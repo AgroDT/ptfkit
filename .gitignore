@@ -1,0 +1,25 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Cython-generated files
+src/ptfkit/*.c
+src/ptfkit/*.pyd
+src/ptfkit/*.so
+
+# Coverage
+.coverage*
+
+# Dotenv
+.env*.local
+
+#docs
+docs/index.md
+site

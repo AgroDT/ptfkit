@@ -1,0 +1,96 @@
+[build-system]
+requires = ["setuptools>=80", "numpy>=2,<3", "cython>=3,<4"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ptfkit"
+version = "0.1.0"
+description = "Pedotransfer functions for estimating soil hydraulic properties"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Cython",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python",
+    "Topic :: Scientific/Engineering :: Hydrology",
+    "Topic :: Scientific/Engineering",
+]
+authors = [
+    {name = "Dmitry Fomin", email = "fomin_ds@esoil.ru"},
+    {name = "Petr Shumilin", email = "shumpet03@yandex.ru"},
+    {name = "Kirill Tolstygin", email = "tolstygin_kd@esoil.ru"},
+    {name = "Petr Tsymbarovich", email = "tpr@esoil.ru"},
+]
+maintainers = [
+    {name = "Petr Tsymbarovich", email = "tpr@esoil.ru"},
+    {name = "Kirill Tolstygin", email = "tolstygin_kd@esoil.ru"},
+]
+
+dependencies = [
+    "numpy>=2.0,<3",
+]
+
+[project.urls]
+Repository = "https://github.com/AgroDT/ptfkit"
+Issues = "https://github.com/AgroDT/ptfkit/issues"
+Documentation = "https://agrodt.github.io/ptfkit/"
+
+[dependency-groups]
+dev = [
+    "cython~=3.2",
+    "mypy~=1.19",
+    "pre-commit~=4.5",
+    "pytest~=9.0",
+    "pytest-cov~=7.0",
+    "ruff~=0.14",
+    "setuptools>=80",
+    "types-setuptools>=80",
+]
+docs = [
+    "mkdocs-api-autonav>=0.4.0",
+    "mkdocs-material>=9.7.0",
+    "mkdocs-minify-plugin>=0.8.0",
+]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+show-fixes = true
+output-format = "full"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "COM812",
+    "D100", "D101", "D103", "D104", "D202", "D203", "D213",
+    "PLR0913",
+    "RUF003",
+    "Q000", "Q003"
+]
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.ruff.lint.isort]
+lines-after-imports = 2
+known-first-party = ["ptfkit"]
+
+[tool.mypy]
+files = ["src", "tests", "setup.py"]
+
+[tool.pytest.ini_options]
+addopts = "--cov=ptfkit"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+plugins = ["Cython.Coverage"]

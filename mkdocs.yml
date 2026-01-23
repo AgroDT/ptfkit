@@ -1,0 +1,58 @@
+site_name: ptfkit
+repo_url: https://github.com/AgroDT/ptfkit
+repo_name: AgroDT/ptfkit
+theme:
+  name: material
+  features:
+    - navigation.indexes
+
+plugins:
+  - search
+  - api-autonav:
+      modules: [src/ptfkit]
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_section_style: spacy
+            docstring_style: google
+            separate_signature: true
+            show_root_heading: true
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            overloads_only: true
+            summary: true
+  - minify:
+      minify_html: true
+
+nav:
+  - Home: index.md
+
+markdown_extensions:
+  - def_list
+  - md_in_html
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.highlight:
+      use_pygments: true
+  - pymdownx.superfences
+
+hooks:
+  - docs/hooks.py
+
+exclude_docs: |
+  __pycache__
+  hooks.py
+  ruff.toml
+
+extra_javascript:
+  - js/katex.js
+  - https://cdn.jsdelivr.net/npm/katex@0/dist/katex.min.js
+  - https://cdn.jsdelivr.net/npm/katex@0/dist/contrib/auto-render.min.js
+
+extra_css:
+  - https://cdn.jsdelivr.net/npm/katex@0/dist/katex.min.css
+
+watch:
+  - src/ptfkit
+  - README.md
