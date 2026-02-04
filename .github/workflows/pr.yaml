@@ -1,19 +1,18 @@
-name: PR checks
+name: PR Checks
 
 on:
   pull_request:
-    types: [opened, synchronize, reopened, ready_for_review]
+    branches:
+      - main
 
 jobs:
-  tests:
+  pytest:
+    name: Tests Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         python-version: ['3.10', '3.11', '3.12', '3.13', '3.14', '3.14t']
-
-    name: tests (python ${{ matrix.python-version }})
-
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -77,3 +76,14 @@ jobs:
           steps.ruff-format.outcome == 'failure' ||
           steps.mypy.outcome == 'failure'
         run: exit 1
+
+  summary:
+    name: PR Checks Summary
+    runs-on: ubuntu-latest
+    if: always()
+    needs: [pytest, code-quality]
+    steps:
+      - run: >
+          test
+          "${{ needs.pytest.result }}" = "success" -a
+          "${{ needs.code-quality.result }}" = "success"
