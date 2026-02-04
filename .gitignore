@@ -16,6 +16,7 @@ src/ptfkit/*.so
 
 # Coverage
 .coverage*
+coverage.xml
 
 # Dotenv
 .env*.local
