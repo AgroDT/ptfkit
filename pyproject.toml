@@ -1,14 +1,15 @@
 [build-system]
 requires = ["setuptools>=80", "numpy>=2,<3", "cython>=3,<4"]
 build-backend = "setuptools.build_meta"
+backend-path = ["."]
 
 [project]
 name = "ptfkit"
 version = "0.1.0"
 description = "Pedotransfer functions for estimating soil hydraulic properties"
-readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
+dynamic = ["readme"]
 requires-python = ">=3.10"
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -89,7 +90,7 @@ lines-after-imports = 2
 known-first-party = ["ptfkit"]
 
 [tool.mypy]
-files = ["src", "tests", "setup.py"]
+files = ["docs", "src", "tests", "setup.py"]
 
 [tool.pytest.ini_options]
 addopts = "--cov=ptfkit"

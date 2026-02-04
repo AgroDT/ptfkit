@@ -54,7 +54,7 @@ jobs:
         run: uv lock --check
 
       - name: Install the project
-        run: uv sync --frozen --group=github
+        run: uv sync --frozen --all-groups
 
       - name: Ruff check
         id: ruff-check

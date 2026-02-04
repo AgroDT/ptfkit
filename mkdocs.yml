@@ -42,7 +42,7 @@ hooks:
 
 exclude_docs: |
   __pycache__
-  hooks.py
+  *.py
   ruff.toml
 
 extra_javascript:
