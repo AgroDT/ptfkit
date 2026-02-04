@@ -17,6 +17,7 @@ MM_PER_HOUR_TO_M_PER_SEC = 1 / 3600000
 CM_TO_M = 1 / 100
 PERCENTS_TO_G_PER_KG = 10
 
+i: int = ''
 
 @cython.ufunc
 @cython.cfunc
