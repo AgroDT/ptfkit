@@ -23,15 +23,15 @@ PERCENTS_TO_G_PER_KG = 10
 def calc_ptf_aimrun2009_ufunc(
     clay: cython.double,
     bulk_density: cython.double,
-    organic_matter: cython.double,
+    soil_organic_matter: cython.double,
     gmd: cython.double,
 ) -> cython.double:
     k_sat_m_per_day = np.exp(
         -2.368
         + 3.846 * bulk_density
-        + 0.091 * organic_matter
+        + 0.091 * soil_organic_matter
         - 6.203 * np.log(bulk_density)
-        - 0.343 * np.log(organic_matter)
+        - 0.343 * np.log(soil_organic_matter)
         - 2.334 * np.log(clay)
         - 0.411 * np.log(gmd)
     )
@@ -240,26 +240,26 @@ def calc_ptf_bai2022_with_depth_ufunc(
 @cython.cfunc
 def calc_theta_1500_rawls1982_ufunc(
     clay: cython.double,
-    organic_matter: cython.double,
+    soil_organic_matter: cython.double,
 ) -> cython.double:
-    return 0.0260 + 0.0050 * clay + 0.0158 * organic_matter
+    return 0.0260 + 0.0050 * clay + 0.0158 * soil_organic_matter
 
 
 @cython.ufunc
 @cython.cfunc
 def calc_theta_33_rawls1982_ufunc(
     sand: cython.double,
-    organic_matter: cython.double,
+    soil_organic_matter: cython.double,
     theta_1500: cython.double,
 ) -> cython.double:
-    return 0.2391 - 0.0019 * sand + 0.0210 * organic_matter + 0.72 * theta_1500
+    return 0.2391 - 0.0019 * sand + 0.0210 * soil_organic_matter + 0.72 * theta_1500
 
 
 @cython.ufunc
 @cython.cfunc
 def calc_full_wrc_rawls1982_ufunc(
     sand: cython.double,
-    organic_matter: cython.double,
+    soil_organic_matter: cython.double,
     bulk_density: cython.double,
     theta_33: cython.double,
     theta_1500: cython.double,
@@ -279,7 +279,7 @@ def calc_full_wrc_rawls1982_ufunc(
 ]:
     theta_4 = (
         0.1829
-        - 0.0246 * organic_matter
+        - 0.0246 * soil_organic_matter
         - 0.0376 * bulk_density
         + 1.89 * theta_33
         - 1.38 * theta_1500
@@ -288,7 +288,7 @@ def calc_full_wrc_rawls1982_ufunc(
     theta_7 = (
         0.8888
         - 0.0003 * sand
-        - 0.0107 * organic_matter
+        - 0.0107 * soil_organic_matter
         + 1.53 * theta_33
         - 0.81 * theta_1500
     )  # fmt: skip
@@ -296,7 +296,7 @@ def calc_full_wrc_rawls1982_ufunc(
     theta_10 = (
         0.0619
         - 0.0002 * sand
-        - 0.0067 * organic_matter
+        - 0.0067 * soil_organic_matter
         + 1.34 * theta_33
         - 0.51 * theta_1500
     )  # fmt: skip
@@ -305,15 +305,15 @@ def calc_full_wrc_rawls1982_ufunc(
 
     theta_60 = 0.0136 - 0.0091 * bulk_density + 0.66 * theta_33 + 0.39 * theta_1500
 
-    theta_100 = -0.0034 + 0.0022 * organic_matter + 0.52 * theta_33 + 0.54 * theta_1500
+    theta_100 = -0.0034 + 0.0022 * soil_organic_matter + 0.52 * theta_33 + 0.54 * theta_1500
 
-    theta_200 = -0.0043 + 0.0026 * organic_matter + 0.36 * theta_33 + 0.69 * theta_1500
+    theta_200 = -0.0043 + 0.0026 * soil_organic_matter + 0.36 * theta_33 + 0.69 * theta_1500
 
-    theta_400 = -0.0038 + 0.0026 * organic_matter + 0.24 * theta_33 + 0.79 * theta_1500
+    theta_400 = -0.0038 + 0.0026 * soil_organic_matter + 0.24 * theta_33 + 0.79 * theta_1500
 
-    theta_700 = -0.0027 + 0.0024 * organic_matter + 0.16 * theta_33 + 0.86 * theta_1500
+    theta_700 = -0.0027 + 0.0024 * soil_organic_matter + 0.16 * theta_33 + 0.86 * theta_1500
 
-    theta_1000 = -0.0019 + 0.0022 * organic_matter + 0.11 * theta_33 + 0.89 * theta_1500
+    theta_1000 = -0.0019 + 0.0022 * soil_organic_matter + 0.11 * theta_33 + 0.89 * theta_1500
 
     return (
         theta_4,
@@ -336,7 +336,7 @@ def calc_full_wrc_rawls1982_ufunc(
 def calc_full_wrc_rawls1983_ufunc(
     sand: cython.double,
     clay: cython.double,
-    organic_matter: cython.double,
+    soil_organic_matter: cython.double,
     bulk_density: cython.double,
 ) -> tuple[
     cython.double,
@@ -353,7 +353,7 @@ def calc_full_wrc_rawls1983_ufunc(
         0.4180
         - 0.0021 * sand
         + 0.0035 * clay
-        + 0.0232 * organic_matter
+        + 0.0232 * soil_organic_matter
         - 0.0859 * bulk_density
     )  # fmt: skip
 
@@ -361,7 +361,7 @@ def calc_full_wrc_rawls1983_ufunc(
         0.3486
         - 0.0018 * sand
         + 0.0039 * clay
-        + 0.0228 * organic_matter
+        + 0.0228 * soil_organic_matter
         - 0.0738 * bulk_density
     )  # fmt: skip
 
@@ -369,7 +369,7 @@ def calc_full_wrc_rawls1983_ufunc(
         0.2819
         - 0.0014 * sand
         + 0.0042 * clay
-        + 0.0216 * organic_matter
+        + 0.0216 * soil_organic_matter
         - 0.0612 * bulk_density
     )  # fmt: skip
 
@@ -377,7 +377,7 @@ def calc_full_wrc_rawls1983_ufunc(
         0.2352
         - 0.0012 * sand
         + 0.0043 * clay
-        + 0.0202 * organic_matter
+        + 0.0202 * soil_organic_matter
         - 0.0517 * bulk_density
     )  # fmt: skip
 
@@ -385,7 +385,7 @@ def calc_full_wrc_rawls1983_ufunc(
         0.1837
         - 0.0009 * sand
         + 0.0044 * clay
-        + 0.0181 * organic_matter
+        + 0.0181 * soil_organic_matter
         - 0.0407 * bulk_density
     )  # fmt: skip
 
@@ -393,7 +393,7 @@ def calc_full_wrc_rawls1983_ufunc(
         0.1426
         - 0.0007 * sand
         + 0.0045 * clay
-        + 0.0160 * organic_matter
+        + 0.0160 * soil_organic_matter
         - 0.0315 * bulk_density
     )  # fmt: skip
 
@@ -401,7 +401,7 @@ def calc_full_wrc_rawls1983_ufunc(
         0.1155
         - 0.0005 * sand
         + 0.0045 * clay
-        + 0.0143 * organic_matter
+        + 0.0143 * soil_organic_matter
         - 0.0253 * bulk_density
     )  # fmt: skip
 
@@ -409,7 +409,7 @@ def calc_full_wrc_rawls1983_ufunc(
         0.1005
         - 0.0004 * sand
         + 0.0045 * clay
-        + 0.0133 * organic_matter
+        + 0.0133 * soil_organic_matter
         - 0.0218 * bulk_density
     )  # fmt: skip
 
@@ -417,7 +417,7 @@ def calc_full_wrc_rawls1983_ufunc(
         0.0854
         - 0.0004 * sand
         + 0.0044 * clay
-        + 0.0122 * organic_matter
+        + 0.0122 * soil_organic_matter
         - 0.0182 * bulk_density
     )  # fmt: skip
 
@@ -641,7 +641,7 @@ def calc_ptf_kalumba2020_ufunc(
     stoniness: cython.double,
     bulk_density: cython.double,
     depth: cython.double,
-    organic_matter: cython.double,
+    soil_organic_matter: cython.double,
     electrical_conductivity: cython.double,
     ph: cython.double,
     nitrogen_content: cython.double,
@@ -701,7 +701,7 @@ def calc_ptf_kalumba2020_ufunc(
         - 0.022 * stoniness
         + 0.887 * nitrogen_content
         + 0.595 * electrical_conductivity
-        + 0.014 * organic_matter
+        + 0.014 * soil_organic_matter
         + 0.029 * bulk_density
         + 4.17 * np.exp(-4) * depth
         - 2.43 * np.exp(-4) * altitude
@@ -715,7 +715,7 @@ def calc_ptf_kalumba2020_ufunc(
         - 0.023 * stoniness
         + 0.787 * nitrogen_content
         + 0.703 * electrical_conductivity
-        + 0.016 * organic_matter
+        + 0.016 * soil_organic_matter
         + 0.027 * bulk_density
         + 5.31 * np.exp(-4) * depth
         - 2.30 * np.exp(-4) * altitude
@@ -729,7 +729,7 @@ def calc_ptf_kalumba2020_ufunc(
         - 0.023 * stoniness
         + 0.623 * nitrogen_content
         + 0.754 * electrical_conductivity
-        + 0.015 * organic_matter
+        + 0.015 * soil_organic_matter
         + 3.81 * np.exp(-4) * depth
         - 1.79 * np.exp(-4) * altitude
     )
