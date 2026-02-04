@@ -1,0 +1,79 @@
+name: PR checks
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.10', '3.11', '3.12', '3.13', '3.14', '3.14t']
+
+    name: tests (python ${{ matrix.python-version }})
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Install the project
+        run: uv sync --frozen
+
+      - name: Run pytest
+        run: uv run --no-sync pytest --no-cov tests
+
+  code-quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: pyproject.toml
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+
+      - name: Check uv.lock
+        run: uv lock --check
+
+      - name: Install the project
+        run: uv sync --frozen --group=github
+
+      - name: Ruff check
+        id: ruff-check
+        continue-on-error: true
+        run: uv run --no-sync ruff check --output-format=github
+
+      - name: Ruff format
+        id: ruff-format
+        continue-on-error: true
+        run: uv run --no-sync ruff format --check --preview --output-format=github
+
+      - name: Mypy
+        id: mypy
+        continue-on-error: true
+        run: uv run --no-sync mypy | uv run --no-sync mypy-gh-action-report
+
+      - name: Fail if any step failed
+        if: |
+          steps.ruff-check.outcome == 'failure' ||
+          steps.ruff-format.outcome == 'failure' ||
+          steps.mypy.outcome == 'failure'
+        run: exit 1
