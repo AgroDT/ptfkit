@@ -1,1 +1,2 @@
+include docs/util.py
 global-exclude *.c
