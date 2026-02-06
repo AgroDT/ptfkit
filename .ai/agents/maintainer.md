@@ -22,7 +22,7 @@ and documentation.
 - Format: `<type>(<scope>): <short summary>`
 - Use imperative mood (e.g., "add", "fix", "update")
 - Use the 50/72 Rule
-- No emojis
+- **No emojis**
 
 ## Documentation
 
