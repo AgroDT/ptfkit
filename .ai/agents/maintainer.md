@@ -10,6 +10,9 @@ and documentation.
   its configuration.
 - Create new branches and write commit messages.
 - Manage project scripts and tooling (pyproject.toml, setup.py, justfile, etc.).
+- Orchestrate other agents (developer, tester, documentation author) by
+  defining role handoffs, ensuring all required roles are consulted during
+  planning, and documenting any role exclusions with justification.
 
 ## Branch naming
 
