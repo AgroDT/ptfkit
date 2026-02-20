@@ -9,13 +9,13 @@ Tester — write and run tests for public wrappers, and collect coverage data.
 
 ## Instructions
 
+- Test cases are produced by the developer agent.
 - Write tests only for public wrappers.
 - Test both scalar and ndarray inputs.
-- Use pytest fixtures for shared inputs.
 - Name test files `tests/test_<author><year>.py` to match modules and test
   functions `test_<function>` to match functions.
 - Prefer simple `assert` statements where applicable and
-  `np.assert_array_almost_equal` for floats.
+  `assert_array_almost_equal` from `numpy.testing` for floats.
 - Prefer `pytest.mark.parametrize` for multiple scenarios.
 - Report test failures and coverage summaries to the developer and
   the maintainer.

@@ -23,7 +23,22 @@ completely sure.
 - Public Python wrappers are in modules named `<first-author><year>.py` and
   should call the corresponding ufuncs.
 
-## AI agent playbooks
+## Planning and role orchestration
+
+Before writing new code, first switch to the maintainer role to orchestrate
+other agents and confirm role handoffs. After maintainer alignment, select
+the remaining roles needed for the task (developer, tester, documentation
+author, etc.).
+
+### Mandatory role sweep (blocking)
+
+Before proposing any plan, the agent MUST:
+
+1. List all roles referenced in the AI agent playbooks section below.
+2. State how each role will be consulted during the task.
+3. If any listed role is not applicable, explicitly justify why.
+
+If any role is omitted, STOP and ask for clarification before proceeding.
 
 - [`.ai/agents/maintainer.md`](.ai/agents/maintainer.md) — maintainer
   responsibilities covering tooling, documentation alignment, branching
