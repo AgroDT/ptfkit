@@ -1033,3 +1033,51 @@ def calc_ptf_wang2012_ufunc(
     )
 
     return theta_s, theta_fc, k_sat
+
+
+@cython.ufunc
+@cython.cfunc
+def calc_ptf_pidgeon1972_fc_ufunc(
+    silt: cython.double,
+    clay: cython.double,
+    organic_matter: cython.double,
+) -> cython.double:
+    return 7.38 + 0.16 * silt + 0.30 * clay + 1.5 * organic_matter
+
+
+@cython.ufunc
+@cython.cfunc
+def calc_ptf_pidgeon1972_pwp_ufunc(
+    silt: cython.double,
+    clay: cython.double,
+    organic_matter: cython.double,
+) -> cython.double:
+    return -4.19 + 0.19 * silt + 0.39 * clay + 0.90 * organic_matter
+
+
+@cython.ufunc
+@cython.cfunc
+def calc_ptf_pidgeon1972_awc_usd_ufunc(
+    clay: cython.double,
+    organic_matter: cython.double,
+) -> cython.double:
+    return 169.3 - 1.50 * clay + 6.09 * organic_matter
+
+
+@cython.ufunc
+@cython.cfunc
+def calc_ptf_pidgeon1972_awc_ons_ufunc(
+    clay: cython.double,
+    organic_matter: cython.double,
+) -> cython.double:
+    return 184.5 - 2.00 * clay + 3.57 * organic_matter
+
+
+@cython.ufunc
+@cython.cfunc
+def calc_ptf_pidgeon1972_eawc_ufunc(
+    silt: cython.double,
+    clay: cython.double,
+    organic_matter: cython.double,
+) -> cython.double:
+    return 121.1 - 3.03 * silt - 1.38 * clay + 6.76 * organic_matter
