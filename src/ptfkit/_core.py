@@ -1033,3 +1033,153 @@ def calc_ptf_wang2012_ufunc(
     )
 
     return theta_s, theta_fc, k_sat
+
+
+@cython.ufunc
+@cython.cfunc
+def calc_ptf_pidgeon1972_fc_ufunc(
+    silt: cython.double,
+    clay: cython.double,
+    organic_matter: cython.double,
+) -> cython.double:
+    return 7.38 + 0.16 * silt + 0.30 * clay + 1.54 * organic_matter
+
+
+@cython.ufunc
+@cython.cfunc
+def calc_ptf_pidgeon1972_fc_sand_ufunc(
+    sand: cython.double,
+) -> cython.double:
+    return 36.16 - 0.25 * sand
+
+
+@cython.ufunc
+@cython.cfunc
+def calc_ptf_pidgeon1972_fc_sand_om_ufunc(
+    sand: cython.double,
+    organic_matter: cython.double,
+) -> cython.double:
+    return 34.27 - 0.27 * sand + 1.25 * organic_matter
+
+
+@cython.ufunc
+@cython.cfunc
+def calc_ptf_pidgeon1972_fc_vol_sand_om_ufunc(
+    sand: cython.double,
+    organic_matter: cython.double,
+) -> cython.double:
+    return 38.15 - 0.17 * sand + 0.77 * organic_matter
+
+
+@cython.ufunc
+@cython.cfunc
+def calc_ptf_pidgeon1972_pwp_ufunc(
+    silt: cython.double,
+    clay: cython.double,
+    organic_matter: cython.double,
+) -> cython.double:
+    return -4.19 + 0.19 * silt + 0.39 * clay + 0.90 * organic_matter
+
+
+@cython.ufunc
+@cython.cfunc
+def calc_ptf_pidgeon1972_pwp_sand_ufunc(
+    sand: cython.double,
+) -> cython.double:
+    return 28.41 - 0.29 * sand
+
+
+@cython.ufunc
+@cython.cfunc
+def calc_ptf_pidgeon1972_pwp_sand_om_ufunc(
+    sand: cython.double,
+    organic_matter: cython.double,
+) -> cython.double:
+    return 32.90 - 0.37 * sand + 0.44 * organic_matter
+
+
+@cython.ufunc
+@cython.cfunc
+def calc_ptf_pidgeon1972_awc_usd_ufunc(
+    clay: cython.double,
+    organic_matter: cython.double,
+) -> cython.double:
+    return 169.3 - 1.50 * clay + 6.09 * organic_matter
+
+
+@cython.ufunc
+@cython.cfunc
+def calc_ptf_pidgeon1972_awc_sand_om_ufunc(
+    sand: cython.double,
+    organic_matter: cython.double,
+) -> cython.double:
+    return 1.0 + 1.84 * sand + 8.12 * organic_matter
+
+
+@cython.ufunc
+@cython.cfunc
+def calc_ptf_pidgeon1972_awc_coarse_sand_ufunc(
+    coarse_sand: cython.double,
+) -> cython.double:
+    return 68.5 + 2.33 * coarse_sand
+
+
+@cython.ufunc
+@cython.cfunc
+def calc_ptf_pidgeon1972_awc_fine_sand_ufunc(
+    fine_sand: cython.double,
+) -> cython.double:
+    return 66.7 + 2.66 * fine_sand
+
+
+@cython.ufunc
+@cython.cfunc
+def calc_ptf_pidgeon1972_awc_very_fine_sand_ufunc(
+    very_fine_sand: cython.double,
+) -> cython.double:
+    return 66.9 + 4.58 * very_fine_sand
+
+
+@cython.ufunc
+@cython.cfunc
+def calc_ptf_pidgeon1972_eawc_ufunc(
+    silt: cython.double,
+    clay: cython.double,
+    organic_matter: cython.double,
+) -> cython.double:
+    return 121.1 - 3.03 * silt - 1.38 * clay + 6.76 * organic_matter
+
+
+@cython.ufunc
+@cython.cfunc
+def calc_ptf_pidgeon1972_eawc_sand_ufunc(
+    sand: cython.double,
+) -> cython.double:
+    return -25.8 + 1.55 * sand
+
+
+@cython.ufunc
+@cython.cfunc
+def calc_ptf_pidgeon1972_eawc_sand_om_ufunc(
+    sand: cython.double,
+    organic_matter: cython.double,
+) -> cython.double:
+    return -10.8 + 1.15 * sand + 4.78 * organic_matter
+
+
+@cython.ufunc
+@cython.cfunc
+def calc_ptf_pidgeon1972_eawc_coarse_sand_om_ufunc(
+    coarse_sand: cython.double,
+    organic_matter: cython.double,
+) -> cython.double:
+    return -7.4 + 2.37 * coarse_sand + 6.86 * organic_matter
+
+
+@cython.ufunc
+@cython.cfunc
+def calc_ptf_pidgeon1972_eawc_fine_sand_om_ufunc(
+    fine_sand: cython.double,
+    organic_matter: cython.double,
+) -> cython.double:
+    return -18.0 + 3.11 * fine_sand + 7.69 * organic_matter
