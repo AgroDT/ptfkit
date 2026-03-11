@@ -1042,7 +1042,7 @@ def calc_ptf_pidgeon1972_fc_ufunc(
     clay: cython.double,
     organic_matter: cython.double,
 ) -> cython.double:
-    return 7.38 + 0.16 * silt + 0.30 * clay + 1.5 * organic_matter
+    return 7.38 + 0.16 * silt + 0.30 * clay + 1.54 * organic_matter
 
 
 @cython.ufunc
