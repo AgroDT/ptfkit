@@ -14,13 +14,25 @@ Territory
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal, overload
+from typing import TYPE_CHECKING, overload
 
 from ptfkit._core import (
-    calc_ptf_pidgeon1972_awc_ons_ufunc,
+    calc_ptf_pidgeon1972_awc_coarse_sand_ufunc,
+    calc_ptf_pidgeon1972_awc_fine_sand_ufunc,
+    calc_ptf_pidgeon1972_awc_sand_om_ufunc,
     calc_ptf_pidgeon1972_awc_usd_ufunc,
+    calc_ptf_pidgeon1972_awc_very_fine_sand_ufunc,
+    calc_ptf_pidgeon1972_eawc_coarse_sand_om_ufunc,
+    calc_ptf_pidgeon1972_eawc_fine_sand_om_ufunc,
+    calc_ptf_pidgeon1972_eawc_sand_om_ufunc,
+    calc_ptf_pidgeon1972_eawc_sand_ufunc,
     calc_ptf_pidgeon1972_eawc_ufunc,
+    calc_ptf_pidgeon1972_fc_sand_om_ufunc,
+    calc_ptf_pidgeon1972_fc_sand_ufunc,
     calc_ptf_pidgeon1972_fc_ufunc,
+    calc_ptf_pidgeon1972_fc_vol_sand_om_ufunc,
+    calc_ptf_pidgeon1972_pwp_sand_om_ufunc,
+    calc_ptf_pidgeon1972_pwp_sand_ufunc,
     calc_ptf_pidgeon1972_pwp_ufunc,
 )
 
@@ -32,9 +44,22 @@ if TYPE_CHECKING:
 
 __all__ = [
     'calc_ptf_pidgeon1972_awc',
+    'calc_ptf_pidgeon1972_awc_coarse_sand',
+    'calc_ptf_pidgeon1972_awc_fine_sand',
+    'calc_ptf_pidgeon1972_awc_sand_organic_matter',
+    'calc_ptf_pidgeon1972_awc_very_fine_sand',
     'calc_ptf_pidgeon1972_eawc',
+    'calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter',
+    'calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter',
+    'calc_ptf_pidgeon1972_eawc_sand',
+    'calc_ptf_pidgeon1972_eawc_sand_organic_matter',
     'calc_ptf_pidgeon1972_fc',
+    'calc_ptf_pidgeon1972_fc_sand',
+    'calc_ptf_pidgeon1972_fc_sand_organic_matter',
+    'calc_ptf_pidgeon1972_fc_vol_sand_organic_matter',
     'calc_ptf_pidgeon1972_pwp',
+    'calc_ptf_pidgeon1972_pwp_sand',
+    'calc_ptf_pidgeon1972_pwp_sand_organic_matter',
 ]
 
 
@@ -82,6 +107,119 @@ def calc_ptf_pidgeon1972_fc(
 
 
 @overload
+def calc_ptf_pidgeon1972_fc_sand(
+    *,
+    sand: float,
+) -> floating: ...
+
+
+@overload
+def calc_ptf_pidgeon1972_fc_sand(
+    *,
+    sand: ArrayLike,
+    out: ArrayLike | None = None,
+) -> NDArray[floating]: ...
+
+
+def calc_ptf_pidgeon1972_fc_sand(
+    *,
+    sand,
+    out=None,
+):
+    """Calculate field capacity from sand.
+
+    Regression in Table 3 (FC w/w%, Sand (2)).
+
+    Args:
+        sand: sand content (%)
+        out: field capacity (w/w %) (FC)
+
+    Returns:
+        field capacity (w/w %)
+
+    """
+    return calc_ptf_pidgeon1972_fc_sand_ufunc(sand, out=out)
+
+
+@overload
+def calc_ptf_pidgeon1972_fc_sand_organic_matter(
+    *,
+    sand: float,
+    organic_matter: float,
+) -> floating: ...
+
+
+@overload
+def calc_ptf_pidgeon1972_fc_sand_organic_matter(
+    *,
+    sand: ArrayLike,
+    organic_matter: ArrayLike,
+    out: ArrayLike | None = None,
+) -> NDArray[floating]: ...
+
+
+def calc_ptf_pidgeon1972_fc_sand_organic_matter(
+    *,
+    sand,
+    organic_matter,
+    out=None,
+):
+    """Calculate field capacity from sand and organic matter.
+
+    Best regression for FC (w/w%) with this input set (Table 3, Sand (2) + OM).
+
+    Args:
+        sand: sand content (%)
+        organic_matter: organic matter content (%)
+        out: field capacity (w/w %) (FC)
+
+    Returns:
+        field capacity (w/w %)
+
+    """
+    return calc_ptf_pidgeon1972_fc_sand_om_ufunc(sand, organic_matter, out=out)
+
+
+@overload
+def calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(
+    *,
+    sand: float,
+    organic_matter: float,
+) -> floating: ...
+
+
+@overload
+def calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(
+    *,
+    sand: ArrayLike,
+    organic_matter: ArrayLike,
+    out: ArrayLike | None = None,
+) -> NDArray[floating]: ...
+
+
+def calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(
+    *,
+    sand,
+    organic_matter,
+    out=None,
+):
+    """Calculate field capacity (volume basis) from sand and organic matter.
+
+    Regression in Table 3 (FC v/v%).
+
+    Args:
+        sand: sand content (%)
+        organic_matter: organic matter content (%)
+        out: field capacity (v/v %) (FC)
+
+    Returns:
+        field capacity (v/v %)
+
+    """
+    return calc_ptf_pidgeon1972_fc_vol_sand_om_ufunc(sand, organic_matter, out=out)
+
+
+@overload
 def calc_ptf_pidgeon1972_pwp(
     *,
     silt: float,
@@ -125,11 +263,84 @@ def calc_ptf_pidgeon1972_pwp(
 
 
 @overload
+def calc_ptf_pidgeon1972_pwp_sand(
+    *,
+    sand: float,
+) -> floating: ...
+
+
+@overload
+def calc_ptf_pidgeon1972_pwp_sand(
+    *,
+    sand: ArrayLike,
+    out: ArrayLike | None = None,
+) -> NDArray[floating]: ...
+
+
+def calc_ptf_pidgeon1972_pwp_sand(
+    *,
+    sand,
+    out=None,
+):
+    """Calculate permanent wilting point from sand.
+
+    Best regression for PWP (w/w%) with sand-only input (Table 3, Sand (1)).
+
+    Args:
+        sand: sand content (%)
+        out: permanent wilting point (w/w %) (PWP)
+
+    Returns:
+        permanent wilting point (w/w %)
+
+    """
+    return calc_ptf_pidgeon1972_pwp_sand_ufunc(sand, out=out)
+
+
+@overload
+def calc_ptf_pidgeon1972_pwp_sand_organic_matter(
+    *,
+    sand: float,
+    organic_matter: float,
+) -> floating: ...
+
+
+@overload
+def calc_ptf_pidgeon1972_pwp_sand_organic_matter(
+    *,
+    sand: ArrayLike,
+    organic_matter: ArrayLike,
+    out: ArrayLike | None = None,
+) -> NDArray[floating]: ...
+
+
+def calc_ptf_pidgeon1972_pwp_sand_organic_matter(
+    *,
+    sand,
+    organic_matter,
+    out=None,
+):
+    """Calculate permanent wilting point from sand and organic matter.
+
+    Best regression for PWP (w/w%) with this input set (Table 3, Sand (2) + OM).
+
+    Args:
+        sand: sand content (%)
+        organic_matter: organic matter content (%)
+        out: permanent wilting point (w/w %) (PWP)
+
+    Returns:
+        permanent wilting point (w/w %)
+
+    """
+    return calc_ptf_pidgeon1972_pwp_sand_om_ufunc(sand, organic_matter, out=out)
+
+
+@overload
 def calc_ptf_pidgeon1972_awc(
     *,
     clay: float,
     organic_matter: float,
-    method: Literal['ultrasonic_dispersion', 'overnight_shaking'],
 ) -> floating: ...
 
 
@@ -138,7 +349,6 @@ def calc_ptf_pidgeon1972_awc(
     *,
     clay: ArrayLike,
     organic_matter: ArrayLike,
-    method: Literal['ultrasonic_dispersion', 'overnight_shaking'],
     out: ArrayLike | None = None,
 ) -> NDArray[floating]: ...
 
@@ -147,32 +357,167 @@ def calc_ptf_pidgeon1972_awc(
     *,
     clay,
     organic_matter,
-    method,
     out=None,
 ):
     """Calculate available water capacity for Ugandan ferrallitic soils.
 
     Equation (6). Uses particle-size method 1 (ultrasonic dispersion) and organic matter.
-    Equation (8). Uses particle-size method 2 (overnight shaking) and organic matter.
+    Equation (8) is excluded because this input set is duplicated and has lower accuracy.
 
     Args:
         clay: clay content (<2 um) (%)
         organic_matter: organic matter content (%)
-        method: particle-size method
         out: available water capacity (mm/m) (AWC)
 
     Returns:
         available water capacity (mm/m)
 
     """
-    if method == 'ultrasonic_dispersion':
-        return calc_ptf_pidgeon1972_awc_usd_ufunc(clay, organic_matter, out=out)
+    return calc_ptf_pidgeon1972_awc_usd_ufunc(clay, organic_matter, out=out)
 
-    if method == 'overnight_shaking':
-        return calc_ptf_pidgeon1972_awc_ons_ufunc(clay, organic_matter, out=out)
 
-    msg = 'method must be "ultrasonic_dispersion" or "overnight_shaking"'
-    raise ValueError(msg)
+@overload
+def calc_ptf_pidgeon1972_awc_sand_organic_matter(
+    *,
+    sand: float,
+    organic_matter: float,
+) -> floating: ...
+
+
+@overload
+def calc_ptf_pidgeon1972_awc_sand_organic_matter(
+    *,
+    sand: ArrayLike,
+    organic_matter: ArrayLike,
+    out: ArrayLike | None = None,
+) -> NDArray[floating]: ...
+
+
+def calc_ptf_pidgeon1972_awc_sand_organic_matter(
+    *,
+    sand,
+    organic_matter,
+    out=None,
+):
+    """Calculate available water capacity from sand and organic matter.
+
+    Regression in Table 3 (AWC mm/m, Sand (2) + OM).
+
+    Args:
+        sand: sand content (%)
+        organic_matter: organic matter content (%)
+        out: available water capacity (mm/m) (AWC)
+
+    Returns:
+        available water capacity (mm/m)
+
+    """
+    return calc_ptf_pidgeon1972_awc_sand_om_ufunc(sand, organic_matter, out=out)
+
+
+@overload
+def calc_ptf_pidgeon1972_awc_coarse_sand(
+    *,
+    coarse_sand: float,
+) -> floating: ...
+
+
+@overload
+def calc_ptf_pidgeon1972_awc_coarse_sand(
+    *,
+    coarse_sand: ArrayLike,
+    out: ArrayLike | None = None,
+) -> NDArray[floating]: ...
+
+
+def calc_ptf_pidgeon1972_awc_coarse_sand(
+    *,
+    coarse_sand,
+    out=None,
+):
+    """Calculate available water capacity from coarse sand.
+
+    Regression in Table 3 (AWC mm/m, Coarse Sand (1)).
+
+    Args:
+        coarse_sand: coarse sand content (%)
+        out: available water capacity (mm/m) (AWC)
+
+    Returns:
+        available water capacity (mm/m)
+
+    """
+    return calc_ptf_pidgeon1972_awc_coarse_sand_ufunc(coarse_sand, out=out)
+
+
+@overload
+def calc_ptf_pidgeon1972_awc_fine_sand(
+    *,
+    fine_sand: float,
+) -> floating: ...
+
+
+@overload
+def calc_ptf_pidgeon1972_awc_fine_sand(
+    *,
+    fine_sand: ArrayLike,
+    out: ArrayLike | None = None,
+) -> NDArray[floating]: ...
+
+
+def calc_ptf_pidgeon1972_awc_fine_sand(
+    *,
+    fine_sand,
+    out=None,
+):
+    """Calculate available water capacity from fine sand.
+
+    Regression in Table 3 (AWC mm/m, Fine Sand (1)).
+
+    Args:
+        fine_sand: fine sand content (%)
+        out: available water capacity (mm/m) (AWC)
+
+    Returns:
+        available water capacity (mm/m)
+
+    """
+    return calc_ptf_pidgeon1972_awc_fine_sand_ufunc(fine_sand, out=out)
+
+
+@overload
+def calc_ptf_pidgeon1972_awc_very_fine_sand(
+    *,
+    very_fine_sand: float,
+) -> floating: ...
+
+
+@overload
+def calc_ptf_pidgeon1972_awc_very_fine_sand(
+    *,
+    very_fine_sand: ArrayLike,
+    out: ArrayLike | None = None,
+) -> NDArray[floating]: ...
+
+
+def calc_ptf_pidgeon1972_awc_very_fine_sand(
+    *,
+    very_fine_sand,
+    out=None,
+):
+    """Calculate available water capacity from very fine sand.
+
+    Regression in Table 3 (AWC mm/m, Very Fine Sand (1)).
+
+    Args:
+        very_fine_sand: very fine sand content (%)
+        out: available water capacity (mm/m) (AWC)
+
+    Returns:
+        available water capacity (mm/m)
+
+    """
+    return calc_ptf_pidgeon1972_awc_very_fine_sand_ufunc(very_fine_sand, out=out)
 
 
 @overload
@@ -216,3 +561,155 @@ def calc_ptf_pidgeon1972_eawc(
 
     """
     return calc_ptf_pidgeon1972_eawc_ufunc(silt, clay, organic_matter, out=out)
+
+
+@overload
+def calc_ptf_pidgeon1972_eawc_sand(
+    *,
+    sand: float,
+) -> floating: ...
+
+
+@overload
+def calc_ptf_pidgeon1972_eawc_sand(
+    *,
+    sand: ArrayLike,
+    out: ArrayLike | None = None,
+) -> NDArray[floating]: ...
+
+
+def calc_ptf_pidgeon1972_eawc_sand(
+    *,
+    sand,
+    out=None,
+):
+    """Calculate easily available water capacity from sand.
+
+    Regression in Table 3 (EAWC mm/m, Sand (2)).
+
+    Args:
+        sand: sand content (%)
+        out: easily available water capacity (mm/m) (EAWC)
+
+    Returns:
+        easily available water capacity (mm/m)
+
+    """
+    return calc_ptf_pidgeon1972_eawc_sand_ufunc(sand, out=out)
+
+
+@overload
+def calc_ptf_pidgeon1972_eawc_sand_organic_matter(
+    *,
+    sand: float,
+    organic_matter: float,
+) -> floating: ...
+
+
+@overload
+def calc_ptf_pidgeon1972_eawc_sand_organic_matter(
+    *,
+    sand: ArrayLike,
+    organic_matter: ArrayLike,
+    out: ArrayLike | None = None,
+) -> NDArray[floating]: ...
+
+
+def calc_ptf_pidgeon1972_eawc_sand_organic_matter(
+    *,
+    sand,
+    organic_matter,
+    out=None,
+):
+    """Calculate easily available water capacity from sand and organic matter.
+
+    Regression in Table 3 (EAWC mm/m, Sand (1) + OM).
+
+    Args:
+        sand: sand content (%)
+        organic_matter: organic matter content (%)
+        out: easily available water capacity (mm/m) (EAWC)
+
+    Returns:
+        easily available water capacity (mm/m)
+
+    """
+    return calc_ptf_pidgeon1972_eawc_sand_om_ufunc(sand, organic_matter, out=out)
+
+
+@overload
+def calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(
+    *,
+    coarse_sand: float,
+    organic_matter: float,
+) -> floating: ...
+
+
+@overload
+def calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(
+    *,
+    coarse_sand: ArrayLike,
+    organic_matter: ArrayLike,
+    out: ArrayLike | None = None,
+) -> NDArray[floating]: ...
+
+
+def calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(
+    *,
+    coarse_sand,
+    organic_matter,
+    out=None,
+):
+    """Calculate easily available water capacity from coarse sand and organic matter.
+
+    Regression in Table 3 (EAWC mm/m, Coarse Sand (1) + OM).
+
+    Args:
+        coarse_sand: coarse sand content (%)
+        organic_matter: organic matter content (%)
+        out: easily available water capacity (mm/m) (EAWC)
+
+    Returns:
+        easily available water capacity (mm/m)
+
+    """
+    return calc_ptf_pidgeon1972_eawc_coarse_sand_om_ufunc(coarse_sand, organic_matter, out=out)
+
+
+@overload
+def calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(
+    *,
+    fine_sand: float,
+    organic_matter: float,
+) -> floating: ...
+
+
+@overload
+def calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(
+    *,
+    fine_sand: ArrayLike,
+    organic_matter: ArrayLike,
+    out: ArrayLike | None = None,
+) -> NDArray[floating]: ...
+
+
+def calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(
+    *,
+    fine_sand,
+    organic_matter,
+    out=None,
+):
+    """Calculate easily available water capacity from fine sand and organic matter.
+
+    Regression in Table 3 (EAWC mm/m, Fine Sand (1) + OM).
+
+    Args:
+        fine_sand: fine sand content (%)
+        organic_matter: organic matter content (%)
+        out: easily available water capacity (mm/m) (EAWC)
+
+    Returns:
+        easily available water capacity (mm/m)
+
+    """
+    return calc_ptf_pidgeon1972_eawc_fine_sand_om_ufunc(fine_sand, organic_matter, out=out)
