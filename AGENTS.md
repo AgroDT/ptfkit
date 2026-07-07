@@ -3,7 +3,7 @@
 Use **only English** for code, comments, documentation, and commits.
 For conversations use the user's preferred language.
 
-When in doubt, stop and ask for clarification. Don't try to act without being
+When in doubt, stop and ask for clarification. Do not act without being
 completely sure.
 
 ## Project management
@@ -15,13 +15,43 @@ completely sure.
   `uv run --no-sync <command>` to ensure a consistent environment and avoid
   implicit dependency resolution.
 
-## Implementation details
+## PTF specification workflow
 
-- Core implementations live in `src/ptfkit/_core.py` (Cython-annotated code in
-  pure Python mode).
-- Vectorized ufuncs follow the naming convention: `calc_ptf_<first-author><year>[_<extra>]_ufunc`.
-- Public Python wrappers are in modules named `<first-author><year>.py` and
-  should call the corresponding ufuncs.
+- The source of truth for implementing a PTF is a function-level Markdown spec
+  in `specs/functions/*.md`.
+- Codex must not extract formulas from articles, PDFs, article-level
+  extraction files, or surrounding prose.
+- Codex must not invent, infer, simplify, or complete missing formulas,
+  constants, units, expected values, output fields, or API details.
+- If a spec is incomplete or ambiguous, stop implementation work and create a
+  review file that lists blocking issues and questions for the spec owner.
+- Article-level files under `specs/*.md` may be useful context for humans, but
+  they are not implementation-ready function specs.
+- Use the project-specific skills in `.codex/skills/` for the PTF workflow:
+  - `ptf-spec-ingest` for validating specs and creating implementation
+    checklists.
+  - `ptf-rust-core` for implementing validated specs in the pure Rust core.
+  - `ptf-python-bindings` for exposing Rust functions through the Python API.
+  - `ptf-review` for checking implementation quality against the spec and
+    golden tests.
+
+## Implementation details and migration
+
+- The current legacy computational core lives in `src/ptfkit/_core.py`
+  (Cython-annotated code in pure Python mode).
+- The migration target is a pure Rust core crate. Rust core code must not
+  depend on Python, PyO3, NumPy, or Python packaging internals.
+- Python bindings may use PyO3, maturin, and NumPy-facing adapter code, but
+  they must preserve the public Python API unless a breaking change is
+  explicitly agreed before implementation.
+- Public Python wrappers remain in modules named `<first-author><year>.py`.
+- Existing public wrapper names, keyword-only arguments, return units,
+  `NamedTuple` result classes, result field order, scalar behavior, vectorized
+  NumPy behavior, and `out` behavior are compatibility constraints unless the
+  spec and maintainer approval explicitly say otherwise.
+- Vectorized function naming should continue to follow the established
+  convention when applicable:
+  `calc_ptf_<first-author><year>[_<extra>]`.
 
 ## Planning and role orchestration
 
@@ -40,13 +70,36 @@ Before proposing any plan, the agent MUST:
 
 If any role is omitted, STOP and ask for clarification before proceeding.
 
-- [`.ai/agents/maintainer.md`](.ai/agents/maintainer.md) — maintainer
+- [`.ai/agents/maintainer.md`](.ai/agents/maintainer.md) - maintainer
   responsibilities covering tooling, documentation alignment, branching
   strategy, and commit rules, while coordinating the work of developers,
   testers, and documentation authors to keep processes, environments, and
   communication synchronized.
-- [`.ai/agents/developer.md`](.ai/agents/developer.md) — developer guidance for
+- [`.ai/agents/developer.md`](.ai/agents/developer.md) - developer guidance for
   implementing vectorized PTF ufuncs in `_core.py` and public wrappers under
   `src/ptfkit/`.
-- [`.ai/agents/tester.md`](.ai/agents/tester.md) — tester workflow describing
+- [`.ai/agents/tester.md`](.ai/agents/tester.md) - tester workflow describing
   how to structure pytest suites for public wrappers and how to gather coverage.
+
+## Testing and quality gates
+
+- Every implemented function must have golden tests derived from the validated
+  function-level spec.
+- Golden tests must cover all output fields, declared units, tolerances, and at
+  least one scalar public API case.
+- When the function supports vectorized inputs, tests must include NumPy array
+  inputs and broadcasting behavior.
+- When the function supports `out`, tests must cover `out` behavior.
+- Review must verify formula traceability, units, constants, output order,
+  edge cases, documentation, and public Python API compatibility.
+
+## Migration strategy
+
+- Migrate in small steps: one function or a small, coherent group of functions
+  per PR.
+- Before moving many functions, complete one end-to-end pilot:
+  spec ingest, Rust core implementation, Python bindings, golden tests,
+  documentation alignment, and review.
+- Keep each migration PR passing tests before starting the next function group.
+- Do not combine broad refactors with formula migrations unless the maintainer
+  explicitly approves the scope.
