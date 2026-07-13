@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "crates/ptfkit-core",
+    "crates/ptfkit-py",
+]
+resolver = "2"

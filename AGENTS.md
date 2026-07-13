@@ -17,19 +17,22 @@ completely sure.
 
 ## PTF specification workflow
 
-- The source of truth for implementing a PTF is a function-level Markdown spec
-  in `specs/functions/*.md`.
-- Codex must not extract formulas from articles, PDFs, article-level
-  extraction files, or surrounding prose.
+- Article-level Markdown extracted from papers belongs in `specs/papers/*.md`.
+- `ptf-spec-ingest` reads article-level Markdown from `specs/papers/*.md`,
+  extracts explicitly stated PTF formulas, and prepares function-level specs in
+  `specs/functions/*.md`.
+- The source of truth for implementation remains the generated function-level
+  Markdown spec in `specs/functions/*.md`.
 - Codex must not invent, infer, simplify, or complete missing formulas,
-  constants, units, expected values, output fields, or API details.
-- If a spec is incomplete or ambiguous, stop implementation work and create a
-  review file that lists blocking issues and questions for the spec owner.
-- Article-level files under `specs/*.md` may be useful context for humans, but
-  they are not implementation-ready function specs.
+  constants, units, expected values, output fields, or API details. If the paper
+  extraction is ambiguous or incomplete, preserve the uncertainty as blocking
+  issues in the generated spec and ingest report.
+- If a generated function-level spec is incomplete or ambiguous, stop
+  implementation work and create a review file that lists blocking issues and
+  questions for the spec owner.
 - Use the project-specific skills in `.codex/skills/` for the PTF workflow:
-  - `ptf-spec-ingest` for validating specs and creating implementation
-    checklists.
+  - `ptf-spec-ingest` for converting article-level Markdown into function-level
+    specs, validating generated specs, and creating developer/tester tasks.
   - `ptf-rust-core` for implementing validated specs in the pure Rust core.
   - `ptf-python-bindings` for exposing Rust functions through the Python API.
   - `ptf-review` for checking implementation quality against the spec and

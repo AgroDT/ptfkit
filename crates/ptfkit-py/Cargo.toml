@@ -1,0 +1,14 @@
+[package]
+name = "ptfkit-py"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[lib]
+name = "_rust"
+crate-type = ["cdylib"]
+path = "src/lib.rs"
+
+[dependencies]
+ptfkit-core = { path = "../ptfkit-core" }
+pyo3 = { version = "0.21", features = ["extension-module", "abi3-py310"] }

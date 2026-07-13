@@ -1,0 +1,54 @@
+{
+  "function_name": "calc_ptf_cosby1984_univariate",
+  "spec_path": "specs/functions/calc_ptf_cosby1984_univariate.md",
+  "rtol": 1e-12,
+  "atol": 1e-12,
+  "units": {
+    "sand": "%",
+    "silt": "%",
+    "clay": "%",
+    "mean_b": "dimensionless",
+    "mean_log_psi_s": "reported log value",
+    "mean_log_k_sat": "reported log value",
+    "mean_theta_s": "% volume/volume",
+    "sd_b": "dimensionless",
+    "sd_log_k_sat": "reported log value",
+    "sd_theta_s": "% volume/volume"
+  },
+  "cases": [
+    {
+      "id": "scalar_mid_texture",
+      "inputs": {
+        "sand": 50.0,
+        "silt": 30.0,
+        "clay": 20.0
+      },
+      "expected": {
+        "mean_b": 6.09,
+        "mean_log_psi_s": 1.225,
+        "mean_log_k_sat": -0.119,
+        "mean_theta_s": 42.6,
+        "sd_b": 2.34,
+        "sd_log_k_sat": 0.5553,
+        "sd_theta_s": 6.27
+      }
+    },
+    {
+      "id": "scalar_sandy_texture",
+      "inputs": {
+        "sand": 80.0,
+        "silt": 15.0,
+        "clay": 5.0
+      },
+      "expected": {
+        "mean_b": 3.705,
+        "mean_log_psi_s": 0.832,
+        "mean_log_k_sat": 0.34,
+        "mean_theta_s": 38.82,
+        "sd_b": 1.59,
+        "sd_log_k_sat": 0.50715,
+        "sd_theta_s": 7.365
+      }
+    }
+  ]
+}
