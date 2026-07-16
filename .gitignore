@@ -24,3 +24,5 @@ coverage.xml
 #docs
 docs/index.md
 site
+
+\target

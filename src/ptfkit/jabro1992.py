@@ -23,7 +23,13 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, overload
 
-from ptfkit._core import calc_ptf_jabro1992_ufunc
+import numpy as np
+
+
+try:
+    from ptfkit._rust import calc_ptf_jabro1992 as _calc_ptf_jabro1992
+except ImportError:  # pragma: no cover - used until the Rust extension is built.
+    _calc_ptf_jabro1992 = None
 
 
 if TYPE_CHECKING:
@@ -57,11 +63,11 @@ def calc_ptf_jabro1992(
 
 def calc_ptf_jabro1992(
     *,
-    silt,
-    clay,
-    bulk_density,
-    out=None,
-):
+    silt: float | ArrayLike,
+    clay: float | ArrayLike,
+    bulk_density: float | ArrayLike,
+    out: ArrayLike | None = None,
+) -> floating | NDArray[floating]:
     """Calculate PTF for soils of USA.
 
     Arguments:
@@ -74,4 +80,30 @@ def calc_ptf_jabro1992(
         saturated hydraulic conductivity (m/s)
 
     """
-    return calc_ptf_jabro1992_ufunc(silt, clay, bulk_density, out=out)
+    if out is None and np.ndim(silt) == np.ndim(clay) == np.ndim(bulk_density) == 0:
+        if _calc_ptf_jabro1992 is not None:
+            return _calc_ptf_jabro1992(float(silt), float(clay), float(bulk_density))
+
+        log10_k_sat_cm_per_hour = (
+            9.56 - 0.81 * np.log10(float(silt)) - 1.09 * np.log10(float(clay))
+            - 4.64 * float(bulk_density)
+        )
+        return 10.0**log10_k_sat_cm_per_hour / 360000.0
+
+    silt_arr, clay_arr, bulk_density_arr = np.broadcast_arrays(silt, clay, bulk_density)
+    result = (
+        10.0
+        ** (
+            9.56
+            - 0.81 * np.log10(silt_arr)
+            - 1.09 * np.log10(clay_arr)
+            - 4.64 * bulk_density_arr
+        )
+        / 360000.0
+    )
+
+    if out is None:
+        return np.asarray(result, dtype=float)
+
+    np.copyto(out, result)
+    return out
