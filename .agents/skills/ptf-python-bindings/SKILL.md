@@ -1,6 +1,6 @@
 ---
 name: ptf-python-bindings
-description: Expose ptfkit Rust core PTF functions to Python through PyO3, maturin, and NumPy-compatible wrappers. Use when a Rust PTF kernel exists and Codex must preserve ptfkit public Python API behavior, including scalar inputs, vectorized NumPy inputs, broadcasting, out handling, typing, and NamedTuple results.
+description: Expose ptfkit Rust core PTF functions to Python through PyO3, maturin, and NumPy-compatible wrappers. Use when a Rust PTF kernel exists and the agent must preserve ptfkit public Python API behavior, including scalar inputs, vectorized NumPy inputs, broadcasting, out handling, typing, and NamedTuple results.
 ---
 
 # PTF Python Bindings

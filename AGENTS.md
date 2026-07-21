@@ -33,7 +33,7 @@ completely sure.
 - If a generated function-level spec is incomplete or ambiguous, stop
   implementation work and create a review file that lists blocking issues and
   questions for the spec owner.
-- Use the project-specific skills in `.codex/skills/` for the PTF workflow:
+- Use the project-specific skills in `.agents/skills/` for the PTF workflow:
   - `ptf-spec-ingest` for converting article-level Markdown into function-level
     specs, validating generated specs, and creating developer/tester tasks.
   - `ptf-rust-core` for implementing validated specs in the pure Rust core.
