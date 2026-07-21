@@ -18,11 +18,14 @@ completely sure.
 ## PTF specification workflow
 
 - Article-level Markdown extracted from papers belongs in `specs/papers/*.md`.
+- `specs/papers/*.md` is a transient input area and must not be committed.
 - `ptf-spec-ingest` reads article-level Markdown from `specs/papers/*.md`,
   extracts explicitly stated PTF formulas, and prepares function-level specs in
   `specs/functions/*.md`.
 - The source of truth for implementation remains the generated function-level
   Markdown spec in `specs/functions/*.md`.
+- Function-level specs must use article/APA-style filenames, not public
+  function names. Keep public function names inside the spec identity section.
 - Codex must not invent, infer, simplify, or complete missing formulas,
   constants, units, expected values, output fields, or API details. If the paper
   extraction is ambiguous or incomplete, preserve the uncertainty as blocking
@@ -88,11 +91,10 @@ If any role is omitted, STOP and ask for clarification before proceeding.
 
 - Every implemented function must have golden tests derived from the validated
   function-level spec.
-- Golden tests must cover all output fields, declared units, tolerances, and at
-  least one scalar public API case.
-- When the function supports vectorized inputs, tests must include NumPy array
-  inputs and broadcasting behavior.
-- When the function supports `out`, tests must cover `out` behavior.
+- Core formula golden tests belong in the Rust core crate near the
+  implementation and may embed cases directly in Rust test code.
+- Python tests should cover bindings and public API compatibility: scalar
+  wrappers, NumPy array inputs, broadcasting, `NamedTuple` results, and `out`.
 - Review must verify formula traceability, units, constants, output order,
   edge cases, documentation, and public Python API compatibility.
 

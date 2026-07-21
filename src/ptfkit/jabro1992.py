@@ -25,6 +25,8 @@ from typing import TYPE_CHECKING, overload
 
 import numpy as np
 
+from ptfkit._vectorize import vectorize_scalar_result
+
 
 try:
     from ptfkit._rust import calc_ptf_jabro1992 as _calc_ptf_jabro1992
@@ -80,30 +82,35 @@ def calc_ptf_jabro1992(
         saturated hydraulic conductivity (m/s)
 
     """
-    if out is None and np.ndim(silt) == np.ndim(clay) == np.ndim(bulk_density) == 0:
-        if _calc_ptf_jabro1992 is not None:
-            return _calc_ptf_jabro1992(float(silt), float(clay), float(bulk_density))
+    return vectorize_scalar_result(
+        _calc_scalar,
+        _calc_array,
+        silt,
+        clay,
+        bulk_density,
+        out=out,
+    )
 
-        log10_k_sat_cm_per_hour = (
-            9.56 - 0.81 * np.log10(float(silt)) - 1.09 * np.log10(float(clay))
-            - 4.64 * float(bulk_density)
-        )
-        return 10.0**log10_k_sat_cm_per_hour / 360000.0
 
+def _calc_scalar(silt: float, clay: float, bulk_density: float) -> float:
+    if _calc_ptf_jabro1992 is not None:
+        return _calc_ptf_jabro1992(silt, clay, bulk_density)
+
+    log10_k_sat_cm_per_hour = (
+        9.56 - 0.81 * np.log10(silt) - 1.09 * np.log10(clay) - 4.64 * bulk_density
+    )
+    return 10.0**log10_k_sat_cm_per_hour / 360000.0
+
+
+def _calc_array(
+    silt: NDArray[floating],
+    clay: NDArray[floating],
+    bulk_density: NDArray[floating],
+) -> NDArray[floating]:
     silt_arr, clay_arr, bulk_density_arr = np.broadcast_arrays(silt, clay, bulk_density)
     result = (
         10.0
-        ** (
-            9.56
-            - 0.81 * np.log10(silt_arr)
-            - 1.09 * np.log10(clay_arr)
-            - 4.64 * bulk_density_arr
-        )
+        ** (9.56 - 0.81 * np.log10(silt_arr) - 1.09 * np.log10(clay_arr) - 4.64 * bulk_density_arr)
         / 360000.0
     )
-
-    if out is None:
-        return np.asarray(result, dtype=float)
-
-    np.copyto(out, result)
-    return out
+    return np.asarray(result, dtype=float)

@@ -12,7 +12,7 @@
 
 | function_name | spec_path | status | notes |
 | --- | --- | --- | --- |
-| calc_ptf_li2007 | `specs/functions/calc_ptf_li2007.md` | ready-for-implementation | Extracted from Table 6. |
+| calc_ptf_li2007 | `specs/functions/2007_Li_Estimating_soil_hydraulic_properties_of_Fengqiu_County_soils.md` | ready-for-implementation | Extracted from Table 6. |
 
 ## Blocked Function Specs
 
@@ -27,7 +27,7 @@
 
 ## Tester Task
 
-- Use the golden data embedded in `specs/functions/calc_ptf_li2007.md`.
+- Use the golden data embedded in `specs/functions/2007_Li_Estimating_soil_hydraulic_properties_of_Fengqiu_County_soils.md`.
 - Verify scalar, NumPy vectorized, broadcasting, result field order, and `out` behavior.
 - Verify cm/day to m/s conversion for `k_sat`.
 

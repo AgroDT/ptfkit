@@ -29,6 +29,8 @@ from typing import TYPE_CHECKING, Generic, NamedTuple, TypeVar, overload
 
 import numpy as np
 
+from ptfkit._vectorize import vectorize_namedtuple_result
+
 
 try:
     from ptfkit._rust import calc_ptf_cosby1984_univariate as _calc_ptf_cosby1984_univariate
@@ -127,11 +129,24 @@ def calc_ptf_cosby1984_univariate(
         PTF result fields in the order declared by `Cosby1984UnivariatePTFResult`.
 
     """
-    if np.ndim(sand) == np.ndim(silt) == np.ndim(clay) == 0:
-        return Cosby1984UnivariatePTFResult(*_calc_scalar(float(sand), float(silt), float(clay)))
+    return vectorize_namedtuple_result(
+        _calc_scalar,
+        _calc_array,
+        Cosby1984UnivariatePTFResult,
+        sand,
+        silt,
+        clay,
+        out=out,
+    )
 
+
+def _calc_array(
+    sand: NDArray[floating],
+    silt: NDArray[floating],
+    clay: NDArray[floating],
+) -> tuple[NDArray[floating], ...]:
     sand_arr, silt_arr, clay_arr = np.broadcast_arrays(sand, silt, clay)
-    result = (
+    return (
         2.91 + 0.159 * clay_arr,
         1.88 - 0.0131 * sand_arr,
         -0.884 + 0.0153 * sand_arr,
@@ -140,12 +155,3 @@ def calc_ptf_cosby1984_univariate(
         0.459 + 0.00321 * silt_arr,
         7.73 - 0.0730 * clay_arr,
     )
-
-    if out is None:
-        return Cosby1984UnivariatePTFResult(*(np.asarray(field, dtype=float) for field in result))
-
-    out_items = tuple(out)
-    for out_item, result_item in zip(out_items, result, strict=True):
-        np.copyto(out_item, result_item)
-
-    return Cosby1984UnivariatePTFResult(*out_items)

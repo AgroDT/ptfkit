@@ -1,6 +1,7 @@
 //! Jabro (1992) saturated hydraulic conductivity PTF.
 //!
-//! Formula source: `specs/functions/calc_ptf_jabro1992.md`.
+//! Formula source:
+//! `specs/functions/1992_Jabro_Estimation_of_saturated_hydraulic_conductivity_of_soils.md`.
 
 const CM_PER_HOUR_TO_M_PER_SEC: f64 = 1.0 / 360_000.0;
 
@@ -18,10 +19,12 @@ pub fn calc_ptf_jabro1992(silt: f64, clay: f64, bulk_density: f64) -> f64 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use assertables::assert_le;
 
     fn assert_close(actual: f64, expected: f64) {
-        assert!(
-            (actual - expected).abs() <= 1e-12 + 1e-8 * expected.abs(),
+        assert_le!(
+            (actual - expected).abs(),
+            1e-12 + 1e-8 * expected.abs(),
             "actual {actual} != expected {expected}"
         );
     }

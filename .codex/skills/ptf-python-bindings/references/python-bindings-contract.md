@@ -23,10 +23,12 @@ binding already provides a well-tested NumPy array path.
 
 ## Tests
 
-For each public function, add or update tests for:
+Core formula golden tests live in the Rust core crate. Python tests are binding
+and public API compatibility tests. For each public function, add or update
+tests for:
 
-- scalar golden cases
-- ndarray golden cases
+- scalar wrapper calls
+- ndarray calls
 - mixed scalar and ndarray broadcasting
 - `out` arrays for single-output functions
 - `out` result containers for multi-output functions

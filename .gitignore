@@ -14,6 +14,9 @@ src/ptfkit/*.c
 src/ptfkit/*.pyd
 src/ptfkit/*.so
 
+# Paper extractions are transient inputs; commit generated function specs instead.
+specs/papers/
+
 # Coverage
 .coverage*
 coverage.xml
@@ -25,4 +28,4 @@ coverage.xml
 docs/index.md
 site
 
-\target
+target/

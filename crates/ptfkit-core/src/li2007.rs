@@ -1,6 +1,7 @@
 //! Li et al. (2007) Fengqiu County soil hydraulic PTF.
 //!
-//! Formula source: `specs/functions/calc_ptf_li2007.md`.
+//! Formula source:
+//! `specs/functions/2007_Li_Estimating_soil_hydraulic_properties_of_Fengqiu_County_soils.md`.
 
 const CM_PER_DAY_TO_M_PER_SEC: f64 = 1.0 / 8_640_000.0;
 
@@ -70,10 +71,12 @@ pub fn calc_ptf_li2007(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use assertables::assert_le;
 
     fn assert_close(actual: f64, expected: f64) {
-        assert!(
-            (actual - expected).abs() <= 1e-12 + 1e-8 * expected.abs(),
+        assert_le!(
+            (actual - expected).abs(),
+            1e-12 + 1e-8 * expected.abs(),
             "actual {actual} != expected {expected}"
         );
     }

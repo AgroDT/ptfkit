@@ -12,7 +12,7 @@
 
 | function_name | spec_path | status | notes |
 | --- | --- | --- | --- |
-| calc_ptf_aimrun2009 | `specs/functions/calc_ptf_aimrun2009.md` | ready-for-implementation | Extracted from equation (10). |
+| calc_ptf_aimrun2009 | `specs/functions/2009_aimrun_Pedo_transfer_function_for_saturated_hydraulic_conductivity.md` | ready-for-implementation | Extracted from equation (10). |
 
 ## Blocked Function Specs
 
@@ -27,7 +27,7 @@
 
 ## Tester Task
 
-- Use the golden data embedded in `specs/functions/calc_ptf_aimrun2009.md`.
+- Use the golden data embedded in `specs/functions/2009_aimrun_Pedo_transfer_function_for_saturated_hydraulic_conductivity.md`.
 - Verify scalar, NumPy vectorized, broadcasting, and `out` behavior.
 - Verify m/day to m/s conversion.
 

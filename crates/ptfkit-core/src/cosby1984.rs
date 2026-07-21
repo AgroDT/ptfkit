@@ -1,6 +1,7 @@
 //! Cosby et al. (1984) univariate hydraulic parameter statistics.
 //!
-//! Formulas are taken from `specs/functions/calc_ptf_cosby1984_univariate.md`.
+//! Formula source:
+//! `specs/functions/1984_Cosby_A_Statistical_Exploration_of_the_Relationships_of_Soil_Moisture_Characteristics_to_the_Physical_Properties_of_Soils.md`.
 
 /// Results of the Cosby et al. (1984) univariate pilot PTF.
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -24,7 +25,7 @@ pub struct Cosby1984UnivariateResult {
 /// Calculate Cosby et al. (1984) univariate hydraulic parameter statistics.
 ///
 /// Inputs are sand, silt, and clay content in percent. Outputs follow the
-/// field order declared in `calc_ptf_cosby1984_univariate.md`.
+/// field order declared in the Cosby et al. (1984) function spec.
 #[must_use]
 pub fn calc_ptf_cosby1984_univariate(sand: f64, silt: f64, clay: f64) -> Cosby1984UnivariateResult {
     Cosby1984UnivariateResult {
@@ -41,10 +42,12 @@ pub fn calc_ptf_cosby1984_univariate(sand: f64, silt: f64, clay: f64) -> Cosby19
 #[cfg(test)]
 mod tests {
     use super::*;
+    use assertables::assert_le;
 
     fn assert_close(actual: f64, expected: f64) {
-        assert!(
-            (actual - expected).abs() <= 1e-12,
+        assert_le!(
+            (actual - expected).abs(),
+            1e-12,
             "actual {actual} != expected {expected}"
         );
     }

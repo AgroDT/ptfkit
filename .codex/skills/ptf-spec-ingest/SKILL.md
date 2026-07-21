@@ -11,7 +11,7 @@ description: Convert ptfkit article-level paper Markdown from specs/papers/*.md 
 2. Extract only explicitly stated PTF formulas, variables, constants, units,
    references, and candidate outputs from the provided MD.
 3. For each concrete PTF function, create or update a function-level spec under
-   `specs/functions/<function_name>.md` using `references/spec-template.md`.
+   `specs/functions/<apa_article_key>.md` using `references/spec-template.md`.
 4. Create an ingest report and developer/tester tasks using
    `references/paper-ingest-report-template.md`.
 5. Validate each generated or existing function-level spec with
@@ -35,6 +35,10 @@ Return one of:
 - Treat the MD spec as the source of truth.
 - Treat `specs/papers/*.md` as extraction input only; generated
   `specs/functions/*.md` files become the implementation source of truth.
+- Do not commit `specs/papers/*.md`; commit only generated specs and review
+  artifacts derived from them.
+- Use article/APA-style spec filenames and keep public API names inside the
+  spec identity section.
 - Extract only formulas and metadata explicitly present in the paper MD.
 - Do not implement code during ingest.
 - For missing or ambiguous details, write `TODO` and blocking issues instead of

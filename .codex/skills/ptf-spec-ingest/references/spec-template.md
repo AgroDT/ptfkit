@@ -1,6 +1,9 @@
 # Valid PTF Function Spec Template
 
-Store function-level specs at `specs/functions/<function_name>.md`.
+Store function-level specs at `specs/functions/<apa_article_key>.md`.
+
+Use the article/APA-style basename from the paper extraction. Keep public Python
+and Rust function names in the identity section.
 
 ```markdown
 # calc_ptf_authorYEAR_extra

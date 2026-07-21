@@ -7,3 +7,6 @@ license = "MIT"
 [lib]
 name = "ptfkit_core"
 path = "src/lib.rs"
+
+[dev-dependencies]
+assertables = "10.1.0"

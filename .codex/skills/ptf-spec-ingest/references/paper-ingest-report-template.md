@@ -18,13 +18,13 @@ function-level specs under `specs/functions/*.md`.
 
 | function_name | spec_path | status | notes |
 | --- | --- | --- | --- |
-| calc_ptf_example | `specs/functions/calc_ptf_example.md` | ready | TODO |
+| calc_ptf_example | `specs/functions/<apa_article_key>.md` | ready | TODO |
 
 ## Blocked Function Specs
 
 | function_name | spec_path | blocking_issues |
 | --- | --- | --- |
-| calc_ptf_example | `specs/functions/calc_ptf_example.md` | Missing golden tests. |
+| calc_ptf_example | `specs/functions/<apa_article_key>.md` | Missing golden tests. |
 
 ## Developer Task
 

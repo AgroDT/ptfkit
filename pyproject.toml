@@ -1,7 +1,6 @@
 [build-system]
-requires = ["setuptools>=80", "numpy>=2,<3", "cython>=3,<4"]
-build-backend = "setuptools.build_meta"
-backend-path = ["."]
+requires = ["maturin>=1.8,<2"]
+build-backend = "maturin"
 
 [project]
 name = "ptfkit"
@@ -9,14 +8,14 @@ version = "0.1.0"
 description = "Pedotransfer functions for estimating soil hydraulic properties"
 license = "MIT"
 license-files = ["LICENSE"]
-dynamic = ["readme"]
+readme = "README.md"
 requires-python = ">=3.10"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
     "Natural Language :: English",
     "Operating System :: OS Independent",
-    "Programming Language :: Cython",
+    "Programming Language :: Rust",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -38,6 +37,7 @@ maintainers = [
 ]
 
 dependencies = [
+    "cython>=3,<4",
     "numpy>=2.0,<3",
 ]
 
@@ -48,14 +48,12 @@ Documentation = "https://agrodt.github.io/ptfkit/"
 
 [dependency-groups]
 dev = [
-    "cython~=3.2",
+    "maturin>=1.8,<2",
     "mypy~=1.19",
     "pre-commit~=4.5",
     "pytest~=9.0",
     "pytest-cov~=7.0",
     "ruff~=0.14",
-    "setuptools>=80",
-    "types-setuptools>=80",
 ]
 docs = [
     "mkdocs-api-autonav>=0.4.0",
@@ -90,7 +88,12 @@ lines-after-imports = 2
 known-first-party = ["ptfkit"]
 
 [tool.mypy]
-files = ["docs", "src", "tests", "setup.py"]
+files = ["docs", "src", "tests"]
+
+[tool.maturin]
+manifest-path = "crates/ptfkit-py/Cargo.toml"
+module-name = "ptfkit._rust"
+python-source = "src"
 
 [tool.pytest.ini_options]
 addopts = "--cov=ptfkit"

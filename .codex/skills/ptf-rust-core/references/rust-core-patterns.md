@@ -53,6 +53,8 @@ algebraic rearrangement for stability, note it in code comments and tests.
 
 ## Tests
 
-- Use golden scalar cases from the spec.
+- Embed golden scalar cases from the validated spec in Rust unit tests next to
+  the implementation.
 - Compare floats using the spec `rtol` and `atol`.
 - Cover every output field.
+- Use `assertables` assertions for comparison predicates.
