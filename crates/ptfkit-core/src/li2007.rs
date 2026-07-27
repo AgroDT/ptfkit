@@ -1,7 +1,6 @@
 //! Li et al. (2007) Fengqiu County soil hydraulic PTF.
 //!
-//! Formula source:
-//! `specs/functions/2007_Li_Estimating_soil_hydraulic_properties_of_Fengqiu_County_soils.md`.
+//! Formula source: `specs/functions/li2007.md`.
 
 const CM_PER_DAY_TO_M_PER_SEC: f64 = 1.0 / 8_640_000.0;
 

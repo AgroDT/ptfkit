@@ -1,7 +1,6 @@
 //! Aimrun and Amin (2009) saturated hydraulic conductivity PTF.
 //!
-//! Formula source:
-//! `specs/functions/2009_aimrun_Pedo_transfer_function_for_saturated_hydraulic_conductivity.md`.
+//! Formula source: `specs/functions/aimrun2009.md`.
 
 const M_PER_DAY_TO_M_PER_SEC: f64 = 1.0 / 86_400.0;
 

@@ -28,6 +28,11 @@ jobs:
         env:
           CYTHON_TRACING: '1'
 
+      - name: Install Python bindings
+        run: uv run --no-sync maturin develop --manifest-path crates/ptfkit-py/Cargo.toml
+        env:
+          CYTHON_TRACING: '1'
+
       - name: Coverage
         run: uv run --no-sync pytest --cov-report=xml --cov-report=term
 

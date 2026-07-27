@@ -35,10 +35,11 @@ Return one of:
 - Treat the MD spec as the source of truth.
 - Treat `specs/papers/*.md` as extraction input only; generated
   `specs/functions/*.md` files become the implementation source of truth.
-- Do not commit `specs/papers/*.md`; commit only generated specs and review
-  artifacts derived from them.
 - Use article/APA-style spec filenames and keep public API names inside the
   spec identity section.
+- Build `apa_article_key` as `<first_author_surname_lowercase><year>` from local
+  metadata, for example `cosby1984`. If needed, append `a`, `b`, etc. for
+  same-author same-year collisions. Do not use internet lookup to construct the key.
 - Extract only formulas and metadata explicitly present in the paper MD.
 - Do not implement code during ingest.
 - For missing or ambiguous details, write `TODO` and blocking issues instead of

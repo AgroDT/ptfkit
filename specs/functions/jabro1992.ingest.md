@@ -12,7 +12,7 @@
 
 | function_name | spec_path | status | notes |
 | --- | --- | --- | --- |
-| calc_ptf_jabro1992 | `specs/functions/1992_Jabro_Estimation_of_saturated_hydraulic_conductivity_of_soils.md` | ready-for-implementation | Extracted from equation (3). |
+| calc_ptf_jabro1992 | `specs/functions/jabro1992.md` | ready-for-implementation | Extracted from equation (3). |
 
 ## Blocked Function Specs
 
@@ -27,7 +27,7 @@
 
 ## Tester Task
 
-- Use the golden data embedded in `specs/functions/1992_Jabro_Estimation_of_saturated_hydraulic_conductivity_of_soils.md`.
+- Use the golden data embedded in `specs/functions/jabro1992.md`.
 - Verify scalar, NumPy vectorized, broadcasting, and `out` behavior.
 - Verify cm/h to m/s conversion.
 

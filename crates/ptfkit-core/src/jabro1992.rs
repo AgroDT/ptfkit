@@ -1,7 +1,6 @@
 //! Jabro (1992) saturated hydraulic conductivity PTF.
 //!
-//! Formula source:
-//! `specs/functions/1992_Jabro_Estimation_of_saturated_hydraulic_conductivity_of_soils.md`.
+//! Formula source: `specs/functions/jabro1992.md`.
 
 const CM_PER_HOUR_TO_M_PER_SEC: f64 = 1.0 / 360_000.0;
 

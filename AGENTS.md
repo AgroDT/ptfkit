@@ -18,7 +18,6 @@ completely sure.
 ## PTF specification workflow
 
 - Article-level Markdown extracted from papers belongs in `specs/papers/*.md`.
-- `specs/papers/*.md` is a transient input area and must not be committed.
 - `ptf-spec-ingest` reads article-level Markdown from `specs/papers/*.md`,
   extracts explicitly stated PTF formulas, and prepares function-level specs in
   `specs/functions/*.md`.
@@ -26,6 +25,11 @@ completely sure.
   Markdown spec in `specs/functions/*.md`.
 - Function-level specs must use article/APA-style filenames, not public
   function names. Keep public function names inside the spec identity section.
+- `apa_article_key` is a deterministic local citation key:
+  `<first_author_surname_lowercase><year>`, for example `cosby1984`. If the
+  same first author has multiple papers in the same year, append `a`, `b`, etc.
+  in the order already present in local specs or metadata. Do not use internet
+  lookup to construct this key.
 - Codex must not invent, infer, simplify, or complete missing formulas,
   constants, units, expected values, output fields, or API details. If the paper
   extraction is ambiguous or incomplete, preserve the uncertainty as blocking
@@ -49,7 +53,8 @@ completely sure.
   depend on Python, PyO3, NumPy, or Python packaging internals.
 - Python bindings may use PyO3, maturin, and NumPy-facing adapter code, but
   they must preserve the public Python API unless a breaking change is
-  explicitly agreed before implementation.
+  explicitly agreed before implementation. Maturin configuration belongs to the
+  bindings package, not the repository root.
 - Public Python wrappers remain in modules named `<first-author><year>.py`.
 - Existing public wrapper names, keyword-only arguments, return units,
   `NamedTuple` result classes, result field order, scalar behavior, vectorized

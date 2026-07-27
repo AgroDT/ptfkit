@@ -14,7 +14,7 @@ src/ptfkit/*.c
 src/ptfkit/*.pyd
 src/ptfkit/*.so
 
-# Paper extractions are transient inputs; commit generated function specs instead.
+# Local paper extraction inputs
 specs/papers/
 
 # Coverage

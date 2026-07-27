@@ -1,7 +1,6 @@
 //! Cosby et al. (1984) univariate hydraulic parameter statistics.
 //!
-//! Formula source:
-//! `specs/functions/1984_Cosby_A_Statistical_Exploration_of_the_Relationships_of_Soil_Moisture_Characteristics_to_the_Physical_Properties_of_Soils.md`.
+//! Formula source: `specs/functions/cosby1984.md`.
 
 /// Results of the Cosby et al. (1984) univariate pilot PTF.
 #[derive(Debug, Clone, Copy, PartialEq)]

@@ -29,6 +29,9 @@ jobs:
       - name: Install the project
         run: uv sync --frozen
 
+      - name: Install Python bindings
+        run: uv run --no-sync maturin develop --manifest-path crates/ptfkit-py/Cargo.toml
+
       - name: Run pytest
         run: uv run --no-sync pytest --no-cov tests
 
@@ -54,6 +57,9 @@ jobs:
 
       - name: Install the project
         run: uv sync --frozen --all-groups
+
+      - name: Install Python bindings
+        run: uv run --no-sync maturin develop --manifest-path crates/ptfkit-py/Cargo.toml
 
       - name: Ruff check
         id: ruff-check

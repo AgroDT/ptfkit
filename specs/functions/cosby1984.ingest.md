@@ -12,7 +12,7 @@
 
 | function_name | spec_path | status | notes |
 | --- | --- | --- | --- |
-| calc_ptf_cosby1984_univariate | `specs/functions/1984_Cosby_A_Statistical_Exploration_of_the_Relationships_of_Soil_Moisture_Characteristics_to_the_Physical_Properties_of_Soils.md` | ready-for-implementation | Extracted from Table 5 univariate regressions for a test pilot. |
+| calc_ptf_cosby1984_univariate | `specs/functions/cosby1984.md` | ready-for-implementation | Extracted from Table 5 univariate regressions for a test pilot. |
 
 ## Blocked Function Specs
 
@@ -21,13 +21,13 @@
 
 ## Developer Task
 
-- Review `specs/functions/1984_Cosby_A_Statistical_Exploration_of_the_Relationships_of_Soil_Moisture_Characteristics_to_the_Physical_Properties_of_Soils.md`.
+- Review `specs/functions/cosby1984.md`.
 - Implement only this function as an end-to-end pilot.
 - Do not use `specs/papers/*.md` directly during Rust or Python implementation.
 
 ## Tester Task
 
-- Use the golden data embedded in `specs/functions/1984_Cosby_A_Statistical_Exploration_of_the_Relationships_of_Soil_Moisture_Characteristics_to_the_Physical_Properties_of_Soils.md`.
+- Use the golden data embedded in `specs/functions/cosby1984.md`.
 - Include scalar and NumPy vectorized cases.
 - Include tolerances for log-transformed outputs and percentage outputs.
 - Add `out` behavior cases for each output field.

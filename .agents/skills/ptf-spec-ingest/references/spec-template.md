@@ -2,8 +2,11 @@
 
 Store function-level specs at `specs/functions/<apa_article_key>.md`.
 
-Use the article/APA-style basename from the paper extraction. Keep public Python
-and Rust function names in the identity section.
+Use `apa_article_key = <first_author_surname_lowercase><year>`, for example
+`cosby1984`. If the same first author has multiple papers in the same year,
+append `a`, `b`, etc. using local metadata order. Do not use internet lookup to
+construct this key. Keep public Python and Rust function names in the identity
+section.
 
 ```markdown
 # calc_ptf_authorYEAR_extra
