@@ -29,7 +29,10 @@ jobs:
           CYTHON_TRACING: '1'
 
       - name: Install Python bindings
-        run: uv run --no-sync maturin develop --manifest-path crates/ptfkit-py/Cargo.toml
+        run: >
+          uv run --project "${{ github.workspace }}"
+          --directory "${{ github.workspace }}/crates/ptfkit-py"
+          --no-sync maturin develop
         env:
           CYTHON_TRACING: '1'
 

@@ -13,6 +13,9 @@ wheels/
 src/ptfkit/*.c
 src/ptfkit/*.pyd
 src/ptfkit/*.so
+crates/ptfkit-py/python/ptfkit/*.pyd
+crates/ptfkit-py/python/ptfkit/*.pdb
+crates/ptfkit-py/python/ptfkit/*.so
 
 # Local paper extraction inputs
 specs/papers/

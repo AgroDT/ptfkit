@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from collections.abc import Callable  # noqa: TC003
+
 import numpy as np
 
 
@@ -1183,3 +1187,37 @@ def calc_ptf_pidgeon1972_eawc_fine_sand_om_ufunc(
     organic_matter: cython.double,
 ) -> cython.double:
     return -18.0 + 3.11 * fine_sand + 7.69 * organic_matter
+
+
+def _copy_ufunc_out(result: object, out: object | None) -> object:
+    if out is None:
+        return result
+
+    if isinstance(out, tuple):
+        if all(item is None for item in out):
+            return result
+
+        result_items = result if isinstance(result, tuple) else (result,)
+        copied = []
+        for out_item, result_item in zip(out, result_items, strict=True):
+            if out_item is None:
+                copied.append(result_item)
+            else:
+                np.copyto(out_item, result_item)
+                copied.append(out_item)
+        return tuple(copied)
+
+    np.copyto(out, result)
+    return out
+
+
+def _with_out_compat(func: Callable[..., object]) -> Callable[..., object]:
+    def wrapper(*args: object, out: object | None = None) -> object:
+        return _copy_ufunc_out(func(*args), out)
+
+    return wrapper
+
+
+for _name, _func in tuple(globals().items()):
+    if _name.endswith('_ufunc') and callable(_func):
+        globals()[_name] = _with_out_compat(_func)

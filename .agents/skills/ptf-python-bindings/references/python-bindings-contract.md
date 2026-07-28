@@ -2,7 +2,7 @@
 
 ## Public API Defaults
 
-- Public modules remain `src/ptfkit/<author><year>.py`.
+- Public modules remain `crates/ptfkit-py/python/ptfkit/<author><year>.py`.
 - Public functions remain keyword-only.
 - Existing function names and result classes are preserved unless the spec says the function is new.
 - Multi-output functions return project `NamedTuple` classes, not raw tuples.

@@ -46,4 +46,4 @@ Documentation = "https://agrodt.github.io/ptfkit/"
 
 [tool.maturin]
 module-name = "ptfkit._rust"
-python-source = "../../src"
+python-source = "python"

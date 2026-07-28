@@ -55,7 +55,8 @@ completely sure.
   they must preserve the public Python API unless a breaking change is
   explicitly agreed before implementation. Maturin configuration belongs to the
   bindings package, not the repository root.
-- Public Python wrappers remain in modules named `<first-author><year>.py`.
+- Public Python wrappers remain in modules named `<first-author><year>.py`
+  under `crates/ptfkit-py/python/ptfkit/`.
 - Existing public wrapper names, keyword-only arguments, return units,
   `NamedTuple` result classes, result field order, scalar behavior, vectorized
   NumPy behavior, and `out` behavior are compatibility constraints unless the

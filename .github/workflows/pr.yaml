@@ -30,7 +30,10 @@ jobs:
         run: uv sync --frozen
 
       - name: Install Python bindings
-        run: uv run --no-sync maturin develop --manifest-path crates/ptfkit-py/Cargo.toml
+        run: >
+          uv run --project "${{ github.workspace }}"
+          --directory "${{ github.workspace }}/crates/ptfkit-py"
+          --no-sync maturin develop
 
       - name: Run pytest
         run: uv run --no-sync pytest --no-cov tests
@@ -59,7 +62,10 @@ jobs:
         run: uv sync --frozen --all-groups
 
       - name: Install Python bindings
-        run: uv run --no-sync maturin develop --manifest-path crates/ptfkit-py/Cargo.toml
+        run: >
+          uv run --project "${{ github.workspace }}"
+          --directory "${{ github.workspace }}/crates/ptfkit-py"
+          --no-sync maturin develop
 
       - name: Ruff check
         id: ruff-check
