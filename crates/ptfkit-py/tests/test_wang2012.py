@@ -39,6 +39,7 @@ from ptfkit.wang2012 import calc_ptf_wang2012
     ],
 )
 def test_calc_ptf_wang2012(
+    *,
     sand: float,
     silt: float,
     clay: float,

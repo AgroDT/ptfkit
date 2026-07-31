@@ -1,34 +1,8 @@
-# Python-generated files
-__pycache__/
-*.py[oc]
-build/
-dist/
-wheels/
-*.egg-info
-
-# Virtual environments
-.venv
-
-# Cython-generated files
-src/ptfkit/*.c
-src/ptfkit/*.pyd
-src/ptfkit/*.so
-crates/ptfkit-py/python/ptfkit/*.pyd
-crates/ptfkit-py/python/ptfkit/*.pdb
-crates/ptfkit-py/python/ptfkit/*.so
+# Rust build artifacts
+/target/
 
 # Local paper extraction inputs
-specs/papers/
+/specs/papers/
 
-# Coverage
-.coverage*
-coverage.xml
-
-# Dotenv
+# Local environment overrides
 .env*.local
-
-#docs
-docs/index.md
-site
-
-target/

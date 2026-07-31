@@ -54,6 +54,7 @@ from ptfkit.santra2008 import calc_ptf_santra2008
     ],
 )
 def test_calc_ptf_santra2008(
+    *,
     silt: float,
     clay: float,
     bulk_density: float,

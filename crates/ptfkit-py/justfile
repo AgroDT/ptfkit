@@ -1,0 +1,38 @@
+default:
+	@{{just_executable()}} --list
+
+sync:
+	uv sync --frozen --all-groups
+
+lock:
+	uv lock --check
+
+build:
+	uv build
+
+bindings:
+	uv run --no-sync maturin develop
+
+test: bindings
+	uv run --no-sync pytest
+
+lint:
+	uv run --no-sync ruff check
+
+lint-fix:
+	uv run --no-sync ruff check --fix
+
+format:
+	uv run --no-sync ruff format --check
+
+format-fix:
+	uv run --no-sync ruff format
+
+mypy:
+	uv run --no-sync mypy
+
+docs:
+	uv run --group docs --no-sync mkdocs build
+
+docs-serve:
+	uv run --group docs --no-sync mkdocs serve

@@ -7,8 +7,8 @@
 * Manage **all** dependencies and virtual environments exclusively with `uv`
   commands (`uv add`, `uv remove`, `uv sync`, etc.). Do not mix package
   managers.
-* Run every development tool (tests, linters, docs, pre-commit, etc.) via
-  `uv run --no-sync <command>` to avoid implicit dependency resolution.
+* Run Python development tools through the root `Justfile` recipes, which use
+  `uv` without implicit dependency resolution.
 
 ## Workflow and collaboration
 
@@ -33,7 +33,7 @@ Keep `README.md`, `AGENTS.md`, MkDocs content, and configuration files
 Build docs locally with:
 
 ```sh
-uv run --no-sync mkdocs serve
+just python::docs-serve
 ```
 
 ## Step 1: Install `uv`
@@ -50,26 +50,27 @@ uv --version
 
 ## Step 2: Synchronizing the Environment
 
-Set up the virtual environment & dependencies with `uv sync`. To evaluate coverage during
+Set up the virtual environment and dependencies with `just python::sync`. To evaluate coverage during
 development, you need to build the module in a special mode, which is enabled by
 the `CYTHON_TRACING` environment variable.
 
 **Unix-like**
 
 ```sh
-CYTHON_TRACING=1 uv sync --no-build-isolation --reinstall-package=ptfkit
+just python::test
 ```
 
 **Windows**
 
 ```sh
 $env:CYTHON_TRACING=1
-uv sync --no-build-isolation --reinstall-package=ptfkit
+just python::test
 ```
 
 ## Step 3: Function Implementations in Cython
 
-PTFs are implemented in the private module [`_core.py`](./src/ptfkit/_core.py).
+PTFs are implemented in the private module
+[`_core.py`](./crates/ptfkit-py/python/ptfkit/_core.py).
 Every function is annotated with Cython types and decorators:
 
 * `@cython.ufunc` for NumPy vectorized operations.
@@ -153,7 +154,8 @@ Refer to existing modules for concrete examples if unsure.
 <details markdown>
 <summary>Jabro, 1992</summary>
 
-* Located in a separate module [`jabro1992.py`](./src/ptfkit/jabro1992.py)
+* Located in a separate module
+  [`jabro1992.py`](./crates/ptfkit-py/python/ptfkit/jabro1992.py)
 * Dispatches calls to `calc_ptf_jabro1992_ufunc`
 * Returns a single scalar/vector of saturated hydraulic conductivity (m/s)
 
@@ -170,7 +172,8 @@ k_sat = calc_ptf_jabro1992(silt=20, clay=30, bulk_density=1.3)
 <details markdown>
 <summary>Li et al., 2007</summary>
 
-* Located in a separate module [`li2007.py`](./src/ptfkit/li2007.py)
+* Located in a separate module
+  [`li2007.py`](./crates/ptfkit-py/python/ptfkit/li2007.py)
 * Dispatches calls to `calc_ptf_li2007_ufunc`
 * Returns a NamedTuple with attributes:
   * **theta_s** - saturated water content (θs) (cm^3/cm^3)
@@ -202,7 +205,7 @@ k_sat = res.k_sat
 
 **Rules:**
 
-* Scope: test only public wrappers under `src/ptfkit/`.
+* Scope: test only public wrappers under `crates/ptfkit-py/python/ptfkit/`.
 * Inputs: cover both scalar and `ndarray` scenarios.
 * Prefer `pytest.mark.parametrize` for multiple cases and fixtures for shared inputs.
 * Test files: `tests/test_<first-author><year>.py` (one test file for each public module)
@@ -215,13 +218,11 @@ k_sat = res.k_sat
 **Run tests:**
 
 ```sh
-uv run --no-sync pytest
+just python::test
 ```
 
 For full rebuilds with coverage tracing (required when touching `_core.py`):
 
 ```sh
-rm src/ptfkit/_core.c
-CYTHON_TRACING=1 uv sync --reinstall-package=ptfkit --no-build-isolation
-uv run --no-sync pytest
+just python::test
 ```

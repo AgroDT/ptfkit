@@ -9,7 +9,7 @@ theme:
 plugins:
   - search
   - api-autonav:
-      modules: [src/ptfkit]
+      modules: [python/ptfkit]
   - mkdocstrings:
       handlers:
         python:
@@ -54,5 +54,5 @@ extra_css:
   - https://cdn.jsdelivr.net/npm/katex@0/dist/katex.min.css
 
 watch:
-  - src/ptfkit
+  - python/ptfkit
   - README.md

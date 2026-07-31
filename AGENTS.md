@@ -11,9 +11,8 @@ completely sure.
 - Manage **all** project dependencies exclusively via `uv` commands (e.g.,
   `uv add`, `uv remove`, `uv sync`). Do not mix package managers or install
   dependencies ad hoc.
-- Run every development tool (tests, linters, formatters, docs, etc.) through
-  `uv run --no-sync <command>` to ensure a consistent environment and avoid
-  implicit dependency resolution.
+- Run Python development workflows through the root `Justfile`; its recipes
+  invoke `uv` against `crates/ptfkit-py` without implicit dependency resolution.
 
 ## PTF specification workflow
 
@@ -47,7 +46,8 @@ completely sure.
 
 ## Implementation details and migration
 
-- The current legacy computational core lives in `src/ptfkit/_core.py`
+- The current legacy computational core lives in
+  `crates/ptfkit-py/python/ptfkit/_core.py`
   (Cython-annotated code in pure Python mode).
 - The migration target is a pure Rust core crate. Rust core code must not
   depend on Python, PyO3, NumPy, or Python packaging internals.
@@ -89,7 +89,7 @@ If any role is omitted, STOP and ask for clarification before proceeding.
   communication synchronized.
 - [`.ai/agents/developer.md`](.ai/agents/developer.md) - developer guidance for
   implementing vectorized PTF ufuncs in `_core.py` and public wrappers under
-  `src/ptfkit/`.
+  `crates/ptfkit-py/python/ptfkit/`.
 - [`.ai/agents/tester.md`](.ai/agents/tester.md) - tester workflow describing
   how to structure pytest suites for public wrappers and how to gather coverage.
 

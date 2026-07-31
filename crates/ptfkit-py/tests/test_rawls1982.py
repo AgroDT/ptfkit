@@ -146,6 +146,7 @@ def test_valid_calc_theta_33(
     ],
 )
 def test_valid_calc_full_wrc(
+    *,
     sand: float,
     organic_matter: float,
     bulk_density: float,

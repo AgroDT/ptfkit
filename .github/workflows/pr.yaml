@@ -27,16 +27,19 @@ jobs:
           enable-cache: true
 
       - name: Install the project
-        run: uv sync --frozen
+        run: uv sync --project crates/ptfkit-py --frozen
 
       - name: Install Python bindings
         run: >
-          uv run --project "${{ github.workspace }}"
+          uv run --project "${{ github.workspace }}/crates/ptfkit-py"
           --directory "${{ github.workspace }}/crates/ptfkit-py"
           --no-sync maturin develop
 
       - name: Run pytest
-        run: uv run --no-sync pytest --no-cov tests
+        run: >
+          uv run --project "${{ github.workspace }}/crates/ptfkit-py"
+          --directory "${{ github.workspace }}/crates/ptfkit-py"
+          --no-sync pytest --no-cov
 
   code-quality:
     name: Code Quality
@@ -48,7 +51,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version-file: pyproject.toml
+          python-version-file: crates/ptfkit-py/pyproject.toml
 
       - name: Install uv
         uses: astral-sh/setup-uv@v7
@@ -56,31 +59,43 @@ jobs:
           enable-cache: true
 
       - name: Check uv.lock
-        run: uv lock --check
+        run: uv lock --project crates/ptfkit-py --check
 
       - name: Install the project
-        run: uv sync --frozen --all-groups
+        run: uv sync --project crates/ptfkit-py --frozen --all-groups
 
       - name: Install Python bindings
         run: >
-          uv run --project "${{ github.workspace }}"
+          uv run --project "${{ github.workspace }}/crates/ptfkit-py"
           --directory "${{ github.workspace }}/crates/ptfkit-py"
           --no-sync maturin develop
 
       - name: Ruff check
         id: ruff-check
         continue-on-error: true
-        run: uv run --no-sync ruff check --output-format=github
+        run: >
+          uv run --project "${{ github.workspace }}/crates/ptfkit-py"
+          --directory "${{ github.workspace }}/crates/ptfkit-py"
+          --no-sync ruff check --output-format=github
 
       - name: Ruff format
         id: ruff-format
         continue-on-error: true
-        run: uv run --no-sync ruff format --check --preview --output-format=github
+        run: >
+          uv run --project "${{ github.workspace }}/crates/ptfkit-py"
+          --directory "${{ github.workspace }}/crates/ptfkit-py"
+          --no-sync ruff format --check --preview --output-format=github
 
       - name: Mypy
         id: mypy
         continue-on-error: true
-        run: uv run --no-sync mypy | uv run --no-sync mypy-gh-action-report
+        run: >
+          uv run --project "${{ github.workspace }}/crates/ptfkit-py"
+          --directory "${{ github.workspace }}/crates/ptfkit-py"
+          --no-sync mypy |
+          uv run --project "${{ github.workspace }}/crates/ptfkit-py"
+          --directory "${{ github.workspace }}/crates/ptfkit-py"
+          --no-sync mypy-gh-action-report
 
       - name: Fail if any step failed
         if: |
