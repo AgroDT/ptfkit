@@ -19,13 +19,13 @@
 | function_name | spec_path | blocking_issues |
 | --- | --- | --- |
 
-## Developer Task
+## Implementation Task
 
 - Review `specs/functions/cosby1984.md`.
 - Implement only this function as an end-to-end pilot.
 - Do not use `specs/papers/*.md` directly during Rust or Python implementation.
 
-## Tester Task
+## Validation Task
 
 - Use the golden data embedded in `specs/functions/cosby1984.md`.
 - Include scalar and NumPy vectorized cases.

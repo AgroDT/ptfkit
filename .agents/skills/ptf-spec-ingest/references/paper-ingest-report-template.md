@@ -26,7 +26,7 @@ function-level specs under `specs/functions/*.md`.
 | --- | --- | --- |
 | calc_ptf_example | `specs/functions/<apa_article_key>.md` | Missing golden tests. |
 
-## Developer Task
+## Implementation Task
 
 - Implement only function specs with `status: ready-for-implementation`.
 - Use `ptf-rust-core` for pure Rust scalar kernels.
@@ -35,7 +35,7 @@ function-level specs under `specs/functions/*.md`.
 - Do not use the paper MD directly during implementation.
 - Do not implement blocked specs.
 
-## Tester Task
+## Validation Task
 
 - Build tests only from function-level specs and golden data.
 - Verify scalar public API behavior.

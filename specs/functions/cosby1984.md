@@ -136,12 +136,12 @@ Table 5 reports no significant univariate regression for `sd_log_psi_s`.
 - DOI is not specified in this pilot spec and should be filled before publication-quality docs.
 - Log-transformed output units use the pilot contract `reported log value`.
 
-## Developer Task
+## Implementation Task
 
 - Implement only this function as a pilot candidate.
 - Preserve the declared output field order.
 
-## Tester Task
+## Validation Task
 
 - Add tests from the golden cases above.
 - Include at least one scalar case and one NumPy vectorized case.

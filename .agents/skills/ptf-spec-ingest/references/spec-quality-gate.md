@@ -58,4 +58,4 @@
 
 Mark `Ready for implementation` only when no blocking issues remain. Otherwise
 return `Blocked` with a short list of questions for the external spec owner and
-handoff tasks for developer and tester.
+handoff tasks for implementation and validation.

@@ -19,13 +19,13 @@
 | function_name | spec_path | blocking_issues |
 | --- | --- | --- |
 
-## Developer Task
+## Implementation Task
 
 - Implement `calc_ptf_jabro1992` in pure Rust and expose it through the existing Python API.
 - Preserve keyword-only arguments, scalar behavior, NumPy broadcasting, and `out`.
 - Do not use the paper MD directly during implementation.
 
-## Tester Task
+## Validation Task
 
 - Use the golden data embedded in `specs/functions/jabro1992.md`.
 - Verify scalar, NumPy vectorized, broadcasting, and `out` behavior.

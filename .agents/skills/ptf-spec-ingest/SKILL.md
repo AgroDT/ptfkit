@@ -1,6 +1,6 @@
 ---
 name: ptf-spec-ingest
-description: Convert ptfkit article-level paper Markdown from specs/papers/*.md into function-level specs in specs/functions/*.md, validate generated or existing PTF specs, and prepare developer/tester handoff tasks. Use before Rust or Python implementation. Extract only formulas explicitly present in the MD and preserve ambiguity as blocking issues.
+description: Convert ptfkit article-level paper Markdown from specs/papers/*.md into function-level specs in specs/functions/*.md, validate generated or existing PTF specs, and prepare implementation and validation handoff tasks. Use before Rust or Python implementation. Extract only formulas explicitly present in the MD and preserve ambiguity as blocking issues.
 ---
 
 # PTF Spec Ingest
@@ -12,7 +12,7 @@ description: Convert ptfkit article-level paper Markdown from specs/papers/*.md 
    references, and candidate outputs from the provided MD.
 3. For each concrete PTF function, create or update a function-level spec under
    `specs/functions/<apa_article_key>.md` using `references/spec-template.md`.
-4. Create an ingest report and developer/tester tasks using
+4. Create an ingest report and implementation/validation tasks using
    `references/paper-ingest-report-template.md`.
 5. Validate each generated or existing function-level spec with
    `references/spec-quality-gate.md`.
@@ -26,7 +26,7 @@ Return one of:
 
 - `Ready for implementation`: include the checklist and non-blocking notes.
 - `Blocked`: include blocking questions, missing fields grouped by spec section,
-  and developer/tester handoff tasks.
+  and implementation/validation handoff tasks.
 - `Paper ingested`: include generated function-level spec paths, ingest report
   path, ready functions, and blocked functions.
 
