@@ -21,12 +21,12 @@
 
 - citation_apa: Cosby, B. J., Hornberger, G. M., Clapp, R. B., & Ginn, T. R. (1984). A statistical exploration of the relationships of soil moisture characteristics to the physical properties of soils. Water Resources Research, 20(6), 682-690.
 - doi: not specified
-- source_notes: Extracted from the provided article-level Markdown in `specs/papers/1984_Cosby_A_Statistical_Exploration_of_the_Relationships_of_Soil_Moisture_Characteristics_to_the_Physical_Properties_of_Soils.md`. Formulas are from Table 5, univariate regressions.
+- source_notes: Formulas are from Table 5, univariate regressions.
 
 ## Scope
 
 - territory: United States
-- dataset: 1448 soil samples from Holtan et al. (1968) and Rawls et al. (1976), as described in the provided paper MD.
+- dataset: 1448 soil samples from Holtan et al. (1968) and Rawls et al. (1976).
 - h_theta_model: power function moisture characteristic
 - k_h_model: saturated hydraulic conductivity parameter statistics
 - prediction_target: mean and standard deviation estimates for hydraulic parameters from sand, silt, and clay percentages.
@@ -58,7 +58,7 @@
 
 ## Formula
 
-Formulas extracted from Table 5 in the provided paper MD.
+Formulas extracted from Table 5.
 
 ```text
 mean_b = 2.91 + 0.159 * clay
@@ -135,19 +135,3 @@ Table 5 reports no significant univariate regression for `sd_log_psi_s`.
 
 - DOI is not specified in this pilot spec and should be filled before publication-quality docs.
 - Log-transformed output units use the pilot contract `reported log value`.
-
-## Implementation Task
-
-- Implement only this function as a pilot candidate.
-- Preserve the declared output field order.
-
-## Validation Task
-
-- Add tests from the golden cases above.
-- Include at least one scalar case and one NumPy vectorized case.
-- Include `out` behavior for each output field.
-
-## Implementation Notes
-
-- This spec was generated from article-level MD and is approved for a test pilot only.
-- Do not use the paper MD directly during implementation.

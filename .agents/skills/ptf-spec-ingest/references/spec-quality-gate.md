@@ -3,9 +3,8 @@
 ## Required Location
 
 - The spec must be a function-level file under `specs/functions/*.md`.
-- Article-level paper extractions belong under `specs/papers/*.md`.
-- `ptf-spec-ingest` may create function-level specs from paper extractions, but
-  implementation may start only from specs that pass this gate.
+- `ptf-spec-ingest` may create function-level specs from a user-supplied local
+  source file, but implementation may start only from specs that pass this gate.
 
 ## Required Sections
 
@@ -39,7 +38,7 @@
 ## Blocking Issues
 
 - Missing or ambiguous formula.
-- Formula references paper text instead of giving implementable equations.
+- Formula references source text instead of giving implementable equations.
 - Variable appears in formula but is not declared.
 - Missing units for any input, output, constant, or conversion.
 - Conflicting units between formula, tables, and expected outputs.
@@ -50,12 +49,11 @@
 - API contract breaks an existing public function without an explicit migration note.
 - Unclear handling of logarithms, powers, division by zero, negative domains, or NaN.
 - Spec requires categorical inputs without encoding rules.
-- Current file is article-level material, not a function-level spec.
+- Current file is source material, not a function-level spec.
 - Generated spec contains `TODO` in required formula, units, constants, golden
   tests, numeric policy, or Python API sections.
 
 ## Ready Decision
 
 Mark `Ready for implementation` only when no blocking issues remain. Otherwise
-return `Blocked` with a short list of questions for the external spec owner and
-handoff tasks for implementation and validation.
+return `Blocked` with a short list of questions for the spec owner.

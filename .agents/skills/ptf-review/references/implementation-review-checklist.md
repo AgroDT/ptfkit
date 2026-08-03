@@ -4,7 +4,8 @@
 
 - [ ] Implementation uses a function-level spec from `specs/functions/*.md`.
 - [ ] Spec passed `ptf-spec-ingest`.
-- [ ] No formulas, constants, units, or expected values were inferred from papers.
+- [ ] No formulas, constants, units, or expected values were inferred beyond the
+  validated function-level spec.
 - [ ] Every implemented variable maps to spec input, output, constant, or intermediate.
 
 ## Formula And Units

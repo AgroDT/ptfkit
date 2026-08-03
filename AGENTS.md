@@ -16,30 +16,9 @@ completely sure.
 
 ## PTF specification workflow
 
-- Article-level Markdown extracted from papers belongs in `specs/papers/*.md`.
-- `ptf-spec-ingest` reads article-level Markdown from `specs/papers/*.md`,
-  extracts explicitly stated PTF formulas, and prepares function-level specs in
-  `specs/functions/*.md`.
-- The source of truth for implementation remains the generated function-level
-  Markdown spec in `specs/functions/*.md`.
-- Function-level specs must use article/APA-style filenames, not public
-  function names. Keep public function names inside the spec identity section.
-- `apa_article_key` is a deterministic local citation key:
-  `<first_author_surname_lowercase><year>`, for example `cosby1984`. If the
-  same first author has multiple papers in the same year, append `a`, `b`, etc.
-  in the order already present in local specs or metadata. Do not use internet
-  lookup to construct this key.
-- Codex must not invent, infer, simplify, or complete missing formulas,
-  constants, units, expected values, output fields, or API details. If the paper
-  extraction is ambiguous or incomplete, preserve the uncertainty as blocking
-  issues in the generated spec and ingest report.
-- If a generated function-level spec is incomplete or ambiguous, stop
-  implementation work and create a review file that lists blocking issues and
-  questions for the spec owner.
-- Use the project-specific skills in `.agents/skills/` for the PTF workflow:
-  - `ptf-spec-ingest` for converting article-level Markdown into function-level
-    specs, validating generated specs, and creating implementation and validation
-    tasks.
+- Use the project-specific skills in `.agents/skills/` in this order:
+  - `ptf-spec-ingest` for converting a user-supplied local source file into a
+    validated function-level spec under `specs/functions/`.
   - `ptf-rust-core` for implementing validated specs in the pure Rust core.
   - `ptf-python-bindings` for exposing Rust functions through the Python API.
   - `ptf-review` for checking implementation quality against the spec and
@@ -50,32 +29,13 @@ completely sure.
 - The current legacy computational core lives in
   `crates/ptfkit-py/python/ptfkit/_core.py`
   (Cython-annotated code in pure Python mode).
-- The migration target is a pure Rust core crate. Rust core code must not
-  depend on Python, PyO3, NumPy, or Python packaging internals.
-- Python bindings may use PyO3, maturin, and NumPy-facing adapter code, but
-  they must preserve the public Python API unless a breaking change is
-  explicitly agreed before implementation. Maturin configuration belongs to the
-  bindings package, not the repository root.
+- Maturin configuration belongs to the bindings package, not the repository
+  root.
 - Public Python wrappers remain in modules named `<first-author><year>.py`
   under `crates/ptfkit-py/python/ptfkit/`.
-- Existing public wrapper names, keyword-only arguments, return units,
-  `NamedTuple` result classes, result field order, scalar behavior, vectorized
-  NumPy behavior, and `out` behavior are compatibility constraints unless the
-  spec explicitly says otherwise.
 - Vectorized function naming should continue to follow the established
   convention when applicable:
   `calc_ptf_<first-author><year>[_<extra>]`.
-
-## Testing and quality gates
-
-- Every implemented function must have golden tests derived from the validated
-  function-level spec.
-- Core formula golden tests belong in the Rust core crate near the
-  implementation and may embed cases directly in Rust test code.
-- Python tests should cover bindings and public API compatibility: scalar
-  wrappers, NumPy array inputs, broadcasting, `NamedTuple` results, and `out`.
-- Review must verify formula traceability, units, constants, output order,
-  edge cases, documentation, and public Python API compatibility.
 
 ## Migration strategy
 

@@ -23,6 +23,6 @@ description: Implement validated ptfkit PTF function specs in the pure Rust core
 
 ## Hard Rules
 
-- Do not read papers to resolve missing formulas.
+- Do not consult source material to resolve gaps in the function-level spec.
 - Do not change the public Python API in this skill.
 - Do not silently change units, output order, or numeric policy.

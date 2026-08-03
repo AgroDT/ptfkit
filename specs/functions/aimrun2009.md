@@ -21,7 +21,7 @@
 
 - citation_apa: Aimrun, W., & Amin, M. S. M. (2009). Pedo-transfer function for saturated hydraulic conductivity of lowland paddy soils. Paddy and Water Environment, 7, 217-225.
 - doi: 10.1007/s10333-009-0165-y
-- source_notes: Extracted from `specs/papers/2009_aimrun_Pedo_transfer_function_for_saturated_hydraulic_conductivity.md`. Formula is equation (10).
+- source_notes: Formula is equation (10).
 
 ## Scope
 
@@ -111,6 +111,6 @@ k_sat = k_sat_m_per_day * M_PER_DAY_TO_M_PER_SEC
 | --- | --- | --- | --- |
 | non_positive_log_input | {"clay": 0.0, "bulk_density": 1.0, "organic_matter": 1.0, "gmd": 0.01} | numpy-compatible logarithm domain behavior | Formula uses natural logarithms of all inputs. |
 
-## Implementation Notes
+## Model Notes
 
 - Sand and silt are not inputs to the selected final model.

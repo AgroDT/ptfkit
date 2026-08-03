@@ -2,7 +2,6 @@
 /target/
 
 # Local paper extraction inputs
-/specs/papers/
 
 # Local environment overrides
 .env*.local

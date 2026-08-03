@@ -21,7 +21,7 @@
 
 - citation_apa: Jabro, J. D. (1992). Estimation of saturated hydraulic conductivity of soils from particle size distribution and bulk density data. Transactions of the ASAE, 35(2), 557-560.
 - doi: 10.13031/2013.28633
-- source_notes: Extracted from `specs/papers/1992_Jabro_Estimation_of_saturated_hydraulic_conductivity_of_soils.md`. Formula is equation (3).
+- source_notes: Formula is equation (3).
 
 ## Scope
 
@@ -110,6 +110,6 @@ k_sat = k_sat_cm_per_hour * CM_PER_HOUR_TO_M_PER_SEC
 | --- | --- | --- | --- |
 | non_positive_silt_or_clay | {"silt": 0.0, "clay": 5.0, "bulk_density": 1.26} | numpy-compatible logarithm domain behavior | Formula uses log10(silt) and log10(clay). |
 
-## Implementation Notes
+## Model Notes
 
-- Do not use sand; the source model excludes it.
+- Sand is not an input to the model.
