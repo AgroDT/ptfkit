@@ -1,59 +1,48 @@
-# Spec Quality Gate
+# PTF Specification Quality Gate
 
-## Required Location
+## Required location and format
 
-- The spec must be a function-level file under `specs/functions/*.md`.
-- `ptf-spec-ingest` may create function-level specs from a user-supplied local
-  source file, but implementation may start only from specs that pass this gate.
+- A source specification is a Markdown file under `specs/functions/` named
+  `<source.key>.md`.
+- It starts with YAML front matter conforming to
+  [`specs/schema/ptf-spec-v1.schema.json`](../../../specs/schema/ptf-spec-v1.schema.json).
+- The `functions` list is ordered and non-empty. Each entry has complete local
+  inputs and outputs in public order.
+- Publication citation, DOI, source notes, and common scope appear only at the
+  top level.
 
-## Required Sections
+## Required checks
 
-- `Status`
-- `Identity`
-- `Reference`
-- `Scope`
-- `Inputs`
-- `Outputs`
-- `Constants`
-- `Formula`
-- `Units Policy`
-- `Numeric Policy`
-- `Vectorization Contract`
-- `Python API Contract`
-- `Golden Tests`
+- A function is `ready-for-implementation` only when its formula is complete
+  and unambiguous.
+- Every function has exactly one Markdown `## \`calc_ptf_...\`` section, in YAML
+  order; no Markdown function section is undeclared.
+- Every formula symbol is declared as an input, output, constant, or
+  intermediate in that function's Markdown section.
+- Every input and output has units and complete descriptions.
+- Unit conversions and numerical policy remain in Markdown. Ordered golden
+  cases and edge cases are structured YAML and are sufficiently explicit to
+  implement; their scientific rationale may remain in Markdown.
+- Multiple outputs require a result class; a scalar output requires
+  `result_class: null`.
+- Scope inherits top-level territory/dataset only when the function field is
+  omitted; explicit `null` is intentional.
 
-## Required Checks
+## Blocking issues
 
-- `status` is `ready-for-implementation`.
-- `function_name`, `public_module`, `public_function`, and `rust_function` are present.
-- Every formula symbol is declared as an input, output, constant, or intermediate.
-- Every input and output has units.
-- Unit conversions are explicit constants.
-- Output order matches `result_fields` for namedtuple results.
-- Numeric policy defines precision, rounding, NaN, and invalid input behavior.
-- Vectorization contract says whether scalar, ndarray, broadcasting, and `out` are supported.
-- Golden tests include inputs, expected outputs, `rtol`, and `atol`.
-- Golden tests cover every output field.
+- Missing or ambiguous formula, unit, constant, output, or golden expectation.
+- A duplicated publication entry or source key.
+- A source-oriented filename that does not match `source.key`.
+- A duplicate function name or public `(module, name)` pair.
+- Duplicate input or output names in one function.
+- A Markdown section missing, undeclared, or out of order.
+- Formula expressions or long scientific prose placed in YAML.
+- `not specified` used where a structured `null` is required.
 
-## Blocking Issues
+## Status vocabulary
 
-- Missing or ambiguous formula.
-- Formula references source text instead of giving implementable equations.
-- Variable appears in formula but is not declared.
-- Missing units for any input, output, constant, or conversion.
-- Conflicting units between formula, tables, and expected outputs.
-- Missing golden tests or missing expected outputs.
-- Missing tolerance for floating point comparison.
-- Missing output field names for multi-output functions.
-- Missing public Python API contract.
-- API contract breaks an existing public function without an explicit migration note.
-- Unclear handling of logarithms, powers, division by zero, negative domains, or NaN.
-- Spec requires categorical inputs without encoding rules.
-- Current file is source material, not a function-level spec.
-- Generated spec contains `TODO` in required formula, units, constants, golden
-  tests, numeric policy, or Python API sections.
-
-## Ready Decision
-
-Mark `Ready for implementation` only when no blocking issues remain. Otherwise
-return `Blocked` with a short list of questions for the spec owner.
+- `draft`: incomplete, exploratory specification.
+- `blocked`: an identified missing or ambiguous source detail prevents work.
+- `ready-for-implementation`: complete and reviewed specification.
+- `implemented`: a corresponding implementation exists and remains traceable to
+  this specification.

@@ -1,6 +1,6 @@
 ---
 name: ptf-spec-ingest
-description: Convert a user-supplied local source file into a validated function-level PTF spec in specs/functions/*.md. Use before Rust or Python implementation, or to validate an existing spec. Extract only explicitly stated formulas and preserve ambiguity as blocking issues.
+description: Convert a user-supplied local source file into a validated source-oriented PTF specification in specs/functions/*.md. Use before Rust or Python implementation, or to validate an existing spec. Extract only explicitly stated formulas and preserve ambiguity as blocking issues.
 ---
 
 # PTF Spec Ingest
@@ -10,8 +10,10 @@ description: Convert a user-supplied local source file into a validated function
 1. Read the local source file at the path supplied by the user.
 2. Extract only explicitly stated PTF formulas, variables, constants, units,
    references, and candidate outputs from the supplied file.
-3. For each concrete PTF function, create or update a function-level spec under
+3. Create or update the source-oriented specification under
    `specs/functions/<apa_article_key>.md` using `references/spec-template.md`.
+   Add every function from that publication to its single ordered `functions`
+   list and add its matching Markdown section.
 4. Validate each generated or existing function-level spec with
    `references/spec-quality-gate.md`.
 5. If anything required is missing or ambiguous, mark that function spec blocked.
@@ -30,7 +32,8 @@ Return one of:
 ## Hard Rules
 
 - Treat the supplied file as extraction input only; the generated
-  `specs/functions/*.md` file becomes the implementation source of truth.
+  `specs/functions/*.md` source specification becomes the implementation source
+  of truth.
 - Do not copy the supplied file into the repository or record its path in
   generated files.
 - Use article/APA-style spec filenames and keep public API names inside the

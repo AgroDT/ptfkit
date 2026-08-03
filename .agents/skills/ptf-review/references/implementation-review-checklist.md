@@ -2,10 +2,10 @@
 
 ## Spec Traceability
 
-- [ ] Implementation uses a function-level spec from `specs/functions/*.md`.
+- [ ] Implementation uses a source-oriented spec from `specs/functions/*.md`.
 - [ ] Spec passed `ptf-spec-ingest`.
 - [ ] No formulas, constants, units, or expected values were inferred beyond the
-  validated function-level spec.
+  validated source specification.
 - [ ] Every implemented variable maps to spec input, output, constant, or intermediate.
 
 ## Formula And Units
@@ -13,7 +13,7 @@
 - [ ] Formula terms match the spec.
 - [ ] Constants match exact spec values.
 - [ ] Unit conversions are explicit and tested.
-- [ ] Output order matches `result_fields`.
+- [ ] Output order matches the ordered YAML `outputs` list.
 - [ ] Numeric policy for rounding, NaN, and invalid inputs is respected.
 
 ## Golden Tests

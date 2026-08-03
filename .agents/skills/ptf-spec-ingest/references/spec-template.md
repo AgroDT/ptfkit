@@ -1,117 +1,106 @@
-# Valid PTF Function Spec Template
+# PTF Source Specification Template
 
-Store function-level specs at `specs/functions/<apa_article_key>.md`.
+Store source-oriented specifications at `specs/functions/<source-key>.md`. One
+file may describe one or more functions from the same publication. Do not make a
+second file merely because that publication provides another function.
 
-Keep public Python and Rust function names in the identity section.
+Every specification begins with YAML front matter conforming to
+[`specs/schema/ptf-spec-v1.schema.json`](../../../specs/schema/ptf-spec-v1.schema.json),
+followed by Markdown for formulas and scientific explanation.
 
 ```markdown
-# calc_ptf_authorYEAR_extra
+---
+schema_version: 1
+source:
+  key: author_year
+  title: Publication title
+  citation_apa: Author, A. (YEAR). Publication title. Journal, volume, pages.
+  doi: null
+  notes: []
+scope:
+  territory: Region
+  dataset: Shared source dataset
+functions:
+  - name: calc_ptf_authoryear_property
+    status: draft
+    public_api:
+      module: ptfkit.authoryear
+      name: calc_ptf_authoryear_property
+      result_class: null
+      summary: Estimate a soil hydraulic property.
+    scope:
+      prediction_target: Soil hydraulic property.
+      models:
+        h_theta: null
+        k_h: null
+    inputs:
+      - name: clay
+        symbol: C
+        unit: "%"
+        domain: "0 <= value <= 100"
+        description: Clay content.
+    outputs:
+      - name: property
+        symbol: null
+        unit: dimensionless
+        domain: null
+        description: Estimated soil hydraulic property.
+    golden_tests:
+      - id: scalar_001
+        inputs: {clay: 58.0}
+        expected: {property: 1.23e-6}
+        rtol: 1.0e-10
+        atol: 1.0e-12
+        notes: Derived from the publication equation.
+    edge_cases: []
+    documentation:
+      notes: []
+      warnings: []
+---
 
-## Status
+# Author et al. (YEAR)
 
-- spec_version: 1
-- status: ready-for-implementation
-- generated_by: external-spec-app
-- generated_at: YYYY-MM-DD
+## `calc_ptf_authoryear_property`
 
-## Identity
-
-- function_name: calc_ptf_authorYEAR_extra
-- source_key: authorYEAR_extra
-- public_module: ptfkit.authorYEAR
-- public_function: calc_ptf_authorYEAR_extra
-- rust_function: calc_ptf_authorYEAR_extra
-- result_type: scalar | namedtuple
-- result_class: AuthorYEARPTFResult | null
-
-## Reference
-
-- citation_apa: Author, A. (YEAR). Title. Journal, volume(issue), pages.
-- doi: https://doi.org/...
-- source_notes: Short note from the external spec app.
-
-## Scope
-
-- territory: Region or "not specified"
-- dataset: Dataset description or "not specified"
-- h_theta_model: Model name or "not applicable"
-- k_h_model: Model name or "not applicable"
-- prediction_target: Short description of computed property.
-
-## Inputs
-
-| name | symbol | type | units | valid_range | required | description |
-| --- | --- | --- | --- | --- | --- | --- |
-| sand | S | float | % | 0 <= sand <= 100 | yes | Sand content. |
-
-## Outputs
-
-| name | symbol | type | units | valid_range | description |
-| --- | --- | --- | --- | --- | --- |
-| k_sat | Ks | float | m/s | >= 0 | Saturated hydraulic conductivity. |
-
-## Constants
-
-| name | value | units | description |
-| --- | --- | --- | --- |
-| CM_PER_HOUR_TO_M_PER_SEC | 0.000002777777777777778 | (m/s)/(cm/h) | Unit conversion. |
-
-## Formula
-
-Use plain text or fenced math. Every variable must be declared as an input,
-constant, intermediate, or output.
+### Formula
 
 ```text
-intermediate = ...
-k_sat = ...
+property = ...
 ```
 
-## Intermediates
+### Constants
 
-| name | units | formula_reference | description |
-| --- | --- | --- | --- |
+... constants, source-table details, unit conversions, and derivations ...
 
-## Units Policy
+### Numeric policy
 
-- input_units: Inputs are accepted exactly as listed above.
-- output_units: Outputs are returned exactly as listed above.
-- conversions: List every conversion used by the formula.
+... NaN, domain, rounding, and precision behaviour ...
 
-## Numeric Policy
+### Golden-test rationale
 
-- precision: f64
-- rounding: none
-- nan_policy: propagate
-- domain_errors: numpy-compatible
-- invalid_input_policy: document-only | raise | return_nan
-
-## Vectorization Contract
-
-- supports_scalar: true
-- supports_numpy_arrays: true
-- broadcasting: numpy
-- supports_out: true
-
-## Python API Contract
-
-- keyword_only: true
-- return_kind: scalar | namedtuple
-- result_fields: [field1, field2]
-- existing_api_compatibility: new | must-match-existing
-- public_doc_summary: One sentence.
-
-## Golden Tests
-
-| case_id | inputs_json | expected_json | rtol | atol | notes |
-| --- | --- | --- | --- | --- | --- |
-| scalar_001 | {"sand": 58.0} | {"k_sat": 1.23e-6} | 1e-10 | 1e-12 | External spec app. |
-
-## Edge Cases
-
-| case_id | inputs_json | expected_behavior | notes |
-| --- | --- | --- | --- |
-
-## Additional Notes
-
-- Optional notes that do not override formulas, units, or API contract.
+... source provenance, representativeness, or scientific interpretation of the
+structured golden cases above ...
 ```
+
+## Authoring rules
+
+1. Create or locate the source-oriented file first. Reuse it when adding a
+   function from the same publication.
+2. Add publication citation, DOI, source notes, and shared territory/dataset
+   only once at the top level.
+3. Add one complete, ordered entry to `functions` for each public function.
+   Inputs and outputs are deliberately local to each function.
+4. Give every function exactly one matching `## \`calc_ptf_...\`` Markdown
+   section in the same order as the YAML list.
+5. Keep concise public documentation, golden cases, and edge cases in YAML.
+   Keep formulas, constants, and scientific reasoning in Markdown.
+6. Use `null` for absent structured values; never write `not specified`,
+   `none`, or `not applicable` in place of `null`. Use `dimensionless` when it
+   is a real unit.
+7. `result_class` is `null` for exactly one output and is required for multiple
+   outputs. Do not add redundant result-field or return-kind metadata.
+8. A function may override inherited `territory` or `dataset`; a missing field
+   inherits and an explicit `null` intentionally suppresses the common value.
+   Do not use YAML anchors or merge keys.
+9. Package-wide scalar, NumPy, broadcasting, `out`, precision, and keyword-only
+   contracts are documented centrally; do not repeat them in each source spec.

@@ -126,9 +126,12 @@ specification, implementation, public API compatibility, and review aligned.
 ### Adding a PTF
 
 1. Provide the agent with a local path to the source material.
-2. Use `ptf-spec-ingest` to create and validate a function-level specification
-   under [`specs/functions`](./specs/functions/). The source file is not copied
-   into the repository and its path is not retained.
+2. Use `ptf-spec-ingest` to create and validate a source-oriented specification
+   under [`specs/functions`](./specs/functions/). It uses YAML front matter for
+   shared publication and function metadata and Markdown for formulas and
+   scientific reasoning. Reuse the same file for every function from one
+   publication; the source file is not copied into the repository and its path
+   is not retained.
 3. Use `ptf-rust-core` to implement a ready specification as a pure Rust kernel
    with golden tests.
 4. Use `ptf-python-bindings` to expose the kernel while preserving the public
