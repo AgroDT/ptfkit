@@ -1,228 +1,117 @@
-# Development Guide
+# Contributing to ptfkit
 
-## Project-wide guidelines
+ptfkit is a Cargo workspace with a pure Rust computational core and a Python
+binding package. New PTFs are normally added through the repository's
+agent-assisted workflow, with a validated function-level specification as the
+contract between stages.
 
-* Use **only English** for all code, in-code documentation, commit messages, and
-  generated docs.
-* Manage **all** dependencies and virtual environments exclusively with `uv`
-  commands (`uv add`, `uv remove`, `uv sync`, etc.). Do not mix package
-  managers.
-* Run Python development tools through the root `Justfile` recipes, which use
-  `uv` without implicit dependency resolution.
+## Project Layout
 
-## Workflow and collaboration
+- `crates/ptfkit-core` contains pure Rust PTF kernels and their golden tests.
+- `crates/ptfkit-py` contains the PyO3 bindings, public Python modules, and
+  Python package tooling.
+- `specs/functions` contains the validated function-level specifications that
+  define formulas, units, numeric policy, API contracts, and golden cases.
+- `.agents/skills` contains the workflow skills used to add and review PTFs.
 
-### Branch naming
+## Toolchains and Dependencies
 
-Follow the template `(<type>)/<short-description>` where `<type>` is one of
-`feature`, `fix`, `refactor`, `docs`, `ci`, etc., and `<short-description>` is a
-concise, kebab-cased summary.
-
-### Commit messages
-
-* Use Conventional Commits in English (https://www.conventionalcommits.org):
-  `<type>(<scope>): <short summary>`.
-* Use imperative mood ("add", "fix", "update"), keep the subject ≤ 50
-  characters and wrap body lines at 72 (50/72 rule).
-* Avoid emojis and keep scope names short.
-
-### Documentation alignment
-
-Keep `README.md`, `AGENTS.md`, MkDocs content, and configuration files
-(`pyproject.toml`, `setup.py`, `Justfile`, etc.) synchronized with code changes.
-Build docs locally with:
+Install the Rust toolchain with [rustup](https://rustup.rs/) and install
+[`uv`](https://docs.astral.sh/uv/getting-started/installation/) for the Python
+package.
 
 ```sh
-just python::docs-serve
-```
-
-## Step 1: Install `uv`
-
-`uv` manages virtual environments, package installation, and dependency locking.
-Install it with the official [installer](https://docs.astral.sh/uv/getting-started/installation/)
-or use your system's package manager if applicable.
-
-Verify installation:
-
-```sh
+cargo --version
 uv --version
 ```
 
-## Step 2: Synchronizing the Environment
+Cargo owns the Rust workspace dependencies and `Cargo.lock`. Use Cargo commands
+such as `cargo add`, `cargo remove`, and `cargo update` for Rust changes.
 
-Set up the virtual environment and dependencies with `just python::sync`. To evaluate coverage during
-development, you need to build the module in a special mode, which is enabled by
-the `CYTHON_TRACING` environment variable.
+`uv` owns Python dependencies, virtual environments, and
+`crates/ptfkit-py/uv.lock`. Use `uv add`, `uv remove`, and `uv sync` for Python
+package changes. Do not edit either lockfile by hand or use one ecosystem's
+package manager for the other.
 
-**Unix-like**
-
-```sh
-just python::test
-```
-
-**Windows**
+Synchronize the Python package environment with:
 
 ```sh
-$env:CYTHON_TRACING=1
-just python::test
+just python::sync
 ```
 
-## Step 3: Function Implementations in Cython
+## Everyday Development
 
-PTFs are implemented in the private module
-[`_core.py`](./crates/ptfkit-py/python/ptfkit/_core.py).
-Every function is annotated with Cython types and decorators:
-
-* `@cython.ufunc` for NumPy vectorized operations.
-* `@cython.cfunc` for cdef function creation.
-
-Each function is named with the template
-
-```
-calc_ptf_<first-author><year>[_<extra>]_ufunc
-```
-
-where:
-
-* `first-author` and `year` are the bibliographic reference
-* `extra` is an optional modifier, for example for similar PTFs with different inputs
-
-<details markdown>
-<summary>Example</summary>
-
-```python
-@cython.ufunc
-@cython.cfunc
-def calc_ptf_aimrun2009_ufunc(
-    clay: cython.double,
-    bulk_density: cython.double,
-    organic_matter: cython.double,
-    gmd: cython.double,
-) -> cython.double:
-    k_sat_m_per_day = np.exp(
-        -2.368
-        + 3.846 * bulk_density
-        + 0.091 * organic_matter
-        - 6.203 * np.log(bulk_density)
-        - 0.343 * np.log(organic_matter)
-        - 2.334 * np.log(clay)
-        - 0.411 * np.log(gmd)
-    )
-    return k_sat_m_per_day * M_PER_DAY_TO_M_PER_SEC
-```
-
-</details>
-
-## Step 4: Writing Pure Python Wrappers
-
-Each PTF implementation is wrapped in a separate public module
-
-```
-<first-author><year>.py
-```
-
-Wrappers provide:
-
-* Clean API with pure Python annotations
-* Overloads for scalar and vector data
-* Docstrings for the entire module, each PTF, and data structures
-
-Each function is named with the template
-
-```
-calc_ptf_<first-author><year>[_<extra>]
-```
-
-### Documentation standards
-
-Follow these conventions for every public module:
-
-1. **Module docstring** — describe the model, include APA-formatted reference,
-   DOI, model identifiers (`h(θ)`, `k(h)`), territory, and dataset details
-   when available.
-2. **Result containers** — when returning multiple values, expose a `NamedTuple`
-   (optionally generic) with an `Attributes` section documenting each field and
-   its units.
-3. **Wrapper functions** — provide overloads for scalar and vector inputs,
-   include detailed `Args`/`Returns` sections, and dispatch directly to the
-   matching `calc_ptf_<author><year>[_<extra>]_ufunc`.
-
-Refer to existing modules for concrete examples if unsure.
-
-### Examples
-
-<details markdown>
-<summary>Jabro, 1992</summary>
-
-* Located in a separate module
-  [`jabro1992.py`](./crates/ptfkit-py/python/ptfkit/jabro1992.py)
-* Dispatches calls to `calc_ptf_jabro1992_ufunc`
-* Returns a single scalar/vector of saturated hydraulic conductivity (m/s)
-
-**Example usage:**
-
-```python
-from ptfkit.jabro1992 import calc_ptf_jabro1992
-
-k_sat = calc_ptf_jabro1992(silt=20, clay=30, bulk_density=1.3)
-```
-
-</details>
-
-<details markdown>
-<summary>Li et al., 2007</summary>
-
-* Located in a separate module
-  [`li2007.py`](./crates/ptfkit-py/python/ptfkit/li2007.py)
-* Dispatches calls to `calc_ptf_li2007_ufunc`
-* Returns a NamedTuple with attributes:
-  * **theta_s** - saturated water content (θs) (cm^3/cm^3)
-  * **a_vg** - fitting parameter of the van Genuchten equation, inversely related to the air-entry
-    suction (α) (cm^-1)
-  * **n_vg** - fitting parameter of the van Genuchten equation, that characterizes the pore-size
-    distribution (n)
-  * **k_sat** - saturated hydraulic conductivity (Ks) (m/s)
-
-**Example usage:**
-
-```python
-from ptfkit.li2007 import calc_ptf_li2007
-
-import numpy as np
-
-sand = np.array([15, 30])
-silt = np.array([25, 50])
-clay = np.array([35, 40])
-bulk_density = np.array([1.2, 1.3])
-soil_organic_matter = np.array([3.4, 3.2])
-res = calc_ptf_li2007(sand=sand, silt=silt, clay=clay, bulk_density=bulk_density, soil_organic_matter=soil_organic_matter)
-k_sat = res.k_sat
-```
-
-</details>
-
-## Step 5: Writing Tests
-
-**Rules:**
-
-* Scope: test only public wrappers under `crates/ptfkit-py/python/ptfkit/`.
-* Inputs: cover both scalar and `ndarray` scenarios.
-* Prefer `pytest.mark.parametrize` for multiple cases and fixtures for shared inputs.
-* Test files: `tests/test_<first-author><year>.py` (one test file for each public module)
-* Test functions: `test_calc_ptf_<first-author><year>[_<extra>]`
-* Assertions: prefer plain `assert` where possible and
-  `np.testing.assert_array_almost_equal` for floating-point values.
-* Coverage: normal and edge cases (normal practice is to test
-  function performance using values provided in a reference paper)
-
-**Run tests:**
+Run Rust workspace checks from the repository root:
 
 ```sh
-just python::test
+cargo fmt --check
+cargo clippy --workspace --all-targets
+cargo test --workspace
 ```
 
-For full rebuilds with coverage tracing (required when touching `_core.py`):
+Run Python package workflows through the root `Justfile`:
 
 ```sh
+just python::lint
+just python::format
 just python::test
+just python::docs
 ```
+
+`just python::test` builds the local bindings before running the public Python
+test suite. Use the smallest relevant checks while iterating, then run every
+applicable check before submitting a change.
+
+## Adding a PTF
+
+Most new PTF work is agent-assisted. Use the skills in `.agents/skills` in this
+order:
+
+1. Give `ptf-spec-ingest` a local path to the source material. It creates or
+   validates a function-level spec under `specs/functions` using only explicitly
+   stated formulas, constants, units, and expected values.
+2. If the spec is ready, use `ptf-rust-core` to implement the pure Rust `f64`
+   kernel and its golden tests. If the spec is blocked, resolve its questions
+   before writing code.
+3. Use `ptf-python-bindings` to expose the Rust kernel while preserving the
+   declared Python API, scalar and NumPy behavior, broadcasting, `out`, and
+   `NamedTuple` results where applicable.
+4. Use `ptf-review` before merging to check traceability, formula fidelity,
+   units, numeric policy, test coverage, documentation, and API compatibility.
+
+The source file is transient input. Do not copy it into the repository or store
+its path in generated files. The validated function-level specification is the
+only persisted ingest artifact and the source of truth for implementation.
+
+## Change Scope and Quality
+
+Keep formula migrations small: one function or a closely related group per
+change. Do not combine a formula migration with an unrelated refactor unless
+the scope is explicitly approved.
+
+Every implementation must remain traceable to its function-level spec. The Rust
+core owns formula golden tests; the Python package owns public API compatibility
+tests. Update documentation when a public API, a specification, or a supported
+workflow changes.
+
+## Documentation, Branches, and Commits
+
+Keep `README.md`, `AGENTS.md`, relevant MkDocs content, `Cargo.toml`,
+`pyproject.toml`, and `Justfile` aligned with the change. Build Python package
+documentation with:
+
+```sh
+just python::docs
+```
+
+Name branches as `(<type>)/<short-description>`, for example
+`feature/add-cosby1984`.
+
+Use English Conventional Commits:
+
+```text
+<type>(<scope>): <short summary>
+```
+
+Use imperative mood, keep the subject at 50 characters or fewer, wrap body
+lines at 72 characters, and avoid emojis.

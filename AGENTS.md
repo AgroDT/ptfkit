@@ -8,9 +8,9 @@ completely sure.
 
 ## Project management
 
-- Manage **all** project dependencies exclusively via `uv` commands (e.g.,
-  `uv add`, `uv remove`, `uv sync`). Do not mix package managers or install
-  dependencies ad hoc.
+- Manage Python dependencies exclusively via `uv` commands (e.g., `uv add`,
+  `uv remove`, `uv sync`) and Rust dependencies via Cargo commands. Do not mix
+  dependency managers within either ecosystem or install dependencies ad hoc.
 - Run Python development workflows through the root `Justfile`; its recipes
   invoke `uv` against `crates/ptfkit-py` without implicit dependency resolution.
 

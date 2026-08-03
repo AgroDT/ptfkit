@@ -95,9 +95,6 @@ files = ["docs", "python/ptfkit", "tests"]
 addopts = "--cov=ptfkit"
 testpaths = ["tests"]
 
-[tool.coverage.run]
-plugins = ["Cython.Coverage"]
-
 [tool.maturin]
 module-name = "ptfkit._rust"
 python-source = "python"
