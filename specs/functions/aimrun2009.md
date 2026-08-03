@@ -2,22 +2,19 @@
 schema_version: 1
 source:
   key: aimrun2009
-  title: Pedo-transfer function for saturated hydraulic conductivity of lowland paddy soils
+  summary: Aimrun & Amin (2009), Tanjung Karang Rice Irrigation Project, Malaysia.
   citation_apa: >-
     Aimrun, W., & Amin, M. S. M. (2009). Pedo-transfer function for saturated
     hydraulic conductivity of lowland paddy soils. Paddy and Water Environment,
     7, 217-225.
-  doi: 10.1007/s10333-009-0165-y
-  notes:
-    - Formula is equation (10).
+  doi: {identifier: 10.1007/s10333-009-0165-y, url: https://doi.org/10.1007/s10333-009-0165-y}
 scope:
-  territory: Tanjung Karang Rice Irrigation Project, Malaysia
+  territory: Tanjung Karang Rice Irrigation Project, located on a flat coastal plain in the Integrated Agricultural Development Area (IADA Barat Laut Selangor), Malaysia
   dataset: 408 lowland paddy soil samples from Sawah Sempadan rice cultivation area.
 functions:
   - name: calc_ptf_aimrun2009
     status: ready-for-implementation
     public_api:
-      module: ptfkit.aimrun2009
       name: calc_ptf_aimrun2009
       result_class: null
       summary: Estimate saturated hydraulic conductivity for lowland paddy soils.
@@ -27,10 +24,10 @@ functions:
         h_theta: null
         k_h: Saturated hydraulic conductivity
     inputs:
-      - {name: clay, symbol: C, unit: "%", domain: "value > 0", description: Clay content.}
+      - {name: clay, symbol: C, unit: "%", domain: "value > 0", description: "Clay content, <2 um."}
       - {name: bulk_density, symbol: Db, unit: g/cm^3, domain: "value > 0", description: Dry bulk density.}
       - {name: organic_matter, symbol: OM, unit: "%", domain: "value > 0", description: Organic matter content.}
-      - {name: gmd, symbol: GMD, unit: mm, domain: "value > 0", description: Geometric mean diameter.}
+      - {name: gmd, symbol: GMD, unit: mm, domain: "value > 0", description: Geometric mean diameter of texture.}
     outputs:
       - {name: k_sat, symbol: Ks, unit: m/s, domain: "value >= 0", description: Saturated hydraulic conductivity.}
     golden_tests:
@@ -66,6 +63,7 @@ functions:
     documentation:
       notes:
         - Sand and silt are not inputs to the selected final model.
+        - "Applicability: Clayey rice soils with compacted subsoil."
       warnings:
         - The formula uses natural logarithms of all inputs.
 ---

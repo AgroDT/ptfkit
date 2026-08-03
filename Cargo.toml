@@ -1,5 +1,9 @@
 [workspace]
 members = ["crates/*"]
+default-members = [
+    "crates/ptfkit-core",
+    "crates/ptfkit-py",
+]
 resolver = "3"
 
 [workspace.package]

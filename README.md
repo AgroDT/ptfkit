@@ -137,6 +137,8 @@ specification, implementation, public API compatibility, and review aligned.
 4. Use `ptf-python-bindings` to expose the kernel while preserving the public
    Python API, including scalar and NumPy behavior, broadcasting, `out`, and
    `NamedTuple` results where applicable.
+   Each spec generates `ptfkit.<source.key>` by default; set top-level
+   `python_generation: manual` only for an entire manual module.
 5. Use `ptf-review` before merging to check formula traceability, numerical
    policy, tests, documentation, and API compatibility.
 

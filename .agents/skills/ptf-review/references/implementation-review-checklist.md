@@ -38,10 +38,16 @@
 - [ ] Type overloads are present or intentionally updated.
 - [ ] Multi-output functions return the documented `NamedTuple`.
 - [ ] Existing public API compatibility is preserved.
+- [ ] Omitted top-level `python_generation` is treated as generated; a manual
+      module has a justified `python_generation: manual` entry.
 
 ## Documentation
 
 - [ ] Module docstring matches reference and scope from spec.
+- [ ] Module summary is the hand-authored `source.summary` (at most 100
+      characters); the APA citation and DOI identifier/URL match the spec.
+- [ ] Module and function territories are rendered from independent scope fields
+      without inheritance or combination.
 - [ ] Function docstring lists input and output units.
 - [ ] Result class docs match output fields.
 

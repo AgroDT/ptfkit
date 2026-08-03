@@ -2,21 +2,19 @@
 schema_version: 1
 source:
   key: jabro1992
-  title: Estimation of saturated hydraulic conductivity of soils from particle size distribution and bulk density data
+  summary: Jabro (1992), United States.
   citation_apa: >-
     Jabro, J. D. (1992). Estimation of saturated hydraulic conductivity of soils
     from particle size distribution and bulk density data. Transactions of the
     ASAE, 35(2), 557-560.
-  doi: 10.13031/2013.28633
-  notes: [Formula is equation (3).]
+  doi: {identifier: 10.13031/2013.28633, url: https://doi.org/10.13031/2013.28633}
 scope:
   territory: USA
-  dataset: Southern Cooperation Series Bulletins, 350 samples; validation on Duffield silt loam data.
+  dataset: Southern Cooperation Series Bulletins (Dan et al., 1983; Nofziger et al., 1983; Quisenberry et al., 1987), 350 samples; validation on Duffield silt loam data.
 functions:
   - name: calc_ptf_jabro1992
     status: ready-for-implementation
     public_api:
-      module: ptfkit.jabro1992
       name: calc_ptf_jabro1992
       result_class: null
       summary: Estimate saturated hydraulic conductivity from silt, clay, and bulk density.
@@ -24,8 +22,8 @@ functions:
       prediction_target: Saturated hydraulic conductivity from silt, clay, and bulk density.
       models: {h_theta: null, k_h: Saturated hydraulic conductivity}
     inputs:
-      - {name: silt, symbol: Si, unit: "%", domain: "value > 0", description: Silt content.}
-      - {name: clay, symbol: C, unit: "%", domain: "value > 0", description: Clay content.}
+      - {name: silt, symbol: Si, unit: "%", domain: "value > 0", description: "Silt content, 0.002-0.05 mm."}
+      - {name: clay, symbol: C, unit: "%", domain: "value > 0", description: "Clay content, <0.002 mm."}
       - {name: bulk_density, symbol: Bd, unit: g/cm^3, domain: "value > 0", description: Bulk density.}
     outputs:
       - {name: k_sat, symbol: Ks, unit: m/s, domain: "value >= 0", description: Saturated hydraulic conductivity.}

@@ -76,6 +76,8 @@ order:
 3. Use `ptf-python-bindings` to expose the Rust kernel while preserving the
    declared Python API, scalar and NumPy behavior, broadcasting, `out`, and
    `NamedTuple` results where applicable.
+   Each spec generates `ptfkit.<source.key>` by default; set top-level
+   `python_generation: manual` only for an entire manual module.
 4. Use `ptf-review` before merging to check traceability, formula fidelity,
    units, numeric policy, test coverage, documentation, and API compatibility.
 

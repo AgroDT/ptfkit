@@ -8,8 +8,8 @@
   [`specs/schema/ptf-spec-v1.schema.json`](../../../specs/schema/ptf-spec-v1.schema.json).
 - The `functions` list is ordered and non-empty. Each entry has complete local
   inputs and outputs in public order.
-- Publication citation, DOI, source notes, and common scope appear only at the
-  top level.
+- The top level records a source summary of at most 100 characters, complete
+  APA citation, DOI identifier and URL (or `null`), and complete source scope.
 
 ## Required checks
 
@@ -25,8 +25,14 @@
   implement; their scientific rationale may remain in Markdown.
 - Multiple outputs require a result class; a scalar output requires
   `result_class: null`.
-- Scope inherits top-level territory/dataset only when the function field is
-  omitted; explicit `null` is intentional.
+- `source.summary` is hand-authored, includes short APA attribution and short
+  territory, and is not derived from citation or scope fields.
+- Top-level `scope.territory` describes the source and public module. A function
+  declares `scope.territory` only for a narrower or different territory; the
+  fields are independent and never inherit or override one another.
+- The spec filename and `source.key` identify exactly one public Python module.
+  Omitted top-level `python_generation` means it is generated; a manual module
+  needs `python_generation: manual` at the top level.
 
 ## Blocking issues
 

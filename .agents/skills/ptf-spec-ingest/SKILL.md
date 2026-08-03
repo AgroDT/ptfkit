@@ -15,7 +15,8 @@ description: Convert a user-supplied local source file into a validated source-o
    Add every function from that publication to its single ordered `functions`
    list and add its matching Markdown section.
 4. Validate each generated or existing function-level spec with
-   `references/spec-quality-gate.md`.
+   `references/spec-quality-gate.md` and
+   `cargo run -p ptfkit-codegen -- validate`.
 5. If anything required is missing or ambiguous, mark that function spec blocked.
    Do not invent formulas, constants, units, expected values, output fields, or
    API details.
@@ -42,6 +43,17 @@ Return one of:
   metadata, for example `cosby1984`. If needed, append `a`, `b`, etc. for
   same-author same-year collisions. Do not use internet lookup to construct the key.
 - Extract only formulas and metadata explicitly present in the supplied file.
+- Record `source.summary` as a hand-authored public summary no longer than 100
+  characters. It includes a short APA attribution and short territory; do not
+  derive it from other fields.
+- Record `source.citation_apa` as the complete citation. For a DOI, record both
+  its identifier and its source-provided URL; use `null` only when no DOI exists.
 - Do not implement code during ingest.
+- Omit top-level `python_generation` for the default generated public Python
+  module. Set `python_generation: manual` only as a deliberate module-wide
+  opt-out.
+- Record the source's complete territory in top-level `scope.territory`. Add
+  `functions[].scope.territory` only for a function with a narrower or different
+  territory; the two fields are independent and never inherit.
 - For missing or ambiguous details, write `TODO` and blocking issues instead of
   filling gaps.

@@ -9,6 +9,7 @@
     "schema_version": { "const": 1 },
     "source": { "$ref": "#/$defs/source" },
     "scope": { "$ref": "#/$defs/commonScope" },
+    "python_generation": { "enum": ["generated", "manual"], "default": "generated" },
     "functions": {
       "type": "array",
       "minItems": 1,
@@ -20,13 +21,25 @@
     "source": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["key", "title", "citation_apa", "doi"],
+      "required": ["key", "summary", "citation_apa", "doi"],
       "properties": {
         "key": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
-        "title": { "type": "string", "minLength": 1 },
+        "summary": { "type": "string", "minLength": 1, "maxLength": 100 },
         "citation_apa": { "type": "string", "minLength": 1 },
-        "doi": { "type": ["string", "null"] },
-        "notes": { "type": "array", "items": { "type": "string" } }
+        "doi": {
+          "oneOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["identifier", "url"],
+              "properties": {
+                "identifier": { "type": "string", "minLength": 1 },
+                "url": { "type": "string", "format": "uri", "minLength": 1 }
+              }
+            }
+          ]
+        }
       }
     },
     "commonScope": {
@@ -43,7 +56,6 @@
       "required": ["prediction_target", "models"],
       "properties": {
         "territory": { "$ref": "#/$defs/stringOrNull" },
-        "dataset": { "$ref": "#/$defs/stringOrNull" },
         "prediction_target": { "type": "string", "minLength": 1 },
         "models": {
           "type": "object",
@@ -116,12 +128,8 @@
         "public_api": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["module", "name", "result_class", "summary"],
+          "required": ["name", "result_class", "summary"],
           "properties": {
-            "module": {
-              "type": "string",
-              "pattern": "^ptfkit\\.[a-z][a-z0-9_]*$"
-            },
             "name": {
               "type": "string",
               "pattern": "^calc_ptf_[a-z][a-z0-9_]*$"

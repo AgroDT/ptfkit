@@ -2,13 +2,12 @@
 schema_version: 1
 source:
   key: cosby1984
-  title: A statistical exploration of the relationships of soil moisture characteristics to the physical properties of soils
+  summary: Cosby et al. (1984), United States.
   citation_apa: >-
     Cosby, B. J., Hornberger, G. M., Clapp, R. B., & Ginn, T. R. (1984). A
     statistical exploration of the relationships of soil moisture characteristics
     to the physical properties of soils. Water Resources Research, 20(6), 682-690.
   doi: null
-  notes: [Formulas are from Table 5, univariate regressions.]
 scope:
   territory: United States
   dataset: 1448 soil samples from Holtan et al. (1968) and Rawls et al. (1976).
@@ -16,7 +15,6 @@ functions:
   - name: calc_ptf_cosby1984_univariate
     status: ready-for-implementation
     public_api:
-      module: ptfkit.cosby1984
       name: calc_ptf_cosby1984_univariate
       result_class: Cosby1984UnivariatePTFResult
       summary: Estimate Cosby et al. (1984) univariate hydraulic parameter statistics from soil texture.

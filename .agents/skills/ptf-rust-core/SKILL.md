@@ -12,6 +12,8 @@ description: Implement validated ptfkit PTF function specs in the pure Rust core
 3. Implement pure Rust `f64` scalar kernels only. Keep Python, PyO3, NumPy, and allocation concerns outside the pure core.
 4. Map every formula variable and constant back to the spec.
 5. Add or update Rust golden tests when the Rust crate exists.
+6. Run `just generate` after changing an eligible `calc_ptf_*` function or its result structure, then review the generated
+   ufunc binding and Python wrapper.
 6. If the spec is incomplete, stop and send the issue back to `ptf-spec-ingest`.
 
 ## Output
@@ -26,3 +28,4 @@ description: Implement validated ptfkit PTF function specs in the pure Rust core
 - Do not consult source material to resolve gaps in the function-level spec.
 - Do not change the public Python API in this skill.
 - Do not silently change units, output order, or numeric policy.
+- Do not add Python, NumPy, or binding dependencies to `ptfkit-core`.
