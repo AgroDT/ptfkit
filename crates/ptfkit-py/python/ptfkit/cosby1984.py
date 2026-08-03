@@ -29,13 +29,8 @@ from typing import TYPE_CHECKING, Generic, NamedTuple, TypeVar, overload
 
 import numpy as np
 
+from ptfkit._rust import calc_ptf_cosby1984_univariate as _calc_ptf_cosby1984_univariate
 from ptfkit._vectorize import vectorize_namedtuple_result
-
-
-try:
-    from ptfkit._rust import calc_ptf_cosby1984_univariate as _calc_ptf_cosby1984_univariate
-except ImportError:  # pragma: no cover - used until the Rust extension is built.
-    _calc_ptf_cosby1984_univariate = None
 
 
 if TYPE_CHECKING:
@@ -96,18 +91,7 @@ def _calc_scalar(
     silt: float,
     clay: float,
 ) -> tuple[float, float, float, float, float, float, float]:
-    if _calc_ptf_cosby1984_univariate is not None:
-        return _calc_ptf_cosby1984_univariate(sand, silt, clay)
-
-    return (
-        2.91 + 0.159 * clay,
-        1.88 - 0.0131 * sand,
-        -0.884 + 0.0153 * sand,
-        48.9 - 0.126 * sand,
-        1.34 + 0.0500 * clay,
-        0.459 + 0.00321 * silt,
-        7.73 - 0.0730 * clay,
-    )
+    return _calc_ptf_cosby1984_univariate(sand, silt, clay)
 
 
 def calc_ptf_cosby1984_univariate(

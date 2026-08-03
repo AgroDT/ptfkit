@@ -21,13 +21,8 @@ from typing import TYPE_CHECKING, overload
 
 import numpy as np
 
+from ptfkit._rust import calc_ptf_aimrun2009 as _calc_ptf_aimrun2009
 from ptfkit._vectorize import vectorize_scalar_result
-
-
-try:
-    from ptfkit._rust import calc_ptf_aimrun2009 as _calc_ptf_aimrun2009
-except ImportError:  # pragma: no cover - used until the Rust extension is built.
-    _calc_ptf_aimrun2009 = None
 
 
 if TYPE_CHECKING:
@@ -97,19 +92,7 @@ def _calc_scalar(
     organic_matter: float,
     gmd: float,
 ) -> float:
-    if _calc_ptf_aimrun2009 is not None:
-        return _calc_ptf_aimrun2009(clay, bulk_density, organic_matter, gmd)
-
-    ln_k_sat_m_per_day = (
-        -2.368
-        + 3.846 * bulk_density
-        + 0.091 * organic_matter
-        - 6.203 * np.log(bulk_density)
-        - 0.343 * np.log(organic_matter)
-        - 2.334 * np.log(clay)
-        - 0.411 * np.log(gmd)
-    )
-    return np.exp(ln_k_sat_m_per_day) / 86400.0
+    return _calc_ptf_aimrun2009(clay, bulk_density, organic_matter, gmd)
 
 
 def _calc_array(

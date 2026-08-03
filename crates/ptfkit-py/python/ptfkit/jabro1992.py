@@ -25,13 +25,8 @@ from typing import TYPE_CHECKING, overload
 
 import numpy as np
 
+from ptfkit._rust import calc_ptf_jabro1992 as _calc_ptf_jabro1992
 from ptfkit._vectorize import vectorize_scalar_result
-
-
-try:
-    from ptfkit._rust import calc_ptf_jabro1992 as _calc_ptf_jabro1992
-except ImportError:  # pragma: no cover - used until the Rust extension is built.
-    _calc_ptf_jabro1992 = None
 
 
 if TYPE_CHECKING:
@@ -93,13 +88,7 @@ def calc_ptf_jabro1992(
 
 
 def _calc_scalar(silt: float, clay: float, bulk_density: float) -> float:
-    if _calc_ptf_jabro1992 is not None:
-        return _calc_ptf_jabro1992(silt, clay, bulk_density)
-
-    log10_k_sat_cm_per_hour = (
-        9.56 - 0.81 * np.log10(silt) - 1.09 * np.log10(clay) - 4.64 * bulk_density
-    )
-    return 10.0**log10_k_sat_cm_per_hour / 360000.0
+    return _calc_ptf_jabro1992(silt, clay, bulk_density)
 
 
 def _calc_array(
