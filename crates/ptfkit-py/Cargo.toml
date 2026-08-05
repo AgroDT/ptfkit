@@ -11,5 +11,5 @@ path = "src/lib.rs"
 
 [dependencies]
 ptfkit-core = { path = "../ptfkit-core" }
-pyo3 = { version = "0.29", features = ["extension-module", "abi3-py310"] }
+pyo3 = { version = "0.29", features = ["extension-module", "abi3-py311"] }
 numpy = "0.29"

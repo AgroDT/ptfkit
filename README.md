@@ -58,7 +58,7 @@ to be added to the library, please create a new issue on GitHub.
 
 **Prerequisites:**
 
-- Python >= 3.10
+- Python >= 3.11
 
 We strongly recommend to install ptfkit into a virtual environment
 
