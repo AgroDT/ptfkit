@@ -69,11 +69,12 @@ pub(crate) fn render(functions: &[Resolved]) -> Result<Vec<(String, PythonGenera
             .iter()
             .map(|resolved| view(resolved))
             .collect::<Vec<_>>();
-        let exports = classes
+        let mut exports = classes
             .keys()
             .cloned()
             .chain(functions.iter().map(|function| function.name.to_owned()))
             .collect::<Vec<_>>();
+        exports.sort_by_key(|export| natural_sort_key(export));
         let classes = classes.into_values().collect::<Vec<_>>();
         let typing_imports = if classes.is_empty() {
             "TYPE_CHECKING, overload"
@@ -101,13 +102,29 @@ fn module_source(
     functions: &[PythonFunction<'_>],
     exports: &[String],
 ) -> String {
-    let mut sections = vec![
-        GENERATED_HEADER.trim_end().into(),
+    let mut sections = vec![GENERATED_HEADER.trim_end().into()];
+    if functions.len() > 1 {
+        let has_long_import = functions.iter().any(|function| {
+            format!(
+                "    {rust_name} as _{rust_name},",
+                rust_name = function.rust_name
+            )
+            .chars()
+            .count()
+                > 100
+        });
+        sections.push(if has_long_import {
+            "# ruff: noqa: E501, I001".into()
+        } else {
+            "# ruff: noqa: I001".into()
+        });
+    }
+    sections.extend([
         module_docstring(source, scope),
         "from __future__ import annotations".into(),
         format!("from typing import {typing_imports}"),
         "from ptfkit._rust import (".into(),
-    ];
+    ]);
     sections.extend(functions.iter().map(|function| {
         format!(
             "    {rust_name} as _{rust_name},",
@@ -159,8 +176,12 @@ fn function_source(function: &PythonFunction<'_>) -> String {
     } else {
         "return values".into()
     };
+    let calculation = format!(
+        "    if out is None:\n        values = _{}({})\n    else:\n        values = _{}({}, out={out})",
+        function.rust_name, function.parameters, function.rust_name, function.parameters
+    );
     format!(
-        "@overload\ndef {}(*, {}) -> {scalar_result}: ...\n\n@overload\ndef {}(*, {},\n    out: {array_result} | None = None,\n) -> {array_result}: ...\n\ndef {}(*,\n{}\n    out: {array_result} | None = None,\n) -> {scalar_result} | {array_result}:\n{}\n    if out is None:\n        values = _{}({})\n    else:\n        values = _{}({}, out={out})\n\n    {result}",
+        "@overload\ndef {}(*, {}) -> {scalar_result}: ...\n\n@overload\ndef {}(*, {},\n    out: {array_result} | None = None,\n) -> {array_result}: ...\n\ndef {}(*,\n{}\n    out: {array_result} | None = None,\n) -> {scalar_result} | {array_result}:\n{}\n{calculation}\n\n    {result}",
         function.name,
         function.scalar_inputs.join(", "),
         function.name,
@@ -168,11 +189,27 @@ fn function_source(function: &PythonFunction<'_>) -> String {
         function.name,
         function.keyword_inputs.join("\n"),
         function.docstring,
-        function.rust_name,
-        function.parameters,
-        function.rust_name,
-        function.parameters,
     )
+}
+
+fn natural_sort_key(value: &str) -> String {
+    let mut key = String::new();
+    let mut digits = String::new();
+    for character in value.chars() {
+        if character.is_ascii_digit() {
+            digits.push(character);
+        } else {
+            if !digits.is_empty() {
+                key.push_str(&format!("{digits:0>20}"));
+                digits.clear();
+            }
+            key.push(character);
+        }
+    }
+    if !digits.is_empty() {
+        key.push_str(&format!("{digits:0>20}"));
+    }
+    key
 }
 
 fn view(resolved: &Resolved) -> PythonFunction<'_> {

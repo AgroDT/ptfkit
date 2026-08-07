@@ -1,0 +1,116 @@
+---
+schema_version: 1
+source:
+  key: tiwary2014
+  summary: Tiwary et al. (2014), hydraulic PTFs for two major soil regions of India.
+  citation_apa: >-
+    Tiwary, P., Patil, N. G., Bhattacharyya, T., Chandran, P., Ray, S. K.,
+    Karthikeyan, K., ... & Thakre, S. (2014). Pedotransfer functions: a tool for
+    estimating hydraulic properties of two major soil types of India. Current
+    Science, 1431-1439.
+  doi: null
+scope:
+  territory: Indo-Gangetic Plains and black soil region of India
+  dataset: 209 layers from 30 Indo-Gangetic Plains profiles and 275 layers from 62 black-soil profiles; equation-specific subsets are described below.
+functions:
+  - name: calc_ptf_tiwary2014_igp
+    status: implemented
+    public_api:
+      name: calc_ptf_tiwary2014_igp
+      result_class: null
+      summary: Estimate saturated conductivity for Indo-Gangetic Plains soils.
+    scope:
+      prediction_target: Saturated hydraulic conductivity.
+      models: {h_theta: null, k_h: Saturated hydraulic conductivity}
+    inputs:
+      - {name: sand, symbol: Sand, unit: "%", domain: null, description: Sand content.}
+      - {name: bulk_density, symbol: BD, unit: Mg/m^3, domain: "value > 0", description: Bulk density.}
+      - {name: esp, symbol: ESP, unit: "%", domain: null, description: Exchangeable sodium percentage.}
+    outputs:
+      - {name: k_sat, symbol: sHC, unit: m/s, domain: null, description: Saturated hydraulic conductivity converted from mm/h.}
+    golden_tests:
+      - id: igp_saturated_conductivity_case
+        inputs: {sand: 37.3, bulk_density: 1.674, esp: 4.6}
+        expected: {k_sat: 5.103578e-07}
+        rtol: 1.0e-10
+        atol: 1.0e-12
+        notes: Calculated directly from equation 11.
+    edge_cases: []
+    documentation:
+      notes: [Equation 11 was calibrated on 100 layers from 20 Indo-Gangetic Plains profiles.]
+      warnings: [The legacy API's three water-retention outputs are intentionally excluded because the source defines them only for BSR soils.]
+  - name: calc_ptf_tiwary2014_bsr
+    status: implemented
+    public_api:
+      name: calc_ptf_tiwary2014_bsr
+      result_class: Tiwary2014PTFResult
+      summary: Estimate water retention and saturated conductivity for the black soil region.
+    scope:
+      prediction_target: Gravimetric water contents at 33, 100, and 1500 kPa and saturated hydraulic conductivity.
+      models: {h_theta: Point water-retention estimates, k_h: Saturated hydraulic conductivity}
+    inputs:
+      - {name: clay, symbol: Clay, unit: "%", domain: null, description: Clay content.}
+      - {name: ph, symbol: pH, unit: dimensionless, domain: "value > 0", description: Soil pH.}
+      - {name: cation_exchange_capacity, symbol: CEC, unit: "cmol(c)/kg", domain: null, description: Cation exchange capacity.}
+      - {name: esp, symbol: ESP, unit: "%", domain: null, description: Exchangeable sodium percentage.}
+      - {name: emp, symbol: EMP, unit: "%", domain: null, description: Exchangeable magnesium percentage.}
+      - {name: excm, symbol: ExCaMg, unit: dimensionless, domain: null, description: Exchangeable calcium-to-magnesium ratio.}
+    outputs:
+      - {name: w_33, symbol: w33, unit: "%", domain: null, description: Gravimetric water content at 33 kPa.}
+      - {name: w_100, symbol: w100, unit: "%", domain: null, description: Gravimetric water content at 100 kPa.}
+      - {name: w_1500, symbol: w1500, unit: "%", domain: null, description: Gravimetric water content at 1500 kPa.}
+      - {name: k_sat, symbol: sHC, unit: m/s, domain: null, description: Saturated hydraulic conductivity converted from mm/h.}
+    golden_tests:
+      - id: black_soil_compatibility_case
+        inputs: {clay: 54.9, ph: 7.6, cation_exchange_capacity: 61.6, esp: 7.3, emp: 21.4, excm: 3.32}
+        expected: {w_33: 41.1729, w_100: 36.8273, w_1500: 21.6976, k_sat: 5.373367e-06}
+        rtol: 1.0e-10
+        atol: 1.0e-12
+        notes: Calculated directly from equations 7-10 for BSR soils.
+    edge_cases: []
+    documentation:
+      notes: [Water-retention equations used 75 layers from 14 profiles; equation 10 used 200 layers from 46 profiles.]
+      warnings: []
+---
+
+# Tiwary et al. (2014)
+
+## `calc_ptf_tiwary2014_igp`
+
+### Formula
+
+```text
+sHC_mm_per_h = 4.079 + 0.047 * sand - 0.054 * ESP
+                - 2.238 * bulk_density
+k_sat = sHC_mm_per_h / 3_600_000
+```
+
+Equation 11 is the IGP saturated-conductivity regression. In accordance with
+the article, this function does not expose the BSR-only water-retention
+equations 7-9.
+
+### Numeric policy
+
+Use `f64`, do not round, propagate NaN, and convert mm/h to m/s by dividing by
+3,600,000.
+
+## `calc_ptf_tiwary2014_bsr`
+
+### Formula
+
+```text
+w_33 = 2.583 + 0.346 * CEC + 0.249 * clay + 0.494 * ESP
+w_100 = -1.918 + 0.383 * CEC + 0.228 * clay + 0.361 * ESP
+w_1500 = 0.541 + 0.306 * CEC + 0.146 * ESP + 0.058 * EMP
+sHC_mm_per_h = 120.637 - 13.094 * pH - 0.102 * clay
+                + 1.151 * ExCaMg
+k_sat = sHC_mm_per_h / 3_600_000
+```
+
+These are equations 7-10. The three water contents are gravimetric percentages;
+the public conductivity is converted from mm/h to m/s.
+
+### Numeric policy
+
+Use `f64`, do not round, propagate NaN, and convert mm/h to m/s by dividing by
+3,600,000.

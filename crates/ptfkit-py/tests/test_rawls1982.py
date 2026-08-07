@@ -1,6 +1,9 @@
+import numpy as np
+import numpy.testing as npt
 import pytest
 
 from ptfkit.rawls1982 import (
+    Rawls1982PTFResult,
     calc_full_wrc_rawls1982,
     calc_theta_33_rawls1982,
     calc_theta_1500_rawls1982,
@@ -164,3 +167,82 @@ def test_valid_calc_full_wrc(
 
     for res_val, exp_val in zip(res, expected, strict=True):
         assert abs(res_val - exp_val) < 0.001
+
+
+def test_theta_1500_array_broadcasting_and_out():
+    clay = np.full((2, 1), 5.12)
+    organic_matter = np.full((1, 3), 0.1)
+    out = np.empty((2, 3))
+
+    result = calc_theta_1500_rawls1982(
+        clay=clay,
+        organic_matter=organic_matter,
+        out=out,
+    )
+
+    assert result is out
+    npt.assert_allclose(result, 0.05318, rtol=1.0e-10, atol=1.0e-12)
+
+
+def test_theta_33_array_broadcasting_and_out():
+    sand = np.full((2, 1), 85.0)
+    organic_matter = np.full((1, 3), 0.1)
+    out = np.empty((2, 3))
+
+    result = calc_theta_33_rawls1982(
+        sand=sand,
+        organic_matter=organic_matter,
+        theta_1500=0.05318,
+        out=out,
+    )
+
+    assert result is out
+    npt.assert_allclose(result, 0.1179896, rtol=1.0e-10, atol=1.0e-12)
+
+
+def test_full_wrc_array_broadcasting_result_contract_and_out():
+    expected = (
+        0.247242,
+        0.968738,
+        0.145588,
+        0.10483,
+        0.091,
+        0.075428,
+        0.063192,
+        0.052946,
+        0.045826,
+        0.041824,
+        0.038932,
+        0.033,
+    )
+    fields = (
+        'theta_4',
+        'theta_7',
+        'theta_10',
+        'theta_20',
+        'theta_33',
+        'theta_60',
+        'theta_100',
+        'theta_200',
+        'theta_400',
+        'theta_700',
+        'theta_1000',
+        'theta_1500',
+    )
+    out = Rawls1982PTFResult(*(np.empty((2, 3)) for _ in fields))
+
+    result = calc_full_wrc_rawls1982(
+        sand=np.full((2, 1), 85.0),
+        organic_matter=np.full((1, 3), 0.66),
+        bulk_density=1.22,
+        theta_33=0.091,
+        theta_1500=0.033,
+        out=out,
+    )
+
+    assert isinstance(result, Rawls1982PTFResult)
+    assert result._fields == fields
+    for actual, target, expected_value in zip(result, out, expected, strict=True):
+        assert actual is target
+        assert actual.shape == (2, 3)
+        npt.assert_allclose(actual, expected_value, rtol=1.0e-10, atol=1.0e-12)

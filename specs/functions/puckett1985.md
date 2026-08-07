@@ -1,0 +1,89 @@
+---
+schema_version: 1
+source:
+  key: puckett1985
+  summary: Puckett et al. (1985), Alabama Lower Coastal Plain Ultisols.
+  citation_apa: >-
+    Puckett, W. E., Dane, J. H., & Hajek, B. F. (1985). Physical and
+    mineralogical data to determine soil hydraulic properties. Soil Science
+    Society of America Journal, 49, 831-836.
+  doi: null
+scope:
+  territory: Lower Coastal Plain of Alabama, USA
+  dataset: Seven pedons at seven locations representing six Ultisol series with similar genesis and clay mineralogy.
+functions:
+  - name: calc_ptf_puckett1985
+    status: implemented
+    public_api:
+      name: calc_ptf_puckett1985
+      result_class: Puckett1985PTFResult
+      summary: Estimate a point water-retention curve and saturated hydraulic conductivity.
+    scope:
+      prediction_target: Volumetric water contents at ten pressure heads and saturated hydraulic conductivity.
+      models:
+        h_theta: Point water-retention estimates from 0 to -1500 kPa
+        k_h: Saturated hydraulic conductivity
+    inputs:
+      - {name: sand, symbol: Sand, unit: "%", domain: "35 <= value <= 89", description: "Sand content, 0.05-2 mm."}
+      - {name: fine_sand, symbol: FineSand, unit: "%", domain: null, description: "Fine sand content, 0.106-0.25 mm."}
+      - {name: clay, symbol: Clay, unit: "%", domain: "1 <= value <= 42", description: "Clay content, <0.002 mm."}
+      - {name: bulk_density, symbol: BD, unit: Mg/m^3, domain: "1.47 <= value <= 1.86", description: Oven-dry bulk density.}
+      - {name: porosity, symbol: epsilon, unit: cm^3/cm^3, domain: "0.30 <= value <= 0.48", description: Porosity calculated from measured bulk and particle densities.}
+    outputs:
+      - {name: theta_0, symbol: theta_0, unit: cm^3/cm^3, domain: null, description: Volumetric water content at 0 kPa.}
+      - {name: theta_1, symbol: theta_1, unit: cm^3/cm^3, domain: null, description: Volumetric water content at -1 kPa.}
+      - {name: theta_5, symbol: theta_5, unit: cm^3/cm^3, domain: null, description: Volumetric water content at -5 kPa.}
+      - {name: theta_10, symbol: theta_10, unit: cm^3/cm^3, domain: null, description: Volumetric water content at -10 kPa.}
+      - {name: theta_30, symbol: theta_30, unit: cm^3/cm^3, domain: null, description: Volumetric water content at -30 kPa.}
+      - {name: theta_60, symbol: theta_60, unit: cm^3/cm^3, domain: null, description: Volumetric water content at -60 kPa.}
+      - {name: theta_100, symbol: theta_100, unit: cm^3/cm^3, domain: null, description: Volumetric water content at -100 kPa.}
+      - {name: theta_500, symbol: theta_500, unit: cm^3/cm^3, domain: null, description: Volumetric water content at -500 kPa.}
+      - {name: theta_1000, symbol: theta_1000, unit: cm^3/cm^3, domain: null, description: Volumetric water content at -1000 kPa.}
+      - {name: theta_1500, symbol: theta_1500, unit: cm^3/cm^3, domain: null, description: Volumetric water content at -1500 kPa.}
+      - {name: k_sat, symbol: Ks, unit: m/s, domain: "value >= 0", description: Saturated hydraulic conductivity.}
+    golden_tests:
+      - id: cahaba_ap
+        inputs: {sand: 70.9, fine_sand: 36.4, clay: 11.8, bulk_density: 1.67, porosity: 0.380}
+        expected: {theta_0: 0.34288, theta_1: 0.33926, theta_5: 0.3938615, theta_10: 0.39330438, theta_30: 0.34432936, theta_60: 0.31153562, theta_100: 0.29292896, theta_500: 0.2513588, theta_1000: 0.25187788, theta_1500: 0.22746346, k_sat: 4.2399741e-06}
+        rtol: 1.0e-8
+        atol: 1.0e-12
+        notes: Calculated from Table 4 using the Cahaba Ap inputs in Tables 2 and 3.
+    edge_cases: []
+    documentation:
+      notes: [The regressions were developed for soils with similar genesis and clay mineralogy.]
+      warnings: [Use outside Lower Coastal Plain Ultisols requires independent validation.]
+---
+
+# Puckett et al. (1985)
+
+## `calc_ptf_puckett1985`
+
+### Formula
+
+```text
+theta_0 = 0.264 * bulk_density + 1.60 * porosity - 0.706
+theta_1 = 0.318 * bulk_density + 1.69 * porosity - 0.834
+theta_5 = 0.0001930 * fine_sand - 0.000357 * sand + 0.000182 * clay + 0.410
+theta_10 = 0.0000712 * fine_sand - 0.000383 * sand + 0.000243 * clay + 0.415
+theta_30 = 0.0000059 * fine_sand - 0.000348 * sand + 0.000321 * clay + 0.365
+theta_60 = 0.0000003 * fine_sand - 0.000319 * sand + 0.000351 * clay + 0.330
+theta_100 = 0.0000019 * fine_sand - 0.000302 * sand + 0.000362 * clay + 0.310
+theta_500 = 0.0000140 * fine_sand - 0.000262 * sand + 0.000375 * clay + 0.265
+theta_1000 = 0.0000197 * fine_sand - 0.000244 * sand + 0.000378 * clay + 0.264
+theta_1500 = 0.0000254 * fine_sand - 0.000239 * sand + 0.000380 * clay + 0.239
+k_sat = 4.36e-5 * exp(-0.1975 * clay)
+```
+
+The water-retention coefficients are from Table 4. The printed `d`, `e`, and
+`f` values are multiplied by `10^-4`, as explicitly selected during
+specification review. The `Ks` equation and m/s unit are stated in Figure 3.
+
+### Numeric policy
+
+Use `f64`, do not round, and propagate NaN.
+
+### Review decision
+
+- Interpret the Table 4 coefficient heading as a `10^-4` multiplier. This
+  intentionally differs from the existing legacy implementation's `10^-3`
+  interpretation.

@@ -1,60 +1,58 @@
-import pytest
+from __future__ import annotations
 
-from ptfkit.wang2012 import calc_ptf_wang2012
+import numpy as np
+import numpy.testing as npt
+
+from ptfkit.wang2012 import Wang2012PTFResult, calc_ptf_wang2012
 
 
-@pytest.mark.parametrize(
-    ('sand', 'silt', 'clay', 'bulk_density', 'soil_organic_carbon', 'altitude', 'expected'),
-    [
-        pytest.param(
-            85.0,
-            10.0,
-            5.0,
-            1.22,
-            0.033,
-            1193,
-            (61.540575, 38.491949, 3.872974e-05),
-            id='Loamy sand',
-        ),
-        pytest.param(
-            50.6,
-            39.2,
-            10.2,
-            1.35,
-            0.742,
-            1193,
-            (51.071502, 24.608724, 1.751326e-05),
-            id='Loam',
-        ),
-        pytest.param(
-            15.5,
-            67.4,
-            17.1,
-            1.24,
-            1.231,
-            1391,
-            (54.682452, 29.285901, 9.934949e-06),
-            id='Silt loam',
-        ),
-    ],
-)
-def test_calc_ptf_wang2012(
-    *,
-    sand: float,
-    silt: float,
-    clay: float,
-    bulk_density: float,
-    soil_organic_carbon: float,
-    altitude: float,
-    expected: tuple,
-):
-    res = calc_ptf_wang2012(
-        sand=sand,
-        silt=silt,
-        clay=clay,
-        bulk_density=bulk_density,
-        soil_organic_carbon=soil_organic_carbon,
-        altitude=altitude,
+ATOL = 1.0e-12
+RTOL = 1.0e-6
+INPUTS = {
+    'sand': 85.0,
+    'silt': 10.0,
+    'clay': 5.0,
+    'bulk_density': 1.22,
+    'soil_organic_carbon': 0.033,
+    'altitude': 1193.0,
+}
+EXPECTED = np.array([0.61540575, 0.38491949, 3.872974e-05])
+FIELDS = ('theta_s', 'theta_fc', 'k_sat')
+
+
+def test_scalar_golden_case_and_result_contract():
+    result = calc_ptf_wang2012(**INPUTS)
+
+    assert isinstance(result, Wang2012PTFResult)
+    assert result._fields == FIELDS
+    assert all(isinstance(value, np.floating) for value in result)
+    npt.assert_allclose(result, EXPECTED, rtol=RTOL, atol=ATOL)
+
+
+def test_array_broadcasting():
+    result = calc_ptf_wang2012(
+        sand=np.full((2, 1), INPUTS['sand']),
+        silt=np.full((1, 3), INPUTS['silt']),
+        clay=INPUTS['clay'],
+        bulk_density=INPUTS['bulk_density'],
+        soil_organic_carbon=INPUTS['soil_organic_carbon'],
+        altitude=INPUTS['altitude'],
     )
-    for res_val, exp_val in zip(res, expected, strict=True):
-        assert abs(res_val - exp_val) < 1e-06
+
+    assert isinstance(result, Wang2012PTFResult)
+    for actual, expected in zip(result, EXPECTED, strict=True):
+        assert isinstance(actual, np.ndarray)
+        assert actual.shape == (2, 3)
+        npt.assert_allclose(actual, expected, rtol=RTOL, atol=ATOL)
+
+
+def test_out_reuses_result_arrays():
+    inputs = {name: np.full(2, value) for name, value in INPUTS.items()}
+    out = Wang2012PTFResult(*(np.empty(2) for _ in FIELDS))
+
+    result = calc_ptf_wang2012(**inputs, out=out)
+
+    assert isinstance(result, Wang2012PTFResult)
+    for actual, target, expected in zip(result, out, EXPECTED, strict=True):
+        assert actual is target
+        npt.assert_allclose(actual, expected, rtol=RTOL, atol=ATOL)

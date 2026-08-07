@@ -47,7 +47,9 @@ pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> Result<()> {
         let path = root
             .join("crates/ptfkit-py/python")
             .join(module.replace('.', "/") + ".py");
-        if path.exists() && !fs::read_to_string(&path)?.starts_with(GENERATED_HEADER) {
+        if path.exists()
+            && fs::read_to_string(&path)?.lines().next() != Some(GENERATED_HEADER.trim_end())
+        {
             bail!(
                 "refusing to overwrite {}:\nthe file is not marked as generated",
                 path.display()

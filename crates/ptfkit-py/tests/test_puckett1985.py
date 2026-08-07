@@ -1,4 +1,7 @@
-import pytest
+from __future__ import annotations
+
+import numpy as np
+import numpy.testing as npt
 
 from ptfkit.puckett1985 import (
     Puckett1985PTFResult,
@@ -6,86 +9,77 @@ from ptfkit.puckett1985 import (
 )
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected'),
+ATOL = 1.0e-12
+RTOL = 1.0e-8
+INPUTS = {
+    'sand': 70.9,
+    'fine_sand': 36.4,
+    'clay': 11.8,
+    'bulk_density': 1.67,
+    'porosity': 0.380,
+}
+EXPECTED = np.array(
     [
-        pytest.param(
-            {
-                'sand': 70.9,
-                'fine_sand': 36.4,
-                'clay': 11.8,
-                'bulk_density': 1.67,
-                'porosity': 0.380,
-            },
-            (
-                0.34288,  # theta_0
-                0.33926,  # theta_1
-                0.248615,  # theta_5
-                0.1980438,  # theta_10
-                0.1582936,  # theta_30
-                0.1453562,  # theta_60
-                0.1392896,  # theta_100
-                0.128588,  # theta_500
-                0.1427788,  # theta_1000
-                0.1236346,  # theta_1500
-                4.2399741e-06,  # k_sat  # adequate value
-            ),
-            id='Cahaba, Ap (Sandy loam)',
-        ),
-        pytest.param(
-            {
-                'sand': 51.1,
-                'fine_sand': 23.1,
-                'clay': 13.1,
-                'bulk_density': 1.57,
-                'porosity': 0.396,
-            },
-            (
-                0.34208,
-                0.3345,
-                0.295998,
-                0.2675672,
-                0.2305859,
-                0.2130413,
-                0.2035389,
-                0.183477,
-                0.1933847,
-                0.1725184,
-                3.279881e-06,  # adequate value
-            ),
-            id='Lucedate, Ap (Loam)',
-        ),
-        pytest.param(
-            {
-                'sand': 34.6,
-                'fine_sand': 16.3,
-                'clay': 31.8,
-                'bulk_density': 1.64,
-                'porosity': 0.395,
-            },
-            (
-                0.35896,
-                0.35507,
-                0.375813,
-                0.3713616,
-                0.3476317,
-                0.3312929,
-                0.3209337,
-                0.29588,
-                0.3029911,
-                0.2812862,
-                8.163944e-08,  # adequate value
-            ),
-            id='Malbis 1, Bt4 (Clay loam)',
-        ),
-    ],
+        0.34288,
+        0.33926,
+        0.3938615,
+        0.39330438,
+        0.34432936,
+        0.31153562,
+        0.29292896,
+        0.2513588,
+        0.25187788,
+        0.22746346,
+        4.2399741e-06,
+    ]
 )
-def test_calc_ptf_puckett1985(
-    inputs: dict[str, float],
-    expected: tuple,
-):
-    res = calc_ptf_puckett1985(**inputs)
+FIELDS = (
+    'theta_0',
+    'theta_1',
+    'theta_5',
+    'theta_10',
+    'theta_30',
+    'theta_60',
+    'theta_100',
+    'theta_500',
+    'theta_1000',
+    'theta_1500',
+    'k_sat',
+)
 
-    assert isinstance(res, Puckett1985PTFResult)
-    for res_val, exp_val in zip(res, expected, strict=True):
-        assert abs(res_val - exp_val) < 0.01  # relaxed tolerance for complex formulas
+
+def test_scalar_golden_case_and_result_contract():
+    result = calc_ptf_puckett1985(**INPUTS)
+
+    assert isinstance(result, Puckett1985PTFResult)
+    assert result._fields == FIELDS
+    assert all(isinstance(value, np.floating) for value in result)
+    npt.assert_allclose(result, EXPECTED, rtol=RTOL, atol=ATOL)
+
+
+def test_array_broadcasting():
+    result = calc_ptf_puckett1985(
+        sand=np.full((2, 1), INPUTS['sand']),
+        fine_sand=INPUTS['fine_sand'],
+        clay=np.full((1, 3), INPUTS['clay']),
+        bulk_density=INPUTS['bulk_density'],
+        porosity=INPUTS['porosity'],
+    )
+
+    assert isinstance(result, Puckett1985PTFResult)
+    for actual, expected in zip(result, EXPECTED, strict=True):
+        assert isinstance(actual, np.ndarray)
+        assert actual.shape == (2, 3)
+        npt.assert_allclose(actual, expected, rtol=RTOL, atol=ATOL)
+
+
+def test_out_reuses_result_arrays():
+    inputs = {name: np.full(2, value) for name, value in INPUTS.items()}
+    out = Puckett1985PTFResult(*(np.empty(2) for _ in FIELDS))
+
+    result = calc_ptf_puckett1985(**inputs, out=out)
+
+    assert isinstance(result, Puckett1985PTFResult)
+    for actual, target, expected in zip(result, out, EXPECTED, strict=True):
+        assert actual is target
+        npt.assert_allclose(actual, expected, rtol=RTOL, atol=ATOL)

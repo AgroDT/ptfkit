@@ -78,7 +78,9 @@ pub(crate) fn load(root: &Path) -> Result<Vec<Entry>> {
 }
 
 fn frontmatter(text: &str) -> Option<&str> {
-    text.strip_prefix("---\n")?
+    let body = text.strip_prefix("---")?;
+    body.strip_prefix("\r\n")
+        .or_else(|| body.strip_prefix('\n'))?
         .split_once("\n---")
         .map(|(front, _)| front)
 }
@@ -101,4 +103,22 @@ fn markdown_functions(text: &str) -> Vec<String> {
         .filter(|name| name.starts_with("calc_ptf_"))
         .map(str::to_owned)
         .collect()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::frontmatter;
+
+    #[test]
+    fn reads_lf_frontmatter() {
+        assert_eq!(frontmatter("---\nkey: value\n---\n"), Some("key: value"));
+    }
+
+    #[test]
+    fn reads_crlf_frontmatter() {
+        assert_eq!(
+            frontmatter("---\r\nkey: value\r\n---\r\n"),
+            Some("key: value\r")
+        );
+    }
 }
