@@ -123,7 +123,7 @@ fn module_source(
         module_docstring(source, scope),
         "from __future__ import annotations".into(),
         format!("from typing import {typing_imports}"),
-        "from ptfkit._rust import (".into(),
+        "from ptfkit._core import (".into(),
     ]);
     sections.extend(functions.iter().map(|function| {
         format!(

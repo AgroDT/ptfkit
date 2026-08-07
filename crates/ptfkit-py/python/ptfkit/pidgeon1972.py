@@ -23,7 +23,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, overload
 
-from ptfkit._rust import (
+from ptfkit._core import (
     calc_ptf_pidgeon1972_awc as _calc_ptf_pidgeon1972_awc,
     calc_ptf_pidgeon1972_awc_coarse_sand as _calc_ptf_pidgeon1972_awc_coarse_sand,
     calc_ptf_pidgeon1972_awc_fine_sand as _calc_ptf_pidgeon1972_awc_fine_sand,

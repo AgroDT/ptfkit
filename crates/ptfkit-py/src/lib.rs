@@ -6,7 +6,7 @@ mod ufunc;
 
 /// Private ptfkit Rust extension module.
 #[pymodule]
-fn _rust(m: &Bound<'_, PyModule>) -> PyResult<()> {
+fn _core(m: &Bound<'_, PyModule>) -> PyResult<()> {
     ufunc::generated::register(m)?;
     Ok(())
 }

@@ -1,3 +1,6 @@
+[windows]
+set shell := ["powershell.exe", "-NoLogo", "-Command"]
+
 mod cargo
 mod python 'crates/ptfkit-py'
 

@@ -21,7 +21,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Generic, NamedTuple, TypeVar, overload
 
-from ptfkit._rust import (
+from ptfkit._core import (
     calc_ptf_wang2012 as _calc_ptf_wang2012,
 )
 

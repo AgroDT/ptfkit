@@ -94,5 +94,5 @@ addopts = "--cov=ptfkit"
 testpaths = ["tests"]
 
 [tool.maturin]
-module-name = "ptfkit._rust"
+module-name = "ptfkit._core"
 python-source = "python"

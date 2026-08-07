@@ -22,7 +22,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, overload
 
-from ptfkit._rust import (
+from ptfkit._core import (
     calc_ptf_jabro1992 as _calc_ptf_jabro1992,
 )
 

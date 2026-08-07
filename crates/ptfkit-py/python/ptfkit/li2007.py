@@ -23,7 +23,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Generic, NamedTuple, TypeVar, overload
 
-from ptfkit._rust import (
+from ptfkit._core import (
     calc_ptf_li2007 as _calc_ptf_li2007,
 )
 

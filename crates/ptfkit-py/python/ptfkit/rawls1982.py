@@ -22,7 +22,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Generic, NamedTuple, TypeVar, overload
 
-from ptfkit._rust import (
+from ptfkit._core import (
     calc_ptf_rawls1982_full_wrc as _calc_ptf_rawls1982_full_wrc,
     calc_ptf_rawls1982_theta_1500 as _calc_ptf_rawls1982_theta_1500,
     calc_ptf_rawls1982_theta_33 as _calc_ptf_rawls1982_theta_33,

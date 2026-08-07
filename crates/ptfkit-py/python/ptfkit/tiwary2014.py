@@ -24,7 +24,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Generic, NamedTuple, TypeVar, overload
 
-from ptfkit._rust import (
+from ptfkit._core import (
     calc_ptf_tiwary2014_bsr as _calc_ptf_tiwary2014_bsr,
     calc_ptf_tiwary2014_igp as _calc_ptf_tiwary2014_igp,
 )
