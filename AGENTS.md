@@ -26,9 +26,6 @@ completely sure.
 
 ## Implementation details and migration
 
-- The current legacy computational core lives in
-  `crates/ptfkit-py/python/ptfkit/_core.py`
-  (Cython-annotated code in pure Python mode).
 - Maturin configuration belongs to the bindings package, not the repository
   root.
 - Public Python wrappers remain in modules named `<first-author><year>.py`
