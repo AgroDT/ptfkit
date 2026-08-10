@@ -6,13 +6,34 @@ on:
       - main
 
 jobs:
+  rust-quality:
+    name: Rust Quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+
+      - name: Run Rust tests
+        run: cargo test --workspace
+
+      - name: Check Rust formatting
+        run: cargo fmt --all --check
+
+      - name: Run Clippy
+        run: cargo clippy --workspace --all-targets -- -D warnings
+
   pytest:
     name: Tests Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        python-version: ['3.10', '3.11', '3.12', '3.13', '3.14', '3.14t']
+        python-version: ['3.11', '3.12', '3.13', '3.14', '3.14t']
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -27,10 +48,19 @@ jobs:
           enable-cache: true
 
       - name: Install the project
-        run: uv sync --frozen
+        run: uv sync --project crates/ptfkit-py --frozen
+
+      - name: Install Python bindings
+        run: >
+          uv run --project "${{ github.workspace }}/crates/ptfkit-py"
+          --directory "${{ github.workspace }}/crates/ptfkit-py"
+          --no-sync maturin develop
 
       - name: Run pytest
-        run: uv run --no-sync pytest --no-cov tests
+        run: >
+          uv run --project "${{ github.workspace }}/crates/ptfkit-py"
+          --directory "${{ github.workspace }}/crates/ptfkit-py"
+          --no-sync pytest --no-cov
 
   code-quality:
     name: Code Quality
@@ -42,7 +72,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version-file: pyproject.toml
+          python-version-file: crates/ptfkit-py/pyproject.toml
 
       - name: Install uv
         uses: astral-sh/setup-uv@v7
@@ -50,25 +80,49 @@ jobs:
           enable-cache: true
 
       - name: Check uv.lock
-        run: uv lock --check
+        run: uv lock --project crates/ptfkit-py --check
 
       - name: Install the project
-        run: uv sync --frozen --all-groups
+        run: uv sync --project crates/ptfkit-py --frozen --all-groups
+
+      - name: Check generated files
+        run: |
+          cargo run -p ptfkit-codegen -- generate
+          git diff --exit-code
+          test -z "$(git status --porcelain)"
+
+      - name: Install Python bindings
+        run: >
+          uv run --project "${{ github.workspace }}/crates/ptfkit-py"
+          --directory "${{ github.workspace }}/crates/ptfkit-py"
+          --no-sync maturin develop
 
       - name: Ruff check
         id: ruff-check
         continue-on-error: true
-        run: uv run --no-sync ruff check --output-format=github
+        run: >
+          uv run --project "${{ github.workspace }}/crates/ptfkit-py"
+          --directory "${{ github.workspace }}/crates/ptfkit-py"
+          --no-sync ruff check --output-format=github
 
       - name: Ruff format
         id: ruff-format
         continue-on-error: true
-        run: uv run --no-sync ruff format --check --preview --output-format=github
+        run: >
+          uv run --project "${{ github.workspace }}/crates/ptfkit-py"
+          --directory "${{ github.workspace }}/crates/ptfkit-py"
+          --no-sync ruff format --check --output-format=github
 
       - name: Mypy
         id: mypy
         continue-on-error: true
-        run: uv run --no-sync mypy | uv run --no-sync mypy-gh-action-report
+        run: >
+          uv run --project "${{ github.workspace }}/crates/ptfkit-py"
+          --directory "${{ github.workspace }}/crates/ptfkit-py"
+          --no-sync mypy |
+          uv run --project "${{ github.workspace }}/crates/ptfkit-py"
+          --directory "${{ github.workspace }}/crates/ptfkit-py"
+          --no-sync mypy-gh-action-report
 
       - name: Fail if any step failed
         if: |
@@ -81,9 +135,10 @@ jobs:
     name: PR Checks Summary
     runs-on: ubuntu-latest
     if: always()
-    needs: [pytest, code-quality]
+    needs: [rust-quality, pytest, code-quality]
     steps:
       - run: >
           test
+          "${{ needs.rust-quality.result }}" = "success" -a
           "${{ needs.pytest.result }}" = "success" -a
           "${{ needs.code-quality.result }}" = "success"

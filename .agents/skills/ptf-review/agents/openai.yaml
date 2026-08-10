@@ -1,0 +1,4 @@
+interface:
+  display_name: "PTF Review"
+  short_description: "Review PTF implementation quality"
+  default_prompt: "Use $ptf-review to review a PTF implementation against its validated spec, golden tests, units, docs, and Python API compatibility."

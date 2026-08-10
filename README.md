@@ -49,7 +49,7 @@ to be added to the library, please create a new issue on GitHub.
 2. 🧮 **Vectorized Input Support** - Accept NumPy arrays for batch processing.
 3. 🗂️ **Model-Specific Output Structures** - NamedTuple outputs for clarity.
 4. 🛠 **Extensibility for New Models** - Easily add new PTFs.
-5. ⚡ **Performance Optimization via Cython** - Fast computations on large datasets.
+5. ⚡ **Rust Core** - Pure Rust kernels for reliable numerical computation.
 6. 📦 **Packaging & Distribution** - Precompiled packages for easy installation via pip.
 7. 🚧 **Strong typing** - Type annotations ready for static analysis and linting.
 8. 🎓 **Well documented** - Docstrings for all implemented PTFs with proper references.
@@ -58,7 +58,7 @@ to be added to the library, please create a new issue on GitHub.
 
 **Prerequisites:**
 
-- Python >= 3.10
+- Python >= 3.11
 
 We strongly recommend to install ptfkit into a virtual environment
 
@@ -105,31 +105,45 @@ pip install ptfkit
 
 **Extra prerequisites:**
 
-- Python development files
-- C compiler
 - git
+- Rust toolchain — available from [rustup](https://rustup.rs/)
+- Python development files
 
-**Linux (Debian-based):**
-
-```sh
-sudo apt install gcc git python3-dev
-```
-
-**Windows:**
-
-1. Download [Build Tools for Visual Studio](https://visualstudio.microsoft.com/downloads/)
-2. Select **Desktop development with C++**
-3. Install git
-
-```ps1
-winget install --id Git.Git -e --source winget
-```
+The build uses the Rust extension, so `cargo` must be available on `PATH`.
 
 **Install ptfkit from git:**
 
 ```sh
 pip install 'git+https://github.com/AgroDT/ptfkit.git'
 ```
+
+## Development Model
+
+Most feature development in ptfkit is agent-assisted. The repository provides
+workflow skills in [`.agents/skills`](./.agents/skills/) that keep scientific
+specification, implementation, public API compatibility, and review aligned.
+
+### Adding a PTF
+
+1. Provide the agent with a local path to the source material.
+2. Use `ptf-spec-ingest` to create and validate a source-oriented specification
+   under [`specs/functions`](./specs/functions/). It uses YAML front matter for
+   shared publication and function metadata and Markdown for formulas and
+   scientific reasoning. Reuse the same file for every function from one
+   publication; the source file is not copied into the repository and its path
+   is not retained.
+3. Use `ptf-rust-core` to implement a ready specification as a pure Rust kernel
+   with golden tests.
+4. Use `ptf-python-bindings` to expose the kernel while preserving the public
+   Python API, including scalar and NumPy behavior, broadcasting, `out`, and
+   `NamedTuple` results where applicable.
+   Each spec generates `ptfkit.<source.key>` by default; set top-level
+   `python_generation: manual` only for an entire manual module.
+5. Use `ptf-review` before merging to check formula traceability, numerical
+   policy, tests, documentation, and API compatibility.
+
+If the generated specification has unresolved details, implementation stops
+until the specification is complete.
 
 ## Contributing
 

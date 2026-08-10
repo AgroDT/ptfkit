@@ -1,0 +1,4 @@
+interface:
+  display_name: "PTF Rust Core"
+  short_description: "Implement PTF Rust kernels"
+  default_prompt: "Use $ptf-rust-core to implement a validated PTF spec in the Rust core crate."

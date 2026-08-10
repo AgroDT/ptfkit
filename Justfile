@@ -1,9 +1,11 @@
+[windows]
+set shell := ["powershell.exe", "-NoLogo", "-Command"]
+
+mod cargo
+mod python 'crates/ptfkit-py'
+
 default:
+	@{{just_executable()}} --list
 
-test:
-	rm -f src/ptfkit/_core.c
-	CYTHON_TRACING=1 uv sync --reinstall-package=ptfkit --no-build-isolation
-	uv run --no-sync pytest
-
-docs:
-	uv run --group docs mkdocs build
+generate:
+    cargo run -p ptfkit-codegen generate
