@@ -20,6 +20,7 @@ pub struct Puckett1985Result {
 
 /// Estimate a point water-retention curve and saturated hydraulic conductivity.
 #[must_use]
+#[allow(clippy::approx_constant)] // 0.318 is the published regression coefficient.
 pub fn calc_ptf_puckett1985(
     sand: f64,
     fine_sand: f64,

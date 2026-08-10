@@ -2,7 +2,7 @@ mod python;
 mod rust;
 
 use std::{
-    collections::BTreeMap,
+    collections::{BTreeMap, BTreeSet},
     fs,
     path::{Path, PathBuf},
     process::Command,
@@ -58,6 +58,22 @@ pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> Result<()> {
         python_paths.push(path.clone());
         writes.push((path, contents));
     }
+    let core_stub = root.join("crates/ptfkit-py/python/ptfkit/_core.pyi");
+    python_paths.push(core_stub.clone());
+    writes.push((core_stub, python::render_core_stub(&resolved)));
+
+    let expected_rust_paths = rust_paths.iter().cloned().collect();
+    let expected_python_paths = python_paths.iter().cloned().collect();
+    remove_obsolete_generated(
+        &root.join("crates/ptfkit-py/src/ufunc/generated"),
+        &expected_rust_paths,
+        RUST_HEADER,
+    )?;
+    remove_obsolete_generated(
+        &root.join("crates/ptfkit-py/python/ptfkit"),
+        &expected_python_paths,
+        GENERATED_HEADER,
+    )?;
     for (path, content) in writes {
         if fs::read_to_string(&path).ok().as_deref() != Some(&content) {
             fs::create_dir_all(path.parent().expect("output path has a parent"))?;
@@ -68,9 +84,35 @@ pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> Result<()> {
     }
     rustfmt(&rust_paths)?;
     ruff(root, &python_paths)?;
-    let legacy = root.join("crates/ptfkit-py/src/ufunc/generated.rs");
-    if legacy.is_file() {
-        fs::remove_file(legacy)?;
+    remove_obsolete_generated_file(
+        &root.join("crates/ptfkit-py/src/ufunc/generated.rs"),
+        RUST_HEADER,
+    )?;
+    Ok(())
+}
+
+fn remove_obsolete_generated(
+    directory: &Path,
+    expected: &BTreeSet<PathBuf>,
+    header: &str,
+) -> Result<()> {
+    if !directory.is_dir() {
+        return Ok(());
+    }
+    for entry in fs::read_dir(directory)? {
+        let path = entry?.path();
+        if path.is_dir() {
+            remove_obsolete_generated(&path, expected, header)?;
+        } else if !expected.contains(&path) {
+            remove_obsolete_generated_file(&path, header)?;
+        }
+    }
+    Ok(())
+}
+
+fn remove_obsolete_generated_file(path: &Path, header: &str) -> Result<()> {
+    if path.is_file() && fs::read(path)?.starts_with(header.as_bytes()) {
+        fs::remove_file(path)?;
     }
     Ok(())
 }
@@ -174,13 +216,135 @@ fn resolve(entries: Vec<Entry>, core: Vec<CoreFunction>) -> Result<Vec<Resolved>
             core: function,
         });
     }
-    for name in specs.keys() {
-        errors.push(format!(
-            "specification function `{name}` has no implemented calc_ptf_* core function"
-        ));
+    for (name, (entry, index)) in &specs {
+        if entry.spec.functions[*index].status == "implemented" {
+            errors.push(format!(
+                "specification function `{name}` has no implemented calc_ptf_* core function"
+            ));
+        }
     }
     if !errors.is_empty() {
         bail!("core/specification matching failed:\n{}", errors.join("\n"))
     }
     Ok(resolved)
+}
+
+#[cfg(test)]
+mod tests {
+    use std::{collections::BTreeSet, fs, path::PathBuf};
+
+    use super::{GENERATED_HEADER, remove_obsolete_generated, resolve};
+    use crate::model::{
+        CoreFunction, Documentation, Entry, Function, FunctionScope, Models, Output, PublicApi,
+        PythonGeneration, Scope, Source, Spec,
+    };
+
+    fn entry(name: &str, status: &str) -> Entry {
+        Entry {
+            path: PathBuf::from("test.md"),
+            spec: Spec {
+                source: Source {
+                    key: "test".into(),
+                    summary: "Test source.".into(),
+                    citation_apa: "Test (2026).".into(),
+                    doi: None,
+                },
+                scope: Scope::default(),
+                python_generation: PythonGeneration::Generated,
+                functions: vec![Function {
+                    name: name.into(),
+                    status: status.into(),
+                    public_api: PublicApi {
+                        name: name.into(),
+                        result_class: None,
+                        summary: "Test function.".into(),
+                    },
+                    scope: FunctionScope {
+                        territory: None,
+                        prediction_target: "Test value.".into(),
+                        models: Models::default(),
+                    },
+                    inputs: Vec::new(),
+                    outputs: vec![crate::model::Parameter {
+                        name: "value".into(),
+                        unit: "1".into(),
+                        domain: None,
+                        description: "Test value.".into(),
+                    }],
+                    documentation: Documentation::default(),
+                }],
+            },
+            section_functions: vec![name.into()],
+        }
+    }
+
+    fn core(name: &str) -> CoreFunction {
+        CoreFunction {
+            name: name.into(),
+            module: vec!["test".into()],
+            inputs: Vec::new(),
+            output: Output::Scalar,
+        }
+    }
+
+    #[test]
+    fn ready_function_without_core_is_valid() {
+        assert!(
+            resolve(
+                vec![entry("calc_ptf_test", "ready-for-implementation")],
+                vec![]
+            )
+            .is_ok()
+        );
+    }
+
+    #[test]
+    fn ready_function_with_core_is_resolved() {
+        let resolved = resolve(
+            vec![entry("calc_ptf_test", "ready-for-implementation")],
+            vec![core("calc_ptf_test")],
+        )
+        .unwrap();
+        assert_eq!(resolved.len(), 1);
+    }
+
+    #[test]
+    fn implemented_function_without_core_is_rejected() {
+        let error = resolve(vec![entry("calc_ptf_test", "implemented")], vec![])
+            .err()
+            .unwrap();
+        assert!(
+            error
+                .to_string()
+                .contains("has no implemented calc_ptf_* core function")
+        );
+    }
+
+    #[test]
+    fn cleanup_only_removes_obsolete_marked_files() {
+        let directory = std::env::temp_dir().join(format!(
+            "ptfkit-codegen-cleanup-{}-{}",
+            std::process::id(),
+            line!()
+        ));
+        fs::create_dir_all(&directory).unwrap();
+        let obsolete = directory.join("obsolete.py");
+        let current = directory.join("current.py");
+        let manual = directory.join("manual.py");
+        fs::write(&obsolete, format!("{GENERATED_HEADER}obsolete\n")).unwrap();
+        fs::write(&current, format!("{GENERATED_HEADER}current\n")).unwrap();
+        fs::write(&manual, "manual\n").unwrap();
+
+        remove_obsolete_generated(
+            &directory,
+            &BTreeSet::from([current.clone()]),
+            GENERATED_HEADER,
+        )
+        .unwrap();
+
+        assert!(!obsolete.exists());
+        assert!(current.exists());
+        assert!(manual.exists());
+        fs::remove_dir_all(directory).unwrap();
+    }
 }
