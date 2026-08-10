@@ -3,6 +3,17 @@
 from numpy import ufunc
 
 calc_ptf_aimrun2009: ufunc
+calc_ptf_beniaich2023_mlr1: ufunc
+calc_ptf_beniaich2023_mlr2: ufunc
+calc_ptf_beniaich2023_mlr3: ufunc
+calc_ptf_beniaich2023_mlr4: ufunc
+calc_ptf_beniaich2023_mlr5: ufunc
+calc_ptf_beniaich2023_slr1: ufunc
+calc_ptf_beniaich2023_slr2: ufunc
+calc_ptf_beniaich2023_slr3: ufunc
+calc_ptf_beniaich2023_slr4: ufunc
+calc_ptf_beniaich2023_slr5: ufunc
+calc_ptf_beniaich2023_slr6: ufunc
 calc_ptf_cosby1984_univariate: ufunc
 calc_ptf_jabro1992: ufunc
 calc_ptf_li2007: ufunc
