@@ -136,7 +136,7 @@ fn temporary_path(target: &Path) -> PathBuf {
 fn commit_staged_file(write: &StagedWrite) -> Result<bool> {
     let formatted = fs::read_to_string(&write.temporary)?;
     let existing = fs::read(&write.target).ok();
-    let output = preserve_line_endings(&formatted, existing.as_deref());
+    let output = normalize_line_endings(&formatted);
 
     if existing.as_deref() == Some(output.as_bytes()) {
         fs::remove_file(&write.temporary)?;
@@ -148,19 +148,8 @@ fn commit_staged_file(write: &StagedWrite) -> Result<bool> {
     Ok(true)
 }
 
-fn preserve_line_endings(content: &str, existing: Option<&[u8]>) -> String {
-    let normalized = content.replace("\r\n", "\n");
-    let Some(existing) = existing else {
-        return normalized;
-    };
-    let line_feeds = existing.iter().filter(|byte| **byte == b'\n').count();
-    let crlf = existing.windows(2).filter(|pair| *pair == b"\r\n").count();
-    let bare_lf = line_feeds.saturating_sub(crlf);
-    if crlf > bare_lf {
-        normalized.replace('\n', "\r\n")
-    } else {
-        normalized
-    }
+fn normalize_line_endings(content: &str) -> String {
+    content.replace("\r\n", "\n").replace('\r', "\n")
 }
 
 fn cleanup_staged(staged: &[StagedWrite]) {
@@ -429,7 +418,7 @@ mod tests {
     }
 
     #[test]
-    fn unchanged_staged_content_preserves_existing_crlf_without_replacement() {
+    fn unchanged_lf_content_is_not_replaced() {
         let directory = std::env::temp_dir().join(format!(
             "ptfkit-codegen-eol-{}-{}",
             std::process::id(),
@@ -438,9 +427,9 @@ mod tests {
         fs::create_dir_all(&directory).unwrap();
         let target = directory.join("generated.py");
         let temporary = directory.join("generated.ptfkit-codegen.py");
-        let original = b"first\r\nsecond\r\n";
+        let original = b"first\nsecond\n";
         fs::write(&target, original).unwrap();
-        fs::write(&temporary, b"first\nsecond\n").unwrap();
+        fs::write(&temporary, b"first\r\nsecond\r\n").unwrap();
 
         let changed = commit_staged_file(&StagedWrite {
             target: target.clone(),
@@ -455,7 +444,7 @@ mod tests {
     }
 
     #[test]
-    fn changed_staged_content_uses_existing_crlf() {
+    fn existing_crlf_content_is_normalized_to_lf() {
         let directory = std::env::temp_dir().join(format!(
             "ptfkit-codegen-eol-{}-{}",
             std::process::id(),
@@ -464,8 +453,8 @@ mod tests {
         fs::create_dir_all(&directory).unwrap();
         let target = directory.join("generated.rs");
         let temporary = directory.join("generated.ptfkit-codegen.rs");
-        fs::write(&target, b"old\r\n").unwrap();
-        fs::write(&temporary, b"new\nvalue\n").unwrap();
+        fs::write(&target, b"first\r\nsecond\r\n").unwrap();
+        fs::write(&temporary, b"first\r\nsecond\r\n").unwrap();
 
         let changed = commit_staged_file(&StagedWrite {
             target: target.clone(),
@@ -474,7 +463,7 @@ mod tests {
         .unwrap();
 
         assert!(changed);
-        assert_eq!(fs::read(&target).unwrap(), b"new\r\nvalue\r\n");
+        assert_eq!(fs::read(&target).unwrap(), b"first\nsecond\n");
         assert!(!temporary.exists());
         fs::remove_dir_all(directory).unwrap();
     }
