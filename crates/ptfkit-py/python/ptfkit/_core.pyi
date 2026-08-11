@@ -41,3 +41,4 @@ calc_ptf_rawls1982_theta_33: ufunc
 calc_ptf_tiwary2014_bsr: ufunc
 calc_ptf_tiwary2014_igp: ufunc
 calc_ptf_wang2012: ufunc
+calc_ptf_weber2020: ufunc
