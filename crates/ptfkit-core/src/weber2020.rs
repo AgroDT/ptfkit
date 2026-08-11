@@ -1,6 +1,4 @@
 //! Weber et al. (2020) conversion from VGM to Brunswick-VGM parameters.
-//!
-//! Formula source: `specs/functions/weber2020.md`.
 
 /// Brunswick-VGM soil hydraulic model parameters.
 #[derive(Debug, Clone, Copy, PartialEq)]
