@@ -38,6 +38,10 @@ completely sure.
 - Vectorized function naming should continue to follow the established
   convention when applicable:
   `calc_ptf_<first-author><year>[_<extra>]`.
+- Production Rust, native bindings, and public Python modules must not refer to
+  repository-only specification paths in comments, docstrings, or user-facing
+  metadata. Specifications are development inputs and are not shipped in
+  production packages.
 
 ## Migration strategy
 

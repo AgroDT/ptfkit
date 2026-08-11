@@ -29,3 +29,6 @@ description: Implement validated ptfkit PTF function specs in the pure Rust core
 - Do not change the public Python API in this skill.
 - Do not silently change units, output order, or numeric policy.
 - Do not add Python, NumPy, or binding dependencies to `ptfkit-core`.
+- Do not reference repository-only specification paths in production Rust
+  comments or documentation; specifications are not shipped with production
+  packages.
