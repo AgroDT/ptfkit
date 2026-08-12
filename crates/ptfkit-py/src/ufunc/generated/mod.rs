@@ -10,6 +10,7 @@ pub mod puckett1985;
 pub mod rawls1982;
 pub mod tiwary2014;
 pub mod wang2012;
+pub mod weber2020;
 pub fn register(module: &Bound<'_, PyModule>) -> PyResult<()> {
     aimrun2009::register(module)?;
     beniaich2023::register(module)?;
@@ -21,5 +22,6 @@ pub fn register(module: &Bound<'_, PyModule>) -> PyResult<()> {
     rawls1982::register(module)?;
     tiwary2014::register(module)?;
     wang2012::register(module)?;
+    weber2020::register(module)?;
     Ok(())
 }
