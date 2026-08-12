@@ -119,8 +119,8 @@ pip install 'git+https://github.com/AgroDT/ptfkit.git'
 
 ## Development Model
 
-The current generated target set consists of Rust kernels and the PyO3/NumPy
-ufunc extension used by the Python package. Direct CPython, C, and R targets
+The current generated target set consists of an idiomatic Rust crate and a
+direct CPython/NumPy ufunc extension used by the Python package. Direct C and R targets
 are deferred; they are not part of the supported implementation pipeline.
 
 Most feature development in ptfkit is agent-assisted. The repository provides
@@ -139,7 +139,7 @@ specification, implementation, public API compatibility, and review aligned.
    test, prove idempotence, and atomically mark the source implemented.
    Each specification filename stem generates `ptfkit.<apa_article_key>` by default; use
    `generation.public_python: manual` only for an intentional public wrapper
-   that delegates to the generated native ufunc.
+   that delegates to the generated native ufunc extension.
 5. Optionally use `ptf-review <apa_article_key>` in another fresh session for an
    independent, read-only pre-merge review.
 

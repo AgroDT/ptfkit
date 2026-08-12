@@ -1,0 +1,26 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info/
+
+# Virtual environments
+.venv/
+
+# Native Python extension artifacts
+src/ptfkit/*.pyd
+src/ptfkit/*.pdb
+src/ptfkit/*.so
+
+# Test coverage
+.coverage*
+coverage.xml
+
+# MkDocs build output
+docs/index.md
+site/
+
+# cibuildwheel artifacts
+wheelhouse/

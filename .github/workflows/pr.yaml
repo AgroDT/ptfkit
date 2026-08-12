@@ -18,14 +18,23 @@ jobs:
         with:
           components: clippy, rustfmt
 
-      - name: Run Rust tests
-        run: cargo test --workspace
+      - name: Check codegen formatting
+        run: cargo fmt --manifest-path codegen/Cargo.toml --all --check
 
-      - name: Check Rust formatting
-        run: cargo fmt --all --check
+      - name: Lint codegen
+        run: cargo clippy --manifest-path codegen/Cargo.toml --all-targets -- -D warnings
 
-      - name: Run Clippy
-        run: cargo clippy --workspace --all-targets -- -D warnings
+      - name: Run codegen tests
+        run: cargo test --manifest-path codegen/Cargo.toml
+
+      - name: Check ptfkit-rs formatting
+        run: cargo fmt --manifest-path targets/ptfkit-rs/Cargo.toml --all --check
+
+      - name: Lint ptfkit-rs
+        run: cargo clippy --manifest-path targets/ptfkit-rs/Cargo.toml --all-targets -- -D warnings
+
+      - name: Run ptfkit-rs tests
+        run: cargo test --manifest-path targets/ptfkit-rs/Cargo.toml
 
   pytest:
     name: Tests Python ${{ matrix.python-version }}
@@ -47,23 +56,11 @@ jobs:
         with:
           enable-cache: true
 
-      - name: Install the project
-        run: uv sync --project crates/ptfkit-py --frozen
-
-      - name: Install Python bindings
-        run: >
-          uv run --project "${{ github.workspace }}/crates/ptfkit-py"
-          --directory "${{ github.workspace }}/crates/ptfkit-py"
-          --no-sync maturin develop
-
       - name: Run pytest
-        run: >
-          uv run --project "${{ github.workspace }}/crates/ptfkit-py"
-          --directory "${{ github.workspace }}/crates/ptfkit-py"
-          --no-sync pytest --no-cov
+        run: uv run --directory targets/ptfkit-py pytest --no-cov
 
   code-quality:
-    name: Code Quality
+    name: Python Code Quality
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -72,7 +69,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version-file: crates/ptfkit-py/pyproject.toml
+          python-version-file: targets/ptfkit-py/pyproject.toml
 
       - name: Install uv
         uses: astral-sh/setup-uv@v7
@@ -80,49 +77,38 @@ jobs:
           enable-cache: true
 
       - name: Check uv.lock
-        run: uv lock --project crates/ptfkit-py --check
+        run: uv lock --project targets/ptfkit-py --check
 
       - name: Install the project
-        run: uv sync --project crates/ptfkit-py --frozen --all-groups
+        run: uv sync --project targets/ptfkit-py --frozen --all-groups
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
 
       - name: Check generated files
         run: |
-          cargo run -p ptfkit-codegen -- generate
+          cargo run --manifest-path codegen/Cargo.toml generate
           git diff --exit-code
           test -z "$(git status --porcelain)"
-
-      - name: Install Python bindings
-        run: >
-          uv run --project "${{ github.workspace }}/crates/ptfkit-py"
-          --directory "${{ github.workspace }}/crates/ptfkit-py"
-          --no-sync maturin develop
 
       - name: Ruff check
         id: ruff-check
         continue-on-error: true
-        run: >
-          uv run --project "${{ github.workspace }}/crates/ptfkit-py"
-          --directory "${{ github.workspace }}/crates/ptfkit-py"
-          --no-sync ruff check --output-format=github
+        run: uv run --directory targets/ptfkit-py --no-sync ruff check --output-format=github
 
       - name: Ruff format
         id: ruff-format
         continue-on-error: true
-        run: >
-          uv run --project "${{ github.workspace }}/crates/ptfkit-py"
-          --directory "${{ github.workspace }}/crates/ptfkit-py"
-          --no-sync ruff format --check --output-format=github
+        run: uv run --directory targets/ptfkit-py --no-sync ruff format --check --output-format=github
 
       - name: Mypy
         id: mypy
         continue-on-error: true
-        run: >
-          uv run --project "${{ github.workspace }}/crates/ptfkit-py"
-          --directory "${{ github.workspace }}/crates/ptfkit-py"
-          --no-sync mypy |
-          uv run --project "${{ github.workspace }}/crates/ptfkit-py"
-          --directory "${{ github.workspace }}/crates/ptfkit-py"
-          --no-sync mypy-gh-action-report
+        run: |
+          uv run --directory targets/ptfkit-py --no-sync mypy |
+          uv run --directory targets/ptfkit-py --no-sync mypy-gh-action-report
 
       - name: Fail if any step failed
         if: |

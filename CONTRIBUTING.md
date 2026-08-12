@@ -7,8 +7,9 @@ contract between stages.
 
 ## Project Layout
 
-- `crates/ptfkit-core` contains pure Rust PTF kernels and their golden tests.
-- `crates/ptfkit-py` contains the PyO3 bindings, public Python modules, and
+- `targets/ptfkit-rs` contains the idiomatic Rust PTF implementation and its golden tests.
+- `targets/ptfkit-py` contains public Python modules and the generated direct-CPython
+  extension sources.
   Python package tooling.
 - `specs/functions` contains the validated function-level specifications that
   define formulas, units, numeric policy, API contracts, and golden cases.
@@ -29,7 +30,7 @@ Cargo owns the Rust workspace dependencies and `Cargo.lock`. Use Cargo commands
 such as `cargo add`, `cargo remove`, and `cargo update` for Rust changes.
 
 `uv` owns Python dependencies, virtual environments, and
-`crates/ptfkit-py/uv.lock`. Use `uv add`, `uv remove`, and `uv sync` for Python
+`targets/ptfkit-py/uv.lock`. Use `uv add`, `uv remove`, and `uv sync` for Python
 package changes. Do not edit either lockfile by hand or use one ecosystem's
 package manager for the other.
 
