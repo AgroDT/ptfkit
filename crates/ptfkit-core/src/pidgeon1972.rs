@@ -35,11 +35,8 @@ the adopted regressions."]
 
 Prediction target: Available water capacity"]
 #[must_use]
-#[allow(clippy::let_and_return)]
 pub fn calc_ptf_pidgeon1972_awc(clay: f64, organic_matter: f64) -> f64 {
-    let available_water_capacity =
-        ((169.3f64) - ((1.5f64) * (clay))) + ((6.09f64) * (organic_matter));
-    available_water_capacity
+    ((169.3f64) - ((1.5f64) * (clay))) + ((6.09f64) * (organic_matter))
 }
 
 #[cfg(test)]
@@ -76,10 +73,8 @@ mod calc_ptf_pidgeon1972_awc_tests {
 
 Prediction target: Available water capacity"]
 #[must_use]
-#[allow(clippy::let_and_return)]
 pub fn calc_ptf_pidgeon1972_awc_coarse_sand(coarse_sand: f64) -> f64 {
-    let available_water_capacity = (68.5f64) + ((2.33f64) * (coarse_sand));
-    available_water_capacity
+    (68.5f64) + ((2.33f64) * (coarse_sand))
 }
 
 #[cfg(test)]
@@ -116,10 +111,8 @@ mod calc_ptf_pidgeon1972_awc_coarse_sand_tests {
 
 Prediction target: Available water capacity"]
 #[must_use]
-#[allow(clippy::let_and_return)]
 pub fn calc_ptf_pidgeon1972_awc_fine_sand(fine_sand: f64) -> f64 {
-    let available_water_capacity = (66.7f64) + ((2.66f64) * (fine_sand));
-    available_water_capacity
+    (66.7f64) + ((2.66f64) * (fine_sand))
 }
 
 #[cfg(test)]
@@ -157,10 +150,8 @@ mod calc_ptf_pidgeon1972_awc_fine_sand_tests {
 
 Prediction target: Available water capacity"]
 #[must_use]
-#[allow(clippy::let_and_return)]
 pub fn calc_ptf_pidgeon1972_awc_sand_organic_matter(sand: f64, organic_matter: f64) -> f64 {
-    let available_water_capacity = ((1f64) + ((1.84f64) * (sand))) + ((8.12f64) * (organic_matter));
-    available_water_capacity
+    ((1f64) + ((1.84f64) * (sand))) + ((8.12f64) * (organic_matter))
 }
 
 #[cfg(test)]
@@ -197,10 +188,8 @@ mod calc_ptf_pidgeon1972_awc_sand_organic_matter_tests {
 
 Prediction target: Available water capacity"]
 #[must_use]
-#[allow(clippy::let_and_return)]
 pub fn calc_ptf_pidgeon1972_awc_very_fine_sand(very_fine_sand: f64) -> f64 {
-    let available_water_capacity = (66.9f64) + ((4.58f64) * (very_fine_sand));
-    available_water_capacity
+    (66.9f64) + ((4.58f64) * (very_fine_sand))
 }
 
 #[cfg(test)]
@@ -239,12 +228,8 @@ mod calc_ptf_pidgeon1972_awc_very_fine_sand_tests {
 
 Prediction target: Extended available water capacity"]
 #[must_use]
-#[allow(clippy::let_and_return)]
 pub fn calc_ptf_pidgeon1972_eawc(silt: f64, clay: f64, organic_matter: f64) -> f64 {
-    let extended_available_water_capacity = (((121.1f64) - ((3.03f64) * (silt)))
-        - ((1.38f64) * (clay)))
-        + ((6.76f64) * (organic_matter));
-    extended_available_water_capacity
+    (((121.1f64) - ((3.03f64) * (silt))) - ((1.38f64) * (clay))) + ((6.76f64) * (organic_matter))
 }
 
 #[cfg(test)]
@@ -282,14 +267,11 @@ mod calc_ptf_pidgeon1972_eawc_tests {
 
 Prediction target: Extended available water capacity"]
 #[must_use]
-#[allow(clippy::let_and_return)]
 pub fn calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(
     coarse_sand: f64,
     organic_matter: f64,
 ) -> f64 {
-    let extended_available_water_capacity =
-        ((-(7.4f64)) + ((2.37f64) * (coarse_sand))) + ((6.86f64) * (organic_matter));
-    extended_available_water_capacity
+    ((-(7.4f64)) + ((2.37f64) * (coarse_sand))) + ((6.86f64) * (organic_matter))
 }
 
 #[cfg(test)]
@@ -327,14 +309,11 @@ mod calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter_tests {
 
 Prediction target: Extended available water capacity"]
 #[must_use]
-#[allow(clippy::let_and_return)]
 pub fn calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(
     fine_sand: f64,
     organic_matter: f64,
 ) -> f64 {
-    let extended_available_water_capacity =
-        ((-(18f64)) + ((3.11f64) * (fine_sand))) + ((7.69f64) * (organic_matter));
-    extended_available_water_capacity
+    ((-(18f64)) + ((3.11f64) * (fine_sand))) + ((7.69f64) * (organic_matter))
 }
 
 #[cfg(test)]
@@ -371,10 +350,8 @@ mod calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter_tests {
 
 Prediction target: Extended available water capacity"]
 #[must_use]
-#[allow(clippy::let_and_return)]
 pub fn calc_ptf_pidgeon1972_eawc_sand(sand: f64) -> f64 {
-    let extended_available_water_capacity = (-(25.8f64)) + ((1.55f64) * (sand));
-    extended_available_water_capacity
+    (-(25.8f64)) + ((1.55f64) * (sand))
 }
 
 #[cfg(test)]
@@ -412,11 +389,8 @@ mod calc_ptf_pidgeon1972_eawc_sand_tests {
 
 Prediction target: Extended available water capacity"]
 #[must_use]
-#[allow(clippy::let_and_return)]
 pub fn calc_ptf_pidgeon1972_eawc_sand_organic_matter(sand: f64, organic_matter: f64) -> f64 {
-    let extended_available_water_capacity =
-        ((-(10.8f64)) + ((1.15f64) * (sand))) + ((4.78f64) * (organic_matter));
-    extended_available_water_capacity
+    ((-(10.8f64)) + ((1.15f64) * (sand))) + ((4.78f64) * (organic_matter))
 }
 
 #[cfg(test)]
@@ -456,11 +430,8 @@ mod calc_ptf_pidgeon1972_eawc_sand_organic_matter_tests {
 Prediction target: Gravimetric field capacity
 The reviewed organic-matter coefficient is 1.54."]
 #[must_use]
-#[allow(clippy::let_and_return)]
 pub fn calc_ptf_pidgeon1972_fc(silt: f64, clay: f64, organic_matter: f64) -> f64 {
-    let field_capacity =
-        (((7.38f64) + ((0.16f64) * (silt))) + ((0.3f64) * (clay))) + ((1.54f64) * (organic_matter));
-    field_capacity
+    (((7.38f64) + ((0.16f64) * (silt))) + ((0.3f64) * (clay))) + ((1.54f64) * (organic_matter))
 }
 
 #[cfg(test)]
@@ -497,10 +468,8 @@ mod calc_ptf_pidgeon1972_fc_tests {
 
 Prediction target: Gravimetric field capacity"]
 #[must_use]
-#[allow(clippy::let_and_return)]
 pub fn calc_ptf_pidgeon1972_fc_sand(sand: f64) -> f64 {
-    let field_capacity = (36.16f64) - ((0.25f64) * (sand));
-    field_capacity
+    (36.16f64) - ((0.25f64) * (sand))
 }
 
 #[cfg(test)]
@@ -538,10 +507,8 @@ mod calc_ptf_pidgeon1972_fc_sand_tests {
 
 Prediction target: Gravimetric field capacity"]
 #[must_use]
-#[allow(clippy::let_and_return)]
 pub fn calc_ptf_pidgeon1972_fc_sand_organic_matter(sand: f64, organic_matter: f64) -> f64 {
-    let field_capacity = ((34.27f64) - ((0.27f64) * (sand))) + ((1.25f64) * (organic_matter));
-    field_capacity
+    ((34.27f64) - ((0.27f64) * (sand))) + ((1.25f64) * (organic_matter))
 }
 
 #[cfg(test)]
@@ -579,10 +546,8 @@ mod calc_ptf_pidgeon1972_fc_sand_organic_matter_tests {
 
 Prediction target: Volumetric field capacity"]
 #[must_use]
-#[allow(clippy::let_and_return)]
 pub fn calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(sand: f64, organic_matter: f64) -> f64 {
-    let field_capacity = ((38.15f64) - ((0.17f64) * (sand))) + ((0.77f64) * (organic_matter));
-    field_capacity
+    ((38.15f64) - ((0.17f64) * (sand))) + ((0.77f64) * (organic_matter))
 }
 
 #[cfg(test)]
@@ -621,11 +586,8 @@ mod calc_ptf_pidgeon1972_fc_vol_sand_organic_matter_tests {
 
 Prediction target: Gravimetric permanent wilting point"]
 #[must_use]
-#[allow(clippy::let_and_return)]
 pub fn calc_ptf_pidgeon1972_pwp(silt: f64, clay: f64, organic_matter: f64) -> f64 {
-    let permanent_wilting_point = (((-(4.19f64)) + ((0.19f64) * (silt))) + ((0.39f64) * (clay)))
-        + ((0.9f64) * (organic_matter));
-    permanent_wilting_point
+    (((-(4.19f64)) + ((0.19f64) * (silt))) + ((0.39f64) * (clay))) + ((0.9f64) * (organic_matter))
 }
 
 #[cfg(test)]
@@ -662,10 +624,8 @@ mod calc_ptf_pidgeon1972_pwp_tests {
 
 Prediction target: Gravimetric permanent wilting point"]
 #[must_use]
-#[allow(clippy::let_and_return)]
 pub fn calc_ptf_pidgeon1972_pwp_sand(sand: f64) -> f64 {
-    let permanent_wilting_point = (28.41f64) - ((0.29f64) * (sand));
-    permanent_wilting_point
+    (28.41f64) - ((0.29f64) * (sand))
 }
 
 #[cfg(test)]
@@ -703,11 +663,8 @@ mod calc_ptf_pidgeon1972_pwp_sand_tests {
 
 Prediction target: Gravimetric permanent wilting point"]
 #[must_use]
-#[allow(clippy::let_and_return)]
 pub fn calc_ptf_pidgeon1972_pwp_sand_organic_matter(sand: f64, organic_matter: f64) -> f64 {
-    let permanent_wilting_point =
-        ((32.9f64) - ((0.37f64) * (sand))) + ((0.44f64) * (organic_matter));
-    permanent_wilting_point
+    ((32.9f64) - ((0.37f64) * (sand))) + ((0.44f64) * (organic_matter))
 }
 
 #[cfg(test)]

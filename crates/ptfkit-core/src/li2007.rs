@@ -59,7 +59,6 @@ conductivity.
 
 The formulas use natural logarithms of selected inputs."]
 #[must_use]
-#[allow(clippy::let_and_return)]
 pub fn calc_ptf_li2007(
     sand: f64,
     silt: f64,

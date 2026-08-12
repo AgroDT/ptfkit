@@ -55,9 +55,23 @@ fn module_tokens(
         .iter()
         .map(|name| format_ident!("{name}"))
         .collect::<Vec<_>>();
+    let scalar_output = matches!(function.output, Output::Scalar)
+        .then(|| {
+            resolved.entry.spec.functions[resolved.function_index]
+                .outputs
+                .fields()[0]
+                .name
+                .as_str()
+        });
+    let terminal_output = scalar_output.and_then(|output| {
+        ir.variables
+            .last()
+            .filter(|variable| variable.name == output)
+    });
     let variables = ir
         .variables
         .iter()
+        .take(ir.variables.len() - usize::from(terminal_output.is_some()))
         .map(|variable| {
             let name = format_ident!("{}", variable.name);
             let expression = expression_tokens(&variable.expression, &inputs, &ir.variables)?;
@@ -69,14 +83,13 @@ fn module_tokens(
         return_type,
         expression,
         separates_result,
-    } = output_tokens(resolved)?;
+    } = output_tokens(resolved, terminal_output, &inputs, &ir.variables)?;
     let tests = golden_test_tokens(resolved, unique_test_module)?;
     Ok(quote! {
         #definition
 
         #function_docs
         #[must_use]
-        #[allow(clippy::let_and_return)]
         pub fn #name(#(#inputs: f64),*) -> #return_type {
             #(#variables)*
             #separates_result
@@ -94,18 +107,29 @@ struct OutputTokens {
     separates_result: TokenStream,
 }
 
-fn output_tokens(resolved: &Resolved) -> Result<OutputTokens> {
+fn output_tokens(
+    resolved: &Resolved,
+    terminal_output: Option<&semantic::Variable>,
+    inputs: &[syn::Ident],
+    variables: &[semantic::Variable],
+) -> Result<OutputTokens> {
     match &resolved.core.output {
         Output::Scalar => {
             let name = &resolved.entry.spec.functions[resolved.function_index]
                 .outputs
                 .fields()[0]
                 .name;
-            let expression = format_ident!("{name}");
+            let expression = match terminal_output {
+                Some(variable) => expression_tokens(&variable.expression, inputs, variables)?,
+                None => {
+                    let name = format_ident!("{name}");
+                    quote!(#name)
+                }
+            };
             Ok(OutputTokens {
                 definition: TokenStream::new(),
                 return_type: quote!(f64),
-                expression: quote!(#expression),
+                expression,
                 separates_result: TokenStream::new(),
             })
         }

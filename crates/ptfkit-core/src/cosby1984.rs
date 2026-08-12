@@ -65,7 +65,6 @@ Public API names are provisional for pilot testing.
 
 Log-transformed output units use the pilot contract `reported log value`."]
 #[must_use]
-#[allow(clippy::let_and_return)]
 pub fn calc_ptf_cosby1984_univariate(
     sand: f64,
     silt: f64,

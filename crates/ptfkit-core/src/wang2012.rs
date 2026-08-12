@@ -62,7 +62,6 @@ volumetric fractions.
 
 This normalization intentionally changes the legacy water-content outputs by a factor of 100."]
 #[must_use]
-#[allow(clippy::let_and_return)]
 pub fn calc_ptf_wang2012(
     sand: f64,
     silt: f64,

@@ -42,13 +42,11 @@ Sand is not an input to the model.
 
 The formula uses base-10 logarithms of silt and clay."]
 #[must_use]
-#[allow(clippy::let_and_return)]
 pub fn calc_ptf_jabro1992(silt: f64, clay: f64, bulk_density: f64) -> f64 {
     let log10_k_sat_cm_per_hour = (((9.56f64) - ((0.81f64) * ((silt).log10())))
         - ((1.09f64) * ((clay).log10())))
         - ((4.64f64) * (bulk_density));
-    let k_sat = ((10f64).powf(log10_k_sat_cm_per_hour)) * ((0.01f64) / (3600f64));
-    k_sat
+    ((10f64).powf(log10_k_sat_cm_per_hour)) * ((0.01f64) / (3600f64))
 }
 
 #[cfg(test)]

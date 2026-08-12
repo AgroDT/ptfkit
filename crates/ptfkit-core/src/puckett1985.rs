@@ -72,7 +72,6 @@ The regressions were developed for soils with similar genesis and clay mineralog
 
 Use outside Lower Coastal Plain Ultisols requires independent validation."]
 #[must_use]
-#[allow(clippy::let_and_return)]
 pub fn calc_ptf_puckett1985(
     sand: f64,
     fine_sand: f64,

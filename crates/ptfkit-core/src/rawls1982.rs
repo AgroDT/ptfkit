@@ -72,7 +72,6 @@ for the intermediate points.
 
 The source value 0.8888 is retained literally for the theta_7 intercept."]
 #[must_use]
-#[allow(clippy::let_and_return)]
 pub fn calc_ptf_rawls1982_full_wrc(
     sand: f64,
     organic_matter: f64,
@@ -231,10 +230,8 @@ mod calc_ptf_rawls1982_full_wrc_tests {
 
 Prediction target: Volumetric soil water content at -1500 kPa."]
 #[must_use]
-#[allow(clippy::let_and_return)]
 pub fn calc_ptf_rawls1982_theta_1500(clay: f64, organic_matter: f64) -> f64 {
-    let theta_1500 = ((0.026f64) + ((0.005f64) * (clay))) + ((0.0158f64) * (organic_matter));
-    theta_1500
+    ((0.026f64) + ((0.005f64) * (clay))) + ((0.0158f64) * (organic_matter))
 }
 
 #[cfg(test)]
@@ -273,11 +270,9 @@ mod calc_ptf_rawls1982_theta_1500_tests {
 
 Prediction target: Volumetric soil water content at -33 kPa."]
 #[must_use]
-#[allow(clippy::let_and_return)]
 pub fn calc_ptf_rawls1982_theta_33(sand: f64, organic_matter: f64, theta_1500: f64) -> f64 {
-    let theta_33 = (((0.2391f64) - ((0.0019f64) * (sand))) + ((0.021f64) * (organic_matter)))
-        + ((0.72f64) * (theta_1500));
-    theta_33
+    (((0.2391f64) - ((0.0019f64) * (sand))) + ((0.021f64) * (organic_matter)))
+        + ((0.72f64) * (theta_1500))
 }
 
 #[cfg(test)]
