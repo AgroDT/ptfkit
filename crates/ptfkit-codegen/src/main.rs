@@ -9,6 +9,7 @@ mod core;
 mod formula;
 mod generate;
 mod model;
+mod semantic;
 mod specs;
 mod validate;
 

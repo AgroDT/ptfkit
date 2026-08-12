@@ -114,6 +114,50 @@ pub(crate) enum Output {
     Struct(Vec<String>),
 }
 
+/// Formula data before semantic validation. This deliberately remains separate
+/// from the versioned specification model until the frontend is wired to YAML.
+#[derive(Clone, Debug)]
+pub(crate) struct RawFunction {
+    pub(crate) specification_path: PathBuf,
+    pub(crate) name: String,
+    pub(crate) inputs: Vec<RawInput>,
+    pub(crate) variables: Vec<RawVariable>,
+    pub(crate) output: RawOutput,
+}
+
+#[derive(Clone, Debug)]
+pub(crate) struct RawInput {
+    pub(crate) name: String,
+}
+
+#[derive(Clone, Debug)]
+pub(crate) struct RawVariable {
+    pub(crate) name: String,
+    pub(crate) expression: RawExpression,
+}
+
+#[derive(Clone, Debug)]
+pub(crate) struct RawExpression {
+    pub(crate) implementation_path: String,
+    pub(crate) expression: crate::formula::Expr,
+}
+
+#[allow(
+    dead_code,
+    reason = "Session 04 constructs raw scalar and record outputs from the versioned specification loader."
+)]
+#[derive(Clone, Debug)]
+pub(crate) enum RawOutput {
+    Scalar(RawExpression),
+    Record(Vec<RawField>),
+}
+
+#[derive(Clone, Debug)]
+pub(crate) struct RawField {
+    pub(crate) name: String,
+    pub(crate) expression: RawExpression,
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
