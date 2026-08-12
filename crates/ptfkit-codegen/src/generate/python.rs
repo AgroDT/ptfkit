@@ -492,6 +492,7 @@ mod tests {
             outputs: Vec::new(),
             documentation: Documentation::default(),
             implementation: None,
+            golden_tests: Vec::new(),
         }
     }
 

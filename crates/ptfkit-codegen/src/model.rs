@@ -1,3 +1,4 @@
+use std::collections::BTreeMap;
 use std::path::PathBuf;
 
 use serde::{Deserialize, Serialize};
@@ -42,7 +43,18 @@ pub(crate) struct Function {
     pub(crate) outputs: Vec<Parameter>,
     pub(crate) implementation: Option<Implementation>,
     #[serde(default)]
+    pub(crate) golden_tests: Vec<GoldenTest>,
+    #[serde(default)]
     pub(crate) documentation: Documentation,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub(crate) struct GoldenTest {
+    pub(crate) id: String,
+    pub(crate) inputs: BTreeMap<String, f64>,
+    pub(crate) expected: BTreeMap<String, f64>,
+    pub(crate) rtol: f64,
+    pub(crate) atol: f64,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]

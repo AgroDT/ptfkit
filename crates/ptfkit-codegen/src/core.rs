@@ -1,13 +1,20 @@
-use std::{collections::BTreeMap, fs, path::Path};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    fs,
+    path::Path,
+};
 
 use anyhow::{Context, Result, bail};
 use syn::{FnArg, Item, ItemFn, ItemMod, ItemStruct, ReturnType, Type, Visibility};
 
 use crate::model::{CoreFunction, Output};
 
-pub(crate) fn discover(lib: &Path) -> Result<Vec<CoreFunction>> {
+pub(crate) fn discover(
+    lib: &Path,
+    generated_modules: &BTreeSet<String>,
+) -> Result<Vec<CoreFunction>> {
     let mut modules = BTreeMap::new();
-    parse_module(lib, &[], &mut modules)?;
+    parse_module(lib, &[], generated_modules, &mut modules)?;
     let mut structs = BTreeMap::new();
     for (module, file) in &modules {
         for item in &file.items {
@@ -37,6 +44,7 @@ pub(crate) fn discover(lib: &Path) -> Result<Vec<CoreFunction>> {
 fn parse_module(
     path: &Path,
     module: &[String],
+    generated_modules: &BTreeSet<String>,
     modules: &mut BTreeMap<Vec<String>, syn::File>,
 ) -> Result<()> {
     let file = syn::parse_file(
@@ -51,6 +59,9 @@ fn parse_module(
         }) = item
         {
             let name = ident.to_string();
+            if module.is_empty() && generated_modules.contains(&name) {
+                continue;
+            }
             let direct = parent.join(format!("{name}.rs"));
             let nested = parent.join(&name).join("mod.rs");
             let child = if direct.exists() {
@@ -62,7 +73,7 @@ fn parse_module(
             };
             let mut next = module.to_vec();
             next.push(name);
-            parse_module(&child, &next, modules)?;
+            parse_module(&child, &next, generated_modules, modules)?;
         }
     }
     modules.insert(module.to_vec(), file);
