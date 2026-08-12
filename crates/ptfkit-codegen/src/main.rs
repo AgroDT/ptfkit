@@ -6,6 +6,7 @@ use anyhow::{Context, Result, bail};
 use clap::{Parser, Subcommand};
 
 mod core;
+mod formula;
 mod generate;
 mod model;
 mod specs;

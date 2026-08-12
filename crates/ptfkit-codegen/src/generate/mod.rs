@@ -53,14 +53,7 @@ pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> Result<()> {
         let path = root
             .join("crates/ptfkit-py/python")
             .join(module.replace('.', "/") + ".py");
-        if path.exists()
-            && fs::read_to_string(&path)?.lines().next() != Some(GENERATED_HEADER.trim_end())
-        {
-            bail!(
-                "refusing to overwrite {}:\nthe file is not marked as generated",
-                path.display()
-            );
-        }
+        refuse_unmarked_python_target(&path)?;
         python_paths.push(path.clone());
         writes.push((path, contents));
     }
@@ -105,6 +98,22 @@ pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> Result<()> {
         &root.join("crates/ptfkit-py/src/ufunc/generated.rs"),
         RUST_HEADER,
     )?;
+    Ok(())
+}
+
+/// Preserves the legacy public-wrapper ownership boundary during the migration.
+///
+/// Generated modules may be replaced only when they carry the generator marker;
+/// an intentional manual wrapper must never be overwritten by `generate`.
+fn refuse_unmarked_python_target(path: &Path) -> Result<()> {
+    if path.exists()
+        && fs::read_to_string(path)?.lines().next() != Some(GENERATED_HEADER.trim_end())
+    {
+        bail!(
+            "refusing to overwrite {}:\nthe file is not marked as generated",
+            path.display()
+        );
+    }
     Ok(())
 }
 
@@ -301,7 +310,8 @@ mod tests {
     use std::{collections::BTreeSet, fs, path::PathBuf};
 
     use super::{
-        GENERATED_HEADER, StagedWrite, commit_staged_file, remove_obsolete_generated, resolve,
+        GENERATED_HEADER, StagedWrite, commit_staged_file, refuse_unmarked_python_target,
+        remove_obsolete_generated, resolve,
     };
     use crate::model::{
         CoreFunction, Documentation, Entry, Function, FunctionScope, Models, Output, PublicApi,
@@ -414,6 +424,27 @@ mod tests {
         assert!(!obsolete.exists());
         assert!(current.exists());
         assert!(manual.exists());
+        fs::remove_dir_all(directory).unwrap();
+    }
+
+    #[test]
+    fn unmarked_python_target_is_not_overwritten() {
+        let directory = std::env::temp_dir().join(format!(
+            "ptfkit-codegen-ownership-{}-{}",
+            std::process::id(),
+            line!()
+        ));
+        fs::create_dir_all(&directory).unwrap();
+        let target = directory.join("manual.py");
+        fs::write(&target, "def calc_ptf_manual():\n    pass\n").unwrap();
+
+        let error = refuse_unmarked_python_target(&target).unwrap_err();
+
+        assert!(error.to_string().contains("not marked as generated"));
+        assert_eq!(
+            fs::read_to_string(&target).unwrap(),
+            "def calc_ptf_manual():\n    pass\n"
+        );
         fs::remove_dir_all(directory).unwrap();
     }
 
