@@ -12,7 +12,7 @@ scope:
   dataset: 408 lowland paddy soil samples from Sawah Sempadan rice cultivation area.
 functions:
 - name: calc_ptf_aimrun2009
-  status: ready-for-implementation
+  status: implemented
   public_api:
     name: calc_ptf_aimrun2009
     result_class: null
@@ -110,6 +110,15 @@ functions:
     - 'Applicability: Clayey rice soils with compacted subsoil.'
     warnings:
     - The formula uses natural logarithms of all inputs.
+  implementation:
+    variables:
+    - name: ln_k_sat_m_per_day
+      expr: -2.368 + 3.846 * bulk_density + 0.091 * organic_matter - 6.203 * ln(bulk_density) - 0.343 * ln(organic_matter) - 2.334 * ln(clay) - 0.411 * ln(gmd)
+    - name: k_sat_m_per_day
+      expr: exp(ln_k_sat_m_per_day)
+    output:
+      type: scalar
+      expr: k_sat_m_per_day * (1.0 / 86400.0)
 scientific_notes: '
 
   # Aimrun and Amin (2009)

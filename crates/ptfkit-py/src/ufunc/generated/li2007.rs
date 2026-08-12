@@ -31,14 +31,38 @@ unsafe extern "C" fn calc_ptf_li2007_loop(
             let clay = (pointers[2usize] as *const f64).read_unaligned();
             let bulk_density = (pointers[3usize] as *const f64).read_unaligned();
             let soil_organic_matter = (pointers[4usize] as *const f64).read_unaligned();
-            let result = ptfkit_core::li2007::calc_ptf_li2007(
-                sand,
-                silt,
-                clay,
-                bulk_density,
-                soil_organic_matter,
-            );
-            let values = [result.theta_s, result.a_vg, result.n_vg, result.k_sat];
+            let sand_ln = (sand).ln();
+            let silt_ln = (silt).ln();
+            let clay_ln = (clay).ln();
+            let soil_organic_matter_ln = (soil_organic_matter).ln();
+            let bulk_density_ln = (bulk_density).ln();
+            let theta_s = (((((-(1.531f64)) + ((0.212f64) * (sand_ln))) + ((0.006f64) * (silt)))
+                - ((0.051f64) * (soil_organic_matter)))
+                - ((0.566f64) * (bulk_density_ln)))
+                .exp();
+            let a_vg = (((((((-(67.408f64)) - ((0.04f64) * (silt))) - ((0.67f64) * (silt_ln)))
+                - ((2.189f64) * (soil_organic_matter)))
+                + ((1.41f64) * (soil_organic_matter_ln)))
+                + ((78.4f64) * (bulk_density)))
+                - ((121.331f64) * (bulk_density_ln)))
+                .exp();
+            let n_vg = (((((1.488f64) + ((0.002f64) * (silt_ln))) + ((0.013f64) * (clay)))
+                - ((0.248f64) * (clay_ln)))
+                + ((0.048f64) * (soil_organic_matter_ln)))
+                + ((0.451f64) * (bulk_density_ln));
+            let k_sat_cm_per_day = (((((((13.262f64) - ((1.914f64) * (sand_ln)))
+                - ((0.974f64) * (silt_ln)))
+                - ((0.058f64) * (clay)))
+                - ((1.709f64) * (soil_organic_matter_ln)))
+                + ((2.885f64) * (soil_organic_matter)))
+                - ((8.026f64) * (bulk_density_ln)))
+                .exp();
+            let values = [
+                theta_s,
+                a_vg,
+                n_vg,
+                (k_sat_cm_per_day) * ((1f64) / (8640000f64)),
+            ];
             (pointers[5usize] as *mut f64).write_unaligned(values[0usize]);
             (pointers[6usize] as *mut f64).write_unaligned(values[1usize]);
             (pointers[7usize] as *mut f64).write_unaligned(values[2usize]);

@@ -12,7 +12,7 @@ scope:
     samples from seven soil profiles.
 functions:
 - name: calc_ptf_li2007
-  status: ready-for-implementation
+  status: implemented
   public_api:
     name: calc_ptf_li2007
     result_class: Li2007PTFResult
@@ -130,6 +130,37 @@ functions:
   documentation:
     warnings:
     - The formulas use natural logarithms of selected inputs.
+  implementation:
+    variables:
+    - name: sand_ln
+      expr: ln(sand)
+    - name: silt_ln
+      expr: ln(silt)
+    - name: clay_ln
+      expr: ln(clay)
+    - name: soil_organic_matter_ln
+      expr: ln(soil_organic_matter)
+    - name: bulk_density_ln
+      expr: ln(bulk_density)
+    - name: theta_s
+      expr: exp(-1.531 + 0.212 * sand_ln + 0.006 * silt - 0.051 * soil_organic_matter - 0.566 * bulk_density_ln)
+    - name: a_vg
+      expr: exp(-67.408 - 0.040 * silt - 0.670 * silt_ln - 2.189 * soil_organic_matter + 1.410 * soil_organic_matter_ln + 78.400 * bulk_density - 121.331 * bulk_density_ln)
+    - name: n_vg
+      expr: 1.488 + 0.002 * silt_ln + 0.013 * clay - 0.248 * clay_ln + 0.048 * soil_organic_matter_ln + 0.451 * bulk_density_ln
+    - name: k_sat_cm_per_day
+      expr: exp(13.262 - 1.914 * sand_ln - 0.974 * silt_ln - 0.058 * clay - 1.709 * soil_organic_matter_ln + 2.885 * soil_organic_matter - 8.026 * bulk_density_ln)
+    output:
+      type: record
+      fields:
+      - name: theta_s
+        expr: theta_s
+      - name: a_vg
+        expr: a_vg
+      - name: n_vg
+        expr: n_vg
+      - name: k_sat
+        expr: k_sat_cm_per_day * (1.0 / 8640000.0)
 scientific_notes: '
 
   # Li et al. (2007)

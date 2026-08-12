@@ -31,13 +31,14 @@ unsafe extern "C" fn calc_ptf_aimrun2009_loop(
             let bulk_density = (pointers[1usize] as *const f64).read_unaligned();
             let organic_matter = (pointers[2usize] as *const f64).read_unaligned();
             let gmd = (pointers[3usize] as *const f64).read_unaligned();
-            let result = ptfkit_core::aimrun2009::calc_ptf_aimrun2009(
-                clay,
-                bulk_density,
-                organic_matter,
-                gmd,
-            );
-            let values = [result];
+            let ln_k_sat_m_per_day = ((((((-(2.368f64)) + ((3.846f64) * (bulk_density)))
+                + ((0.091f64) * (organic_matter)))
+                - ((6.203f64) * ((bulk_density).ln())))
+                - ((0.343f64) * ((organic_matter).ln())))
+                - ((2.334f64) * ((clay).ln())))
+                - ((0.411f64) * ((gmd).ln()));
+            let k_sat_m_per_day = (ln_k_sat_m_per_day).exp();
+            let values = [(k_sat_m_per_day) * ((1f64) / (86400f64))];
             (pointers[4usize] as *mut f64).write_unaligned(values[0usize]);
             for index in 0..CALC_PTF_AIMRUN2009_NARGS {
                 pointers[index] = pointers[index].offset(strides[index]);

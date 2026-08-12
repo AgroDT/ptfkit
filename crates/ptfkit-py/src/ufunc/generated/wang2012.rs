@@ -33,15 +33,33 @@ unsafe extern "C" fn calc_ptf_wang2012_loop(
             let bulk_density = (pointers[3usize] as *const f64).read_unaligned();
             let soil_organic_carbon = (pointers[4usize] as *const f64).read_unaligned();
             let altitude = (pointers[5usize] as *const f64).read_unaligned();
-            let result = ptfkit_core::wang2012::calc_ptf_wang2012(
-                sand,
-                silt,
-                clay,
-                bulk_density,
-                soil_organic_carbon,
-                altitude,
-            );
-            let values = [result.theta_s, result.theta_fc, result.k_sat];
+            let soil_organic_carbon_g_per_kg = (10f64) * (soil_organic_carbon);
+            let log10_k_sat_cm_per_day = (((((1.173f64) + ((0.038f64) * (silt)))
+                + ((0.69f64) * ((sand).log10())))
+                + ((0.865f64) / (sand)))
+                - (((0.03f64) * (bulk_density)) * (silt)))
+                - (((0.00000995f64) * (soil_organic_carbon_g_per_kg)) * (altitude));
+            let k_sat_cm_per_day = (10f64).powf(log10_k_sat_cm_per_day);
+            let fc_percent = (((((((((46.481f64)
+                - ((4.757f64) * (soil_organic_carbon_g_per_kg)))
+                - ((14.028f64) * ((clay).log10())))
+                - ((13.991f64) * ((sand).log10())))
+                + ((42.261f64) * ((soil_organic_carbon_g_per_kg).log10())))
+                - ((11.763f64) / (sand)))
+                + ((19.198f64) / (soil_organic_carbon_g_per_kg)))
+                - ((5.448f64) * ((bulk_density).powf(2f64))))
+                + ((0.044f64) * ((soil_organic_carbon_g_per_kg).powf(2f64))))
+                + (((1.975f64) * (bulk_density)) * (soil_organic_carbon_g_per_kg));
+            let sswc_percent = (((((98.813f64) - ((21.555f64) / (bulk_density)))
+                - ((39.735f64) / (silt)))
+                - ((2.091f64) / (sand)))
+                + ((3.247f64) / (soil_organic_carbon_g_per_kg)))
+                - ((17.096f64) * ((bulk_density).powf(2f64)));
+            let values = [
+                (sswc_percent) / (100f64),
+                (fc_percent) / (100f64),
+                (k_sat_cm_per_day) / (8640000f64),
+            ];
             (pointers[6usize] as *mut f64).write_unaligned(values[0usize]);
             (pointers[7usize] as *mut f64).write_unaligned(values[1usize]);
             (pointers[8usize] as *mut f64).write_unaligned(values[2usize]);

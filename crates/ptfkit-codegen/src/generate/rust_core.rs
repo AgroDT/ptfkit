@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::{collections::BTreeMap, path::PathBuf};
 
 use anyhow::{Result, bail};
 use proc_macro2::{Literal, TokenStream};
@@ -11,25 +11,41 @@ use crate::{
 };
 
 pub(crate) fn render(functions: &[Resolved]) -> Result<Vec<(PathBuf, String)>> {
-    functions
-        .iter()
-        .filter_map(|resolved| {
-            resolved.entry.implementations[resolved.function_index]
-                .as_ref()
-                .map(|ir| (resolved, ir))
-        })
-        .map(|(resolved, ir)| {
-            let module_docs =
-                module_doc_tokens(&resolved.entry.spec.source, &resolved.entry.spec.scope);
+    let mut sources = BTreeMap::<String, Vec<(&Resolved, &semantic::Function)>>::new();
+    for resolved in functions {
+        if let Some(ir) = resolved.entry.implementations[resolved.function_index].as_ref() {
+            sources
+                .entry(resolved.entry.slug.clone())
+                .or_default()
+                .push((resolved, ir));
+        }
+    }
+
+    sources
+        .into_iter()
+        .map(|(slug, functions)| {
+            let (first, _) = functions
+                .first()
+                .expect("generated source contains at least one function");
+            let module_docs = module_doc_tokens(&first.entry.spec.source, &first.entry.spec.scope);
+            let unique_test_modules = functions.len() > 1;
+            let definitions = functions
+                .into_iter()
+                .map(|(resolved, ir)| module_tokens(resolved, ir, unique_test_modules))
+                .collect::<Result<Vec<_>>>()?;
             Ok((
-                PathBuf::from(format!("{}.rs", resolved.entry.slug)),
-                render_tokens(module_docs, module_tokens(resolved, ir)?),
+                PathBuf::from(format!("{slug}.rs")),
+                render_tokens(module_docs, quote!(#(#definitions)*)),
             ))
         })
         .collect()
 }
 
-fn module_tokens(resolved: &Resolved, ir: &semantic::Function) -> Result<TokenStream> {
+fn module_tokens(
+    resolved: &Resolved,
+    ir: &semantic::Function,
+    unique_test_module: bool,
+) -> Result<TokenStream> {
     let function = &resolved.core;
     let specification = &resolved.entry.spec.functions[resolved.function_index];
     let function_docs = function_doc_tokens(specification);
@@ -53,7 +69,7 @@ fn module_tokens(resolved: &Resolved, ir: &semantic::Function) -> Result<TokenSt
         return_type,
         expression,
     } = output_tokens(resolved, ir, &inputs)?;
-    let tests = golden_test_tokens(resolved)?;
+    let tests = golden_test_tokens(resolved, unique_test_module)?;
     Ok(quote! {
         #definition
 
@@ -103,7 +119,7 @@ fn output_tokens(
                     .iter()
                     .find(|parameter| field == parameter.name)
                     .expect("core output field matches specification");
-                let docs = doc_tokens([parameter_doc(parameter)]);
+                let docs = doc_tokens([parameter_details(parameter)]);
                 quote!(#docs pub #field: f64)
             });
             let values = expressions
@@ -111,19 +127,16 @@ fn output_tokens(
                 .map(|field| {
                     let name = format_ident!("{}", field.name);
                     let expression = expression_tokens(&field.expression, inputs, &ir.variables)?;
-                    Ok(quote!(#name: #expression))
+                    let value = match name == expression.to_string() {
+                        true => quote!(#name),
+                        false => quote!(#name: #expression),
+                    };
+                    Ok(value)
                 })
                 .collect::<Result<Vec<_>>>()?;
             Ok(OutputTokens {
                 definition: {
-                    let mut lines = vec![
-                        "Results returned by the matching PTF.".into(),
-                        String::new(),
-                        "# Fields".into(),
-                        String::new(),
-                    ];
-                    lines.extend(specification.outputs.iter().map(parameter_doc));
-                    let docs = doc_tokens(lines);
+                    let docs = doc_tokens([format!("Results returned by `{}`.", resolved.core.name)]);
                     quote!(#docs #[derive(Clone, Copy, Debug, PartialEq)] pub struct #result { #(#definitions),* })
                 },
                 return_type: quote!(#result),
@@ -178,12 +191,10 @@ fn function_doc_tokens(function: &Function) -> TokenStream {
             .map(|parameter| format!("* {}", parameter_doc(parameter))),
     );
     lines.extend([String::new(), "# Returns".into(), String::new()]);
-    lines.extend(
-        function
-            .outputs
-            .iter()
-            .map(|parameter| format!("* {}", parameter_doc(parameter))),
-    );
+    lines.extend(return_doc_lines(
+        function.public_api.result_class.as_deref(),
+        &function.outputs,
+    ));
     if let Some(territory) = &function.scope.territory {
         lines.extend([
             String::new(),
@@ -228,10 +239,21 @@ fn function_doc_tokens(function: &Function) -> TokenStream {
 }
 
 fn parameter_doc(parameter: &Parameter) -> String {
-    format!(
-        "{}: {} ({})",
-        parameter.name, parameter.description, parameter.unit
-    )
+    format!("{}: {}", parameter.name, parameter_details(parameter))
+}
+
+fn parameter_details(parameter: &Parameter) -> String {
+    format!("{} ({})", parameter.description, parameter.unit)
+}
+
+fn return_doc_lines(result_class: Option<&str>, outputs: &[Parameter]) -> Vec<String> {
+    match result_class {
+        Some(result_class) => vec![format!("A [`{result_class}`].")],
+        None => outputs
+            .iter()
+            .map(|parameter| format!("* {}", parameter_doc(parameter)))
+            .collect(),
+    }
 }
 
 fn doc_tokens(lines: impl IntoIterator<Item = String>) -> TokenStream {
@@ -379,8 +401,12 @@ fn power_tokens(
     }
 }
 
-fn golden_test_tokens(resolved: &Resolved) -> Result<TokenStream> {
+fn golden_test_tokens(resolved: &Resolved, unique_test_module: bool) -> Result<TokenStream> {
     let function = format_ident!("{}", resolved.core.name);
+    let module = match unique_test_module {
+        true => format_ident!("{}_tests", resolved.core.name),
+        false => format_ident!("tests"),
+    };
     let tests = resolved.entry.spec.functions[resolved.function_index]
         .golden_tests
         .iter()
@@ -434,7 +460,7 @@ fn golden_test_tokens(resolved: &Resolved) -> Result<TokenStream> {
         })
         .collect::<Result<Vec<_>>>()?;
     Ok(
-        quote! { #[cfg(test)] mod tests { use super::*; fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) { assert!((actual - expected).abs() <= atol + rtol * expected.abs(), "actual {actual} != expected {expected}"); } #(#tests)* } },
+        quote! { #[cfg(test)] mod #module { use super::*; fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) { assert!((actual - expected).abs() <= atol + rtol * expected.abs(), "actual {actual} != expected {expected}"); } #(#tests)* } },
     )
 }
 
@@ -505,5 +531,26 @@ mod tests {
         assert!(syn::parse_file(&generated.to_string()).is_ok());
         assert!(generated.to_string().contains("r\"Source summary."));
         assert!(generated.to_string().contains("r\"Function summary."));
+    }
+
+    #[test]
+    fn record_results_document_fields_only_once() {
+        let parameter = Parameter {
+            name: "theta_s".into(),
+            unit: "cm^3/cm^3".into(),
+            domain: None,
+            description: "Saturated water content.".into(),
+        };
+
+        assert_eq!(parameter_doc(&parameter), "theta_s: Saturated water content. (cm^3/cm^3)");
+        assert_eq!(parameter_details(&parameter), "Saturated water content. (cm^3/cm^3)");
+    }
+
+    #[test]
+    fn record_return_documentation_links_to_the_result_type() {
+        assert_eq!(
+            return_doc_lines(Some("Li2007PTFResult"), &[]),
+            ["A [`Li2007PTFResult`]."]
+        );
     }
 }

@@ -48,6 +48,7 @@ pub fn calc_ptf_jabro1992(silt: f64, clay: f64, bulk_density: f64) -> f64 {
         - ((4.64f64) * (bulk_density));
     ((10f64).powf(log10_k_sat_cm_per_hour)) * ((0.01f64) / (3600f64))
 }
+
 #[cfg(test)]
 mod tests {
     use super::*;

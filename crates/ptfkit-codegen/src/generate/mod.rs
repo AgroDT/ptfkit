@@ -282,7 +282,15 @@ fn rustfmt(paths: &[PathBuf]) -> Result<()> {
             String::from_utf8_lossy(&output.stderr).trim()
         );
     }
+    for path in paths {
+        let source = fs::read_to_string(path)?;
+        fs::write(path, separate_item_attributes(&source))?;
+    }
     Ok(())
+}
+
+fn separate_item_attributes(source: &str) -> String {
+    source.replace("}\n#[", "}\n\n#[")
 }
 
 fn resolve(entries: Vec<Entry>, core: Vec<CoreFunction>) -> Result<Vec<Resolved>> {
@@ -394,7 +402,7 @@ mod tests {
 
     use super::{
         GENERATED_HEADER, StagedWrite, commit_staged_file, refuse_unmarked_python_target,
-        remove_obsolete_generated, resolve,
+        remove_obsolete_generated, resolve, separate_item_attributes,
     };
     use crate::model::{
         CoreFunction, Documentation, Entry, Function, FunctionScope, Models, Output, PublicApi,
@@ -582,5 +590,13 @@ mod tests {
         assert_eq!(fs::read(&target).unwrap(), b"first\nsecond\n");
         assert!(!temporary.exists());
         fs::remove_dir_all(directory).unwrap();
+    }
+
+    #[test]
+    fn separates_generated_items_from_following_attributes() {
+        assert_eq!(
+            separate_item_attributes("pub struct Result {}\n#[must_use]\npub fn calculate() {}\n"),
+            "pub struct Result {}\n\n#[must_use]\npub fn calculate() {}\n"
+        );
     }
 }

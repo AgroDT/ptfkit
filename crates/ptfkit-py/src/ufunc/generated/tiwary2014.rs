@@ -33,15 +33,18 @@ unsafe extern "C" fn calc_ptf_tiwary2014_bsr_loop(
             let esp = (pointers[3usize] as *const f64).read_unaligned();
             let emp = (pointers[4usize] as *const f64).read_unaligned();
             let excm = (pointers[5usize] as *const f64).read_unaligned();
-            let result = ptfkit_core::tiwary2014::calc_ptf_tiwary2014_bsr(
-                clay,
-                ph,
-                cation_exchange_capacity,
-                esp,
-                emp,
-                excm,
-            );
-            let values = [result.w_33, result.w_100, result.w_1500, result.k_sat];
+            let w_33 = (((2.583f64) + ((0.346f64) * (cation_exchange_capacity)))
+                + ((0.249f64) * (clay)))
+                + ((0.494f64) * (esp));
+            let w_100 = (((-(1.918f64)) + ((0.383f64) * (cation_exchange_capacity)))
+                + ((0.228f64) * (clay)))
+                + ((0.361f64) * (esp));
+            let w_1500 = (((0.541f64) + ((0.306f64) * (cation_exchange_capacity)))
+                + ((0.146f64) * (esp)))
+                + ((0.058f64) * (emp));
+            let k_sat_mm_per_hour = (((120.637f64) - ((13.094f64) * (ph))) - ((0.102f64) * (clay)))
+                + ((1.151f64) * (excm));
+            let values = [w_33, w_100, w_1500, (k_sat_mm_per_hour) / (3600000f64)];
             (pointers[6usize] as *mut f64).write_unaligned(values[0usize]);
             (pointers[7usize] as *mut f64).write_unaligned(values[1usize]);
             (pointers[8usize] as *mut f64).write_unaligned(values[2usize]);
@@ -76,8 +79,9 @@ unsafe extern "C" fn calc_ptf_tiwary2014_igp_loop(
             let sand = (pointers[0usize] as *const f64).read_unaligned();
             let bulk_density = (pointers[1usize] as *const f64).read_unaligned();
             let esp = (pointers[2usize] as *const f64).read_unaligned();
-            let result = ptfkit_core::tiwary2014::calc_ptf_tiwary2014_igp(sand, bulk_density, esp);
-            let values = [result];
+            let k_sat_mm_per_hour = (((4.079f64) + ((0.047f64) * (sand))) - ((0.054f64) * (esp)))
+                - ((2.238f64) * (bulk_density));
+            let values = [(k_sat_mm_per_hour) / (3600000f64)];
             (pointers[3usize] as *mut f64).write_unaligned(values[0usize]);
             for index in 0..CALC_PTF_TIWARY2014_IGP_NARGS {
                 pointers[index] = pointers[index].offset(strides[index]);

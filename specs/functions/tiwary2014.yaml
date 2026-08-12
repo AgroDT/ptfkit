@@ -61,6 +61,13 @@ functions:
     warnings:
     - The legacy API's three water-retention outputs are intentionally excluded because
       the source defines them only for BSR soils.
+  implementation:
+    variables:
+    - name: k_sat_mm_per_hour
+      expr: 4.079 + 0.047 * sand - 0.054 * esp - 2.238 * bulk_density
+    output:
+      type: scalar
+      expr: k_sat_mm_per_hour / 3600000.0
 - name: calc_ptf_tiwary2014_bsr
   status: implemented
   public_api:
@@ -149,6 +156,27 @@ functions:
     - Water-retention equations used 75 layers from 14 profiles; equation 10 used
       200 layers from 46 profiles.
     warnings: []
+  implementation:
+    variables:
+    - name: w_33
+      expr: 2.583 + 0.346 * cation_exchange_capacity + 0.249 * clay + 0.494 * esp
+    - name: w_100
+      expr: -1.918 + 0.383 * cation_exchange_capacity + 0.228 * clay + 0.361 * esp
+    - name: w_1500
+      expr: 0.541 + 0.306 * cation_exchange_capacity + 0.146 * esp + 0.058 * emp
+    - name: k_sat_mm_per_hour
+      expr: 120.637 - 13.094 * ph - 0.102 * clay + 1.151 * excm
+    output:
+      type: record
+      fields:
+      - name: w_33
+        expr: w_33
+      - name: w_100
+        expr: w_100
+      - name: w_1500
+        expr: w_1500
+      - name: k_sat
+        expr: k_sat_mm_per_hour / 3600000.0
 scientific_notes: "\n# Tiwary et al. (2014)\n\n## `calc_ptf_tiwary2014_igp`\n\n###\
   \ Formula\n\n```text\nsHC_mm_per_h = 4.079 + 0.047 * sand - 0.054 * ESP\n      \
   \          - 2.238 * bulk_density\nk_sat = sHC_mm_per_h / 3_600_000\n```\n\nEquation\

@@ -108,6 +108,27 @@ functions:
     warnings:
     - This normalization intentionally changes the legacy water-content outputs by
       a factor of 100.
+  implementation:
+    variables:
+    - name: soil_organic_carbon_g_per_kg
+      expr: 10.0 * soil_organic_carbon
+    - name: log10_k_sat_cm_per_day
+      expr: 1.173 + 0.038 * silt + 0.690 * log10(sand) + 0.865 / sand - 0.030 * bulk_density * silt - 0.00000995 * soil_organic_carbon_g_per_kg * altitude
+    - name: k_sat_cm_per_day
+      expr: 10.0 ^ log10_k_sat_cm_per_day
+    - name: fc_percent
+      expr: 46.481 - 4.757 * soil_organic_carbon_g_per_kg - 14.028 * log10(clay) - 13.991 * log10(sand) + 42.261 * log10(soil_organic_carbon_g_per_kg) - 11.763 / sand + 19.198 / soil_organic_carbon_g_per_kg - 5.448 * bulk_density ^ 2 + 0.044 * soil_organic_carbon_g_per_kg ^ 2 + 1.975 * bulk_density * soil_organic_carbon_g_per_kg
+    - name: sswc_percent
+      expr: 98.813 - 21.555 / bulk_density - 39.735 / silt - 2.091 / sand + 3.247 / soil_organic_carbon_g_per_kg - 17.096 * bulk_density ^ 2
+    output:
+      type: record
+      fields:
+      - name: theta_s
+        expr: sswc_percent / 100.0
+      - name: theta_fc
+        expr: fc_percent / 100.0
+      - name: k_sat
+        expr: k_sat_cm_per_day / 8640000.0
 scientific_notes: "\n# Wang et al. (2012)\n\n## `calc_ptf_wang2012`\n\n### Formula\n\
   \n```text\nSOC_g_per_kg = 10 * soil_organic_carbon\n\nlog10_k_sat_cm_per_day = 1.173\
   \ + 0.038 * silt + 0.690 * log10(sand)\n                       + 0.865 / sand -\
