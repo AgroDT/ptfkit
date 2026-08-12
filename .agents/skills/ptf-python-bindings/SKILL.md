@@ -38,3 +38,5 @@ description: Expose ptfkit Rust core PTF functions to Python through PyO3, matur
   from `source`; do not derive a summary or synthesize a DOI URL.
 - Render module and function territories from their respective scope fields;
   never inherit, override, or combine them.
+- Do not render or write repository-only specification paths in native binding
+  comments, public Python docstrings, or other production package metadata.

@@ -30,6 +30,8 @@
 - [ ] Pure core uses `f64`.
 - [ ] Pure core does not depend on Python, PyO3, or NumPy.
 - [ ] Rust tests compare against golden cases when a Rust test harness exists.
+- [ ] Production Rust comments and documentation do not reference repository-only
+      specification paths.
 
 ## Python API
 
@@ -50,6 +52,8 @@
       without inheritance or combination.
 - [ ] Function docstring lists input and output units.
 - [ ] Result class docs match output fields.
+- [ ] Native bindings, public docstrings, and package metadata do not reference
+      repository-only specification paths.
 
 ## Blocking Findings
 
@@ -62,3 +66,5 @@ Classify as blocking:
 - Output field order mismatch.
 - Public API break without explicit approval.
 - Missing vectorized behavior promised by the spec.
+- Repository-only specification paths exposed by production Rust, native
+  bindings, public docstrings, or package metadata.

@@ -44,6 +44,10 @@ Docstrings must be generated from the validated spec content:
 - argument descriptions and units
 - return descriptions and units
 
+Do not expose repository-only specification paths in generated native bindings,
+public docstrings, or module metadata. Specification files are development
+inputs and are not available in production packages.
+
 ## Compatibility Blocks
 
 Stop and ask before changing:

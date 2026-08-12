@@ -50,6 +50,9 @@ pub fn calc_ptf_example(sand: f64, clay: f64) -> ExampleResult {
 
 Every formula line should be recognizable from the spec. If a formula needs
 algebraic rearrangement for stability, note it in code comments and tests.
+Keep path-level traceability in development artifacts such as tests and PRs.
+Do not place repository-only specification paths in production Rust comments
+or documentation because specifications are not shipped in production packages.
 
 ## Tests
 
