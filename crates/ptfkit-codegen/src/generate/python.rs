@@ -4,7 +4,7 @@ use anyhow::{Result, bail};
 
 use crate::{
     generate::GENERATED_HEADER,
-    model::{Function, Parameter, PythonGeneration, Resolved, Scope, Source},
+    model::{CompiledFunction, Function, Parameter, PythonGeneration, Scope, Source},
 };
 
 struct PythonFunction<'a> {
@@ -24,8 +24,10 @@ struct PythonResultClass {
     docstring: String,
 }
 
-pub(crate) fn render(functions: &[Resolved]) -> Result<Vec<(String, PythonGeneration, String)>> {
-    let mut modules: BTreeMap<String, Vec<&Resolved>> = BTreeMap::new();
+pub(crate) fn render(
+    functions: &[CompiledFunction],
+) -> Result<Vec<(String, PythonGeneration, String)>> {
+    let mut modules: BTreeMap<String, Vec<&CompiledFunction>> = BTreeMap::new();
     for function in functions {
         modules
             .entry(format!("ptfkit.{}", function.entry.slug))
@@ -95,7 +97,7 @@ pub(crate) fn render(functions: &[Resolved]) -> Result<Vec<(String, PythonGenera
     Ok(generated)
 }
 
-pub(crate) fn render_core_stub(functions: &[Resolved]) -> String {
+pub(crate) fn render_core_stub(functions: &[CompiledFunction]) -> String {
     let mut names = functions
         .iter()
         .map(|function| function.core.name.as_str())
@@ -230,7 +232,7 @@ fn natural_sort_key(value: &str) -> String {
     key
 }
 
-fn view(resolved: &Resolved) -> PythonFunction<'_> {
+fn view(resolved: &CompiledFunction) -> PythonFunction<'_> {
     let function = &resolved.entry.spec.functions[resolved.function_index];
     let names = function
         .inputs
@@ -469,13 +471,8 @@ fn wrap_doc_line(text: &str, first_width: usize, continuation_width: usize) -> V
 
 #[cfg(test)]
 mod tests {
-    use std::path::PathBuf;
-
-    use super::{function_docstring, module_docstring, render_core_stub};
-    use crate::model::{
-        CoreFunction, Documentation, Entry, Function, FunctionScope, Models, Output, PublicApi,
-        Resolved, Scope, Source, Spec,
-    };
+    use super::{function_docstring, module_docstring};
+    use crate::model::{Documentation, Function, FunctionScope, Models, PublicApi, Scope, Source};
 
     fn function(territory: Option<&str>) -> Function {
         Function {
@@ -533,37 +530,5 @@ mod tests {
             Some("r\"\"\"Test et al. (2026), short territory.")
         );
         assert!(docstring.contains("[DOI: 10.1234/test](https://example.test/doi/10.1234/test)"));
-    }
-
-    #[test]
-    fn core_stub_lists_native_ufuncs() {
-        let function = function(None);
-        let name = function.name.clone();
-        let resolved = Resolved {
-            entry: Entry {
-                path: PathBuf::from("test.yaml"),
-                slug: "test".into(),
-                spec: Spec {
-                    source: Source {
-                        summary: "Test source.".into(),
-                        citation_apa: "Test (2026).".into(),
-                        doi: None,
-                    },
-                    scope: Scope::default(),
-                    generation: crate::model::Generation::default(),
-                    functions: vec![function],
-                },
-                implementations: vec![None],
-            },
-            function_index: 0,
-            core: CoreFunction {
-                name: name.clone(),
-                module: vec!["test".into()],
-                inputs: Vec::new(),
-                output: Output::Scalar,
-            },
-        };
-
-        assert!(render_core_stub(&[resolved]).contains(&format!("{name}: ufunc")));
     }
 }

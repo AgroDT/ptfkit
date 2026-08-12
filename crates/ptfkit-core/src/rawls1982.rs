@@ -15,6 +15,86 @@ Agricultural soils from 32 states of the USA
 
 1,323 soils with about 5,350 horizons; regression equations used 2,541 horizons."]
 
+#[doc = r"Estimate volumetric water content at -1500 kPa.
+
+# Arguments
+
+  * clay: Clay content. (%)
+  * organic_matter: Organic matter content. (%)
+
+# Returns
+
+  * theta_1500: Volumetric soil water content at -1500 kPa. (cm^3/cm^3)
+
+# Models
+
+  * h(theta): Point estimate at -1500 kPa
+
+# Notes
+
+Prediction target: Volumetric soil water content at -1500 kPa."]
+#[must_use]
+pub fn calc_ptf_rawls1982_theta_1500(clay: f64, organic_matter: f64) -> f64 {
+    ((0.026f64) + ((0.005f64) * (clay))) + ((0.0158f64) * (organic_matter))
+}
+
+#[cfg(test)]
+mod calc_ptf_rawls1982_theta_1500_tests {
+    use super::*;
+    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+        assert!(
+            (actual - expected).abs() <= atol + rtol * expected.abs(),
+            "actual {actual} != expected {expected}"
+        );
+    }
+    #[test]
+    fn loamy_sand() {
+        let result = calc_ptf_rawls1982_theta_1500(5.12f64, 0.1f64);
+        assert_close(result, 0.05318f64, 0.000000000001f64, 0.0000000001f64);
+    }
+}
+
+#[doc = r"Estimate volumetric water content at -33 kPa using measured or estimated theta_1500.
+
+# Arguments
+
+  * sand: Sand content. (%)
+  * organic_matter: Organic matter content. (%)
+  * theta_1500: Measured or estimated volumetric water content at -1500 kPa. (cm^3/cm^3)
+
+# Returns
+
+  * theta_33: Volumetric soil water content at -33 kPa. (cm^3/cm^3)
+
+# Models
+
+  * h(theta): Point estimate at -33 kPa
+
+# Notes
+
+Prediction target: Volumetric soil water content at -33 kPa."]
+#[must_use]
+pub fn calc_ptf_rawls1982_theta_33(sand: f64, organic_matter: f64, theta_1500: f64) -> f64 {
+    (((0.2391f64) - ((0.0019f64) * (sand))) + ((0.021f64) * (organic_matter)))
+        + ((0.72f64) * (theta_1500))
+}
+
+#[cfg(test)]
+mod calc_ptf_rawls1982_theta_33_tests {
+    use super::*;
+    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+        assert!(
+            (actual - expected).abs() <= atol + rtol * expected.abs(),
+            "actual {actual} != expected {expected}"
+        );
+    }
+    #[test]
+    fn loamy_sand_with_estimated_theta_1500() {
+        let result = calc_ptf_rawls1982_theta_33(85f64, 0.1f64, 0.05318f64);
+        assert_close(result, 0.1179896f64, 0.000000000001f64, 0.0000000001f64);
+    }
+}
+
 #[doc = r"Results returned by `calc_ptf_rawls1982_full_wrc`."]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Rawls1982PTFResult {
@@ -208,85 +288,5 @@ mod calc_ptf_rawls1982_full_wrc_tests {
             0.000000000001f64,
             0.0000000001f64,
         );
-    }
-}
-
-#[doc = r"Estimate volumetric water content at -1500 kPa.
-
-# Arguments
-
-  * clay: Clay content. (%)
-  * organic_matter: Organic matter content. (%)
-
-# Returns
-
-  * theta_1500: Volumetric soil water content at -1500 kPa. (cm^3/cm^3)
-
-# Models
-
-  * h(theta): Point estimate at -1500 kPa
-
-# Notes
-
-Prediction target: Volumetric soil water content at -1500 kPa."]
-#[must_use]
-pub fn calc_ptf_rawls1982_theta_1500(clay: f64, organic_matter: f64) -> f64 {
-    ((0.026f64) + ((0.005f64) * (clay))) + ((0.0158f64) * (organic_matter))
-}
-
-#[cfg(test)]
-mod calc_ptf_rawls1982_theta_1500_tests {
-    use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
-    #[test]
-    fn loamy_sand() {
-        let result = calc_ptf_rawls1982_theta_1500(5.12f64, 0.1f64);
-        assert_close(result, 0.05318f64, 0.000000000001f64, 0.0000000001f64);
-    }
-}
-
-#[doc = r"Estimate volumetric water content at -33 kPa using measured or estimated theta_1500.
-
-# Arguments
-
-  * sand: Sand content. (%)
-  * organic_matter: Organic matter content. (%)
-  * theta_1500: Measured or estimated volumetric water content at -1500 kPa. (cm^3/cm^3)
-
-# Returns
-
-  * theta_33: Volumetric soil water content at -33 kPa. (cm^3/cm^3)
-
-# Models
-
-  * h(theta): Point estimate at -33 kPa
-
-# Notes
-
-Prediction target: Volumetric soil water content at -33 kPa."]
-#[must_use]
-pub fn calc_ptf_rawls1982_theta_33(sand: f64, organic_matter: f64, theta_1500: f64) -> f64 {
-    (((0.2391f64) - ((0.0019f64) * (sand))) + ((0.021f64) * (organic_matter)))
-        + ((0.72f64) * (theta_1500))
-}
-
-#[cfg(test)]
-mod calc_ptf_rawls1982_theta_33_tests {
-    use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
-    #[test]
-    fn loamy_sand_with_estimated_theta_1500() {
-        let result = calc_ptf_rawls1982_theta_33(85f64, 0.1f64, 0.05318f64);
-        assert_close(result, 0.1179896f64, 0.000000000001f64, 0.0000000001f64);
     }
 }

@@ -24,16 +24,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, overload
 
 from ptfkit._core import (
-    calc_ptf_pidgeon1972_awc as _calc_ptf_pidgeon1972_awc,
-    calc_ptf_pidgeon1972_awc_coarse_sand as _calc_ptf_pidgeon1972_awc_coarse_sand,
-    calc_ptf_pidgeon1972_awc_fine_sand as _calc_ptf_pidgeon1972_awc_fine_sand,
-    calc_ptf_pidgeon1972_awc_sand_organic_matter as _calc_ptf_pidgeon1972_awc_sand_organic_matter,
-    calc_ptf_pidgeon1972_awc_very_fine_sand as _calc_ptf_pidgeon1972_awc_very_fine_sand,
-    calc_ptf_pidgeon1972_eawc as _calc_ptf_pidgeon1972_eawc,
-    calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter as _calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter,
-    calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter as _calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter,
-    calc_ptf_pidgeon1972_eawc_sand as _calc_ptf_pidgeon1972_eawc_sand,
-    calc_ptf_pidgeon1972_eawc_sand_organic_matter as _calc_ptf_pidgeon1972_eawc_sand_organic_matter,
     calc_ptf_pidgeon1972_fc as _calc_ptf_pidgeon1972_fc,
     calc_ptf_pidgeon1972_fc_sand as _calc_ptf_pidgeon1972_fc_sand,
     calc_ptf_pidgeon1972_fc_sand_organic_matter as _calc_ptf_pidgeon1972_fc_sand_organic_matter,
@@ -41,6 +31,16 @@ from ptfkit._core import (
     calc_ptf_pidgeon1972_pwp as _calc_ptf_pidgeon1972_pwp,
     calc_ptf_pidgeon1972_pwp_sand as _calc_ptf_pidgeon1972_pwp_sand,
     calc_ptf_pidgeon1972_pwp_sand_organic_matter as _calc_ptf_pidgeon1972_pwp_sand_organic_matter,
+    calc_ptf_pidgeon1972_awc as _calc_ptf_pidgeon1972_awc,
+    calc_ptf_pidgeon1972_awc_sand_organic_matter as _calc_ptf_pidgeon1972_awc_sand_organic_matter,
+    calc_ptf_pidgeon1972_awc_coarse_sand as _calc_ptf_pidgeon1972_awc_coarse_sand,
+    calc_ptf_pidgeon1972_awc_fine_sand as _calc_ptf_pidgeon1972_awc_fine_sand,
+    calc_ptf_pidgeon1972_awc_very_fine_sand as _calc_ptf_pidgeon1972_awc_very_fine_sand,
+    calc_ptf_pidgeon1972_eawc as _calc_ptf_pidgeon1972_eawc,
+    calc_ptf_pidgeon1972_eawc_sand as _calc_ptf_pidgeon1972_eawc_sand,
+    calc_ptf_pidgeon1972_eawc_sand_organic_matter as _calc_ptf_pidgeon1972_eawc_sand_organic_matter,
+    calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter as _calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter,
+    calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter as _calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter,
 )
 
 
@@ -67,449 +67,6 @@ __all__ = [
     'calc_ptf_pidgeon1972_pwp_sand',
     'calc_ptf_pidgeon1972_pwp_sand_organic_matter',
 ]
-
-
-@overload
-def calc_ptf_pidgeon1972_awc(*, clay: float, organic_matter: float) -> floating: ...
-
-
-@overload
-def calc_ptf_pidgeon1972_awc(
-    *,
-    clay: ArrayLike,
-    organic_matter: ArrayLike,
-    out: NDArray[floating] | None = None,
-) -> NDArray[floating]: ...
-
-
-def calc_ptf_pidgeon1972_awc(
-    *,
-    clay: float | ArrayLike,
-    organic_matter: float | ArrayLike,
-    out: NDArray[floating] | None = None,
-) -> floating | NDArray[floating]:
-    r"""Estimate available water capacity from clay and organic matter.
-
-    Arguments:
-        clay: Clay measured by particle-size method 1. (%)
-        organic_matter: Organic matter content. (%)
-        out: Optional output arrays for in-place calculation.
-
-    Returns:
-        available_water_capacity: Available water capacity. (mm/m)
-
-    Models:
-        $h(\theta)$: Available-water estimate
-
-    Notes:
-        Prediction target: Available water capacity
-
-    """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_awc(clay, organic_matter)
-    else:
-        values = _calc_ptf_pidgeon1972_awc(clay, organic_matter, out=out)
-
-    return values
-
-
-@overload
-def calc_ptf_pidgeon1972_awc_coarse_sand(*, coarse_sand: float) -> floating: ...
-
-
-@overload
-def calc_ptf_pidgeon1972_awc_coarse_sand(
-    *,
-    coarse_sand: ArrayLike,
-    out: NDArray[floating] | None = None,
-) -> NDArray[floating]: ...
-
-
-def calc_ptf_pidgeon1972_awc_coarse_sand(
-    *,
-    coarse_sand: float | ArrayLike,
-    out: NDArray[floating] | None = None,
-) -> floating | NDArray[floating]:
-    r"""Estimate available water capacity from coarse sand.
-
-    Arguments:
-        coarse_sand: Coarse sand measured by particle-size method 1. (%)
-        out: Optional output arrays for in-place calculation.
-
-    Returns:
-        available_water_capacity: Available water capacity. (mm/m)
-
-    Models:
-        $h(\theta)$: Available-water estimate
-
-    Notes:
-        Prediction target: Available water capacity
-
-    """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_awc_coarse_sand(coarse_sand)
-    else:
-        values = _calc_ptf_pidgeon1972_awc_coarse_sand(coarse_sand, out=out)
-
-    return values
-
-
-@overload
-def calc_ptf_pidgeon1972_awc_fine_sand(*, fine_sand: float) -> floating: ...
-
-
-@overload
-def calc_ptf_pidgeon1972_awc_fine_sand(
-    *,
-    fine_sand: ArrayLike,
-    out: NDArray[floating] | None = None,
-) -> NDArray[floating]: ...
-
-
-def calc_ptf_pidgeon1972_awc_fine_sand(
-    *,
-    fine_sand: float | ArrayLike,
-    out: NDArray[floating] | None = None,
-) -> floating | NDArray[floating]:
-    r"""Estimate available water capacity from fine sand.
-
-    Arguments:
-        fine_sand: Fine sand measured by particle-size method 1. (%)
-        out: Optional output arrays for in-place calculation.
-
-    Returns:
-        available_water_capacity: Available water capacity. (mm/m)
-
-    Models:
-        $h(\theta)$: Available-water estimate
-
-    Notes:
-        Prediction target: Available water capacity
-
-    """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_awc_fine_sand(fine_sand)
-    else:
-        values = _calc_ptf_pidgeon1972_awc_fine_sand(fine_sand, out=out)
-
-    return values
-
-
-@overload
-def calc_ptf_pidgeon1972_awc_sand_organic_matter(
-    *, sand: float, organic_matter: float
-) -> floating: ...
-
-
-@overload
-def calc_ptf_pidgeon1972_awc_sand_organic_matter(
-    *,
-    sand: ArrayLike,
-    organic_matter: ArrayLike,
-    out: NDArray[floating] | None = None,
-) -> NDArray[floating]: ...
-
-
-def calc_ptf_pidgeon1972_awc_sand_organic_matter(
-    *,
-    sand: float | ArrayLike,
-    organic_matter: float | ArrayLike,
-    out: NDArray[floating] | None = None,
-) -> floating | NDArray[floating]:
-    r"""Estimate available water capacity from sand and organic matter.
-
-    Arguments:
-        sand: Sand measured by particle-size method 2. (%)
-        organic_matter: Organic matter content. (%)
-        out: Optional output arrays for in-place calculation.
-
-    Returns:
-        available_water_capacity: Available water capacity. (mm/m)
-
-    Models:
-        $h(\theta)$: Available-water estimate
-
-    Notes:
-        Prediction target: Available water capacity
-
-    """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_awc_sand_organic_matter(sand, organic_matter)
-    else:
-        values = _calc_ptf_pidgeon1972_awc_sand_organic_matter(sand, organic_matter, out=out)
-
-    return values
-
-
-@overload
-def calc_ptf_pidgeon1972_awc_very_fine_sand(*, very_fine_sand: float) -> floating: ...
-
-
-@overload
-def calc_ptf_pidgeon1972_awc_very_fine_sand(
-    *,
-    very_fine_sand: ArrayLike,
-    out: NDArray[floating] | None = None,
-) -> NDArray[floating]: ...
-
-
-def calc_ptf_pidgeon1972_awc_very_fine_sand(
-    *,
-    very_fine_sand: float | ArrayLike,
-    out: NDArray[floating] | None = None,
-) -> floating | NDArray[floating]:
-    r"""Estimate available water capacity from very fine sand.
-
-    Arguments:
-        very_fine_sand: Very fine sand measured by particle-size method 1. (%)
-        out: Optional output arrays for in-place calculation.
-
-    Returns:
-        available_water_capacity: Available water capacity. (mm/m)
-
-    Models:
-        $h(\theta)$: Available-water estimate
-
-    Notes:
-        Prediction target: Available water capacity
-
-    """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_awc_very_fine_sand(very_fine_sand)
-    else:
-        values = _calc_ptf_pidgeon1972_awc_very_fine_sand(very_fine_sand, out=out)
-
-    return values
-
-
-@overload
-def calc_ptf_pidgeon1972_eawc(*, silt: float, clay: float, organic_matter: float) -> floating: ...
-
-
-@overload
-def calc_ptf_pidgeon1972_eawc(
-    *,
-    silt: ArrayLike,
-    clay: ArrayLike,
-    organic_matter: ArrayLike,
-    out: NDArray[floating] | None = None,
-) -> NDArray[floating]: ...
-
-
-def calc_ptf_pidgeon1972_eawc(
-    *,
-    silt: float | ArrayLike,
-    clay: float | ArrayLike,
-    organic_matter: float | ArrayLike,
-    out: NDArray[floating] | None = None,
-) -> floating | NDArray[floating]:
-    r"""Estimate extended available water capacity from silt, clay, and organic matter.
-
-    Arguments:
-        silt: Silt measured by particle-size method 2. (%)
-        clay: Clay measured by particle-size method 2. (%)
-        organic_matter: Organic matter content. (%)
-        out: Optional output arrays for in-place calculation.
-
-    Returns:
-        extended_available_water_capacity: Extended available water capacity. (mm/m)
-
-    Models:
-        $h(\theta)$: Available-water estimate
-
-    Notes:
-        Prediction target: Extended available water capacity
-
-    """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_eawc(silt, clay, organic_matter)
-    else:
-        values = _calc_ptf_pidgeon1972_eawc(silt, clay, organic_matter, out=out)
-
-    return values
-
-
-@overload
-def calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(
-    *, coarse_sand: float, organic_matter: float
-) -> floating: ...
-
-
-@overload
-def calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(
-    *,
-    coarse_sand: ArrayLike,
-    organic_matter: ArrayLike,
-    out: NDArray[floating] | None = None,
-) -> NDArray[floating]: ...
-
-
-def calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(
-    *,
-    coarse_sand: float | ArrayLike,
-    organic_matter: float | ArrayLike,
-    out: NDArray[floating] | None = None,
-) -> floating | NDArray[floating]:
-    r"""Estimate extended available water capacity from coarse sand and organic matter.
-
-    Arguments:
-        coarse_sand: Coarse sand measured by particle-size method 1. (%)
-        organic_matter: Organic matter content. (%)
-        out: Optional output arrays for in-place calculation.
-
-    Returns:
-        extended_available_water_capacity: Extended available water capacity. (mm/m)
-
-    Models:
-        $h(\theta)$: Available-water estimate
-
-    Notes:
-        Prediction target: Extended available water capacity
-
-    """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(coarse_sand, organic_matter)
-    else:
-        values = _calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(
-            coarse_sand, organic_matter, out=out
-        )
-
-    return values
-
-
-@overload
-def calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(
-    *, fine_sand: float, organic_matter: float
-) -> floating: ...
-
-
-@overload
-def calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(
-    *,
-    fine_sand: ArrayLike,
-    organic_matter: ArrayLike,
-    out: NDArray[floating] | None = None,
-) -> NDArray[floating]: ...
-
-
-def calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(
-    *,
-    fine_sand: float | ArrayLike,
-    organic_matter: float | ArrayLike,
-    out: NDArray[floating] | None = None,
-) -> floating | NDArray[floating]:
-    r"""Estimate extended available water capacity from fine sand and organic matter.
-
-    Arguments:
-        fine_sand: Fine sand measured by particle-size method 1. (%)
-        organic_matter: Organic matter content. (%)
-        out: Optional output arrays for in-place calculation.
-
-    Returns:
-        extended_available_water_capacity: Extended available water capacity. (mm/m)
-
-    Models:
-        $h(\theta)$: Available-water estimate
-
-    Notes:
-        Prediction target: Extended available water capacity
-
-    """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(fine_sand, organic_matter)
-    else:
-        values = _calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(
-            fine_sand, organic_matter, out=out
-        )
-
-    return values
-
-
-@overload
-def calc_ptf_pidgeon1972_eawc_sand(*, sand: float) -> floating: ...
-
-
-@overload
-def calc_ptf_pidgeon1972_eawc_sand(
-    *,
-    sand: ArrayLike,
-    out: NDArray[floating] | None = None,
-) -> NDArray[floating]: ...
-
-
-def calc_ptf_pidgeon1972_eawc_sand(
-    *,
-    sand: float | ArrayLike,
-    out: NDArray[floating] | None = None,
-) -> floating | NDArray[floating]:
-    r"""Estimate extended available water capacity from sand.
-
-    Arguments:
-        sand: Sand measured by particle-size method 2. (%)
-        out: Optional output arrays for in-place calculation.
-
-    Returns:
-        extended_available_water_capacity: Extended available water capacity. (mm/m)
-
-    Models:
-        $h(\theta)$: Available-water estimate
-
-    Notes:
-        Prediction target: Extended available water capacity
-
-    """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_eawc_sand(sand)
-    else:
-        values = _calc_ptf_pidgeon1972_eawc_sand(sand, out=out)
-
-    return values
-
-
-@overload
-def calc_ptf_pidgeon1972_eawc_sand_organic_matter(
-    *, sand: float, organic_matter: float
-) -> floating: ...
-
-
-@overload
-def calc_ptf_pidgeon1972_eawc_sand_organic_matter(
-    *,
-    sand: ArrayLike,
-    organic_matter: ArrayLike,
-    out: NDArray[floating] | None = None,
-) -> NDArray[floating]: ...
-
-
-def calc_ptf_pidgeon1972_eawc_sand_organic_matter(
-    *,
-    sand: float | ArrayLike,
-    organic_matter: float | ArrayLike,
-    out: NDArray[floating] | None = None,
-) -> floating | NDArray[floating]:
-    r"""Estimate extended available water capacity from sand and organic matter.
-
-    Arguments:
-        sand: Sand measured by particle-size method 1. (%)
-        organic_matter: Organic matter content. (%)
-        out: Optional output arrays for in-place calculation.
-
-    Returns:
-        extended_available_water_capacity: Extended available water capacity. (mm/m)
-
-    Models:
-        $h(\theta)$: Available-water estimate
-
-    Notes:
-        Prediction target: Extended available water capacity
-
-    """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_eawc_sand_organic_matter(sand, organic_matter)
-    else:
-        values = _calc_ptf_pidgeon1972_eawc_sand_organic_matter(sand, organic_matter, out=out)
-
-    return values
 
 
 @overload
@@ -823,5 +380,448 @@ def calc_ptf_pidgeon1972_pwp_sand_organic_matter(
         values = _calc_ptf_pidgeon1972_pwp_sand_organic_matter(sand, organic_matter)
     else:
         values = _calc_ptf_pidgeon1972_pwp_sand_organic_matter(sand, organic_matter, out=out)
+
+    return values
+
+
+@overload
+def calc_ptf_pidgeon1972_awc(*, clay: float, organic_matter: float) -> floating: ...
+
+
+@overload
+def calc_ptf_pidgeon1972_awc(
+    *,
+    clay: ArrayLike,
+    organic_matter: ArrayLike,
+    out: NDArray[floating] | None = None,
+) -> NDArray[floating]: ...
+
+
+def calc_ptf_pidgeon1972_awc(
+    *,
+    clay: float | ArrayLike,
+    organic_matter: float | ArrayLike,
+    out: NDArray[floating] | None = None,
+) -> floating | NDArray[floating]:
+    r"""Estimate available water capacity from clay and organic matter.
+
+    Arguments:
+        clay: Clay measured by particle-size method 1. (%)
+        organic_matter: Organic matter content. (%)
+        out: Optional output arrays for in-place calculation.
+
+    Returns:
+        available_water_capacity: Available water capacity. (mm/m)
+
+    Models:
+        $h(\theta)$: Available-water estimate
+
+    Notes:
+        Prediction target: Available water capacity
+
+    """
+    if out is None:
+        values = _calc_ptf_pidgeon1972_awc(clay, organic_matter)
+    else:
+        values = _calc_ptf_pidgeon1972_awc(clay, organic_matter, out=out)
+
+    return values
+
+
+@overload
+def calc_ptf_pidgeon1972_awc_sand_organic_matter(
+    *, sand: float, organic_matter: float
+) -> floating: ...
+
+
+@overload
+def calc_ptf_pidgeon1972_awc_sand_organic_matter(
+    *,
+    sand: ArrayLike,
+    organic_matter: ArrayLike,
+    out: NDArray[floating] | None = None,
+) -> NDArray[floating]: ...
+
+
+def calc_ptf_pidgeon1972_awc_sand_organic_matter(
+    *,
+    sand: float | ArrayLike,
+    organic_matter: float | ArrayLike,
+    out: NDArray[floating] | None = None,
+) -> floating | NDArray[floating]:
+    r"""Estimate available water capacity from sand and organic matter.
+
+    Arguments:
+        sand: Sand measured by particle-size method 2. (%)
+        organic_matter: Organic matter content. (%)
+        out: Optional output arrays for in-place calculation.
+
+    Returns:
+        available_water_capacity: Available water capacity. (mm/m)
+
+    Models:
+        $h(\theta)$: Available-water estimate
+
+    Notes:
+        Prediction target: Available water capacity
+
+    """
+    if out is None:
+        values = _calc_ptf_pidgeon1972_awc_sand_organic_matter(sand, organic_matter)
+    else:
+        values = _calc_ptf_pidgeon1972_awc_sand_organic_matter(sand, organic_matter, out=out)
+
+    return values
+
+
+@overload
+def calc_ptf_pidgeon1972_awc_coarse_sand(*, coarse_sand: float) -> floating: ...
+
+
+@overload
+def calc_ptf_pidgeon1972_awc_coarse_sand(
+    *,
+    coarse_sand: ArrayLike,
+    out: NDArray[floating] | None = None,
+) -> NDArray[floating]: ...
+
+
+def calc_ptf_pidgeon1972_awc_coarse_sand(
+    *,
+    coarse_sand: float | ArrayLike,
+    out: NDArray[floating] | None = None,
+) -> floating | NDArray[floating]:
+    r"""Estimate available water capacity from coarse sand.
+
+    Arguments:
+        coarse_sand: Coarse sand measured by particle-size method 1. (%)
+        out: Optional output arrays for in-place calculation.
+
+    Returns:
+        available_water_capacity: Available water capacity. (mm/m)
+
+    Models:
+        $h(\theta)$: Available-water estimate
+
+    Notes:
+        Prediction target: Available water capacity
+
+    """
+    if out is None:
+        values = _calc_ptf_pidgeon1972_awc_coarse_sand(coarse_sand)
+    else:
+        values = _calc_ptf_pidgeon1972_awc_coarse_sand(coarse_sand, out=out)
+
+    return values
+
+
+@overload
+def calc_ptf_pidgeon1972_awc_fine_sand(*, fine_sand: float) -> floating: ...
+
+
+@overload
+def calc_ptf_pidgeon1972_awc_fine_sand(
+    *,
+    fine_sand: ArrayLike,
+    out: NDArray[floating] | None = None,
+) -> NDArray[floating]: ...
+
+
+def calc_ptf_pidgeon1972_awc_fine_sand(
+    *,
+    fine_sand: float | ArrayLike,
+    out: NDArray[floating] | None = None,
+) -> floating | NDArray[floating]:
+    r"""Estimate available water capacity from fine sand.
+
+    Arguments:
+        fine_sand: Fine sand measured by particle-size method 1. (%)
+        out: Optional output arrays for in-place calculation.
+
+    Returns:
+        available_water_capacity: Available water capacity. (mm/m)
+
+    Models:
+        $h(\theta)$: Available-water estimate
+
+    Notes:
+        Prediction target: Available water capacity
+
+    """
+    if out is None:
+        values = _calc_ptf_pidgeon1972_awc_fine_sand(fine_sand)
+    else:
+        values = _calc_ptf_pidgeon1972_awc_fine_sand(fine_sand, out=out)
+
+    return values
+
+
+@overload
+def calc_ptf_pidgeon1972_awc_very_fine_sand(*, very_fine_sand: float) -> floating: ...
+
+
+@overload
+def calc_ptf_pidgeon1972_awc_very_fine_sand(
+    *,
+    very_fine_sand: ArrayLike,
+    out: NDArray[floating] | None = None,
+) -> NDArray[floating]: ...
+
+
+def calc_ptf_pidgeon1972_awc_very_fine_sand(
+    *,
+    very_fine_sand: float | ArrayLike,
+    out: NDArray[floating] | None = None,
+) -> floating | NDArray[floating]:
+    r"""Estimate available water capacity from very fine sand.
+
+    Arguments:
+        very_fine_sand: Very fine sand measured by particle-size method 1. (%)
+        out: Optional output arrays for in-place calculation.
+
+    Returns:
+        available_water_capacity: Available water capacity. (mm/m)
+
+    Models:
+        $h(\theta)$: Available-water estimate
+
+    Notes:
+        Prediction target: Available water capacity
+
+    """
+    if out is None:
+        values = _calc_ptf_pidgeon1972_awc_very_fine_sand(very_fine_sand)
+    else:
+        values = _calc_ptf_pidgeon1972_awc_very_fine_sand(very_fine_sand, out=out)
+
+    return values
+
+
+@overload
+def calc_ptf_pidgeon1972_eawc(*, silt: float, clay: float, organic_matter: float) -> floating: ...
+
+
+@overload
+def calc_ptf_pidgeon1972_eawc(
+    *,
+    silt: ArrayLike,
+    clay: ArrayLike,
+    organic_matter: ArrayLike,
+    out: NDArray[floating] | None = None,
+) -> NDArray[floating]: ...
+
+
+def calc_ptf_pidgeon1972_eawc(
+    *,
+    silt: float | ArrayLike,
+    clay: float | ArrayLike,
+    organic_matter: float | ArrayLike,
+    out: NDArray[floating] | None = None,
+) -> floating | NDArray[floating]:
+    r"""Estimate extended available water capacity from silt, clay, and organic matter.
+
+    Arguments:
+        silt: Silt measured by particle-size method 2. (%)
+        clay: Clay measured by particle-size method 2. (%)
+        organic_matter: Organic matter content. (%)
+        out: Optional output arrays for in-place calculation.
+
+    Returns:
+        extended_available_water_capacity: Extended available water capacity. (mm/m)
+
+    Models:
+        $h(\theta)$: Available-water estimate
+
+    Notes:
+        Prediction target: Extended available water capacity
+
+    """
+    if out is None:
+        values = _calc_ptf_pidgeon1972_eawc(silt, clay, organic_matter)
+    else:
+        values = _calc_ptf_pidgeon1972_eawc(silt, clay, organic_matter, out=out)
+
+    return values
+
+
+@overload
+def calc_ptf_pidgeon1972_eawc_sand(*, sand: float) -> floating: ...
+
+
+@overload
+def calc_ptf_pidgeon1972_eawc_sand(
+    *,
+    sand: ArrayLike,
+    out: NDArray[floating] | None = None,
+) -> NDArray[floating]: ...
+
+
+def calc_ptf_pidgeon1972_eawc_sand(
+    *,
+    sand: float | ArrayLike,
+    out: NDArray[floating] | None = None,
+) -> floating | NDArray[floating]:
+    r"""Estimate extended available water capacity from sand.
+
+    Arguments:
+        sand: Sand measured by particle-size method 2. (%)
+        out: Optional output arrays for in-place calculation.
+
+    Returns:
+        extended_available_water_capacity: Extended available water capacity. (mm/m)
+
+    Models:
+        $h(\theta)$: Available-water estimate
+
+    Notes:
+        Prediction target: Extended available water capacity
+
+    """
+    if out is None:
+        values = _calc_ptf_pidgeon1972_eawc_sand(sand)
+    else:
+        values = _calc_ptf_pidgeon1972_eawc_sand(sand, out=out)
+
+    return values
+
+
+@overload
+def calc_ptf_pidgeon1972_eawc_sand_organic_matter(
+    *, sand: float, organic_matter: float
+) -> floating: ...
+
+
+@overload
+def calc_ptf_pidgeon1972_eawc_sand_organic_matter(
+    *,
+    sand: ArrayLike,
+    organic_matter: ArrayLike,
+    out: NDArray[floating] | None = None,
+) -> NDArray[floating]: ...
+
+
+def calc_ptf_pidgeon1972_eawc_sand_organic_matter(
+    *,
+    sand: float | ArrayLike,
+    organic_matter: float | ArrayLike,
+    out: NDArray[floating] | None = None,
+) -> floating | NDArray[floating]:
+    r"""Estimate extended available water capacity from sand and organic matter.
+
+    Arguments:
+        sand: Sand measured by particle-size method 1. (%)
+        organic_matter: Organic matter content. (%)
+        out: Optional output arrays for in-place calculation.
+
+    Returns:
+        extended_available_water_capacity: Extended available water capacity. (mm/m)
+
+    Models:
+        $h(\theta)$: Available-water estimate
+
+    Notes:
+        Prediction target: Extended available water capacity
+
+    """
+    if out is None:
+        values = _calc_ptf_pidgeon1972_eawc_sand_organic_matter(sand, organic_matter)
+    else:
+        values = _calc_ptf_pidgeon1972_eawc_sand_organic_matter(sand, organic_matter, out=out)
+
+    return values
+
+
+@overload
+def calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(
+    *, coarse_sand: float, organic_matter: float
+) -> floating: ...
+
+
+@overload
+def calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(
+    *,
+    coarse_sand: ArrayLike,
+    organic_matter: ArrayLike,
+    out: NDArray[floating] | None = None,
+) -> NDArray[floating]: ...
+
+
+def calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(
+    *,
+    coarse_sand: float | ArrayLike,
+    organic_matter: float | ArrayLike,
+    out: NDArray[floating] | None = None,
+) -> floating | NDArray[floating]:
+    r"""Estimate extended available water capacity from coarse sand and organic matter.
+
+    Arguments:
+        coarse_sand: Coarse sand measured by particle-size method 1. (%)
+        organic_matter: Organic matter content. (%)
+        out: Optional output arrays for in-place calculation.
+
+    Returns:
+        extended_available_water_capacity: Extended available water capacity. (mm/m)
+
+    Models:
+        $h(\theta)$: Available-water estimate
+
+    Notes:
+        Prediction target: Extended available water capacity
+
+    """
+    if out is None:
+        values = _calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(coarse_sand, organic_matter)
+    else:
+        values = _calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(
+            coarse_sand, organic_matter, out=out
+        )
+
+    return values
+
+
+@overload
+def calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(
+    *, fine_sand: float, organic_matter: float
+) -> floating: ...
+
+
+@overload
+def calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(
+    *,
+    fine_sand: ArrayLike,
+    organic_matter: ArrayLike,
+    out: NDArray[floating] | None = None,
+) -> NDArray[floating]: ...
+
+
+def calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(
+    *,
+    fine_sand: float | ArrayLike,
+    organic_matter: float | ArrayLike,
+    out: NDArray[floating] | None = None,
+) -> floating | NDArray[floating]:
+    r"""Estimate extended available water capacity from fine sand and organic matter.
+
+    Arguments:
+        fine_sand: Fine sand measured by particle-size method 1. (%)
+        organic_matter: Organic matter content. (%)
+        out: Optional output arrays for in-place calculation.
+
+    Returns:
+        extended_available_water_capacity: Extended available water capacity. (mm/m)
+
+    Models:
+        $h(\theta)$: Available-water estimate
+
+    Notes:
+        Prediction target: Extended available water capacity
+
+    """
+    if out is None:
+        values = _calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(fine_sand, organic_matter)
+    else:
+        values = _calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(
+            fine_sand, organic_matter, out=out
+        )
 
     return values

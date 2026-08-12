@@ -27,17 +27,17 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Generic, NamedTuple, TypeVar, overload
 
 from ptfkit._core import (
-    calc_ptf_beniaich2023_mlr1 as _calc_ptf_beniaich2023_mlr1,
-    calc_ptf_beniaich2023_mlr2 as _calc_ptf_beniaich2023_mlr2,
-    calc_ptf_beniaich2023_mlr3 as _calc_ptf_beniaich2023_mlr3,
-    calc_ptf_beniaich2023_mlr4 as _calc_ptf_beniaich2023_mlr4,
-    calc_ptf_beniaich2023_mlr5 as _calc_ptf_beniaich2023_mlr5,
     calc_ptf_beniaich2023_slr1 as _calc_ptf_beniaich2023_slr1,
     calc_ptf_beniaich2023_slr2 as _calc_ptf_beniaich2023_slr2,
     calc_ptf_beniaich2023_slr3 as _calc_ptf_beniaich2023_slr3,
     calc_ptf_beniaich2023_slr4 as _calc_ptf_beniaich2023_slr4,
     calc_ptf_beniaich2023_slr5 as _calc_ptf_beniaich2023_slr5,
     calc_ptf_beniaich2023_slr6 as _calc_ptf_beniaich2023_slr6,
+    calc_ptf_beniaich2023_mlr1 as _calc_ptf_beniaich2023_mlr1,
+    calc_ptf_beniaich2023_mlr2 as _calc_ptf_beniaich2023_mlr2,
+    calc_ptf_beniaich2023_mlr3 as _calc_ptf_beniaich2023_mlr3,
+    calc_ptf_beniaich2023_mlr4 as _calc_ptf_beniaich2023_mlr4,
+    calc_ptf_beniaich2023_mlr5 as _calc_ptf_beniaich2023_mlr5,
 )
 
 
@@ -77,267 +77,6 @@ __all__ = [
     'calc_ptf_beniaich2023_slr5',
     'calc_ptf_beniaich2023_slr6',
 ]
-
-
-@overload
-def calc_ptf_beniaich2023_mlr1(
-    *, silt: float, sand: float, soil_organic_matter: float
-) -> Beniaich2023PTFResult[floating]: ...
-
-
-@overload
-def calc_ptf_beniaich2023_mlr1(
-    *,
-    silt: ArrayLike,
-    sand: ArrayLike,
-    soil_organic_matter: ArrayLike,
-    out: Beniaich2023PTFResult[NDArray[floating]] | None = None,
-) -> Beniaich2023PTFResult[NDArray[floating]]: ...
-
-
-def calc_ptf_beniaich2023_mlr1(
-    *,
-    silt: float | ArrayLike,
-    sand: float | ArrayLike,
-    soil_organic_matter: float | ArrayLike,
-    out: Beniaich2023PTFResult[NDArray[floating]] | None = None,
-) -> Beniaich2023PTFResult[floating] | Beniaich2023PTFResult[NDArray[floating]]:
-    r"""Estimate three gravimetric water contents from silt, sand, and organic matter.
-
-    Arguments:
-        silt: Silt content by mass. (%)
-        sand: Sand content by mass. (%)
-        soil_organic_matter: Soil organic matter content by mass. (%)
-        out: Optional output arrays for in-place calculation.
-
-    Returns:
-        Beniaich2023PTFResult: Results grouped by result attributes.
-
-    Models:
-        $h(\theta)$: Three point estimates
-
-    Notes:
-        Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
-        Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
-
-    Warnings:
-        Developed from Moroccan agricultural topsoils and not independently validated outside the
-            source territory.
-
-    """
-    if out is None:
-        values = _calc_ptf_beniaich2023_mlr1(silt, sand, soil_organic_matter)
-    else:
-        values = _calc_ptf_beniaich2023_mlr1(silt, sand, soil_organic_matter, out=tuple(out))
-
-    return Beniaich2023PTFResult(*values)
-
-
-@overload
-def calc_ptf_beniaich2023_mlr2(
-    *, sand: float, soil_organic_matter: float
-) -> Beniaich2023PTFResult[floating]: ...
-
-
-@overload
-def calc_ptf_beniaich2023_mlr2(
-    *,
-    sand: ArrayLike,
-    soil_organic_matter: ArrayLike,
-    out: Beniaich2023PTFResult[NDArray[floating]] | None = None,
-) -> Beniaich2023PTFResult[NDArray[floating]]: ...
-
-
-def calc_ptf_beniaich2023_mlr2(
-    *,
-    sand: float | ArrayLike,
-    soil_organic_matter: float | ArrayLike,
-    out: Beniaich2023PTFResult[NDArray[floating]] | None = None,
-) -> Beniaich2023PTFResult[floating] | Beniaich2023PTFResult[NDArray[floating]]:
-    r"""Estimate three gravimetric water contents from sand and organic matter.
-
-    Arguments:
-        sand: Sand content by mass. (%)
-        soil_organic_matter: Soil organic matter content by mass. (%)
-        out: Optional output arrays for in-place calculation.
-
-    Returns:
-        Beniaich2023PTFResult: Results grouped by result attributes.
-
-    Models:
-        $h(\theta)$: Three point estimates
-
-    Notes:
-        Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
-        Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
-
-    Warnings:
-        Developed from Moroccan agricultural topsoils and not independently validated outside the
-            source territory.
-
-    """
-    if out is None:
-        values = _calc_ptf_beniaich2023_mlr2(sand, soil_organic_matter)
-    else:
-        values = _calc_ptf_beniaich2023_mlr2(sand, soil_organic_matter, out=tuple(out))
-
-    return Beniaich2023PTFResult(*values)
-
-
-@overload
-def calc_ptf_beniaich2023_mlr3(
-    *, silt: float, soil_organic_matter: float
-) -> Beniaich2023PTFResult[floating]: ...
-
-
-@overload
-def calc_ptf_beniaich2023_mlr3(
-    *,
-    silt: ArrayLike,
-    soil_organic_matter: ArrayLike,
-    out: Beniaich2023PTFResult[NDArray[floating]] | None = None,
-) -> Beniaich2023PTFResult[NDArray[floating]]: ...
-
-
-def calc_ptf_beniaich2023_mlr3(
-    *,
-    silt: float | ArrayLike,
-    soil_organic_matter: float | ArrayLike,
-    out: Beniaich2023PTFResult[NDArray[floating]] | None = None,
-) -> Beniaich2023PTFResult[floating] | Beniaich2023PTFResult[NDArray[floating]]:
-    r"""Estimate three gravimetric water contents from silt and organic matter.
-
-    Arguments:
-        silt: Silt content by mass. (%)
-        soil_organic_matter: Soil organic matter content by mass. (%)
-        out: Optional output arrays for in-place calculation.
-
-    Returns:
-        Beniaich2023PTFResult: Results grouped by result attributes.
-
-    Models:
-        $h(\theta)$: Three point estimates
-
-    Notes:
-        Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
-        Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
-
-    Warnings:
-        Developed from Moroccan agricultural topsoils and not independently validated outside the
-            source territory.
-
-    """
-    if out is None:
-        values = _calc_ptf_beniaich2023_mlr3(silt, soil_organic_matter)
-    else:
-        values = _calc_ptf_beniaich2023_mlr3(silt, soil_organic_matter, out=tuple(out))
-
-    return Beniaich2023PTFResult(*values)
-
-
-@overload
-def calc_ptf_beniaich2023_mlr4(
-    *, clay: float, soil_organic_matter: float
-) -> Beniaich2023PTFResult[floating]: ...
-
-
-@overload
-def calc_ptf_beniaich2023_mlr4(
-    *,
-    clay: ArrayLike,
-    soil_organic_matter: ArrayLike,
-    out: Beniaich2023PTFResult[NDArray[floating]] | None = None,
-) -> Beniaich2023PTFResult[NDArray[floating]]: ...
-
-
-def calc_ptf_beniaich2023_mlr4(
-    *,
-    clay: float | ArrayLike,
-    soil_organic_matter: float | ArrayLike,
-    out: Beniaich2023PTFResult[NDArray[floating]] | None = None,
-) -> Beniaich2023PTFResult[floating] | Beniaich2023PTFResult[NDArray[floating]]:
-    r"""Estimate three gravimetric water contents from clay and organic matter.
-
-    Arguments:
-        clay: Clay content by mass. (%)
-        soil_organic_matter: Soil organic matter content by mass. (%)
-        out: Optional output arrays for in-place calculation.
-
-    Returns:
-        Beniaich2023PTFResult: Results grouped by result attributes.
-
-    Models:
-        $h(\theta)$: Three point estimates
-
-    Notes:
-        Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
-        Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
-
-    Warnings:
-        Developed from Moroccan agricultural topsoils and not independently validated outside the
-            source territory.
-
-    """
-    if out is None:
-        values = _calc_ptf_beniaich2023_mlr4(clay, soil_organic_matter)
-    else:
-        values = _calc_ptf_beniaich2023_mlr4(clay, soil_organic_matter, out=tuple(out))
-
-    return Beniaich2023PTFResult(*values)
-
-
-@overload
-def calc_ptf_beniaich2023_mlr5(
-    *, clay: float, silt: float, soil_organic_matter: float
-) -> Beniaich2023PTFResult[floating]: ...
-
-
-@overload
-def calc_ptf_beniaich2023_mlr5(
-    *,
-    clay: ArrayLike,
-    silt: ArrayLike,
-    soil_organic_matter: ArrayLike,
-    out: Beniaich2023PTFResult[NDArray[floating]] | None = None,
-) -> Beniaich2023PTFResult[NDArray[floating]]: ...
-
-
-def calc_ptf_beniaich2023_mlr5(
-    *,
-    clay: float | ArrayLike,
-    silt: float | ArrayLike,
-    soil_organic_matter: float | ArrayLike,
-    out: Beniaich2023PTFResult[NDArray[floating]] | None = None,
-) -> Beniaich2023PTFResult[floating] | Beniaich2023PTFResult[NDArray[floating]]:
-    r"""Estimate three gravimetric water contents from clay, silt, and organic matter.
-
-    Arguments:
-        clay: Clay content by mass. (%)
-        silt: Silt content by mass. (%)
-        soil_organic_matter: Soil organic matter content by mass. (%)
-        out: Optional output arrays for in-place calculation.
-
-    Returns:
-        Beniaich2023PTFResult: Results grouped by result attributes.
-
-    Models:
-        $h(\theta)$: Three point estimates
-
-    Notes:
-        Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
-        Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
-
-    Warnings:
-        Developed from Moroccan agricultural topsoils and not independently validated outside the
-            source territory.
-
-    """
-    if out is None:
-        values = _calc_ptf_beniaich2023_mlr5(clay, silt, soil_organic_matter)
-    else:
-        values = _calc_ptf_beniaich2023_mlr5(clay, silt, soil_organic_matter, out=tuple(out))
-
-    return Beniaich2023PTFResult(*values)
 
 
 @overload
@@ -620,5 +359,266 @@ def calc_ptf_beniaich2023_slr6(
         values = _calc_ptf_beniaich2023_slr6(soil_organic_matter)
     else:
         values = _calc_ptf_beniaich2023_slr6(soil_organic_matter, out=tuple(out))
+
+    return Beniaich2023PTFResult(*values)
+
+
+@overload
+def calc_ptf_beniaich2023_mlr1(
+    *, silt: float, sand: float, soil_organic_matter: float
+) -> Beniaich2023PTFResult[floating]: ...
+
+
+@overload
+def calc_ptf_beniaich2023_mlr1(
+    *,
+    silt: ArrayLike,
+    sand: ArrayLike,
+    soil_organic_matter: ArrayLike,
+    out: Beniaich2023PTFResult[NDArray[floating]] | None = None,
+) -> Beniaich2023PTFResult[NDArray[floating]]: ...
+
+
+def calc_ptf_beniaich2023_mlr1(
+    *,
+    silt: float | ArrayLike,
+    sand: float | ArrayLike,
+    soil_organic_matter: float | ArrayLike,
+    out: Beniaich2023PTFResult[NDArray[floating]] | None = None,
+) -> Beniaich2023PTFResult[floating] | Beniaich2023PTFResult[NDArray[floating]]:
+    r"""Estimate three gravimetric water contents from silt, sand, and organic matter.
+
+    Arguments:
+        silt: Silt content by mass. (%)
+        sand: Sand content by mass. (%)
+        soil_organic_matter: Soil organic matter content by mass. (%)
+        out: Optional output arrays for in-place calculation.
+
+    Returns:
+        Beniaich2023PTFResult: Results grouped by result attributes.
+
+    Models:
+        $h(\theta)$: Three point estimates
+
+    Notes:
+        Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
+        Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
+
+    Warnings:
+        Developed from Moroccan agricultural topsoils and not independently validated outside the
+            source territory.
+
+    """
+    if out is None:
+        values = _calc_ptf_beniaich2023_mlr1(silt, sand, soil_organic_matter)
+    else:
+        values = _calc_ptf_beniaich2023_mlr1(silt, sand, soil_organic_matter, out=tuple(out))
+
+    return Beniaich2023PTFResult(*values)
+
+
+@overload
+def calc_ptf_beniaich2023_mlr2(
+    *, sand: float, soil_organic_matter: float
+) -> Beniaich2023PTFResult[floating]: ...
+
+
+@overload
+def calc_ptf_beniaich2023_mlr2(
+    *,
+    sand: ArrayLike,
+    soil_organic_matter: ArrayLike,
+    out: Beniaich2023PTFResult[NDArray[floating]] | None = None,
+) -> Beniaich2023PTFResult[NDArray[floating]]: ...
+
+
+def calc_ptf_beniaich2023_mlr2(
+    *,
+    sand: float | ArrayLike,
+    soil_organic_matter: float | ArrayLike,
+    out: Beniaich2023PTFResult[NDArray[floating]] | None = None,
+) -> Beniaich2023PTFResult[floating] | Beniaich2023PTFResult[NDArray[floating]]:
+    r"""Estimate three gravimetric water contents from sand and organic matter.
+
+    Arguments:
+        sand: Sand content by mass. (%)
+        soil_organic_matter: Soil organic matter content by mass. (%)
+        out: Optional output arrays for in-place calculation.
+
+    Returns:
+        Beniaich2023PTFResult: Results grouped by result attributes.
+
+    Models:
+        $h(\theta)$: Three point estimates
+
+    Notes:
+        Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
+        Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
+
+    Warnings:
+        Developed from Moroccan agricultural topsoils and not independently validated outside the
+            source territory.
+
+    """
+    if out is None:
+        values = _calc_ptf_beniaich2023_mlr2(sand, soil_organic_matter)
+    else:
+        values = _calc_ptf_beniaich2023_mlr2(sand, soil_organic_matter, out=tuple(out))
+
+    return Beniaich2023PTFResult(*values)
+
+
+@overload
+def calc_ptf_beniaich2023_mlr3(
+    *, silt: float, soil_organic_matter: float
+) -> Beniaich2023PTFResult[floating]: ...
+
+
+@overload
+def calc_ptf_beniaich2023_mlr3(
+    *,
+    silt: ArrayLike,
+    soil_organic_matter: ArrayLike,
+    out: Beniaich2023PTFResult[NDArray[floating]] | None = None,
+) -> Beniaich2023PTFResult[NDArray[floating]]: ...
+
+
+def calc_ptf_beniaich2023_mlr3(
+    *,
+    silt: float | ArrayLike,
+    soil_organic_matter: float | ArrayLike,
+    out: Beniaich2023PTFResult[NDArray[floating]] | None = None,
+) -> Beniaich2023PTFResult[floating] | Beniaich2023PTFResult[NDArray[floating]]:
+    r"""Estimate three gravimetric water contents from silt and organic matter.
+
+    Arguments:
+        silt: Silt content by mass. (%)
+        soil_organic_matter: Soil organic matter content by mass. (%)
+        out: Optional output arrays for in-place calculation.
+
+    Returns:
+        Beniaich2023PTFResult: Results grouped by result attributes.
+
+    Models:
+        $h(\theta)$: Three point estimates
+
+    Notes:
+        Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
+        Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
+
+    Warnings:
+        Developed from Moroccan agricultural topsoils and not independently validated outside the
+            source territory.
+
+    """
+    if out is None:
+        values = _calc_ptf_beniaich2023_mlr3(silt, soil_organic_matter)
+    else:
+        values = _calc_ptf_beniaich2023_mlr3(silt, soil_organic_matter, out=tuple(out))
+
+    return Beniaich2023PTFResult(*values)
+
+
+@overload
+def calc_ptf_beniaich2023_mlr4(
+    *, clay: float, soil_organic_matter: float
+) -> Beniaich2023PTFResult[floating]: ...
+
+
+@overload
+def calc_ptf_beniaich2023_mlr4(
+    *,
+    clay: ArrayLike,
+    soil_organic_matter: ArrayLike,
+    out: Beniaich2023PTFResult[NDArray[floating]] | None = None,
+) -> Beniaich2023PTFResult[NDArray[floating]]: ...
+
+
+def calc_ptf_beniaich2023_mlr4(
+    *,
+    clay: float | ArrayLike,
+    soil_organic_matter: float | ArrayLike,
+    out: Beniaich2023PTFResult[NDArray[floating]] | None = None,
+) -> Beniaich2023PTFResult[floating] | Beniaich2023PTFResult[NDArray[floating]]:
+    r"""Estimate three gravimetric water contents from clay and organic matter.
+
+    Arguments:
+        clay: Clay content by mass. (%)
+        soil_organic_matter: Soil organic matter content by mass. (%)
+        out: Optional output arrays for in-place calculation.
+
+    Returns:
+        Beniaich2023PTFResult: Results grouped by result attributes.
+
+    Models:
+        $h(\theta)$: Three point estimates
+
+    Notes:
+        Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
+        Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
+
+    Warnings:
+        Developed from Moroccan agricultural topsoils and not independently validated outside the
+            source territory.
+
+    """
+    if out is None:
+        values = _calc_ptf_beniaich2023_mlr4(clay, soil_organic_matter)
+    else:
+        values = _calc_ptf_beniaich2023_mlr4(clay, soil_organic_matter, out=tuple(out))
+
+    return Beniaich2023PTFResult(*values)
+
+
+@overload
+def calc_ptf_beniaich2023_mlr5(
+    *, clay: float, silt: float, soil_organic_matter: float
+) -> Beniaich2023PTFResult[floating]: ...
+
+
+@overload
+def calc_ptf_beniaich2023_mlr5(
+    *,
+    clay: ArrayLike,
+    silt: ArrayLike,
+    soil_organic_matter: ArrayLike,
+    out: Beniaich2023PTFResult[NDArray[floating]] | None = None,
+) -> Beniaich2023PTFResult[NDArray[floating]]: ...
+
+
+def calc_ptf_beniaich2023_mlr5(
+    *,
+    clay: float | ArrayLike,
+    silt: float | ArrayLike,
+    soil_organic_matter: float | ArrayLike,
+    out: Beniaich2023PTFResult[NDArray[floating]] | None = None,
+) -> Beniaich2023PTFResult[floating] | Beniaich2023PTFResult[NDArray[floating]]:
+    r"""Estimate three gravimetric water contents from clay, silt, and organic matter.
+
+    Arguments:
+        clay: Clay content by mass. (%)
+        silt: Silt content by mass. (%)
+        soil_organic_matter: Soil organic matter content by mass. (%)
+        out: Optional output arrays for in-place calculation.
+
+    Returns:
+        Beniaich2023PTFResult: Results grouped by result attributes.
+
+    Models:
+        $h(\theta)$: Three point estimates
+
+    Notes:
+        Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
+        Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
+
+    Warnings:
+        Developed from Moroccan agricultural topsoils and not independently validated outside the
+            source territory.
+
+    """
+    if out is None:
+        values = _calc_ptf_beniaich2023_mlr5(clay, silt, soil_organic_matter)
+    else:
+        values = _calc_ptf_beniaich2023_mlr5(clay, silt, soil_organic_matter, out=tuple(out))
 
     return Beniaich2023PTFResult(*values)

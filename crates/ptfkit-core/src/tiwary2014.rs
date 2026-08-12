@@ -17,6 +17,59 @@ Indo-Gangetic Plains and black soil region of India
 209 layers from 30 Indo-Gangetic Plains profiles and 275 layers from 62 black-soil profiles;
 equation-specific subsets are described below."]
 
+#[doc = r"Estimate saturated conductivity for Indo-Gangetic Plains soils.
+
+# Arguments
+
+  * sand: Sand content. (%)
+  * bulk_density: Bulk density. (Mg/m^3)
+  * esp: Exchangeable sodium percentage. (%)
+
+# Returns
+
+  * k_sat: Saturated hydraulic conductivity converted from mm/h. (m/s)
+
+# Models
+
+  * k(h): Saturated hydraulic conductivity
+
+# Notes
+
+Prediction target: Saturated hydraulic conductivity.
+Equation 11 was calibrated on 100 layers from 20 Indo-Gangetic Plains profiles.
+
+# Warnings
+
+The legacy API's three water-retention outputs are intentionally excluded because the source
+defines them only for BSR soils."]
+#[must_use]
+pub fn calc_ptf_tiwary2014_igp(sand: f64, bulk_density: f64, esp: f64) -> f64 {
+    let k_sat_mm_per_hour = (((4.079f64) + ((0.047f64) * (sand))) - ((0.054f64) * (esp)))
+        - ((2.238f64) * (bulk_density));
+    (k_sat_mm_per_hour) / (3600000f64)
+}
+
+#[cfg(test)]
+mod calc_ptf_tiwary2014_igp_tests {
+    use super::*;
+    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+        assert!(
+            (actual - expected).abs() <= atol + rtol * expected.abs(),
+            "actual {actual} != expected {expected}"
+        );
+    }
+    #[test]
+    fn igp_saturated_conductivity_case() {
+        let result = calc_ptf_tiwary2014_igp(37.3f64, 1.674f64, 4.6f64);
+        assert_close(
+            result,
+            0.0000005103578f64,
+            0.000000000001f64,
+            0.0000000001f64,
+        );
+    }
+}
+
 #[doc = r"Results returned by `calc_ptf_tiwary2014_bsr`."]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Tiwary2014PTFResult {
@@ -106,59 +159,6 @@ mod calc_ptf_tiwary2014_bsr_tests {
         assert_close(
             result.k_sat,
             0.000005373367f64,
-            0.000000000001f64,
-            0.0000000001f64,
-        );
-    }
-}
-
-#[doc = r"Estimate saturated conductivity for Indo-Gangetic Plains soils.
-
-# Arguments
-
-  * sand: Sand content. (%)
-  * bulk_density: Bulk density. (Mg/m^3)
-  * esp: Exchangeable sodium percentage. (%)
-
-# Returns
-
-  * k_sat: Saturated hydraulic conductivity converted from mm/h. (m/s)
-
-# Models
-
-  * k(h): Saturated hydraulic conductivity
-
-# Notes
-
-Prediction target: Saturated hydraulic conductivity.
-Equation 11 was calibrated on 100 layers from 20 Indo-Gangetic Plains profiles.
-
-# Warnings
-
-The legacy API's three water-retention outputs are intentionally excluded because the source
-defines them only for BSR soils."]
-#[must_use]
-pub fn calc_ptf_tiwary2014_igp(sand: f64, bulk_density: f64, esp: f64) -> f64 {
-    let k_sat_mm_per_hour = (((4.079f64) + ((0.047f64) * (sand))) - ((0.054f64) * (esp)))
-        - ((2.238f64) * (bulk_density));
-    (k_sat_mm_per_hour) / (3600000f64)
-}
-
-#[cfg(test)]
-mod calc_ptf_tiwary2014_igp_tests {
-    use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
-    #[test]
-    fn igp_saturated_conductivity_case() {
-        let result = calc_ptf_tiwary2014_igp(37.3f64, 1.674f64, 4.6f64);
-        assert_close(
-            result,
-            0.0000005103578f64,
             0.000000000001f64,
             0.0000000001f64,
         );

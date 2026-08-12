@@ -32,6 +32,10 @@ Function front matter records source-specific public API, ordered inputs and
 outputs, golden cases, edge cases, scope, and short documentation notes. For a
 single output,
 `result_class` is `null`; multiple outputs use the documented result class.
+Functions with status `ready-for-implementation` or `implemented` must include
+an `implementation`. The generator compiles that expression data to one shared
+semantic IR, then renders Rust kernels, native NumPy ufuncs, and the selected
+public Python-wrapper policy independently.
 
 Sources with repeated parameter or result definitions may declare them once in
 the optional top-level `$defs` object. A function uses a local reference object,

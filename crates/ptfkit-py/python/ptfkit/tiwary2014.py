@@ -25,8 +25,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Generic, NamedTuple, TypeVar, overload
 
 from ptfkit._core import (
-    calc_ptf_tiwary2014_bsr as _calc_ptf_tiwary2014_bsr,
     calc_ptf_tiwary2014_igp as _calc_ptf_tiwary2014_igp,
+    calc_ptf_tiwary2014_bsr as _calc_ptf_tiwary2014_bsr,
 )
 
 
@@ -55,6 +55,58 @@ class Tiwary2014PTFResult(NamedTuple, Generic[T]):
 
 
 __all__ = ['Tiwary2014PTFResult', 'calc_ptf_tiwary2014_bsr', 'calc_ptf_tiwary2014_igp']
+
+
+@overload
+def calc_ptf_tiwary2014_igp(*, sand: float, bulk_density: float, esp: float) -> floating: ...
+
+
+@overload
+def calc_ptf_tiwary2014_igp(
+    *,
+    sand: ArrayLike,
+    bulk_density: ArrayLike,
+    esp: ArrayLike,
+    out: NDArray[floating] | None = None,
+) -> NDArray[floating]: ...
+
+
+def calc_ptf_tiwary2014_igp(
+    *,
+    sand: float | ArrayLike,
+    bulk_density: float | ArrayLike,
+    esp: float | ArrayLike,
+    out: NDArray[floating] | None = None,
+) -> floating | NDArray[floating]:
+    """Estimate saturated conductivity for Indo-Gangetic Plains soils.
+
+    Arguments:
+        sand: Sand content. (%)
+        bulk_density: Bulk density. (Mg/m^3)
+        esp: Exchangeable sodium percentage. (%)
+        out: Optional output arrays for in-place calculation.
+
+    Returns:
+        k_sat: Saturated hydraulic conductivity converted from mm/h. (m/s)
+
+    Models:
+        $k(h)$: Saturated hydraulic conductivity
+
+    Notes:
+        Prediction target: Saturated hydraulic conductivity.
+        Equation 11 was calibrated on 100 layers from 20 Indo-Gangetic Plains profiles.
+
+    Warnings:
+        The legacy API's three water-retention outputs are intentionally excluded because the source
+            defines them only for BSR soils.
+
+    """
+    if out is None:
+        values = _calc_ptf_tiwary2014_igp(sand, bulk_density, esp)
+    else:
+        values = _calc_ptf_tiwary2014_igp(sand, bulk_density, esp, out=out)
+
+    return values
 
 
 @overload
@@ -119,55 +171,3 @@ def calc_ptf_tiwary2014_bsr(
         )
 
     return Tiwary2014PTFResult(*values)
-
-
-@overload
-def calc_ptf_tiwary2014_igp(*, sand: float, bulk_density: float, esp: float) -> floating: ...
-
-
-@overload
-def calc_ptf_tiwary2014_igp(
-    *,
-    sand: ArrayLike,
-    bulk_density: ArrayLike,
-    esp: ArrayLike,
-    out: NDArray[floating] | None = None,
-) -> NDArray[floating]: ...
-
-
-def calc_ptf_tiwary2014_igp(
-    *,
-    sand: float | ArrayLike,
-    bulk_density: float | ArrayLike,
-    esp: float | ArrayLike,
-    out: NDArray[floating] | None = None,
-) -> floating | NDArray[floating]:
-    """Estimate saturated conductivity for Indo-Gangetic Plains soils.
-
-    Arguments:
-        sand: Sand content. (%)
-        bulk_density: Bulk density. (Mg/m^3)
-        esp: Exchangeable sodium percentage. (%)
-        out: Optional output arrays for in-place calculation.
-
-    Returns:
-        k_sat: Saturated hydraulic conductivity converted from mm/h. (m/s)
-
-    Models:
-        $k(h)$: Saturated hydraulic conductivity
-
-    Notes:
-        Prediction target: Saturated hydraulic conductivity.
-        Equation 11 was calibrated on 100 layers from 20 Indo-Gangetic Plains profiles.
-
-    Warnings:
-        The legacy API's three water-retention outputs are intentionally excluded because the source
-            defines them only for BSR soils.
-
-    """
-    if out is None:
-        values = _calc_ptf_tiwary2014_igp(sand, bulk_density, esp)
-    else:
-        values = _calc_ptf_tiwary2014_igp(sand, bulk_density, esp, out=out)
-
-    return values

@@ -6,6 +6,91 @@ use numpy::npyffi::{
 };
 use pyo3::{prelude::*, types::PyModule};
 use std::{ffi::c_void, os::raw::c_char};
+const CALC_PTF_RAWLS1982_THETA_1500_NIN: usize = 2usize;
+const CALC_PTF_RAWLS1982_THETA_1500_NOUT: usize = 1usize;
+const CALC_PTF_RAWLS1982_THETA_1500_NARGS: usize = 3usize;
+static mut CALC_PTF_RAWLS1982_THETA_1500_TYPES: [i8; 3usize] =
+    [NPY_TYPES::NPY_DOUBLE as i8; 3usize];
+static mut CALC_PTF_RAWLS1982_THETA_1500_FUNCTIONS: [PyUFuncGenericFunction; 1] =
+    [Some(calc_ptf_rawls1982_theta_1500_loop); 1];
+static CALC_PTF_RAWLS1982_THETA_1500_NAME: &[u8] = b"calc_ptf_rawls1982_theta_1500\0";
+static CALC_PTF_RAWLS1982_THETA_1500_DOC: &[u8] = b"calc_ptf_rawls1982_theta_1500\0";
+unsafe extern "C" fn calc_ptf_rawls1982_theta_1500_loop(
+    args: *mut *mut c_char,
+    dimensions: *mut npy_intp,
+    steps: *mut npy_intp,
+    _: *mut c_void,
+) {
+    unsafe {
+        let count = *dimensions as usize;
+        let mut pointers = [std::ptr::null_mut(); CALC_PTF_RAWLS1982_THETA_1500_NARGS];
+        let mut strides = [0isize; CALC_PTF_RAWLS1982_THETA_1500_NARGS];
+        std::ptr::copy_nonoverlapping(
+            args,
+            pointers.as_mut_ptr(),
+            CALC_PTF_RAWLS1982_THETA_1500_NARGS,
+        );
+        std::ptr::copy_nonoverlapping(
+            steps,
+            strides.as_mut_ptr(),
+            CALC_PTF_RAWLS1982_THETA_1500_NARGS,
+        );
+        for _ in 0..count {
+            let clay = (pointers[0usize] as *const f64).read_unaligned();
+            let organic_matter = (pointers[1usize] as *const f64).read_unaligned();
+            let theta_1500 =
+                ((0.026f64) + ((0.005f64) * (clay))) + ((0.0158f64) * (organic_matter));
+            let values = [theta_1500];
+            (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
+            for index in 0..CALC_PTF_RAWLS1982_THETA_1500_NARGS {
+                pointers[index] = pointers[index].offset(strides[index]);
+            }
+        }
+    }
+}
+const CALC_PTF_RAWLS1982_THETA_33_NIN: usize = 3usize;
+const CALC_PTF_RAWLS1982_THETA_33_NOUT: usize = 1usize;
+const CALC_PTF_RAWLS1982_THETA_33_NARGS: usize = 4usize;
+static mut CALC_PTF_RAWLS1982_THETA_33_TYPES: [i8; 4usize] = [NPY_TYPES::NPY_DOUBLE as i8; 4usize];
+static mut CALC_PTF_RAWLS1982_THETA_33_FUNCTIONS: [PyUFuncGenericFunction; 1] =
+    [Some(calc_ptf_rawls1982_theta_33_loop); 1];
+static CALC_PTF_RAWLS1982_THETA_33_NAME: &[u8] = b"calc_ptf_rawls1982_theta_33\0";
+static CALC_PTF_RAWLS1982_THETA_33_DOC: &[u8] = b"calc_ptf_rawls1982_theta_33\0";
+unsafe extern "C" fn calc_ptf_rawls1982_theta_33_loop(
+    args: *mut *mut c_char,
+    dimensions: *mut npy_intp,
+    steps: *mut npy_intp,
+    _: *mut c_void,
+) {
+    unsafe {
+        let count = *dimensions as usize;
+        let mut pointers = [std::ptr::null_mut(); CALC_PTF_RAWLS1982_THETA_33_NARGS];
+        let mut strides = [0isize; CALC_PTF_RAWLS1982_THETA_33_NARGS];
+        std::ptr::copy_nonoverlapping(
+            args,
+            pointers.as_mut_ptr(),
+            CALC_PTF_RAWLS1982_THETA_33_NARGS,
+        );
+        std::ptr::copy_nonoverlapping(
+            steps,
+            strides.as_mut_ptr(),
+            CALC_PTF_RAWLS1982_THETA_33_NARGS,
+        );
+        for _ in 0..count {
+            let sand = (pointers[0usize] as *const f64).read_unaligned();
+            let organic_matter = (pointers[1usize] as *const f64).read_unaligned();
+            let theta_1500 = (pointers[2usize] as *const f64).read_unaligned();
+            let theta_33 = (((0.2391f64) - ((0.0019f64) * (sand)))
+                + ((0.021f64) * (organic_matter)))
+                + ((0.72f64) * (theta_1500));
+            let values = [theta_33];
+            (pointers[3usize] as *mut f64).write_unaligned(values[0usize]);
+            for index in 0..CALC_PTF_RAWLS1982_THETA_33_NARGS {
+                pointers[index] = pointers[index].offset(strides[index]);
+            }
+        }
+    }
+}
 const CALC_PTF_RAWLS1982_FULL_WRC_NIN: usize = 5usize;
 const CALC_PTF_RAWLS1982_FULL_WRC_NOUT: usize = 12usize;
 const CALC_PTF_RAWLS1982_FULL_WRC_NARGS: usize = 17usize;
@@ -95,105 +180,8 @@ unsafe extern "C" fn calc_ptf_rawls1982_full_wrc_loop(
         }
     }
 }
-const CALC_PTF_RAWLS1982_THETA_1500_NIN: usize = 2usize;
-const CALC_PTF_RAWLS1982_THETA_1500_NOUT: usize = 1usize;
-const CALC_PTF_RAWLS1982_THETA_1500_NARGS: usize = 3usize;
-static mut CALC_PTF_RAWLS1982_THETA_1500_TYPES: [i8; 3usize] =
-    [NPY_TYPES::NPY_DOUBLE as i8; 3usize];
-static mut CALC_PTF_RAWLS1982_THETA_1500_FUNCTIONS: [PyUFuncGenericFunction; 1] =
-    [Some(calc_ptf_rawls1982_theta_1500_loop); 1];
-static CALC_PTF_RAWLS1982_THETA_1500_NAME: &[u8] = b"calc_ptf_rawls1982_theta_1500\0";
-static CALC_PTF_RAWLS1982_THETA_1500_DOC: &[u8] = b"calc_ptf_rawls1982_theta_1500\0";
-unsafe extern "C" fn calc_ptf_rawls1982_theta_1500_loop(
-    args: *mut *mut c_char,
-    dimensions: *mut npy_intp,
-    steps: *mut npy_intp,
-    _: *mut c_void,
-) {
-    unsafe {
-        let count = *dimensions as usize;
-        let mut pointers = [std::ptr::null_mut(); CALC_PTF_RAWLS1982_THETA_1500_NARGS];
-        let mut strides = [0isize; CALC_PTF_RAWLS1982_THETA_1500_NARGS];
-        std::ptr::copy_nonoverlapping(
-            args,
-            pointers.as_mut_ptr(),
-            CALC_PTF_RAWLS1982_THETA_1500_NARGS,
-        );
-        std::ptr::copy_nonoverlapping(
-            steps,
-            strides.as_mut_ptr(),
-            CALC_PTF_RAWLS1982_THETA_1500_NARGS,
-        );
-        for _ in 0..count {
-            let clay = (pointers[0usize] as *const f64).read_unaligned();
-            let organic_matter = (pointers[1usize] as *const f64).read_unaligned();
-            let theta_1500 =
-                ((0.026f64) + ((0.005f64) * (clay))) + ((0.0158f64) * (organic_matter));
-            let values = [theta_1500];
-            (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
-            for index in 0..CALC_PTF_RAWLS1982_THETA_1500_NARGS {
-                pointers[index] = pointers[index].offset(strides[index]);
-            }
-        }
-    }
-}
-const CALC_PTF_RAWLS1982_THETA_33_NIN: usize = 3usize;
-const CALC_PTF_RAWLS1982_THETA_33_NOUT: usize = 1usize;
-const CALC_PTF_RAWLS1982_THETA_33_NARGS: usize = 4usize;
-static mut CALC_PTF_RAWLS1982_THETA_33_TYPES: [i8; 4usize] = [NPY_TYPES::NPY_DOUBLE as i8; 4usize];
-static mut CALC_PTF_RAWLS1982_THETA_33_FUNCTIONS: [PyUFuncGenericFunction; 1] =
-    [Some(calc_ptf_rawls1982_theta_33_loop); 1];
-static CALC_PTF_RAWLS1982_THETA_33_NAME: &[u8] = b"calc_ptf_rawls1982_theta_33\0";
-static CALC_PTF_RAWLS1982_THETA_33_DOC: &[u8] = b"calc_ptf_rawls1982_theta_33\0";
-unsafe extern "C" fn calc_ptf_rawls1982_theta_33_loop(
-    args: *mut *mut c_char,
-    dimensions: *mut npy_intp,
-    steps: *mut npy_intp,
-    _: *mut c_void,
-) {
-    unsafe {
-        let count = *dimensions as usize;
-        let mut pointers = [std::ptr::null_mut(); CALC_PTF_RAWLS1982_THETA_33_NARGS];
-        let mut strides = [0isize; CALC_PTF_RAWLS1982_THETA_33_NARGS];
-        std::ptr::copy_nonoverlapping(
-            args,
-            pointers.as_mut_ptr(),
-            CALC_PTF_RAWLS1982_THETA_33_NARGS,
-        );
-        std::ptr::copy_nonoverlapping(
-            steps,
-            strides.as_mut_ptr(),
-            CALC_PTF_RAWLS1982_THETA_33_NARGS,
-        );
-        for _ in 0..count {
-            let sand = (pointers[0usize] as *const f64).read_unaligned();
-            let organic_matter = (pointers[1usize] as *const f64).read_unaligned();
-            let theta_1500 = (pointers[2usize] as *const f64).read_unaligned();
-            let theta_33 = (((0.2391f64) - ((0.0019f64) * (sand)))
-                + ((0.021f64) * (organic_matter)))
-                + ((0.72f64) * (theta_1500));
-            let values = [theta_33];
-            (pointers[3usize] as *mut f64).write_unaligned(values[0usize]);
-            for index in 0..CALC_PTF_RAWLS1982_THETA_33_NARGS {
-                pointers[index] = pointers[index].offset(strides[index]);
-            }
-        }
-    }
-}
 pub fn register(module: &Bound<'_, PyModule>) -> PyResult<()> {
     let py = module.py();
-    let ufunc = unsafe {
-        runtime::create_ufunc(
-            py,
-            std::ptr::addr_of_mut!(CALC_PTF_RAWLS1982_FULL_WRC_FUNCTIONS).cast(),
-            std::ptr::addr_of_mut!(CALC_PTF_RAWLS1982_FULL_WRC_TYPES).cast(),
-            CALC_PTF_RAWLS1982_FULL_WRC_NIN as i32,
-            CALC_PTF_RAWLS1982_FULL_WRC_NOUT as i32,
-            CALC_PTF_RAWLS1982_FULL_WRC_NAME.as_ptr().cast(),
-            CALC_PTF_RAWLS1982_FULL_WRC_DOC.as_ptr().cast(),
-        )
-    }?;
-    module.add("calc_ptf_rawls1982_full_wrc", ufunc)?;
     let ufunc = unsafe {
         runtime::create_ufunc(
             py,
@@ -218,5 +206,17 @@ pub fn register(module: &Bound<'_, PyModule>) -> PyResult<()> {
         )
     }?;
     module.add("calc_ptf_rawls1982_theta_33", ufunc)?;
+    let ufunc = unsafe {
+        runtime::create_ufunc(
+            py,
+            std::ptr::addr_of_mut!(CALC_PTF_RAWLS1982_FULL_WRC_FUNCTIONS).cast(),
+            std::ptr::addr_of_mut!(CALC_PTF_RAWLS1982_FULL_WRC_TYPES).cast(),
+            CALC_PTF_RAWLS1982_FULL_WRC_NIN as i32,
+            CALC_PTF_RAWLS1982_FULL_WRC_NOUT as i32,
+            CALC_PTF_RAWLS1982_FULL_WRC_NAME.as_ptr().cast(),
+            CALC_PTF_RAWLS1982_FULL_WRC_DOC.as_ptr().cast(),
+        )
+    }?;
+    module.add("calc_ptf_rawls1982_full_wrc", ufunc)?;
     Ok(())
 }

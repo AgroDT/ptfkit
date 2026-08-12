@@ -1,17 +1,17 @@
 use std::{collections::BTreeMap, path::PathBuf};
 
-use anyhow::{Result, bail};
+use anyhow::Result;
 use proc_macro2::{Literal, Span, TokenStream};
 use quote::{format_ident, quote};
 
 use crate::{
     generate::RUST_HEADER,
-    model::{Output, Resolved},
+    model::{CompiledFunction, Output},
     semantic::{self, BinaryOp, Expr, MathFunction, Reference, UnaryOp},
 };
 
-pub(crate) fn render(functions: &[Resolved]) -> Result<Vec<(PathBuf, String)>> {
-    let mut sources = BTreeMap::<String, Vec<&Resolved>>::new();
+pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<(PathBuf, String)>> {
+    let mut sources = BTreeMap::<String, Vec<&CompiledFunction>>::new();
     for function in functions {
         sources
             .entry(function.entry.slug.clone())
@@ -35,7 +35,7 @@ pub(crate) fn render(functions: &[Resolved]) -> Result<Vec<(PathBuf, String)>> {
     Ok(files)
 }
 
-fn module_tokens(functions: &[&Resolved]) -> Result<TokenStream> {
+fn module_tokens(functions: &[&CompiledFunction]) -> Result<TokenStream> {
     let definitions = functions
         .iter()
         .map(|function| function_tokens(function))
@@ -62,7 +62,7 @@ fn module_tokens(functions: &[&Resolved]) -> Result<TokenStream> {
     })
 }
 
-fn function_tokens(resolved: &Resolved) -> Result<TokenStream> {
+fn function_tokens(resolved: &CompiledFunction) -> Result<TokenStream> {
     let function = &resolved.core;
     let loop_name = format_ident!("{}_loop", function.name);
     let upper = function.name.to_uppercase();
@@ -83,51 +83,19 @@ fn function_tokens(resolved: &Resolved) -> Result<TokenStream> {
             let #input = (pointers[#index] as *const f64).read_unaligned();
         }
     });
-    let legacy_values = match &function.output {
-        Output::Scalar => vec![quote!(result)],
-        Output::Struct(fields) => fields
-            .iter()
-            .map(|field| {
-                let field = format_ident!("{field}");
-                quote!(result.#field)
-            })
-            .collect(),
-    };
-    let (calculation, values) = match resolved.entry.implementations[resolved.function_index]
-        .as_ref()
-    {
-        Some(ir) => {
-            let variables = ir
-                .variables
-                .iter()
-                .map(|variable| {
-                    let name = format_ident!("{}", variable.name);
-                    let expression =
-                        expression_tokens(&variable.expression, &inputs, &ir.variables)?;
-                    Ok(quote!(let #name = #expression;))
-                })
-                .collect::<Result<Vec<_>>>()?;
-            let values = output_variable_tokens(&function.output, resolved)?;
-            if values.len() != legacy_values.len() {
-                bail!(
-                    "semantic output count for `{}` does not match the NumPy ufunc contract",
-                    function.name
-                );
-            }
-            (quote!(#(#variables)* let values = [#(#values),*];), values)
-        }
-        None => {
-            let core_path = syn::parse_str::<syn::Path>(&format!(
-                "ptfkit_core::{}::{}",
-                function.module.join("::"),
-                function.name
-            ))?;
-            (
-                quote!(let result = #core_path(#(#inputs),*); let values = [#(#legacy_values),*];),
-                legacy_values,
-            )
-        }
-    };
+    let variables = resolved
+        .ir
+        .variables
+        .iter()
+        .map(|variable| {
+            let name = format_ident!("{}", variable.name);
+            let expression =
+                expression_tokens(&variable.expression, &inputs, &resolved.ir.variables)?;
+            Ok(quote!(let #name = #expression;))
+        })
+        .collect::<Result<Vec<_>>>()?;
+    let values = output_variable_tokens(&function.output, resolved)?;
+    let calculation = quote!(#(#variables)* let values = [#(#values),*];);
     let writes = values.iter().enumerate().map(|(offset, _)| {
         let index = function.inputs.len() + offset;
         quote! { (pointers[#index] as *mut f64).write_unaligned(values[#offset]); }
@@ -165,7 +133,10 @@ fn function_tokens(resolved: &Resolved) -> Result<TokenStream> {
     })
 }
 
-fn output_variable_tokens(function: &Output, resolved: &Resolved) -> Result<Vec<TokenStream>> {
+fn output_variable_tokens(
+    function: &Output,
+    resolved: &CompiledFunction,
+) -> Result<Vec<TokenStream>> {
     let fields = match function {
         Output::Scalar => &resolved.entry.spec.functions[resolved.function_index]
             .outputs
@@ -242,7 +213,7 @@ fn expression_tokens(
     }
 }
 
-fn registration_tokens(resolved: &Resolved) -> Result<TokenStream> {
+fn registration_tokens(resolved: &CompiledFunction) -> Result<TokenStream> {
     let upper = resolved.core.name.to_uppercase();
     let functions = format_ident!("{upper}_FUNCTIONS");
     let types = format_ident!("{upper}_TYPES");

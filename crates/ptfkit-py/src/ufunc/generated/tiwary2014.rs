@@ -6,6 +6,41 @@ use numpy::npyffi::{
 };
 use pyo3::{prelude::*, types::PyModule};
 use std::{ffi::c_void, os::raw::c_char};
+const CALC_PTF_TIWARY2014_IGP_NIN: usize = 3usize;
+const CALC_PTF_TIWARY2014_IGP_NOUT: usize = 1usize;
+const CALC_PTF_TIWARY2014_IGP_NARGS: usize = 4usize;
+static mut CALC_PTF_TIWARY2014_IGP_TYPES: [i8; 4usize] = [NPY_TYPES::NPY_DOUBLE as i8; 4usize];
+static mut CALC_PTF_TIWARY2014_IGP_FUNCTIONS: [PyUFuncGenericFunction; 1] =
+    [Some(calc_ptf_tiwary2014_igp_loop); 1];
+static CALC_PTF_TIWARY2014_IGP_NAME: &[u8] = b"calc_ptf_tiwary2014_igp\0";
+static CALC_PTF_TIWARY2014_IGP_DOC: &[u8] = b"calc_ptf_tiwary2014_igp\0";
+unsafe extern "C" fn calc_ptf_tiwary2014_igp_loop(
+    args: *mut *mut c_char,
+    dimensions: *mut npy_intp,
+    steps: *mut npy_intp,
+    _: *mut c_void,
+) {
+    unsafe {
+        let count = *dimensions as usize;
+        let mut pointers = [std::ptr::null_mut(); CALC_PTF_TIWARY2014_IGP_NARGS];
+        let mut strides = [0isize; CALC_PTF_TIWARY2014_IGP_NARGS];
+        std::ptr::copy_nonoverlapping(args, pointers.as_mut_ptr(), CALC_PTF_TIWARY2014_IGP_NARGS);
+        std::ptr::copy_nonoverlapping(steps, strides.as_mut_ptr(), CALC_PTF_TIWARY2014_IGP_NARGS);
+        for _ in 0..count {
+            let sand = (pointers[0usize] as *const f64).read_unaligned();
+            let bulk_density = (pointers[1usize] as *const f64).read_unaligned();
+            let esp = (pointers[2usize] as *const f64).read_unaligned();
+            let k_sat_mm_per_hour = (((4.079f64) + ((0.047f64) * (sand))) - ((0.054f64) * (esp)))
+                - ((2.238f64) * (bulk_density));
+            let k_sat = (k_sat_mm_per_hour) / (3600000f64);
+            let values = [k_sat];
+            (pointers[3usize] as *mut f64).write_unaligned(values[0usize]);
+            for index in 0..CALC_PTF_TIWARY2014_IGP_NARGS {
+                pointers[index] = pointers[index].offset(strides[index]);
+            }
+        }
+    }
+}
 const CALC_PTF_TIWARY2014_BSR_NIN: usize = 6usize;
 const CALC_PTF_TIWARY2014_BSR_NOUT: usize = 4usize;
 const CALC_PTF_TIWARY2014_BSR_NARGS: usize = 10usize;
@@ -56,55 +91,8 @@ unsafe extern "C" fn calc_ptf_tiwary2014_bsr_loop(
         }
     }
 }
-const CALC_PTF_TIWARY2014_IGP_NIN: usize = 3usize;
-const CALC_PTF_TIWARY2014_IGP_NOUT: usize = 1usize;
-const CALC_PTF_TIWARY2014_IGP_NARGS: usize = 4usize;
-static mut CALC_PTF_TIWARY2014_IGP_TYPES: [i8; 4usize] = [NPY_TYPES::NPY_DOUBLE as i8; 4usize];
-static mut CALC_PTF_TIWARY2014_IGP_FUNCTIONS: [PyUFuncGenericFunction; 1] =
-    [Some(calc_ptf_tiwary2014_igp_loop); 1];
-static CALC_PTF_TIWARY2014_IGP_NAME: &[u8] = b"calc_ptf_tiwary2014_igp\0";
-static CALC_PTF_TIWARY2014_IGP_DOC: &[u8] = b"calc_ptf_tiwary2014_igp\0";
-unsafe extern "C" fn calc_ptf_tiwary2014_igp_loop(
-    args: *mut *mut c_char,
-    dimensions: *mut npy_intp,
-    steps: *mut npy_intp,
-    _: *mut c_void,
-) {
-    unsafe {
-        let count = *dimensions as usize;
-        let mut pointers = [std::ptr::null_mut(); CALC_PTF_TIWARY2014_IGP_NARGS];
-        let mut strides = [0isize; CALC_PTF_TIWARY2014_IGP_NARGS];
-        std::ptr::copy_nonoverlapping(args, pointers.as_mut_ptr(), CALC_PTF_TIWARY2014_IGP_NARGS);
-        std::ptr::copy_nonoverlapping(steps, strides.as_mut_ptr(), CALC_PTF_TIWARY2014_IGP_NARGS);
-        for _ in 0..count {
-            let sand = (pointers[0usize] as *const f64).read_unaligned();
-            let bulk_density = (pointers[1usize] as *const f64).read_unaligned();
-            let esp = (pointers[2usize] as *const f64).read_unaligned();
-            let k_sat_mm_per_hour = (((4.079f64) + ((0.047f64) * (sand))) - ((0.054f64) * (esp)))
-                - ((2.238f64) * (bulk_density));
-            let k_sat = (k_sat_mm_per_hour) / (3600000f64);
-            let values = [k_sat];
-            (pointers[3usize] as *mut f64).write_unaligned(values[0usize]);
-            for index in 0..CALC_PTF_TIWARY2014_IGP_NARGS {
-                pointers[index] = pointers[index].offset(strides[index]);
-            }
-        }
-    }
-}
 pub fn register(module: &Bound<'_, PyModule>) -> PyResult<()> {
     let py = module.py();
-    let ufunc = unsafe {
-        runtime::create_ufunc(
-            py,
-            std::ptr::addr_of_mut!(CALC_PTF_TIWARY2014_BSR_FUNCTIONS).cast(),
-            std::ptr::addr_of_mut!(CALC_PTF_TIWARY2014_BSR_TYPES).cast(),
-            CALC_PTF_TIWARY2014_BSR_NIN as i32,
-            CALC_PTF_TIWARY2014_BSR_NOUT as i32,
-            CALC_PTF_TIWARY2014_BSR_NAME.as_ptr().cast(),
-            CALC_PTF_TIWARY2014_BSR_DOC.as_ptr().cast(),
-        )
-    }?;
-    module.add("calc_ptf_tiwary2014_bsr", ufunc)?;
     let ufunc = unsafe {
         runtime::create_ufunc(
             py,
@@ -117,5 +105,17 @@ pub fn register(module: &Bound<'_, PyModule>) -> PyResult<()> {
         )
     }?;
     module.add("calc_ptf_tiwary2014_igp", ufunc)?;
+    let ufunc = unsafe {
+        runtime::create_ufunc(
+            py,
+            std::ptr::addr_of_mut!(CALC_PTF_TIWARY2014_BSR_FUNCTIONS).cast(),
+            std::ptr::addr_of_mut!(CALC_PTF_TIWARY2014_BSR_TYPES).cast(),
+            CALC_PTF_TIWARY2014_BSR_NIN as i32,
+            CALC_PTF_TIWARY2014_BSR_NOUT as i32,
+            CALC_PTF_TIWARY2014_BSR_NAME.as_ptr().cast(),
+            CALC_PTF_TIWARY2014_BSR_DOC.as_ptr().cast(),
+        )
+    }?;
+    module.add("calc_ptf_tiwary2014_bsr", ufunc)?;
     Ok(())
 }

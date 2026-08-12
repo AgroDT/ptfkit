@@ -19,7 +19,7 @@ Agricultural topsoils in Doukkala, Gharb-Loukouss, Moulouya, and Tadla, Morocco
 331 disturbed topsoil samples collected at 0-20 cm from 2019 to 2022; random 50% calibration and
 50% validation subsets."]
 
-#[doc = r"Results returned by `calc_ptf_beniaich2023_mlr1`."]
+#[doc = r"Results returned by `calc_ptf_beniaich2023_slr1`."]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Beniaich2023PTFResult {
     #[doc = r"Gravimetric water content at saturation. (g/g)"]
@@ -28,382 +28,6 @@ pub struct Beniaich2023PTFResult {
     pub water_field_capacity: f64,
     #[doc = r"Gravimetric water content at -1,500 kPa. (g/g)"]
     pub water_wilting_point: f64,
-}
-
-#[doc = r"Estimate three gravimetric water contents from silt, sand, and organic matter.
-
-# Arguments
-
-  * silt: Silt content by mass. (%)
-  * sand: Sand content by mass. (%)
-  * soil_organic_matter: Soil organic matter content by mass. (%)
-
-# Returns
-
-A [`Beniaich2023PTFResult`].
-
-# Models
-
-  * h(theta): Three point estimates
-
-# Notes
-
-Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
-Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
-
-# Warnings
-
-Developed from Moroccan agricultural topsoils and not independently validated outside the source
-territory."]
-#[must_use]
-pub fn calc_ptf_beniaich2023_mlr1(
-    silt: f64,
-    sand: f64,
-    soil_organic_matter: f64,
-) -> Beniaich2023PTFResult {
-    let water_saturation = ((((87.342f64) - ((0.281f64) * (silt))) - ((0.548f64) * (sand)))
-        + ((2.377f64) * (soil_organic_matter)))
-        / (100f64);
-    let water_field_capacity = ((((35.844f64) - ((0.085f64) * (silt))) - ((0.359f64) * (sand)))
-        + ((0.947f64) * (soil_organic_matter)))
-        / (100f64);
-    let water_wilting_point = ((((28.734f64) - ((0.148f64) * (silt))) - ((0.324f64) * (sand)))
-        + ((0.636f64) * (soil_organic_matter)))
-        / (100f64);
-    Beniaich2023PTFResult {
-        water_saturation,
-        water_field_capacity,
-        water_wilting_point,
-    }
-}
-
-#[cfg(test)]
-mod calc_ptf_beniaich2023_mlr1_tests {
-    use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
-    #[test]
-    fn representative_case() {
-        let result = calc_ptf_beniaich2023_mlr1(30f64, 50f64, 2f64);
-        assert_close(
-            result.water_saturation,
-            0.56266f64,
-            0.000000000001f64,
-            0.000000000001f64,
-        );
-        assert_close(
-            result.water_field_capacity,
-            0.17238f64,
-            0.000000000001f64,
-            0.000000000001f64,
-        );
-        assert_close(
-            result.water_wilting_point,
-            0.09366f64,
-            0.000000000001f64,
-            0.000000000001f64,
-        );
-    }
-}
-
-#[doc = r"Estimate three gravimetric water contents from sand and organic matter.
-
-# Arguments
-
-  * sand: Sand content by mass. (%)
-  * soil_organic_matter: Soil organic matter content by mass. (%)
-
-# Returns
-
-A [`Beniaich2023PTFResult`].
-
-# Models
-
-  * h(theta): Three point estimates
-
-# Notes
-
-Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
-Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
-
-# Warnings
-
-Developed from Moroccan agricultural topsoils and not independently validated outside the source
-territory."]
-#[must_use]
-pub fn calc_ptf_beniaich2023_mlr2(sand: f64, soil_organic_matter: f64) -> Beniaich2023PTFResult {
-    let water_saturation =
-        (((75.366f64) - ((0.417f64) * (sand))) + ((2.219f64) * (soil_organic_matter))) / (100f64);
-    let water_field_capacity =
-        (((32.227f64) - ((0.32f64) * (sand))) + ((0.899f64) * (soil_organic_matter))) / (100f64);
-    let water_wilting_point =
-        (((22.421f64) - ((0.254f64) * (sand))) + ((0.552f64) * (soil_organic_matter))) / (100f64);
-    Beniaich2023PTFResult {
-        water_saturation,
-        water_field_capacity,
-        water_wilting_point,
-    }
-}
-
-#[cfg(test)]
-mod calc_ptf_beniaich2023_mlr2_tests {
-    use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
-    #[test]
-    fn representative_case() {
-        let result = calc_ptf_beniaich2023_mlr2(50f64, 2f64);
-        assert_close(
-            result.water_saturation,
-            0.58954f64,
-            0.000000000001f64,
-            0.000000000001f64,
-        );
-        assert_close(
-            result.water_field_capacity,
-            0.18025f64,
-            0.000000000001f64,
-            0.000000000001f64,
-        );
-        assert_close(
-            result.water_wilting_point,
-            0.10825f64,
-            0.000000000001f64,
-            0.000000000001f64,
-        );
-    }
-}
-
-#[doc = r"Estimate three gravimetric water contents from silt and organic matter.
-
-# Arguments
-
-  * silt: Silt content by mass. (%)
-  * soil_organic_matter: Soil organic matter content by mass. (%)
-
-# Returns
-
-A [`Beniaich2023PTFResult`].
-
-# Models
-
-  * h(theta): Three point estimates
-
-# Notes
-
-Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
-Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
-
-# Warnings
-
-Developed from Moroccan agricultural topsoils and not independently validated outside the source
-territory."]
-#[must_use]
-pub fn calc_ptf_beniaich2023_mlr3(silt: f64, soil_organic_matter: f64) -> Beniaich2023PTFResult {
-    let water_saturation =
-        (((53.777f64) + ((0.278f64) * (silt))) + ((2.457f64) * (soil_organic_matter))) / (100f64);
-    let water_field_capacity =
-        (((13.847f64) + ((0.281f64) * (silt))) + ((0.999f64) * (soil_organic_matter))) / (100f64);
-    let water_wilting_point =
-        (((8.929f64) + ((0.182f64) * (silt))) + ((0.683f64) * (soil_organic_matter))) / (100f64);
-    Beniaich2023PTFResult {
-        water_saturation,
-        water_field_capacity,
-        water_wilting_point,
-    }
-}
-
-#[cfg(test)]
-mod calc_ptf_beniaich2023_mlr3_tests {
-    use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
-    #[test]
-    fn representative_case() {
-        let result = calc_ptf_beniaich2023_mlr3(30f64, 2f64);
-        assert_close(
-            result.water_saturation,
-            0.67031f64,
-            0.000000000001f64,
-            0.000000000001f64,
-        );
-        assert_close(
-            result.water_field_capacity,
-            0.24275f64,
-            0.000000000001f64,
-            0.000000000001f64,
-        );
-        assert_close(
-            result.water_wilting_point,
-            0.15755f64,
-            0.000000000001f64,
-            0.000000000001f64,
-        );
-    }
-}
-
-#[doc = r"Estimate three gravimetric water contents from clay and organic matter.
-
-# Arguments
-
-  * clay: Clay content by mass. (%)
-  * soil_organic_matter: Soil organic matter content by mass. (%)
-
-# Returns
-
-A [`Beniaich2023PTFResult`].
-
-# Models
-
-  * h(theta): Three point estimates
-
-# Notes
-
-Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
-Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
-
-# Warnings
-
-Developed from Moroccan agricultural topsoils and not independently validated outside the source
-territory."]
-#[must_use]
-pub fn calc_ptf_beniaich2023_mlr4(clay: f64, soil_organic_matter: f64) -> Beniaich2023PTFResult {
-    let water_saturation =
-        (((39.432f64) + ((0.553f64) * (clay))) + ((2.699f64) * (soil_organic_matter))) / (100f64);
-    let water_field_capacity =
-        (((7.023f64) + ((0.364f64) * (clay))) + ((1.278f64) * (soil_organic_matter))) / (100f64);
-    let water_wilting_point =
-        (((0.923f64) + ((0.327f64) * (clay))) + ((0.847f64) * (soil_organic_matter))) / (100f64);
-    Beniaich2023PTFResult {
-        water_saturation,
-        water_field_capacity,
-        water_wilting_point,
-    }
-}
-
-#[cfg(test)]
-mod calc_ptf_beniaich2023_mlr4_tests {
-    use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
-    #[test]
-    fn representative_case() {
-        let result = calc_ptf_beniaich2023_mlr4(20f64, 2f64);
-        assert_close(
-            result.water_saturation,
-            0.5589f64,
-            0.000000000001f64,
-            0.000000000001f64,
-        );
-        assert_close(
-            result.water_field_capacity,
-            0.16859f64,
-            0.000000000001f64,
-            0.000000000001f64,
-        );
-        assert_close(
-            result.water_wilting_point,
-            0.09157f64,
-            0.000000000001f64,
-            0.000000000001f64,
-        );
-    }
-}
-
-#[doc = r"Estimate three gravimetric water contents from clay, silt, and organic matter.
-
-# Arguments
-
-  * clay: Clay content by mass. (%)
-  * silt: Silt content by mass. (%)
-  * soil_organic_matter: Soil organic matter content by mass. (%)
-
-# Returns
-
-A [`Beniaich2023PTFResult`].
-
-# Models
-
-  * h(theta): Three point estimates
-
-# Notes
-
-Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
-Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
-
-# Warnings
-
-Developed from Moroccan agricultural topsoils and not independently validated outside the source
-territory."]
-#[must_use]
-pub fn calc_ptf_beniaich2023_mlr5(
-    clay: f64,
-    silt: f64,
-    soil_organic_matter: f64,
-) -> Beniaich2023PTFResult {
-    let water_saturation = ((((32.505f64) + ((0.548f64) * (clay))) + ((0.267f64) * (silt)))
-        + ((2.377f64) * (soil_organic_matter)))
-        / (100f64);
-    let water_field_capacity = ((((-(0.094f64)) + ((0.359f64) * (clay))) + ((0.274f64) * (silt)))
-        + ((0.947f64) * (soil_organic_matter)))
-        / (100f64);
-    let water_wilting_point = ((((-(3.623f64)) + ((0.324f64) * (clay))) + ((0.175f64) * (silt)))
-        + ((0.636f64) * (soil_organic_matter)))
-        / (100f64);
-    Beniaich2023PTFResult {
-        water_saturation,
-        water_field_capacity,
-        water_wilting_point,
-    }
-}
-
-#[cfg(test)]
-mod calc_ptf_beniaich2023_mlr5_tests {
-    use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
-    #[test]
-    fn representative_case() {
-        let result = calc_ptf_beniaich2023_mlr5(20f64, 30f64, 2f64);
-        assert_close(
-            result.water_saturation,
-            0.56229f64,
-            0.000000000001f64,
-            0.000000000001f64,
-        );
-        assert_close(
-            result.water_field_capacity,
-            0.172f64,
-            0.000000000001f64,
-            0.000000000001f64,
-        );
-        assert_close(
-            result.water_wilting_point,
-            0.09379f64,
-            0.000000000001f64,
-            0.000000000001f64,
-        );
-    }
 }
 
 #[doc = r"Estimate three gravimetric water contents from clay.
@@ -812,6 +436,382 @@ mod calc_ptf_beniaich2023_slr6_tests {
         assert_close(
             result.water_wilting_point,
             0.15562f64,
+            0.000000000001f64,
+            0.000000000001f64,
+        );
+    }
+}
+
+#[doc = r"Estimate three gravimetric water contents from silt, sand, and organic matter.
+
+# Arguments
+
+  * silt: Silt content by mass. (%)
+  * sand: Sand content by mass. (%)
+  * soil_organic_matter: Soil organic matter content by mass. (%)
+
+# Returns
+
+A [`Beniaich2023PTFResult`].
+
+# Models
+
+  * h(theta): Three point estimates
+
+# Notes
+
+Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
+Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
+
+# Warnings
+
+Developed from Moroccan agricultural topsoils and not independently validated outside the source
+territory."]
+#[must_use]
+pub fn calc_ptf_beniaich2023_mlr1(
+    silt: f64,
+    sand: f64,
+    soil_organic_matter: f64,
+) -> Beniaich2023PTFResult {
+    let water_saturation = ((((87.342f64) - ((0.281f64) * (silt))) - ((0.548f64) * (sand)))
+        + ((2.377f64) * (soil_organic_matter)))
+        / (100f64);
+    let water_field_capacity = ((((35.844f64) - ((0.085f64) * (silt))) - ((0.359f64) * (sand)))
+        + ((0.947f64) * (soil_organic_matter)))
+        / (100f64);
+    let water_wilting_point = ((((28.734f64) - ((0.148f64) * (silt))) - ((0.324f64) * (sand)))
+        + ((0.636f64) * (soil_organic_matter)))
+        / (100f64);
+    Beniaich2023PTFResult {
+        water_saturation,
+        water_field_capacity,
+        water_wilting_point,
+    }
+}
+
+#[cfg(test)]
+mod calc_ptf_beniaich2023_mlr1_tests {
+    use super::*;
+    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+        assert!(
+            (actual - expected).abs() <= atol + rtol * expected.abs(),
+            "actual {actual} != expected {expected}"
+        );
+    }
+    #[test]
+    fn representative_case() {
+        let result = calc_ptf_beniaich2023_mlr1(30f64, 50f64, 2f64);
+        assert_close(
+            result.water_saturation,
+            0.56266f64,
+            0.000000000001f64,
+            0.000000000001f64,
+        );
+        assert_close(
+            result.water_field_capacity,
+            0.17238f64,
+            0.000000000001f64,
+            0.000000000001f64,
+        );
+        assert_close(
+            result.water_wilting_point,
+            0.09366f64,
+            0.000000000001f64,
+            0.000000000001f64,
+        );
+    }
+}
+
+#[doc = r"Estimate three gravimetric water contents from sand and organic matter.
+
+# Arguments
+
+  * sand: Sand content by mass. (%)
+  * soil_organic_matter: Soil organic matter content by mass. (%)
+
+# Returns
+
+A [`Beniaich2023PTFResult`].
+
+# Models
+
+  * h(theta): Three point estimates
+
+# Notes
+
+Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
+Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
+
+# Warnings
+
+Developed from Moroccan agricultural topsoils and not independently validated outside the source
+territory."]
+#[must_use]
+pub fn calc_ptf_beniaich2023_mlr2(sand: f64, soil_organic_matter: f64) -> Beniaich2023PTFResult {
+    let water_saturation =
+        (((75.366f64) - ((0.417f64) * (sand))) + ((2.219f64) * (soil_organic_matter))) / (100f64);
+    let water_field_capacity =
+        (((32.227f64) - ((0.32f64) * (sand))) + ((0.899f64) * (soil_organic_matter))) / (100f64);
+    let water_wilting_point =
+        (((22.421f64) - ((0.254f64) * (sand))) + ((0.552f64) * (soil_organic_matter))) / (100f64);
+    Beniaich2023PTFResult {
+        water_saturation,
+        water_field_capacity,
+        water_wilting_point,
+    }
+}
+
+#[cfg(test)]
+mod calc_ptf_beniaich2023_mlr2_tests {
+    use super::*;
+    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+        assert!(
+            (actual - expected).abs() <= atol + rtol * expected.abs(),
+            "actual {actual} != expected {expected}"
+        );
+    }
+    #[test]
+    fn representative_case() {
+        let result = calc_ptf_beniaich2023_mlr2(50f64, 2f64);
+        assert_close(
+            result.water_saturation,
+            0.58954f64,
+            0.000000000001f64,
+            0.000000000001f64,
+        );
+        assert_close(
+            result.water_field_capacity,
+            0.18025f64,
+            0.000000000001f64,
+            0.000000000001f64,
+        );
+        assert_close(
+            result.water_wilting_point,
+            0.10825f64,
+            0.000000000001f64,
+            0.000000000001f64,
+        );
+    }
+}
+
+#[doc = r"Estimate three gravimetric water contents from silt and organic matter.
+
+# Arguments
+
+  * silt: Silt content by mass. (%)
+  * soil_organic_matter: Soil organic matter content by mass. (%)
+
+# Returns
+
+A [`Beniaich2023PTFResult`].
+
+# Models
+
+  * h(theta): Three point estimates
+
+# Notes
+
+Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
+Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
+
+# Warnings
+
+Developed from Moroccan agricultural topsoils and not independently validated outside the source
+territory."]
+#[must_use]
+pub fn calc_ptf_beniaich2023_mlr3(silt: f64, soil_organic_matter: f64) -> Beniaich2023PTFResult {
+    let water_saturation =
+        (((53.777f64) + ((0.278f64) * (silt))) + ((2.457f64) * (soil_organic_matter))) / (100f64);
+    let water_field_capacity =
+        (((13.847f64) + ((0.281f64) * (silt))) + ((0.999f64) * (soil_organic_matter))) / (100f64);
+    let water_wilting_point =
+        (((8.929f64) + ((0.182f64) * (silt))) + ((0.683f64) * (soil_organic_matter))) / (100f64);
+    Beniaich2023PTFResult {
+        water_saturation,
+        water_field_capacity,
+        water_wilting_point,
+    }
+}
+
+#[cfg(test)]
+mod calc_ptf_beniaich2023_mlr3_tests {
+    use super::*;
+    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+        assert!(
+            (actual - expected).abs() <= atol + rtol * expected.abs(),
+            "actual {actual} != expected {expected}"
+        );
+    }
+    #[test]
+    fn representative_case() {
+        let result = calc_ptf_beniaich2023_mlr3(30f64, 2f64);
+        assert_close(
+            result.water_saturation,
+            0.67031f64,
+            0.000000000001f64,
+            0.000000000001f64,
+        );
+        assert_close(
+            result.water_field_capacity,
+            0.24275f64,
+            0.000000000001f64,
+            0.000000000001f64,
+        );
+        assert_close(
+            result.water_wilting_point,
+            0.15755f64,
+            0.000000000001f64,
+            0.000000000001f64,
+        );
+    }
+}
+
+#[doc = r"Estimate three gravimetric water contents from clay and organic matter.
+
+# Arguments
+
+  * clay: Clay content by mass. (%)
+  * soil_organic_matter: Soil organic matter content by mass. (%)
+
+# Returns
+
+A [`Beniaich2023PTFResult`].
+
+# Models
+
+  * h(theta): Three point estimates
+
+# Notes
+
+Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
+Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
+
+# Warnings
+
+Developed from Moroccan agricultural topsoils and not independently validated outside the source
+territory."]
+#[must_use]
+pub fn calc_ptf_beniaich2023_mlr4(clay: f64, soil_organic_matter: f64) -> Beniaich2023PTFResult {
+    let water_saturation =
+        (((39.432f64) + ((0.553f64) * (clay))) + ((2.699f64) * (soil_organic_matter))) / (100f64);
+    let water_field_capacity =
+        (((7.023f64) + ((0.364f64) * (clay))) + ((1.278f64) * (soil_organic_matter))) / (100f64);
+    let water_wilting_point =
+        (((0.923f64) + ((0.327f64) * (clay))) + ((0.847f64) * (soil_organic_matter))) / (100f64);
+    Beniaich2023PTFResult {
+        water_saturation,
+        water_field_capacity,
+        water_wilting_point,
+    }
+}
+
+#[cfg(test)]
+mod calc_ptf_beniaich2023_mlr4_tests {
+    use super::*;
+    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+        assert!(
+            (actual - expected).abs() <= atol + rtol * expected.abs(),
+            "actual {actual} != expected {expected}"
+        );
+    }
+    #[test]
+    fn representative_case() {
+        let result = calc_ptf_beniaich2023_mlr4(20f64, 2f64);
+        assert_close(
+            result.water_saturation,
+            0.5589f64,
+            0.000000000001f64,
+            0.000000000001f64,
+        );
+        assert_close(
+            result.water_field_capacity,
+            0.16859f64,
+            0.000000000001f64,
+            0.000000000001f64,
+        );
+        assert_close(
+            result.water_wilting_point,
+            0.09157f64,
+            0.000000000001f64,
+            0.000000000001f64,
+        );
+    }
+}
+
+#[doc = r"Estimate three gravimetric water contents from clay, silt, and organic matter.
+
+# Arguments
+
+  * clay: Clay content by mass. (%)
+  * silt: Silt content by mass. (%)
+  * soil_organic_matter: Soil organic matter content by mass. (%)
+
+# Returns
+
+A [`Beniaich2023PTFResult`].
+
+# Models
+
+  * h(theta): Three point estimates
+
+# Notes
+
+Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
+Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
+
+# Warnings
+
+Developed from Moroccan agricultural topsoils and not independently validated outside the source
+territory."]
+#[must_use]
+pub fn calc_ptf_beniaich2023_mlr5(
+    clay: f64,
+    silt: f64,
+    soil_organic_matter: f64,
+) -> Beniaich2023PTFResult {
+    let water_saturation = ((((32.505f64) + ((0.548f64) * (clay))) + ((0.267f64) * (silt)))
+        + ((2.377f64) * (soil_organic_matter)))
+        / (100f64);
+    let water_field_capacity = ((((-(0.094f64)) + ((0.359f64) * (clay))) + ((0.274f64) * (silt)))
+        + ((0.947f64) * (soil_organic_matter)))
+        / (100f64);
+    let water_wilting_point = ((((-(3.623f64)) + ((0.324f64) * (clay))) + ((0.175f64) * (silt)))
+        + ((0.636f64) * (soil_organic_matter)))
+        / (100f64);
+    Beniaich2023PTFResult {
+        water_saturation,
+        water_field_capacity,
+        water_wilting_point,
+    }
+}
+
+#[cfg(test)]
+mod calc_ptf_beniaich2023_mlr5_tests {
+    use super::*;
+    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+        assert!(
+            (actual - expected).abs() <= atol + rtol * expected.abs(),
+            "actual {actual} != expected {expected}"
+        );
+    }
+    #[test]
+    fn representative_case() {
+        let result = calc_ptf_beniaich2023_mlr5(20f64, 30f64, 2f64);
+        assert_close(
+            result.water_saturation,
+            0.56229f64,
+            0.000000000001f64,
+            0.000000000001f64,
+        );
+        assert_close(
+            result.water_field_capacity,
+            0.172f64,
+            0.000000000001f64,
+            0.000000000001f64,
+        );
+        assert_close(
+            result.water_wilting_point,
+            0.09379f64,
             0.000000000001f64,
             0.000000000001f64,
         );

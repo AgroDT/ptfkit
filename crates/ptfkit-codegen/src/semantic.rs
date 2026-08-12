@@ -1,8 +1,3 @@
-#![expect(
-    dead_code,
-    reason = "Session 04 wires semantic compilation into the standalone YAML specification loader."
-)]
-
 use std::{collections::BTreeMap, fmt};
 
 use crate::{

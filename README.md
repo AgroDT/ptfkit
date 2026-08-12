@@ -119,6 +119,10 @@ pip install 'git+https://github.com/AgroDT/ptfkit.git'
 
 ## Development Model
 
+The current generated target set consists of Rust kernels and the PyO3/NumPy
+ufunc extension used by the Python package. Direct CPython, C, and R targets
+are deferred; they are not part of the supported implementation pipeline.
+
 Most feature development in ptfkit is agent-assisted. The repository provides
 workflow skills in [`.agents/skills`](./.agents/skills/) that keep scientific
 specification, implementation, public API compatibility, and review aligned.
@@ -139,8 +143,8 @@ specification, implementation, public API compatibility, and review aligned.
 5. Optionally use `ptf-review <apa_article_key>` in another fresh session for an
    independent, read-only pre-merge review.
 
-If the generated specification has unresolved details, implementation stops
-until the specification is complete.
+Code-generating functions require a reviewed `implementation`; if scientific
+details remain unresolved, the source stays draft or blocked.
 
 ## Contributing
 

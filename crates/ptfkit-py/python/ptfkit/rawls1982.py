@@ -23,9 +23,9 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Generic, NamedTuple, TypeVar, overload
 
 from ptfkit._core import (
-    calc_ptf_rawls1982_full_wrc as _calc_ptf_rawls1982_full_wrc,
     calc_ptf_rawls1982_theta_1500 as _calc_ptf_rawls1982_theta_1500,
     calc_ptf_rawls1982_theta_33 as _calc_ptf_rawls1982_theta_33,
+    calc_ptf_rawls1982_full_wrc as _calc_ptf_rawls1982_full_wrc,
 )
 
 
@@ -75,70 +75,6 @@ __all__ = [
     'calc_theta_33_rawls1982',
     'calc_theta_1500_rawls1982',
 ]
-
-
-@overload
-def calc_full_wrc_rawls1982(
-    *, sand: float, organic_matter: float, bulk_density: float, theta_33: float, theta_1500: float
-) -> Rawls1982PTFResult[floating]: ...
-
-
-@overload
-def calc_full_wrc_rawls1982(
-    *,
-    sand: ArrayLike,
-    organic_matter: ArrayLike,
-    bulk_density: ArrayLike,
-    theta_33: ArrayLike,
-    theta_1500: ArrayLike,
-    out: Rawls1982PTFResult[NDArray[floating]] | None = None,
-) -> Rawls1982PTFResult[NDArray[floating]]: ...
-
-
-def calc_full_wrc_rawls1982(
-    *,
-    sand: float | ArrayLike,
-    organic_matter: float | ArrayLike,
-    bulk_density: float | ArrayLike,
-    theta_33: float | ArrayLike,
-    theta_1500: float | ArrayLike,
-    out: Rawls1982PTFResult[NDArray[floating]] | None = None,
-) -> Rawls1982PTFResult[floating] | Rawls1982PTFResult[NDArray[floating]]:
-    r"""Estimate a twelve-point water-retention curve using theta_33 and theta_1500.
-
-    Arguments:
-        sand: Sand content. (%)
-        organic_matter: Organic matter content. (%)
-        bulk_density: Bulk density. (g/cm^3)
-        theta_33: Measured or estimated volumetric water content at -33 kPa. (cm^3/cm^3)
-        theta_1500: Measured or estimated volumetric water content at -1500 kPa. (cm^3/cm^3)
-        out: Optional output arrays for in-place calculation.
-
-    Returns:
-        Rawls1982PTFResult: Results grouped by result attributes.
-
-    Models:
-        $h(\theta)$: Twelve point water-retention curve
-
-    Notes:
-        Prediction target: Volumetric water contents from -4 to -1500 kPa.
-        The source offers three regression levels; this function uses measured theta_33 and
-            theta_1500 for the intermediate points.
-
-    Warnings:
-        The source value 0.8888 is retained literally for the theta_7 intercept.
-
-    """
-    if out is None:
-        values = _calc_ptf_rawls1982_full_wrc(
-            sand, organic_matter, bulk_density, theta_33, theta_1500
-        )
-    else:
-        values = _calc_ptf_rawls1982_full_wrc(
-            sand, organic_matter, bulk_density, theta_33, theta_1500, out=tuple(out)
-        )
-
-    return Rawls1982PTFResult(*values)
 
 
 @overload
@@ -232,3 +168,67 @@ def calc_theta_33_rawls1982(
         values = _calc_ptf_rawls1982_theta_33(sand, organic_matter, theta_1500, out=out)
 
     return values
+
+
+@overload
+def calc_full_wrc_rawls1982(
+    *, sand: float, organic_matter: float, bulk_density: float, theta_33: float, theta_1500: float
+) -> Rawls1982PTFResult[floating]: ...
+
+
+@overload
+def calc_full_wrc_rawls1982(
+    *,
+    sand: ArrayLike,
+    organic_matter: ArrayLike,
+    bulk_density: ArrayLike,
+    theta_33: ArrayLike,
+    theta_1500: ArrayLike,
+    out: Rawls1982PTFResult[NDArray[floating]] | None = None,
+) -> Rawls1982PTFResult[NDArray[floating]]: ...
+
+
+def calc_full_wrc_rawls1982(
+    *,
+    sand: float | ArrayLike,
+    organic_matter: float | ArrayLike,
+    bulk_density: float | ArrayLike,
+    theta_33: float | ArrayLike,
+    theta_1500: float | ArrayLike,
+    out: Rawls1982PTFResult[NDArray[floating]] | None = None,
+) -> Rawls1982PTFResult[floating] | Rawls1982PTFResult[NDArray[floating]]:
+    r"""Estimate a twelve-point water-retention curve using theta_33 and theta_1500.
+
+    Arguments:
+        sand: Sand content. (%)
+        organic_matter: Organic matter content. (%)
+        bulk_density: Bulk density. (g/cm^3)
+        theta_33: Measured or estimated volumetric water content at -33 kPa. (cm^3/cm^3)
+        theta_1500: Measured or estimated volumetric water content at -1500 kPa. (cm^3/cm^3)
+        out: Optional output arrays for in-place calculation.
+
+    Returns:
+        Rawls1982PTFResult: Results grouped by result attributes.
+
+    Models:
+        $h(\theta)$: Twelve point water-retention curve
+
+    Notes:
+        Prediction target: Volumetric water contents from -4 to -1500 kPa.
+        The source offers three regression levels; this function uses measured theta_33 and
+            theta_1500 for the intermediate points.
+
+    Warnings:
+        The source value 0.8888 is retained literally for the theta_7 intercept.
+
+    """
+    if out is None:
+        values = _calc_ptf_rawls1982_full_wrc(
+            sand, organic_matter, bulk_density, theta_33, theta_1500
+        )
+    else:
+        values = _calc_ptf_rawls1982_full_wrc(
+            sand, organic_matter, bulk_density, theta_33, theta_1500, out=tuple(out)
+        )
+
+    return Rawls1982PTFResult(*values)

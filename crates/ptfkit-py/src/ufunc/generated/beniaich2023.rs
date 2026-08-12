@@ -6,264 +6,6 @@ use numpy::npyffi::{
 };
 use pyo3::{prelude::*, types::PyModule};
 use std::{ffi::c_void, os::raw::c_char};
-const CALC_PTF_BENIAICH2023_MLR1_NIN: usize = 3usize;
-const CALC_PTF_BENIAICH2023_MLR1_NOUT: usize = 3usize;
-const CALC_PTF_BENIAICH2023_MLR1_NARGS: usize = 6usize;
-static mut CALC_PTF_BENIAICH2023_MLR1_TYPES: [i8; 6usize] = [NPY_TYPES::NPY_DOUBLE as i8; 6usize];
-static mut CALC_PTF_BENIAICH2023_MLR1_FUNCTIONS: [PyUFuncGenericFunction; 1] =
-    [Some(calc_ptf_beniaich2023_mlr1_loop); 1];
-static CALC_PTF_BENIAICH2023_MLR1_NAME: &[u8] = b"calc_ptf_beniaich2023_mlr1\0";
-static CALC_PTF_BENIAICH2023_MLR1_DOC: &[u8] = b"calc_ptf_beniaich2023_mlr1\0";
-unsafe extern "C" fn calc_ptf_beniaich2023_mlr1_loop(
-    args: *mut *mut c_char,
-    dimensions: *mut npy_intp,
-    steps: *mut npy_intp,
-    _: *mut c_void,
-) {
-    unsafe {
-        let count = *dimensions as usize;
-        let mut pointers = [std::ptr::null_mut(); CALC_PTF_BENIAICH2023_MLR1_NARGS];
-        let mut strides = [0isize; CALC_PTF_BENIAICH2023_MLR1_NARGS];
-        std::ptr::copy_nonoverlapping(
-            args,
-            pointers.as_mut_ptr(),
-            CALC_PTF_BENIAICH2023_MLR1_NARGS,
-        );
-        std::ptr::copy_nonoverlapping(
-            steps,
-            strides.as_mut_ptr(),
-            CALC_PTF_BENIAICH2023_MLR1_NARGS,
-        );
-        for _ in 0..count {
-            let silt = (pointers[0usize] as *const f64).read_unaligned();
-            let sand = (pointers[1usize] as *const f64).read_unaligned();
-            let soil_organic_matter = (pointers[2usize] as *const f64).read_unaligned();
-            let water_saturation = ((((87.342f64) - ((0.281f64) * (silt)))
-                - ((0.548f64) * (sand)))
-                + ((2.377f64) * (soil_organic_matter)))
-                / (100f64);
-            let water_field_capacity = ((((35.844f64) - ((0.085f64) * (silt)))
-                - ((0.359f64) * (sand)))
-                + ((0.947f64) * (soil_organic_matter)))
-                / (100f64);
-            let water_wilting_point = ((((28.734f64) - ((0.148f64) * (silt)))
-                - ((0.324f64) * (sand)))
-                + ((0.636f64) * (soil_organic_matter)))
-                / (100f64);
-            let values = [water_saturation, water_field_capacity, water_wilting_point];
-            (pointers[3usize] as *mut f64).write_unaligned(values[0usize]);
-            (pointers[4usize] as *mut f64).write_unaligned(values[1usize]);
-            (pointers[5usize] as *mut f64).write_unaligned(values[2usize]);
-            for index in 0..CALC_PTF_BENIAICH2023_MLR1_NARGS {
-                pointers[index] = pointers[index].offset(strides[index]);
-            }
-        }
-    }
-}
-const CALC_PTF_BENIAICH2023_MLR2_NIN: usize = 2usize;
-const CALC_PTF_BENIAICH2023_MLR2_NOUT: usize = 3usize;
-const CALC_PTF_BENIAICH2023_MLR2_NARGS: usize = 5usize;
-static mut CALC_PTF_BENIAICH2023_MLR2_TYPES: [i8; 5usize] = [NPY_TYPES::NPY_DOUBLE as i8; 5usize];
-static mut CALC_PTF_BENIAICH2023_MLR2_FUNCTIONS: [PyUFuncGenericFunction; 1] =
-    [Some(calc_ptf_beniaich2023_mlr2_loop); 1];
-static CALC_PTF_BENIAICH2023_MLR2_NAME: &[u8] = b"calc_ptf_beniaich2023_mlr2\0";
-static CALC_PTF_BENIAICH2023_MLR2_DOC: &[u8] = b"calc_ptf_beniaich2023_mlr2\0";
-unsafe extern "C" fn calc_ptf_beniaich2023_mlr2_loop(
-    args: *mut *mut c_char,
-    dimensions: *mut npy_intp,
-    steps: *mut npy_intp,
-    _: *mut c_void,
-) {
-    unsafe {
-        let count = *dimensions as usize;
-        let mut pointers = [std::ptr::null_mut(); CALC_PTF_BENIAICH2023_MLR2_NARGS];
-        let mut strides = [0isize; CALC_PTF_BENIAICH2023_MLR2_NARGS];
-        std::ptr::copy_nonoverlapping(
-            args,
-            pointers.as_mut_ptr(),
-            CALC_PTF_BENIAICH2023_MLR2_NARGS,
-        );
-        std::ptr::copy_nonoverlapping(
-            steps,
-            strides.as_mut_ptr(),
-            CALC_PTF_BENIAICH2023_MLR2_NARGS,
-        );
-        for _ in 0..count {
-            let sand = (pointers[0usize] as *const f64).read_unaligned();
-            let soil_organic_matter = (pointers[1usize] as *const f64).read_unaligned();
-            let water_saturation = (((75.366f64) - ((0.417f64) * (sand)))
-                + ((2.219f64) * (soil_organic_matter)))
-                / (100f64);
-            let water_field_capacity = (((32.227f64) - ((0.32f64) * (sand)))
-                + ((0.899f64) * (soil_organic_matter)))
-                / (100f64);
-            let water_wilting_point = (((22.421f64) - ((0.254f64) * (sand)))
-                + ((0.552f64) * (soil_organic_matter)))
-                / (100f64);
-            let values = [water_saturation, water_field_capacity, water_wilting_point];
-            (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
-            (pointers[3usize] as *mut f64).write_unaligned(values[1usize]);
-            (pointers[4usize] as *mut f64).write_unaligned(values[2usize]);
-            for index in 0..CALC_PTF_BENIAICH2023_MLR2_NARGS {
-                pointers[index] = pointers[index].offset(strides[index]);
-            }
-        }
-    }
-}
-const CALC_PTF_BENIAICH2023_MLR3_NIN: usize = 2usize;
-const CALC_PTF_BENIAICH2023_MLR3_NOUT: usize = 3usize;
-const CALC_PTF_BENIAICH2023_MLR3_NARGS: usize = 5usize;
-static mut CALC_PTF_BENIAICH2023_MLR3_TYPES: [i8; 5usize] = [NPY_TYPES::NPY_DOUBLE as i8; 5usize];
-static mut CALC_PTF_BENIAICH2023_MLR3_FUNCTIONS: [PyUFuncGenericFunction; 1] =
-    [Some(calc_ptf_beniaich2023_mlr3_loop); 1];
-static CALC_PTF_BENIAICH2023_MLR3_NAME: &[u8] = b"calc_ptf_beniaich2023_mlr3\0";
-static CALC_PTF_BENIAICH2023_MLR3_DOC: &[u8] = b"calc_ptf_beniaich2023_mlr3\0";
-unsafe extern "C" fn calc_ptf_beniaich2023_mlr3_loop(
-    args: *mut *mut c_char,
-    dimensions: *mut npy_intp,
-    steps: *mut npy_intp,
-    _: *mut c_void,
-) {
-    unsafe {
-        let count = *dimensions as usize;
-        let mut pointers = [std::ptr::null_mut(); CALC_PTF_BENIAICH2023_MLR3_NARGS];
-        let mut strides = [0isize; CALC_PTF_BENIAICH2023_MLR3_NARGS];
-        std::ptr::copy_nonoverlapping(
-            args,
-            pointers.as_mut_ptr(),
-            CALC_PTF_BENIAICH2023_MLR3_NARGS,
-        );
-        std::ptr::copy_nonoverlapping(
-            steps,
-            strides.as_mut_ptr(),
-            CALC_PTF_BENIAICH2023_MLR3_NARGS,
-        );
-        for _ in 0..count {
-            let silt = (pointers[0usize] as *const f64).read_unaligned();
-            let soil_organic_matter = (pointers[1usize] as *const f64).read_unaligned();
-            let water_saturation = (((53.777f64) + ((0.278f64) * (silt)))
-                + ((2.457f64) * (soil_organic_matter)))
-                / (100f64);
-            let water_field_capacity = (((13.847f64) + ((0.281f64) * (silt)))
-                + ((0.999f64) * (soil_organic_matter)))
-                / (100f64);
-            let water_wilting_point = (((8.929f64) + ((0.182f64) * (silt)))
-                + ((0.683f64) * (soil_organic_matter)))
-                / (100f64);
-            let values = [water_saturation, water_field_capacity, water_wilting_point];
-            (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
-            (pointers[3usize] as *mut f64).write_unaligned(values[1usize]);
-            (pointers[4usize] as *mut f64).write_unaligned(values[2usize]);
-            for index in 0..CALC_PTF_BENIAICH2023_MLR3_NARGS {
-                pointers[index] = pointers[index].offset(strides[index]);
-            }
-        }
-    }
-}
-const CALC_PTF_BENIAICH2023_MLR4_NIN: usize = 2usize;
-const CALC_PTF_BENIAICH2023_MLR4_NOUT: usize = 3usize;
-const CALC_PTF_BENIAICH2023_MLR4_NARGS: usize = 5usize;
-static mut CALC_PTF_BENIAICH2023_MLR4_TYPES: [i8; 5usize] = [NPY_TYPES::NPY_DOUBLE as i8; 5usize];
-static mut CALC_PTF_BENIAICH2023_MLR4_FUNCTIONS: [PyUFuncGenericFunction; 1] =
-    [Some(calc_ptf_beniaich2023_mlr4_loop); 1];
-static CALC_PTF_BENIAICH2023_MLR4_NAME: &[u8] = b"calc_ptf_beniaich2023_mlr4\0";
-static CALC_PTF_BENIAICH2023_MLR4_DOC: &[u8] = b"calc_ptf_beniaich2023_mlr4\0";
-unsafe extern "C" fn calc_ptf_beniaich2023_mlr4_loop(
-    args: *mut *mut c_char,
-    dimensions: *mut npy_intp,
-    steps: *mut npy_intp,
-    _: *mut c_void,
-) {
-    unsafe {
-        let count = *dimensions as usize;
-        let mut pointers = [std::ptr::null_mut(); CALC_PTF_BENIAICH2023_MLR4_NARGS];
-        let mut strides = [0isize; CALC_PTF_BENIAICH2023_MLR4_NARGS];
-        std::ptr::copy_nonoverlapping(
-            args,
-            pointers.as_mut_ptr(),
-            CALC_PTF_BENIAICH2023_MLR4_NARGS,
-        );
-        std::ptr::copy_nonoverlapping(
-            steps,
-            strides.as_mut_ptr(),
-            CALC_PTF_BENIAICH2023_MLR4_NARGS,
-        );
-        for _ in 0..count {
-            let clay = (pointers[0usize] as *const f64).read_unaligned();
-            let soil_organic_matter = (pointers[1usize] as *const f64).read_unaligned();
-            let water_saturation = (((39.432f64) + ((0.553f64) * (clay)))
-                + ((2.699f64) * (soil_organic_matter)))
-                / (100f64);
-            let water_field_capacity = (((7.023f64) + ((0.364f64) * (clay)))
-                + ((1.278f64) * (soil_organic_matter)))
-                / (100f64);
-            let water_wilting_point = (((0.923f64) + ((0.327f64) * (clay)))
-                + ((0.847f64) * (soil_organic_matter)))
-                / (100f64);
-            let values = [water_saturation, water_field_capacity, water_wilting_point];
-            (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
-            (pointers[3usize] as *mut f64).write_unaligned(values[1usize]);
-            (pointers[4usize] as *mut f64).write_unaligned(values[2usize]);
-            for index in 0..CALC_PTF_BENIAICH2023_MLR4_NARGS {
-                pointers[index] = pointers[index].offset(strides[index]);
-            }
-        }
-    }
-}
-const CALC_PTF_BENIAICH2023_MLR5_NIN: usize = 3usize;
-const CALC_PTF_BENIAICH2023_MLR5_NOUT: usize = 3usize;
-const CALC_PTF_BENIAICH2023_MLR5_NARGS: usize = 6usize;
-static mut CALC_PTF_BENIAICH2023_MLR5_TYPES: [i8; 6usize] = [NPY_TYPES::NPY_DOUBLE as i8; 6usize];
-static mut CALC_PTF_BENIAICH2023_MLR5_FUNCTIONS: [PyUFuncGenericFunction; 1] =
-    [Some(calc_ptf_beniaich2023_mlr5_loop); 1];
-static CALC_PTF_BENIAICH2023_MLR5_NAME: &[u8] = b"calc_ptf_beniaich2023_mlr5\0";
-static CALC_PTF_BENIAICH2023_MLR5_DOC: &[u8] = b"calc_ptf_beniaich2023_mlr5\0";
-unsafe extern "C" fn calc_ptf_beniaich2023_mlr5_loop(
-    args: *mut *mut c_char,
-    dimensions: *mut npy_intp,
-    steps: *mut npy_intp,
-    _: *mut c_void,
-) {
-    unsafe {
-        let count = *dimensions as usize;
-        let mut pointers = [std::ptr::null_mut(); CALC_PTF_BENIAICH2023_MLR5_NARGS];
-        let mut strides = [0isize; CALC_PTF_BENIAICH2023_MLR5_NARGS];
-        std::ptr::copy_nonoverlapping(
-            args,
-            pointers.as_mut_ptr(),
-            CALC_PTF_BENIAICH2023_MLR5_NARGS,
-        );
-        std::ptr::copy_nonoverlapping(
-            steps,
-            strides.as_mut_ptr(),
-            CALC_PTF_BENIAICH2023_MLR5_NARGS,
-        );
-        for _ in 0..count {
-            let clay = (pointers[0usize] as *const f64).read_unaligned();
-            let silt = (pointers[1usize] as *const f64).read_unaligned();
-            let soil_organic_matter = (pointers[2usize] as *const f64).read_unaligned();
-            let water_saturation = ((((32.505f64) + ((0.548f64) * (clay)))
-                + ((0.267f64) * (silt)))
-                + ((2.377f64) * (soil_organic_matter)))
-                / (100f64);
-            let water_field_capacity = ((((-(0.094f64)) + ((0.359f64) * (clay)))
-                + ((0.274f64) * (silt)))
-                + ((0.947f64) * (soil_organic_matter)))
-                / (100f64);
-            let water_wilting_point = ((((-(3.623f64)) + ((0.324f64) * (clay)))
-                + ((0.175f64) * (silt)))
-                + ((0.636f64) * (soil_organic_matter)))
-                / (100f64);
-            let values = [water_saturation, water_field_capacity, water_wilting_point];
-            (pointers[3usize] as *mut f64).write_unaligned(values[0usize]);
-            (pointers[4usize] as *mut f64).write_unaligned(values[1usize]);
-            (pointers[5usize] as *mut f64).write_unaligned(values[2usize]);
-            for index in 0..CALC_PTF_BENIAICH2023_MLR5_NARGS {
-                pointers[index] = pointers[index].offset(strides[index]);
-            }
-        }
-    }
-}
 const CALC_PTF_BENIAICH2023_SLR1_NIN: usize = 1usize;
 const CALC_PTF_BENIAICH2023_SLR1_NOUT: usize = 3usize;
 const CALC_PTF_BENIAICH2023_SLR1_NARGS: usize = 4usize;
@@ -528,68 +270,266 @@ unsafe extern "C" fn calc_ptf_beniaich2023_slr6_loop(
         }
     }
 }
+const CALC_PTF_BENIAICH2023_MLR1_NIN: usize = 3usize;
+const CALC_PTF_BENIAICH2023_MLR1_NOUT: usize = 3usize;
+const CALC_PTF_BENIAICH2023_MLR1_NARGS: usize = 6usize;
+static mut CALC_PTF_BENIAICH2023_MLR1_TYPES: [i8; 6usize] = [NPY_TYPES::NPY_DOUBLE as i8; 6usize];
+static mut CALC_PTF_BENIAICH2023_MLR1_FUNCTIONS: [PyUFuncGenericFunction; 1] =
+    [Some(calc_ptf_beniaich2023_mlr1_loop); 1];
+static CALC_PTF_BENIAICH2023_MLR1_NAME: &[u8] = b"calc_ptf_beniaich2023_mlr1\0";
+static CALC_PTF_BENIAICH2023_MLR1_DOC: &[u8] = b"calc_ptf_beniaich2023_mlr1\0";
+unsafe extern "C" fn calc_ptf_beniaich2023_mlr1_loop(
+    args: *mut *mut c_char,
+    dimensions: *mut npy_intp,
+    steps: *mut npy_intp,
+    _: *mut c_void,
+) {
+    unsafe {
+        let count = *dimensions as usize;
+        let mut pointers = [std::ptr::null_mut(); CALC_PTF_BENIAICH2023_MLR1_NARGS];
+        let mut strides = [0isize; CALC_PTF_BENIAICH2023_MLR1_NARGS];
+        std::ptr::copy_nonoverlapping(
+            args,
+            pointers.as_mut_ptr(),
+            CALC_PTF_BENIAICH2023_MLR1_NARGS,
+        );
+        std::ptr::copy_nonoverlapping(
+            steps,
+            strides.as_mut_ptr(),
+            CALC_PTF_BENIAICH2023_MLR1_NARGS,
+        );
+        for _ in 0..count {
+            let silt = (pointers[0usize] as *const f64).read_unaligned();
+            let sand = (pointers[1usize] as *const f64).read_unaligned();
+            let soil_organic_matter = (pointers[2usize] as *const f64).read_unaligned();
+            let water_saturation = ((((87.342f64) - ((0.281f64) * (silt)))
+                - ((0.548f64) * (sand)))
+                + ((2.377f64) * (soil_organic_matter)))
+                / (100f64);
+            let water_field_capacity = ((((35.844f64) - ((0.085f64) * (silt)))
+                - ((0.359f64) * (sand)))
+                + ((0.947f64) * (soil_organic_matter)))
+                / (100f64);
+            let water_wilting_point = ((((28.734f64) - ((0.148f64) * (silt)))
+                - ((0.324f64) * (sand)))
+                + ((0.636f64) * (soil_organic_matter)))
+                / (100f64);
+            let values = [water_saturation, water_field_capacity, water_wilting_point];
+            (pointers[3usize] as *mut f64).write_unaligned(values[0usize]);
+            (pointers[4usize] as *mut f64).write_unaligned(values[1usize]);
+            (pointers[5usize] as *mut f64).write_unaligned(values[2usize]);
+            for index in 0..CALC_PTF_BENIAICH2023_MLR1_NARGS {
+                pointers[index] = pointers[index].offset(strides[index]);
+            }
+        }
+    }
+}
+const CALC_PTF_BENIAICH2023_MLR2_NIN: usize = 2usize;
+const CALC_PTF_BENIAICH2023_MLR2_NOUT: usize = 3usize;
+const CALC_PTF_BENIAICH2023_MLR2_NARGS: usize = 5usize;
+static mut CALC_PTF_BENIAICH2023_MLR2_TYPES: [i8; 5usize] = [NPY_TYPES::NPY_DOUBLE as i8; 5usize];
+static mut CALC_PTF_BENIAICH2023_MLR2_FUNCTIONS: [PyUFuncGenericFunction; 1] =
+    [Some(calc_ptf_beniaich2023_mlr2_loop); 1];
+static CALC_PTF_BENIAICH2023_MLR2_NAME: &[u8] = b"calc_ptf_beniaich2023_mlr2\0";
+static CALC_PTF_BENIAICH2023_MLR2_DOC: &[u8] = b"calc_ptf_beniaich2023_mlr2\0";
+unsafe extern "C" fn calc_ptf_beniaich2023_mlr2_loop(
+    args: *mut *mut c_char,
+    dimensions: *mut npy_intp,
+    steps: *mut npy_intp,
+    _: *mut c_void,
+) {
+    unsafe {
+        let count = *dimensions as usize;
+        let mut pointers = [std::ptr::null_mut(); CALC_PTF_BENIAICH2023_MLR2_NARGS];
+        let mut strides = [0isize; CALC_PTF_BENIAICH2023_MLR2_NARGS];
+        std::ptr::copy_nonoverlapping(
+            args,
+            pointers.as_mut_ptr(),
+            CALC_PTF_BENIAICH2023_MLR2_NARGS,
+        );
+        std::ptr::copy_nonoverlapping(
+            steps,
+            strides.as_mut_ptr(),
+            CALC_PTF_BENIAICH2023_MLR2_NARGS,
+        );
+        for _ in 0..count {
+            let sand = (pointers[0usize] as *const f64).read_unaligned();
+            let soil_organic_matter = (pointers[1usize] as *const f64).read_unaligned();
+            let water_saturation = (((75.366f64) - ((0.417f64) * (sand)))
+                + ((2.219f64) * (soil_organic_matter)))
+                / (100f64);
+            let water_field_capacity = (((32.227f64) - ((0.32f64) * (sand)))
+                + ((0.899f64) * (soil_organic_matter)))
+                / (100f64);
+            let water_wilting_point = (((22.421f64) - ((0.254f64) * (sand)))
+                + ((0.552f64) * (soil_organic_matter)))
+                / (100f64);
+            let values = [water_saturation, water_field_capacity, water_wilting_point];
+            (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
+            (pointers[3usize] as *mut f64).write_unaligned(values[1usize]);
+            (pointers[4usize] as *mut f64).write_unaligned(values[2usize]);
+            for index in 0..CALC_PTF_BENIAICH2023_MLR2_NARGS {
+                pointers[index] = pointers[index].offset(strides[index]);
+            }
+        }
+    }
+}
+const CALC_PTF_BENIAICH2023_MLR3_NIN: usize = 2usize;
+const CALC_PTF_BENIAICH2023_MLR3_NOUT: usize = 3usize;
+const CALC_PTF_BENIAICH2023_MLR3_NARGS: usize = 5usize;
+static mut CALC_PTF_BENIAICH2023_MLR3_TYPES: [i8; 5usize] = [NPY_TYPES::NPY_DOUBLE as i8; 5usize];
+static mut CALC_PTF_BENIAICH2023_MLR3_FUNCTIONS: [PyUFuncGenericFunction; 1] =
+    [Some(calc_ptf_beniaich2023_mlr3_loop); 1];
+static CALC_PTF_BENIAICH2023_MLR3_NAME: &[u8] = b"calc_ptf_beniaich2023_mlr3\0";
+static CALC_PTF_BENIAICH2023_MLR3_DOC: &[u8] = b"calc_ptf_beniaich2023_mlr3\0";
+unsafe extern "C" fn calc_ptf_beniaich2023_mlr3_loop(
+    args: *mut *mut c_char,
+    dimensions: *mut npy_intp,
+    steps: *mut npy_intp,
+    _: *mut c_void,
+) {
+    unsafe {
+        let count = *dimensions as usize;
+        let mut pointers = [std::ptr::null_mut(); CALC_PTF_BENIAICH2023_MLR3_NARGS];
+        let mut strides = [0isize; CALC_PTF_BENIAICH2023_MLR3_NARGS];
+        std::ptr::copy_nonoverlapping(
+            args,
+            pointers.as_mut_ptr(),
+            CALC_PTF_BENIAICH2023_MLR3_NARGS,
+        );
+        std::ptr::copy_nonoverlapping(
+            steps,
+            strides.as_mut_ptr(),
+            CALC_PTF_BENIAICH2023_MLR3_NARGS,
+        );
+        for _ in 0..count {
+            let silt = (pointers[0usize] as *const f64).read_unaligned();
+            let soil_organic_matter = (pointers[1usize] as *const f64).read_unaligned();
+            let water_saturation = (((53.777f64) + ((0.278f64) * (silt)))
+                + ((2.457f64) * (soil_organic_matter)))
+                / (100f64);
+            let water_field_capacity = (((13.847f64) + ((0.281f64) * (silt)))
+                + ((0.999f64) * (soil_organic_matter)))
+                / (100f64);
+            let water_wilting_point = (((8.929f64) + ((0.182f64) * (silt)))
+                + ((0.683f64) * (soil_organic_matter)))
+                / (100f64);
+            let values = [water_saturation, water_field_capacity, water_wilting_point];
+            (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
+            (pointers[3usize] as *mut f64).write_unaligned(values[1usize]);
+            (pointers[4usize] as *mut f64).write_unaligned(values[2usize]);
+            for index in 0..CALC_PTF_BENIAICH2023_MLR3_NARGS {
+                pointers[index] = pointers[index].offset(strides[index]);
+            }
+        }
+    }
+}
+const CALC_PTF_BENIAICH2023_MLR4_NIN: usize = 2usize;
+const CALC_PTF_BENIAICH2023_MLR4_NOUT: usize = 3usize;
+const CALC_PTF_BENIAICH2023_MLR4_NARGS: usize = 5usize;
+static mut CALC_PTF_BENIAICH2023_MLR4_TYPES: [i8; 5usize] = [NPY_TYPES::NPY_DOUBLE as i8; 5usize];
+static mut CALC_PTF_BENIAICH2023_MLR4_FUNCTIONS: [PyUFuncGenericFunction; 1] =
+    [Some(calc_ptf_beniaich2023_mlr4_loop); 1];
+static CALC_PTF_BENIAICH2023_MLR4_NAME: &[u8] = b"calc_ptf_beniaich2023_mlr4\0";
+static CALC_PTF_BENIAICH2023_MLR4_DOC: &[u8] = b"calc_ptf_beniaich2023_mlr4\0";
+unsafe extern "C" fn calc_ptf_beniaich2023_mlr4_loop(
+    args: *mut *mut c_char,
+    dimensions: *mut npy_intp,
+    steps: *mut npy_intp,
+    _: *mut c_void,
+) {
+    unsafe {
+        let count = *dimensions as usize;
+        let mut pointers = [std::ptr::null_mut(); CALC_PTF_BENIAICH2023_MLR4_NARGS];
+        let mut strides = [0isize; CALC_PTF_BENIAICH2023_MLR4_NARGS];
+        std::ptr::copy_nonoverlapping(
+            args,
+            pointers.as_mut_ptr(),
+            CALC_PTF_BENIAICH2023_MLR4_NARGS,
+        );
+        std::ptr::copy_nonoverlapping(
+            steps,
+            strides.as_mut_ptr(),
+            CALC_PTF_BENIAICH2023_MLR4_NARGS,
+        );
+        for _ in 0..count {
+            let clay = (pointers[0usize] as *const f64).read_unaligned();
+            let soil_organic_matter = (pointers[1usize] as *const f64).read_unaligned();
+            let water_saturation = (((39.432f64) + ((0.553f64) * (clay)))
+                + ((2.699f64) * (soil_organic_matter)))
+                / (100f64);
+            let water_field_capacity = (((7.023f64) + ((0.364f64) * (clay)))
+                + ((1.278f64) * (soil_organic_matter)))
+                / (100f64);
+            let water_wilting_point = (((0.923f64) + ((0.327f64) * (clay)))
+                + ((0.847f64) * (soil_organic_matter)))
+                / (100f64);
+            let values = [water_saturation, water_field_capacity, water_wilting_point];
+            (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
+            (pointers[3usize] as *mut f64).write_unaligned(values[1usize]);
+            (pointers[4usize] as *mut f64).write_unaligned(values[2usize]);
+            for index in 0..CALC_PTF_BENIAICH2023_MLR4_NARGS {
+                pointers[index] = pointers[index].offset(strides[index]);
+            }
+        }
+    }
+}
+const CALC_PTF_BENIAICH2023_MLR5_NIN: usize = 3usize;
+const CALC_PTF_BENIAICH2023_MLR5_NOUT: usize = 3usize;
+const CALC_PTF_BENIAICH2023_MLR5_NARGS: usize = 6usize;
+static mut CALC_PTF_BENIAICH2023_MLR5_TYPES: [i8; 6usize] = [NPY_TYPES::NPY_DOUBLE as i8; 6usize];
+static mut CALC_PTF_BENIAICH2023_MLR5_FUNCTIONS: [PyUFuncGenericFunction; 1] =
+    [Some(calc_ptf_beniaich2023_mlr5_loop); 1];
+static CALC_PTF_BENIAICH2023_MLR5_NAME: &[u8] = b"calc_ptf_beniaich2023_mlr5\0";
+static CALC_PTF_BENIAICH2023_MLR5_DOC: &[u8] = b"calc_ptf_beniaich2023_mlr5\0";
+unsafe extern "C" fn calc_ptf_beniaich2023_mlr5_loop(
+    args: *mut *mut c_char,
+    dimensions: *mut npy_intp,
+    steps: *mut npy_intp,
+    _: *mut c_void,
+) {
+    unsafe {
+        let count = *dimensions as usize;
+        let mut pointers = [std::ptr::null_mut(); CALC_PTF_BENIAICH2023_MLR5_NARGS];
+        let mut strides = [0isize; CALC_PTF_BENIAICH2023_MLR5_NARGS];
+        std::ptr::copy_nonoverlapping(
+            args,
+            pointers.as_mut_ptr(),
+            CALC_PTF_BENIAICH2023_MLR5_NARGS,
+        );
+        std::ptr::copy_nonoverlapping(
+            steps,
+            strides.as_mut_ptr(),
+            CALC_PTF_BENIAICH2023_MLR5_NARGS,
+        );
+        for _ in 0..count {
+            let clay = (pointers[0usize] as *const f64).read_unaligned();
+            let silt = (pointers[1usize] as *const f64).read_unaligned();
+            let soil_organic_matter = (pointers[2usize] as *const f64).read_unaligned();
+            let water_saturation = ((((32.505f64) + ((0.548f64) * (clay)))
+                + ((0.267f64) * (silt)))
+                + ((2.377f64) * (soil_organic_matter)))
+                / (100f64);
+            let water_field_capacity = ((((-(0.094f64)) + ((0.359f64) * (clay)))
+                + ((0.274f64) * (silt)))
+                + ((0.947f64) * (soil_organic_matter)))
+                / (100f64);
+            let water_wilting_point = ((((-(3.623f64)) + ((0.324f64) * (clay)))
+                + ((0.175f64) * (silt)))
+                + ((0.636f64) * (soil_organic_matter)))
+                / (100f64);
+            let values = [water_saturation, water_field_capacity, water_wilting_point];
+            (pointers[3usize] as *mut f64).write_unaligned(values[0usize]);
+            (pointers[4usize] as *mut f64).write_unaligned(values[1usize]);
+            (pointers[5usize] as *mut f64).write_unaligned(values[2usize]);
+            for index in 0..CALC_PTF_BENIAICH2023_MLR5_NARGS {
+                pointers[index] = pointers[index].offset(strides[index]);
+            }
+        }
+    }
+}
 pub fn register(module: &Bound<'_, PyModule>) -> PyResult<()> {
     let py = module.py();
-    let ufunc = unsafe {
-        runtime::create_ufunc(
-            py,
-            std::ptr::addr_of_mut!(CALC_PTF_BENIAICH2023_MLR1_FUNCTIONS).cast(),
-            std::ptr::addr_of_mut!(CALC_PTF_BENIAICH2023_MLR1_TYPES).cast(),
-            CALC_PTF_BENIAICH2023_MLR1_NIN as i32,
-            CALC_PTF_BENIAICH2023_MLR1_NOUT as i32,
-            CALC_PTF_BENIAICH2023_MLR1_NAME.as_ptr().cast(),
-            CALC_PTF_BENIAICH2023_MLR1_DOC.as_ptr().cast(),
-        )
-    }?;
-    module.add("calc_ptf_beniaich2023_mlr1", ufunc)?;
-    let ufunc = unsafe {
-        runtime::create_ufunc(
-            py,
-            std::ptr::addr_of_mut!(CALC_PTF_BENIAICH2023_MLR2_FUNCTIONS).cast(),
-            std::ptr::addr_of_mut!(CALC_PTF_BENIAICH2023_MLR2_TYPES).cast(),
-            CALC_PTF_BENIAICH2023_MLR2_NIN as i32,
-            CALC_PTF_BENIAICH2023_MLR2_NOUT as i32,
-            CALC_PTF_BENIAICH2023_MLR2_NAME.as_ptr().cast(),
-            CALC_PTF_BENIAICH2023_MLR2_DOC.as_ptr().cast(),
-        )
-    }?;
-    module.add("calc_ptf_beniaich2023_mlr2", ufunc)?;
-    let ufunc = unsafe {
-        runtime::create_ufunc(
-            py,
-            std::ptr::addr_of_mut!(CALC_PTF_BENIAICH2023_MLR3_FUNCTIONS).cast(),
-            std::ptr::addr_of_mut!(CALC_PTF_BENIAICH2023_MLR3_TYPES).cast(),
-            CALC_PTF_BENIAICH2023_MLR3_NIN as i32,
-            CALC_PTF_BENIAICH2023_MLR3_NOUT as i32,
-            CALC_PTF_BENIAICH2023_MLR3_NAME.as_ptr().cast(),
-            CALC_PTF_BENIAICH2023_MLR3_DOC.as_ptr().cast(),
-        )
-    }?;
-    module.add("calc_ptf_beniaich2023_mlr3", ufunc)?;
-    let ufunc = unsafe {
-        runtime::create_ufunc(
-            py,
-            std::ptr::addr_of_mut!(CALC_PTF_BENIAICH2023_MLR4_FUNCTIONS).cast(),
-            std::ptr::addr_of_mut!(CALC_PTF_BENIAICH2023_MLR4_TYPES).cast(),
-            CALC_PTF_BENIAICH2023_MLR4_NIN as i32,
-            CALC_PTF_BENIAICH2023_MLR4_NOUT as i32,
-            CALC_PTF_BENIAICH2023_MLR4_NAME.as_ptr().cast(),
-            CALC_PTF_BENIAICH2023_MLR4_DOC.as_ptr().cast(),
-        )
-    }?;
-    module.add("calc_ptf_beniaich2023_mlr4", ufunc)?;
-    let ufunc = unsafe {
-        runtime::create_ufunc(
-            py,
-            std::ptr::addr_of_mut!(CALC_PTF_BENIAICH2023_MLR5_FUNCTIONS).cast(),
-            std::ptr::addr_of_mut!(CALC_PTF_BENIAICH2023_MLR5_TYPES).cast(),
-            CALC_PTF_BENIAICH2023_MLR5_NIN as i32,
-            CALC_PTF_BENIAICH2023_MLR5_NOUT as i32,
-            CALC_PTF_BENIAICH2023_MLR5_NAME.as_ptr().cast(),
-            CALC_PTF_BENIAICH2023_MLR5_DOC.as_ptr().cast(),
-        )
-    }?;
-    module.add("calc_ptf_beniaich2023_mlr5", ufunc)?;
     let ufunc = unsafe {
         runtime::create_ufunc(
             py,
@@ -662,5 +602,65 @@ pub fn register(module: &Bound<'_, PyModule>) -> PyResult<()> {
         )
     }?;
     module.add("calc_ptf_beniaich2023_slr6", ufunc)?;
+    let ufunc = unsafe {
+        runtime::create_ufunc(
+            py,
+            std::ptr::addr_of_mut!(CALC_PTF_BENIAICH2023_MLR1_FUNCTIONS).cast(),
+            std::ptr::addr_of_mut!(CALC_PTF_BENIAICH2023_MLR1_TYPES).cast(),
+            CALC_PTF_BENIAICH2023_MLR1_NIN as i32,
+            CALC_PTF_BENIAICH2023_MLR1_NOUT as i32,
+            CALC_PTF_BENIAICH2023_MLR1_NAME.as_ptr().cast(),
+            CALC_PTF_BENIAICH2023_MLR1_DOC.as_ptr().cast(),
+        )
+    }?;
+    module.add("calc_ptf_beniaich2023_mlr1", ufunc)?;
+    let ufunc = unsafe {
+        runtime::create_ufunc(
+            py,
+            std::ptr::addr_of_mut!(CALC_PTF_BENIAICH2023_MLR2_FUNCTIONS).cast(),
+            std::ptr::addr_of_mut!(CALC_PTF_BENIAICH2023_MLR2_TYPES).cast(),
+            CALC_PTF_BENIAICH2023_MLR2_NIN as i32,
+            CALC_PTF_BENIAICH2023_MLR2_NOUT as i32,
+            CALC_PTF_BENIAICH2023_MLR2_NAME.as_ptr().cast(),
+            CALC_PTF_BENIAICH2023_MLR2_DOC.as_ptr().cast(),
+        )
+    }?;
+    module.add("calc_ptf_beniaich2023_mlr2", ufunc)?;
+    let ufunc = unsafe {
+        runtime::create_ufunc(
+            py,
+            std::ptr::addr_of_mut!(CALC_PTF_BENIAICH2023_MLR3_FUNCTIONS).cast(),
+            std::ptr::addr_of_mut!(CALC_PTF_BENIAICH2023_MLR3_TYPES).cast(),
+            CALC_PTF_BENIAICH2023_MLR3_NIN as i32,
+            CALC_PTF_BENIAICH2023_MLR3_NOUT as i32,
+            CALC_PTF_BENIAICH2023_MLR3_NAME.as_ptr().cast(),
+            CALC_PTF_BENIAICH2023_MLR3_DOC.as_ptr().cast(),
+        )
+    }?;
+    module.add("calc_ptf_beniaich2023_mlr3", ufunc)?;
+    let ufunc = unsafe {
+        runtime::create_ufunc(
+            py,
+            std::ptr::addr_of_mut!(CALC_PTF_BENIAICH2023_MLR4_FUNCTIONS).cast(),
+            std::ptr::addr_of_mut!(CALC_PTF_BENIAICH2023_MLR4_TYPES).cast(),
+            CALC_PTF_BENIAICH2023_MLR4_NIN as i32,
+            CALC_PTF_BENIAICH2023_MLR4_NOUT as i32,
+            CALC_PTF_BENIAICH2023_MLR4_NAME.as_ptr().cast(),
+            CALC_PTF_BENIAICH2023_MLR4_DOC.as_ptr().cast(),
+        )
+    }?;
+    module.add("calc_ptf_beniaich2023_mlr4", ufunc)?;
+    let ufunc = unsafe {
+        runtime::create_ufunc(
+            py,
+            std::ptr::addr_of_mut!(CALC_PTF_BENIAICH2023_MLR5_FUNCTIONS).cast(),
+            std::ptr::addr_of_mut!(CALC_PTF_BENIAICH2023_MLR5_TYPES).cast(),
+            CALC_PTF_BENIAICH2023_MLR5_NIN as i32,
+            CALC_PTF_BENIAICH2023_MLR5_NOUT as i32,
+            CALC_PTF_BENIAICH2023_MLR5_NAME.as_ptr().cast(),
+            CALC_PTF_BENIAICH2023_MLR5_DOC.as_ptr().cast(),
+        )
+    }?;
+    module.add("calc_ptf_beniaich2023_mlr5", ufunc)?;
     Ok(())
 }

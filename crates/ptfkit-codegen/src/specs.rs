@@ -10,8 +10,6 @@ use crate::{
     semantic,
 };
 
-/// Temporary frontend compatibility boundary. Remove the `None` branch when
-/// every source specification provides an implementation.
 pub(crate) fn load(root: &Path) -> Result<Vec<Entry>> {
     let schema: Value =
         serde_json::from_slice(&fs::read(root.join("specs/schema/ptf-spec.schema.json"))?)?;
@@ -74,6 +72,20 @@ pub(crate) fn load(root: &Path) -> Result<Vec<Entry>> {
                 continue;
             }
         };
+        for function in &spec.functions {
+            if matches!(
+                function.status.as_str(),
+                "implemented" | "ready-for-implementation"
+            ) && function.implementation.is_none()
+            {
+                errors.push(format!(
+                    "{} -> function {} -> implementation: required for status `{}`",
+                    path.display(),
+                    function.name,
+                    function.status
+                ));
+            }
+        }
         let implementations = spec
             .functions
             .iter()
@@ -260,7 +272,7 @@ mod tests {
     }
 
     #[test]
-    fn loads_standalone_yaml_with_pilot_and_legacy_functions() {
+    fn rejects_a_code_generating_function_without_implementation() {
         let root = fixture_root("mixed");
         write(
             &root,
@@ -270,14 +282,9 @@ mod tests {
         );
         write(&root, "legacy", "", "");
 
-        let entries = load(&root).unwrap();
-        assert_eq!(entries.len(), 2);
-        assert!(entries[1].implementations[0].is_some());
-        assert!(entries[0].implementations[0].is_none());
-        assert_eq!(
-            entries[0].spec.generation.public_python,
-            PythonGeneration::Generated
-        );
+        let error = load(&root).unwrap_err().to_string();
+        assert!(error.contains("implementation\" is a required property"));
+        assert!(error.contains("required for status `ready-for-implementation`"));
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -308,7 +315,7 @@ mod tests {
     fn reports_schema_formula_and_output_contract_errors() {
         let root = fixture_root("errors");
         write(&root, "schema", "", "unknown: value\n");
-        let error = load(&root).err().expect("schema must fail").to_string();
+        let error = load(&root).expect_err("schema must fail").to_string();
         assert!(error.contains("Additional properties are not allowed"));
         fs::remove_file(root.join("specs/functions/schema.yaml")).unwrap();
 
@@ -318,7 +325,7 @@ mod tests {
             "    implementation:\n      variables: [{name: value, expr: '('}]\n",
             "",
         );
-        let error = load(&root).err().expect("formula must fail").to_string();
+        let error = load(&root).expect_err("formula must fail").to_string();
         assert!(error.contains("implementation.variables[0].expr"));
         fs::remove_file(root.join("specs/functions/formula.yaml")).unwrap();
 
@@ -329,8 +336,7 @@ mod tests {
             "",
         );
         let error = load(&root)
-            .err()
-            .expect("output contract must fail")
+            .expect_err("output contract must fail")
             .to_string();
         assert!(error.contains("missing final output variables"));
         fs::remove_dir_all(root).unwrap();

@@ -204,6 +204,16 @@
         "inputs",
         "outputs"
       ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": { "enum": ["ready-for-implementation", "implemented"] }
+            }
+          },
+          "then": { "required": ["implementation"] }
+        }
+      ],
       "properties": {
         "name": { "type": "string", "pattern": "^calc_ptf_[a-z][a-z0-9_]*$" },
         "status": {

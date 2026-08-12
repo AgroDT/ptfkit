@@ -9,25 +9,23 @@ use quote::{format_ident, quote};
 
 use crate::{
     generate::RUST_HEADER,
-    model::{Function, Output, Parameter, Resolved, Scope, Source},
+    model::{CompiledFunction, Function, Output, Parameter, Scope, Source},
     semantic::{self, BinaryOp, Expr, MathFunction, Reference, UnaryOp},
 };
 
-pub(crate) fn render(functions: &[Resolved]) -> Result<Vec<(PathBuf, String)>> {
-    let mut sources = BTreeMap::<String, Vec<(&Resolved, &semantic::Function)>>::new();
+pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<(PathBuf, String)>> {
+    let mut sources = BTreeMap::<String, Vec<&CompiledFunction>>::new();
     for resolved in functions {
-        if let Some(ir) = resolved.entry.implementations[resolved.function_index].as_ref() {
-            sources
-                .entry(resolved.entry.slug.clone())
-                .or_default()
-                .push((resolved, ir));
-        }
+        sources
+            .entry(resolved.entry.slug.clone())
+            .or_default()
+            .push(resolved);
     }
 
     sources
         .into_iter()
         .map(|(slug, functions)| {
-            let (first, _) = functions
+            let first = functions
                 .first()
                 .expect("generated source contains at least one function");
             let module_docs = module_doc_tokens(&first.entry.spec.source, &first.entry.spec.scope);
@@ -35,11 +33,11 @@ pub(crate) fn render(functions: &[Resolved]) -> Result<Vec<(PathBuf, String)>> {
             let mut defined_output_schemas = BTreeSet::new();
             let definitions = functions
                 .into_iter()
-                .map(|(resolved, ir)| {
+                .map(|resolved| {
                     let function = &resolved.entry.spec.functions[resolved.function_index];
                     let output_schema = function.output_schema.as_deref().unwrap_or(&function.name);
                     let define_output = defined_output_schemas.insert(output_schema);
-                    module_tokens(resolved, ir, unique_test_modules, define_output)
+                    module_tokens(resolved, &resolved.ir, unique_test_modules, define_output)
                 })
                 .collect::<Result<Vec<_>>>()?;
             Ok((
@@ -51,7 +49,7 @@ pub(crate) fn render(functions: &[Resolved]) -> Result<Vec<(PathBuf, String)>> {
 }
 
 fn module_tokens(
-    resolved: &Resolved,
+    resolved: &CompiledFunction,
     ir: &semantic::Function,
     unique_test_module: bool,
     define_output: bool,
@@ -123,7 +121,7 @@ struct OutputTokens {
 }
 
 fn output_tokens(
-    resolved: &Resolved,
+    resolved: &CompiledFunction,
     terminal_output: Option<&semantic::Variable>,
     inputs: &[syn::Ident],
     variables: &[semantic::Variable],
@@ -437,7 +435,10 @@ fn power_tokens(
     }
 }
 
-fn golden_test_tokens(resolved: &Resolved, unique_test_module: bool) -> Result<TokenStream> {
+fn golden_test_tokens(
+    resolved: &CompiledFunction,
+    unique_test_module: bool,
+) -> Result<TokenStream> {
     let function = format_ident!("{}", resolved.core.name);
     let module = match unique_test_module {
         true => format_ident!("{}_tests", resolved.core.name),

@@ -1,8 +1,3 @@
-#![expect(
-    dead_code,
-    reason = "Session 03 consumes the independently tested syntax parser and AST."
-)]
-
 use std::fmt;
 
 use pest::{Parser, error::ErrorVariant, iterators::Pair};

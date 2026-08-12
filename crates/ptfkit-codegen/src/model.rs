@@ -311,27 +311,31 @@ pub(crate) struct ImplementationVariable {
     pub(crate) expr: String,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub(crate) struct Entry {
     pub(crate) path: PathBuf,
     pub(crate) slug: String,
     pub(crate) spec: Spec,
-    #[allow(
-        dead_code,
-        reason = "Session 05 will make the compiled frontend IR the Rust target input."
-    )]
     pub(crate) implementations: Vec<Option<crate::semantic::Function>>,
 }
 
-#[derive(Clone)]
+/// A validated source function paired with its immutable semantic IR.
+#[derive(Clone, Debug)]
+pub(crate) struct CompiledFunction {
+    pub(crate) entry: Entry,
+    pub(crate) function_index: usize,
+    pub(crate) ir: crate::semantic::Function,
+    pub(crate) core: CoreFunction,
+}
+
+#[derive(Clone, Debug)]
 pub(crate) struct CoreFunction {
     pub(crate) name: String,
-    pub(crate) module: Vec<String>,
     pub(crate) inputs: Vec<String>,
     pub(crate) output: Output,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) enum Output {
     Scalar,
     Struct(Vec<String>),
@@ -432,11 +436,4 @@ functions:
         assert_eq!(function.result_class(), Some("TestResult"));
         assert_eq!(function.output_schema.as_deref(), Some("TestResult"));
     }
-}
-
-#[derive(Clone)]
-pub(crate) struct Resolved {
-    pub(crate) entry: Entry,
-    pub(crate) function_index: usize,
-    pub(crate) core: CoreFunction,
 }

@@ -6,417 +6,6 @@ use numpy::npyffi::{
 };
 use pyo3::{prelude::*, types::PyModule};
 use std::{ffi::c_void, os::raw::c_char};
-const CALC_PTF_PIDGEON1972_AWC_NIN: usize = 2usize;
-const CALC_PTF_PIDGEON1972_AWC_NOUT: usize = 1usize;
-const CALC_PTF_PIDGEON1972_AWC_NARGS: usize = 3usize;
-static mut CALC_PTF_PIDGEON1972_AWC_TYPES: [i8; 3usize] = [NPY_TYPES::NPY_DOUBLE as i8; 3usize];
-static mut CALC_PTF_PIDGEON1972_AWC_FUNCTIONS: [PyUFuncGenericFunction; 1] =
-    [Some(calc_ptf_pidgeon1972_awc_loop); 1];
-static CALC_PTF_PIDGEON1972_AWC_NAME: &[u8] = b"calc_ptf_pidgeon1972_awc\0";
-static CALC_PTF_PIDGEON1972_AWC_DOC: &[u8] = b"calc_ptf_pidgeon1972_awc\0";
-unsafe extern "C" fn calc_ptf_pidgeon1972_awc_loop(
-    args: *mut *mut c_char,
-    dimensions: *mut npy_intp,
-    steps: *mut npy_intp,
-    _: *mut c_void,
-) {
-    unsafe {
-        let count = *dimensions as usize;
-        let mut pointers = [std::ptr::null_mut(); CALC_PTF_PIDGEON1972_AWC_NARGS];
-        let mut strides = [0isize; CALC_PTF_PIDGEON1972_AWC_NARGS];
-        std::ptr::copy_nonoverlapping(args, pointers.as_mut_ptr(), CALC_PTF_PIDGEON1972_AWC_NARGS);
-        std::ptr::copy_nonoverlapping(steps, strides.as_mut_ptr(), CALC_PTF_PIDGEON1972_AWC_NARGS);
-        for _ in 0..count {
-            let clay = (pointers[0usize] as *const f64).read_unaligned();
-            let organic_matter = (pointers[1usize] as *const f64).read_unaligned();
-            let available_water_capacity =
-                ((169.3f64) - ((1.5f64) * (clay))) + ((6.09f64) * (organic_matter));
-            let values = [available_water_capacity];
-            (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
-            for index in 0..CALC_PTF_PIDGEON1972_AWC_NARGS {
-                pointers[index] = pointers[index].offset(strides[index]);
-            }
-        }
-    }
-}
-const CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_NIN: usize = 1usize;
-const CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_NOUT: usize = 1usize;
-const CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_NARGS: usize = 2usize;
-static mut CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_TYPES: [i8; 2usize] =
-    [NPY_TYPES::NPY_DOUBLE as i8; 2usize];
-static mut CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_FUNCTIONS: [PyUFuncGenericFunction; 1] =
-    [Some(calc_ptf_pidgeon1972_awc_coarse_sand_loop); 1];
-static CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_NAME: &[u8] = b"calc_ptf_pidgeon1972_awc_coarse_sand\0";
-static CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_DOC: &[u8] = b"calc_ptf_pidgeon1972_awc_coarse_sand\0";
-unsafe extern "C" fn calc_ptf_pidgeon1972_awc_coarse_sand_loop(
-    args: *mut *mut c_char,
-    dimensions: *mut npy_intp,
-    steps: *mut npy_intp,
-    _: *mut c_void,
-) {
-    unsafe {
-        let count = *dimensions as usize;
-        let mut pointers = [std::ptr::null_mut(); CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_NARGS];
-        let mut strides = [0isize; CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_NARGS];
-        std::ptr::copy_nonoverlapping(
-            args,
-            pointers.as_mut_ptr(),
-            CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_NARGS,
-        );
-        std::ptr::copy_nonoverlapping(
-            steps,
-            strides.as_mut_ptr(),
-            CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_NARGS,
-        );
-        for _ in 0..count {
-            let coarse_sand = (pointers[0usize] as *const f64).read_unaligned();
-            let available_water_capacity = (68.5f64) + ((2.33f64) * (coarse_sand));
-            let values = [available_water_capacity];
-            (pointers[1usize] as *mut f64).write_unaligned(values[0usize]);
-            for index in 0..CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_NARGS {
-                pointers[index] = pointers[index].offset(strides[index]);
-            }
-        }
-    }
-}
-const CALC_PTF_PIDGEON1972_AWC_FINE_SAND_NIN: usize = 1usize;
-const CALC_PTF_PIDGEON1972_AWC_FINE_SAND_NOUT: usize = 1usize;
-const CALC_PTF_PIDGEON1972_AWC_FINE_SAND_NARGS: usize = 2usize;
-static mut CALC_PTF_PIDGEON1972_AWC_FINE_SAND_TYPES: [i8; 2usize] =
-    [NPY_TYPES::NPY_DOUBLE as i8; 2usize];
-static mut CALC_PTF_PIDGEON1972_AWC_FINE_SAND_FUNCTIONS: [PyUFuncGenericFunction; 1] =
-    [Some(calc_ptf_pidgeon1972_awc_fine_sand_loop); 1];
-static CALC_PTF_PIDGEON1972_AWC_FINE_SAND_NAME: &[u8] = b"calc_ptf_pidgeon1972_awc_fine_sand\0";
-static CALC_PTF_PIDGEON1972_AWC_FINE_SAND_DOC: &[u8] = b"calc_ptf_pidgeon1972_awc_fine_sand\0";
-unsafe extern "C" fn calc_ptf_pidgeon1972_awc_fine_sand_loop(
-    args: *mut *mut c_char,
-    dimensions: *mut npy_intp,
-    steps: *mut npy_intp,
-    _: *mut c_void,
-) {
-    unsafe {
-        let count = *dimensions as usize;
-        let mut pointers = [std::ptr::null_mut(); CALC_PTF_PIDGEON1972_AWC_FINE_SAND_NARGS];
-        let mut strides = [0isize; CALC_PTF_PIDGEON1972_AWC_FINE_SAND_NARGS];
-        std::ptr::copy_nonoverlapping(
-            args,
-            pointers.as_mut_ptr(),
-            CALC_PTF_PIDGEON1972_AWC_FINE_SAND_NARGS,
-        );
-        std::ptr::copy_nonoverlapping(
-            steps,
-            strides.as_mut_ptr(),
-            CALC_PTF_PIDGEON1972_AWC_FINE_SAND_NARGS,
-        );
-        for _ in 0..count {
-            let fine_sand = (pointers[0usize] as *const f64).read_unaligned();
-            let available_water_capacity = (66.7f64) + ((2.66f64) * (fine_sand));
-            let values = [available_water_capacity];
-            (pointers[1usize] as *mut f64).write_unaligned(values[0usize]);
-            for index in 0..CALC_PTF_PIDGEON1972_AWC_FINE_SAND_NARGS {
-                pointers[index] = pointers[index].offset(strides[index]);
-            }
-        }
-    }
-}
-const CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_NIN: usize = 2usize;
-const CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_NOUT: usize = 1usize;
-const CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_NARGS: usize = 3usize;
-static mut CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_TYPES: [i8; 3usize] =
-    [NPY_TYPES::NPY_DOUBLE as i8; 3usize];
-static mut CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_FUNCTIONS: [PyUFuncGenericFunction; 1] =
-    [Some(calc_ptf_pidgeon1972_awc_sand_organic_matter_loop); 1];
-static CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_NAME: &[u8] =
-    b"calc_ptf_pidgeon1972_awc_sand_organic_matter\0";
-static CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_DOC: &[u8] =
-    b"calc_ptf_pidgeon1972_awc_sand_organic_matter\0";
-unsafe extern "C" fn calc_ptf_pidgeon1972_awc_sand_organic_matter_loop(
-    args: *mut *mut c_char,
-    dimensions: *mut npy_intp,
-    steps: *mut npy_intp,
-    _: *mut c_void,
-) {
-    unsafe {
-        let count = *dimensions as usize;
-        let mut pointers =
-            [std::ptr::null_mut(); CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_NARGS];
-        let mut strides = [0isize; CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_NARGS];
-        std::ptr::copy_nonoverlapping(
-            args,
-            pointers.as_mut_ptr(),
-            CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_NARGS,
-        );
-        std::ptr::copy_nonoverlapping(
-            steps,
-            strides.as_mut_ptr(),
-            CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_NARGS,
-        );
-        for _ in 0..count {
-            let sand = (pointers[0usize] as *const f64).read_unaligned();
-            let organic_matter = (pointers[1usize] as *const f64).read_unaligned();
-            let available_water_capacity =
-                ((1f64) + ((1.84f64) * (sand))) + ((8.12f64) * (organic_matter));
-            let values = [available_water_capacity];
-            (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
-            for index in 0..CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_NARGS {
-                pointers[index] = pointers[index].offset(strides[index]);
-            }
-        }
-    }
-}
-const CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_NIN: usize = 1usize;
-const CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_NOUT: usize = 1usize;
-const CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_NARGS: usize = 2usize;
-static mut CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_TYPES: [i8; 2usize] =
-    [NPY_TYPES::NPY_DOUBLE as i8; 2usize];
-static mut CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_FUNCTIONS: [PyUFuncGenericFunction; 1] =
-    [Some(calc_ptf_pidgeon1972_awc_very_fine_sand_loop); 1];
-static CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_NAME: &[u8] =
-    b"calc_ptf_pidgeon1972_awc_very_fine_sand\0";
-static CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_DOC: &[u8] =
-    b"calc_ptf_pidgeon1972_awc_very_fine_sand\0";
-unsafe extern "C" fn calc_ptf_pidgeon1972_awc_very_fine_sand_loop(
-    args: *mut *mut c_char,
-    dimensions: *mut npy_intp,
-    steps: *mut npy_intp,
-    _: *mut c_void,
-) {
-    unsafe {
-        let count = *dimensions as usize;
-        let mut pointers = [std::ptr::null_mut(); CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_NARGS];
-        let mut strides = [0isize; CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_NARGS];
-        std::ptr::copy_nonoverlapping(
-            args,
-            pointers.as_mut_ptr(),
-            CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_NARGS,
-        );
-        std::ptr::copy_nonoverlapping(
-            steps,
-            strides.as_mut_ptr(),
-            CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_NARGS,
-        );
-        for _ in 0..count {
-            let very_fine_sand = (pointers[0usize] as *const f64).read_unaligned();
-            let available_water_capacity = (66.9f64) + ((4.58f64) * (very_fine_sand));
-            let values = [available_water_capacity];
-            (pointers[1usize] as *mut f64).write_unaligned(values[0usize]);
-            for index in 0..CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_NARGS {
-                pointers[index] = pointers[index].offset(strides[index]);
-            }
-        }
-    }
-}
-const CALC_PTF_PIDGEON1972_EAWC_NIN: usize = 3usize;
-const CALC_PTF_PIDGEON1972_EAWC_NOUT: usize = 1usize;
-const CALC_PTF_PIDGEON1972_EAWC_NARGS: usize = 4usize;
-static mut CALC_PTF_PIDGEON1972_EAWC_TYPES: [i8; 4usize] = [NPY_TYPES::NPY_DOUBLE as i8; 4usize];
-static mut CALC_PTF_PIDGEON1972_EAWC_FUNCTIONS: [PyUFuncGenericFunction; 1] =
-    [Some(calc_ptf_pidgeon1972_eawc_loop); 1];
-static CALC_PTF_PIDGEON1972_EAWC_NAME: &[u8] = b"calc_ptf_pidgeon1972_eawc\0";
-static CALC_PTF_PIDGEON1972_EAWC_DOC: &[u8] = b"calc_ptf_pidgeon1972_eawc\0";
-unsafe extern "C" fn calc_ptf_pidgeon1972_eawc_loop(
-    args: *mut *mut c_char,
-    dimensions: *mut npy_intp,
-    steps: *mut npy_intp,
-    _: *mut c_void,
-) {
-    unsafe {
-        let count = *dimensions as usize;
-        let mut pointers = [std::ptr::null_mut(); CALC_PTF_PIDGEON1972_EAWC_NARGS];
-        let mut strides = [0isize; CALC_PTF_PIDGEON1972_EAWC_NARGS];
-        std::ptr::copy_nonoverlapping(args, pointers.as_mut_ptr(), CALC_PTF_PIDGEON1972_EAWC_NARGS);
-        std::ptr::copy_nonoverlapping(steps, strides.as_mut_ptr(), CALC_PTF_PIDGEON1972_EAWC_NARGS);
-        for _ in 0..count {
-            let silt = (pointers[0usize] as *const f64).read_unaligned();
-            let clay = (pointers[1usize] as *const f64).read_unaligned();
-            let organic_matter = (pointers[2usize] as *const f64).read_unaligned();
-            let extended_available_water_capacity = (((121.1f64) - ((3.03f64) * (silt)))
-                - ((1.38f64) * (clay)))
-                + ((6.76f64) * (organic_matter));
-            let values = [extended_available_water_capacity];
-            (pointers[3usize] as *mut f64).write_unaligned(values[0usize]);
-            for index in 0..CALC_PTF_PIDGEON1972_EAWC_NARGS {
-                pointers[index] = pointers[index].offset(strides[index]);
-            }
-        }
-    }
-}
-const CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_NIN: usize = 2usize;
-const CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_NOUT: usize = 1usize;
-const CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_NARGS: usize = 3usize;
-static mut CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_TYPES: [i8; 3usize] =
-    [NPY_TYPES::NPY_DOUBLE as i8; 3usize];
-static mut CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_FUNCTIONS:
-    [PyUFuncGenericFunction; 1] =
-    [Some(calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter_loop); 1];
-static CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_NAME: &[u8] =
-    b"calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter\0";
-static CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_DOC: &[u8] =
-    b"calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter\0";
-unsafe extern "C" fn calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter_loop(
-    args: *mut *mut c_char,
-    dimensions: *mut npy_intp,
-    steps: *mut npy_intp,
-    _: *mut c_void,
-) {
-    unsafe {
-        let count = *dimensions as usize;
-        let mut pointers =
-            [std::ptr::null_mut(); CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_NARGS];
-        let mut strides = [0isize; CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_NARGS];
-        std::ptr::copy_nonoverlapping(
-            args,
-            pointers.as_mut_ptr(),
-            CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_NARGS,
-        );
-        std::ptr::copy_nonoverlapping(
-            steps,
-            strides.as_mut_ptr(),
-            CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_NARGS,
-        );
-        for _ in 0..count {
-            let coarse_sand = (pointers[0usize] as *const f64).read_unaligned();
-            let organic_matter = (pointers[1usize] as *const f64).read_unaligned();
-            let extended_available_water_capacity =
-                ((-(7.4f64)) + ((2.37f64) * (coarse_sand))) + ((6.86f64) * (organic_matter));
-            let values = [extended_available_water_capacity];
-            (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
-            for index in 0..CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_NARGS {
-                pointers[index] = pointers[index].offset(strides[index]);
-            }
-        }
-    }
-}
-const CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_NIN: usize = 2usize;
-const CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_NOUT: usize = 1usize;
-const CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_NARGS: usize = 3usize;
-static mut CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_TYPES: [i8; 3usize] =
-    [NPY_TYPES::NPY_DOUBLE as i8; 3usize];
-static mut CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_FUNCTIONS: [PyUFuncGenericFunction;
-    1] = [Some(calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter_loop); 1];
-static CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_NAME: &[u8] =
-    b"calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter\0";
-static CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_DOC: &[u8] =
-    b"calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter\0";
-unsafe extern "C" fn calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter_loop(
-    args: *mut *mut c_char,
-    dimensions: *mut npy_intp,
-    steps: *mut npy_intp,
-    _: *mut c_void,
-) {
-    unsafe {
-        let count = *dimensions as usize;
-        let mut pointers =
-            [std::ptr::null_mut(); CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_NARGS];
-        let mut strides = [0isize; CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_NARGS];
-        std::ptr::copy_nonoverlapping(
-            args,
-            pointers.as_mut_ptr(),
-            CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_NARGS,
-        );
-        std::ptr::copy_nonoverlapping(
-            steps,
-            strides.as_mut_ptr(),
-            CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_NARGS,
-        );
-        for _ in 0..count {
-            let fine_sand = (pointers[0usize] as *const f64).read_unaligned();
-            let organic_matter = (pointers[1usize] as *const f64).read_unaligned();
-            let extended_available_water_capacity =
-                ((-(18f64)) + ((3.11f64) * (fine_sand))) + ((7.69f64) * (organic_matter));
-            let values = [extended_available_water_capacity];
-            (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
-            for index in 0..CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_NARGS {
-                pointers[index] = pointers[index].offset(strides[index]);
-            }
-        }
-    }
-}
-const CALC_PTF_PIDGEON1972_EAWC_SAND_NIN: usize = 1usize;
-const CALC_PTF_PIDGEON1972_EAWC_SAND_NOUT: usize = 1usize;
-const CALC_PTF_PIDGEON1972_EAWC_SAND_NARGS: usize = 2usize;
-static mut CALC_PTF_PIDGEON1972_EAWC_SAND_TYPES: [i8; 2usize] =
-    [NPY_TYPES::NPY_DOUBLE as i8; 2usize];
-static mut CALC_PTF_PIDGEON1972_EAWC_SAND_FUNCTIONS: [PyUFuncGenericFunction; 1] =
-    [Some(calc_ptf_pidgeon1972_eawc_sand_loop); 1];
-static CALC_PTF_PIDGEON1972_EAWC_SAND_NAME: &[u8] = b"calc_ptf_pidgeon1972_eawc_sand\0";
-static CALC_PTF_PIDGEON1972_EAWC_SAND_DOC: &[u8] = b"calc_ptf_pidgeon1972_eawc_sand\0";
-unsafe extern "C" fn calc_ptf_pidgeon1972_eawc_sand_loop(
-    args: *mut *mut c_char,
-    dimensions: *mut npy_intp,
-    steps: *mut npy_intp,
-    _: *mut c_void,
-) {
-    unsafe {
-        let count = *dimensions as usize;
-        let mut pointers = [std::ptr::null_mut(); CALC_PTF_PIDGEON1972_EAWC_SAND_NARGS];
-        let mut strides = [0isize; CALC_PTF_PIDGEON1972_EAWC_SAND_NARGS];
-        std::ptr::copy_nonoverlapping(
-            args,
-            pointers.as_mut_ptr(),
-            CALC_PTF_PIDGEON1972_EAWC_SAND_NARGS,
-        );
-        std::ptr::copy_nonoverlapping(
-            steps,
-            strides.as_mut_ptr(),
-            CALC_PTF_PIDGEON1972_EAWC_SAND_NARGS,
-        );
-        for _ in 0..count {
-            let sand = (pointers[0usize] as *const f64).read_unaligned();
-            let extended_available_water_capacity = (-(25.8f64)) + ((1.55f64) * (sand));
-            let values = [extended_available_water_capacity];
-            (pointers[1usize] as *mut f64).write_unaligned(values[0usize]);
-            for index in 0..CALC_PTF_PIDGEON1972_EAWC_SAND_NARGS {
-                pointers[index] = pointers[index].offset(strides[index]);
-            }
-        }
-    }
-}
-const CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_NIN: usize = 2usize;
-const CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_NOUT: usize = 1usize;
-const CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_NARGS: usize = 3usize;
-static mut CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_TYPES: [i8; 3usize] =
-    [NPY_TYPES::NPY_DOUBLE as i8; 3usize];
-static mut CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_FUNCTIONS: [PyUFuncGenericFunction; 1] =
-    [Some(calc_ptf_pidgeon1972_eawc_sand_organic_matter_loop); 1];
-static CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_NAME: &[u8] =
-    b"calc_ptf_pidgeon1972_eawc_sand_organic_matter\0";
-static CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_DOC: &[u8] =
-    b"calc_ptf_pidgeon1972_eawc_sand_organic_matter\0";
-unsafe extern "C" fn calc_ptf_pidgeon1972_eawc_sand_organic_matter_loop(
-    args: *mut *mut c_char,
-    dimensions: *mut npy_intp,
-    steps: *mut npy_intp,
-    _: *mut c_void,
-) {
-    unsafe {
-        let count = *dimensions as usize;
-        let mut pointers =
-            [std::ptr::null_mut(); CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_NARGS];
-        let mut strides = [0isize; CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_NARGS];
-        std::ptr::copy_nonoverlapping(
-            args,
-            pointers.as_mut_ptr(),
-            CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_NARGS,
-        );
-        std::ptr::copy_nonoverlapping(
-            steps,
-            strides.as_mut_ptr(),
-            CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_NARGS,
-        );
-        for _ in 0..count {
-            let sand = (pointers[0usize] as *const f64).read_unaligned();
-            let organic_matter = (pointers[1usize] as *const f64).read_unaligned();
-            let extended_available_water_capacity =
-                ((-(10.8f64)) + ((1.15f64) * (sand))) + ((4.78f64) * (organic_matter));
-            let values = [extended_available_water_capacity];
-            (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
-            for index in 0..CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_NARGS {
-                pointers[index] = pointers[index].offset(strides[index]);
-            }
-        }
-    }
-}
 const CALC_PTF_PIDGEON1972_FC_NIN: usize = 3usize;
 const CALC_PTF_PIDGEON1972_FC_NOUT: usize = 1usize;
 const CALC_PTF_PIDGEON1972_FC_NARGS: usize = 4usize;
@@ -700,150 +289,419 @@ unsafe extern "C" fn calc_ptf_pidgeon1972_pwp_sand_organic_matter_loop(
         }
     }
 }
+const CALC_PTF_PIDGEON1972_AWC_NIN: usize = 2usize;
+const CALC_PTF_PIDGEON1972_AWC_NOUT: usize = 1usize;
+const CALC_PTF_PIDGEON1972_AWC_NARGS: usize = 3usize;
+static mut CALC_PTF_PIDGEON1972_AWC_TYPES: [i8; 3usize] = [NPY_TYPES::NPY_DOUBLE as i8; 3usize];
+static mut CALC_PTF_PIDGEON1972_AWC_FUNCTIONS: [PyUFuncGenericFunction; 1] =
+    [Some(calc_ptf_pidgeon1972_awc_loop); 1];
+static CALC_PTF_PIDGEON1972_AWC_NAME: &[u8] = b"calc_ptf_pidgeon1972_awc\0";
+static CALC_PTF_PIDGEON1972_AWC_DOC: &[u8] = b"calc_ptf_pidgeon1972_awc\0";
+unsafe extern "C" fn calc_ptf_pidgeon1972_awc_loop(
+    args: *mut *mut c_char,
+    dimensions: *mut npy_intp,
+    steps: *mut npy_intp,
+    _: *mut c_void,
+) {
+    unsafe {
+        let count = *dimensions as usize;
+        let mut pointers = [std::ptr::null_mut(); CALC_PTF_PIDGEON1972_AWC_NARGS];
+        let mut strides = [0isize; CALC_PTF_PIDGEON1972_AWC_NARGS];
+        std::ptr::copy_nonoverlapping(args, pointers.as_mut_ptr(), CALC_PTF_PIDGEON1972_AWC_NARGS);
+        std::ptr::copy_nonoverlapping(steps, strides.as_mut_ptr(), CALC_PTF_PIDGEON1972_AWC_NARGS);
+        for _ in 0..count {
+            let clay = (pointers[0usize] as *const f64).read_unaligned();
+            let organic_matter = (pointers[1usize] as *const f64).read_unaligned();
+            let available_water_capacity =
+                ((169.3f64) - ((1.5f64) * (clay))) + ((6.09f64) * (organic_matter));
+            let values = [available_water_capacity];
+            (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
+            for index in 0..CALC_PTF_PIDGEON1972_AWC_NARGS {
+                pointers[index] = pointers[index].offset(strides[index]);
+            }
+        }
+    }
+}
+const CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_NIN: usize = 2usize;
+const CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_NOUT: usize = 1usize;
+const CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_NARGS: usize = 3usize;
+static mut CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_TYPES: [i8; 3usize] =
+    [NPY_TYPES::NPY_DOUBLE as i8; 3usize];
+static mut CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_FUNCTIONS: [PyUFuncGenericFunction; 1] =
+    [Some(calc_ptf_pidgeon1972_awc_sand_organic_matter_loop); 1];
+static CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_NAME: &[u8] =
+    b"calc_ptf_pidgeon1972_awc_sand_organic_matter\0";
+static CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_DOC: &[u8] =
+    b"calc_ptf_pidgeon1972_awc_sand_organic_matter\0";
+unsafe extern "C" fn calc_ptf_pidgeon1972_awc_sand_organic_matter_loop(
+    args: *mut *mut c_char,
+    dimensions: *mut npy_intp,
+    steps: *mut npy_intp,
+    _: *mut c_void,
+) {
+    unsafe {
+        let count = *dimensions as usize;
+        let mut pointers =
+            [std::ptr::null_mut(); CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_NARGS];
+        let mut strides = [0isize; CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_NARGS];
+        std::ptr::copy_nonoverlapping(
+            args,
+            pointers.as_mut_ptr(),
+            CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_NARGS,
+        );
+        std::ptr::copy_nonoverlapping(
+            steps,
+            strides.as_mut_ptr(),
+            CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_NARGS,
+        );
+        for _ in 0..count {
+            let sand = (pointers[0usize] as *const f64).read_unaligned();
+            let organic_matter = (pointers[1usize] as *const f64).read_unaligned();
+            let available_water_capacity =
+                ((1f64) + ((1.84f64) * (sand))) + ((8.12f64) * (organic_matter));
+            let values = [available_water_capacity];
+            (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
+            for index in 0..CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_NARGS {
+                pointers[index] = pointers[index].offset(strides[index]);
+            }
+        }
+    }
+}
+const CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_NIN: usize = 1usize;
+const CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_NOUT: usize = 1usize;
+const CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_NARGS: usize = 2usize;
+static mut CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_TYPES: [i8; 2usize] =
+    [NPY_TYPES::NPY_DOUBLE as i8; 2usize];
+static mut CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_FUNCTIONS: [PyUFuncGenericFunction; 1] =
+    [Some(calc_ptf_pidgeon1972_awc_coarse_sand_loop); 1];
+static CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_NAME: &[u8] = b"calc_ptf_pidgeon1972_awc_coarse_sand\0";
+static CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_DOC: &[u8] = b"calc_ptf_pidgeon1972_awc_coarse_sand\0";
+unsafe extern "C" fn calc_ptf_pidgeon1972_awc_coarse_sand_loop(
+    args: *mut *mut c_char,
+    dimensions: *mut npy_intp,
+    steps: *mut npy_intp,
+    _: *mut c_void,
+) {
+    unsafe {
+        let count = *dimensions as usize;
+        let mut pointers = [std::ptr::null_mut(); CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_NARGS];
+        let mut strides = [0isize; CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_NARGS];
+        std::ptr::copy_nonoverlapping(
+            args,
+            pointers.as_mut_ptr(),
+            CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_NARGS,
+        );
+        std::ptr::copy_nonoverlapping(
+            steps,
+            strides.as_mut_ptr(),
+            CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_NARGS,
+        );
+        for _ in 0..count {
+            let coarse_sand = (pointers[0usize] as *const f64).read_unaligned();
+            let available_water_capacity = (68.5f64) + ((2.33f64) * (coarse_sand));
+            let values = [available_water_capacity];
+            (pointers[1usize] as *mut f64).write_unaligned(values[0usize]);
+            for index in 0..CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_NARGS {
+                pointers[index] = pointers[index].offset(strides[index]);
+            }
+        }
+    }
+}
+const CALC_PTF_PIDGEON1972_AWC_FINE_SAND_NIN: usize = 1usize;
+const CALC_PTF_PIDGEON1972_AWC_FINE_SAND_NOUT: usize = 1usize;
+const CALC_PTF_PIDGEON1972_AWC_FINE_SAND_NARGS: usize = 2usize;
+static mut CALC_PTF_PIDGEON1972_AWC_FINE_SAND_TYPES: [i8; 2usize] =
+    [NPY_TYPES::NPY_DOUBLE as i8; 2usize];
+static mut CALC_PTF_PIDGEON1972_AWC_FINE_SAND_FUNCTIONS: [PyUFuncGenericFunction; 1] =
+    [Some(calc_ptf_pidgeon1972_awc_fine_sand_loop); 1];
+static CALC_PTF_PIDGEON1972_AWC_FINE_SAND_NAME: &[u8] = b"calc_ptf_pidgeon1972_awc_fine_sand\0";
+static CALC_PTF_PIDGEON1972_AWC_FINE_SAND_DOC: &[u8] = b"calc_ptf_pidgeon1972_awc_fine_sand\0";
+unsafe extern "C" fn calc_ptf_pidgeon1972_awc_fine_sand_loop(
+    args: *mut *mut c_char,
+    dimensions: *mut npy_intp,
+    steps: *mut npy_intp,
+    _: *mut c_void,
+) {
+    unsafe {
+        let count = *dimensions as usize;
+        let mut pointers = [std::ptr::null_mut(); CALC_PTF_PIDGEON1972_AWC_FINE_SAND_NARGS];
+        let mut strides = [0isize; CALC_PTF_PIDGEON1972_AWC_FINE_SAND_NARGS];
+        std::ptr::copy_nonoverlapping(
+            args,
+            pointers.as_mut_ptr(),
+            CALC_PTF_PIDGEON1972_AWC_FINE_SAND_NARGS,
+        );
+        std::ptr::copy_nonoverlapping(
+            steps,
+            strides.as_mut_ptr(),
+            CALC_PTF_PIDGEON1972_AWC_FINE_SAND_NARGS,
+        );
+        for _ in 0..count {
+            let fine_sand = (pointers[0usize] as *const f64).read_unaligned();
+            let available_water_capacity = (66.7f64) + ((2.66f64) * (fine_sand));
+            let values = [available_water_capacity];
+            (pointers[1usize] as *mut f64).write_unaligned(values[0usize]);
+            for index in 0..CALC_PTF_PIDGEON1972_AWC_FINE_SAND_NARGS {
+                pointers[index] = pointers[index].offset(strides[index]);
+            }
+        }
+    }
+}
+const CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_NIN: usize = 1usize;
+const CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_NOUT: usize = 1usize;
+const CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_NARGS: usize = 2usize;
+static mut CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_TYPES: [i8; 2usize] =
+    [NPY_TYPES::NPY_DOUBLE as i8; 2usize];
+static mut CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_FUNCTIONS: [PyUFuncGenericFunction; 1] =
+    [Some(calc_ptf_pidgeon1972_awc_very_fine_sand_loop); 1];
+static CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_NAME: &[u8] =
+    b"calc_ptf_pidgeon1972_awc_very_fine_sand\0";
+static CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_DOC: &[u8] =
+    b"calc_ptf_pidgeon1972_awc_very_fine_sand\0";
+unsafe extern "C" fn calc_ptf_pidgeon1972_awc_very_fine_sand_loop(
+    args: *mut *mut c_char,
+    dimensions: *mut npy_intp,
+    steps: *mut npy_intp,
+    _: *mut c_void,
+) {
+    unsafe {
+        let count = *dimensions as usize;
+        let mut pointers = [std::ptr::null_mut(); CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_NARGS];
+        let mut strides = [0isize; CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_NARGS];
+        std::ptr::copy_nonoverlapping(
+            args,
+            pointers.as_mut_ptr(),
+            CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_NARGS,
+        );
+        std::ptr::copy_nonoverlapping(
+            steps,
+            strides.as_mut_ptr(),
+            CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_NARGS,
+        );
+        for _ in 0..count {
+            let very_fine_sand = (pointers[0usize] as *const f64).read_unaligned();
+            let available_water_capacity = (66.9f64) + ((4.58f64) * (very_fine_sand));
+            let values = [available_water_capacity];
+            (pointers[1usize] as *mut f64).write_unaligned(values[0usize]);
+            for index in 0..CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_NARGS {
+                pointers[index] = pointers[index].offset(strides[index]);
+            }
+        }
+    }
+}
+const CALC_PTF_PIDGEON1972_EAWC_NIN: usize = 3usize;
+const CALC_PTF_PIDGEON1972_EAWC_NOUT: usize = 1usize;
+const CALC_PTF_PIDGEON1972_EAWC_NARGS: usize = 4usize;
+static mut CALC_PTF_PIDGEON1972_EAWC_TYPES: [i8; 4usize] = [NPY_TYPES::NPY_DOUBLE as i8; 4usize];
+static mut CALC_PTF_PIDGEON1972_EAWC_FUNCTIONS: [PyUFuncGenericFunction; 1] =
+    [Some(calc_ptf_pidgeon1972_eawc_loop); 1];
+static CALC_PTF_PIDGEON1972_EAWC_NAME: &[u8] = b"calc_ptf_pidgeon1972_eawc\0";
+static CALC_PTF_PIDGEON1972_EAWC_DOC: &[u8] = b"calc_ptf_pidgeon1972_eawc\0";
+unsafe extern "C" fn calc_ptf_pidgeon1972_eawc_loop(
+    args: *mut *mut c_char,
+    dimensions: *mut npy_intp,
+    steps: *mut npy_intp,
+    _: *mut c_void,
+) {
+    unsafe {
+        let count = *dimensions as usize;
+        let mut pointers = [std::ptr::null_mut(); CALC_PTF_PIDGEON1972_EAWC_NARGS];
+        let mut strides = [0isize; CALC_PTF_PIDGEON1972_EAWC_NARGS];
+        std::ptr::copy_nonoverlapping(args, pointers.as_mut_ptr(), CALC_PTF_PIDGEON1972_EAWC_NARGS);
+        std::ptr::copy_nonoverlapping(steps, strides.as_mut_ptr(), CALC_PTF_PIDGEON1972_EAWC_NARGS);
+        for _ in 0..count {
+            let silt = (pointers[0usize] as *const f64).read_unaligned();
+            let clay = (pointers[1usize] as *const f64).read_unaligned();
+            let organic_matter = (pointers[2usize] as *const f64).read_unaligned();
+            let extended_available_water_capacity = (((121.1f64) - ((3.03f64) * (silt)))
+                - ((1.38f64) * (clay)))
+                + ((6.76f64) * (organic_matter));
+            let values = [extended_available_water_capacity];
+            (pointers[3usize] as *mut f64).write_unaligned(values[0usize]);
+            for index in 0..CALC_PTF_PIDGEON1972_EAWC_NARGS {
+                pointers[index] = pointers[index].offset(strides[index]);
+            }
+        }
+    }
+}
+const CALC_PTF_PIDGEON1972_EAWC_SAND_NIN: usize = 1usize;
+const CALC_PTF_PIDGEON1972_EAWC_SAND_NOUT: usize = 1usize;
+const CALC_PTF_PIDGEON1972_EAWC_SAND_NARGS: usize = 2usize;
+static mut CALC_PTF_PIDGEON1972_EAWC_SAND_TYPES: [i8; 2usize] =
+    [NPY_TYPES::NPY_DOUBLE as i8; 2usize];
+static mut CALC_PTF_PIDGEON1972_EAWC_SAND_FUNCTIONS: [PyUFuncGenericFunction; 1] =
+    [Some(calc_ptf_pidgeon1972_eawc_sand_loop); 1];
+static CALC_PTF_PIDGEON1972_EAWC_SAND_NAME: &[u8] = b"calc_ptf_pidgeon1972_eawc_sand\0";
+static CALC_PTF_PIDGEON1972_EAWC_SAND_DOC: &[u8] = b"calc_ptf_pidgeon1972_eawc_sand\0";
+unsafe extern "C" fn calc_ptf_pidgeon1972_eawc_sand_loop(
+    args: *mut *mut c_char,
+    dimensions: *mut npy_intp,
+    steps: *mut npy_intp,
+    _: *mut c_void,
+) {
+    unsafe {
+        let count = *dimensions as usize;
+        let mut pointers = [std::ptr::null_mut(); CALC_PTF_PIDGEON1972_EAWC_SAND_NARGS];
+        let mut strides = [0isize; CALC_PTF_PIDGEON1972_EAWC_SAND_NARGS];
+        std::ptr::copy_nonoverlapping(
+            args,
+            pointers.as_mut_ptr(),
+            CALC_PTF_PIDGEON1972_EAWC_SAND_NARGS,
+        );
+        std::ptr::copy_nonoverlapping(
+            steps,
+            strides.as_mut_ptr(),
+            CALC_PTF_PIDGEON1972_EAWC_SAND_NARGS,
+        );
+        for _ in 0..count {
+            let sand = (pointers[0usize] as *const f64).read_unaligned();
+            let extended_available_water_capacity = (-(25.8f64)) + ((1.55f64) * (sand));
+            let values = [extended_available_water_capacity];
+            (pointers[1usize] as *mut f64).write_unaligned(values[0usize]);
+            for index in 0..CALC_PTF_PIDGEON1972_EAWC_SAND_NARGS {
+                pointers[index] = pointers[index].offset(strides[index]);
+            }
+        }
+    }
+}
+const CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_NIN: usize = 2usize;
+const CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_NOUT: usize = 1usize;
+const CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_NARGS: usize = 3usize;
+static mut CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_TYPES: [i8; 3usize] =
+    [NPY_TYPES::NPY_DOUBLE as i8; 3usize];
+static mut CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_FUNCTIONS: [PyUFuncGenericFunction; 1] =
+    [Some(calc_ptf_pidgeon1972_eawc_sand_organic_matter_loop); 1];
+static CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_NAME: &[u8] =
+    b"calc_ptf_pidgeon1972_eawc_sand_organic_matter\0";
+static CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_DOC: &[u8] =
+    b"calc_ptf_pidgeon1972_eawc_sand_organic_matter\0";
+unsafe extern "C" fn calc_ptf_pidgeon1972_eawc_sand_organic_matter_loop(
+    args: *mut *mut c_char,
+    dimensions: *mut npy_intp,
+    steps: *mut npy_intp,
+    _: *mut c_void,
+) {
+    unsafe {
+        let count = *dimensions as usize;
+        let mut pointers =
+            [std::ptr::null_mut(); CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_NARGS];
+        let mut strides = [0isize; CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_NARGS];
+        std::ptr::copy_nonoverlapping(
+            args,
+            pointers.as_mut_ptr(),
+            CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_NARGS,
+        );
+        std::ptr::copy_nonoverlapping(
+            steps,
+            strides.as_mut_ptr(),
+            CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_NARGS,
+        );
+        for _ in 0..count {
+            let sand = (pointers[0usize] as *const f64).read_unaligned();
+            let organic_matter = (pointers[1usize] as *const f64).read_unaligned();
+            let extended_available_water_capacity =
+                ((-(10.8f64)) + ((1.15f64) * (sand))) + ((4.78f64) * (organic_matter));
+            let values = [extended_available_water_capacity];
+            (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
+            for index in 0..CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_NARGS {
+                pointers[index] = pointers[index].offset(strides[index]);
+            }
+        }
+    }
+}
+const CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_NIN: usize = 2usize;
+const CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_NOUT: usize = 1usize;
+const CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_NARGS: usize = 3usize;
+static mut CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_TYPES: [i8; 3usize] =
+    [NPY_TYPES::NPY_DOUBLE as i8; 3usize];
+static mut CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_FUNCTIONS:
+    [PyUFuncGenericFunction; 1] =
+    [Some(calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter_loop); 1];
+static CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_NAME: &[u8] =
+    b"calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter\0";
+static CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_DOC: &[u8] =
+    b"calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter\0";
+unsafe extern "C" fn calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter_loop(
+    args: *mut *mut c_char,
+    dimensions: *mut npy_intp,
+    steps: *mut npy_intp,
+    _: *mut c_void,
+) {
+    unsafe {
+        let count = *dimensions as usize;
+        let mut pointers =
+            [std::ptr::null_mut(); CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_NARGS];
+        let mut strides = [0isize; CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_NARGS];
+        std::ptr::copy_nonoverlapping(
+            args,
+            pointers.as_mut_ptr(),
+            CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_NARGS,
+        );
+        std::ptr::copy_nonoverlapping(
+            steps,
+            strides.as_mut_ptr(),
+            CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_NARGS,
+        );
+        for _ in 0..count {
+            let coarse_sand = (pointers[0usize] as *const f64).read_unaligned();
+            let organic_matter = (pointers[1usize] as *const f64).read_unaligned();
+            let extended_available_water_capacity =
+                ((-(7.4f64)) + ((2.37f64) * (coarse_sand))) + ((6.86f64) * (organic_matter));
+            let values = [extended_available_water_capacity];
+            (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
+            for index in 0..CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_NARGS {
+                pointers[index] = pointers[index].offset(strides[index]);
+            }
+        }
+    }
+}
+const CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_NIN: usize = 2usize;
+const CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_NOUT: usize = 1usize;
+const CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_NARGS: usize = 3usize;
+static mut CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_TYPES: [i8; 3usize] =
+    [NPY_TYPES::NPY_DOUBLE as i8; 3usize];
+static mut CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_FUNCTIONS: [PyUFuncGenericFunction;
+    1] = [Some(calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter_loop); 1];
+static CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_NAME: &[u8] =
+    b"calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter\0";
+static CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_DOC: &[u8] =
+    b"calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter\0";
+unsafe extern "C" fn calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter_loop(
+    args: *mut *mut c_char,
+    dimensions: *mut npy_intp,
+    steps: *mut npy_intp,
+    _: *mut c_void,
+) {
+    unsafe {
+        let count = *dimensions as usize;
+        let mut pointers =
+            [std::ptr::null_mut(); CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_NARGS];
+        let mut strides = [0isize; CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_NARGS];
+        std::ptr::copy_nonoverlapping(
+            args,
+            pointers.as_mut_ptr(),
+            CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_NARGS,
+        );
+        std::ptr::copy_nonoverlapping(
+            steps,
+            strides.as_mut_ptr(),
+            CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_NARGS,
+        );
+        for _ in 0..count {
+            let fine_sand = (pointers[0usize] as *const f64).read_unaligned();
+            let organic_matter = (pointers[1usize] as *const f64).read_unaligned();
+            let extended_available_water_capacity =
+                ((-(18f64)) + ((3.11f64) * (fine_sand))) + ((7.69f64) * (organic_matter));
+            let values = [extended_available_water_capacity];
+            (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
+            for index in 0..CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_NARGS {
+                pointers[index] = pointers[index].offset(strides[index]);
+            }
+        }
+    }
+}
 pub fn register(module: &Bound<'_, PyModule>) -> PyResult<()> {
     let py = module.py();
-    let ufunc = unsafe {
-        runtime::create_ufunc(
-            py,
-            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_AWC_FUNCTIONS).cast(),
-            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_AWC_TYPES).cast(),
-            CALC_PTF_PIDGEON1972_AWC_NIN as i32,
-            CALC_PTF_PIDGEON1972_AWC_NOUT as i32,
-            CALC_PTF_PIDGEON1972_AWC_NAME.as_ptr().cast(),
-            CALC_PTF_PIDGEON1972_AWC_DOC.as_ptr().cast(),
-        )
-    }?;
-    module.add("calc_ptf_pidgeon1972_awc", ufunc)?;
-    let ufunc = unsafe {
-        runtime::create_ufunc(
-            py,
-            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_FUNCTIONS).cast(),
-            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_TYPES).cast(),
-            CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_NIN as i32,
-            CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_NOUT as i32,
-            CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_NAME.as_ptr().cast(),
-            CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_DOC.as_ptr().cast(),
-        )
-    }?;
-    module.add("calc_ptf_pidgeon1972_awc_coarse_sand", ufunc)?;
-    let ufunc = unsafe {
-        runtime::create_ufunc(
-            py,
-            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_AWC_FINE_SAND_FUNCTIONS).cast(),
-            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_AWC_FINE_SAND_TYPES).cast(),
-            CALC_PTF_PIDGEON1972_AWC_FINE_SAND_NIN as i32,
-            CALC_PTF_PIDGEON1972_AWC_FINE_SAND_NOUT as i32,
-            CALC_PTF_PIDGEON1972_AWC_FINE_SAND_NAME.as_ptr().cast(),
-            CALC_PTF_PIDGEON1972_AWC_FINE_SAND_DOC.as_ptr().cast(),
-        )
-    }?;
-    module.add("calc_ptf_pidgeon1972_awc_fine_sand", ufunc)?;
-    let ufunc = unsafe {
-        runtime::create_ufunc(
-            py,
-            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_FUNCTIONS).cast(),
-            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_TYPES).cast(),
-            CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_NIN as i32,
-            CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_NOUT as i32,
-            CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_NAME
-                .as_ptr()
-                .cast(),
-            CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_DOC
-                .as_ptr()
-                .cast(),
-        )
-    }?;
-    module.add("calc_ptf_pidgeon1972_awc_sand_organic_matter", ufunc)?;
-    let ufunc = unsafe {
-        runtime::create_ufunc(
-            py,
-            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_FUNCTIONS).cast(),
-            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_TYPES).cast(),
-            CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_NIN as i32,
-            CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_NOUT as i32,
-            CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_NAME.as_ptr().cast(),
-            CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_DOC.as_ptr().cast(),
-        )
-    }?;
-    module.add("calc_ptf_pidgeon1972_awc_very_fine_sand", ufunc)?;
-    let ufunc = unsafe {
-        runtime::create_ufunc(
-            py,
-            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_EAWC_FUNCTIONS).cast(),
-            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_EAWC_TYPES).cast(),
-            CALC_PTF_PIDGEON1972_EAWC_NIN as i32,
-            CALC_PTF_PIDGEON1972_EAWC_NOUT as i32,
-            CALC_PTF_PIDGEON1972_EAWC_NAME.as_ptr().cast(),
-            CALC_PTF_PIDGEON1972_EAWC_DOC.as_ptr().cast(),
-        )
-    }?;
-    module.add("calc_ptf_pidgeon1972_eawc", ufunc)?;
-    let ufunc = unsafe {
-        runtime::create_ufunc(
-            py,
-            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_FUNCTIONS)
-                .cast(),
-            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_TYPES)
-                .cast(),
-            CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_NIN as i32,
-            CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_NOUT as i32,
-            CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_NAME
-                .as_ptr()
-                .cast(),
-            CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_DOC
-                .as_ptr()
-                .cast(),
-        )
-    }?;
-    module.add(
-        "calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter",
-        ufunc,
-    )?;
-    let ufunc = unsafe {
-        runtime::create_ufunc(
-            py,
-            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_FUNCTIONS)
-                .cast(),
-            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_TYPES).cast(),
-            CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_NIN as i32,
-            CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_NOUT as i32,
-            CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_NAME
-                .as_ptr()
-                .cast(),
-            CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_DOC
-                .as_ptr()
-                .cast(),
-        )
-    }?;
-    module.add("calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter", ufunc)?;
-    let ufunc = unsafe {
-        runtime::create_ufunc(
-            py,
-            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_EAWC_SAND_FUNCTIONS).cast(),
-            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_EAWC_SAND_TYPES).cast(),
-            CALC_PTF_PIDGEON1972_EAWC_SAND_NIN as i32,
-            CALC_PTF_PIDGEON1972_EAWC_SAND_NOUT as i32,
-            CALC_PTF_PIDGEON1972_EAWC_SAND_NAME.as_ptr().cast(),
-            CALC_PTF_PIDGEON1972_EAWC_SAND_DOC.as_ptr().cast(),
-        )
-    }?;
-    module.add("calc_ptf_pidgeon1972_eawc_sand", ufunc)?;
-    let ufunc = unsafe {
-        runtime::create_ufunc(
-            py,
-            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_FUNCTIONS).cast(),
-            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_TYPES).cast(),
-            CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_NIN as i32,
-            CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_NOUT as i32,
-            CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_NAME
-                .as_ptr()
-                .cast(),
-            CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_DOC
-                .as_ptr()
-                .cast(),
-        )
-    }?;
-    module.add("calc_ptf_pidgeon1972_eawc_sand_organic_matter", ufunc)?;
     let ufunc = unsafe {
         runtime::create_ufunc(
             py,
@@ -941,5 +799,147 @@ pub fn register(module: &Bound<'_, PyModule>) -> PyResult<()> {
         )
     }?;
     module.add("calc_ptf_pidgeon1972_pwp_sand_organic_matter", ufunc)?;
+    let ufunc = unsafe {
+        runtime::create_ufunc(
+            py,
+            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_AWC_FUNCTIONS).cast(),
+            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_AWC_TYPES).cast(),
+            CALC_PTF_PIDGEON1972_AWC_NIN as i32,
+            CALC_PTF_PIDGEON1972_AWC_NOUT as i32,
+            CALC_PTF_PIDGEON1972_AWC_NAME.as_ptr().cast(),
+            CALC_PTF_PIDGEON1972_AWC_DOC.as_ptr().cast(),
+        )
+    }?;
+    module.add("calc_ptf_pidgeon1972_awc", ufunc)?;
+    let ufunc = unsafe {
+        runtime::create_ufunc(
+            py,
+            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_FUNCTIONS).cast(),
+            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_TYPES).cast(),
+            CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_NIN as i32,
+            CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_NOUT as i32,
+            CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_NAME
+                .as_ptr()
+                .cast(),
+            CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_DOC
+                .as_ptr()
+                .cast(),
+        )
+    }?;
+    module.add("calc_ptf_pidgeon1972_awc_sand_organic_matter", ufunc)?;
+    let ufunc = unsafe {
+        runtime::create_ufunc(
+            py,
+            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_FUNCTIONS).cast(),
+            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_TYPES).cast(),
+            CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_NIN as i32,
+            CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_NOUT as i32,
+            CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_NAME.as_ptr().cast(),
+            CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_DOC.as_ptr().cast(),
+        )
+    }?;
+    module.add("calc_ptf_pidgeon1972_awc_coarse_sand", ufunc)?;
+    let ufunc = unsafe {
+        runtime::create_ufunc(
+            py,
+            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_AWC_FINE_SAND_FUNCTIONS).cast(),
+            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_AWC_FINE_SAND_TYPES).cast(),
+            CALC_PTF_PIDGEON1972_AWC_FINE_SAND_NIN as i32,
+            CALC_PTF_PIDGEON1972_AWC_FINE_SAND_NOUT as i32,
+            CALC_PTF_PIDGEON1972_AWC_FINE_SAND_NAME.as_ptr().cast(),
+            CALC_PTF_PIDGEON1972_AWC_FINE_SAND_DOC.as_ptr().cast(),
+        )
+    }?;
+    module.add("calc_ptf_pidgeon1972_awc_fine_sand", ufunc)?;
+    let ufunc = unsafe {
+        runtime::create_ufunc(
+            py,
+            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_FUNCTIONS).cast(),
+            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_TYPES).cast(),
+            CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_NIN as i32,
+            CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_NOUT as i32,
+            CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_NAME.as_ptr().cast(),
+            CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_DOC.as_ptr().cast(),
+        )
+    }?;
+    module.add("calc_ptf_pidgeon1972_awc_very_fine_sand", ufunc)?;
+    let ufunc = unsafe {
+        runtime::create_ufunc(
+            py,
+            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_EAWC_FUNCTIONS).cast(),
+            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_EAWC_TYPES).cast(),
+            CALC_PTF_PIDGEON1972_EAWC_NIN as i32,
+            CALC_PTF_PIDGEON1972_EAWC_NOUT as i32,
+            CALC_PTF_PIDGEON1972_EAWC_NAME.as_ptr().cast(),
+            CALC_PTF_PIDGEON1972_EAWC_DOC.as_ptr().cast(),
+        )
+    }?;
+    module.add("calc_ptf_pidgeon1972_eawc", ufunc)?;
+    let ufunc = unsafe {
+        runtime::create_ufunc(
+            py,
+            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_EAWC_SAND_FUNCTIONS).cast(),
+            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_EAWC_SAND_TYPES).cast(),
+            CALC_PTF_PIDGEON1972_EAWC_SAND_NIN as i32,
+            CALC_PTF_PIDGEON1972_EAWC_SAND_NOUT as i32,
+            CALC_PTF_PIDGEON1972_EAWC_SAND_NAME.as_ptr().cast(),
+            CALC_PTF_PIDGEON1972_EAWC_SAND_DOC.as_ptr().cast(),
+        )
+    }?;
+    module.add("calc_ptf_pidgeon1972_eawc_sand", ufunc)?;
+    let ufunc = unsafe {
+        runtime::create_ufunc(
+            py,
+            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_FUNCTIONS).cast(),
+            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_TYPES).cast(),
+            CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_NIN as i32,
+            CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_NOUT as i32,
+            CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_NAME
+                .as_ptr()
+                .cast(),
+            CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_DOC
+                .as_ptr()
+                .cast(),
+        )
+    }?;
+    module.add("calc_ptf_pidgeon1972_eawc_sand_organic_matter", ufunc)?;
+    let ufunc = unsafe {
+        runtime::create_ufunc(
+            py,
+            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_FUNCTIONS)
+                .cast(),
+            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_TYPES)
+                .cast(),
+            CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_NIN as i32,
+            CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_NOUT as i32,
+            CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_NAME
+                .as_ptr()
+                .cast(),
+            CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_DOC
+                .as_ptr()
+                .cast(),
+        )
+    }?;
+    module.add(
+        "calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter",
+        ufunc,
+    )?;
+    let ufunc = unsafe {
+        runtime::create_ufunc(
+            py,
+            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_FUNCTIONS)
+                .cast(),
+            std::ptr::addr_of_mut!(CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_TYPES).cast(),
+            CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_NIN as i32,
+            CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_NOUT as i32,
+            CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_NAME
+                .as_ptr()
+                .cast(),
+            CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_DOC
+                .as_ptr()
+                .cast(),
+        )
+    }?;
+    module.add("calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter", ufunc)?;
     Ok(())
 }
