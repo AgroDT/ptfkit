@@ -101,7 +101,7 @@ fn output_tokens(
                 let parameter = specification
                     .outputs
                     .iter()
-                    .find(|parameter| parameter.name == field.to_string())
+                    .find(|parameter| field == parameter.name)
                     .expect("core output field matches specification");
                 let docs = doc_tokens([parameter_doc(parameter)]);
                 quote!(#docs pub #field: f64)

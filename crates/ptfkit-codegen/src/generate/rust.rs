@@ -1,12 +1,13 @@
 use std::{collections::BTreeMap, path::PathBuf};
 
-use anyhow::Result;
-use proc_macro2::{Span, TokenStream};
+use anyhow::{Result, bail};
+use proc_macro2::{Literal, Span, TokenStream};
 use quote::{format_ident, quote};
 
 use crate::{
     generate::RUST_HEADER,
     model::{Output, Resolved},
+    semantic::{self, BinaryOp, Expr, MathFunction, Reference, UnaryOp},
 };
 
 pub(crate) fn render(functions: &[Resolved]) -> Result<Vec<(PathBuf, String)>> {
@@ -82,12 +83,7 @@ fn function_tokens(resolved: &Resolved) -> Result<TokenStream> {
             let #input = (pointers[#index] as *const f64).read_unaligned();
         }
     });
-    let core_path = syn::parse_str::<syn::Path>(&format!(
-        "ptfkit_core::{}::{}",
-        function.module.join("::"),
-        function.name
-    ))?;
-    let values = match &function.output {
+    let legacy_values = match &function.output {
         Output::Scalar => vec![quote!(result)],
         Output::Struct(fields) => fields
             .iter()
@@ -96,6 +92,41 @@ fn function_tokens(resolved: &Resolved) -> Result<TokenStream> {
                 quote!(result.#field)
             })
             .collect(),
+    };
+    let (calculation, values) = match resolved.entry.implementations[resolved.function_index]
+        .as_ref()
+    {
+        Some(ir) => {
+            let variables = ir
+                .variables
+                .iter()
+                .map(|variable| {
+                    let name = format_ident!("{}", variable.name);
+                    let expression =
+                        expression_tokens(&variable.expression, &inputs, &ir.variables)?;
+                    Ok(quote!(let #name = #expression;))
+                })
+                .collect::<Result<Vec<_>>>()?;
+            let values = output_expression_tokens(&ir.output, &inputs, &ir.variables)?;
+            if values.len() != legacy_values.len() {
+                bail!(
+                    "semantic output count for `{}` does not match the NumPy ufunc contract",
+                    function.name
+                );
+            }
+            (quote!(#(#variables)* let values = [#(#values),*];), values)
+        }
+        None => {
+            let core_path = syn::parse_str::<syn::Path>(&format!(
+                "ptfkit_core::{}::{}",
+                function.module.join("::"),
+                function.name
+            ))?;
+            (
+                quote!(let result = #core_path(#(#inputs),*); let values = [#(#legacy_values),*];),
+                legacy_values,
+            )
+        }
     };
     let writes = values.iter().enumerate().map(|(offset, _)| {
         let index = function.inputs.len() + offset;
@@ -125,14 +156,90 @@ fn function_tokens(resolved: &Resolved) -> Result<TokenStream> {
                 std::ptr::copy_nonoverlapping(steps, strides.as_mut_ptr(), #nargs);
                 for _ in 0..count {
                     #(#input_reads)*
-                    let result = #core_path(#(#inputs),*);
-                    let values = [#(#values),*];
+                    #calculation
                     #(#writes)*
                     for index in 0..#nargs { pointers[index] = pointers[index].offset(strides[index]); }
                 }
             }
         }
     })
+}
+
+fn output_expression_tokens(
+    output: &semantic::Output,
+    inputs: &[syn::Ident],
+    variables: &[semantic::Variable],
+) -> Result<Vec<TokenStream>> {
+    match output {
+        semantic::Output::Scalar(expression) => {
+            Ok(vec![expression_tokens(expression, inputs, variables)?])
+        }
+        semantic::Output::Record(fields) => fields
+            .iter()
+            .map(|field| expression_tokens(&field.expression, inputs, variables))
+            .collect(),
+    }
+}
+
+fn expression_tokens(
+    expression: &Expr,
+    inputs: &[syn::Ident],
+    variables: &[semantic::Variable],
+) -> Result<TokenStream> {
+    match expression {
+        Expr::Number(value) => {
+            let value = Literal::f64_suffixed(*value);
+            Ok(quote!(#value))
+        }
+        Expr::Reference(Reference::Input(index)) => {
+            let input = &inputs[*index];
+            Ok(quote!(#input))
+        }
+        Expr::Reference(Reference::Variable(index)) => {
+            let name = format_ident!("{}", variables[*index].name);
+            Ok(quote!(#name))
+        }
+        Expr::Unary { op, operand } => {
+            let operand = expression_tokens(operand, inputs, variables)?;
+            Ok(match op {
+                UnaryOp::Plus => quote!(#operand),
+                UnaryOp::Minus => quote!(-(#operand)),
+            })
+        }
+        Expr::Binary { op, left, right } => {
+            let left = expression_tokens(left, inputs, variables)?;
+            let right = expression_tokens(right, inputs, variables)?;
+            Ok(match op {
+                BinaryOp::Add => quote!((#left) + (#right)),
+                BinaryOp::Subtract => quote!((#left) - (#right)),
+                BinaryOp::Multiply => quote!((#left) * (#right)),
+                BinaryOp::Divide => quote!((#left) / (#right)),
+                BinaryOp::Power => quote!((#left).powf(#right)),
+            })
+        }
+        Expr::Call { function, args } => {
+            let args = args
+                .iter()
+                .map(|arg| expression_tokens(arg, inputs, variables))
+                .collect::<Result<Vec<_>>>()?;
+            let first = &args[0];
+            Ok(match function {
+                MathFunction::Sqrt => quote!((#first).sqrt()),
+                MathFunction::Exp => quote!((#first).exp()),
+                MathFunction::Ln => quote!((#first).ln()),
+                MathFunction::Log10 => quote!((#first).log10()),
+                MathFunction::Abs => quote!((#first).abs()),
+                MathFunction::Min => {
+                    let second = &args[1];
+                    quote!((#first).min(#second))
+                }
+                MathFunction::Max => {
+                    let second = &args[1];
+                    quote!((#first).max(#second))
+                }
+            })
+        }
+    }
 }
 
 fn registration_tokens(resolved: &Resolved) -> Result<TokenStream> {
@@ -180,9 +287,10 @@ fn render_tokens(tokens: TokenStream) -> String {
 
 #[cfg(test)]
 mod tests {
-    use quote::quote;
+    use quote::{format_ident, quote};
 
-    use super::render_tokens;
+    use super::{expression_tokens, output_expression_tokens, render_tokens};
+    use crate::semantic::{BinaryOp, Expr, Field, MathFunction, Output, Reference, Variable};
 
     #[test]
     fn generated_rust_parses() {
@@ -190,5 +298,60 @@ mod tests {
             pub fn register() {}
         ));
         assert!(syn::parse_file(&generated).is_ok());
+    }
+
+    #[test]
+    fn renders_scalar_expressions_from_semantic_ir() {
+        let inputs = vec![format_ident!("silt"), format_ident!("clay")];
+        let variables = vec![Variable {
+            name: "log_k_sat".into(),
+            expression: Expr::Number(0.0),
+        }];
+        let expression = Expr::Binary {
+            op: BinaryOp::Power,
+            left: Box::new(Expr::Number(10.0)),
+            right: Box::new(Expr::Binary {
+                op: BinaryOp::Add,
+                left: Box::new(Expr::Call {
+                    function: MathFunction::Log10,
+                    args: vec![Expr::Reference(Reference::Input(0))],
+                }),
+                right: Box::new(Expr::Reference(Reference::Variable(0))),
+            }),
+        };
+
+        let tokens = expression_tokens(&expression, &inputs, &variables).unwrap();
+
+        assert!(syn::parse2::<syn::Expr>(tokens.clone()).is_ok());
+        assert!(tokens.to_string().contains("log10"));
+        assert!(tokens.to_string().contains("powf"));
+        assert!(tokens.to_string().contains("log_k_sat"));
+    }
+
+    #[test]
+    fn prepares_record_field_outputs_from_semantic_ir() {
+        let fields = vec![
+            Field {
+                name: "first".into(),
+                expression: Expr::Number(1.0),
+            },
+            Field {
+                name: "second".into(),
+                expression: Expr::Number(2.0),
+            },
+        ];
+
+        let values = output_expression_tokens(&Output::Record(fields), &[], &[]).unwrap();
+
+        assert_eq!(values.len(), 2);
+        assert_eq!(values[0].to_string(), "1f64");
+        assert_eq!(values[1].to_string(), "2f64");
+    }
+
+    #[test]
+    fn generated_jabro_ufunc_does_not_call_the_core_kernel() {
+        let generated = include_str!("../../../ptfkit-py/src/ufunc/generated/jabro1992.rs");
+
+        assert!(!generated.contains("ptfkit_core::jabro1992"));
     }
 }
