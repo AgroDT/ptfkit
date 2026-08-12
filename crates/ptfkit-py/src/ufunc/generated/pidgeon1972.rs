@@ -29,8 +29,9 @@ unsafe extern "C" fn calc_ptf_pidgeon1972_awc_loop(
         for _ in 0..count {
             let clay = (pointers[0usize] as *const f64).read_unaligned();
             let organic_matter = (pointers[1usize] as *const f64).read_unaligned();
-            let result = ptfkit_core::pidgeon1972::calc_ptf_pidgeon1972_awc(clay, organic_matter);
-            let values = [result];
+            let available_water_capacity =
+                ((169.3f64) - ((1.5f64) * (clay))) + ((6.09f64) * (organic_matter));
+            let values = [available_water_capacity];
             (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
             for index in 0..CALC_PTF_PIDGEON1972_AWC_NARGS {
                 pointers[index] = pointers[index].offset(strides[index]);
@@ -69,9 +70,8 @@ unsafe extern "C" fn calc_ptf_pidgeon1972_awc_coarse_sand_loop(
         );
         for _ in 0..count {
             let coarse_sand = (pointers[0usize] as *const f64).read_unaligned();
-            let result =
-                ptfkit_core::pidgeon1972::calc_ptf_pidgeon1972_awc_coarse_sand(coarse_sand);
-            let values = [result];
+            let available_water_capacity = (68.5f64) + ((2.33f64) * (coarse_sand));
+            let values = [available_water_capacity];
             (pointers[1usize] as *mut f64).write_unaligned(values[0usize]);
             for index in 0..CALC_PTF_PIDGEON1972_AWC_COARSE_SAND_NARGS {
                 pointers[index] = pointers[index].offset(strides[index]);
@@ -110,8 +110,8 @@ unsafe extern "C" fn calc_ptf_pidgeon1972_awc_fine_sand_loop(
         );
         for _ in 0..count {
             let fine_sand = (pointers[0usize] as *const f64).read_unaligned();
-            let result = ptfkit_core::pidgeon1972::calc_ptf_pidgeon1972_awc_fine_sand(fine_sand);
-            let values = [result];
+            let available_water_capacity = (66.7f64) + ((2.66f64) * (fine_sand));
+            let values = [available_water_capacity];
             (pointers[1usize] as *mut f64).write_unaligned(values[0usize]);
             for index in 0..CALC_PTF_PIDGEON1972_AWC_FINE_SAND_NARGS {
                 pointers[index] = pointers[index].offset(strides[index]);
@@ -154,11 +154,9 @@ unsafe extern "C" fn calc_ptf_pidgeon1972_awc_sand_organic_matter_loop(
         for _ in 0..count {
             let sand = (pointers[0usize] as *const f64).read_unaligned();
             let organic_matter = (pointers[1usize] as *const f64).read_unaligned();
-            let result = ptfkit_core::pidgeon1972::calc_ptf_pidgeon1972_awc_sand_organic_matter(
-                sand,
-                organic_matter,
-            );
-            let values = [result];
+            let available_water_capacity =
+                ((1f64) + ((1.84f64) * (sand))) + ((8.12f64) * (organic_matter));
+            let values = [available_water_capacity];
             (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
             for index in 0..CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER_NARGS {
                 pointers[index] = pointers[index].offset(strides[index]);
@@ -199,9 +197,8 @@ unsafe extern "C" fn calc_ptf_pidgeon1972_awc_very_fine_sand_loop(
         );
         for _ in 0..count {
             let very_fine_sand = (pointers[0usize] as *const f64).read_unaligned();
-            let result =
-                ptfkit_core::pidgeon1972::calc_ptf_pidgeon1972_awc_very_fine_sand(very_fine_sand);
-            let values = [result];
+            let available_water_capacity = (66.9f64) + ((4.58f64) * (very_fine_sand));
+            let values = [available_water_capacity];
             (pointers[1usize] as *mut f64).write_unaligned(values[0usize]);
             for index in 0..CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND_NARGS {
                 pointers[index] = pointers[index].offset(strides[index]);
@@ -233,9 +230,10 @@ unsafe extern "C" fn calc_ptf_pidgeon1972_eawc_loop(
             let silt = (pointers[0usize] as *const f64).read_unaligned();
             let clay = (pointers[1usize] as *const f64).read_unaligned();
             let organic_matter = (pointers[2usize] as *const f64).read_unaligned();
-            let result =
-                ptfkit_core::pidgeon1972::calc_ptf_pidgeon1972_eawc(silt, clay, organic_matter);
-            let values = [result];
+            let extended_available_water_capacity = (((121.1f64) - ((3.03f64) * (silt)))
+                - ((1.38f64) * (clay)))
+                + ((6.76f64) * (organic_matter));
+            let values = [extended_available_water_capacity];
             (pointers[3usize] as *mut f64).write_unaligned(values[0usize]);
             for index in 0..CALC_PTF_PIDGEON1972_EAWC_NARGS {
                 pointers[index] = pointers[index].offset(strides[index]);
@@ -279,12 +277,9 @@ unsafe extern "C" fn calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter_loop(
         for _ in 0..count {
             let coarse_sand = (pointers[0usize] as *const f64).read_unaligned();
             let organic_matter = (pointers[1usize] as *const f64).read_unaligned();
-            let result =
-                ptfkit_core::pidgeon1972::calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(
-                    coarse_sand,
-                    organic_matter,
-                );
-            let values = [result];
+            let extended_available_water_capacity =
+                ((-(7.4f64)) + ((2.37f64) * (coarse_sand))) + ((6.86f64) * (organic_matter));
+            let values = [extended_available_water_capacity];
             (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
             for index in 0..CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER_NARGS {
                 pointers[index] = pointers[index].offset(strides[index]);
@@ -327,12 +322,9 @@ unsafe extern "C" fn calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter_loop(
         for _ in 0..count {
             let fine_sand = (pointers[0usize] as *const f64).read_unaligned();
             let organic_matter = (pointers[1usize] as *const f64).read_unaligned();
-            let result =
-                ptfkit_core::pidgeon1972::calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(
-                    fine_sand,
-                    organic_matter,
-                );
-            let values = [result];
+            let extended_available_water_capacity =
+                ((-(18f64)) + ((3.11f64) * (fine_sand))) + ((7.69f64) * (organic_matter));
+            let values = [extended_available_water_capacity];
             (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
             for index in 0..CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER_NARGS {
                 pointers[index] = pointers[index].offset(strides[index]);
@@ -371,8 +363,8 @@ unsafe extern "C" fn calc_ptf_pidgeon1972_eawc_sand_loop(
         );
         for _ in 0..count {
             let sand = (pointers[0usize] as *const f64).read_unaligned();
-            let result = ptfkit_core::pidgeon1972::calc_ptf_pidgeon1972_eawc_sand(sand);
-            let values = [result];
+            let extended_available_water_capacity = (-(25.8f64)) + ((1.55f64) * (sand));
+            let values = [extended_available_water_capacity];
             (pointers[1usize] as *mut f64).write_unaligned(values[0usize]);
             for index in 0..CALC_PTF_PIDGEON1972_EAWC_SAND_NARGS {
                 pointers[index] = pointers[index].offset(strides[index]);
@@ -415,11 +407,9 @@ unsafe extern "C" fn calc_ptf_pidgeon1972_eawc_sand_organic_matter_loop(
         for _ in 0..count {
             let sand = (pointers[0usize] as *const f64).read_unaligned();
             let organic_matter = (pointers[1usize] as *const f64).read_unaligned();
-            let result = ptfkit_core::pidgeon1972::calc_ptf_pidgeon1972_eawc_sand_organic_matter(
-                sand,
-                organic_matter,
-            );
-            let values = [result];
+            let extended_available_water_capacity =
+                ((-(10.8f64)) + ((1.15f64) * (sand))) + ((4.78f64) * (organic_matter));
+            let values = [extended_available_water_capacity];
             (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
             for index in 0..CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER_NARGS {
                 pointers[index] = pointers[index].offset(strides[index]);
@@ -451,9 +441,9 @@ unsafe extern "C" fn calc_ptf_pidgeon1972_fc_loop(
             let silt = (pointers[0usize] as *const f64).read_unaligned();
             let clay = (pointers[1usize] as *const f64).read_unaligned();
             let organic_matter = (pointers[2usize] as *const f64).read_unaligned();
-            let result =
-                ptfkit_core::pidgeon1972::calc_ptf_pidgeon1972_fc(silt, clay, organic_matter);
-            let values = [result];
+            let field_capacity = (((7.38f64) + ((0.16f64) * (silt))) + ((0.3f64) * (clay)))
+                + ((1.54f64) * (organic_matter));
+            let values = [field_capacity];
             (pointers[3usize] as *mut f64).write_unaligned(values[0usize]);
             for index in 0..CALC_PTF_PIDGEON1972_FC_NARGS {
                 pointers[index] = pointers[index].offset(strides[index]);
@@ -491,8 +481,8 @@ unsafe extern "C" fn calc_ptf_pidgeon1972_fc_sand_loop(
         );
         for _ in 0..count {
             let sand = (pointers[0usize] as *const f64).read_unaligned();
-            let result = ptfkit_core::pidgeon1972::calc_ptf_pidgeon1972_fc_sand(sand);
-            let values = [result];
+            let field_capacity = (36.16f64) - ((0.25f64) * (sand));
+            let values = [field_capacity];
             (pointers[1usize] as *mut f64).write_unaligned(values[0usize]);
             for index in 0..CALC_PTF_PIDGEON1972_FC_SAND_NARGS {
                 pointers[index] = pointers[index].offset(strides[index]);
@@ -535,11 +525,9 @@ unsafe extern "C" fn calc_ptf_pidgeon1972_fc_sand_organic_matter_loop(
         for _ in 0..count {
             let sand = (pointers[0usize] as *const f64).read_unaligned();
             let organic_matter = (pointers[1usize] as *const f64).read_unaligned();
-            let result = ptfkit_core::pidgeon1972::calc_ptf_pidgeon1972_fc_sand_organic_matter(
-                sand,
-                organic_matter,
-            );
-            let values = [result];
+            let field_capacity =
+                ((34.27f64) - ((0.27f64) * (sand))) + ((1.25f64) * (organic_matter));
+            let values = [field_capacity];
             (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
             for index in 0..CALC_PTF_PIDGEON1972_FC_SAND_ORGANIC_MATTER_NARGS {
                 pointers[index] = pointers[index].offset(strides[index]);
@@ -582,11 +570,9 @@ unsafe extern "C" fn calc_ptf_pidgeon1972_fc_vol_sand_organic_matter_loop(
         for _ in 0..count {
             let sand = (pointers[0usize] as *const f64).read_unaligned();
             let organic_matter = (pointers[1usize] as *const f64).read_unaligned();
-            let result = ptfkit_core::pidgeon1972::calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(
-                sand,
-                organic_matter,
-            );
-            let values = [result];
+            let field_capacity =
+                ((38.15f64) - ((0.17f64) * (sand))) + ((0.77f64) * (organic_matter));
+            let values = [field_capacity];
             (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
             for index in 0..CALC_PTF_PIDGEON1972_FC_VOL_SAND_ORGANIC_MATTER_NARGS {
                 pointers[index] = pointers[index].offset(strides[index]);
@@ -618,9 +604,10 @@ unsafe extern "C" fn calc_ptf_pidgeon1972_pwp_loop(
             let silt = (pointers[0usize] as *const f64).read_unaligned();
             let clay = (pointers[1usize] as *const f64).read_unaligned();
             let organic_matter = (pointers[2usize] as *const f64).read_unaligned();
-            let result =
-                ptfkit_core::pidgeon1972::calc_ptf_pidgeon1972_pwp(silt, clay, organic_matter);
-            let values = [result];
+            let permanent_wilting_point = (((-(4.19f64)) + ((0.19f64) * (silt)))
+                + ((0.39f64) * (clay)))
+                + ((0.9f64) * (organic_matter));
+            let values = [permanent_wilting_point];
             (pointers[3usize] as *mut f64).write_unaligned(values[0usize]);
             for index in 0..CALC_PTF_PIDGEON1972_PWP_NARGS {
                 pointers[index] = pointers[index].offset(strides[index]);
@@ -659,8 +646,8 @@ unsafe extern "C" fn calc_ptf_pidgeon1972_pwp_sand_loop(
         );
         for _ in 0..count {
             let sand = (pointers[0usize] as *const f64).read_unaligned();
-            let result = ptfkit_core::pidgeon1972::calc_ptf_pidgeon1972_pwp_sand(sand);
-            let values = [result];
+            let permanent_wilting_point = (28.41f64) - ((0.29f64) * (sand));
+            let values = [permanent_wilting_point];
             (pointers[1usize] as *mut f64).write_unaligned(values[0usize]);
             for index in 0..CALC_PTF_PIDGEON1972_PWP_SAND_NARGS {
                 pointers[index] = pointers[index].offset(strides[index]);
@@ -703,11 +690,9 @@ unsafe extern "C" fn calc_ptf_pidgeon1972_pwp_sand_organic_matter_loop(
         for _ in 0..count {
             let sand = (pointers[0usize] as *const f64).read_unaligned();
             let organic_matter = (pointers[1usize] as *const f64).read_unaligned();
-            let result = ptfkit_core::pidgeon1972::calc_ptf_pidgeon1972_pwp_sand_organic_matter(
-                sand,
-                organic_matter,
-            );
-            let values = [result];
+            let permanent_wilting_point =
+                ((32.9f64) - ((0.37f64) * (sand))) + ((0.44f64) * (organic_matter));
+            let values = [permanent_wilting_point];
             (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
             for index in 0..CALC_PTF_PIDGEON1972_PWP_SAND_ORGANIC_MATTER_NARGS {
                 pointers[index] = pointers[index].offset(strides[index]);

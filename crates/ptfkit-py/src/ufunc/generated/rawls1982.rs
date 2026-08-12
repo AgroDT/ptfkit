@@ -41,26 +41,41 @@ unsafe extern "C" fn calc_ptf_rawls1982_full_wrc_loop(
             let bulk_density = (pointers[2usize] as *const f64).read_unaligned();
             let theta_33 = (pointers[3usize] as *const f64).read_unaligned();
             let theta_1500 = (pointers[4usize] as *const f64).read_unaligned();
-            let result = ptfkit_core::rawls1982::calc_ptf_rawls1982_full_wrc(
-                sand,
-                organic_matter,
-                bulk_density,
-                theta_33,
-                theta_1500,
-            );
+            let theta_4 = ((((0.1829f64) - ((0.0246f64) * (organic_matter)))
+                - ((0.0376f64) * (bulk_density)))
+                + ((1.89f64) * (theta_33)))
+                - ((1.38f64) * (theta_1500));
+            let theta_7 = ((((0.8888f64) - ((0.0003f64) * (sand)))
+                - ((0.0107f64) * (organic_matter)))
+                + ((1.53f64) * (theta_33)))
+                - ((0.81f64) * (theta_1500));
+            let theta_10 = ((((0.0619f64) - ((0.0002f64) * (sand)))
+                - ((0.0067f64) * (organic_matter)))
+                + ((1.34f64) * (theta_33)))
+                - ((0.51f64) * (theta_1500));
+            let theta_20 = (((0.0319f64) - ((0.0002f64) * (sand))) + ((1.01f64) * (theta_33)))
+                - ((0.06f64) * (theta_1500));
+            let theta_60 = (((0.0136f64) - ((0.0091f64) * (bulk_density)))
+                + ((0.66f64) * (theta_33)))
+                + ((0.39f64) * (theta_1500));
+            let theta_100 = (((-(0.0034f64)) + ((0.0022f64) * (organic_matter)))
+                + ((0.52f64) * (theta_33)))
+                + ((0.54f64) * (theta_1500));
+            let theta_200 = (((-(0.0043f64)) + ((0.0026f64) * (organic_matter)))
+                + ((0.36f64) * (theta_33)))
+                + ((0.69f64) * (theta_1500));
+            let theta_400 = (((-(0.0038f64)) + ((0.0026f64) * (organic_matter)))
+                + ((0.24f64) * (theta_33)))
+                + ((0.79f64) * (theta_1500));
+            let theta_700 = (((-(0.0027f64)) + ((0.0024f64) * (organic_matter)))
+                + ((0.16f64) * (theta_33)))
+                + ((0.86f64) * (theta_1500));
+            let theta_1000 = (((-(0.0019f64)) + ((0.0022f64) * (organic_matter)))
+                + ((0.11f64) * (theta_33)))
+                + ((0.89f64) * (theta_1500));
             let values = [
-                result.theta_4,
-                result.theta_7,
-                result.theta_10,
-                result.theta_20,
-                result.theta_33,
-                result.theta_60,
-                result.theta_100,
-                result.theta_200,
-                result.theta_400,
-                result.theta_700,
-                result.theta_1000,
-                result.theta_1500,
+                theta_4, theta_7, theta_10, theta_20, theta_33, theta_60, theta_100, theta_200,
+                theta_400, theta_700, theta_1000, theta_1500,
             ];
             (pointers[5usize] as *mut f64).write_unaligned(values[0usize]);
             (pointers[6usize] as *mut f64).write_unaligned(values[1usize]);
@@ -112,9 +127,9 @@ unsafe extern "C" fn calc_ptf_rawls1982_theta_1500_loop(
         for _ in 0..count {
             let clay = (pointers[0usize] as *const f64).read_unaligned();
             let organic_matter = (pointers[1usize] as *const f64).read_unaligned();
-            let result =
-                ptfkit_core::rawls1982::calc_ptf_rawls1982_theta_1500(clay, organic_matter);
-            let values = [result];
+            let theta_1500 =
+                ((0.026f64) + ((0.005f64) * (clay))) + ((0.0158f64) * (organic_matter));
+            let values = [theta_1500];
             (pointers[2usize] as *mut f64).write_unaligned(values[0usize]);
             for index in 0..CALC_PTF_RAWLS1982_THETA_1500_NARGS {
                 pointers[index] = pointers[index].offset(strides[index]);
@@ -154,12 +169,10 @@ unsafe extern "C" fn calc_ptf_rawls1982_theta_33_loop(
             let sand = (pointers[0usize] as *const f64).read_unaligned();
             let organic_matter = (pointers[1usize] as *const f64).read_unaligned();
             let theta_1500 = (pointers[2usize] as *const f64).read_unaligned();
-            let result = ptfkit_core::rawls1982::calc_ptf_rawls1982_theta_33(
-                sand,
-                organic_matter,
-                theta_1500,
-            );
-            let values = [result];
+            let theta_33 = (((0.2391f64) - ((0.0019f64) * (sand)))
+                + ((0.021f64) * (organic_matter)))
+                + ((0.72f64) * (theta_1500));
+            let values = [theta_33];
             (pointers[3usize] as *mut f64).write_unaligned(values[0usize]);
             for index in 0..CALC_PTF_RAWLS1982_THETA_33_NARGS {
                 pointers[index] = pointers[index].offset(strides[index]);

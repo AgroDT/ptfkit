@@ -60,6 +60,10 @@ functions:
     notes:
     - The reviewed organic-matter coefficient is 1.54.
     warnings: []
+  implementation:
+    variables:
+    - name: field_capacity
+      expr: 7.38 + 0.16 * silt + 0.30 * clay + 1.54 * organic_matter
 - name: calc_ptf_pidgeon1972_fc_sand
   status: implemented
   public_api:
@@ -97,6 +101,10 @@ functions:
   documentation:
     notes: []
     warnings: []
+  implementation:
+    variables:
+    - name: field_capacity
+      expr: 36.16 - 0.25 * sand
 - name: calc_ptf_pidgeon1972_fc_sand_organic_matter
   status: implemented
   public_api:
@@ -140,6 +148,10 @@ functions:
   documentation:
     notes: []
     warnings: []
+  implementation:
+    variables:
+    - name: field_capacity
+      expr: 34.27 - 0.27 * sand + 1.25 * organic_matter
 - name: calc_ptf_pidgeon1972_fc_vol_sand_organic_matter
   status: implemented
   public_api:
@@ -183,6 +195,10 @@ functions:
   documentation:
     notes: []
     warnings: []
+  implementation:
+    variables:
+    - name: field_capacity
+      expr: 38.15 - 0.17 * sand + 0.77 * organic_matter
 - name: calc_ptf_pidgeon1972_pwp
   status: implemented
   public_api:
@@ -232,6 +248,10 @@ functions:
   documentation:
     notes: []
     warnings: []
+  implementation:
+    variables:
+    - name: permanent_wilting_point
+      expr: -4.19 + 0.19 * silt + 0.39 * clay + 0.90 * organic_matter
 - name: calc_ptf_pidgeon1972_pwp_sand
   status: implemented
   public_api:
@@ -269,6 +289,10 @@ functions:
   documentation:
     notes: []
     warnings: []
+  implementation:
+    variables:
+    - name: permanent_wilting_point
+      expr: 28.41 - 0.29 * sand
 - name: calc_ptf_pidgeon1972_pwp_sand_organic_matter
   status: implemented
   public_api:
@@ -312,6 +336,10 @@ functions:
   documentation:
     notes: []
     warnings: []
+  implementation:
+    variables:
+    - name: permanent_wilting_point
+      expr: 32.90 - 0.37 * sand + 0.44 * organic_matter
 - name: calc_ptf_pidgeon1972_awc
   status: implemented
   public_api:
@@ -355,6 +383,10 @@ functions:
   documentation:
     notes: []
     warnings: []
+  implementation:
+    variables:
+    - name: available_water_capacity
+      expr: 169.3 - 1.50 * clay + 6.09 * organic_matter
 - name: calc_ptf_pidgeon1972_awc_sand_organic_matter
   status: implemented
   public_api:
@@ -398,6 +430,10 @@ functions:
   documentation:
     notes: []
     warnings: []
+  implementation:
+    variables:
+    - name: available_water_capacity
+      expr: 1.0 + 1.84 * sand + 8.12 * organic_matter
 - name: calc_ptf_pidgeon1972_awc_coarse_sand
   status: implemented
   public_api:
@@ -435,6 +471,10 @@ functions:
   documentation:
     notes: []
     warnings: []
+  implementation:
+    variables:
+    - name: available_water_capacity
+      expr: 68.5 + 2.33 * coarse_sand
 - name: calc_ptf_pidgeon1972_awc_fine_sand
   status: implemented
   public_api:
@@ -472,6 +512,10 @@ functions:
   documentation:
     notes: []
     warnings: []
+  implementation:
+    variables:
+    - name: available_water_capacity
+      expr: 66.7 + 2.66 * fine_sand
 - name: calc_ptf_pidgeon1972_awc_very_fine_sand
   status: implemented
   public_api:
@@ -509,6 +553,10 @@ functions:
   documentation:
     notes: []
     warnings: []
+  implementation:
+    variables:
+    - name: available_water_capacity
+      expr: 66.9 + 4.58 * very_fine_sand
 - name: calc_ptf_pidgeon1972_eawc
   status: implemented
   public_api:
@@ -559,6 +607,10 @@ functions:
   documentation:
     notes: []
     warnings: []
+  implementation:
+    variables:
+    - name: extended_available_water_capacity
+      expr: 121.1 - 3.03 * silt - 1.38 * clay + 6.76 * organic_matter
 - name: calc_ptf_pidgeon1972_eawc_sand
   status: implemented
   public_api:
@@ -596,6 +648,10 @@ functions:
   documentation:
     notes: []
     warnings: []
+  implementation:
+    variables:
+    - name: extended_available_water_capacity
+      expr: -25.8 + 1.55 * sand
 - name: calc_ptf_pidgeon1972_eawc_sand_organic_matter
   status: implemented
   public_api:
@@ -639,6 +695,10 @@ functions:
   documentation:
     notes: []
     warnings: []
+  implementation:
+    variables:
+    - name: extended_available_water_capacity
+      expr: -10.8 + 1.15 * sand + 4.78 * organic_matter
 - name: calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter
   status: implemented
   public_api:
@@ -683,6 +743,10 @@ functions:
   documentation:
     notes: []
     warnings: []
+  implementation:
+    variables:
+    - name: extended_available_water_capacity
+      expr: -7.4 + 2.37 * coarse_sand + 6.86 * organic_matter
 - name: calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter
   status: implemented
   public_api:
@@ -727,6 +791,10 @@ functions:
   documentation:
     notes: []
     warnings: []
+  implementation:
+    variables:
+    - name: extended_available_water_capacity
+      expr: -18.0 + 3.11 * fine_sand + 7.69 * organic_matter
 scientific_notes: '
 
   # Pidgeon (1972)

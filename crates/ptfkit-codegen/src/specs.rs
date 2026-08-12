@@ -190,14 +190,19 @@ fn validate_output(
         .iter()
         .map(|output| &output.name)
         .collect::<Vec<_>>();
-    let variable_names = raw
-        .variables
+    let output_sources = raw
+        .inputs
         .iter()
-        .map(|variable| variable.name.as_str())
+        .map(|input| input.name.as_str())
+        .chain(
+            raw.variables
+                .iter()
+                .map(|variable| variable.name.as_str()),
+        )
         .collect::<std::collections::BTreeSet<_>>();
     let missing = output_names
         .iter()
-        .filter(|name| !variable_names.contains(name.as_str()))
+        .filter(|name| !output_sources.contains(name.as_str()))
         .collect::<Vec<_>>();
     if missing.is_empty() {
         Ok(())
@@ -279,6 +284,29 @@ mod tests {
             entries[0].spec.generation.public_python,
             PythonGeneration::Generated
         );
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn permits_an_output_to_reuse_a_same_named_input() {
+        let root = fixture_root("input-output");
+        let specification = specification(
+            "input_output",
+            "    implementation:\n      variables: [{name: intermediate, expr: value}]\n",
+            "",
+        )
+        .replace(
+            "{name: x, symbol: x, unit: '1', domain: null, description: Test input.}",
+            "{name: value, symbol: x, unit: '1', domain: null, description: Test input.}",
+        );
+        fs::write(
+            root.join("specs/functions/input_output.yaml"),
+            specification,
+        )
+        .unwrap();
+
+        let entries = load(&root).unwrap();
+        assert!(entries[0].implementations[0].is_some());
         fs::remove_dir_all(root).unwrap();
     }
 

@@ -127,3 +127,15 @@ def test_out(
 
     assert result is out
     npt.assert_allclose(out, expected, rtol=RTOL, atol=ATOL)
+
+
+def test_texture_sibling_functions_remain_isolated():
+    assert calc_ptf_pidgeon1972_awc_coarse_sand(coarse_sand=20.0) == pytest.approx(115.1)
+    assert calc_ptf_pidgeon1972_awc_fine_sand(fine_sand=20.0) == pytest.approx(119.9)
+    assert calc_ptf_pidgeon1972_awc_very_fine_sand(very_fine_sand=10.0) == pytest.approx(112.7)
+    assert calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(
+        coarse_sand=20.0, organic_matter=2.0
+    ) == pytest.approx(53.72)
+    assert calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(
+        fine_sand=20.0, organic_matter=2.0
+    ) == pytest.approx(59.58)
