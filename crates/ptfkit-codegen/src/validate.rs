@@ -7,25 +7,9 @@ use crate::model::{Entry, Function, Parameter};
 
 pub(crate) fn specifications(entries: &[Entry]) -> Vec<String> {
     let mut errors = Vec::new();
-    let mut sources = BTreeMap::new();
     let mut functions = BTreeMap::new();
     let mut public = BTreeMap::new();
     for entry in entries {
-        duplicate(
-            &mut sources,
-            &entry.spec.source.key,
-            entry,
-            "source.key",
-            &mut errors,
-        );
-        if entry.path.file_stem().and_then(|stem| stem.to_str()) != Some(&entry.spec.source.key) {
-            errors.push(diag(
-                entry,
-                "source.key",
-                None,
-                "source-oriented filename must match source.key",
-            ));
-        }
         for function in &entry.spec.functions {
             duplicate(
                 &mut functions,
@@ -34,7 +18,7 @@ pub(crate) fn specifications(entries: &[Entry]) -> Vec<String> {
                 "functions[].name",
                 &mut errors,
             );
-            let public_key = format!("{}::{}", entry.spec.source.key, function.public_api.name);
+            let public_key = format!("{}::{}", entry.slug, function.public_api.name);
             duplicate(
                 &mut public,
                 &public_key,

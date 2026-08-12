@@ -1,0 +1,4 @@
+interface:
+  display_name: "PTF Extract"
+  short_description: "Extract a reviewable PTF YAML draft"
+  default_prompt: "Use $ptf-extract with one local source-file path to create a reviewable PTF YAML draft."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "PTF Generate"
+  short_description: "Generate and verify a reviewed PTF source"
+  default_prompt: "Use $ptf-generate with one reviewed APA-style source slug."

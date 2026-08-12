@@ -14,7 +14,7 @@ pub(crate) fn render(functions: &[Resolved]) -> Result<Vec<(PathBuf, String)>> {
     let mut sources = BTreeMap::<String, Vec<&Resolved>>::new();
     for function in functions {
         sources
-            .entry(function.entry.spec.source.key.clone())
+            .entry(function.entry.slug.clone())
             .or_default()
             .push(function);
     }

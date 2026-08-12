@@ -1,4 +1,0 @@
-interface:
-  display_name: "PTF Spec Ingest"
-  short_description: "Validate PTF function specs"
-  default_prompt: "Use $ptf-spec-ingest to validate a PTF function spec and produce an implementation checklist."

@@ -37,7 +37,7 @@ pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> Result<()> {
                 .filter_map(|(index, _)| {
                     entry.implementations[index]
                         .is_some()
-                        .then_some(entry.spec.source.key.clone())
+                        .then_some(entry.slug.clone())
                 })
         })
         .collect();
@@ -307,7 +307,7 @@ fn resolve(entries: Vec<Entry>, core: Vec<CoreFunction>) -> Result<Vec<Resolved>
             legacy_core.remove(&name);
             CoreFunction {
                 name: spec.name.clone(),
-                module: vec![entry.spec.source.key.clone()],
+                module: vec![entry.slug.clone()],
                 inputs: spec.inputs.iter().map(|input| input.name.clone()).collect(),
                 output: if spec.public_api.result_class.is_some() {
                     Output::Struct(
@@ -404,9 +404,9 @@ mod tests {
     fn entry(name: &str, status: &str) -> Entry {
         Entry {
             path: PathBuf::from("test.yaml"),
+            slug: "test".into(),
             spec: Spec {
                 source: Source {
-                    key: "test".into(),
                     summary: "Test source.".into(),
                     citation_apa: "Test (2026).".into(),
                     doi: None,

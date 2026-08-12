@@ -28,7 +28,7 @@ pub(crate) fn render(functions: &[Resolved]) -> Result<Vec<(String, PythonGenera
     let mut modules: BTreeMap<String, Vec<&Resolved>> = BTreeMap::new();
     for function in functions {
         modules
-            .entry(format!("ptfkit.{}", function.entry.spec.source.key))
+            .entry(format!("ptfkit.{}", function.entry.slug))
             .or_default()
             .push(function);
     }
@@ -508,7 +508,6 @@ mod tests {
     #[test]
     fn module_summary_and_doi_url_come_from_source() {
         let source = Source {
-            key: "test".into(),
             summary: "Test et al. (2026), short territory.".into(),
             citation_apa: "Test et al. (2026). Test reference.".into(),
             doi: Some(crate::model::Doi {
@@ -536,9 +535,9 @@ mod tests {
         let resolved = Resolved {
             entry: Entry {
                 path: PathBuf::from("test.yaml"),
+                slug: "test".into(),
                 spec: Spec {
                     source: Source {
-                        key: "test".into(),
                         summary: "Test source.".into(),
                         citation_apa: "Test (2026).".into(),
                         doi: None,

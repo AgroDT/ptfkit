@@ -1,0 +1,35 @@
+source:
+  summary: Short public summary supported by the paper.
+  citation_apa: Complete source citation.
+  doi: null
+scope:
+  territory: null
+  dataset: null
+functions:
+  - name: calc_ptf_author2026
+    status: blocked
+    public_api:
+      name: calc_ptf_author2026
+      result_class: null
+      summary: Public function summary supported by the paper.
+    scope:
+      prediction_target: Target quantity.
+      models:
+        h_theta: null
+        k_h: null
+    inputs: []
+    outputs: []
+    golden_tests: []
+    edge_cases: []
+    documentation:
+      notes: []
+      warnings: []
+    implementation:
+      variables: []
+      output:
+        type: scalar
+        expr: TODO
+scientific_notes: |
+  ## Blockers
+
+  - Replace this blocker only with evidence explicitly present in the paper.

@@ -1,70 +1,43 @@
-# Implementation Review Checklist
+# Implementation review checklist
 
-## Spec Traceability
+## Specification and IR
 
-- [ ] Implementation uses a source-oriented spec from `specs/functions/*.md`.
-- [ ] Spec passed `ptf-spec-ingest`.
-- [ ] No formulas, constants, units, or expected values were inferred beyond the
-  validated source specification.
-- [ ] Every implemented variable maps to spec input, output, constant, or intermediate.
+- [ ] YAML validates against the active unversioned schema and semantic checks.
+- [ ] Every public function name, argument, output, unit, and IR expression
+  matches the YAML specification.
+- [ ] No scientific assumption is present only in generated code.
 
-## Formula And Units
+## Formula and units
 
-- [ ] Formula terms match the spec.
-- [ ] Constants match exact spec values.
-- [ ] Unit conversions are explicit and tested.
-- [ ] Output order matches the ordered YAML `outputs` list.
-- [ ] Numeric policy for rounding, NaN, and invalid inputs is respected.
+- [ ] Formula terms, constants, unit conversions, output order, and numeric
+  policy match the YAML specification.
 
-## Golden Tests
+## Retained targets
 
-- [ ] Golden cases cover every output.
-- [ ] Scalar public API tests exist.
-- [ ] NumPy ndarray tests exist.
-- [ ] Broadcasting tests exist when supported.
-- [ ] `out` tests exist when supported.
-- [ ] Tolerances match the spec.
-
-## Rust Core
-
-- [ ] Pure core uses `f64`.
-- [ ] Pure core does not depend on Python, PyO3, or NumPy.
-- [ ] Rust tests compare against golden cases when a Rust test harness exists.
-- [ ] Production Rust comments and documentation do not reference repository-only
-      specification paths.
+- [ ] Generated Rust uses `f64` scalar computation from the semantic IR.
+- [ ] Generated native NumPy ufuncs use the same IR.
+- [ ] Generated target tests cover every structured golden case.
+- [ ] Valid IR unsupported by a retained target is reported as a generator
+  capability blocker, not replaced with hand-written computation.
 
 ## Python API
 
-- [ ] Public module and function names are correct.
-- [ ] Wrapper remains keyword-only.
-- [ ] Type overloads are present or intentionally updated.
-- [ ] Multi-output functions return the documented `NamedTuple`.
-- [ ] Existing public API compatibility is preserved.
-- [ ] Omitted top-level `python_generation` is treated as generated; a manual
-      module has a justified `python_generation: manual` entry.
+- [ ] Public module and function names, keyword-only inputs, scalar/array
+  behavior, broadcasting, `out`, and `NamedTuple` output match the contract.
+- [ ] A manual public module is justified and delegates to generated native
+  ufuncs without duplicating formulas.
 
-## Documentation
+## Determinism and documentation
 
-- [ ] Module docstring matches reference and scope from spec.
-- [ ] Module summary is the hand-authored `source.summary` (at most 100
-      characters); the APA citation and DOI identifier/URL match the spec.
-- [ ] Module and function territories are rendered from independent scope fields
-      without inheritance or combination.
-- [ ] Function docstring lists input and output units.
-- [ ] Result class docs match output fields.
-- [ ] Native bindings, public docstrings, and package metadata do not reference
-      repository-only specification paths.
+- [ ] Regeneration is deterministic and no marked generated file was edited.
+- [ ] The transition to `implemented` has evidence that all required checks
+  passed.
+- [ ] Public docstrings and package metadata match source metadata and expose
+  no repository-only specification paths.
 
-## Blocking Findings
+## Blocking findings
 
-Classify as blocking:
-
-- Missing function-level spec.
-- Missing or failing golden tests.
-- Unit mismatch.
-- Formula mismatch.
-- Output field order mismatch.
-- Public API break without explicit approval.
-- Missing vectorized behavior promised by the spec.
-- Repository-only specification paths exposed by production Rust, native
-  bindings, public docstrings, or package metadata.
+Classify as blocking: schema or semantic failure; formula, unit, output-order,
+or public-API mismatch; missing retained target or golden test; unsupported IR;
+nondeterministic generation; unsubstantiated status transition; or exposed
+repository-only specification paths.

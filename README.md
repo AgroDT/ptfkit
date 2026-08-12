@@ -126,21 +126,18 @@ specification, implementation, public API compatibility, and review aligned.
 ### Adding a PTF
 
 1. Provide the agent with a local path to the source material.
-2. Use `ptf-spec-ingest` to create and validate a source-oriented specification
-   under [`specs/functions`](./specs/functions/). It uses YAML front matter for
-   shared publication and function metadata and Markdown for formulas and
-   scientific reasoning. Reuse the same file for every function from one
-   publication; the source file is not copied into the repository and its path
-   is not retained.
-3. Use `ptf-rust-core` to implement a ready specification as a pure Rust kernel
-   with golden tests.
-4. Use `ptf-python-bindings` to expose the kernel while preserving the public
-   Python API, including scalar and NumPy behavior, broadcasting, `out`, and
-   `NamedTuple` results where applicable.
-   Each spec generates `ptfkit.<source.key>` by default; set top-level
-   `python_generation: manual` only for an entire manual module.
-5. Use `ptf-review` before merging to check formula traceability, numerical
-   policy, tests, documentation, and API compatibility.
+2. In a dedicated session, use `ptf-extract` to create and validate a draft
+   source YAML under [`specs/functions`](./specs/functions/). It extracts only
+   paper-supported facts and reports either `Ready for user review` or
+   `Blocked`.
+3. Review and, if needed, edit the YAML directly.
+4. In a fresh session, use `ptf-generate <apa_article_key>` to validate, generate,
+   test, prove idempotence, and atomically mark the source implemented.
+   Each specification filename stem generates `ptfkit.<apa_article_key>` by default; use
+   `generation.public_python: manual` only for an intentional public wrapper
+   that delegates to the generated native ufunc.
+5. Optionally use `ptf-review <apa_article_key>` in another fresh session for an
+   independent, read-only pre-merge review.
 
 If the generated specification has unresolved details, implementation stops
 until the specification is complete.

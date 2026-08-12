@@ -15,7 +15,6 @@ pub(crate) struct Spec {
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub(crate) struct Source {
-    pub(crate) key: String,
     pub(crate) summary: String,
     pub(crate) citation_apa: String,
     pub(crate) doi: Option<Doi>,
@@ -141,6 +140,7 @@ pub(crate) struct ImplementationField {
 #[derive(Clone)]
 pub(crate) struct Entry {
     pub(crate) path: PathBuf,
+    pub(crate) slug: String,
     pub(crate) spec: Spec,
     #[allow(
         dead_code,
@@ -214,7 +214,6 @@ mod tests {
     fn public_python_generation_defaults_to_generated() {
         let mut spec = Spec {
             source: Source {
-                key: "test".into(),
                 summary: "Test (2026), test territory.".into(),
                 citation_apa: "Test (2026).".into(),
                 doi: None,

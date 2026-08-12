@@ -22,7 +22,7 @@ pub(crate) fn render(functions: &[Resolved]) -> Result<Vec<(PathBuf, String)>> {
             let module_docs =
                 module_doc_tokens(&resolved.entry.spec.source, &resolved.entry.spec.scope);
             Ok((
-                PathBuf::from(format!("{}.rs", resolved.entry.spec.source.key)),
+                PathBuf::from(format!("{}.rs", resolved.entry.slug)),
                 render_tokens(module_docs, module_tokens(resolved, ir)?),
             ))
         })

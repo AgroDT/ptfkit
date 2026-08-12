@@ -31,6 +31,13 @@ pub(crate) fn load(root: &Path) -> Result<Vec<Entry>> {
         path.extension()
             .is_some_and(|extension| extension == "yaml")
     }) {
+        let slug = match source_slug(&path) {
+            Ok(slug) => slug,
+            Err(error) => {
+                errors.push(error);
+                continue;
+            }
+        };
         let text = fs::read_to_string(&path)?;
         let yaml_value: serde_yaml::Value = match serde_yaml::from_str(&text) {
             Ok(value) => value,
@@ -81,6 +88,7 @@ pub(crate) fn load(root: &Path) -> Result<Vec<Entry>> {
         match implementations {
             Ok(implementations) => entries.push(Entry {
                 path,
+                slug,
                 spec,
                 implementations,
             }),
@@ -91,6 +99,30 @@ pub(crate) fn load(root: &Path) -> Result<Vec<Entry>> {
         bail!("validation failed:\n{}", errors.join("\n"))
     }
     Ok(entries)
+}
+
+fn source_slug(path: &Path) -> Result<String, String> {
+    let Some(stem) = path.file_stem().and_then(|stem| stem.to_str()) else {
+        return Err(format!(
+            "{}:\n  $:\n    specification filename must have a UTF-8 stem",
+            path.display()
+        ));
+    };
+    let valid = stem
+        .chars()
+        .enumerate()
+        .all(|(index, character)| match index {
+            0 => character.is_ascii_lowercase(),
+            _ => character.is_ascii_lowercase() || character.is_ascii_digit() || character == '_',
+        });
+    if !stem.is_empty() && valid {
+        Ok(stem.to_owned())
+    } else {
+        Err(format!(
+            "{}:\n  $:\n    specification filename stem must be an APA-style slug matching ^[a-z][a-z0-9_]*$",
+            path.display()
+        ))
+    }
 }
 
 fn compile(
@@ -246,9 +278,9 @@ mod tests {
         root
     }
 
-    fn specification(key: &str, implementation: &str, generation: &str) -> String {
+    fn specification(slug: &str, implementation: &str, generation: &str) -> String {
         format!(
-            "source:\n  key: {key}\n  summary: Test source.\n  citation_apa: Test (2026).\n  doi: null\n{generation}functions:\n  - name: calc_ptf_{key}\n    status: ready-for-implementation\n    public_api: {{name: calc_ptf_{key}, result_class: null, summary: Test value.}}\n    scope:\n      prediction_target: Test value.\n      models: {{h_theta: null, k_h: null}}\n    inputs:\n      - {{name: x, symbol: x, unit: '1', domain: null, description: Test input.}}\n    outputs:\n      - {{name: value, symbol: y, unit: '1', domain: null, description: Test output.}}\n{implementation}"
+            "source:\n  summary: Test source.\n  citation_apa: Test (2026).\n  doi: null\n{generation}functions:\n  - name: calc_ptf_{slug}\n    status: ready-for-implementation\n    public_api: {{name: calc_ptf_{slug}, result_class: null, summary: Test value.}}\n    scope:\n      prediction_target: Test value.\n      models: {{h_theta: null, k_h: null}}\n    inputs:\n      - {{name: x, symbol: x, unit: '1', domain: null, description: Test input.}}\n    outputs:\n      - {{name: value, symbol: y, unit: '1', domain: null, description: Test output.}}\n{implementation}"
         )
     }
 
@@ -329,5 +361,23 @@ mod tests {
             PythonGeneration::Manual
         );
         fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn rejects_a_non_slug_specification_filename() {
+        let root = fixture_root("invalid-slug");
+        write(
+            &root,
+            "Bad-Slug",
+            "    implementation:\n      output: {type: scalar, expr: x * 2}\n",
+            "",
+        );
+
+        let error = match load(&root) {
+            Ok(_) => panic!("non-slug filename unexpectedly loaded"),
+            Err(error) => error.to_string(),
+        };
+
+        assert!(error.contains("filename stem must be an APA-style slug"));
     }
 }

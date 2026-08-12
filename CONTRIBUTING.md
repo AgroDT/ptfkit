@@ -67,19 +67,16 @@ applicable check before submitting a change.
 Most new PTF work is agent-assisted. Use the skills in `.agents/skills` in this
 order:
 
-1. Give `ptf-spec-ingest` a local path to the source material. It creates or
-   validates a function-level spec under `specs/functions` using only explicitly
-   stated formulas, constants, units, and expected values.
-2. If the spec is ready, use `ptf-rust-core` to implement the pure Rust `f64`
-   kernel and its golden tests. If the spec is blocked, resolve its questions
-   before writing code.
-3. Use `ptf-python-bindings` to expose the Rust kernel while preserving the
-   declared Python API, scalar and NumPy behavior, broadcasting, `out`, and
-   `NamedTuple` results where applicable.
-   Each spec generates `ptfkit.<source.key>` by default; set top-level
-   `python_generation: manual` only for an entire manual module.
-4. Use `ptf-review` before merging to check traceability, formula fidelity,
-   units, numeric policy, test coverage, documentation, and API compatibility.
+1. In one session, give `ptf-extract` a local path to the source material. It
+   writes and validates a draft YAML under `specs/functions` using only
+   explicitly stated facts, then reports `Ready for user review` or `Blocked`.
+2. Review and, if needed, edit the YAML directly. Resolve blockers before
+   generation.
+3. In a fresh session, use `ptf-generate <apa_article_key>` to validate, generate,
+   test, prove idempotence, and mark the reviewed source implemented only after
+   all retained targets pass.
+4. Optionally use `ptf-review <apa_article_key>` in another fresh session for
+   independent, read-only pre-merge review.
 
 The source file is transient input. Do not copy it into the repository or store
 its path in generated files. The validated function-level specification is the
@@ -91,8 +88,8 @@ Keep formula migrations small: one function or a closely related group per
 change. Do not combine a formula migration with an unrelated refactor unless
 the scope is explicitly approved.
 
-Every implementation must remain traceable to its function-level spec. The Rust
-core owns formula golden tests; the Python package owns public API compatibility
+Every implementation must remain traceable to its YAML source specification.
+Generated Rust and native NumPy targets own formula golden tests; the Python package owns public API compatibility
 tests. Update documentation when a public API, a specification, or a supported
 workflow changes.
 
