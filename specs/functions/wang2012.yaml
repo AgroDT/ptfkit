@@ -54,23 +54,25 @@ functions:
     domain: 99 <= value <= 2835
     description: Altitude above sea level.
   outputs:
-  - name: theta_s
-    symbol: SSWC
-    unit: cm^3/cm^3
-    domain: value >= 0
-    description: Saturated volumetric water content normalized from the regression's
-      volume-percent scale.
-  - name: theta_fc
-    symbol: FC
-    unit: cm^3/cm^3
-    domain: value >= 0
-    description: Volumetric water content at -33 kPa normalized from the regression's
-      volume-percent scale.
-  - name: k_sat
-    symbol: Ks
-    unit: m/s
-    domain: value >= 0
-    description: Saturated hydraulic conductivity converted from cm/day.
+    type: record
+    fields:
+    - name: theta_s
+      symbol: SSWC
+      unit: cm^3/cm^3
+      domain: value >= 0
+      description: Saturated volumetric water content normalized from the regression's
+        volume-percent scale.
+    - name: theta_fc
+      symbol: FC
+      unit: cm^3/cm^3
+      domain: value >= 0
+      description: Volumetric water content at -33 kPa normalized from the regression's
+        volume-percent scale.
+    - name: k_sat
+      symbol: Ks
+      unit: m/s
+      domain: value >= 0
+      description: Saturated hydraulic conductivity converted from cm/day.
   golden_tests:
   - id: derivation_minimum_soc_case
     inputs:
@@ -120,15 +122,12 @@ functions:
       expr: 46.481 - 4.757 * soil_organic_carbon_g_per_kg - 14.028 * log10(clay) - 13.991 * log10(sand) + 42.261 * log10(soil_organic_carbon_g_per_kg) - 11.763 / sand + 19.198 / soil_organic_carbon_g_per_kg - 5.448 * bulk_density ^ 2 + 0.044 * soil_organic_carbon_g_per_kg ^ 2 + 1.975 * bulk_density * soil_organic_carbon_g_per_kg
     - name: sswc_percent
       expr: 98.813 - 21.555 / bulk_density - 39.735 / silt - 2.091 / sand + 3.247 / soil_organic_carbon_g_per_kg - 17.096 * bulk_density ^ 2
-    output:
-      type: record
-      fields:
-      - name: theta_s
-        expr: sswc_percent / 100.0
-      - name: theta_fc
-        expr: fc_percent / 100.0
-      - name: k_sat
-        expr: k_sat_cm_per_day / 8640000.0
+    - name: theta_s
+      expr: sswc_percent / 100.0
+    - name: theta_fc
+      expr: fc_percent / 100.0
+    - name: k_sat
+      expr: k_sat_cm_per_day / 8640000.0
 scientific_notes: "\n# Wang et al. (2012)\n\n## `calc_ptf_wang2012`\n\n### Formula\n\
   \n```text\nSOC_g_per_kg = 10 * soil_organic_carbon\n\nlog10_k_sat_cm_per_day = 1.173\
   \ + 0.038 * silt + 0.690 * log10(sand)\n                       + 0.865 / sand -\

@@ -1,6 +1,6 @@
 use std::{collections::BTreeMap, path::PathBuf};
 
-use anyhow::{Result, bail};
+use anyhow::Result;
 use proc_macro2::{Literal, TokenStream};
 use quote::{format_ident, quote};
 
@@ -68,15 +68,18 @@ fn module_tokens(
         definition,
         return_type,
         expression,
-    } = output_tokens(resolved, ir, &inputs)?;
+        separates_result,
+    } = output_tokens(resolved)?;
     let tests = golden_test_tokens(resolved, unique_test_module)?;
     Ok(quote! {
         #definition
 
         #function_docs
         #[must_use]
+        #[allow(clippy::let_and_return)]
         pub fn #name(#(#inputs: f64),*) -> #return_type {
             #(#variables)*
+            #separates_result
             #expression
         }
 
@@ -88,23 +91,25 @@ struct OutputTokens {
     definition: TokenStream,
     return_type: TokenStream,
     expression: TokenStream,
+    separates_result: TokenStream,
 }
 
-fn output_tokens(
-    resolved: &Resolved,
-    ir: &semantic::Function,
-    inputs: &[syn::Ident],
-) -> Result<OutputTokens> {
-    match (&resolved.core.output, &ir.output) {
-        (Output::Scalar, semantic::Output::Scalar(expression)) => {
-            let expression = expression_tokens(expression, inputs, &ir.variables)?;
+fn output_tokens(resolved: &Resolved) -> Result<OutputTokens> {
+    match &resolved.core.output {
+        Output::Scalar => {
+            let name = &resolved.entry.spec.functions[resolved.function_index]
+                .outputs
+                .fields()[0]
+                .name;
+            let expression = format_ident!("{name}");
             Ok(OutputTokens {
                 definition: TokenStream::new(),
                 return_type: quote!(f64),
                 expression: quote!(#expression),
+                separates_result: TokenStream::new(),
             })
         }
-        (Output::Struct(fields), semantic::Output::Record(expressions)) => {
+        Output::Struct(fields) => {
             let specification = &resolved.entry.spec.functions[resolved.function_index];
             let result = specification
                 .public_api
@@ -116,24 +121,14 @@ fn output_tokens(
                 let field = format_ident!("{field}");
                 let parameter = specification
                     .outputs
+                    .fields()
                     .iter()
                     .find(|parameter| field == parameter.name)
                     .expect("core output field matches specification");
                 let docs = doc_tokens([parameter_details(parameter)]);
                 quote!(#docs pub #field: f64)
             });
-            let values = expressions
-                .iter()
-                .map(|field| {
-                    let name = format_ident!("{}", field.name);
-                    let expression = expression_tokens(&field.expression, inputs, &ir.variables)?;
-                    let value = match name == expression.to_string() {
-                        true => quote!(#name),
-                        false => quote!(#name: #expression),
-                    };
-                    Ok(value)
-                })
-                .collect::<Result<Vec<_>>>()?;
+            let values = fields.iter().map(|field| format_ident!("{field}"));
             Ok(OutputTokens {
                 definition: {
                     let docs = doc_tokens([format!("Results returned by `{}`.", resolved.core.name)]);
@@ -141,9 +136,9 @@ fn output_tokens(
                 },
                 return_type: quote!(#result),
                 expression: quote!(#result { #(#values),* }),
+                separates_result: quote!(),
             })
         }
-        _ => bail!("semantic output does not match public core output"),
     }
 }
 
@@ -193,7 +188,7 @@ fn function_doc_tokens(function: &Function) -> TokenStream {
     lines.extend([String::new(), "# Returns".into(), String::new()]);
     lines.extend(return_doc_lines(
         function.public_api.result_class.as_deref(),
-        &function.outputs,
+        function.outputs.fields(),
     ));
     if let Some(territory) = &function.scope.territory {
         lines.extend([
@@ -427,6 +422,7 @@ fn golden_test_tokens(resolved: &Resolved, unique_test_module: bool) -> Result<T
                 .collect::<Result<Vec<_>>>()?;
             let expected = resolved.entry.spec.functions[resolved.function_index]
                 .outputs
+                .fields()
                 .iter()
                 .map(|field| {
                     case.expected

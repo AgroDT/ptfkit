@@ -320,6 +320,7 @@ fn resolve(entries: Vec<Entry>, core: Vec<CoreFunction>) -> Result<Vec<Resolved>
                 output: if spec.public_api.result_class.is_some() {
                     Output::Struct(
                         spec.outputs
+                            .fields()
                             .iter()
                             .map(|output| output.name.clone())
                             .collect(),
@@ -353,7 +354,7 @@ fn resolve(entries: Vec<Entry>, core: Vec<CoreFunction>) -> Result<Vec<Resolved>
         }
         match (
             &function.output,
-            spec.outputs.len(),
+            spec.outputs.fields().len(),
             spec.public_api.result_class.is_some(),
         ) {
             (Output::Scalar, 1, false) => {}
@@ -361,6 +362,7 @@ fn resolve(entries: Vec<Entry>, core: Vec<CoreFunction>) -> Result<Vec<Resolved>
                 if fields
                     == &spec
                         .outputs
+                        .fields()
                         .iter()
                         .map(|output| output.name.clone())
                         .collect::<Vec<_>>()
@@ -435,12 +437,12 @@ mod tests {
                         models: Models::default(),
                     },
                     inputs: Vec::new(),
-                    outputs: vec![crate::model::Parameter {
+                    outputs: crate::model::Outputs::Scalar { field: crate::model::Parameter {
                         name: "value".into(),
                         unit: "1".into(),
                         domain: None,
                         description: "Test value.".into(),
-                    }],
+                    } },
                     documentation: Documentation::default(),
                     implementation: None,
                     golden_tests: Vec::new(),

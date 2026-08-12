@@ -45,7 +45,8 @@ functions:
     domain: value > 0
     description: Geometric mean diameter of texture.
   outputs:
-  - name: k_sat
+    type: scalar
+    name: k_sat
     symbol: Ks
     unit: m/s
     domain: value >= 0
@@ -116,8 +117,7 @@ functions:
       expr: -2.368 + 3.846 * bulk_density + 0.091 * organic_matter - 6.203 * ln(bulk_density) - 0.343 * ln(organic_matter) - 2.334 * ln(clay) - 0.411 * ln(gmd)
     - name: k_sat_m_per_day
       expr: exp(ln_k_sat_m_per_day)
-    output:
-      type: scalar
+    - name: k_sat
       expr: k_sat_m_per_day * (1.0 / 86400.0)
 scientific_notes: '
 

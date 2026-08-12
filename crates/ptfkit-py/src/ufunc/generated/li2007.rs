@@ -57,12 +57,8 @@ unsafe extern "C" fn calc_ptf_li2007_loop(
                 + ((2.885f64) * (soil_organic_matter)))
                 - ((8.026f64) * (bulk_density_ln)))
                 .exp();
-            let values = [
-                theta_s,
-                a_vg,
-                n_vg,
-                (k_sat_cm_per_day) * ((1f64) / (8640000f64)),
-            ];
+            let k_sat = (k_sat_cm_per_day) * ((1f64) / (8640000f64));
+            let values = [theta_s, a_vg, n_vg, k_sat];
             (pointers[5usize] as *mut f64).write_unaligned(values[0usize]);
             (pointers[6usize] as *mut f64).write_unaligned(values[1usize]);
             (pointers[7usize] as *mut f64).write_unaligned(values[2usize]);

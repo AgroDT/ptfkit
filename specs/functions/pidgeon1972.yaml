@@ -38,7 +38,8 @@ functions:
     domain: null
     description: Organic matter content.
   outputs:
-  - name: field_capacity
+    type: scalar
+    name: field_capacity
     symbol: FC
     unit: '% w/w'
     domain: null
@@ -77,7 +78,8 @@ functions:
     domain: null
     description: Sand measured by particle-size method 2.
   outputs:
-  - name: field_capacity
+    type: scalar
+    name: field_capacity
     symbol: FC
     unit: '% w/w'
     domain: null
@@ -118,7 +120,8 @@ functions:
     domain: null
     description: Organic matter content.
   outputs:
-  - name: field_capacity
+    type: scalar
+    name: field_capacity
     symbol: FC
     unit: '% w/w'
     domain: null
@@ -160,7 +163,8 @@ functions:
     domain: null
     description: Organic matter content.
   outputs:
-  - name: field_capacity
+    type: scalar
+    name: field_capacity
     symbol: FCvol
     unit: '% v/v'
     domain: null
@@ -207,7 +211,8 @@ functions:
     domain: null
     description: Organic matter content.
   outputs:
-  - name: permanent_wilting_point
+    type: scalar
+    name: permanent_wilting_point
     symbol: PWP
     unit: '% w/w'
     domain: null
@@ -245,7 +250,8 @@ functions:
     domain: null
     description: Sand measured by particle-size method 1.
   outputs:
-  - name: permanent_wilting_point
+    type: scalar
+    name: permanent_wilting_point
     symbol: PWP
     unit: '% w/w'
     domain: null
@@ -286,7 +292,8 @@ functions:
     domain: null
     description: Organic matter content.
   outputs:
-  - name: permanent_wilting_point
+    type: scalar
+    name: permanent_wilting_point
     symbol: PWP
     unit: '% w/w'
     domain: null
@@ -328,7 +335,8 @@ functions:
     domain: null
     description: Organic matter content.
   outputs:
-  - name: available_water_capacity
+    type: scalar
+    name: available_water_capacity
     symbol: AWC
     unit: mm/m
     domain: null
@@ -370,7 +378,8 @@ functions:
     domain: null
     description: Organic matter content.
   outputs:
-  - name: available_water_capacity
+    type: scalar
+    name: available_water_capacity
     symbol: AWC
     unit: mm/m
     domain: null
@@ -407,7 +416,8 @@ functions:
     domain: null
     description: Coarse sand measured by particle-size method 1.
   outputs:
-  - name: available_water_capacity
+    type: scalar
+    name: available_water_capacity
     symbol: AWC
     unit: mm/m
     domain: null
@@ -443,7 +453,8 @@ functions:
     domain: null
     description: Fine sand measured by particle-size method 1.
   outputs:
-  - name: available_water_capacity
+    type: scalar
+    name: available_water_capacity
     symbol: AWC
     unit: mm/m
     domain: null
@@ -479,7 +490,8 @@ functions:
     domain: null
     description: Very fine sand measured by particle-size method 1.
   outputs:
-  - name: available_water_capacity
+    type: scalar
+    name: available_water_capacity
     symbol: AWC
     unit: mm/m
     domain: null
@@ -526,7 +538,8 @@ functions:
     domain: null
     description: Organic matter content.
   outputs:
-  - name: extended_available_water_capacity
+    type: scalar
+    name: extended_available_water_capacity
     symbol: EAWC
     unit: mm/m
     domain: null
@@ -564,7 +577,8 @@ functions:
     domain: null
     description: Sand measured by particle-size method 2.
   outputs:
-  - name: extended_available_water_capacity
+    type: scalar
+    name: extended_available_water_capacity
     symbol: EAWC
     unit: mm/m
     domain: null
@@ -605,7 +619,8 @@ functions:
     domain: null
     description: Organic matter content.
   outputs:
-  - name: extended_available_water_capacity
+    type: scalar
+    name: extended_available_water_capacity
     symbol: EAWC
     unit: mm/m
     domain: null
@@ -648,7 +663,8 @@ functions:
     domain: null
     description: Organic matter content.
   outputs:
-  - name: extended_available_water_capacity
+    type: scalar
+    name: extended_available_water_capacity
     symbol: EAWC
     unit: mm/m
     domain: null
@@ -691,7 +707,8 @@ functions:
     domain: null
     description: Organic matter content.
   outputs:
-  - name: extended_available_water_capacity
+    type: scalar
+    name: extended_available_water_capacity
     symbol: EAWC
     unit: mm/m
     domain: null

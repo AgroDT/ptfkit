@@ -27,9 +27,15 @@ pub(crate) fn specifications(entries: &[Entry]) -> Vec<String> {
                 &mut errors,
             );
             duplicate_names(entry, function, &function.inputs, "inputs", &mut errors);
-            duplicate_names(entry, function, &function.outputs, "outputs", &mut errors);
+            duplicate_names(
+                entry,
+                function,
+                function.outputs.fields(),
+                "outputs.fields",
+                &mut errors,
+            );
             match (
-                function.outputs.len(),
+                function.outputs.fields().len(),
                 function.public_api.result_class.is_some(),
             ) {
                 (1, false) | (2.., true) => {}

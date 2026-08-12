@@ -50,6 +50,7 @@ pub(crate) fn render(functions: &[Resolved]) -> Result<Vec<(String, PythonGenera
                     name: class_name.clone(),
                     field_definitions: function
                         .outputs
+                        .fields()
                         .iter()
                         .map(|output| format!("    {}: T", output.name))
                         .collect::<Vec<_>>()
@@ -293,6 +294,7 @@ fn function_docstring(function: &Function) -> String {
     } else {
         function
             .outputs
+            .fields()
             .iter()
             .map(parameter_documentation)
             .collect()
@@ -344,6 +346,7 @@ fn result_class_docstring(function: &Function) -> String {
             "Attributes",
             function
                 .outputs
+                .fields()
                 .iter()
                 .map(parameter_documentation)
                 .collect(),
@@ -489,7 +492,7 @@ mod tests {
                 models: Models::default(),
             },
             inputs: Vec::new(),
-            outputs: Vec::new(),
+            outputs: crate::model::Outputs::Record { fields: Vec::new() },
             documentation: Documentation::default(),
             implementation: None,
             golden_tests: Vec::new(),

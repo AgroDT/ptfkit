@@ -59,6 +59,7 @@ conductivity.
 
 The formulas use natural logarithms of selected inputs."]
 #[must_use]
+#[allow(clippy::let_and_return)]
 pub fn calc_ptf_li2007(
     sand: f64,
     silt: f64,
@@ -92,11 +93,12 @@ pub fn calc_ptf_li2007(
         + ((2.885f64) * (soil_organic_matter)))
         - ((8.026f64) * (bulk_density_ln)))
         .exp();
+    let k_sat = (k_sat_cm_per_day) * ((1f64) / (8640000f64));
     Li2007PTFResult {
         theta_s,
         a_vg,
         n_vg,
-        k_sat: (k_sat_cm_per_day) * ((1f64) / (8640000f64)),
+        k_sat,
     }
 }
 

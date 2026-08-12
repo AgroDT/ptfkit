@@ -65,19 +65,27 @@ Public API names are provisional for pilot testing.
 
 Log-transformed output units use the pilot contract `reported log value`."]
 #[must_use]
+#[allow(clippy::let_and_return)]
 pub fn calc_ptf_cosby1984_univariate(
     sand: f64,
     silt: f64,
     clay: f64,
 ) -> Cosby1984UnivariatePTFResult {
+    let mean_b = (2.91f64) + ((0.159f64) * (clay));
+    let mean_log_psi_s = (1.88f64) - ((0.0131f64) * (sand));
+    let mean_log_k_sat = (-(0.884f64)) + ((0.0153f64) * (sand));
+    let mean_theta_s = (48.9f64) - ((0.126f64) * (sand));
+    let sd_b = (1.34f64) + ((0.05f64) * (clay));
+    let sd_log_k_sat = (0.459f64) + ((0.00321f64) * (silt));
+    let sd_theta_s = (7.73f64) - ((0.073f64) * (clay));
     Cosby1984UnivariatePTFResult {
-        mean_b: (2.91f64) + ((0.159f64) * (clay)),
-        mean_log_psi_s: (1.88f64) - ((0.0131f64) * (sand)),
-        mean_log_k_sat: (-(0.884f64)) + ((0.0153f64) * (sand)),
-        mean_theta_s: (48.9f64) - ((0.126f64) * (sand)),
-        sd_b: (1.34f64) + ((0.05f64) * (clay)),
-        sd_log_k_sat: (0.459f64) + ((0.00321f64) * (silt)),
-        sd_theta_s: (7.73f64) - ((0.073f64) * (clay)),
+        mean_b,
+        mean_log_psi_s,
+        mean_log_k_sat,
+        mean_theta_s,
+        sd_b,
+        sd_log_k_sat,
+        sd_theta_s,
     }
 }
 

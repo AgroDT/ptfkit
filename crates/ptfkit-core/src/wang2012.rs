@@ -62,6 +62,7 @@ volumetric fractions.
 
 This normalization intentionally changes the legacy water-content outputs by a factor of 100."]
 #[must_use]
+#[allow(clippy::let_and_return)]
 pub fn calc_ptf_wang2012(
     sand: f64,
     silt: f64,
@@ -91,10 +92,13 @@ pub fn calc_ptf_wang2012(
         - ((2.091f64) / (sand)))
         + ((3.247f64) / (soil_organic_carbon_g_per_kg)))
         - ((17.096f64) * ((bulk_density).powi(2)));
+    let theta_s = (sswc_percent) / (100f64);
+    let theta_fc = (fc_percent) / (100f64);
+    let k_sat = (k_sat_cm_per_day) / (8640000f64);
     Wang2012PTFResult {
-        theta_s: (sswc_percent) / (100f64),
-        theta_fc: (fc_percent) / (100f64),
-        k_sat: (k_sat_cm_per_day) / (8640000f64),
+        theta_s,
+        theta_fc,
+        k_sat,
     }
 }
 

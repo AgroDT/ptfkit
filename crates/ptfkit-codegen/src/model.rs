@@ -39,7 +39,7 @@ pub(crate) struct Function {
     pub(crate) public_api: PublicApi,
     pub(crate) scope: FunctionScope,
     pub(crate) inputs: Vec<Parameter>,
-    pub(crate) outputs: Vec<Parameter>,
+    pub(crate) outputs: Outputs,
     pub(crate) implementation: Option<Implementation>,
     #[serde(default)]
     pub(crate) golden_tests: Vec<GoldenTest>,
@@ -89,6 +89,27 @@ pub(crate) struct Parameter {
     pub(crate) description: String,
 }
 
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(tag = "type", rename_all = "lowercase")]
+pub(crate) enum Outputs {
+    Scalar {
+        #[serde(flatten)]
+        field: Parameter,
+    },
+    Record {
+        fields: Vec<Parameter>,
+    },
+}
+
+impl Outputs {
+    pub(crate) fn fields(&self) -> &[Parameter] {
+        match self {
+            Self::Scalar { field } => std::slice::from_ref(field),
+            Self::Record { fields } => fields,
+        }
+    }
+}
+
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub(crate) struct Documentation {
     #[serde(default)]
@@ -115,24 +136,10 @@ pub(crate) struct Generation {
 pub(crate) struct Implementation {
     #[serde(default)]
     pub(crate) variables: Vec<ImplementationVariable>,
-    pub(crate) output: ImplementationOutput,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub(crate) struct ImplementationVariable {
-    pub(crate) name: String,
-    pub(crate) expr: String,
-}
-
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(tag = "type", rename_all = "lowercase")]
-pub(crate) enum ImplementationOutput {
-    Scalar { expr: String },
-    Record { fields: Vec<ImplementationField> },
-}
-
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub(crate) struct ImplementationField {
     pub(crate) name: String,
     pub(crate) expr: String,
 }
@@ -170,7 +177,6 @@ pub(crate) struct RawFunction {
     pub(crate) name: String,
     pub(crate) inputs: Vec<RawInput>,
     pub(crate) variables: Vec<RawVariable>,
-    pub(crate) output: RawOutput,
 }
 
 #[derive(Clone, Debug)]
@@ -188,22 +194,6 @@ pub(crate) struct RawVariable {
 pub(crate) struct RawExpression {
     pub(crate) implementation_path: String,
     pub(crate) expression: crate::formula::Expr,
-}
-
-#[allow(
-    dead_code,
-    reason = "Session 04 constructs raw scalar and record outputs from the YAML specification loader."
-)]
-#[derive(Clone, Debug)]
-pub(crate) enum RawOutput {
-    Scalar(RawExpression),
-    Record(Vec<RawField>),
-}
-
-#[derive(Clone, Debug)]
-pub(crate) struct RawField {
-    pub(crate) name: String,
-    pub(crate) expression: RawExpression,
 }
 
 #[cfg(test)]

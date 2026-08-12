@@ -38,7 +38,8 @@ functions:
     domain: null
     description: Exchangeable sodium percentage.
   outputs:
-  - name: k_sat
+    type: scalar
+    name: k_sat
     symbol: sHC
     unit: m/s
     domain: null
@@ -65,8 +66,7 @@ functions:
     variables:
     - name: k_sat_mm_per_hour
       expr: 4.079 + 0.047 * sand - 0.054 * esp - 2.238 * bulk_density
-    output:
-      type: scalar
+    - name: k_sat
       expr: k_sat_mm_per_hour / 3600000.0
 - name: calc_ptf_tiwary2014_bsr
   status: implemented
@@ -113,26 +113,28 @@ functions:
     domain: null
     description: Exchangeable calcium-to-magnesium ratio.
   outputs:
-  - name: w_33
-    symbol: w33
-    unit: '%'
-    domain: null
-    description: Gravimetric water content at 33 kPa.
-  - name: w_100
-    symbol: w100
-    unit: '%'
-    domain: null
-    description: Gravimetric water content at 100 kPa.
-  - name: w_1500
-    symbol: w1500
-    unit: '%'
-    domain: null
-    description: Gravimetric water content at 1500 kPa.
-  - name: k_sat
-    symbol: sHC
-    unit: m/s
-    domain: null
-    description: Saturated hydraulic conductivity converted from mm/h.
+    type: record
+    fields:
+    - name: w_33
+      symbol: w33
+      unit: '%'
+      domain: null
+      description: Gravimetric water content at 33 kPa.
+    - name: w_100
+      symbol: w100
+      unit: '%'
+      domain: null
+      description: Gravimetric water content at 100 kPa.
+    - name: w_1500
+      symbol: w1500
+      unit: '%'
+      domain: null
+      description: Gravimetric water content at 1500 kPa.
+    - name: k_sat
+      symbol: sHC
+      unit: m/s
+      domain: null
+      description: Saturated hydraulic conductivity converted from mm/h.
   golden_tests:
   - id: black_soil_compatibility_case
     inputs:
@@ -166,17 +168,8 @@ functions:
       expr: 0.541 + 0.306 * cation_exchange_capacity + 0.146 * esp + 0.058 * emp
     - name: k_sat_mm_per_hour
       expr: 120.637 - 13.094 * ph - 0.102 * clay + 1.151 * excm
-    output:
-      type: record
-      fields:
-      - name: w_33
-        expr: w_33
-      - name: w_100
-        expr: w_100
-      - name: w_1500
-        expr: w_1500
-      - name: k_sat
-        expr: k_sat_mm_per_hour / 3600000.0
+    - name: k_sat
+      expr: k_sat_mm_per_hour / 3600000.0
 scientific_notes: "\n# Tiwary et al. (2014)\n\n## `calc_ptf_tiwary2014_igp`\n\n###\
   \ Formula\n\n```text\nsHC_mm_per_h = 4.079 + 0.047 * sand - 0.054 * ESP\n      \
   \          - 2.238 * bulk_density\nk_sat = sHC_mm_per_h / 3_600_000\n```\n\nEquation\

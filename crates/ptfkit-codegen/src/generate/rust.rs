@@ -107,7 +107,7 @@ fn function_tokens(resolved: &Resolved) -> Result<TokenStream> {
                     Ok(quote!(let #name = #expression;))
                 })
                 .collect::<Result<Vec<_>>>()?;
-            let values = output_expression_tokens(&ir.output, &inputs, &ir.variables)?;
+            let values = output_variable_tokens(&function.output, resolved)?;
             if values.len() != legacy_values.len() {
                 bail!(
                     "semantic output count for `{}` does not match the NumPy ufunc contract",
@@ -165,20 +165,20 @@ fn function_tokens(resolved: &Resolved) -> Result<TokenStream> {
     })
 }
 
-fn output_expression_tokens(
-    output: &semantic::Output,
-    inputs: &[syn::Ident],
-    variables: &[semantic::Variable],
-) -> Result<Vec<TokenStream>> {
-    match output {
-        semantic::Output::Scalar(expression) => {
-            Ok(vec![expression_tokens(expression, inputs, variables)?])
-        }
-        semantic::Output::Record(fields) => fields
-            .iter()
-            .map(|field| expression_tokens(&field.expression, inputs, variables))
-            .collect(),
-    }
+fn output_variable_tokens(function: &Output, resolved: &Resolved) -> Result<Vec<TokenStream>> {
+    let fields = match function {
+        Output::Scalar => &resolved.entry.spec.functions[resolved.function_index]
+            .outputs
+            .fields()[..1],
+        Output::Struct(_) => resolved.entry.spec.functions[resolved.function_index]
+            .outputs
+            .fields(),
+    };
+    Ok(fields
+        .iter()
+        .map(|field| format_ident!("{}", field.name))
+        .map(|name| quote!(#name))
+        .collect())
 }
 
 fn expression_tokens(
@@ -289,8 +289,8 @@ fn render_tokens(tokens: TokenStream) -> String {
 mod tests {
     use quote::{format_ident, quote};
 
-    use super::{expression_tokens, output_expression_tokens, render_tokens};
-    use crate::semantic::{BinaryOp, Expr, Field, MathFunction, Output, Reference, Variable};
+    use super::{expression_tokens, render_tokens};
+    use crate::semantic::{BinaryOp, Expr, MathFunction, Reference, Variable};
 
     #[test]
     fn generated_rust_parses() {
@@ -326,26 +326,6 @@ mod tests {
         assert!(tokens.to_string().contains("log10"));
         assert!(tokens.to_string().contains("powf"));
         assert!(tokens.to_string().contains("log_k_sat"));
-    }
-
-    #[test]
-    fn prepares_record_field_outputs_from_semantic_ir() {
-        let fields = vec![
-            Field {
-                name: "first".into(),
-                expression: Expr::Number(1.0),
-            },
-            Field {
-                name: "second".into(),
-                expression: Expr::Number(2.0),
-            },
-        ];
-
-        let values = output_expression_tokens(&Output::Record(fields), &[], &[]).unwrap();
-
-        assert_eq!(values.len(), 2);
-        assert_eq!(values[0].to_string(), "1f64");
-        assert_eq!(values[1].to_string(), "2f64");
     }
 
     #[test]

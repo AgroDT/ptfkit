@@ -55,11 +55,10 @@ unsafe extern "C" fn calc_ptf_wang2012_loop(
                 - ((2.091f64) / (sand)))
                 + ((3.247f64) / (soil_organic_carbon_g_per_kg)))
                 - ((17.096f64) * ((bulk_density).powf(2f64)));
-            let values = [
-                (sswc_percent) / (100f64),
-                (fc_percent) / (100f64),
-                (k_sat_cm_per_day) / (8640000f64),
-            ];
+            let theta_s = (sswc_percent) / (100f64);
+            let theta_fc = (fc_percent) / (100f64);
+            let k_sat = (k_sat_cm_per_day) / (8640000f64);
+            let values = [theta_s, theta_fc, k_sat];
             (pointers[6usize] as *mut f64).write_unaligned(values[0usize]);
             (pointers[7usize] as *mut f64).write_unaligned(values[1usize]);
             (pointers[8usize] as *mut f64).write_unaligned(values[2usize]);

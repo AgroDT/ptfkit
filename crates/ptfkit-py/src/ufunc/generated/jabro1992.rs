@@ -33,7 +33,8 @@ unsafe extern "C" fn calc_ptf_jabro1992_loop(
             let log10_k_sat_cm_per_hour = (((9.56f64) - ((0.81f64) * ((silt).log10())))
                 - ((1.09f64) * ((clay).log10())))
                 - ((4.64f64) * (bulk_density));
-            let values = [((10f64).powf(log10_k_sat_cm_per_hour)) * ((0.01f64) / (3600f64))];
+            let k_sat = ((10f64).powf(log10_k_sat_cm_per_hour)) * ((0.01f64) / (3600f64));
+            let values = [k_sat];
             (pointers[3usize] as *mut f64).write_unaligned(values[0usize]);
             for index in 0..CALC_PTF_JABRO1992_NARGS {
                 pointers[index] = pointers[index].offset(strides[index]);

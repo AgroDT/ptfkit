@@ -31,7 +31,8 @@ functions:
     domain: 0.1 <= value <= 12.5
     description: Organic matter content.
   outputs:
-  - name: theta_1500
+    type: scalar
+    name: theta_1500
     symbol: theta_1500
     unit: cm^3/cm^3
     domain: value >= 0
@@ -79,7 +80,8 @@ functions:
     domain: value >= 0
     description: Measured or estimated volumetric water content at -1500 kPa.
   outputs:
-  - name: theta_33
+    type: scalar
+    name: theta_33
     symbol: theta_33
     unit: cm^3/cm^3
     domain: value >= 0
@@ -138,66 +140,68 @@ functions:
     domain: value >= 0
     description: Measured or estimated volumetric water content at -1500 kPa.
   outputs:
-  - name: theta_4
-    symbol: theta_4
-    unit: cm^3/cm^3
-    domain: null
-    description: Volumetric water content at -4 kPa.
-  - name: theta_7
-    symbol: theta_7
-    unit: cm^3/cm^3
-    domain: null
-    description: Volumetric water content at -7 kPa.
-  - name: theta_10
-    symbol: theta_10
-    unit: cm^3/cm^3
-    domain: null
-    description: Volumetric water content at -10 kPa.
-  - name: theta_20
-    symbol: theta_20
-    unit: cm^3/cm^3
-    domain: null
-    description: Volumetric water content at -20 kPa.
-  - name: theta_33
-    symbol: theta_33
-    unit: cm^3/cm^3
-    domain: null
-    description: Input volumetric water content at -33 kPa.
-  - name: theta_60
-    symbol: theta_60
-    unit: cm^3/cm^3
-    domain: null
-    description: Volumetric water content at -60 kPa.
-  - name: theta_100
-    symbol: theta_100
-    unit: cm^3/cm^3
-    domain: null
-    description: Volumetric water content at -100 kPa.
-  - name: theta_200
-    symbol: theta_200
-    unit: cm^3/cm^3
-    domain: null
-    description: Volumetric water content at -200 kPa.
-  - name: theta_400
-    symbol: theta_400
-    unit: cm^3/cm^3
-    domain: null
-    description: Volumetric water content at -400 kPa.
-  - name: theta_700
-    symbol: theta_700
-    unit: cm^3/cm^3
-    domain: null
-    description: Volumetric water content at -700 kPa.
-  - name: theta_1000
-    symbol: theta_1000
-    unit: cm^3/cm^3
-    domain: null
-    description: Volumetric water content at -1000 kPa.
-  - name: theta_1500
-    symbol: theta_1500
-    unit: cm^3/cm^3
-    domain: null
-    description: Input volumetric water content at -1500 kPa.
+    type: record
+    fields:
+    - name: theta_4
+      symbol: theta_4
+      unit: cm^3/cm^3
+      domain: null
+      description: Volumetric water content at -4 kPa.
+    - name: theta_7
+      symbol: theta_7
+      unit: cm^3/cm^3
+      domain: null
+      description: Volumetric water content at -7 kPa.
+    - name: theta_10
+      symbol: theta_10
+      unit: cm^3/cm^3
+      domain: null
+      description: Volumetric water content at -10 kPa.
+    - name: theta_20
+      symbol: theta_20
+      unit: cm^3/cm^3
+      domain: null
+      description: Volumetric water content at -20 kPa.
+    - name: theta_33
+      symbol: theta_33
+      unit: cm^3/cm^3
+      domain: null
+      description: Input volumetric water content at -33 kPa.
+    - name: theta_60
+      symbol: theta_60
+      unit: cm^3/cm^3
+      domain: null
+      description: Volumetric water content at -60 kPa.
+    - name: theta_100
+      symbol: theta_100
+      unit: cm^3/cm^3
+      domain: null
+      description: Volumetric water content at -100 kPa.
+    - name: theta_200
+      symbol: theta_200
+      unit: cm^3/cm^3
+      domain: null
+      description: Volumetric water content at -200 kPa.
+    - name: theta_400
+      symbol: theta_400
+      unit: cm^3/cm^3
+      domain: null
+      description: Volumetric water content at -400 kPa.
+    - name: theta_700
+      symbol: theta_700
+      unit: cm^3/cm^3
+      domain: null
+      description: Volumetric water content at -700 kPa.
+    - name: theta_1000
+      symbol: theta_1000
+      unit: cm^3/cm^3
+      domain: null
+      description: Volumetric water content at -1000 kPa.
+    - name: theta_1500
+      symbol: theta_1500
+      unit: cm^3/cm^3
+      domain: null
+      description: Input volumetric water content at -1500 kPa.
   golden_tests:
   - id: loamy_sand
     inputs:

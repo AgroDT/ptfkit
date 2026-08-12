@@ -51,26 +51,28 @@ functions:
     domain: value > 0
     description: Soil organic matter.
   outputs:
-  - name: theta_s
-    symbol: theta_s
-    unit: cm^3/cm^3
-    domain: value >= 0
-    description: Saturated water content.
-  - name: a_vg
-    symbol: alpha
-    unit: cm^-1
-    domain: value >= 0
-    description: Van Genuchten alpha parameter, inversely related to air-entry suction.
-  - name: n_vg
-    symbol: n
-    unit: dimensionless
-    domain: value > 1
-    description: Van Genuchten n parameter that characterizes pore-size distribution.
-  - name: k_sat
-    symbol: Ks
-    unit: m/s
-    domain: value >= 0
-    description: Saturated hydraulic conductivity.
+    type: record
+    fields:
+    - name: theta_s
+      symbol: theta_s
+      unit: cm^3/cm^3
+      domain: value >= 0
+      description: Saturated water content.
+    - name: a_vg
+      symbol: alpha
+      unit: cm^-1
+      domain: value >= 0
+      description: Van Genuchten alpha parameter, inversely related to air-entry suction.
+    - name: n_vg
+      symbol: n
+      unit: dimensionless
+      domain: value > 1
+      description: Van Genuchten n parameter that characterizes pore-size distribution.
+    - name: k_sat
+      symbol: Ks
+      unit: m/s
+      domain: value >= 0
+      description: Saturated hydraulic conductivity.
   golden_tests:
   - id: loamy_sand
     inputs:
@@ -150,17 +152,8 @@ functions:
       expr: 1.488 + 0.002 * silt_ln + 0.013 * clay - 0.248 * clay_ln + 0.048 * soil_organic_matter_ln + 0.451 * bulk_density_ln
     - name: k_sat_cm_per_day
       expr: exp(13.262 - 1.914 * sand_ln - 0.974 * silt_ln - 0.058 * clay - 1.709 * soil_organic_matter_ln + 2.885 * soil_organic_matter - 8.026 * bulk_density_ln)
-    output:
-      type: record
-      fields:
-      - name: theta_s
-        expr: theta_s
-      - name: a_vg
-        expr: a_vg
-      - name: n_vg
-        expr: n_vg
-      - name: k_sat
-        expr: k_sat_cm_per_day * (1.0 / 8640000.0)
+    - name: k_sat
+      expr: k_sat_cm_per_day * (1.0 / 8640000.0)
 scientific_notes: '
 
   # Li et al. (2007)

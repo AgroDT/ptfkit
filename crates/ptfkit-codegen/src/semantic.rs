@@ -7,14 +7,13 @@ use std::{collections::BTreeMap, fmt};
 
 use crate::{
     formula::{self, Span},
-    model::{RawExpression, RawField, RawFunction, RawOutput},
+    model::{RawExpression, RawFunction},
 };
 
 #[derive(Clone, Debug, PartialEq)]
 pub(crate) struct Function {
     pub(crate) inputs: Vec<Input>,
     pub(crate) variables: Vec<Variable>,
-    pub(crate) output: Output,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -24,18 +23,6 @@ pub(crate) struct Input {
 
 #[derive(Clone, Debug, PartialEq)]
 pub(crate) struct Variable {
-    pub(crate) name: String,
-    pub(crate) expression: Expr,
-}
-
-#[derive(Clone, Debug, PartialEq)]
-pub(crate) enum Output {
-    Scalar(Expr),
-    Record(Vec<Field>),
-}
-
-#[derive(Clone, Debug, PartialEq)]
-pub(crate) struct Field {
     pub(crate) name: String,
     pub(crate) expression: Expr,
 }
@@ -179,18 +166,6 @@ pub(crate) fn compile(raw: &RawFunction) -> Result<Function, Error> {
         });
     }
 
-    let output = match &raw.output {
-        RawOutput::Scalar(expression) => Output::Scalar(compile_expression(
-            raw,
-            expression,
-            &scope,
-            &variable_names,
-            raw.variables.len(),
-        )?),
-        RawOutput::Record(fields) => {
-            Output::Record(compile_fields(raw, fields, &scope, &variable_names)?)
-        }
-    };
     Ok(Function {
         inputs: raw
             .inputs
@@ -200,46 +175,7 @@ pub(crate) fn compile(raw: &RawFunction) -> Result<Function, Error> {
             })
             .collect(),
         variables,
-        output,
     })
-}
-
-fn compile_fields(
-    raw: &RawFunction,
-    fields: &[RawField],
-    scope: &BTreeMap<String, usize>,
-    variable_names: &BTreeMap<&str, usize>,
-) -> Result<Vec<Field>, Error> {
-    if fields.is_empty() {
-        return Err(error(
-            raw,
-            "output.fields",
-            Span { start: 0, end: 0 },
-            "record output must contain at least one field",
-        ));
-    }
-    let mut names = BTreeMap::new();
-    let mut compiled = Vec::with_capacity(fields.len());
-    for field in fields {
-        insert_name(
-            raw,
-            &mut names,
-            &field.name,
-            "output.fields",
-            Span { start: 0, end: 0 },
-        )?;
-        compiled.push(Field {
-            name: field.name.clone(),
-            expression: compile_expression(
-                raw,
-                &field.expression,
-                scope,
-                variable_names,
-                raw.variables.len(),
-            )?,
-        });
-    }
-    Ok(compiled)
 }
 
 fn insert_name(
@@ -413,10 +349,10 @@ mod tests {
 
     use crate::{
         formula::parse,
-        model::{RawExpression, RawField, RawFunction, RawInput, RawOutput, RawVariable},
+        model::{RawExpression, RawFunction, RawInput, RawVariable},
     };
 
-    use super::{BinaryOp, Expr, MathFunction, Output, Reference, compile};
+    use super::{BinaryOp, Expr, compile};
 
     fn expression(path: &str, source: &str) -> RawExpression {
         RawExpression {
@@ -425,7 +361,7 @@ mod tests {
         }
     }
 
-    fn function(inputs: &[&str], variables: Vec<RawVariable>, output: RawOutput) -> RawFunction {
+    fn function(inputs: &[&str], variables: Vec<RawVariable>) -> RawFunction {
         RawFunction {
             specification_path: PathBuf::from("specs/functions/example.md"),
             name: "example".into(),
@@ -433,61 +369,28 @@ mod tests {
                 .iter()
                 .map(|name| RawInput {
                     name: (*name).into(),
-                })
-                .collect(),
+            })
+            .collect(),
             variables,
-            output,
         }
     }
 
     #[test]
-    fn compiles_scalar_and_record_outputs() {
-        let scalar = function(
+    fn compiles_variables() {
+        let raw = function(
             &["x"],
             vec![RawVariable {
                 name: "twice".into(),
                 expression: expression("implementation.variables[0]", "x * 2"),
             }],
-            RawOutput::Scalar(expression("implementation.output", "sqrt(twice)")),
         );
-        let compiled = compile(&scalar).unwrap();
+        let compiled = compile(&raw).unwrap();
         assert!(matches!(
             compiled.variables[0].expression,
             Expr::Binary {
                 op: BinaryOp::Multiply,
                 ..
             }
-        ));
-        assert!(matches!(
-            compiled.output,
-            Output::Scalar(Expr::Call {
-                function: MathFunction::Sqrt,
-                ..
-            })
-        ));
-
-        let record = function(
-            &["x"],
-            Vec::new(),
-            RawOutput::Record(vec![
-                RawField {
-                    name: "first".into(),
-                    expression: expression("implementation.output.fields[0]", "x"),
-                },
-                RawField {
-                    name: "second".into(),
-                    expression: expression("implementation.output.fields[1]", "x + 1"),
-                },
-            ]),
-        );
-        let compiled = compile(&record).unwrap();
-        let Output::Record(fields) = compiled.output else {
-            panic!("expected record output")
-        };
-        assert_eq!(fields.len(), 2);
-        assert!(matches!(
-            fields[0].expression,
-            Expr::Reference(Reference::Input(0))
         ));
     }
 
@@ -505,16 +408,11 @@ mod tests {
                     expression: expression("implementation.variables[1]", "first * first"),
                 },
             ],
-            RawOutput::Scalar(expression("implementation.output", "second")),
         );
         let compiled = compile(&raw).unwrap();
         assert!(matches!(
             compiled.variables[1].expression,
             Expr::Binary { .. }
-        ));
-        assert!(matches!(
-            compiled.output,
-            Output::Scalar(Expr::Reference(Reference::Variable(1)))
         ));
     }
 
@@ -538,7 +436,6 @@ mod tests {
             let error = compile(&function(
                 &[],
                 variables,
-                RawOutput::Scalar(expression("implementation.output", "1")),
             ))
             .unwrap_err();
             assert!(error.to_string().contains(expected), "{error}");
@@ -549,11 +446,10 @@ mod tests {
     }
 
     #[test]
-    fn rejects_duplicate_names_and_empty_or_duplicate_record_fields() {
+    fn rejects_duplicate_names() {
         let duplicate_input = function(
             &["x", "x"],
             Vec::new(),
-            RawOutput::Scalar(expression("implementation.output", "x")),
         );
         assert!(
             compile(&duplicate_input)
@@ -573,37 +469,9 @@ mod tests {
                     expression: expression("implementation.variables[1]", "1"),
                 },
             ],
-            RawOutput::Scalar(expression("implementation.output", "x")),
         );
         assert!(
             compile(&duplicate_variable)
-                .unwrap_err()
-                .to_string()
-                .contains("duplicate name `x`")
-        );
-        let empty_record = function(&[], Vec::new(), RawOutput::Record(Vec::new()));
-        assert!(
-            compile(&empty_record)
-                .unwrap_err()
-                .to_string()
-                .contains("at least one field")
-        );
-        let duplicate_field = function(
-            &[],
-            Vec::new(),
-            RawOutput::Record(vec![
-                RawField {
-                    name: "x".into(),
-                    expression: expression("implementation.output.fields[0]", "1"),
-                },
-                RawField {
-                    name: "x".into(),
-                    expression: expression("implementation.output.fields[1]", "2"),
-                },
-            ]),
-        );
-        assert!(
-            compile(&duplicate_field)
                 .unwrap_err()
                 .to_string()
                 .contains("duplicate name `x`")
@@ -612,11 +480,7 @@ mod tests {
 
     #[test]
     fn rejects_unknown_functions_and_wrong_arities() {
-        let unknown = function(
-            &["x"],
-            Vec::new(),
-            RawOutput::Scalar(expression("implementation.output", "nope(x)")),
-        );
+        let unknown = function(&["x"], vec![RawVariable { name: "value".into(), expression: expression("implementation.variables[0]", "nope(x)") }]);
         assert!(
             compile(&unknown)
                 .unwrap_err()
@@ -632,11 +496,7 @@ mod tests {
             "min(x)",
             "max(x, x, x)",
         ] {
-            let raw = function(
-                &["x"],
-                Vec::new(),
-                RawOutput::Scalar(expression("implementation.output", source)),
-            );
+            let raw = function(&["x"], vec![RawVariable { name: "value".into(), expression: expression("implementation.variables[0]", source) }]);
             assert!(
                 compile(&raw).unwrap_err().to_string().contains("expects"),
                 "{source}"
@@ -644,30 +504,4 @@ mod tests {
         }
     }
 
-    #[test]
-    fn validates_final_output_scope() {
-        let raw = function(
-            &["x"],
-            Vec::new(),
-            RawOutput::Scalar(expression("implementation.output", "missing + x")),
-        );
-        let error = compile(&raw).unwrap_err();
-        assert!(error.to_string().contains("implementation.output:0..7"));
-        assert!(error.to_string().contains("unknown identifier `missing`"));
-    }
-
-    #[test]
-    fn ir_uses_closed_enums_for_operators_and_functions() {
-        let raw = function(
-            &["x"],
-            Vec::new(),
-            RawOutput::Scalar(expression("implementation.output", "max(-x, log10(x))")),
-        );
-        let compiled = compile(&raw).unwrap();
-        let Output::Scalar(Expr::Call { function, args }) = compiled.output else {
-            panic!("expected call")
-        };
-        assert_eq!(function, MathFunction::Max);
-        assert_eq!(args.len(), 2);
-    }
 }

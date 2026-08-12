@@ -57,6 +57,7 @@ conductivity.
 Water-retention equations used 75 layers from 14 profiles; equation 10 used 200 layers from 46
 profiles."]
 #[must_use]
+#[allow(clippy::let_and_return)]
 pub fn calc_ptf_tiwary2014_bsr(
     clay: f64,
     ph: f64,
@@ -74,11 +75,12 @@ pub fn calc_ptf_tiwary2014_bsr(
         + ((0.058f64) * (emp));
     let k_sat_mm_per_hour =
         (((120.637f64) - ((13.094f64) * (ph))) - ((0.102f64) * (clay))) + ((1.151f64) * (excm));
+    let k_sat = (k_sat_mm_per_hour) / (3600000f64);
     Tiwary2014PTFResult {
         w_33,
         w_100,
         w_1500,
-        k_sat: (k_sat_mm_per_hour) / (3600000f64),
+        k_sat,
     }
 }
 
@@ -137,10 +139,12 @@ Equation 11 was calibrated on 100 layers from 20 Indo-Gangetic Plains profiles.
 The legacy API's three water-retention outputs are intentionally excluded because the source
 defines them only for BSR soils."]
 #[must_use]
+#[allow(clippy::let_and_return)]
 pub fn calc_ptf_tiwary2014_igp(sand: f64, bulk_density: f64, esp: f64) -> f64 {
     let k_sat_mm_per_hour = (((4.079f64) + ((0.047f64) * (sand))) - ((0.054f64) * (esp)))
         - ((2.238f64) * (bulk_density));
-    (k_sat_mm_per_hour) / (3600000f64)
+    let k_sat = (k_sat_mm_per_hour) / (3600000f64);
+    k_sat
 }
 
 #[cfg(test)]

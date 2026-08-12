@@ -58,41 +58,43 @@ functions:
     domain: 1 <= value <= 1000
     description: VGM saturated hydraulic conductivity.
   outputs:
-  - name: theta_snc_bw
-    symbol: theta_snc,BW
-    unit: dimensionless
-    domain: null
-    description: Saturated water content of the Brunswick noncapillary pore space.
-  - name: theta_sc_bw
-    symbol: theta_sc,BW
-    unit: dimensionless
-    domain: null
-    description: Saturated water content of the Brunswick capillary pore space.
-  - name: alpha_bw
-    symbol: alpha_BW
-    unit: cm^-1
-    domain: null
-    description: Brunswick-VGM inverse pressure-head scale parameter.
-  - name: n_bw
-    symbol: n_BW
-    unit: dimensionless
-    domain: null
-    description: Brunswick-VGM pore-size distribution shape parameter.
-  - name: tau_bw
-    symbol: tau_BW
-    unit: dimensionless
-    domain: null
-    description: Brunswick capillary hydraulic-conductivity shape parameter.
-  - name: k_sc_bw
-    symbol: K_sc,BW
-    unit: cm d^-1
-    domain: null
-    description: Saturated capillary hydraulic conductivity.
-  - name: k_snc_bw
-    symbol: K_snc,BW
-    unit: cm d^-1
-    domain: null
-    description: Saturated noncapillary hydraulic conductivity.
+    type: record
+    fields:
+    - name: theta_snc_bw
+      symbol: theta_snc,BW
+      unit: dimensionless
+      domain: null
+      description: Saturated water content of the Brunswick noncapillary pore space.
+    - name: theta_sc_bw
+      symbol: theta_sc,BW
+      unit: dimensionless
+      domain: null
+      description: Saturated water content of the Brunswick capillary pore space.
+    - name: alpha_bw
+      symbol: alpha_BW
+      unit: cm^-1
+      domain: null
+      description: Brunswick-VGM inverse pressure-head scale parameter.
+    - name: n_bw
+      symbol: n_BW
+      unit: dimensionless
+      domain: null
+      description: Brunswick-VGM pore-size distribution shape parameter.
+    - name: tau_bw
+      symbol: tau_BW
+      unit: dimensionless
+      domain: null
+      description: Brunswick capillary hydraulic-conductivity shape parameter.
+    - name: k_sc_bw
+      symbol: K_sc,BW
+      unit: cm d^-1
+      domain: null
+      description: Saturated capillary hydraulic conductivity.
+    - name: k_snc_bw
+      symbol: K_snc,BW
+      unit: cm d^-1
+      domain: null
+      description: Saturated noncapillary hydraulic conductivity.
   golden_tests:
   - id: representative_vgm_parameters
     inputs:
@@ -153,23 +155,6 @@ functions:
       expr: 10.0 ^ (1.16e-1 + 1.060 * log10(k_s_vgm))
     - name: k_snc_bw
       expr: 10.0 ^ -1.72
-    output:
-      type: record
-      fields:
-      - name: theta_snc_bw
-        expr: theta_snc_bw
-      - name: theta_sc_bw
-        expr: theta_sc_bw
-      - name: alpha_bw
-        expr: alpha_bw
-      - name: n_bw
-        expr: n_bw
-      - name: tau_bw
-        expr: tau_bw
-      - name: k_sc_bw
-        expr: k_sc_bw
-      - name: k_snc_bw
-        expr: k_snc_bw
 scientific_notes: '
 
   # Weber et al. (2020)

@@ -7,8 +7,7 @@ use serde_json::Value;
 use crate::{
     formula,
     model::{
-        Entry, Implementation, ImplementationOutput, RawExpression, RawField, RawFunction,
-        RawInput, RawOutput, RawVariable, Spec,
+        Entry, Implementation, RawExpression, RawFunction, RawInput, RawVariable, Spec,
     },
     semantic,
 };
@@ -157,34 +156,8 @@ fn compile(
                 })
             })
             .collect::<Result<Vec<_>, _>>()?,
-        output: match &implementation.output {
-            ImplementationOutput::Scalar { expr } => RawOutput::Scalar(expression(
-                path,
-                &function.name,
-                "implementation.output.expr".into(),
-                expr,
-            )?),
-            ImplementationOutput::Record { fields } => RawOutput::Record(
-                fields
-                    .iter()
-                    .enumerate()
-                    .map(|(index, field)| {
-                        expression(
-                            path,
-                            &function.name,
-                            format!("implementation.output.fields[{index}].expr"),
-                            &field.expr,
-                        )
-                        .map(|expression| RawField {
-                            name: field.name.clone(),
-                            expression,
-                        })
-                    })
-                    .collect::<Result<Vec<_>, _>>()?,
-            ),
-        },
     };
-    validate_output(path, function, &raw.output)?;
+    validate_output(path, function, &raw)?;
     semantic::compile(&raw).map_err(|error| error.to_string())
 }
 
@@ -209,36 +182,31 @@ fn expression(
 fn validate_output(
     path: &Path,
     function: &crate::model::Function,
-    output: &RawOutput,
+    raw: &RawFunction,
 ) -> Result<(), String> {
-    let expected = function
+    let output_names = function
         .outputs
+        .fields()
         .iter()
         .map(|output| &output.name)
         .collect::<Vec<_>>();
-    let actual: Vec<_> = match output {
-        RawOutput::Scalar(_) => {
-            if expected.len() == 1 {
-                return Ok(());
-            }
-            return Err(format!(
-                "{} -> function {} -> implementation.output: scalar implementation requires exactly one output, found {}",
-                path.display(),
-                function.name,
-                expected.len()
-            ));
-        }
-        RawOutput::Record(fields) => fields.iter().map(|field| &field.name).collect(),
-    };
-    if actual == expected {
+    let variable_names = raw
+        .variables
+        .iter()
+        .map(|variable| variable.name.as_str())
+        .collect::<std::collections::BTreeSet<_>>();
+    let missing = output_names
+        .iter()
+        .filter(|name| !variable_names.contains(name.as_str()))
+        .collect::<Vec<_>>();
+    if missing.is_empty() {
         Ok(())
     } else {
         Err(format!(
-            "{} -> function {} -> implementation.output.fields: field names {:?} do not match outputs {:?}",
+            "{} -> function {} -> implementation.variables: missing final output variables {:?}",
             path.display(),
             function.name,
-            actual,
-            expected
+            missing
         ))
     }
 }
@@ -280,7 +248,7 @@ mod tests {
 
     fn specification(slug: &str, implementation: &str, generation: &str) -> String {
         format!(
-            "source:\n  summary: Test source.\n  citation_apa: Test (2026).\n  doi: null\n{generation}functions:\n  - name: calc_ptf_{slug}\n    status: ready-for-implementation\n    public_api: {{name: calc_ptf_{slug}, result_class: null, summary: Test value.}}\n    scope:\n      prediction_target: Test value.\n      models: {{h_theta: null, k_h: null}}\n    inputs:\n      - {{name: x, symbol: x, unit: '1', domain: null, description: Test input.}}\n    outputs:\n      - {{name: value, symbol: y, unit: '1', domain: null, description: Test output.}}\n{implementation}"
+            "source:\n  summary: Test source.\n  citation_apa: Test (2026).\n  doi: null\n{generation}functions:\n  - name: calc_ptf_{slug}\n    status: ready-for-implementation\n    public_api: {{name: calc_ptf_{slug}, result_class: null, summary: Test value.}}\n    scope:\n      prediction_target: Test value.\n      models: {{h_theta: null, k_h: null}}\n    inputs:\n      - {{name: x, symbol: x, unit: '1', domain: null, description: Test input.}}\n    outputs: {{type: scalar, name: value, symbol: y, unit: '1', domain: null, description: Test output.}}\n{implementation}"
         )
     }
 
@@ -298,7 +266,7 @@ mod tests {
         write(
             &root,
             "pilot",
-            "    implementation:\n      output: {type: scalar, expr: x * 2}\n",
+            "    implementation:\n      variables: [{name: value, expr: x * 2}]\n",
             "",
         );
         write(&root, "legacy", "", "");
@@ -325,24 +293,24 @@ mod tests {
         write(
             &root,
             "formula",
-            "    implementation:\n      output: {type: scalar, expr: '('}\n",
+            "    implementation:\n      variables: [{name: value, expr: '('}]\n",
             "",
         );
         let error = load(&root).err().expect("formula must fail").to_string();
-        assert!(error.contains("implementation.output.expr"));
+        assert!(error.contains("implementation.variables[0].expr"));
         fs::remove_file(root.join("specs/functions/formula.yaml")).unwrap();
 
         write(
             &root,
             "output",
-            "    implementation:\n      output:\n        type: record\n        fields: [{name: other, expr: x}]\n",
+            "    implementation:\n      variables: [{name: other, expr: x}]\n",
             "",
         );
         let error = load(&root)
             .err()
             .expect("output contract must fail")
             .to_string();
-        assert!(error.contains("field names"));
+        assert!(error.contains("missing final output variables"));
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -352,7 +320,7 @@ mod tests {
         write(
             &root,
             "manual",
-            "    implementation:\n      output: {type: scalar, expr: x}\n",
+            "    implementation:\n      variables: [{name: value, expr: x}]\n",
             "generation:\n  public_python: manual\n",
         );
         let entries = load(&root).unwrap();
@@ -369,7 +337,7 @@ mod tests {
         write(
             &root,
             "Bad-Slug",
-            "    implementation:\n      output: {type: scalar, expr: x * 2}\n",
+            "    implementation:\n      variables: [{name: value, expr: x * 2}]\n",
             "",
         );
 

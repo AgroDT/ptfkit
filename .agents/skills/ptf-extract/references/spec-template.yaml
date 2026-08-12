@@ -26,9 +26,6 @@ functions:
       warnings: []
     implementation:
       variables: []
-      output:
-        type: scalar
-        expr: TODO
 scientific_notes: |
   ## Blockers
 

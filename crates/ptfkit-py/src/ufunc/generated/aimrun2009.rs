@@ -38,7 +38,8 @@ unsafe extern "C" fn calc_ptf_aimrun2009_loop(
                 - ((2.334f64) * ((clay).ln())))
                 - ((0.411f64) * ((gmd).ln()));
             let k_sat_m_per_day = (ln_k_sat_m_per_day).exp();
-            let values = [(k_sat_m_per_day) * ((1f64) / (86400f64))];
+            let k_sat = (k_sat_m_per_day) * ((1f64) / (86400f64));
+            let values = [k_sat];
             (pointers[4usize] as *mut f64).write_unaligned(values[0usize]);
             for index in 0..CALC_PTF_AIMRUN2009_NARGS {
                 pointers[index] = pointers[index].offset(strides[index]);

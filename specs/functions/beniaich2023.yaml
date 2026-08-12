@@ -32,21 +32,23 @@ functions:
     domain: 0 <= value <= 100
     description: Clay content by mass.
   outputs:
-  - name: water_saturation
-    symbol: w_0
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at saturation.
-  - name: water_field_capacity
-    symbol: w_330
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -33 kPa.
-  - name: water_wilting_point
-    symbol: w_15000
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -1,500 kPa.
+    type: record
+    fields:
+    - name: water_saturation
+      symbol: w_0
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at saturation.
+    - name: water_field_capacity
+      symbol: w_330
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -33 kPa.
+    - name: water_wilting_point
+      symbol: w_15000
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -1,500 kPa.
   golden_tests:
   - id: representative_case
     inputs:
@@ -85,21 +87,23 @@ functions:
     domain: 0 <= value <= 100
     description: Silt content by mass.
   outputs:
-  - name: water_saturation
-    symbol: w_0
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at saturation.
-  - name: water_field_capacity
-    symbol: w_330
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -33 kPa.
-  - name: water_wilting_point
-    symbol: w_15000
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -1,500 kPa.
+    type: record
+    fields:
+    - name: water_saturation
+      symbol: w_0
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at saturation.
+    - name: water_field_capacity
+      symbol: w_330
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -33 kPa.
+    - name: water_wilting_point
+      symbol: w_15000
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -1,500 kPa.
   golden_tests:
   - id: representative_case
     inputs:
@@ -138,21 +142,23 @@ functions:
     domain: 0 <= value <= 100
     description: Sand content by mass.
   outputs:
-  - name: water_saturation
-    symbol: w_0
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at saturation.
-  - name: water_field_capacity
-    symbol: w_330
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -33 kPa.
-  - name: water_wilting_point
-    symbol: w_15000
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -1,500 kPa.
+    type: record
+    fields:
+    - name: water_saturation
+      symbol: w_0
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at saturation.
+    - name: water_field_capacity
+      symbol: w_330
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -33 kPa.
+    - name: water_wilting_point
+      symbol: w_15000
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -1,500 kPa.
   golden_tests:
   - id: representative_case
     inputs:
@@ -196,21 +202,23 @@ functions:
     domain: 0 <= value <= 100
     description: Silt content by mass.
   outputs:
-  - name: water_saturation
-    symbol: w_0
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at saturation.
-  - name: water_field_capacity
-    symbol: w_330
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -33 kPa.
-  - name: water_wilting_point
-    symbol: w_15000
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -1,500 kPa.
+    type: record
+    fields:
+    - name: water_saturation
+      symbol: w_0
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at saturation.
+    - name: water_field_capacity
+      symbol: w_330
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -33 kPa.
+    - name: water_wilting_point
+      symbol: w_15000
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -1,500 kPa.
   golden_tests:
   - id: representative_case
     inputs:
@@ -255,21 +263,23 @@ functions:
     domain: 0 < value <= 100
     description: Silt content by mass and denominator of the clay-to-silt ratio.
   outputs:
-  - name: water_saturation
-    symbol: w_0
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at saturation.
-  - name: water_field_capacity
-    symbol: w_330
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -33 kPa.
-  - name: water_wilting_point
-    symbol: w_15000
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -1,500 kPa.
+    type: record
+    fields:
+    - name: water_saturation
+      symbol: w_0
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at saturation.
+    - name: water_field_capacity
+      symbol: w_330
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -33 kPa.
+    - name: water_wilting_point
+      symbol: w_15000
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -1,500 kPa.
   golden_tests:
   - id: representative_case
     inputs:
@@ -315,21 +325,23 @@ functions:
     domain: value >= 0
     description: Soil organic matter content by mass.
   outputs:
-  - name: water_saturation
-    symbol: w_0
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at saturation.
-  - name: water_field_capacity
-    symbol: w_330
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -33 kPa.
-  - name: water_wilting_point
-    symbol: w_15000
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -1,500 kPa.
+    type: record
+    fields:
+    - name: water_saturation
+      symbol: w_0
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at saturation.
+    - name: water_field_capacity
+      symbol: w_330
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -33 kPa.
+    - name: water_wilting_point
+      symbol: w_15000
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -1,500 kPa.
   golden_tests:
   - id: representative_case
     inputs:
@@ -379,21 +391,23 @@ functions:
     domain: value >= 0
     description: Soil organic matter content by mass.
   outputs:
-  - name: water_saturation
-    symbol: w_0
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at saturation.
-  - name: water_field_capacity
-    symbol: w_330
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -33 kPa.
-  - name: water_wilting_point
-    symbol: w_15000
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -1,500 kPa.
+    type: record
+    fields:
+    - name: water_saturation
+      symbol: w_0
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at saturation.
+    - name: water_field_capacity
+      symbol: w_330
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -33 kPa.
+    - name: water_wilting_point
+      symbol: w_15000
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -1,500 kPa.
   golden_tests:
   - id: representative_case
     inputs:
@@ -439,21 +453,23 @@ functions:
     domain: value >= 0
     description: Soil organic matter content by mass.
   outputs:
-  - name: water_saturation
-    symbol: w_0
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at saturation.
-  - name: water_field_capacity
-    symbol: w_330
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -33 kPa.
-  - name: water_wilting_point
-    symbol: w_15000
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -1,500 kPa.
+    type: record
+    fields:
+    - name: water_saturation
+      symbol: w_0
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at saturation.
+    - name: water_field_capacity
+      symbol: w_330
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -33 kPa.
+    - name: water_wilting_point
+      symbol: w_15000
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -1,500 kPa.
   golden_tests:
   - id: representative_case
     inputs:
@@ -498,21 +514,23 @@ functions:
     domain: value >= 0
     description: Soil organic matter content by mass.
   outputs:
-  - name: water_saturation
-    symbol: w_0
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at saturation.
-  - name: water_field_capacity
-    symbol: w_330
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -33 kPa.
-  - name: water_wilting_point
-    symbol: w_15000
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -1,500 kPa.
+    type: record
+    fields:
+    - name: water_saturation
+      symbol: w_0
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at saturation.
+    - name: water_field_capacity
+      symbol: w_330
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -33 kPa.
+    - name: water_wilting_point
+      symbol: w_15000
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -1,500 kPa.
   golden_tests:
   - id: representative_case
     inputs:
@@ -557,21 +575,23 @@ functions:
     domain: value >= 0
     description: Soil organic matter content by mass.
   outputs:
-  - name: water_saturation
-    symbol: w_0
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at saturation.
-  - name: water_field_capacity
-    symbol: w_330
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -33 kPa.
-  - name: water_wilting_point
-    symbol: w_15000
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -1,500 kPa.
+    type: record
+    fields:
+    - name: water_saturation
+      symbol: w_0
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at saturation.
+    - name: water_field_capacity
+      symbol: w_330
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -33 kPa.
+    - name: water_wilting_point
+      symbol: w_15000
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -1,500 kPa.
   golden_tests:
   - id: representative_case
     inputs:
@@ -622,21 +642,23 @@ functions:
     domain: value >= 0
     description: Soil organic matter content by mass.
   outputs:
-  - name: water_saturation
-    symbol: w_0
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at saturation.
-  - name: water_field_capacity
-    symbol: w_330
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -33 kPa.
-  - name: water_wilting_point
-    symbol: w_15000
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -1,500 kPa.
+    type: record
+    fields:
+    - name: water_saturation
+      symbol: w_0
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at saturation.
+    - name: water_field_capacity
+      symbol: w_330
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -33 kPa.
+    - name: water_wilting_point
+      symbol: w_15000
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -1,500 kPa.
   golden_tests:
   - id: representative_case
     inputs:
@@ -693,21 +715,23 @@ functions:
     domain: value >= 0
     description: Soil organic matter content by mass.
   outputs:
-  - name: water_saturation
-    symbol: w_0
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at saturation.
-  - name: water_field_capacity
-    symbol: w_330
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -33 kPa.
-  - name: water_wilting_point
-    symbol: w_15000
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -1,500 kPa.
+    type: record
+    fields:
+    - name: water_saturation
+      symbol: w_0
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at saturation.
+    - name: water_field_capacity
+      symbol: w_330
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -33 kPa.
+    - name: water_wilting_point
+      symbol: w_15000
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -1,500 kPa.
   golden_tests: []
   edge_cases: []
   documentation:
@@ -749,21 +773,23 @@ functions:
     domain: value >= 0
     description: Soil organic matter content by mass.
   outputs:
-  - name: water_saturation
-    symbol: w_0
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at saturation.
-  - name: water_field_capacity
-    symbol: w_330
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -33 kPa.
-  - name: water_wilting_point
-    symbol: w_15000
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -1,500 kPa.
+    type: record
+    fields:
+    - name: water_saturation
+      symbol: w_0
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at saturation.
+    - name: water_field_capacity
+      symbol: w_330
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -33 kPa.
+    - name: water_wilting_point
+      symbol: w_15000
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -1,500 kPa.
   golden_tests: []
   edge_cases: []
   documentation:
@@ -807,21 +833,23 @@ functions:
     domain: value >= 0
     description: Soil organic matter content by mass.
   outputs:
-  - name: water_saturation
-    symbol: w_0
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at saturation.
-  - name: water_field_capacity
-    symbol: w_330
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -33 kPa.
-  - name: water_wilting_point
-    symbol: w_15000
-    unit: g/g
-    domain: null
-    description: Gravimetric water content at -1,500 kPa.
+    type: record
+    fields:
+    - name: water_saturation
+      symbol: w_0
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at saturation.
+    - name: water_field_capacity
+      symbol: w_330
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -33 kPa.
+    - name: water_wilting_point
+      symbol: w_15000
+      unit: g/g
+      domain: null
+      description: Gravimetric water content at -1,500 kPa.
   golden_tests: []
   edge_cases: []
   documentation:

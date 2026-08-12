@@ -44,7 +44,8 @@ unsafe extern "C" fn calc_ptf_tiwary2014_bsr_loop(
                 + ((0.058f64) * (emp));
             let k_sat_mm_per_hour = (((120.637f64) - ((13.094f64) * (ph))) - ((0.102f64) * (clay)))
                 + ((1.151f64) * (excm));
-            let values = [w_33, w_100, w_1500, (k_sat_mm_per_hour) / (3600000f64)];
+            let k_sat = (k_sat_mm_per_hour) / (3600000f64);
+            let values = [w_33, w_100, w_1500, k_sat];
             (pointers[6usize] as *mut f64).write_unaligned(values[0usize]);
             (pointers[7usize] as *mut f64).write_unaligned(values[1usize]);
             (pointers[8usize] as *mut f64).write_unaligned(values[2usize]);
@@ -81,7 +82,8 @@ unsafe extern "C" fn calc_ptf_tiwary2014_igp_loop(
             let esp = (pointers[2usize] as *const f64).read_unaligned();
             let k_sat_mm_per_hour = (((4.079f64) + ((0.047f64) * (sand))) - ((0.054f64) * (esp)))
                 - ((2.238f64) * (bulk_density));
-            let values = [(k_sat_mm_per_hour) / (3600000f64)];
+            let k_sat = (k_sat_mm_per_hour) / (3600000f64);
+            let values = [k_sat];
             (pointers[3usize] as *mut f64).write_unaligned(values[0usize]);
             for index in 0..CALC_PTF_TIWARY2014_IGP_NARGS {
                 pointers[index] = pointers[index].offset(strides[index]);

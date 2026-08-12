@@ -32,34 +32,37 @@ unsafe extern "C" fn calc_ptf_puckett1985_loop(
             let clay = (pointers[2usize] as *const f64).read_unaligned();
             let bulk_density = (pointers[3usize] as *const f64).read_unaligned();
             let porosity = (pointers[4usize] as *const f64).read_unaligned();
+            let theta_0 = (((0.264f64) * (bulk_density)) + ((1.6f64) * (porosity))) - (0.706f64);
+            let theta_1 =
+                ((((318f64) / (1000f64)) * (bulk_density)) + ((1.69f64) * (porosity))) - (0.834f64);
+            let theta_5 = ((((0.000193f64) * (fine_sand)) - ((0.000357f64) * (sand)))
+                + ((0.000182f64) * (clay)))
+                + (0.41f64);
+            let theta_10 = ((((0.0000712f64) * (fine_sand)) - ((0.000383f64) * (sand)))
+                + ((0.000243f64) * (clay)))
+                + (0.415f64);
+            let theta_30 = ((((0.0000059f64) * (fine_sand)) - ((0.000348f64) * (sand)))
+                + ((0.000321f64) * (clay)))
+                + (0.365f64);
+            let theta_60 = ((((0.0000003f64) * (fine_sand)) - ((0.000319f64) * (sand)))
+                + ((0.000351f64) * (clay)))
+                + (0.33f64);
+            let theta_100 = ((((0.0000019f64) * (fine_sand)) - ((0.000302f64) * (sand)))
+                + ((0.000362f64) * (clay)))
+                + (0.31f64);
+            let theta_500 = ((((0.000014f64) * (fine_sand)) - ((0.000262f64) * (sand)))
+                + ((0.000375f64) * (clay)))
+                + (0.265f64);
+            let theta_1000 = ((((0.0000197f64) * (fine_sand)) - ((0.000244f64) * (sand)))
+                + ((0.000378f64) * (clay)))
+                + (0.264f64);
+            let theta_1500 = ((((0.0000254f64) * (fine_sand)) - ((0.000239f64) * (sand)))
+                + ((0.00038f64) * (clay)))
+                + (0.239f64);
+            let k_sat = (0.0000436f64) * (((-(0.1975f64)) * (clay)).exp());
             let values = [
-                (((0.264f64) * (bulk_density)) + ((1.6f64) * (porosity))) - (0.706f64),
-                ((((318f64) / (1000f64)) * (bulk_density)) + ((1.69f64) * (porosity))) - (0.834f64),
-                ((((0.000193f64) * (fine_sand)) - ((0.000357f64) * (sand)))
-                    + ((0.000182f64) * (clay)))
-                    + (0.41f64),
-                ((((0.0000712f64) * (fine_sand)) - ((0.000383f64) * (sand)))
-                    + ((0.000243f64) * (clay)))
-                    + (0.415f64),
-                ((((0.0000059f64) * (fine_sand)) - ((0.000348f64) * (sand)))
-                    + ((0.000321f64) * (clay)))
-                    + (0.365f64),
-                ((((0.0000003f64) * (fine_sand)) - ((0.000319f64) * (sand)))
-                    + ((0.000351f64) * (clay)))
-                    + (0.33f64),
-                ((((0.0000019f64) * (fine_sand)) - ((0.000302f64) * (sand)))
-                    + ((0.000362f64) * (clay)))
-                    + (0.31f64),
-                ((((0.000014f64) * (fine_sand)) - ((0.000262f64) * (sand)))
-                    + ((0.000375f64) * (clay)))
-                    + (0.265f64),
-                ((((0.0000197f64) * (fine_sand)) - ((0.000244f64) * (sand)))
-                    + ((0.000378f64) * (clay)))
-                    + (0.264f64),
-                ((((0.0000254f64) * (fine_sand)) - ((0.000239f64) * (sand)))
-                    + ((0.00038f64) * (clay)))
-                    + (0.239f64),
-                (0.0000436f64) * (((-(0.1975f64)) * (clay)).exp()),
+                theta_0, theta_1, theta_5, theta_10, theta_30, theta_60, theta_100, theta_500,
+                theta_1000, theta_1500, k_sat,
             ];
             (pointers[5usize] as *mut f64).write_unaligned(values[0usize]);
             (pointers[6usize] as *mut f64).write_unaligned(values[1usize]);
