@@ -33,22 +33,24 @@ unsafe extern "C" fn calc_ptf_weber2020_loop(
             let n_vgm = (pointers[3usize] as *const f64).read_unaligned();
             let tau_vgm = (pointers[4usize] as *const f64).read_unaligned();
             let k_s_vgm = (pointers[5usize] as *const f64).read_unaligned();
-            let result = ptfkit_core::weber2020::calc_ptf_weber2020(
-                theta_r_vgm,
-                theta_s_vgm,
-                alpha_vgm,
-                n_vgm,
-                tau_vgm,
-                k_s_vgm,
-            );
+            let theta_snc_bw = (-(0.00158f64)) + ((1.285f64) * (theta_r_vgm));
+            let theta_s_bw = (0.00189f64) + ((0.993f64) * (theta_s_vgm));
+            let theta_sc_bw = (theta_s_bw) - (theta_snc_bw);
+            let alpha_bw = (10f64).powf((-(0.0206f64)) + ((0.986f64) * ((alpha_vgm).log10())));
+            let n_bw =
+                (1f64) + ((10f64).powf((0.0642f64) + ((0.933f64) * (((n_vgm) - (1f64)).log10()))));
+            let tau_vgm_constrained = (tau_vgm).min(0f64);
+            let tau_bw = (0.0295f64) + ((1.833f64) * (tau_vgm_constrained));
+            let k_sc_bw = (10f64).powf((0.116f64) + ((1.06f64) * ((k_s_vgm).log10())));
+            let k_snc_bw = (10f64).powf(-(1.72f64));
             let values = [
-                result.theta_snc_bw,
-                result.theta_sc_bw,
-                result.alpha_bw,
-                result.n_bw,
-                result.tau_bw,
-                result.k_sc_bw,
-                result.k_snc_bw,
+                theta_snc_bw,
+                theta_sc_bw,
+                alpha_bw,
+                n_bw,
+                tau_bw,
+                k_sc_bw,
+                k_snc_bw,
             ];
             (pointers[6usize] as *mut f64).write_unaligned(values[0usize]);
             (pointers[7usize] as *mut f64).write_unaligned(values[1usize]);

@@ -133,6 +133,43 @@ functions:
     warnings:
     - The DS2 inequality is treated as a source typographical error; the tau regression
       is interpreted as being based on nonpositive tau_vgm values.
+  implementation:
+    variables:
+    - name: theta_snc_bw
+      expr: -1.58e-3 + 1.285 * theta_r_vgm
+    - name: theta_s_bw
+      expr: 1.89e-3 + 0.993 * theta_s_vgm
+    - name: theta_sc_bw
+      expr: theta_s_bw - theta_snc_bw
+    - name: alpha_bw
+      expr: 10.0 ^ (-2.06e-2 + 0.986 * log10(alpha_vgm))
+    - name: n_bw
+      expr: 1.0 + 10.0 ^ (6.42e-2 + 0.933 * log10(n_vgm - 1.0))
+    - name: tau_vgm_constrained
+      expr: min(tau_vgm, 0.0)
+    - name: tau_bw
+      expr: 2.95e-2 + 1.833 * tau_vgm_constrained
+    - name: k_sc_bw
+      expr: 10.0 ^ (1.16e-1 + 1.060 * log10(k_s_vgm))
+    - name: k_snc_bw
+      expr: 10.0 ^ -1.72
+    output:
+      type: record
+      fields:
+      - name: theta_snc_bw
+        expr: theta_snc_bw
+      - name: theta_sc_bw
+        expr: theta_sc_bw
+      - name: alpha_bw
+        expr: alpha_bw
+      - name: n_bw
+        expr: n_bw
+      - name: tau_bw
+        expr: tau_bw
+      - name: k_sc_bw
+        expr: k_sc_bw
+      - name: k_snc_bw
+        expr: k_snc_bw
 scientific_notes: '
 
   # Weber et al. (2020)

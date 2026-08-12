@@ -39,15 +39,14 @@ unsafe extern "C" fn calc_ptf_cosby1984_univariate_loop(
             let sand = (pointers[0usize] as *const f64).read_unaligned();
             let silt = (pointers[1usize] as *const f64).read_unaligned();
             let clay = (pointers[2usize] as *const f64).read_unaligned();
-            let result = ptfkit_core::cosby1984::calc_ptf_cosby1984_univariate(sand, silt, clay);
             let values = [
-                result.mean_b,
-                result.mean_log_psi_s,
-                result.mean_log_k_sat,
-                result.mean_theta_s,
-                result.sd_b,
-                result.sd_log_k_sat,
-                result.sd_theta_s,
+                (2.91f64) + ((0.159f64) * (clay)),
+                (1.88f64) - ((0.0131f64) * (sand)),
+                (-(0.884f64)) + ((0.0153f64) * (sand)),
+                (48.9f64) - ((0.126f64) * (sand)),
+                (1.34f64) + ((0.05f64) * (clay)),
+                (0.459f64) + ((0.00321f64) * (silt)),
+                (7.73f64) - ((0.073f64) * (clay)),
             ];
             (pointers[3usize] as *mut f64).write_unaligned(values[0usize]);
             (pointers[4usize] as *mut f64).write_unaligned(values[1usize]);

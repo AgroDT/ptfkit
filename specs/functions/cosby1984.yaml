@@ -9,7 +9,7 @@ scope:
   dataset: 1448 soil samples from Holtan et al. (1968) and Rawls et al. (1976).
 functions:
 - name: calc_ptf_cosby1984_univariate
-  status: ready-for-implementation
+  status: implemented
   public_api:
     name: calc_ptf_cosby1984_univariate
     result_class: Cosby1984UnivariatePTFResult
@@ -122,6 +122,24 @@ functions:
     - Public API names are provisional for pilot testing.
     warnings:
     - Log-transformed output units use the pilot contract `reported log value`.
+  implementation:
+    output:
+      type: record
+      fields:
+      - name: mean_b
+        expr: 2.91 + 0.159 * clay
+      - name: mean_log_psi_s
+        expr: 1.88 - 0.0131 * sand
+      - name: mean_log_k_sat
+        expr: -0.884 + 0.0153 * sand
+      - name: mean_theta_s
+        expr: 48.9 - 0.126 * sand
+      - name: sd_b
+        expr: 1.34 + 0.0500 * clay
+      - name: sd_log_k_sat
+        expr: 0.459 + 0.00321 * silt
+      - name: sd_theta_s
+        expr: 7.73 - 0.0730 * clay
 scientific_notes: '
 
   # Cosby et al. (1984)
