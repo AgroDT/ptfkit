@@ -4,7 +4,7 @@ use anyhow::{Result, bail};
 
 use crate::model::{CompiledFunction, Function, Parameter, PythonGeneration, Scope, Source};
 
-use super::WRAPPER_HEADER;
+use super::{WRAPPER_HEADER, natural_sort_key};
 
 struct PythonFunction<'a> {
     name: &'a str,
@@ -192,26 +192,6 @@ fn function_source(function: &PythonFunction<'_>) -> String {
         function.keyword_inputs.join("\n"),
         function.docstring,
     )
-}
-
-fn natural_sort_key(value: &str) -> String {
-    let mut key = String::new();
-    let mut digits = String::new();
-    for character in value.chars() {
-        if character.is_ascii_digit() {
-            digits.push(character);
-        } else {
-            if !digits.is_empty() {
-                key.push_str(&format!("{digits:0>20}"));
-                digits.clear();
-            }
-            key.push(character);
-        }
-    }
-    if !digits.is_empty() {
-        key.push_str(&format!("{digits:0>20}"));
-    }
-    key
 }
 
 fn view(resolved: &CompiledFunction) -> PythonFunction<'_> {

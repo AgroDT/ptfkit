@@ -14,16 +14,23 @@ pub(super) enum Target {
     Rust,
     PythonExtension,
     PythonWrapper,
+    PythonTest,
 }
 
 impl Target {
-    pub(super) const ALL: [Self; 3] = [Self::Rust, Self::PythonExtension, Self::PythonWrapper];
+    pub(super) const ALL: [Self; 4] = [
+        Self::Rust,
+        Self::PythonExtension,
+        Self::PythonWrapper,
+        Self::PythonTest,
+    ];
 
     fn output_path(self, root: &Path, relative: &Path) -> PathBuf {
         match self {
             Self::Rust => root.join("targets/ptfkit-rs/src").join(relative),
             Self::PythonExtension => root.join("targets/ptfkit-py").join(relative),
             Self::PythonWrapper => root.join("targets/ptfkit-py/src").join(relative),
+            Self::PythonTest => root.join("targets/ptfkit-py").join(relative),
         }
     }
 
@@ -33,6 +40,7 @@ impl Target {
             Self::PythonExtension | Self::PythonWrapper => {
                 root.join("targets/ptfkit-py/src/ptfkit")
             }
+            Self::PythonTest => root.join("targets/ptfkit-py/tests"),
         }
     }
 
@@ -41,6 +49,7 @@ impl Target {
             Self::Rust => rs::HEADER,
             Self::PythonExtension => py::C_HEADER,
             Self::PythonWrapper => py::WRAPPER_HEADER,
+            Self::PythonTest => py::WRAPPER_HEADER,
         }
     }
 
@@ -49,6 +58,7 @@ impl Target {
             Self::Rust => write::format_rust(paths),
             Self::PythonExtension => Ok(()),
             Self::PythonWrapper => write::format_python(root, paths),
+            Self::PythonTest => write::format_python(root, paths),
         }
     }
 }
@@ -98,12 +108,23 @@ pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> Result<()> {
         })
         .collect::<Vec<_>>();
     wrappers.push(GeneratedFile::new("ptfkit/_ptfkit.pyi".into(), py.stub));
+    let tests = py
+        .tests
+        .into_iter()
+        .filter_map(|(slug, mode, contents)| {
+            (mode == PythonGeneration::Generated).then_some(GeneratedFile::new(
+                format!("tests/test_{slug}.py").into(),
+                contents,
+            ))
+        })
+        .collect::<Vec<_>>();
     write::commit(
         root,
         [
             TargetOutput::new(Target::Rust, rust),
             TargetOutput::new(Target::PythonExtension, c),
             TargetOutput::new(Target::PythonWrapper, wrappers),
+            TargetOutput::new(Target::PythonTest, tests),
         ],
     )
 }

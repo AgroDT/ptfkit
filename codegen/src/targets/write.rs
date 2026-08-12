@@ -15,7 +15,7 @@ struct StagedWrite {
     output_target: Target,
 }
 
-pub(super) fn commit(root: &Path, outputs: [TargetOutput; 3]) -> Result<()> {
+pub(super) fn commit(root: &Path, outputs: [TargetOutput; 4]) -> Result<()> {
     for output in &outputs {
         cleanup(root, output)?;
     }
@@ -33,7 +33,7 @@ pub(super) fn commit(root: &Path, outputs: [TargetOutput; 3]) -> Result<()> {
     Ok(())
 }
 
-fn stage(root: &Path, outputs: [TargetOutput; 3]) -> Result<Vec<StagedWrite>> {
+fn stage(root: &Path, outputs: [TargetOutput; 4]) -> Result<Vec<StagedWrite>> {
     let mut staged = Vec::new();
     for output in outputs {
         for file in output.files {
