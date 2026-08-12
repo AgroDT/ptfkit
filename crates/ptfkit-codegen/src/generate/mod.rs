@@ -315,12 +315,12 @@ mod tests {
     };
     use crate::model::{
         CoreFunction, Documentation, Entry, Function, FunctionScope, Models, Output, PublicApi,
-        PythonGeneration, Scope, Source, Spec,
+        Scope, Source, Spec,
     };
 
     fn entry(name: &str, status: &str) -> Entry {
         Entry {
-            path: PathBuf::from("test.md"),
+            path: PathBuf::from("test.yaml"),
             spec: Spec {
                 source: Source {
                     key: "test".into(),
@@ -329,7 +329,7 @@ mod tests {
                     doi: None,
                 },
                 scope: Scope::default(),
-                python_generation: PythonGeneration::Generated,
+                generation: crate::model::Generation::default(),
                 functions: vec![Function {
                     name: name.into(),
                     status: status.into(),
@@ -351,9 +351,10 @@ mod tests {
                         description: "Test value.".into(),
                     }],
                     documentation: Documentation::default(),
+                    implementation: None,
                 }],
             },
-            section_functions: vec![name.into()],
+            implementations: vec![None],
         }
     }
 

@@ -35,7 +35,7 @@ pub(crate) fn render(functions: &[Resolved]) -> Result<Vec<(String, PythonGenera
 
     let mut generated = Vec::new();
     for (module, functions) in modules {
-        let mode = functions[0].entry.spec.python_generation;
+        let mode = functions[0].entry.spec.generation.public_python;
         if mode == PythonGeneration::Manual {
             generated.push((module, mode, String::new()));
             continue;
@@ -471,7 +471,7 @@ mod tests {
     use super::{function_docstring, module_docstring, render_core_stub};
     use crate::model::{
         CoreFunction, Documentation, Entry, Function, FunctionScope, Models, Output, PublicApi,
-        PythonGeneration, Resolved, Scope, Source, Spec,
+        Resolved, Scope, Source, Spec,
     };
 
     fn function(territory: Option<&str>) -> Function {
@@ -491,6 +491,7 @@ mod tests {
             inputs: Vec::new(),
             outputs: Vec::new(),
             documentation: Documentation::default(),
+            implementation: None,
         }
     }
 
@@ -533,7 +534,7 @@ mod tests {
         let name = function.name.clone();
         let resolved = Resolved {
             entry: Entry {
-                path: PathBuf::from("test.md"),
+                path: PathBuf::from("test.yaml"),
                 spec: Spec {
                     source: Source {
                         key: "test".into(),
@@ -542,10 +543,10 @@ mod tests {
                         doi: None,
                     },
                     scope: Scope::default(),
-                    python_generation: PythonGeneration::Generated,
+                    generation: crate::model::Generation::default(),
                     functions: vec![function],
                 },
-                section_functions: vec![name.clone()],
+                implementations: vec![None],
             },
             function_index: 0,
             core: CoreFunction {

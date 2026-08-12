@@ -26,15 +26,6 @@ pub(crate) fn specifications(entries: &[Entry]) -> Vec<String> {
                 "source-oriented filename must match source.key",
             ));
         }
-        let expected: Vec<_> = entry
-            .spec
-            .functions
-            .iter()
-            .map(|function| function.name.clone())
-            .collect();
-        if entry.section_functions != expected {
-            errors.push(diag(entry, "Markdown sections", None, &format!("declared function sections must appear once and in YAML order; expected {expected:?}, found {:?}", entry.section_functions)));
-        }
         for function in &entry.spec.functions {
             duplicate(
                 &mut functions,

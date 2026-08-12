@@ -1,15 +1,15 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/AgroDT/ptfkit/blob/main/specs/schema/ptf-spec-v1.schema.json",
-  "title": "PTF source specification front matter",
+  "$id": "https://github.com/AgroDT/ptfkit/blob/main/specs/schema/ptf-spec.schema.json",
+  "title": "PTF source specification",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "source", "functions"],
+  "required": ["source", "functions"],
   "properties": {
-    "schema_version": { "const": 1 },
     "source": { "$ref": "#/$defs/source" },
     "scope": { "$ref": "#/$defs/commonScope" },
-    "python_generation": { "enum": ["generated", "manual"], "default": "generated" },
+    "generation": { "$ref": "#/$defs/generation" },
+    "scientific_notes": { "type": "string" },
     "functions": {
       "type": "array",
       "minItems": 1,
@@ -17,6 +17,15 @@
     }
   },
   "$defs": {
+    "generation": { "type": "object", "additionalProperties": false, "properties": { "public_python": { "enum": ["generated", "manual"], "default": "generated" } } },
+    "implementationVariable": { "type": "object", "additionalProperties": false, "required": ["name", "expr"], "properties": { "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" }, "expr": { "type": "string", "minLength": 1 } } },
+    "implementationField": { "type": "object", "additionalProperties": false, "required": ["name", "expr"], "properties": { "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" }, "expr": { "type": "string", "minLength": 1 } } },
+    "implementation": {
+      "oneOf": [
+        { "type": "object", "additionalProperties": false, "required": ["output"], "properties": { "variables": { "type": "array", "default": [], "items": { "$ref": "#/$defs/implementationVariable" } }, "output": { "type": "object", "additionalProperties": false, "required": ["type", "expr"], "properties": { "type": { "const": "scalar" }, "expr": { "type": "string", "minLength": 1 } } } } },
+        { "type": "object", "additionalProperties": false, "required": ["output"], "properties": { "variables": { "type": "array", "default": [], "items": { "$ref": "#/$defs/implementationVariable" } }, "output": { "type": "object", "additionalProperties": false, "required": ["type", "fields"], "properties": { "type": { "const": "record" }, "fields": { "type": "array", "items": { "$ref": "#/$defs/implementationField" } } } } } }
+      ]
+    },
     "stringOrNull": { "type": ["string", "null"] },
     "source": {
       "type": "object",
@@ -164,7 +173,8 @@
             "notes": { "type": "array", "items": { "type": "string" } },
             "warnings": { "type": "array", "items": { "type": "string" } }
           }
-        }
+        },
+        "implementation": { "$ref": "#/$defs/implementation" }
       }
     }
   }

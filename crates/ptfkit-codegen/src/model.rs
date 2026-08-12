@@ -8,7 +8,7 @@ pub(crate) struct Spec {
     #[serde(default)]
     pub(crate) scope: Scope,
     #[serde(default)]
-    pub(crate) python_generation: PythonGeneration,
+    pub(crate) generation: Generation,
     pub(crate) functions: Vec<Function>,
 }
 
@@ -40,6 +40,7 @@ pub(crate) struct Function {
     pub(crate) scope: FunctionScope,
     pub(crate) inputs: Vec<Parameter>,
     pub(crate) outputs: Vec<Parameter>,
+    pub(crate) implementation: Option<Implementation>,
     #[serde(default)]
     pub(crate) documentation: Documentation,
 }
@@ -93,11 +94,47 @@ pub(crate) enum PythonGeneration {
     Manual,
 }
 
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+pub(crate) struct Generation {
+    #[serde(default)]
+    pub(crate) public_python: PythonGeneration,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub(crate) struct Implementation {
+    #[serde(default)]
+    pub(crate) variables: Vec<ImplementationVariable>,
+    pub(crate) output: ImplementationOutput,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub(crate) struct ImplementationVariable {
+    pub(crate) name: String,
+    pub(crate) expr: String,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(tag = "type", rename_all = "lowercase")]
+pub(crate) enum ImplementationOutput {
+    Scalar { expr: String },
+    Record { fields: Vec<ImplementationField> },
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub(crate) struct ImplementationField {
+    pub(crate) name: String,
+    pub(crate) expr: String,
+}
+
 #[derive(Clone)]
 pub(crate) struct Entry {
     pub(crate) path: PathBuf,
     pub(crate) spec: Spec,
-    pub(crate) section_functions: Vec<String>,
+    #[allow(
+        dead_code,
+        reason = "Session 05 will make the compiled frontend IR the Rust target input."
+    )]
+    pub(crate) implementations: Vec<Option<crate::semantic::Function>>,
 }
 
 #[derive(Clone)]
@@ -114,8 +151,7 @@ pub(crate) enum Output {
     Struct(Vec<String>),
 }
 
-/// Formula data before semantic validation. This deliberately remains separate
-/// from the versioned specification model until the frontend is wired to YAML.
+/// Formula data passed from the YAML specification frontend to semantic validation.
 #[derive(Clone, Debug)]
 pub(crate) struct RawFunction {
     pub(crate) specification_path: PathBuf,
@@ -144,7 +180,7 @@ pub(crate) struct RawExpression {
 
 #[allow(
     dead_code,
-    reason = "Session 04 constructs raw scalar and record outputs from the versioned specification loader."
+    reason = "Session 04 constructs raw scalar and record outputs from the YAML specification loader."
 )]
 #[derive(Clone, Debug)]
 pub(crate) enum RawOutput {
@@ -163,7 +199,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn python_generation_defaults_to_generated() {
+    fn public_python_generation_defaults_to_generated() {
         let mut spec = Spec {
             source: Source {
                 key: "test".into(),
@@ -172,14 +208,14 @@ mod tests {
                 doi: None,
             },
             scope: Scope::default(),
-            python_generation: PythonGeneration::Generated,
+            generation: Generation::default(),
             functions: Vec::new(),
         };
 
-        assert_eq!(spec.python_generation, PythonGeneration::Generated);
+        assert_eq!(spec.generation.public_python, PythonGeneration::Generated);
 
-        spec.python_generation = PythonGeneration::Manual;
-        assert_eq!(spec.python_generation, PythonGeneration::Manual);
+        spec.generation.public_python = PythonGeneration::Manual;
+        assert_eq!(spec.generation.public_python, PythonGeneration::Manual);
     }
 }
 
