@@ -6,9 +6,7 @@ use serde_json::Value;
 
 use crate::{
     formula,
-    model::{
-        Entry, Implementation, RawExpression, RawFunction, RawInput, RawVariable, Spec,
-    },
+    model::{Entry, Implementation, RawExpression, RawFunction, RawInput, RawVariable, Spec},
     semantic,
 };
 
@@ -194,11 +192,7 @@ fn validate_output(
         .inputs
         .iter()
         .map(|input| input.name.as_str())
-        .chain(
-            raw.variables
-                .iter()
-                .map(|variable| variable.name.as_str()),
-        )
+        .chain(raw.variables.iter().map(|variable| variable.name.as_str()))
         .collect::<std::collections::BTreeSet<_>>();
     let missing = output_names
         .iter()

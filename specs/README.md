@@ -33,6 +33,13 @@ outputs, golden cases, edge cases, scope, and short documentation notes. For a
 single output,
 `result_class` is `null`; multiple outputs use the documented result class.
 
+Sources with repeated parameter or result definitions may declare them once in
+the optional top-level `$defs` object. A function uses a local reference object,
+for example `{ $ref: "#/$defs/clay" }`, instead of repeating an input or output
+definition. `$defs` keys are canonical model names; a referenced record output
+uses its key as the generated Rust and Python result type name. Inline
+definitions and `public_api.result_class` remain supported for legacy sources.
+
 Top-level `scope.territory` describes the complete territory of the source and
 its public module. A function may independently declare `scope.territory` only
 when its territory is narrower or different. Function territory never inherits

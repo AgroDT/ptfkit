@@ -12,26 +12,38 @@ scope:
     Morocco
   dataset: 331 disturbed topsoil samples collected at 0-20 cm from 2019 to 2022; random
     50% calibration and 50% validation subsets.
-functions:
-- name: calc_ptf_beniaich2023_slr1
-  status: implemented
-  public_api:
-    name: calc_ptf_beniaich2023_slr1
-    result_class: Beniaich2023PTFResult
-    summary: Estimate three gravimetric water contents from clay.
-  scope:
-    prediction_target: Gravimetric water content at saturation, -33 kPa, and -1,500
-      kPa.
-    models:
-      h_theta: Three point estimates
-      k_h: null
-  inputs:
-  - name: clay
+$defs:
+  clay:
+    name: clay
     symbol: Clay
     unit: '%'
     domain: 0 <= value <= 100
     description: Clay content by mass.
-  outputs:
+  silt:
+    name: silt
+    symbol: Silt
+    unit: '%'
+    domain: 0 <= value <= 100
+    description: Silt content by mass.
+  sand:
+    name: sand
+    symbol: Sand
+    unit: '%'
+    domain: 0 <= value <= 100
+    description: Sand content by mass.
+  silt_nonzero:
+    name: silt
+    symbol: Silt
+    unit: '%'
+    domain: 0 < value <= 100
+    description: Silt content by mass and denominator of the clay-to-silt ratio.
+  soil_organic_matter:
+    name: soil_organic_matter
+    symbol: SOM
+    unit: '%'
+    domain: value >= 0
+    description: Soil organic matter content by mass.
+  Beniaich2023PTFResult:
     type: record
     fields:
     - name: water_saturation
@@ -49,6 +61,30 @@ functions:
       unit: g/g
       domain: null
       description: Gravimetric water content at -1,500 kPa.
+functions:
+- name: calc_ptf_beniaich2023_slr1
+  status: implemented
+  public_api:
+    name: calc_ptf_beniaich2023_slr1
+    summary: Estimate three gravimetric water contents from clay.
+  scope:
+    prediction_target: Gravimetric water content at saturation, -33 kPa, and -1,500
+      kPa.
+    models:
+      h_theta: Three point estimates
+      k_h: null
+  inputs:
+  - $ref: "#/$defs/clay"
+  outputs:
+    $ref: "#/$defs/Beniaich2023PTFResult"
+  implementation:
+    variables:
+    - name: water_saturation
+      expr: (46.307 + 0.556 * clay) / 100
+    - name: water_field_capacity
+      expr: (10.277 + 0.365 * clay) / 100
+    - name: water_wilting_point
+      expr: (3.081 + 0.327 * clay) / 100
   golden_tests:
   - id: representative_case
     inputs:
@@ -72,7 +108,6 @@ functions:
   status: implemented
   public_api:
     name: calc_ptf_beniaich2023_slr2
-    result_class: Beniaich2023PTFResult
     summary: Estimate three gravimetric water contents from silt.
   scope:
     prediction_target: Gravimetric water content at saturation, -33 kPa, and -1,500
@@ -81,29 +116,17 @@ functions:
       h_theta: Three point estimates
       k_h: null
   inputs:
-  - name: silt
-    symbol: Silt
-    unit: '%'
-    domain: 0 <= value <= 100
-    description: Silt content by mass.
+  - $ref: "#/$defs/silt"
   outputs:
-    type: record
-    fields:
+    $ref: "#/$defs/Beniaich2023PTFResult"
+  implementation:
+    variables:
     - name: water_saturation
-      symbol: w_0
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at saturation.
+      expr: (59.508 + 0.299 * silt) / 100
     - name: water_field_capacity
-      symbol: w_330
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -33 kPa.
+      expr: (16.178 + 0.290 * silt) / 100
     - name: water_wilting_point
-      symbol: w_15000
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -1,500 kPa.
+      expr: (10.521 + 0.187 * silt) / 100
   golden_tests:
   - id: representative_case
     inputs:
@@ -127,7 +150,6 @@ functions:
   status: implemented
   public_api:
     name: calc_ptf_beniaich2023_slr3
-    result_class: Beniaich2023PTFResult
     summary: Estimate three gravimetric water contents from sand.
   scope:
     prediction_target: Gravimetric water content at saturation, -33 kPa, and -1,500
@@ -136,29 +158,17 @@ functions:
       h_theta: Three point estimates
       k_h: null
   inputs:
-  - name: sand
-    symbol: Sand
-    unit: '%'
-    domain: 0 <= value <= 100
-    description: Sand content by mass.
+  - $ref: "#/$defs/sand"
   outputs:
-    type: record
-    fields:
+    $ref: "#/$defs/Beniaich2023PTFResult"
+  implementation:
+    variables:
     - name: water_saturation
-      symbol: w_0
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at saturation.
+      expr: (81.420 - 0.427 * sand) / 100
     - name: water_field_capacity
-      symbol: w_330
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -33 kPa.
+      expr: (34.680 - 0.324 * sand) / 100
     - name: water_wilting_point
-      symbol: w_15000
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -1,500 kPa.
+      expr: (23.927 - 0.257 * sand) / 100
   golden_tests:
   - id: representative_case
     inputs:
@@ -182,7 +192,6 @@ functions:
   status: implemented
   public_api:
     name: calc_ptf_beniaich2023_slr4
-    result_class: Beniaich2023PTFResult
     summary: Estimate three gravimetric water contents from clay plus silt.
   scope:
     prediction_target: Gravimetric water content at saturation, -33 kPa, and -1,500
@@ -191,34 +200,20 @@ functions:
       h_theta: Three point estimates
       k_h: null
   inputs:
-  - name: clay
-    symbol: Clay
-    unit: '%'
-    domain: 0 <= value <= 100
-    description: Clay content by mass.
-  - name: silt
-    symbol: Silt
-    unit: '%'
-    domain: 0 <= value <= 100
-    description: Silt content by mass.
+  - $ref: "#/$defs/clay"
+  - $ref: "#/$defs/silt"
   outputs:
-    type: record
-    fields:
+    $ref: "#/$defs/Beniaich2023PTFResult"
+  implementation:
+    variables:
+    - name: clay_silt
+      expr: clay + silt
     - name: water_saturation
-      symbol: w_0
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at saturation.
+      expr: (89.401 - 0.298 * clay_silt) / 100
     - name: water_field_capacity
-      symbol: w_330
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -33 kPa.
+      expr: (45.178 - 0.290 * clay_silt) / 100
     - name: water_wilting_point
-      symbol: w_15000
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -1,500 kPa.
+      expr: (29.265 - 0.187 * clay_silt) / 100
   golden_tests:
   - id: representative_case
     inputs:
@@ -243,7 +238,6 @@ functions:
   status: implemented
   public_api:
     name: calc_ptf_beniaich2023_slr5
-    result_class: Beniaich2023PTFResult
     summary: Estimate three gravimetric water contents from the clay-to-silt ratio.
   scope:
     prediction_target: Gravimetric water content at saturation, -33 kPa, and -1,500
@@ -252,34 +246,20 @@ functions:
       h_theta: Three point estimates
       k_h: null
   inputs:
-  - name: clay
-    symbol: Clay
-    unit: '%'
-    domain: 0 <= value <= 100
-    description: Clay content by mass.
-  - name: silt
-    symbol: Silt
-    unit: '%'
-    domain: 0 < value <= 100
-    description: Silt content by mass and denominator of the clay-to-silt ratio.
+  - $ref: "#/$defs/clay"
+  - $ref: "#/$defs/silt_nonzero"
   outputs:
-    type: record
-    fields:
+    $ref: "#/$defs/Beniaich2023PTFResult"
+  implementation:
+    variables:
+    - name: clay_silt_ratio
+      expr: clay / silt
     - name: water_saturation
-      symbol: w_0
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at saturation.
+      expr: (68.851 - 0.546 * clay_silt_ratio) / 100
     - name: water_field_capacity
-      symbol: w_330
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -33 kPa.
+      expr: (23.278 + 1.819 * clay_silt_ratio) / 100
     - name: water_wilting_point
-      symbol: w_15000
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -1,500 kPa.
+      expr: (16.298 - 0.244 * clay_silt_ratio) / 100
   golden_tests:
   - id: representative_case
     inputs:
@@ -310,7 +290,6 @@ functions:
   status: implemented
   public_api:
     name: calc_ptf_beniaich2023_slr6
-    result_class: Beniaich2023PTFResult
     summary: Estimate three gravimetric water contents from soil organic matter.
   scope:
     prediction_target: Gravimetric water content at saturation, -33 kPa, and -1,500
@@ -319,29 +298,17 @@ functions:
       h_theta: Three point estimates
       k_h: null
   inputs:
-  - name: soil_organic_matter
-    symbol: SOM
-    unit: '%'
-    domain: value >= 0
-    description: Soil organic matter content by mass.
+  - $ref: "#/$defs/soil_organic_matter"
   outputs:
-    type: record
-    fields:
+    $ref: "#/$defs/Beniaich2023PTFResult"
+  implementation:
+    variables:
     - name: water_saturation
-      symbol: w_0
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at saturation.
+      expr: (61.163 + 2.793 * soil_organic_matter) / 100
     - name: water_field_capacity
-      symbol: w_330
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -33 kPa.
+      expr: (21.331 + 1.339 * soil_organic_matter) / 100
     - name: water_wilting_point
-      symbol: w_15000
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -1,500 kPa.
+      expr: (13.758 + 0.902 * soil_organic_matter) / 100
   golden_tests:
   - id: representative_case
     inputs:
@@ -365,7 +332,6 @@ functions:
   status: implemented
   public_api:
     name: calc_ptf_beniaich2023_mlr1
-    result_class: Beniaich2023PTFResult
     summary: Estimate three gravimetric water contents from silt, sand, and organic
       matter.
   scope:
@@ -375,39 +341,19 @@ functions:
       h_theta: Three point estimates
       k_h: null
   inputs:
-  - name: silt
-    symbol: Silt
-    unit: '%'
-    domain: 0 <= value <= 100
-    description: Silt content by mass.
-  - name: sand
-    symbol: Sand
-    unit: '%'
-    domain: 0 <= value <= 100
-    description: Sand content by mass.
-  - name: soil_organic_matter
-    symbol: SOM
-    unit: '%'
-    domain: value >= 0
-    description: Soil organic matter content by mass.
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/soil_organic_matter"
   outputs:
-    type: record
-    fields:
+    $ref: "#/$defs/Beniaich2023PTFResult"
+  implementation:
+    variables:
     - name: water_saturation
-      symbol: w_0
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at saturation.
+      expr: (87.342 - 0.281 * silt - 0.548 * sand + 2.377 * soil_organic_matter) / 100
     - name: water_field_capacity
-      symbol: w_330
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -33 kPa.
+      expr: (35.844 - 0.085 * silt - 0.359 * sand + 0.947 * soil_organic_matter) / 100
     - name: water_wilting_point
-      symbol: w_15000
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -1,500 kPa.
+      expr: (28.734 - 0.148 * silt - 0.324 * sand + 0.636 * soil_organic_matter) / 100
   golden_tests:
   - id: representative_case
     inputs:
@@ -433,7 +379,6 @@ functions:
   status: implemented
   public_api:
     name: calc_ptf_beniaich2023_mlr2
-    result_class: Beniaich2023PTFResult
     summary: Estimate three gravimetric water contents from sand and organic matter.
   scope:
     prediction_target: Gravimetric water content at saturation, -33 kPa, and -1,500
@@ -442,34 +387,18 @@ functions:
       h_theta: Three point estimates
       k_h: null
   inputs:
-  - name: sand
-    symbol: Sand
-    unit: '%'
-    domain: 0 <= value <= 100
-    description: Sand content by mass.
-  - name: soil_organic_matter
-    symbol: SOM
-    unit: '%'
-    domain: value >= 0
-    description: Soil organic matter content by mass.
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/soil_organic_matter"
   outputs:
-    type: record
-    fields:
+    $ref: "#/$defs/Beniaich2023PTFResult"
+  implementation:
+    variables:
     - name: water_saturation
-      symbol: w_0
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at saturation.
+      expr: (75.366 - 0.417 * sand + 2.219 * soil_organic_matter) / 100
     - name: water_field_capacity
-      symbol: w_330
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -33 kPa.
+      expr: (32.227 - 0.320 * sand + 0.899 * soil_organic_matter) / 100
     - name: water_wilting_point
-      symbol: w_15000
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -1,500 kPa.
+      expr: (22.421 - 0.254 * sand + 0.552 * soil_organic_matter) / 100
   golden_tests:
   - id: representative_case
     inputs:
@@ -494,7 +423,6 @@ functions:
   status: implemented
   public_api:
     name: calc_ptf_beniaich2023_mlr3
-    result_class: Beniaich2023PTFResult
     summary: Estimate three gravimetric water contents from silt and organic matter.
   scope:
     prediction_target: Gravimetric water content at saturation, -33 kPa, and -1,500
@@ -503,34 +431,18 @@ functions:
       h_theta: Three point estimates
       k_h: null
   inputs:
-  - name: silt
-    symbol: Silt
-    unit: '%'
-    domain: 0 <= value <= 100
-    description: Silt content by mass.
-  - name: soil_organic_matter
-    symbol: SOM
-    unit: '%'
-    domain: value >= 0
-    description: Soil organic matter content by mass.
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/soil_organic_matter"
   outputs:
-    type: record
-    fields:
+    $ref: "#/$defs/Beniaich2023PTFResult"
+  implementation:
+    variables:
     - name: water_saturation
-      symbol: w_0
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at saturation.
+      expr: (53.777 + 0.278 * silt + 2.457 * soil_organic_matter) / 100
     - name: water_field_capacity
-      symbol: w_330
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -33 kPa.
+      expr: (13.847 + 0.281 * silt + 0.999 * soil_organic_matter) / 100
     - name: water_wilting_point
-      symbol: w_15000
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -1,500 kPa.
+      expr: (8.929 + 0.182 * silt + 0.683 * soil_organic_matter) / 100
   golden_tests:
   - id: representative_case
     inputs:
@@ -555,7 +467,6 @@ functions:
   status: implemented
   public_api:
     name: calc_ptf_beniaich2023_mlr4
-    result_class: Beniaich2023PTFResult
     summary: Estimate three gravimetric water contents from clay and organic matter.
   scope:
     prediction_target: Gravimetric water content at saturation, -33 kPa, and -1,500
@@ -564,34 +475,18 @@ functions:
       h_theta: Three point estimates
       k_h: null
   inputs:
-  - name: clay
-    symbol: Clay
-    unit: '%'
-    domain: 0 <= value <= 100
-    description: Clay content by mass.
-  - name: soil_organic_matter
-    symbol: SOM
-    unit: '%'
-    domain: value >= 0
-    description: Soil organic matter content by mass.
+  - $ref: "#/$defs/clay"
+  - $ref: "#/$defs/soil_organic_matter"
   outputs:
-    type: record
-    fields:
+    $ref: "#/$defs/Beniaich2023PTFResult"
+  implementation:
+    variables:
     - name: water_saturation
-      symbol: w_0
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at saturation.
+      expr: (39.432 + 0.553 * clay + 2.699 * soil_organic_matter) / 100
     - name: water_field_capacity
-      symbol: w_330
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -33 kPa.
+      expr: (7.023 + 0.364 * clay + 1.278 * soil_organic_matter) / 100
     - name: water_wilting_point
-      symbol: w_15000
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -1,500 kPa.
+      expr: (0.923 + 0.327 * clay + 0.847 * soil_organic_matter) / 100
   golden_tests:
   - id: representative_case
     inputs:
@@ -616,7 +511,6 @@ functions:
   status: implemented
   public_api:
     name: calc_ptf_beniaich2023_mlr5
-    result_class: Beniaich2023PTFResult
     summary: Estimate three gravimetric water contents from clay, silt, and organic
       matter.
   scope:
@@ -626,39 +520,19 @@ functions:
       h_theta: Three point estimates
       k_h: null
   inputs:
-  - name: clay
-    symbol: Clay
-    unit: '%'
-    domain: 0 <= value <= 100
-    description: Clay content by mass.
-  - name: silt
-    symbol: Silt
-    unit: '%'
-    domain: 0 <= value <= 100
-    description: Silt content by mass.
-  - name: soil_organic_matter
-    symbol: SOM
-    unit: '%'
-    domain: value >= 0
-    description: Soil organic matter content by mass.
+  - $ref: "#/$defs/clay"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/soil_organic_matter"
   outputs:
-    type: record
-    fields:
+    $ref: "#/$defs/Beniaich2023PTFResult"
+  implementation:
+    variables:
     - name: water_saturation
-      symbol: w_0
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at saturation.
+      expr: (32.505 + 0.548 * clay + 0.267 * silt + 2.377 * soil_organic_matter) / 100
     - name: water_field_capacity
-      symbol: w_330
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -33 kPa.
+      expr: (-0.094 + 0.359 * clay + 0.274 * silt + 0.947 * soil_organic_matter) / 100
     - name: water_wilting_point
-      symbol: w_15000
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -1,500 kPa.
+      expr: (-3.623 + 0.324 * clay + 0.175 * silt + 0.636 * soil_organic_matter) / 100
   golden_tests:
   - id: representative_case
     inputs:
@@ -684,7 +558,6 @@ functions:
   status: blocked
   public_api:
     name: calc_ptf_beniaich2023_regression_tree
-    result_class: Beniaich2023PTFResult
     summary: Estimate three gravimetric water contents with the fitted regression
       trees.
   scope:
@@ -694,44 +567,12 @@ functions:
       h_theta: Three fitted regression-tree point estimates
       k_h: null
   inputs:
-  - name: clay
-    symbol: Clay
-    unit: '%'
-    domain: 0 <= value <= 100
-    description: Clay content by mass.
-  - name: silt
-    symbol: Silt
-    unit: '%'
-    domain: 0 <= value <= 100
-    description: Silt content by mass.
-  - name: sand
-    symbol: Sand
-    unit: '%'
-    domain: 0 <= value <= 100
-    description: Sand content by mass.
-  - name: soil_organic_matter
-    symbol: SOM
-    unit: '%'
-    domain: value >= 0
-    description: Soil organic matter content by mass.
+  - $ref: "#/$defs/clay"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/soil_organic_matter"
   outputs:
-    type: record
-    fields:
-    - name: water_saturation
-      symbol: w_0
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at saturation.
-    - name: water_field_capacity
-      symbol: w_330
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -33 kPa.
-    - name: water_wilting_point
-      symbol: w_15000
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -1,500 kPa.
+    $ref: "#/$defs/Beniaich2023PTFResult"
   golden_tests: []
   edge_cases: []
   documentation:
@@ -743,7 +584,6 @@ functions:
   status: blocked
   public_api:
     name: calc_ptf_beniaich2023_cubist
-    result_class: Beniaich2023PTFResult
     summary: Estimate three gravimetric water contents with the fitted Cubist models.
   scope:
     prediction_target: Gravimetric water content at saturation, -33 kPa, and -1,500
@@ -752,44 +592,12 @@ functions:
       h_theta: Three fitted Cubist point estimates
       k_h: null
   inputs:
-  - name: clay
-    symbol: Clay
-    unit: '%'
-    domain: 0 <= value <= 100
-    description: Clay content by mass.
-  - name: silt
-    symbol: Silt
-    unit: '%'
-    domain: 0 <= value <= 100
-    description: Silt content by mass.
-  - name: sand
-    symbol: Sand
-    unit: '%'
-    domain: 0 <= value <= 100
-    description: Sand content by mass.
-  - name: soil_organic_matter
-    symbol: SOM
-    unit: '%'
-    domain: value >= 0
-    description: Soil organic matter content by mass.
+  - $ref: "#/$defs/clay"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/soil_organic_matter"
   outputs:
-    type: record
-    fields:
-    - name: water_saturation
-      symbol: w_0
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at saturation.
-    - name: water_field_capacity
-      symbol: w_330
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -33 kPa.
-    - name: water_wilting_point
-      symbol: w_15000
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -1,500 kPa.
+    $ref: "#/$defs/Beniaich2023PTFResult"
   golden_tests: []
   edge_cases: []
   documentation:
@@ -803,7 +611,6 @@ functions:
   status: blocked
   public_api:
     name: calc_ptf_beniaich2023_random_forest
-    result_class: Beniaich2023PTFResult
     summary: Estimate three gravimetric water contents with the fitted random forests.
   scope:
     prediction_target: Gravimetric water content at saturation, -33 kPa, and -1,500
@@ -812,44 +619,12 @@ functions:
       h_theta: Three fitted random-forest point estimates
       k_h: null
   inputs:
-  - name: clay
-    symbol: Clay
-    unit: '%'
-    domain: 0 <= value <= 100
-    description: Clay content by mass.
-  - name: silt
-    symbol: Silt
-    unit: '%'
-    domain: 0 <= value <= 100
-    description: Silt content by mass.
-  - name: sand
-    symbol: Sand
-    unit: '%'
-    domain: 0 <= value <= 100
-    description: Sand content by mass.
-  - name: soil_organic_matter
-    symbol: SOM
-    unit: '%'
-    domain: value >= 0
-    description: Soil organic matter content by mass.
+  - $ref: "#/$defs/clay"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/soil_organic_matter"
   outputs:
-    type: record
-    fields:
-    - name: water_saturation
-      symbol: w_0
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at saturation.
-    - name: water_field_capacity
-      symbol: w_330
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -33 kPa.
-    - name: water_wilting_point
-      symbol: w_15000
-      unit: g/g
-      domain: null
-      description: Gravimetric water content at -1,500 kPa.
+    $ref: "#/$defs/Beniaich2023PTFResult"
   golden_tests: []
   edge_cases: []
   documentation:

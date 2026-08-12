@@ -45,9 +45,9 @@ pub(crate) fn render(functions: &[Resolved]) -> Result<Vec<(String, PythonGenera
         let mut classes = BTreeMap::<String, PythonResultClass>::new();
         for resolved in &functions {
             let function = &resolved.entry.spec.functions[resolved.function_index];
-            if let Some(class_name) = &function.public_api.result_class {
+            if let Some(class_name) = function.result_class() {
                 let result_class = PythonResultClass {
-                    name: class_name.clone(),
+                    name: class_name.to_owned(),
                     field_definitions: function
                         .outputs
                         .fields()
@@ -63,7 +63,7 @@ pub(crate) fn render(functions: &[Resolved]) -> Result<Vec<(String, PythonGenera
                 {
                     bail!("Python result class `{class_name}` is reused with conflicting fields")
                 }
-                classes.insert(class_name.clone(), result_class);
+                classes.insert(class_name.to_owned(), result_class);
             }
         }
         let functions = functions
@@ -240,7 +240,7 @@ fn view(resolved: &Resolved) -> PythonFunction<'_> {
     PythonFunction {
         name: &function.public_api.name,
         rust_name: &resolved.core.name,
-        result_class: function.public_api.result_class.as_deref(),
+        result_class: function.result_class(),
         scalar_inputs: names.iter().map(|name| format!("{name}: float")).collect(),
         array_inputs: names
             .iter()
@@ -287,7 +287,7 @@ fn function_docstring(function: &Function) -> String {
         .map(parameter_documentation)
         .collect::<Vec<_>>();
     arguments.push("out: Optional output arrays for in-place calculation.".into());
-    let returns = if let Some(result_class) = &function.public_api.result_class {
+    let returns = if let Some(result_class) = function.result_class() {
         vec![format!(
             "{result_class}: Results grouped by result attributes."
         )]
@@ -492,7 +492,11 @@ mod tests {
                 models: Models::default(),
             },
             inputs: Vec::new(),
-            outputs: crate::model::Outputs::Record { fields: Vec::new() },
+            outputs: crate::model::Outputs::Record {
+                name: None,
+                fields: Vec::new(),
+            },
+            output_schema: None,
             documentation: Documentation::default(),
             implementation: None,
             golden_tests: Vec::new(),

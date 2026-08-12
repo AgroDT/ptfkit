@@ -36,20 +36,20 @@ pub(crate) fn specifications(entries: &[Entry]) -> Vec<String> {
             );
             match (
                 function.outputs.fields().len(),
-                function.public_api.result_class.is_some(),
+                function.result_class().is_some(),
             ) {
                 (1, false) | (2.., true) => {}
                 (1, true) => errors.push(diag(
                     entry,
-                    "public_api.result_class",
+                    "outputs",
                     Some(&function.name),
-                    "must be null for a scalar result",
+                    "must be scalar when it has one field",
                 )),
                 (_, false) => errors.push(diag(
                     entry,
-                    "public_api.result_class",
+                    "outputs",
                     Some(&function.name),
-                    "must be non-null for a multi-output result",
+                    "must be a named record when it has multiple fields",
                 )),
                 (_, true) => errors.push(diag(
                     entry,

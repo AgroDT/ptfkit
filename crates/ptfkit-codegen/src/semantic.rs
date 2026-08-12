@@ -369,8 +369,8 @@ mod tests {
                 .iter()
                 .map(|name| RawInput {
                     name: (*name).into(),
-            })
-            .collect(),
+                })
+                .collect(),
             variables,
         }
     }
@@ -433,11 +433,7 @@ mod tests {
                     expression: expression("implementation.variables[1]", "1"),
                 },
             ];
-            let error = compile(&function(
-                &[],
-                variables,
-            ))
-            .unwrap_err();
+            let error = compile(&function(&[], variables)).unwrap_err();
             assert!(error.to_string().contains(expected), "{error}");
             assert!(error.to_string().contains(
                 "specs/functions/example.md -> function example -> implementation.variables[0]:0.."
@@ -447,10 +443,7 @@ mod tests {
 
     #[test]
     fn rejects_duplicate_names() {
-        let duplicate_input = function(
-            &["x", "x"],
-            Vec::new(),
-        );
+        let duplicate_input = function(&["x", "x"], Vec::new());
         assert!(
             compile(&duplicate_input)
                 .unwrap_err()
@@ -480,7 +473,13 @@ mod tests {
 
     #[test]
     fn rejects_unknown_functions_and_wrong_arities() {
-        let unknown = function(&["x"], vec![RawVariable { name: "value".into(), expression: expression("implementation.variables[0]", "nope(x)") }]);
+        let unknown = function(
+            &["x"],
+            vec![RawVariable {
+                name: "value".into(),
+                expression: expression("implementation.variables[0]", "nope(x)"),
+            }],
+        );
         assert!(
             compile(&unknown)
                 .unwrap_err()
@@ -496,12 +495,17 @@ mod tests {
             "min(x)",
             "max(x, x, x)",
         ] {
-            let raw = function(&["x"], vec![RawVariable { name: "value".into(), expression: expression("implementation.variables[0]", source) }]);
+            let raw = function(
+                &["x"],
+                vec![RawVariable {
+                    name: "value".into(),
+                    expression: expression("implementation.variables[0]", source),
+                }],
+            );
             assert!(
                 compile(&raw).unwrap_err().to_string().contains("expects"),
                 "{source}"
             );
         }
     }
-
 }

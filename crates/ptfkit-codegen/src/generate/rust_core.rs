@@ -1,4 +1,7 @@
-use std::{collections::BTreeMap, path::PathBuf};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    path::PathBuf,
+};
 
 use anyhow::Result;
 use proc_macro2::{Literal, TokenStream};
@@ -29,9 +32,15 @@ pub(crate) fn render(functions: &[Resolved]) -> Result<Vec<(PathBuf, String)>> {
                 .expect("generated source contains at least one function");
             let module_docs = module_doc_tokens(&first.entry.spec.source, &first.entry.spec.scope);
             let unique_test_modules = functions.len() > 1;
+            let mut defined_output_schemas = BTreeSet::new();
             let definitions = functions
                 .into_iter()
-                .map(|(resolved, ir)| module_tokens(resolved, ir, unique_test_modules))
+                .map(|(resolved, ir)| {
+                    let function = &resolved.entry.spec.functions[resolved.function_index];
+                    let output_schema = function.output_schema.as_deref().unwrap_or(&function.name);
+                    let define_output = defined_output_schemas.insert(output_schema);
+                    module_tokens(resolved, ir, unique_test_modules, define_output)
+                })
                 .collect::<Result<Vec<_>>>()?;
             Ok((
                 PathBuf::from(format!("{slug}.rs")),
@@ -45,6 +54,7 @@ fn module_tokens(
     resolved: &Resolved,
     ir: &semantic::Function,
     unique_test_module: bool,
+    define_output: bool,
 ) -> Result<TokenStream> {
     let function = &resolved.core;
     let specification = &resolved.entry.spec.functions[resolved.function_index];
@@ -55,14 +65,13 @@ fn module_tokens(
         .iter()
         .map(|name| format_ident!("{name}"))
         .collect::<Vec<_>>();
-    let scalar_output = matches!(function.output, Output::Scalar)
-        .then(|| {
-            resolved.entry.spec.functions[resolved.function_index]
-                .outputs
-                .fields()[0]
-                .name
-                .as_str()
-        });
+    let scalar_output = matches!(function.output, Output::Scalar).then(|| {
+        resolved.entry.spec.functions[resolved.function_index]
+            .outputs
+            .fields()[0]
+            .name
+            .as_str()
+    });
     let terminal_output = scalar_output.and_then(|output| {
         ir.variables
             .last()
@@ -83,7 +92,13 @@ fn module_tokens(
         return_type,
         expression,
         separates_result,
-    } = output_tokens(resolved, terminal_output, &inputs, &ir.variables)?;
+    } = output_tokens(
+        resolved,
+        terminal_output,
+        &inputs,
+        &ir.variables,
+        define_output,
+    )?;
     let tests = golden_test_tokens(resolved, unique_test_module)?;
     Ok(quote! {
         #definition
@@ -112,6 +127,7 @@ fn output_tokens(
     terminal_output: Option<&semantic::Variable>,
     inputs: &[syn::Ident],
     variables: &[semantic::Variable],
+    define_output: bool,
 ) -> Result<OutputTokens> {
     match &resolved.core.output {
         Output::Scalar => {
@@ -136,9 +152,7 @@ fn output_tokens(
         Output::Struct(fields) => {
             let specification = &resolved.entry.spec.functions[resolved.function_index];
             let result = specification
-                .public_api
-                .result_class
-                .as_deref()
+                .result_class()
                 .ok_or_else(|| anyhow::anyhow!("record output has no result class"))?;
             let result = format_ident!("{result}");
             let definitions = fields.iter().map(|field| {
@@ -154,9 +168,12 @@ fn output_tokens(
             });
             let values = fields.iter().map(|field| format_ident!("{field}"));
             Ok(OutputTokens {
-                definition: {
-                    let docs = doc_tokens([format!("Results returned by `{}`.", resolved.core.name)]);
+                definition: if define_output {
+                    let docs =
+                        doc_tokens([format!("Results returned by `{}`.", resolved.core.name)]);
                     quote!(#docs #[derive(Clone, Copy, Debug, PartialEq)] pub struct #result { #(#definitions),* })
+                } else {
+                    TokenStream::new()
                 },
                 return_type: quote!(#result),
                 expression: quote!(#result { #(#values),* }),
@@ -211,7 +228,7 @@ fn function_doc_tokens(function: &Function) -> TokenStream {
     );
     lines.extend([String::new(), "# Returns".into(), String::new()]);
     lines.extend(return_doc_lines(
-        function.public_api.result_class.as_deref(),
+        function.result_class(),
         function.outputs.fields(),
     ));
     if let Some(territory) = &function.scope.territory {
@@ -562,8 +579,14 @@ mod tests {
             description: "Saturated water content.".into(),
         };
 
-        assert_eq!(parameter_doc(&parameter), "theta_s: Saturated water content. (cm^3/cm^3)");
-        assert_eq!(parameter_details(&parameter), "Saturated water content. (cm^3/cm^3)");
+        assert_eq!(
+            parameter_doc(&parameter),
+            "theta_s: Saturated water content. (cm^3/cm^3)"
+        );
+        assert_eq!(
+            parameter_details(&parameter),
+            "Saturated water content. (cm^3/cm^3)"
+        );
     }
 
     #[test]
