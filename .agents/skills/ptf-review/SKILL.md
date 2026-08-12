@@ -27,4 +27,6 @@ description: Review ptfkit PTF implementations against validated MD specs, golde
 
 - Review against the MD spec, not guessed article intent.
 - Treat missing golden tests, ambiguous units, and public API breaks as blocking unless explicitly approved.
+- Treat repository-only specification paths in production Rust, native binding
+  comments, public Python docstrings, or package metadata as blocking.
 - Do not rewrite the implementation while acting as reviewer unless the user asks for fixes.
