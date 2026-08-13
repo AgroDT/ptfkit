@@ -48,8 +48,8 @@ completely sure.
 - Migrate in small steps: one function or a small, coherent group of functions
   per PR.
 - Before moving many functions, complete one end-to-end pilot:
-  spec ingest, Rust core implementation, Python bindings, golden tests,
-  documentation alignment, and review.
+  specification ingest, validation and code generation, generated Rust and
+  Python sibling targets, golden tests, documentation alignment, and review.
 - Keep each migration PR passing tests before starting the next function group.
 - Do not combine broad refactors with formula migrations unless the scope is
   explicitly approved.

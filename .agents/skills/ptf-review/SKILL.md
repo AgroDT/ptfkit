@@ -41,6 +41,6 @@ modifying repository state.
   numerical source of truth, not guessed article intent.
 - Treat missing golden tests, ambiguous units, and public API breaks as
   blocking unless explicitly approved.
-- Treat repository-only specification paths in production Rust, native binding
+- Treat repository-only specification paths in production Rust, native extension
   comments, public Python docstrings, or package metadata as blocking.
 - Remain read-only by default and never own the transition to `implemented`.

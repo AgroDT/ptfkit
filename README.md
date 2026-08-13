@@ -49,7 +49,8 @@ to be added to the library, please create a new issue on GitHub.
 2. 🧮 **Vectorized Input Support** - Accept NumPy arrays for batch processing.
 3. 🗂️ **Model-Specific Output Structures** - NamedTuple outputs for clarity.
 4. 🛠 **Extensibility for New Models** - Easily add new PTFs.
-5. ⚡ **Rust Core** - Pure Rust kernels for reliable numerical computation.
+5. ⚡ **Native Rust Target** - Idiomatic Rust implementations for reliable
+   numerical computation.
 6. 📦 **Packaging & Distribution** - Precompiled packages for easy installation via pip.
 7. 🚧 **Strong typing** - Type annotations ready for static analysis and linting.
 8. 🎓 **Well documented** - Docstrings for all implemented PTFs with proper references.
@@ -106,10 +107,14 @@ pip install ptfkit
 **Extra prerequisites:**
 
 - git
-- Rust toolchain — available from [rustup](https://rustup.rs/)
-- Python development files
+- A C compiler and the usual platform build tools
+- CMake
+- Python development files, where packaged separately from Python
 
-The build uses the Rust extension, so `cargo` must be available on `PATH`.
+The Python package uses a generated native CPython/NumPy extension written in C
+and is built with CMake via scikit-build-core. Rust and Cargo are not required
+to install the Python package; they are required only when developing the Rust
+target or the code generator.
 
 **Install ptfkit from git:**
 

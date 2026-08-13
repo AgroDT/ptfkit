@@ -25,8 +25,9 @@ input error.
 3. Record missing or ambiguous required scientific information as explicit
    blockers and set affected functions to `blocked`; otherwise set reviewed,
    complete functions to `ready-for-implementation`.
-4. Run `cargo run -p ptfkit-codegen -- validate` and fix validation errors
-   before finishing. Validation never justifies inferred science.
+4. Run `cargo run --manifest-path codegen/Cargo.toml -- validate` and fix
+   validation errors before finishing. Validation never justifies inferred
+   science.
 
 ## Output
 

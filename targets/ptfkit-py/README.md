@@ -1,7 +1,7 @@
-# ptfkit Python bindings
+# ptfkit Python package
 
-Python bindings for `ptfkit`, a library of pedotransfer functions for estimating
-soil hydraulic properties.
+The Python target for `ptfkit`, a library of pedotransfer functions for
+estimating soil hydraulic properties.
 
 ## Installation
 

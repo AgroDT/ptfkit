@@ -8,25 +8,30 @@
 - Every selected function is `ready-for-implementation`, has no unresolved
   blocker or `TODO`, and has complete schema-valid semantic implementation and
   matching ordered output metadata.
-- Run `cargo run -p ptfkit-codegen -- validate` before generation.
+- Run `cargo run --manifest-path codegen/Cargo.toml -- validate` before
+  generation.
 
 ## Required commands
 
-Run the relevant project gates after `cargo run -p ptfkit-codegen -- generate`:
+Run the relevant project gates after
+`cargo run --manifest-path codegen/Cargo.toml -- generate`:
 
 ```sh
-cargo test --workspace
+just codegen::format
+just codegen::lint
+just codegen::test
+just rust::format
+just rust::lint
+just rust::test
 just python::test
-cargo fmt --all --check
-cargo clippy --workspace --all-targets -- -D warnings
 just python::lint
 just python::format
 ```
 
-Run `cargo run -p ptfkit-codegen -- generate` a second time and inspect the
-diff for idempotence. Once all gates pass, set only the selected source's
-functions to `implemented`, then rerun validation, generation, and the second
-generation idempotence check. Investigate every unexpected diff.
+Run `cargo run --manifest-path codegen/Cargo.toml -- generate` a second time and
+inspect the diff for idempotence. Once all gates pass, set only the selected
+source's functions to `implemented`, then rerun validation, generation, and the
+second generation idempotence check. Investigate every unexpected diff.
 
 ## Failure classification
 
