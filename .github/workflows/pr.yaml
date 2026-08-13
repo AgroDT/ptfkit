@@ -27,6 +27,9 @@ jobs:
             codegen/target
           key: ${{ runner.os }}-cargo-${{ hashFiles('codegen/Cargo.toml') }}
 
+      - name: Set up Rust problem matchers
+        uses: r7kamura/rust-problem-matchers@v1
+
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
