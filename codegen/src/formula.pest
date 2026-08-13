@@ -1,0 +1,23 @@
+WHITESPACE = _{ " " | "\t" | NEWLINE }
+
+program = { SOI ~ expression ~ EOI }
+expression = { addition }
+addition = { multiplication ~ ((plus | minus) ~ multiplication)* }
+multiplication = { unary ~ ((times | divide) ~ unary)* }
+unary = { (plus | minus)* ~ power }
+power = { primary ~ (power_operator ~ unary)? }
+primary = { number | call | identifier | parenthesized }
+parenthesized = { lparen ~ expression ~ rparen }
+call = { identifier ~ lparen ~ (expression ~ (comma ~ expression)*)? ~ rparen }
+
+number = @{ (ASCII_DIGIT+ ~ ("." ~ ASCII_DIGIT*)? | "." ~ ASCII_DIGIT+) ~ (("e" | "E") ~ (plus | minus)? ~ ASCII_DIGIT+)? }
+identifier = @{ (ASCII_ALPHA | "_") ~ (ASCII_ALPHANUMERIC | "_")* }
+
+plus = { "+" }
+minus = { "-" }
+times = { "*" }
+divide = { "/" }
+power_operator = { "^" }
+comma = { "," }
+lparen = { "(" }
+rparen = { ")" }

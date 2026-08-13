@@ -1,4 +1,0 @@
-interface:
-  display_name: "PTF Python Bindings"
-  short_description: "Expose Rust PTFs to Python"
-  default_prompt: "Use $ptf-python-bindings to expose Rust PTF functions through PyO3, maturin, and NumPy-compatible Python APIs."

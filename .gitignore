@@ -1,7 +1,2 @@
-# Rust build artifacts
-/target/
-
-# Local paper extraction inputs
-
 # Local environment overrides
 .env*.local

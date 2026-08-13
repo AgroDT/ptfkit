@@ -49,7 +49,8 @@ to be added to the library, please create a new issue on GitHub.
 2. 🧮 **Vectorized Input Support** - Accept NumPy arrays for batch processing.
 3. 🗂️ **Model-Specific Output Structures** - NamedTuple outputs for clarity.
 4. 🛠 **Extensibility for New Models** - Easily add new PTFs.
-5. ⚡ **Rust Core** - Pure Rust kernels for reliable numerical computation.
+5. ⚡ **Native Rust Target** - Idiomatic Rust implementations for reliable
+   numerical computation.
 6. 📦 **Packaging & Distribution** - Precompiled packages for easy installation via pip.
 7. 🚧 **Strong typing** - Type annotations ready for static analysis and linting.
 8. 🎓 **Well documented** - Docstrings for all implemented PTFs with proper references.
@@ -106,10 +107,14 @@ pip install ptfkit
 **Extra prerequisites:**
 
 - git
-- Rust toolchain — available from [rustup](https://rustup.rs/)
-- Python development files
+- A C compiler and the usual platform build tools
+- CMake
+- Python development files, where packaged separately from Python
 
-The build uses the Rust extension, so `cargo` must be available on `PATH`.
+The Python package uses a generated native CPython/NumPy extension written in C
+and is built with CMake via scikit-build-core. Rust and Cargo are not required
+to install the Python package; they are required only when developing the Rust
+target or the code generator.
 
 **Install ptfkit from git:**
 
@@ -119,6 +124,10 @@ pip install 'git+https://github.com/AgroDT/ptfkit.git'
 
 ## Development Model
 
+The current generated target set consists of an idiomatic Rust crate and a
+direct CPython/NumPy ufunc extension used by the Python package. Direct C and R targets
+are deferred; they are not part of the supported implementation pipeline.
+
 Most feature development in ptfkit is agent-assisted. The repository provides
 workflow skills in [`.agents/skills`](./.agents/skills/) that keep scientific
 specification, implementation, public API compatibility, and review aligned.
@@ -126,24 +135,21 @@ specification, implementation, public API compatibility, and review aligned.
 ### Adding a PTF
 
 1. Provide the agent with a local path to the source material.
-2. Use `ptf-spec-ingest` to create and validate a source-oriented specification
-   under [`specs/functions`](./specs/functions/). It uses YAML front matter for
-   shared publication and function metadata and Markdown for formulas and
-   scientific reasoning. Reuse the same file for every function from one
-   publication; the source file is not copied into the repository and its path
-   is not retained.
-3. Use `ptf-rust-core` to implement a ready specification as a pure Rust kernel
-   with golden tests.
-4. Use `ptf-python-bindings` to expose the kernel while preserving the public
-   Python API, including scalar and NumPy behavior, broadcasting, `out`, and
-   `NamedTuple` results where applicable.
-   Each spec generates `ptfkit.<source.key>` by default; set top-level
-   `python_generation: manual` only for an entire manual module.
-5. Use `ptf-review` before merging to check formula traceability, numerical
-   policy, tests, documentation, and API compatibility.
+2. In a dedicated session, use `ptf-extract` to create and validate a draft
+   source YAML under [`specs/functions`](./specs/functions/). It extracts only
+   paper-supported facts and reports either `Ready for user review` or
+   `Blocked`.
+3. Review and, if needed, edit the YAML directly.
+4. In a fresh session, use `ptf-generate <apa_article_key>` to validate, generate,
+   test, prove idempotence, and atomically mark the source implemented.
+   Each specification filename stem generates `ptfkit.<apa_article_key>` by default; use
+   `generation.public_python: manual` only for an intentional public wrapper
+   that delegates to the generated native ufunc extension.
+5. Optionally use `ptf-review <apa_article_key>` in another fresh session for an
+   independent, read-only pre-merge review.
 
-If the generated specification has unresolved details, implementation stops
-until the specification is complete.
+Code-generating functions require a reviewed `implementation`; if scientific
+details remain unresolved, the source stays draft or blocked.
 
 ## Contributing
 

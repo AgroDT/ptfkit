@@ -12,18 +12,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+
       - name: Install uv
         uses: astral-sh/setup-uv@v7
-      - name: Install build dependencies
-        run: uv sync --project crates/ptfkit-py --frozen --group dev
+        with:
+          enable-cache: true
+
       - name: Build SDist
-        run: >
-          uv run --project crates/ptfkit-py --directory crates/ptfkit-py
-          --no-sync maturin sdist --out dist
+        run: uv build --directory targets/ptfkit-py --sdist
+
       - uses: actions/upload-artifact@v4
         with:
           name: cibw-sdist
-          path: crates/ptfkit-py/dist/*.tar.gz
+          path: targets/ptfkit-py/dist/*.tar.gz
 
   build-wheels:
     name: Build wheels on ${{ matrix.os }}
@@ -46,17 +47,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+
       - name: Build wheels
-        uses: pypa/cibuildwheel@v3.3.1
+        uses: pypa/cibuildwheel@v4.2.0
         with:
-          package-dir: crates/ptfkit-py
-          output-dir: crates/ptfkit-py/wheelhouse
+          package-dir: targets/ptfkit-py/dist
+          output-dir: targets/ptfkit-py/dist/wheelhouse
         env:
-          CIBW_BUILD_FRONTEND: build
+          CIBW_BUILD_FRONTEND: uv
+
       - uses: actions/upload-artifact@v4
         with:
           name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
-          path: crates/ptfkit-py/wheelhouse/*.whl
+          path: targets/ptfkit-py/wheelhouse/*.whl
 
   publish:
     name: Publish to PyPI
@@ -73,9 +76,9 @@ jobs:
         uses: actions/download-artifact@v5
         with:
           pattern: cibw-*
-          path: crates/ptfkit-py/dist
+          path: targets/ptfkit-py/dist
           merge-multiple: true
       - name: Upload to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          packages-dir: crates/ptfkit-py/dist/
+          packages-dir: targets/ptfkit-py/dist/

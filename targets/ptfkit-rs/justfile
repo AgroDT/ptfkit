@@ -1,0 +1,14 @@
+[windows]
+set shell := ["powershell.exe", "-NoLogo", "-Command"]
+
+default:
+	@{{just_executable()}} --list
+
+lint:
+    cargo clippy --all-targets -- -D warnings
+
+format:
+    cargo fmt --all --check
+
+test:
+    cargo test

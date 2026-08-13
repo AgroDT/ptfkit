@@ -1,11 +1,15 @@
 [windows]
 set shell := ["powershell.exe", "-NoLogo", "-Command"]
 
-mod cargo
-mod python 'crates/ptfkit-py'
+mod codegen
+mod python 'targets/ptfkit-py'
+mod rust 'targets/ptfkit-rs'
 
 default:
 	@{{just_executable()}} --list
 
-generate:
-    cargo run -p ptfkit-codegen generate
+[working-directory: 'codegen']
+@generate:
+    cargo run generate
+
+test: codegen::test python::test rust::test
