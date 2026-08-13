@@ -4,7 +4,7 @@ from __future__ import annotations
 import pytest
 
 from _helpers import prepare_vector_case
-from ptfkit.li2007 import calc_ptf_li2007
+from ptfkit.li2007 import Li2007PTFResult, calc_ptf_li2007
 
 
 CASES_CALC_PTF_LI2007 = [
@@ -69,10 +69,8 @@ def test_calc_ptf_li2007_golden(
 
 
 def test_calc_ptf_li2007_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_LI2007, 4)
-
-    result = calc_ptf_li2007(**inputs)
-
+    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_LI2007, Li2007PTFResult)
+    result = calc_ptf_li2007(**inputs, out=None)
     assert result.theta_s[0] == pytest.approx(expected['theta_s'], rel=rtol, abs=atol)
     assert result.a_vg[0] == pytest.approx(expected['a_vg'], rel=rtol, abs=atol)
     assert result.n_vg[0] == pytest.approx(expected['n_vg'], rel=rtol, abs=atol)
@@ -80,10 +78,8 @@ def test_calc_ptf_li2007_array():
 
 
 def test_calc_ptf_li2007_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_LI2007, 4)
-
+    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_LI2007, Li2007PTFResult)
     result = calc_ptf_li2007(**inputs, out=out)
-
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
     assert result.theta_s[0] == pytest.approx(expected['theta_s'], rel=rtol, abs=atol)

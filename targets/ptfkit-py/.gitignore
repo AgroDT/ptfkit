@@ -14,10 +14,6 @@ src/ptfkit/*.pyd
 src/ptfkit/*.pdb
 src/ptfkit/*.so
 
-# Test coverage
-.coverage*
-coverage.xml
-
 # MkDocs build output
 docs/index.md
 site/

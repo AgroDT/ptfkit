@@ -28,8 +28,11 @@ format:
 format-fix:
 	uv run --no-sync ruff format
 
-mypy:
-	uv run --no-sync mypy
+typecheck:
+	uv run --no-sync ty check
+
+typecheck-fix:
+	uv run --no-sync ty check --fix
 
 docs:
 	uv run --group docs --no-sync mkdocs build

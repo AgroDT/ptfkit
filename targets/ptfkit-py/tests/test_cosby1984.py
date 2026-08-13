@@ -4,7 +4,7 @@ from __future__ import annotations
 import pytest
 
 from _helpers import prepare_vector_case
-from ptfkit.cosby1984 import calc_ptf_cosby1984_univariate
+from ptfkit.cosby1984 import Cosby1984UnivariatePTFResult, calc_ptf_cosby1984_univariate
 
 
 CASES_CALC_PTF_COSBY1984_UNIVARIATE = [
@@ -57,10 +57,10 @@ def test_calc_ptf_cosby1984_univariate_golden(
 
 
 def test_calc_ptf_cosby1984_univariate_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_COSBY1984_UNIVARIATE, 7)
-
-    result = calc_ptf_cosby1984_univariate(**inputs)
-
+    inputs, expected, rtol, atol, _out = prepare_vector_case(
+        CASES_CALC_PTF_COSBY1984_UNIVARIATE, Cosby1984UnivariatePTFResult
+    )
+    result = calc_ptf_cosby1984_univariate(**inputs, out=None)
     assert result.mean_b[0] == pytest.approx(expected['mean_b'], rel=rtol, abs=atol)
     assert result.mean_log_psi_s[0] == pytest.approx(expected['mean_log_psi_s'], rel=rtol, abs=atol)
     assert result.mean_log_k_sat[0] == pytest.approx(expected['mean_log_k_sat'], rel=rtol, abs=atol)
@@ -71,10 +71,10 @@ def test_calc_ptf_cosby1984_univariate_array():
 
 
 def test_calc_ptf_cosby1984_univariate_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_COSBY1984_UNIVARIATE, 7)
-
+    inputs, expected, rtol, atol, out = prepare_vector_case(
+        CASES_CALC_PTF_COSBY1984_UNIVARIATE, Cosby1984UnivariatePTFResult
+    )
     result = calc_ptf_cosby1984_univariate(**inputs, out=out)
-
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
     assert result.mean_b[0] == pytest.approx(expected['mean_b'], rel=rtol, abs=atol)

@@ -28,16 +28,16 @@ pub(super) fn render(functions: &[CompiledFunction]) -> Vec<(String, PythonGener
 }
 
 fn module_source(slug: &str, functions: &[&CompiledFunction]) -> String {
-    let mut imports = functions
-        .iter()
-        .map(|resolved| {
-            resolved.entry.spec.functions[resolved.function_index]
-                .public_api
-                .name
-                .as_str()
-        })
-        .collect::<Vec<_>>();
+    let mut imports = Vec::new();
+    for resolved in functions {
+        let function = &resolved.entry.spec.functions[resolved.function_index];
+        imports.push(function.public_api.name.as_str());
+        if let Some(result_class) = function.result_class() {
+            imports.push(result_class);
+        }
+    }
     imports.sort_by_key(|name| natural_sort_key(name));
+    imports.dedup();
     let imports = imports.join(", ");
     let tests = functions
         .iter()
@@ -86,17 +86,35 @@ fn function_source(function: &Function) -> String {
 }
 
 fn vector_test_source(function: &Function, cases_name: &str) -> String {
-    let output_count = function.outputs.fields().len();
     let array_assertion = expected_assertion(function, "    ", "[0]");
-    let out_assertion: String = match &function.outputs {
-        Outputs::Scalar { .. } => "    assert result is out".into(),
-        Outputs::Record { .. } => "    for actual, expected_out in zip(result, out, strict=True):\n        assert actual is expected_out".into(),
+    let out_assertion = match &function.outputs {
+        Outputs::Scalar { .. } => "    assert result is out",
+        Outputs::Record { .. } => {
+            "    for actual, expected_out in zip(result, out, strict=True):\n        assert actual is expected_out"
+        }
     };
+    let result_cls = function
+        .result_class()
+        .map(|result_class| format!(", {result_class}"))
+        .unwrap_or_default();
     format!(
-        "\n\n\ndef test_{name}_array():\n    inputs, expected, rtol, atol, _out = prepare_vector_case({cases_name}, {output_count})\n\n    result = {name}(**inputs)\n\n{array_assertion}\n\n\ndef test_{name}_out():\n    inputs, expected, rtol, atol, out = prepare_vector_case({cases_name}, {output_count})\n\n    result = {name}(**inputs, out=out)\n\n{out_assertion}\n{array_assertion}",
+        r#"
+
+
+def test_{name}_array():
+    inputs, expected, rtol, atol, _out = prepare_vector_case({cases_name}{result_cls})
+    result = {name}(**inputs, out=None)
+{array_assertion}
+
+
+def test_{name}_out():
+    inputs, expected, rtol, atol, out = prepare_vector_case({cases_name}{result_cls})
+    result = {name}(**inputs, out=out)
+{out_assertion}
+{array_assertion}"#,
         name = function.public_api.name,
         cases_name = cases_name,
-        output_count = output_count,
+        result_cls = result_cls,
         array_assertion = array_assertion,
         out_assertion = out_assertion,
     )
