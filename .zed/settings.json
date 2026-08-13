@@ -1,0 +1,13 @@
+{
+  "languages": {
+    "Python": {
+      "language_servers": [
+        // Enable ty and ruff,
+        // Other built-in servers (basedpyright, pyright, pylsp)
+        // are disabled by being omitted from this list.
+        "ty",
+        "ruff"
+      ]
+    }
+  }
+}

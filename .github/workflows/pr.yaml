@@ -80,9 +80,7 @@ jobs:
       - name: Check ptfkit-py types
         id: ptfkit-py-typescheck
         continue-on-error: true
-        run: |
-          uv run --directory targets/ptfkit-py --no-sync mypy |
-          uv run --directory targets/ptfkit-py --no-sync mypy-gh-action-report
+        run: uv run --directory targets/ptfkit-py --no-sync ty check --output-format=github
 
       - name: Check ptfkit-rs formatting
         id: ptfkit-rs-format

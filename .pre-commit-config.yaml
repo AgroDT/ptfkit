@@ -58,9 +58,9 @@ repos:
         entry: uv
         args: [--project, targets/ptfkit-py, run, --no-sync, ruff, format]
         types: [file, python]
-      - id: mypy
-        name: mypy
+      - id: ty-check
+        name: ty check
         language: system
         entry: uv
-        args: [--project, targets/ptfkit-py, run, --no-sync, mypy]
+        args: [--project, targets/ptfkit-py, run, --no-sync, ty, check]
         types: [file, python]

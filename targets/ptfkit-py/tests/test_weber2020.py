@@ -4,7 +4,7 @@ from __future__ import annotations
 import pytest
 
 from _helpers import prepare_vector_case
-from ptfkit.weber2020 import calc_ptf_weber2020
+from ptfkit.weber2020 import Weber2020PTFResult, calc_ptf_weber2020
 
 
 CASES_CALC_PTF_WEBER2020 = [
@@ -48,10 +48,10 @@ def test_calc_ptf_weber2020_golden(
 
 
 def test_calc_ptf_weber2020_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_WEBER2020, 7)
-
-    result = calc_ptf_weber2020(**inputs)
-
+    inputs, expected, rtol, atol, _out = prepare_vector_case(
+        CASES_CALC_PTF_WEBER2020, Weber2020PTFResult
+    )
+    result = calc_ptf_weber2020(**inputs, out=None)
     assert result.theta_snc_bw[0] == pytest.approx(expected['theta_snc_bw'], rel=rtol, abs=atol)
     assert result.theta_sc_bw[0] == pytest.approx(expected['theta_sc_bw'], rel=rtol, abs=atol)
     assert result.alpha_bw[0] == pytest.approx(expected['alpha_bw'], rel=rtol, abs=atol)
@@ -62,10 +62,10 @@ def test_calc_ptf_weber2020_array():
 
 
 def test_calc_ptf_weber2020_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_WEBER2020, 7)
-
+    inputs, expected, rtol, atol, out = prepare_vector_case(
+        CASES_CALC_PTF_WEBER2020, Weber2020PTFResult
+    )
     result = calc_ptf_weber2020(**inputs, out=out)
-
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
     assert result.theta_snc_bw[0] == pytest.approx(expected['theta_snc_bw'], rel=rtol, abs=atol)

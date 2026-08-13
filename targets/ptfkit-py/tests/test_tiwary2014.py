@@ -4,7 +4,7 @@ from __future__ import annotations
 import pytest
 
 from _helpers import prepare_vector_case
-from ptfkit.tiwary2014 import calc_ptf_tiwary2014_bsr, calc_ptf_tiwary2014_igp
+from ptfkit.tiwary2014 import Tiwary2014PTFResult, calc_ptf_tiwary2014_bsr, calc_ptf_tiwary2014_igp
 
 
 CASES_CALC_PTF_TIWARY2014_IGP = [
@@ -22,18 +22,14 @@ def test_calc_ptf_tiwary2014_igp_golden(
 
 
 def test_calc_ptf_tiwary2014_igp_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_TIWARY2014_IGP, 1)
-
-    result = calc_ptf_tiwary2014_igp(**inputs)
-
+    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_TIWARY2014_IGP)
+    result = calc_ptf_tiwary2014_igp(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
 
 
 def test_calc_ptf_tiwary2014_igp_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_TIWARY2014_IGP, 1)
-
+    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_TIWARY2014_IGP)
     result = calc_ptf_tiwary2014_igp(**inputs, out=out)
-
     assert result is out
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
 
@@ -68,10 +64,10 @@ def test_calc_ptf_tiwary2014_bsr_golden(
 
 
 def test_calc_ptf_tiwary2014_bsr_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_TIWARY2014_BSR, 4)
-
-    result = calc_ptf_tiwary2014_bsr(**inputs)
-
+    inputs, expected, rtol, atol, _out = prepare_vector_case(
+        CASES_CALC_PTF_TIWARY2014_BSR, Tiwary2014PTFResult
+    )
+    result = calc_ptf_tiwary2014_bsr(**inputs, out=None)
     assert result.w_33[0] == pytest.approx(expected['w_33'], rel=rtol, abs=atol)
     assert result.w_100[0] == pytest.approx(expected['w_100'], rel=rtol, abs=atol)
     assert result.w_1500[0] == pytest.approx(expected['w_1500'], rel=rtol, abs=atol)
@@ -79,10 +75,10 @@ def test_calc_ptf_tiwary2014_bsr_array():
 
 
 def test_calc_ptf_tiwary2014_bsr_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_TIWARY2014_BSR, 4)
-
+    inputs, expected, rtol, atol, out = prepare_vector_case(
+        CASES_CALC_PTF_TIWARY2014_BSR, Tiwary2014PTFResult
+    )
     result = calc_ptf_tiwary2014_bsr(**inputs, out=out)
-
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
     assert result.w_33[0] == pytest.approx(expected['w_33'], rel=rtol, abs=atol)

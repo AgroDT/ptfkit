@@ -1,2 +1,6 @@
 # Local environment overrides
 .env*.local
+
+# Test coverage
+.coverage*
+coverage.xml

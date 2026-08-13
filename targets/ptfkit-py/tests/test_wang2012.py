@@ -4,7 +4,7 @@ from __future__ import annotations
 import pytest
 
 from _helpers import prepare_vector_case
-from ptfkit.wang2012 import calc_ptf_wang2012
+from ptfkit.wang2012 import Wang2012PTFResult, calc_ptf_wang2012
 
 
 CASES_CALC_PTF_WANG2012 = [
@@ -36,20 +36,20 @@ def test_calc_ptf_wang2012_golden(
 
 
 def test_calc_ptf_wang2012_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_WANG2012, 3)
-
-    result = calc_ptf_wang2012(**inputs)
-
+    inputs, expected, rtol, atol, _out = prepare_vector_case(
+        CASES_CALC_PTF_WANG2012, Wang2012PTFResult
+    )
+    result = calc_ptf_wang2012(**inputs, out=None)
     assert result.theta_s[0] == pytest.approx(expected['theta_s'], rel=rtol, abs=atol)
     assert result.theta_fc[0] == pytest.approx(expected['theta_fc'], rel=rtol, abs=atol)
     assert result.k_sat[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
 
 
 def test_calc_ptf_wang2012_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_WANG2012, 3)
-
+    inputs, expected, rtol, atol, out = prepare_vector_case(
+        CASES_CALC_PTF_WANG2012, Wang2012PTFResult
+    )
     result = calc_ptf_wang2012(**inputs, out=out)
-
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
     assert result.theta_s[0] == pytest.approx(expected['theta_s'], rel=rtol, abs=atol)

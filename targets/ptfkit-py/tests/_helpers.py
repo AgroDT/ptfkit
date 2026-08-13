@@ -1,28 +1,46 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING, NamedTuple, TypeVar, overload
+
 import numpy as np
 
 
-TYPE_CHECKING = False
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
+    R = TypeVar('R', bound=NamedTuple)
+
     GoldenCase = tuple[dict[str, float], dict[str, float], float, float]
-    VectorCase = tuple[
+    VectorCasePart = tuple[
         dict[str, np.ndarray],
         dict[str, float],
         float,
         float,
-        np.ndarray | tuple[np.ndarray, ...],
     ]
+    VectorCaseScalar = tuple[*VectorCasePart, np.ndarray]
+    VectorCaseTuple = tuple[*VectorCasePart, R]
 
 
-def prepare_vector_case(cases: Sequence[GoldenCase], output_count: int) -> VectorCase:
+@overload
+def prepare_vector_case(cases: Sequence[GoldenCase]) -> VectorCaseScalar: ...
+
+
+@overload
+def prepare_vector_case(cases: Sequence[GoldenCase], result_type: type[R]) -> VectorCaseTuple: ...
+
+
+def prepare_vector_case(
+    cases: Sequence[GoldenCase],
+    result_cls: type[R] | None = None,
+) -> VectorCaseScalar | VectorCaseTuple:
     inputs, expected, rtol, atol = cases[0]
     vector_inputs = {name: np.array([value]) for name, value in inputs.items()}
-    out: np.ndarray | tuple[np.ndarray, ...]
-    if output_count == 1:
+    out: np.ndarray | R
+
+    if result_cls is None:
         out = np.empty(1, dtype=float)
     else:
-        out = tuple(np.empty(1, dtype=float) for _ in range(output_count))
+        field_count = len(result_cls._fields)
+        out = result_cls(*(np.empty(1, dtype=float) for _ in range(field_count)))
+
     return vector_inputs, expected, rtol, atol, out
