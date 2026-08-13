@@ -71,9 +71,11 @@ fn function_source(function: &Function) -> String {
         .collect::<Vec<_>>()
         .join("\n");
     let assertion = expected_assertion(function, "    ", "");
-    let vector_tests = (!function.golden_tests.is_empty())
-        .then(|| vector_test_source(function, &cases_name))
-        .unwrap_or_default();
+    let vector_tests = if !function.golden_tests.is_empty() {
+        vector_test_source(function, &cases_name)
+    } else {
+        Default::default()
+    };
     format!(
         "{cases_name} = [\n{cases}\n]\n\n\n@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), {cases_name})\ndef test_{name}_golden(inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float):\n    result = {name}(**inputs)\n\n{assertion}{vector_tests}",
         cases_name = cases_name,
