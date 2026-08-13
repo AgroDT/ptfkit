@@ -18,6 +18,15 @@ jobs:
         with:
           components: clippy, rustfmt
 
+      - name: Set up Rust Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            codegen/target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('codegen/Cargo.toml') }}
+
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
