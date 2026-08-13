@@ -18,6 +18,12 @@ jobs:
         with:
           components: clippy, rustfmt
 
+      - name: Check generated files
+        run: |
+          cargo run --manifest-path codegen/Cargo.toml generate
+          git diff --exit-code
+          test -z "$(git status --porcelain)"
+
       - name: Check codegen formatting
         run: cargo fmt --manifest-path codegen/Cargo.toml --all --check
 
@@ -81,17 +87,6 @@ jobs:
 
       - name: Install the project
         run: uv sync --project targets/ptfkit-py --frozen --all-groups
-
-      - name: Set up Rust
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          components: rustfmt
-
-      - name: Check generated files
-        run: |
-          cargo run --manifest-path codegen/Cargo.toml generate
-          git diff --exit-code
-          test -z "$(git status --porcelain)"
 
       - name: Ruff check
         id: ruff-check
