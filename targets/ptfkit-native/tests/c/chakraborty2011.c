@@ -5,46 +5,46 @@
 
 int main() {
     {
-        const ptfkit_Chakraborty2011PTFResult_result result = calc_ptf_chakraborty2011_eq1(20.00000000000000000, 30.00000000000000000);
-        assert_close_enough(result.water_content_33, 0.24879999999999999, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.water_content_100, 0.19758000000000001, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.water_content_500, 0.13528000000000001, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.water_content_1500, 0.11702000000000000, 0.00000000000100000, 0.00000000000100000);
+        const ptfkit_Chakraborty2011PTFResult_result result = calc_ptf_chakraborty2011_eq1(20.0, 30.0);
+        assert_close_enough(result.water_content_33, 0.2488, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.water_content_100, 0.19758, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.water_content_500, 0.13528, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.water_content_1500, 0.11702, 0.000000000001, 0.000000000001);
     }
     {
-        const ptfkit_Chakraborty2011PTFResult_result result = calc_ptf_chakraborty2011_eq2(50.00000000000000000, 1.50000000000000000);
-        assert_close_enough(result.water_content_33, 0.21941500000000000, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.water_content_100, 0.17576500000000000, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.water_content_500, 0.14102500000000001, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.water_content_1500, 0.11831500000000000, 0.00000000000100000, 0.00000000000100000);
+        const ptfkit_Chakraborty2011PTFResult_result result = calc_ptf_chakraborty2011_eq2(50.0, 1.5);
+        assert_close_enough(result.water_content_33, 0.219415, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.water_content_100, 0.175765, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.water_content_500, 0.141025, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.water_content_1500, 0.118315, 0.000000000001, 0.000000000001);
     }
     {
-        const ptfkit_Chakraborty2011PTFResult_result result = calc_ptf_chakraborty2011_eq3(20.00000000000000000, 30.00000000000000000, 1.50000000000000000);
-        assert_close_enough(result.water_content_33, 0.25775999999999999, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.water_content_100, 0.20108500000000001, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.water_content_500, 0.13917499999999999, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.water_content_1500, 0.11786500000000000, 0.00000000000100000, 0.00000000000100000);
+        const ptfkit_Chakraborty2011PTFResult_result result = calc_ptf_chakraborty2011_eq3(20.0, 30.0, 1.5);
+        assert_close_enough(result.water_content_33, 0.25776, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.water_content_100, 0.201085, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.water_content_500, 0.139175, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.water_content_1500, 0.117865, 0.000000000001, 0.000000000001);
     }
     {
-        const ptfkit_Chakraborty2011PTFResult_result result = calc_ptf_chakraborty2011_eq4(20.00000000000000000, 30.00000000000000000, 50.00000000000000000);
-        assert_close_enough(result.water_content_33, 0.24396999999999999, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.water_content_100, 0.19234999999999999, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.water_content_500, 0.13116000000000000, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.water_content_1500, 0.11325000000000000, 0.00000000000100000, 0.00000000000100000);
+        const ptfkit_Chakraborty2011PTFResult_result result = calc_ptf_chakraborty2011_eq4(20.0, 30.0, 50.0);
+        assert_close_enough(result.water_content_33, 0.24397, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.water_content_100, 0.19235, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.water_content_500, 0.13116, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.water_content_1500, 0.11325, 0.000000000001, 0.000000000001);
     }
     {
-        const ptfkit_Chakraborty2011PTFResult_result result = calc_ptf_chakraborty2011_eq5(20.00000000000000000, 30.00000000000000000, 50.00000000000000000, 1.50000000000000000);
-        assert_close_enough(result.water_content_33, 0.24978500000000001, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.water_content_100, 0.19166000000000000, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.water_content_500, 0.13106499999999999, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.water_content_1500, 0.11059500000000000, 0.00000000000100000, 0.00000000000100000);
+        const ptfkit_Chakraborty2011PTFResult_result result = calc_ptf_chakraborty2011_eq5(20.0, 30.0, 50.0, 1.5);
+        assert_close_enough(result.water_content_33, 0.249785, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.water_content_100, 0.19166, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.water_content_500, 0.131065, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.water_content_1500, 0.110595, 0.000000000001, 0.000000000001);
     }
     {
-        const ptfkit_Chakraborty2011PTFResult_result result = calc_ptf_chakraborty2011_eq6(20.00000000000000000, 30.00000000000000000, 50.00000000000000000, 0.50000000000000000, 1.50000000000000000);
-        assert_close_enough(result.water_content_33, 0.25207000000000002, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.water_content_100, 0.19694999999999999, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.water_content_500, 0.13364000000000001, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.water_content_1500, 0.11317500000000000, 0.00000000000100000, 0.00000000000100000);
+        const ptfkit_Chakraborty2011PTFResult_result result = calc_ptf_chakraborty2011_eq6(20.0, 30.0, 50.0, 0.5, 1.5);
+        assert_close_enough(result.water_content_33, 0.25207, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.water_content_100, 0.19695, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.water_content_500, 0.13364, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.water_content_1500, 0.113175, 0.000000000001, 0.000000000001);
     }
     return 0;
 }

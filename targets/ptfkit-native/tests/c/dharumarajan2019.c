@@ -5,28 +5,28 @@
 
 int main() {
     {
-        const ptfkit_Dharumarajan2019WaterRetentionResult_result result = calc_ptf_dharumarajan2019_nkp(43.20000000000000284, 39.79999999999999716, 33.60000000000000142);
-        assert_close_enough(result.field_capacity, 29.79119999999999990, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.permanent_wilting_point, 18.92760000000000176, 0.00000000000100000, 0.00000000000100000);
+        const ptfkit_Dharumarajan2019WaterRetentionResult_result result = calc_ptf_dharumarajan2019_nkp(43.2, 39.8, 33.6);
+        assert_close_enough(result.field_capacity, 29.7912, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.permanent_wilting_point, 18.9276, 0.000000000001, 0.000000000001);
     }
     {
-        const ptfkit_Dharumarajan2019WaterRetentionResult_result result = calc_ptf_dharumarajan2019_nkp_clay(43.20000000000000284);
-        assert_close_enough(result.field_capacity, 30.28320000000000078, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.permanent_wilting_point, 19.15700000000000003, 0.00000000000100000, 0.00000000000100000);
+        const ptfkit_Dharumarajan2019WaterRetentionResult_result result = calc_ptf_dharumarajan2019_nkp_clay(43.2);
+        assert_close_enough(result.field_capacity, 30.2832, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.permanent_wilting_point, 19.157, 0.000000000001, 0.000000000001);
     }
     {
-        const ptfkit_Dharumarajan2019WaterRetentionResult_result result = calc_ptf_dharumarajan2019_skp(31.50000000000000000, 53.50000000000000000, 14.69999999999999929);
-        assert_close_enough(result.field_capacity, 21.81690000000000040, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.permanent_wilting_point, 11.30540000000000056, 0.00000000000100000, 0.00000000000100000);
+        const ptfkit_Dharumarajan2019WaterRetentionResult_result result = calc_ptf_dharumarajan2019_skp(31.5, 53.5, 14.7);
+        assert_close_enough(result.field_capacity, 21.8169, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.permanent_wilting_point, 11.3054, 0.000000000001, 0.000000000001);
     }
     {
-        const ptfkit_Dharumarajan2019WaterRetentionResult_result result = calc_ptf_dharumarajan2019_skp_clay(31.50000000000000000);
-        assert_close_enough(result.field_capacity, 22.02550000000000097, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.permanent_wilting_point, 11.50300000000000011, 0.00000000000100000, 0.00000000000100000);
+        const ptfkit_Dharumarajan2019WaterRetentionResult_result result = calc_ptf_dharumarajan2019_skp_clay(31.5);
+        assert_close_enough(result.field_capacity, 22.0255, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.permanent_wilting_point, 11.503, 0.000000000001, 0.000000000001);
     }
     {
-        const double result = calc_ptf_dharumarajan2019_infiltration(50.00000000000000000, 20.00000000000000000, 30.00000000000000000);
-        assert_close_enough(result, 18.44999999999999929, 0.00000000000100000, 0.00000000000100000);
+        const double result = calc_ptf_dharumarajan2019_infiltration(50.0, 20.0, 30.0);
+        assert_close_enough(result, 18.45, 0.000000000001, 0.000000000001);
     }
     return 0;
 }

@@ -5,10 +5,10 @@
 
 int main() {
     {
-        const ptfkit_calc_ptf_wang2012_result result = calc_ptf_wang2012(85.00000000000000000, 10.00000000000000000, 5.00000000000000000, 1.21999999999999997, 0.03300000000000000, 1193.00000000000000000);
-        assert_close_enough(result.theta_s, 0.61540574999999997, 0.00000000000100000, 0.00000100000000000);
-        assert_close_enough(result.theta_fc, 0.38491948999999998, 0.00000000000100000, 0.00000100000000000);
-        assert_close_enough(result.k_sat, 0.00003872974000000, 0.00000000000100000, 0.00000100000000000);
+        const ptfkit_calc_ptf_wang2012_result result = calc_ptf_wang2012(85.0, 10.0, 5.0, 1.22, 0.033, 1193.0);
+        assert_close_enough(result.theta_s, 0.61540575, 0.000000000001, 0.000001);
+        assert_close_enough(result.theta_fc, 0.38491949, 0.000000000001, 0.000001);
+        assert_close_enough(result.k_sat, 0.00003872974, 0.000000000001, 0.000001);
     }
     return 0;
 }

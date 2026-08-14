@@ -11,28 +11,28 @@ import ptfkit.rawls1982;
 
 int main() {
     {
-        const auto result = ptfkit::rawls1982::calc_ptf_rawls1982_theta_1500(5.12000000000000011, 0.10000000000000001);
-        assert_close_enough(result, 0.05318000000000000, 0.00000000000100000, 0.00000000010000000);
+        const auto result = ptfkit::rawls1982::calc_ptf_rawls1982_theta_1500(5.12, 0.1);
+        assert_close_enough(result, 0.05318, 0.000000000001, 0.0000000001);
     }
     {
-        const auto result = ptfkit::rawls1982::calc_ptf_rawls1982_theta_33(85.00000000000000000, 0.10000000000000001, 0.05318000000000000);
-        assert_close_enough(result, 0.11798960000000000, 0.00000000000100000, 0.00000000010000000);
+        const auto result = ptfkit::rawls1982::calc_ptf_rawls1982_theta_33(85.0, 0.1, 0.05318);
+        assert_close_enough(result, 0.1179896, 0.000000000001, 0.0000000001);
     }
     {
-        const auto result = ptfkit::rawls1982::calc_ptf_rawls1982_full_wrc(85.00000000000000000, 0.66000000000000003, 1.21999999999999997, 0.09100000000000000, 0.03300000000000000);
+        const auto result = ptfkit::rawls1982::calc_ptf_rawls1982_full_wrc(85.0, 0.66, 1.22, 0.091, 0.033);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>, ptfkit::rawls1982::Rawls1982PTFResult>);
-        assert_close_enough(result.theta_4, 0.24724199999999999, 0.00000000000100000, 0.00000000010000000);
-        assert_close_enough(result.theta_7, 0.96873799999999999, 0.00000000000100000, 0.00000000010000000);
-        assert_close_enough(result.theta_10, 0.14558800000000000, 0.00000000000100000, 0.00000000010000000);
-        assert_close_enough(result.theta_20, 0.10483000000000001, 0.00000000000100000, 0.00000000010000000);
-        assert_close_enough(result.theta_33, 0.09100000000000000, 0.00000000000100000, 0.00000000010000000);
-        assert_close_enough(result.theta_60, 0.07542800000000000, 0.00000000000100000, 0.00000000010000000);
-        assert_close_enough(result.theta_100, 0.06319200000000000, 0.00000000000100000, 0.00000000010000000);
-        assert_close_enough(result.theta_200, 0.05294600000000000, 0.00000000000100000, 0.00000000010000000);
-        assert_close_enough(result.theta_400, 0.04582600000000000, 0.00000000000100000, 0.00000000010000000);
-        assert_close_enough(result.theta_700, 0.04182400000000000, 0.00000000000100000, 0.00000000010000000);
-        assert_close_enough(result.theta_1000, 0.03893200000000000, 0.00000000000100000, 0.00000000010000000);
-        assert_close_enough(result.theta_1500, 0.03300000000000000, 0.00000000000100000, 0.00000000010000000);
+        assert_close_enough(result.theta_4, 0.247242, 0.000000000001, 0.0000000001);
+        assert_close_enough(result.theta_7, 0.968738, 0.000000000001, 0.0000000001);
+        assert_close_enough(result.theta_10, 0.145588, 0.000000000001, 0.0000000001);
+        assert_close_enough(result.theta_20, 0.10483, 0.000000000001, 0.0000000001);
+        assert_close_enough(result.theta_33, 0.091, 0.000000000001, 0.0000000001);
+        assert_close_enough(result.theta_60, 0.075428, 0.000000000001, 0.0000000001);
+        assert_close_enough(result.theta_100, 0.063192, 0.000000000001, 0.0000000001);
+        assert_close_enough(result.theta_200, 0.052946, 0.000000000001, 0.0000000001);
+        assert_close_enough(result.theta_400, 0.045826, 0.000000000001, 0.0000000001);
+        assert_close_enough(result.theta_700, 0.041824, 0.000000000001, 0.0000000001);
+        assert_close_enough(result.theta_1000, 0.038932, 0.000000000001, 0.0000000001);
+        assert_close_enough(result.theta_1500, 0.033, 0.000000000001, 0.0000000001);
     }
     return 0;
 }

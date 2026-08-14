@@ -11,28 +11,28 @@ import ptfkit.li2007;
 
 int main() {
     {
-        const auto result = ptfkit::li2007::calc_ptf_li2007(85.00000000000000000, 10.00000000000000000, 5.00000000000000000, 1.19999999999999996, 0.20999999999999999);
+        const auto result = ptfkit::li2007::calc_ptf_li2007(85.0, 10.0, 5.0, 1.2, 0.21);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>, ptfkit::li2007::Li2007PTFResult>);
-        assert_close_enough(result.theta_s, 0.52568035831574988, 0.00000000000100000, 0.00000001000000000);
-        assert_close_enough(result.a_vg, 0.94914647583071421, 0.00000000000100000, 0.00000001000000000);
-        assert_close_enough(result.n_vg, 1.16578049809970063, 0.00000000000100000, 0.00000001000000000);
-        assert_close_enough(result.k_sat, 0.00000654911036733, 0.00000000000100000, 0.00000001000000000);
+        assert_close_enough(result.theta_s, 0.5256803583157499, 0.000000000001, 0.00000001);
+        assert_close_enough(result.a_vg, 0.9491464758307142, 0.000000000001, 0.00000001);
+        assert_close_enough(result.n_vg, 1.1657804980997006, 0.000000000001, 0.00000001);
+        assert_close_enough(result.k_sat, 0.000006549110367333547, 0.000000000001, 0.00000001);
     }
     {
-        const auto result = ptfkit::li2007::calc_ptf_li2007(50.22999999999999687, 38.71999999999999886, 11.05000000000000071, 1.41999999999999993, 0.65000000000000002);
+        const auto result = ptfkit::li2007::calc_ptf_li2007(50.23, 38.72, 11.05, 1.42, 0.65);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>, ptfkit::li2007::Li2007PTFResult>);
-        assert_close_enough(result.theta_s, 0.49659526127697506, 0.00000000000100000, 0.00000001000000000);
-        assert_close_enough(result.a_vg, 0.00951998984195073, 0.00000000000100000, 0.00000001000000000);
-        assert_close_enough(result.n_vg, 1.18062863551490538, 0.00000000000100000, 0.00000001000000000);
-        assert_close_enough(result.k_sat, 0.00000045117324656, 0.00000000000100000, 0.00000001000000000);
+        assert_close_enough(result.theta_s, 0.49659526127697506, 0.000000000001, 0.00000001);
+        assert_close_enough(result.a_vg, 0.009519989841950734, 0.000000000001, 0.00000001);
+        assert_close_enough(result.n_vg, 1.1806286355149054, 0.000000000001, 0.00000001);
+        assert_close_enough(result.k_sat, 0.00000045117324656202257, 0.000000000001, 0.00000001);
     }
     {
-        const auto result = ptfkit::li2007::calc_ptf_li2007(12.88000000000000078, 60.00000000000000000, 27.12000000000000099, 1.47999999999999998, 1.02000000000000002);
+        const auto result = ptfkit::li2007::calc_ptf_li2007(12.88, 60.0, 27.12, 1.48, 1.02);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>, ptfkit::li2007::Li2007PTFResult>);
-        assert_close_enough(result.theta_s, 0.40530615106186091, 0.00000000000100000, 0.00000001000000000);
-        assert_close_enough(result.a_vg, 0.00185304007623718, 0.00000000000100000, 0.00000001000000000);
-        assert_close_enough(result.n_vg, 1.20804287397974330, 0.00000000000100000, 0.00000001000000000);
-        assert_close_enough(result.k_sat, 0.00000151514326321, 0.00000000000100000, 0.00000001000000000);
+        assert_close_enough(result.theta_s, 0.4053061510618609, 0.000000000001, 0.00000001);
+        assert_close_enough(result.a_vg, 0.0018530400762371828, 0.000000000001, 0.00000001);
+        assert_close_enough(result.n_vg, 1.2080428739797433, 0.000000000001, 0.00000001);
+        assert_close_enough(result.k_sat, 0.0000015151432632107234, 0.000000000001, 0.00000001);
     }
     return 0;
 }
