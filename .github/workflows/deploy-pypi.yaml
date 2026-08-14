@@ -11,17 +11,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Install uv
-        uses: astral-sh/setup-uv@v7
-        with:
-          enable-cache: true
+        uses: astral-sh/setup-uv@v10.0.1
 
       - name: Build SDist
         run: uv build --directory targets/ptfkit-py --sdist
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: cibw-sdist
           path: targets/ptfkit-py/dist/*.tar.gz
@@ -46,7 +44,7 @@ jobs:
             runs-on: macos-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v4.2.0
@@ -56,7 +54,7 @@ jobs:
         env:
           CIBW_BUILD_FRONTEND: uv
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: targets/ptfkit-py/wheelhouse/*.whl
@@ -73,7 +71,7 @@ jobs:
     if: github.event_name == 'release' && github.event.action == 'published'
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v8
         with:
           pattern: cibw-*
           path: targets/ptfkit-py/dist
