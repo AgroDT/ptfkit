@@ -12,28 +12,32 @@ import ptfkit.varallyai1982;
 int main() {
     {
         const auto result = ptfkit::varallyai1982::calc_ptf_varallyai1982_meadow(1.4, 0.3, 0.25);
-        static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>, ptfkit::varallyai1982::Varallyai1982Parameters>);
+        static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
+                                     ptfkit::varallyai1982::Varallyai1982Parameters>);
         assert_close_enough(result.theta_0, 46.54495, 0.000000000001, 0.000000000001);
         assert_close_enough(result.m, 0.10029, 0.000000000001, 0.000000000001);
         assert_close_enough(result.pf_star, 3.62445, 0.000000000001, 0.000000000001);
     }
     {
         const auto result = ptfkit::varallyai1982::calc_ptf_varallyai1982_chernozem_a(1.4, 0.35);
-        static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>, ptfkit::varallyai1982::Varallyai1982Parameters>);
+        static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
+                                     ptfkit::varallyai1982::Varallyai1982Parameters>);
         assert_close_enough(result.theta_0, 52.005, 0.000000000001, 0.000000000001);
         assert_close_enough(result.m, 0.4174, 0.000000000001, 0.000000000001);
         assert_close_enough(result.pf_star, 4.00469, 0.000000000001, 0.000000000001);
     }
     {
         const auto result = ptfkit::varallyai1982::calc_ptf_varallyai1982_chernozem_b(1.4, 0.35);
-        static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>, ptfkit::varallyai1982::Varallyai1982Parameters>);
+        static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
+                                     ptfkit::varallyai1982::Varallyai1982Parameters>);
         assert_close_enough(result.theta_0, 47.60035, 0.000000000001, 0.000000000001);
         assert_close_enough(result.m, 0.407, 0.000000000001, 0.000000000001);
         assert_close_enough(result.pf_star, 3.9299, 0.000000000001, 0.000000000001);
     }
     {
         const auto result = ptfkit::varallyai1982::calc_ptf_varallyai1982_chernozem_c(1.4, 0.35);
-        static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>, ptfkit::varallyai1982::Varallyai1982Parameters>);
+        static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
+                                     ptfkit::varallyai1982::Varallyai1982Parameters>);
         assert_close_enough(result.theta_0, 49.87, 0.000000000001, 0.000000000001);
         assert_close_enough(result.m, 0.84011, 0.000000000001, 0.000000000001);
         assert_close_enough(result.pf_star, 3.59772, 0.000000000001, 0.000000000001);

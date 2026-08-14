@@ -59,9 +59,10 @@ export namespace ptfkit::ahuja1984 {
  * total_porosity must be greater than or equal to theta_33.
  */
 [[nodiscard]]
-inline double calc_ptf_ahuja1984(double total_porosity, double theta_33, double coefficient_b, double exponent_n) {
+inline double calc_ptf_ahuja1984(double total_porosity, double theta_33, double coefficient_b,
+                                 double exponent_n) {
     const double effective_porosity = total_porosity - theta_33;
     return coefficient_b * std::pow(effective_porosity, exponent_n);
 }
 
-}  // namespace ptfkit::ahuja1984
+} // namespace ptfkit::ahuja1984

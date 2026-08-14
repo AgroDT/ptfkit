@@ -11,16 +11,20 @@ import ptfkit.vereecken1989;
 
 int main() {
     {
-        const auto result = ptfkit::vereecken1989::calc_ptf_vereecken1989(52.14, 10.93, 1.03, 1.466);
-        static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>, ptfkit::vereecken1989::Vereecken1989PTFResult>);
+        const auto result =
+            ptfkit::vereecken1989::calc_ptf_vereecken1989(52.14, 10.93, 1.03, 1.466);
+        static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
+                                     ptfkit::vereecken1989::Vereecken1989PTFResult>);
         assert_close_enough(result.theta_r, 0.08406999999999999, 0.000000000001, 0.000000000001);
         assert_close_enough(result.theta_s, 0.4060520000000001, 0.000000000001, 0.000000000001);
         assert_close_enough(result.alpha, 0.003581613076579849, 0.000000000001, 0.000000000001);
         assert_close_enough(result.n, 0.8602234826041976, 0.000000000001, 0.000000000001);
     }
     {
-        const auto result = ptfkit::vereecken1989::calc_ptf_vereecken1989_detailed(0.25, 0.88, 13.53, 21.15, 16.3, 24.83, 7.0, 5.15, 10.93, 0.07, 4.07, 1.03, 1.466);
-        static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>, ptfkit::vereecken1989::Vereecken1989DetailedPTFResult>);
+        const auto result = ptfkit::vereecken1989::calc_ptf_vereecken1989_detailed(
+            0.25, 0.88, 13.53, 21.15, 16.3, 24.83, 7.0, 5.15, 10.93, 0.07, 4.07, 1.03, 1.466);
+        static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
+                                     ptfkit::vereecken1989::Vereecken1989DetailedPTFResult>);
         assert_close_enough(result.theta_r, 0.08277820000000001, 0.000000000001, 0.000000000001);
         assert_close_enough(result.theta_s, 0.4060520000000001, 0.000000000001, 0.000000000001);
         assert_close_enough(result.alpha, 0.02522115884641546, 0.000000000001, 0.000000000001);

@@ -31,7 +31,7 @@ struct Mayr1999PTFResult {
     double b_hc;
     /** Volumetric soil water content at saturation. (m^3/m^3) */
     double theta_s;
- };
+};
 
 /**
  * Estimate modified Brooks-Corey a, b, and saturated water content from texture, bulk density,
@@ -65,13 +65,23 @@ struct Mayr1999PTFResult {
  * paper provides that distribution only graphically.
  */
 [[nodiscard]]
-inline Mayr1999PTFResult calc_ptf_mayr1999(double sand, double silt, double clay, double bulk_density, double organic_carbon) {
-    const double log10_a_hc = -4.9840297533 + 0.0509226283 * sand + 0.1575152771 * silt + 0.1240901644 * bulk_density - 0.1640033143 * organic_carbon - 0.0021767278 * std::pow(silt, 2.0) + 1.438224e-5 * std::pow(silt, 3.0) + 8.040715e-4 * std::pow(clay, 2.0) + 0.0044067117 * std::pow(organic_carbon, 2.0);
-    const double log10_inv_b_hc = -0.8466880654 - 0.0046806123 * sand + 0.0092463819 * silt - 0.4542769707 * bulk_density - 0.0497915563 * organic_carbon + 3.294687e-4 * std::pow(sand, 2.0) - 1.689056e-6 * std::pow(sand, 3.0) + 0.0011225373 * std::pow(organic_carbon, 2.0);
+inline Mayr1999PTFResult calc_ptf_mayr1999(double sand, double silt, double clay,
+                                           double bulk_density, double organic_carbon) {
+    const double log10_a_hc =
+        -4.9840297533 + 0.0509226283 * sand + 0.1575152771 * silt + 0.1240901644 * bulk_density -
+        0.1640033143 * organic_carbon - 0.0021767278 * std::pow(silt, 2.0) +
+        1.438224e-5 * std::pow(silt, 3.0) + 8.040715e-4 * std::pow(clay, 2.0) +
+        0.0044067117 * std::pow(organic_carbon, 2.0);
+    const double log10_inv_b_hc =
+        -0.8466880654 - 0.0046806123 * sand + 0.0092463819 * silt - 0.4542769707 * bulk_density -
+        0.0497915563 * organic_carbon + 3.294687e-4 * std::pow(sand, 2.0) -
+        1.689056e-6 * std::pow(sand, 3.0) + 0.0011225373 * std::pow(organic_carbon, 2.0);
     const double a_hc = std::pow(10.0, log10_a_hc);
     const double b_hc = std::pow(10.0, -log10_inv_b_hc);
-    const double theta_s = 0.2345971971 + 0.0046614221 * sand + 0.0088163314 * silt + 0.0064338641 * clay - 0.3028160229 * bulk_density + 1.79762e-5 * std::pow(sand, 2.0) - 3.134631e-5 * std::pow(silt, 2.0);
+    const double theta_s = 0.2345971971 + 0.0046614221 * sand + 0.0088163314 * silt +
+                           0.0064338641 * clay - 0.3028160229 * bulk_density +
+                           1.79762e-5 * std::pow(sand, 2.0) - 3.134631e-5 * std::pow(silt, 2.0);
     return Mayr1999PTFResult{a_hc, b_hc, theta_s};
 }
 
-}  // namespace ptfkit::mayr1999
+} // namespace ptfkit::mayr1999

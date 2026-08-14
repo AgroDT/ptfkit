@@ -29,7 +29,7 @@ struct Tiwary2014PTFResult {
     double w_1500;
     /** Saturated hydraulic conductivity converted from mm/h. (m/s) */
     double k_sat;
- };
+};
 
 /**
  * Estimate saturated conductivity for Indo-Gangetic Plains soils.
@@ -80,7 +80,9 @@ inline double calc_ptf_tiwary2014_igp(double sand, double bulk_density, double e
  * 46 profiles.
  */
 [[nodiscard]]
-inline Tiwary2014PTFResult calc_ptf_tiwary2014_bsr(double clay, double ph, double cation_exchange_capacity, double esp, double emp, double excm) {
+inline Tiwary2014PTFResult calc_ptf_tiwary2014_bsr(double clay, double ph,
+                                                   double cation_exchange_capacity, double esp,
+                                                   double emp, double excm) {
     const double w_33 = 2.583 + 0.346 * cation_exchange_capacity + 0.249 * clay + 0.494 * esp;
     const double w_100 = -1.918 + 0.383 * cation_exchange_capacity + 0.228 * clay + 0.361 * esp;
     const double w_1500 = 0.541 + 0.306 * cation_exchange_capacity + 0.146 * esp + 0.058 * emp;
@@ -89,4 +91,4 @@ inline Tiwary2014PTFResult calc_ptf_tiwary2014_bsr(double clay, double ph, doubl
     return Tiwary2014PTFResult{w_33, w_100, w_1500, k_sat};
 }
 
-}  // namespace ptfkit::tiwary2014
+} // namespace ptfkit::tiwary2014

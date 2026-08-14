@@ -21,13 +21,15 @@
  */
 
 typedef struct {
-    /** Saturated volumetric water content normalized from the regression's volume-percent scale. (cm^3/cm^3) */
+    /** Saturated volumetric water content normalized from the regression's volume-percent scale.
+     * (cm^3/cm^3) */
     double theta_s;
-    /** Volumetric water content at -33 kPa normalized from the regression's volume-percent scale. (cm^3/cm^3) */
+    /** Volumetric water content at -33 kPa normalized from the regression's volume-percent scale.
+     * (cm^3/cm^3) */
     double theta_fc;
     /** Saturated hydraulic conductivity converted from cm/day. (m/s) */
     double k_sat;
- } ptfkit_calc_ptf_wang2012_result;
+} ptfkit_calc_ptf_wang2012_result;
 
 /**
  * Estimate saturated water content, field capacity, and saturated conductivity.
@@ -59,19 +61,31 @@ typedef struct {
  * This normalization intentionally changes the legacy water-content outputs by a factor of
  * 100.
  */
-static inline ptfkit_calc_ptf_wang2012_result calc_ptf_wang2012(double sand, double silt, double clay, double bulk_density, double soil_organic_carbon, double altitude) {
+static inline ptfkit_calc_ptf_wang2012_result calc_ptf_wang2012(double sand, double silt,
+                                                                double clay, double bulk_density,
+                                                                double soil_organic_carbon,
+                                                                double altitude) {
     const double soil_organic_carbon_g_per_kg = 10.0 * soil_organic_carbon;
-    const double log10_k_sat_cm_per_day = 1.173 + 0.038 * silt + 0.690 * log10(sand) + 0.865 / sand - 0.030 * bulk_density * silt - 0.00000995 * soil_organic_carbon_g_per_kg * altitude;
+    const double log10_k_sat_cm_per_day = 1.173 + 0.038 * silt + 0.690 * log10(sand) +
+                                          0.865 / sand - 0.030 * bulk_density * silt -
+                                          0.00000995 * soil_organic_carbon_g_per_kg * altitude;
     const double k_sat_cm_per_day = pow(10.0, log10_k_sat_cm_per_day);
-    const double fc_percent = 46.481 - 4.757 * soil_organic_carbon_g_per_kg - 14.028 * log10(clay) - 13.991 * log10(sand) + 42.261 * log10(soil_organic_carbon_g_per_kg) - 11.763 / sand + 19.198 / soil_organic_carbon_g_per_kg - 5.448 * pow(bulk_density, 2.0) + 0.044 * pow(soil_organic_carbon_g_per_kg, 2.0) + 1.975 * bulk_density * soil_organic_carbon_g_per_kg;
-    const double sswc_percent = 98.813 - 21.555 / bulk_density - 39.735 / silt - 2.091 / sand + 3.247 / soil_organic_carbon_g_per_kg - 17.096 * pow(bulk_density, 2.0);
+    const double fc_percent = 46.481 - 4.757 * soil_organic_carbon_g_per_kg - 14.028 * log10(clay) -
+                              13.991 * log10(sand) + 42.261 * log10(soil_organic_carbon_g_per_kg) -
+                              11.763 / sand + 19.198 / soil_organic_carbon_g_per_kg -
+                              5.448 * pow(bulk_density, 2.0) +
+                              0.044 * pow(soil_organic_carbon_g_per_kg, 2.0) +
+                              1.975 * bulk_density * soil_organic_carbon_g_per_kg;
+    const double sswc_percent = 98.813 - 21.555 / bulk_density - 39.735 / silt - 2.091 / sand +
+                                3.247 / soil_organic_carbon_g_per_kg -
+                                17.096 * pow(bulk_density, 2.0);
     const double theta_s = sswc_percent / 100.0;
     const double theta_fc = fc_percent / 100.0;
     const double k_sat = k_sat_cm_per_day / 8640000.0;
-    #ifdef __cplusplus
+#ifdef __cplusplus
     return ptfkit_calc_ptf_wang2012_result{theta_s, theta_fc, k_sat};
 #else
-    return (ptfkit_calc_ptf_wang2012_result) {
+    return (ptfkit_calc_ptf_wang2012_result){
         .theta_s = theta_s,
         .theta_fc = theta_fc,
         .k_sat = k_sat,

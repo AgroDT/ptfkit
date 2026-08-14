@@ -3,7 +3,6 @@
 #ifndef PTFKIT_PIDGEON1972_H
 #define PTFKIT_PIDGEON1972_H
 
-
 /**
  * Pidgeon (1972), available-water regressions for ferrallitic soils in Uganda.
  *
@@ -50,9 +49,7 @@ static inline double calc_ptf_pidgeon1972_fc(double silt, double clay, double or
  * Notes:
  * Prediction target: Gravimetric field capacity
  */
-static inline double calc_ptf_pidgeon1972_fc_sand(double sand) {
-    return 36.16 - 0.25 * sand;
-}
+static inline double calc_ptf_pidgeon1972_fc_sand(double sand) { return 36.16 - 0.25 * sand; }
 
 /**
  * Estimate gravimetric field capacity from sand and organic matter.
@@ -67,7 +64,8 @@ static inline double calc_ptf_pidgeon1972_fc_sand(double sand) {
  * Notes:
  * Prediction target: Gravimetric field capacity
  */
-static inline double calc_ptf_pidgeon1972_fc_sand_organic_matter(double sand, double organic_matter) {
+static inline double calc_ptf_pidgeon1972_fc_sand_organic_matter(double sand,
+                                                                 double organic_matter) {
     return 34.27 - 0.27 * sand + 1.25 * organic_matter;
 }
 
@@ -84,7 +82,8 @@ static inline double calc_ptf_pidgeon1972_fc_sand_organic_matter(double sand, do
  * Notes:
  * Prediction target: Volumetric field capacity
  */
-static inline double calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(double sand, double organic_matter) {
+static inline double calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(double sand,
+                                                                     double organic_matter) {
     return 38.15 - 0.17 * sand + 0.77 * organic_matter;
 }
 
@@ -118,9 +117,7 @@ static inline double calc_ptf_pidgeon1972_pwp(double silt, double clay, double o
  * Notes:
  * Prediction target: Gravimetric permanent wilting point
  */
-static inline double calc_ptf_pidgeon1972_pwp_sand(double sand) {
-    return 28.41 - 0.29 * sand;
-}
+static inline double calc_ptf_pidgeon1972_pwp_sand(double sand) { return 28.41 - 0.29 * sand; }
 
 /**
  * Estimate permanent wilting point from sand and organic matter.
@@ -135,7 +132,8 @@ static inline double calc_ptf_pidgeon1972_pwp_sand(double sand) {
  * Notes:
  * Prediction target: Gravimetric permanent wilting point
  */
-static inline double calc_ptf_pidgeon1972_pwp_sand_organic_matter(double sand, double organic_matter) {
+static inline double calc_ptf_pidgeon1972_pwp_sand_organic_matter(double sand,
+                                                                  double organic_matter) {
     return 32.90 - 0.37 * sand + 0.44 * organic_matter;
 }
 
@@ -169,7 +167,8 @@ static inline double calc_ptf_pidgeon1972_awc(double clay, double organic_matter
  * Notes:
  * Prediction target: Available water capacity
  */
-static inline double calc_ptf_pidgeon1972_awc_sand_organic_matter(double sand, double organic_matter) {
+static inline double calc_ptf_pidgeon1972_awc_sand_organic_matter(double sand,
+                                                                  double organic_matter) {
     return 1.0 + 1.84 * sand + 8.12 * organic_matter;
 }
 
@@ -251,9 +250,7 @@ static inline double calc_ptf_pidgeon1972_eawc(double silt, double clay, double 
  * Notes:
  * Prediction target: Extended available water capacity
  */
-static inline double calc_ptf_pidgeon1972_eawc_sand(double sand) {
-    return -25.8 + 1.55 * sand;
-}
+static inline double calc_ptf_pidgeon1972_eawc_sand(double sand) { return -25.8 + 1.55 * sand; }
 
 /**
  * Estimate extended available water capacity from sand and organic matter.
@@ -268,7 +265,8 @@ static inline double calc_ptf_pidgeon1972_eawc_sand(double sand) {
  * Notes:
  * Prediction target: Extended available water capacity
  */
-static inline double calc_ptf_pidgeon1972_eawc_sand_organic_matter(double sand, double organic_matter) {
+static inline double calc_ptf_pidgeon1972_eawc_sand_organic_matter(double sand,
+                                                                   double organic_matter) {
     return -10.8 + 1.15 * sand + 4.78 * organic_matter;
 }
 
@@ -285,7 +283,8 @@ static inline double calc_ptf_pidgeon1972_eawc_sand_organic_matter(double sand, 
  * Notes:
  * Prediction target: Extended available water capacity
  */
-static inline double calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(double coarse_sand, double organic_matter) {
+static inline double calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(double coarse_sand,
+                                                                          double organic_matter) {
     return -7.4 + 2.37 * coarse_sand + 6.86 * organic_matter;
 }
 
@@ -302,7 +301,8 @@ static inline double calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(double
  * Notes:
  * Prediction target: Extended available water capacity
  */
-static inline double calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(double fine_sand, double organic_matter) {
+static inline double calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(double fine_sand,
+                                                                        double organic_matter) {
     return -18.0 + 3.11 * fine_sand + 7.69 * organic_matter;
 }
 

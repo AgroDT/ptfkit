@@ -41,7 +41,8 @@ int main() {
         assert_close_enough(result.water_wilting_point, 0.15562, 0.000000000001, 0.000000000001);
     }
     {
-        const ptfkit_Beniaich2023PTFResult_result result = calc_ptf_beniaich2023_mlr1(30.0, 50.0, 2.0);
+        const ptfkit_Beniaich2023PTFResult_result result =
+            calc_ptf_beniaich2023_mlr1(30.0, 50.0, 2.0);
         assert_close_enough(result.water_saturation, 0.56266, 0.000000000001, 0.000000000001);
         assert_close_enough(result.water_field_capacity, 0.17238, 0.000000000001, 0.000000000001);
         assert_close_enough(result.water_wilting_point, 0.09366, 0.000000000001, 0.000000000001);
@@ -65,7 +66,8 @@ int main() {
         assert_close_enough(result.water_wilting_point, 0.09157, 0.000000000001, 0.000000000001);
     }
     {
-        const ptfkit_Beniaich2023PTFResult_result result = calc_ptf_beniaich2023_mlr5(20.0, 30.0, 2.0);
+        const ptfkit_Beniaich2023PTFResult_result result =
+            calc_ptf_beniaich2023_mlr5(20.0, 30.0, 2.0);
         assert_close_enough(result.water_saturation, 0.56229, 0.000000000001, 0.000000000001);
         assert_close_enough(result.water_field_capacity, 0.172, 0.000000000001, 0.000000000001);
         assert_close_enough(result.water_wilting_point, 0.09379, 0.000000000001, 0.000000000001);

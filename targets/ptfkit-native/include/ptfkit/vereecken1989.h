@@ -31,7 +31,7 @@ typedef struct {
     double alpha;
     /** Shape parameter of the van Genuchten moisture-retention model. (dimensionless) */
     double n;
- } ptfkit_calc_ptf_vereecken1989_result;
+} ptfkit_calc_ptf_vereecken1989_result;
 
 typedef struct {
     /** Residual volumetric soil water content. (cm^3/cm^3) */
@@ -42,7 +42,7 @@ typedef struct {
     double alpha;
     /** Shape parameter of the van Genuchten moisture-retention model. (dimensionless) */
     double n;
- } ptfkit_calc_ptf_vereecken1989_detailed_result;
+} ptfkit_calc_ptf_vereecken1989_detailed_result;
 
 /**
  * Estimate four parameters of the reduced van Genuchten moisture-retention model from broad
@@ -73,17 +73,19 @@ typedef struct {
  * The bulk-density maximum is reviewed as 1.730 g/cm^3 because the supplied transcription's
  * 1.230 value is inconsistent with the reported mean.
  */
-static inline ptfkit_calc_ptf_vereecken1989_result calc_ptf_vereecken1989(double sand, double clay, double carbon, double bulk_density) {
+static inline ptfkit_calc_ptf_vereecken1989_result
+calc_ptf_vereecken1989(double sand, double clay, double carbon, double bulk_density) {
     const double theta_r = 0.015 + 0.005 * clay + 0.014 * carbon;
     const double theta_s = 0.81 - 0.283 * bulk_density + 0.001 * clay;
-    const double ln_alpha = -2.486 + 0.025 * sand - 0.351 * carbon - 2.617 * bulk_density - 0.023 * clay;
+    const double ln_alpha =
+        -2.486 + 0.025 * sand - 0.351 * carbon - 2.617 * bulk_density - 0.023 * clay;
     const double alpha = exp(ln_alpha);
     const double ln_n = 0.053 - 0.009 * sand - 0.013 * clay + 0.00015 * sand * sand;
     const double n = exp(ln_n);
-    #ifdef __cplusplus
+#ifdef __cplusplus
     return ptfkit_calc_ptf_vereecken1989_result{theta_r, theta_s, alpha, n};
 #else
-    return (ptfkit_calc_ptf_vereecken1989_result) {
+    return (ptfkit_calc_ptf_vereecken1989_result){
         .theta_r = theta_r,
         .theta_s = theta_s,
         .alpha = alpha,
@@ -134,17 +136,35 @@ static inline ptfkit_calc_ptf_vereecken1989_result calc_ptf_vereecken1989(double
  * The bulk-density maximum is reviewed as 1.730 g/cm^3 because the supplied transcription's
  * 1.230 value is inconsistent with the reported mean.
  */
-static inline ptfkit_calc_ptf_vereecken1989_detailed_result calc_ptf_vereecken1989_detailed(double particle_2000_1000, double particle_1000_500, double particle_500_200, double particle_200_100, double particle_100_50, double particle_50_20, double particle_20_10, double particle_10_2, double clay, double geometric_mean_particle_size, double geometric_standard_deviation, double carbon, double bulk_density) {
-    const double theta_r = 0.027 + 0.0094 * particle_2000_1000 - 0.0035 * particle_1000_500 - 0.0004 * particle_500_200 - 0.0002 * particle_200_100 - 0.0001 * particle_100_50 - 0.00028 * particle_50_20 - 0.00006 * particle_20_10 + 0.0001 * particle_10_2 + 0.0037 * clay - 0.045 * geometric_mean_particle_size + 0.00538 * geometric_standard_deviation + 0.015 * carbon;
+static inline ptfkit_calc_ptf_vereecken1989_detailed_result calc_ptf_vereecken1989_detailed(
+    double particle_2000_1000, double particle_1000_500, double particle_500_200,
+    double particle_200_100, double particle_100_50, double particle_50_20, double particle_20_10,
+    double particle_10_2, double clay, double geometric_mean_particle_size,
+    double geometric_standard_deviation, double carbon, double bulk_density) {
+    const double theta_r = 0.027 + 0.0094 * particle_2000_1000 - 0.0035 * particle_1000_500 -
+                           0.0004 * particle_500_200 - 0.0002 * particle_200_100 -
+                           0.0001 * particle_100_50 - 0.00028 * particle_50_20 -
+                           0.00006 * particle_20_10 + 0.0001 * particle_10_2 + 0.0037 * clay -
+                           0.045 * geometric_mean_particle_size +
+                           0.00538 * geometric_standard_deviation + 0.015 * carbon;
     const double theta_s = 0.81 - 0.283 * bulk_density + 0.001 * clay;
-    const double ln_alpha = 1.245 + 0.178 * particle_2000_1000 + 0.173 * particle_1000_500 + 0.0292 * particle_500_200 + 0.0135 * particle_200_100 + 0.105 * particle_100_50 - 0.0149 * particle_50_20 - 0.118 * particle_20_10 - 0.042 * particle_10_2 - 0.0218 * clay - 14.73 * geometric_mean_particle_size - 0.179 * geometric_standard_deviation - 0.416 * carbon - 2.507 * bulk_density;
+    const double ln_alpha =
+        1.245 + 0.178 * particle_2000_1000 + 0.173 * particle_1000_500 + 0.0292 * particle_500_200 +
+        0.0135 * particle_200_100 + 0.105 * particle_100_50 - 0.0149 * particle_50_20 -
+        0.118 * particle_20_10 - 0.042 * particle_10_2 - 0.0218 * clay -
+        14.73 * geometric_mean_particle_size - 0.179 * geometric_standard_deviation -
+        0.416 * carbon - 2.507 * bulk_density;
     const double alpha = exp(ln_alpha);
-    const double ln_n = -0.0066 - 0.0147 * particle_2000_1000 + 0.0404 * particle_1000_500 + 0.00234 * particle_500_200 + 0.0047 * particle_200_100 - 0.0414 * particle_100_50 - 0.007 * particle_50_20 + 0.0300 * particle_20_10 - 0.0380 * particle_10_2 - 0.0042 * clay + 1.0322 * geometric_mean_particle_size - 0.0019 * geometric_standard_deviation;
+    const double ln_n =
+        -0.0066 - 0.0147 * particle_2000_1000 + 0.0404 * particle_1000_500 +
+        0.00234 * particle_500_200 + 0.0047 * particle_200_100 - 0.0414 * particle_100_50 -
+        0.007 * particle_50_20 + 0.0300 * particle_20_10 - 0.0380 * particle_10_2 - 0.0042 * clay +
+        1.0322 * geometric_mean_particle_size - 0.0019 * geometric_standard_deviation;
     const double n = exp(ln_n);
-    #ifdef __cplusplus
+#ifdef __cplusplus
     return ptfkit_calc_ptf_vereecken1989_detailed_result{theta_r, theta_s, alpha, n};
 #else
-    return (ptfkit_calc_ptf_vereecken1989_detailed_result) {
+    return (ptfkit_calc_ptf_vereecken1989_detailed_result){
         .theta_r = theta_r,
         .theta_s = theta_s,
         .alpha = alpha,

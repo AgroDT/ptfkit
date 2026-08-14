@@ -3,7 +3,6 @@
 #ifndef PTFKIT_TIWARY2014_H
 #define PTFKIT_TIWARY2014_H
 
-
 /**
  * Tiwary et al. (2014), hydraulic PTFs for two major soil regions of India.
  *
@@ -29,7 +28,7 @@ typedef struct {
     double w_1500;
     /** Saturated hydraulic conductivity converted from mm/h. (m/s) */
     double k_sat;
- } ptfkit_calc_ptf_tiwary2014_bsr_result;
+} ptfkit_calc_ptf_tiwary2014_bsr_result;
 
 /**
  * Estimate saturated conductivity for Indo-Gangetic Plains soils.
@@ -78,16 +77,18 @@ static inline double calc_ptf_tiwary2014_igp(double sand, double bulk_density, d
  * Water-retention equations used 75 layers from 14 profiles; equation 10 used 200 layers from
  * 46 profiles.
  */
-static inline ptfkit_calc_ptf_tiwary2014_bsr_result calc_ptf_tiwary2014_bsr(double clay, double ph, double cation_exchange_capacity, double esp, double emp, double excm) {
+static inline ptfkit_calc_ptf_tiwary2014_bsr_result
+calc_ptf_tiwary2014_bsr(double clay, double ph, double cation_exchange_capacity, double esp,
+                        double emp, double excm) {
     const double w_33 = 2.583 + 0.346 * cation_exchange_capacity + 0.249 * clay + 0.494 * esp;
     const double w_100 = -1.918 + 0.383 * cation_exchange_capacity + 0.228 * clay + 0.361 * esp;
     const double w_1500 = 0.541 + 0.306 * cation_exchange_capacity + 0.146 * esp + 0.058 * emp;
     const double k_sat_mm_per_hour = 120.637 - 13.094 * ph - 0.102 * clay + 1.151 * excm;
     const double k_sat = k_sat_mm_per_hour / 3600000.0;
-    #ifdef __cplusplus
+#ifdef __cplusplus
     return ptfkit_calc_ptf_tiwary2014_bsr_result{w_33, w_100, w_1500, k_sat};
 #else
-    return (ptfkit_calc_ptf_tiwary2014_bsr_result) {
+    return (ptfkit_calc_ptf_tiwary2014_bsr_result){
         .w_33 = w_33,
         .w_100 = w_100,
         .w_1500 = w_1500,

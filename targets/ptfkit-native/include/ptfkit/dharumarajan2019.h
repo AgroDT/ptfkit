@@ -3,7 +3,6 @@
 #ifndef PTFKIT_DHARUMARAJAN2019_H
 #define PTFKIT_DHARUMARAJAN2019_H
 
-
 /**
  * Dharumarajan et al. (2019) hydraulic PTFs for the Karnataka Plateau.
  *
@@ -28,7 +27,7 @@ typedef struct {
     double field_capacity;
     /** Soil water content at -1500 kPa matric potential. (%) */
     double permanent_wilting_point;
- } ptfkit_Dharumarajan2019WaterRetentionResult_result;
+} ptfkit_Dharumarajan2019WaterRetentionResult_result;
 
 /**
  * Estimate field capacity and wilting point for Northern Karnataka soils.
@@ -57,13 +56,17 @@ typedef struct {
  * The source gives inconsistent profile counts and district lists for the Northern dataset;
  * see the scientific notes.
  */
-static inline ptfkit_Dharumarajan2019WaterRetentionResult_result calc_ptf_dharumarajan2019_nkp(double clay, double sand, double cation_exchange_capacity) {
-    const double field_capacity = 13.82 + 0.205 * clay - 0.088 * sand + 0.316 * cation_exchange_capacity;
-    const double permanent_wilting_point = -5.776 + 0.315 * clay + 0.050 * sand + 0.271 * cation_exchange_capacity;
-    #ifdef __cplusplus
-    return ptfkit_Dharumarajan2019WaterRetentionResult_result{field_capacity, permanent_wilting_point};
+static inline ptfkit_Dharumarajan2019WaterRetentionResult_result
+calc_ptf_dharumarajan2019_nkp(double clay, double sand, double cation_exchange_capacity) {
+    const double field_capacity =
+        13.82 + 0.205 * clay - 0.088 * sand + 0.316 * cation_exchange_capacity;
+    const double permanent_wilting_point =
+        -5.776 + 0.315 * clay + 0.050 * sand + 0.271 * cation_exchange_capacity;
+#ifdef __cplusplus
+    return ptfkit_Dharumarajan2019WaterRetentionResult_result{field_capacity,
+                                                              permanent_wilting_point};
 #else
-    return (ptfkit_Dharumarajan2019WaterRetentionResult_result) {
+    return (ptfkit_Dharumarajan2019WaterRetentionResult_result){
         .field_capacity = field_capacity,
         .permanent_wilting_point = permanent_wilting_point,
     };
@@ -95,13 +98,15 @@ static inline ptfkit_Dharumarajan2019WaterRetentionResult_result calc_ptf_dharum
  * The source gives inconsistent profile counts and district lists for the Northern dataset;
  * see the scientific notes.
  */
-static inline ptfkit_Dharumarajan2019WaterRetentionResult_result calc_ptf_dharumarajan2019_nkp_clay(double clay) {
+static inline ptfkit_Dharumarajan2019WaterRetentionResult_result
+calc_ptf_dharumarajan2019_nkp_clay(double clay) {
     const double field_capacity = 4.968 + 0.586 * clay;
     const double permanent_wilting_point = -2.443 + 0.500 * clay;
-    #ifdef __cplusplus
-    return ptfkit_Dharumarajan2019WaterRetentionResult_result{field_capacity, permanent_wilting_point};
+#ifdef __cplusplus
+    return ptfkit_Dharumarajan2019WaterRetentionResult_result{field_capacity,
+                                                              permanent_wilting_point};
 #else
-    return (ptfkit_Dharumarajan2019WaterRetentionResult_result) {
+    return (ptfkit_Dharumarajan2019WaterRetentionResult_result){
         .field_capacity = field_capacity,
         .permanent_wilting_point = permanent_wilting_point,
     };
@@ -133,13 +138,17 @@ static inline ptfkit_Dharumarajan2019WaterRetentionResult_result calc_ptf_dharum
  * The paper does not state whether its water-content percentages are gravimetric or
  * volumetric.
  */
-static inline ptfkit_Dharumarajan2019WaterRetentionResult_result calc_ptf_dharumarajan2019_skp(double clay, double sand, double cation_exchange_capacity) {
-    const double field_capacity = 39.179 - 0.041 * clay - 0.371 * sand + 0.257 * cation_exchange_capacity;
-    const double permanent_wilting_point = 8.227 + 0.168 * clay - 0.101 * sand + 0.217 * cation_exchange_capacity;
-    #ifdef __cplusplus
-    return ptfkit_Dharumarajan2019WaterRetentionResult_result{field_capacity, permanent_wilting_point};
+static inline ptfkit_Dharumarajan2019WaterRetentionResult_result
+calc_ptf_dharumarajan2019_skp(double clay, double sand, double cation_exchange_capacity) {
+    const double field_capacity =
+        39.179 - 0.041 * clay - 0.371 * sand + 0.257 * cation_exchange_capacity;
+    const double permanent_wilting_point =
+        8.227 + 0.168 * clay - 0.101 * sand + 0.217 * cation_exchange_capacity;
+#ifdef __cplusplus
+    return ptfkit_Dharumarajan2019WaterRetentionResult_result{field_capacity,
+                                                              permanent_wilting_point};
 #else
-    return (ptfkit_Dharumarajan2019WaterRetentionResult_result) {
+    return (ptfkit_Dharumarajan2019WaterRetentionResult_result){
         .field_capacity = field_capacity,
         .permanent_wilting_point = permanent_wilting_point,
     };
@@ -169,13 +178,15 @@ static inline ptfkit_Dharumarajan2019WaterRetentionResult_result calc_ptf_dharum
  * The paper does not state whether its water-content percentages are gravimetric or
  * volumetric.
  */
-static inline ptfkit_Dharumarajan2019WaterRetentionResult_result calc_ptf_dharumarajan2019_skp_clay(double clay) {
+static inline ptfkit_Dharumarajan2019WaterRetentionResult_result
+calc_ptf_dharumarajan2019_skp_clay(double clay) {
     const double field_capacity = 3.724 + 0.581 * clay;
     const double permanent_wilting_point = -1.979 + 0.428 * clay;
-    #ifdef __cplusplus
-    return ptfkit_Dharumarajan2019WaterRetentionResult_result{field_capacity, permanent_wilting_point};
+#ifdef __cplusplus
+    return ptfkit_Dharumarajan2019WaterRetentionResult_result{field_capacity,
+                                                              permanent_wilting_point};
 #else
-    return (ptfkit_Dharumarajan2019WaterRetentionResult_result) {
+    return (ptfkit_Dharumarajan2019WaterRetentionResult_result){
         .field_capacity = field_capacity,
         .permanent_wilting_point = permanent_wilting_point,
     };

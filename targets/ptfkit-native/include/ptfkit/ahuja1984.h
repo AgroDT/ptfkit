@@ -56,7 +56,8 @@
  * select one as a unique transferable value.
  * total_porosity must be greater than or equal to theta_33.
  */
-static inline double calc_ptf_ahuja1984(double total_porosity, double theta_33, double coefficient_b, double exponent_n) {
+static inline double calc_ptf_ahuja1984(double total_porosity, double theta_33,
+                                        double coefficient_b, double exponent_n) {
     const double effective_porosity = total_porosity - theta_33;
     return coefficient_b * pow(effective_porosity, exponent_n);
 }

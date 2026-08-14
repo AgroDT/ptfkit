@@ -42,8 +42,11 @@
  * Warnings:
  * The formula uses natural logarithms of all inputs.
  */
-static inline double calc_ptf_aimrun2009(double clay, double bulk_density, double organic_matter, double gmd) {
-    const double ln_k_sat_m_per_day = -2.368 + 3.846 * bulk_density + 0.091 * organic_matter - 6.203 * log(bulk_density) - 0.343 * log(organic_matter) - 2.334 * log(clay) - 0.411 * log(gmd);
+static inline double calc_ptf_aimrun2009(double clay, double bulk_density, double organic_matter,
+                                         double gmd) {
+    const double ln_k_sat_m_per_day = -2.368 + 3.846 * bulk_density + 0.091 * organic_matter -
+                                      6.203 * log(bulk_density) - 0.343 * log(organic_matter) -
+                                      2.334 * log(clay) - 0.411 * log(gmd);
     const double k_sat_m_per_day = exp(ln_k_sat_m_per_day);
     return k_sat_m_per_day * (1.0 / 86400.0);
 }

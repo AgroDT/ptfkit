@@ -42,7 +42,10 @@ fn stage(root: &Path, outputs: &[TargetOutput]) -> Result<Vec<StagedWrite>> {
     for output in outputs {
         for file in &output.files {
             let target = output.target.output_path(root, &file.path);
-            if target.exists() && fs::read_to_string(&target)? == file.contents {
+            if target.exists()
+                && fs::read_to_string(&target)? == file.contents
+                && !output.target.is_clang_formatted()
+            {
                 continue;
             }
             let parent = target.parent().context("finding generated-file parent")?;
@@ -138,6 +141,24 @@ pub(super) fn format_python(root: &Path, paths: &[PathBuf]) -> Result<()> {
         &["run", "--no-sync", "ruff", "format"],
         paths,
         Some(&root.join("targets/ptfkit-py")),
+    )
+}
+
+pub(super) fn format_c(paths: &[PathBuf]) -> Result<()> {
+    run(
+        "clang-format",
+        &["--style=file", "--assume-filename=generated.c", "-i"],
+        paths,
+        None,
+    )
+}
+
+pub(super) fn format_cpp(paths: &[PathBuf]) -> Result<()> {
+    run(
+        "clang-format",
+        &["--style=file", "--assume-filename=generated.cpp", "-i"],
+        paths,
+        None,
     )
 }
 

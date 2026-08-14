@@ -22,9 +22,11 @@ export namespace ptfkit::cosby1984 {
 struct Cosby1984UnivariatePTFResult {
     /** Mean slope of the moisture characteristic. (dimensionless) */
     double mean_b;
-    /** Mean log saturation matric potential; the underlying potential is expressed in cm H2O. (reported log value) */
+    /** Mean log saturation matric potential; the underlying potential is expressed in cm H2O.
+     * (reported log value) */
     double mean_log_psi_s;
-    /** Mean log saturated hydraulic conductivity; the underlying conductivity is expressed in inches per hour. (reported log value) */
+    /** Mean log saturated hydraulic conductivity; the underlying conductivity is expressed in
+     * inches per hour. (reported log value) */
     double mean_log_k_sat;
     /** Mean saturated water content. (% volume/volume) */
     double mean_theta_s;
@@ -34,7 +36,7 @@ struct Cosby1984UnivariatePTFResult {
     double sd_log_k_sat;
     /** Standard deviation of saturated water content. (% volume/volume) */
     double sd_theta_s;
- };
+};
 
 /**
  * Estimate Cosby et al. (1984) univariate hydraulic parameter statistics from soil texture.
@@ -66,7 +68,8 @@ struct Cosby1984UnivariatePTFResult {
  * Log-transformed output units use the pilot contract `reported log value`.
  */
 [[nodiscard]]
-inline Cosby1984UnivariatePTFResult calc_ptf_cosby1984_univariate(double sand, double silt, double clay) {
+inline Cosby1984UnivariatePTFResult calc_ptf_cosby1984_univariate(double sand, double silt,
+                                                                  double clay) {
     const double mean_b = 2.91 + 0.159 * clay;
     const double mean_log_psi_s = 1.88 - 0.0131 * sand;
     const double mean_log_k_sat = -0.884 + 0.0153 * sand;
@@ -74,7 +77,8 @@ inline Cosby1984UnivariatePTFResult calc_ptf_cosby1984_univariate(double sand, d
     const double sd_b = 1.34 + 0.0500 * clay;
     const double sd_log_k_sat = 0.459 + 0.00321 * silt;
     const double sd_theta_s = 7.73 - 0.0730 * clay;
-    return Cosby1984UnivariatePTFResult{mean_b, mean_log_psi_s, mean_log_k_sat, mean_theta_s, sd_b, sd_log_k_sat, sd_theta_s};
+    return Cosby1984UnivariatePTFResult{mean_b, mean_log_psi_s, mean_log_k_sat, mean_theta_s,
+                                        sd_b,   sd_log_k_sat,   sd_theta_s};
 }
 
-}  // namespace ptfkit::cosby1984
+} // namespace ptfkit::cosby1984

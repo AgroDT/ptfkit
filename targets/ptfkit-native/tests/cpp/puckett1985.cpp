@@ -12,7 +12,8 @@ import ptfkit.puckett1985;
 int main() {
     {
         const auto result = ptfkit::puckett1985::calc_ptf_puckett1985(70.9, 36.4, 11.8, 1.67, 0.38);
-        static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>, ptfkit::puckett1985::Puckett1985PTFResult>);
+        static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
+                                     ptfkit::puckett1985::Puckett1985PTFResult>);
         assert_close_enough(result.theta_0, 0.34288, 0.000000000001, 0.00000001);
         assert_close_enough(result.theta_1, 0.33926, 0.000000000001, 0.00000001);
         assert_close_enough(result.theta_5, 0.3938615, 0.000000000001, 0.00000001);

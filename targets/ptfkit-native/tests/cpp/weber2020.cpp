@@ -11,8 +11,10 @@ import ptfkit.weber2020;
 
 int main() {
     {
-        const auto result = ptfkit::weber2020::calc_ptf_weber2020(0.05, 0.45, 0.02, 1.6, -0.5, 100.0);
-        static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>, ptfkit::weber2020::Weber2020PTFResult>);
+        const auto result =
+            ptfkit::weber2020::calc_ptf_weber2020(0.05, 0.45, 0.02, 1.6, -0.5, 100.0);
+        static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
+                                     ptfkit::weber2020::Weber2020PTFResult>);
         assert_close_enough(result.theta_snc_bw, 0.06267, 0.000000000001, 0.000000000001);
         assert_close_enough(result.theta_sc_bw, 0.38607, 0.000000000001, 0.000000000001);
         assert_close_enough(result.alpha_bw, 0.0201472407335197, 0.000000000001, 0.000000000001);

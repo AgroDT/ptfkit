@@ -43,8 +43,9 @@ export namespace ptfkit::jabro1992 {
  */
 [[nodiscard]]
 inline double calc_ptf_jabro1992(double silt, double clay, double bulk_density) {
-    const double log10_k_sat_cm_per_hour = 9.56 - 0.81 * std::log10(silt) - 1.09 * std::log10(clay) - 4.64 * bulk_density;
+    const double log10_k_sat_cm_per_hour =
+        9.56 - 0.81 * std::log10(silt) - 1.09 * std::log10(clay) - 4.64 * bulk_density;
     return std::pow(10.0, log10_k_sat_cm_per_hour) * (0.01 / 3600.0);
 }
 
-}  // namespace ptfkit::jabro1992
+} // namespace ptfkit::jabro1992

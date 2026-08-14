@@ -45,7 +45,7 @@ struct Puckett1985PTFResult {
     double theta_1500;
     /** Saturated hydraulic conductivity. (m/s) */
     double k_sat;
- };
+};
 
 /**
  * Estimate a point water-retention curve and saturated hydraulic conductivity.
@@ -79,7 +79,8 @@ struct Puckett1985PTFResult {
  * Use outside Lower Coastal Plain Ultisols requires independent validation.
  */
 [[nodiscard]]
-inline Puckett1985PTFResult calc_ptf_puckett1985(double sand, double fine_sand, double clay, double bulk_density, double porosity) {
+inline Puckett1985PTFResult calc_ptf_puckett1985(double sand, double fine_sand, double clay,
+                                                 double bulk_density, double porosity) {
     const double theta_0 = 0.264 * bulk_density + 1.60 * porosity - 0.706;
     const double theta_1 = 318.0 / 1000.0 * bulk_density + 1.69 * porosity - 0.834;
     const double theta_5 = 0.0001930 * fine_sand - 0.000357 * sand + 0.000182 * clay + 0.410;
@@ -91,7 +92,8 @@ inline Puckett1985PTFResult calc_ptf_puckett1985(double sand, double fine_sand, 
     const double theta_1000 = 0.0000197 * fine_sand - 0.000244 * sand + 0.000378 * clay + 0.264;
     const double theta_1500 = 0.0000254 * fine_sand - 0.000239 * sand + 0.000380 * clay + 0.239;
     const double k_sat = 4.36e-5 * std::exp(-0.1975 * clay);
-    return Puckett1985PTFResult{theta_0, theta_1, theta_5, theta_10, theta_30, theta_60, theta_100, theta_500, theta_1000, theta_1500, k_sat};
+    return Puckett1985PTFResult{theta_0,   theta_1,   theta_5,    theta_10,   theta_30, theta_60,
+                                theta_100, theta_500, theta_1000, theta_1500, k_sat};
 }
 
-}  // namespace ptfkit::puckett1985
+} // namespace ptfkit::puckett1985
