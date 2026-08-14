@@ -6,8 +6,19 @@ on:
       - published
 
 jobs:
+  check-version:
+    name: Check release version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Check target versions
+        run: python .github/scripts/check-version.py "${{ github.event.release.tag_name }}"
+
   make-sdist:
     name: Make SDist
+    needs: check-version
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -26,6 +37,7 @@ jobs:
 
   build-wheels:
     name: Build wheels on ${{ matrix.os }}
+    needs: check-version
     runs-on: ${{ matrix.runs-on }}
     strategy:
       matrix:

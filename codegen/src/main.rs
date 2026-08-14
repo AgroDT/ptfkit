@@ -11,6 +11,7 @@ mod semantic;
 mod specs;
 mod targets;
 mod validate;
+mod version;
 
 #[derive(Parser)]
 #[command(about = "Validate ptfkit specifications and generate bindings")]
@@ -23,6 +24,7 @@ pub(crate) struct Cli {
 enum Command {
     Validate,
     Generate,
+    Version { version: String },
 }
 
 impl Cli {
@@ -30,14 +32,10 @@ impl Cli {
         let root = Path::new(env!("CARGO_MANIFEST_DIR"))
             .parent()
             .context("finding the ptfkit workspace root")?;
-        let entries = specs::load(root)?;
-        let errors = validate::specifications(&entries);
-        if !errors.is_empty() {
-            bail!("validation failed:\n{}", errors.join("\n"))
-        }
 
         match self.command {
             Command::Validate => {
+                let entries = load_validated_specifications(root)?;
                 println!(
                     "validated {} PTF specification files containing {} functions",
                     entries.len(),
@@ -48,9 +46,22 @@ impl Cli {
                 );
                 Ok(())
             }
-            Command::Generate => targets::run(root, entries),
+            Command::Generate => {
+                let entries = load_validated_specifications(root)?;
+                targets::run(root, entries)
+            }
+            Command::Version { version } => version::run(root, &version),
         }
     }
+}
+
+fn load_validated_specifications(root: &Path) -> Result<Vec<model::Entry>> {
+    let entries = specs::load(root)?;
+    let errors = validate::specifications(&entries);
+    if !errors.is_empty() {
+        bail!("validation failed:\n{}", errors.join("\n"))
+    }
+    Ok(entries)
 }
 
 fn main() -> ExitCode {
