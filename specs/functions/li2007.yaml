@@ -154,68 +154,15 @@ functions:
       expr: exp(13.262 - 1.914 * sand_ln - 0.974 * silt_ln - 0.058 * clay - 1.709 * soil_organic_matter_ln + 2.885 * soil_organic_matter - 8.026 * bulk_density_ln)
     - name: k_sat
       expr: k_sat_cm_per_day * (1.0 / 8640000.0)
-scientific_notes: '
-
+scientific_notes: |
   # Li et al. (2007)
 
+  ## Supported models
 
-  ## `calc_ptf_li2007`
+  Table 6 supplies the regressions for van Genuchten parameters and saturated
+  hydraulic conductivity. The public conductivity output converts cm/day to m/s.
 
+  ## Documented limitations
 
-  ### Constants
-
-
-  | name | value | units | description |
-
-  | --- | --- | --- | --- |
-
-  | CM_PER_DAY_TO_M_PER_SEC | 0.00000011574074074074075 | (m/s)/(cm/day) | Convert
-  cm/day to m/s. |
-
-
-  ### Formula
-
-
-  ```text
-
-  theta_s = exp(-1.531 + 0.212 * ln(sand) + 0.006 * silt - 0.051 * soil_organic_matter
-  - 0.566 * ln(bulk_density))
-
-  a_vg = exp(-67.408 - 0.040 * silt - 0.670 * ln(silt) - 2.189 * soil_organic_matter
-  + 1.410 * ln(soil_organic_matter) + 78.400 * bulk_density - 121.331 * ln(bulk_density))
-
-  n_vg = 1.488 + 0.002 * ln(silt) + 0.013 * clay - 0.248 * ln(clay) + 0.048 * ln(soil_organic_matter)
-  + 0.451 * ln(bulk_density)
-
-  k_sat_cm_per_day = exp(13.262 - 1.914 * ln(sand) - 0.974 * ln(silt) - 0.058 * clay
-  - 1.709 * ln(soil_organic_matter) + 2.885 * soil_organic_matter - 8.026 * ln(bulk_density))
-
-  k_sat = k_sat_cm_per_day * CM_PER_DAY_TO_M_PER_SEC
-
-  ```
-
-
-  ### Intermediates
-
-
-  | name | units | formula_reference | description |
-
-  | --- | --- | --- | --- |
-
-  | k_sat_cm_per_day | cm/day | Table 6 | Saturated hydraulic conductivity before
-  unit conversion. |
-
-
-  ### Unit conversion
-
-
-  Convert cm/day to m/s using `CM_PER_DAY_TO_M_PER_SEC`.
-
-
-  ### Numeric policy
-
-
-  Use `f64`, do not round, propagate NaN, and retain NumPy-compatible logarithm-domain
-  behaviour.
-
-  '
+  The logarithmic predictors require positive sand, silt, clay, soil organic
+  matter, and bulk density.

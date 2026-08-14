@@ -128,23 +128,14 @@ functions:
       expr: fc_percent / 100.0
     - name: k_sat
       expr: k_sat_cm_per_day / 8640000.0
-scientific_notes: "\n# Wang et al. (2012)\n\n## `calc_ptf_wang2012`\n\n### Formula\n\
-  \n```text\nSOC_g_per_kg = 10 * soil_organic_carbon\n\nlog10_k_sat_cm_per_day = 1.173\
-  \ + 0.038 * silt + 0.690 * log10(sand)\n                       + 0.865 / sand -\
-  \ 0.030 * bulk_density * silt\n                       - 0.00000995 * SOC_g_per_kg\
-  \ * altitude\nk_sat_cm_per_day = 10^log10_k_sat_cm_per_day\nk_sat = k_sat_cm_per_day\
-  \ / 8_640_000\n\nfc_percent = 46.481 - 4.757 * SOC_g_per_kg - 14.028 * log10(clay)\n\
-  \             - 13.991 * log10(sand) + 42.261 * log10(SOC_g_per_kg)\n          \
-  \   - 11.763 / sand + 19.198 / SOC_g_per_kg\n             - 5.448 * bulk_density^2\
-  \ + 0.044 * SOC_g_per_kg^2\n             + 1.975 * bulk_density * SOC_g_per_kg\n\
-  theta_fc = fc_percent / 100\n\nsswc_percent = 98.813 - 21.555 / bulk_density - 39.735\
-  \ / silt\n               - 2.091 / sand + 3.247 / SOC_g_per_kg\n               -\
-  \ 17.096 * bulk_density^2\ntheta_s = sswc_percent / 100\n```\n\nThe regressions\
-  \ are from Table 6. Base 10 is established by Table 3: applying\n`log10` to the\
-  \ reported raw `Ks` range 0.61-1672.56 cm/day gives the reported\ntransformed range\
-  \ -0.22 to 3.22. Conversion from cm/day to m/s uses\n1 cm/day = 1/8,640,000 m/s.\n\
-  \nThe source labels FC and SSWC as cm^3/cm^3 but reports and models them on a\n\
-  percentage-point scale: 2.39-36.82 for FC and 32.81-67.12 for SSWC. The raw\nregression\
-  \ results are therefore divided by 100 so the public `theta_fc` and\n`theta_s` values\
-  \ are actual volumetric fractions consistent with their units.\n\n### Numeric policy\n\
-  \nUse `f64`, do not round, and propagate NaN and infinities.\n"
+scientific_notes: |
+  # Wang et al. (2012)
+
+  ## Review decisions
+
+  Table 6 supplies the regressions. Table 3 confirms that the reported
+  logarithms are base 10: 0.61-1672.56 cm/day transforms to the reported
+  -0.22-3.22 range. Although FC and SSWC are labelled cm^3/cm^3, the article
+  models and reports them as percentage points: 2.39-36.82 for FC and
+  32.81-67.12 for SSWC. Their predictions are divided by 100 for public
+  volumetric-fraction outputs.

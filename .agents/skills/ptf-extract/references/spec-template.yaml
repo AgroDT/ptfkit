@@ -27,6 +27,19 @@ functions:
     implementation:
       variables: []
 scientific_notes: |
+  ## Supported models
+
+  - Record source-supported context that is not represented by structured fields.
+
+  ## Formula evidence
+
+  - Retain source notation only when it explains an interpretation or a model not
+    represented by `implementation`.
+
+  ## Review decisions
+
+  - Record each interpretation and its source evidence.
+
   ## Blockers
 
   - Replace this blocker only with evidence explicitly present in the paper.
