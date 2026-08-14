@@ -20,8 +20,14 @@ pub(crate) struct Expr {
 }
 
 #[derive(Clone, Debug, PartialEq)]
+pub(crate) struct Number {
+    pub(crate) value: f64,
+    pub(crate) lexeme: String,
+}
+
+#[derive(Clone, Debug, PartialEq)]
 pub(crate) enum ExprKind {
-    Number(f64),
+    Number(Number),
     Variable(String),
     Unary {
         op: UnaryOp,
@@ -150,7 +156,8 @@ fn build_expression(pair: Pair<'_, Rule>, location: &str) -> Result<Expr, ParseE
         ),
         Rule::number => {
             let span = span(&pair);
-            let value = pair.as_str().parse::<f64>().map_err(|_| ParseError {
+            let lexeme = pair.as_str().to_owned();
+            let value = lexeme.parse::<f64>().map_err(|_| ParseError {
                 location: location.to_owned(),
                 span,
                 expected: vec!["a finite number"],
@@ -163,7 +170,7 @@ fn build_expression(pair: Pair<'_, Rule>, location: &str) -> Result<Expr, ParseE
                 });
             }
             Ok(Expr {
-                kind: ExprKind::Number(value),
+                kind: ExprKind::Number(Number { value, lexeme }),
                 span,
             })
         }
@@ -308,7 +315,7 @@ mod tests {
 
     fn shape(expression: &Expr) -> String {
         match &expression.kind {
-            ExprKind::Number(value) => format!("{value}"),
+            ExprKind::Number(number) => format!("{}", number.value),
             ExprKind::Variable(name) => name.clone(),
             ExprKind::Unary { op, operand } => match op {
                 UnaryOp::Plus => format!("(+ {})", shape(operand)),
@@ -361,6 +368,35 @@ mod tests {
         assert_eq!(shape(&expression), "max(5, sqrt((+ x 2)))");
         assert_eq!(expression.span.start, 3);
         assert_eq!(expression.span.end, 26);
+    }
+
+    #[test]
+    fn preserves_number_lexemes() {
+        let expression = parse("formula", "1.00 + .5e1 + 2.").unwrap();
+        let ExprKind::Binary { left, right, .. } = expression.kind else {
+            panic!("expected addition");
+        };
+        let ExprKind::Binary {
+            left,
+            right: middle,
+            ..
+        } = left.kind
+        else {
+            panic!("expected addition");
+        };
+        let ExprKind::Number(first) = left.kind else {
+            panic!("expected number");
+        };
+        let ExprKind::Number(middle) = middle.kind else {
+            panic!("expected number");
+        };
+        let ExprKind::Number(last) = right.kind else {
+            panic!("expected number");
+        };
+        assert_eq!(
+            [first.lexeme, middle.lexeme, last.lexeme],
+            ["1.00", ".5e1", "2."]
+        );
     }
 
     #[test]

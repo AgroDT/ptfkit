@@ -8,9 +8,9 @@ static void calc_ptf_aimrun2009_loop(char **args, const npy_intp *dimensions, co
         const double bulk_density = *(const double *)args[1];
         const double organic_matter = *(const double *)args[2];
         const double gmd = *(const double *)args[3];
-        const double ln_k_sat_m_per_day = (((((((((((((-(2.36799999999999988))) + (((3.84600000000000009) * (bulk_density))))) + (((0.09100000000000000) * (organic_matter))))) - (((6.20300000000000029) * (log(bulk_density)))))) - (((0.34300000000000003) * (log(organic_matter)))))) - (((2.33400000000000007) * (log(clay)))))) - (((0.41099999999999998) * (log(gmd)))));
+        const double ln_k_sat_m_per_day = -2.368 + 3.846 * bulk_density + 0.091 * organic_matter - 6.203 * log(bulk_density) - 0.343 * log(organic_matter) - 2.334 * log(clay) - 0.411 * log(gmd);
         const double k_sat_m_per_day = exp(ln_k_sat_m_per_day);
-        const double k_sat = ((k_sat_m_per_day) * (((1.00000000000000000) / (86400.00000000000000000))));
+        const double k_sat = k_sat_m_per_day * (1.0 / 86400.0);
         *(double *)args[4] = k_sat;
         for (int arg = 0; arg < 5; arg++) args[arg] += steps[arg];
     }

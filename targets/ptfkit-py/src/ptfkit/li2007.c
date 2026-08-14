@@ -14,11 +14,11 @@ static void calc_ptf_li2007_loop(char **args, const npy_intp *dimensions, const 
         const double clay_ln = log(clay);
         const double soil_organic_matter_ln = log(soil_organic_matter);
         const double bulk_density_ln = log(bulk_density);
-        const double theta_s = exp((((((((((-(1.53099999999999992))) + (((0.21199999999999999) * (sand_ln))))) + (((0.00600000000000000) * (silt))))) - (((0.05100000000000000) * (soil_organic_matter))))) - (((0.56599999999999995) * (bulk_density_ln)))));
-        const double a_vg = exp((((((((((((((-(67.40800000000000125))) - (((0.04000000000000000) * (silt))))) - (((0.67000000000000004) * (silt_ln))))) - (((2.18900000000000006) * (soil_organic_matter))))) + (((1.40999999999999992) * (soil_organic_matter_ln))))) + (((78.40000000000000568) * (bulk_density))))) - (((121.33100000000000307) * (bulk_density_ln)))));
-        const double n_vg = ((((((((((1.48799999999999999) + (((0.00200000000000000) * (silt_ln))))) + (((0.01300000000000000) * (clay))))) - (((0.24800000000000000) * (clay_ln))))) + (((0.04800000000000000) * (soil_organic_matter_ln))))) + (((0.45100000000000001) * (bulk_density_ln))));
-        const double k_sat_cm_per_day = exp(((((((((((((13.26200000000000045) - (((1.91399999999999992) * (sand_ln))))) - (((0.97399999999999998) * (silt_ln))))) - (((0.05800000000000000) * (clay))))) - (((1.70900000000000007) * (soil_organic_matter_ln))))) + (((2.88499999999999979) * (soil_organic_matter))))) - (((8.02599999999999980) * (bulk_density_ln)))));
-        const double k_sat = ((k_sat_cm_per_day) * (((1.00000000000000000) / (8640000.00000000000000000))));
+        const double theta_s = exp(-1.531 + 0.212 * sand_ln + 0.006 * silt - 0.051 * soil_organic_matter - 0.566 * bulk_density_ln);
+        const double a_vg = exp(-67.408 - 0.040 * silt - 0.670 * silt_ln - 2.189 * soil_organic_matter + 1.410 * soil_organic_matter_ln + 78.400 * bulk_density - 121.331 * bulk_density_ln);
+        const double n_vg = 1.488 + 0.002 * silt_ln + 0.013 * clay - 0.248 * clay_ln + 0.048 * soil_organic_matter_ln + 0.451 * bulk_density_ln;
+        const double k_sat_cm_per_day = exp(13.262 - 1.914 * sand_ln - 0.974 * silt_ln - 0.058 * clay - 1.709 * soil_organic_matter_ln + 2.885 * soil_organic_matter - 8.026 * bulk_density_ln);
+        const double k_sat = k_sat_cm_per_day * (1.0 / 8640000.0);
         *(double *)args[5] = theta_s;
         *(double *)args[6] = a_vg;
         *(double *)args[7] = n_vg;

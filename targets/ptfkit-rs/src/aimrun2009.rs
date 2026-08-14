@@ -46,14 +46,13 @@ Applicability: Clayey rice soils with compacted subsoil.
 The formula uses natural logarithms of all inputs."]
 #[must_use]
 pub fn calc_ptf_aimrun2009(clay: f64, bulk_density: f64, organic_matter: f64, gmd: f64) -> f64 {
-    let ln_k_sat_m_per_day = ((((((-(2.368f64)) + ((3.846f64) * (bulk_density)))
-        + ((0.091f64) * (organic_matter)))
-        - ((6.203f64) * ((bulk_density).ln())))
-        - ((0.343f64) * ((organic_matter).ln())))
-        - ((2.334f64) * ((clay).ln())))
-        - ((0.411f64) * ((gmd).ln()));
-    let k_sat_m_per_day = (ln_k_sat_m_per_day).exp();
-    (k_sat_m_per_day) * ((1f64) / (86400f64))
+    let ln_k_sat_m_per_day = -2.368f64 + 3.846f64 * bulk_density + 0.091f64 * organic_matter
+        - 6.203f64 * bulk_density.ln()
+        - 0.343f64 * organic_matter.ln()
+        - 2.334f64 * clay.ln()
+        - 0.411f64 * gmd.ln();
+    let k_sat_m_per_day = ln_k_sat_m_per_day.exp();
+    k_sat_m_per_day * (1.0f64 / 86400.0f64)
 }
 #[cfg(test)]
 mod tests {

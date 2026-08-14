@@ -78,34 +78,17 @@ pub fn calc_ptf_puckett1985(
     bulk_density: f64,
     porosity: f64,
 ) -> Puckett1985PTFResult {
-    let theta_0 = (((0.264f64) * (bulk_density)) + ((1.6f64) * (porosity))) - (0.706f64);
-    let theta_1 =
-        ((((318f64) / (1000f64)) * (bulk_density)) + ((1.69f64) * (porosity))) - (0.834f64);
-    let theta_5 = ((((0.000193f64) * (fine_sand)) - ((0.000357f64) * (sand)))
-        + ((0.000182f64) * (clay)))
-        + (0.41f64);
-    let theta_10 = ((((0.0000712f64) * (fine_sand)) - ((0.000383f64) * (sand)))
-        + ((0.000243f64) * (clay)))
-        + (0.415f64);
-    let theta_30 = ((((0.0000059f64) * (fine_sand)) - ((0.000348f64) * (sand)))
-        + ((0.000321f64) * (clay)))
-        + (0.365f64);
-    let theta_60 = ((((0.0000003f64) * (fine_sand)) - ((0.000319f64) * (sand)))
-        + ((0.000351f64) * (clay)))
-        + (0.33f64);
-    let theta_100 = ((((0.0000019f64) * (fine_sand)) - ((0.000302f64) * (sand)))
-        + ((0.000362f64) * (clay)))
-        + (0.31f64);
-    let theta_500 = ((((0.000014f64) * (fine_sand)) - ((0.000262f64) * (sand)))
-        + ((0.000375f64) * (clay)))
-        + (0.265f64);
-    let theta_1000 = ((((0.0000197f64) * (fine_sand)) - ((0.000244f64) * (sand)))
-        + ((0.000378f64) * (clay)))
-        + (0.264f64);
-    let theta_1500 = ((((0.0000254f64) * (fine_sand)) - ((0.000239f64) * (sand)))
-        + ((0.00038f64) * (clay)))
-        + (0.239f64);
-    let k_sat = (0.0000436f64) * (((-(0.1975f64)) * (clay)).exp());
+    let theta_0 = 0.264f64 * bulk_density + 1.60f64 * porosity - 0.706f64;
+    let theta_1 = 318.0f64 / 1000.0f64 * bulk_density + 1.69f64 * porosity - 0.834f64;
+    let theta_5 = 0.0001930f64 * fine_sand - 0.000357f64 * sand + 0.000182f64 * clay + 0.410f64;
+    let theta_10 = 0.0000712f64 * fine_sand - 0.000383f64 * sand + 0.000243f64 * clay + 0.415f64;
+    let theta_30 = 0.0000059f64 * fine_sand - 0.000348f64 * sand + 0.000321f64 * clay + 0.365f64;
+    let theta_60 = 0.0000003f64 * fine_sand - 0.000319f64 * sand + 0.000351f64 * clay + 0.330f64;
+    let theta_100 = 0.0000019f64 * fine_sand - 0.000302f64 * sand + 0.000362f64 * clay + 0.310f64;
+    let theta_500 = 0.0000140f64 * fine_sand - 0.000262f64 * sand + 0.000375f64 * clay + 0.265f64;
+    let theta_1000 = 0.0000197f64 * fine_sand - 0.000244f64 * sand + 0.000378f64 * clay + 0.264f64;
+    let theta_1500 = 0.0000254f64 * fine_sand - 0.000239f64 * sand + 0.000380f64 * clay + 0.239f64;
+    let k_sat = 4.36e-5f64 * (-0.1975f64 * clay).exp();
     Puckett1985PTFResult {
         theta_0,
         theta_1,

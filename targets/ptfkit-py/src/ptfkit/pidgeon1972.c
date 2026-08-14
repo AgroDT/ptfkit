@@ -7,7 +7,7 @@ static void calc_ptf_pidgeon1972_fc_loop(char **args, const npy_intp *dimensions
         const double silt = *(const double *)args[0];
         const double clay = *(const double *)args[1];
         const double organic_matter = *(const double *)args[2];
-        const double field_capacity = ((((((7.37999999999999989) + (((0.16000000000000000) * (silt))))) + (((0.29999999999999999) * (clay))))) + (((1.54000000000000004) * (organic_matter))));
+        const double field_capacity = 7.38 + 0.16 * silt + 0.30 * clay + 1.54 * organic_matter;
         *(double *)args[3] = field_capacity;
         for (int arg = 0; arg < 4; arg++) args[arg] += steps[arg];
     }
@@ -19,7 +19,7 @@ static void calc_ptf_pidgeon1972_fc_sand_loop(char **args, const npy_intp *dimen
     npy_intp index;
     for (index = 0; index < dimensions[0]; index++) {
         const double sand = *(const double *)args[0];
-        const double field_capacity = ((36.15999999999999659) - (((0.25000000000000000) * (sand))));
+        const double field_capacity = 36.16 - 0.25 * sand;
         *(double *)args[1] = field_capacity;
         for (int arg = 0; arg < 2; arg++) args[arg] += steps[arg];
     }
@@ -32,7 +32,7 @@ static void calc_ptf_pidgeon1972_fc_sand_organic_matter_loop(char **args, const 
     for (index = 0; index < dimensions[0]; index++) {
         const double sand = *(const double *)args[0];
         const double organic_matter = *(const double *)args[1];
-        const double field_capacity = ((((34.27000000000000313) - (((0.27000000000000002) * (sand))))) + (((1.25000000000000000) * (organic_matter))));
+        const double field_capacity = 34.27 - 0.27 * sand + 1.25 * organic_matter;
         *(double *)args[2] = field_capacity;
         for (int arg = 0; arg < 3; arg++) args[arg] += steps[arg];
     }
@@ -45,7 +45,7 @@ static void calc_ptf_pidgeon1972_fc_vol_sand_organic_matter_loop(char **args, co
     for (index = 0; index < dimensions[0]; index++) {
         const double sand = *(const double *)args[0];
         const double organic_matter = *(const double *)args[1];
-        const double field_capacity = ((((38.14999999999999858) - (((0.17000000000000001) * (sand))))) + (((0.77000000000000002) * (organic_matter))));
+        const double field_capacity = 38.15 - 0.17 * sand + 0.77 * organic_matter;
         *(double *)args[2] = field_capacity;
         for (int arg = 0; arg < 3; arg++) args[arg] += steps[arg];
     }
@@ -59,7 +59,7 @@ static void calc_ptf_pidgeon1972_pwp_loop(char **args, const npy_intp *dimension
         const double silt = *(const double *)args[0];
         const double clay = *(const double *)args[1];
         const double organic_matter = *(const double *)args[2];
-        const double permanent_wilting_point = (((((((-(4.19000000000000039))) + (((0.19000000000000000) * (silt))))) + (((0.39000000000000001) * (clay))))) + (((0.90000000000000002) * (organic_matter))));
+        const double permanent_wilting_point = -4.19 + 0.19 * silt + 0.39 * clay + 0.90 * organic_matter;
         *(double *)args[3] = permanent_wilting_point;
         for (int arg = 0; arg < 4; arg++) args[arg] += steps[arg];
     }
@@ -71,7 +71,7 @@ static void calc_ptf_pidgeon1972_pwp_sand_loop(char **args, const npy_intp *dime
     npy_intp index;
     for (index = 0; index < dimensions[0]; index++) {
         const double sand = *(const double *)args[0];
-        const double permanent_wilting_point = ((28.41000000000000014) - (((0.28999999999999998) * (sand))));
+        const double permanent_wilting_point = 28.41 - 0.29 * sand;
         *(double *)args[1] = permanent_wilting_point;
         for (int arg = 0; arg < 2; arg++) args[arg] += steps[arg];
     }
@@ -84,7 +84,7 @@ static void calc_ptf_pidgeon1972_pwp_sand_organic_matter_loop(char **args, const
     for (index = 0; index < dimensions[0]; index++) {
         const double sand = *(const double *)args[0];
         const double organic_matter = *(const double *)args[1];
-        const double permanent_wilting_point = ((((32.89999999999999858) - (((0.37000000000000000) * (sand))))) + (((0.44000000000000000) * (organic_matter))));
+        const double permanent_wilting_point = 32.90 - 0.37 * sand + 0.44 * organic_matter;
         *(double *)args[2] = permanent_wilting_point;
         for (int arg = 0; arg < 3; arg++) args[arg] += steps[arg];
     }
@@ -97,7 +97,7 @@ static void calc_ptf_pidgeon1972_awc_loop(char **args, const npy_intp *dimension
     for (index = 0; index < dimensions[0]; index++) {
         const double clay = *(const double *)args[0];
         const double organic_matter = *(const double *)args[1];
-        const double available_water_capacity = ((((169.30000000000001137) - (((1.50000000000000000) * (clay))))) + (((6.08999999999999986) * (organic_matter))));
+        const double available_water_capacity = 169.3 - 1.50 * clay + 6.09 * organic_matter;
         *(double *)args[2] = available_water_capacity;
         for (int arg = 0; arg < 3; arg++) args[arg] += steps[arg];
     }
@@ -110,7 +110,7 @@ static void calc_ptf_pidgeon1972_awc_sand_organic_matter_loop(char **args, const
     for (index = 0; index < dimensions[0]; index++) {
         const double sand = *(const double *)args[0];
         const double organic_matter = *(const double *)args[1];
-        const double available_water_capacity = ((((1.00000000000000000) + (((1.84000000000000008) * (sand))))) + (((8.11999999999999922) * (organic_matter))));
+        const double available_water_capacity = 1.0 + 1.84 * sand + 8.12 * organic_matter;
         *(double *)args[2] = available_water_capacity;
         for (int arg = 0; arg < 3; arg++) args[arg] += steps[arg];
     }
@@ -122,7 +122,7 @@ static void calc_ptf_pidgeon1972_awc_coarse_sand_loop(char **args, const npy_int
     npy_intp index;
     for (index = 0; index < dimensions[0]; index++) {
         const double coarse_sand = *(const double *)args[0];
-        const double available_water_capacity = ((68.50000000000000000) + (((2.33000000000000007) * (coarse_sand))));
+        const double available_water_capacity = 68.5 + 2.33 * coarse_sand;
         *(double *)args[1] = available_water_capacity;
         for (int arg = 0; arg < 2; arg++) args[arg] += steps[arg];
     }
@@ -134,7 +134,7 @@ static void calc_ptf_pidgeon1972_awc_fine_sand_loop(char **args, const npy_intp 
     npy_intp index;
     for (index = 0; index < dimensions[0]; index++) {
         const double fine_sand = *(const double *)args[0];
-        const double available_water_capacity = ((66.70000000000000284) + (((2.66000000000000014) * (fine_sand))));
+        const double available_water_capacity = 66.7 + 2.66 * fine_sand;
         *(double *)args[1] = available_water_capacity;
         for (int arg = 0; arg < 2; arg++) args[arg] += steps[arg];
     }
@@ -146,7 +146,7 @@ static void calc_ptf_pidgeon1972_awc_very_fine_sand_loop(char **args, const npy_
     npy_intp index;
     for (index = 0; index < dimensions[0]; index++) {
         const double very_fine_sand = *(const double *)args[0];
-        const double available_water_capacity = ((66.90000000000000568) + (((4.58000000000000007) * (very_fine_sand))));
+        const double available_water_capacity = 66.9 + 4.58 * very_fine_sand;
         *(double *)args[1] = available_water_capacity;
         for (int arg = 0; arg < 2; arg++) args[arg] += steps[arg];
     }
@@ -160,7 +160,7 @@ static void calc_ptf_pidgeon1972_eawc_loop(char **args, const npy_intp *dimensio
         const double silt = *(const double *)args[0];
         const double clay = *(const double *)args[1];
         const double organic_matter = *(const double *)args[2];
-        const double extended_available_water_capacity = ((((((121.09999999999999432) - (((3.02999999999999980) * (silt))))) - (((1.37999999999999989) * (clay))))) + (((6.75999999999999979) * (organic_matter))));
+        const double extended_available_water_capacity = 121.1 - 3.03 * silt - 1.38 * clay + 6.76 * organic_matter;
         *(double *)args[3] = extended_available_water_capacity;
         for (int arg = 0; arg < 4; arg++) args[arg] += steps[arg];
     }
@@ -172,7 +172,7 @@ static void calc_ptf_pidgeon1972_eawc_sand_loop(char **args, const npy_intp *dim
     npy_intp index;
     for (index = 0; index < dimensions[0]; index++) {
         const double sand = *(const double *)args[0];
-        const double extended_available_water_capacity = (((-(25.80000000000000071))) + (((1.55000000000000004) * (sand))));
+        const double extended_available_water_capacity = -25.8 + 1.55 * sand;
         *(double *)args[1] = extended_available_water_capacity;
         for (int arg = 0; arg < 2; arg++) args[arg] += steps[arg];
     }
@@ -185,7 +185,7 @@ static void calc_ptf_pidgeon1972_eawc_sand_organic_matter_loop(char **args, cons
     for (index = 0; index < dimensions[0]; index++) {
         const double sand = *(const double *)args[0];
         const double organic_matter = *(const double *)args[1];
-        const double extended_available_water_capacity = (((((-(10.80000000000000071))) + (((1.14999999999999991) * (sand))))) + (((4.78000000000000025) * (organic_matter))));
+        const double extended_available_water_capacity = -10.8 + 1.15 * sand + 4.78 * organic_matter;
         *(double *)args[2] = extended_available_water_capacity;
         for (int arg = 0; arg < 3; arg++) args[arg] += steps[arg];
     }
@@ -198,7 +198,7 @@ static void calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter_loop(char **arg
     for (index = 0; index < dimensions[0]; index++) {
         const double coarse_sand = *(const double *)args[0];
         const double organic_matter = *(const double *)args[1];
-        const double extended_available_water_capacity = (((((-(7.40000000000000036))) + (((2.37000000000000011) * (coarse_sand))))) + (((6.86000000000000032) * (organic_matter))));
+        const double extended_available_water_capacity = -7.4 + 2.37 * coarse_sand + 6.86 * organic_matter;
         *(double *)args[2] = extended_available_water_capacity;
         for (int arg = 0; arg < 3; arg++) args[arg] += steps[arg];
     }
@@ -211,7 +211,7 @@ static void calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter_loop(char **args,
     for (index = 0; index < dimensions[0]; index++) {
         const double fine_sand = *(const double *)args[0];
         const double organic_matter = *(const double *)args[1];
-        const double extended_available_water_capacity = (((((-(18.00000000000000000))) + (((3.10999999999999988) * (fine_sand))))) + (((7.69000000000000039) * (organic_matter))));
+        const double extended_available_water_capacity = -18.0 + 3.11 * fine_sand + 7.69 * organic_matter;
         *(double *)args[2] = extended_available_water_capacity;
         for (int arg = 0; arg < 3; arg++) args[arg] += steps[arg];
     }

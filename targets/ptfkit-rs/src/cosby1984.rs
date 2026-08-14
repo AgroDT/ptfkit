@@ -69,13 +69,13 @@ pub fn calc_ptf_cosby1984_univariate(
     silt: f64,
     clay: f64,
 ) -> Cosby1984UnivariatePTFResult {
-    let mean_b = (2.91f64) + ((0.159f64) * (clay));
-    let mean_log_psi_s = (1.88f64) - ((0.0131f64) * (sand));
-    let mean_log_k_sat = (-(0.884f64)) + ((0.0153f64) * (sand));
-    let mean_theta_s = (48.9f64) - ((0.126f64) * (sand));
-    let sd_b = (1.34f64) + ((0.05f64) * (clay));
-    let sd_log_k_sat = (0.459f64) + ((0.00321f64) * (silt));
-    let sd_theta_s = (7.73f64) - ((0.073f64) * (clay));
+    let mean_b = 2.91f64 + 0.159f64 * clay;
+    let mean_log_psi_s = 1.88f64 - 0.0131f64 * sand;
+    let mean_log_k_sat = -0.884f64 + 0.0153f64 * sand;
+    let mean_theta_s = 48.9f64 - 0.126f64 * sand;
+    let sd_b = 1.34f64 + 0.0500f64 * clay;
+    let sd_log_k_sat = 0.459f64 + 0.00321f64 * silt;
+    let sd_theta_s = 7.73f64 - 0.0730f64 * clay;
     Cosby1984UnivariatePTFResult {
         mean_b,
         mean_log_psi_s,

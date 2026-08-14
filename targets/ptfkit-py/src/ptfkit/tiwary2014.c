@@ -7,8 +7,8 @@ static void calc_ptf_tiwary2014_igp_loop(char **args, const npy_intp *dimensions
         const double sand = *(const double *)args[0];
         const double bulk_density = *(const double *)args[1];
         const double esp = *(const double *)args[2];
-        const double k_sat_mm_per_hour = ((((((4.07899999999999974) + (((0.04700000000000000) * (sand))))) - (((0.05400000000000000) * (esp))))) - (((2.23799999999999999) * (bulk_density))));
-        const double k_sat = ((k_sat_mm_per_hour) / (3600000.00000000000000000));
+        const double k_sat_mm_per_hour = 4.079 + 0.047 * sand - 0.054 * esp - 2.238 * bulk_density;
+        const double k_sat = k_sat_mm_per_hour / 3600000.0;
         *(double *)args[3] = k_sat;
         for (int arg = 0; arg < 4; arg++) args[arg] += steps[arg];
     }
@@ -25,11 +25,11 @@ static void calc_ptf_tiwary2014_bsr_loop(char **args, const npy_intp *dimensions
         const double esp = *(const double *)args[3];
         const double emp = *(const double *)args[4];
         const double excm = *(const double *)args[5];
-        const double w_33 = ((((((2.58300000000000018) + (((0.34599999999999997) * (cation_exchange_capacity))))) + (((0.24900000000000000) * (clay))))) + (((0.49399999999999999) * (esp))));
-        const double w_100 = (((((((-(1.91799999999999993))) + (((0.38300000000000001) * (cation_exchange_capacity))))) + (((0.22800000000000001) * (clay))))) + (((0.36099999999999999) * (esp))));
-        const double w_1500 = ((((((0.54100000000000004) + (((0.30599999999999999) * (cation_exchange_capacity))))) + (((0.14599999999999999) * (esp))))) + (((0.05800000000000000) * (emp))));
-        const double k_sat_mm_per_hour = ((((((120.63700000000000045) - (((13.09399999999999942) * (ph))))) - (((0.10199999999999999) * (clay))))) + (((1.15100000000000002) * (excm))));
-        const double k_sat = ((k_sat_mm_per_hour) / (3600000.00000000000000000));
+        const double w_33 = 2.583 + 0.346 * cation_exchange_capacity + 0.249 * clay + 0.494 * esp;
+        const double w_100 = -1.918 + 0.383 * cation_exchange_capacity + 0.228 * clay + 0.361 * esp;
+        const double w_1500 = 0.541 + 0.306 * cation_exchange_capacity + 0.146 * esp + 0.058 * emp;
+        const double k_sat_mm_per_hour = 120.637 - 13.094 * ph - 0.102 * clay + 1.151 * excm;
+        const double k_sat = k_sat_mm_per_hour / 3600000.0;
         *(double *)args[6] = w_33;
         *(double *)args[7] = w_100;
         *(double *)args[8] = w_1500;

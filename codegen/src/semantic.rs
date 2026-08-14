@@ -23,8 +23,14 @@ pub(crate) struct Variable {
 }
 
 #[derive(Clone, Debug, PartialEq)]
+pub(crate) struct Number {
+    pub(crate) value: f64,
+    pub(crate) lexeme: String,
+}
+
+#[derive(Clone, Debug, PartialEq)]
 pub(crate) enum Expr {
-    Number(f64),
+    Number(Number),
     Reference(Reference),
     Unary {
         op: UnaryOp,
@@ -212,7 +218,10 @@ fn compile_expr(
     variable_index: usize,
 ) -> Result<Expr, Error> {
     match &expression.kind {
-        formula::ExprKind::Number(value) => Ok(Expr::Number(*value)),
+        formula::ExprKind::Number(number) => Ok(Expr::Number(Number {
+            value: number.value,
+            lexeme: number.lexeme.clone(),
+        })),
         formula::ExprKind::Variable(name) => match scope.get(name) {
             Some(index) if *index < raw.inputs.len() => {
                 Ok(Expr::Reference(Reference::Input(*index)))
