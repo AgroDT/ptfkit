@@ -16,6 +16,7 @@
 #include "puckett1985.c"
 #include "rawls1982.c"
 #include "tiwary2014.c"
+#include "varallyai1982.c"
 #include "wang2012.c"
 #include "weber2020.c"
 
@@ -37,6 +38,7 @@ PyMODINIT_FUNC PyInit__ptfkit(void) {
     if (ptfkit_register_puckett1985(module) < 0) { Py_DECREF(module); return NULL; }
     if (ptfkit_register_rawls1982(module) < 0) { Py_DECREF(module); return NULL; }
     if (ptfkit_register_tiwary2014(module) < 0) { Py_DECREF(module); return NULL; }
+    if (ptfkit_register_varallyai1982(module) < 0) { Py_DECREF(module); return NULL; }
     if (ptfkit_register_wang2012(module) < 0) { Py_DECREF(module); return NULL; }
     if (ptfkit_register_weber2020(module) < 0) { Py_DECREF(module); return NULL; }
     return module;

@@ -14,6 +14,7 @@
 #include <ptfkit/puckett1985.h>
 #include <ptfkit/rawls1982.h>
 #include <ptfkit/tiwary2014.h>
+#include <ptfkit/varallyai1982.h>
 #include <ptfkit/wang2012.h>
 #include <ptfkit/weber2020.h>
 
