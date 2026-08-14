@@ -65,10 +65,10 @@ pub fn calc_ptf_dharumarajan2019_nkp(
     sand: f64,
     cation_exchange_capacity: f64,
 ) -> Dharumarajan2019WaterRetentionResult {
-    let field_capacity = (((13.82f64) + ((0.205f64) * (clay))) - ((0.088f64) * (sand)))
-        + ((0.316f64) * (cation_exchange_capacity));
-    let permanent_wilting_point = (((-(5.776f64)) + ((0.315f64) * (clay))) + ((0.05f64) * (sand)))
-        + ((0.271f64) * (cation_exchange_capacity));
+    let field_capacity =
+        13.82f64 + 0.205f64 * clay - 0.088f64 * sand + 0.316f64 * cation_exchange_capacity;
+    let permanent_wilting_point =
+        -5.776f64 + 0.315f64 * clay + 0.050f64 * sand + 0.271f64 * cation_exchange_capacity;
     Dharumarajan2019WaterRetentionResult {
         field_capacity,
         permanent_wilting_point,
@@ -132,8 +132,8 @@ The source gives inconsistent profile counts and district lists for the Northern
 the scientific notes."]
 #[must_use]
 pub fn calc_ptf_dharumarajan2019_nkp_clay(clay: f64) -> Dharumarajan2019WaterRetentionResult {
-    let field_capacity = (4.968f64) + ((0.586f64) * (clay));
-    let permanent_wilting_point = (-(2.443f64)) + ((0.5f64) * (clay));
+    let field_capacity = 4.968f64 + 0.586f64 * clay;
+    let permanent_wilting_point = -2.443f64 + 0.500f64 * clay;
     Dharumarajan2019WaterRetentionResult {
         field_capacity,
         permanent_wilting_point,
@@ -201,10 +201,10 @@ pub fn calc_ptf_dharumarajan2019_skp(
     sand: f64,
     cation_exchange_capacity: f64,
 ) -> Dharumarajan2019WaterRetentionResult {
-    let field_capacity = (((39.179f64) - ((0.041f64) * (clay))) - ((0.371f64) * (sand)))
-        + ((0.257f64) * (cation_exchange_capacity));
-    let permanent_wilting_point = (((8.227f64) + ((0.168f64) * (clay))) - ((0.101f64) * (sand)))
-        + ((0.217f64) * (cation_exchange_capacity));
+    let field_capacity =
+        39.179f64 - 0.041f64 * clay - 0.371f64 * sand + 0.257f64 * cation_exchange_capacity;
+    let permanent_wilting_point =
+        8.227f64 + 0.168f64 * clay - 0.101f64 * sand + 0.217f64 * cation_exchange_capacity;
     Dharumarajan2019WaterRetentionResult {
         field_capacity,
         permanent_wilting_point,
@@ -266,8 +266,8 @@ Reported cross-validation RMSE values are 5.39% for FC and 3.13% for PWP.
 The paper does not state whether its water-content percentages are gravimetric or volumetric."]
 #[must_use]
 pub fn calc_ptf_dharumarajan2019_skp_clay(clay: f64) -> Dharumarajan2019WaterRetentionResult {
-    let field_capacity = (3.724f64) + ((0.581f64) * (clay));
-    let permanent_wilting_point = (-(1.979f64)) + ((0.428f64) * (clay));
+    let field_capacity = 3.724f64 + 0.581f64 * clay;
+    let permanent_wilting_point = -1.979f64 + 0.428f64 * clay;
     Dharumarajan2019WaterRetentionResult {
         field_capacity,
         permanent_wilting_point,
@@ -330,7 +330,7 @@ The reported model R-squared is 41%, and the reported RMSE is 6.71%.
 Predictor calibration ranges are not reported for the 100-observation dataset."]
 #[must_use]
 pub fn calc_ptf_dharumarajan2019_infiltration(sand: f64, silt: f64, clay: f64) -> f64 {
-    (((177.55f64) - ((1.47f64) * (sand))) - ((1.8f64) * (clay))) - ((1.58f64) * (silt))
+    177.55f64 - 1.47f64 * sand - 1.80f64 * clay - 1.58f64 * silt
 }
 #[cfg(test)]
 mod calc_ptf_dharumarajan2019_infiltration_tests {

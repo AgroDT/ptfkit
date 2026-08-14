@@ -5,6 +5,7 @@ import pytest
 
 from _helpers import prepare_vector_case
 from ptfkit.dharumarajan2019 import (
+    Dharumarajan2019WaterRetentionResult,
     calc_ptf_dharumarajan2019_infiltration,
     calc_ptf_dharumarajan2019_nkp,
     calc_ptf_dharumarajan2019_nkp_clay,
@@ -38,10 +39,10 @@ def test_calc_ptf_dharumarajan2019_nkp_golden(
 
 
 def test_calc_ptf_dharumarajan2019_nkp_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_DHARUMARAJAN2019_NKP, 2)
-
-    result = calc_ptf_dharumarajan2019_nkp(**inputs)
-
+    inputs, expected, rtol, atol, _out = prepare_vector_case(
+        CASES_CALC_PTF_DHARUMARAJAN2019_NKP, Dharumarajan2019WaterRetentionResult
+    )
+    result = calc_ptf_dharumarajan2019_nkp(**inputs, out=None)
     assert result.field_capacity[0] == pytest.approx(expected['field_capacity'], rel=rtol, abs=atol)
     assert result.permanent_wilting_point[0] == pytest.approx(
         expected['permanent_wilting_point'], rel=rtol, abs=atol
@@ -49,10 +50,10 @@ def test_calc_ptf_dharumarajan2019_nkp_array():
 
 
 def test_calc_ptf_dharumarajan2019_nkp_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_DHARUMARAJAN2019_NKP, 2)
-
+    inputs, expected, rtol, atol, out = prepare_vector_case(
+        CASES_CALC_PTF_DHARUMARAJAN2019_NKP, Dharumarajan2019WaterRetentionResult
+    )
     result = calc_ptf_dharumarajan2019_nkp(**inputs, out=out)
-
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
     assert result.field_capacity[0] == pytest.approx(expected['field_capacity'], rel=rtol, abs=atol)
@@ -82,11 +83,9 @@ def test_calc_ptf_dharumarajan2019_nkp_clay_golden(
 
 def test_calc_ptf_dharumarajan2019_nkp_clay_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_DHARUMARAJAN2019_NKP_CLAY, 2
+        CASES_CALC_PTF_DHARUMARAJAN2019_NKP_CLAY, Dharumarajan2019WaterRetentionResult
     )
-
-    result = calc_ptf_dharumarajan2019_nkp_clay(**inputs)
-
+    result = calc_ptf_dharumarajan2019_nkp_clay(**inputs, out=None)
     assert result.field_capacity[0] == pytest.approx(expected['field_capacity'], rel=rtol, abs=atol)
     assert result.permanent_wilting_point[0] == pytest.approx(
         expected['permanent_wilting_point'], rel=rtol, abs=atol
@@ -95,11 +94,9 @@ def test_calc_ptf_dharumarajan2019_nkp_clay_array():
 
 def test_calc_ptf_dharumarajan2019_nkp_clay_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_DHARUMARAJAN2019_NKP_CLAY, 2
+        CASES_CALC_PTF_DHARUMARAJAN2019_NKP_CLAY, Dharumarajan2019WaterRetentionResult
     )
-
     result = calc_ptf_dharumarajan2019_nkp_clay(**inputs, out=out)
-
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
     assert result.field_capacity[0] == pytest.approx(expected['field_capacity'], rel=rtol, abs=atol)
@@ -133,10 +130,10 @@ def test_calc_ptf_dharumarajan2019_skp_golden(
 
 
 def test_calc_ptf_dharumarajan2019_skp_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_DHARUMARAJAN2019_SKP, 2)
-
-    result = calc_ptf_dharumarajan2019_skp(**inputs)
-
+    inputs, expected, rtol, atol, _out = prepare_vector_case(
+        CASES_CALC_PTF_DHARUMARAJAN2019_SKP, Dharumarajan2019WaterRetentionResult
+    )
+    result = calc_ptf_dharumarajan2019_skp(**inputs, out=None)
     assert result.field_capacity[0] == pytest.approx(expected['field_capacity'], rel=rtol, abs=atol)
     assert result.permanent_wilting_point[0] == pytest.approx(
         expected['permanent_wilting_point'], rel=rtol, abs=atol
@@ -144,10 +141,10 @@ def test_calc_ptf_dharumarajan2019_skp_array():
 
 
 def test_calc_ptf_dharumarajan2019_skp_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_DHARUMARAJAN2019_SKP, 2)
-
+    inputs, expected, rtol, atol, out = prepare_vector_case(
+        CASES_CALC_PTF_DHARUMARAJAN2019_SKP, Dharumarajan2019WaterRetentionResult
+    )
     result = calc_ptf_dharumarajan2019_skp(**inputs, out=out)
-
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
     assert result.field_capacity[0] == pytest.approx(expected['field_capacity'], rel=rtol, abs=atol)
@@ -177,11 +174,9 @@ def test_calc_ptf_dharumarajan2019_skp_clay_golden(
 
 def test_calc_ptf_dharumarajan2019_skp_clay_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_DHARUMARAJAN2019_SKP_CLAY, 2
+        CASES_CALC_PTF_DHARUMARAJAN2019_SKP_CLAY, Dharumarajan2019WaterRetentionResult
     )
-
-    result = calc_ptf_dharumarajan2019_skp_clay(**inputs)
-
+    result = calc_ptf_dharumarajan2019_skp_clay(**inputs, out=None)
     assert result.field_capacity[0] == pytest.approx(expected['field_capacity'], rel=rtol, abs=atol)
     assert result.permanent_wilting_point[0] == pytest.approx(
         expected['permanent_wilting_point'], rel=rtol, abs=atol
@@ -190,11 +185,9 @@ def test_calc_ptf_dharumarajan2019_skp_clay_array():
 
 def test_calc_ptf_dharumarajan2019_skp_clay_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_DHARUMARAJAN2019_SKP_CLAY, 2
+        CASES_CALC_PTF_DHARUMARAJAN2019_SKP_CLAY, Dharumarajan2019WaterRetentionResult
     )
-
     result = calc_ptf_dharumarajan2019_skp_clay(**inputs, out=out)
-
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
     assert result.field_capacity[0] == pytest.approx(expected['field_capacity'], rel=rtol, abs=atol)
@@ -221,20 +214,16 @@ def test_calc_ptf_dharumarajan2019_infiltration_golden(
 
 def test_calc_ptf_dharumarajan2019_infiltration_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_DHARUMARAJAN2019_INFILTRATION, 1
+        CASES_CALC_PTF_DHARUMARAJAN2019_INFILTRATION
     )
-
-    result = calc_ptf_dharumarajan2019_infiltration(**inputs)
-
+    result = calc_ptf_dharumarajan2019_infiltration(**inputs, out=None)
     assert result[0] == pytest.approx(expected['infiltration_rate'], rel=rtol, abs=atol)
 
 
 def test_calc_ptf_dharumarajan2019_infiltration_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_DHARUMARAJAN2019_INFILTRATION, 1
+        CASES_CALC_PTF_DHARUMARAJAN2019_INFILTRATION
     )
-
     result = calc_ptf_dharumarajan2019_infiltration(**inputs, out=out)
-
     assert result is out
     assert result[0] == pytest.approx(expected['infiltration_rate'], rel=rtol, abs=atol)

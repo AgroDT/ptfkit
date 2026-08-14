@@ -7,8 +7,8 @@ static void calc_ptf_dharumarajan2019_nkp_loop(char **args, const npy_intp *dime
         const double clay = *(const double *)args[0];
         const double sand = *(const double *)args[1];
         const double cation_exchange_capacity = *(const double *)args[2];
-        const double field_capacity = ((((((13.82000000000000028) + (((0.20499999999999999) * (clay))))) - (((0.08799999999999999) * (sand))))) + (((0.31600000000000000) * (cation_exchange_capacity))));
-        const double permanent_wilting_point = (((((((-(5.77599999999999980))) + (((0.31500000000000000) * (clay))))) + (((0.05000000000000000) * (sand))))) + (((0.27100000000000002) * (cation_exchange_capacity))));
+        const double field_capacity = 13.82 + 0.205 * clay - 0.088 * sand + 0.316 * cation_exchange_capacity;
+        const double permanent_wilting_point = -5.776 + 0.315 * clay + 0.050 * sand + 0.271 * cation_exchange_capacity;
         *(double *)args[3] = field_capacity;
         *(double *)args[4] = permanent_wilting_point;
         for (int arg = 0; arg < 5; arg++) args[arg] += steps[arg];
@@ -21,8 +21,8 @@ static void calc_ptf_dharumarajan2019_nkp_clay_loop(char **args, const npy_intp 
     npy_intp index;
     for (index = 0; index < dimensions[0]; index++) {
         const double clay = *(const double *)args[0];
-        const double field_capacity = ((4.96799999999999997) + (((0.58599999999999997) * (clay))));
-        const double permanent_wilting_point = (((-(2.44300000000000006))) + (((0.50000000000000000) * (clay))));
+        const double field_capacity = 4.968 + 0.586 * clay;
+        const double permanent_wilting_point = -2.443 + 0.500 * clay;
         *(double *)args[1] = field_capacity;
         *(double *)args[2] = permanent_wilting_point;
         for (int arg = 0; arg < 3; arg++) args[arg] += steps[arg];
@@ -37,8 +37,8 @@ static void calc_ptf_dharumarajan2019_skp_loop(char **args, const npy_intp *dime
         const double clay = *(const double *)args[0];
         const double sand = *(const double *)args[1];
         const double cation_exchange_capacity = *(const double *)args[2];
-        const double field_capacity = ((((((39.17900000000000205) - (((0.04100000000000000) * (clay))))) - (((0.37100000000000000) * (sand))))) + (((0.25700000000000001) * (cation_exchange_capacity))));
-        const double permanent_wilting_point = ((((((8.22700000000000031) + (((0.16800000000000001) * (clay))))) - (((0.10100000000000001) * (sand))))) + (((0.21700000000000000) * (cation_exchange_capacity))));
+        const double field_capacity = 39.179 - 0.041 * clay - 0.371 * sand + 0.257 * cation_exchange_capacity;
+        const double permanent_wilting_point = 8.227 + 0.168 * clay - 0.101 * sand + 0.217 * cation_exchange_capacity;
         *(double *)args[3] = field_capacity;
         *(double *)args[4] = permanent_wilting_point;
         for (int arg = 0; arg < 5; arg++) args[arg] += steps[arg];
@@ -51,8 +51,8 @@ static void calc_ptf_dharumarajan2019_skp_clay_loop(char **args, const npy_intp 
     npy_intp index;
     for (index = 0; index < dimensions[0]; index++) {
         const double clay = *(const double *)args[0];
-        const double field_capacity = ((3.72400000000000020) + (((0.58099999999999996) * (clay))));
-        const double permanent_wilting_point = (((-(1.97900000000000009))) + (((0.42799999999999999) * (clay))));
+        const double field_capacity = 3.724 + 0.581 * clay;
+        const double permanent_wilting_point = -1.979 + 0.428 * clay;
         *(double *)args[1] = field_capacity;
         *(double *)args[2] = permanent_wilting_point;
         for (int arg = 0; arg < 3; arg++) args[arg] += steps[arg];
@@ -67,7 +67,7 @@ static void calc_ptf_dharumarajan2019_infiltration_loop(char **args, const npy_i
         const double sand = *(const double *)args[0];
         const double silt = *(const double *)args[1];
         const double clay = *(const double *)args[2];
-        const double infiltration_rate = ((((((177.55000000000001137) - (((1.46999999999999997) * (sand))))) - (((1.80000000000000004) * (clay))))) - (((1.58000000000000007) * (silt))));
+        const double infiltration_rate = 177.55 - 1.47 * sand - 1.80 * clay - 1.58 * silt;
         *(double *)args[3] = infiltration_rate;
         for (int arg = 0; arg < 4; arg++) args[arg] += steps[arg];
     }
