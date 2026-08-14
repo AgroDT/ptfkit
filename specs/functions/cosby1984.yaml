@@ -140,56 +140,11 @@ functions:
       expr: 0.459 + 0.00321 * silt
     - name: sd_theta_s
       expr: 7.73 - 0.0730 * clay
-scientific_notes: '
-
+scientific_notes: |
   # Cosby et al. (1984)
 
+  ## Review decisions
 
-  ## `calc_ptf_cosby1984_univariate`
-
-
-  ### Formula
-
-
-  Formulas extracted from Table 5.
-
-
-  ```text
-
-  mean_b = 2.91 + 0.159 * clay
-
-  mean_log_psi_s = 1.88 - 0.0131 * sand
-
-  mean_log_k_sat = -0.884 + 0.0153 * sand
-
-  mean_theta_s = 48.9 - 0.126 * sand
-
-  sd_b = 1.34 + 0.0500 * clay
-
-  sd_log_k_sat = 0.459 + 0.00321 * silt
-
-  sd_theta_s = 7.73 - 0.0730 * clay
-
-  ```
-
-
-  ### Excluded output
-
-
-  `sd_log_psi_s` is excluded from this pilot because Table 5 reports no significant
-  univariate regression.
-
-
-  ### Numeric policy
-
-
-  Use `f64`, do not round, propagate NaN, and retain NumPy-compatible domain behaviour.
-
-
-
-  ### Remaining notes
-
-
-  The DOI has not been established for this pilot specification.
-
-  '
+  The implementation contains the significant univariate regressions from Table
+  5. `sd_log_psi_s` is excluded because the table reports no significant
+  univariate regression for it.

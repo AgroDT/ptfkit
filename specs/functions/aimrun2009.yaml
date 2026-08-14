@@ -119,64 +119,10 @@ functions:
       expr: exp(ln_k_sat_m_per_day)
     - name: k_sat
       expr: k_sat_m_per_day * (1.0 / 86400.0)
-scientific_notes: '
-
+scientific_notes: |
   # Aimrun and Amin (2009)
 
+  ## Supported model
 
-  ## `calc_ptf_aimrun2009`
-
-
-  ### Constants
-
-
-  | name | value | units | description |
-
-  | --- | --- | --- | --- |
-
-  | M_PER_DAY_TO_M_PER_SEC | 0.000011574074074074073 | (m/s)/(m/day) | Convert m/day
-  to m/s. |
-
-
-  ### Formula
-
-
-  ```text
-
-  ln_k_sat_m_per_day = -2.368 + 3.846 * bulk_density + 0.091 * organic_matter - 6.203
-  * ln(bulk_density) - 0.343 * ln(organic_matter) - 2.334 * ln(clay) - 0.411 * ln(gmd)
-
-  k_sat_m_per_day = exp(ln_k_sat_m_per_day)
-
-  k_sat = k_sat_m_per_day * M_PER_DAY_TO_M_PER_SEC
-
-  ```
-
-
-  ### Intermediates
-
-
-  | name | units | formula_reference | description |
-
-  | --- | --- | --- | --- |
-
-  | ln_k_sat_m_per_day | ln(m/day) | equation (10) | Natural logarithm of saturated
-  hydraulic conductivity. |
-
-  | k_sat_m_per_day | m/day | equation (10) | Saturated hydraulic conductivity before
-  unit conversion. |
-
-
-  ### Unit conversion
-
-
-  Convert m/day to m/s using `M_PER_DAY_TO_M_PER_SEC`.
-
-
-  ### Numeric policy
-
-
-  Use `f64`, do not round, propagate NaN, and retain NumPy-compatible logarithm-domain
-  behaviour.
-
-  '
+  The implementation is equation 10. Its saturated hydraulic conductivity is
+  reported in m/day and converted to the public m/s unit.

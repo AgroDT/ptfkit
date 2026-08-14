@@ -170,17 +170,15 @@ functions:
       expr: 120.637 - 13.094 * ph - 0.102 * clay + 1.151 * excm
     - name: k_sat
       expr: k_sat_mm_per_hour / 3600000.0
-scientific_notes: "\n# Tiwary et al. (2014)\n\n## `calc_ptf_tiwary2014_igp`\n\n###\
-  \ Formula\n\n```text\nsHC_mm_per_h = 4.079 + 0.047 * sand - 0.054 * ESP\n      \
-  \          - 2.238 * bulk_density\nk_sat = sHC_mm_per_h / 3_600_000\n```\n\nEquation\
-  \ 11 is the IGP saturated-conductivity regression. In accordance with\nthe article,\
-  \ this function does not expose the BSR-only water-retention\nequations 7-9.\n\n\
-  ### Numeric policy\n\nUse `f64`, do not round, propagate NaN, and convert mm/h to\
-  \ m/s by dividing by\n3,600,000.\n\n## `calc_ptf_tiwary2014_bsr`\n\n### Formula\n\
-  \n```text\nw_33 = 2.583 + 0.346 * CEC + 0.249 * clay + 0.494 * ESP\nw_100 = -1.918\
-  \ + 0.383 * CEC + 0.228 * clay + 0.361 * ESP\nw_1500 = 0.541 + 0.306 * CEC + 0.146\
-  \ * ESP + 0.058 * EMP\nsHC_mm_per_h = 120.637 - 13.094 * pH - 0.102 * clay\n   \
-  \             + 1.151 * ExCaMg\nk_sat = sHC_mm_per_h / 3_600_000\n```\n\nThese are\
-  \ equations 7-10. The three water contents are gravimetric percentages;\nthe public\
-  \ conductivity is converted from mm/h to m/s.\n\n### Numeric policy\n\nUse `f64`,\
-  \ do not round, propagate NaN, and convert mm/h to m/s by dividing by\n3,600,000.\n"
+scientific_notes: |
+  # Tiwary et al. (2014)
+
+  ## Supported models
+
+  Equation 11 is the IGP saturated-conductivity regression. Equations 7-10 are
+  the BSR water-retention and conductivity regressions; their water contents are
+  gravimetric percentages. Public conductivity outputs convert mm/h to m/s.
+
+  ## Scope decision
+
+  The IGP API does not expose the BSR-only water-retention regressions.

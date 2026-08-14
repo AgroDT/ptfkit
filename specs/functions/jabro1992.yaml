@@ -107,64 +107,10 @@ functions:
       expr: 9.56 - 0.81 * log10(silt) - 1.09 * log10(clay) - 4.64 * bulk_density
     - name: k_sat
       expr: 10 ^ log10_k_sat_cm_per_hour * (0.01 / 3600)
-scientific_notes: '
-
+scientific_notes: |
   # Jabro (1992)
 
+  ## Supported model
 
-  ## `calc_ptf_jabro1992`
-
-
-  ### Constants
-
-
-  | name | value | units | description |
-
-  | --- | --- | --- | --- |
-
-  | CM_PER_HOUR_TO_M_PER_SEC | 0.000002777777777777778 | (m/s)/(cm/h) | Convert cm/h
-  to m/s. |
-
-
-  ### Formula
-
-
-  ```text
-
-  log10_k_sat_cm_per_hour = 9.56 - 0.81 * log10(silt) - 1.09 * log10(clay) - 4.64
-  * bulk_density
-
-  k_sat_cm_per_hour = 10 ** log10_k_sat_cm_per_hour
-
-  k_sat = k_sat_cm_per_hour * CM_PER_HOUR_TO_M_PER_SEC
-
-  ```
-
-
-  ### Intermediates
-
-
-  | name | units | formula_reference | description |
-
-  | --- | --- | --- | --- |
-
-  | log10_k_sat_cm_per_hour | log10(cm/h) | equation (3) | Base-10 logarithm of saturated
-  hydraulic conductivity. |
-
-  | k_sat_cm_per_hour | cm/h | equation (3) | Saturated hydraulic conductivity before
-  unit conversion. |
-
-
-  ### Unit conversion
-
-
-  Convert cm/h to m/s using `CM_PER_HOUR_TO_M_PER_SEC`.
-
-
-  ### Numeric policy
-
-
-  Use `f64`, do not round, propagate NaN, and retain NumPy-compatible logarithm-domain
-  behaviour.
-
-  '
+  The implementation is equation 3. It uses base-10 logarithms and converts
+  saturated hydraulic conductivity from cm/h to the public m/s unit.

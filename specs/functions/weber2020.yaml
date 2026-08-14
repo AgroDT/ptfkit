@@ -155,123 +155,32 @@ functions:
       expr: 10.0 ^ (1.16e-1 + 1.060 * log10(k_s_vgm))
     - name: k_snc_bw
       expr: 10.0 ^ -1.72
-scientific_notes: '
-
+scientific_notes: |
   # Weber et al. (2020)
 
-
-  ## `calc_ptf_weber2020`
-
-
-  ### Formula
-
-
-  Table 3 reports York regressions in the form `y = intercept + slope * x`.
-
-  The text and Figure 8 identify `theta_s,BW` as the total saturated water
-
-  content `theta_sc,BW + theta_snc,BW`:
-
-
-  ```text
-
-  theta_snc_bw = -1.58e-3 + 1.285 * theta_r_vgm
-
-  theta_s_bw = 1.89e-3 + 0.993 * theta_s_vgm
-
-  theta_sc_bw = theta_s_bw - theta_snc_bw
-
-
-  log10(alpha_bw) = -2.06e-2 + 0.986 * log10(alpha_vgm)
-
-  log10(n_bw - 1) = 6.42e-2 + 0.933 * log10(n_vgm - 1)
-
-  log10(k_sc_bw) = 1.16e-1 + 1.060 * log10(k_s_vgm)
-
-
-  k_snc_bw = 10^(-1.72) cm d^-1
-
-  ```
-
-
-  Equivalently, the three log-space predictions are back-transformed as:
-
-
-  ```text
-
-  alpha_bw = 10^(-2.06e-2 + 0.986 * log10(alpha_vgm))
-
-  n_bw = 1 + 10^(6.42e-2 + 0.933 * log10(n_vgm - 1))
-
-  k_sc_bw = 10^(1.16e-1 + 1.060 * log10(k_s_vgm))
-
-  ```
-
-
-  The published `tau` coefficient row and confirmed nonpositive-input constraint
-
-  give the operational formula:
-
-
-  ```text
-
-  tau_vgm_constrained = min(tau_vgm, 0)
-
-  tau_bw = 2.95e-2 + 1.833 * tau_vgm_constrained
-
-  ```
-
-
-  The surrounding prose is read as constraining the explanatory VGM parameter
-
-  before applying the Table 3 regression. Correspondingly, the DS2 statement
-
-  that cases with `tau_vgm < 0` were removed is treated as a typographical error:
-
-  the scientific rationale, the nonpositive constraint, and the nonzero fitted
-
-  slope are mutually consistent only when positive cases were removed from the
-
-  tau regression data.
-
-
-  ### Constants
-
-
-  All regression constants above are printed in Table 3. The noncapillary
-
-  conductivity is the median reported in Section 3.3.2:
-
-  `10^(-1.72) cm d^-1`.
-
-
-  ### Numeric policy
-
-
-  Use `f64` and the printed coefficient precision without rounding intermediate
-
-  results. The logarithmic equations require `alpha_vgm > 0`, `n_vgm > 1`, and
-
-  `k_s_vgm > 0`.
-
-
-  ### Golden-test rationale
-
-
-  The structured representative case uses values within the Table 1 parameter
-
-  bounds. Its seven expected outputs are calculated directly from the printed
-
-  Table 3 coefficients, the reported median `K_snc`, and the confirmed
-
-  constrained-tau interpretation, without rounding intermediate results.
-
-
-  ### Interpretation note
-
-
-  The constrained-tau formula and corrected DS2 inequality above are the
-
-  user-confirmed resolution of contradictory wording in the supplied source.
-
-  '
+  ## Review decisions
+
+  Table 3 reports York regressions. The text and Figure 8 identify total
+  saturated water content as the sum of capillary and noncapillary components.
+  Noncapillary conductivity uses the median reported in section 3.3.2.
+
+  The source contains contradictory wording about the `tau` regression. Human
+  review constrains the explanatory VGM parameter to nonpositive values before
+  applying the printed regression; the DS2 statement that negative cases were
+  removed is treated as a typographical error. The scientific rationale, the
+  stated constraint, and the nonzero fitted slope support this interpretation.
+  The operational source notation is
+  `tau_vgm_constrained = min(tau_vgm, 0)` and
+  `tau_bw = 2.95e-2 + 1.833 * tau_vgm_constrained`.
+
+  ## Documented limitations
+
+  The logarithmic regressions require positive `alpha_vgm`, `k_s_vgm`, and
+  `n_vgm - 1`.
+
+  ## Golden-test rationale
+
+  The representative case uses values within the Table 1 parameter bounds. Its
+  seven expected outputs are calculated directly from the Table 3 coefficients,
+  the reported median noncapillary conductivity, and the confirmed constrained-
+  `tau` interpretation.

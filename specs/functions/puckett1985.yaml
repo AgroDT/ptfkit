@@ -158,20 +158,12 @@ functions:
       expr: 0.0000254 * fine_sand - 0.000239 * sand + 0.000380 * clay + 0.239
     - name: k_sat
       expr: 4.36e-5 * exp(-0.1975 * clay)
-scientific_notes: "\n# Puckett et al. (1985)\n\n## `calc_ptf_puckett1985`\n\n### Formula\n\
-  \n```text\ntheta_0 = 0.264 * bulk_density + 1.60 * porosity - 0.706\ntheta_1 = 0.318\
-  \ * bulk_density + 1.69 * porosity - 0.834\ntheta_5 = 0.0001930 * fine_sand - 0.000357\
-  \ * sand + 0.000182 * clay + 0.410\ntheta_10 = 0.0000712 * fine_sand - 0.000383\
-  \ * sand + 0.000243 * clay + 0.415\ntheta_30 = 0.0000059 * fine_sand - 0.000348\
-  \ * sand + 0.000321 * clay + 0.365\ntheta_60 = 0.0000003 * fine_sand - 0.000319\
-  \ * sand + 0.000351 * clay + 0.330\ntheta_100 = 0.0000019 * fine_sand - 0.000302\
-  \ * sand + 0.000362 * clay + 0.310\ntheta_500 = 0.0000140 * fine_sand - 0.000262\
-  \ * sand + 0.000375 * clay + 0.265\ntheta_1000 = 0.0000197 * fine_sand - 0.000244\
-  \ * sand + 0.000378 * clay + 0.264\ntheta_1500 = 0.0000254 * fine_sand - 0.000239\
-  \ * sand + 0.000380 * clay + 0.239\nk_sat = 4.36e-5 * exp(-0.1975 * clay)\n```\n\
-  \nThe water-retention coefficients are from Table 4. The printed `d`, `e`, and\n\
-  `f` values are multiplied by `10^-4`, as explicitly selected during\nspecification\
-  \ review. The `Ks` equation and m/s unit are stated in Figure 3.\n\n### Numeric\
-  \ policy\n\nUse `f64`, do not round, and propagate NaN.\n\n### Review decision\n\
-  \n- Interpret the Table 4 coefficient heading as a `10^-4` multiplier. This\n  intentionally\
-  \ differs from the existing legacy implementation's `10^-3`\n  interpretation.\n"
+scientific_notes: |
+  # Puckett et al. (1985)
+
+  ## Review decision
+
+  Table 4 water-retention coefficients labelled `d`, `e`, and `f` use a
+  `10^-4` multiplier. This intentionally differs from the legacy
+  implementation's `10^-3` interpretation. The saturated-conductivity model
+  and its m/s unit are stated in Figure 3.
