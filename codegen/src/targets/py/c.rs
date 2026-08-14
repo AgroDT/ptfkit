@@ -1,26 +1,20 @@
-use std::collections::BTreeMap;
-
 use anyhow::Result;
 
-use crate::{
-    model::{CompiledFunction, Output},
-    semantic::{BinaryOp, Expr, MathFunction, Reference, UnaryOp},
+use crate::model::{CompiledFunction, Output};
+
+use super::{
+    super::{
+        c_expression::{self, Dialect},
+        group_by_source,
+    },
+    C_HEADER,
 };
 
-use super::C_HEADER;
-
 pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<(String, String)>> {
-    let mut sources = BTreeMap::<String, Vec<&CompiledFunction>>::new();
-    for function in functions {
-        sources
-            .entry(function.entry.slug.clone())
-            .or_default()
-            .push(function);
-    }
     let mut includes = String::new();
     let mut registers = Vec::new();
     let mut writes = Vec::new();
-    for (slug, functions) in sources {
+    for (slug, functions) in group_by_source(functions) {
         let register = format!("ptfkit_register_{slug}");
         registers.push(register.clone());
         let mut definitions = String::new();
@@ -70,7 +64,12 @@ fn ufunc(function: &CompiledFunction) -> Result<String> {
         locals.push_str(&format!(
             "        const double {} = {};\n",
             variable.name,
-            expression(&variable.expression, inputs, &function.ir.variables)?.text
+            c_expression::render(
+                &variable.expression,
+                inputs,
+                &function.ir.variables,
+                Dialect::C,
+            )?
         ));
     }
     let values = match &function.core.output {
@@ -109,116 +108,9 @@ fn output_count(output: &Output) -> usize {
     }
 }
 
-#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd)]
-enum Precedence {
-    Sum,
-    Product,
-    Unary,
-    Primary,
-}
-
-struct RenderedExpression {
-    text: String,
-    precedence: Precedence,
-}
-
-impl RenderedExpression {
-    fn binary_operand(&self, parent: Precedence, is_right: bool) -> String {
-        let needs_parentheses = self.precedence < parent || (is_right && self.precedence == parent);
-        match needs_parentheses {
-            true => format!("({})", self.text),
-            false => self.text.clone(),
-        }
-    }
-
-    fn unary_operand(&self) -> String {
-        match self.precedence <= Precedence::Unary {
-            true => format!("({})", self.text),
-            false => self.text.clone(),
-        }
-    }
-}
-
-fn expression(
-    expr: &Expr,
-    inputs: &[String],
-    variables: &[crate::semantic::Variable],
-) -> Result<RenderedExpression> {
-    Ok(match expr {
-        Expr::Number(number) => primary(c_float_literal(&number.lexeme)),
-        Expr::Reference(Reference::Input(index)) => primary(inputs[*index].clone()),
-        Expr::Reference(Reference::Variable(index)) => primary(variables[*index].name.clone()),
-        Expr::Unary { op, operand } => match op {
-            UnaryOp::Plus => expression(operand, inputs, variables)?,
-            UnaryOp::Minus => {
-                let operand = expression(operand, inputs, variables)?.unary_operand();
-                RenderedExpression {
-                    text: format!("-{operand}"),
-                    precedence: Precedence::Unary,
-                }
-            }
-        },
-        Expr::Binary { op, left, right } => {
-            let left = expression(left, inputs, variables)?;
-            let right = expression(right, inputs, variables)?;
-            match op {
-                BinaryOp::Add => binary(left, right, Precedence::Sum, "+"),
-                BinaryOp::Subtract => binary(left, right, Precedence::Sum, "-"),
-                BinaryOp::Multiply => binary(left, right, Precedence::Product, "*"),
-                BinaryOp::Divide => binary(left, right, Precedence::Product, "/"),
-                BinaryOp::Power => primary(format!("pow({}, {})", left.text, right.text)),
-            }
-        }
-        Expr::Call { function, args } => {
-            let args = args
-                .iter()
-                .map(|arg| expression(arg, inputs, variables))
-                .collect::<Result<Vec<_>>>()?;
-            match function {
-                MathFunction::Sqrt => primary(format!("sqrt({})", args[0].text)),
-                MathFunction::Exp => primary(format!("exp({})", args[0].text)),
-                MathFunction::Ln => primary(format!("log({})", args[0].text)),
-                MathFunction::Log10 => primary(format!("log10({})", args[0].text)),
-                MathFunction::Abs => primary(format!("fabs({})", args[0].text)),
-                MathFunction::Min => primary(format!("fmin({}, {})", args[0].text, args[1].text)),
-                MathFunction::Max => primary(format!("fmax({}, {})", args[0].text, args[1].text)),
-            }
-        }
-    })
-}
-
-fn c_float_literal(lexeme: &str) -> String {
-    match lexeme.contains(['.', 'e', 'E']) {
-        true => lexeme.to_owned(),
-        false => format!("{lexeme}.0"),
-    }
-}
-
-fn primary(text: String) -> RenderedExpression {
-    RenderedExpression {
-        text,
-        precedence: Precedence::Primary,
-    }
-}
-
-fn binary(
-    left: RenderedExpression,
-    right: RenderedExpression,
-    precedence: Precedence,
-    operator: &str,
-) -> RenderedExpression {
-    let left = left.binary_operand(precedence, false);
-    let right = right.binary_operand(precedence, true);
-    RenderedExpression {
-        text: format!("{left} {operator} {right}"),
-        precedence,
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::semantic::{BinaryOp, Reference};
 
     #[test]
     fn entry_source_initializes_the_private_module() {
@@ -226,64 +118,5 @@ mod tests {
         let entry = rendered.last().unwrap().1.as_str();
         assert!(entry.contains("PyInit__ptfkit"));
         assert!(!entry.contains("#include \"ufunc.h\""));
-    }
-
-    #[test]
-    fn omits_parentheses_when_precedence_preserves_the_expression() {
-        let inputs = vec!["x".into(), "y".into(), "z".into()];
-        let variables = Vec::new();
-        let input = |index| Expr::Reference(Reference::Input(index));
-        let binary = |op, left, right| Expr::Binary {
-            op,
-            left: Box::new(left),
-            right: Box::new(right),
-        };
-        let cases = [
-            (
-                binary(
-                    BinaryOp::Add,
-                    input(0),
-                    binary(BinaryOp::Multiply, input(1), input(2)),
-                ),
-                "x + y * z",
-            ),
-            (
-                binary(
-                    BinaryOp::Multiply,
-                    binary(BinaryOp::Add, input(0), input(1)),
-                    input(2),
-                ),
-                "(x + y) * z",
-            ),
-            (
-                binary(
-                    BinaryOp::Subtract,
-                    input(0),
-                    binary(BinaryOp::Subtract, input(1), input(2)),
-                ),
-                "x - (y - z)",
-            ),
-            (
-                binary(
-                    BinaryOp::Power,
-                    binary(BinaryOp::Add, input(0), input(1)),
-                    input(2),
-                ),
-                "pow(x + y, z)",
-            ),
-        ];
-        for (expr, expected) in cases {
-            assert_eq!(
-                expression(&expr, &inputs, &variables).unwrap().text,
-                expected
-            );
-        }
-    }
-
-    #[test]
-    fn preserves_number_lexemes_in_c_literals() {
-        assert_eq!(c_float_literal("1"), "1.0");
-        assert_eq!(c_float_literal("1.00"), "1.00");
-        assert_eq!(c_float_literal(".5e1"), ".5e1");
     }
 }
