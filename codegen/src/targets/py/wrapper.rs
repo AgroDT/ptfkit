@@ -4,7 +4,7 @@ use anyhow::{Result, bail};
 
 use crate::model::{CompiledFunction, Function, Parameter, PythonGeneration, Scope, Source};
 
-use super::{WRAPPER_HEADER, natural_sort_key};
+use super::{super::documentation, WRAPPER_HEADER, natural_sort_key};
 
 struct PythonFunction<'a> {
     name: &'a str,
@@ -320,10 +320,7 @@ fn result_class_docstring(function: &Function) -> String {
 }
 
 fn parameter_documentation(parameter: &Parameter) -> String {
-    format!(
-        "{}: {} ({})",
-        parameter.name, parameter.description, parameter.unit
-    )
+    documentation::parameter_documentation(parameter)
 }
 
 fn definition_list_block(lines: &mut Vec<String>, name: &str, text: &str) {

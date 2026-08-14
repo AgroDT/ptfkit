@@ -326,6 +326,16 @@ pub(crate) struct CompiledFunction {
     pub(crate) function_index: usize,
     pub(crate) ir: crate::semantic::Function,
     pub(crate) core: CoreFunction,
+    pub(crate) golden_tests: Vec<CompiledGoldenTest>,
+}
+
+#[derive(Clone, Debug)]
+pub(crate) struct CompiledGoldenTest {
+    pub(crate) id: String,
+    pub(crate) inputs: Vec<f64>,
+    pub(crate) expected: Vec<f64>,
+    pub(crate) rtol: f64,
+    pub(crate) atol: f64,
 }
 
 #[derive(Clone, Debug)]

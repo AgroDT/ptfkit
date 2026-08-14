@@ -1,14 +1,32 @@
+mod c_expression;
 mod compile;
+mod documentation;
 mod native;
 mod py;
 mod rs;
 mod write;
 
-use std::path::{Path, PathBuf};
+use std::{
+    collections::BTreeMap,
+    path::{Path, PathBuf},
+};
 
 use anyhow::Result;
 
-use crate::model::{Entry, PythonGeneration};
+use crate::model::{CompiledFunction, Entry, PythonGeneration};
+
+pub(super) fn group_by_source(
+    functions: &[CompiledFunction],
+) -> BTreeMap<&str, Vec<&CompiledFunction>> {
+    let mut sources: BTreeMap<&str, Vec<&CompiledFunction>> = BTreeMap::new();
+    for function in functions {
+        sources
+            .entry(function.entry.slug.as_str())
+            .or_default()
+            .push(function);
+    }
+    sources
+}
 
 #[derive(Clone, Copy, PartialEq, Eq)]
 pub(super) enum Target {

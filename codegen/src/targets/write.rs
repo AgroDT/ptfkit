@@ -1,8 +1,10 @@
 use std::{
     collections::BTreeSet,
-    fs,
+    fs::{self, OpenOptions},
+    io::Write,
     path::{Path, PathBuf},
     process::Command,
+    sync::atomic::{AtomicU64, Ordering},
 };
 
 use anyhow::{Context, Result, bail};
@@ -15,10 +17,9 @@ struct StagedWrite {
     output_target: Target,
 }
 
+static TEMPORARY_SEQUENCE: AtomicU64 = AtomicU64::new(0);
+
 pub(super) fn commit(root: &Path, outputs: &[TargetOutput]) -> Result<()> {
-    for output in outputs {
-        cleanup(root, output)?;
-    }
     let staged = stage(root, outputs)?;
     if let Err(error) = format(root, &staged) {
         remove_temporary(&staged);
@@ -30,6 +31,9 @@ pub(super) fn commit(root: &Path, outputs: &[TargetOutput]) -> Result<()> {
             return Err(error).with_context(|| format!("replacing {}", write.target.display()));
         }
     }
+    for output in outputs {
+        cleanup(root, output)?;
+    }
     Ok(())
 }
 
@@ -38,20 +42,17 @@ fn stage(root: &Path, outputs: &[TargetOutput]) -> Result<Vec<StagedWrite>> {
     for output in outputs {
         for file in &output.files {
             let target = output.target.output_path(root, &file.path);
-            let contents = file.contents.replace("\r\n", "\n");
-            if target.exists() && fs::read_to_string(&target)? == contents {
+            if target.exists() && fs::read_to_string(&target)? == file.contents {
                 continue;
             }
             let parent = target.parent().context("finding generated-file parent")?;
             fs::create_dir_all(parent)?;
-            let temporary = target.with_extension(format!(
-                "{}.tmp",
-                target
-                    .extension()
-                    .and_then(|extension| extension.to_str())
-                    .unwrap_or("generated")
-            ));
-            fs::write(&temporary, contents)?;
+            let temporary = temporary_path(&target);
+            if let Err(error) = write_temporary(&temporary, &file.contents) {
+                let _ = fs::remove_file(&temporary);
+                remove_temporary(&staged);
+                return Err(error);
+            }
             staged.push(StagedWrite {
                 target,
                 temporary,
@@ -60,6 +61,29 @@ fn stage(root: &Path, outputs: &[TargetOutput]) -> Result<Vec<StagedWrite>> {
         }
     }
     Ok(staged)
+}
+
+fn temporary_path(target: &Path) -> PathBuf {
+    let extension = target
+        .extension()
+        .and_then(|extension| extension.to_str())
+        .unwrap_or("generated");
+    let sequence = TEMPORARY_SEQUENCE.fetch_add(1, Ordering::Relaxed);
+    target.with_extension(format!(
+        "{extension}.{}.{}.tmp",
+        std::process::id(),
+        sequence
+    ))
+}
+
+fn write_temporary(path: &Path, contents: &str) -> Result<()> {
+    let mut file = OpenOptions::new()
+        .write(true)
+        .create_new(true)
+        .open(path)
+        .with_context(|| format!("creating temporary generated file {}", path.display()))?;
+    file.write_all(contents.as_bytes())
+        .with_context(|| format!("writing temporary generated file {}", path.display()))
 }
 
 fn cleanup(root: &Path, output: &TargetOutput) -> Result<()> {
