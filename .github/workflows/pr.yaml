@@ -21,6 +21,9 @@ jobs:
         with:
           components: clippy, rustfmt
 
+      - name: Install clang-format
+        run: sudo apt-get update && sudo apt-get install --yes clang-format
+
       - name: Cache Rust dependencies and codegen artifacts
         uses: Swatinem/rust-cache@v2
         with:
@@ -87,6 +90,13 @@ jobs:
         continue-on-error: true
         run: cargo fmt --manifest-path targets/ptfkit-rs/Cargo.toml --all --check
 
+      - name: Check C and C++ formatting
+        id: c-family-format
+        continue-on-error: true
+        run: >
+          git ls-files -z -- '*.c' '*.h' '*.cc' '*.cpp' '*.cppm' '*.cxx' '*.hpp'
+          | xargs -0 --no-run-if-empty clang-format --style=file --dry-run --Werror
+
       - name: Check ptfkit-rs lint
         id: ptfkit-rs-lint
         continue-on-error: true
@@ -106,6 +116,7 @@ jobs:
           steps.ptfkit-py-format.outcome == 'failure' ||
           steps.ptfkit-py-typescheck.outcome == 'failure' ||
           steps.ptfkit-rs-format.outcome == 'failure' ||
+          steps.c-family-format.outcome == 'failure' ||
           steps.ptfkit-rs-lint.outcome == 'failure' ||
           steps.ptfkit-rs-tests.outcome == 'failure'
         run: exit 1

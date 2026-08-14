@@ -45,10 +45,13 @@ export namespace ptfkit::aimrun2009 {
  * The formula uses natural logarithms of all inputs.
  */
 [[nodiscard]]
-inline double calc_ptf_aimrun2009(double clay, double bulk_density, double organic_matter, double gmd) {
-    const double ln_k_sat_m_per_day = -2.368 + 3.846 * bulk_density + 0.091 * organic_matter - 6.203 * std::log(bulk_density) - 0.343 * std::log(organic_matter) - 2.334 * std::log(clay) - 0.411 * std::log(gmd);
+inline double calc_ptf_aimrun2009(double clay, double bulk_density, double organic_matter,
+                                  double gmd) {
+    const double ln_k_sat_m_per_day =
+        -2.368 + 3.846 * bulk_density + 0.091 * organic_matter - 6.203 * std::log(bulk_density) -
+        0.343 * std::log(organic_matter) - 2.334 * std::log(clay) - 0.411 * std::log(gmd);
     const double k_sat_m_per_day = std::exp(ln_k_sat_m_per_day);
     return k_sat_m_per_day * (1.0 / 86400.0);
 }
 
-}  // namespace ptfkit::aimrun2009
+} // namespace ptfkit::aimrun2009

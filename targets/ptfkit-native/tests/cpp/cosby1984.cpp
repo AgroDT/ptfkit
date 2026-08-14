@@ -12,7 +12,8 @@ import ptfkit.cosby1984;
 int main() {
     {
         const auto result = ptfkit::cosby1984::calc_ptf_cosby1984_univariate(50.0, 30.0, 20.0);
-        static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>, ptfkit::cosby1984::Cosby1984UnivariatePTFResult>);
+        static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
+                                     ptfkit::cosby1984::Cosby1984UnivariatePTFResult>);
         assert_close_enough(result.mean_b, 6.09, 0.000000000001, 0.000000000001);
         assert_close_enough(result.mean_log_psi_s, 1.225, 0.000000000001, 0.000000000001);
         assert_close_enough(result.mean_log_k_sat, -0.119, 0.000000000001, 0.000000000001);
@@ -23,7 +24,8 @@ int main() {
     }
     {
         const auto result = ptfkit::cosby1984::calc_ptf_cosby1984_univariate(80.0, 15.0, 5.0);
-        static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>, ptfkit::cosby1984::Cosby1984UnivariatePTFResult>);
+        static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
+                                     ptfkit::cosby1984::Cosby1984UnivariatePTFResult>);
         assert_close_enough(result.mean_b, 3.705, 0.000000000001, 0.000000000001);
         assert_close_enough(result.mean_log_psi_s, 0.832, 0.000000000001, 0.000000000001);
         assert_close_enough(result.mean_log_k_sat, 0.34, 0.000000000001, 0.000000000001);

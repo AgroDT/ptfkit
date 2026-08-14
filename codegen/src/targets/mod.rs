@@ -96,17 +96,25 @@ impl Target {
         }
     }
 
+    fn is_clang_formatted(self) -> bool {
+        matches!(
+            self,
+            Self::PythonExtension
+                | Self::NativeC
+                | Self::NativeCppModule
+                | Self::NativeCTest
+                | Self::NativeCppTest
+        )
+    }
+
     fn format(self, root: &Path, paths: &[PathBuf]) -> Result<()> {
         match self {
             Self::Rust => write::format_rust(paths),
-            Self::PythonExtension => Ok(()),
+            Self::PythonExtension | Self::NativeCTest => write::format_c(paths),
             Self::PythonWrapper => write::format_python(root, paths),
             Self::PythonTest => write::format_python(root, paths),
-            Self::NativeC
-            | Self::NativeCppModule
-            | Self::NativeCppCmake
-            | Self::NativeCTest
-            | Self::NativeCppTest => Ok(()),
+            Self::NativeC | Self::NativeCppModule | Self::NativeCppTest => write::format_cpp(paths),
+            Self::NativeCppCmake => Ok(()),
         }
     }
 }

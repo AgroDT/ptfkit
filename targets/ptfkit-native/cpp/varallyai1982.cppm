@@ -28,9 +28,10 @@ struct Varallyai1982Parameters {
     double theta_0;
     /** Shape parameter of equation (9). (dimensionless) */
     double m;
-    /** Base-10 logarithm of the equation (9) suction-scale parameter psi_*, with suction expressed in centimetres of water. (dimensionless) */
+    /** Base-10 logarithm of the equation (9) suction-scale parameter psi_*, with suction expressed
+     * in centimetres of water. (dimensionless) */
     double pf_star;
- };
+};
 
 /**
  * Estimate equation (9) water-retention parameters for meadow-series soils.
@@ -62,10 +63,15 @@ struct Varallyai1982Parameters {
  * Hungarian meadow-series soils.
  */
 [[nodiscard]]
-inline Varallyai1982Parameters calc_ptf_varallyai1982_meadow(double bulk_density, double fine_sand_fraction, double fine_fraction) {
-    const double theta_0 = -8.78 * std::pow(bulk_density, 2.0) + 14.46 * std::pow(fine_fraction, 2.0) + 62.85;
-    const double m = 0.576 * std::pow(fine_sand_fraction, 2.0) - 1.434 * fine_sand_fraction * fine_fraction + 0.156;
-    const double pf_star = -1.702 * fine_sand_fraction + 1.103 * bulk_density * fine_fraction + 3.749;
+inline Varallyai1982Parameters calc_ptf_varallyai1982_meadow(double bulk_density,
+                                                             double fine_sand_fraction,
+                                                             double fine_fraction) {
+    const double theta_0 =
+        -8.78 * std::pow(bulk_density, 2.0) + 14.46 * std::pow(fine_fraction, 2.0) + 62.85;
+    const double m = 0.576 * std::pow(fine_sand_fraction, 2.0) -
+                     1.434 * fine_sand_fraction * fine_fraction + 0.156;
+    const double pf_star =
+        -1.702 * fine_sand_fraction + 1.103 * bulk_density * fine_fraction + 3.749;
     return Varallyai1982Parameters{theta_0, m, pf_star};
 }
 
@@ -98,7 +104,8 @@ inline Varallyai1982Parameters calc_ptf_varallyai1982_meadow(double bulk_density
  * Hungarian chernozem A horizons.
  */
 [[nodiscard]]
-inline Varallyai1982Parameters calc_ptf_varallyai1982_chernozem_a(double bulk_density, double fine_fraction) {
+inline Varallyai1982Parameters calc_ptf_varallyai1982_chernozem_a(double bulk_density,
+                                                                  double fine_fraction) {
     const double theta_0 = -56.40 * bulk_density + 20.50 * fine_fraction + 123.79;
     const double m = 0.336 * bulk_density - 0.053;
     const double pf_star = 4.701 * bulk_density * fine_fraction + 1.513 * bulk_density - 0.417;
@@ -134,7 +141,8 @@ inline Varallyai1982Parameters calc_ptf_varallyai1982_chernozem_a(double bulk_de
  * Hungarian chernozem B horizons.
  */
 [[nodiscard]]
-inline Varallyai1982Parameters calc_ptf_varallyai1982_chernozem_b(double bulk_density, double fine_fraction) {
+inline Varallyai1982Parameters calc_ptf_varallyai1982_chernozem_b(double bulk_density,
+                                                                  double fine_fraction) {
     const double theta_0 = -62.20 * bulk_density - 49.14 * std::pow(fine_fraction, 2.0) + 140.70;
     const double m = 0.635 * bulk_density - 0.482;
     const double pf_star = 4.270 * bulk_density * fine_fraction + 3.509 * bulk_density - 3.075;
@@ -170,11 +178,13 @@ inline Varallyai1982Parameters calc_ptf_varallyai1982_chernozem_b(double bulk_de
  * Hungarian chernozem C horizons.
  */
 [[nodiscard]]
-inline Varallyai1982Parameters calc_ptf_varallyai1982_chernozem_c(double bulk_density, double fine_fraction) {
+inline Varallyai1982Parameters calc_ptf_varallyai1982_chernozem_c(double bulk_density,
+                                                                  double fine_fraction) {
     const double theta_0 = -46.80 * bulk_density + 115.39;
     const double m = 0.439 * bulk_density * fine_fraction + 0.625;
-    const double pf_star = 3.268 * bulk_density * fine_fraction + 0.865 * std::pow(bulk_density, 2.0) + 0.301;
+    const double pf_star =
+        3.268 * bulk_density * fine_fraction + 0.865 * std::pow(bulk_density, 2.0) + 0.301;
     return Varallyai1982Parameters{theta_0, m, pf_star};
 }
 
-}  // namespace ptfkit::varallyai1982
+} // namespace ptfkit::varallyai1982

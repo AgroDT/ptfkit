@@ -301,7 +301,8 @@ inline double calc_ptf_pidgeon1972_eawc_sand_organic_matter(double sand, double 
  * Prediction target: Extended available water capacity
  */
 [[nodiscard]]
-inline double calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(double coarse_sand, double organic_matter) {
+inline double calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(double coarse_sand,
+                                                                   double organic_matter) {
     return -7.4 + 2.37 * coarse_sand + 6.86 * organic_matter;
 }
 
@@ -319,8 +320,9 @@ inline double calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(double coarse
  * Prediction target: Extended available water capacity
  */
 [[nodiscard]]
-inline double calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(double fine_sand, double organic_matter) {
+inline double calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(double fine_sand,
+                                                                 double organic_matter) {
     return -18.0 + 3.11 * fine_sand + 7.69 * organic_matter;
 }
 
-}  // namespace ptfkit::pidgeon1972
+} // namespace ptfkit::pidgeon1972

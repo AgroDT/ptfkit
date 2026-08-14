@@ -30,7 +30,7 @@ struct Chakraborty2011PTFResult {
     double water_content_500;
     /** Gravimetric water content at -1500 kPa matric potential. (g/g) */
     double water_content_1500;
- };
+};
 
 /**
  * Estimate four gravimetric water contents from clay and silt.
@@ -61,7 +61,8 @@ inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq1(double clay, double
     const double water_content_100 = (0.270 * clay + 0.379 * silt + 2.988) / 100.0;
     const double water_content_500 = (0.251 * clay + 0.185 * silt + 2.958) / 100.0;
     const double water_content_1500 = (0.184 * clay + 0.144 * silt + 3.702) / 100.0;
-    return Chakraborty2011PTFResult{water_content_33, water_content_100, water_content_500, water_content_1500};
+    return Chakraborty2011PTFResult{water_content_33, water_content_100, water_content_500,
+                                    water_content_1500};
 }
 
 /**
@@ -93,7 +94,8 @@ inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq2(double sand, double
     const double water_content_100 = (-0.330 * sand + 2.611 * bulk_density + 30.160) / 100.0;
     const double water_content_500 = (-0.244 * sand - 0.795 * bulk_density + 27.495) / 100.0;
     const double water_content_1500 = (-0.187 * sand + 1.241 * bulk_density + 19.320) / 100.0;
-    return Chakraborty2011PTFResult{water_content_33, water_content_100, water_content_500, water_content_1500};
+    return Chakraborty2011PTFResult{water_content_33, water_content_100, water_content_500,
+                                    water_content_1500};
 }
 
 /**
@@ -121,12 +123,18 @@ inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq2(double sand, double
  * Use outside the source Indian-soil dataset requires independent validation.
  */
 [[nodiscard]]
-inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq3(double clay, double silt, double bulk_density) {
-    const double water_content_33 = (0.280 * clay + 0.481 * silt - 7.566 * bulk_density + 17.095) / 100.0;
-    const double water_content_100 = (0.262 * clay + 0.380 * silt - 3.167 * bulk_density + 8.219) / 100.0;
-    const double water_content_500 = (0.244 * clay + 0.187 * silt - 3.079 * bulk_density + 8.046) / 100.0;
-    const double water_content_1500 = (0.183 * clay + 0.144 * silt - 0.689 * bulk_density + 4.840) / 100.0;
-    return Chakraborty2011PTFResult{water_content_33, water_content_100, water_content_500, water_content_1500};
+inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq3(double clay, double silt,
+                                                             double bulk_density) {
+    const double water_content_33 =
+        (0.280 * clay + 0.481 * silt - 7.566 * bulk_density + 17.095) / 100.0;
+    const double water_content_100 =
+        (0.262 * clay + 0.380 * silt - 3.167 * bulk_density + 8.219) / 100.0;
+    const double water_content_500 =
+        (0.244 * clay + 0.187 * silt - 3.079 * bulk_density + 8.046) / 100.0;
+    const double water_content_1500 =
+        (0.183 * clay + 0.144 * silt - 0.689 * bulk_density + 4.840) / 100.0;
+    return Chakraborty2011PTFResult{water_content_33, water_content_100, water_content_500,
+                                    water_content_1500};
 }
 
 /**
@@ -154,12 +162,14 @@ inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq3(double clay, double
  * Use outside the source Indian-soil dataset requires independent validation.
  */
 [[nodiscard]]
-inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq4(double clay, double silt, double sand) {
+inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq4(double clay, double silt,
+                                                             double sand) {
     const double water_content_33 = (0.078 * clay + 0.248 * silt - 0.241 * sand + 27.447) / 100.0;
     const double water_content_100 = (0.049 * clay + 0.147 * silt - 0.242 * sand + 25.945) / 100.0;
     const double water_content_500 = (0.067 * clay - 0.008 * silt - 0.204 * sand + 22.216) / 100.0;
     const double water_content_1500 = (0.021 * clay - 0.028 * silt - 0.179 * sand + 20.695) / 100.0;
-    return Chakraborty2011PTFResult{water_content_33, water_content_100, water_content_500, water_content_1500};
+    return Chakraborty2011PTFResult{water_content_33, water_content_100, water_content_500,
+                                    water_content_1500};
 }
 
 /**
@@ -188,12 +198,18 @@ inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq4(double clay, double
  * Use outside the source Indian-soil dataset requires independent validation.
  */
 [[nodiscard]]
-inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq5(double clay, double silt, double sand, double bulk_density) {
-    const double water_content_33 = (0.093 * clay + 0.276 * silt - 0.213 * sand - 4.481 * bulk_density + 32.210) / 100.0;
-    const double water_content_100 = (0.048 * clay + 0.145 * silt - 0.245 * sand + 0.370 * bulk_density + 25.551) / 100.0;
-    const double water_content_500 = (0.067 * clay - 0.008 * silt - 0.203 * sand - 0.135 * bulk_density + 22.359) / 100.0;
-    const double water_content_1500 = (0.014 * clay - 0.041 * silt - 0.192 * sand + 2.093 * bulk_density + 18.470) / 100.0;
-    return Chakraborty2011PTFResult{water_content_33, water_content_100, water_content_500, water_content_1500};
+inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq5(double clay, double silt, double sand,
+                                                             double bulk_density) {
+    const double water_content_33 =
+        (0.093 * clay + 0.276 * silt - 0.213 * sand - 4.481 * bulk_density + 32.210) / 100.0;
+    const double water_content_100 =
+        (0.048 * clay + 0.145 * silt - 0.245 * sand + 0.370 * bulk_density + 25.551) / 100.0;
+    const double water_content_500 =
+        (0.067 * clay - 0.008 * silt - 0.203 * sand - 0.135 * bulk_density + 22.359) / 100.0;
+    const double water_content_1500 =
+        (0.014 * clay - 0.041 * silt - 0.192 * sand + 2.093 * bulk_density + 18.470) / 100.0;
+    return Chakraborty2011PTFResult{water_content_33, water_content_100, water_content_500,
+                                    water_content_1500};
 }
 
 /**
@@ -223,12 +239,23 @@ inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq5(double clay, double
  * Use outside the source Indian-soil dataset requires independent validation.
  */
 [[nodiscard]]
-inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq6(double clay, double silt, double sand, double organic_carbon, double bulk_density) {
-    const double water_content_33 = (0.095 * clay + 0.268 * silt - 0.206 * sand + 2.420 * organic_carbon - 4.402 * bulk_density + 30.960) / 100.0;
-    const double water_content_100 = (0.053 * clay + 0.113 * silt - 0.230 * sand + 6.434 * organic_carbon + 1.528 * bulk_density + 21.236) / 100.0;
-    const double water_content_500 = (0.069 * clay - 0.017 * silt - 0.195 * sand + 2.461 * organic_carbon + 0.079 * bulk_density + 20.895) / 100.0;
-    const double water_content_1500 = (0.017 * clay - 0.053 * silt - 0.184 * sand + 2.950 * organic_carbon + 2.327 * bulk_density + 16.802) / 100.0;
-    return Chakraborty2011PTFResult{water_content_33, water_content_100, water_content_500, water_content_1500};
+inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq6(double clay, double silt, double sand,
+                                                             double organic_carbon,
+                                                             double bulk_density) {
+    const double water_content_33 = (0.095 * clay + 0.268 * silt - 0.206 * sand +
+                                     2.420 * organic_carbon - 4.402 * bulk_density + 30.960) /
+                                    100.0;
+    const double water_content_100 = (0.053 * clay + 0.113 * silt - 0.230 * sand +
+                                      6.434 * organic_carbon + 1.528 * bulk_density + 21.236) /
+                                     100.0;
+    const double water_content_500 = (0.069 * clay - 0.017 * silt - 0.195 * sand +
+                                      2.461 * organic_carbon + 0.079 * bulk_density + 20.895) /
+                                     100.0;
+    const double water_content_1500 = (0.017 * clay - 0.053 * silt - 0.184 * sand +
+                                       2.950 * organic_carbon + 2.327 * bulk_density + 16.802) /
+                                      100.0;
+    return Chakraborty2011PTFResult{water_content_33, water_content_100, water_content_500,
+                                    water_content_1500};
 }
 
-}  // namespace ptfkit::chakraborty2011
+} // namespace ptfkit::chakraborty2011

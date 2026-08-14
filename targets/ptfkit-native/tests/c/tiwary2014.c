@@ -9,7 +9,8 @@ int main() {
         assert_close_enough(result, 0.0000005103578, 0.000000000001, 0.0000000001);
     }
     {
-        const ptfkit_calc_ptf_tiwary2014_bsr_result result = calc_ptf_tiwary2014_bsr(54.9, 7.6, 61.6, 7.3, 21.4, 3.32);
+        const ptfkit_calc_ptf_tiwary2014_bsr_result result =
+            calc_ptf_tiwary2014_bsr(54.9, 7.6, 61.6, 7.3, 21.4, 3.32);
         assert_close_enough(result.w_33, 41.1729, 0.000000000001, 0.0000000001);
         assert_close_enough(result.w_100, 36.8273, 0.000000000001, 0.0000000001);
         assert_close_enough(result.w_1500, 21.6976, 0.000000000001, 0.0000000001);

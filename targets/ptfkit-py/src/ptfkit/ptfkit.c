@@ -23,29 +23,81 @@
 #include "wang2012.c"
 #include "weber2020.c"
 
-static struct PyModuleDef module_def = { PyModuleDef_HEAD_INIT, "_ptfkit", NULL, -1, NULL };
+static struct PyModuleDef module_def = {PyModuleDef_HEAD_INIT, "_ptfkit", NULL, -1, NULL};
 
 PyMODINIT_FUNC PyInit__ptfkit(void) {
     PyObject *module = PyModule_Create(&module_def);
-    if (module == NULL) return NULL;
+    if (module == NULL)
+        return NULL;
     import_array();
     import_ufunc();
-    if (ptfkit_register_ahuja1984(module) < 0) { Py_DECREF(module); return NULL; }
-    if (ptfkit_register_aimrun2009(module) < 0) { Py_DECREF(module); return NULL; }
-    if (ptfkit_register_beniaich2023(module) < 0) { Py_DECREF(module); return NULL; }
-    if (ptfkit_register_chakraborty2011(module) < 0) { Py_DECREF(module); return NULL; }
-    if (ptfkit_register_cosby1984(module) < 0) { Py_DECREF(module); return NULL; }
-    if (ptfkit_register_dharumarajan2019(module) < 0) { Py_DECREF(module); return NULL; }
-    if (ptfkit_register_jabro1992(module) < 0) { Py_DECREF(module); return NULL; }
-    if (ptfkit_register_li2007(module) < 0) { Py_DECREF(module); return NULL; }
-    if (ptfkit_register_mayr1999(module) < 0) { Py_DECREF(module); return NULL; }
-    if (ptfkit_register_pidgeon1972(module) < 0) { Py_DECREF(module); return NULL; }
-    if (ptfkit_register_puckett1985(module) < 0) { Py_DECREF(module); return NULL; }
-    if (ptfkit_register_rawls1982(module) < 0) { Py_DECREF(module); return NULL; }
-    if (ptfkit_register_tiwary2014(module) < 0) { Py_DECREF(module); return NULL; }
-    if (ptfkit_register_varallyai1982(module) < 0) { Py_DECREF(module); return NULL; }
-    if (ptfkit_register_vereecken1989(module) < 0) { Py_DECREF(module); return NULL; }
-    if (ptfkit_register_wang2012(module) < 0) { Py_DECREF(module); return NULL; }
-    if (ptfkit_register_weber2020(module) < 0) { Py_DECREF(module); return NULL; }
+    if (ptfkit_register_ahuja1984(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_aimrun2009(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_beniaich2023(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_chakraborty2011(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_cosby1984(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_dharumarajan2019(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_jabro1992(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_li2007(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_mayr1999(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_pidgeon1972(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_puckett1985(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_rawls1982(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_tiwary2014(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_varallyai1982(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_vereecken1989(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_wang2012(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_weber2020(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
     return module;
 }

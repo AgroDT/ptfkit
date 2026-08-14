@@ -7,7 +7,8 @@
 #include <cmath>
 #include <print>
 
-inline void _close_enough_impl(const char *file, int line, double actual, double expected, double atol, double rtol) {
+inline void _close_enough_impl(const char *file, int line, double actual, double expected,
+                               double atol, double rtol) {
     if (std::fabs(actual - expected) > atol + rtol * std::fabs(expected)) {
         std::println(stderr, "asserion failed: {}:{}:\n\n\t{} ≈ {}", file, line, actual, expected);
         std::exit(EXIT_FAILURE);
@@ -19,7 +20,8 @@ inline void _close_enough_impl(const char *file, int line, double actual, double
 #include <math.h>
 #include <stdio.h>
 
-static inline void _close_enough_impl(const char *file, int line, double actual, double expected, double atol, double rtol) {
+static inline void _close_enough_impl(const char *file, int line, double actual, double expected,
+                                      double atol, double rtol) {
     if (fabs(actual - expected) > atol + rtol * fabs(expected)) {
         fprintf(stderr, "asserion failed: %s:%d:\n\n\t%f ≈ %f\n", file, line, actual, expected);
         exit(EXIT_FAILURE);
@@ -28,8 +30,10 @@ static inline void _close_enough_impl(const char *file, int line, double actual,
 
 #endif
 
-#define assert_close_enough(actual, expected, atol, rtol) \
-    do { _close_enough_impl(__FILE__, __LINE__, (actual), (expected), (atol), (rtol)); } while (0)
+#define assert_close_enough(actual, expected, atol, rtol)                                          \
+    do {                                                                                           \
+        _close_enough_impl(__FILE__, __LINE__, (actual), (expected), (atol), (rtol));              \
+    } while (0)
 
 // #define assert_close_enough(actual, expected, atol, rtol)       \
 //     do {                                                        \

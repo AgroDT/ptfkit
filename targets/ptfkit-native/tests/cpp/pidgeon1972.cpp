@@ -18,11 +18,13 @@ int main() {
         assert_close_enough(result, 23.66, 0.000000000001, 0.000000000001);
     }
     {
-        const auto result = ptfkit::pidgeon1972::calc_ptf_pidgeon1972_fc_sand_organic_matter(50.0, 2.0);
+        const auto result =
+            ptfkit::pidgeon1972::calc_ptf_pidgeon1972_fc_sand_organic_matter(50.0, 2.0);
         assert_close_enough(result, 23.27, 0.000000000001, 0.000000000001);
     }
     {
-        const auto result = ptfkit::pidgeon1972::calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(50.0, 2.0);
+        const auto result =
+            ptfkit::pidgeon1972::calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(50.0, 2.0);
         assert_close_enough(result, 31.19, 0.000000000001, 0.000000000001);
     }
     {
@@ -34,7 +36,8 @@ int main() {
         assert_close_enough(result, 13.91, 0.000000000001, 0.000000000001);
     }
     {
-        const auto result = ptfkit::pidgeon1972::calc_ptf_pidgeon1972_pwp_sand_organic_matter(50.0, 2.0);
+        const auto result =
+            ptfkit::pidgeon1972::calc_ptf_pidgeon1972_pwp_sand_organic_matter(50.0, 2.0);
         assert_close_enough(result, 15.28, 0.000000000001, 0.000000000001);
     }
     {
@@ -42,7 +45,8 @@ int main() {
         assert_close_enough(result, 151.48, 0.000000000001, 0.000000000001);
     }
     {
-        const auto result = ptfkit::pidgeon1972::calc_ptf_pidgeon1972_awc_sand_organic_matter(50.0, 2.0);
+        const auto result =
+            ptfkit::pidgeon1972::calc_ptf_pidgeon1972_awc_sand_organic_matter(50.0, 2.0);
         assert_close_enough(result, 109.24, 0.000000000001, 0.000000000001);
     }
     {
@@ -66,15 +70,18 @@ int main() {
         assert_close_enough(result, 51.7, 0.000000000001, 0.000000000001);
     }
     {
-        const auto result = ptfkit::pidgeon1972::calc_ptf_pidgeon1972_eawc_sand_organic_matter(50.0, 2.0);
+        const auto result =
+            ptfkit::pidgeon1972::calc_ptf_pidgeon1972_eawc_sand_organic_matter(50.0, 2.0);
         assert_close_enough(result, 56.26, 0.000000000001, 0.000000000001);
     }
     {
-        const auto result = ptfkit::pidgeon1972::calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(20.0, 2.0);
+        const auto result =
+            ptfkit::pidgeon1972::calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(20.0, 2.0);
         assert_close_enough(result, 53.72, 0.000000000001, 0.000000000001);
     }
     {
-        const auto result = ptfkit::pidgeon1972::calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(20.0, 2.0);
+        const auto result =
+            ptfkit::pidgeon1972::calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(20.0, 2.0);
         assert_close_enough(result, 59.58, 0.000000000001, 0.000000000001);
     }
     return 0;

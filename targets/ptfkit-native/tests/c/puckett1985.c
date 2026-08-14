@@ -5,7 +5,8 @@
 
 int main() {
     {
-        const ptfkit_calc_ptf_puckett1985_result result = calc_ptf_puckett1985(70.9, 36.4, 11.8, 1.67, 0.38);
+        const ptfkit_calc_ptf_puckett1985_result result =
+            calc_ptf_puckett1985(70.9, 36.4, 11.8, 1.67, 0.38);
         assert_close_enough(result.theta_0, 0.34288, 0.000000000001, 0.00000001);
         assert_close_enough(result.theta_1, 0.33926, 0.000000000001, 0.00000001);
         assert_close_enough(result.theta_5, 0.3938615, 0.000000000001, 0.00000001);

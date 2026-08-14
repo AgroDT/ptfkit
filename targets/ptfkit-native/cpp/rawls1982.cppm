@@ -43,7 +43,7 @@ struct Rawls1982PTFResult {
     double theta_1000;
     /** Input volumetric water content at -1500 kPa. (cm^3/cm^3) */
     double theta_1500;
- };
+};
 
 /**
  * Estimate volumetric water content at -1500 kPa.
@@ -115,18 +115,29 @@ inline double calc_ptf_rawls1982_theta_33(double sand, double organic_matter, do
  * The source value 0.8888 is retained literally for the theta_7 intercept.
  */
 [[nodiscard]]
-inline Rawls1982PTFResult calc_ptf_rawls1982_full_wrc(double sand, double organic_matter, double bulk_density, double theta_33, double theta_1500) {
-    const double theta_4 = 0.1829 - 0.0246 * organic_matter - 0.0376 * bulk_density + 1.89 * theta_33 - 1.38 * theta_1500;
-    const double theta_7 = 0.8888 - 0.0003 * sand - 0.0107 * organic_matter + 1.53 * theta_33 - 0.81 * theta_1500;
-    const double theta_10 = 0.0619 - 0.0002 * sand - 0.0067 * organic_matter + 1.34 * theta_33 - 0.51 * theta_1500;
+inline Rawls1982PTFResult calc_ptf_rawls1982_full_wrc(double sand, double organic_matter,
+                                                      double bulk_density, double theta_33,
+                                                      double theta_1500) {
+    const double theta_4 = 0.1829 - 0.0246 * organic_matter - 0.0376 * bulk_density +
+                           1.89 * theta_33 - 1.38 * theta_1500;
+    const double theta_7 =
+        0.8888 - 0.0003 * sand - 0.0107 * organic_matter + 1.53 * theta_33 - 0.81 * theta_1500;
+    const double theta_10 =
+        0.0619 - 0.0002 * sand - 0.0067 * organic_matter + 1.34 * theta_33 - 0.51 * theta_1500;
     const double theta_20 = 0.0319 - 0.0002 * sand + 1.01 * theta_33 - 0.06 * theta_1500;
     const double theta_60 = 0.0136 - 0.0091 * bulk_density + 0.66 * theta_33 + 0.39 * theta_1500;
-    const double theta_100 = -0.0034 + 0.0022 * organic_matter + 0.52 * theta_33 + 0.54 * theta_1500;
-    const double theta_200 = -0.0043 + 0.0026 * organic_matter + 0.36 * theta_33 + 0.69 * theta_1500;
-    const double theta_400 = -0.0038 + 0.0026 * organic_matter + 0.24 * theta_33 + 0.79 * theta_1500;
-    const double theta_700 = -0.0027 + 0.0024 * organic_matter + 0.16 * theta_33 + 0.86 * theta_1500;
-    const double theta_1000 = -0.0019 + 0.0022 * organic_matter + 0.11 * theta_33 + 0.89 * theta_1500;
-    return Rawls1982PTFResult{theta_4, theta_7, theta_10, theta_20, theta_33, theta_60, theta_100, theta_200, theta_400, theta_700, theta_1000, theta_1500};
+    const double theta_100 =
+        -0.0034 + 0.0022 * organic_matter + 0.52 * theta_33 + 0.54 * theta_1500;
+    const double theta_200 =
+        -0.0043 + 0.0026 * organic_matter + 0.36 * theta_33 + 0.69 * theta_1500;
+    const double theta_400 =
+        -0.0038 + 0.0026 * organic_matter + 0.24 * theta_33 + 0.79 * theta_1500;
+    const double theta_700 =
+        -0.0027 + 0.0024 * organic_matter + 0.16 * theta_33 + 0.86 * theta_1500;
+    const double theta_1000 =
+        -0.0019 + 0.0022 * organic_matter + 0.11 * theta_33 + 0.89 * theta_1500;
+    return Rawls1982PTFResult{theta_4,   theta_7,   theta_10,  theta_20,  theta_33,   theta_60,
+                              theta_100, theta_200, theta_400, theta_700, theta_1000, theta_1500};
 }
 
-}  // namespace ptfkit::rawls1982
+} // namespace ptfkit::rawls1982

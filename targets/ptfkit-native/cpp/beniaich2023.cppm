@@ -29,7 +29,7 @@ struct Beniaich2023PTFResult {
     double water_field_capacity;
     /** Gravimetric water content at -1,500 kPa. (g/g) */
     double water_wilting_point;
- };
+};
 
 /**
  * Estimate three gravimetric water contents from clay.
@@ -219,10 +219,14 @@ inline Beniaich2023PTFResult calc_ptf_beniaich2023_slr6(double soil_organic_matt
  * source territory.
  */
 [[nodiscard]]
-inline Beniaich2023PTFResult calc_ptf_beniaich2023_mlr1(double silt, double sand, double soil_organic_matter) {
-    const double water_saturation = (87.342 - 0.281 * silt - 0.548 * sand + 2.377 * soil_organic_matter) / 100.0;
-    const double water_field_capacity = (35.844 - 0.085 * silt - 0.359 * sand + 0.947 * soil_organic_matter) / 100.0;
-    const double water_wilting_point = (28.734 - 0.148 * silt - 0.324 * sand + 0.636 * soil_organic_matter) / 100.0;
+inline Beniaich2023PTFResult calc_ptf_beniaich2023_mlr1(double silt, double sand,
+                                                        double soil_organic_matter) {
+    const double water_saturation =
+        (87.342 - 0.281 * silt - 0.548 * sand + 2.377 * soil_organic_matter) / 100.0;
+    const double water_field_capacity =
+        (35.844 - 0.085 * silt - 0.359 * sand + 0.947 * soil_organic_matter) / 100.0;
+    const double water_wilting_point =
+        (28.734 - 0.148 * silt - 0.324 * sand + 0.636 * soil_organic_matter) / 100.0;
     return Beniaich2023PTFResult{water_saturation, water_field_capacity, water_wilting_point};
 }
 
@@ -249,8 +253,10 @@ inline Beniaich2023PTFResult calc_ptf_beniaich2023_mlr1(double silt, double sand
 [[nodiscard]]
 inline Beniaich2023PTFResult calc_ptf_beniaich2023_mlr2(double sand, double soil_organic_matter) {
     const double water_saturation = (75.366 - 0.417 * sand + 2.219 * soil_organic_matter) / 100.0;
-    const double water_field_capacity = (32.227 - 0.320 * sand + 0.899 * soil_organic_matter) / 100.0;
-    const double water_wilting_point = (22.421 - 0.254 * sand + 0.552 * soil_organic_matter) / 100.0;
+    const double water_field_capacity =
+        (32.227 - 0.320 * sand + 0.899 * soil_organic_matter) / 100.0;
+    const double water_wilting_point =
+        (22.421 - 0.254 * sand + 0.552 * soil_organic_matter) / 100.0;
     return Beniaich2023PTFResult{water_saturation, water_field_capacity, water_wilting_point};
 }
 
@@ -277,7 +283,8 @@ inline Beniaich2023PTFResult calc_ptf_beniaich2023_mlr2(double sand, double soil
 [[nodiscard]]
 inline Beniaich2023PTFResult calc_ptf_beniaich2023_mlr3(double silt, double soil_organic_matter) {
     const double water_saturation = (53.777 + 0.278 * silt + 2.457 * soil_organic_matter) / 100.0;
-    const double water_field_capacity = (13.847 + 0.281 * silt + 0.999 * soil_organic_matter) / 100.0;
+    const double water_field_capacity =
+        (13.847 + 0.281 * silt + 0.999 * soil_organic_matter) / 100.0;
     const double water_wilting_point = (8.929 + 0.182 * silt + 0.683 * soil_organic_matter) / 100.0;
     return Beniaich2023PTFResult{water_saturation, water_field_capacity, water_wilting_point};
 }
@@ -305,7 +312,8 @@ inline Beniaich2023PTFResult calc_ptf_beniaich2023_mlr3(double silt, double soil
 [[nodiscard]]
 inline Beniaich2023PTFResult calc_ptf_beniaich2023_mlr4(double clay, double soil_organic_matter) {
     const double water_saturation = (39.432 + 0.553 * clay + 2.699 * soil_organic_matter) / 100.0;
-    const double water_field_capacity = (7.023 + 0.364 * clay + 1.278 * soil_organic_matter) / 100.0;
+    const double water_field_capacity =
+        (7.023 + 0.364 * clay + 1.278 * soil_organic_matter) / 100.0;
     const double water_wilting_point = (0.923 + 0.327 * clay + 0.847 * soil_organic_matter) / 100.0;
     return Beniaich2023PTFResult{water_saturation, water_field_capacity, water_wilting_point};
 }
@@ -332,11 +340,15 @@ inline Beniaich2023PTFResult calc_ptf_beniaich2023_mlr4(double clay, double soil
  * source territory.
  */
 [[nodiscard]]
-inline Beniaich2023PTFResult calc_ptf_beniaich2023_mlr5(double clay, double silt, double soil_organic_matter) {
-    const double water_saturation = (32.505 + 0.548 * clay + 0.267 * silt + 2.377 * soil_organic_matter) / 100.0;
-    const double water_field_capacity = (-0.094 + 0.359 * clay + 0.274 * silt + 0.947 * soil_organic_matter) / 100.0;
-    const double water_wilting_point = (-3.623 + 0.324 * clay + 0.175 * silt + 0.636 * soil_organic_matter) / 100.0;
+inline Beniaich2023PTFResult calc_ptf_beniaich2023_mlr5(double clay, double silt,
+                                                        double soil_organic_matter) {
+    const double water_saturation =
+        (32.505 + 0.548 * clay + 0.267 * silt + 2.377 * soil_organic_matter) / 100.0;
+    const double water_field_capacity =
+        (-0.094 + 0.359 * clay + 0.274 * silt + 0.947 * soil_organic_matter) / 100.0;
+    const double water_wilting_point =
+        (-3.623 + 0.324 * clay + 0.175 * silt + 0.636 * soil_organic_matter) / 100.0;
     return Beniaich2023PTFResult{water_saturation, water_field_capacity, water_wilting_point};
 }
 
-}  // namespace ptfkit::beniaich2023
+} // namespace ptfkit::beniaich2023

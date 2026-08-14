@@ -33,7 +33,7 @@ struct Li2007PTFResult {
     double n_vg;
     /** Saturated hydraulic conductivity. (m/s) */
     double k_sat;
- };
+};
 
 /**
  * Estimate van Genuchten parameters and saturated hydraulic conductivity for Fengqiu County
@@ -60,18 +60,25 @@ struct Li2007PTFResult {
  * The formulas use natural logarithms of selected inputs.
  */
 [[nodiscard]]
-inline Li2007PTFResult calc_ptf_li2007(double sand, double silt, double clay, double bulk_density, double soil_organic_matter) {
+inline Li2007PTFResult calc_ptf_li2007(double sand, double silt, double clay, double bulk_density,
+                                       double soil_organic_matter) {
     const double sand_ln = std::log(sand);
     const double silt_ln = std::log(silt);
     const double clay_ln = std::log(clay);
     const double soil_organic_matter_ln = std::log(soil_organic_matter);
     const double bulk_density_ln = std::log(bulk_density);
-    const double theta_s = std::exp(-1.531 + 0.212 * sand_ln + 0.006 * silt - 0.051 * soil_organic_matter - 0.566 * bulk_density_ln);
-    const double a_vg = std::exp(-67.408 - 0.040 * silt - 0.670 * silt_ln - 2.189 * soil_organic_matter + 1.410 * soil_organic_matter_ln + 78.400 * bulk_density - 121.331 * bulk_density_ln);
-    const double n_vg = 1.488 + 0.002 * silt_ln + 0.013 * clay - 0.248 * clay_ln + 0.048 * soil_organic_matter_ln + 0.451 * bulk_density_ln;
-    const double k_sat_cm_per_day = std::exp(13.262 - 1.914 * sand_ln - 0.974 * silt_ln - 0.058 * clay - 1.709 * soil_organic_matter_ln + 2.885 * soil_organic_matter - 8.026 * bulk_density_ln);
+    const double theta_s = std::exp(-1.531 + 0.212 * sand_ln + 0.006 * silt -
+                                    0.051 * soil_organic_matter - 0.566 * bulk_density_ln);
+    const double a_vg = std::exp(-67.408 - 0.040 * silt - 0.670 * silt_ln -
+                                 2.189 * soil_organic_matter + 1.410 * soil_organic_matter_ln +
+                                 78.400 * bulk_density - 121.331 * bulk_density_ln);
+    const double n_vg = 1.488 + 0.002 * silt_ln + 0.013 * clay - 0.248 * clay_ln +
+                        0.048 * soil_organic_matter_ln + 0.451 * bulk_density_ln;
+    const double k_sat_cm_per_day = std::exp(13.262 - 1.914 * sand_ln - 0.974 * silt_ln -
+                                             0.058 * clay - 1.709 * soil_organic_matter_ln +
+                                             2.885 * soil_organic_matter - 8.026 * bulk_density_ln);
     const double k_sat = k_sat_cm_per_day * (1.0 / 8640000.0);
     return Li2007PTFResult{theta_s, a_vg, n_vg, k_sat};
 }
 
-}  // namespace ptfkit::li2007
+} // namespace ptfkit::li2007

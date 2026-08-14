@@ -32,6 +32,12 @@ repos:
         args: [fmt, --manifest-path, targets/ptfkit-rs/Cargo.toml, --all]
         files: '^targets/ptfkit-rs/.*\.rs$'
         pass_filenames: false
+      - id: clang-format
+        name: clang-format
+        language: system
+        entry: clang-format
+        args: [--style=file, -i]
+        files: '\\.(c|h|cc|cpp|cppm|cxx|hpp)$'
       - id: uv-lock
         name: uv lock
         language: system

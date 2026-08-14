@@ -28,7 +28,7 @@ struct Dharumarajan2019WaterRetentionResult {
     double field_capacity;
     /** Soil water content at -1500 kPa matric potential. (%) */
     double permanent_wilting_point;
- };
+};
 
 /**
  * Estimate field capacity and wilting point for Northern Karnataka soils.
@@ -58,9 +58,12 @@ struct Dharumarajan2019WaterRetentionResult {
  * see the scientific notes.
  */
 [[nodiscard]]
-inline Dharumarajan2019WaterRetentionResult calc_ptf_dharumarajan2019_nkp(double clay, double sand, double cation_exchange_capacity) {
-    const double field_capacity = 13.82 + 0.205 * clay - 0.088 * sand + 0.316 * cation_exchange_capacity;
-    const double permanent_wilting_point = -5.776 + 0.315 * clay + 0.050 * sand + 0.271 * cation_exchange_capacity;
+inline Dharumarajan2019WaterRetentionResult
+calc_ptf_dharumarajan2019_nkp(double clay, double sand, double cation_exchange_capacity) {
+    const double field_capacity =
+        13.82 + 0.205 * clay - 0.088 * sand + 0.316 * cation_exchange_capacity;
+    const double permanent_wilting_point =
+        -5.776 + 0.315 * clay + 0.050 * sand + 0.271 * cation_exchange_capacity;
     return Dharumarajan2019WaterRetentionResult{field_capacity, permanent_wilting_point};
 }
 
@@ -122,9 +125,12 @@ inline Dharumarajan2019WaterRetentionResult calc_ptf_dharumarajan2019_nkp_clay(d
  * volumetric.
  */
 [[nodiscard]]
-inline Dharumarajan2019WaterRetentionResult calc_ptf_dharumarajan2019_skp(double clay, double sand, double cation_exchange_capacity) {
-    const double field_capacity = 39.179 - 0.041 * clay - 0.371 * sand + 0.257 * cation_exchange_capacity;
-    const double permanent_wilting_point = 8.227 + 0.168 * clay - 0.101 * sand + 0.217 * cation_exchange_capacity;
+inline Dharumarajan2019WaterRetentionResult
+calc_ptf_dharumarajan2019_skp(double clay, double sand, double cation_exchange_capacity) {
+    const double field_capacity =
+        39.179 - 0.041 * clay - 0.371 * sand + 0.257 * cation_exchange_capacity;
+    const double permanent_wilting_point =
+        8.227 + 0.168 * clay - 0.101 * sand + 0.217 * cation_exchange_capacity;
     return Dharumarajan2019WaterRetentionResult{field_capacity, permanent_wilting_point};
 }
 
@@ -185,4 +191,4 @@ inline double calc_ptf_dharumarajan2019_infiltration(double sand, double silt, d
     return 177.55 - 1.47 * sand - 1.80 * clay - 1.58 * silt;
 }
 
-}  // namespace ptfkit::dharumarajan2019
+} // namespace ptfkit::dharumarajan2019

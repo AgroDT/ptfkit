@@ -40,7 +40,7 @@ struct Weber2020PTFResult {
     double k_sc_bw;
     /** Saturated noncapillary hydraulic conductivity. (cm d^-1) */
     double k_snc_bw;
- };
+};
 
 /**
  * Convert VGM parameters to Brunswick-VGM parameters.
@@ -78,7 +78,9 @@ struct Weber2020PTFResult {
  * interpreted as being based on nonpositive tau_vgm values.
  */
 [[nodiscard]]
-inline Weber2020PTFResult calc_ptf_weber2020(double theta_r_vgm, double theta_s_vgm, double alpha_vgm, double n_vgm, double tau_vgm, double k_s_vgm) {
+inline Weber2020PTFResult calc_ptf_weber2020(double theta_r_vgm, double theta_s_vgm,
+                                             double alpha_vgm, double n_vgm, double tau_vgm,
+                                             double k_s_vgm) {
     const double theta_snc_bw = -1.58e-3 + 1.285 * theta_r_vgm;
     const double theta_s_bw = 1.89e-3 + 0.993 * theta_s_vgm;
     const double theta_sc_bw = theta_s_bw - theta_snc_bw;
@@ -91,4 +93,4 @@ inline Weber2020PTFResult calc_ptf_weber2020(double theta_r_vgm, double theta_s_
     return Weber2020PTFResult{theta_snc_bw, theta_sc_bw, alpha_bw, n_bw, tau_bw, k_sc_bw, k_snc_bw};
 }
 
-}  // namespace ptfkit::weber2020
+} // namespace ptfkit::weber2020

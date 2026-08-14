@@ -12,14 +12,16 @@ int main() {
         assert_close_enough(result.k_sat, 0.000006549110367333547, 0.000000000001, 0.00000001);
     }
     {
-        const ptfkit_calc_ptf_li2007_result result = calc_ptf_li2007(50.23, 38.72, 11.05, 1.42, 0.65);
+        const ptfkit_calc_ptf_li2007_result result =
+            calc_ptf_li2007(50.23, 38.72, 11.05, 1.42, 0.65);
         assert_close_enough(result.theta_s, 0.49659526127697506, 0.000000000001, 0.00000001);
         assert_close_enough(result.a_vg, 0.009519989841950734, 0.000000000001, 0.00000001);
         assert_close_enough(result.n_vg, 1.1806286355149054, 0.000000000001, 0.00000001);
         assert_close_enough(result.k_sat, 0.00000045117324656202257, 0.000000000001, 0.00000001);
     }
     {
-        const ptfkit_calc_ptf_li2007_result result = calc_ptf_li2007(12.88, 60.0, 27.12, 1.48, 1.02);
+        const ptfkit_calc_ptf_li2007_result result =
+            calc_ptf_li2007(12.88, 60.0, 27.12, 1.48, 1.02);
         assert_close_enough(result.theta_s, 0.4053061510618609, 0.000000000001, 0.00000001);
         assert_close_enough(result.a_vg, 0.0018530400762371828, 0.000000000001, 0.00000001);
         assert_close_enough(result.n_vg, 1.2080428739797433, 0.000000000001, 0.00000001);

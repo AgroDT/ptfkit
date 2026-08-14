@@ -40,7 +40,8 @@
  * The formula uses base-10 logarithms of silt and clay.
  */
 static inline double calc_ptf_jabro1992(double silt, double clay, double bulk_density) {
-    const double log10_k_sat_cm_per_hour = 9.56 - 0.81 * log10(silt) - 1.09 * log10(clay) - 4.64 * bulk_density;
+    const double log10_k_sat_cm_per_hour =
+        9.56 - 0.81 * log10(silt) - 1.09 * log10(clay) - 4.64 * bulk_density;
     return pow(10.0, log10_k_sat_cm_per_hour) * (0.01 / 3600.0);
 }
 

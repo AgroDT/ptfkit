@@ -19,8 +19,10 @@ int main() {
         assert_close_enough(result, 0.1179896, 0.000000000001, 0.0000000001);
     }
     {
-        const auto result = ptfkit::rawls1982::calc_ptf_rawls1982_full_wrc(85.0, 0.66, 1.22, 0.091, 0.033);
-        static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>, ptfkit::rawls1982::Rawls1982PTFResult>);
+        const auto result =
+            ptfkit::rawls1982::calc_ptf_rawls1982_full_wrc(85.0, 0.66, 1.22, 0.091, 0.033);
+        static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
+                                     ptfkit::rawls1982::Rawls1982PTFResult>);
         assert_close_enough(result.theta_4, 0.247242, 0.000000000001, 0.0000000001);
         assert_close_enough(result.theta_7, 0.968738, 0.000000000001, 0.0000000001);
         assert_close_enough(result.theta_10, 0.145588, 0.000000000001, 0.0000000001);
