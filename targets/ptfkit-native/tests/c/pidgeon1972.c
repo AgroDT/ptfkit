@@ -5,72 +5,72 @@
 
 int main() {
     {
-        const double result = calc_ptf_pidgeon1972_fc(30.00000000000000000, 20.00000000000000000, 2.00000000000000000);
-        assert_close_enough(result, 21.26000000000000156, 0.00000000000100000, 0.00000000000100000);
+        const double result = calc_ptf_pidgeon1972_fc(30.0, 20.0, 2.0);
+        assert_close_enough(result, 21.26, 0.000000000001, 0.000000000001);
     }
     {
-        const double result = calc_ptf_pidgeon1972_fc_sand(50.00000000000000000);
-        assert_close_enough(result, 23.66000000000000014, 0.00000000000100000, 0.00000000000100000);
+        const double result = calc_ptf_pidgeon1972_fc_sand(50.0);
+        assert_close_enough(result, 23.66, 0.000000000001, 0.000000000001);
     }
     {
-        const double result = calc_ptf_pidgeon1972_fc_sand_organic_matter(50.00000000000000000, 2.00000000000000000);
-        assert_close_enough(result, 23.26999999999999957, 0.00000000000100000, 0.00000000000100000);
+        const double result = calc_ptf_pidgeon1972_fc_sand_organic_matter(50.0, 2.0);
+        assert_close_enough(result, 23.27, 0.000000000001, 0.000000000001);
     }
     {
-        const double result = calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(50.00000000000000000, 2.00000000000000000);
-        assert_close_enough(result, 31.19000000000000128, 0.00000000000100000, 0.00000000000100000);
+        const double result = calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(50.0, 2.0);
+        assert_close_enough(result, 31.19, 0.000000000001, 0.000000000001);
     }
     {
-        const double result = calc_ptf_pidgeon1972_pwp(30.00000000000000000, 20.00000000000000000, 2.00000000000000000);
-        assert_close_enough(result, 11.10999999999999943, 0.00000000000100000, 0.00000000000100000);
+        const double result = calc_ptf_pidgeon1972_pwp(30.0, 20.0, 2.0);
+        assert_close_enough(result, 11.11, 0.000000000001, 0.000000000001);
     }
     {
-        const double result = calc_ptf_pidgeon1972_pwp_sand(50.00000000000000000);
-        assert_close_enough(result, 13.91000000000000014, 0.00000000000100000, 0.00000000000100000);
+        const double result = calc_ptf_pidgeon1972_pwp_sand(50.0);
+        assert_close_enough(result, 13.91, 0.000000000001, 0.000000000001);
     }
     {
-        const double result = calc_ptf_pidgeon1972_pwp_sand_organic_matter(50.00000000000000000, 2.00000000000000000);
-        assert_close_enough(result, 15.27999999999999936, 0.00000000000100000, 0.00000000000100000);
+        const double result = calc_ptf_pidgeon1972_pwp_sand_organic_matter(50.0, 2.0);
+        assert_close_enough(result, 15.28, 0.000000000001, 0.000000000001);
     }
     {
-        const double result = calc_ptf_pidgeon1972_awc(20.00000000000000000, 2.00000000000000000);
-        assert_close_enough(result, 151.47999999999998977, 0.00000000000100000, 0.00000000000100000);
+        const double result = calc_ptf_pidgeon1972_awc(20.0, 2.0);
+        assert_close_enough(result, 151.48, 0.000000000001, 0.000000000001);
     }
     {
-        const double result = calc_ptf_pidgeon1972_awc_sand_organic_matter(50.00000000000000000, 2.00000000000000000);
-        assert_close_enough(result, 109.23999999999999488, 0.00000000000100000, 0.00000000000100000);
+        const double result = calc_ptf_pidgeon1972_awc_sand_organic_matter(50.0, 2.0);
+        assert_close_enough(result, 109.24, 0.000000000001, 0.000000000001);
     }
     {
-        const double result = calc_ptf_pidgeon1972_awc_coarse_sand(20.00000000000000000);
-        assert_close_enough(result, 115.09999999999999432, 0.00000000000100000, 0.00000000000100000);
+        const double result = calc_ptf_pidgeon1972_awc_coarse_sand(20.0);
+        assert_close_enough(result, 115.1, 0.000000000001, 0.000000000001);
     }
     {
-        const double result = calc_ptf_pidgeon1972_awc_fine_sand(20.00000000000000000);
-        assert_close_enough(result, 119.90000000000000568, 0.00000000000100000, 0.00000000000100000);
+        const double result = calc_ptf_pidgeon1972_awc_fine_sand(20.0);
+        assert_close_enough(result, 119.9, 0.000000000001, 0.000000000001);
     }
     {
-        const double result = calc_ptf_pidgeon1972_awc_very_fine_sand(10.00000000000000000);
-        assert_close_enough(result, 112.70000000000000284, 0.00000000000100000, 0.00000000000100000);
+        const double result = calc_ptf_pidgeon1972_awc_very_fine_sand(10.0);
+        assert_close_enough(result, 112.7, 0.000000000001, 0.000000000001);
     }
     {
-        const double result = calc_ptf_pidgeon1972_eawc(30.00000000000000000, 20.00000000000000000, 2.00000000000000000);
-        assert_close_enough(result, 16.12000000000000099, 0.00000000000100000, 0.00000000000100000);
+        const double result = calc_ptf_pidgeon1972_eawc(30.0, 20.0, 2.0);
+        assert_close_enough(result, 16.12, 0.000000000001, 0.000000000001);
     }
     {
-        const double result = calc_ptf_pidgeon1972_eawc_sand(50.00000000000000000);
-        assert_close_enough(result, 51.70000000000000284, 0.00000000000100000, 0.00000000000100000);
+        const double result = calc_ptf_pidgeon1972_eawc_sand(50.0);
+        assert_close_enough(result, 51.7, 0.000000000001, 0.000000000001);
     }
     {
-        const double result = calc_ptf_pidgeon1972_eawc_sand_organic_matter(50.00000000000000000, 2.00000000000000000);
-        assert_close_enough(result, 56.25999999999999801, 0.00000000000100000, 0.00000000000100000);
+        const double result = calc_ptf_pidgeon1972_eawc_sand_organic_matter(50.0, 2.0);
+        assert_close_enough(result, 56.26, 0.000000000001, 0.000000000001);
     }
     {
-        const double result = calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(20.00000000000000000, 2.00000000000000000);
-        assert_close_enough(result, 53.71999999999999886, 0.00000000000100000, 0.00000000000100000);
+        const double result = calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(20.0, 2.0);
+        assert_close_enough(result, 53.72, 0.000000000001, 0.000000000001);
     }
     {
-        const double result = calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(20.00000000000000000, 2.00000000000000000);
-        assert_close_enough(result, 59.57999999999999829, 0.00000000000100000, 0.00000000000100000);
+        const double result = calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(20.0, 2.0);
+        assert_close_enough(result, 59.58, 0.000000000001, 0.000000000001);
     }
     return 0;
 }

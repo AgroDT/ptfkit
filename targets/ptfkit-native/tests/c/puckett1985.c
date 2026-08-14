@@ -5,18 +5,18 @@
 
 int main() {
     {
-        const ptfkit_calc_ptf_puckett1985_result result = calc_ptf_puckett1985(70.90000000000000568, 36.39999999999999858, 11.80000000000000071, 1.66999999999999993, 0.38000000000000000);
-        assert_close_enough(result.theta_0, 0.34288000000000002, 0.00000000000100000, 0.00000001000000000);
-        assert_close_enough(result.theta_1, 0.33926000000000001, 0.00000000000100000, 0.00000001000000000);
-        assert_close_enough(result.theta_5, 0.39386149999999998, 0.00000000000100000, 0.00000001000000000);
-        assert_close_enough(result.theta_10, 0.39330438000000001, 0.00000000000100000, 0.00000001000000000);
-        assert_close_enough(result.theta_30, 0.34432935999999997, 0.00000000000100000, 0.00000001000000000);
-        assert_close_enough(result.theta_60, 0.31153562000000001, 0.00000000000100000, 0.00000001000000000);
-        assert_close_enough(result.theta_100, 0.29292896000000002, 0.00000000000100000, 0.00000001000000000);
-        assert_close_enough(result.theta_500, 0.25135879999999999, 0.00000000000100000, 0.00000001000000000);
-        assert_close_enough(result.theta_1000, 0.25187788000000000, 0.00000000000100000, 0.00000001000000000);
-        assert_close_enough(result.theta_1500, 0.22746346000000001, 0.00000000000100000, 0.00000001000000000);
-        assert_close_enough(result.k_sat, 0.00000423997410000, 0.00000000000100000, 0.00000001000000000);
+        const ptfkit_calc_ptf_puckett1985_result result = calc_ptf_puckett1985(70.9, 36.4, 11.8, 1.67, 0.38);
+        assert_close_enough(result.theta_0, 0.34288, 0.000000000001, 0.00000001);
+        assert_close_enough(result.theta_1, 0.33926, 0.000000000001, 0.00000001);
+        assert_close_enough(result.theta_5, 0.3938615, 0.000000000001, 0.00000001);
+        assert_close_enough(result.theta_10, 0.39330438, 0.000000000001, 0.00000001);
+        assert_close_enough(result.theta_30, 0.34432936, 0.000000000001, 0.00000001);
+        assert_close_enough(result.theta_60, 0.31153562, 0.000000000001, 0.00000001);
+        assert_close_enough(result.theta_100, 0.29292896, 0.000000000001, 0.00000001);
+        assert_close_enough(result.theta_500, 0.2513588, 0.000000000001, 0.00000001);
+        assert_close_enough(result.theta_1000, 0.25187788, 0.000000000001, 0.00000001);
+        assert_close_enough(result.theta_1500, 0.22746346, 0.000000000001, 0.00000001);
+        assert_close_enough(result.k_sat, 0.0000042399741, 0.000000000001, 0.00000001);
     }
     return 0;
 }

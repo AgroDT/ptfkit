@@ -11,25 +11,25 @@ import ptfkit.mayr1999;
 
 int main() {
     {
-        const auto result = ptfkit::mayr1999::calc_ptf_mayr1999(40.00000000000000000, 40.00000000000000000, 20.00000000000000000, 1.30000000000000004, 2.00000000000000000);
+        const auto result = ptfkit::mayr1999::calc_ptf_mayr1999(40.0, 40.0, 20.0, 1.3, 2.0);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>, ptfkit::mayr1999::Mayr1999PTFResult>);
-        assert_close_enough(result.a_hc, 9.19922782578422016, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.b_hc, 8.52432443785474980, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.theta_s, 0.48733161333000002, 0.00000000000100000, 0.00000000000100000);
+        assert_close_enough(result.a_hc, 9.19922782578422, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.b_hc, 8.52432443785475, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.theta_s, 0.48733161333, 0.000000000001, 0.000000000001);
     }
     {
-        const auto result = ptfkit::mayr1999::calc_ptf_mayr1999(20.00000000000000000, 20.00000000000000000, 60.00000000000000000, 1.19999999999999996, 2.00000000000000000);
+        const auto result = ptfkit::mayr1999::calc_ptf_mayr1999(20.0, 20.0, 60.0, 1.2, 2.0);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>, ptfkit::mayr1999::Mayr1999PTFResult>);
-        assert_close_enough(result.a_hc, 14.53051376409110063, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.b_hc, 18.93751411909250137, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.theta_s, 0.52145684161999994, 0.00000000000100000, 0.00000000000100000);
+        assert_close_enough(result.a_hc, 14.5305137640911, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.b_hc, 18.9375141190925, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.theta_s, 0.52145684162, 0.000000000001, 0.000000000001);
     }
     {
-        const auto result = ptfkit::mayr1999::calc_ptf_mayr1999(90.00000000000000000, 5.00000000000000000, 5.00000000000000000, 1.50000000000000000, 1.00000000000000000);
+        const auto result = ptfkit::mayr1999::calc_ptf_mayr1999(90.0, 5.0, 5.0, 1.5, 1.0);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>, ptfkit::mayr1999::Mayr1999PTFResult>);
-        assert_close_enough(result.a_hc, 2.40216699550361978, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.b_hc, 3.26904645315909992, 0.00000000000100000, 0.00000000000100000);
-        assert_close_enough(result.theta_s, 0.42097569150000003, 0.00000000000100000, 0.00000000000100000);
+        assert_close_enough(result.a_hc, 2.40216699550362, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.b_hc, 3.2690464531591, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.theta_s, 0.4209756915, 0.000000000001, 0.000000000001);
     }
     return 0;
 }

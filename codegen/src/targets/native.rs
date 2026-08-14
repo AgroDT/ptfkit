@@ -482,6 +482,10 @@ fn c_float_literal(lexeme: &str) -> String {
     }
 }
 
+fn test_float_literal(value: f64) -> String {
+    c_float_literal(&value.to_string())
+}
+
 fn primary(text: String) -> RenderedExpression {
     RenderedExpression {
         text,
@@ -546,7 +550,7 @@ fn c_compatibility_test(slug: &str, functions: &[&CompiledFunction]) -> Result<S
                 .map(|name| {
                     case.inputs
                         .get(name)
-                        .map(|value| format!("{value:.17}"))
+                        .map(|value| test_float_literal(*value))
                         .ok_or_else(|| {
                             anyhow::anyhow!("golden test `{}` is missing input `{name}`", case.id)
                         })
@@ -580,7 +584,12 @@ fn c_compatibility_test(slug: &str, functions: &[&CompiledFunction]) -> Result<S
                 } else {
                     format!("result.{}", field.name)
                 };
-                tests.push_str(&format!("        assert_close_enough({actual}, {expected:.17}, {atol:.17}, {rtol:.17});\n", atol = case.atol, rtol = case.rtol));
+                tests.push_str(&format!(
+                    "        assert_close_enough({actual}, {}, {}, {});\n",
+                    test_float_literal(*expected),
+                    test_float_literal(case.atol),
+                    test_float_literal(case.rtol),
+                ));
             }
             tests.push_str("    }\n");
         }
@@ -610,7 +619,7 @@ fn module_test(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
                 .map(|name| {
                     case.inputs
                         .get(name)
-                        .map(|value| format!("{value:.17}"))
+                        .map(|value| test_float_literal(*value))
                         .ok_or_else(|| {
                             anyhow::anyhow!("golden test `{}` is missing input `{name}`", case.id)
                         })
@@ -640,7 +649,12 @@ fn module_test(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
                 } else {
                     format!("result.{}", field.name)
                 };
-                tests.push_str(&format!("        assert_close_enough({actual}, {expected:.17}, {atol:.17}, {rtol:.17});\n", atol = case.atol, rtol = case.rtol));
+                tests.push_str(&format!(
+                    "        assert_close_enough({actual}, {}, {}, {});\n",
+                    test_float_literal(*expected),
+                    test_float_literal(case.atol),
+                    test_float_literal(case.rtol),
+                ));
             }
             tests.push_str("    }\n");
         }
@@ -685,5 +699,11 @@ mod tests {
         assert_eq!(c_float_literal("1"), "1.0");
         assert_eq!(c_float_literal("1.00"), "1.00");
         assert_eq!(c_float_literal(".5e1"), ".5e1");
+    }
+
+    #[test]
+    fn uses_compact_float_literals_in_tests() {
+        assert_eq!(test_float_literal(1.0), "1.0");
+        assert_eq!(test_float_literal(0.1), "0.1");
     }
 }
