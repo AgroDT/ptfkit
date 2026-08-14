@@ -15,8 +15,8 @@ struct StagedWrite {
     output_target: Target,
 }
 
-pub(super) fn commit(root: &Path, outputs: [TargetOutput; 4]) -> Result<()> {
-    for output in &outputs {
+pub(super) fn commit(root: &Path, outputs: &[TargetOutput]) -> Result<()> {
+    for output in outputs {
         cleanup(root, output)?;
     }
     let staged = stage(root, outputs)?;
@@ -33,10 +33,10 @@ pub(super) fn commit(root: &Path, outputs: [TargetOutput; 4]) -> Result<()> {
     Ok(())
 }
 
-fn stage(root: &Path, outputs: [TargetOutput; 4]) -> Result<Vec<StagedWrite>> {
+fn stage(root: &Path, outputs: &[TargetOutput]) -> Result<Vec<StagedWrite>> {
     let mut staged = Vec::new();
     for output in outputs {
-        for file in output.files {
+        for file in &output.files {
             let target = output.target.output_path(root, &file.path);
             let contents = file.contents.replace("\r\n", "\n");
             if target.exists() && fs::read_to_string(&target)? == contents {
