@@ -2,6 +2,7 @@
 set shell := ["powershell.exe", "-NoLogo", "-Command"]
 
 mod codegen
+mod native 'targets/ptfkit-native'
 mod python 'targets/ptfkit-py'
 mod rust 'targets/ptfkit-rs'
 
@@ -12,4 +13,4 @@ default:
 @generate:
     cargo run generate
 
-test: codegen::test python::test rust::test
+test: codegen::test native::test python::test rust::test

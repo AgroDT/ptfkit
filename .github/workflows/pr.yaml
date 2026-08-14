@@ -133,13 +133,36 @@ jobs:
       - name: Run pytest
         run: uv run --directory targets/ptfkit-py pytest --no-cov
 
+  native:
+    name: Tests Native
+    runs-on: ubuntu-26.04
+    env:
+      CC: clang
+      CXX: clang++
+      CMAKE_GENERATOR: Ninja
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Configure ptfkit-native
+        run: >
+          cmake -S targets/ptfkit-native -B targets/ptfkit-native/build
+          -DBUILD_TESTING=ON -DPTFKIT_BUILD_CPP_MODULES=ON
+
+      - name: Build ptfkit-native
+        run: cmake --build targets/ptfkit-native/build
+
+      - name: Test ptfkit-native
+        run: ctest --test-dir targets/ptfkit-native/build --output-on-failure
+
   summary:
     name: PR Checks Summary
     runs-on: ubuntu-latest
     if: always()
-    needs: [code-quality, pytest]
+    needs: [code-quality, native, pytest]
     steps:
       - run: >
           test
           "${{ needs.code-quality.result }}" = "success" -a
+          "${{ needs.native.result }}" = "success" -a
           "${{ needs.pytest.result }}" = "success"
