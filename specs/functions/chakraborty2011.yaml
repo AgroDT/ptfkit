@@ -1,0 +1,436 @@
+source:
+  summary: Chakraborty et al. (2011), point water-retention PTFs for Indian soils.
+  citation_apa: >-
+    Chakraborty, D., Mazumdar, S. P., Garg, R. N., Banerjee, S., Santra, P.,
+    Singh, R., & Tomar, R. K. (2011). Pedotransfer functions for predicting
+    points on the moisture retention curve of Indian soils. Indian Journal of
+    Agricultural Sciences, 81(11), 1030.
+  doi: null
+scope:
+  territory: India
+  dataset: >-
+    187 soil samples from three or more horizons at locations across India;
+    107 samples were used for regression development and 80 independent samples
+    for validation. Analyses were performed during 2006-2008.
+$defs:
+  clay:
+    name: clay
+    symbol: Clay
+    unit: '%'
+    domain: null
+    description: Clay content by mass.
+  silt:
+    name: silt
+    symbol: Silt
+    unit: '%'
+    domain: null
+    description: Silt content by mass.
+  sand:
+    name: sand
+    symbol: Sand
+    unit: '%'
+    domain: null
+    description: Sand content by mass.
+  organic_carbon:
+    name: organic_carbon
+    symbol: OrgC
+    unit: '%'
+    domain: 0.02 <= value <= 1.18
+    description: Soil organic carbon content by mass.
+  bulk_density:
+    name: bulk_density
+    symbol: BD
+    unit: Mg/m^3
+    domain: 1.17 <= value <= 1.98
+    description: Dry soil bulk density.
+  Chakraborty2011PTFResult:
+    type: record
+    fields:
+      - name: water_content_33
+        symbol: w_33
+        unit: g/g
+        domain: null
+        description: Gravimetric water content at -33 kPa matric potential.
+      - name: water_content_100
+        symbol: w_100
+        unit: g/g
+        domain: null
+        description: Gravimetric water content at -100 kPa matric potential.
+      - name: water_content_500
+        symbol: w_500
+        unit: g/g
+        domain: null
+        description: Gravimetric water content at -500 kPa matric potential.
+      - name: water_content_1500
+        symbol: w_1500
+        unit: g/g
+        domain: null
+        description: Gravimetric water content at -1500 kPa matric potential.
+functions:
+  - name: calc_ptf_chakraborty2011_eq1
+    status: implemented
+    public_api:
+      name: calc_ptf_chakraborty2011_eq1
+      result_class: Chakraborty2011PTFResult
+      summary: Estimate four gravimetric water contents from clay and silt.
+    scope:
+      prediction_target: >-
+        Gravimetric water content at -33, -100, -500, and -1500 kPa.
+      models:
+        h_theta: Four point estimates from regression equation set 1
+        k_h: null
+    inputs:
+      - $ref: '#/$defs/clay'
+      - $ref: '#/$defs/silt'
+    outputs:
+      $ref: '#/$defs/Chakraborty2011PTFResult'
+    implementation:
+      variables:
+        - name: water_content_33
+          expr: (0.297 * clay + 0.478 * silt + 4.600) / 100
+        - name: water_content_100
+          expr: (0.270 * clay + 0.379 * silt + 2.988) / 100
+        - name: water_content_500
+          expr: (0.251 * clay + 0.185 * silt + 2.958) / 100
+        - name: water_content_1500
+          expr: (0.184 * clay + 0.144 * silt + 3.702) / 100
+    golden_tests:
+      - id: representative_case
+        inputs:
+          clay: 20.0
+          silt: 30.0
+        expected:
+          water_content_33: 0.2488
+          water_content_100: 0.19758
+          water_content_500: 0.13528
+          water_content_1500: 0.11702
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: Calculated directly from Table 3 and divided by 100.
+    edge_cases: []
+    documentation:
+      notes:
+        - >-
+          Table 3 reports R-squared values of 0.820, 0.709, 0.698, and 0.489
+          at -33, -100, -500, and -1500 kPa, respectively.
+        - >-
+          Table 3 reports SEE values of 4.351, 5.051, 3.837, and 4.488
+          percentage points at the four respective potentials.
+      warnings:
+        - Use outside the source Indian-soil dataset requires independent validation.
+  - name: calc_ptf_chakraborty2011_eq2
+    status: implemented
+    public_api:
+      name: calc_ptf_chakraborty2011_eq2
+      result_class: Chakraborty2011PTFResult
+      summary: Estimate four gravimetric water contents from sand and bulk density.
+    scope:
+      prediction_target: >-
+        Gravimetric water content at -33, -100, -500, and -1500 kPa.
+      models:
+        h_theta: Four point estimates from regression equation set 2
+        k_h: null
+    inputs:
+      - $ref: '#/$defs/sand'
+      - $ref: '#/$defs/bulk_density'
+    outputs:
+      $ref: '#/$defs/Chakraborty2011PTFResult'
+    implementation:
+      variables:
+        - name: water_content_33
+          expr: (-0.377 * sand - 0.215 * bulk_density + 41.114) / 100
+        - name: water_content_100
+          expr: (-0.330 * sand + 2.611 * bulk_density + 30.160) / 100
+        - name: water_content_500
+          expr: (-0.244 * sand - 0.795 * bulk_density + 27.495) / 100
+        - name: water_content_1500
+          expr: (-0.187 * sand + 1.241 * bulk_density + 19.320) / 100
+    golden_tests:
+      - id: representative_case
+        inputs:
+          sand: 50.0
+          bulk_density: 1.5
+        expected:
+          water_content_33: 0.219415
+          water_content_100: 0.175765
+          water_content_500: 0.141025
+          water_content_1500: 0.118315
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: Calculated directly from Table 3 and divided by 100.
+    edge_cases: []
+    documentation:
+      notes:
+        - >-
+          Table 3 reports R-squared values of 0.812, 0.726, 0.721, and 0.519
+          at -33, -100, -500, and -1500 kPa, respectively.
+        - >-
+          Table 3 reports SEE values of 4.454, 4.875, 3.691, and 4.352
+          percentage points at the four respective potentials.
+      warnings:
+        - Use outside the source Indian-soil dataset requires independent validation.
+  - name: calc_ptf_chakraborty2011_eq3
+    status: implemented
+    public_api:
+      name: calc_ptf_chakraborty2011_eq3
+      result_class: Chakraborty2011PTFResult
+      summary: Estimate four gravimetric water contents from clay, silt, and bulk density.
+    scope:
+      prediction_target: >-
+        Gravimetric water content at -33, -100, -500, and -1500 kPa.
+      models:
+        h_theta: Four point estimates from regression equation set 3
+        k_h: null
+    inputs:
+      - $ref: '#/$defs/clay'
+      - $ref: '#/$defs/silt'
+      - $ref: '#/$defs/bulk_density'
+    outputs:
+      $ref: '#/$defs/Chakraborty2011PTFResult'
+    implementation:
+      variables:
+        - name: water_content_33
+          expr: (0.280 * clay + 0.481 * silt - 7.566 * bulk_density + 17.095) / 100
+        - name: water_content_100
+          expr: (0.262 * clay + 0.380 * silt - 3.167 * bulk_density + 8.219) / 100
+        - name: water_content_500
+          expr: (0.244 * clay + 0.187 * silt - 3.079 * bulk_density + 8.046) / 100
+        - name: water_content_1500
+          expr: (0.183 * clay + 0.144 * silt - 0.689 * bulk_density + 4.840) / 100
+    golden_tests:
+      - id: representative_case
+        inputs:
+          clay: 20.0
+          silt: 30.0
+          bulk_density: 1.5
+        expected:
+          water_content_33: 0.25776
+          water_content_100: 0.201085
+          water_content_500: 0.139175
+          water_content_1500: 0.117865
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: Calculated directly from Table 3 and divided by 100.
+    edge_cases: []
+    documentation:
+      notes:
+        - >-
+          Table 3 reports R-squared values of 0.830, 0.711, 0.701, and 0.490
+          at -33, -100, -500, and -1500 kPa, respectively.
+        - >-
+          Table 3 reports SEE values of 4.253, 5.059, 3.843, and 4.509
+          percentage points at the four respective potentials.
+      warnings:
+        - Use outside the source Indian-soil dataset requires independent validation.
+  - name: calc_ptf_chakraborty2011_eq4
+    status: implemented
+    public_api:
+      name: calc_ptf_chakraborty2011_eq4
+      result_class: Chakraborty2011PTFResult
+      summary: Estimate four gravimetric water contents from clay, silt, and sand.
+    scope:
+      prediction_target: >-
+        Gravimetric water content at -33, -100, -500, and -1500 kPa.
+      models:
+        h_theta: Four point estimates from regression equation set 4
+        k_h: null
+    inputs:
+      - $ref: '#/$defs/clay'
+      - $ref: '#/$defs/silt'
+      - $ref: '#/$defs/sand'
+    outputs:
+      $ref: '#/$defs/Chakraborty2011PTFResult'
+    implementation:
+      variables:
+        - name: water_content_33
+          expr: (0.078 * clay + 0.248 * silt - 0.241 * sand + 27.447) / 100
+        - name: water_content_100
+          expr: (0.049 * clay + 0.147 * silt - 0.242 * sand + 25.945) / 100
+        - name: water_content_500
+          expr: (0.067 * clay - 0.008 * silt - 0.204 * sand + 22.216) / 100
+        - name: water_content_1500
+          expr: (0.021 * clay - 0.028 * silt - 0.179 * sand + 20.695) / 100
+    golden_tests:
+      - id: representative_case
+        inputs:
+          clay: 20.0
+          silt: 30.0
+          sand: 50.0
+        expected:
+          water_content_33: 0.24397
+          water_content_100: 0.19235
+          water_content_500: 0.13116
+          water_content_1500: 0.11325
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: Calculated directly from Table 3 and divided by 100.
+    edge_cases: []
+    documentation:
+      notes:
+        - >-
+          Table 3 reports R-squared values of 0.844, 0.737, 0.734, and 0.524
+          at -33, -100, -500, and -1500 kPa, respectively.
+        - >-
+          Table 3 reports SEE values of 4.078, 4.820, 3.618, and 4.365
+          percentage points at the four respective potentials.
+      warnings:
+        - Use outside the source Indian-soil dataset requires independent validation.
+  - name: calc_ptf_chakraborty2011_eq5
+    status: implemented
+    public_api:
+      name: calc_ptf_chakraborty2011_eq5
+      result_class: Chakraborty2011PTFResult
+      summary: >-
+        Estimate four gravimetric water contents from clay, silt, sand, and bulk density.
+    scope:
+      prediction_target: >-
+        Gravimetric water content at -33, -100, -500, and -1500 kPa.
+      models:
+        h_theta: Four point estimates from regression equation set 5
+        k_h: null
+    inputs:
+      - $ref: '#/$defs/clay'
+      - $ref: '#/$defs/silt'
+      - $ref: '#/$defs/sand'
+      - $ref: '#/$defs/bulk_density'
+    outputs:
+      $ref: '#/$defs/Chakraborty2011PTFResult'
+    implementation:
+      variables:
+        - name: water_content_33
+          expr: >-
+            (0.093 * clay + 0.276 * silt - 0.213 * sand - 4.481 * bulk_density + 32.210) / 100
+        - name: water_content_100
+          expr: >-
+            (0.048 * clay + 0.145 * silt - 0.245 * sand + 0.370 * bulk_density + 25.551) / 100
+        - name: water_content_500
+          expr: >-
+            (0.067 * clay - 0.008 * silt - 0.203 * sand - 0.135 * bulk_density + 22.359) / 100
+        - name: water_content_1500
+          expr: >-
+            (0.014 * clay - 0.041 * silt - 0.192 * sand + 2.093 * bulk_density + 18.470) / 100
+    golden_tests:
+      - id: representative_case
+        inputs:
+          clay: 20.0
+          silt: 30.0
+          sand: 50.0
+          bulk_density: 1.5
+        expected:
+          water_content_33: 0.249785
+          water_content_100: 0.19166
+          water_content_500: 0.131065
+          water_content_1500: 0.110595
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: Calculated directly from Table 3 and divided by 100.
+    edge_cases: []
+    documentation:
+      notes:
+        - >-
+          Table 3 reports R-squared values of 0.847, 0.737, 0.734, and 0.526
+          at -33, -100, -500, and -1500 kPa, respectively.
+        - >-
+          Table 3 reports SEE values of 4.045, 4.855, 3.637, and 4.370
+          percentage points at the four respective potentials.
+      warnings:
+        - Use outside the source Indian-soil dataset requires independent validation.
+  - name: calc_ptf_chakraborty2011_eq6
+    status: implemented
+    public_api:
+      name: calc_ptf_chakraborty2011_eq6
+      result_class: Chakraborty2011PTFResult
+      summary: >-
+        Estimate four gravimetric water contents from texture, organic carbon,
+        and bulk density.
+    scope:
+      prediction_target: >-
+        Gravimetric water content at -33, -100, -500, and -1500 kPa.
+      models:
+        h_theta: Four point estimates from regression equation set 6
+        k_h: null
+    inputs:
+      - $ref: '#/$defs/clay'
+      - $ref: '#/$defs/silt'
+      - $ref: '#/$defs/sand'
+      - $ref: '#/$defs/organic_carbon'
+      - $ref: '#/$defs/bulk_density'
+    outputs:
+      $ref: '#/$defs/Chakraborty2011PTFResult'
+    implementation:
+      variables:
+        - name: water_content_33
+          expr: >-
+            (0.095 * clay + 0.268 * silt - 0.206 * sand + 2.420 * organic_carbon - 4.402 * bulk_density + 30.960) / 100
+        - name: water_content_100
+          expr: >-
+            (0.053 * clay + 0.113 * silt - 0.230 * sand + 6.434 * organic_carbon + 1.528 * bulk_density + 21.236) / 100
+        - name: water_content_500
+          expr: >-
+            (0.069 * clay - 0.017 * silt - 0.195 * sand + 2.461 * organic_carbon + 0.079 * bulk_density + 20.895) / 100
+        - name: water_content_1500
+          expr: >-
+            (0.017 * clay - 0.053 * silt - 0.184 * sand + 2.950 * organic_carbon + 2.327 * bulk_density + 16.802) / 100
+    golden_tests:
+      - id: representative_case
+        inputs:
+          clay: 20.0
+          silt: 30.0
+          sand: 50.0
+          organic_carbon: 0.5
+          bulk_density: 1.5
+        expected:
+          water_content_33: 0.25207
+          water_content_100: 0.19695
+          water_content_500: 0.13364
+          water_content_1500: 0.113175
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: Calculated directly from Table 3 and divided by 100.
+    edge_cases: []
+    documentation:
+      notes:
+        - >-
+          Table 3 reports R-squared values of 0.849, 0.750, 0.736, and 0.529
+          at -33, -100, -500, and -1500 kPa, respectively.
+        - >-
+          Table 3 reports SEE values of 4.060, 5.682, 3.645, and 4.369
+          percentage points at the four respective potentials.
+      warnings:
+        - Use outside the source Indian-soil dataset requires independent validation.
+scientific_notes: |
+  # Chakraborty et al. (2011)
+
+  Table 3 presents six multiple-linear-regression equation sets at each of four
+  matric potentials. `Clay`, `Silt`, `Sand`, and `Org C` are expressed as mass
+  percentages and `BD` as Mg/m^3. The regressions return gravimetric moisture
+  content on a percent oven-dry basis, so every raw percentage prediction is
+  divided by 100 to expose g/g outputs.
+
+  The paper reports dry bulk density from 1.17 to 1.98 Mg/m^3. It reports the
+  organic-C range as 0.2 to 11.8 g/kg, while Table 3 labels the regression input
+  `Org C (%)`; the specified 0.02% to 1.18% domain is the direct unit conversion
+  of that reported range.
+
+  The abstract recommends clay plus silt at -33 and -500 kPa and clay, silt,
+  plus bulk density at -100 and -1500 kPa. The discussion likewise chooses
+  equation 1 at -33 and -500 kPa and equation 3 at -100 and -1500 kPa. However,
+  Table 4's printed final ranking assigns rank 1 to equation 5 at -33 kPa and
+  equation 3 at -500 kPa. This draft preserves every published equation set and
+  does not introduce a composite API that would silently choose between the
+  conflicting recommendations.
+
+  ## Numeric policy
+
+  Use `f64`, do not round intermediate or final values, and propagate IEEE 754
+  NaN and infinities. Golden cases are direct evaluations of the printed Table 3
+  coefficients at representative inputs, with source percentage predictions
+  divided by 100 to obtain g/g.
+
+  ## Review decisions
+
+  - Retain all six numbered equation sets as public functions rather than
+    selecting only the paper's preferred equations.
+  - Treat the user-supplied citation as authoritative; the article has no DOI.
+  - The conflicting narrative and tabulated model rankings are documentation,
+    not a blocker, because no composite best-model function is exposed.

@@ -14,6 +14,12 @@ calc_ptf_beniaich2023_slr3: ufunc
 calc_ptf_beniaich2023_slr4: ufunc
 calc_ptf_beniaich2023_slr5: ufunc
 calc_ptf_beniaich2023_slr6: ufunc
+calc_ptf_chakraborty2011_eq1: ufunc
+calc_ptf_chakraborty2011_eq2: ufunc
+calc_ptf_chakraborty2011_eq3: ufunc
+calc_ptf_chakraborty2011_eq4: ufunc
+calc_ptf_chakraborty2011_eq5: ufunc
+calc_ptf_chakraborty2011_eq6: ufunc
 calc_ptf_cosby1984_univariate: ufunc
 calc_ptf_dharumarajan2019_infiltration: ufunc
 calc_ptf_dharumarajan2019_nkp: ufunc

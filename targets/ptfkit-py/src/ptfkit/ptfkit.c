@@ -7,6 +7,7 @@
 
 #include "aimrun2009.c"
 #include "beniaich2023.c"
+#include "chakraborty2011.c"
 #include "cosby1984.c"
 #include "dharumarajan2019.c"
 #include "jabro1992.c"
@@ -27,6 +28,7 @@ PyMODINIT_FUNC PyInit__ptfkit(void) {
     import_ufunc();
     if (ptfkit_register_aimrun2009(module) < 0) { Py_DECREF(module); return NULL; }
     if (ptfkit_register_beniaich2023(module) < 0) { Py_DECREF(module); return NULL; }
+    if (ptfkit_register_chakraborty2011(module) < 0) { Py_DECREF(module); return NULL; }
     if (ptfkit_register_cosby1984(module) < 0) { Py_DECREF(module); return NULL; }
     if (ptfkit_register_dharumarajan2019(module) < 0) { Py_DECREF(module); return NULL; }
     if (ptfkit_register_jabro1992(module) < 0) { Py_DECREF(module); return NULL; }
