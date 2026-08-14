@@ -5,15 +5,15 @@
 
 int main() {
     {
-        const double result = calc_ptf_tiwary2014_igp(37.29999999999999716, 1.67399999999999993, 4.59999999999999964);
-        assert_close_enough(result, 0.00000051035780000, 0.00000000000100000, 0.00000000010000000);
+        const double result = calc_ptf_tiwary2014_igp(37.3, 1.674, 4.6);
+        assert_close_enough(result, 0.0000005103578, 0.000000000001, 0.0000000001);
     }
     {
-        const ptfkit_calc_ptf_tiwary2014_bsr_result result = calc_ptf_tiwary2014_bsr(54.89999999999999858, 7.59999999999999964, 61.60000000000000142, 7.29999999999999982, 21.39999999999999858, 3.31999999999999984);
-        assert_close_enough(result.w_33, 41.17289999999999850, 0.00000000000100000, 0.00000000010000000);
-        assert_close_enough(result.w_100, 36.82730000000000103, 0.00000000000100000, 0.00000000010000000);
-        assert_close_enough(result.w_1500, 21.69760000000000133, 0.00000000000100000, 0.00000000010000000);
-        assert_close_enough(result.k_sat, 0.00000537336700000, 0.00000000000100000, 0.00000000010000000);
+        const ptfkit_calc_ptf_tiwary2014_bsr_result result = calc_ptf_tiwary2014_bsr(54.9, 7.6, 61.6, 7.3, 21.4, 3.32);
+        assert_close_enough(result.w_33, 41.1729, 0.000000000001, 0.0000000001);
+        assert_close_enough(result.w_100, 36.8273, 0.000000000001, 0.0000000001);
+        assert_close_enough(result.w_1500, 21.6976, 0.000000000001, 0.0000000001);
+        assert_close_enough(result.k_sat, 0.000005373367, 0.000000000001, 0.0000000001);
     }
     return 0;
 }

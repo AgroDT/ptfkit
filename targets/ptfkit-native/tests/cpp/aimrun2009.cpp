@@ -10,20 +10,20 @@ import ptfkit.aimrun2009;
 
 int main() {
     {
-        const auto result = ptfkit::aimrun2009::calc_ptf_aimrun2009(43.88000000000000256, 0.93999999999999995, 12.07000000000000028, 0.01000000000000000);
-        assert_close_enough(result, 0.00000007358406556, 0.00000000000100000, 0.00000001000000000);
+        const auto result = ptfkit::aimrun2009::calc_ptf_aimrun2009(43.88, 0.94, 12.07, 0.01);
+        assert_close_enough(result, 0.00000007358406556179513, 0.000000000001, 0.00000001);
     }
     {
-        const auto result = ptfkit::aimrun2009::calc_ptf_aimrun2009(50.21000000000000085, 1.18999999999999995, 8.55000000000000071, 0.00700000000000000);
-        assert_close_enough(result, 0.00000003078724467, 0.00000000000100000, 0.00000001000000000);
+        const auto result = ptfkit::aimrun2009::calc_ptf_aimrun2009(50.21, 1.19, 8.55, 0.007);
+        assert_close_enough(result, 0.0000000307872446717209, 0.000000000001, 0.00000001);
     }
     {
-        const auto result = ptfkit::aimrun2009::calc_ptf_aimrun2009(58.81000000000000227, 1.12999999999999989, 5.12000000000000011, 0.00500000000000000);
-        assert_close_enough(result, 0.00000002334305191, 0.00000000000100000, 0.00000001000000000);
+        const auto result = ptfkit::aimrun2009::calc_ptf_aimrun2009(58.81, 1.13, 5.12, 0.005);
+        assert_close_enough(result, 0.000000023343051908963327, 0.000000000001, 0.00000001);
     }
     {
-        const auto result = ptfkit::aimrun2009::calc_ptf_aimrun2009(47.50000000000000000, 1.08000000000000007, 1.42999999999999994, 0.00800000000000000);
-        assert_close_enough(result, 0.00000003831168764, 0.00000000000100000, 0.00000001000000000);
+        const auto result = ptfkit::aimrun2009::calc_ptf_aimrun2009(47.5, 1.08, 1.43, 0.008);
+        assert_close_enough(result, 0.00000003831168764444974, 0.000000000001, 0.00000001);
     }
     return 0;
 }

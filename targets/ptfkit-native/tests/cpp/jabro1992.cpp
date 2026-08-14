@@ -10,20 +10,20 @@ import ptfkit.jabro1992;
 
 int main() {
     {
-        const auto result = ptfkit::jabro1992::calc_ptf_jabro1992(10.00000000000000000, 5.00000000000000000, 1.26000000000000001);
-        assert_close_enough(result, 0.00038496406758969, 0.00000000000100000, 0.00000001000000000);
+        const auto result = ptfkit::jabro1992::calc_ptf_jabro1992(10.0, 5.0, 1.26);
+        assert_close_enough(result, 0.0003849640675896946, 0.000000000001, 0.00000001);
     }
     {
-        const auto result = ptfkit::jabro1992::calc_ptf_jabro1992(38.71999999999999886, 11.05000000000000071, 1.41999999999999993);
-        assert_close_enough(result, 0.00000980403795272, 0.00000000000100000, 0.00000001000000000);
+        const auto result = ptfkit::jabro1992::calc_ptf_jabro1992(38.72, 11.05, 1.42);
+        assert_close_enough(result, 0.000009804037952717678, 0.000000000001, 0.00000001);
     }
     {
-        const auto result = ptfkit::jabro1992::calc_ptf_jabro1992(52.00000000000000000, 30.00000000000000000, 1.96999999999999997);
-        assert_close_enough(result, 0.00000000729243595, 0.00000000000100000, 0.00000001000000000);
+        const auto result = ptfkit::jabro1992::calc_ptf_jabro1992(52.0, 30.0, 1.97);
+        assert_close_enough(result, 0.000000007292435947882127, 0.000000000001, 0.00000001);
     }
     {
-        const auto result = ptfkit::jabro1992::calc_ptf_jabro1992(0.20000000000000001, 44.00000000000000000, 1.61000000000000010);
-        assert_close_enough(result, 0.00002032824027706, 0.00000000000100000, 0.00000001000000000);
+        const auto result = ptfkit::jabro1992::calc_ptf_jabro1992(0.2, 44.0, 1.61);
+        assert_close_enough(result, 0.00002032824027706267, 0.000000000001, 0.00000001);
     }
     return 0;
 }

@@ -5,12 +5,12 @@
 
 int main() {
     {
-        const double result = calc_ptf_ahuja1984(0.45000000000000001, 0.25000000000000000, 100.00000000000000000, 4.00000000000000000);
-        assert_close_enough(result, 0.16000000000000000, 0.00000000000001000, 0.00000000000100000);
+        const double result = calc_ptf_ahuja1984(0.45, 0.25, 100.0, 4.0);
+        assert_close_enough(result, 0.16, 0.00000000000001, 0.000000000001);
     }
     {
-        const double result = calc_ptf_ahuja1984(0.50000000000000000, 0.20000000000000001, 100.00000000000000000, 5.00000000000000000);
-        assert_close_enough(result, 0.24299999999999999, 0.00000000000001000, 0.00000000000100000);
+        const double result = calc_ptf_ahuja1984(0.5, 0.2, 100.0, 5.0);
+        assert_close_enough(result, 0.243, 0.00000000000001, 0.000000000001);
     }
     return 0;
 }
