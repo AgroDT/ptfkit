@@ -15,6 +15,11 @@ calc_ptf_beniaich2023_slr4: ufunc
 calc_ptf_beniaich2023_slr5: ufunc
 calc_ptf_beniaich2023_slr6: ufunc
 calc_ptf_cosby1984_univariate: ufunc
+calc_ptf_dharumarajan2019_infiltration: ufunc
+calc_ptf_dharumarajan2019_nkp: ufunc
+calc_ptf_dharumarajan2019_nkp_clay: ufunc
+calc_ptf_dharumarajan2019_skp: ufunc
+calc_ptf_dharumarajan2019_skp_clay: ufunc
 calc_ptf_jabro1992: ufunc
 calc_ptf_li2007: ufunc
 calc_ptf_pidgeon1972_awc: ufunc
