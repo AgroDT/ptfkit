@@ -1,6 +1,9 @@
 name: PR Checks
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
@@ -18,14 +21,11 @@ jobs:
         with:
           components: clippy, rustfmt
 
-      - name: Set up Rust Cache
-        uses: actions/cache@v6
+      - name: Cache Rust dependencies and codegen artifacts
+        uses: Swatinem/rust-cache@v2
         with:
-          path: |
-            ~/.cargo/registry
-            ~/.cargo/git
-            codegen/target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('codegen/Cargo.toml') }}
+          workspaces: |
+            codegen -> target
 
       - name: Set up Rust problem matchers
         uses: r7kamura/rust-problem-matchers@v1
