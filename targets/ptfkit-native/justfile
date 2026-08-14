@@ -1,0 +1,30 @@
+set unstable
+set lists
+
+[windows]
+set shell := ["powershell.exe", "-NoLogo", "-Command"]
+
+build_dir := 'build'
+cmake_generator := if which("ninja") {
+    "Ninja"
+} else {
+    []
+}
+
+default:
+	@{{just_executable()}} --list
+
+[env("CMAKE_GENERATOR", cmake_generator)]
+@configure:
+	cmake -S . -B "{{build_dir}}" -DBUILD_TESTING=ON
+
+build: configure
+	cmake --build "{{build_dir}}"
+
+test: build
+	ctest --test-dir "{{build_dir}}" --output-on-failure
+
+verify: test
+
+clean:
+    rm -rf "{{build_dir}}"

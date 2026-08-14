@@ -1,4 +1,5 @@
 mod compile;
+mod native;
 mod py;
 mod rs;
 mod write;
@@ -15,14 +16,24 @@ pub(super) enum Target {
     PythonExtension,
     PythonWrapper,
     PythonTest,
+    NativeC,
+    NativeCppModule,
+    NativeCppCmake,
+    NativeCTest,
+    NativeCppTest,
 }
 
 impl Target {
-    pub(super) const ALL: [Self; 4] = [
+    pub(super) const ALL: [Self; 9] = [
         Self::Rust,
         Self::PythonExtension,
         Self::PythonWrapper,
         Self::PythonTest,
+        Self::NativeC,
+        Self::NativeCppModule,
+        Self::NativeCppCmake,
+        Self::NativeCTest,
+        Self::NativeCppTest,
     ];
 
     fn output_path(self, root: &Path, relative: &Path) -> PathBuf {
@@ -31,6 +42,11 @@ impl Target {
             Self::PythonExtension => root.join("targets/ptfkit-py").join(relative),
             Self::PythonWrapper => root.join("targets/ptfkit-py/src").join(relative),
             Self::PythonTest => root.join("targets/ptfkit-py").join(relative),
+            Self::NativeC => root.join("targets/ptfkit-native/include").join(relative),
+            Self::NativeCppModule => root.join("targets/ptfkit-native/cpp").join(relative),
+            Self::NativeCppCmake => root.join("targets/ptfkit-native/cmake").join(relative),
+            Self::NativeCTest => root.join("targets/ptfkit-native/tests/c").join(relative),
+            Self::NativeCppTest => root.join("targets/ptfkit-native/tests/cpp").join(relative),
         }
     }
 
@@ -41,6 +57,11 @@ impl Target {
                 root.join("targets/ptfkit-py/src/ptfkit")
             }
             Self::PythonTest => root.join("targets/ptfkit-py/tests"),
+            Self::NativeC => root.join("targets/ptfkit-native/include"),
+            Self::NativeCppModule => root.join("targets/ptfkit-native/cpp"),
+            Self::NativeCppCmake => root.join("targets/ptfkit-native/cmake"),
+            Self::NativeCTest => root.join("targets/ptfkit-native/tests/c"),
+            Self::NativeCppTest => root.join("targets/ptfkit-native/tests/cpp"),
         }
     }
 
@@ -50,6 +71,10 @@ impl Target {
             Self::PythonExtension => py::C_HEADER,
             Self::PythonWrapper => py::WRAPPER_HEADER,
             Self::PythonTest => py::WRAPPER_HEADER,
+            Self::NativeC | Self::NativeCppModule | Self::NativeCTest | Self::NativeCppTest => {
+                native::HEADER
+            }
+            Self::NativeCppCmake => native::CMAKE_HEADER,
         }
     }
 
@@ -59,6 +84,11 @@ impl Target {
             Self::PythonExtension => Ok(()),
             Self::PythonWrapper => write::format_python(root, paths),
             Self::PythonTest => write::format_python(root, paths),
+            Self::NativeC
+            | Self::NativeCppModule
+            | Self::NativeCppCmake
+            | Self::NativeCTest
+            | Self::NativeCppTest => Ok(()),
         }
     }
 }
@@ -92,6 +122,7 @@ pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> Result<()> {
         .map(|(path, contents)| GeneratedFile::new(path, contents))
         .collect::<Vec<_>>();
     let py = py::render(&compiled)?;
+    let native = native::render(&compiled)?;
     let c = py
         .c_sources
         .into_iter()
@@ -120,11 +151,16 @@ pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> Result<()> {
         .collect::<Vec<_>>();
     write::commit(
         root,
-        [
+        &[
             TargetOutput::new(Target::Rust, rust),
             TargetOutput::new(Target::PythonExtension, c),
             TargetOutput::new(Target::PythonWrapper, wrappers),
             TargetOutput::new(Target::PythonTest, tests),
+            TargetOutput::new(Target::NativeC, native.c_headers),
+            TargetOutput::new(Target::NativeCppModule, native.cpp_modules),
+            TargetOutput::new(Target::NativeCppCmake, native.cpp_cmake),
+            TargetOutput::new(Target::NativeCTest, native.c_tests),
+            TargetOutput::new(Target::NativeCppTest, native.cpp_tests),
         ],
     )
 }
