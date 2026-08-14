@@ -1,0 +1,384 @@
+source:
+  summary: Dharumarajan et al. (2019) hydraulic PTFs for the Karnataka Plateau.
+  citation_apa: >-
+    Dharumarajan, S., Hegde, R., Lalitha, M., Kalaiselvi, B., & Singh, S. K.
+    (2019). Pedotransfer functions for predicting soil hydraulic properties in
+    semi-arid regions of Karnataka Plateau, India. Current Science, 116(7),
+    1237-1246. https://doi.org/10.18520/cs/v116/i7/1237-1246
+  doi:
+    identifier: 10.18520/cs/v116/i7/1237-1246
+    url: https://doi.org/10.18520/cs/v116/i7/1237-1246
+scope:
+  territory: Karnataka Plateau, India
+  dataset: >-
+    Field capacity and permanent wilting point were modeled from 512 soil
+    samples in the Northern Karnataka Plateau and 228 samples in the Southern
+    Karnataka Plateau; infiltration was modeled from 100 Karnataka soil
+    observations.
+$defs:
+  clayNkp:
+    name: clay
+    symbol: Clay
+    unit: "%"
+    domain: "Northern study range: 1.2 <= value <= 80.8"
+    description: Clay content.
+  sandNkp:
+    name: sand
+    symbol: Sand
+    unit: "%"
+    domain: "Northern study range: 2.7 <= value <= 94.0"
+    description: Sand content.
+  cecNkp:
+    name: cation_exchange_capacity
+    symbol: CEC
+    unit: C mol p+/kg
+    domain: "Northern study range: 1.7 <= value <= 80.9"
+    description: Cation exchange capacity.
+  claySkp:
+    name: clay
+    symbol: Clay
+    unit: "%"
+    domain: "Southern study range: 5.8 <= value <= 67.8"
+    description: Clay content.
+  sandSkp:
+    name: sand
+    symbol: Sand
+    unit: "%"
+    domain: "Southern study range: 4.4 <= value <= 92.3"
+    description: Sand content.
+  cecSkp:
+    name: cation_exchange_capacity
+    symbol: CEC
+    unit: C mol p+/kg
+    domain: "Southern study range: 1.2 <= value <= 52.6"
+    description: Cation exchange capacity.
+  clayKarnataka:
+    name: clay
+    symbol: Clay
+    unit: "%"
+    domain: null
+    description: Clay content in the Karnataka infiltration dataset.
+  sandKarnataka:
+    name: sand
+    symbol: Sand
+    unit: "%"
+    domain: null
+    description: Sand content in the Karnataka infiltration dataset.
+  siltKarnataka:
+    name: silt
+    symbol: Silt
+    unit: "%"
+    domain: null
+    description: Silt content in the Karnataka infiltration dataset.
+  Dharumarajan2019WaterRetentionResult:
+    type: record
+    fields:
+      - name: field_capacity
+        symbol: FC
+        unit: "%"
+        domain: null
+        description: Soil water content at -33 kPa matric potential.
+      - name: permanent_wilting_point
+        symbol: PWP
+        unit: "%"
+        domain: null
+        description: Soil water content at -1500 kPa matric potential.
+functions:
+  - name: calc_ptf_dharumarajan2019_nkp
+    status: implemented
+    public_api:
+      name: calc_ptf_dharumarajan2019_nkp
+      result_class: Dharumarajan2019WaterRetentionResult
+      summary: Estimate field capacity and wilting point for Northern Karnataka soils.
+    scope:
+      territory: Northern Karnataka Plateau
+      prediction_target: >-
+        Water content at field capacity and permanent wilting point from clay,
+        sand, and cation exchange capacity.
+      models:
+        h_theta: Point water-retention estimates from multiple linear regression
+        k_h: null
+    inputs:
+      - $ref: "#/$defs/clayNkp"
+      - $ref: "#/$defs/sandNkp"
+      - $ref: "#/$defs/cecNkp"
+    outputs:
+      $ref: "#/$defs/Dharumarajan2019WaterRetentionResult"
+    golden_tests:
+      - id: northern_study_mean_case
+        inputs:
+          clay: 43.2
+          sand: 39.8
+          cation_exchange_capacity: 33.6
+        expected:
+          field_capacity: 29.7912
+          permanent_wilting_point: 18.9276
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: Calculated from the Table 3 coefficients at the Table 1 mean inputs.
+    edge_cases: []
+    documentation:
+      notes:
+        - The model was fitted to 512 soil-layer observations.
+        - Reported cross-validation RMSE values are 5.25% for FC and 3.71% for PWP.
+      warnings:
+        - >-
+          The paper does not state whether its water-content percentages are
+          gravimetric or volumetric.
+        - >-
+          The source gives inconsistent profile counts and district lists for the
+          Northern dataset; see the scientific notes.
+    implementation:
+      variables:
+        - name: field_capacity
+          expr: 13.82 + 0.205 * clay - 0.088 * sand + 0.316 * cation_exchange_capacity
+        - name: permanent_wilting_point
+          expr: -5.776 + 0.315 * clay + 0.050 * sand + 0.271 * cation_exchange_capacity
+  - name: calc_ptf_dharumarajan2019_nkp_clay
+    status: implemented
+    public_api:
+      name: calc_ptf_dharumarajan2019_nkp_clay
+      result_class: Dharumarajan2019WaterRetentionResult
+      summary: Estimate Northern Karnataka field capacity and wilting point from clay.
+    scope:
+      territory: Northern Karnataka Plateau
+      prediction_target: >-
+        Water content at field capacity and permanent wilting point from clay
+        content alone.
+      models:
+        h_theta: Point water-retention estimates from simple linear regression
+        k_h: null
+    inputs:
+      - $ref: "#/$defs/clayNkp"
+    outputs:
+      $ref: "#/$defs/Dharumarajan2019WaterRetentionResult"
+    golden_tests:
+      - id: northern_study_mean_clay_case
+        inputs:
+          clay: 43.2
+        expected:
+          field_capacity: 30.2832
+          permanent_wilting_point: 19.157
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: Calculated from the Table 4 coefficients at the Table 1 mean clay content.
+    edge_cases: []
+    documentation:
+      notes:
+        - >-
+          The paper recommends this model when clay content is the only available
+          predictor.
+        - Reported cross-validation RMSE values are 7.05% for FC and 4.74% for PWP.
+      warnings:
+        - >-
+          The paper does not state whether its water-content percentages are
+          gravimetric or volumetric.
+        - >-
+          The source gives inconsistent profile counts and district lists for the
+          Northern dataset; see the scientific notes.
+    implementation:
+      variables:
+        - name: field_capacity
+          expr: 4.968 + 0.586 * clay
+        - name: permanent_wilting_point
+          expr: -2.443 + 0.500 * clay
+  - name: calc_ptf_dharumarajan2019_skp
+    status: implemented
+    public_api:
+      name: calc_ptf_dharumarajan2019_skp
+      result_class: Dharumarajan2019WaterRetentionResult
+      summary: Estimate field capacity and wilting point for Southern Karnataka soils.
+    scope:
+      territory: Southern Karnataka Plateau
+      prediction_target: >-
+        Water content at field capacity and permanent wilting point from clay,
+        sand, and cation exchange capacity.
+      models:
+        h_theta: Point water-retention estimates from multiple linear regression
+        k_h: null
+    inputs:
+      - $ref: "#/$defs/claySkp"
+      - $ref: "#/$defs/sandSkp"
+      - $ref: "#/$defs/cecSkp"
+    outputs:
+      $ref: "#/$defs/Dharumarajan2019WaterRetentionResult"
+    golden_tests:
+      - id: southern_study_mean_case
+        inputs:
+          clay: 31.5
+          sand: 53.5
+          cation_exchange_capacity: 14.7
+        expected:
+          field_capacity: 21.8169
+          permanent_wilting_point: 11.3054
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: Calculated from the Table 5 coefficients at the Table 2 mean inputs.
+    edge_cases: []
+    documentation:
+      notes:
+        - The model was fitted to 228 soil samples from 43 profiles.
+        - Reported cross-validation RMSE values are 3.05% for FC and 2.17% for PWP.
+      warnings:
+        - >-
+          The paper does not state whether its water-content percentages are
+          gravimetric or volumetric.
+    implementation:
+      variables:
+        - name: field_capacity
+          expr: 39.179 - 0.041 * clay - 0.371 * sand + 0.257 * cation_exchange_capacity
+        - name: permanent_wilting_point
+          expr: 8.227 + 0.168 * clay - 0.101 * sand + 0.217 * cation_exchange_capacity
+  - name: calc_ptf_dharumarajan2019_skp_clay
+    status: implemented
+    public_api:
+      name: calc_ptf_dharumarajan2019_skp_clay
+      result_class: Dharumarajan2019WaterRetentionResult
+      summary: Estimate Southern Karnataka field capacity and wilting point from clay.
+    scope:
+      territory: Southern Karnataka Plateau
+      prediction_target: >-
+        Water content at field capacity and permanent wilting point from clay
+        content alone.
+      models:
+        h_theta: Point water-retention estimates from simple linear regression
+        k_h: null
+    inputs:
+      - $ref: "#/$defs/claySkp"
+    outputs:
+      $ref: "#/$defs/Dharumarajan2019WaterRetentionResult"
+    golden_tests:
+      - id: southern_study_mean_clay_case
+        inputs:
+          clay: 31.5
+        expected:
+          field_capacity: 22.0255
+          permanent_wilting_point: 11.503
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: Calculated from the Table 7 coefficients at the Table 2 mean clay content.
+    edge_cases: []
+    documentation:
+      notes:
+        - >-
+          The paper recommends this model when clay content is the only available
+          predictor.
+        - Reported cross-validation RMSE values are 5.39% for FC and 3.13% for PWP.
+      warnings:
+        - >-
+          The paper does not state whether its water-content percentages are
+          gravimetric or volumetric.
+    implementation:
+      variables:
+        - name: field_capacity
+          expr: 3.724 + 0.581 * clay
+        - name: permanent_wilting_point
+          expr: -1.979 + 0.428 * clay
+  - name: calc_ptf_dharumarajan2019_infiltration
+    status: implemented
+    public_api:
+      name: calc_ptf_dharumarajan2019_infiltration
+      result_class: null
+      summary: Estimate infiltration rate for Karnataka soils from texture fractions.
+    scope:
+      territory: Karnataka, India
+      prediction_target: Infiltration rate from sand, silt, and clay contents.
+      models:
+        h_theta: null
+        k_h: Multiple linear regression for infiltration rate
+    inputs:
+      - $ref: "#/$defs/sandKarnataka"
+      - $ref: "#/$defs/siltKarnataka"
+      - $ref: "#/$defs/clayKarnataka"
+    outputs:
+      type: scalar
+      name: infiltration_rate
+      symbol: null
+      unit: mm/h
+      domain: "Observed study range: 2.3 <= value <= 35"
+      description: Soil infiltration rate measured with a double-ring infiltrometer.
+    golden_tests:
+      - id: balanced_texture_case
+        inputs:
+          sand: 50.0
+          silt: 20.0
+          clay: 30.0
+        expected:
+          infiltration_rate: 18.45
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: Calculated directly from the reported equation for a texture summing to 100%.
+    edge_cases: []
+    documentation:
+      notes:
+        - The model was fitted to 100 Karnataka soil observations.
+        - The reported model R-squared is 41%, and the reported RMSE is 6.71%.
+      warnings:
+        - Predictor calibration ranges are not reported for the 100-observation dataset.
+    implementation:
+      variables:
+        - name: infiltration_rate
+          expr: 177.55 - 1.47 * sand - 1.80 * clay - 1.58 * silt
+scientific_notes: |
+  # Dharumarajan et al. (2019)
+
+  The source develops point PTFs for field capacity at -33 kPa and permanent
+  wilting point at -1500 kPa separately for the Northern and Southern Karnataka
+  Plateaus. It also develops one Karnataka-wide infiltration-rate PTF. Field
+  capacity and permanent wilting point are reported as percentages; the source
+  does not explicitly identify whether these percentages are gravimetric or
+  volumetric water contents.
+
+  ## Explicit formula evidence
+
+  The displayed Northern Karnataka equations are:
+
+  ```text
+  FC = 13.82 + 0.205 * clay - 0.088 * sand + 0.316 * CEC
+  PWP = -5.78 + 0.315 * clay + 0.050 * sand + 0.271 * CEC
+  FC = 4.97 + 0.586 * clay
+  PWP = -2.44 + 0.50 * clay
+  ```
+
+  Tables 3 and 4 instead print intercepts of -5.776, 4.968, and -2.443 for the
+  affected equations. The other coefficients agree at the displayed precision.
+
+  The displayed Southern Karnataka equations are:
+
+  ```text
+  FC = 39.18 - 0.041 * clay - 0.371 * sand + 0.257 * CEC
+  PWP = 8.227 + 0.168 * clay - 0.101 * sand + 0.217 * CEC
+  FC = 3.72 + 0.581 * clay
+  PWP = -1.98 + 0.43 * clay
+  ```
+
+  Tables 5 and 7 instead print intercepts of 39.179, 3.724, and -1.979, and a
+  PWP clay coefficient of 0.428. The other coefficients agree at the displayed
+  precision.
+
+  The infiltration equation and Table 9 agree:
+
+  ```text
+  infiltration_rate = 177.55 - 1.47 * sand - 1.80 * clay - 1.58 * silt
+  ```
+
+  ## Human review decisions
+
+  - Use the more precise regression coefficients printed in Tables 3-7 rather
+    than the rounded coefficients in the displayed water-retention equations.
+  - Preserve the paper's `%` water-content unit without asserting an unsupported
+    gravimetric or volumetric basis.
+  - Evaluate in `f64`, do not round or clip outputs, and propagate NaN.
+  - Use directly calculated formula cases as golden tests because the source does
+    not provide exact reference input-output pairs.
+
+  ## Documented limitations
+
+  - The source does not state whether water-content percentages are gravimetric
+    or volumetric.
+  - The source is internally inconsistent about the Northern dataset: the methods
+    report 512 samples from 106 profiles in Koppal, Raichur, Yadgir, and Gulburga,
+    while the results report 512 observations from 100 profiles in Gulburga,
+    Gadag, Yadgir, and Koppal.
+  - Calibration ranges for sand, silt, and clay in the 100-observation
+    infiltration dataset are not reported.
