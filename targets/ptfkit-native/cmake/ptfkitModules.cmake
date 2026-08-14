@@ -15,6 +15,7 @@ set(PTFKIT_CPP_MODULES
     "${CMAKE_CURRENT_LIST_DIR}/../cpp/rawls1982.cppm"
     "${CMAKE_CURRENT_LIST_DIR}/../cpp/tiwary2014.cppm"
     "${CMAKE_CURRENT_LIST_DIR}/../cpp/varallyai1982.cppm"
+    "${CMAKE_CURRENT_LIST_DIR}/../cpp/vereecken1989.cppm"
     "${CMAKE_CURRENT_LIST_DIR}/../cpp/wang2012.cppm"
     "${CMAKE_CURRENT_LIST_DIR}/../cpp/weber2020.cppm"
 )

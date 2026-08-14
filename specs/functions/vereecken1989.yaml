@@ -1,0 +1,383 @@
+source:
+  summary: Vereecken et al. soil-moisture retention regressions for Belgian soils.
+  citation_apa: >-
+    Vereecken, H., Maes, J., Feyen, J., & Darius, P. (1989). Estimating the soil
+    moisture retention characteristic from texture, bulk density, and carbon content.
+    Soil Science, 148(6), 389-403.
+  doi:
+    identifier: 10.1097/00010694-198912000-00001
+    url: https://doi.org/10.1097/00010694-198912000-00001
+scope:
+  territory: >-
+    Belgian territory north of the river axis Samber and Meuse
+  dataset: >-
+    182 horizons from 40 important Belgian soil series, with textures ranging from
+    sand to heavy clay.
+functions:
+  - name: calc_ptf_vereecken1989
+    status: implemented
+    public_api:
+      name: calc_ptf_vereecken1989
+      result_class: Vereecken1989PTFResult
+      summary: >-
+        Estimate four parameters of the reduced van Genuchten moisture-retention
+        model from broad texture fractions, bulk density, and carbon content.
+    scope:
+      prediction_target: >-
+        Residual and saturated volumetric water content and the alpha and n shape
+        parameters of the van Genuchten model with m equal to 1.
+      models:
+        h_theta: van Genuchten moisture-retention model with m = 1
+        k_h: null
+    inputs:
+      - name: sand
+        symbol: Sa
+        unit: '%'
+        domain: 5.60 <= value <= 97.80
+        description: Sand content in the 50-2000 micrometre particle-size fraction.
+      - name: clay
+        symbol: Cl
+        unit: '%'
+        domain: 0 <= value <= 54.46
+        description: Clay content in the less-than-2-micrometre particle-size fraction.
+      - name: carbon
+        symbol: C
+        unit: '%'
+        domain: 0.01 <= value <= 6.60
+        description: Carbon content determined by the Walkley-Black method.
+      - name: bulk_density
+        symbol: Bd
+        unit: g/cm^3
+        domain: 1.040 <= value <= 1.730
+        description: >-
+          Dry bulk density measured after drying undisturbed 100-cm^3 cores for 24
+          hours at 105 degrees Celsius.
+    outputs:
+      type: record
+      fields:
+        - name: theta_r
+          symbol: theta_r
+          unit: cm^3/cm^3
+          domain: 0 <= value <= 1
+          description: Residual volumetric soil water content.
+        - name: theta_s
+          symbol: theta_s
+          unit: cm^3/cm^3
+          domain: 0 <= value <= 1
+          description: Saturated volumetric soil water content.
+        - name: alpha
+          symbol: alpha
+          unit: cm^-1
+          domain: value > 0
+          description: Shape parameter of the van Genuchten moisture-retention model.
+        - name: n
+          symbol: n
+          unit: dimensionless
+          domain: value > 0
+          description: Shape parameter of the van Genuchten moisture-retention model.
+    golden_tests:
+      - id: dataset_mean_properties
+        inputs:
+          sand: 52.14
+          clay: 10.93
+          carbon: 1.03
+          bulk_density: 1.466
+        expected:
+          theta_r: 0.08406999999999999
+          theta_s: 0.4060520000000001
+          alpha: 0.003581613076579849
+          n: 0.8602234826041976
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: >-
+          Calculated from the Table 7 regressions using the dataset means reported
+          in Tables 1 and 6 and the reviewed natural-log back-transformation.
+    edge_cases:
+      - id: nan_input
+        inputs:
+          sand: .nan
+          clay: 10.93
+          carbon: 1.03
+          bulk_density: 1.466
+        expected_behavior: Propagate NaN through outputs that depend on sand.
+        notes: Reviewed NumPy-compatible numeric policy.
+    documentation:
+      notes:
+        - >-
+          Table 7 reports regressions for theta_s, theta_r, log(alpha), and log(n)
+          using broad particle-size fractions, carbon content, and bulk density.
+        - >-
+          The paper accepts fitted n values below 1 because constraining n above 1
+          gave poorer descriptions for many of the measured curves.
+      warnings:
+        - >-
+          The bulk-density maximum is reviewed as 1.730 g/cm^3 because the supplied
+          transcription's 1.230 value is inconsistent with the reported mean.
+    implementation:
+      variables:
+        - name: theta_r
+          expr: 0.015 + 0.005 * clay + 0.014 * carbon
+        - name: theta_s
+          expr: 0.81 - 0.283 * bulk_density + 0.001 * clay
+        - name: ln_alpha
+          expr: -2.486 + 0.025 * sand - 0.351 * carbon - 2.617 * bulk_density - 0.023 * clay
+        - name: alpha
+          expr: exp(ln_alpha)
+        - name: ln_n
+          expr: 0.053 - 0.009 * sand - 0.013 * clay + 0.00015 * sand * sand
+        - name: n
+          expr: exp(ln_n)
+
+  - name: calc_ptf_vereecken1989_detailed
+    status: implemented
+    public_api:
+      name: calc_ptf_vereecken1989_detailed
+      result_class: Vereecken1989DetailedPTFResult
+      summary: >-
+        Estimate van Genuchten parameters from nine particle-size fractions and
+        particle-size distribution descriptors.
+    scope:
+      prediction_target: >-
+        Residual and saturated volumetric water content and the alpha and n shape
+        parameters of the van Genuchten model with m equal to 1.
+      models:
+        h_theta: van Genuchten moisture-retention model with m = 1
+        k_h: null
+    inputs:
+      - name: particle_2000_1000
+        symbol: T1
+        unit: '%'
+        domain: 0 <= value <= 4.50
+        description: Particle content from 2000 to 1000 micrometres.
+      - name: particle_1000_500
+        symbol: T2
+        unit: '%'
+        domain: 0 <= value <= 9.30
+        description: Particle content from 1000 to 500 micrometres.
+      - name: particle_500_200
+        symbol: T3
+        unit: '%'
+        domain: 0.10 <= value <= 85.70
+        description: Particle content from 500 to 200 micrometres.
+      - name: particle_200_100
+        symbol: T4
+        unit: '%'
+        domain: 0.10 <= value <= 68.90
+        description: Particle content from 200 to 100 micrometres.
+      - name: particle_100_50
+        symbol: T5
+        unit: '%'
+        domain: 0.70 <= value <= 51.00
+        description: Particle content from 100 to 50 micrometres.
+      - name: particle_50_20
+        symbol: T6
+        unit: '%'
+        domain: 0 <= value <= 62.80
+        description: Particle content from 50 to 20 micrometres.
+      - name: particle_20_10
+        symbol: T7
+        unit: '%'
+        domain: 0 <= value <= 19.00
+        description: Particle content from 20 to 10 micrometres.
+      - name: particle_10_2
+        symbol: T8
+        unit: '%'
+        domain: 0 <= value <= 23.33
+        description: Particle content from 10 to 2 micrometres.
+      - name: clay
+        symbol: Clay
+        unit: '%'
+        domain: 0 <= value <= 54.46
+        description: Particle content below 2 micrometres.
+      - name: geometric_mean_particle_size
+        symbol: GMPS
+        unit: cm
+        domain: value > 0
+        description: >-
+          Geometrical mean particle size calculated using the method cited by the
+          paper.
+      - name: geometric_standard_deviation
+        symbol: GSD
+        unit: dimensionless
+        domain: value > 0
+        description: >-
+          Geometrical standard deviation of particle size calculated using the
+          method cited by the paper.
+      - name: carbon
+        symbol: C
+        unit: '%'
+        domain: 0.01 <= value <= 6.60
+        description: Carbon content determined by the Walkley-Black method.
+      - name: bulk_density
+        symbol: Bd
+        unit: g/cm^3
+        domain: 1.040 <= value <= 1.730
+        description: >-
+          Dry bulk density measured after drying undisturbed 100-cm^3 cores for 24
+          hours at 105 degrees Celsius.
+    outputs:
+      type: record
+      fields:
+        - name: theta_r
+          symbol: theta_r
+          unit: cm^3/cm^3
+          domain: 0 <= value <= 1
+          description: Residual volumetric soil water content.
+        - name: theta_s
+          symbol: theta_s
+          unit: cm^3/cm^3
+          domain: 0 <= value <= 1
+          description: Saturated volumetric soil water content.
+        - name: alpha
+          symbol: alpha
+          unit: cm^-1
+          domain: value > 0
+          description: Shape parameter of the van Genuchten moisture-retention model.
+        - name: n
+          symbol: n
+          unit: dimensionless
+          domain: value > 0
+          description: Shape parameter of the van Genuchten moisture-retention model.
+    golden_tests:
+      - id: dataset_mean_properties
+        inputs:
+          particle_2000_1000: 0.25
+          particle_1000_500: 0.88
+          particle_500_200: 13.53
+          particle_200_100: 21.15
+          particle_100_50: 16.30
+          particle_50_20: 24.83
+          particle_20_10: 7.00
+          particle_10_2: 5.15
+          clay: 10.93
+          geometric_mean_particle_size: 0.07
+          geometric_standard_deviation: 4.07
+          carbon: 1.03
+          bulk_density: 1.466
+        expected:
+          theta_r: 0.08277820000000001
+          theta_s: 0.4060520000000001
+          alpha: 0.02522115884641546
+          n: 0.517175605329397
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: >-
+          Calculated from the reviewed detailed regressions using dataset means from
+          Tables 1 and 6, including restored carbon and bulk-density terms.
+    edge_cases:
+      - id: nan_input
+        inputs:
+          particle_2000_1000: .nan
+          particle_1000_500: 0.88
+          particle_500_200: 13.53
+          particle_200_100: 21.15
+          particle_100_50: 16.30
+          particle_50_20: 24.83
+          particle_20_10: 7.00
+          particle_10_2: 5.15
+          clay: 10.93
+          geometric_mean_particle_size: 0.07
+          geometric_standard_deviation: 4.07
+          carbon: 1.03
+          bulk_density: 1.466
+        expected_behavior: Propagate NaN through outputs that depend on the input.
+        notes: Reviewed NumPy-compatible numeric policy.
+    documentation:
+      notes:
+        - >-
+          Table 8 reports transformed regressions in original particle-size
+          variables for theta_r, log(alpha), and log(n).
+        - >-
+          Detailed particle-size information did not substantially improve theta_s;
+          this function therefore retains the broad-texture theta_s regression.
+      warnings:
+        - >-
+          The detailed log(alpha) formula restores the carbon and bulk-density terms
+          shown in Table 7 but omitted from the supplied Table 8 transcription.
+        - >-
+          The bulk-density maximum is reviewed as 1.730 g/cm^3 because the supplied
+          transcription's 1.230 value is inconsistent with the reported mean.
+    implementation:
+      variables:
+        - name: theta_r
+          expr: 0.027 + 0.0094 * particle_2000_1000 - 0.0035 * particle_1000_500 - 0.0004 * particle_500_200 - 0.0002 * particle_200_100 - 0.0001 * particle_100_50 - 0.00028 * particle_50_20 - 0.00006 * particle_20_10 + 0.0001 * particle_10_2 + 0.0037 * clay - 0.045 * geometric_mean_particle_size + 0.00538 * geometric_standard_deviation + 0.015 * carbon
+        - name: theta_s
+          expr: 0.81 - 0.283 * bulk_density + 0.001 * clay
+        - name: ln_alpha
+          expr: 1.245 + 0.178 * particle_2000_1000 + 0.173 * particle_1000_500 + 0.0292 * particle_500_200 + 0.0135 * particle_200_100 + 0.105 * particle_100_50 - 0.0149 * particle_50_20 - 0.118 * particle_20_10 - 0.042 * particle_10_2 - 0.0218 * clay - 14.73 * geometric_mean_particle_size - 0.179 * geometric_standard_deviation - 0.416 * carbon - 2.507 * bulk_density
+        - name: alpha
+          expr: exp(ln_alpha)
+        - name: ln_n
+          expr: -0.0066 - 0.0147 * particle_2000_1000 + 0.0404 * particle_1000_500 + 0.00234 * particle_500_200 + 0.0047 * particle_200_100 - 0.0414 * particle_100_50 - 0.007 * particle_50_20 + 0.0300 * particle_20_10 - 0.0380 * particle_10_2 - 0.0042 * clay + 1.0322 * geometric_mean_particle_size - 0.0019 * geometric_standard_deviation
+        - name: n
+          expr: exp(ln_n)
+
+scientific_notes: |
+  # Vereecken et al. (1989)
+
+  The paper fits the van Genuchten relation
+  `se = (1 + (alpha * h)^n)^(-m)`, where
+  `se = (theta - theta_r) / (theta_s - theta_r)`, and selects the restricted
+  model with `m = 1`. Pressure head `h` is reported in centimetres.
+
+  ## `calc_ptf_vereecken1989`
+
+  Table 7 reports the broad-texture regressions as:
+
+  ```text
+  theta_s = 0.81 - 0.283 * bulk_density + 0.001 * clay
+  theta_r = 0.015 + 0.005 * clay + 0.014 * carbon
+  ln_alpha = -2.486 + 0.025 * sand - 0.351 * carbon
+             - 2.617 * bulk_density - 0.023 * clay
+  alpha = exp(ln_alpha)
+  ln_n = 0.053 - 0.009 * sand - 0.013 * clay
+         + 0.00015 * sand^2
+  n = exp(ln_n)
+  ```
+
+  ## `calc_ptf_vereecken1989_detailed`
+
+  Table 8 reports the transformed detailed-particle regressions as:
+
+  ```text
+  theta_s = 0.81 - 0.283 * bulk_density + 0.001 * clay
+  theta_r = 0.027 + 0.0094 * T1 - 0.0035 * T2 - 0.0004 * T3
+            - 0.0002 * T4 - 0.0001 * T5 - 0.00028 * T6
+            - 0.00006 * T7 + 0.0001 * T8 + 0.0037 * clay
+            - 0.045 * GMPS + 0.00538 * GSD + 0.015 * carbon
+  ln_alpha = 1.245 + 0.178 * T1 + 0.173 * T2 + 0.0292 * T3
+             + 0.0135 * T4 + 0.105 * T5 - 0.0149 * T6
+             - 0.118 * T7 - 0.042 * T8 - 0.0218 * clay
+             - 14.73 * GMPS - 0.179 * GSD
+             - 0.416 * carbon - 2.507 * bulk_density
+  alpha = exp(ln_alpha)
+  ln_n = -0.0066 - 0.0147 * T1 + 0.0404 * T2 + 0.00234 * T3
+         + 0.0047 * T4 - 0.0414 * T5 - 0.007 * T6
+         + 0.0300 * T7 - 0.0380 * T8 - 0.0042 * clay
+         + 1.0322 * GMPS - 0.0019 * GSD
+  n = exp(ln_n)
+  ```
+
+  ## Review decisions
+
+  - Interpret the paper's `log` as the natural logarithm. This is consistent with the
+    `log(alpha)` and `log(n)` values reported alongside untransformed values in Table 5.
+  - Back-transform the alpha and n regressions with `exp`.
+  - Restore `-0.416 * carbon - 2.507 * bulk_density` to the detailed `ln_alpha`
+    expression. Table 7 explicitly includes these terms, and replacing principal
+    factors with original particle-size variables does not eliminate independent
+    carbon or bulk-density predictors.
+  - Reuse the broad-texture theta_s regression in the detailed function because the
+    paper reports no substantial improvement from detailed particle-size information.
+  - Interpret GMPS in centimetres and GSD as dimensionless, following their
+    definitions and the reported GMPS mean of 0.07.
+  - Correct the internally inconsistent transcribed maximum bulk density from 1.230
+    to 1.730 g/cm^3.
+  - Use `f64`, do not round, propagate NaN, and retain NumPy-compatible behavior for
+    infinity and out-of-domain numeric inputs. Applicability domains are documented
+    but are not runtime clamps.
+
+  ## Golden-value policy
+
+  Golden values are calculated without rounding from the retained equations using
+  the dataset means reported in Tables 1 and 6.

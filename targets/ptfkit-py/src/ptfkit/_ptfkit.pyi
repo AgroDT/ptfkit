@@ -57,5 +57,7 @@ calc_ptf_varallyai1982_chernozem_a: ufunc
 calc_ptf_varallyai1982_chernozem_b: ufunc
 calc_ptf_varallyai1982_chernozem_c: ufunc
 calc_ptf_varallyai1982_meadow: ufunc
+calc_ptf_vereecken1989: ufunc
+calc_ptf_vereecken1989_detailed: ufunc
 calc_ptf_wang2012: ufunc
 calc_ptf_weber2020: ufunc
