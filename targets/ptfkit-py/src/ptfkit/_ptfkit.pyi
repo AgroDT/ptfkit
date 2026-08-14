@@ -52,5 +52,9 @@ calc_ptf_rawls1982_theta_1500: ufunc
 calc_ptf_rawls1982_theta_33: ufunc
 calc_ptf_tiwary2014_bsr: ufunc
 calc_ptf_tiwary2014_igp: ufunc
+calc_ptf_varallyai1982_chernozem_a: ufunc
+calc_ptf_varallyai1982_chernozem_b: ufunc
+calc_ptf_varallyai1982_chernozem_c: ufunc
+calc_ptf_varallyai1982_meadow: ufunc
 calc_ptf_wang2012: ufunc
 calc_ptf_weber2020: ufunc

@@ -12,5 +12,6 @@ pub mod pidgeon1972;
 pub mod puckett1985;
 pub mod rawls1982;
 pub mod tiwary2014;
+pub mod varallyai1982;
 pub mod wang2012;
 pub mod weber2020;
