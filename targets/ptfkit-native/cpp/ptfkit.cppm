@@ -9,6 +9,7 @@ export import ptfkit.cosby1984;
 export import ptfkit.dharumarajan2019;
 export import ptfkit.jabro1992;
 export import ptfkit.li2007;
+export import ptfkit.mayr1999;
 export import ptfkit.pidgeon1972;
 export import ptfkit.puckett1985;
 export import ptfkit.rawls1982;

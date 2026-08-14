@@ -1,0 +1,221 @@
+source:
+  summary: Mayr and Jarvis (1999) modified Brooks-Corey water-retention parameter PTFs.
+  citation_apa: >-
+    Mayr, T., & Jarvis, N. J. (1999). Pedotransfer functions to estimate soil
+    water retention parameters for a modified Brooks-Corey type model. Geoderma,
+    91(1-2), 1-9.
+  doi:
+    identifier: 10.1016/S0016-7061(98)00129-3
+    url: https://doi.org/10.1016/S0016-7061(98)00129-3
+scope:
+  territory: England and Wales
+  dataset: >-
+    Soil Survey and Land Research Centre soil physical properties database;
+    regressions used 286 soil horizons retained from a 306-horizon subset after
+    excluding fits with RMSE greater than 0.05 m^3/m^3, and validation used 1678
+    independent soil horizons.
+functions:
+- name: calc_ptf_mayr1999
+  status: implemented
+  public_api:
+    name: calc_ptf_mayr1999
+    result_class: Mayr1999PTFResult
+    summary: >-
+      Estimate modified Brooks-Corey a, b, and saturated water content from
+      texture, bulk density, and organic carbon.
+  scope:
+    prediction_target: >-
+      Hutson-Cass modified Brooks-Corey water-retention parameters a, b, and
+      saturated volumetric water content.
+    models:
+      h_theta: Hutson-Cass modified Brooks-Corey water-retention model
+      k_h: null
+  inputs:
+  - name: sand
+    symbol: sand
+    unit: '%'
+    domain: 0 <= value <= 100
+    description: Sand content for particles 0.063-2.0 mm.
+  - name: silt
+    symbol: silt
+    unit: '%'
+    domain: 0 <= value <= 100
+    description: Silt content for particles 0.002-0.063 mm.
+  - name: clay
+    symbol: clay
+    unit: '%'
+    domain: 0 <= value <= 100
+    description: Clay content for particles 0-0.002 mm.
+  - name: bulk_density
+    symbol: bd
+    unit: g/cm^3
+    domain: value >= 0.9
+    description: Dry bulk density; the paper excludes application below 0.9 g/cm^3.
+  - name: organic_carbon
+    symbol: oc
+    unit: '%'
+    domain: 0 <= value <= 5
+    description: >-
+      Organic carbon content; the paper excludes application above 5%.
+  outputs:
+    type: record
+    fields:
+    - name: a_hc
+      symbol: a
+      unit: cm H2O
+      domain: value > 0
+      description: >-
+        Hutson-Cass fitting parameter with pressure-head dimensions.
+    - name: b_hc
+      symbol: b
+      unit: dimensionless
+      domain: value > 0
+      description: Hutson-Cass fitting parameter controlling retention-curve shape.
+    - name: theta_s
+      symbol: theta_s
+      unit: m^3/m^3
+      domain: 0 <= value <= 1
+      description: Volumetric soil water content at saturation.
+  golden_tests:
+  - id: representative_loam
+    inputs:
+      sand: 40.0
+      silt: 40.0
+      clay: 20.0
+      bulk_density: 1.3
+      organic_carbon: 2.0
+    expected:
+      a_hc: 9.19922782578422
+      b_hc: 8.52432443785475
+      theta_s: 0.48733161333
+    rtol: 1.0e-12
+    atol: 1.0e-12
+    notes: Calculated from the Table 2 regressions using base-10 logarithms.
+  - id: representative_clay
+    inputs:
+      sand: 20.0
+      silt: 20.0
+      clay: 60.0
+      bulk_density: 1.2
+      organic_carbon: 2.0
+    expected:
+      a_hc: 14.5305137640911
+      b_hc: 18.9375141190925
+      theta_s: 0.52145684162
+    rtol: 1.0e-12
+    atol: 1.0e-12
+    notes: Calculated from the Table 2 regressions using base-10 logarithms.
+  - id: representative_sand
+    inputs:
+      sand: 90.0
+      silt: 5.0
+      clay: 5.0
+      bulk_density: 1.5
+      organic_carbon: 1.0
+    expected:
+      a_hc: 2.40216699550362
+      b_hc: 3.2690464531591
+      theta_s: 0.4209756915
+    rtol: 1.0e-12
+    atol: 1.0e-12
+    notes: Calculated from the Table 2 regressions using base-10 logarithms.
+  edge_cases: []
+  documentation:
+    notes:
+    - >-
+      The particle-size inputs use the UK size boundaries stated by the paper;
+      sand, silt, and clay are percentages.
+    - >-
+      The source reports r^2 values of 0.34 for log(a), 0.74 for log(1/b), and
+      0.84 for theta_s.
+    - >-
+      Human review resolved the source's unspecified log base as base 10; the
+      implementation therefore interprets log(a) and log(1/b) as log10 values.
+    warnings:
+    - >-
+      Do not apply the functions to organic soils with organic carbon above 5%
+      or soils with dry bulk density below 0.9 g/cm^3.
+    - >-
+      Treat application outside the calibration particle-size distribution with
+      great care; the paper provides that distribution only graphically.
+  implementation:
+    variables:
+    - name: log10_a_hc
+      expr: -4.9840297533 + 0.0509226283 * sand + 0.1575152771 * silt + 0.1240901644 * bulk_density - 0.1640033143 * organic_carbon - 0.0021767278 * silt ^ 2 + 1.438224e-5 * silt ^ 3 + 8.040715e-4 * clay ^ 2 + 0.0044067117 * organic_carbon ^ 2
+    - name: log10_inv_b_hc
+      expr: -0.8466880654 - 0.0046806123 * sand + 0.0092463819 * silt - 0.4542769707 * bulk_density - 0.0497915563 * organic_carbon + 3.294687e-4 * sand ^ 2 - 1.689056e-6 * sand ^ 3 + 0.0011225373 * organic_carbon ^ 2
+    - name: a_hc
+      expr: 10 ^ log10_a_hc
+    - name: b_hc
+      expr: 10 ^ (-log10_inv_b_hc)
+    - name: theta_s
+      expr: 0.2345971971 + 0.0046614221 * sand + 0.0088163314 * silt + 0.0064338641 * clay - 0.3028160229 * bulk_density + 1.79762e-5 * sand ^ 2 - 3.134631e-5 * silt ^ 2
+scientific_notes: |
+  # Mayr and Jarvis (1999)
+
+  ## Human-review decision
+
+  The paper writes `log(a)` and `log(1/b)` without naming the logarithm base.
+  Human review selected base 10 for implementation. Consequently,
+  `a_hc = 10^log10(a)` and `b_hc = 10^(-log10(1/b))`. The golden cases are
+  calculated from this interpretation and are not published worked examples.
+
+  ## Published regressions
+
+  Table 2 defines the predictors `sand`, `silt`, and `clay` as contents in
+  percent, `bd` as bulk density in g/cm^3, and `oc` as organic carbon content in
+  percent.
+
+  ```text
+  log(a) = -4.9840297533
+           + 0.0509226283 * sand
+           + 0.1575152771 * silt
+           + 0.1240901644 * bd
+           - 0.1640033143 * oc
+           - 0.0021767278 * silt^2
+           + 1.438224e-05 * silt^3
+           + 8.040715e-04 * clay^2
+           + 0.0044067117 * oc^2
+
+  log(1/b) = -0.8466880654
+             - 0.0046806123 * sand
+             + 0.0092463819 * silt
+             - 0.4542769707 * bd
+             - 0.0497915563 * oc
+             + 3.294687e-04 * sand^2
+             - 1.689056e-06 * sand^3
+             + 0.0011225373 * oc^2
+
+  theta_s = 0.2345971971
+            + 0.0046614221 * sand
+            + 0.0088163314 * silt
+            + 0.0064338641 * clay
+            - 0.3028160229 * bd
+            + 1.79762e-05 * sand^2
+            - 3.134631e-05 * silt^2
+  ```
+
+  ## Water-retention model context
+
+  The paper defines the dry-range Hutson-Cass equation as
+  `theta = theta_s * (psi / a)^(-1 / b)` for `theta < theta_i`, with residual
+  water content assumed zero. The wet range is joined to a parabola. The
+  matching quantities are `theta_i = 2 * b * theta_s / (1 + 2 * b)` and
+  `psi_i = a * (2 * b / (1 + 2 * b))^(-b)`.
+
+  Water-retention measurements used pressure heads in cm H2O and volumetric
+  water contents. Consequently, `a` has the same pressure-head dimension as
+  `psi`, `b` is dimensionless, and `theta_s` is volumetric water content.
+
+  ## Applicability
+
+  The functions were developed for soils of England and Wales. The paper says
+  they should not be applied to organic soils (`oc > 5%`) or soils with dry bulk
+  density below 0.9 g/cm^3. It also cautions against particle-size distributions
+  outside the calibration distribution shown in its Figure 1, especially at
+  sparsely represented texture extremes.
+
+  ## Numeric policy
+
+  Use `f64`, do not round intermediate or final values, and propagate NaN and
+  infinities according to the generated Rust and NumPy target behavior.

@@ -7,6 +7,7 @@ pub mod cosby1984;
 pub mod dharumarajan2019;
 pub mod jabro1992;
 pub mod li2007;
+pub mod mayr1999;
 pub mod pidgeon1972;
 pub mod puckett1985;
 pub mod rawls1982;
