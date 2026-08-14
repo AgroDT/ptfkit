@@ -1,0 +1,167 @@
+source:
+  summary: Ahuja et al. (1984), effective-porosity relations for saturated conductivity.
+  citation_apa: >-
+    Ahuja, L. R., Naney, J. W., Green, R. E., & Nielsen, D. R. (1984).
+    Macroporosity to characterize spatial variability of hydraulic conductivity
+    and effects of land management. Soil Science Society of America Journal, 48,
+    699-702.
+  doi: null
+scope:
+  territory: Chickasha, Oklahoma, and the Wahiawa Plateau, Oahu, Hawaii, USA
+  dataset: >-
+    Undisturbed cores from 15 sites in a 9.6-ha Renfro silt loam watershed and
+    54 cores from three related Hawaii Oxic soils; the Hawaii study also supplied
+    35 field measurements of saturated hydraulic conductivity.
+functions:
+  - name: calc_ptf_ahuja1984
+    status: implemented
+    public_api:
+      name: calc_ptf_ahuja1984
+      result_class: null
+      summary: >-
+        Estimate saturated hydraulic conductivity from total porosity and water
+        content at -33 kPa using user-supplied empirical coefficients.
+    scope:
+      territory: Chickasha, Oklahoma, and the Wahiawa Plateau, Oahu, Hawaii, USA
+      prediction_target: >-
+        Saturated hydraulic conductivity from effective porosity, defined as total
+        porosity minus volumetric water content at -33 kPa.
+      models:
+        h_theta: null
+        k_h: Saturated hydraulic conductivity
+    inputs:
+      - name: total_porosity
+        symbol: phi
+        unit: cm^3/cm^3
+        domain: 0 <= value <= 1
+        description: >-
+          Total porosity; in the experiments it was taken as saturated volumetric
+          water content.
+      - name: theta_33
+        symbol: theta_33
+        unit: cm^3/cm^3
+        domain: 0 <= value <= 1
+        description: Volumetric soil water content at -33 kPa pressure head.
+      - name: coefficient_b
+        symbol: B
+        unit: cm/h
+        domain: value > 0
+        description: >-
+          Soil-specific empirical coefficient in the generalized Kozeny-Carman
+          relation.
+      - name: exponent_n
+        symbol: n
+        unit: '1'
+        domain: value > 0
+        description: >-
+          Empirical exponent; the paper evaluates values of 4 and 5 for deriving
+          conductivity scaling-factor distributions.
+    outputs:
+      type: scalar
+      name: k_sat
+      symbol: Ks
+      unit: cm/h
+      domain: value >= 0
+      description: Saturated hydraulic conductivity.
+    golden_tests:
+      - id: exponent_four
+        inputs:
+          total_porosity: 0.45
+          theta_33: 0.25
+          coefficient_b: 100.0
+          exponent_n: 4.0
+        expected:
+          k_sat: 0.16
+        rtol: 1.0e-12
+        atol: 1.0e-14
+        notes: Algebraic verification of equation 3 with the paper's typical exponent n = 4.
+      - id: exponent_five
+        inputs:
+          total_porosity: 0.5
+          theta_33: 0.2
+          coefficient_b: 100.0
+          exponent_n: 5.0
+        expected:
+          k_sat: 0.243
+        rtol: 1.0e-12
+        atol: 1.0e-14
+        notes: Algebraic verification of equation 3 with the evaluated exponent n = 5.
+    edge_cases:
+      - id: zero_effective_porosity
+        inputs:
+          total_porosity: 0.25
+          theta_33: 0.25
+          coefficient_b: 100.0
+          exponent_n: 4.0
+        expected_behavior: Return zero saturated hydraulic conductivity.
+        notes: Direct consequence of equation 3 when effective porosity is zero.
+    documentation:
+      notes:
+        - >-
+          Effective porosity is total_porosity - theta_33; the paper notes that
+          field capacity is not a precisely defined soil parameter.
+        - >-
+          Soil-core fitted exponents were near 4, whereas the smaller Hawaii field
+          dataset had a fitted slope of 1.59 over a narrower effective-porosity range.
+      warnings:
+        - >-
+          The empirical coefficient B varies with soil type; callers must supply a
+          coefficient calibrated for the soil being evaluated.
+        - >-
+          Callers must supply the exponent. The paper evaluates both n = 4 and
+          n = 5 and does not select one as a unique transferable value.
+        - total_porosity must be greater than or equal to theta_33.
+    implementation:
+      variables:
+        - name: effective_porosity
+          expr: total_porosity - theta_33
+        - name: k_sat
+          expr: coefficient_b * effective_porosity ^ exponent_n
+scientific_notes: |
+  # Ahuja et al. (1984)
+
+  ## Supported model
+
+  The paper defines effective porosity as:
+
+  ```text
+  phi_e = total_porosity - theta_33
+  ```
+
+  Its generalized Kozeny-Carman relation (equation 3) is:
+
+  ```text
+  k_sat = B * phi_e ^ n
+  ```
+
+  Here `B` and `n` are empirical constants. The authors assume that `n` varies
+  within a narrow range, use 4 as a typical value, and compare scaling-factor
+  distributions calculated with both `n = 4` and `n = 5`. The paper reports a
+  least-squares slope of 3.39 for all Renfro core observations, 3.98 after one
+  outlier is excluded, 3.8 for the Hawaii core observations, and 1.59 for the
+  narrower-range Hawaii field observations.
+
+  Equation 6b derives a site scaling factor without `B`:
+
+  ```text
+  alpha_i = N * phi_e_i ^ (n / 2) / sum(phi_e_j ^ (n / 2), j = 1..N)
+  ```
+
+  This is a sample-level reduction rather than an elementwise scalar PTF. The
+  paper also gives equations 5a, 5b, 6a, and 7 for scaled means, conductivity-
+  derived scaling factors, and comparison between land-management fields.
+
+  ## Public API decision after human review
+
+  `B` and `n` are explicit inputs because the paper does not provide transferable
+  values for either empirical constant. This API implements equation 3 without
+  presenting a soil-specific fit as universal. The golden cases are algebraic
+  checks of equation 3, not observed values from the experimental datasets.
+
+  The sample-reduction scaling equations remain outside this scalar API. Their
+  implementation would require a separately reviewed aggregate API.
+
+  ## Numeric policy
+
+  Use `f64`, do not round, and propagate IEEE/NumPy-compatible power behavior.
+  The documented physical domain requires `total_porosity >= theta_33`.

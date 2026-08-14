@@ -2,6 +2,7 @@
 
 export module ptfkit;
 
+export import ptfkit.ahuja1984;
 export import ptfkit.aimrun2009;
 export import ptfkit.beniaich2023;
 export import ptfkit.chakraborty2011;
