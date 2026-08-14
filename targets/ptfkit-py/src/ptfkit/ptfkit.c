@@ -12,6 +12,7 @@
 #include "dharumarajan2019.c"
 #include "jabro1992.c"
 #include "li2007.c"
+#include "mayr1999.c"
 #include "pidgeon1972.c"
 #include "puckett1985.c"
 #include "rawls1982.c"
@@ -33,6 +34,7 @@ PyMODINIT_FUNC PyInit__ptfkit(void) {
     if (ptfkit_register_dharumarajan2019(module) < 0) { Py_DECREF(module); return NULL; }
     if (ptfkit_register_jabro1992(module) < 0) { Py_DECREF(module); return NULL; }
     if (ptfkit_register_li2007(module) < 0) { Py_DECREF(module); return NULL; }
+    if (ptfkit_register_mayr1999(module) < 0) { Py_DECREF(module); return NULL; }
     if (ptfkit_register_pidgeon1972(module) < 0) { Py_DECREF(module); return NULL; }
     if (ptfkit_register_puckett1985(module) < 0) { Py_DECREF(module); return NULL; }
     if (ptfkit_register_rawls1982(module) < 0) { Py_DECREF(module); return NULL; }
