@@ -16,5 +16,6 @@ export import ptfkit.puckett1985;
 export import ptfkit.rawls1982;
 export import ptfkit.tiwary2014;
 export import ptfkit.varallyai1982;
+export import ptfkit.vereecken1989;
 export import ptfkit.wang2012;
 export import ptfkit.weber2020;
