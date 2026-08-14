@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 
-project(ptfkit VERSION 0.1.0 LANGUAGES C CXX)
+include(cmake/ptfkitVersion.cmake)
+project(ptfkit VERSION ${PTFKIT_VERSION} LANGUAGES C CXX)
 
 include(CMakePackageConfigHelpers)
 include(CMakeDependentOption)
@@ -10,6 +11,7 @@ add_library(ptfkit_c INTERFACE)
 add_library(ptfkit::c ALIAS ptfkit_c)
 set_target_properties(ptfkit_c PROPERTIES EXPORT_NAME c)
 target_compile_features(ptfkit_c INTERFACE c_std_11)
+target_compile_definitions(ptfkit_c INTERFACE PTFKIT_VERSION=\"${PROJECT_VERSION}\")
 target_include_directories(ptfkit_c INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
@@ -31,6 +33,7 @@ if(PTFKIT_BUILD_CPP_MODULES)
         EXPORT_NAME cpp CXX_SCAN_FOR_MODULES ON
     )
     target_compile_features(ptfkit_cpp PUBLIC cxx_std_20)
+    target_compile_definitions(ptfkit_cpp PUBLIC PTFKIT_VERSION=\"${PROJECT_VERSION}\")
     target_compile_options(ptfkit_cpp PUBLIC
         $<$<CXX_COMPILER_ID:GNU>:-fmodules-ts>
     )

@@ -1,5 +1,7 @@
 //! Pedotransfer functions for estimating soil hydraulic properties.
 
+pub const VERSION: &str = env!("CARGO_PKG_VERSION");
+
 pub mod aimrun2009;
 pub mod beniaich2023;
 pub mod chakraborty2011;

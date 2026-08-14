@@ -13,4 +13,9 @@ default:
 @generate:
     cargo run generate
 
+@version value:
+    cargo run --manifest-path codegen/Cargo.toml -- version {{quote(value)}}
+    cargo check --manifest-path targets/ptfkit-rs/Cargo.toml --quiet
+    uv lock --project targets/ptfkit-py
+
 test: codegen::test native::test python::test rust::test
