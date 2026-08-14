@@ -28,6 +28,7 @@ calc_ptf_dharumarajan2019_skp: ufunc
 calc_ptf_dharumarajan2019_skp_clay: ufunc
 calc_ptf_jabro1992: ufunc
 calc_ptf_li2007: ufunc
+calc_ptf_mayr1999: ufunc
 calc_ptf_pidgeon1972_awc: ufunc
 calc_ptf_pidgeon1972_awc_coarse_sand: ufunc
 calc_ptf_pidgeon1972_awc_fine_sand: ufunc
