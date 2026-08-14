@@ -2,7 +2,6 @@
 
 <!-- github:start -->
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/AgroDT/ptfkit/deploy-pypi.yaml)
-![Coveralls](https://img.shields.io/coverallsCoverage/github/AgroDT/ptfkit)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/ptfkit)
 ![PyPI - Implementation](https://img.shields.io/pypi/implementation/ptfkit)
 ![PyPI - Version](https://img.shields.io/pypi/v/ptfkit)
