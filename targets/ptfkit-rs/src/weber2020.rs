@@ -80,15 +80,15 @@ pub fn calc_ptf_weber2020(
     tau_vgm: f64,
     k_s_vgm: f64,
 ) -> Weber2020PTFResult {
-    let theta_snc_bw = (-(0.00158f64)) + ((1.285f64) * (theta_r_vgm));
-    let theta_s_bw = (0.00189f64) + ((0.993f64) * (theta_s_vgm));
-    let theta_sc_bw = (theta_s_bw) - (theta_snc_bw);
-    let alpha_bw = (10f64).powf((-(0.0206f64)) + ((0.986f64) * ((alpha_vgm).log10())));
-    let n_bw = (1f64) + ((10f64).powf((0.0642f64) + ((0.933f64) * (((n_vgm) - (1f64)).log10()))));
-    let tau_vgm_constrained = (tau_vgm).min(0f64);
-    let tau_bw = (0.0295f64) + ((1.833f64) * (tau_vgm_constrained));
-    let k_sc_bw = (10f64).powf((0.116f64) + ((1.06f64) * ((k_s_vgm).log10())));
-    let k_snc_bw = (10f64).powf(-(1.72f64));
+    let theta_snc_bw = -1.58e-3f64 + 1.285f64 * theta_r_vgm;
+    let theta_s_bw = 1.89e-3f64 + 0.993f64 * theta_s_vgm;
+    let theta_sc_bw = theta_s_bw - theta_snc_bw;
+    let alpha_bw = 10.0f64.powf(-2.06e-2f64 + 0.986f64 * alpha_vgm.log10());
+    let n_bw = 1.0f64 + 10.0f64.powf(6.42e-2f64 + 0.933f64 * (n_vgm - 1.0f64).log10());
+    let tau_vgm_constrained = tau_vgm.min(0.0f64);
+    let tau_bw = 2.95e-2f64 + 1.833f64 * tau_vgm_constrained;
+    let k_sc_bw = 10.0f64.powf(1.16e-1f64 + 1.060f64 * k_s_vgm.log10());
+    let k_snc_bw = 10.0f64.powf(-1.72f64);
     Weber2020PTFResult {
         theta_snc_bw,
         theta_sc_bw,

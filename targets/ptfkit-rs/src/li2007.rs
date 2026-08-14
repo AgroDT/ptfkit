@@ -65,33 +65,32 @@ pub fn calc_ptf_li2007(
     bulk_density: f64,
     soil_organic_matter: f64,
 ) -> Li2007PTFResult {
-    let sand_ln = (sand).ln();
-    let silt_ln = (silt).ln();
-    let clay_ln = (clay).ln();
-    let soil_organic_matter_ln = (soil_organic_matter).ln();
-    let bulk_density_ln = (bulk_density).ln();
-    let theta_s = (((((-(1.531f64)) + ((0.212f64) * (sand_ln))) + ((0.006f64) * (silt)))
-        - ((0.051f64) * (soil_organic_matter)))
-        - ((0.566f64) * (bulk_density_ln)))
+    let sand_ln = sand.ln();
+    let silt_ln = silt.ln();
+    let clay_ln = clay.ln();
+    let soil_organic_matter_ln = soil_organic_matter.ln();
+    let bulk_density_ln = bulk_density.ln();
+    let theta_s = (-1.531f64 + 0.212f64 * sand_ln + 0.006f64 * silt
+        - 0.051f64 * soil_organic_matter
+        - 0.566f64 * bulk_density_ln)
         .exp();
-    let a_vg = (((((((-(67.408f64)) - ((0.04f64) * (silt))) - ((0.67f64) * (silt_ln)))
-        - ((2.189f64) * (soil_organic_matter)))
-        + ((1.41f64) * (soil_organic_matter_ln)))
-        + ((78.4f64) * (bulk_density)))
-        - ((121.331f64) * (bulk_density_ln)))
+    let a_vg = (-67.408f64 - 0.040f64 * silt - 0.670f64 * silt_ln - 2.189f64 * soil_organic_matter
+        + 1.410f64 * soil_organic_matter_ln
+        + 78.400f64 * bulk_density
+        - 121.331f64 * bulk_density_ln)
         .exp();
-    let n_vg = (((((1.488f64) + ((0.002f64) * (silt_ln))) + ((0.013f64) * (clay)))
-        - ((0.248f64) * (clay_ln)))
-        + ((0.048f64) * (soil_organic_matter_ln)))
-        + ((0.451f64) * (bulk_density_ln));
-    let k_sat_cm_per_day = (((((((13.262f64) - ((1.914f64) * (sand_ln)))
-        - ((0.974f64) * (silt_ln)))
-        - ((0.058f64) * (clay)))
-        - ((1.709f64) * (soil_organic_matter_ln)))
-        + ((2.885f64) * (soil_organic_matter)))
-        - ((8.026f64) * (bulk_density_ln)))
+    let n_vg = 1.488f64 + 0.002f64 * silt_ln + 0.013f64 * clay - 0.248f64 * clay_ln
+        + 0.048f64 * soil_organic_matter_ln
+        + 0.451f64 * bulk_density_ln;
+    let k_sat_cm_per_day = (13.262f64
+        - 1.914f64 * sand_ln
+        - 0.974f64 * silt_ln
+        - 0.058f64 * clay
+        - 1.709f64 * soil_organic_matter_ln
+        + 2.885f64 * soil_organic_matter
+        - 8.026f64 * bulk_density_ln)
         .exp();
-    let k_sat = (k_sat_cm_per_day) * ((1f64) / (8640000f64));
+    let k_sat = k_sat_cm_per_day * (1.0f64 / 8640000.0f64);
     Li2007PTFResult {
         theta_s,
         a_vg,

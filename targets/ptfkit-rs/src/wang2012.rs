@@ -69,30 +69,28 @@ pub fn calc_ptf_wang2012(
     soil_organic_carbon: f64,
     altitude: f64,
 ) -> Wang2012PTFResult {
-    let soil_organic_carbon_g_per_kg = (10f64) * (soil_organic_carbon);
-    let log10_k_sat_cm_per_day = (((((1.173f64) + ((0.038f64) * (silt)))
-        + ((0.69f64) * ((sand).log10())))
-        + ((0.865f64) / (sand)))
-        - (((0.03f64) * (bulk_density)) * (silt)))
-        - (((0.00000995f64) * (soil_organic_carbon_g_per_kg)) * (altitude));
-    let k_sat_cm_per_day = (10f64).powf(log10_k_sat_cm_per_day);
-    let fc_percent = (((((((((46.481f64) - ((4.757f64) * (soil_organic_carbon_g_per_kg)))
-        - ((14.028f64) * ((clay).log10())))
-        - ((13.991f64) * ((sand).log10())))
-        + ((42.261f64) * ((soil_organic_carbon_g_per_kg).log10())))
-        - ((11.763f64) / (sand)))
-        + ((19.198f64) / (soil_organic_carbon_g_per_kg)))
-        - ((5.448f64) * ((bulk_density).powi(2))))
-        + ((0.044f64) * ((soil_organic_carbon_g_per_kg).powi(2))))
-        + (((1.975f64) * (bulk_density)) * (soil_organic_carbon_g_per_kg));
-    let sswc_percent = (((((98.813f64) - ((21.555f64) / (bulk_density)))
-        - ((39.735f64) / (silt)))
-        - ((2.091f64) / (sand)))
-        + ((3.247f64) / (soil_organic_carbon_g_per_kg)))
-        - ((17.096f64) * ((bulk_density).powi(2)));
-    let theta_s = (sswc_percent) / (100f64);
-    let theta_fc = (fc_percent) / (100f64);
-    let k_sat = (k_sat_cm_per_day) / (8640000f64);
+    let soil_organic_carbon_g_per_kg = 10.0f64 * soil_organic_carbon;
+    let log10_k_sat_cm_per_day =
+        1.173f64 + 0.038f64 * silt + 0.690f64 * sand.log10() + 0.865f64 / sand
+            - 0.030f64 * bulk_density * silt
+            - 0.00000995f64 * soil_organic_carbon_g_per_kg * altitude;
+    let k_sat_cm_per_day = 10.0f64.powf(log10_k_sat_cm_per_day);
+    let fc_percent = 46.481f64
+        - 4.757f64 * soil_organic_carbon_g_per_kg
+        - 14.028f64 * clay.log10()
+        - 13.991f64 * sand.log10()
+        + 42.261f64 * soil_organic_carbon_g_per_kg.log10()
+        - 11.763f64 / sand
+        + 19.198f64 / soil_organic_carbon_g_per_kg
+        - 5.448f64 * bulk_density.powi(2)
+        + 0.044f64 * soil_organic_carbon_g_per_kg.powi(2)
+        + 1.975f64 * bulk_density * soil_organic_carbon_g_per_kg;
+    let sswc_percent = 98.813f64 - 21.555f64 / bulk_density - 39.735f64 / silt - 2.091f64 / sand
+        + 3.247f64 / soil_organic_carbon_g_per_kg
+        - 17.096f64 * bulk_density.powi(2);
+    let theta_s = sswc_percent / 100.0f64;
+    let theta_fc = fc_percent / 100.0f64;
+    let k_sat = k_sat_cm_per_day / 8640000.0f64;
     Wang2012PTFResult {
         theta_s,
         theta_fc,

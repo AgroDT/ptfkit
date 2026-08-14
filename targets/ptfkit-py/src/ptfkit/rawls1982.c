@@ -6,7 +6,7 @@ static void calc_ptf_rawls1982_theta_1500_loop(char **args, const npy_intp *dime
     for (index = 0; index < dimensions[0]; index++) {
         const double clay = *(const double *)args[0];
         const double organic_matter = *(const double *)args[1];
-        const double theta_1500 = ((((0.02600000000000000) + (((0.00500000000000000) * (clay))))) + (((0.01580000000000000) * (organic_matter))));
+        const double theta_1500 = 0.0260 + 0.0050 * clay + 0.0158 * organic_matter;
         *(double *)args[2] = theta_1500;
         for (int arg = 0; arg < 3; arg++) args[arg] += steps[arg];
     }
@@ -20,7 +20,7 @@ static void calc_ptf_rawls1982_theta_33_loop(char **args, const npy_intp *dimens
         const double sand = *(const double *)args[0];
         const double organic_matter = *(const double *)args[1];
         const double theta_1500 = *(const double *)args[2];
-        const double theta_33 = ((((((0.23910000000000001) - (((0.00190000000000000) * (sand))))) + (((0.02100000000000000) * (organic_matter))))) + (((0.71999999999999997) * (theta_1500))));
+        const double theta_33 = 0.2391 - 0.0019 * sand + 0.0210 * organic_matter + 0.72 * theta_1500;
         *(double *)args[3] = theta_33;
         for (int arg = 0; arg < 4; arg++) args[arg] += steps[arg];
     }
@@ -36,16 +36,16 @@ static void calc_ptf_rawls1982_full_wrc_loop(char **args, const npy_intp *dimens
         const double bulk_density = *(const double *)args[2];
         const double theta_33 = *(const double *)args[3];
         const double theta_1500 = *(const double *)args[4];
-        const double theta_4 = ((((((((0.18290000000000001) - (((0.02460000000000000) * (organic_matter))))) - (((0.03760000000000000) * (bulk_density))))) + (((1.88999999999999990) * (theta_33))))) - (((1.37999999999999989) * (theta_1500))));
-        const double theta_7 = ((((((((0.88880000000000003) - (((0.00030000000000000) * (sand))))) - (((0.01070000000000000) * (organic_matter))))) + (((1.53000000000000003) * (theta_33))))) - (((0.81000000000000005) * (theta_1500))));
-        const double theta_10 = ((((((((0.06190000000000000) - (((0.00020000000000000) * (sand))))) - (((0.00670000000000000) * (organic_matter))))) + (((1.34000000000000008) * (theta_33))))) - (((0.51000000000000001) * (theta_1500))));
-        const double theta_20 = ((((((0.03190000000000000) - (((0.00020000000000000) * (sand))))) + (((1.01000000000000001) * (theta_33))))) - (((0.06000000000000000) * (theta_1500))));
-        const double theta_60 = ((((((0.01360000000000000) - (((0.00910000000000000) * (bulk_density))))) + (((0.66000000000000003) * (theta_33))))) + (((0.39000000000000001) * (theta_1500))));
-        const double theta_100 = (((((((-(0.00340000000000000))) + (((0.00220000000000000) * (organic_matter))))) + (((0.52000000000000002) * (theta_33))))) + (((0.54000000000000004) * (theta_1500))));
-        const double theta_200 = (((((((-(0.00430000000000000))) + (((0.00260000000000000) * (organic_matter))))) + (((0.35999999999999999) * (theta_33))))) + (((0.68999999999999995) * (theta_1500))));
-        const double theta_400 = (((((((-(0.00380000000000000))) + (((0.00260000000000000) * (organic_matter))))) + (((0.23999999999999999) * (theta_33))))) + (((0.79000000000000004) * (theta_1500))));
-        const double theta_700 = (((((((-(0.00270000000000000))) + (((0.00240000000000000) * (organic_matter))))) + (((0.16000000000000000) * (theta_33))))) + (((0.85999999999999999) * (theta_1500))));
-        const double theta_1000 = (((((((-(0.00190000000000000))) + (((0.00220000000000000) * (organic_matter))))) + (((0.11000000000000000) * (theta_33))))) + (((0.89000000000000001) * (theta_1500))));
+        const double theta_4 = 0.1829 - 0.0246 * organic_matter - 0.0376 * bulk_density + 1.89 * theta_33 - 1.38 * theta_1500;
+        const double theta_7 = 0.8888 - 0.0003 * sand - 0.0107 * organic_matter + 1.53 * theta_33 - 0.81 * theta_1500;
+        const double theta_10 = 0.0619 - 0.0002 * sand - 0.0067 * organic_matter + 1.34 * theta_33 - 0.51 * theta_1500;
+        const double theta_20 = 0.0319 - 0.0002 * sand + 1.01 * theta_33 - 0.06 * theta_1500;
+        const double theta_60 = 0.0136 - 0.0091 * bulk_density + 0.66 * theta_33 + 0.39 * theta_1500;
+        const double theta_100 = -0.0034 + 0.0022 * organic_matter + 0.52 * theta_33 + 0.54 * theta_1500;
+        const double theta_200 = -0.0043 + 0.0026 * organic_matter + 0.36 * theta_33 + 0.69 * theta_1500;
+        const double theta_400 = -0.0038 + 0.0026 * organic_matter + 0.24 * theta_33 + 0.79 * theta_1500;
+        const double theta_700 = -0.0027 + 0.0024 * organic_matter + 0.16 * theta_33 + 0.86 * theta_1500;
+        const double theta_1000 = -0.0019 + 0.0022 * organic_matter + 0.11 * theta_33 + 0.89 * theta_1500;
         *(double *)args[5] = theta_4;
         *(double *)args[6] = theta_7;
         *(double *)args[7] = theta_10;

@@ -7,8 +7,8 @@ static void calc_ptf_jabro1992_loop(char **args, const npy_intp *dimensions, con
         const double silt = *(const double *)args[0];
         const double clay = *(const double *)args[1];
         const double bulk_density = *(const double *)args[2];
-        const double log10_k_sat_cm_per_hour = ((((((9.56000000000000050) - (((0.81000000000000005) * (log10(silt)))))) - (((1.09000000000000008) * (log10(clay)))))) - (((4.63999999999999968) * (bulk_density))));
-        const double k_sat = ((pow((10.00000000000000000), (log10_k_sat_cm_per_hour))) * (((0.01000000000000000) / (3600.00000000000000000))));
+        const double log10_k_sat_cm_per_hour = 9.56 - 0.81 * log10(silt) - 1.09 * log10(clay) - 4.64 * bulk_density;
+        const double k_sat = pow(10.0, log10_k_sat_cm_per_hour) * (0.01 / 3600.0);
         *(double *)args[3] = k_sat;
         for (int arg = 0; arg < 4; arg++) args[arg] += steps[arg];
     }

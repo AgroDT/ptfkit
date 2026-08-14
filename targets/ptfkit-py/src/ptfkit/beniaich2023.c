@@ -5,9 +5,9 @@ static void calc_ptf_beniaich2023_slr1_loop(char **args, const npy_intp *dimensi
     npy_intp index;
     for (index = 0; index < dimensions[0]; index++) {
         const double clay = *(const double *)args[0];
-        const double water_saturation = ((((46.30700000000000216) + (((0.55600000000000005) * (clay))))) / (100.00000000000000000));
-        const double water_field_capacity = ((((10.27699999999999925) + (((0.36499999999999999) * (clay))))) / (100.00000000000000000));
-        const double water_wilting_point = ((((3.08099999999999996) + (((0.32700000000000001) * (clay))))) / (100.00000000000000000));
+        const double water_saturation = (46.307 + 0.556 * clay) / 100.0;
+        const double water_field_capacity = (10.277 + 0.365 * clay) / 100.0;
+        const double water_wilting_point = (3.081 + 0.327 * clay) / 100.0;
         *(double *)args[1] = water_saturation;
         *(double *)args[2] = water_field_capacity;
         *(double *)args[3] = water_wilting_point;
@@ -21,9 +21,9 @@ static void calc_ptf_beniaich2023_slr2_loop(char **args, const npy_intp *dimensi
     npy_intp index;
     for (index = 0; index < dimensions[0]; index++) {
         const double silt = *(const double *)args[0];
-        const double water_saturation = ((((59.50800000000000267) + (((0.29899999999999999) * (silt))))) / (100.00000000000000000));
-        const double water_field_capacity = ((((16.17800000000000082) + (((0.28999999999999998) * (silt))))) / (100.00000000000000000));
-        const double water_wilting_point = ((((10.52100000000000080) + (((0.18700000000000000) * (silt))))) / (100.00000000000000000));
+        const double water_saturation = (59.508 + 0.299 * silt) / 100.0;
+        const double water_field_capacity = (16.178 + 0.290 * silt) / 100.0;
+        const double water_wilting_point = (10.521 + 0.187 * silt) / 100.0;
         *(double *)args[1] = water_saturation;
         *(double *)args[2] = water_field_capacity;
         *(double *)args[3] = water_wilting_point;
@@ -37,9 +37,9 @@ static void calc_ptf_beniaich2023_slr3_loop(char **args, const npy_intp *dimensi
     npy_intp index;
     for (index = 0; index < dimensions[0]; index++) {
         const double sand = *(const double *)args[0];
-        const double water_saturation = ((((81.42000000000000171) - (((0.42699999999999999) * (sand))))) / (100.00000000000000000));
-        const double water_field_capacity = ((((34.67999999999999972) - (((0.32400000000000001) * (sand))))) / (100.00000000000000000));
-        const double water_wilting_point = ((((23.92699999999999960) - (((0.25700000000000001) * (sand))))) / (100.00000000000000000));
+        const double water_saturation = (81.420 - 0.427 * sand) / 100.0;
+        const double water_field_capacity = (34.680 - 0.324 * sand) / 100.0;
+        const double water_wilting_point = (23.927 - 0.257 * sand) / 100.0;
         *(double *)args[1] = water_saturation;
         *(double *)args[2] = water_field_capacity;
         *(double *)args[3] = water_wilting_point;
@@ -54,10 +54,10 @@ static void calc_ptf_beniaich2023_slr4_loop(char **args, const npy_intp *dimensi
     for (index = 0; index < dimensions[0]; index++) {
         const double clay = *(const double *)args[0];
         const double silt = *(const double *)args[1];
-        const double clay_silt = ((clay) + (silt));
-        const double water_saturation = ((((89.40099999999999625) - (((0.29799999999999999) * (clay_silt))))) / (100.00000000000000000));
-        const double water_field_capacity = ((((45.17799999999999727) - (((0.28999999999999998) * (clay_silt))))) / (100.00000000000000000));
-        const double water_wilting_point = ((((29.26500000000000057) - (((0.18700000000000000) * (clay_silt))))) / (100.00000000000000000));
+        const double clay_silt = clay + silt;
+        const double water_saturation = (89.401 - 0.298 * clay_silt) / 100.0;
+        const double water_field_capacity = (45.178 - 0.290 * clay_silt) / 100.0;
+        const double water_wilting_point = (29.265 - 0.187 * clay_silt) / 100.0;
         *(double *)args[2] = water_saturation;
         *(double *)args[3] = water_field_capacity;
         *(double *)args[4] = water_wilting_point;
@@ -72,10 +72,10 @@ static void calc_ptf_beniaich2023_slr5_loop(char **args, const npy_intp *dimensi
     for (index = 0; index < dimensions[0]; index++) {
         const double clay = *(const double *)args[0];
         const double silt = *(const double *)args[1];
-        const double clay_silt_ratio = ((clay) / (silt));
-        const double water_saturation = ((((68.85099999999999909) - (((0.54600000000000004) * (clay_silt_ratio))))) / (100.00000000000000000));
-        const double water_field_capacity = ((((23.27799999999999869) + (((1.81899999999999995) * (clay_silt_ratio))))) / (100.00000000000000000));
-        const double water_wilting_point = ((((16.29799999999999827) - (((0.24399999999999999) * (clay_silt_ratio))))) / (100.00000000000000000));
+        const double clay_silt_ratio = clay / silt;
+        const double water_saturation = (68.851 - 0.546 * clay_silt_ratio) / 100.0;
+        const double water_field_capacity = (23.278 + 1.819 * clay_silt_ratio) / 100.0;
+        const double water_wilting_point = (16.298 - 0.244 * clay_silt_ratio) / 100.0;
         *(double *)args[2] = water_saturation;
         *(double *)args[3] = water_field_capacity;
         *(double *)args[4] = water_wilting_point;
@@ -89,9 +89,9 @@ static void calc_ptf_beniaich2023_slr6_loop(char **args, const npy_intp *dimensi
     npy_intp index;
     for (index = 0; index < dimensions[0]; index++) {
         const double soil_organic_matter = *(const double *)args[0];
-        const double water_saturation = ((((61.16299999999999670) + (((2.79300000000000015) * (soil_organic_matter))))) / (100.00000000000000000));
-        const double water_field_capacity = ((((21.33099999999999952) + (((1.33899999999999997) * (soil_organic_matter))))) / (100.00000000000000000));
-        const double water_wilting_point = ((((13.75799999999999912) + (((0.90200000000000002) * (soil_organic_matter))))) / (100.00000000000000000));
+        const double water_saturation = (61.163 + 2.793 * soil_organic_matter) / 100.0;
+        const double water_field_capacity = (21.331 + 1.339 * soil_organic_matter) / 100.0;
+        const double water_wilting_point = (13.758 + 0.902 * soil_organic_matter) / 100.0;
         *(double *)args[1] = water_saturation;
         *(double *)args[2] = water_field_capacity;
         *(double *)args[3] = water_wilting_point;
@@ -107,9 +107,9 @@ static void calc_ptf_beniaich2023_mlr1_loop(char **args, const npy_intp *dimensi
         const double silt = *(const double *)args[0];
         const double sand = *(const double *)args[1];
         const double soil_organic_matter = *(const double *)args[2];
-        const double water_saturation = ((((((((87.34199999999999875) - (((0.28100000000000003) * (silt))))) - (((0.54800000000000004) * (sand))))) + (((2.37699999999999978) * (soil_organic_matter))))) / (100.00000000000000000));
-        const double water_field_capacity = ((((((((35.84400000000000119) - (((0.08500000000000001) * (silt))))) - (((0.35899999999999999) * (sand))))) + (((0.94699999999999995) * (soil_organic_matter))))) / (100.00000000000000000));
-        const double water_wilting_point = ((((((((28.73400000000000176) - (((0.14799999999999999) * (silt))))) - (((0.32400000000000001) * (sand))))) + (((0.63600000000000001) * (soil_organic_matter))))) / (100.00000000000000000));
+        const double water_saturation = (87.342 - 0.281 * silt - 0.548 * sand + 2.377 * soil_organic_matter) / 100.0;
+        const double water_field_capacity = (35.844 - 0.085 * silt - 0.359 * sand + 0.947 * soil_organic_matter) / 100.0;
+        const double water_wilting_point = (28.734 - 0.148 * silt - 0.324 * sand + 0.636 * soil_organic_matter) / 100.0;
         *(double *)args[3] = water_saturation;
         *(double *)args[4] = water_field_capacity;
         *(double *)args[5] = water_wilting_point;
@@ -124,9 +124,9 @@ static void calc_ptf_beniaich2023_mlr2_loop(char **args, const npy_intp *dimensi
     for (index = 0; index < dimensions[0]; index++) {
         const double sand = *(const double *)args[0];
         const double soil_organic_matter = *(const double *)args[1];
-        const double water_saturation = ((((((75.36599999999999966) - (((0.41699999999999998) * (sand))))) + (((2.21899999999999986) * (soil_organic_matter))))) / (100.00000000000000000));
-        const double water_field_capacity = ((((((32.22699999999999676) - (((0.32000000000000001) * (sand))))) + (((0.89900000000000002) * (soil_organic_matter))))) / (100.00000000000000000));
-        const double water_wilting_point = ((((((22.42099999999999937) - (((0.25400000000000000) * (sand))))) + (((0.55200000000000005) * (soil_organic_matter))))) / (100.00000000000000000));
+        const double water_saturation = (75.366 - 0.417 * sand + 2.219 * soil_organic_matter) / 100.0;
+        const double water_field_capacity = (32.227 - 0.320 * sand + 0.899 * soil_organic_matter) / 100.0;
+        const double water_wilting_point = (22.421 - 0.254 * sand + 0.552 * soil_organic_matter) / 100.0;
         *(double *)args[2] = water_saturation;
         *(double *)args[3] = water_field_capacity;
         *(double *)args[4] = water_wilting_point;
@@ -141,9 +141,9 @@ static void calc_ptf_beniaich2023_mlr3_loop(char **args, const npy_intp *dimensi
     for (index = 0; index < dimensions[0]; index++) {
         const double silt = *(const double *)args[0];
         const double soil_organic_matter = *(const double *)args[1];
-        const double water_saturation = ((((((53.77700000000000102) + (((0.27800000000000002) * (silt))))) + (((2.45699999999999985) * (soil_organic_matter))))) / (100.00000000000000000));
-        const double water_field_capacity = ((((((13.84699999999999953) + (((0.28100000000000003) * (silt))))) + (((0.99900000000000000) * (soil_organic_matter))))) / (100.00000000000000000));
-        const double water_wilting_point = ((((((8.92900000000000027) + (((0.18200000000000000) * (silt))))) + (((0.68300000000000005) * (soil_organic_matter))))) / (100.00000000000000000));
+        const double water_saturation = (53.777 + 0.278 * silt + 2.457 * soil_organic_matter) / 100.0;
+        const double water_field_capacity = (13.847 + 0.281 * silt + 0.999 * soil_organic_matter) / 100.0;
+        const double water_wilting_point = (8.929 + 0.182 * silt + 0.683 * soil_organic_matter) / 100.0;
         *(double *)args[2] = water_saturation;
         *(double *)args[3] = water_field_capacity;
         *(double *)args[4] = water_wilting_point;
@@ -158,9 +158,9 @@ static void calc_ptf_beniaich2023_mlr4_loop(char **args, const npy_intp *dimensi
     for (index = 0; index < dimensions[0]; index++) {
         const double clay = *(const double *)args[0];
         const double soil_organic_matter = *(const double *)args[1];
-        const double water_saturation = ((((((39.43200000000000216) + (((0.55300000000000005) * (clay))))) + (((2.69899999999999984) * (soil_organic_matter))))) / (100.00000000000000000));
-        const double water_field_capacity = ((((((7.02299999999999969) + (((0.36399999999999999) * (clay))))) + (((1.27800000000000002) * (soil_organic_matter))))) / (100.00000000000000000));
-        const double water_wilting_point = ((((((0.92300000000000004) + (((0.32700000000000001) * (clay))))) + (((0.84699999999999998) * (soil_organic_matter))))) / (100.00000000000000000));
+        const double water_saturation = (39.432 + 0.553 * clay + 2.699 * soil_organic_matter) / 100.0;
+        const double water_field_capacity = (7.023 + 0.364 * clay + 1.278 * soil_organic_matter) / 100.0;
+        const double water_wilting_point = (0.923 + 0.327 * clay + 0.847 * soil_organic_matter) / 100.0;
         *(double *)args[2] = water_saturation;
         *(double *)args[3] = water_field_capacity;
         *(double *)args[4] = water_wilting_point;
@@ -176,9 +176,9 @@ static void calc_ptf_beniaich2023_mlr5_loop(char **args, const npy_intp *dimensi
         const double clay = *(const double *)args[0];
         const double silt = *(const double *)args[1];
         const double soil_organic_matter = *(const double *)args[2];
-        const double water_saturation = ((((((((32.50500000000000256) + (((0.54800000000000004) * (clay))))) + (((0.26700000000000002) * (silt))))) + (((2.37699999999999978) * (soil_organic_matter))))) / (100.00000000000000000));
-        const double water_field_capacity = (((((((((-(0.09400000000000000))) + (((0.35899999999999999) * (clay))))) + (((0.27400000000000002) * (silt))))) + (((0.94699999999999995) * (soil_organic_matter))))) / (100.00000000000000000));
-        const double water_wilting_point = (((((((((-(3.62300000000000022))) + (((0.32400000000000001) * (clay))))) + (((0.17499999999999999) * (silt))))) + (((0.63600000000000001) * (soil_organic_matter))))) / (100.00000000000000000));
+        const double water_saturation = (32.505 + 0.548 * clay + 0.267 * silt + 2.377 * soil_organic_matter) / 100.0;
+        const double water_field_capacity = (-0.094 + 0.359 * clay + 0.274 * silt + 0.947 * soil_organic_matter) / 100.0;
+        const double water_wilting_point = (-3.623 + 0.324 * clay + 0.175 * silt + 0.636 * soil_organic_matter) / 100.0;
         *(double *)args[3] = water_saturation;
         *(double *)args[4] = water_field_capacity;
         *(double *)args[5] = water_wilting_point;

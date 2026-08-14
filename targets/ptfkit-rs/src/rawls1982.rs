@@ -35,7 +35,7 @@ Agricultural soils from 32 states of the USA
 Prediction target: Volumetric soil water content at -1500 kPa."]
 #[must_use]
 pub fn calc_ptf_rawls1982_theta_1500(clay: f64, organic_matter: f64) -> f64 {
-    ((0.026f64) + ((0.005f64) * (clay))) + ((0.0158f64) * (organic_matter))
+    0.0260f64 + 0.0050f64 * clay + 0.0158f64 * organic_matter
 }
 #[cfg(test)]
 mod calc_ptf_rawls1982_theta_1500_tests {
@@ -73,8 +73,7 @@ mod calc_ptf_rawls1982_theta_1500_tests {
 Prediction target: Volumetric soil water content at -33 kPa."]
 #[must_use]
 pub fn calc_ptf_rawls1982_theta_33(sand: f64, organic_matter: f64, theta_1500: f64) -> f64 {
-    (((0.2391f64) - ((0.0019f64) * (sand))) + ((0.021f64) * (organic_matter)))
-        + ((0.72f64) * (theta_1500))
+    0.2391f64 - 0.0019f64 * sand + 0.0210f64 * organic_matter + 0.72f64 * theta_1500
 }
 #[cfg(test)]
 mod calc_ptf_rawls1982_theta_33_tests {
@@ -154,35 +153,25 @@ pub fn calc_ptf_rawls1982_full_wrc(
     theta_33: f64,
     theta_1500: f64,
 ) -> Rawls1982PTFResult {
-    let theta_4 = ((((0.1829f64) - ((0.0246f64) * (organic_matter)))
-        - ((0.0376f64) * (bulk_density)))
-        + ((1.89f64) * (theta_33)))
-        - ((1.38f64) * (theta_1500));
-    let theta_7 = ((((0.8888f64) - ((0.0003f64) * (sand))) - ((0.0107f64) * (organic_matter)))
-        + ((1.53f64) * (theta_33)))
-        - ((0.81f64) * (theta_1500));
-    let theta_10 = ((((0.0619f64) - ((0.0002f64) * (sand))) - ((0.0067f64) * (organic_matter)))
-        + ((1.34f64) * (theta_33)))
-        - ((0.51f64) * (theta_1500));
-    let theta_20 = (((0.0319f64) - ((0.0002f64) * (sand))) + ((1.01f64) * (theta_33)))
-        - ((0.06f64) * (theta_1500));
-    let theta_60 = (((0.0136f64) - ((0.0091f64) * (bulk_density))) + ((0.66f64) * (theta_33)))
-        + ((0.39f64) * (theta_1500));
-    let theta_100 = (((-(0.0034f64)) + ((0.0022f64) * (organic_matter)))
-        + ((0.52f64) * (theta_33)))
-        + ((0.54f64) * (theta_1500));
-    let theta_200 = (((-(0.0043f64)) + ((0.0026f64) * (organic_matter)))
-        + ((0.36f64) * (theta_33)))
-        + ((0.69f64) * (theta_1500));
-    let theta_400 = (((-(0.0038f64)) + ((0.0026f64) * (organic_matter)))
-        + ((0.24f64) * (theta_33)))
-        + ((0.79f64) * (theta_1500));
-    let theta_700 = (((-(0.0027f64)) + ((0.0024f64) * (organic_matter)))
-        + ((0.16f64) * (theta_33)))
-        + ((0.86f64) * (theta_1500));
-    let theta_1000 = (((-(0.0019f64)) + ((0.0022f64) * (organic_matter)))
-        + ((0.11f64) * (theta_33)))
-        + ((0.89f64) * (theta_1500));
+    let theta_4 = 0.1829f64 - 0.0246f64 * organic_matter - 0.0376f64 * bulk_density
+        + 1.89f64 * theta_33
+        - 1.38f64 * theta_1500;
+    let theta_7 = 0.8888f64 - 0.0003f64 * sand - 0.0107f64 * organic_matter + 1.53f64 * theta_33
+        - 0.81f64 * theta_1500;
+    let theta_10 = 0.0619f64 - 0.0002f64 * sand - 0.0067f64 * organic_matter + 1.34f64 * theta_33
+        - 0.51f64 * theta_1500;
+    let theta_20 = 0.0319f64 - 0.0002f64 * sand + 1.01f64 * theta_33 - 0.06f64 * theta_1500;
+    let theta_60 = 0.0136f64 - 0.0091f64 * bulk_density + 0.66f64 * theta_33 + 0.39f64 * theta_1500;
+    let theta_100 =
+        -0.0034f64 + 0.0022f64 * organic_matter + 0.52f64 * theta_33 + 0.54f64 * theta_1500;
+    let theta_200 =
+        -0.0043f64 + 0.0026f64 * organic_matter + 0.36f64 * theta_33 + 0.69f64 * theta_1500;
+    let theta_400 =
+        -0.0038f64 + 0.0026f64 * organic_matter + 0.24f64 * theta_33 + 0.79f64 * theta_1500;
+    let theta_700 =
+        -0.0027f64 + 0.0024f64 * organic_matter + 0.16f64 * theta_33 + 0.86f64 * theta_1500;
+    let theta_1000 =
+        -0.0019f64 + 0.0022f64 * organic_matter + 0.11f64 * theta_33 + 0.89f64 * theta_1500;
     Rawls1982PTFResult {
         theta_4,
         theta_7,

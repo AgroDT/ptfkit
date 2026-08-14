@@ -44,9 +44,8 @@ The legacy API's three water-retention outputs are intentionally excluded becaus
 defines them only for BSR soils."]
 #[must_use]
 pub fn calc_ptf_tiwary2014_igp(sand: f64, bulk_density: f64, esp: f64) -> f64 {
-    let k_sat_mm_per_hour = (((4.079f64) + ((0.047f64) * (sand))) - ((0.054f64) * (esp)))
-        - ((2.238f64) * (bulk_density));
-    (k_sat_mm_per_hour) / (3600000f64)
+    let k_sat_mm_per_hour = 4.079f64 + 0.047f64 * sand - 0.054f64 * esp - 2.238f64 * bulk_density;
+    k_sat_mm_per_hour / 3600000.0f64
 }
 #[cfg(test)]
 mod calc_ptf_tiwary2014_igp_tests {
@@ -115,16 +114,11 @@ pub fn calc_ptf_tiwary2014_bsr(
     emp: f64,
     excm: f64,
 ) -> Tiwary2014PTFResult {
-    let w_33 = (((2.583f64) + ((0.346f64) * (cation_exchange_capacity))) + ((0.249f64) * (clay)))
-        + ((0.494f64) * (esp));
-    let w_100 = (((-(1.918f64)) + ((0.383f64) * (cation_exchange_capacity)))
-        + ((0.228f64) * (clay)))
-        + ((0.361f64) * (esp));
-    let w_1500 = (((0.541f64) + ((0.306f64) * (cation_exchange_capacity))) + ((0.146f64) * (esp)))
-        + ((0.058f64) * (emp));
-    let k_sat_mm_per_hour =
-        (((120.637f64) - ((13.094f64) * (ph))) - ((0.102f64) * (clay))) + ((1.151f64) * (excm));
-    let k_sat = (k_sat_mm_per_hour) / (3600000f64);
+    let w_33 = 2.583f64 + 0.346f64 * cation_exchange_capacity + 0.249f64 * clay + 0.494f64 * esp;
+    let w_100 = -1.918f64 + 0.383f64 * cation_exchange_capacity + 0.228f64 * clay + 0.361f64 * esp;
+    let w_1500 = 0.541f64 + 0.306f64 * cation_exchange_capacity + 0.146f64 * esp + 0.058f64 * emp;
+    let k_sat_mm_per_hour = 120.637f64 - 13.094f64 * ph - 0.102f64 * clay + 1.151f64 * excm;
+    let k_sat = k_sat_mm_per_hour / 3600000.0f64;
     Tiwary2014PTFResult {
         w_33,
         w_100,
