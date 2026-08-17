@@ -9,6 +9,7 @@
 #include <ptfkit/chakraborty2011.h>
 #include <ptfkit/cosby1984.h>
 #include <ptfkit/dharumarajan2019.h>
+#include <ptfkit/ferrerjulia2004.h>
 #include <ptfkit/jabro1992.h>
 #include <ptfkit/li2007.h>
 #include <ptfkit/mayr1999.h>

@@ -8,6 +8,7 @@ export import ptfkit.beniaich2023;
 export import ptfkit.chakraborty2011;
 export import ptfkit.cosby1984;
 export import ptfkit.dharumarajan2019;
+export import ptfkit.ferrerjulia2004;
 export import ptfkit.jabro1992;
 export import ptfkit.li2007;
 export import ptfkit.mayr1999;

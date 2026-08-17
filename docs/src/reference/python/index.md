@@ -16,6 +16,7 @@ ptfkit's Python API is organized around public source modules.
 - [`ptfkit.chakraborty2011`](chakraborty2011.md) — Chakraborty et al. (2011), point water-retention PTFs for Indian soils.
 - [`ptfkit.cosby1984`](cosby1984.md) — Cosby et al. (1984), United States.
 - [`ptfkit.dharumarajan2019`](dharumarajan2019.md) — Dharumarajan et al. (2019) hydraulic PTFs for the Karnataka Plateau.
+- [`ptfkit.ferrerjulia2004`](ferrerjulia2004.md) — Ferrer Julià et al. (2004), saturated-conductivity PTFs for Spanish soils.
 - [`ptfkit.jabro1992`](jabro1992.md) — Jabro (1992), United States.
 - [`ptfkit.li2007`](li2007.md) — Li et al. (2007), Fengqiu County, North China Plain, China.
 - [`ptfkit.mayr1999`](mayr1999.md) — Mayr and Jarvis (1999) modified Brooks-Corey water-retention parameter PTFs.

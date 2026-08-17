@@ -7,6 +7,7 @@ set(PTFKIT_CPP_MODULES
     "${CMAKE_CURRENT_LIST_DIR}/../cpp/chakraborty2011.cppm"
     "${CMAKE_CURRENT_LIST_DIR}/../cpp/cosby1984.cppm"
     "${CMAKE_CURRENT_LIST_DIR}/../cpp/dharumarajan2019.cppm"
+    "${CMAKE_CURRENT_LIST_DIR}/../cpp/ferrerjulia2004.cppm"
     "${CMAKE_CURRENT_LIST_DIR}/../cpp/jabro1992.cppm"
     "${CMAKE_CURRENT_LIST_DIR}/../cpp/li2007.cppm"
     "${CMAKE_CURRENT_LIST_DIR}/../cpp/mayr1999.cppm"
