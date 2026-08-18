@@ -45,6 +45,7 @@ $defs:
     description: Dry soil bulk density.
   Chakraborty2011PTFResult:
     type: record
+    name: Chakraborty2011PTFResult
     fields:
       - name: water_content_33
         symbol: w_33

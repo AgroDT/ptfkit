@@ -29,7 +29,7 @@ typedef struct {
     double b_hc;
     /** Volumetric soil water content at saturation. (m^3/m^3) */
     double theta_s;
-} ptfkit_calc_ptf_mayr1999_result;
+} mayr1999_ptf_result;
 
 /**
  * Estimate modified Brooks-Corey a, b, and saturated water content from texture, bulk density,
@@ -62,9 +62,8 @@ typedef struct {
  * Treat application outside the calibration particle-size distribution with great care; the
  * paper provides that distribution only graphically.
  */
-static inline ptfkit_calc_ptf_mayr1999_result calc_ptf_mayr1999(double sand, double silt,
-                                                                double clay, double bulk_density,
-                                                                double organic_carbon) {
+static inline mayr1999_ptf_result calc_ptf_mayr1999(double sand, double silt, double clay,
+                                                    double bulk_density, double organic_carbon) {
     const double log10_a_hc = -4.9840297533 + 0.0509226283 * sand + 0.1575152771 * silt +
                               0.1240901644 * bulk_density - 0.1640033143 * organic_carbon -
                               0.0021767278 * pow(silt, 2.0) + 1.438224e-5 * pow(silt, 3.0) +
@@ -80,9 +79,9 @@ static inline ptfkit_calc_ptf_mayr1999_result calc_ptf_mayr1999(double sand, dou
                            0.0064338641 * clay - 0.3028160229 * bulk_density +
                            1.79762e-5 * pow(sand, 2.0) - 3.134631e-5 * pow(silt, 2.0);
 #ifdef __cplusplus
-    return ptfkit_calc_ptf_mayr1999_result{a_hc, b_hc, theta_s};
+    return mayr1999_ptf_result{a_hc, b_hc, theta_s};
 #else
-    return (ptfkit_calc_ptf_mayr1999_result){
+    return (mayr1999_ptf_result){
         .a_hc = a_hc,
         .b_hc = b_hc,
         .theta_s = theta_s,

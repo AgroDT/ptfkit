@@ -157,9 +157,10 @@
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["type", "fields"],
+          "required": ["type", "name", "fields"],
           "properties": {
             "type": { "const": "record" },
+            "name": { "type": "string", "pattern": "^[A-Z][A-Za-z0-9]*$" },
             "fields": {
               "type": "array",
               "minItems": 1,

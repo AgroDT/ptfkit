@@ -35,7 +35,7 @@ typedef struct {
     double sd_log_k_sat;
     /** Standard deviation of saturated water content. (% volume/volume) */
     double sd_theta_s;
-} ptfkit_calc_ptf_cosby1984_univariate_result;
+} cosby1984_univariate_ptf_result;
 
 /**
  * Estimate Cosby et al. (1984) univariate hydraulic parameter statistics from soil texture.
@@ -66,7 +66,7 @@ typedef struct {
  * Warnings:
  * Log-transformed output units use the pilot contract `reported log value`.
  */
-static inline ptfkit_calc_ptf_cosby1984_univariate_result
+static inline cosby1984_univariate_ptf_result
 calc_ptf_cosby1984_univariate(double sand, double silt, double clay) {
     const double mean_b = 2.91 + 0.159 * clay;
     const double mean_log_psi_s = 1.88 - 0.0131 * sand;
@@ -76,10 +76,10 @@ calc_ptf_cosby1984_univariate(double sand, double silt, double clay) {
     const double sd_log_k_sat = 0.459 + 0.00321 * silt;
     const double sd_theta_s = 7.73 - 0.0730 * clay;
 #ifdef __cplusplus
-    return ptfkit_calc_ptf_cosby1984_univariate_result{
-        mean_b, mean_log_psi_s, mean_log_k_sat, mean_theta_s, sd_b, sd_log_k_sat, sd_theta_s};
+    return cosby1984_univariate_ptf_result{mean_b, mean_log_psi_s, mean_log_k_sat, mean_theta_s,
+                                           sd_b,   sd_log_k_sat,   sd_theta_s};
 #else
-    return (ptfkit_calc_ptf_cosby1984_univariate_result){
+    return (cosby1984_univariate_ptf_result){
         .mean_b = mean_b,
         .mean_log_psi_s = mean_log_psi_s,
         .mean_log_k_sat = mean_log_k_sat,

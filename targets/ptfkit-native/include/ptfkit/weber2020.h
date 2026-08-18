@@ -38,7 +38,7 @@ typedef struct {
     double k_sc_bw;
     /** Saturated noncapillary hydraulic conductivity. (cm d^-1) */
     double k_snc_bw;
-} ptfkit_calc_ptf_weber2020_result;
+} weber2020_ptf_result;
 
 /**
  * Convert VGM parameters to Brunswick-VGM parameters.
@@ -75,10 +75,9 @@ typedef struct {
  * The DS2 inequality is treated as a source typographical error; the tau regression is
  * interpreted as being based on nonpositive tau_vgm values.
  */
-static inline ptfkit_calc_ptf_weber2020_result calc_ptf_weber2020(double theta_r_vgm,
-                                                                  double theta_s_vgm,
-                                                                  double alpha_vgm, double n_vgm,
-                                                                  double tau_vgm, double k_s_vgm) {
+static inline weber2020_ptf_result calc_ptf_weber2020(double theta_r_vgm, double theta_s_vgm,
+                                                      double alpha_vgm, double n_vgm,
+                                                      double tau_vgm, double k_s_vgm) {
     const double theta_snc_bw = -1.58e-3 + 1.285 * theta_r_vgm;
     const double theta_s_bw = 1.89e-3 + 0.993 * theta_s_vgm;
     const double theta_sc_bw = theta_s_bw - theta_snc_bw;
@@ -89,10 +88,10 @@ static inline ptfkit_calc_ptf_weber2020_result calc_ptf_weber2020(double theta_r
     const double k_sc_bw = pow(10.0, 1.16e-1 + 1.060 * log10(k_s_vgm));
     const double k_snc_bw = pow(10.0, -1.72);
 #ifdef __cplusplus
-    return ptfkit_calc_ptf_weber2020_result{theta_snc_bw, theta_sc_bw, alpha_bw, n_bw,
-                                            tau_bw,       k_sc_bw,     k_snc_bw};
+    return weber2020_ptf_result{theta_snc_bw, theta_sc_bw, alpha_bw, n_bw,
+                                tau_bw,       k_sc_bw,     k_snc_bw};
 #else
-    return (ptfkit_calc_ptf_weber2020_result){
+    return (weber2020_ptf_result){
         .theta_snc_bw = theta_snc_bw,
         .theta_sc_bw = theta_sc_bw,
         .alpha_bw = alpha_bw,

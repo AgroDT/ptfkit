@@ -54,6 +54,7 @@ functions:
           hours at 105 degrees Celsius.
     outputs:
       type: record
+      name: Vereecken1989PTFResult
       fields:
         - name: theta_r
           symbol: theta_r
@@ -217,6 +218,7 @@ functions:
           hours at 105 degrees Celsius.
     outputs:
       type: record
+      name: Vereecken1989DetailedPTFResult
       fields:
         - name: theta_r
           symbol: theta_r

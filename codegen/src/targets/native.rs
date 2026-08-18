@@ -1,6 +1,7 @@
 use std::{collections::BTreeSet, path::PathBuf};
 
 use anyhow::Result;
+use convert_case::{Boundary, Case, Casing};
 
 use crate::model::{CompiledFunction, Function, Output, Parameter, Scope, Source};
 
@@ -75,6 +76,12 @@ fn file(path: impl Into<PathBuf>, contents: String) -> super::GeneratedFile {
     super::GeneratedFile::new(path.into(), contents)
 }
 
+fn c_result_name(schema: &str) -> String {
+    schema
+        .remove_boundaries(&[Boundary::LowerDigit])
+        .to_case(Case::Snake)
+}
+
 fn c_header(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
     let guard = format!("PTFKIT_{}_H", slug.to_ascii_uppercase());
     let mut body = String::new();
@@ -92,10 +99,12 @@ fn c_header(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
     for function in functions {
         let spec = &function.entry.spec.functions[function.function_index];
         if let Output::Struct(fields) = &function.core.output {
-            let schema = spec.output_schema.as_deref().unwrap_or(&spec.name);
+            let schema = spec
+                .result_class()
+                .ok_or_else(|| anyhow::anyhow!("record output has no result class"))?;
             if schemas.insert(schema) {
                 body.push_str(&format!(
-                    "\ntypedef struct {{\n{} }} ptfkit_{}_result;\n",
+                    "\ntypedef struct {{\n{} }} {};\n",
                     fields
                         .iter()
                         .map(|field| {
@@ -108,7 +117,7 @@ fn c_header(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
                             format!("    {}\n    double {field};\n", field_comment(parameter))
                         })
                         .collect::<String>(),
-                    schema
+                    c_result_name(schema)
                 ));
             }
         }
@@ -179,19 +188,16 @@ fn cpp_function(function: &CompiledFunction) -> Result<String> {
 
 fn render_function(function: &CompiledFunction, cpp: bool) -> Result<String> {
     let spec = &function.entry.spec.functions[function.function_index];
-    let schema = spec.output_schema.as_deref().unwrap_or(&spec.name);
     let result = match function.core.output {
         Output::Scalar => "double".to_owned(),
         Output::Struct(_) if cpp => spec
             .result_class()
             .ok_or_else(|| anyhow::anyhow!("record output has no result class"))?
             .to_owned(),
-        Output::Struct(_) => format!("{schema}_result"),
-    };
-    let result = if cpp || matches!(function.core.output, Output::Scalar) {
-        result
-    } else {
-        format!("ptfkit_{result}")
+        Output::Struct(_) => c_result_name(
+            spec.result_class()
+                .ok_or_else(|| anyhow::anyhow!("record output has no result class"))?,
+        ),
     };
     let prefix = if cpp {
         "[[nodiscard]]\ninline"
@@ -400,8 +406,10 @@ fn c_compatibility_test(slug: &str, functions: &[&CompiledFunction]) -> Result<S
                 "const ptfkit_result_placeholder"
             };
             let result_declaration = if result_declaration == "const ptfkit_result_placeholder" {
-                let schema = spec.output_schema.as_deref().unwrap_or(&spec.name);
-                format!("const ptfkit_{schema}_result")
+                let name = spec
+                    .result_class()
+                    .ok_or_else(|| anyhow::anyhow!("record output has no result class"))?;
+                format!("const {}", c_result_name(name))
             } else {
                 result_declaration.to_owned()
             };
@@ -508,5 +516,13 @@ mod tests {
         assert!(!c_expression::requires_math(&arithmetic));
         assert!(c_expression::requires_math(&power));
         assert!(c_expression::requires_math(&logarithm));
+    }
+
+    #[test]
+    fn c_result_names_use_snake_case_without_a_generated_suffix() {
+        assert_eq!(
+            c_result_name("Dharumarajan2019WaterRetentionResult"),
+            "dharumarajan2019_water_retention_result"
+        );
     }
 }

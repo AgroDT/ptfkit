@@ -59,6 +59,7 @@ functions:
       Organic carbon content; the paper excludes application above 5%.
   outputs:
     type: record
+    name: Mayr1999PTFResult
     fields:
     - name: a_hc
       symbol: a

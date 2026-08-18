@@ -59,6 +59,7 @@ functions:
     description: VGM saturated hydraulic conductivity.
   outputs:
     type: record
+    name: Weber2020PTFResult
     fields:
     - name: theta_snc_bw
       symbol: theta_snc,BW

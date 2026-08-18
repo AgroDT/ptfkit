@@ -97,8 +97,8 @@ impl<'de> Deserialize<'de> for Spec {
                         }
                     })
                     .collect::<Result<Vec<_>, _>>()?;
-                let (outputs, output_schema) = match function.outputs {
-                    OutputReference::Inline(outputs) => Ok((outputs, None)),
+                let outputs = match function.outputs {
+                    OutputReference::Inline(outputs) => Ok(outputs),
                     OutputReference::Reference(reference) => {
                         let name = definition_name(&reference.target)?;
                         match raw.definitions.get(name) {
@@ -106,10 +106,7 @@ impl<'de> Deserialize<'de> for Spec {
                                 "function {} references input definition `{name}` as an output",
                                 function.name
                             )),
-                            Some(Definition::Output(outputs)) => Ok((
-                                outputs.clone().with_record_name(name),
-                                Some(name.to_owned()),
-                            )),
+                            Some(Definition::Output(outputs)) => Ok(outputs.clone()),
                             None => Err(format!(
                                 "function {} references unknown definition `{name}`",
                                 function.name
@@ -124,7 +121,6 @@ impl<'de> Deserialize<'de> for Spec {
                     scope: function.scope,
                     inputs,
                     outputs,
-                    output_schema,
                     implementation: function.implementation,
                     golden_tests: function.golden_tests,
                     documentation: function.documentation,
@@ -182,8 +178,6 @@ pub(crate) struct Function {
     pub(crate) scope: FunctionScope,
     pub(crate) inputs: Vec<Parameter>,
     pub(crate) outputs: Outputs,
-    #[serde(skip)]
-    pub(crate) output_schema: Option<String>,
     pub(crate) implementation: Option<Implementation>,
     #[serde(default)]
     pub(crate) golden_tests: Vec<GoldenTest>,
@@ -195,9 +189,7 @@ impl Function {
     pub(crate) fn result_class(&self) -> Option<&str> {
         match &self.outputs {
             Outputs::Scalar { .. } => None,
-            Outputs::Record { name, .. } => {
-                name.as_deref().or(self.public_api.result_class.as_deref())
-            }
+            Outputs::Record { name, .. } => Some(name),
         }
     }
 }
@@ -252,8 +244,7 @@ pub(crate) enum Outputs {
         field: Parameter,
     },
     Record {
-        #[serde(default)]
-        name: Option<String>,
+        name: String,
         fields: Vec<Parameter>,
     },
 }
@@ -264,16 +255,6 @@ impl Outputs {
             Self::Scalar { field } => std::slice::from_ref(field),
             Self::Record { fields, .. } => fields,
         }
-    }
-
-    fn with_record_name(mut self, name: &str) -> Self {
-        if let Self::Record {
-            name: record_name, ..
-        } = &mut self
-        {
-            *record_name = Some(name.to_owned());
-        }
-        self
     }
 }
 
@@ -401,7 +382,7 @@ mod tests {
     }
 
     #[test]
-    fn resolves_reusable_input_and_output_schemas() {
+    fn resolves_reusable_input_and_output_names() {
         let spec: Spec = serde_yaml::from_str(
             r##"
 source:
@@ -415,8 +396,9 @@ $defs:
     unit: '1'
     domain: null
     description: Test input.
-  TestResult:
+  reusable_result:
     type: record
+    name: TestResult
     fields:
     - name: value
       symbol: y
@@ -435,7 +417,7 @@ functions:
   inputs:
   - $ref: "#/$defs/x"
   outputs:
-    $ref: "#/$defs/TestResult"
+    $ref: "#/$defs/reusable_result"
 "##,
         )
         .expect("reusable schemas deserialize");
@@ -444,6 +426,5 @@ functions:
         assert_eq!(function.inputs[0].name, "x");
         assert_eq!(function.outputs.fields()[0].name, "value");
         assert_eq!(function.result_class(), Some("TestResult"));
-        assert_eq!(function.output_schema.as_deref(), Some("TestResult"));
     }
 }

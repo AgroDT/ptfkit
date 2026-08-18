@@ -114,6 +114,7 @@ functions:
     description: Exchangeable calcium-to-magnesium ratio.
   outputs:
     type: record
+    name: Tiwary2014PTFResult
     fields:
     - name: w_33
       symbol: w33

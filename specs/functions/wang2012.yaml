@@ -55,6 +55,7 @@ functions:
     description: Altitude above sea level.
   outputs:
     type: record
+    name: Wang2012PTFResult
     fields:
     - name: theta_s
       symbol: SSWC

@@ -22,13 +22,14 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<(PathBuf, Str
                 .expect("generated source contains at least one function");
             let module_docs = module_doc_tokens(&first.entry.spec.source, &first.entry.spec.scope);
             let unique_test_modules = functions.len() > 1;
-            let mut defined_output_schemas = BTreeSet::new();
+            let mut defined_result_classes = BTreeSet::new();
             let definitions = functions
                 .into_iter()
                 .map(|resolved| {
                     let function = &resolved.entry.spec.functions[resolved.function_index];
-                    let output_schema = function.output_schema.as_deref().unwrap_or(&function.name);
-                    let define_output = defined_output_schemas.insert(output_schema);
+                    let define_output = function
+                        .result_class()
+                        .is_some_and(|name| defined_result_classes.insert(name));
                     module_tokens(resolved, &resolved.ir, unique_test_modules, define_output)
                 })
                 .collect::<Result<Vec<_>>>()?;

@@ -31,7 +31,7 @@ typedef struct {
     double n_vg;
     /** Saturated hydraulic conductivity. (m/s) */
     double k_sat;
-} ptfkit_calc_ptf_li2007_result;
+} li2007_ptf_result;
 
 /**
  * Estimate van Genuchten parameters and saturated hydraulic conductivity for Fengqiu County
@@ -57,9 +57,8 @@ typedef struct {
  * Warnings:
  * The formulas use natural logarithms of selected inputs.
  */
-static inline ptfkit_calc_ptf_li2007_result calc_ptf_li2007(double sand, double silt, double clay,
-                                                            double bulk_density,
-                                                            double soil_organic_matter) {
+static inline li2007_ptf_result calc_ptf_li2007(double sand, double silt, double clay,
+                                                double bulk_density, double soil_organic_matter) {
     const double sand_ln = log(sand);
     const double silt_ln = log(silt);
     const double clay_ln = log(clay);
@@ -77,9 +76,9 @@ static inline ptfkit_calc_ptf_li2007_result calc_ptf_li2007(double sand, double 
             1.709 * soil_organic_matter_ln + 2.885 * soil_organic_matter - 8.026 * bulk_density_ln);
     const double k_sat = k_sat_cm_per_day * (1.0 / 8640000.0);
 #ifdef __cplusplus
-    return ptfkit_calc_ptf_li2007_result{theta_s, a_vg, n_vg, k_sat};
+    return li2007_ptf_result{theta_s, a_vg, n_vg, k_sat};
 #else
-    return (ptfkit_calc_ptf_li2007_result){
+    return (li2007_ptf_result){
         .theta_s = theta_s,
         .a_vg = a_vg,
         .n_vg = n_vg,

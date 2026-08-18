@@ -21,7 +21,9 @@ status when input validation fails; report the blocking input error.
    `specs/schema/ptf-spec.schema.json`, its selected YAML file,
    and `references/generation-checklist.md`.
 2. Reject unresolved blockers, `TODO` values, schema or semantic failures, and
-   output-metadata mismatches. Do not infer missing science.
+   output-metadata mismatches. Record `outputs.name` is PascalCase and names
+   generated structures and classes; `$defs` keys only resolve local references.
+   Do not infer missing science.
 3. Validate, generate both retained targets, and run the required verification
    gates. A generator capability gap is a blocker, never an invitation to
    hand-write that computational target.

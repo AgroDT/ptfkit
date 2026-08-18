@@ -8,6 +8,8 @@
 - Every selected function is `ready-for-implementation`, has no unresolved
   blocker or `TODO`, and has complete schema-valid semantic implementation and
   matching ordered output metadata.
+- Every record `outputs.name` is PascalCase and names generated structures and
+  classes.
 - Run `cargo run --manifest-path codegen/Cargo.toml -- validate` before
   generation.
 

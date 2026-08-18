@@ -28,7 +28,7 @@ typedef struct {
     double water_field_capacity;
     /** Gravimetric water content at -1,500 kPa. (g/g) */
     double water_wilting_point;
-} ptfkit_Beniaich2023PTFResult_result;
+} beniaich2023_ptf_result;
 
 /**
  * Estimate three gravimetric water contents from clay.
@@ -49,15 +49,14 @@ typedef struct {
  * Developed from Moroccan agricultural topsoils and not independently validated outside the
  * source territory.
  */
-static inline ptfkit_Beniaich2023PTFResult_result calc_ptf_beniaich2023_slr1(double clay) {
+static inline beniaich2023_ptf_result calc_ptf_beniaich2023_slr1(double clay) {
     const double water_saturation = (46.307 + 0.556 * clay) / 100.0;
     const double water_field_capacity = (10.277 + 0.365 * clay) / 100.0;
     const double water_wilting_point = (3.081 + 0.327 * clay) / 100.0;
 #ifdef __cplusplus
-    return ptfkit_Beniaich2023PTFResult_result{water_saturation, water_field_capacity,
-                                               water_wilting_point};
+    return beniaich2023_ptf_result{water_saturation, water_field_capacity, water_wilting_point};
 #else
-    return (ptfkit_Beniaich2023PTFResult_result){
+    return (beniaich2023_ptf_result){
         .water_saturation = water_saturation,
         .water_field_capacity = water_field_capacity,
         .water_wilting_point = water_wilting_point,
@@ -84,15 +83,14 @@ static inline ptfkit_Beniaich2023PTFResult_result calc_ptf_beniaich2023_slr1(dou
  * Developed from Moroccan agricultural topsoils and not independently validated outside the
  * source territory.
  */
-static inline ptfkit_Beniaich2023PTFResult_result calc_ptf_beniaich2023_slr2(double silt) {
+static inline beniaich2023_ptf_result calc_ptf_beniaich2023_slr2(double silt) {
     const double water_saturation = (59.508 + 0.299 * silt) / 100.0;
     const double water_field_capacity = (16.178 + 0.290 * silt) / 100.0;
     const double water_wilting_point = (10.521 + 0.187 * silt) / 100.0;
 #ifdef __cplusplus
-    return ptfkit_Beniaich2023PTFResult_result{water_saturation, water_field_capacity,
-                                               water_wilting_point};
+    return beniaich2023_ptf_result{water_saturation, water_field_capacity, water_wilting_point};
 #else
-    return (ptfkit_Beniaich2023PTFResult_result){
+    return (beniaich2023_ptf_result){
         .water_saturation = water_saturation,
         .water_field_capacity = water_field_capacity,
         .water_wilting_point = water_wilting_point,
@@ -119,15 +117,14 @@ static inline ptfkit_Beniaich2023PTFResult_result calc_ptf_beniaich2023_slr2(dou
  * Developed from Moroccan agricultural topsoils and not independently validated outside the
  * source territory.
  */
-static inline ptfkit_Beniaich2023PTFResult_result calc_ptf_beniaich2023_slr3(double sand) {
+static inline beniaich2023_ptf_result calc_ptf_beniaich2023_slr3(double sand) {
     const double water_saturation = (81.420 - 0.427 * sand) / 100.0;
     const double water_field_capacity = (34.680 - 0.324 * sand) / 100.0;
     const double water_wilting_point = (23.927 - 0.257 * sand) / 100.0;
 #ifdef __cplusplus
-    return ptfkit_Beniaich2023PTFResult_result{water_saturation, water_field_capacity,
-                                               water_wilting_point};
+    return beniaich2023_ptf_result{water_saturation, water_field_capacity, water_wilting_point};
 #else
-    return (ptfkit_Beniaich2023PTFResult_result){
+    return (beniaich2023_ptf_result){
         .water_saturation = water_saturation,
         .water_field_capacity = water_field_capacity,
         .water_wilting_point = water_wilting_point,
@@ -155,17 +152,15 @@ static inline ptfkit_Beniaich2023PTFResult_result calc_ptf_beniaich2023_slr3(dou
  * Developed from Moroccan agricultural topsoils and not independently validated outside the
  * source territory.
  */
-static inline ptfkit_Beniaich2023PTFResult_result calc_ptf_beniaich2023_slr4(double clay,
-                                                                             double silt) {
+static inline beniaich2023_ptf_result calc_ptf_beniaich2023_slr4(double clay, double silt) {
     const double clay_silt = clay + silt;
     const double water_saturation = (89.401 - 0.298 * clay_silt) / 100.0;
     const double water_field_capacity = (45.178 - 0.290 * clay_silt) / 100.0;
     const double water_wilting_point = (29.265 - 0.187 * clay_silt) / 100.0;
 #ifdef __cplusplus
-    return ptfkit_Beniaich2023PTFResult_result{water_saturation, water_field_capacity,
-                                               water_wilting_point};
+    return beniaich2023_ptf_result{water_saturation, water_field_capacity, water_wilting_point};
 #else
-    return (ptfkit_Beniaich2023PTFResult_result){
+    return (beniaich2023_ptf_result){
         .water_saturation = water_saturation,
         .water_field_capacity = water_field_capacity,
         .water_wilting_point = water_wilting_point,
@@ -193,17 +188,15 @@ static inline ptfkit_Beniaich2023PTFResult_result calc_ptf_beniaich2023_slr4(dou
  * Developed from Moroccan agricultural topsoils and not independently validated outside the
  * source territory.
  */
-static inline ptfkit_Beniaich2023PTFResult_result calc_ptf_beniaich2023_slr5(double clay,
-                                                                             double silt) {
+static inline beniaich2023_ptf_result calc_ptf_beniaich2023_slr5(double clay, double silt) {
     const double clay_silt_ratio = clay / silt;
     const double water_saturation = (68.851 - 0.546 * clay_silt_ratio) / 100.0;
     const double water_field_capacity = (23.278 + 1.819 * clay_silt_ratio) / 100.0;
     const double water_wilting_point = (16.298 - 0.244 * clay_silt_ratio) / 100.0;
 #ifdef __cplusplus
-    return ptfkit_Beniaich2023PTFResult_result{water_saturation, water_field_capacity,
-                                               water_wilting_point};
+    return beniaich2023_ptf_result{water_saturation, water_field_capacity, water_wilting_point};
 #else
-    return (ptfkit_Beniaich2023PTFResult_result){
+    return (beniaich2023_ptf_result){
         .water_saturation = water_saturation,
         .water_field_capacity = water_field_capacity,
         .water_wilting_point = water_wilting_point,
@@ -230,16 +223,14 @@ static inline ptfkit_Beniaich2023PTFResult_result calc_ptf_beniaich2023_slr5(dou
  * Developed from Moroccan agricultural topsoils and not independently validated outside the
  * source territory.
  */
-static inline ptfkit_Beniaich2023PTFResult_result
-calc_ptf_beniaich2023_slr6(double soil_organic_matter) {
+static inline beniaich2023_ptf_result calc_ptf_beniaich2023_slr6(double soil_organic_matter) {
     const double water_saturation = (61.163 + 2.793 * soil_organic_matter) / 100.0;
     const double water_field_capacity = (21.331 + 1.339 * soil_organic_matter) / 100.0;
     const double water_wilting_point = (13.758 + 0.902 * soil_organic_matter) / 100.0;
 #ifdef __cplusplus
-    return ptfkit_Beniaich2023PTFResult_result{water_saturation, water_field_capacity,
-                                               water_wilting_point};
+    return beniaich2023_ptf_result{water_saturation, water_field_capacity, water_wilting_point};
 #else
-    return (ptfkit_Beniaich2023PTFResult_result){
+    return (beniaich2023_ptf_result){
         .water_saturation = water_saturation,
         .water_field_capacity = water_field_capacity,
         .water_wilting_point = water_wilting_point,
@@ -268,8 +259,8 @@ calc_ptf_beniaich2023_slr6(double soil_organic_matter) {
  * Developed from Moroccan agricultural topsoils and not independently validated outside the
  * source territory.
  */
-static inline ptfkit_Beniaich2023PTFResult_result
-calc_ptf_beniaich2023_mlr1(double silt, double sand, double soil_organic_matter) {
+static inline beniaich2023_ptf_result calc_ptf_beniaich2023_mlr1(double silt, double sand,
+                                                                 double soil_organic_matter) {
     const double water_saturation =
         (87.342 - 0.281 * silt - 0.548 * sand + 2.377 * soil_organic_matter) / 100.0;
     const double water_field_capacity =
@@ -277,10 +268,9 @@ calc_ptf_beniaich2023_mlr1(double silt, double sand, double soil_organic_matter)
     const double water_wilting_point =
         (28.734 - 0.148 * silt - 0.324 * sand + 0.636 * soil_organic_matter) / 100.0;
 #ifdef __cplusplus
-    return ptfkit_Beniaich2023PTFResult_result{water_saturation, water_field_capacity,
-                                               water_wilting_point};
+    return beniaich2023_ptf_result{water_saturation, water_field_capacity, water_wilting_point};
 #else
-    return (ptfkit_Beniaich2023PTFResult_result){
+    return (beniaich2023_ptf_result){
         .water_saturation = water_saturation,
         .water_field_capacity = water_field_capacity,
         .water_wilting_point = water_wilting_point,
@@ -308,18 +298,17 @@ calc_ptf_beniaich2023_mlr1(double silt, double sand, double soil_organic_matter)
  * Developed from Moroccan agricultural topsoils and not independently validated outside the
  * source territory.
  */
-static inline ptfkit_Beniaich2023PTFResult_result
-calc_ptf_beniaich2023_mlr2(double sand, double soil_organic_matter) {
+static inline beniaich2023_ptf_result calc_ptf_beniaich2023_mlr2(double sand,
+                                                                 double soil_organic_matter) {
     const double water_saturation = (75.366 - 0.417 * sand + 2.219 * soil_organic_matter) / 100.0;
     const double water_field_capacity =
         (32.227 - 0.320 * sand + 0.899 * soil_organic_matter) / 100.0;
     const double water_wilting_point =
         (22.421 - 0.254 * sand + 0.552 * soil_organic_matter) / 100.0;
 #ifdef __cplusplus
-    return ptfkit_Beniaich2023PTFResult_result{water_saturation, water_field_capacity,
-                                               water_wilting_point};
+    return beniaich2023_ptf_result{water_saturation, water_field_capacity, water_wilting_point};
 #else
-    return (ptfkit_Beniaich2023PTFResult_result){
+    return (beniaich2023_ptf_result){
         .water_saturation = water_saturation,
         .water_field_capacity = water_field_capacity,
         .water_wilting_point = water_wilting_point,
@@ -347,17 +336,16 @@ calc_ptf_beniaich2023_mlr2(double sand, double soil_organic_matter) {
  * Developed from Moroccan agricultural topsoils and not independently validated outside the
  * source territory.
  */
-static inline ptfkit_Beniaich2023PTFResult_result
-calc_ptf_beniaich2023_mlr3(double silt, double soil_organic_matter) {
+static inline beniaich2023_ptf_result calc_ptf_beniaich2023_mlr3(double silt,
+                                                                 double soil_organic_matter) {
     const double water_saturation = (53.777 + 0.278 * silt + 2.457 * soil_organic_matter) / 100.0;
     const double water_field_capacity =
         (13.847 + 0.281 * silt + 0.999 * soil_organic_matter) / 100.0;
     const double water_wilting_point = (8.929 + 0.182 * silt + 0.683 * soil_organic_matter) / 100.0;
 #ifdef __cplusplus
-    return ptfkit_Beniaich2023PTFResult_result{water_saturation, water_field_capacity,
-                                               water_wilting_point};
+    return beniaich2023_ptf_result{water_saturation, water_field_capacity, water_wilting_point};
 #else
-    return (ptfkit_Beniaich2023PTFResult_result){
+    return (beniaich2023_ptf_result){
         .water_saturation = water_saturation,
         .water_field_capacity = water_field_capacity,
         .water_wilting_point = water_wilting_point,
@@ -385,17 +373,16 @@ calc_ptf_beniaich2023_mlr3(double silt, double soil_organic_matter) {
  * Developed from Moroccan agricultural topsoils and not independently validated outside the
  * source territory.
  */
-static inline ptfkit_Beniaich2023PTFResult_result
-calc_ptf_beniaich2023_mlr4(double clay, double soil_organic_matter) {
+static inline beniaich2023_ptf_result calc_ptf_beniaich2023_mlr4(double clay,
+                                                                 double soil_organic_matter) {
     const double water_saturation = (39.432 + 0.553 * clay + 2.699 * soil_organic_matter) / 100.0;
     const double water_field_capacity =
         (7.023 + 0.364 * clay + 1.278 * soil_organic_matter) / 100.0;
     const double water_wilting_point = (0.923 + 0.327 * clay + 0.847 * soil_organic_matter) / 100.0;
 #ifdef __cplusplus
-    return ptfkit_Beniaich2023PTFResult_result{water_saturation, water_field_capacity,
-                                               water_wilting_point};
+    return beniaich2023_ptf_result{water_saturation, water_field_capacity, water_wilting_point};
 #else
-    return (ptfkit_Beniaich2023PTFResult_result){
+    return (beniaich2023_ptf_result){
         .water_saturation = water_saturation,
         .water_field_capacity = water_field_capacity,
         .water_wilting_point = water_wilting_point,
@@ -424,8 +411,8 @@ calc_ptf_beniaich2023_mlr4(double clay, double soil_organic_matter) {
  * Developed from Moroccan agricultural topsoils and not independently validated outside the
  * source territory.
  */
-static inline ptfkit_Beniaich2023PTFResult_result
-calc_ptf_beniaich2023_mlr5(double clay, double silt, double soil_organic_matter) {
+static inline beniaich2023_ptf_result calc_ptf_beniaich2023_mlr5(double clay, double silt,
+                                                                 double soil_organic_matter) {
     const double water_saturation =
         (32.505 + 0.548 * clay + 0.267 * silt + 2.377 * soil_organic_matter) / 100.0;
     const double water_field_capacity =
@@ -433,10 +420,9 @@ calc_ptf_beniaich2023_mlr5(double clay, double silt, double soil_organic_matter)
     const double water_wilting_point =
         (-3.623 + 0.324 * clay + 0.175 * silt + 0.636 * soil_organic_matter) / 100.0;
 #ifdef __cplusplus
-    return ptfkit_Beniaich2023PTFResult_result{water_saturation, water_field_capacity,
-                                               water_wilting_point};
+    return beniaich2023_ptf_result{water_saturation, water_field_capacity, water_wilting_point};
 #else
-    return (ptfkit_Beniaich2023PTFResult_result){
+    return (beniaich2023_ptf_result){
         .water_saturation = water_saturation,
         .water_field_capacity = water_field_capacity,
         .water_wilting_point = water_wilting_point,

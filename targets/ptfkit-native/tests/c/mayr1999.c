@@ -5,21 +5,19 @@
 
 int main() {
     {
-        const ptfkit_calc_ptf_mayr1999_result result =
-            calc_ptf_mayr1999(40.0, 40.0, 20.0, 1.3, 2.0);
+        const mayr1999_ptf_result result = calc_ptf_mayr1999(40.0, 40.0, 20.0, 1.3, 2.0);
         assert_close_enough(result.a_hc, 9.19922782578422, 0.000000000001, 0.000000000001);
         assert_close_enough(result.b_hc, 8.52432443785475, 0.000000000001, 0.000000000001);
         assert_close_enough(result.theta_s, 0.48733161333, 0.000000000001, 0.000000000001);
     }
     {
-        const ptfkit_calc_ptf_mayr1999_result result =
-            calc_ptf_mayr1999(20.0, 20.0, 60.0, 1.2, 2.0);
+        const mayr1999_ptf_result result = calc_ptf_mayr1999(20.0, 20.0, 60.0, 1.2, 2.0);
         assert_close_enough(result.a_hc, 14.5305137640911, 0.000000000001, 0.000000000001);
         assert_close_enough(result.b_hc, 18.9375141190925, 0.000000000001, 0.000000000001);
         assert_close_enough(result.theta_s, 0.52145684162, 0.000000000001, 0.000000000001);
     }
     {
-        const ptfkit_calc_ptf_mayr1999_result result = calc_ptf_mayr1999(90.0, 5.0, 5.0, 1.5, 1.0);
+        const mayr1999_ptf_result result = calc_ptf_mayr1999(90.0, 5.0, 5.0, 1.5, 1.0);
         assert_close_enough(result.a_hc, 2.40216699550362, 0.000000000001, 0.000000000001);
         assert_close_enough(result.b_hc, 3.2690464531591, 0.000000000001, 0.000000000001);
         assert_close_enough(result.theta_s, 0.4209756915, 0.000000000001, 0.000000000001);

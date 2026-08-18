@@ -52,6 +52,7 @@ functions:
     description: Soil organic matter.
   outputs:
     type: record
+    name: Li2007PTFResult
     fields:
     - name: theta_s
       symbol: theta_s

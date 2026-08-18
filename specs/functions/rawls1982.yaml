@@ -149,6 +149,7 @@ functions:
     description: Measured or estimated volumetric water content at -1500 kPa.
   outputs:
     type: record
+    name: Rawls1982PTFResult
     fields:
     - name: theta_4
       symbol: theta_4

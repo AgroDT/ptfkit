@@ -10,6 +10,7 @@ APA-style slug and identifies the generated public module, for example
 - Preserve the ordered functions, inputs, outputs, source metadata, units,
   golden and edge cases, documentation, scope, and semantic `implementation`
   fields required by the schema.
+- Every record output has an explicit PascalCase `name`.
 - Use the formula DSL only in `implementation` expressions. In
   `scientific_notes`, retain source-supported scientific context, derivations
   needed to justify an interpretation, evidence for review decisions, citations,
