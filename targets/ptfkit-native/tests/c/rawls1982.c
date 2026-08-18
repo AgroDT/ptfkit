@@ -13,7 +13,7 @@ int main() {
         assert_close_enough(result, 0.1179896, 0.000000000001, 0.0000000001);
     }
     {
-        const ptfkit_calc_ptf_rawls1982_full_wrc_result result =
+        const rawls1982_ptf_result result =
             calc_ptf_rawls1982_full_wrc(85.0, 0.66, 1.22, 0.091, 0.033);
         assert_close_enough(result.theta_4, 0.247242, 0.000000000001, 0.0000000001);
         assert_close_enough(result.theta_7, 0.968738, 0.000000000001, 0.0000000001);

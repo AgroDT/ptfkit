@@ -42,7 +42,7 @@ typedef struct {
     double theta_1000;
     /** Input volumetric water content at -1500 kPa. (cm^3/cm^3) */
     double theta_1500;
-} ptfkit_calc_ptf_rawls1982_full_wrc_result;
+} rawls1982_ptf_result;
 
 /**
  * Estimate volumetric water content at -1500 kPa.
@@ -112,9 +112,9 @@ static inline double calc_ptf_rawls1982_theta_33(double sand, double organic_mat
  * Warnings:
  * The source value 0.8888 is retained literally for the theta_7 intercept.
  */
-static inline ptfkit_calc_ptf_rawls1982_full_wrc_result
-calc_ptf_rawls1982_full_wrc(double sand, double organic_matter, double bulk_density,
-                            double theta_33, double theta_1500) {
+static inline rawls1982_ptf_result calc_ptf_rawls1982_full_wrc(double sand, double organic_matter,
+                                                               double bulk_density, double theta_33,
+                                                               double theta_1500) {
     const double theta_4 = 0.1829 - 0.0246 * organic_matter - 0.0376 * bulk_density +
                            1.89 * theta_33 - 1.38 * theta_1500;
     const double theta_7 =
@@ -134,11 +134,10 @@ calc_ptf_rawls1982_full_wrc(double sand, double organic_matter, double bulk_dens
     const double theta_1000 =
         -0.0019 + 0.0022 * organic_matter + 0.11 * theta_33 + 0.89 * theta_1500;
 #ifdef __cplusplus
-    return ptfkit_calc_ptf_rawls1982_full_wrc_result{theta_4,   theta_7,   theta_10,   theta_20,
-                                                     theta_33,  theta_60,  theta_100,  theta_200,
-                                                     theta_400, theta_700, theta_1000, theta_1500};
+    return rawls1982_ptf_result{theta_4,   theta_7,   theta_10,  theta_20,  theta_33,   theta_60,
+                                theta_100, theta_200, theta_400, theta_700, theta_1000, theta_1500};
 #else
-    return (ptfkit_calc_ptf_rawls1982_full_wrc_result){
+    return (rawls1982_ptf_result){
         .theta_4 = theta_4,
         .theta_7 = theta_7,
         .theta_10 = theta_10,

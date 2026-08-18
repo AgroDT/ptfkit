@@ -3,6 +3,8 @@
 ## Specification and IR
 
 - [ ] YAML validates against the active unversioned schema and semantic checks.
+- [ ] Every record `outputs.name` is PascalCase and names generated structures
+  and classes; `$defs` keys only resolve local references.
 - [ ] Every public function name, argument, output, unit, and IR expression
   matches the YAML specification.
 - [ ] No scientific assumption is present only in generated code.

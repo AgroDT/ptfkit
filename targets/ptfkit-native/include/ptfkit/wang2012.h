@@ -29,7 +29,7 @@ typedef struct {
     double theta_fc;
     /** Saturated hydraulic conductivity converted from cm/day. (m/s) */
     double k_sat;
-} ptfkit_calc_ptf_wang2012_result;
+} wang2012_ptf_result;
 
 /**
  * Estimate saturated water content, field capacity, and saturated conductivity.
@@ -61,10 +61,9 @@ typedef struct {
  * This normalization intentionally changes the legacy water-content outputs by a factor of
  * 100.
  */
-static inline ptfkit_calc_ptf_wang2012_result calc_ptf_wang2012(double sand, double silt,
-                                                                double clay, double bulk_density,
-                                                                double soil_organic_carbon,
-                                                                double altitude) {
+static inline wang2012_ptf_result calc_ptf_wang2012(double sand, double silt, double clay,
+                                                    double bulk_density, double soil_organic_carbon,
+                                                    double altitude) {
     const double soil_organic_carbon_g_per_kg = 10.0 * soil_organic_carbon;
     const double log10_k_sat_cm_per_day = 1.173 + 0.038 * silt + 0.690 * log10(sand) +
                                           0.865 / sand - 0.030 * bulk_density * silt -
@@ -83,9 +82,9 @@ static inline ptfkit_calc_ptf_wang2012_result calc_ptf_wang2012(double sand, dou
     const double theta_fc = fc_percent / 100.0;
     const double k_sat = k_sat_cm_per_day / 8640000.0;
 #ifdef __cplusplus
-    return ptfkit_calc_ptf_wang2012_result{theta_s, theta_fc, k_sat};
+    return wang2012_ptf_result{theta_s, theta_fc, k_sat};
 #else
-    return (ptfkit_calc_ptf_wang2012_result){
+    return (wang2012_ptf_result){
         .theta_s = theta_s,
         .theta_fc = theta_fc,
         .k_sat = k_sat,

@@ -32,6 +32,7 @@ $defs:
     description: Fine-particle mass fraction reported as particles smaller than 0.002 mm.
   Varallyai1982Parameters:
     type: record
+    name: Varallyai1982Parameters
     fields:
       - name: theta_0
         symbol: theta_0

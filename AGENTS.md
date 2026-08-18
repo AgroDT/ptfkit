@@ -16,6 +16,9 @@ completely sure.
 
 ## PTF specification workflow
 
+- Every record output declares a non-empty PascalCase `outputs.name`, including
+  records in `$defs`. It names generated structures and classes.
+
 - Use the project-specific skills in `.agents/skills/` in this order:
   - `ptf-extract` to turn a user-supplied local paper into a validated draft
     YAML source specification under `specs/functions/`.

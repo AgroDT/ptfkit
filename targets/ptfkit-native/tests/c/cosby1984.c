@@ -5,7 +5,7 @@
 
 int main() {
     {
-        const ptfkit_calc_ptf_cosby1984_univariate_result result =
+        const cosby1984_univariate_ptf_result result =
             calc_ptf_cosby1984_univariate(50.0, 30.0, 20.0);
         assert_close_enough(result.mean_b, 6.09, 0.000000000001, 0.000000000001);
         assert_close_enough(result.mean_log_psi_s, 1.225, 0.000000000001, 0.000000000001);
@@ -16,7 +16,7 @@ int main() {
         assert_close_enough(result.sd_theta_s, 6.27, 0.000000000001, 0.000000000001);
     }
     {
-        const ptfkit_calc_ptf_cosby1984_univariate_result result =
+        const cosby1984_univariate_ptf_result result =
             calc_ptf_cosby1984_univariate(80.0, 15.0, 5.0);
         assert_close_enough(result.mean_b, 3.705, 0.000000000001, 0.000000000001);
         assert_close_enough(result.mean_log_psi_s, 0.832, 0.000000000001, 0.000000000001);

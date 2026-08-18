@@ -39,6 +39,9 @@ exact YAML path and explicit blockers.
 - Do not set `implemented`, run target generation, or edit generated files.
 - Do not invent formulas, units, metadata, golden values, applicability, or
   API details. Keep uncertainty explicit in the YAML.
+- Give every `type: record` output a PascalCase `name`, whether it is inline or
+  declared in `$defs`. It names generated structures and classes; `$defs` keys
+  only resolve local `$ref` targets.
 - Use `generation.public_python: manual` only when the public wrapper cannot
   follow the standard generated API; it never opts the native NumPy ufunc out
   of generation.

@@ -45,6 +45,7 @@ $defs:
     description: Soil organic matter content by mass.
   Beniaich2023PTFResult:
     type: record
+    name: Beniaich2023PTFResult
     fields:
     - name: water_saturation
       symbol: w_0

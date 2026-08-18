@@ -5,8 +5,7 @@
 
 int main() {
     {
-        const ptfkit_calc_ptf_wang2012_result result =
-            calc_ptf_wang2012(85.0, 10.0, 5.0, 1.22, 0.033, 1193.0);
+        const wang2012_ptf_result result = calc_ptf_wang2012(85.0, 10.0, 5.0, 1.22, 0.033, 1193.0);
         assert_close_enough(result.theta_s, 0.61540575, 0.000000000001, 0.000001);
         assert_close_enough(result.theta_fc, 0.38491949, 0.000000000001, 0.000001);
         assert_close_enough(result.k_sat, 0.00003872974, 0.000000000001, 0.000001);

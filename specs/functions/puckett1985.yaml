@@ -49,6 +49,7 @@ functions:
     description: Porosity calculated from measured bulk and particle densities.
   outputs:
     type: record
+    name: Puckett1985PTFResult
     fields:
     - name: theta_0
       symbol: theta_0

@@ -5,8 +5,7 @@
 
 int main() {
     {
-        const ptfkit_calc_ptf_weber2020_result result =
-            calc_ptf_weber2020(0.05, 0.45, 0.02, 1.6, -0.5, 100.0);
+        const weber2020_ptf_result result = calc_ptf_weber2020(0.05, 0.45, 0.02, 1.6, -0.5, 100.0);
         assert_close_enough(result.theta_snc_bw, 0.06267, 0.000000000001, 0.000000000001);
         assert_close_enough(result.theta_sc_bw, 0.38607, 0.000000000001, 0.000000000001);
         assert_close_enough(result.alpha_bw, 0.0201472407335197, 0.000000000001, 0.000000000001);

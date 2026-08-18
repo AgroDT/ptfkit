@@ -312,6 +312,85 @@ mod tests {
     }
 
     #[test]
+    fn rejects_an_inline_record_without_a_name() {
+        let root = fixture_root("unnamed-record");
+        let specification = specification(
+            "unnamed_record",
+            "    implementation:\n      variables: [{name: first, expr: x}, {name: second, expr: x}]\n",
+            "",
+        )
+        .replace(
+            "outputs: {type: scalar, name: value, symbol: y, unit: '1', domain: null, description: Test output.}",
+            "outputs:\n      type: record\n      fields:\n      - {name: first, symbol: y_1, unit: '1', domain: null, description: First output.}\n      - {name: second, symbol: y_2, unit: '1', domain: null, description: Second output.}",
+        );
+        fs::write(
+            root.join("specs/functions/unnamed_record.yaml"),
+            specification,
+        )
+        .unwrap();
+
+        let error = load(&root)
+            .expect_err("unnamed inline record must fail")
+            .to_string();
+        assert!(error.contains("functions.0.outputs"), "{error}");
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn rejects_a_non_pascal_case_record_name() {
+        let root = fixture_root("non-pascal-case-record");
+        let specification = specification(
+            "non_pascal_case_record",
+            "    implementation:\n      variables: [{name: first, expr: x}, {name: second, expr: x}]\n",
+            "",
+        )
+        .replace(
+            "outputs: {type: scalar, name: value, symbol: y, unit: '1', domain: null, description: Test output.}",
+            "outputs:\n      type: record\n      name: result_record\n      fields:\n      - {name: first, symbol: y_1, unit: '1', domain: null, description: First output.}\n      - {name: second, symbol: y_2, unit: '1', domain: null, description: Second output.}",
+        );
+        fs::write(
+            root.join("specs/functions/non_pascal_case_record.yaml"),
+            specification,
+        )
+        .unwrap();
+
+        let error = load(&root)
+            .expect_err("non-PascalCase record name must fail")
+            .to_string();
+        assert!(error.contains("functions.0.outputs"), "{error}");
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn rejects_a_record_definition_without_a_name() {
+        let root = fixture_root("unnamed-record-definition");
+        let specification = specification(
+            "unnamed_record_definition",
+            "    implementation:\n      variables: [{name: value, expr: x}]\n",
+            "",
+        )
+        .replace(
+            "functions:\n",
+            "$defs:\n  reusable_result:\n    type: record\n    fields:\n    - {name: value, symbol: y, unit: '1', domain: null, description: Test output.}\nfunctions:\n",
+        )
+        .replace(
+            "outputs: {type: scalar, name: value, symbol: y, unit: '1', domain: null, description: Test output.}",
+            "outputs: {$ref: '#/$defs/reusable_result'}",
+        );
+        fs::write(
+            root.join("specs/functions/unnamed_record_definition.yaml"),
+            specification,
+        )
+        .unwrap();
+
+        let error = load(&root)
+            .expect_err("unnamed record definition must fail")
+            .to_string();
+        assert!(error.contains("$defs.reusable_result"), "{error}");
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
     fn reports_schema_formula_and_output_contract_errors() {
         let root = fixture_root("errors");
         write(&root, "schema", "", "unknown: value\n");

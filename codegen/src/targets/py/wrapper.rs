@@ -449,10 +449,9 @@ mod tests {
             },
             inputs: Vec::new(),
             outputs: crate::model::Outputs::Record {
-                name: None,
+                name: "TestResult".into(),
                 fields: Vec::new(),
             },
-            output_schema: None,
             documentation: Documentation::default(),
             implementation: None,
             golden_tests: Vec::new(),

@@ -39,6 +39,7 @@ functions:
     description: Clay content.
   outputs:
     type: record
+    name: Cosby1984UnivariatePTFResult
     fields:
     - name: mean_b
       symbol: b

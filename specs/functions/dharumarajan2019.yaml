@@ -72,6 +72,7 @@ $defs:
     description: Silt content in the Karnataka infiltration dataset.
   Dharumarajan2019WaterRetentionResult:
     type: record
+    name: Dharumarajan2019WaterRetentionResult
     fields:
       - name: field_capacity
         symbol: FC
