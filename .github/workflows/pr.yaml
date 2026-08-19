@@ -22,7 +22,18 @@ jobs:
           components: clippy, rustfmt
 
       - name: Install clang-format
-        run: sudo apt-get update && sudo apt-get install --yes clang-format
+        timeout-minutes: 5
+        run: |
+          sudo apt-get \
+            -o Acquire::Retries=3 \
+            -o Acquire::http::Timeout=30 \
+            -o Acquire::https::Timeout=30 \
+            update
+          sudo apt-get \
+            -o Acquire::Retries=3 \
+            -o Acquire::http::Timeout=30 \
+            -o Acquire::https::Timeout=30 \
+            install --yes clang-format
 
       - name: Cache Rust dependencies and codegen artifacts
         uses: Swatinem/rust-cache@v2
