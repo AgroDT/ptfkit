@@ -4,57 +4,56 @@
 #define PTFKIT_DHARUMARAJAN2019_H
 
 /**
- * Dharumarajan et al. (2019) hydraulic PTFs for the Karnataka Plateau.
+ * @brief Dharumarajan et al. (2019) hydraulic PTFs for the Karnataka Plateau.
  *
- * Reference:
+ * @details Source publication:
  * Dharumarajan, S., Hegde, R., Lalitha, M., Kalaiselvi, B., & Singh, S. K. (2019).
  * Pedotransfer functions for predicting soil hydraulic properties in semi-arid regions of
  * Karnataka Plateau, India. Current Science, 116(7), 1237-1246.
  * https://doi.org/10.18520/cs/v116/i7/1237-1246
- * DOI: 10.18520/cs/v116/i7/1237-1246 (https://doi.org/10.18520/cs/v116/i7/1237-1246)
+ * @see https://doi.org/10.18520/cs/v116/i7/1237-1246 DOI: 10.18520/cs/v116/i7/1237-1246
  *
- * Territory:
+ * @remark Geographic scope:
  * Karnataka Plateau, India
  *
- * Dataset:
+ * @remark Calibration dataset:
  * Field capacity and permanent wilting point were modeled from 512 soil samples in the
  * Northern Karnataka Plateau and 228 samples in the Southern Karnataka Plateau; infiltration
  * was modeled from 100 Karnataka soil observations.
  */
 
 typedef struct {
-    /** Soil water content at -33 kPa matric potential. (%) */
+    /**
+     * @brief Soil water content at -33 kPa matric potential. (%)
+     */
     double field_capacity;
-    /** Soil water content at -1500 kPa matric potential. (%) */
+    /**
+     * @brief Soil water content at -1500 kPa matric potential. (%)
+     */
     double permanent_wilting_point;
 } dharumarajan2019_water_retention_result;
 
 /**
- * Estimate field capacity and wilting point for Northern Karnataka soils.
+ * @brief Estimate field capacity and wilting point for Northern Karnataka soils.
+ * @param clay Clay content. (%)
+ * @param sand Sand content. (%)
+ * @param cation_exchange_capacity Cation exchange capacity. (C mol p+/kg)
+ * @return A result with the following fields:
+ * - `field_capacity` — Soil water content at -33 kPa matric potential. (%)
+ * - `permanent_wilting_point` — Soil water content at -1500 kPa matric potential. (%)
  *
- * Parameters:
- * clay: Clay content. (%)
- * sand: Sand content. (%)
- * cation_exchange_capacity: Cation exchange capacity. (C mol p+/kg)
- *
- * Returns:
- * field_capacity: Soil water content at -33 kPa matric potential. (%)
- * permanent_wilting_point: Soil water content at -1500 kPa matric potential. (%)
- *
- * Territory:
+ * @remark Geographic scope:
  * Northern Karnataka Plateau
  *
- * Notes:
- * Prediction target: Water content at field capacity and permanent wilting point from clay,
- * sand, and cation exchange capacity.
- * The model was fitted to 512 soil-layer observations.
- * Reported cross-validation RMSE values are 5.25% for FC and 3.71% for PWP.
- *
- * Warnings:
- * The paper does not state whether its water-content percentages are gravimetric or
+ * @details Prediction target:
+ * Water content at field capacity and permanent wilting point from clay, sand, and cation
+ * exchange capacity.
+ * @note The model was fitted to 512 soil-layer observations.
+ * @note Reported cross-validation RMSE values are 5.25% for FC and 3.71% for PWP.
+ * @warning The paper does not state whether its water-content percentages are gravimetric or
  * volumetric.
- * The source gives inconsistent profile counts and district lists for the Northern dataset;
- * see the scientific notes.
+ * @warning The source gives inconsistent profile counts and district lists for the Northern
+ * dataset; see the scientific notes.
  */
 static inline dharumarajan2019_water_retention_result
 calc_ptf_dharumarajan2019_nkp(double clay, double sand, double cation_exchange_capacity) {
@@ -73,29 +72,23 @@ calc_ptf_dharumarajan2019_nkp(double clay, double sand, double cation_exchange_c
 }
 
 /**
- * Estimate Northern Karnataka field capacity and wilting point from clay.
+ * @brief Estimate Northern Karnataka field capacity and wilting point from clay.
+ * @param clay Clay content. (%)
+ * @return A result with the following fields:
+ * - `field_capacity` — Soil water content at -33 kPa matric potential. (%)
+ * - `permanent_wilting_point` — Soil water content at -1500 kPa matric potential. (%)
  *
- * Parameters:
- * clay: Clay content. (%)
- *
- * Returns:
- * field_capacity: Soil water content at -33 kPa matric potential. (%)
- * permanent_wilting_point: Soil water content at -1500 kPa matric potential. (%)
- *
- * Territory:
+ * @remark Geographic scope:
  * Northern Karnataka Plateau
  *
- * Notes:
- * Prediction target: Water content at field capacity and permanent wilting point from clay
- * content alone.
- * The paper recommends this model when clay content is the only available predictor.
- * Reported cross-validation RMSE values are 7.05% for FC and 4.74% for PWP.
- *
- * Warnings:
- * The paper does not state whether its water-content percentages are gravimetric or
+ * @details Prediction target:
+ * Water content at field capacity and permanent wilting point from clay content alone.
+ * @note The paper recommends this model when clay content is the only available predictor.
+ * @note Reported cross-validation RMSE values are 7.05% for FC and 4.74% for PWP.
+ * @warning The paper does not state whether its water-content percentages are gravimetric or
  * volumetric.
- * The source gives inconsistent profile counts and district lists for the Northern dataset;
- * see the scientific notes.
+ * @warning The source gives inconsistent profile counts and district lists for the Northern
+ * dataset; see the scientific notes.
  */
 static inline dharumarajan2019_water_retention_result
 calc_ptf_dharumarajan2019_nkp_clay(double clay) {
@@ -112,28 +105,23 @@ calc_ptf_dharumarajan2019_nkp_clay(double clay) {
 }
 
 /**
- * Estimate field capacity and wilting point for Southern Karnataka soils.
+ * @brief Estimate field capacity and wilting point for Southern Karnataka soils.
+ * @param clay Clay content. (%)
+ * @param sand Sand content. (%)
+ * @param cation_exchange_capacity Cation exchange capacity. (C mol p+/kg)
+ * @return A result with the following fields:
+ * - `field_capacity` — Soil water content at -33 kPa matric potential. (%)
+ * - `permanent_wilting_point` — Soil water content at -1500 kPa matric potential. (%)
  *
- * Parameters:
- * clay: Clay content. (%)
- * sand: Sand content. (%)
- * cation_exchange_capacity: Cation exchange capacity. (C mol p+/kg)
- *
- * Returns:
- * field_capacity: Soil water content at -33 kPa matric potential. (%)
- * permanent_wilting_point: Soil water content at -1500 kPa matric potential. (%)
- *
- * Territory:
+ * @remark Geographic scope:
  * Southern Karnataka Plateau
  *
- * Notes:
- * Prediction target: Water content at field capacity and permanent wilting point from clay,
- * sand, and cation exchange capacity.
- * The model was fitted to 228 soil samples from 43 profiles.
- * Reported cross-validation RMSE values are 3.05% for FC and 2.17% for PWP.
- *
- * Warnings:
- * The paper does not state whether its water-content percentages are gravimetric or
+ * @details Prediction target:
+ * Water content at field capacity and permanent wilting point from clay, sand, and cation
+ * exchange capacity.
+ * @note The model was fitted to 228 soil samples from 43 profiles.
+ * @note Reported cross-validation RMSE values are 3.05% for FC and 2.17% for PWP.
+ * @warning The paper does not state whether its water-content percentages are gravimetric or
  * volumetric.
  */
 static inline dharumarajan2019_water_retention_result
@@ -153,26 +141,20 @@ calc_ptf_dharumarajan2019_skp(double clay, double sand, double cation_exchange_c
 }
 
 /**
- * Estimate Southern Karnataka field capacity and wilting point from clay.
+ * @brief Estimate Southern Karnataka field capacity and wilting point from clay.
+ * @param clay Clay content. (%)
+ * @return A result with the following fields:
+ * - `field_capacity` — Soil water content at -33 kPa matric potential. (%)
+ * - `permanent_wilting_point` — Soil water content at -1500 kPa matric potential. (%)
  *
- * Parameters:
- * clay: Clay content. (%)
- *
- * Returns:
- * field_capacity: Soil water content at -33 kPa matric potential. (%)
- * permanent_wilting_point: Soil water content at -1500 kPa matric potential. (%)
- *
- * Territory:
+ * @remark Geographic scope:
  * Southern Karnataka Plateau
  *
- * Notes:
- * Prediction target: Water content at field capacity and permanent wilting point from clay
- * content alone.
- * The paper recommends this model when clay content is the only available predictor.
- * Reported cross-validation RMSE values are 5.39% for FC and 3.13% for PWP.
- *
- * Warnings:
- * The paper does not state whether its water-content percentages are gravimetric or
+ * @details Prediction target:
+ * Water content at field capacity and permanent wilting point from clay content alone.
+ * @note The paper recommends this model when clay content is the only available predictor.
+ * @note Reported cross-validation RMSE values are 5.39% for FC and 3.13% for PWP.
+ * @warning The paper does not state whether its water-content percentages are gravimetric or
  * volumetric.
  */
 static inline dharumarajan2019_water_retention_result
@@ -190,26 +172,20 @@ calc_ptf_dharumarajan2019_skp_clay(double clay) {
 }
 
 /**
- * Estimate infiltration rate for Karnataka soils from texture fractions.
+ * @brief Estimate infiltration rate for Karnataka soils from texture fractions.
+ * @param sand Sand content in the Karnataka infiltration dataset. (%)
+ * @param silt Silt content in the Karnataka infiltration dataset. (%)
+ * @param clay Clay content in the Karnataka infiltration dataset. (%)
+ * @return Soil infiltration rate measured with a double-ring infiltrometer. (mm/h)
  *
- * Parameters:
- * sand: Sand content in the Karnataka infiltration dataset. (%)
- * silt: Silt content in the Karnataka infiltration dataset. (%)
- * clay: Clay content in the Karnataka infiltration dataset. (%)
- *
- * Returns:
- * infiltration_rate: Soil infiltration rate measured with a double-ring infiltrometer. (mm/h)
- *
- * Territory:
+ * @remark Geographic scope:
  * Karnataka, India
  *
- * Notes:
- * Prediction target: Infiltration rate from sand, silt, and clay contents.
- * The model was fitted to 100 Karnataka soil observations.
- * The reported model R-squared is 41%, and the reported RMSE is 6.71%.
- *
- * Warnings:
- * Predictor calibration ranges are not reported for the 100-observation dataset.
+ * @details Prediction target:
+ * Infiltration rate from sand, silt, and clay contents.
+ * @note The model was fitted to 100 Karnataka soil observations.
+ * @note The reported model R-squared is 41%, and the reported RMSE is 6.71%.
+ * @warning Predictor calibration ranges are not reported for the 100-observation dataset.
  */
 static inline double calc_ptf_dharumarajan2019_infiltration(double sand, double silt, double clay) {
     return 177.55 - 1.47 * sand - 1.80 * clay - 1.58 * silt;

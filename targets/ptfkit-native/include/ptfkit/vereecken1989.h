@@ -6,72 +6,83 @@
 #include <math.h>
 
 /**
- * Vereecken et al. soil-moisture retention regressions for Belgian soils.
+ * @brief Vereecken et al. soil-moisture retention regressions for Belgian soils.
  *
- * Reference:
+ * @details Source publication:
  * Vereecken, H., Maes, J., Feyen, J., & Darius, P. (1989). Estimating the soil moisture
  * retention characteristic from texture, bulk density, and carbon content. Soil Science,
  * 148(6), 389-403.
- * DOI: 10.1097/00010694-198912000-00001 (https://doi.org/10.1097/00010694-198912000-00001)
+ * @see https://doi.org/10.1097/00010694-198912000-00001 DOI: 10.1097/00010694-198912000-00001
  *
- * Territory:
+ * @remark Geographic scope:
  * Belgian territory north of the river axis Samber and Meuse
  *
- * Dataset:
+ * @remark Calibration dataset:
  * 182 horizons from 40 important Belgian soil series, with textures ranging from sand to heavy
  * clay.
  */
 
 typedef struct {
-    /** Residual volumetric soil water content. (cm^3/cm^3) */
+    /**
+     * @brief Residual volumetric soil water content. (cm^3/cm^3)
+     */
     double theta_r;
-    /** Saturated volumetric soil water content. (cm^3/cm^3) */
+    /**
+     * @brief Saturated volumetric soil water content. (cm^3/cm^3)
+     */
     double theta_s;
-    /** Shape parameter of the van Genuchten moisture-retention model. (cm^-1) */
+    /**
+     * @brief Shape parameter of the van Genuchten moisture-retention model. (cm^-1)
+     */
     double alpha;
-    /** Shape parameter of the van Genuchten moisture-retention model. (dimensionless) */
+    /**
+     * @brief Shape parameter of the van Genuchten moisture-retention model. (dimensionless)
+     */
     double n;
 } vereecken1989_ptf_result;
 
 typedef struct {
-    /** Residual volumetric soil water content. (cm^3/cm^3) */
+    /**
+     * @brief Residual volumetric soil water content. (cm^3/cm^3)
+     */
     double theta_r;
-    /** Saturated volumetric soil water content. (cm^3/cm^3) */
+    /**
+     * @brief Saturated volumetric soil water content. (cm^3/cm^3)
+     */
     double theta_s;
-    /** Shape parameter of the van Genuchten moisture-retention model. (cm^-1) */
+    /**
+     * @brief Shape parameter of the van Genuchten moisture-retention model. (cm^-1)
+     */
     double alpha;
-    /** Shape parameter of the van Genuchten moisture-retention model. (dimensionless) */
+    /**
+     * @brief Shape parameter of the van Genuchten moisture-retention model. (dimensionless)
+     */
     double n;
 } vereecken1989_detailed_ptf_result;
 
 /**
- * Estimate four parameters of the reduced van Genuchten moisture-retention model from broad
- * texture fractions, bulk density, and carbon content.
+ * @brief Estimate four parameters of the reduced van Genuchten moisture-retention model from
+ * broad texture fractions, bulk density, and carbon content.
+ * @param sand Sand content in the 50-2000 micrometre particle-size fraction. (%)
+ * @param clay Clay content in the less-than-2-micrometre particle-size fraction. (%)
+ * @param carbon Carbon content determined by the Walkley-Black method. (%)
+ * @param bulk_density Dry bulk density measured after drying undisturbed 100-cm^3 cores for 24
+ * hours at 105 degrees Celsius. (g/cm^3)
+ * @return A result with the following fields:
+ * - `theta_r` — Residual volumetric soil water content. (cm^3/cm^3)
+ * - `theta_s` — Saturated volumetric soil water content. (cm^3/cm^3)
+ * - `alpha` — Shape parameter of the van Genuchten moisture-retention model. (cm^-1)
+ * - `n` — Shape parameter of the van Genuchten moisture-retention model. (dimensionless)
  *
- * Parameters:
- * sand: Sand content in the 50-2000 micrometre particle-size fraction. (%)
- * clay: Clay content in the less-than-2-micrometre particle-size fraction. (%)
- * carbon: Carbon content determined by the Walkley-Black method. (%)
- * bulk_density: Dry bulk density measured after drying undisturbed 100-cm^3 cores for 24 hours
- * at 105 degrees Celsius. (g/cm^3)
- *
- * Returns:
- * theta_r: Residual volumetric soil water content. (cm^3/cm^3)
- * theta_s: Saturated volumetric soil water content. (cm^3/cm^3)
- * alpha: Shape parameter of the van Genuchten moisture-retention model. (cm^-1)
- * n: Shape parameter of the van Genuchten moisture-retention model. (dimensionless)
- *
- * Notes:
- * Prediction target: Residual and saturated volumetric water content and the alpha and n shape
- * parameters of the van Genuchten model with m equal to 1.
- * Table 7 reports regressions for theta_s, theta_r, log(alpha), and log(n) using broad
+ * @details Prediction target:
+ * Residual and saturated volumetric water content and the alpha and n shape parameters of the
+ * van Genuchten model with m equal to 1.
+ * @note Table 7 reports regressions for theta_s, theta_r, log(alpha), and log(n) using broad
  * particle-size fractions, carbon content, and bulk density.
- * The paper accepts fitted n values below 1 because constraining n above 1 gave poorer
+ * @note The paper accepts fitted n values below 1 because constraining n above 1 gave poorer
  * descriptions for many of the measured curves.
- *
- * Warnings:
- * The bulk-density maximum is reviewed as 1.730 g/cm^3 because the supplied transcription's
- * 1.230 value is inconsistent with the reported mean.
+ * @warning The bulk-density maximum is reviewed as 1.730 g/cm^3 because the supplied
+ * transcription's 1.230 value is inconsistent with the reported mean.
  */
 static inline vereecken1989_ptf_result calc_ptf_vereecken1989(double sand, double clay,
                                                               double carbon, double bulk_density) {
@@ -95,46 +106,41 @@ static inline vereecken1989_ptf_result calc_ptf_vereecken1989(double sand, doubl
 }
 
 /**
- * Estimate van Genuchten parameters from nine particle-size fractions and particle-size
+ * @brief Estimate van Genuchten parameters from nine particle-size fractions and particle-size
  * distribution descriptors.
+ * @param particle_2000_1000 Particle content from 2000 to 1000 micrometres. (%)
+ * @param particle_1000_500 Particle content from 1000 to 500 micrometres. (%)
+ * @param particle_500_200 Particle content from 500 to 200 micrometres. (%)
+ * @param particle_200_100 Particle content from 200 to 100 micrometres. (%)
+ * @param particle_100_50 Particle content from 100 to 50 micrometres. (%)
+ * @param particle_50_20 Particle content from 50 to 20 micrometres. (%)
+ * @param particle_20_10 Particle content from 20 to 10 micrometres. (%)
+ * @param particle_10_2 Particle content from 10 to 2 micrometres. (%)
+ * @param clay Particle content below 2 micrometres. (%)
+ * @param geometric_mean_particle_size Geometrical mean particle size calculated using the
+ * method cited by the paper. (cm)
+ * @param geometric_standard_deviation Geometrical standard deviation of particle size
+ * calculated using the method cited by the paper. (dimensionless)
+ * @param carbon Carbon content determined by the Walkley-Black method. (%)
+ * @param bulk_density Dry bulk density measured after drying undisturbed 100-cm^3 cores for 24
+ * hours at 105 degrees Celsius. (g/cm^3)
+ * @return A result with the following fields:
+ * - `theta_r` — Residual volumetric soil water content. (cm^3/cm^3)
+ * - `theta_s` — Saturated volumetric soil water content. (cm^3/cm^3)
+ * - `alpha` — Shape parameter of the van Genuchten moisture-retention model. (cm^-1)
+ * - `n` — Shape parameter of the van Genuchten moisture-retention model. (dimensionless)
  *
- * Parameters:
- * particle_2000_1000: Particle content from 2000 to 1000 micrometres. (%)
- * particle_1000_500: Particle content from 1000 to 500 micrometres. (%)
- * particle_500_200: Particle content from 500 to 200 micrometres. (%)
- * particle_200_100: Particle content from 200 to 100 micrometres. (%)
- * particle_100_50: Particle content from 100 to 50 micrometres. (%)
- * particle_50_20: Particle content from 50 to 20 micrometres. (%)
- * particle_20_10: Particle content from 20 to 10 micrometres. (%)
- * particle_10_2: Particle content from 10 to 2 micrometres. (%)
- * clay: Particle content below 2 micrometres. (%)
- * geometric_mean_particle_size: Geometrical mean particle size calculated using the method
- * cited by the paper. (cm)
- * geometric_standard_deviation: Geometrical standard deviation of particle size calculated
- * using the method cited by the paper. (dimensionless)
- * carbon: Carbon content determined by the Walkley-Black method. (%)
- * bulk_density: Dry bulk density measured after drying undisturbed 100-cm^3 cores for 24 hours
- * at 105 degrees Celsius. (g/cm^3)
- *
- * Returns:
- * theta_r: Residual volumetric soil water content. (cm^3/cm^3)
- * theta_s: Saturated volumetric soil water content. (cm^3/cm^3)
- * alpha: Shape parameter of the van Genuchten moisture-retention model. (cm^-1)
- * n: Shape parameter of the van Genuchten moisture-retention model. (dimensionless)
- *
- * Notes:
- * Prediction target: Residual and saturated volumetric water content and the alpha and n shape
- * parameters of the van Genuchten model with m equal to 1.
- * Table 8 reports transformed regressions in original particle-size variables for theta_r,
- * log(alpha), and log(n).
- * Detailed particle-size information did not substantially improve theta_s; this function
- * therefore retains the broad-texture theta_s regression.
- *
- * Warnings:
- * The detailed log(alpha) formula restores the carbon and bulk-density terms shown in Table 7
- * but omitted from the supplied Table 8 transcription.
- * The bulk-density maximum is reviewed as 1.730 g/cm^3 because the supplied transcription's
- * 1.230 value is inconsistent with the reported mean.
+ * @details Prediction target:
+ * Residual and saturated volumetric water content and the alpha and n shape parameters of the
+ * van Genuchten model with m equal to 1.
+ * @note Table 8 reports transformed regressions in original particle-size variables for
+ * theta_r, log(alpha), and log(n).
+ * @note Detailed particle-size information did not substantially improve theta_s; this
+ * function therefore retains the broad-texture theta_s regression.
+ * @warning The detailed log(alpha) formula restores the carbon and bulk-density terms shown in
+ * Table 7 but omitted from the supplied Table 8 transcription.
+ * @warning The bulk-density maximum is reviewed as 1.730 g/cm^3 because the supplied
+ * transcription's 1.230 value is inconsistent with the reported mean.
  */
 static inline vereecken1989_detailed_ptf_result calc_ptf_vereecken1989_detailed(
     double particle_2000_1000, double particle_1000_500, double particle_500_200,

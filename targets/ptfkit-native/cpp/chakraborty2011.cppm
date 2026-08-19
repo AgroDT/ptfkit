@@ -3,17 +3,17 @@
 export module ptfkit.chakraborty2011;
 
 /**
- * Chakraborty et al. (2011), point water-retention PTFs for Indian soils.
+ * @brief Chakraborty et al. (2011), point water-retention PTFs for Indian soils.
  *
- * Reference:
+ * @details Source publication:
  * Chakraborty, D., Mazumdar, S. P., Garg, R. N., Banerjee, S., Santra, P., Singh, R., & Tomar,
  * R. K. (2011). Pedotransfer functions for predicting points on the moisture retention curve
  * of Indian soils. Indian Journal of Agricultural Sciences, 81(11), 1030.
  *
- * Territory:
+ * @remark Geographic scope:
  * India
  *
- * Dataset:
+ * @remark Calibration dataset:
  * 187 soil samples from three or more horizons at locations across India; 107 samples were
  * used for regression development and 80 independent samples for validation. Analyses were
  * performed during 2006-2008.
@@ -22,38 +22,41 @@ export module ptfkit.chakraborty2011;
 export namespace ptfkit::chakraborty2011 {
 
 struct Chakraborty2011PTFResult {
-    /** Gravimetric water content at -33 kPa matric potential. (g/g) */
+    /**
+     * @brief Gravimetric water content at -33 kPa matric potential. (g/g)
+     */
     double water_content_33;
-    /** Gravimetric water content at -100 kPa matric potential. (g/g) */
+    /**
+     * @brief Gravimetric water content at -100 kPa matric potential. (g/g)
+     */
     double water_content_100;
-    /** Gravimetric water content at -500 kPa matric potential. (g/g) */
+    /**
+     * @brief Gravimetric water content at -500 kPa matric potential. (g/g)
+     */
     double water_content_500;
-    /** Gravimetric water content at -1500 kPa matric potential. (g/g) */
+    /**
+     * @brief Gravimetric water content at -1500 kPa matric potential. (g/g)
+     */
     double water_content_1500;
 };
 
 /**
- * Estimate four gravimetric water contents from clay and silt.
+ * @brief Estimate four gravimetric water contents from clay and silt.
+ * @param clay Clay content by mass. (%)
+ * @param silt Silt content by mass. (%)
+ * @return A result with the following fields:
+ * - `water_content_33` — Gravimetric water content at -33 kPa matric potential. (g/g)
+ * - `water_content_100` — Gravimetric water content at -100 kPa matric potential. (g/g)
+ * - `water_content_500` — Gravimetric water content at -500 kPa matric potential. (g/g)
+ * - `water_content_1500` — Gravimetric water content at -1500 kPa matric potential. (g/g)
  *
- * Parameters:
- * clay: Clay content by mass. (%)
- * silt: Silt content by mass. (%)
- *
- * Returns:
- * water_content_33: Gravimetric water content at -33 kPa matric potential. (g/g)
- * water_content_100: Gravimetric water content at -100 kPa matric potential. (g/g)
- * water_content_500: Gravimetric water content at -500 kPa matric potential. (g/g)
- * water_content_1500: Gravimetric water content at -1500 kPa matric potential. (g/g)
- *
- * Notes:
- * Prediction target: Gravimetric water content at -33, -100, -500, and -1500 kPa.
- * Table 3 reports R-squared values of 0.820, 0.709, 0.698, and 0.489 at -33, -100, -500, and
- * -1500 kPa, respectively.
- * Table 3 reports SEE values of 4.351, 5.051, 3.837, and 4.488 percentage points at the four
- * respective potentials.
- *
- * Warnings:
- * Use outside the source Indian-soil dataset requires independent validation.
+ * @details Prediction target:
+ * Gravimetric water content at -33, -100, -500, and -1500 kPa.
+ * @note Table 3 reports R-squared values of 0.820, 0.709, 0.698, and 0.489 at -33, -100, -500,
+ * and -1500 kPa, respectively.
+ * @note Table 3 reports SEE values of 4.351, 5.051, 3.837, and 4.488 percentage points at the
+ * four respective potentials.
+ * @warning Use outside the source Indian-soil dataset requires independent validation.
  */
 [[nodiscard]]
 inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq1(double clay, double silt) {
@@ -66,27 +69,22 @@ inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq1(double clay, double
 }
 
 /**
- * Estimate four gravimetric water contents from sand and bulk density.
+ * @brief Estimate four gravimetric water contents from sand and bulk density.
+ * @param sand Sand content by mass. (%)
+ * @param bulk_density Dry soil bulk density. (Mg/m^3)
+ * @return A result with the following fields:
+ * - `water_content_33` — Gravimetric water content at -33 kPa matric potential. (g/g)
+ * - `water_content_100` — Gravimetric water content at -100 kPa matric potential. (g/g)
+ * - `water_content_500` — Gravimetric water content at -500 kPa matric potential. (g/g)
+ * - `water_content_1500` — Gravimetric water content at -1500 kPa matric potential. (g/g)
  *
- * Parameters:
- * sand: Sand content by mass. (%)
- * bulk_density: Dry soil bulk density. (Mg/m^3)
- *
- * Returns:
- * water_content_33: Gravimetric water content at -33 kPa matric potential. (g/g)
- * water_content_100: Gravimetric water content at -100 kPa matric potential. (g/g)
- * water_content_500: Gravimetric water content at -500 kPa matric potential. (g/g)
- * water_content_1500: Gravimetric water content at -1500 kPa matric potential. (g/g)
- *
- * Notes:
- * Prediction target: Gravimetric water content at -33, -100, -500, and -1500 kPa.
- * Table 3 reports R-squared values of 0.812, 0.726, 0.721, and 0.519 at -33, -100, -500, and
- * -1500 kPa, respectively.
- * Table 3 reports SEE values of 4.454, 4.875, 3.691, and 4.352 percentage points at the four
- * respective potentials.
- *
- * Warnings:
- * Use outside the source Indian-soil dataset requires independent validation.
+ * @details Prediction target:
+ * Gravimetric water content at -33, -100, -500, and -1500 kPa.
+ * @note Table 3 reports R-squared values of 0.812, 0.726, 0.721, and 0.519 at -33, -100, -500,
+ * and -1500 kPa, respectively.
+ * @note Table 3 reports SEE values of 4.454, 4.875, 3.691, and 4.352 percentage points at the
+ * four respective potentials.
+ * @warning Use outside the source Indian-soil dataset requires independent validation.
  */
 [[nodiscard]]
 inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq2(double sand, double bulk_density) {
@@ -99,28 +97,23 @@ inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq2(double sand, double
 }
 
 /**
- * Estimate four gravimetric water contents from clay, silt, and bulk density.
+ * @brief Estimate four gravimetric water contents from clay, silt, and bulk density.
+ * @param clay Clay content by mass. (%)
+ * @param silt Silt content by mass. (%)
+ * @param bulk_density Dry soil bulk density. (Mg/m^3)
+ * @return A result with the following fields:
+ * - `water_content_33` — Gravimetric water content at -33 kPa matric potential. (g/g)
+ * - `water_content_100` — Gravimetric water content at -100 kPa matric potential. (g/g)
+ * - `water_content_500` — Gravimetric water content at -500 kPa matric potential. (g/g)
+ * - `water_content_1500` — Gravimetric water content at -1500 kPa matric potential. (g/g)
  *
- * Parameters:
- * clay: Clay content by mass. (%)
- * silt: Silt content by mass. (%)
- * bulk_density: Dry soil bulk density. (Mg/m^3)
- *
- * Returns:
- * water_content_33: Gravimetric water content at -33 kPa matric potential. (g/g)
- * water_content_100: Gravimetric water content at -100 kPa matric potential. (g/g)
- * water_content_500: Gravimetric water content at -500 kPa matric potential. (g/g)
- * water_content_1500: Gravimetric water content at -1500 kPa matric potential. (g/g)
- *
- * Notes:
- * Prediction target: Gravimetric water content at -33, -100, -500, and -1500 kPa.
- * Table 3 reports R-squared values of 0.830, 0.711, 0.701, and 0.490 at -33, -100, -500, and
- * -1500 kPa, respectively.
- * Table 3 reports SEE values of 4.253, 5.059, 3.843, and 4.509 percentage points at the four
- * respective potentials.
- *
- * Warnings:
- * Use outside the source Indian-soil dataset requires independent validation.
+ * @details Prediction target:
+ * Gravimetric water content at -33, -100, -500, and -1500 kPa.
+ * @note Table 3 reports R-squared values of 0.830, 0.711, 0.701, and 0.490 at -33, -100, -500,
+ * and -1500 kPa, respectively.
+ * @note Table 3 reports SEE values of 4.253, 5.059, 3.843, and 4.509 percentage points at the
+ * four respective potentials.
+ * @warning Use outside the source Indian-soil dataset requires independent validation.
  */
 [[nodiscard]]
 inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq3(double clay, double silt,
@@ -138,28 +131,23 @@ inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq3(double clay, double
 }
 
 /**
- * Estimate four gravimetric water contents from clay, silt, and sand.
+ * @brief Estimate four gravimetric water contents from clay, silt, and sand.
+ * @param clay Clay content by mass. (%)
+ * @param silt Silt content by mass. (%)
+ * @param sand Sand content by mass. (%)
+ * @return A result with the following fields:
+ * - `water_content_33` — Gravimetric water content at -33 kPa matric potential. (g/g)
+ * - `water_content_100` — Gravimetric water content at -100 kPa matric potential. (g/g)
+ * - `water_content_500` — Gravimetric water content at -500 kPa matric potential. (g/g)
+ * - `water_content_1500` — Gravimetric water content at -1500 kPa matric potential. (g/g)
  *
- * Parameters:
- * clay: Clay content by mass. (%)
- * silt: Silt content by mass. (%)
- * sand: Sand content by mass. (%)
- *
- * Returns:
- * water_content_33: Gravimetric water content at -33 kPa matric potential. (g/g)
- * water_content_100: Gravimetric water content at -100 kPa matric potential. (g/g)
- * water_content_500: Gravimetric water content at -500 kPa matric potential. (g/g)
- * water_content_1500: Gravimetric water content at -1500 kPa matric potential. (g/g)
- *
- * Notes:
- * Prediction target: Gravimetric water content at -33, -100, -500, and -1500 kPa.
- * Table 3 reports R-squared values of 0.844, 0.737, 0.734, and 0.524 at -33, -100, -500, and
- * -1500 kPa, respectively.
- * Table 3 reports SEE values of 4.078, 4.820, 3.618, and 4.365 percentage points at the four
- * respective potentials.
- *
- * Warnings:
- * Use outside the source Indian-soil dataset requires independent validation.
+ * @details Prediction target:
+ * Gravimetric water content at -33, -100, -500, and -1500 kPa.
+ * @note Table 3 reports R-squared values of 0.844, 0.737, 0.734, and 0.524 at -33, -100, -500,
+ * and -1500 kPa, respectively.
+ * @note Table 3 reports SEE values of 4.078, 4.820, 3.618, and 4.365 percentage points at the
+ * four respective potentials.
+ * @warning Use outside the source Indian-soil dataset requires independent validation.
  */
 [[nodiscard]]
 inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq4(double clay, double silt,
@@ -173,29 +161,24 @@ inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq4(double clay, double
 }
 
 /**
- * Estimate four gravimetric water contents from clay, silt, sand, and bulk density.
+ * @brief Estimate four gravimetric water contents from clay, silt, sand, and bulk density.
+ * @param clay Clay content by mass. (%)
+ * @param silt Silt content by mass. (%)
+ * @param sand Sand content by mass. (%)
+ * @param bulk_density Dry soil bulk density. (Mg/m^3)
+ * @return A result with the following fields:
+ * - `water_content_33` — Gravimetric water content at -33 kPa matric potential. (g/g)
+ * - `water_content_100` — Gravimetric water content at -100 kPa matric potential. (g/g)
+ * - `water_content_500` — Gravimetric water content at -500 kPa matric potential. (g/g)
+ * - `water_content_1500` — Gravimetric water content at -1500 kPa matric potential. (g/g)
  *
- * Parameters:
- * clay: Clay content by mass. (%)
- * silt: Silt content by mass. (%)
- * sand: Sand content by mass. (%)
- * bulk_density: Dry soil bulk density. (Mg/m^3)
- *
- * Returns:
- * water_content_33: Gravimetric water content at -33 kPa matric potential. (g/g)
- * water_content_100: Gravimetric water content at -100 kPa matric potential. (g/g)
- * water_content_500: Gravimetric water content at -500 kPa matric potential. (g/g)
- * water_content_1500: Gravimetric water content at -1500 kPa matric potential. (g/g)
- *
- * Notes:
- * Prediction target: Gravimetric water content at -33, -100, -500, and -1500 kPa.
- * Table 3 reports R-squared values of 0.847, 0.737, 0.734, and 0.526 at -33, -100, -500, and
- * -1500 kPa, respectively.
- * Table 3 reports SEE values of 4.045, 4.855, 3.637, and 4.370 percentage points at the four
- * respective potentials.
- *
- * Warnings:
- * Use outside the source Indian-soil dataset requires independent validation.
+ * @details Prediction target:
+ * Gravimetric water content at -33, -100, -500, and -1500 kPa.
+ * @note Table 3 reports R-squared values of 0.847, 0.737, 0.734, and 0.526 at -33, -100, -500,
+ * and -1500 kPa, respectively.
+ * @note Table 3 reports SEE values of 4.045, 4.855, 3.637, and 4.370 percentage points at the
+ * four respective potentials.
+ * @warning Use outside the source Indian-soil dataset requires independent validation.
  */
 [[nodiscard]]
 inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq5(double clay, double silt, double sand,
@@ -213,30 +196,26 @@ inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq5(double clay, double
 }
 
 /**
- * Estimate four gravimetric water contents from texture, organic carbon, and bulk density.
+ * @brief Estimate four gravimetric water contents from texture, organic carbon, and bulk
+ * density.
+ * @param clay Clay content by mass. (%)
+ * @param silt Silt content by mass. (%)
+ * @param sand Sand content by mass. (%)
+ * @param organic_carbon Soil organic carbon content by mass. (%)
+ * @param bulk_density Dry soil bulk density. (Mg/m^3)
+ * @return A result with the following fields:
+ * - `water_content_33` — Gravimetric water content at -33 kPa matric potential. (g/g)
+ * - `water_content_100` — Gravimetric water content at -100 kPa matric potential. (g/g)
+ * - `water_content_500` — Gravimetric water content at -500 kPa matric potential. (g/g)
+ * - `water_content_1500` — Gravimetric water content at -1500 kPa matric potential. (g/g)
  *
- * Parameters:
- * clay: Clay content by mass. (%)
- * silt: Silt content by mass. (%)
- * sand: Sand content by mass. (%)
- * organic_carbon: Soil organic carbon content by mass. (%)
- * bulk_density: Dry soil bulk density. (Mg/m^3)
- *
- * Returns:
- * water_content_33: Gravimetric water content at -33 kPa matric potential. (g/g)
- * water_content_100: Gravimetric water content at -100 kPa matric potential. (g/g)
- * water_content_500: Gravimetric water content at -500 kPa matric potential. (g/g)
- * water_content_1500: Gravimetric water content at -1500 kPa matric potential. (g/g)
- *
- * Notes:
- * Prediction target: Gravimetric water content at -33, -100, -500, and -1500 kPa.
- * Table 3 reports R-squared values of 0.849, 0.750, 0.736, and 0.529 at -33, -100, -500, and
- * -1500 kPa, respectively.
- * Table 3 reports SEE values of 4.060, 5.682, 3.645, and 4.369 percentage points at the four
- * respective potentials.
- *
- * Warnings:
- * Use outside the source Indian-soil dataset requires independent validation.
+ * @details Prediction target:
+ * Gravimetric water content at -33, -100, -500, and -1500 kPa.
+ * @note Table 3 reports R-squared values of 0.849, 0.750, 0.736, and 0.529 at -33, -100, -500,
+ * and -1500 kPa, respectively.
+ * @note Table 3 reports SEE values of 4.060, 5.682, 3.645, and 4.369 percentage points at the
+ * four respective potentials.
+ * @warning Use outside the source Indian-soil dataset requires independent validation.
  */
 [[nodiscard]]
 inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq6(double clay, double silt, double sand,

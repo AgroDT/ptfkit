@@ -6,18 +6,18 @@ module;
 export module ptfkit.weber2020;
 
 /**
- * Weber et al. (2020), compiled international soil hydraulic data.
+ * @brief Weber et al. (2020), compiled international soil hydraulic data.
  *
- * Reference:
+ * @details Source publication:
  * Weber, T. K. D., Finkel, M., da Conceicao Goncalves, M., Vereecken, H., & Diamantopoulos, E.
  * (2020). Pedotransfer function for the Brunswick soil hydraulic property model and comparison
  * to the van Genuchten-Mualem model. Water Resources Research, 56, e2019WR026820.
- * DOI: 10.1029/2019WR026820 (https://doi.org/10.1029/2019WR026820)
+ * @see https://doi.org/10.1029/2019WR026820 DOI: 10.1029/2019WR026820
  *
- * Territory:
+ * @remark Geographic scope:
  * Portuguese, German, UNSODA, and Vereecken soil data collections
  *
- * Dataset:
+ * @remark Calibration dataset:
  * A compilation of 1,729 samples with water-retention and hydraulic-conductivity data;
  * regression data set DS1 contained 392 of the 402 retained samples, DS2 was used for tau, DS3
  * contained 359 samples for K_snc, and 10 samples were held out as DS4.
@@ -26,56 +26,65 @@ export module ptfkit.weber2020;
 export namespace ptfkit::weber2020 {
 
 struct Weber2020PTFResult {
-    /** Saturated water content of the Brunswick noncapillary pore space. (dimensionless) */
+    /**
+     * @brief Saturated water content of the Brunswick noncapillary pore space. (dimensionless)
+     */
     double theta_snc_bw;
-    /** Saturated water content of the Brunswick capillary pore space. (dimensionless) */
+    /**
+     * @brief Saturated water content of the Brunswick capillary pore space. (dimensionless)
+     */
     double theta_sc_bw;
-    /** Brunswick-VGM inverse pressure-head scale parameter. (cm^-1) */
+    /**
+     * @brief Brunswick-VGM inverse pressure-head scale parameter. (cm^-1)
+     */
     double alpha_bw;
-    /** Brunswick-VGM pore-size distribution shape parameter. (dimensionless) */
+    /**
+     * @brief Brunswick-VGM pore-size distribution shape parameter. (dimensionless)
+     */
     double n_bw;
-    /** Brunswick capillary hydraulic-conductivity shape parameter. (dimensionless) */
+    /**
+     * @brief Brunswick capillary hydraulic-conductivity shape parameter. (dimensionless)
+     */
     double tau_bw;
-    /** Saturated capillary hydraulic conductivity. (cm d^-1) */
+    /**
+     * @brief Saturated capillary hydraulic conductivity. (cm d^-1)
+     */
     double k_sc_bw;
-    /** Saturated noncapillary hydraulic conductivity. (cm d^-1) */
+    /**
+     * @brief Saturated noncapillary hydraulic conductivity. (cm d^-1)
+     */
     double k_snc_bw;
 };
 
 /**
- * Convert VGM parameters to Brunswick-VGM parameters.
- *
- * Parameters:
- * theta_r_vgm: VGM residual volumetric water content. (dimensionless)
- * theta_s_vgm: VGM saturated volumetric water content. (dimensionless)
- * alpha_vgm: VGM inverse pressure-head scale parameter. (cm^-1)
- * n_vgm: VGM pore-size distribution shape parameter. (dimensionless)
- * tau_vgm: VGM hydraulic-conductivity shape parameter. (dimensionless)
- * k_s_vgm: VGM saturated hydraulic conductivity. (cm d^-1)
- *
- * Returns:
- * theta_snc_bw: Saturated water content of the Brunswick noncapillary pore space.
+ * @brief Convert VGM parameters to Brunswick-VGM parameters.
+ * @param theta_r_vgm VGM residual volumetric water content. (dimensionless)
+ * @param theta_s_vgm VGM saturated volumetric water content. (dimensionless)
+ * @param alpha_vgm VGM inverse pressure-head scale parameter. (cm^-1)
+ * @param n_vgm VGM pore-size distribution shape parameter. (dimensionless)
+ * @param tau_vgm VGM hydraulic-conductivity shape parameter. (dimensionless)
+ * @param k_s_vgm VGM saturated hydraulic conductivity. (cm d^-1)
+ * @return A result with the following fields:
+ * - `theta_snc_bw` — Saturated water content of the Brunswick noncapillary pore space.
  * (dimensionless)
- * theta_sc_bw: Saturated water content of the Brunswick capillary pore space. (dimensionless)
- * alpha_bw: Brunswick-VGM inverse pressure-head scale parameter. (cm^-1)
- * n_bw: Brunswick-VGM pore-size distribution shape parameter. (dimensionless)
- * tau_bw: Brunswick capillary hydraulic-conductivity shape parameter. (dimensionless)
- * k_sc_bw: Saturated capillary hydraulic conductivity. (cm d^-1)
- * k_snc_bw: Saturated noncapillary hydraulic conductivity. (cm d^-1)
+ * - `theta_sc_bw` — Saturated water content of the Brunswick capillary pore space.
+ * (dimensionless)
+ * - `alpha_bw` — Brunswick-VGM inverse pressure-head scale parameter. (cm^-1)
+ * - `n_bw` — Brunswick-VGM pore-size distribution shape parameter. (dimensionless)
+ * - `tau_bw` — Brunswick capillary hydraulic-conductivity shape parameter. (dimensionless)
+ * - `k_sc_bw` — Saturated capillary hydraulic conductivity. (cm d^-1)
+ * - `k_snc_bw` — Saturated noncapillary hydraulic conductivity. (cm d^-1)
  *
- * Notes:
- * Prediction target: Seven Brunswick-VGM soil hydraulic model parameters from six VGM
- * parameters.
- * Regression coefficients are the York-regression estimates in Table 3; parenthesized standard
- * errors are not part of the prediction.
- * Input domains reproduce the parameter-estimation bounds in Table 1 and are not stated as a
- * validated application domain.
- * The source recommends the median K_snc value as a provisional parsimonious estimate
+ * @details Prediction target:
+ * Seven Brunswick-VGM soil hydraulic model parameters from six VGM parameters.
+ * @note Regression coefficients are the York-regression estimates in Table 3; parenthesized
+ * standard errors are not part of the prediction.
+ * @note Input domains reproduce the parameter-estimation bounds in Table 1 and are not stated
+ * as a validated application domain.
+ * @note The source recommends the median K_snc value as a provisional parsimonious estimate
  * requiring further research.
- *
- * Warnings:
- * The DS2 inequality is treated as a source typographical error; the tau regression is
- * interpreted as being based on nonpositive tau_vgm values.
+ * @warning The DS2 inequality is treated as a source typographical error; the tau regression
+ * is interpreted as being based on nonpositive tau_vgm values.
  */
 [[nodiscard]]
 inline Weber2020PTFResult calc_ptf_weber2020(double theta_r_vgm, double theta_s_vgm,

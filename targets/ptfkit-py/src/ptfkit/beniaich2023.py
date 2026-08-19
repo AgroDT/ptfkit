@@ -112,7 +112,7 @@ def calc_ptf_beniaich2023_slr1(
         Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
         Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
 
-    Warnings:
+    Warning:
         Developed from Moroccan agricultural topsoils and not independently validated outside the
             source territory.
 
@@ -158,7 +158,7 @@ def calc_ptf_beniaich2023_slr2(
         Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
         Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
 
-    Warnings:
+    Warning:
         Developed from Moroccan agricultural topsoils and not independently validated outside the
             source territory.
 
@@ -204,7 +204,7 @@ def calc_ptf_beniaich2023_slr3(
         Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
         Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
 
-    Warnings:
+    Warning:
         Developed from Moroccan agricultural topsoils and not independently validated outside the
             source territory.
 
@@ -253,7 +253,7 @@ def calc_ptf_beniaich2023_slr4(
         Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
         Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
 
-    Warnings:
+    Warning:
         Developed from Moroccan agricultural topsoils and not independently validated outside the
             source territory.
 
@@ -302,7 +302,7 @@ def calc_ptf_beniaich2023_slr5(
         Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
         Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
 
-    Warnings:
+    Warning:
         Developed from Moroccan agricultural topsoils and not independently validated outside the
             source territory.
 
@@ -350,7 +350,7 @@ def calc_ptf_beniaich2023_slr6(
         Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
         Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
 
-    Warnings:
+    Warning:
         Developed from Moroccan agricultural topsoils and not independently validated outside the
             source territory.
 
@@ -404,7 +404,7 @@ def calc_ptf_beniaich2023_mlr1(
         Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
         Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
 
-    Warnings:
+    Warning:
         Developed from Moroccan agricultural topsoils and not independently validated outside the
             source territory.
 
@@ -455,7 +455,7 @@ def calc_ptf_beniaich2023_mlr2(
         Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
         Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
 
-    Warnings:
+    Warning:
         Developed from Moroccan agricultural topsoils and not independently validated outside the
             source territory.
 
@@ -506,7 +506,7 @@ def calc_ptf_beniaich2023_mlr3(
         Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
         Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
 
-    Warnings:
+    Warning:
         Developed from Moroccan agricultural topsoils and not independently validated outside the
             source territory.
 
@@ -557,7 +557,7 @@ def calc_ptf_beniaich2023_mlr4(
         Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
         Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
 
-    Warnings:
+    Warning:
         Developed from Moroccan agricultural topsoils and not independently validated outside the
             source territory.
 
@@ -611,7 +611,7 @@ def calc_ptf_beniaich2023_mlr5(
         Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
         Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
 
-    Warnings:
+    Warning:
         Developed from Moroccan agricultural topsoils and not independently validated outside the
             source territory.
 

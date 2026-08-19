@@ -76,7 +76,7 @@ fn file(path: impl Into<PathBuf>, contents: String) -> super::GeneratedFile {
     super::GeneratedFile::new(path.into(), contents)
 }
 
-fn c_result_name(schema: &str) -> String {
+pub(super) fn c_result_name(schema: &str) -> String {
     schema
         .remove_boundaries(&[Boundary::LowerDigit])
         .to_case(Case::Snake)
@@ -266,54 +266,93 @@ fn render_function(function: &CompiledFunction, cpp: bool) -> Result<String> {
 
 fn source_comment(source: &Source, scope: &Scope) -> String {
     let mut lines = vec![
-        source.summary.clone(),
+        format!("@brief {}", source.summary),
         String::new(),
-        "Reference:".to_owned(),
+        "@details Source publication:".to_owned(),
         source.citation_apa.clone(),
     ];
     if let Some(doi) = &source.doi {
-        lines.push(format!("DOI: {} ({})", doi.identifier, doi.url));
+        lines.push(format!("@see {} DOI: {}", doi.url, doi.identifier));
     }
     if let Some(territory) = &scope.territory {
-        lines.extend([String::new(), "Territory:".to_owned(), territory.clone()]);
+        lines.extend([
+            String::new(),
+            "@remark Geographic scope:".to_owned(),
+            territory.clone(),
+        ]);
     }
     if let Some(dataset) = &scope.dataset {
-        lines.extend([String::new(), "Dataset:".to_owned(), dataset.clone()]);
+        lines.extend([
+            String::new(),
+            "@remark Calibration dataset:".to_owned(),
+            dataset.clone(),
+        ]);
     }
     comment(lines)
 }
 
 fn function_comment(function: &Function) -> String {
-    let mut lines = vec![
-        function.public_api.summary.clone(),
-        String::new(),
-        "Parameters:".to_owned(),
-    ];
-    lines.extend(function.inputs.iter().map(parameter_comment));
-    lines.extend([String::new(), "Returns:".to_owned()]);
-    lines.extend(function.outputs.fields().iter().map(parameter_comment));
+    let mut lines = vec![format!("@brief {}", function.public_api.summary)];
+    lines.extend(function.inputs.iter().map(|parameter| {
+        format!(
+            "@param {} {}",
+            parameter.name,
+            documentation::parameter_details(parameter)
+        )
+    }));
+
+    let outputs = function.outputs.fields();
+    if outputs.len() == 1 {
+        lines.push(format!(
+            "@return {}",
+            documentation::parameter_details(&outputs[0])
+        ));
+    } else {
+        lines.push("@return A result with the following fields:".to_owned());
+        lines.extend(outputs.iter().map(|parameter| {
+            format!(
+                "- `{}` — {}",
+                parameter.name,
+                documentation::parameter_details(parameter)
+            )
+        }));
+    }
     if let Some(territory) = &function.scope.territory {
-        lines.extend([String::new(), "Territory:".to_owned(), territory.clone()]);
+        lines.extend([
+            String::new(),
+            "@remark Geographic scope:".to_owned(),
+            territory.clone(),
+        ]);
     }
     lines.extend([
         String::new(),
-        "Notes:".to_owned(),
-        format!("Prediction target: {}", function.scope.prediction_target),
+        "@details Prediction target:".to_owned(),
+        function.scope.prediction_target.clone(),
     ]);
-    lines.extend(function.documentation.notes.iter().cloned());
-    if !function.documentation.warnings.is_empty() {
-        lines.extend([String::new(), "Warnings:".to_owned()]);
-        lines.extend(function.documentation.warnings.iter().cloned());
-    }
+    lines.extend(
+        function
+            .documentation
+            .notes
+            .iter()
+            .map(|note| format!("@note {note}")),
+    );
+    lines.extend(
+        function
+            .documentation
+            .warnings
+            .iter()
+            .map(|warning| format!("@warning {warning}")),
+    );
     comment(lines)
 }
 
 fn field_comment(parameter: &Parameter) -> String {
-    format!("/** {} */", documentation::parameter_details(parameter))
-}
-
-fn parameter_comment(parameter: &Parameter) -> String {
-    documentation::parameter_documentation(parameter)
+    comment([format!(
+        "@brief {}",
+        documentation::parameter_details(parameter)
+    )])
+    .trim_end()
+    .to_owned()
 }
 
 fn comment(lines: impl IntoIterator<Item = String>) -> String {

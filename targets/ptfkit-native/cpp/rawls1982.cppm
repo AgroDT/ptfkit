@@ -3,60 +3,80 @@
 export module ptfkit.rawls1982;
 
 /**
- * Rawls et al. (1982), water-retention regressions for soils across the USA.
+ * @brief Rawls et al. (1982), water-retention regressions for soils across the USA.
  *
- * Reference:
+ * @details Source publication:
  * Rawls, W. J., Brakensiek, D. L., & Saxton, K. E. (1982). Estimation of soil water
  * properties. Transactions of the ASAE, 25, 1316-1320.
  *
- * Territory:
+ * @remark Geographic scope:
  * Agricultural soils from 32 states of the USA
  *
- * Dataset:
+ * @remark Calibration dataset:
  * 1,323 soils with about 5,350 horizons; regression equations used 2,541 horizons.
  */
 
 export namespace ptfkit::rawls1982 {
 
 struct Rawls1982PTFResult {
-    /** Volumetric water content at -4 kPa. (cm^3/cm^3) */
+    /**
+     * @brief Volumetric water content at -4 kPa. (cm^3/cm^3)
+     */
     double theta_4;
-    /** Volumetric water content at -7 kPa. (cm^3/cm^3) */
+    /**
+     * @brief Volumetric water content at -7 kPa. (cm^3/cm^3)
+     */
     double theta_7;
-    /** Volumetric water content at -10 kPa. (cm^3/cm^3) */
+    /**
+     * @brief Volumetric water content at -10 kPa. (cm^3/cm^3)
+     */
     double theta_10;
-    /** Volumetric water content at -20 kPa. (cm^3/cm^3) */
+    /**
+     * @brief Volumetric water content at -20 kPa. (cm^3/cm^3)
+     */
     double theta_20;
-    /** Input volumetric water content at -33 kPa. (cm^3/cm^3) */
+    /**
+     * @brief Input volumetric water content at -33 kPa. (cm^3/cm^3)
+     */
     double theta_33;
-    /** Volumetric water content at -60 kPa. (cm^3/cm^3) */
+    /**
+     * @brief Volumetric water content at -60 kPa. (cm^3/cm^3)
+     */
     double theta_60;
-    /** Volumetric water content at -100 kPa. (cm^3/cm^3) */
+    /**
+     * @brief Volumetric water content at -100 kPa. (cm^3/cm^3)
+     */
     double theta_100;
-    /** Volumetric water content at -200 kPa. (cm^3/cm^3) */
+    /**
+     * @brief Volumetric water content at -200 kPa. (cm^3/cm^3)
+     */
     double theta_200;
-    /** Volumetric water content at -400 kPa. (cm^3/cm^3) */
+    /**
+     * @brief Volumetric water content at -400 kPa. (cm^3/cm^3)
+     */
     double theta_400;
-    /** Volumetric water content at -700 kPa. (cm^3/cm^3) */
+    /**
+     * @brief Volumetric water content at -700 kPa. (cm^3/cm^3)
+     */
     double theta_700;
-    /** Volumetric water content at -1000 kPa. (cm^3/cm^3) */
+    /**
+     * @brief Volumetric water content at -1000 kPa. (cm^3/cm^3)
+     */
     double theta_1000;
-    /** Input volumetric water content at -1500 kPa. (cm^3/cm^3) */
+    /**
+     * @brief Input volumetric water content at -1500 kPa. (cm^3/cm^3)
+     */
     double theta_1500;
 };
 
 /**
- * Estimate volumetric water content at -1500 kPa.
+ * @brief Estimate volumetric water content at -1500 kPa.
+ * @param clay Clay content. (%)
+ * @param organic_matter Organic matter content. (%)
+ * @return Volumetric soil water content at -1500 kPa. (cm^3/cm^3)
  *
- * Parameters:
- * clay: Clay content. (%)
- * organic_matter: Organic matter content. (%)
- *
- * Returns:
- * theta_1500: Volumetric soil water content at -1500 kPa. (cm^3/cm^3)
- *
- * Notes:
- * Prediction target: Volumetric soil water content at -1500 kPa.
+ * @details Prediction target:
+ * Volumetric soil water content at -1500 kPa.
  */
 [[nodiscard]]
 inline double calc_ptf_rawls1982_theta_1500(double clay, double organic_matter) {
@@ -64,18 +84,14 @@ inline double calc_ptf_rawls1982_theta_1500(double clay, double organic_matter) 
 }
 
 /**
- * Estimate volumetric water content at -33 kPa using measured or estimated theta_1500.
+ * @brief Estimate volumetric water content at -33 kPa using measured or estimated theta_1500.
+ * @param sand Sand content. (%)
+ * @param organic_matter Organic matter content. (%)
+ * @param theta_1500 Measured or estimated volumetric water content at -1500 kPa. (cm^3/cm^3)
+ * @return Volumetric soil water content at -33 kPa. (cm^3/cm^3)
  *
- * Parameters:
- * sand: Sand content. (%)
- * organic_matter: Organic matter content. (%)
- * theta_1500: Measured or estimated volumetric water content at -1500 kPa. (cm^3/cm^3)
- *
- * Returns:
- * theta_33: Volumetric soil water content at -33 kPa. (cm^3/cm^3)
- *
- * Notes:
- * Prediction target: Volumetric soil water content at -33 kPa.
+ * @details Prediction target:
+ * Volumetric soil water content at -33 kPa.
  */
 [[nodiscard]]
 inline double calc_ptf_rawls1982_theta_33(double sand, double organic_matter, double theta_1500) {
@@ -83,36 +99,31 @@ inline double calc_ptf_rawls1982_theta_33(double sand, double organic_matter, do
 }
 
 /**
- * Estimate a twelve-point water-retention curve using theta_33 and theta_1500.
+ * @brief Estimate a twelve-point water-retention curve using theta_33 and theta_1500.
+ * @param sand Sand content. (%)
+ * @param organic_matter Organic matter content. (%)
+ * @param bulk_density Bulk density. (g/cm^3)
+ * @param theta_33 Measured or estimated volumetric water content at -33 kPa. (cm^3/cm^3)
+ * @param theta_1500 Measured or estimated volumetric water content at -1500 kPa. (cm^3/cm^3)
+ * @return A result with the following fields:
+ * - `theta_4` — Volumetric water content at -4 kPa. (cm^3/cm^3)
+ * - `theta_7` — Volumetric water content at -7 kPa. (cm^3/cm^3)
+ * - `theta_10` — Volumetric water content at -10 kPa. (cm^3/cm^3)
+ * - `theta_20` — Volumetric water content at -20 kPa. (cm^3/cm^3)
+ * - `theta_33` — Input volumetric water content at -33 kPa. (cm^3/cm^3)
+ * - `theta_60` — Volumetric water content at -60 kPa. (cm^3/cm^3)
+ * - `theta_100` — Volumetric water content at -100 kPa. (cm^3/cm^3)
+ * - `theta_200` — Volumetric water content at -200 kPa. (cm^3/cm^3)
+ * - `theta_400` — Volumetric water content at -400 kPa. (cm^3/cm^3)
+ * - `theta_700` — Volumetric water content at -700 kPa. (cm^3/cm^3)
+ * - `theta_1000` — Volumetric water content at -1000 kPa. (cm^3/cm^3)
+ * - `theta_1500` — Input volumetric water content at -1500 kPa. (cm^3/cm^3)
  *
- * Parameters:
- * sand: Sand content. (%)
- * organic_matter: Organic matter content. (%)
- * bulk_density: Bulk density. (g/cm^3)
- * theta_33: Measured or estimated volumetric water content at -33 kPa. (cm^3/cm^3)
- * theta_1500: Measured or estimated volumetric water content at -1500 kPa. (cm^3/cm^3)
- *
- * Returns:
- * theta_4: Volumetric water content at -4 kPa. (cm^3/cm^3)
- * theta_7: Volumetric water content at -7 kPa. (cm^3/cm^3)
- * theta_10: Volumetric water content at -10 kPa. (cm^3/cm^3)
- * theta_20: Volumetric water content at -20 kPa. (cm^3/cm^3)
- * theta_33: Input volumetric water content at -33 kPa. (cm^3/cm^3)
- * theta_60: Volumetric water content at -60 kPa. (cm^3/cm^3)
- * theta_100: Volumetric water content at -100 kPa. (cm^3/cm^3)
- * theta_200: Volumetric water content at -200 kPa. (cm^3/cm^3)
- * theta_400: Volumetric water content at -400 kPa. (cm^3/cm^3)
- * theta_700: Volumetric water content at -700 kPa. (cm^3/cm^3)
- * theta_1000: Volumetric water content at -1000 kPa. (cm^3/cm^3)
- * theta_1500: Input volumetric water content at -1500 kPa. (cm^3/cm^3)
- *
- * Notes:
- * Prediction target: Volumetric water contents from -4 to -1500 kPa.
- * The source offers three regression levels; this function uses measured theta_33 and
+ * @details Prediction target:
+ * Volumetric water contents from -4 to -1500 kPa.
+ * @note The source offers three regression levels; this function uses measured theta_33 and
  * theta_1500 for the intermediate points.
- *
- * Warnings:
- * The source value 0.8888 is retained literally for the theta_7 intercept.
+ * @warning The source value 0.8888 is retained literally for the theta_7 intercept.
  */
 [[nodiscard]]
 inline Rawls1982PTFResult calc_ptf_rawls1982_full_wrc(double sand, double organic_matter,

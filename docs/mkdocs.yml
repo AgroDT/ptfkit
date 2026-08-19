@@ -1,18 +1,23 @@
 site_name: ptfkit
+site_url: https://agrodt.github.io/ptfkit/
 repo_url: https://github.com/AgroDT/ptfkit
 repo_name: AgroDT/ptfkit
+docs_dir: src
+site_dir: dist
+
 theme:
   name: material
   features:
     - navigation.indexes
+    - navigation.tabs
 
 plugins:
+  - awesome-nav
   - search
-  - api-autonav:
-      modules: [src/ptfkit]
   - mkdocstrings:
       handlers:
         python:
+          paths: [../targets/ptfkit-py/src]
           options:
             docstring_section_style: spacy
             docstring_style: google
@@ -25,25 +30,27 @@ plugins:
   - minify:
       minify_html: true
 
-nav:
-  - Home: index.md
-
 markdown_extensions:
+  - attr_list
+  - admonition
   - def_list
+  - footnotes
+  - meta
   - md_in_html
+  - toc:
+      permalink: true
   - pymdownx.arithmatex:
       generic: true
+  - pymdownx.details
   - pymdownx.highlight:
       use_pygments: true
+  - pymdownx.inlinehilite
   - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
 
 hooks:
-  - docs/hooks.py
-
-exclude_docs: |
-  __pycache__
-  *.py
-  ruff.toml
+  - hooks.py
 
 extra_javascript:
   - js/katex.js
@@ -52,7 +59,3 @@ extra_javascript:
 
 extra_css:
   - https://cdn.jsdelivr.net/npm/katex@0/dist/katex.min.css
-
-watch:
-  - src/ptfkit
-  - README.md

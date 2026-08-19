@@ -96,7 +96,7 @@ def calc_ptf_tiwary2014_igp(
         Prediction target: Saturated hydraulic conductivity.
         Equation 11 was calibrated on 100 layers from 20 Indo-Gangetic Plains profiles.
 
-    Warnings:
+    Warning:
         The legacy API's three water-retention outputs are intentionally excluded because the source
             defines them only for BSR soils.
 

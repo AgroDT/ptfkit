@@ -1,0 +1,22 @@
+target-version = "py311"
+line-length = 100
+show-fixes = true
+output-format = "full"
+
+[lint]
+select = ["ALL"]
+ignore = [
+    "COM812",
+    "CPY001",
+    "D100", "D101", "D103", "D104", "D202", "D203", "D213",
+    "PLR0913",
+    "RUF003",
+    "Q000", "Q003"
+]
+
+[format]
+quote-style = "single"
+
+[lint.isort]
+lines-after-imports = 2
+known-first-party = ["ptfkit"]

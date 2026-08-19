@@ -6,21 +6,15 @@ on:
       - published
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -29,17 +23,36 @@ jobs:
         uses: astral-sh/setup-uv@v10.0.1
         with:
           enable-cache: true
+          cache-dependency-glob: |
+            docs/pyproject.toml
+            docs/uv.lock
+
+      - name: Check documentation lock
+        run: uv lock --project docs --check
+
+      - name: Sync documentation environment
+        run: uv sync --project docs --frozen
 
       - name: Build site
-        run: uv run --directory targets/ptfkit-py --group docs mkdocs build
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v6
+        run: uv --directory=docs run mkdocs build --strict --config-file mkdocs.yml
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: targets/ptfkit-py/site
+          path: docs/dist/
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Setup Pages
+        uses: actions/configure-pages@v6
 
       - name: Deploy to GitHub Pages
         id: deployment

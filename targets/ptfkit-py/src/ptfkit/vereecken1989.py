@@ -131,7 +131,7 @@ def calc_ptf_vereecken1989(
         The paper accepts fitted n values below 1 because constraining n above 1 gave poorer
             descriptions for many of the measured curves.
 
-    Warnings:
+    Warning:
         The bulk-density maximum is reviewed as 1.730 g/cm^3 because the supplied transcription's
             1.230 value is inconsistent with the reported mean.
 
@@ -238,7 +238,7 @@ def calc_ptf_vereecken1989_detailed(
         Detailed particle-size information did not substantially improve theta_s; this function
             therefore retains the broad-texture theta_s regression.
 
-    Warnings:
+    Warning:
         The detailed log(alpha) formula restores the carbon and bulk-density terms shown in Table 7
             but omitted from the supplied Table 8 transcription.
         The bulk-density maximum is reviewed as 1.730 g/cm^3 because the supplied transcription's

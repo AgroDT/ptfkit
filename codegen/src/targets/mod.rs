@@ -1,8 +1,11 @@
+mod c_documentation;
 mod c_expression;
 mod compile;
+mod cpp_documentation;
 mod documentation;
 mod native;
 mod py;
+mod python_documentation;
 mod rs;
 mod write;
 
@@ -30,6 +33,10 @@ pub(super) fn group_by_source(
 
 #[derive(Clone, Copy, PartialEq, Eq)]
 pub(super) enum Target {
+    Documentation,
+    CDocumentation,
+    CppDocumentation,
+    PythonDocumentation,
     Rust,
     PythonExtension,
     PythonWrapper,
@@ -42,7 +49,11 @@ pub(super) enum Target {
 }
 
 impl Target {
-    pub(super) const ALL: [Self; 9] = [
+    pub(super) const ALL: [Self; 13] = [
+        Self::Documentation,
+        Self::CDocumentation,
+        Self::CppDocumentation,
+        Self::PythonDocumentation,
         Self::Rust,
         Self::PythonExtension,
         Self::PythonWrapper,
@@ -56,6 +67,10 @@ impl Target {
 
     fn output_path(self, root: &Path, relative: &Path) -> PathBuf {
         match self {
+            Self::Documentation => root.join("docs/src/ptf-catalog/sources").join(relative),
+            Self::CDocumentation => root.join("docs/src/reference/c").join(relative),
+            Self::CppDocumentation => root.join("docs/src/reference/cpp").join(relative),
+            Self::PythonDocumentation => root.join("docs/src/reference/python").join(relative),
             Self::Rust => root.join("targets/ptfkit-rs/src").join(relative),
             Self::PythonExtension => root.join("targets/ptfkit-py").join(relative),
             Self::PythonWrapper => root.join("targets/ptfkit-py/src").join(relative),
@@ -70,6 +85,10 @@ impl Target {
 
     fn cleanup_directory(self, root: &Path) -> PathBuf {
         match self {
+            Self::Documentation => root.join("docs/src/ptf-catalog/sources"),
+            Self::CDocumentation => root.join("docs/src/reference/c"),
+            Self::CppDocumentation => root.join("docs/src/reference/cpp"),
+            Self::PythonDocumentation => root.join("docs/src/reference/python"),
             Self::Rust => root.join("targets/ptfkit-rs/src"),
             Self::PythonExtension | Self::PythonWrapper => {
                 root.join("targets/ptfkit-py/src/ptfkit")
@@ -85,6 +104,10 @@ impl Target {
 
     fn generated_header(self) -> &'static str {
         match self {
+            Self::Documentation => documentation::HEADER,
+            Self::CDocumentation => documentation::HEADER,
+            Self::CppDocumentation => documentation::HEADER,
+            Self::PythonDocumentation => documentation::HEADER,
             Self::Rust => rs::HEADER,
             Self::PythonExtension => py::C_HEADER,
             Self::PythonWrapper => py::WRAPPER_HEADER,
@@ -109,6 +132,10 @@ impl Target {
 
     fn format(self, root: &Path, paths: &[PathBuf]) -> Result<()> {
         match self {
+            Self::Documentation
+            | Self::CDocumentation
+            | Self::CppDocumentation
+            | Self::PythonDocumentation => Ok(()),
             Self::Rust => write::format_rust(paths),
             Self::PythonExtension | Self::NativeCTest => write::format_c(paths),
             Self::PythonWrapper => write::format_python(root, paths),
@@ -142,6 +169,8 @@ impl GeneratedFile {
 }
 
 pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> Result<()> {
+    let documentation = documentation::render(&entries);
+    let python_documentation = python_documentation::render(&entries);
     let compiled = compile::functions(entries)?;
     let rust = rs::render(&compiled)?
         .into_iter()
@@ -149,6 +178,8 @@ pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> Result<()> {
         .collect::<Vec<_>>();
     let py = py::render(&compiled)?;
     let native = native::render(&compiled)?;
+    let c_documentation = c_documentation::render(&compiled)?;
+    let cpp_documentation = cpp_documentation::render(&compiled)?;
     let c = py
         .c_sources
         .into_iter()
@@ -178,6 +209,10 @@ pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> Result<()> {
     write::commit(
         root,
         &[
+            TargetOutput::new(Target::Documentation, documentation),
+            TargetOutput::new(Target::CDocumentation, c_documentation),
+            TargetOutput::new(Target::CppDocumentation, cpp_documentation),
+            TargetOutput::new(Target::PythonDocumentation, python_documentation),
             TargetOutput::new(Target::Rust, rust),
             TargetOutput::new(Target::PythonExtension, c),
             TargetOutput::new(Target::PythonWrapper, wrappers),
@@ -189,4 +224,30 @@ pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> Result<()> {
             TargetOutput::new(Target::NativeCppTest, native.cpp_tests),
         ],
     )
+}
+
+#[cfg(test)]
+mod tests {
+    use std::path::Path;
+
+    use super::Target;
+
+    #[test]
+    fn documentation_targets_use_structured_mkdocs_roots() {
+        let root = Path::new("repository");
+        let relative = Path::new("index.md");
+
+        for (target, directory) in [
+            (Target::Documentation, "docs/src/ptf-catalog/sources"),
+            (Target::CDocumentation, "docs/src/reference/c"),
+            (Target::CppDocumentation, "docs/src/reference/cpp"),
+            (Target::PythonDocumentation, "docs/src/reference/python"),
+        ] {
+            assert_eq!(
+                target.output_path(root, relative),
+                root.join(directory).join(relative)
+            );
+            assert_eq!(target.cleanup_directory(root), root.join(directory));
+        }
+    }
 }

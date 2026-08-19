@@ -51,11 +51,6 @@ dev = [
     "ruff~=0.14",
     "ty~=0.0.71",
 ]
-docs = [
-    "mkdocs-api-autonav>=0.4.0",
-    "mkdocs-material>=9.7.0",
-    "mkdocs-minify-plugin>=0.8.0",
-]
 
 [[tool.dynamic-metadata]]
 provider = "scikit_build_core.metadata.regex"
@@ -63,28 +58,7 @@ field = "version"
 input = "src/ptfkit/_version.py"
 
 [tool.ruff]
-target-version = "py311"
-line-length = 100
-show-fixes = true
-output-format = "full"
-
-[tool.ruff.lint]
-select = ["ALL"]
-ignore = [
-    "COM812",
-    "CPY001",
-    "D100", "D101", "D103", "D104", "D202", "D203", "D213",
-    "PLR0913",
-    "RUF003",
-    "Q000", "Q003"
-]
-
-[tool.ruff.format]
-quote-style = "single"
-
-[tool.ruff.lint.isort]
-lines-after-imports = 2
-known-first-party = ["ptfkit"]
+extend = "../../ruff.toml"
 
 [tool.pytest.ini_options]
 addopts = "--cov=ptfkit"

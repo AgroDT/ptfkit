@@ -80,7 +80,7 @@ def calc_ptf_aimrun2009(
         Sand and silt are not inputs to the selected final model.
         Applicability: Clayey rice soils with compacted subsoil.
 
-    Warnings:
+    Warning:
         The formula uses natural logarithms of all inputs.
 
     """

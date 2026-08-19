@@ -3,17 +3,17 @@
 export module ptfkit.tiwary2014;
 
 /**
- * Tiwary et al. (2014), hydraulic PTFs for two major soil regions of India.
+ * @brief Tiwary et al. (2014), hydraulic PTFs for two major soil regions of India.
  *
- * Reference:
+ * @details Source publication:
  * Tiwary, P., Patil, N. G., Bhattacharyya, T., Chandran, P., Ray, S. K., Karthikeyan, K., ...
  * & Thakre, S. (2014). Pedotransfer functions: a tool for estimating hydraulic properties of
  * two major soil types of India. Current Science, 1431-1439.
  *
- * Territory:
+ * @remark Geographic scope:
  * Indo-Gangetic Plains and black soil region of India
  *
- * Dataset:
+ * @remark Calibration dataset:
  * 209 layers from 30 Indo-Gangetic Plains profiles and 275 layers from 62 black-soil profiles;
  * equation-specific subsets are described below.
  */
@@ -21,34 +21,36 @@ export module ptfkit.tiwary2014;
 export namespace ptfkit::tiwary2014 {
 
 struct Tiwary2014PTFResult {
-    /** Gravimetric water content at 33 kPa. (%) */
+    /**
+     * @brief Gravimetric water content at 33 kPa. (%)
+     */
     double w_33;
-    /** Gravimetric water content at 100 kPa. (%) */
+    /**
+     * @brief Gravimetric water content at 100 kPa. (%)
+     */
     double w_100;
-    /** Gravimetric water content at 1500 kPa. (%) */
+    /**
+     * @brief Gravimetric water content at 1500 kPa. (%)
+     */
     double w_1500;
-    /** Saturated hydraulic conductivity converted from mm/h. (m/s) */
+    /**
+     * @brief Saturated hydraulic conductivity converted from mm/h. (m/s)
+     */
     double k_sat;
 };
 
 /**
- * Estimate saturated conductivity for Indo-Gangetic Plains soils.
+ * @brief Estimate saturated conductivity for Indo-Gangetic Plains soils.
+ * @param sand Sand content. (%)
+ * @param bulk_density Bulk density. (Mg/m^3)
+ * @param esp Exchangeable sodium percentage. (%)
+ * @return Saturated hydraulic conductivity converted from mm/h. (m/s)
  *
- * Parameters:
- * sand: Sand content. (%)
- * bulk_density: Bulk density. (Mg/m^3)
- * esp: Exchangeable sodium percentage. (%)
- *
- * Returns:
- * k_sat: Saturated hydraulic conductivity converted from mm/h. (m/s)
- *
- * Notes:
- * Prediction target: Saturated hydraulic conductivity.
- * Equation 11 was calibrated on 100 layers from 20 Indo-Gangetic Plains profiles.
- *
- * Warnings:
- * The legacy API's three water-retention outputs are intentionally excluded because the source
- * defines them only for BSR soils.
+ * @details Prediction target:
+ * Saturated hydraulic conductivity.
+ * @note Equation 11 was calibrated on 100 layers from 20 Indo-Gangetic Plains profiles.
+ * @warning The legacy API's three water-retention outputs are intentionally excluded because
+ * the source defines them only for BSR soils.
  */
 [[nodiscard]]
 inline double calc_ptf_tiwary2014_igp(double sand, double bulk_density, double esp) {
@@ -57,27 +59,23 @@ inline double calc_ptf_tiwary2014_igp(double sand, double bulk_density, double e
 }
 
 /**
- * Estimate water retention and saturated conductivity for the black soil region.
+ * @brief Estimate water retention and saturated conductivity for the black soil region.
+ * @param clay Clay content. (%)
+ * @param ph Soil pH. (dimensionless)
+ * @param cation_exchange_capacity Cation exchange capacity. (cmol(c)/kg)
+ * @param esp Exchangeable sodium percentage. (%)
+ * @param emp Exchangeable magnesium percentage. (%)
+ * @param excm Exchangeable calcium-to-magnesium ratio. (dimensionless)
+ * @return A result with the following fields:
+ * - `w_33` — Gravimetric water content at 33 kPa. (%)
+ * - `w_100` — Gravimetric water content at 100 kPa. (%)
+ * - `w_1500` — Gravimetric water content at 1500 kPa. (%)
+ * - `k_sat` — Saturated hydraulic conductivity converted from mm/h. (m/s)
  *
- * Parameters:
- * clay: Clay content. (%)
- * ph: Soil pH. (dimensionless)
- * cation_exchange_capacity: Cation exchange capacity. (cmol(c)/kg)
- * esp: Exchangeable sodium percentage. (%)
- * emp: Exchangeable magnesium percentage. (%)
- * excm: Exchangeable calcium-to-magnesium ratio. (dimensionless)
- *
- * Returns:
- * w_33: Gravimetric water content at 33 kPa. (%)
- * w_100: Gravimetric water content at 100 kPa. (%)
- * w_1500: Gravimetric water content at 1500 kPa. (%)
- * k_sat: Saturated hydraulic conductivity converted from mm/h. (m/s)
- *
- * Notes:
- * Prediction target: Gravimetric water contents at 33, 100, and 1500 kPa and saturated
- * hydraulic conductivity.
- * Water-retention equations used 75 layers from 14 profiles; equation 10 used 200 layers from
- * 46 profiles.
+ * @details Prediction target:
+ * Gravimetric water contents at 33, 100, and 1500 kPa and saturated hydraulic conductivity.
+ * @note Water-retention equations used 75 layers from 14 profiles; equation 10 used 200 layers
+ * from 46 profiles.
  */
 [[nodiscard]]
 inline Tiwary2014PTFResult calc_ptf_tiwary2014_bsr(double clay, double ph,

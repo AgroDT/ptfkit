@@ -116,7 +116,7 @@ def calc_ptf_puckett1985(
             conductivity.
         The regressions were developed for soils with similar genesis and clay mineralogy.
 
-    Warnings:
+    Warning:
         Use outside Lower Coastal Plain Ultisols requires independent validation.
 
     """

@@ -105,7 +105,7 @@ def calc_ptf_li2007(
         Prediction target: Van Genuchten saturated water content, alpha, n, and saturated hydraulic
             conductivity.
 
-    Warnings:
+    Warning:
         The formulas use natural logarithms of selected inputs.
 
     """

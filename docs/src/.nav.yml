@@ -1,0 +1,14 @@
+nav:
+  - ptfkit:
+      - index.md
+      - Targets:
+          - C and C++: targets/native.md
+          - Python: targets/python.md
+          - Rust: targets/rust.md
+  - PTF Catalog: ptf-catalog
+  - Contributing: contributing
+  - API Reference:
+      - C: reference/c
+      - C++: reference/cpp
+      - Python: reference/python
+      - Rust: https://docs.rs/ptfkit/

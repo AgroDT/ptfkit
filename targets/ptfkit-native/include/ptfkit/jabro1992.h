@@ -6,38 +6,32 @@
 #include <math.h>
 
 /**
- * Jabro (1992), United States.
+ * @brief Jabro (1992), United States.
  *
- * Reference:
+ * @details Source publication:
  * Jabro, J. D. (1992). Estimation of saturated hydraulic conductivity of soils from particle
  * size distribution and bulk density data. Transactions of the ASAE, 35(2), 557-560.
- * DOI: 10.13031/2013.28633 (https://doi.org/10.13031/2013.28633)
+ * @see https://doi.org/10.13031/2013.28633 DOI: 10.13031/2013.28633
  *
- * Territory:
+ * @remark Geographic scope:
  * USA
  *
- * Dataset:
+ * @remark Calibration dataset:
  * Southern Cooperation Series Bulletins (Dan et al., 1983; Nofziger et al., 1983; Quisenberry
  * et al., 1987), 350 samples; validation on Duffield silt loam data.
  */
 
 /**
- * Estimate saturated hydraulic conductivity from silt, clay, and bulk density.
+ * @brief Estimate saturated hydraulic conductivity from silt, clay, and bulk density.
+ * @param silt Silt content, 0.002-0.05 mm. (%)
+ * @param clay Clay content, <0.002 mm. (%)
+ * @param bulk_density Bulk density. (g/cm^3)
+ * @return Saturated hydraulic conductivity. (m/s)
  *
- * Parameters:
- * silt: Silt content, 0.002-0.05 mm. (%)
- * clay: Clay content, <0.002 mm. (%)
- * bulk_density: Bulk density. (g/cm^3)
- *
- * Returns:
- * k_sat: Saturated hydraulic conductivity. (m/s)
- *
- * Notes:
- * Prediction target: Saturated hydraulic conductivity from silt, clay, and bulk density.
- * Sand is not an input to the model.
- *
- * Warnings:
- * The formula uses base-10 logarithms of silt and clay.
+ * @details Prediction target:
+ * Saturated hydraulic conductivity from silt, clay, and bulk density.
+ * @note Sand is not an input to the model.
+ * @warning The formula uses base-10 logarithms of silt and clay.
  */
 static inline double calc_ptf_jabro1992(double silt, double clay, double bulk_density) {
     const double log10_k_sat_cm_per_hour =

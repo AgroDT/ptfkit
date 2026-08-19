@@ -114,7 +114,7 @@ def calc_ptf_dharumarajan2019_nkp(
         The model was fitted to 512 soil-layer observations.
         Reported cross-validation RMSE values are 5.25% for FC and 3.71% for PWP.
 
-    Warnings:
+    Warning:
         The paper does not state whether its water-content percentages are gravimetric or
             volumetric.
         The source gives inconsistent profile counts and district lists for the Northern dataset;
@@ -174,7 +174,7 @@ def calc_ptf_dharumarajan2019_nkp_clay(
         The paper recommends this model when clay content is the only available predictor.
         Reported cross-validation RMSE values are 7.05% for FC and 4.74% for PWP.
 
-    Warnings:
+    Warning:
         The paper does not state whether its water-content percentages are gravimetric or
             volumetric.
         The source gives inconsistent profile counts and district lists for the Northern dataset;
@@ -238,7 +238,7 @@ def calc_ptf_dharumarajan2019_skp(
         The model was fitted to 228 soil samples from 43 profiles.
         Reported cross-validation RMSE values are 3.05% for FC and 2.17% for PWP.
 
-    Warnings:
+    Warning:
         The paper does not state whether its water-content percentages are gravimetric or
             volumetric.
 
@@ -296,7 +296,7 @@ def calc_ptf_dharumarajan2019_skp_clay(
         The paper recommends this model when clay content is the only available predictor.
         Reported cross-validation RMSE values are 5.39% for FC and 3.13% for PWP.
 
-    Warnings:
+    Warning:
         The paper does not state whether its water-content percentages are gravimetric or
             volumetric.
 
@@ -354,7 +354,7 @@ def calc_ptf_dharumarajan2019_infiltration(
         The model was fitted to 100 Karnataka soil observations.
         The reported model R-squared is 41%, and the reported RMSE is 6.71%.
 
-    Warnings:
+    Warning:
         Predictor calibration ranges are not reported for the 100-observation dataset.
 
     """

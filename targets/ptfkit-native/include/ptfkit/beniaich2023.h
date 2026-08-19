@@ -4,50 +4,52 @@
 #define PTFKIT_BENIAICH2023_H
 
 /**
- * Beniaich et al. (2023), soil-water PTFs for four Moroccan regions.
+ * @brief Beniaich et al. (2023), soil-water PTFs for four Moroccan regions.
  *
- * Reference:
+ * @details Source publication:
  * Beniaich, A., Otten, W., Shin, H.-C., Cooper, H. V., Rickson, J., Soulaimani, A., & El
  * Gharous, M. (2023). Evaluation of pedotransfer functions to estimate some of soil hydraulic
  * characteristics in North Africa: A case study from Morocco. Frontiers in Environmental
  * Science, 11, 1090688.
- * DOI: 10.3389/fenvs.2023.1090688 (https://doi.org/10.3389/fenvs.2023.1090688)
+ * @see https://doi.org/10.3389/fenvs.2023.1090688 DOI: 10.3389/fenvs.2023.1090688
  *
- * Territory:
+ * @remark Geographic scope:
  * Agricultural topsoils in Doukkala, Gharb-Loukouss, Moulouya, and Tadla, Morocco
  *
- * Dataset:
+ * @remark Calibration dataset:
  * 331 disturbed topsoil samples collected at 0-20 cm from 2019 to 2022; random 50% calibration
  * and 50% validation subsets.
  */
 
 typedef struct {
-    /** Gravimetric water content at saturation. (g/g) */
+    /**
+     * @brief Gravimetric water content at saturation. (g/g)
+     */
     double water_saturation;
-    /** Gravimetric water content at -33 kPa. (g/g) */
+    /**
+     * @brief Gravimetric water content at -33 kPa. (g/g)
+     */
     double water_field_capacity;
-    /** Gravimetric water content at -1,500 kPa. (g/g) */
+    /**
+     * @brief Gravimetric water content at -1,500 kPa. (g/g)
+     */
     double water_wilting_point;
 } beniaich2023_ptf_result;
 
 /**
- * Estimate three gravimetric water contents from clay.
+ * @brief Estimate three gravimetric water contents from clay.
+ * @param clay Clay content by mass. (%)
+ * @return A result with the following fields:
+ * - `water_saturation` — Gravimetric water content at saturation. (g/g)
+ * - `water_field_capacity` — Gravimetric water content at -33 kPa. (g/g)
+ * - `water_wilting_point` — Gravimetric water content at -1,500 kPa. (g/g)
  *
- * Parameters:
- * clay: Clay content by mass. (%)
- *
- * Returns:
- * water_saturation: Gravimetric water content at saturation. (g/g)
- * water_field_capacity: Gravimetric water content at -33 kPa. (g/g)
- * water_wilting_point: Gravimetric water content at -1,500 kPa. (g/g)
- *
- * Notes:
- * Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
- * Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
- *
- * Warnings:
- * Developed from Moroccan agricultural topsoils and not independently validated outside the
- * source territory.
+ * @details Prediction target:
+ * Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
+ * @note Source regressions operate in percentage points; outputs are divided by 100 to return
+ * g/g.
+ * @warning Developed from Moroccan agricultural topsoils and not independently validated
+ * outside the source territory.
  */
 static inline beniaich2023_ptf_result calc_ptf_beniaich2023_slr1(double clay) {
     const double water_saturation = (46.307 + 0.556 * clay) / 100.0;
@@ -65,23 +67,19 @@ static inline beniaich2023_ptf_result calc_ptf_beniaich2023_slr1(double clay) {
 }
 
 /**
- * Estimate three gravimetric water contents from silt.
+ * @brief Estimate three gravimetric water contents from silt.
+ * @param silt Silt content by mass. (%)
+ * @return A result with the following fields:
+ * - `water_saturation` — Gravimetric water content at saturation. (g/g)
+ * - `water_field_capacity` — Gravimetric water content at -33 kPa. (g/g)
+ * - `water_wilting_point` — Gravimetric water content at -1,500 kPa. (g/g)
  *
- * Parameters:
- * silt: Silt content by mass. (%)
- *
- * Returns:
- * water_saturation: Gravimetric water content at saturation. (g/g)
- * water_field_capacity: Gravimetric water content at -33 kPa. (g/g)
- * water_wilting_point: Gravimetric water content at -1,500 kPa. (g/g)
- *
- * Notes:
- * Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
- * Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
- *
- * Warnings:
- * Developed from Moroccan agricultural topsoils and not independently validated outside the
- * source territory.
+ * @details Prediction target:
+ * Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
+ * @note Source regressions operate in percentage points; outputs are divided by 100 to return
+ * g/g.
+ * @warning Developed from Moroccan agricultural topsoils and not independently validated
+ * outside the source territory.
  */
 static inline beniaich2023_ptf_result calc_ptf_beniaich2023_slr2(double silt) {
     const double water_saturation = (59.508 + 0.299 * silt) / 100.0;
@@ -99,23 +97,19 @@ static inline beniaich2023_ptf_result calc_ptf_beniaich2023_slr2(double silt) {
 }
 
 /**
- * Estimate three gravimetric water contents from sand.
+ * @brief Estimate three gravimetric water contents from sand.
+ * @param sand Sand content by mass. (%)
+ * @return A result with the following fields:
+ * - `water_saturation` — Gravimetric water content at saturation. (g/g)
+ * - `water_field_capacity` — Gravimetric water content at -33 kPa. (g/g)
+ * - `water_wilting_point` — Gravimetric water content at -1,500 kPa. (g/g)
  *
- * Parameters:
- * sand: Sand content by mass. (%)
- *
- * Returns:
- * water_saturation: Gravimetric water content at saturation. (g/g)
- * water_field_capacity: Gravimetric water content at -33 kPa. (g/g)
- * water_wilting_point: Gravimetric water content at -1,500 kPa. (g/g)
- *
- * Notes:
- * Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
- * Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
- *
- * Warnings:
- * Developed from Moroccan agricultural topsoils and not independently validated outside the
- * source territory.
+ * @details Prediction target:
+ * Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
+ * @note Source regressions operate in percentage points; outputs are divided by 100 to return
+ * g/g.
+ * @warning Developed from Moroccan agricultural topsoils and not independently validated
+ * outside the source territory.
  */
 static inline beniaich2023_ptf_result calc_ptf_beniaich2023_slr3(double sand) {
     const double water_saturation = (81.420 - 0.427 * sand) / 100.0;
@@ -133,24 +127,20 @@ static inline beniaich2023_ptf_result calc_ptf_beniaich2023_slr3(double sand) {
 }
 
 /**
- * Estimate three gravimetric water contents from clay plus silt.
+ * @brief Estimate three gravimetric water contents from clay plus silt.
+ * @param clay Clay content by mass. (%)
+ * @param silt Silt content by mass. (%)
+ * @return A result with the following fields:
+ * - `water_saturation` — Gravimetric water content at saturation. (g/g)
+ * - `water_field_capacity` — Gravimetric water content at -33 kPa. (g/g)
+ * - `water_wilting_point` — Gravimetric water content at -1,500 kPa. (g/g)
  *
- * Parameters:
- * clay: Clay content by mass. (%)
- * silt: Silt content by mass. (%)
- *
- * Returns:
- * water_saturation: Gravimetric water content at saturation. (g/g)
- * water_field_capacity: Gravimetric water content at -33 kPa. (g/g)
- * water_wilting_point: Gravimetric water content at -1,500 kPa. (g/g)
- *
- * Notes:
- * Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
- * Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
- *
- * Warnings:
- * Developed from Moroccan agricultural topsoils and not independently validated outside the
- * source territory.
+ * @details Prediction target:
+ * Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
+ * @note Source regressions operate in percentage points; outputs are divided by 100 to return
+ * g/g.
+ * @warning Developed from Moroccan agricultural topsoils and not independently validated
+ * outside the source territory.
  */
 static inline beniaich2023_ptf_result calc_ptf_beniaich2023_slr4(double clay, double silt) {
     const double clay_silt = clay + silt;
@@ -169,24 +159,20 @@ static inline beniaich2023_ptf_result calc_ptf_beniaich2023_slr4(double clay, do
 }
 
 /**
- * Estimate three gravimetric water contents from the clay-to-silt ratio.
+ * @brief Estimate three gravimetric water contents from the clay-to-silt ratio.
+ * @param clay Clay content by mass. (%)
+ * @param silt Silt content by mass and denominator of the clay-to-silt ratio. (%)
+ * @return A result with the following fields:
+ * - `water_saturation` — Gravimetric water content at saturation. (g/g)
+ * - `water_field_capacity` — Gravimetric water content at -33 kPa. (g/g)
+ * - `water_wilting_point` — Gravimetric water content at -1,500 kPa. (g/g)
  *
- * Parameters:
- * clay: Clay content by mass. (%)
- * silt: Silt content by mass and denominator of the clay-to-silt ratio. (%)
- *
- * Returns:
- * water_saturation: Gravimetric water content at saturation. (g/g)
- * water_field_capacity: Gravimetric water content at -33 kPa. (g/g)
- * water_wilting_point: Gravimetric water content at -1,500 kPa. (g/g)
- *
- * Notes:
- * Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
- * Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
- *
- * Warnings:
- * Developed from Moroccan agricultural topsoils and not independently validated outside the
- * source territory.
+ * @details Prediction target:
+ * Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
+ * @note Source regressions operate in percentage points; outputs are divided by 100 to return
+ * g/g.
+ * @warning Developed from Moroccan agricultural topsoils and not independently validated
+ * outside the source territory.
  */
 static inline beniaich2023_ptf_result calc_ptf_beniaich2023_slr5(double clay, double silt) {
     const double clay_silt_ratio = clay / silt;
@@ -205,23 +191,19 @@ static inline beniaich2023_ptf_result calc_ptf_beniaich2023_slr5(double clay, do
 }
 
 /**
- * Estimate three gravimetric water contents from soil organic matter.
+ * @brief Estimate three gravimetric water contents from soil organic matter.
+ * @param soil_organic_matter Soil organic matter content by mass. (%)
+ * @return A result with the following fields:
+ * - `water_saturation` — Gravimetric water content at saturation. (g/g)
+ * - `water_field_capacity` — Gravimetric water content at -33 kPa. (g/g)
+ * - `water_wilting_point` — Gravimetric water content at -1,500 kPa. (g/g)
  *
- * Parameters:
- * soil_organic_matter: Soil organic matter content by mass. (%)
- *
- * Returns:
- * water_saturation: Gravimetric water content at saturation. (g/g)
- * water_field_capacity: Gravimetric water content at -33 kPa. (g/g)
- * water_wilting_point: Gravimetric water content at -1,500 kPa. (g/g)
- *
- * Notes:
- * Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
- * Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
- *
- * Warnings:
- * Developed from Moroccan agricultural topsoils and not independently validated outside the
- * source territory.
+ * @details Prediction target:
+ * Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
+ * @note Source regressions operate in percentage points; outputs are divided by 100 to return
+ * g/g.
+ * @warning Developed from Moroccan agricultural topsoils and not independently validated
+ * outside the source territory.
  */
 static inline beniaich2023_ptf_result calc_ptf_beniaich2023_slr6(double soil_organic_matter) {
     const double water_saturation = (61.163 + 2.793 * soil_organic_matter) / 100.0;
@@ -239,25 +221,21 @@ static inline beniaich2023_ptf_result calc_ptf_beniaich2023_slr6(double soil_org
 }
 
 /**
- * Estimate three gravimetric water contents from silt, sand, and organic matter.
+ * @brief Estimate three gravimetric water contents from silt, sand, and organic matter.
+ * @param silt Silt content by mass. (%)
+ * @param sand Sand content by mass. (%)
+ * @param soil_organic_matter Soil organic matter content by mass. (%)
+ * @return A result with the following fields:
+ * - `water_saturation` — Gravimetric water content at saturation. (g/g)
+ * - `water_field_capacity` — Gravimetric water content at -33 kPa. (g/g)
+ * - `water_wilting_point` — Gravimetric water content at -1,500 kPa. (g/g)
  *
- * Parameters:
- * silt: Silt content by mass. (%)
- * sand: Sand content by mass. (%)
- * soil_organic_matter: Soil organic matter content by mass. (%)
- *
- * Returns:
- * water_saturation: Gravimetric water content at saturation. (g/g)
- * water_field_capacity: Gravimetric water content at -33 kPa. (g/g)
- * water_wilting_point: Gravimetric water content at -1,500 kPa. (g/g)
- *
- * Notes:
- * Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
- * Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
- *
- * Warnings:
- * Developed from Moroccan agricultural topsoils and not independently validated outside the
- * source territory.
+ * @details Prediction target:
+ * Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
+ * @note Source regressions operate in percentage points; outputs are divided by 100 to return
+ * g/g.
+ * @warning Developed from Moroccan agricultural topsoils and not independently validated
+ * outside the source territory.
  */
 static inline beniaich2023_ptf_result calc_ptf_beniaich2023_mlr1(double silt, double sand,
                                                                  double soil_organic_matter) {
@@ -279,24 +257,20 @@ static inline beniaich2023_ptf_result calc_ptf_beniaich2023_mlr1(double silt, do
 }
 
 /**
- * Estimate three gravimetric water contents from sand and organic matter.
+ * @brief Estimate three gravimetric water contents from sand and organic matter.
+ * @param sand Sand content by mass. (%)
+ * @param soil_organic_matter Soil organic matter content by mass. (%)
+ * @return A result with the following fields:
+ * - `water_saturation` — Gravimetric water content at saturation. (g/g)
+ * - `water_field_capacity` — Gravimetric water content at -33 kPa. (g/g)
+ * - `water_wilting_point` — Gravimetric water content at -1,500 kPa. (g/g)
  *
- * Parameters:
- * sand: Sand content by mass. (%)
- * soil_organic_matter: Soil organic matter content by mass. (%)
- *
- * Returns:
- * water_saturation: Gravimetric water content at saturation. (g/g)
- * water_field_capacity: Gravimetric water content at -33 kPa. (g/g)
- * water_wilting_point: Gravimetric water content at -1,500 kPa. (g/g)
- *
- * Notes:
- * Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
- * Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
- *
- * Warnings:
- * Developed from Moroccan agricultural topsoils and not independently validated outside the
- * source territory.
+ * @details Prediction target:
+ * Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
+ * @note Source regressions operate in percentage points; outputs are divided by 100 to return
+ * g/g.
+ * @warning Developed from Moroccan agricultural topsoils and not independently validated
+ * outside the source territory.
  */
 static inline beniaich2023_ptf_result calc_ptf_beniaich2023_mlr2(double sand,
                                                                  double soil_organic_matter) {
@@ -317,24 +291,20 @@ static inline beniaich2023_ptf_result calc_ptf_beniaich2023_mlr2(double sand,
 }
 
 /**
- * Estimate three gravimetric water contents from silt and organic matter.
+ * @brief Estimate three gravimetric water contents from silt and organic matter.
+ * @param silt Silt content by mass. (%)
+ * @param soil_organic_matter Soil organic matter content by mass. (%)
+ * @return A result with the following fields:
+ * - `water_saturation` — Gravimetric water content at saturation. (g/g)
+ * - `water_field_capacity` — Gravimetric water content at -33 kPa. (g/g)
+ * - `water_wilting_point` — Gravimetric water content at -1,500 kPa. (g/g)
  *
- * Parameters:
- * silt: Silt content by mass. (%)
- * soil_organic_matter: Soil organic matter content by mass. (%)
- *
- * Returns:
- * water_saturation: Gravimetric water content at saturation. (g/g)
- * water_field_capacity: Gravimetric water content at -33 kPa. (g/g)
- * water_wilting_point: Gravimetric water content at -1,500 kPa. (g/g)
- *
- * Notes:
- * Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
- * Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
- *
- * Warnings:
- * Developed from Moroccan agricultural topsoils and not independently validated outside the
- * source territory.
+ * @details Prediction target:
+ * Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
+ * @note Source regressions operate in percentage points; outputs are divided by 100 to return
+ * g/g.
+ * @warning Developed from Moroccan agricultural topsoils and not independently validated
+ * outside the source territory.
  */
 static inline beniaich2023_ptf_result calc_ptf_beniaich2023_mlr3(double silt,
                                                                  double soil_organic_matter) {
@@ -354,24 +324,20 @@ static inline beniaich2023_ptf_result calc_ptf_beniaich2023_mlr3(double silt,
 }
 
 /**
- * Estimate three gravimetric water contents from clay and organic matter.
+ * @brief Estimate three gravimetric water contents from clay and organic matter.
+ * @param clay Clay content by mass. (%)
+ * @param soil_organic_matter Soil organic matter content by mass. (%)
+ * @return A result with the following fields:
+ * - `water_saturation` — Gravimetric water content at saturation. (g/g)
+ * - `water_field_capacity` — Gravimetric water content at -33 kPa. (g/g)
+ * - `water_wilting_point` — Gravimetric water content at -1,500 kPa. (g/g)
  *
- * Parameters:
- * clay: Clay content by mass. (%)
- * soil_organic_matter: Soil organic matter content by mass. (%)
- *
- * Returns:
- * water_saturation: Gravimetric water content at saturation. (g/g)
- * water_field_capacity: Gravimetric water content at -33 kPa. (g/g)
- * water_wilting_point: Gravimetric water content at -1,500 kPa. (g/g)
- *
- * Notes:
- * Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
- * Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
- *
- * Warnings:
- * Developed from Moroccan agricultural topsoils and not independently validated outside the
- * source territory.
+ * @details Prediction target:
+ * Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
+ * @note Source regressions operate in percentage points; outputs are divided by 100 to return
+ * g/g.
+ * @warning Developed from Moroccan agricultural topsoils and not independently validated
+ * outside the source territory.
  */
 static inline beniaich2023_ptf_result calc_ptf_beniaich2023_mlr4(double clay,
                                                                  double soil_organic_matter) {
@@ -391,25 +357,21 @@ static inline beniaich2023_ptf_result calc_ptf_beniaich2023_mlr4(double clay,
 }
 
 /**
- * Estimate three gravimetric water contents from clay, silt, and organic matter.
+ * @brief Estimate three gravimetric water contents from clay, silt, and organic matter.
+ * @param clay Clay content by mass. (%)
+ * @param silt Silt content by mass. (%)
+ * @param soil_organic_matter Soil organic matter content by mass. (%)
+ * @return A result with the following fields:
+ * - `water_saturation` — Gravimetric water content at saturation. (g/g)
+ * - `water_field_capacity` — Gravimetric water content at -33 kPa. (g/g)
+ * - `water_wilting_point` — Gravimetric water content at -1,500 kPa. (g/g)
  *
- * Parameters:
- * clay: Clay content by mass. (%)
- * silt: Silt content by mass. (%)
- * soil_organic_matter: Soil organic matter content by mass. (%)
- *
- * Returns:
- * water_saturation: Gravimetric water content at saturation. (g/g)
- * water_field_capacity: Gravimetric water content at -33 kPa. (g/g)
- * water_wilting_point: Gravimetric water content at -1,500 kPa. (g/g)
- *
- * Notes:
- * Prediction target: Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
- * Source regressions operate in percentage points; outputs are divided by 100 to return g/g.
- *
- * Warnings:
- * Developed from Moroccan agricultural topsoils and not independently validated outside the
- * source territory.
+ * @details Prediction target:
+ * Gravimetric water content at saturation, -33 kPa, and -1,500 kPa.
+ * @note Source regressions operate in percentage points; outputs are divided by 100 to return
+ * g/g.
+ * @warning Developed from Moroccan agricultural topsoils and not independently validated
+ * outside the source territory.
  */
 static inline beniaich2023_ptf_result calc_ptf_beniaich2023_mlr5(double clay, double silt,
                                                                  double soil_organic_matter) {

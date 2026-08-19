@@ -218,7 +218,7 @@ def calc_full_wrc_rawls1982(
         The source offers three regression levels; this function uses measured theta_33 and
             theta_1500 for the intermediate points.
 
-    Warnings:
+    Warning:
         The source value 0.8888 is retained literally for the theta_7 intercept.
 
     """

@@ -6,41 +6,35 @@
 #include <math.h>
 
 /**
- * Aimrun & Amin (2009), Tanjung Karang Rice Irrigation Project, Malaysia.
+ * @brief Aimrun & Amin (2009), Tanjung Karang Rice Irrigation Project, Malaysia.
  *
- * Reference:
+ * @details Source publication:
  * Aimrun, W., & Amin, M. S. M. (2009). Pedo-transfer function for saturated hydraulic
  * conductivity of lowland paddy soils. Paddy and Water Environment, 7, 217-225.
- * DOI: 10.1007/s10333-009-0165-y (https://doi.org/10.1007/s10333-009-0165-y)
+ * @see https://doi.org/10.1007/s10333-009-0165-y DOI: 10.1007/s10333-009-0165-y
  *
- * Territory:
+ * @remark Geographic scope:
  * Tanjung Karang Rice Irrigation Project, located on a flat coastal plain in the Integrated
  * Agricultural Development Area (IADA Barat Laut Selangor), Malaysia
  *
- * Dataset:
+ * @remark Calibration dataset:
  * 408 lowland paddy soil samples from Sawah Sempadan rice cultivation area.
  */
 
 /**
- * Estimate saturated hydraulic conductivity for lowland paddy soils.
+ * @brief Estimate saturated hydraulic conductivity for lowland paddy soils.
+ * @param clay Clay content, <2 um. (%)
+ * @param bulk_density Dry bulk density. (g/cm^3)
+ * @param organic_matter Organic matter content. (%)
+ * @param gmd Geometric mean diameter of texture. (mm)
+ * @return Saturated hydraulic conductivity. (m/s)
  *
- * Parameters:
- * clay: Clay content, <2 um. (%)
- * bulk_density: Dry bulk density. (g/cm^3)
- * organic_matter: Organic matter content. (%)
- * gmd: Geometric mean diameter of texture. (mm)
- *
- * Returns:
- * k_sat: Saturated hydraulic conductivity. (m/s)
- *
- * Notes:
- * Prediction target: Saturated hydraulic conductivity from clay, dry bulk density, organic
- * matter, and geometric mean diameter.
- * Sand and silt are not inputs to the selected final model.
- * Applicability: Clayey rice soils with compacted subsoil.
- *
- * Warnings:
- * The formula uses natural logarithms of all inputs.
+ * @details Prediction target:
+ * Saturated hydraulic conductivity from clay, dry bulk density, organic matter, and geometric
+ * mean diameter.
+ * @note Sand and silt are not inputs to the selected final model.
+ * @note Applicability: Clayey rice soils with compacted subsoil.
+ * @warning The formula uses natural logarithms of all inputs.
  */
 static inline double calc_ptf_aimrun2009(double clay, double bulk_density, double organic_matter,
                                          double gmd) {

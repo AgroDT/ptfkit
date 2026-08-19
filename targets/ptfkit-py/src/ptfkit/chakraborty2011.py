@@ -111,7 +111,7 @@ def calc_ptf_chakraborty2011_eq1(
         Table 3 reports SEE values of 4.351, 5.051, 3.837, and 4.488 percentage points at the four
             respective potentials.
 
-    Warnings:
+    Warning:
         Use outside the source Indian-soil dataset requires independent validation.
 
     """
@@ -164,7 +164,7 @@ def calc_ptf_chakraborty2011_eq2(
         Table 3 reports SEE values of 4.454, 4.875, 3.691, and 4.352 percentage points at the four
             respective potentials.
 
-    Warnings:
+    Warning:
         Use outside the source Indian-soil dataset requires independent validation.
 
     """
@@ -220,7 +220,7 @@ def calc_ptf_chakraborty2011_eq3(
         Table 3 reports SEE values of 4.253, 5.059, 3.843, and 4.509 percentage points at the four
             respective potentials.
 
-    Warnings:
+    Warning:
         Use outside the source Indian-soil dataset requires independent validation.
 
     """
@@ -276,7 +276,7 @@ def calc_ptf_chakraborty2011_eq4(
         Table 3 reports SEE values of 4.078, 4.820, 3.618, and 4.365 percentage points at the four
             respective potentials.
 
-    Warnings:
+    Warning:
         Use outside the source Indian-soil dataset requires independent validation.
 
     """
@@ -335,7 +335,7 @@ def calc_ptf_chakraborty2011_eq5(
         Table 3 reports SEE values of 4.045, 4.855, 3.637, and 4.370 percentage points at the four
             respective potentials.
 
-    Warnings:
+    Warning:
         Use outside the source Indian-soil dataset requires independent validation.
 
     """
@@ -397,7 +397,7 @@ def calc_ptf_chakraborty2011_eq6(
         Table 3 reports SEE values of 4.060, 5.682, 3.645, and 4.369 percentage points at the four
             respective potentials.
 
-    Warnings:
+    Warning:
         Use outside the source Indian-soil dataset requires independent validation.
 
     """

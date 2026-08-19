@@ -73,7 +73,7 @@ def calc_ptf_jabro1992(
         Prediction target: Saturated hydraulic conductivity from silt, clay, and bulk density.
         Sand is not an input to the model.
 
-    Warnings:
+    Warning:
         The formula uses base-10 logarithms of silt and clay.
 
     """

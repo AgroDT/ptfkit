@@ -48,6 +48,10 @@ install(
     DIRECTORY include/ptfkit/
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/ptfkit
 )
+install(
+    FILES README.md LICENSE
+    DESTINATION ${CMAKE_INSTALL_DOCDIR}
+)
 if(PTFKIT_BUILD_CPP_MODULES)
     install(
         TARGETS ptfkit_cpp

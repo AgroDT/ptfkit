@@ -114,7 +114,7 @@ def calc_ptf_wang2012(
         Water-content equations are evaluated in percentage points and divided by 100 for public
             volumetric fractions.
 
-    Warnings:
+    Warning:
         This normalization intentionally changes the legacy water-content outputs by a factor of
             100.
 

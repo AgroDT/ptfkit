@@ -1,0 +1,58 @@
+# ptfkit for C and C++
+
+The native ptfkit distribution provides:
+
+- header-only C11 functions through the `ptfkit::c` CMake target;
+- optional C++20 modules through the `ptfkit::cpp` CMake target.
+
+## Build and install
+
+CMake 3.21 or newer is required for the C package. C++ modules require CMake
+3.28 or newer and a compiler with C++20 module support.
+
+```shell
+cmake -S . -B build -GNinja -DBUILD_TESTING=OFF
+cmake --build build
+cmake --install build --prefix /path/to/prefix
+```
+
+The C++ module target is enabled by default when the active CMake version
+supports it. It can be controlled explicitly with
+`-DPTFKIT_BUILD_CPP_MODULES=ON` or `OFF`.
+
+## CMake package
+
+```cmake
+find_package(ptfkit CONFIG REQUIRED)
+
+add_executable(example example.c)
+target_link_libraries(example PRIVATE ptfkit::c)
+```
+
+For C++ modules, link against `ptfkit::cpp` instead.
+
+## C usage
+
+```c
+#include <ptfkit/jabro1992.h>
+
+double k_sat = calc_ptf_jabro1992(20.0, 30.0, 1.3);
+```
+
+## C++ usage
+
+```cpp
+import ptfkit.jabro1992;
+
+double k_sat = ptfkit::jabro1992::calc_ptf_jabro1992(20.0, 30.0, 1.3);
+```
+
+## Documentation
+
+- [C API](https://agrodt.github.io/ptfkit/reference/c/)
+- [C++ API](https://agrodt.github.io/ptfkit/reference/cpp/)
+- [PTF source catalogue](https://agrodt.github.io/ptfkit/ptf-catalog/)
+- [Repository](https://github.com/AgroDT/ptfkit)
+
+The applicability of each PTF depends on the dataset, territory, measurement
+methods, and variable ranges reported by its source publication.

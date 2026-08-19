@@ -69,4 +69,4 @@ repos:
         language: system
         entry: uv
         args: [--project, targets/ptfkit-py, run, --no-sync, ty, check]
-        types: [file, python]
+        files: '^targets/ptfkit-py/.*\.py$'
