@@ -68,6 +68,7 @@ calc_ptf_ferrerjulia2004_ranker_texture_organic_matter: ufunc
 calc_ptf_ferrerjulia2004_rendzina_sand: ufunc
 calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter: ufunc
 calc_ptf_ferrerjulia2004_saxton: ufunc
+calc_ptf_hodnett2002: ufunc
 calc_ptf_jabro1992: ufunc
 calc_ptf_li2007: ufunc
 calc_ptf_mayr1999: ufunc
