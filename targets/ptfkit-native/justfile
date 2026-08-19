@@ -1,3 +1,4 @@
+set default-list := true
 set unstable
 set lists
 
@@ -11,20 +12,26 @@ cmake_generator := if which("ninja") {
     []
 }
 
-default:
-	@{{just_executable()}} --list
-
+# Configure the native build with tests enabled.
 [env("CMAKE_GENERATOR", cmake_generator)]
-@configure:
+configure:
 	cmake -S . -B "{{build_dir}}" -DBUILD_TESTING=ON
 
+# Build the native target.
 build: configure
 	cmake --build "{{build_dir}}"
 
+# Build and run native CTest tests.
 test: build
 	ctest --test-dir "{{build_dir}}" --output-on-failure
 
-verify: test
+# Check C and C++ source formatting.
+format:
+	git ls-files -z -- '*.c' '*.h' '*.cc' '*.cpp' '*.cppm' '*.cxx' '*.hpp' | xargs -0 --no-run-if-empty clang-format --style=file --dry-run --Werror
 
+# Run all native target quality checks.
+verify: format test
+
+# Remove generated native build artifacts.
 clean:
     rm -rf "{{build_dir}}"

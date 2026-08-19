@@ -108,7 +108,7 @@ def calc_ptf_mayr1999(
         Human review resolved the source's unspecified log base as base 10; the implementation
             therefore interprets log(a) and log(1/b) as log10 values.
 
-    Warnings:
+    Warning:
         Do not apply the functions to organic soils with organic carbon above 5% or soils with dry
             bulk density below 0.9 g/cm^3.
         Treat application outside the calibration particle-size distribution with great care; the

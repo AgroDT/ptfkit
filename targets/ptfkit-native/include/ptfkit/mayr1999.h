@@ -6,61 +6,65 @@
 #include <math.h>
 
 /**
- * Mayr and Jarvis (1999) modified Brooks-Corey water-retention parameter PTFs.
+ * @brief Mayr and Jarvis (1999) modified Brooks-Corey water-retention parameter PTFs.
  *
- * Reference:
+ * @details Source publication:
  * Mayr, T., & Jarvis, N. J. (1999). Pedotransfer functions to estimate soil water retention
  * parameters for a modified Brooks-Corey type model. Geoderma, 91(1-2), 1-9.
- * DOI: 10.1016/S0016-7061(98)00129-3 (https://doi.org/10.1016/S0016-7061(98)00129-3)
+ * @see https://doi.org/10.1016/S0016-7061(98)00129-3 DOI: 10.1016/S0016-7061(98)00129-3
  *
- * Territory:
+ * @remark Geographic scope:
  * England and Wales
  *
- * Dataset:
+ * @remark Calibration dataset:
  * Soil Survey and Land Research Centre soil physical properties database; regressions used 286
  * soil horizons retained from a 306-horizon subset after excluding fits with RMSE greater than
  * 0.05 m^3/m^3, and validation used 1678 independent soil horizons.
  */
 
 typedef struct {
-    /** Hutson-Cass fitting parameter with pressure-head dimensions. (cm H2O) */
+    /**
+     * @brief Hutson-Cass fitting parameter with pressure-head dimensions. (cm H2O)
+     */
     double a_hc;
-    /** Hutson-Cass fitting parameter controlling retention-curve shape. (dimensionless) */
+    /**
+     * @brief Hutson-Cass fitting parameter controlling retention-curve shape. (dimensionless)
+     */
     double b_hc;
-    /** Volumetric soil water content at saturation. (m^3/m^3) */
+    /**
+     * @brief Volumetric soil water content at saturation. (m^3/m^3)
+     */
     double theta_s;
 } mayr1999_ptf_result;
 
 /**
- * Estimate modified Brooks-Corey a, b, and saturated water content from texture, bulk density,
- * and organic carbon.
+ * @brief Estimate modified Brooks-Corey a, b, and saturated water content from texture, bulk
+ * density, and organic carbon.
+ * @param sand Sand content for particles 0.063-2.0 mm. (%)
+ * @param silt Silt content for particles 0.002-0.063 mm. (%)
+ * @param clay Clay content for particles 0-0.002 mm. (%)
+ * @param bulk_density Dry bulk density; the paper excludes application below 0.9 g/cm^3.
+ * (g/cm^3)
+ * @param organic_carbon Organic carbon content; the paper excludes application above 5%. (%)
+ * @return A result with the following fields:
+ * - `a_hc` — Hutson-Cass fitting parameter with pressure-head dimensions. (cm H2O)
+ * - `b_hc` — Hutson-Cass fitting parameter controlling retention-curve shape.
+ * (dimensionless)
+ * - `theta_s` — Volumetric soil water content at saturation. (m^3/m^3)
  *
- * Parameters:
- * sand: Sand content for particles 0.063-2.0 mm. (%)
- * silt: Silt content for particles 0.002-0.063 mm. (%)
- * clay: Clay content for particles 0-0.002 mm. (%)
- * bulk_density: Dry bulk density; the paper excludes application below 0.9 g/cm^3. (g/cm^3)
- * organic_carbon: Organic carbon content; the paper excludes application above 5%. (%)
- *
- * Returns:
- * a_hc: Hutson-Cass fitting parameter with pressure-head dimensions. (cm H2O)
- * b_hc: Hutson-Cass fitting parameter controlling retention-curve shape. (dimensionless)
- * theta_s: Volumetric soil water content at saturation. (m^3/m^3)
- *
- * Notes:
- * Prediction target: Hutson-Cass modified Brooks-Corey water-retention parameters a, b, and
- * saturated volumetric water content.
- * The particle-size inputs use the UK size boundaries stated by the paper; sand, silt, and
- * clay are percentages.
- * The source reports r^2 values of 0.34 for log(a), 0.74 for log(1/b), and 0.84 for theta_s.
- * Human review resolved the source's unspecified log base as base 10; the implementation
+ * @details Prediction target:
+ * Hutson-Cass modified Brooks-Corey water-retention parameters a, b, and saturated volumetric
+ * water content.
+ * @note The particle-size inputs use the UK size boundaries stated by the paper; sand, silt,
+ * and clay are percentages.
+ * @note The source reports r^2 values of 0.34 for log(a), 0.74 for log(1/b), and 0.84 for
+ * theta_s.
+ * @note Human review resolved the source's unspecified log base as base 10; the implementation
  * therefore interprets log(a) and log(1/b) as log10 values.
- *
- * Warnings:
- * Do not apply the functions to organic soils with organic carbon above 5% or soils with dry
- * bulk density below 0.9 g/cm^3.
- * Treat application outside the calibration particle-size distribution with great care; the
- * paper provides that distribution only graphically.
+ * @warning Do not apply the functions to organic soils with organic carbon above 5% or soils
+ * with dry bulk density below 0.9 g/cm^3.
+ * @warning Treat application outside the calibration particle-size distribution with great
+ * care; the paper provides that distribution only graphically.
  */
 static inline mayr1999_ptf_result calc_ptf_mayr1999(double sand, double silt, double clay,
                                                     double bulk_density, double organic_carbon) {

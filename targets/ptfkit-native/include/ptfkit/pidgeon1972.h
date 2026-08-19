@@ -4,65 +4,53 @@
 #define PTFKIT_PIDGEON1972_H
 
 /**
- * Pidgeon (1972), available-water regressions for ferrallitic soils in Uganda.
+ * @brief Pidgeon (1972), available-water regressions for ferrallitic soils in Uganda.
  *
- * Reference:
+ * @details Source publication:
  * Pidgeon, J. D. (1972). The measurement and prediction of available water capacity of
  * ferrallitic soils in Uganda. *Journal of Soil Science*, *23*(4), 431-441.
  *
- * Territory:
+ * @remark Geographic scope:
  * Non-alluvial ferrallitic soils in Uganda, predominantly kaolinitic and possibly illitic
  *
- * Dataset:
+ * @remark Calibration dataset:
  * Ugandan profile samples; Entebbe alluvial and Nabbongo montmorillonitic soils were excluded
  * from the adopted regressions.
  */
 
 /**
- * Estimate gravimetric field capacity from silt, clay, and organic matter.
+ * @brief Estimate gravimetric field capacity from silt, clay, and organic matter.
+ * @param silt Silt measured by particle-size method 2. (%)
+ * @param clay Clay measured by particle-size method 2. (%)
+ * @param organic_matter Organic matter content. (%)
+ * @return Gravimetric field capacity. (% w/w)
  *
- * Parameters:
- * silt: Silt measured by particle-size method 2. (%)
- * clay: Clay measured by particle-size method 2. (%)
- * organic_matter: Organic matter content. (%)
- *
- * Returns:
- * field_capacity: Gravimetric field capacity. (% w/w)
- *
- * Notes:
- * Prediction target: Gravimetric field capacity
- * The reviewed organic-matter coefficient is 1.54.
+ * @details Prediction target:
+ * Gravimetric field capacity
+ * @note The reviewed organic-matter coefficient is 1.54.
  */
 static inline double calc_ptf_pidgeon1972_fc(double silt, double clay, double organic_matter) {
     return 7.38 + 0.16 * silt + 0.30 * clay + 1.54 * organic_matter;
 }
 
 /**
- * Estimate gravimetric field capacity from sand.
+ * @brief Estimate gravimetric field capacity from sand.
+ * @param sand Sand measured by particle-size method 2. (%)
+ * @return Gravimetric field capacity. (% w/w)
  *
- * Parameters:
- * sand: Sand measured by particle-size method 2. (%)
- *
- * Returns:
- * field_capacity: Gravimetric field capacity. (% w/w)
- *
- * Notes:
- * Prediction target: Gravimetric field capacity
+ * @details Prediction target:
+ * Gravimetric field capacity
  */
 static inline double calc_ptf_pidgeon1972_fc_sand(double sand) { return 36.16 - 0.25 * sand; }
 
 /**
- * Estimate gravimetric field capacity from sand and organic matter.
+ * @brief Estimate gravimetric field capacity from sand and organic matter.
+ * @param sand Sand measured by particle-size method 2. (%)
+ * @param organic_matter Organic matter content. (%)
+ * @return Gravimetric field capacity. (% w/w)
  *
- * Parameters:
- * sand: Sand measured by particle-size method 2. (%)
- * organic_matter: Organic matter content. (%)
- *
- * Returns:
- * field_capacity: Gravimetric field capacity. (% w/w)
- *
- * Notes:
- * Prediction target: Gravimetric field capacity
+ * @details Prediction target:
+ * Gravimetric field capacity
  */
 static inline double calc_ptf_pidgeon1972_fc_sand_organic_matter(double sand,
                                                                  double organic_matter) {
@@ -70,17 +58,13 @@ static inline double calc_ptf_pidgeon1972_fc_sand_organic_matter(double sand,
 }
 
 /**
- * Estimate volumetric field capacity from sand and organic matter.
+ * @brief Estimate volumetric field capacity from sand and organic matter.
+ * @param sand Sand measured by particle-size method 2. (%)
+ * @param organic_matter Organic matter content. (%)
+ * @return Volumetric field capacity. (% v/v)
  *
- * Parameters:
- * sand: Sand measured by particle-size method 2. (%)
- * organic_matter: Organic matter content. (%)
- *
- * Returns:
- * field_capacity: Volumetric field capacity. (% v/v)
- *
- * Notes:
- * Prediction target: Volumetric field capacity
+ * @details Prediction target:
+ * Volumetric field capacity
  */
 static inline double calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(double sand,
                                                                      double organic_matter) {
@@ -88,49 +72,37 @@ static inline double calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(double sand
 }
 
 /**
- * Estimate permanent wilting point from silt, clay, and organic matter.
+ * @brief Estimate permanent wilting point from silt, clay, and organic matter.
+ * @param silt Silt measured by particle-size method 2. (%)
+ * @param clay Clay measured by particle-size method 2. (%)
+ * @param organic_matter Organic matter content. (%)
+ * @return Permanent wilting point. (% w/w)
  *
- * Parameters:
- * silt: Silt measured by particle-size method 2. (%)
- * clay: Clay measured by particle-size method 2. (%)
- * organic_matter: Organic matter content. (%)
- *
- * Returns:
- * permanent_wilting_point: Permanent wilting point. (% w/w)
- *
- * Notes:
- * Prediction target: Gravimetric permanent wilting point
+ * @details Prediction target:
+ * Gravimetric permanent wilting point
  */
 static inline double calc_ptf_pidgeon1972_pwp(double silt, double clay, double organic_matter) {
     return -4.19 + 0.19 * silt + 0.39 * clay + 0.90 * organic_matter;
 }
 
 /**
- * Estimate permanent wilting point from sand.
+ * @brief Estimate permanent wilting point from sand.
+ * @param sand Sand measured by particle-size method 1. (%)
+ * @return Permanent wilting point. (% w/w)
  *
- * Parameters:
- * sand: Sand measured by particle-size method 1. (%)
- *
- * Returns:
- * permanent_wilting_point: Permanent wilting point. (% w/w)
- *
- * Notes:
- * Prediction target: Gravimetric permanent wilting point
+ * @details Prediction target:
+ * Gravimetric permanent wilting point
  */
 static inline double calc_ptf_pidgeon1972_pwp_sand(double sand) { return 28.41 - 0.29 * sand; }
 
 /**
- * Estimate permanent wilting point from sand and organic matter.
+ * @brief Estimate permanent wilting point from sand and organic matter.
+ * @param sand Sand measured by particle-size method 2. (%)
+ * @param organic_matter Organic matter content. (%)
+ * @return Permanent wilting point. (% w/w)
  *
- * Parameters:
- * sand: Sand measured by particle-size method 2. (%)
- * organic_matter: Organic matter content. (%)
- *
- * Returns:
- * permanent_wilting_point: Permanent wilting point. (% w/w)
- *
- * Notes:
- * Prediction target: Gravimetric permanent wilting point
+ * @details Prediction target:
+ * Gravimetric permanent wilting point
  */
 static inline double calc_ptf_pidgeon1972_pwp_sand_organic_matter(double sand,
                                                                   double organic_matter) {
@@ -138,34 +110,26 @@ static inline double calc_ptf_pidgeon1972_pwp_sand_organic_matter(double sand,
 }
 
 /**
- * Estimate available water capacity from clay and organic matter.
+ * @brief Estimate available water capacity from clay and organic matter.
+ * @param clay Clay measured by particle-size method 1. (%)
+ * @param organic_matter Organic matter content. (%)
+ * @return Available water capacity. (mm/m)
  *
- * Parameters:
- * clay: Clay measured by particle-size method 1. (%)
- * organic_matter: Organic matter content. (%)
- *
- * Returns:
- * available_water_capacity: Available water capacity. (mm/m)
- *
- * Notes:
- * Prediction target: Available water capacity
+ * @details Prediction target:
+ * Available water capacity
  */
 static inline double calc_ptf_pidgeon1972_awc(double clay, double organic_matter) {
     return 169.3 - 1.50 * clay + 6.09 * organic_matter;
 }
 
 /**
- * Estimate available water capacity from sand and organic matter.
+ * @brief Estimate available water capacity from sand and organic matter.
+ * @param sand Sand measured by particle-size method 2. (%)
+ * @param organic_matter Organic matter content. (%)
+ * @return Available water capacity. (mm/m)
  *
- * Parameters:
- * sand: Sand measured by particle-size method 2. (%)
- * organic_matter: Organic matter content. (%)
- *
- * Returns:
- * available_water_capacity: Available water capacity. (mm/m)
- *
- * Notes:
- * Prediction target: Available water capacity
+ * @details Prediction target:
+ * Available water capacity
  */
 static inline double calc_ptf_pidgeon1972_awc_sand_organic_matter(double sand,
                                                                   double organic_matter) {
@@ -173,97 +137,73 @@ static inline double calc_ptf_pidgeon1972_awc_sand_organic_matter(double sand,
 }
 
 /**
- * Estimate available water capacity from coarse sand.
+ * @brief Estimate available water capacity from coarse sand.
+ * @param coarse_sand Coarse sand measured by particle-size method 1. (%)
+ * @return Available water capacity. (mm/m)
  *
- * Parameters:
- * coarse_sand: Coarse sand measured by particle-size method 1. (%)
- *
- * Returns:
- * available_water_capacity: Available water capacity. (mm/m)
- *
- * Notes:
- * Prediction target: Available water capacity
+ * @details Prediction target:
+ * Available water capacity
  */
 static inline double calc_ptf_pidgeon1972_awc_coarse_sand(double coarse_sand) {
     return 68.5 + 2.33 * coarse_sand;
 }
 
 /**
- * Estimate available water capacity from fine sand.
+ * @brief Estimate available water capacity from fine sand.
+ * @param fine_sand Fine sand measured by particle-size method 1. (%)
+ * @return Available water capacity. (mm/m)
  *
- * Parameters:
- * fine_sand: Fine sand measured by particle-size method 1. (%)
- *
- * Returns:
- * available_water_capacity: Available water capacity. (mm/m)
- *
- * Notes:
- * Prediction target: Available water capacity
+ * @details Prediction target:
+ * Available water capacity
  */
 static inline double calc_ptf_pidgeon1972_awc_fine_sand(double fine_sand) {
     return 66.7 + 2.66 * fine_sand;
 }
 
 /**
- * Estimate available water capacity from very fine sand.
+ * @brief Estimate available water capacity from very fine sand.
+ * @param very_fine_sand Very fine sand measured by particle-size method 1. (%)
+ * @return Available water capacity. (mm/m)
  *
- * Parameters:
- * very_fine_sand: Very fine sand measured by particle-size method 1. (%)
- *
- * Returns:
- * available_water_capacity: Available water capacity. (mm/m)
- *
- * Notes:
- * Prediction target: Available water capacity
+ * @details Prediction target:
+ * Available water capacity
  */
 static inline double calc_ptf_pidgeon1972_awc_very_fine_sand(double very_fine_sand) {
     return 66.9 + 4.58 * very_fine_sand;
 }
 
 /**
- * Estimate extended available water capacity from silt, clay, and organic matter.
+ * @brief Estimate extended available water capacity from silt, clay, and organic matter.
+ * @param silt Silt measured by particle-size method 2. (%)
+ * @param clay Clay measured by particle-size method 2. (%)
+ * @param organic_matter Organic matter content. (%)
+ * @return Extended available water capacity. (mm/m)
  *
- * Parameters:
- * silt: Silt measured by particle-size method 2. (%)
- * clay: Clay measured by particle-size method 2. (%)
- * organic_matter: Organic matter content. (%)
- *
- * Returns:
- * extended_available_water_capacity: Extended available water capacity. (mm/m)
- *
- * Notes:
- * Prediction target: Extended available water capacity
+ * @details Prediction target:
+ * Extended available water capacity
  */
 static inline double calc_ptf_pidgeon1972_eawc(double silt, double clay, double organic_matter) {
     return 121.1 - 3.03 * silt - 1.38 * clay + 6.76 * organic_matter;
 }
 
 /**
- * Estimate extended available water capacity from sand.
+ * @brief Estimate extended available water capacity from sand.
+ * @param sand Sand measured by particle-size method 2. (%)
+ * @return Extended available water capacity. (mm/m)
  *
- * Parameters:
- * sand: Sand measured by particle-size method 2. (%)
- *
- * Returns:
- * extended_available_water_capacity: Extended available water capacity. (mm/m)
- *
- * Notes:
- * Prediction target: Extended available water capacity
+ * @details Prediction target:
+ * Extended available water capacity
  */
 static inline double calc_ptf_pidgeon1972_eawc_sand(double sand) { return -25.8 + 1.55 * sand; }
 
 /**
- * Estimate extended available water capacity from sand and organic matter.
+ * @brief Estimate extended available water capacity from sand and organic matter.
+ * @param sand Sand measured by particle-size method 1. (%)
+ * @param organic_matter Organic matter content. (%)
+ * @return Extended available water capacity. (mm/m)
  *
- * Parameters:
- * sand: Sand measured by particle-size method 1. (%)
- * organic_matter: Organic matter content. (%)
- *
- * Returns:
- * extended_available_water_capacity: Extended available water capacity. (mm/m)
- *
- * Notes:
- * Prediction target: Extended available water capacity
+ * @details Prediction target:
+ * Extended available water capacity
  */
 static inline double calc_ptf_pidgeon1972_eawc_sand_organic_matter(double sand,
                                                                    double organic_matter) {
@@ -271,17 +211,13 @@ static inline double calc_ptf_pidgeon1972_eawc_sand_organic_matter(double sand,
 }
 
 /**
- * Estimate extended available water capacity from coarse sand and organic matter.
+ * @brief Estimate extended available water capacity from coarse sand and organic matter.
+ * @param coarse_sand Coarse sand measured by particle-size method 1. (%)
+ * @param organic_matter Organic matter content. (%)
+ * @return Extended available water capacity. (mm/m)
  *
- * Parameters:
- * coarse_sand: Coarse sand measured by particle-size method 1. (%)
- * organic_matter: Organic matter content. (%)
- *
- * Returns:
- * extended_available_water_capacity: Extended available water capacity. (mm/m)
- *
- * Notes:
- * Prediction target: Extended available water capacity
+ * @details Prediction target:
+ * Extended available water capacity
  */
 static inline double calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(double coarse_sand,
                                                                           double organic_matter) {
@@ -289,17 +225,13 @@ static inline double calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(double
 }
 
 /**
- * Estimate extended available water capacity from fine sand and organic matter.
+ * @brief Estimate extended available water capacity from fine sand and organic matter.
+ * @param fine_sand Fine sand measured by particle-size method 1. (%)
+ * @param organic_matter Organic matter content. (%)
+ * @return Extended available water capacity. (mm/m)
  *
- * Parameters:
- * fine_sand: Fine sand measured by particle-size method 1. (%)
- * organic_matter: Organic matter content. (%)
- *
- * Returns:
- * extended_available_water_capacity: Extended available water capacity. (mm/m)
- *
- * Notes:
- * Prediction target: Extended available water capacity
+ * @details Prediction target:
+ * Extended available water capacity
  */
 static inline double calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(double fine_sand,
                                                                         double organic_matter) {

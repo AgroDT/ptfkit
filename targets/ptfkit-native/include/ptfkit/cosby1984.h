@@ -4,67 +4,77 @@
 #define PTFKIT_COSBY1984_H
 
 /**
- * Cosby et al. (1984), United States.
+ * @brief Cosby et al. (1984), United States.
  *
- * Reference:
+ * @details Source publication:
  * Cosby, B. J., Hornberger, G. M., Clapp, R. B., & Ginn, T. R. (1984). A statistical
  * exploration of the relationships of soil moisture characteristics to the physical properties
  * of soils. Water Resources Research, 20(6), 682-690.
  *
- * Territory:
+ * @remark Geographic scope:
  * United States
  *
- * Dataset:
+ * @remark Calibration dataset:
  * 1448 soil samples from Holtan et al. (1968) and Rawls et al. (1976).
  */
 
 typedef struct {
-    /** Mean slope of the moisture characteristic. (dimensionless) */
+    /**
+     * @brief Mean slope of the moisture characteristic. (dimensionless)
+     */
     double mean_b;
-    /** Mean log saturation matric potential; the underlying potential is expressed in cm H2O.
-     * (reported log value) */
+    /**
+     * @brief Mean log saturation matric potential; the underlying potential is expressed in cm
+     * H2O. (reported log value)
+     */
     double mean_log_psi_s;
-    /** Mean log saturated hydraulic conductivity; the underlying conductivity is expressed in
-     * inches per hour. (reported log value) */
+    /**
+     * @brief Mean log saturated hydraulic conductivity; the underlying conductivity is expressed
+     * in inches per hour. (reported log value)
+     */
     double mean_log_k_sat;
-    /** Mean saturated water content. (% volume/volume) */
+    /**
+     * @brief Mean saturated water content. (% volume/volume)
+     */
     double mean_theta_s;
-    /** Standard deviation of b. (dimensionless) */
+    /**
+     * @brief Standard deviation of b. (dimensionless)
+     */
     double sd_b;
-    /** Standard deviation of log saturated hydraulic conductivity. (reported log value) */
+    /**
+     * @brief Standard deviation of log saturated hydraulic conductivity. (reported log value)
+     */
     double sd_log_k_sat;
-    /** Standard deviation of saturated water content. (% volume/volume) */
+    /**
+     * @brief Standard deviation of saturated water content. (% volume/volume)
+     */
     double sd_theta_s;
 } cosby1984_univariate_ptf_result;
 
 /**
- * Estimate Cosby et al. (1984) univariate hydraulic parameter statistics from soil texture.
+ * @brief Estimate Cosby et al. (1984) univariate hydraulic parameter statistics from soil
+ * texture.
+ * @param sand Sand content. (%)
+ * @param silt Silt content. (%)
+ * @param clay Clay content. (%)
+ * @return A result with the following fields:
+ * - `mean_b` — Mean slope of the moisture characteristic. (dimensionless)
+ * - `mean_log_psi_s` — Mean log saturation matric potential; the underlying potential is
+ * expressed in cm H2O. (reported log value)
+ * - `mean_log_k_sat` — Mean log saturated hydraulic conductivity; the underlying
+ * conductivity is expressed in inches per hour. (reported log value)
+ * - `mean_theta_s` — Mean saturated water content. (% volume/volume)
+ * - `sd_b` — Standard deviation of b. (dimensionless)
+ * - `sd_log_k_sat` — Standard deviation of log saturated hydraulic conductivity. (reported
+ * log value)
+ * - `sd_theta_s` — Standard deviation of saturated water content. (% volume/volume)
  *
- * Parameters:
- * sand: Sand content. (%)
- * silt: Silt content. (%)
- * clay: Clay content. (%)
- *
- * Returns:
- * mean_b: Mean slope of the moisture characteristic. (dimensionless)
- * mean_log_psi_s: Mean log saturation matric potential; the underlying potential is expressed
- * in cm H2O. (reported log value)
- * mean_log_k_sat: Mean log saturated hydraulic conductivity; the underlying conductivity is
- * expressed in inches per hour. (reported log value)
- * mean_theta_s: Mean saturated water content. (% volume/volume)
- * sd_b: Standard deviation of b. (dimensionless)
- * sd_log_k_sat: Standard deviation of log saturated hydraulic conductivity. (reported log
- * value)
- * sd_theta_s: Standard deviation of saturated water content. (% volume/volume)
- *
- * Notes:
- * Prediction target: Mean and standard deviation estimates for hydraulic parameters from sand,
- * silt, and clay percentages.
- * No back-transform is applied to logarithmic outputs.
- * Public API names are provisional for pilot testing.
- *
- * Warnings:
- * Log-transformed output units use the pilot contract `reported log value`.
+ * @details Prediction target:
+ * Mean and standard deviation estimates for hydraulic parameters from sand, silt, and clay
+ * percentages.
+ * @note No back-transform is applied to logarithmic outputs.
+ * @note Public API names are provisional for pilot testing.
+ * @warning Log-transformed output units use the pilot contract `reported log value`.
  */
 static inline cosby1984_univariate_ptf_result
 calc_ptf_cosby1984_univariate(double sand, double silt, double clay) {

@@ -2,7 +2,11 @@
 name = "ptfkit"
 version = "0.1.0"
 edition = "2024"
+description = "Pedotransfer functions for estimating soil hydraulic properties"
 license = "MIT"
+readme = "README.md"
+repository = "https://github.com/AgroDT/ptfkit"
+documentation = "https://docs.rs/ptfkit"
 
 [dev-dependencies]
 assertables = "10.1.0"

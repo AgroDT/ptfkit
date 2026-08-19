@@ -14,9 +14,5 @@ src/ptfkit/*.pyd
 src/ptfkit/*.pdb
 src/ptfkit/*.so
 
-# MkDocs build output
-docs/index.md
-site/
-
 # cibuildwheel artifacts
 wheelhouse/

@@ -126,7 +126,7 @@ def calc_ptf_weber2020(
         The source recommends the median K_snc value as a provisional parsimonious estimate
             requiring further research.
 
-    Warnings:
+    Warning:
         The DS2 inequality is treated as a source typographical error; the tau regression is
             interpreted as being based on nonpositive tau_vgm values.
 

@@ -6,16 +6,16 @@ module;
 export module ptfkit.puckett1985;
 
 /**
- * Puckett et al. (1985), Alabama Lower Coastal Plain Ultisols.
+ * @brief Puckett et al. (1985), Alabama Lower Coastal Plain Ultisols.
  *
- * Reference:
+ * @details Source publication:
  * Puckett, W. E., Dane, J. H., & Hajek, B. F. (1985). Physical and mineralogical data to
  * determine soil hydraulic properties. Soil Science Society of America Journal, 49, 831-836.
  *
- * Territory:
+ * @remark Geographic scope:
  * Lower Coastal Plain of Alabama, USA
  *
- * Dataset:
+ * @remark Calibration dataset:
  * Seven pedons at seven locations representing six Ultisol series with similar genesis and
  * clay mineralogy.
  */
@@ -23,60 +23,76 @@ export module ptfkit.puckett1985;
 export namespace ptfkit::puckett1985 {
 
 struct Puckett1985PTFResult {
-    /** Volumetric water content at 0 kPa. (cm^3/cm^3) */
+    /**
+     * @brief Volumetric water content at 0 kPa. (cm^3/cm^3)
+     */
     double theta_0;
-    /** Volumetric water content at -1 kPa. (cm^3/cm^3) */
+    /**
+     * @brief Volumetric water content at -1 kPa. (cm^3/cm^3)
+     */
     double theta_1;
-    /** Volumetric water content at -5 kPa. (cm^3/cm^3) */
+    /**
+     * @brief Volumetric water content at -5 kPa. (cm^3/cm^3)
+     */
     double theta_5;
-    /** Volumetric water content at -10 kPa. (cm^3/cm^3) */
+    /**
+     * @brief Volumetric water content at -10 kPa. (cm^3/cm^3)
+     */
     double theta_10;
-    /** Volumetric water content at -30 kPa. (cm^3/cm^3) */
+    /**
+     * @brief Volumetric water content at -30 kPa. (cm^3/cm^3)
+     */
     double theta_30;
-    /** Volumetric water content at -60 kPa. (cm^3/cm^3) */
+    /**
+     * @brief Volumetric water content at -60 kPa. (cm^3/cm^3)
+     */
     double theta_60;
-    /** Volumetric water content at -100 kPa. (cm^3/cm^3) */
+    /**
+     * @brief Volumetric water content at -100 kPa. (cm^3/cm^3)
+     */
     double theta_100;
-    /** Volumetric water content at -500 kPa. (cm^3/cm^3) */
+    /**
+     * @brief Volumetric water content at -500 kPa. (cm^3/cm^3)
+     */
     double theta_500;
-    /** Volumetric water content at -1000 kPa. (cm^3/cm^3) */
+    /**
+     * @brief Volumetric water content at -1000 kPa. (cm^3/cm^3)
+     */
     double theta_1000;
-    /** Volumetric water content at -1500 kPa. (cm^3/cm^3) */
+    /**
+     * @brief Volumetric water content at -1500 kPa. (cm^3/cm^3)
+     */
     double theta_1500;
-    /** Saturated hydraulic conductivity. (m/s) */
+    /**
+     * @brief Saturated hydraulic conductivity. (m/s)
+     */
     double k_sat;
 };
 
 /**
- * Estimate a point water-retention curve and saturated hydraulic conductivity.
+ * @brief Estimate a point water-retention curve and saturated hydraulic conductivity.
+ * @param sand Sand content, 0.05-2 mm. (%)
+ * @param fine_sand Fine sand content, 0.106-0.25 mm. (%)
+ * @param clay Clay content, <0.002 mm. (%)
+ * @param bulk_density Oven-dry bulk density. (Mg/m^3)
+ * @param porosity Porosity calculated from measured bulk and particle densities. (cm^3/cm^3)
+ * @return A result with the following fields:
+ * - `theta_0` — Volumetric water content at 0 kPa. (cm^3/cm^3)
+ * - `theta_1` — Volumetric water content at -1 kPa. (cm^3/cm^3)
+ * - `theta_5` — Volumetric water content at -5 kPa. (cm^3/cm^3)
+ * - `theta_10` — Volumetric water content at -10 kPa. (cm^3/cm^3)
+ * - `theta_30` — Volumetric water content at -30 kPa. (cm^3/cm^3)
+ * - `theta_60` — Volumetric water content at -60 kPa. (cm^3/cm^3)
+ * - `theta_100` — Volumetric water content at -100 kPa. (cm^3/cm^3)
+ * - `theta_500` — Volumetric water content at -500 kPa. (cm^3/cm^3)
+ * - `theta_1000` — Volumetric water content at -1000 kPa. (cm^3/cm^3)
+ * - `theta_1500` — Volumetric water content at -1500 kPa. (cm^3/cm^3)
+ * - `k_sat` — Saturated hydraulic conductivity. (m/s)
  *
- * Parameters:
- * sand: Sand content, 0.05-2 mm. (%)
- * fine_sand: Fine sand content, 0.106-0.25 mm. (%)
- * clay: Clay content, <0.002 mm. (%)
- * bulk_density: Oven-dry bulk density. (Mg/m^3)
- * porosity: Porosity calculated from measured bulk and particle densities. (cm^3/cm^3)
- *
- * Returns:
- * theta_0: Volumetric water content at 0 kPa. (cm^3/cm^3)
- * theta_1: Volumetric water content at -1 kPa. (cm^3/cm^3)
- * theta_5: Volumetric water content at -5 kPa. (cm^3/cm^3)
- * theta_10: Volumetric water content at -10 kPa. (cm^3/cm^3)
- * theta_30: Volumetric water content at -30 kPa. (cm^3/cm^3)
- * theta_60: Volumetric water content at -60 kPa. (cm^3/cm^3)
- * theta_100: Volumetric water content at -100 kPa. (cm^3/cm^3)
- * theta_500: Volumetric water content at -500 kPa. (cm^3/cm^3)
- * theta_1000: Volumetric water content at -1000 kPa. (cm^3/cm^3)
- * theta_1500: Volumetric water content at -1500 kPa. (cm^3/cm^3)
- * k_sat: Saturated hydraulic conductivity. (m/s)
- *
- * Notes:
- * Prediction target: Volumetric water contents at ten pressure heads and saturated hydraulic
- * conductivity.
- * The regressions were developed for soils with similar genesis and clay mineralogy.
- *
- * Warnings:
- * Use outside Lower Coastal Plain Ultisols requires independent validation.
+ * @details Prediction target:
+ * Volumetric water contents at ten pressure heads and saturated hydraulic conductivity.
+ * @note The regressions were developed for soils with similar genesis and clay mineralogy.
+ * @warning Use outside Lower Coastal Plain Ultisols requires independent validation.
  */
 [[nodiscard]]
 inline Puckett1985PTFResult calc_ptf_puckett1985(double sand, double fine_sand, double clay,

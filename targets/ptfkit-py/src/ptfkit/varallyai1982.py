@@ -111,7 +111,7 @@ def calc_ptf_varallyai1982_meadow(
         S and C are fractions of one, while bulk density is in g/cm^3.
         The source reports 95% relative errors of 14% for theta_0, 34% for m, and 25% for pF_*.
 
-    Warnings:
+    Warning:
         Use is described as approximate by the source.
         The source does not report exact calibration ranges; avoid extrapolation beyond comparable
             Hungarian meadow-series soils.
@@ -171,7 +171,7 @@ def calc_ptf_varallyai1982_chernozem_a(
         Equation (15) applies to chernozem A horizons.
         The source reports 95% relative errors of 10% for theta_0, 29% for m, and 18% for pF_*.
 
-    Warnings:
+    Warning:
         Use is described as approximate by the source.
         The source does not report exact calibration ranges; avoid extrapolation beyond comparable
             Hungarian chernozem A horizons.
@@ -229,7 +229,7 @@ def calc_ptf_varallyai1982_chernozem_b(
         Equation (16) applies to chernozem B horizons.
         The source reports 95% relative errors of 11% for theta_0, 34% for m, and 18% for pF_*.
 
-    Warnings:
+    Warning:
         Use is described as approximate by the source.
         The source does not report exact calibration ranges; avoid extrapolation beyond comparable
             Hungarian chernozem B horizons.
@@ -287,7 +287,7 @@ def calc_ptf_varallyai1982_chernozem_c(
         Equation (17) applies to chernozem C horizons.
         The source reports 95% relative errors of 7% for theta_0, 22% for m, and 11% for pF_*.
 
-    Warnings:
+    Warning:
         Use is described as approximate by the source.
         The source does not report exact calibration ranges; avoid extrapolation beyond comparable
             Hungarian chernozem C horizons.

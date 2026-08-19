@@ -169,14 +169,39 @@ jobs:
       - name: Test ptfkit-native
         run: ctest --test-dir targets/ptfkit-native/build --output-on-failure
 
+  docs:
+    name: Build Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v10.0.1
+        with:
+          enable-cache: true
+          cache-dependency-glob: |
+            docs/pyproject.toml
+            docs/uv.lock
+
+      - name: Check documentation lock
+        run: uv lock --project docs --check
+
+      - name: Sync documentation environment
+        run: uv sync --project docs --frozen
+
+      - name: Build documentation
+        run: uv --directory=docs run mkdocs build --strict --config-file mkdocs.yml
+
   summary:
     name: PR Checks Summary
     runs-on: ubuntu-latest
     if: always()
-    needs: [code-quality, native, pytest]
+    needs: [code-quality, docs, native, pytest]
     steps:
       - run: >
           test
           "${{ needs.code-quality.result }}" = "success" -a
+          "${{ needs.docs.result }}" = "success" -a
           "${{ needs.native.result }}" = "success" -a
           "${{ needs.pytest.result }}" = "success"

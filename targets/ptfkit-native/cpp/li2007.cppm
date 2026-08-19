@@ -6,18 +6,18 @@ module;
 export module ptfkit.li2007;
 
 /**
- * Li et al. (2007), Fengqiu County, North China Plain, China.
+ * @brief Li et al. (2007), Fengqiu County, North China Plain, China.
  *
- * Reference:
+ * @details Source publication:
  * Li, Y., Chen, D., White, R. E., Zhu, A., & Zhang, J. (2007). Estimating soil hydraulic
  * properties of Fengqiu County soils in the North China Plain using pedo-transfer functions.
  * Geoderma, 138(3-4), 261-271.
- * DOI: 10.1016/j.geoderma.2006.11.018 (https://doi.org/10.1016/j.geoderma.2006.11.018)
+ * @see https://doi.org/10.1016/j.geoderma.2006.11.018 DOI: 10.1016/j.geoderma.2006.11.018
  *
- * Territory:
+ * @remark Geographic scope:
  * Fengqiu County soils in the North China Plain, China
  *
- * Dataset:
+ * @remark Calibration dataset:
  * 63 soil water retention curves and 36 saturated soil hydraulic conductivity samples from
  * seven soil profiles.
  */
@@ -25,39 +25,42 @@ export module ptfkit.li2007;
 export namespace ptfkit::li2007 {
 
 struct Li2007PTFResult {
-    /** Saturated water content. (cm^3/cm^3) */
+    /**
+     * @brief Saturated water content. (cm^3/cm^3)
+     */
     double theta_s;
-    /** Van Genuchten alpha parameter, inversely related to air-entry suction. (cm^-1) */
+    /**
+     * @brief Van Genuchten alpha parameter, inversely related to air-entry suction. (cm^-1)
+     */
     double a_vg;
-    /** Van Genuchten n parameter that characterizes pore-size distribution. (dimensionless) */
+    /**
+     * @brief Van Genuchten n parameter that characterizes pore-size distribution. (dimensionless)
+     */
     double n_vg;
-    /** Saturated hydraulic conductivity. (m/s) */
+    /**
+     * @brief Saturated hydraulic conductivity. (m/s)
+     */
     double k_sat;
 };
 
 /**
- * Estimate van Genuchten parameters and saturated hydraulic conductivity for Fengqiu County
- * soils.
+ * @brief Estimate van Genuchten parameters and saturated hydraulic conductivity for Fengqiu
+ * County soils.
+ * @param sand Sand content, 0.02-2 mm. (%)
+ * @param silt Silt content, 0.02-0.002 mm. (%)
+ * @param clay Clay content, <0.002 mm. (%)
+ * @param bulk_density Bulk density. (g/cm^3)
+ * @param soil_organic_matter Soil organic matter. (%)
+ * @return A result with the following fields:
+ * - `theta_s` — Saturated water content. (cm^3/cm^3)
+ * - `a_vg` — Van Genuchten alpha parameter, inversely related to air-entry suction. (cm^-1)
+ * - `n_vg` — Van Genuchten n parameter that characterizes pore-size distribution.
+ * (dimensionless)
+ * - `k_sat` — Saturated hydraulic conductivity. (m/s)
  *
- * Parameters:
- * sand: Sand content, 0.02-2 mm. (%)
- * silt: Silt content, 0.02-0.002 mm. (%)
- * clay: Clay content, <0.002 mm. (%)
- * bulk_density: Bulk density. (g/cm^3)
- * soil_organic_matter: Soil organic matter. (%)
- *
- * Returns:
- * theta_s: Saturated water content. (cm^3/cm^3)
- * a_vg: Van Genuchten alpha parameter, inversely related to air-entry suction. (cm^-1)
- * n_vg: Van Genuchten n parameter that characterizes pore-size distribution. (dimensionless)
- * k_sat: Saturated hydraulic conductivity. (m/s)
- *
- * Notes:
- * Prediction target: Van Genuchten saturated water content, alpha, n, and saturated hydraulic
- * conductivity.
- *
- * Warnings:
- * The formulas use natural logarithms of selected inputs.
+ * @details Prediction target:
+ * Van Genuchten saturated water content, alpha, n, and saturated hydraulic conductivity.
+ * @warning The formulas use natural logarithms of selected inputs.
  */
 [[nodiscard]]
 inline Li2007PTFResult calc_ptf_li2007(double sand, double silt, double clay, double bulk_density,

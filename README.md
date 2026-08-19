@@ -1,166 +1,107 @@
 # ptfkit
 
-<!-- github:start -->
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/AgroDT/ptfkit/deploy-pypi.yaml)
-![PyPI - Python Version](https://img.shields.io/pypi/pyversions/ptfkit)
-![PyPI - Implementation](https://img.shields.io/pypi/implementation/ptfkit)
-![PyPI - Version](https://img.shields.io/pypi/v/ptfkit)
-![PyPI - Downloads](https://img.shields.io/pypi/dm/ptfkit?label=pypi%20downloads)
-<!-- github:end -->
+[![CI](https://img.shields.io/github/actions/workflow/status/AgroDT/ptfkit/pr.yaml?branch=main)](https://github.com/AgroDT/ptfkit/actions/workflows/pr.yaml)
+[![Documentation](https://img.shields.io/github/actions/workflow/status/AgroDT/ptfkit/deploy-docs.yaml?label=docs)](https://agrodt.github.io/ptfkit/)
+[![PyPI version](https://img.shields.io/pypi/v/ptfkit)](https://pypi.org/project/ptfkit/)
+[![Python versions](https://img.shields.io/pypi/pyversions/ptfkit)](https://pypi.org/project/ptfkit/)
+[![crates.io version](https://img.shields.io/crates/v/ptfkit)](https://crates.io/crates/ptfkit)
+[![License](https://img.shields.io/github/license/AgroDT/ptfkit)](https://github.com/AgroDT/ptfkit/blob/main/LICENSE)
 
-## Overview
+ptfkit is a specification-driven collection of pedotransfer functions (PTFs)
+for estimating soil hydraulic properties.
 
-ptfkit helps researchers quickly estimate key soil water characteristics from
-basic soil data. It is reliable, easy-to-use, and consistent across studies and
-scales, streamlining analysis and supporting scientific workflows.
+A PTF is an empirical model that predicts a soil property from measurements
+that are generally easier, faster, or less expensive to obtain directly. Common
+inputs include particle-size fractions, bulk density, and organic matter
+content; predicted properties include soil water-retention characteristics and
+hydraulic conductivity.
 
-## About the Package
+ptfkit makes selected PTFs from soil-science publications available through
+consistent interfaces in several programming languages. It is intended for
+soil scientists, hydrologists, environmental modellers, agronomists, students,
+and software developers who need traceable implementations of published soil
+models.
 
-ptfkit is a library of **pedotransfer functions (PTFs)** for estimating key soil
-hydraulic properties, such as water retention and hydraulic conductivity curves,
-from basic soil parameters.
+The [documentation](https://agrodt.github.io/ptfkit/) provides a catalogue of
+source publications and API references for the supported targets.
 
-The library is built on publicly available scientific articles in soil science,
-with the goal of creating a comprehensive resource that includes as many PTFs as
-possible for soils worldwide. This fosters knowledge sharing and supports
-international scientific collaboration.
+## Specification-driven development
 
-Each module contains one or more PTFs and references the original scientific publication.
-PTFs calculate hydrological parameters from easily measurable soil properties, such as:
+Every PTF in ptfkit starts with its original scientific publication. The
+equations and the information needed to interpret them are transcribed into a
+reviewed YAML specification under [`specs/functions`](./specs/functions/).
+Each specification records the source citation, variable definitions, units,
+calibration scope, equations, numerical examples, notes, and warnings.
 
-* Soil texture (sand, silt, clay)
-* Bulk density
-* Organic matter content
+The specifications are the target-independent source of truth. The generator
+under [`codegen`](./codegen/) validates them, compiles their equations into a
+shared semantic model, and generates the language implementations, tests, PTF
+catalogue, and API reference pages. Generated artifacts are committed to the
+repository, but changes to a PTF are made in its specification or in the
+generator rather than in generated files.
 
-Using PTFs is advantageous because measuring base soil properties is simpler and cheaper
-than directly determining hydraulic function parameters. The library is intended for:
+This workflow keeps the scientific description, public interfaces, numerical
+tests, and documentation aligned across targets. A source specification may
+also document a PTF that is not implemented yet; its status in the
+[PTF catalogue](https://agrodt.github.io/ptfkit/ptf-catalog/) indicates whether
+it is available for generation and use.
 
-* Soil scientists conducting research
-* Students for educational purposes
-* Farmers applying precision agriculture techniques
+See the
+[PTF source specification guide](https://agrodt.github.io/ptfkit/ptf-catalog/)
+for the scientific and structural contract represented by the YAML files.
 
-If you discover any errors in PTF implementations or would like your PTF
-to be added to the library, please create a new issue on GitHub.
+## Targets
 
-## Core Features
+| Target | Interface and distribution | Documentation |
+| --- | --- | --- |
+| [Python](./targets/ptfkit-py/) | Scalar and NumPy array inputs backed by native ufuncs; distributed on [PyPI](https://pypi.org/project/ptfkit/) | [Python API](https://agrodt.github.io/ptfkit/reference/python/) |
+| [Rust](./targets/ptfkit-rs/) | Scalar functions grouped by source publication; distributed on [crates.io](https://crates.io/crates/ptfkit) | [Rust API](https://docs.rs/ptfkit/) |
+| [C](./targets/ptfkit-native/) | Header-only C11 functions provided as a CMake package and release archive | [C API](https://agrodt.github.io/ptfkit/reference/c/) |
+| [C++](./targets/ptfkit-native/) | Optional C++20 modules provided by the native CMake package | [C++ API](https://agrodt.github.io/ptfkit/reference/cpp/) |
 
-1. 🔗 **Pedotransfer Function API** - Compute soil hydraulic properties across studies.
-2. 🧮 **Vectorized Input Support** - Accept NumPy arrays for batch processing.
-3. 🗂️ **Model-Specific Output Structures** - NamedTuple outputs for clarity.
-4. 🛠 **Extensibility for New Models** - Easily add new PTFs.
-5. ⚡ **Native Rust Target** - Idiomatic Rust implementations for reliable
-   numerical computation.
-6. 📦 **Packaging & Distribution** - Precompiled packages for easy installation via pip.
-7. 🚧 **Strong typing** - Type annotations ready for static analysis and linting.
-8. 🎓 **Well documented** - Docstrings for all implemented PTFs with proper references.
+Installation and usage instructions are maintained in each target's linked
+README.
 
-## Installation
+## Scope and limitations
 
-**Prerequisites:**
+Pedotransfer functions are empirical models fitted to particular datasets,
+territories, measurement methods, and variable ranges. Their accuracy and
+applicability outside those calibration conditions are not guaranteed. A PTF
+that is appropriate for one soil population or study design may be unsuitable
+for another.
 
-- Python >= 3.11
+ptfkit reproduces the reviewed equations, declared unit conversions, and
+documented numerical behavior. It does not select a PTF for a particular use
+case, assess the quality of input measurements, or replace expert scientific
+judgement. Declared input domains describe the source or mathematical contract
+and do not necessarily imply runtime range validation.
 
-We strongly recommend to install ptfkit into a virtual environment
+Before using a function, consult its catalogue page and original publication
+for the citation, calibration dataset, input definitions, units, domains,
+notes, and warnings. Also verify that the function is marked as implemented and
+is present in the API reference for the intended target.
 
-**Linux (Debian-based):**
+## Contributing and development
 
-Install Python
+Contributions may include reporting an implementation error, requesting a PTF,
+improving a specification, extending the generator, or working on a language
+target. Use [GitHub Issues](https://github.com/AgroDT/ptfkit/issues) to report a
+problem or propose a change.
 
-```sh
-sudo apt install python3 python3-venv
-```
-
-Create virtual environment and activate it
-
-```sh
-python -m venv ptfkit-venv
-source ptfkit-venv/bin/activate
-```
-
-**Windows**
-
-Install Python with the official [installer](https://www.python.org/downloads/)
-or use [winget](https://learn.microsoft.com/en-us/windows/package-manager/winget/)
-
-```ps1
-winget install --id Python.Python.3 --source winget
-```
-
-Create virtual environment and activate it
-
-```ps1
-python -m venv ptfkit-venv
-.\ptfkit-venv\Scripts\activate
-```
-
-### PyPi
-
-Install our precompiled binary wheels
-
-```sh
-pip install ptfkit
-```
-
-### Build from Source
-
-**Extra prerequisites:**
-
-- git
-- A C compiler and the usual platform build tools
-- CMake
-- Python development files, where packaged separately from Python
-
-The Python package uses a generated native CPython/NumPy extension written in C
-and is built with CMake via scikit-build-core. Rust and Cargo are not required
-to install the Python package; they are required only when developing the Rust
-target or the code generator.
-
-**Install ptfkit from git:**
-
-```sh
-pip install 'git+https://github.com/AgroDT/ptfkit.git'
-```
-
-## Development Model
-
-The current generated target set consists of an idiomatic Rust crate and a
-direct CPython/NumPy ufunc extension used by the Python package. Direct C and R targets
-are deferred; they are not part of the supported implementation pipeline.
-
-Most feature development in ptfkit is agent-assisted. The repository provides
-workflow skills in [`.agents/skills`](./.agents/skills/) that keep scientific
-specification, implementation, public API compatibility, and review aligned.
-
-### Adding a PTF
-
-1. Provide the agent with a local path to the source material.
-2. In a dedicated session, use `ptf-extract` to create and validate a draft
-   source YAML under [`specs/functions`](./specs/functions/). It extracts only
-   paper-supported facts and reports either `Ready for user review` or
-   `Blocked`.
-3. Review and, if needed, edit the YAML directly.
-4. In a fresh session, use `ptf-generate <apa_article_key>` to validate, generate,
-   test, prove idempotence, and atomically mark the source implemented.
-   Each specification filename stem generates `ptfkit.<apa_article_key>` by default; use
-   `generation.public_python: manual` only for an intentional public wrapper
-   that delegates to the generated native ufunc extension.
-5. Optionally use `ptf-review <apa_article_key>` in another fresh session for an
-   independent, read-only pre-merge review.
-
-Code-generating functions require a reviewed `implementation`; if scientific
-details remain unresolved, the source stays draft or blocked.
-
-## Contributing
-
-Contributions of all kinds are welcome! If you spot a bug, have a feature request, or want to share an idea, please open [an issue](https://github.com/AgroDT/ptfkit/issues).
-
-For a complete guide on setting up the development environment, deployment workflow, and testing, please see the [`CONTRIBUTING.md`](./CONTRIBUTING.md) file.
+ptfkit has strict ownership and validation rules for specifications and
+generated files. Before making a contribution, read the
+[development guide](https://agrodt.github.io/ptfkit/contributing/development/)
+for repository setup, dependency management, the PTF extraction and generation
+workflow, validation commands, documentation builds, and commit conventions.
+The [PTF source specification guide](https://agrodt.github.io/ptfkit/ptf-catalog/)
+describes the scientific information and cross-target contracts that each
+specification must preserve.
 
 ## Citation
 
 ### APA
 
-```
+```text
 AgroDT lab (2025). ptfkit repository [Computer software]. https://github.com/AgroDT/ptfkit
 ```
 

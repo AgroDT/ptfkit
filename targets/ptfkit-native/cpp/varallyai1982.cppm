@@ -6,17 +6,17 @@ module;
 export module ptfkit.varallyai1982;
 
 /**
- * Varallyai et al. (1982), water-retention parameter regressions for Hungarian soils.
+ * @brief Varallyai et al. (1982), water-retention parameter regressions for Hungarian soils.
  *
- * Reference:
+ * @details Source publication:
  * Varallyai, D., Raikai, K., Mironenko, Ye. V., Pachepskiy, Ya. A., & Scherbakov, R. A.
  * (1982). A mathematical description of basic water-physical soil characteristics.
  * Pochvovedenie, (4), 77-89.
  *
- * Territory:
+ * @remark Geographic scope:
  * Hungary, mainly the Hungarian Plain
  *
- * Dataset:
+ * @remark Calibration dataset:
  * Undisturbed samples from 559 genetic horizons in 160 soil profiles; the meadow-series
  * regressions used 68 samples and the chernozem comparison used 108 samples.
  */
@@ -24,43 +24,45 @@ export module ptfkit.varallyai1982;
 export namespace ptfkit::varallyai1982 {
 
 struct Varallyai1982Parameters {
-    /** Upper-asymptote water content parameter of equation (9). (vol.%) */
+    /**
+     * @brief Upper-asymptote water content parameter of equation (9). (vol.%)
+     */
     double theta_0;
-    /** Shape parameter of equation (9). (dimensionless) */
+    /**
+     * @brief Shape parameter of equation (9). (dimensionless)
+     */
     double m;
-    /** Base-10 logarithm of the equation (9) suction-scale parameter psi_*, with suction expressed
-     * in centimetres of water. (dimensionless) */
+    /**
+     * @brief Base-10 logarithm of the equation (9) suction-scale parameter psi_*, with suction
+     * expressed in centimetres of water. (dimensionless)
+     */
     double pf_star;
 };
 
 /**
- * Estimate equation (9) water-retention parameters for meadow-series soils.
+ * @brief Estimate equation (9) water-retention parameters for meadow-series soils.
+ * @param bulk_density Undisturbed-soil bulk density. (g/cm^3)
+ * @param fine_sand_fraction Mass fraction in the 0.25-0.05 mm particle-size class. (fraction)
+ * @param fine_fraction Fine-particle mass fraction reported as particles smaller than 0.002
+ * mm. (fraction)
+ * @return A result with the following fields:
+ * - `theta_0` — Upper-asymptote water content parameter of equation (9). (vol.%)
+ * - `m` — Shape parameter of equation (9). (dimensionless)
+ * - `pf_star` — Base-10 logarithm of the equation (9) suction-scale parameter psi_*, with
+ * suction expressed in centimetres of water. (dimensionless)
  *
- * Parameters:
- * bulk_density: Undisturbed-soil bulk density. (g/cm^3)
- * fine_sand_fraction: Mass fraction in the 0.25-0.05 mm particle-size class. (fraction)
- * fine_fraction: Fine-particle mass fraction reported as particles smaller than 0.002 mm.
- * (fraction)
- *
- * Returns:
- * theta_0: Upper-asymptote water content parameter of equation (9). (vol.%)
- * m: Shape parameter of equation (9). (dimensionless)
- * pf_star: Base-10 logarithm of the equation (9) suction-scale parameter psi_*, with suction
- * expressed in centimetres of water. (dimensionless)
- *
- * Territory:
+ * @remark Geographic scope:
  * Hungary, mainly the Hungarian Plain
  *
- * Notes:
- * Prediction target: Parameters of the equation (9) water-retention model.
- * Equation (14) was fitted to 68 meadow-series soil samples.
- * S and C are fractions of one, while bulk density is in g/cm^3.
- * The source reports 95% relative errors of 14% for theta_0, 34% for m, and 25% for pF_*.
- *
- * Warnings:
- * Use is described as approximate by the source.
- * The source does not report exact calibration ranges; avoid extrapolation beyond comparable
- * Hungarian meadow-series soils.
+ * @details Prediction target:
+ * Parameters of the equation (9) water-retention model.
+ * @note Equation (14) was fitted to 68 meadow-series soil samples.
+ * @note S and C are fractions of one, while bulk density is in g/cm^3.
+ * @note The source reports 95% relative errors of 14% for theta_0, 34% for m, and 25% for
+ * pF_*.
+ * @warning Use is described as approximate by the source.
+ * @warning The source does not report exact calibration ranges; avoid extrapolation beyond
+ * comparable Hungarian meadow-series soils.
  */
 [[nodiscard]]
 inline Varallyai1982Parameters calc_ptf_varallyai1982_meadow(double bulk_density,
@@ -76,32 +78,27 @@ inline Varallyai1982Parameters calc_ptf_varallyai1982_meadow(double bulk_density
 }
 
 /**
- * Estimate equation (9) water-retention parameters for chernozem A horizons.
+ * @brief Estimate equation (9) water-retention parameters for chernozem A horizons.
+ * @param bulk_density Undisturbed-soil bulk density. (g/cm^3)
+ * @param fine_fraction Fine-particle mass fraction reported as particles smaller than 0.002
+ * mm. (fraction)
+ * @return A result with the following fields:
+ * - `theta_0` — Upper-asymptote water content parameter of equation (9). (vol.%)
+ * - `m` — Shape parameter of equation (9). (dimensionless)
+ * - `pf_star` — Base-10 logarithm of the equation (9) suction-scale parameter psi_*, with
+ * suction expressed in centimetres of water. (dimensionless)
  *
- * Parameters:
- * bulk_density: Undisturbed-soil bulk density. (g/cm^3)
- * fine_fraction: Fine-particle mass fraction reported as particles smaller than 0.002 mm.
- * (fraction)
- *
- * Returns:
- * theta_0: Upper-asymptote water content parameter of equation (9). (vol.%)
- * m: Shape parameter of equation (9). (dimensionless)
- * pf_star: Base-10 logarithm of the equation (9) suction-scale parameter psi_*, with suction
- * expressed in centimetres of water. (dimensionless)
- *
- * Territory:
+ * @remark Geographic scope:
  * Hungary, mainly the Hungarian Plain
  *
- * Notes:
- * Prediction target: Parameters of the equation (9) water-retention model for chernozem A
- * horizons.
- * Equation (15) applies to chernozem A horizons.
- * The source reports 95% relative errors of 10% for theta_0, 29% for m, and 18% for pF_*.
- *
- * Warnings:
- * Use is described as approximate by the source.
- * The source does not report exact calibration ranges; avoid extrapolation beyond comparable
- * Hungarian chernozem A horizons.
+ * @details Prediction target:
+ * Parameters of the equation (9) water-retention model for chernozem A horizons.
+ * @note Equation (15) applies to chernozem A horizons.
+ * @note The source reports 95% relative errors of 10% for theta_0, 29% for m, and 18% for
+ * pF_*.
+ * @warning Use is described as approximate by the source.
+ * @warning The source does not report exact calibration ranges; avoid extrapolation beyond
+ * comparable Hungarian chernozem A horizons.
  */
 [[nodiscard]]
 inline Varallyai1982Parameters calc_ptf_varallyai1982_chernozem_a(double bulk_density,
@@ -113,32 +110,27 @@ inline Varallyai1982Parameters calc_ptf_varallyai1982_chernozem_a(double bulk_de
 }
 
 /**
- * Estimate equation (9) water-retention parameters for chernozem B horizons.
+ * @brief Estimate equation (9) water-retention parameters for chernozem B horizons.
+ * @param bulk_density Undisturbed-soil bulk density. (g/cm^3)
+ * @param fine_fraction Fine-particle mass fraction reported as particles smaller than 0.002
+ * mm. (fraction)
+ * @return A result with the following fields:
+ * - `theta_0` — Upper-asymptote water content parameter of equation (9). (vol.%)
+ * - `m` — Shape parameter of equation (9). (dimensionless)
+ * - `pf_star` — Base-10 logarithm of the equation (9) suction-scale parameter psi_*, with
+ * suction expressed in centimetres of water. (dimensionless)
  *
- * Parameters:
- * bulk_density: Undisturbed-soil bulk density. (g/cm^3)
- * fine_fraction: Fine-particle mass fraction reported as particles smaller than 0.002 mm.
- * (fraction)
- *
- * Returns:
- * theta_0: Upper-asymptote water content parameter of equation (9). (vol.%)
- * m: Shape parameter of equation (9). (dimensionless)
- * pf_star: Base-10 logarithm of the equation (9) suction-scale parameter psi_*, with suction
- * expressed in centimetres of water. (dimensionless)
- *
- * Territory:
+ * @remark Geographic scope:
  * Hungary, mainly the Hungarian Plain
  *
- * Notes:
- * Prediction target: Parameters of the equation (9) water-retention model for chernozem B
- * horizons.
- * Equation (16) applies to chernozem B horizons.
- * The source reports 95% relative errors of 11% for theta_0, 34% for m, and 18% for pF_*.
- *
- * Warnings:
- * Use is described as approximate by the source.
- * The source does not report exact calibration ranges; avoid extrapolation beyond comparable
- * Hungarian chernozem B horizons.
+ * @details Prediction target:
+ * Parameters of the equation (9) water-retention model for chernozem B horizons.
+ * @note Equation (16) applies to chernozem B horizons.
+ * @note The source reports 95% relative errors of 11% for theta_0, 34% for m, and 18% for
+ * pF_*.
+ * @warning Use is described as approximate by the source.
+ * @warning The source does not report exact calibration ranges; avoid extrapolation beyond
+ * comparable Hungarian chernozem B horizons.
  */
 [[nodiscard]]
 inline Varallyai1982Parameters calc_ptf_varallyai1982_chernozem_b(double bulk_density,
@@ -150,32 +142,26 @@ inline Varallyai1982Parameters calc_ptf_varallyai1982_chernozem_b(double bulk_de
 }
 
 /**
- * Estimate equation (9) water-retention parameters for chernozem C horizons.
+ * @brief Estimate equation (9) water-retention parameters for chernozem C horizons.
+ * @param bulk_density Undisturbed-soil bulk density. (g/cm^3)
+ * @param fine_fraction Fine-particle mass fraction reported as particles smaller than 0.002
+ * mm. (fraction)
+ * @return A result with the following fields:
+ * - `theta_0` — Upper-asymptote water content parameter of equation (9). (vol.%)
+ * - `m` — Shape parameter of equation (9). (dimensionless)
+ * - `pf_star` — Base-10 logarithm of the equation (9) suction-scale parameter psi_*, with
+ * suction expressed in centimetres of water. (dimensionless)
  *
- * Parameters:
- * bulk_density: Undisturbed-soil bulk density. (g/cm^3)
- * fine_fraction: Fine-particle mass fraction reported as particles smaller than 0.002 mm.
- * (fraction)
- *
- * Returns:
- * theta_0: Upper-asymptote water content parameter of equation (9). (vol.%)
- * m: Shape parameter of equation (9). (dimensionless)
- * pf_star: Base-10 logarithm of the equation (9) suction-scale parameter psi_*, with suction
- * expressed in centimetres of water. (dimensionless)
- *
- * Territory:
+ * @remark Geographic scope:
  * Hungary, mainly the Hungarian Plain
  *
- * Notes:
- * Prediction target: Parameters of the equation (9) water-retention model for chernozem C
- * horizons.
- * Equation (17) applies to chernozem C horizons.
- * The source reports 95% relative errors of 7% for theta_0, 22% for m, and 11% for pF_*.
- *
- * Warnings:
- * Use is described as approximate by the source.
- * The source does not report exact calibration ranges; avoid extrapolation beyond comparable
- * Hungarian chernozem C horizons.
+ * @details Prediction target:
+ * Parameters of the equation (9) water-retention model for chernozem C horizons.
+ * @note Equation (17) applies to chernozem C horizons.
+ * @note The source reports 95% relative errors of 7% for theta_0, 22% for m, and 11% for pF_*.
+ * @warning Use is described as approximate by the source.
+ * @warning The source does not report exact calibration ranges; avoid extrapolation beyond
+ * comparable Hungarian chernozem C horizons.
  */
 [[nodiscard]]
 inline Varallyai1982Parameters calc_ptf_varallyai1982_chernozem_c(double bulk_density,

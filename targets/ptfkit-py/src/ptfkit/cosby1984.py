@@ -106,7 +106,7 @@ def calc_ptf_cosby1984_univariate(
         No back-transform is applied to logarithmic outputs.
         Public API names are provisional for pilot testing.
 
-    Warnings:
+    Warning:
         Log-transformed output units use the pilot contract `reported log value`.
 
     """

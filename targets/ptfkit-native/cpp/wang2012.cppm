@@ -6,62 +6,64 @@ module;
 export module ptfkit.wang2012;
 
 /**
- * Wang et al. (2012), surface loess across China's Loess Plateau.
+ * @brief Wang et al. (2012), surface loess across China's Loess Plateau.
  *
- * Reference:
+ * @details Source publication:
  * Wang, Y. Q., Shao, M. A., & Liu, Z. P. (2012). Pedotransfer functions for predicting soil
  * hydraulic properties of the Chinese Loess Plateau. Soil Science, 177, 424-432.
- * DOI: 10.1097/SS.0b013e318255a449 (https://doi.org/10.1097/SS.0b013e318255a449)
+ * @see https://doi.org/10.1097/SS.0b013e318255a449 DOI: 10.1097/SS.0b013e318255a449
  *
- * Territory:
+ * @remark Geographic scope:
  * Surface soils across the entire Loess Plateau, China
  *
- * Dataset:
+ * @remark Calibration dataset:
  * 382 surface (0-5 cm) sites; 252 derivation and 130 validation data sets.
  */
 
 export namespace ptfkit::wang2012 {
 
 struct Wang2012PTFResult {
-    /** Saturated volumetric water content normalized from the regression's volume-percent scale.
-     * (cm^3/cm^3) */
+    /**
+     * @brief Saturated volumetric water content normalized from the regression's volume-percent
+     * scale. (cm^3/cm^3)
+     */
     double theta_s;
-    /** Volumetric water content at -33 kPa normalized from the regression's volume-percent scale.
-     * (cm^3/cm^3) */
+    /**
+     * @brief Volumetric water content at -33 kPa normalized from the regression's volume-percent
+     * scale. (cm^3/cm^3)
+     */
     double theta_fc;
-    /** Saturated hydraulic conductivity converted from cm/day. (m/s) */
+    /**
+     * @brief Saturated hydraulic conductivity converted from cm/day. (m/s)
+     */
     double k_sat;
 };
 
 /**
- * Estimate saturated water content, field capacity, and saturated conductivity.
- *
- * Parameters:
- * sand: Sand content, 0.05-1 mm. (%)
- * silt: Silt content, 0.002-0.05 mm. (%)
- * clay: Clay content, <0.002 mm. (%)
- * bulk_density: Bulk density. (g/cm^3)
- * soil_organic_carbon: Soil organic carbon exposed by the public API as percent by mass. (%)
- * altitude: Altitude above sea level. (m)
- *
- * Returns:
- * theta_s: Saturated volumetric water content normalized from the regression's volume-percent
- * scale. (cm^3/cm^3)
- * theta_fc: Volumetric water content at -33 kPa normalized from the regression's
+ * @brief Estimate saturated water content, field capacity, and saturated conductivity.
+ * @param sand Sand content, 0.05-1 mm. (%)
+ * @param silt Silt content, 0.002-0.05 mm. (%)
+ * @param clay Clay content, <0.002 mm. (%)
+ * @param bulk_density Bulk density. (g/cm^3)
+ * @param soil_organic_carbon Soil organic carbon exposed by the public API as percent by mass.
+ * (%)
+ * @param altitude Altitude above sea level. (m)
+ * @return A result with the following fields:
+ * - `theta_s` — Saturated volumetric water content normalized from the regression's
  * volume-percent scale. (cm^3/cm^3)
- * k_sat: Saturated hydraulic conductivity converted from cm/day. (m/s)
+ * - `theta_fc` — Volumetric water content at -33 kPa normalized from the regression's
+ * volume-percent scale. (cm^3/cm^3)
+ * - `k_sat` — Saturated hydraulic conductivity converted from cm/day. (m/s)
  *
- * Notes:
- * Prediction target: Saturated soil-water content, water content at -33 kPa, and saturated
- * hydraulic conductivity.
- * The regression uses source SOC in g/kg; the public API accepts percent.
- * Base-10 logarithms reproduce the source's raw and transformed Ks ranges.
- * Water-content equations are evaluated in percentage points and divided by 100 for public
- * volumetric fractions.
- *
- * Warnings:
- * This normalization intentionally changes the legacy water-content outputs by a factor of
- * 100.
+ * @details Prediction target:
+ * Saturated soil-water content, water content at -33 kPa, and saturated hydraulic
+ * conductivity.
+ * @note The regression uses source SOC in g/kg; the public API accepts percent.
+ * @note Base-10 logarithms reproduce the source's raw and transformed Ks ranges.
+ * @note Water-content equations are evaluated in percentage points and divided by 100 for
+ * public volumetric fractions.
+ * @warning This normalization intentionally changes the legacy water-content outputs by a
+ * factor of 100.
  */
 [[nodiscard]]
 inline Wang2012PTFResult calc_ptf_wang2012(double sand, double silt, double clay,

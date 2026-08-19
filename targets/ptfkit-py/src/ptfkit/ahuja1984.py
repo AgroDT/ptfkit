@@ -92,7 +92,7 @@ def calc_ptf_ahuja1984(
         Soil-core fitted exponents were near 4, whereas the smaller Hawaii field dataset had a
             fitted slope of 1.59 over a narrower effective-porosity range.
 
-    Warnings:
+    Warning:
         The empirical coefficient B varies with soil type; callers must supply a coefficient
             calibrated for the soil being evaluated.
         Callers must supply the exponent. The paper evaluates both n = 4 and n = 5 and does not

@@ -297,7 +297,7 @@ fn function_docstring(function: &Function) -> String {
         .collect(),
     ));
     if !function.documentation.warnings.is_empty() {
-        sections.push(("Warnings", function.documentation.warnings.clone()));
+        sections.push(("Warning", function.documentation.warnings.clone()));
     }
     render_docstring("    ", &function.public_api.summary, &sections, 4)
 }

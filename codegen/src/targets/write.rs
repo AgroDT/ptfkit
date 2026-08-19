@@ -110,11 +110,20 @@ fn remove_obsolete(directory: &Path, expected: &BTreeSet<PathBuf>, header: &str)
         let path = entry?.path();
         if path.is_dir() {
             remove_obsolete(&path, expected, header)?;
-        } else if !expected.contains(&path) && fs::read(&path)?.starts_with(header.as_bytes()) {
+        } else if !expected.contains(&path) && is_generated(&fs::read(&path)?, header) {
             fs::remove_file(path)?;
         }
     }
     Ok(())
+}
+
+fn is_generated(contents: &[u8], header: &str) -> bool {
+    contents.starts_with(header.as_bytes())
+        || (header == super::documentation::HEADER
+            && contents.starts_with(b"---\n")
+            && contents
+                .windows(header.len())
+                .any(|window| window == header.as_bytes()))
 }
 
 fn format(root: &Path, staged: &[StagedWrite]) -> Result<()> {
@@ -189,5 +198,64 @@ fn run(
 fn remove_temporary(staged: &[StagedWrite]) {
     for write in staged {
         let _ = fs::remove_file(&write.temporary);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use std::{fs, path::Path};
+
+    use super::*;
+    use crate::targets::{GeneratedFile, documentation::HEADER};
+
+    fn temporary_root(label: &str) -> PathBuf {
+        std::env::temp_dir().join(format!(
+            "ptfkit-codegen-write-{label}-{}",
+            std::process::id()
+        ))
+    }
+
+    #[test]
+    fn removes_obsolete_generated_python_reference_pages_only() {
+        let root = temporary_root("python-documentation");
+        let python_reference = root.join("docs/src/reference/python");
+        let c_reference = root.join("docs/src/reference/c");
+        fs::create_dir_all(&python_reference).expect("create Python reference directory");
+        fs::create_dir_all(&c_reference).expect("create C reference directory");
+        fs::write(
+            python_reference.join("obsolete.md"),
+            format!("{HEADER}# Obsolete\n"),
+        )
+        .expect("write obsolete Python page");
+        fs::write(
+            c_reference.join("preserved.md"),
+            format!("{HEADER}# Preserved\n"),
+        )
+        .expect("write C page");
+
+        let output = TargetOutput::new(
+            Target::PythonDocumentation,
+            vec![GeneratedFile::new(
+                "index.md".into(),
+                format!("{HEADER}# Python\n"),
+            )],
+        );
+        commit(&root, &[output]).expect("commit Python documentation");
+
+        assert!(python_reference.join("index.md").is_file());
+        assert!(!python_reference.join("obsolete.md").exists());
+        assert!(c_reference.join("preserved.md").is_file());
+
+        fs::remove_dir_all(root).expect("remove temporary test directory");
+    }
+
+    #[test]
+    fn generated_documentation_front_matter_is_recognized_for_cleanup() {
+        assert!(is_generated(
+            format!("---\ntitle: \"ptfkit.test\"\n---\n\n{HEADER}::: ptfkit.test\n").as_bytes(),
+            HEADER,
+        ));
+        assert!(!is_generated(b"# Handwritten page\n", HEADER));
+        assert!(Path::new("index.md").is_relative());
     }
 }
