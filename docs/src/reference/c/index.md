@@ -18,6 +18,7 @@ ptfkit's C API is organized around installed headers.
 - [`<ptfkit/cosby1984.h>`](headers/cosby1984.md) — Cosby et al. (1984), United States.
 - [`<ptfkit/dharumarajan2019.h>`](headers/dharumarajan2019.md) — Dharumarajan et al. (2019) hydraulic PTFs for the Karnataka Plateau.
 - [`<ptfkit/ferrerjulia2004.h>`](headers/ferrerjulia2004.md) — Ferrer Julià et al. (2004), saturated-conductivity PTFs for Spanish soils.
+- [`<ptfkit/hodnett2002.h>`](headers/hodnett2002.md) — Hodnett & Tomasella (2002), tropical-soil regressions for four van Genuchten parameters.
 - [`<ptfkit/jabro1992.h>`](headers/jabro1992.md) — Jabro (1992), United States.
 - [`<ptfkit/li2007.h>`](headers/li2007.md) — Li et al. (2007), Fengqiu County, North China Plain, China.
 - [`<ptfkit/mayr1999.h>`](headers/mayr1999.md) — Mayr and Jarvis (1999) modified Brooks-Corey water-retention parameter PTFs.

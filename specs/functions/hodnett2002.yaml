@@ -1,0 +1,207 @@
+source:
+  summary: Hodnett & Tomasella (2002), tropical-soil regressions for four van Genuchten parameters.
+  citation_apa: >-
+    Hodnett, M. G., & Tomasella, J. (2002). Marked differences between van
+    Genuchten soil water-retention parameters for temperate and tropical soils:
+    A new water-retention pedo-transfer functions developed for tropical soils.
+    Geoderma, 108(3-4), 155-180.
+  doi:
+    identifier: 10.1016/S0016-7061(02)00105-2
+    url: https://doi.org/10.1016/S0016-7061(02)00105-2
+scope:
+  territory: Tropical soils between approximately 25 degrees N and 25 degrees S.
+  dataset: >-
+    The IGBP-DIS tropical-soil dataset contains 771 retained horizons from 249
+    profiles in 22 countries, split into 492 calibration curves and 279
+    validation curves.
+functions:
+  - name: calc_ptf_hodnett2002
+    status: implemented
+    public_api:
+      name: calc_ptf_hodnett2002
+      result_class: Hodnett2002PTFResult
+      summary: >-
+        Estimate four van Genuchten water-retention parameters for tropical soils.
+    scope:
+      prediction_target: >-
+        Residual and saturated volumetric water content and the alpha and n shape
+        parameters of the van Genuchten water-retention model.
+      models:
+        h_theta: van Genuchten model with m = 1 - 1 / n
+        k_h: null
+    inputs:
+      - name: sand
+        symbol: Sa
+        unit: '%'
+        domain: 0.5 <= value <= 99.0
+        description: >-
+          Sand content in the 0.05-2 mm USDA particle-size fraction, expressed as
+          a percentage.
+      - name: silt
+        symbol: Si
+        unit: '%'
+        domain: 0.4 <= value <= 77.4
+        description: >-
+          Silt content in the 0.002-0.05 mm USDA particle-size fraction, expressed
+          as a percentage.
+      - name: clay
+        symbol: Cl
+        unit: '%'
+        domain: 0.0 <= value <= 95.4
+        description: >-
+          Clay content in the less-than-0.002 mm USDA particle-size fraction,
+          expressed as a percentage.
+      - name: organic_carbon
+        symbol: OC
+        unit: '%'
+        domain: 0.0 <= value <= 30.8
+        description: Soil organic carbon content expressed as a percentage.
+      - name: bulk_density
+        symbol: bd
+        unit: Mg/m^3
+        domain: 0.28 <= value <= 1.88
+        description: Soil bulk density.
+      - name: cation_exchange_capacity
+        symbol: CEC
+        unit: cmol/kg
+        domain: 0.0 <= value <= 93.7
+        description: Soil cation exchange capacity.
+      - name: ph
+        symbol: pH
+        unit: dimensionless
+        domain: 3.60 <= value <= 9.60
+        description: Soil pH.
+    outputs:
+      type: record
+      name: Hodnett2002PTFResult
+      fields:
+        - name: alpha
+          symbol: alpha
+          unit: kPa^-1
+          domain: value > 0
+          description: Shape parameter of the van Genuchten water-retention model.
+        - name: n
+          symbol: n
+          unit: dimensionless
+          domain: value > 0
+          description: Shape parameter controlling water-retention curve steepness.
+        - name: theta_s
+          symbol: theta_s
+          unit: m^3/m^3
+          domain: null
+          description: Saturated volumetric soil water content.
+        - name: theta_r
+          symbol: theta_r
+          unit: m^3/m^3
+          domain: null
+          description: Residual volumetric soil water content.
+    golden_tests:
+      - id: calibration_dataset_mean_properties
+        inputs:
+          sand: 39.2
+          silt: 24.2
+          clay: 36.7
+          organic_carbon: 1.4
+          bulk_density: 1.20
+          cation_exchange_capacity: 15.9
+          ph: 5.85
+        expected:
+          alpha: 0.245183615037873
+          n: 1.36739326352383
+          theta_s: 0.4993353
+          theta_r: 0.21344216
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: >-
+          Calculated from the reoptimised Step 3 coefficients in Table 8 using
+          the calibration-set means in Table 3 and the table's factor-of-100 note.
+    edge_cases: []
+    documentation:
+      notes:
+        - >-
+          The regressions use percentages of sand, silt, clay, and organic carbon,
+          bulk density in Mg/m^3, CEC in cmol/kg, and pH.
+        - >-
+          Table 8 reports the reoptimised Step 3 coefficients used here and states
+          that its displayed values are multiplied by 100; each polynomial is
+          therefore divided by 100 before alpha and n are back-transformed.
+        - >-
+          The fitted ln(alpha) and ln(n) values are back-transformed with the
+          natural exponential, as specified by the paper's use of natural
+          logarithms.
+      warnings:
+        - >-
+          The paper reports n = 497 when introducing the continuous PTF, but its
+          dataset split gives 492 calibration curves and 279 validation curves,
+          which account for all 771 retained horizons. The extraction treats 497
+          as a typographical error and records 492 as the calibration-set size.
+        - >-
+          The PTF did not reproduce water-retention curves accurately for soils
+          with bulk density below 0.8 Mg/m^3, most of which were Andosols.
+        - >-
+          The PTF did not reproduce very low alpha values well because high-alpha
+          soils dominated the calibration data; mineralogy and structure were not
+          directly represented.
+    implementation:
+      variables:
+        - name: ln_alpha
+          expr: (-2.294 - 3.526 * silt + 2.440 * organic_carbon - 0.076 * cation_exchange_capacity - 11.331 * ph + 0.019 * silt ^ 2) / 100
+        - name: alpha
+          expr: exp(ln_alpha)
+        - name: ln_n
+          expr: (62.986 - 0.833 * clay - 0.529 * organic_carbon + 0.593 * ph + 0.0070 * clay ^ 2 - 0.014 * sand * silt) / 100
+        - name: n
+          expr: exp(ln_n)
+        - name: theta_s
+          expr: (81.799 + 0.099 * clay - 31.420 * bulk_density + 0.018 * cation_exchange_capacity + 0.451 * ph - 0.0005 * sand * clay) / 100
+        - name: theta_r
+          expr: (22.733 - 0.164 * sand + 0.235 * cation_exchange_capacity - 0.831 * ph + 0.0018 * clay ^ 2 + 0.0026 * sand * clay) / 100
+scientific_notes: |
+  ## Supported models
+
+  The continuous PTF predicts alpha, n, saturated volumetric water content, and
+  residual volumetric water content for the van Genuchten water-retention model.
+  The paper takes m = 1 - 1/n. It does not provide a hydraulic-conductivity PTF.
+
+  The retained IGBP/T dataset comprises 771 horizons from 249 profiles in 22
+  countries between approximately 25 degrees N and 25 degrees S. The regressions
+  use texture, organic carbon, bulk density, cation exchange capacity, and pH.
+
+  ## Formula evidence
+
+  Table 8 gives both Step 2 regression coefficients and Step 3 coefficients
+  reoptimised against all observed pressure-head and water-content pairs. The
+  Step 3 coefficients are selected because the paper reports lower SSE, reduced
+  mean bias, and a slightly lower RMSD after reoptimisation. The table footnote
+  says its values are multiplied by 100, which is represented by dividing each
+  displayed polynomial by 100. The paper explicitly identifies the alpha and n
+  regressands as natural logarithms, so their polynomials are exponentiated.
+
+  ## Review decisions
+
+  The Table 8 caption refers to coefficients of Eq. (3), but Eq. (3) defines mean
+  difference; the coefficient layout and the surrounding text identify these as
+  the reduced Eq. (2) PTF regressions. This extraction follows that internal
+  evidence and records the caption discrepancy for review.
+
+  The continuous-PTF paragraph reports n = 497, whereas the dataset split reports
+  492 calibration curves and 279 validation curves. Because 492 + 279 equals the
+  complete retained dataset of 771 horizons, this extraction treats 497 as a
+  typographical error and records 492 as the calibration-set size. This decision
+  affects provenance metadata only, not the published regression coefficients.
+
+  Input domains use the calibration-set ranges in Table 3. The output domains for
+  theta_s and theta_r remain unspecified because the paper reports fitted-data
+  constraints, not a clipping or rejection policy for regression predictions.
+
+  ## Documented limitations
+
+  The continuous PTF performed better than the textural-class and soil-group PTFs
+  on the validation dataset, but retained systematic underestimation. It was not
+  accurate for bulk densities below 0.8 Mg/m^3, especially Andosols, and did not
+  reproduce very low alpha values well. The paper recommends using a temperate
+  PTF in temperate regions and presents this PTF for use elsewhere in the tropics.
+
+  ## Blockers
+
+  None.

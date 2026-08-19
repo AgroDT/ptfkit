@@ -17,6 +17,7 @@ Each page describes the source, scope, inputs, outputs, status, and limitations 
 | [Cosby et al. (1984), United States.](./cosby1984.md) | United States | 1 |
 | [Dharumarajan et al. (2019) hydraulic PTFs for the Karnataka Plateau.](./dharumarajan2019.md) | Karnataka Plateau, India | 5 |
 | [Ferrer Julià et al. (2004), saturated-conductivity PTFs for Spanish soils.](./ferrerjulia2004.md) | Spanish mainland on the Iberian Peninsula | 41 |
+| [Hodnett & Tomasella (2002), tropical-soil regressions for four van Genuchten parameters.](./hodnett2002.md) | Tropical soils between approximately 25 degrees N and 25 degrees S. | 1 |
 | [Jabro (1992), United States.](./jabro1992.md) | USA | 1 |
 | [Li et al. (2007), Fengqiu County, North China Plain, China.](./li2007.md) | Fengqiu County soils in the North China Plain, China | 1 |
 | [Mayr and Jarvis (1999) modified Brooks-Corey water-retention parameter PTFs.](./mayr1999.md) | England and Wales | 1 |

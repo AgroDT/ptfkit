@@ -12,6 +12,7 @@
 #include "cosby1984.c"
 #include "dharumarajan2019.c"
 #include "ferrerjulia2004.c"
+#include "hodnett2002.c"
 #include "jabro1992.c"
 #include "li2007.c"
 #include "mayr1999.c"
@@ -57,6 +58,10 @@ PyMODINIT_FUNC PyInit__ptfkit(void) {
         return NULL;
     }
     if (ptfkit_register_ferrerjulia2004(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_hodnett2002(module) < 0) {
         Py_DECREF(module);
         return NULL;
     }
