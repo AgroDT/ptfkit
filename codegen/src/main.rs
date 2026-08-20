@@ -5,6 +5,7 @@ use std::{path::Path, process::ExitCode};
 use anyhow::{Context, Result, bail};
 use clap::{Parser, Subcommand};
 
+mod documentation;
 mod formula;
 mod model;
 mod render;

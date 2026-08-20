@@ -5,7 +5,8 @@ use proc_macro2::{Ident, Literal, TokenStream, TokenTree};
 use quote::{format_ident, quote};
 
 use crate::{
-    model::{CompiledFunction, Function, Output, Parameter, Scope, Source},
+    documentation::{self as docs, FunctionDocument, Returns, SourceDocument},
+    model::{CompiledFunction, Output},
     semantic::{self, BinaryOp, Expr, MathFunction, Number, Reference, UnaryOp},
 };
 
@@ -20,7 +21,10 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<(PathBuf, Str
             let first = functions
                 .first()
                 .expect("generated source contains at least one function");
-            let module_docs = module_doc_tokens(&first.entry.spec.source, &first.entry.spec.scope);
+            let module_docs = module_doc_tokens(docs::for_source(
+                &first.entry.spec.source,
+                &first.entry.spec.scope,
+            ));
             let unique_test_modules = functions.len() > 1;
             let mut defined_result_classes = BTreeSet::new();
             let definitions = functions
@@ -49,7 +53,7 @@ fn module_tokens(
 ) -> Result<TokenStream> {
     let function = &resolved.core;
     let specification = &resolved.entry.spec.functions[resolved.function_index];
-    let function_docs = function_doc_tokens(specification);
+    let function_docs = function_doc_tokens(docs::for_function(specification));
     let name = format_ident!("{}", function.name);
     let inputs = function
         .inputs
@@ -177,75 +181,65 @@ fn output_tokens(
     }
 }
 
-fn module_doc_tokens(source: &Source, scope: &Scope) -> TokenStream {
+fn module_doc_tokens(document: SourceDocument<'_>) -> TokenStream {
     let mut lines = vec![
-        source.summary.clone(),
+        document.summary.into(),
         String::new(),
         "# Reference".into(),
         String::new(),
-        source.citation_apa.clone(),
+        document.reference.citation.into(),
     ];
-    if let Some(doi) = &source.doi {
+    if let Some(doi) = document.reference.doi {
         lines.push(format!("DOI: {} ({})", doi.identifier, doi.url));
     }
-    if let Some(territory) = &scope.territory {
+    if let Some(territory) = document.territory {
         lines.extend([
             String::new(),
             "# Territory".into(),
             String::new(),
-            territory.clone(),
+            territory.into(),
         ]);
     }
-    if let Some(dataset) = &scope.dataset {
+    if let Some(dataset) = document.dataset {
         lines.extend([
             String::new(),
             "# Dataset".into(),
             String::new(),
-            dataset.clone(),
+            dataset.into(),
         ]);
     }
     inner_doc_tokens(lines)
 }
 
-fn function_doc_tokens(function: &Function) -> TokenStream {
+fn function_doc_tokens(document: FunctionDocument<'_>) -> TokenStream {
     let mut lines = vec![
-        function.public_api.summary.clone(),
+        document.summary.into(),
         String::new(),
         "# Arguments".into(),
         String::new(),
     ];
     lines.extend(
-        function
-            .inputs
+        document
+            .parameters
             .iter()
             .map(|parameter| format!("* {}", documentation::parameter_documentation(parameter))),
     );
     lines.extend([String::new(), "# Returns".into(), String::new()]);
-    lines.extend(return_doc_lines(
-        function.result_class(),
-        function.outputs.fields(),
-    ));
-    if let Some(territory) = &function.scope.territory {
+    lines.extend(return_doc_lines(document.returns));
+    if let Some(territory) = document.territory {
         lines.extend([
             String::new(),
             "# Territory".into(),
             String::new(),
-            territory.clone(),
+            territory.into(),
         ]);
     }
     let models = [
-        function
-            .scope
+        document
             .models
             .h_theta
-            .as_ref()
             .map(|model| format!("h(theta): {model}")),
-        function
-            .scope
-            .models
-            .k_h
-            .as_ref()
-            .map(|model| format!("k(h): {model}")),
+        document.models.k_h.map(|model| format!("k(h): {model}")),
     ]
     .into_iter()
     .flatten()
@@ -258,20 +252,26 @@ fn function_doc_tokens(function: &Function) -> TokenStream {
         String::new(),
         "# Notes".into(),
         String::new(),
-        format!("Prediction target: {}", function.scope.prediction_target),
+        format!("Prediction target: {}", document.remarks.prediction_target),
     ]);
-    lines.extend(function.documentation.notes.iter().cloned());
-    if !function.documentation.warnings.is_empty() {
+    lines.extend(document.notes.iter().cloned());
+    if !document.warnings.is_empty() {
         lines.extend([String::new(), "# Warnings".into(), String::new()]);
-        lines.extend(function.documentation.warnings.iter().cloned());
+        lines.extend(document.warnings.iter().cloned());
     }
     doc_tokens(lines)
 }
 
-fn return_doc_lines(result_class: Option<&str>, outputs: &[Parameter]) -> Vec<String> {
-    match result_class {
-        Some(result_class) => vec![format!("A [`{result_class}`].")],
-        None => outputs
+fn return_doc_lines(returns: Returns<'_>) -> Vec<String> {
+    match returns {
+        Returns::Record { name, fields } => {
+            debug_assert!(
+                !fields.is_empty(),
+                "record outputs contain at least one field"
+            );
+            vec![format!("A [`{name}`].")]
+        }
+        Returns::Scalar(output) => std::slice::from_ref(output)
             .iter()
             .map(|parameter| format!("* {}", documentation::parameter_documentation(parameter)))
             .collect(),
@@ -570,6 +570,8 @@ fn render_tokens(module_docs: TokenStream, tokens: TokenStream) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::documentation::Returns;
+    use crate::model::Parameter;
     use crate::semantic::{BinaryOp, Expr, MathFunction, Reference};
 
     fn number(value: f64) -> Expr {
@@ -727,7 +729,15 @@ mod tests {
     #[test]
     fn record_return_documentation_links_to_the_result_type() {
         assert_eq!(
-            return_doc_lines(Some("Li2007PTFResult"), &[]),
+            return_doc_lines(Returns::Record {
+                name: "Li2007PTFResult",
+                fields: &[Parameter {
+                    name: "theta_s".into(),
+                    unit: "cm^3/cm^3".into(),
+                    domain: None,
+                    description: "Saturated water content.".into(),
+                }],
+            }),
             ["A [`Li2007PTFResult`]."]
         );
     }
