@@ -3,7 +3,10 @@ use std::{collections::BTreeSet, path::PathBuf};
 use anyhow::Result;
 use convert_case::{Boundary, Case, Casing};
 
-use crate::model::{CompiledFunction, Function, Output, Parameter, Scope, Source};
+use crate::{
+    model::{CompiledFunction, Function, Output, Parameter, Scope, Source},
+    render::{Render, Writer},
+};
 
 use super::{
     c_expression::{self, Dialect},
@@ -26,10 +29,10 @@ pub(super) fn render(functions: &[CompiledFunction]) -> Result<OutputFiles> {
     let mut cpp_modules = Vec::new();
     let mut c_tests = Vec::new();
     let mut cpp_tests = Vec::new();
-    let mut c_includes = String::new();
+    let mut c_includes = Writer::new();
     let mut module_paths = vec!["cpp/ptfkit.cppm".to_owned()];
     for (slug, functions) in group_by_source(functions) {
-        c_includes.push_str(&format!("#include <ptfkit/{slug}.h>\n"));
+        c_includes.line(format_args!("#include <ptfkit/{slug}.h>"));
         c_headers.push(file(
             format!("ptfkit/{slug}.h"),
             c_header(slug, &functions)?,
@@ -39,34 +42,41 @@ pub(super) fn render(functions: &[CompiledFunction]) -> Result<OutputFiles> {
         c_tests.push(file(format!("{slug}.c"), c_test(slug, &functions)?));
         cpp_tests.push(file(format!("{slug}.cpp"), cpp_test(slug, &functions)?));
     }
-    c_headers.push(file(
-        "ptfkit/ptfkit.h",
-        format!(
-            "{HEADER}\n#ifndef PTFKIT_PTFKIT_H\n#define PTFKIT_PTFKIT_H\n\n{c_includes}\n#endif\n"
-        ),
-    ));
-    let exports = module_paths
-        .iter()
-        .skip(1)
-        .map(|path| path.trim_start_matches("cpp/").trim_end_matches(".cppm"))
-        .map(|slug| format!("export import ptfkit.{slug};\n"))
-        .collect::<String>();
-    cpp_modules.push(file(
-        "ptfkit.cppm",
-        format!("{HEADER}\nexport module ptfkit;\n\n{exports}"),
-    ));
-    let module_paths = module_paths
-        .iter()
-        .map(|path| format!("    \"${{CMAKE_CURRENT_LIST_DIR}}/../{path}\""))
-        .collect::<Vec<_>>()
-        .join("\n");
+    let mut umbrella = Writer::new();
+    umbrella.write(HEADER);
+    umbrella.blank_line();
+    umbrella.line("#ifndef PTFKIT_PTFKIT_H");
+    umbrella.line("#define PTFKIT_PTFKIT_H");
+    umbrella.blank_line();
+    umbrella.write(c_includes.into_string());
+    umbrella.blank_line();
+    umbrella.line("#endif");
+    c_headers.push(file("ptfkit/ptfkit.h", umbrella.into_string()));
+
+    let mut root_module = Writer::new();
+    root_module.write(HEADER);
+    root_module.blank_line();
+    root_module.line("export module ptfkit;");
+    root_module.blank_line();
+    for path in module_paths.iter().skip(1) {
+        let slug = path.trim_start_matches("cpp/").trim_end_matches(".cppm");
+        root_module.line(format_args!("export import ptfkit.{slug};"));
+    }
+    cpp_modules.push(file("ptfkit.cppm", root_module.into_string()));
+
+    let mut cmake = Writer::new();
+    cmake.write(CMAKE_HEADER);
+    cmake.line("set(PTFKIT_CPP_MODULES");
+    cmake.indented(|writer| {
+        for path in &module_paths {
+            writer.line(format_args!("\"${{CMAKE_CURRENT_LIST_DIR}}/../{path}\""));
+        }
+    });
+    cmake.line(")");
     Ok(OutputFiles {
         c_headers,
         cpp_modules,
-        cpp_cmake: vec![file(
-            "ptfkitModules.cmake",
-            format!("{CMAKE_HEADER}set(PTFKIT_CPP_MODULES\n{module_paths}\n)\n"),
-        )],
+        cpp_cmake: vec![file("ptfkitModules.cmake", cmake.into_string())],
         c_tests,
         cpp_tests,
     })
@@ -84,17 +94,20 @@ pub(super) fn c_result_name(schema: &str) -> String {
 
 fn c_header(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
     let guard = format!("PTFKIT_{}_H", slug.to_ascii_uppercase());
-    let mut body = String::new();
+    let mut writer = Writer::new();
+    writer.write(HEADER);
+    writer.blank_line();
+    writer.line(format_args!("#ifndef {guard}"));
+    writer.line(format_args!("#define {guard}"));
+    writer.blank_line();
     if requires_math(functions) {
-        body.push_str("#include <math.h>\n");
+        writer.line("#include <math.h>");
+        writer.blank_line();
     }
     let first = functions
         .first()
         .expect("generated source contains at least one function");
-    body.push_str(&format!(
-        "\n{}",
-        source_comment(&first.entry.spec.source, &first.entry.spec.scope)
-    ));
+    source_comment(&first.entry.spec.source, &first.entry.spec.scope).render(&mut writer);
     let mut schemas = BTreeSet::new();
     for function in functions {
         let spec = &function.entry.spec.functions[function.function_index];
@@ -103,168 +116,261 @@ fn c_header(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
                 .result_class()
                 .ok_or_else(|| anyhow::anyhow!("record output has no result class"))?;
             if schemas.insert(schema) {
-                body.push_str(&format!(
-                    "\ntypedef struct {{\n{} }} {};\n",
-                    fields
-                        .iter()
-                        .map(|field| {
-                            let parameter = spec
-                                .outputs
-                                .fields()
-                                .iter()
-                                .find(|parameter| parameter.name == *field)
-                                .expect("core output field matches specification");
-                            format!("    {}\n    double {field};\n", field_comment(parameter))
-                        })
-                        .collect::<String>(),
-                    c_result_name(schema)
-                ));
+                writer.blank_line();
+                render_struct(
+                    &mut writer,
+                    fields,
+                    spec,
+                    &c_result_name(schema),
+                    NativeDialect::C,
+                );
             }
         }
     }
     for function in functions {
-        body.push_str(&format!("\n{}", c_function(function)?));
+        writer.blank_line();
+        NativeFunction::c(function)?.render(&mut writer);
     }
-    Ok(format!(
-        "{HEADER}\n#ifndef {guard}\n#define {guard}\n\n{body}\n#endif\n"
-    ))
+    writer.blank_line();
+    writer.line("#endif");
+    Ok(writer.into_string())
 }
 
 fn cpp_module(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
-    let mut body = String::new();
+    let mut writer = Writer::new();
+    writer.write(HEADER);
+    writer.blank_line();
     if requires_math(functions) {
-        body.push_str("module;\n#include <cmath>\n\n");
+        writer.line("module;");
+        writer.line("#include <cmath>");
+        writer.blank_line();
     }
-    body.push_str(&format!("export module ptfkit.{slug};\n\n"));
+    writer.line(format_args!("export module ptfkit.{slug};"));
+    writer.blank_line();
     let first = functions
         .first()
         .expect("generated source contains at least one function");
-    body.push_str(&source_comment(
-        &first.entry.spec.source,
-        &first.entry.spec.scope,
-    ));
-    body.push('\n');
-    body.push_str(&format!("export namespace ptfkit::{slug} {{\n"));
-    let mut schemas = BTreeSet::new();
-    for function in functions {
-        let spec = &function.entry.spec.functions[function.function_index];
-        if let Output::Struct(fields) = &function.core.output {
-            let result = spec
-                .result_class()
-                .ok_or_else(|| anyhow::anyhow!("record output has no result class"))?;
-            if schemas.insert(result) {
-                body.push_str(&format!(
-                    "\nstruct {} {{\n{} }};\n",
-                    result,
-                    fields
-                        .iter()
-                        .map(|field| {
-                            let parameter = spec
-                                .outputs
-                                .fields()
-                                .iter()
-                                .find(|parameter| parameter.name == *field)
-                                .expect("core output field matches specification");
-                            format!("    {}\n    double {field};\n", field_comment(parameter))
-                        })
-                        .collect::<String>()
-                ));
+    source_comment(&first.entry.spec.source, &first.entry.spec.scope).render(&mut writer);
+    writer.blank_line();
+    let native_functions = functions
+        .iter()
+        .map(|function| NativeFunction::cpp(function))
+        .collect::<Result<Vec<_>>>()?;
+    writer.line(format_args!("export namespace ptfkit::{slug} {{"));
+    writer.indented(|writer| {
+        let mut schemas = BTreeSet::new();
+        for function in functions {
+            let spec = &function.entry.spec.functions[function.function_index];
+            if let Output::Struct(fields) = &function.core.output {
+                let result = spec
+                    .result_class()
+                    .expect("record output has a result class");
+                if schemas.insert(result) {
+                    writer.blank_line();
+                    render_struct(writer, fields, spec, result, NativeDialect::Cpp);
+                }
             }
         }
-    }
-    for function in functions {
-        body.push_str(&format!("\n{}", cpp_function(function)?));
-    }
-    body.push_str(&format!("\n}}  // namespace ptfkit::{slug}\n"));
-    Ok(format!("{HEADER}\n{body}"))
+        for function in &native_functions {
+            writer.blank_line();
+            function.render(writer);
+        }
+    });
+    writer.blank_line();
+    writer.line(format_args!("}}  // namespace ptfkit::{slug}"));
+    Ok(writer.into_string())
 }
 
-fn c_function(function: &CompiledFunction) -> Result<String> {
-    render_function(function, false)
-}
-fn cpp_function(function: &CompiledFunction) -> Result<String> {
-    render_function(function, true)
+#[derive(Clone, Copy)]
+enum NativeDialect {
+    C,
+    Cpp,
 }
 
-fn render_function(function: &CompiledFunction, cpp: bool) -> Result<String> {
-    let spec = &function.entry.spec.functions[function.function_index];
-    let result = match function.core.output {
-        Output::Scalar => "double".to_owned(),
-        Output::Struct(_) if cpp => spec
-            .result_class()
-            .ok_or_else(|| anyhow::anyhow!("record output has no result class"))?
-            .to_owned(),
-        Output::Struct(_) => c_result_name(
-            spec.result_class()
-                .ok_or_else(|| anyhow::anyhow!("record output has no result class"))?,
-        ),
-    };
-    let prefix = if cpp {
-        "[[nodiscard]]\ninline"
-    } else {
-        "static inline"
-    };
-    let inputs = function
-        .core
-        .inputs
-        .iter()
-        .map(|input| format!("double {input}"))
-        .collect::<Vec<_>>()
-        .join(", ");
-    let mut variables = String::new();
-    let output_name = &spec.outputs.fields()[0].name;
-    let terminal = matches!(function.core.output, Output::Scalar)
-        && function
-            .ir
-            .variables
-            .last()
-            .is_some_and(|v| v.name == *output_name);
-    for variable in function
-        .ir
-        .variables
-        .iter()
-        .take(function.ir.variables.len() - usize::from(terminal))
-    {
-        variables.push_str(&format!(
-            "    const double {} = {};\n",
-            variable.name,
-            expression(&variable.expression, function, cpp)
-        ));
+struct NativeFunction<'a> {
+    function: &'a CompiledFunction,
+    result: String,
+    dialect: NativeDialect,
+    terminal: bool,
+}
+
+impl<'a> NativeFunction<'a> {
+    fn c(function: &'a CompiledFunction) -> Result<Self> {
+        Self::new(function, NativeDialect::C)
     }
-    let returned = match &function.core.output {
-        Output::Scalar if terminal => expression(
-            &function
+
+    fn cpp(function: &'a CompiledFunction) -> Result<Self> {
+        Self::new(function, NativeDialect::Cpp)
+    }
+
+    fn new(function: &'a CompiledFunction, dialect: NativeDialect) -> Result<Self> {
+        let spec = &function.entry.spec.functions[function.function_index];
+        let result = match function.core.output {
+            Output::Scalar => "double".to_owned(),
+            Output::Struct(_) if matches!(dialect, NativeDialect::Cpp) => spec
+                .result_class()
+                .ok_or_else(|| anyhow::anyhow!("record output has no result class"))?
+                .to_owned(),
+            Output::Struct(_) => c_result_name(
+                spec.result_class()
+                    .ok_or_else(|| anyhow::anyhow!("record output has no result class"))?,
+            ),
+        };
+        let output_name = &spec.outputs.fields()[0].name;
+        let terminal = matches!(function.core.output, Output::Scalar)
+            && function
                 .ir
                 .variables
                 .last()
-                .expect("terminal variable")
-                .expression,
+                .is_some_and(|variable| variable.name == *output_name);
+        Ok(Self {
             function,
-            cpp,
-        ),
-        Output::Scalar => output_name.clone(),
-        Output::Struct(fields) if cpp => format!("{result}{{{}}}", fields.join(", ")),
-        Output::Struct(fields) => format!("{result}{{{}}}", fields.join(", ")),
-    };
-    let return_statement = match &function.core.output {
-        Output::Struct(fields) if !cpp => format!(
-            "#ifdef __cplusplus\n    return {result}{{{}}};\n#else\n    return ({result}) {{\n{}    }};\n#endif",
-            fields.join(", "),
-            fields
-                .iter()
-                .map(|field| format!("        .{field} = {field},\n"))
-                .collect::<String>()
-        ),
-        _ => format!("return {returned};"),
-    };
-    Ok(format!(
-        "{}{prefix} {result} {}({inputs}) {{\n{variables}    {return_statement}\n}}\n",
-        function_comment(spec),
-        function.core.name
-    ))
+            result,
+            dialect,
+            terminal,
+        })
+    }
 }
 
-fn source_comment(source: &Source, scope: &Scope) -> String {
+impl Render for NativeFunction<'_> {
+    fn render(&self, writer: &mut Writer) {
+        let spec = &self.function.entry.spec.functions[self.function.function_index];
+        function_comment(spec).render(writer);
+        if matches!(self.dialect, NativeDialect::Cpp) {
+            writer.line("[[nodiscard]]");
+            writer.write("inline ");
+        } else {
+            writer.write("static inline ");
+        }
+        writer.write(&self.result);
+        writer.write(" ");
+        writer.write(&self.function.core.name);
+        writer.write("(");
+        for (index, input) in self.function.core.inputs.iter().enumerate() {
+            if index > 0 {
+                writer.write(", ");
+            }
+            writer.write("double ");
+            writer.write(input);
+        }
+        writer.line(") {");
+        writer.indented(|writer| {
+            for variable in self
+                .function
+                .ir
+                .variables
+                .iter()
+                .take(self.function.ir.variables.len() - usize::from(self.terminal))
+            {
+                writer.write(format_args!("const double {} = ", variable.name));
+                writer.write(c_expression::expression(
+                    &variable.expression,
+                    &self.function.core.inputs,
+                    &self.function.ir.variables,
+                    self.expression_dialect(),
+                ));
+                writer.line(";");
+            }
+            self.render_return(writer);
+        });
+        writer.line("}");
+    }
+}
+
+impl NativeFunction<'_> {
+    fn expression_dialect(&self) -> Dialect {
+        match self.dialect {
+            NativeDialect::C => Dialect::C,
+            NativeDialect::Cpp => Dialect::Cpp,
+        }
+    }
+
+    fn render_return(&self, writer: &mut Writer) {
+        let output_name = &self.function.entry.spec.functions[self.function.function_index]
+            .outputs
+            .fields()[0]
+            .name;
+        match &self.function.core.output {
+            Output::Scalar if self.terminal => {
+                writer.write("return ");
+                writer.write(c_expression::expression(
+                    &self
+                        .function
+                        .ir
+                        .variables
+                        .last()
+                        .expect("terminal variable")
+                        .expression,
+                    &self.function.core.inputs,
+                    &self.function.ir.variables,
+                    self.expression_dialect(),
+                ));
+                writer.line(";");
+            }
+            Output::Scalar => writer.line(format_args!("return {output_name};")),
+            Output::Struct(fields) if matches!(self.dialect, NativeDialect::C) => {
+                writer.line("#ifdef __cplusplus");
+                writer.write(format_args!("return {}{{", self.result));
+                render_values(writer, fields);
+                writer.line("};");
+                writer.line("#else");
+                writer.line(format_args!("return ({}) {{", self.result));
+                writer.indented(|writer| {
+                    for field in fields {
+                        writer.line(format_args!(".{field} = {field},"));
+                    }
+                });
+                writer.line("};");
+                writer.line("#endif");
+            }
+            Output::Struct(fields) => {
+                writer.write(format_args!("return {}{{", self.result));
+                render_values(writer, fields);
+                writer.line("};");
+            }
+        }
+    }
+}
+
+fn render_values(writer: &mut Writer, values: &[String]) {
+    for (index, value) in values.iter().enumerate() {
+        if index > 0 {
+            writer.write(", ");
+        }
+        writer.write(value);
+    }
+}
+
+fn render_struct(
+    writer: &mut Writer,
+    fields: &[String],
+    spec: &Function,
+    name: &str,
+    dialect: NativeDialect,
+) {
+    match dialect {
+        NativeDialect::C => writer.line("typedef struct {"),
+        NativeDialect::Cpp => writer.line(format_args!("struct {name} {{")),
+    }
+    writer.indented(|writer| {
+        for field in fields {
+            let parameter = spec
+                .outputs
+                .fields()
+                .iter()
+                .find(|parameter| parameter.name == *field)
+                .expect("core output field matches specification");
+            field_comment(parameter).render(writer);
+            writer.line(format_args!("double {field};"));
+        }
+    });
+    match dialect {
+        NativeDialect::C => writer.line(format_args!("}} {name};")),
+        NativeDialect::Cpp => writer.line("};"),
+    }
+}
+
+fn source_comment(source: &Source, scope: &Scope) -> Comment {
     let mut lines = vec![
         format!("@brief {}", source.summary),
         String::new(),
@@ -288,10 +394,10 @@ fn source_comment(source: &Source, scope: &Scope) -> String {
             dataset.clone(),
         ]);
     }
-    comment(lines)
+    Comment(lines)
 }
 
-fn function_comment(function: &Function) -> String {
+fn function_comment(function: &Function) -> Comment {
     let mut lines = vec![format!("@brief {}", function.public_api.summary)];
     lines.extend(function.inputs.iter().map(|parameter| {
         format!(
@@ -343,37 +449,30 @@ fn function_comment(function: &Function) -> String {
             .iter()
             .map(|warning| format!("@warning {warning}")),
     );
-    comment(lines)
+    Comment(lines)
 }
 
-fn field_comment(parameter: &Parameter) -> String {
-    comment([format!(
+fn field_comment(parameter: &Parameter) -> Comment {
+    Comment(vec![format!(
         "@brief {}",
         documentation::parameter_details(parameter)
     )])
-    .trim_end()
-    .to_owned()
 }
 
-fn comment(lines: impl IntoIterator<Item = String>) -> String {
-    let lines = lines
-        .into_iter()
-        .flat_map(|line| wrap_comment_line(&line))
-        .map(|line| line.replace("*/", "* /"))
-        .collect::<Vec<_>>();
-    format!(
-        "/**\n{} */\n",
-        lines
-            .into_iter()
-            .map(|line| {
-                if line.is_empty() {
-                    " *\n".to_owned()
-                } else {
-                    format!(" * {line}\n")
-                }
-            })
-            .collect::<String>()
-    )
+struct Comment(Vec<String>);
+
+impl Render for Comment {
+    fn render(&self, writer: &mut Writer) {
+        writer.line("/**");
+        for line in self.0.iter().flat_map(|line| wrap_comment_line(line)) {
+            if line.is_empty() {
+                writer.line(" *");
+            } else {
+                writer.line(format_args!(" * {}", line.replace("*/", "* /")));
+            }
+        }
+        writer.line(" */");
+    }
 }
 
 fn wrap_comment_line(line: &str) -> Vec<String> {
@@ -397,19 +496,6 @@ fn wrap_comment_line(line: &str) -> Vec<String> {
     lines
 }
 
-fn expression(
-    expression: &crate::semantic::Expr,
-    function: &CompiledFunction,
-    cpp: bool,
-) -> String {
-    c_expression::render(
-        expression,
-        &function.core.inputs,
-        &function.ir.variables,
-        if cpp { Dialect::Cpp } else { Dialect::C },
-    )
-}
-
 fn requires_math(functions: &[&CompiledFunction]) -> bool {
     functions.iter().any(|function| {
         function
@@ -428,102 +514,123 @@ fn cpp_test(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
 }
 
 fn c_compatibility_test(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
-    let includes = "";
-    let mut tests = String::new();
-    for function in functions {
-        let spec = &function.entry.spec.functions[function.function_index];
-        for case in &function.golden_tests {
-            let values = case
-                .inputs
-                .iter()
-                .map(|value| c_expression::test_float_literal(*value))
-                .collect::<Vec<_>>();
-            let call = format!("{}({})", function.core.name, values.join(", "));
-            let result_declaration = if matches!(function.core.output, Output::Scalar) {
-                "const double"
-            } else {
-                "const ptfkit_result_placeholder"
-            };
-            let result_declaration = if result_declaration == "const ptfkit_result_placeholder" {
-                let name = spec
-                    .result_class()
-                    .ok_or_else(|| anyhow::anyhow!("record output has no result class"))?;
-                format!("const {}", c_result_name(name))
-            } else {
-                result_declaration.to_owned()
-            };
-            tests.push_str(&format!(
-                "    {{\n        {result_declaration} result = {call};\n"
-            ));
-            for (field, expected) in spec.outputs.fields().iter().zip(&case.expected) {
-                let actual = if matches!(function.core.output, Output::Scalar) {
-                    "result".to_owned()
-                } else {
-                    format!("result.{}", field.name)
-                };
-                tests.push_str(&format!(
-                    "        assert_close_enough({actual}, {}, {}, {});\n",
-                    c_expression::test_float_literal(*expected),
-                    c_expression::test_float_literal(case.atol),
-                    c_expression::test_float_literal(case.rtol),
-                ));
+    let mut writer = Writer::new();
+    writer.write(HEADER);
+    writer.blank_line();
+    writer.line(format_args!("#include <ptfkit/{slug}.h>"));
+    writer.line("#include \"close_enough.h\"");
+    writer.blank_line();
+    writer.line("int main() {");
+    writer.indented(|writer| {
+        for function in functions {
+            let spec = &function.entry.spec.functions[function.function_index];
+            for case in &function.golden_tests {
+                writer.line("{");
+                writer.indented(|writer| {
+                    if matches!(function.core.output, Output::Scalar) {
+                        writer.write("const double");
+                    } else {
+                        let name = spec
+                            .result_class()
+                            .expect("record output has a result class");
+                        writer.write(format_args!("const {}", c_result_name(name)));
+                    }
+                    writer.write(" result = ");
+                    writer.write(&function.core.name);
+                    writer.write("(");
+                    render_literals(writer, &case.inputs);
+                    writer.line(");");
+                    for (field, expected) in spec.outputs.fields().iter().zip(&case.expected) {
+                        writer.write("assert_close_enough(");
+                        if matches!(function.core.output, Output::Scalar) {
+                            writer.write("result");
+                        } else {
+                            writer.write(format_args!("result.{}", field.name));
+                        }
+                        writer.write(", ");
+                        writer.write(c_expression::test_float_literal(*expected));
+                        writer.write(", ");
+                        writer.write(c_expression::test_float_literal(case.atol));
+                        writer.write(", ");
+                        writer.write(c_expression::test_float_literal(case.rtol));
+                        writer.line(");");
+                    }
+                });
+                writer.line("}");
             }
-            tests.push_str("    }\n");
         }
-    }
-    Ok(format!(
-        "{HEADER}\n#include <ptfkit/{slug}.h>\n#include \"close_enough.h\"\n{includes}\nint main() {{\n{tests}    return 0;\n}}\n"
-    ))
+    });
+    writer.line("    return 0;");
+    writer.line("}");
+    Ok(writer.into_string())
 }
 
 fn module_test(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
     let type_traits = functions
         .iter()
         .any(|function| matches!(function.core.output, Output::Struct(_)));
-    let includes = if type_traits {
-        "#include <type_traits>\n"
-    } else {
-        ""
-    };
-    let mut tests = String::new();
+    let mut writer = Writer::new();
+    writer.write(HEADER);
+    writer.blank_line();
+    writer.line("#ifdef IMPORT_UMBRELLA");
+    writer.line("import ptfkit;");
+    writer.line("#else");
+    writer.line(format_args!("import ptfkit.{slug};"));
+    writer.line("#endif");
+    writer.blank_line();
+    writer.line("#include \"close_enough.h\"");
+    if type_traits {
+        writer.line("#include <type_traits>");
+    }
+    writer.blank_line();
+    writer.line("int main() {");
+    writer.indented(|writer| {
     for function in functions {
         let spec = &function.entry.spec.functions[function.function_index];
         for case in &function.golden_tests {
-            let values = case
-                .inputs
-                .iter()
-                .map(|value| c_expression::test_float_literal(*value))
-                .collect::<Vec<_>>();
-            tests.push_str(&format!(
-                "    {{\n        const auto result = ptfkit::{slug}::{}({});\n",
-                function.core.name,
-                values.join(", ")
-            ));
+            writer.line("{");
+            writer.indented(|writer| {
+            writer.write(format_args!("const auto result = ptfkit::{slug}::{}(", function.core.name));
+            render_literals(writer, &case.inputs);
+            writer.line(");");
             if matches!(function.core.output, Output::Struct(_)) {
                 let result = spec
                     .result_class()
-                    .ok_or_else(|| anyhow::anyhow!("record output has no result class"))?;
-                tests.push_str(&format!("        static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>, ptfkit::{slug}::{result}>);\n"));
+                    .expect("record output has a result class");
+                writer.line(format_args!("static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>, ptfkit::{slug}::{result}>);"));
             }
             for (field, expected) in spec.outputs.fields().iter().zip(&case.expected) {
-                let actual = if matches!(function.core.output, Output::Scalar) {
-                    "result".to_owned()
+                writer.write("assert_close_enough(");
+                if matches!(function.core.output, Output::Scalar) {
+                    writer.write("result");
                 } else {
-                    format!("result.{}", field.name)
-                };
-                tests.push_str(&format!(
-                    "        assert_close_enough({actual}, {}, {}, {});\n",
-                    c_expression::test_float_literal(*expected),
-                    c_expression::test_float_literal(case.atol),
-                    c_expression::test_float_literal(case.rtol),
-                ));
+                    writer.write(format_args!("result.{}", field.name));
+                }
+                writer.write(", ");
+                writer.write(c_expression::test_float_literal(*expected));
+                writer.write(", ");
+                writer.write(c_expression::test_float_literal(case.atol));
+                writer.write(", ");
+                writer.write(c_expression::test_float_literal(case.rtol));
+                writer.line(");");
             }
-            tests.push_str("    }\n");
+            });
+            writer.line("}");
         }
     }
-    Ok(format!(
-        "{HEADER}\n#ifdef IMPORT_UMBRELLA\nimport ptfkit;\n#else\nimport ptfkit.{slug};\n#endif\n\n#include \"close_enough.h\"\n{includes}\nint main() {{\n{tests}    return 0;\n}}\n"
-    ))
+    });
+    writer.line("    return 0;");
+    writer.line("}");
+    Ok(writer.into_string())
+}
+
+fn render_literals(writer: &mut Writer, values: &[f64]) {
+    for (index, value) in values.iter().enumerate() {
+        if index > 0 {
+            writer.write(", ");
+        }
+        writer.write(c_expression::test_float_literal(*value));
+    }
 }
 
 #[cfg(test)]

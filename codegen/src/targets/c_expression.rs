@@ -9,18 +9,26 @@ pub(super) enum Dialect {
 }
 
 pub(super) fn render(
-    expression: &Expr,
+    value: &Expr,
     inputs: &[String],
     variables: &[Variable],
     dialect: Dialect,
 ) -> String {
+    expression(value, inputs, variables, dialect).to_string()
+}
+
+pub(super) fn expression<'a>(
+    value: &'a Expr,
+    inputs: &'a [String],
+    variables: &'a [Variable],
+    dialect: Dialect,
+) -> impl fmt::Display + 'a {
     Expression {
-        expression,
+        expression: value,
         inputs,
         variables,
         dialect,
     }
-    .to_string()
 }
 
 pub(super) fn float_literal(lexeme: &str) -> String {
