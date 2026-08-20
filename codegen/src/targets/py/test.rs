@@ -2,9 +2,9 @@ use std::collections::BTreeMap;
 
 use crate::model::{CompiledFunction, Function, Outputs, PythonGeneration};
 
-use super::{WRAPPER_HEADER, natural_sort_key, syntax::Module};
+use super::{super::GeneratedFile, WRAPPER_HEADER, natural_sort_key, syntax::Module};
 
-pub(super) fn render(functions: &[CompiledFunction]) -> Vec<(String, PythonGeneration, String)> {
+pub(super) fn render(functions: &[CompiledFunction]) -> Vec<GeneratedFile> {
     let mut modules: BTreeMap<String, Vec<&CompiledFunction>> = BTreeMap::new();
     for function in functions {
         modules
@@ -15,14 +15,15 @@ pub(super) fn render(functions: &[CompiledFunction]) -> Vec<(String, PythonGener
 
     modules
         .into_iter()
-        .map(|(slug, functions)| {
-            let mode = functions[0].entry.spec.generation.public_python;
-            let source = if mode == PythonGeneration::Generated {
-                module_source(&slug, &functions)
-            } else {
-                String::new()
-            };
-            (slug, mode, source)
+        .filter_map(|(slug, functions)| {
+            (functions[0].entry.spec.generation.public_python == PythonGeneration::Generated).then(
+                || {
+                    GeneratedFile::new(
+                        format!("tests/test_{slug}.py").into(),
+                        module_source(&slug, &functions),
+                    )
+                },
+            )
         })
         .collect()
 }

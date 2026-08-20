@@ -5,13 +5,14 @@ use crate::render::Writer;
 
 use super::{
     super::{
+        GeneratedFile,
         c_expression::{self, Dialect},
         group_by_source,
     },
     C_HEADER,
 };
 
-pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<(String, String)>> {
+pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile>> {
     let mut includes = Writer::new();
     let mut registers = Vec::new();
     let mut writes = Vec::new();
@@ -41,7 +42,10 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<(String, Stri
             writer.line("return 0;");
         });
         source.line("}");
-        writes.push((format!("src/ptfkit/{slug}.c"), source.into_string()));
+        writes.push(GeneratedFile::new(
+            format!("src/ptfkit/{slug}.c").into(),
+            source.into_string(),
+        ));
     }
     let mut calls = Writer::new();
     for register in &registers {
@@ -71,7 +75,10 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<(String, Stri
         writer.line("return module;");
     });
     entry.line("}");
-    writes.push(("src/ptfkit/ptfkit.c".into(), entry.into_string()));
+    writes.push(GeneratedFile::new(
+        "src/ptfkit/ptfkit.c".into(),
+        entry.into_string(),
+    ));
     Ok(writes)
 }
 
@@ -148,7 +155,7 @@ mod tests {
     #[test]
     fn entry_source_initializes_the_private_module() {
         let rendered = render(&[]).unwrap();
-        let entry = rendered.last().unwrap().1.as_str();
+        let entry = &rendered.last().unwrap().contents;
         assert!(entry.contains("PyInit__ptfkit"));
         assert!(!entry.contains("#include \"ufunc.h\""));
     }

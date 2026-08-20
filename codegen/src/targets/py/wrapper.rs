@@ -1,4 +1,4 @@
-use std::collections::BTreeMap;
+use std::{collections::BTreeMap, path::PathBuf};
 
 use anyhow::{Result, bail};
 
@@ -7,7 +7,11 @@ use crate::{
     model::{CompiledFunction, Function, Parameter, PythonGeneration, Scope, Source},
 };
 
-use super::{super::documentation, WRAPPER_HEADER, natural_sort_key, syntax::Module};
+use super::{
+    super::{GeneratedFile, documentation},
+    WRAPPER_HEADER, natural_sort_key,
+    syntax::Module,
+};
 
 struct PythonFunction<'a> {
     name: &'a str,
@@ -26,9 +30,7 @@ struct PythonResultClass {
     docstring: String,
 }
 
-pub(crate) fn render(
-    functions: &[CompiledFunction],
-) -> Result<Vec<(String, PythonGeneration, String)>> {
+pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile>> {
     let mut modules: BTreeMap<String, Vec<&CompiledFunction>> = BTreeMap::new();
     for function in functions {
         modules
@@ -41,7 +43,6 @@ pub(crate) fn render(
     for (module, functions) in modules {
         let mode = functions[0].entry.spec.generation.public_python;
         if mode == PythonGeneration::Manual {
-            generated.push((module, mode, String::new()));
             continue;
         }
         let source = &functions[0].entry.spec.source;
@@ -94,7 +95,10 @@ pub(crate) fn render(
             &functions,
             &exports,
         );
-        generated.push((module, mode, text));
+        generated.push(GeneratedFile::new(
+            PathBuf::from(module.replace('.', "/")).with_extension("py"),
+            text,
+        ));
     }
     Ok(generated)
 }

@@ -16,7 +16,7 @@ use std::{
 
 use anyhow::Result;
 
-use crate::model::{CompiledFunction, Entry, PythonGeneration};
+use crate::model::{CompiledFunction, Entry};
 
 pub(super) fn group_by_source(
     functions: &[CompiledFunction],
@@ -203,32 +203,6 @@ pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> Result<()> {
     let native = native::render(&compiled)?;
     let c_documentation = c_documentation::render(&compiled)?;
     let cpp_documentation = cpp_documentation::render(&compiled)?;
-    let c = py
-        .c_sources
-        .into_iter()
-        .map(|(path, contents)| GeneratedFile::new(path.into(), contents))
-        .collect::<Vec<_>>();
-    let mut wrappers = py
-        .wrappers
-        .into_iter()
-        .filter_map(|(module, mode, contents)| {
-            (mode == PythonGeneration::Generated).then_some(GeneratedFile::new(
-                PathBuf::from(module.replace('.', "/")).with_extension("py"),
-                contents,
-            ))
-        })
-        .collect::<Vec<_>>();
-    wrappers.push(GeneratedFile::new("ptfkit/_ptfkit.pyi".into(), py.stub));
-    let tests = py
-        .tests
-        .into_iter()
-        .filter_map(|(slug, mode, contents)| {
-            (mode == PythonGeneration::Generated).then_some(GeneratedFile::new(
-                format!("tests/test_{slug}.py").into(),
-                contents,
-            ))
-        })
-        .collect::<Vec<_>>();
     write::commit(
         root,
         &[
@@ -237,9 +211,9 @@ pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> Result<()> {
             Output::new(&CPP_DOCUMENTATION, cpp_documentation),
             Output::new(&PYTHON_DOCUMENTATION, python_documentation),
             Output::new(&RUST, rust),
-            Output::new(&PYTHON_EXTENSION, c),
-            Output::new(&PYTHON_WRAPPER, wrappers),
-            Output::new(&PYTHON_TEST, tests),
+            Output::new(&PYTHON_EXTENSION, py.c_sources),
+            Output::new(&PYTHON_WRAPPER, py.wrappers),
+            Output::new(&PYTHON_TEST, py.tests),
             Output::new(&NATIVE_C, native.c_headers),
             Output::new(&NATIVE_CPP_MODULE, native.cpp_modules),
             Output::new(&NATIVE_CPP_CMAKE, native.cpp_cmake),
