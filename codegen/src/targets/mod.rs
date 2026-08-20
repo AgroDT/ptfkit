@@ -32,128 +32,154 @@ pub(super) fn group_by_source(
 }
 
 #[derive(Clone, Copy, PartialEq, Eq)]
-pub(super) enum Target {
-    Documentation,
-    CDocumentation,
-    CppDocumentation,
-    PythonDocumentation,
+pub(super) enum Formatter {
+    None,
     Rust,
-    PythonExtension,
-    PythonWrapper,
-    PythonTest,
-    NativeC,
-    NativeCppModule,
-    NativeCppCmake,
-    NativeCTest,
-    NativeCppTest,
+    Python,
+    C,
+    Cpp,
 }
 
-impl Target {
-    pub(super) const ALL: [Self; 13] = [
-        Self::Documentation,
-        Self::CDocumentation,
-        Self::CppDocumentation,
-        Self::PythonDocumentation,
-        Self::Rust,
-        Self::PythonExtension,
-        Self::PythonWrapper,
-        Self::PythonTest,
-        Self::NativeC,
-        Self::NativeCppModule,
-        Self::NativeCppCmake,
-        Self::NativeCTest,
-        Self::NativeCppTest,
-    ];
-
-    fn output_path(self, root: &Path, relative: &Path) -> PathBuf {
-        match self {
-            Self::Documentation => root.join("docs/src/ptf-catalog/sources").join(relative),
-            Self::CDocumentation => root.join("docs/src/reference/c").join(relative),
-            Self::CppDocumentation => root.join("docs/src/reference/cpp").join(relative),
-            Self::PythonDocumentation => root.join("docs/src/reference/python").join(relative),
-            Self::Rust => root.join("targets/ptfkit-rs/src").join(relative),
-            Self::PythonExtension => root.join("targets/ptfkit-py").join(relative),
-            Self::PythonWrapper => root.join("targets/ptfkit-py/src").join(relative),
-            Self::PythonTest => root.join("targets/ptfkit-py").join(relative),
-            Self::NativeC => root.join("targets/ptfkit-native/include").join(relative),
-            Self::NativeCppModule => root.join("targets/ptfkit-native/cpp").join(relative),
-            Self::NativeCppCmake => root.join("targets/ptfkit-native/cmake").join(relative),
-            Self::NativeCTest => root.join("targets/ptfkit-native/tests/c").join(relative),
-            Self::NativeCppTest => root.join("targets/ptfkit-native/tests/cpp").join(relative),
-        }
-    }
-
-    fn cleanup_directory(self, root: &Path) -> PathBuf {
-        match self {
-            Self::Documentation => root.join("docs/src/ptf-catalog/sources"),
-            Self::CDocumentation => root.join("docs/src/reference/c"),
-            Self::CppDocumentation => root.join("docs/src/reference/cpp"),
-            Self::PythonDocumentation => root.join("docs/src/reference/python"),
-            Self::Rust => root.join("targets/ptfkit-rs/src"),
-            Self::PythonExtension | Self::PythonWrapper => {
-                root.join("targets/ptfkit-py/src/ptfkit")
-            }
-            Self::PythonTest => root.join("targets/ptfkit-py/tests"),
-            Self::NativeC => root.join("targets/ptfkit-native/include"),
-            Self::NativeCppModule => root.join("targets/ptfkit-native/cpp"),
-            Self::NativeCppCmake => root.join("targets/ptfkit-native/cmake"),
-            Self::NativeCTest => root.join("targets/ptfkit-native/tests/c"),
-            Self::NativeCppTest => root.join("targets/ptfkit-native/tests/cpp"),
-        }
-    }
-
-    fn generated_header(self) -> &'static str {
-        match self {
-            Self::Documentation => documentation::HEADER,
-            Self::CDocumentation => documentation::HEADER,
-            Self::CppDocumentation => documentation::HEADER,
-            Self::PythonDocumentation => documentation::HEADER,
-            Self::Rust => rs::HEADER,
-            Self::PythonExtension => py::C_HEADER,
-            Self::PythonWrapper => py::WRAPPER_HEADER,
-            Self::PythonTest => py::WRAPPER_HEADER,
-            Self::NativeC | Self::NativeCppModule | Self::NativeCTest | Self::NativeCppTest => {
-                native::HEADER
-            }
-            Self::NativeCppCmake => native::CMAKE_HEADER,
-        }
-    }
-
-    fn is_clang_formatted(self) -> bool {
-        matches!(
-            self,
-            Self::PythonExtension
-                | Self::NativeC
-                | Self::NativeCppModule
-                | Self::NativeCTest
-                | Self::NativeCppTest
-        )
-    }
-
-    fn format(self, root: &Path, paths: &[PathBuf]) -> Result<()> {
-        match self {
-            Self::Documentation
-            | Self::CDocumentation
-            | Self::CppDocumentation
-            | Self::PythonDocumentation => Ok(()),
-            Self::Rust => write::format_rust(paths),
-            Self::PythonExtension | Self::NativeCTest => write::format_c(paths),
-            Self::PythonWrapper => write::format_python(root, paths),
-            Self::PythonTest => write::format_python(root, paths),
-            Self::NativeC | Self::NativeCppModule | Self::NativeCppTest => write::format_cpp(paths),
-            Self::NativeCppCmake => Ok(()),
-        }
-    }
+pub(super) struct Layout {
+    pub(super) output_directory: &'static str,
+    pub(super) cleanup_directory: &'static str,
+    pub(super) generated_header: &'static str,
+    pub(super) formatter: Formatter,
 }
 
-pub(super) struct TargetOutput {
-    pub(super) target: Target,
+macro_rules! layout {
+    (
+        $name:ident,
+        $output_directory:literal,
+        $cleanup_directory:literal,
+        $generated_header:path,
+        $formatter:path,
+    ) => {
+        pub(super) static $name: Layout = Layout {
+            output_directory: $output_directory,
+            cleanup_directory: $cleanup_directory,
+            generated_header: $generated_header,
+            formatter: $formatter,
+        };
+    };
+}
+
+layout!(
+    DOCUMENTATION,
+    "docs/src/ptf-catalog/sources",
+    "docs/src/ptf-catalog/sources",
+    documentation::HEADER,
+    Formatter::None,
+);
+layout!(
+    C_DOCUMENTATION,
+    "docs/src/reference/c",
+    "docs/src/reference/c",
+    documentation::HEADER,
+    Formatter::None,
+);
+layout!(
+    CPP_DOCUMENTATION,
+    "docs/src/reference/cpp",
+    "docs/src/reference/cpp",
+    documentation::HEADER,
+    Formatter::None,
+);
+layout!(
+    PYTHON_DOCUMENTATION,
+    "docs/src/reference/python",
+    "docs/src/reference/python",
+    documentation::HEADER,
+    Formatter::None,
+);
+layout!(
+    RUST,
+    "targets/ptfkit-rs/src",
+    "targets/ptfkit-rs/src",
+    rs::HEADER,
+    Formatter::Rust,
+);
+layout!(
+    PYTHON_EXTENSION,
+    "targets/ptfkit-py",
+    "targets/ptfkit-py/src/ptfkit",
+    py::C_HEADER,
+    Formatter::C,
+);
+layout!(
+    PYTHON_WRAPPER,
+    "targets/ptfkit-py/src",
+    "targets/ptfkit-py/src/ptfkit",
+    py::WRAPPER_HEADER,
+    Formatter::Python,
+);
+layout!(
+    PYTHON_TEST,
+    "targets/ptfkit-py",
+    "targets/ptfkit-py/tests",
+    py::WRAPPER_HEADER,
+    Formatter::Python,
+);
+layout!(
+    NATIVE_C,
+    "targets/ptfkit-native/include",
+    "targets/ptfkit-native/include",
+    native::HEADER,
+    Formatter::Cpp,
+);
+layout!(
+    NATIVE_CPP_MODULE,
+    "targets/ptfkit-native/cpp",
+    "targets/ptfkit-native/cpp",
+    native::HEADER,
+    Formatter::Cpp,
+);
+layout!(
+    NATIVE_CPP_CMAKE,
+    "targets/ptfkit-native/cmake",
+    "targets/ptfkit-native/cmake",
+    native::CMAKE_HEADER,
+    Formatter::None,
+);
+layout!(
+    NATIVE_C_TEST,
+    "targets/ptfkit-native/tests/c",
+    "targets/ptfkit-native/tests/c",
+    native::HEADER,
+    Formatter::C,
+);
+layout!(
+    NATIVE_CPP_TEST,
+    "targets/ptfkit-native/tests/cpp",
+    "targets/ptfkit-native/tests/cpp",
+    native::HEADER,
+    Formatter::Cpp,
+);
+
+pub(super) const LAYOUTS: [&Layout; 13] = [
+    &DOCUMENTATION,
+    &C_DOCUMENTATION,
+    &CPP_DOCUMENTATION,
+    &PYTHON_DOCUMENTATION,
+    &RUST,
+    &PYTHON_EXTENSION,
+    &PYTHON_WRAPPER,
+    &PYTHON_TEST,
+    &NATIVE_C,
+    &NATIVE_CPP_MODULE,
+    &NATIVE_CPP_CMAKE,
+    &NATIVE_C_TEST,
+    &NATIVE_CPP_TEST,
+];
+
+pub(super) struct Output {
+    pub(super) layout: &'static Layout,
     pub(super) files: Vec<GeneratedFile>,
 }
 
-impl TargetOutput {
-    fn new(target: Target, files: Vec<GeneratedFile>) -> Self {
-        Self { target, files }
+impl Output {
+    fn new(layout: &'static Layout, files: Vec<GeneratedFile>) -> Self {
+        Self { layout, files }
     }
 }
 
@@ -209,19 +235,19 @@ pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> Result<()> {
     write::commit(
         root,
         &[
-            TargetOutput::new(Target::Documentation, documentation),
-            TargetOutput::new(Target::CDocumentation, c_documentation),
-            TargetOutput::new(Target::CppDocumentation, cpp_documentation),
-            TargetOutput::new(Target::PythonDocumentation, python_documentation),
-            TargetOutput::new(Target::Rust, rust),
-            TargetOutput::new(Target::PythonExtension, c),
-            TargetOutput::new(Target::PythonWrapper, wrappers),
-            TargetOutput::new(Target::PythonTest, tests),
-            TargetOutput::new(Target::NativeC, native.c_headers),
-            TargetOutput::new(Target::NativeCppModule, native.cpp_modules),
-            TargetOutput::new(Target::NativeCppCmake, native.cpp_cmake),
-            TargetOutput::new(Target::NativeCTest, native.c_tests),
-            TargetOutput::new(Target::NativeCppTest, native.cpp_tests),
+            Output::new(&DOCUMENTATION, documentation),
+            Output::new(&C_DOCUMENTATION, c_documentation),
+            Output::new(&CPP_DOCUMENTATION, cpp_documentation),
+            Output::new(&PYTHON_DOCUMENTATION, python_documentation),
+            Output::new(&RUST, rust),
+            Output::new(&PYTHON_EXTENSION, c),
+            Output::new(&PYTHON_WRAPPER, wrappers),
+            Output::new(&PYTHON_TEST, tests),
+            Output::new(&NATIVE_C, native.c_headers),
+            Output::new(&NATIVE_CPP_MODULE, native.cpp_modules),
+            Output::new(&NATIVE_CPP_CMAKE, native.cpp_cmake),
+            Output::new(&NATIVE_C_TEST, native.c_tests),
+            Output::new(&NATIVE_CPP_TEST, native.cpp_tests),
         ],
     )
 }
@@ -237,24 +263,41 @@ pub(crate) fn check_generated(root: &Path, entries: Vec<Entry>) -> Result<()> {
 mod tests {
     use std::path::Path;
 
-    use super::Target;
+    use super::{
+        C_DOCUMENTATION, CPP_DOCUMENTATION, DOCUMENTATION, PYTHON_DOCUMENTATION, PYTHON_EXTENSION,
+        PYTHON_WRAPPER,
+    };
 
     #[test]
     fn documentation_targets_use_structured_mkdocs_roots() {
         let root = Path::new("repository");
         let relative = Path::new("index.md");
 
-        for (target, directory) in [
-            (Target::Documentation, "docs/src/ptf-catalog/sources"),
-            (Target::CDocumentation, "docs/src/reference/c"),
-            (Target::CppDocumentation, "docs/src/reference/cpp"),
-            (Target::PythonDocumentation, "docs/src/reference/python"),
+        for (layout, directory) in [
+            (&DOCUMENTATION, "docs/src/ptf-catalog/sources"),
+            (&C_DOCUMENTATION, "docs/src/reference/c"),
+            (&CPP_DOCUMENTATION, "docs/src/reference/cpp"),
+            (&PYTHON_DOCUMENTATION, "docs/src/reference/python"),
         ] {
             assert_eq!(
-                target.output_path(root, relative),
+                root.join(layout.output_directory).join(relative),
                 root.join(directory).join(relative)
             );
-            assert_eq!(target.cleanup_directory(root), root.join(directory));
+            assert_eq!(root.join(layout.cleanup_directory), root.join(directory));
         }
+    }
+
+    #[test]
+    fn python_layouts_keep_extension_cleanup_scoped_to_its_package() {
+        assert_eq!(PYTHON_EXTENSION.output_directory, "targets/ptfkit-py");
+        assert_eq!(
+            PYTHON_EXTENSION.cleanup_directory,
+            "targets/ptfkit-py/src/ptfkit"
+        );
+        assert_eq!(PYTHON_WRAPPER.output_directory, "targets/ptfkit-py/src");
+        assert_eq!(
+            PYTHON_WRAPPER.cleanup_directory,
+            "targets/ptfkit-py/src/ptfkit"
+        );
     }
 }

@@ -9,12 +9,12 @@ use std::{
 
 use anyhow::{Context, Result, bail};
 
-use super::{Target, TargetOutput};
+use super::{Formatter, LAYOUTS, Layout, Output};
 
 struct StagedWrite {
     target: PathBuf,
     temporary: PathBuf,
-    output_target: Target,
+    layout: &'static Layout,
 }
 
 static TEMPORARY_SEQUENCE: AtomicU64 = AtomicU64::new(0);
@@ -23,11 +23,11 @@ pub(super) struct GeneratedTree(BTreeMap<PathBuf, Vec<u8>>);
 
 pub(super) fn snapshot_generated(root: &Path) -> Result<GeneratedTree> {
     let mut files = BTreeMap::new();
-    for target in Target::ALL {
+    for layout in LAYOUTS {
         collect_generated(
             root,
-            &target.cleanup_directory(root),
-            target.generated_header(),
+            &root.join(layout.cleanup_directory),
+            layout.generated_header,
             &mut files,
         )?;
     }
@@ -112,7 +112,7 @@ fn append_paths(report: &mut String, label: &str, paths: &[&PathBuf]) {
     }
 }
 
-pub(super) fn commit(root: &Path, outputs: &[TargetOutput]) -> Result<()> {
+pub(super) fn commit(root: &Path, outputs: &[Output]) -> Result<()> {
     let staged = stage(root, outputs)?;
     if let Err(error) = format(root, &staged) {
         remove_temporary(&staged);
@@ -130,14 +130,14 @@ pub(super) fn commit(root: &Path, outputs: &[TargetOutput]) -> Result<()> {
     Ok(())
 }
 
-fn stage(root: &Path, outputs: &[TargetOutput]) -> Result<Vec<StagedWrite>> {
+fn stage(root: &Path, outputs: &[Output]) -> Result<Vec<StagedWrite>> {
     let mut staged = Vec::new();
     for output in outputs {
         for file in &output.files {
-            let target = output.target.output_path(root, &file.path);
+            let target = root.join(output.layout.output_directory).join(&file.path);
             if target.exists()
                 && fs::read_to_string(&target)? == file.contents
-                && !output.target.is_clang_formatted()
+                && output.layout.formatter == Formatter::None
             {
                 continue;
             }
@@ -152,7 +152,7 @@ fn stage(root: &Path, outputs: &[TargetOutput]) -> Result<Vec<StagedWrite>> {
             staged.push(StagedWrite {
                 target,
                 temporary,
-                output_target: output.target,
+                layout: output.layout,
             });
         }
     }
@@ -182,16 +182,16 @@ fn write_temporary(path: &Path, contents: &str) -> Result<()> {
         .with_context(|| format!("writing temporary generated file {}", path.display()))
 }
 
-fn cleanup(root: &Path, output: &TargetOutput) -> Result<()> {
+fn cleanup(root: &Path, output: &Output) -> Result<()> {
     let expected = output
         .files
         .iter()
-        .map(|file| output.target.output_path(root, &file.path))
+        .map(|file| root.join(output.layout.output_directory).join(&file.path))
         .collect::<BTreeSet<_>>();
     remove_obsolete(
-        &output.target.cleanup_directory(root),
+        &root.join(output.layout.cleanup_directory),
         &expected,
-        output.target.generated_header(),
+        output.layout.generated_header,
     )
 }
 
@@ -222,17 +222,27 @@ fn is_generated(contents: &[u8], header: &str) -> bool {
 }
 
 fn format(root: &Path, staged: &[StagedWrite]) -> Result<()> {
-    for target in Target::ALL {
+    for layout in LAYOUTS {
         let paths = staged
             .iter()
-            .filter(|file| file.output_target == target)
+            .filter(|file| std::ptr::eq(file.layout, layout))
             .map(|file| file.temporary.clone())
             .collect::<Vec<_>>();
         if !paths.is_empty() {
-            target.format(root, &paths)?;
+            format_layout(layout.formatter, root, &paths)?;
         }
     }
     Ok(())
+}
+
+fn format_layout(formatter: Formatter, root: &Path, paths: &[PathBuf]) -> Result<()> {
+    match formatter {
+        Formatter::None => Ok(()),
+        Formatter::Rust => format_rust(paths),
+        Formatter::Python => format_python(root, paths),
+        Formatter::C => format_c(paths),
+        Formatter::Cpp => format_cpp(paths),
+    }
 }
 
 pub(super) fn format_rust(paths: &[PathBuf]) -> Result<()> {
@@ -301,7 +311,7 @@ mod tests {
     use std::{collections::BTreeMap, fs, path::Path};
 
     use super::*;
-    use crate::targets::{GeneratedFile, documentation::HEADER};
+    use crate::targets::{GeneratedFile, Output, PYTHON_DOCUMENTATION, documentation::HEADER};
 
     fn temporary_root(label: &str) -> PathBuf {
         std::env::temp_dir().join(format!(
@@ -328,8 +338,8 @@ mod tests {
         )
         .expect("write C page");
 
-        let output = TargetOutput::new(
-            Target::PythonDocumentation,
+        let output = Output::new(
+            &PYTHON_DOCUMENTATION,
             vec![GeneratedFile::new(
                 "index.md".into(),
                 format!("{HEADER}# Python\n"),
