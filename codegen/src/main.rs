@@ -7,6 +7,7 @@ use clap::{Parser, Subcommand};
 
 mod formula;
 mod model;
+mod render;
 mod semantic;
 mod specs;
 mod targets;

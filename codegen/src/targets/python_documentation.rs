@@ -1,6 +1,9 @@
 use std::path::PathBuf;
 
-use crate::model::Entry;
+use crate::{
+    model::Entry,
+    render::{Render, Writer},
+};
 
 use super::{GeneratedFile, documentation::FRONTMATTER_HEADER, py::natural_sort_key};
 
@@ -20,28 +23,57 @@ fn file(path: impl Into<PathBuf>, contents: String) -> GeneratedFile {
 }
 
 fn index(entries: &[&Entry]) -> String {
-    let mut text = format!("---\n{FRONTMATTER_HEADER}title: Python API reference\n---\n\n");
-    text.push_str("# Python API reference\n\n");
-    text.push_str("ptfkit's Python API is organized around public source modules.\n\n");
-    text.push_str("## Modules\n\n");
+    let mut writer = Writer::new();
+    writer.block(
+        "---",
+        false,
+        |writer| {
+            writer.write(FRONTMATTER_HEADER);
+            writer.line("title: Python API reference");
+        },
+        "---",
+    );
+    writer.blank_line();
+    writer.line("# Python API reference");
+    writer.blank_line();
+    writer.line("ptfkit's Python API is organized around public source modules.");
+    writer.blank_line();
+    writer.line("## Modules");
+    writer.blank_line();
     for entry in entries {
-        text.push_str(&format!(
-            "- [`ptfkit.{slug}`]({slug}.md) — {summary}\n",
-            slug = entry.slug,
-            summary = entry.spec.source.summary
-        ));
+        ModuleReference { entry }.render(&mut writer);
     }
-    text
+    writer.into_string()
 }
 
 fn page(slug: &str) -> GeneratedFile {
     let module = format!("ptfkit.{slug}");
-    file(
-        format!("{slug}.md"),
-        format!(
-            "---\n{FRONTMATTER_HEADER}title: Python module {module}\nnav-title: {module}\n---\n\n::: {module}"
-        ),
-    )
+    let mut writer = Writer::new();
+    writer.block(
+        "---",
+        false,
+        |writer| {
+            writer.write(FRONTMATTER_HEADER);
+            writer.line(format_args!("title: Python module {module}"));
+            writer.line(format_args!("nav-title: {module}"));
+        },
+        "---",
+    );
+    writer.blank_line();
+    writer.line(format_args!("::: {module}"));
+    file(format!("{slug}.md"), writer.into_string())
+}
+
+struct ModuleReference<'a> {
+    entry: &'a Entry,
+}
+
+impl Render for ModuleReference<'_> {
+    fn render(&self, writer: &mut Writer) {
+        let slug = &self.entry.slug;
+        let summary = &self.entry.spec.source.summary;
+        writer.line(format_args!("- [`ptfkit.{slug}`]({slug}.md) — {summary}"));
+    }
 }
 
 #[cfg(test)]
