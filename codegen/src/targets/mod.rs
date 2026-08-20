@@ -198,10 +198,7 @@ pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> Result<()> {
     let documentation = documentation::render(&entries);
     let python_documentation = python_documentation::render(&entries);
     let compiled = compile::functions(entries)?;
-    let rust = rs::render(&compiled)?
-        .into_iter()
-        .map(|(path, contents)| GeneratedFile::new(path, contents))
-        .collect::<Vec<_>>();
+    let rust = rs::render(&compiled)?;
     let py = py::render(&compiled)?;
     let native = native::render(&compiled)?;
     let c_documentation = c_documentation::render(&compiled)?;
