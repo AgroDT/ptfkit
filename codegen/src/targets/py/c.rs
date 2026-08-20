@@ -69,7 +69,7 @@ fn ufunc(function: &CompiledFunction) -> Result<String> {
                 inputs,
                 &function.ir.variables,
                 Dialect::C,
-            )?
+            )
         ));
     }
     let values = match &function.core.output {

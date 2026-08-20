@@ -1,4 +1,4 @@
-use anyhow::Result;
+use std::fmt;
 
 use crate::semantic::{BinaryOp, Expr, MathFunction, Reference, UnaryOp, Variable};
 
@@ -13,8 +13,14 @@ pub(super) fn render(
     inputs: &[String],
     variables: &[Variable],
     dialect: Dialect,
-) -> Result<String> {
-    Ok(rendered(expression, inputs, variables, dialect)?.text)
+) -> String {
+    Expression {
+        expression,
+        inputs,
+        variables,
+        dialect,
+    }
+    .to_string()
 }
 
 pub(super) fn float_literal(lexeme: &str) -> String {
@@ -48,120 +54,158 @@ enum Precedence {
     Primary,
 }
 
-struct RenderedExpression {
-    text: String,
-    precedence: Precedence,
-}
-
-impl RenderedExpression {
-    fn binary_operand(&self, parent: Precedence, is_right: bool) -> String {
-        let needs_parentheses = self.precedence < parent || (is_right && self.precedence == parent);
-        if needs_parentheses {
-            format!("({})", self.text)
-        } else {
-            self.text.clone()
-        }
-    }
-
-    fn unary_operand(&self) -> String {
-        if self.precedence <= Precedence::Unary {
-            format!("({})", self.text)
-        } else {
-            self.text.clone()
-        }
-    }
-}
-
-fn rendered(
-    expression: &Expr,
-    inputs: &[String],
-    variables: &[Variable],
+struct Expression<'a> {
+    expression: &'a Expr,
+    inputs: &'a [String],
+    variables: &'a [Variable],
     dialect: Dialect,
-) -> Result<RenderedExpression> {
-    Ok(match expression {
-        Expr::Number(number) => primary(float_literal(&number.lexeme)),
-        Expr::Reference(Reference::Input(index)) => primary(inputs[*index].clone()),
-        Expr::Reference(Reference::Variable(index)) => primary(variables[*index].name.clone()),
-        Expr::Unary { op, operand } => match op {
-            UnaryOp::Plus => rendered(operand, inputs, variables, dialect)?,
-            UnaryOp::Minus => {
-                let operand = rendered(operand, inputs, variables, dialect)?.unary_operand();
-                RenderedExpression {
-                    text: format!("-{operand}"),
-                    precedence: Precedence::Unary,
+}
+
+impl fmt::Display for Expression<'_> {
+    fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        self.write_expression(formatter, self.expression, None)
+    }
+}
+
+impl Expression<'_> {
+    fn write_expression(
+        &self,
+        formatter: &mut fmt::Formatter<'_>,
+        expression: &Expr,
+        parent: Option<(Precedence, bool)>,
+    ) -> fmt::Result {
+        if let Expr::Unary {
+            op: UnaryOp::Plus,
+            operand,
+        } = expression
+        {
+            return self.write_expression(formatter, operand, parent);
+        }
+
+        let precedence = precedence(expression);
+        let parenthesize = parent.is_some_and(|(parent, is_right)| {
+            precedence < parent || (is_right && precedence == parent)
+        });
+        if parenthesize {
+            write!(formatter, "(")?;
+        }
+
+        match expression {
+            Expr::Number(number) => write!(formatter, "{}", float_literal(&number.lexeme))?,
+            Expr::Reference(Reference::Input(index)) => {
+                write!(formatter, "{}", self.inputs[*index])?
+            }
+            Expr::Reference(Reference::Variable(index)) => {
+                write!(formatter, "{}", self.variables[*index].name)?;
+            }
+            Expr::Unary { op, operand } => match op {
+                UnaryOp::Plus => unreachable!("unary plus is handled before parenthesizing"),
+                UnaryOp::Minus => {
+                    write!(formatter, "-")?;
+                    self.write_expression(formatter, operand, Some((Precedence::Unary, true)))?;
                 }
-            }
-        },
-        Expr::Binary { op, left, right } => {
-            let left = rendered(left, inputs, variables, dialect)?;
-            let right = rendered(right, inputs, variables, dialect)?;
-            match op {
-                BinaryOp::Add => binary(left, right, Precedence::Sum, "+"),
-                BinaryOp::Subtract => binary(left, right, Precedence::Sum, "-"),
-                BinaryOp::Multiply => binary(left, right, Precedence::Product, "*"),
-                BinaryOp::Divide => binary(left, right, Precedence::Product, "/"),
-                BinaryOp::Power => primary(format!(
-                    "{}({}, {})",
-                    math_name("pow", dialect),
-                    left.text,
-                    right.text
-                )),
+            },
+            Expr::Binary { op, left, right } => match op {
+                BinaryOp::Add => self.write_binary(formatter, left, right, Precedence::Sum, "+")?,
+                BinaryOp::Subtract => {
+                    self.write_binary(formatter, left, right, Precedence::Sum, "-")?
+                }
+                BinaryOp::Multiply => {
+                    self.write_binary(formatter, left, right, Precedence::Product, "*")?
+                }
+                BinaryOp::Divide => {
+                    self.write_binary(formatter, left, right, Precedence::Product, "/")?
+                }
+                BinaryOp::Power => {
+                    write!(formatter, "{}(", self.math_name("pow"))?;
+                    self.write_expression(formatter, left, None)?;
+                    write!(formatter, ", ")?;
+                    self.write_expression(formatter, right, None)?;
+                    write!(formatter, ")")?;
+                }
+            },
+            Expr::Call { function, args } => {
+                write!(formatter, "{}(", self.function_name(*function))?;
+                for (index, argument) in args.iter().enumerate() {
+                    if index > 0 {
+                        write!(formatter, ", ")?;
+                    }
+                    self.write_expression(formatter, argument, None)?;
+                }
+                write!(formatter, ")")?;
             }
         }
-        Expr::Call { function, args } => {
-            let args = args
-                .iter()
-                .map(|arg| rendered(arg, inputs, variables, dialect))
-                .collect::<Result<Vec<_>>>()?;
-            let name = match function {
-                MathFunction::Sqrt => "sqrt",
-                MathFunction::Exp => "exp",
-                MathFunction::Ln => "log",
-                MathFunction::Log10 => "log10",
-                MathFunction::Abs => "fabs",
-                MathFunction::Min => "fmin",
-                MathFunction::Max => "fmax",
-            };
-            let name = match (dialect, function) {
-                (Dialect::Cpp, MathFunction::Abs) => "std::abs".to_owned(),
-                _ => math_name(name, dialect),
-            };
-            primary(format!(
-                "{name}({})",
-                args.iter()
-                    .map(|argument| argument.text.as_str())
-                    .collect::<Vec<_>>()
-                    .join(", ")
-            ))
-        }
-    })
-}
 
-fn math_name(name: &str, dialect: Dialect) -> String {
-    match dialect {
-        Dialect::C => name.to_owned(),
-        Dialect::Cpp => format!("std::{name}"),
+        if parenthesize {
+            write!(formatter, ")")?;
+        }
+        Ok(())
+    }
+
+    fn write_binary(
+        &self,
+        formatter: &mut fmt::Formatter<'_>,
+        left: &Expr,
+        right: &Expr,
+        precedence: Precedence,
+        operator: &str,
+    ) -> fmt::Result {
+        self.write_expression(formatter, left, Some((precedence, false)))?;
+        write!(formatter, " {operator} ")?;
+        self.write_expression(formatter, right, Some((precedence, true)))
+    }
+
+    fn function_name(&self, function: MathFunction) -> &'static str {
+        match function {
+            MathFunction::Sqrt => self.math_name("sqrt"),
+            MathFunction::Exp => self.math_name("exp"),
+            MathFunction::Ln => self.math_name("log"),
+            MathFunction::Log10 => self.math_name("log10"),
+            MathFunction::Abs if matches!(self.dialect, Dialect::Cpp) => "std::abs",
+            MathFunction::Abs => self.math_name("fabs"),
+            MathFunction::Min => self.math_name("fmin"),
+            MathFunction::Max => self.math_name("fmax"),
+        }
+    }
+
+    fn math_name(&self, name: &'static str) -> &'static str {
+        match self.dialect {
+            Dialect::C => name,
+            Dialect::Cpp => match name {
+                "sqrt" => "std::sqrt",
+                "exp" => "std::exp",
+                "log" => "std::log",
+                "log10" => "std::log10",
+                "fabs" => "std::fabs",
+                "fmin" => "std::fmin",
+                "fmax" => "std::fmax",
+                "pow" => "std::pow",
+                _ => unreachable!("unsupported C/C++ math function"),
+            },
+        }
     }
 }
 
-fn primary(text: String) -> RenderedExpression {
-    RenderedExpression {
-        text,
-        precedence: Precedence::Primary,
-    }
-}
-
-fn binary(
-    left: RenderedExpression,
-    right: RenderedExpression,
-    precedence: Precedence,
-    operator: &str,
-) -> RenderedExpression {
-    let left = left.binary_operand(precedence, false);
-    let right = right.binary_operand(precedence, true);
-    RenderedExpression {
-        text: format!("{left} {operator} {right}"),
-        precedence,
+fn precedence(expression: &Expr) -> Precedence {
+    match expression {
+        Expr::Binary {
+            op: BinaryOp::Add | BinaryOp::Subtract,
+            ..
+        } => Precedence::Sum,
+        Expr::Binary {
+            op: BinaryOp::Multiply | BinaryOp::Divide,
+            ..
+        } => Precedence::Product,
+        Expr::Unary {
+            op: UnaryOp::Minus, ..
+        } => Precedence::Unary,
+        Expr::Unary {
+            op: UnaryOp::Plus,
+            operand,
+        } => precedence(operand),
+        Expr::Number(_) | Expr::Reference(_) | Expr::Binary { .. } | Expr::Call { .. } => {
+            Precedence::Primary
+        }
     }
 }
 
@@ -170,11 +214,16 @@ mod tests {
     use super::*;
     use crate::semantic::{BinaryOp, Reference};
 
+    fn inputs() -> Vec<String> {
+        vec!["x".into(), "y".into(), "z".into()]
+    }
+
+    fn input(index: usize) -> Expr {
+        Expr::Reference(Reference::Input(index))
+    }
+
     #[test]
     fn preserves_precedence_for_c_and_cpp() {
-        let inputs = vec!["x".into(), "y".into(), "z".into()];
-        let variables = Vec::new();
-        let input = |index| Expr::Reference(Reference::Input(index));
         let expression = Expr::Binary {
             op: BinaryOp::Subtract,
             left: Box::new(input(0)),
@@ -186,30 +235,100 @@ mod tests {
         };
 
         assert_eq!(
-            render(&expression, &inputs, &variables, Dialect::C).unwrap(),
+            render(&expression, &inputs(), &[], Dialect::C),
             "x - (y - z)"
         );
         assert_eq!(
-            render(&expression, &inputs, &variables, Dialect::Cpp).unwrap(),
+            render(&expression, &inputs(), &[], Dialect::Cpp),
             "x - (y - z)"
         );
     }
 
     #[test]
-    fn selects_cpp_math_namespace() {
-        let expression = Expr::Call {
-            function: MathFunction::Sqrt,
-            args: vec![Expr::Reference(Reference::Input(0))],
+    fn preserves_parentheses_in_nested_unary_and_binary_expressions() {
+        let expression = Expr::Binary {
+            op: BinaryOp::Divide,
+            left: Box::new(Expr::Unary {
+                op: UnaryOp::Minus,
+                operand: Box::new(Expr::Binary {
+                    op: BinaryOp::Add,
+                    left: Box::new(input(0)),
+                    right: Box::new(input(1)),
+                }),
+            }),
+            right: Box::new(Expr::Binary {
+                op: BinaryOp::Multiply,
+                left: Box::new(input(2)),
+                right: Box::new(Expr::Binary {
+                    op: BinaryOp::Subtract,
+                    left: Box::new(input(0)),
+                    right: Box::new(input(1)),
+                }),
+            }),
         };
-        let inputs = vec!["x".into()];
 
         assert_eq!(
-            render(&expression, &inputs, &[], Dialect::C).unwrap(),
-            "sqrt(x)"
+            render(&expression, &inputs(), &[], Dialect::C),
+            "-(x + y) / (z * (x - y))"
+        );
+    }
+
+    #[test]
+    fn unary_plus_preserves_the_operand_precedence() {
+        let expression = Expr::Binary {
+            op: BinaryOp::Multiply,
+            left: Box::new(Expr::Unary {
+                op: UnaryOp::Plus,
+                operand: Box::new(Expr::Binary {
+                    op: BinaryOp::Add,
+                    left: Box::new(input(0)),
+                    right: Box::new(input(1)),
+                }),
+            }),
+            right: Box::new(input(2)),
+        };
+
+        assert_eq!(
+            render(&expression, &inputs(), &[], Dialect::C),
+            "(x + y) * z"
+        );
+    }
+
+    #[test]
+    fn renders_power_and_calls_with_dialect_local_math_names() {
+        let expression = Expr::Call {
+            function: MathFunction::Min,
+            args: vec![
+                Expr::Binary {
+                    op: BinaryOp::Power,
+                    left: Box::new(Expr::Binary {
+                        op: BinaryOp::Add,
+                        left: Box::new(input(0)),
+                        right: Box::new(input(1)),
+                    }),
+                    right: Box::new(Expr::Unary {
+                        op: UnaryOp::Minus,
+                        operand: Box::new(input(2)),
+                    }),
+                },
+                Expr::Call {
+                    function: MathFunction::Sqrt,
+                    args: vec![Expr::Binary {
+                        op: BinaryOp::Multiply,
+                        left: Box::new(input(0)),
+                        right: Box::new(input(1)),
+                    }],
+                },
+            ],
+        };
+
+        assert_eq!(
+            render(&expression, &inputs(), &[], Dialect::C),
+            "fmin(pow(x + y, -z), sqrt(x * y))"
         );
         assert_eq!(
-            render(&expression, &inputs, &[], Dialect::Cpp).unwrap(),
-            "std::sqrt(x)"
+            render(&expression, &inputs(), &[], Dialect::Cpp),
+            "std::fmin(std::pow(x + y, -z), std::sqrt(x * y))"
         );
     }
 }

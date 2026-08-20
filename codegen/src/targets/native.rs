@@ -228,7 +228,7 @@ fn render_function(function: &CompiledFunction, cpp: bool) -> Result<String> {
         variables.push_str(&format!(
             "    const double {} = {};\n",
             variable.name,
-            expression(&variable.expression, function, cpp)?
+            expression(&variable.expression, function, cpp)
         ));
     }
     let returned = match &function.core.output {
@@ -241,7 +241,7 @@ fn render_function(function: &CompiledFunction, cpp: bool) -> Result<String> {
                 .expression,
             function,
             cpp,
-        )?,
+        ),
         Output::Scalar => output_name.clone(),
         Output::Struct(fields) if cpp => format!("{result}{{{}}}", fields.join(", ")),
         Output::Struct(fields) => format!("{result}{{{}}}", fields.join(", ")),
@@ -401,7 +401,7 @@ fn expression(
     expression: &crate::semantic::Expr,
     function: &CompiledFunction,
     cpp: bool,
-) -> Result<String> {
+) -> String {
     c_expression::render(
         expression,
         &function.core.inputs,
