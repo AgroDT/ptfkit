@@ -1,0 +1,136 @@
+name: Publish release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  check-version:
+    name: Check release version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Check target versions
+        run: python .github/scripts/check-version.py "${{ github.event.release.tag_name }}"
+
+  make-sdist:
+    name: Make Python sdist
+    needs: check-version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.0.1
+      - name: Build sdist
+        run: uv build --directory targets/ptfkit-py --sdist
+      - uses: actions/upload-artifact@v7
+        with:
+          name: cibw-sdist
+          path: targets/ptfkit-py/dist/*.tar.gz
+
+  build-wheels:
+    name: Build Python wheels on ${{ matrix.os }}
+    needs: check-version
+    runs-on: ${{ matrix.runs-on }}
+    strategy:
+      matrix:
+        include:
+          - os: linux-intel
+            runs-on: ubuntu-latest
+          - os: linux-arm
+            runs-on: ubuntu-24.04-arm
+          - os: windows-intel
+            runs-on: windows-latest
+          - os: macos-intel
+            runs-on: macos-15-intel
+          - os: macos-arm
+            runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v4.2.0
+        with:
+          package-dir: targets/ptfkit-py/dist
+          output-dir: targets/ptfkit-py/dist/wheelhouse
+        env:
+          CIBW_BUILD_FRONTEND: uv
+      - uses: actions/upload-artifact@v7
+        with:
+          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
+          path: targets/ptfkit-py/wheelhouse/*.whl
+
+  publish-pypi:
+    name: Publish to PyPI
+    needs: [make-sdist, build-wheels]
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/ptfkit
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: cibw-*
+          path: targets/ptfkit-py/dist
+          merge-multiple: true
+      - name: Publish with trusted publishing
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: targets/ptfkit-py/dist/
+
+  publish-crates:
+    name: Publish to crates.io
+    needs: check-version
+    runs-on: ubuntu-latest
+    environment:
+      name: crates-io
+      url: https://crates.io/crates/ptfkit
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v7
+      - name: Authenticate to crates.io with trusted publishing
+        id: auth
+        uses: rust-lang/crates-io-auth-action@v1
+      - name: Verify package
+        working-directory: targets/ptfkit-rs
+        run: cargo package --locked
+      - name: Publish crate
+        working-directory: targets/ptfkit-rs
+        run: cargo publish --locked
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
+
+  publish-native:
+    name: Publish native source archive
+    needs: check-version
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@v7
+      - name: Create native archive
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          version="${TAG#v}"
+          archive="ptfkit-native-${version}.tar.gz"
+          tar --sort=name --mtime="UTC 1970-01-01" --owner=0 --group=0 --numeric-owner \
+            --transform="s,^targets/ptfkit-native,ptfkit-native-${version}," \
+            -czf "$archive" targets/ptfkit-native
+          sha256sum "$archive" > "$archive.sha256"
+          echo "archive=$archive" >> "$GITHUB_ENV"
+      - name: Attest native archive provenance
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: ${{ env.archive }}
+      - name: Upload native archive to GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ github.event.release.tag_name }}" "$archive" "$archive.sha256" --clobber
