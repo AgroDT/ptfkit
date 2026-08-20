@@ -3,12 +3,6 @@ name: Publish release
 on:
   release:
     types: [published]
-  workflow_dispatch:
-    inputs:
-      tag:
-        description: Existing release tag whose Python package should be republished
-        required: true
-        type: string
 
 permissions:
   contents: read
@@ -21,19 +15,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.release.tag_name || inputs.tag }}
+          ref: ${{ github.event.release.tag_name }}
       - name: Check target versions
-        run: python .github/scripts/check-version.py "${{ github.event.release.tag_name || inputs.tag }}"
+        run: python .github/scripts/check-version.py "${{ github.event.release.tag_name }}"
 
   make-sdist:
     name: Make Python sdist
-    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
     needs: check-version
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.release.tag_name || inputs.tag }}
+          ref: ${{ github.event.release.tag_name }}
       - uses: astral-sh/setup-uv@v10.0.1
       - name: Build sdist
         run: uv build --directory targets/ptfkit-py --sdist
@@ -44,7 +37,6 @@ jobs:
 
   build-wheels:
     name: Build Python wheels on ${{ matrix.os }}
-    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
     needs: check-version
     runs-on: ${{ matrix.runs-on }}
     strategy:
@@ -63,7 +55,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.release.tag_name || inputs.tag }}
+          ref: ${{ github.event.release.tag_name }}
       - uses: astral-sh/setup-uv@v10.0.1
       - name: Build wheels
         uses: pypa/cibuildwheel@v4.2.0
@@ -79,7 +71,6 @@ jobs:
 
   publish-pypi:
     name: Publish to PyPI
-    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
     needs: [make-sdist, build-wheels]
     runs-on: ubuntu-latest
     environment:
@@ -100,7 +91,6 @@ jobs:
 
   publish-crates:
     name: Publish to crates.io
-    if: github.event_name == 'release'
     needs: check-version
     runs-on: ubuntu-latest
     environment:
@@ -111,7 +101,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.release.tag_name || inputs.tag }}
+          ref: ${{ github.event.release.tag_name }}
       - name: Authenticate to crates.io with trusted publishing
         id: auth
         uses: rust-lang/crates-io-auth-action@v1
@@ -126,7 +116,6 @@ jobs:
 
   publish-native:
     name: Publish native source archive
-    if: github.event_name == 'release'
     needs: check-version
     runs-on: ubuntu-latest
     permissions:
@@ -136,10 +125,10 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.release.tag_name || inputs.tag }}
+          ref: ${{ github.event.release.tag_name }}
       - name: Create native archive
         env:
-          TAG: ${{ github.event.release.tag_name || inputs.tag }}
+          TAG: ${{ github.event.release.tag_name }}
         run: |
           version="${TAG#v}"
           archive="ptfkit-native-${version}.tar.gz"
@@ -155,4 +144,4 @@ jobs:
       - name: Upload native archive to GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release upload "${{ github.event.release.tag_name || inputs.tag }}" "$archive" "$archive.sha256" --clobber
+        run: gh release upload "${{ github.event.release.tag_name }}" "$archive" "$archive.sha256" --clobber
