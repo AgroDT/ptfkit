@@ -9,6 +9,24 @@ on:
       - main
 
 jobs:
+  resolve-python:
+    name: Resolve supported Python versions
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v10.0.1
+        with:
+          enable-cache: true
+
+      - name: Create test matrix
+        id: matrix
+        run: uv run --script .github/scripts/python-matrix.py
+
   code-quality:
     name: Code Quality
     runs-on: ubuntu-latest
@@ -126,11 +144,11 @@ jobs:
 
   pytest:
     name: Tests Python ${{ matrix.python-version }}
+    needs: resolve-python
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        python-version: ['3.11', '3.12', '3.13', '3.14', '3.14t']
+      matrix: ${{ fromJSON(needs.resolve-python.outputs.matrix) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -138,6 +156,7 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
+          allow-prereleases: true
 
       - name: Install uv
         uses: astral-sh/setup-uv@v10.0.1

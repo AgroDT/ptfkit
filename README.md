@@ -3,7 +3,6 @@
 [![CI](https://img.shields.io/github/actions/workflow/status/AgroDT/ptfkit/pr.yaml?branch=main)](https://github.com/AgroDT/ptfkit/actions/workflows/pr.yaml)
 [![Documentation](https://img.shields.io/github/actions/workflow/status/AgroDT/ptfkit/deploy-docs.yaml?label=docs)](https://agrodt.github.io/ptfkit/)
 [![PyPI version](https://img.shields.io/pypi/v/ptfkit)](https://pypi.org/project/ptfkit/)
-[![Python versions](https://img.shields.io/pypi/pyversions/ptfkit)](https://pypi.org/project/ptfkit/)
 [![crates.io version](https://img.shields.io/crates/v/ptfkit)](https://crates.io/crates/ptfkit)
 [![License](https://img.shields.io/github/license/AgroDT/ptfkit)](https://github.com/AgroDT/ptfkit/blob/main/LICENSE)
 
