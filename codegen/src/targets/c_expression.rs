@@ -8,15 +8,6 @@ pub(super) enum Dialect {
     Cpp,
 }
 
-pub(super) fn render(
-    value: &Expr,
-    inputs: &[String],
-    variables: &[Variable],
-    dialect: Dialect,
-) -> String {
-    expression(value, inputs, variables, dialect).to_string()
-}
-
 pub(super) fn expression<'a>(
     value: &'a Expr,
     inputs: &'a [String],
@@ -243,11 +234,11 @@ mod tests {
         };
 
         assert_eq!(
-            render(&expression, &inputs(), &[], Dialect::C),
+            super::expression(&expression, &inputs(), &[], Dialect::C).to_string(),
             "x - (y - z)"
         );
         assert_eq!(
-            render(&expression, &inputs(), &[], Dialect::Cpp),
+            super::expression(&expression, &inputs(), &[], Dialect::Cpp).to_string(),
             "x - (y - z)"
         );
     }
@@ -276,7 +267,7 @@ mod tests {
         };
 
         assert_eq!(
-            render(&expression, &inputs(), &[], Dialect::C),
+            super::expression(&expression, &inputs(), &[], Dialect::C).to_string(),
             "-(x + y) / (z * (x - y))"
         );
     }
@@ -297,7 +288,7 @@ mod tests {
         };
 
         assert_eq!(
-            render(&expression, &inputs(), &[], Dialect::C),
+            super::expression(&expression, &inputs(), &[], Dialect::C).to_string(),
             "(x + y) * z"
         );
     }
@@ -331,11 +322,11 @@ mod tests {
         };
 
         assert_eq!(
-            render(&expression, &inputs(), &[], Dialect::C),
+            super::expression(&expression, &inputs(), &[], Dialect::C).to_string(),
             "fmin(pow(x + y, -z), sqrt(x * y))"
         );
         assert_eq!(
-            render(&expression, &inputs(), &[], Dialect::Cpp),
+            super::expression(&expression, &inputs(), &[], Dialect::Cpp).to_string(),
             "std::fmin(std::pow(x + y, -z), std::sqrt(x * y))"
         );
     }

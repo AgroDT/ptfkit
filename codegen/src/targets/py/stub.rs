@@ -1,4 +1,6 @@
-use crate::{model::CompiledFunction, targets::py::WRAPPER_HEADER};
+use crate::model::CompiledFunction;
+
+use super::{WRAPPER_HEADER, syntax::Module};
 
 pub(super) fn render(functions: &[CompiledFunction]) -> String {
     let mut names = functions
@@ -7,14 +9,14 @@ pub(super) fn render(functions: &[CompiledFunction]) -> String {
         .collect::<Vec<_>>();
     names.sort_unstable();
 
-    let mut lines = vec![
-        WRAPPER_HEADER.trim_end().to_owned(),
-        String::new(),
-        "from numpy import ufunc".into(),
-        String::new(),
-    ];
-    lines.extend(names.into_iter().map(|name| format!("{name}: ufunc")));
-    format!("{}\n", lines.join("\n"))
+    let mut module = Module::new(WRAPPER_HEADER);
+    module.blank_line();
+    module.import("numpy", "ufunc");
+    module.blank_line();
+    for name in names {
+        module.line(format_args!("{name}: ufunc"));
+    }
+    module.into_string()
 }
 
 #[cfg(test)]

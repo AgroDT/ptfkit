@@ -2,7 +2,7 @@ use std::collections::BTreeMap;
 
 use crate::model::{CompiledFunction, Function, Outputs, PythonGeneration};
 
-use super::{WRAPPER_HEADER, natural_sort_key};
+use super::{WRAPPER_HEADER, natural_sort_key, syntax::Module};
 
 pub(super) fn render(functions: &[CompiledFunction]) -> Vec<(String, PythonGeneration, String)> {
     let mut modules: BTreeMap<String, Vec<&CompiledFunction>> = BTreeMap::new();
@@ -38,54 +38,58 @@ fn module_source(slug: &str, functions: &[&CompiledFunction]) -> String {
     }
     imports.sort_by_key(|name| natural_sort_key(name));
     imports.dedup();
-    let imports = imports.join(", ");
-    let tests = functions
-        .iter()
-        .map(|resolved| {
-            let function = &resolved.entry.spec.functions[resolved.function_index];
-            function_source(function)
-        })
-        .collect::<Vec<_>>()
-        .join("\n\n\n");
-
-    format!(
-        "{header}\nfrom __future__ import annotations\n\nimport pytest\n\nfrom _helpers import prepare_vector_case\nfrom ptfkit.{slug} import {imports}\n\n\n{tests}\n",
-        header = WRAPPER_HEADER.trim_end(),
-    )
+    let mut module = Module::new(WRAPPER_HEADER);
+    module.line("");
+    module.future_annotations();
+    module.blank_line();
+    module.line("import pytest");
+    module.blank_line();
+    module.import("_helpers", "prepare_vector_case");
+    module.import(&format!("ptfkit.{slug}"), imports.join(", "));
+    module.blank_line();
+    module.blank_line();
+    for (index, resolved) in functions.iter().enumerate() {
+        if index > 0 {
+            module.blank_line();
+            module.blank_line();
+        }
+        let function = &resolved.entry.spec.functions[resolved.function_index];
+        function_source(&mut module, function);
+    }
+    module.into_string()
 }
 
-fn function_source(function: &Function) -> String {
+fn function_source(module: &mut Module, function: &Function) {
     let cases_name = format!("CASES_{}", function.public_api.name.to_ascii_uppercase());
-    let cases = function
-        .golden_tests
-        .iter()
-        .map(|case| {
-            format!(
-                "    ({inputs}, {expected}, {rtol}, {atol}),",
-                inputs = dictionary(&case.inputs),
-                expected = dictionary(&case.expected),
-                rtol = float(case.rtol),
-                atol = float(case.atol),
-            )
-        })
-        .collect::<Vec<_>>()
-        .join("\n");
-    let assertion = expected_assertion(function, "    ", "");
-    let vector_tests = if !function.golden_tests.is_empty() {
-        vector_test_source(function, &cases_name)
-    } else {
-        Default::default()
-    };
-    format!(
-        "{cases_name} = [\n{cases}\n]\n\n\n@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), {cases_name})\ndef test_{name}_golden(inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float):\n    result = {name}(**inputs)\n\n{assertion}{vector_tests}",
-        cases_name = cases_name,
-        name = function.public_api.name,
-        assertion = assertion,
-        vector_tests = vector_tests,
-    )
+    module.assignment(&cases_name, "[");
+    for case in &function.golden_tests {
+        module.line(format_args!(
+            "    ({}, {}, {}, {}),",
+            dictionary(&case.inputs),
+            dictionary(&case.expected),
+            float(case.rtol),
+            float(case.atol),
+        ));
+    }
+    module.line("]");
+    module.blank_line();
+    module.blank_line();
+    let name = &function.public_api.name;
+    module.line(format_args!(
+        "@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), {cases_name})"
+    ));
+    module.line(format_args!(
+        "def test_{name}_golden(inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float):"
+    ));
+    module.line(format_args!("    result = {name}(**inputs)"));
+    module.line("");
+    module.line(expected_assertion(function, "    ", ""));
+    if !function.golden_tests.is_empty() {
+        vector_test_source(module, function, &cases_name);
+    }
 }
 
-fn vector_test_source(function: &Function, cases_name: &str) -> String {
+fn vector_test_source(module: &mut Module, function: &Function, cases_name: &str) {
     let array_assertion = expected_assertion(function, "    ", "[0]");
     let out_assertion = match &function.outputs {
         Outputs::Scalar { .. } => "    assert result is out",
@@ -97,27 +101,24 @@ fn vector_test_source(function: &Function, cases_name: &str) -> String {
         .result_class()
         .map(|result_class| format!(", {result_class}"))
         .unwrap_or_default();
-    format!(
-        r#"
-
-
-def test_{name}_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case({cases_name}{result_cls})
-    result = {name}(**inputs, out=None)
-{array_assertion}
-
-
-def test_{name}_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case({cases_name}{result_cls})
-    result = {name}(**inputs, out=out)
-{out_assertion}
-{array_assertion}"#,
-        name = function.public_api.name,
-        cases_name = cases_name,
-        result_cls = result_cls,
-        array_assertion = array_assertion,
-        out_assertion = out_assertion,
-    )
+    let name = &function.public_api.name;
+    module.blank_line();
+    module.blank_line();
+    module.line(format_args!("def test_{name}_array():"));
+    module.line(format_args!(
+        "    inputs, expected, rtol, atol, _out = prepare_vector_case({cases_name}{result_cls})"
+    ));
+    module.line(format_args!("    result = {name}(**inputs, out=None)"));
+    module.line(&array_assertion);
+    module.blank_line();
+    module.blank_line();
+    module.line(format_args!("def test_{name}_out():"));
+    module.line(format_args!(
+        "    inputs, expected, rtol, atol, out = prepare_vector_case({cases_name}{result_cls})"
+    ));
+    module.line(format_args!("    result = {name}(**inputs, out=out)"));
+    module.line(out_assertion);
+    module.line(array_assertion);
 }
 
 fn expected_assertion(function: &Function, indent: &str, index: &str) -> String {

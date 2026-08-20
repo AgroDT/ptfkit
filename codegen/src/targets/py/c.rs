@@ -1,6 +1,7 @@
 use anyhow::Result;
 
 use crate::model::{CompiledFunction, Output};
+use crate::render::Writer;
 
 use super::{
     super::{
@@ -11,67 +12,72 @@ use super::{
 };
 
 pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<(String, String)>> {
-    let mut includes = String::new();
+    let mut includes = Writer::new();
     let mut registers = Vec::new();
     let mut writes = Vec::new();
     for (slug, functions) in group_by_source(functions) {
         let register = format!("ptfkit_register_{slug}");
         registers.push(register.clone());
-        let mut definitions = String::new();
-        let mut calls = String::new();
+        let mut definitions = Writer::new();
+        let mut calls = Writer::new();
         for function in functions {
-            definitions.push_str(&ufunc(function)?);
-            calls.push_str(&format!(
-                "    if (ptfkit_add_ufunc(module, \"{name}\", {name}_functions, {name}_types, {nin}, {nout}) < 0) return -1;\n",
+            definitions.write(ufunc(function)?);
+            calls.line(format_args!(
+                "if (ptfkit_add_ufunc(module, \"{name}\", {name}_functions, {name}_types, {nin}, {nout}) < 0) return -1;",
                 name = function.core.name,
                 nin = function.core.inputs.len(),
                 nout = output_count(&function.core.output),
             ));
         }
-        includes.push_str(&format!("#include \"{slug}.c\"\n"));
-        writes.push((
-            format!("src/ptfkit/{slug}.c"),
-            format!(
-                "{C_HEADER}#include \"ufunc.h\"\n\n{definitions}int {register}(PyObject *module) {{\n{calls}    return 0;\n}}\n"
-            ),
+        includes.line(format_args!("#include \"{slug}.c\""));
+        let mut source = Writer::new();
+        source.write(C_HEADER);
+        source.line("#include \"ufunc.h\"");
+        source.blank_line();
+        source.write(definitions.into_string());
+        source.line(format_args!("int {register}(PyObject *module) {{"));
+        source.indented(|writer| {
+            writer.write(calls.into_string());
+            writer.line("return 0;");
+        });
+        source.line("}");
+        writes.push((format!("src/ptfkit/{slug}.c"), source.into_string()));
+    }
+    let mut calls = Writer::new();
+    for register in &registers {
+        calls.line(format_args!(
+            "if ({register}(module) < 0) {{ Py_DECREF(module); return NULL; }}"
         ));
     }
-    let calls = registers
-        .iter()
-        .map(|register| {
-            format!("    if ({register}(module) < 0) {{ Py_DECREF(module); return NULL; }}\n")
-        })
-        .collect::<String>();
-    writes.push((
-        "src/ptfkit/ptfkit.c".into(),
-        format!(
-            "{C_HEADER}#define PY_SSIZE_T_CLEAN\n#define PY_ARRAY_UNIQUE_SYMBOL PTFKIT_ARRAY_API\n#include <Python.h>\n#include <numpy/arrayobject.h>\n#include <numpy/ufuncobject.h>\n\n{includes}\nstatic struct PyModuleDef module_def = {{ PyModuleDef_HEAD_INIT, \"_ptfkit\", NULL, -1, NULL }};\n\nPyMODINIT_FUNC PyInit__ptfkit(void) {{\n    PyObject *module = PyModule_Create(&module_def);\n    if (module == NULL) return NULL;\n    import_array();\n    import_ufunc();\n{calls}    return module;\n}}\n"
-        ),
-    ));
+    let mut entry = Writer::new();
+    entry.write(C_HEADER);
+    entry.line("#define PY_SSIZE_T_CLEAN");
+    entry.line("#define PY_ARRAY_UNIQUE_SYMBOL PTFKIT_ARRAY_API");
+    entry.line("#include <Python.h>");
+    entry.line("#include <numpy/arrayobject.h>");
+    entry.line("#include <numpy/ufuncobject.h>");
+    entry.blank_line();
+    entry.write(includes.into_string());
+    entry.blank_line();
+    entry.line("static struct PyModuleDef module_def = { PyModuleDef_HEAD_INIT, \"_ptfkit\", NULL, -1, NULL };");
+    entry.blank_line();
+    entry.line("PyMODINIT_FUNC PyInit__ptfkit(void) {");
+    entry.indented(|writer| {
+        writer.line("PyObject *module = PyModule_Create(&module_def);");
+        writer.line("if (module == NULL) return NULL;");
+        writer.line("import_array();");
+        writer.line("import_ufunc();");
+        writer.write(calls.into_string());
+        writer.line("return module;");
+    });
+    entry.line("}");
+    writes.push(("src/ptfkit/ptfkit.c".into(), entry.into_string()));
     Ok(writes)
 }
 
 fn ufunc(function: &CompiledFunction) -> Result<String> {
     let name = &function.core.name;
     let inputs = &function.core.inputs;
-    let mut locals = String::new();
-    for (index, input) in inputs.iter().enumerate() {
-        locals.push_str(&format!(
-            "        const double {input} = *(const double *)args[{index}];\n"
-        ));
-    }
-    for variable in &function.ir.variables {
-        locals.push_str(&format!(
-            "        const double {} = {};\n",
-            variable.name,
-            c_expression::render(
-                &variable.expression,
-                inputs,
-                &function.ir.variables,
-                Dialect::C,
-            )
-        ));
-    }
     let values = match &function.core.output {
         Output::Scalar => vec![
             function.entry.spec.functions[function.function_index]
@@ -82,23 +88,50 @@ fn ufunc(function: &CompiledFunction) -> Result<String> {
         ],
         Output::Struct(fields) => fields.clone(),
     };
-    let writes = values
-        .iter()
-        .enumerate()
-        .map(|(index, value)| {
-            format!(
-                "        *(double *)args[{}] = {value};\n",
-                inputs.len() + index
-            )
-        })
-        .collect::<String>();
     let types = std::iter::repeat_n("NPY_DOUBLE", inputs.len() + values.len())
         .collect::<Vec<_>>()
         .join(", ");
-    Ok(format!(
-        "static void {name}_loop(char **args, const npy_intp *dimensions, const npy_intp *steps, void *data) {{\n    npy_intp index;\n    for (index = 0; index < dimensions[0]; index++) {{\n{locals}{writes}        for (int arg = 0; arg < {}; arg++) args[arg] += steps[arg];\n    }}\n}}\nstatic PyUFuncGenericFunction {name}_functions[] = {{ {name}_loop }};\nstatic char {name}_types[] = {{ {types} }};\n\n",
-        inputs.len() + values.len()
-    ))
+    let mut writer = Writer::new();
+    writer.line(format_args!("static void {name}_loop(char **args, const npy_intp *dimensions, const npy_intp *steps, void *data) {{"));
+    writer.indented(|writer| {
+        writer.line("npy_intp index;");
+        writer.line("for (index = 0; index < dimensions[0]; index++) {");
+        writer.indented(|writer| {
+            for (index, input) in inputs.iter().enumerate() {
+                writer.line(format_args!(
+                    "const double {input} = *(const double *)args[{index}];"
+                ));
+            }
+            for variable in &function.ir.variables {
+                writer.write(format_args!("const double {} = ", variable.name));
+                writer.write(c_expression::expression(
+                    &variable.expression,
+                    inputs,
+                    &function.ir.variables,
+                    Dialect::C,
+                ));
+                writer.line(";");
+            }
+            for (index, value) in values.iter().enumerate() {
+                writer.line(format_args!(
+                    "*(double *)args[{}] = {value};",
+                    inputs.len() + index
+                ));
+            }
+            writer.line(format_args!(
+                "for (int arg = 0; arg < {}; arg++) args[arg] += steps[arg];",
+                inputs.len() + values.len()
+            ));
+        });
+        writer.line("}");
+    });
+    writer.line("}");
+    writer.line(format_args!(
+        "static PyUFuncGenericFunction {name}_functions[] = {{ {name}_loop }};"
+    ));
+    writer.line(format_args!("static char {name}_types[] = {{ {types} }};"));
+    writer.blank_line();
+    Ok(writer.into_string())
 }
 
 fn output_count(output: &Output) -> usize {

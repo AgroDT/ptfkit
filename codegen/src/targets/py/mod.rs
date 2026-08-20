@@ -1,5 +1,6 @@
 mod c;
 mod stub;
+mod syntax;
 mod test;
 mod wrapper;
 

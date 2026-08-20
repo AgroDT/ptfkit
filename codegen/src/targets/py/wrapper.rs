@@ -7,7 +7,7 @@ use crate::{
     model::{CompiledFunction, Function, Parameter, PythonGeneration, Scope, Source},
 };
 
-use super::{super::documentation, WRAPPER_HEADER, natural_sort_key};
+use super::{super::documentation, WRAPPER_HEADER, natural_sort_key, syntax::Module};
 
 struct PythonFunction<'a> {
     name: &'a str,
@@ -107,7 +107,7 @@ fn module_source(
     functions: &[PythonFunction<'_>],
     exports: &[String],
 ) -> String {
-    let mut sections = vec![WRAPPER_HEADER.trim_end().into()];
+    let mut module = Module::new(WRAPPER_HEADER);
     if functions.len() > 1 {
         let has_long_import = functions.iter().any(|function| {
             format!(
@@ -118,48 +118,75 @@ fn module_source(
             .count()
                 > 100
         });
-        sections.push(if has_long_import {
-            "# ruff: noqa: E501, I001".into()
+        module.blank_line();
+        module.line(if has_long_import {
+            "# ruff: noqa: E501, I001"
         } else {
-            "# ruff: noqa: I001".into()
+            "# ruff: noqa: I001"
         });
     }
-    sections.extend([
-        module_docstring(source, scope),
-        "from __future__ import annotations".into(),
-        format!("from typing import {typing_imports}"),
-        "from ptfkit._ptfkit import (".into(),
-    ]);
-    sections.extend(functions.iter().map(|function| {
-        format!(
-            "    {rust_name} as _{rust_name},",
-            rust_name = function.rust_name
-        )
-    }));
-    sections.extend([
-        ")\n".into(),
-        "if TYPE_CHECKING:\n    from numpy import floating\n    from numpy.typing import ArrayLike, NDArray"
-            .into(),
-    ]);
+    module.blank_line();
+    module.write(module_docstring(source, scope));
+    module.blank_line();
+    module.future_annotations();
+    module.blank_line();
+    module.import("typing", typing_imports);
+    module.blank_line();
+    module.block(
+        "from ptfkit._ptfkit import (",
+        |writer| {
+            for function in functions {
+                writer.line(format_args!(
+                    "{rust_name} as _{rust_name},",
+                    rust_name = function.rust_name
+                ));
+            }
+        },
+        ")",
+    );
+    module.blank_line();
+    module.blank_line();
+    module.line("if TYPE_CHECKING:");
+    module.indented(|writer| {
+        writer.line("from numpy import floating");
+        writer.line("from numpy.typing import ArrayLike, NDArray");
+    });
     if !classes.is_empty() {
-        sections.push("T = TypeVar('T')".into());
-        sections.extend(classes.iter().map(|class| {
-            format!(
-                "class {}(NamedTuple, Generic[T]):\n{}\n{}",
-                class.name, class.docstring, class.field_definitions
-            )
-        }));
+        module.blank_line();
+        module.assignment("T", "TypeVar('T')");
+        for class in classes {
+            module.blank_line();
+            module.line(format_args!(
+                "class {}(NamedTuple, Generic[T]):",
+                class.name
+            ));
+            module.indented(|writer| {
+                writer.write(&class.docstring);
+                writer.write("\n");
+                writer.write(&class.field_definitions);
+                writer.write("\n");
+            });
+        }
     }
-    sections.push(format!(
-        "__all__ = [{}]",
-        exports
-            .iter()
-            .map(|export| format!("'{export}'"))
-            .collect::<Vec<_>>()
-            .join(", ")
-    ));
-    sections.extend(functions.iter().map(function_source));
-    format!("{}\n", sections.join("\n\n"))
+    module.blank_line();
+    module.assignment(
+        "__all__",
+        format_args!(
+            "[{}]",
+            exports
+                .iter()
+                .map(|export| format!("'{export}'"))
+                .collect::<Vec<_>>()
+                .join(", ")
+        ),
+    );
+    for function in functions {
+        module.blank_line();
+        module.blank_line();
+        module.write(function_source(function));
+    }
+    module.line("");
+    module.into_string()
 }
 
 fn function_source(function: &PythonFunction<'_>) -> String {
