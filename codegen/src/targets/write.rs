@@ -1,5 +1,5 @@
 use std::{
-    collections::BTreeSet,
+    collections::{BTreeMap, BTreeSet},
     fs::{self, OpenOptions},
     io::Write,
     path::{Path, PathBuf},
@@ -18,6 +18,99 @@ struct StagedWrite {
 }
 
 static TEMPORARY_SEQUENCE: AtomicU64 = AtomicU64::new(0);
+
+pub(super) struct GeneratedTree(BTreeMap<PathBuf, Vec<u8>>);
+
+pub(super) fn snapshot_generated(root: &Path) -> Result<GeneratedTree> {
+    let mut files = BTreeMap::new();
+    for target in Target::ALL {
+        collect_generated(
+            root,
+            &target.cleanup_directory(root),
+            target.generated_header(),
+            &mut files,
+        )?;
+    }
+    Ok(GeneratedTree(files))
+}
+
+pub(super) fn assert_unchanged(root: &Path, before: GeneratedTree) -> Result<()> {
+    let after = snapshot_generated(root)?;
+    if let Some(report) = drift_report(&before.0, &after.0) {
+        bail!("generated output drift after regeneration:\n{report}")
+    }
+    println!("generated output is unchanged");
+    Ok(())
+}
+
+fn collect_generated(
+    root: &Path,
+    directory: &Path,
+    header: &str,
+    files: &mut BTreeMap<PathBuf, Vec<u8>>,
+) -> Result<()> {
+    if !directory.is_dir() {
+        return Ok(());
+    }
+    for entry in fs::read_dir(directory)? {
+        let path = entry?.path();
+        if path.is_dir() {
+            collect_generated(root, &path, header, files)?;
+        } else {
+            let contents = fs::read(&path)?;
+            if is_generated(&contents, header) {
+                let relative = path
+                    .strip_prefix(root)
+                    .context("finding generated-file path relative to the workspace root")?
+                    .to_owned();
+                files.insert(relative, contents);
+            }
+        }
+    }
+    Ok(())
+}
+
+fn drift_report(
+    before: &BTreeMap<PathBuf, Vec<u8>>,
+    after: &BTreeMap<PathBuf, Vec<u8>>,
+) -> Option<String> {
+    let added = after
+        .keys()
+        .filter(|path| !before.contains_key(*path))
+        .collect::<Vec<_>>();
+    let removed = before
+        .keys()
+        .filter(|path| !after.contains_key(*path))
+        .collect::<Vec<_>>();
+    let modified = before
+        .iter()
+        .filter(|(path, contents)| after.get(*path).is_some_and(|after| after != *contents))
+        .map(|(path, _)| path)
+        .collect::<Vec<_>>();
+
+    if added.is_empty() && removed.is_empty() && modified.is_empty() {
+        return None;
+    }
+
+    let mut report = String::new();
+    append_paths(&mut report, "added", &added);
+    append_paths(&mut report, "removed", &removed);
+    append_paths(&mut report, "modified", &modified);
+    Some(report.trim_end().to_owned())
+}
+
+fn append_paths(report: &mut String, label: &str, paths: &[&PathBuf]) {
+    if paths.is_empty() {
+        return;
+    }
+    report.push_str(label);
+    report.push_str(":\n");
+    for path in paths {
+        report.push_str("  ");
+        report.push_str(&path.display().to_string());
+        report.push('\n');
+    }
+}
 
 pub(super) fn commit(root: &Path, outputs: &[TargetOutput]) -> Result<()> {
     let staged = stage(root, outputs)?;
@@ -120,10 +213,12 @@ fn remove_obsolete(directory: &Path, expected: &BTreeSet<PathBuf>, header: &str)
 fn is_generated(contents: &[u8], header: &str) -> bool {
     contents.starts_with(header.as_bytes())
         || (header == super::documentation::HEADER
-            && contents.starts_with(b"---\n")
-            && contents
-                .windows(header.len())
-                .any(|window| window == header.as_bytes()))
+            && (contents.strip_prefix(b"---\n").is_some_and(|contents| {
+                contents.starts_with(super::documentation::FRONTMATTER_HEADER.as_bytes())
+            }) || (contents.starts_with(b"---\n")
+                && contents
+                    .windows(header.len())
+                    .any(|window| window == header.as_bytes()))))
 }
 
 fn format(root: &Path, staged: &[StagedWrite]) -> Result<()> {
@@ -203,7 +298,7 @@ fn remove_temporary(staged: &[StagedWrite]) {
 
 #[cfg(test)]
 mod tests {
-    use std::{fs, path::Path};
+    use std::{collections::BTreeMap, fs, path::Path};
 
     use super::*;
     use crate::targets::{GeneratedFile, documentation::HEADER};
@@ -255,7 +350,35 @@ mod tests {
             format!("---\ntitle: \"ptfkit.test\"\n---\n\n{HEADER}::: ptfkit.test\n").as_bytes(),
             HEADER,
         ));
+        assert!(is_generated(
+            format!(
+                "---\n{}title: ptfkit.test\n---\n",
+                super::super::documentation::FRONTMATTER_HEADER
+            )
+            .as_bytes(),
+            HEADER,
+        ));
         assert!(!is_generated(b"# Handwritten page\n", HEADER));
         assert!(Path::new("index.md").is_relative());
+    }
+
+    #[test]
+    fn generated_output_drift_reports_added_removed_and_modified_files() {
+        let before = BTreeMap::from([
+            (PathBuf::from("generated/modified"), b"before".to_vec()),
+            (PathBuf::from("generated/removed"), b"removed".to_vec()),
+        ]);
+        let after = BTreeMap::from([
+            (PathBuf::from("generated/added"), b"added".to_vec()),
+            (PathBuf::from("generated/modified"), b"after".to_vec()),
+        ]);
+
+        assert_eq!(
+            drift_report(&before, &after),
+            Some(
+                "added:\n  generated/added\nremoved:\n  generated/removed\nmodified:\n  generated/modified"
+                    .to_owned()
+            )
+        );
     }
 }

@@ -226,6 +226,13 @@ pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> Result<()> {
     )
 }
 
+/// Regenerate every target and fail when that changes a codegen-owned file.
+pub(crate) fn check_generated(root: &Path, entries: Vec<Entry>) -> Result<()> {
+    let before = write::snapshot_generated(root)?;
+    run(root, entries)?;
+    write::assert_unchanged(root, before)
+}
+
 #[cfg(test)]
 mod tests {
     use std::path::Path;

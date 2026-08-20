@@ -24,6 +24,7 @@ pub(crate) struct Cli {
 enum Command {
     Validate,
     Generate,
+    CheckGenerated,
     Version { version: String },
 }
 
@@ -49,6 +50,10 @@ impl Cli {
             Command::Generate => {
                 let entries = load_validated_specifications(root)?;
                 targets::run(root, entries)
+            }
+            Command::CheckGenerated => {
+                let entries = load_validated_specifications(root)?;
+                targets::check_generated(root, entries)
             }
             Command::Version { version } => version::run(root, &version),
         }
