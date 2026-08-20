@@ -6,7 +6,7 @@ calculation to native NumPy ufuncs.
 
 ## Installation
 
-Python 3.11 or newer is required.
+Supported Python versions are declared in the package metadata.
 
 ```shell
 pip install ptfkit
