@@ -2,7 +2,10 @@ use std::{collections::BTreeSet, path::PathBuf};
 
 use anyhow::Result;
 
-use crate::model::{CompiledFunction, Output, Parameter};
+use crate::{
+    documentation::{self as docs},
+    model::{CompiledFunction, Output, Parameter},
+};
 
 use super::{
     GeneratedFile,
@@ -56,7 +59,11 @@ fn index(sources: &std::collections::BTreeMap<&str, Vec<&CompiledFunction>>) -> 
         "- [`<ptfkit/ptfkit.h>`](headers/ptfkit.md) — Aggregates every ptfkit source header.\n",
     );
     for (slug, functions) in sources {
-        let summary = &functions[0].entry.spec.source.summary;
+        let summary = docs::for_source(
+            &functions[0].entry.spec.source,
+            &functions[0].entry.spec.scope,
+        )
+        .summary;
         text.push_str(&format!(
             "- [`<ptfkit/{slug}.h>`](headers/{slug}.md) — {}\n",
             escape_text(summary)
@@ -75,7 +82,13 @@ fn umbrella(sources: &std::collections::BTreeMap<&str, Vec<&CompiledFunction>>) 
     for (slug, functions) in sources {
         text.push_str(&format!(
             "- [`<ptfkit/{slug}.h>`]({slug}.md) — {}\n",
-            escape_text(&functions[0].entry.spec.source.summary)
+            escape_text(
+                docs::for_source(
+                    &functions[0].entry.spec.source,
+                    &functions[0].entry.spec.scope
+                )
+                .summary,
+            )
         ));
     }
     text
@@ -85,28 +98,27 @@ fn header(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
     let first = functions
         .first()
         .expect("compiled source contains at least one function");
-    let source = &first.entry.spec.source;
-    let scope = &first.entry.spec.scope;
+    let source = docs::for_source(&first.entry.spec.source, &first.entry.spec.scope);
     let mut text = String::from(HEADER);
     text.push_str(&format!("# `<ptfkit/{slug}.h>`\n\n"));
     text.push_str(&format!("```c\n#include <ptfkit/{slug}.h>\n```\n\n"));
-    text.push_str(&format!("{}\n\n", escape_text(&source.summary)));
+    text.push_str(&format!("{}\n\n", escape_text(source.summary)));
     text.push_str("## Source\n\n");
-    text.push_str(&escape_text(&source.citation_apa));
+    text.push_str(&escape_text(source.reference.citation));
     text.push_str("\n\n");
-    if let Some(doi) = &source.doi {
+    if let Some(doi) = source.reference.doi {
         text.push_str(&format!(
             "[DOI: {}]({})\n\n",
-            escape_text(&doi.identifier),
+            escape_text(doi.identifier),
             doi.url
         ));
     }
-    if scope.territory.is_some() || scope.dataset.is_some() {
+    if source.territory.is_some() || source.dataset.is_some() {
         text.push_str("## Scope\n\n");
-        if let Some(territory) = &scope.territory {
+        if let Some(territory) = source.territory {
             text.push_str(&format!("**Territory:** {}\n\n", escape_text(territory)));
         }
-        if let Some(dataset) = &scope.dataset {
+        if let Some(dataset) = source.dataset {
             text.push_str(&format!("**Dataset:** {}\n\n", escape_text(dataset)));
         }
     }
@@ -158,14 +170,15 @@ fn structure(name: &str, fields: &[Parameter]) -> String {
 
 fn function_documentation(function: &CompiledFunction) -> Result<String> {
     let spec = spec(function);
+    let document = docs::for_function(spec);
     let anchor = function_anchor(&function.core.name);
     let mut text = format!("### `{}` {{#{anchor}}}\n\n", function.core.name);
-    text.push_str(&format!("{}\n\n", escape_text(&spec.public_api.summary)));
+    text.push_str(&format!("{}\n\n", escape_text(document.summary)));
     text.push_str("```c\n");
     text.push_str(&signature(function)?);
     text.push_str(";\n```\n\n");
     text.push_str("#### Parameters\n\n| Name | Direction | Description |\n| --- | --- | --- |\n");
-    for parameter in &spec.inputs {
+    for parameter in document.parameters {
         text.push_str(&format!(
             "| `{}` | in | {} |\n",
             parameter.name,
@@ -173,22 +186,19 @@ fn function_documentation(function: &CompiledFunction) -> Result<String> {
         ));
     }
     text.push_str("\n#### Returns\n\n");
-    match &function.core.output {
-        Output::Scalar => text.push_str(&format!(
-            "{}\n\n",
-            parameter_details(&spec.outputs.fields()[0])
-        )),
-        Output::Struct(_) => {
+    match document.returns {
+        docs::Returns::Scalar(field) => text.push_str(&format!("{}\n\n", parameter_details(field))),
+        docs::Returns::Record { .. } => {
             let name = spec
                 .result_class()
                 .expect("record output has a result class");
             text.push_str(&format!("A `{}` value.\n\n", c_result_name(name)));
         }
     }
-    for note in &spec.documentation.notes {
+    for note in document.notes {
         admonition(&mut text, "note", note);
     }
-    for warning in &spec.documentation.warnings {
+    for warning in document.warnings {
         admonition(&mut text, "warning", warning);
     }
     Ok(text)
@@ -203,7 +213,7 @@ fn functions_index(functions: &[(&str, &CompiledFunction)]) -> String {
             function.core.name,
             slug,
             function_anchor(&function.core.name),
-            escape_table(&spec(function).public_api.summary),
+            escape_table(docs::for_function(spec(function)).summary),
         ));
     }
     text

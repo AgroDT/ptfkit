@@ -4,6 +4,7 @@ use anyhow::Result;
 use convert_case::{Boundary, Case, Casing};
 
 use crate::{
+    documentation::{self as docs, FunctionDocument, SourceDocument},
     model::{CompiledFunction, Function, Output, Parameter, Scope, Source},
     render::{Render, Writer},
 };
@@ -371,35 +372,43 @@ fn render_struct(
 }
 
 fn source_comment(source: &Source, scope: &Scope) -> Comment {
+    source_comment_from_document(docs::for_source(source, scope))
+}
+
+fn source_comment_from_document(document: SourceDocument<'_>) -> Comment {
     let mut lines = vec![
-        format!("@brief {}", source.summary),
+        format!("@brief {}", document.summary),
         String::new(),
         "@details Source publication:".to_owned(),
-        source.citation_apa.clone(),
+        document.reference.citation.into(),
     ];
-    if let Some(doi) = &source.doi {
+    if let Some(doi) = document.reference.doi {
         lines.push(format!("@see {} DOI: {}", doi.url, doi.identifier));
     }
-    if let Some(territory) = &scope.territory {
+    if let Some(territory) = document.territory {
         lines.extend([
             String::new(),
             "@remark Geographic scope:".to_owned(),
-            territory.clone(),
+            territory.into(),
         ]);
     }
-    if let Some(dataset) = &scope.dataset {
+    if let Some(dataset) = document.dataset {
         lines.extend([
             String::new(),
             "@remark Calibration dataset:".to_owned(),
-            dataset.clone(),
+            dataset.into(),
         ]);
     }
     Comment(lines)
 }
 
 fn function_comment(function: &Function) -> Comment {
-    let mut lines = vec![format!("@brief {}", function.public_api.summary)];
-    lines.extend(function.inputs.iter().map(|parameter| {
+    function_comment_from_document(docs::for_function(function))
+}
+
+fn function_comment_from_document(document: FunctionDocument<'_>) -> Comment {
+    let mut lines = vec![format!("@brief {}", document.summary)];
+    lines.extend(document.parameters.iter().map(|parameter| {
         format!(
             "@param {} {}",
             parameter.name,
@@ -407,7 +416,10 @@ fn function_comment(function: &Function) -> Comment {
         )
     }));
 
-    let outputs = function.outputs.fields();
+    let outputs = match document.returns {
+        docs::Returns::Scalar(field) => std::slice::from_ref(field),
+        docs::Returns::Record { fields, .. } => fields,
+    };
     if outputs.len() == 1 {
         lines.push(format!(
             "@return {}",
@@ -423,28 +435,21 @@ fn function_comment(function: &Function) -> Comment {
             )
         }));
     }
-    if let Some(territory) = &function.scope.territory {
+    if let Some(territory) = document.territory {
         lines.extend([
             String::new(),
             "@remark Geographic scope:".to_owned(),
-            territory.clone(),
+            territory.into(),
         ]);
     }
     lines.extend([
         String::new(),
         "@details Prediction target:".to_owned(),
-        function.scope.prediction_target.clone(),
+        document.remarks.prediction_target.into(),
     ]);
+    lines.extend(document.notes.iter().map(|note| format!("@note {note}")));
     lines.extend(
-        function
-            .documentation
-            .notes
-            .iter()
-            .map(|note| format!("@note {note}")),
-    );
-    lines.extend(
-        function
-            .documentation
+        document
             .warnings
             .iter()
             .map(|warning| format!("@warning {warning}")),

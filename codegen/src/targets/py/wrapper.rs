@@ -2,7 +2,10 @@ use std::collections::BTreeMap;
 
 use anyhow::{Result, bail};
 
-use crate::model::{CompiledFunction, Function, Parameter, PythonGeneration, Scope, Source};
+use crate::{
+    documentation::{self as docs, FunctionDocument},
+    model::{CompiledFunction, Function, Parameter, PythonGeneration, Scope, Source},
+};
 
 use super::{super::documentation, WRAPPER_HEADER, natural_sort_key};
 
@@ -221,22 +224,23 @@ fn view(resolved: &CompiledFunction) -> PythonFunction<'_> {
 }
 
 fn module_docstring(source: &Source, scope: &Scope) -> String {
+    let document = docs::for_source(source, scope);
     let mut lines = vec![
-        format!("r\"\"\"{}", source.summary),
+        format!("r\"\"\"{}", document.summary),
         String::new(),
         "Reference:".into(),
     ];
-    lines.extend(wrap_markdown_block(&source.citation_apa, "    "));
-    if let Some(doi) = &source.doi {
+    lines.extend(wrap_markdown_block(document.reference.citation, "    "));
+    if let Some(doi) = document.reference.doi {
         lines.extend(wrap_markdown_block(
             &format!("[DOI: {}]({})", doi.identifier, doi.url),
             "    ",
         ));
     }
-    if let Some(territory) = &scope.territory {
+    if let Some(territory) = document.territory {
         definition_list_block(&mut lines, "Territory", territory);
     }
-    if let Some(dataset) = &scope.dataset {
+    if let Some(dataset) = document.dataset {
         definition_list_block(&mut lines, "Dataset", dataset);
     }
     lines.push(String::new());
@@ -245,41 +249,42 @@ fn module_docstring(source: &Source, scope: &Scope) -> String {
 }
 
 fn function_docstring(function: &Function) -> String {
-    let mut arguments = function
-        .inputs
+    let document = docs::for_function(function);
+    function_docstring_from_document(document, function.result_class())
+}
+
+fn function_docstring_from_document(
+    document: FunctionDocument<'_>,
+    result_class: Option<&str>,
+) -> String {
+    let mut arguments = document
+        .parameters
         .iter()
         .map(parameter_documentation)
         .collect::<Vec<_>>();
     arguments.push("out: Optional output arrays for in-place calculation.".into());
-    let returns = if let Some(result_class) = function.result_class() {
+    let returns = if let Some(result_class) = result_class {
         vec![format!(
             "{result_class}: Results grouped by result attributes."
         )]
     } else {
-        function
-            .outputs
-            .fields()
-            .iter()
-            .map(parameter_documentation)
-            .collect()
+        match document.returns {
+            docs::Returns::Scalar(field) => vec![parameter_documentation(field)],
+            docs::Returns::Record { fields, .. } => {
+                fields.iter().map(parameter_documentation).collect()
+            }
+        }
     };
     let mut sections = vec![("Arguments", arguments), ("Returns", returns)];
-    if let Some(territory) = &function.scope.territory {
-        sections.push(("Territory", vec![territory.clone()]));
+    if let Some(territory) = document.territory {
+        sections.push(("Territory", vec![territory.into()]));
     }
     let models = [
-        function
-            .scope
+        document
             .models
             .h_theta
-            .as_ref()
             .map(|model| format!("$h(\\theta)$: {model}")),
-        function
-            .scope
-            .models
-            .k_h
-            .as_ref()
-            .map(|model| format!("$k(h)$: {model}")),
+        document.models.k_h.map(|model| format!("$k(h)$: {model}")),
     ]
     .into_iter()
     .flatten()
@@ -291,15 +296,15 @@ fn function_docstring(function: &Function) -> String {
         "Notes",
         std::iter::once(format!(
             "Prediction target: {}",
-            function.scope.prediction_target
+            document.remarks.prediction_target
         ))
-        .chain(function.documentation.notes.iter().cloned())
+        .chain(document.notes.iter().cloned())
         .collect(),
     ));
-    if !function.documentation.warnings.is_empty() {
-        sections.push(("Warning", function.documentation.warnings.clone()));
+    if !document.warnings.is_empty() {
+        sections.push(("Warning", document.warnings.to_vec()));
     }
-    render_docstring("    ", &function.public_api.summary, &sections, 4)
+    render_docstring("    ", document.summary, &sections, 4)
 }
 
 fn result_class_docstring(function: &Function) -> String {
