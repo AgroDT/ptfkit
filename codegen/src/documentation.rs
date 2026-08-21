@@ -93,6 +93,14 @@ pub(crate) fn for_function(function: &Function) -> FunctionDocument<'_> {
     }
 }
 
+pub(crate) fn parameter_details(parameter: &Parameter) -> String {
+    format!("{} ({})", parameter.description, parameter.unit)
+}
+
+pub(crate) fn parameter_documentation(parameter: &Parameter) -> String {
+    format!("{}: {}", parameter.name, parameter_details(parameter))
+}
+
 #[cfg(test)]
 mod tests {
     use crate::model::{

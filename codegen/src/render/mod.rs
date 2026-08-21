@@ -1,5 +1,8 @@
 use std::fmt::{self, Display, Write as _};
 
+pub(crate) mod c;
+pub(crate) mod markdown;
+
 /// Renders a structured value into a [`Writer`].
 pub(crate) trait Render {
     fn render(&self, writer: &mut Writer);
@@ -9,6 +12,7 @@ pub(crate) trait Render {
 pub(crate) struct Writer {
     contents: String,
     indentation: usize,
+    indent: &'static str,
     at_line_start: bool,
 }
 
@@ -17,10 +21,22 @@ impl Writer {
         Self {
             contents: String::new(),
             indentation: 0,
+            indent: "    ",
             at_line_start: true,
         }
     }
 
+    #[allow(dead_code)]
+    pub(crate) fn with_indent(mut self, indent: &'static str) -> Self {
+        self.indent = indent;
+        self
+    }
+
+    /// Writes a text fragment, adding indentation only at the start of its lines.
+    ///
+    /// Keep large static templates as single fragments. Use [`Self::line`] and
+    /// [`Self::indented`] for dynamic or nested structure; templates must not
+    /// include their own leading indentation for a surrounding block.
     pub(crate) fn write(&mut self, value: impl Display) {
         self.write_fmt(format_args!("{value}"))
             .expect("writing to a String cannot fail");
@@ -38,6 +54,7 @@ impl Writer {
         self.write("\n");
     }
 
+    /// Renders a nested block with one additional indentation level.
     pub(crate) fn indented(&mut self, render: impl FnOnce(&mut Self)) {
         self.indentation += 1;
         render(self);
@@ -54,7 +71,7 @@ impl fmt::Write for Writer {
         for part in text.split_inclusive('\n') {
             if self.at_line_start && part != "\n" {
                 for _ in 0..self.indentation {
-                    self.contents.push_str("    ");
+                    self.contents.push_str(self.indent);
                 }
             }
             self.contents.push_str(part);

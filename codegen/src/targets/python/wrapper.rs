@@ -5,13 +5,10 @@ use anyhow::{Result, bail};
 use crate::{
     documentation::{self as docs, FunctionDocument},
     model::{CompiledFunction, Function, Parameter, PythonGeneration, Scope, Source},
+    output::GeneratedFile,
 };
 
-use super::{
-    super::{GeneratedFile, documentation},
-    WRAPPER_HEADER, natural_sort_key,
-    syntax::Module,
-};
+use super::{WRAPPER_HEADER, natural_sort_key, syntax::Module};
 
 struct PythonFunction<'a> {
     name: &'a str,
@@ -130,12 +127,9 @@ fn module_source(
         });
     }
     module.blank_line();
-    module.write(module_docstring(source, scope));
-    module.blank_line();
-    module.future_annotations();
-    module.blank_line();
-    module.import("typing", typing_imports);
-    module.blank_line();
+    module.write(format_args!("{}\n\n", module_docstring(source, scope)));
+    module.write("from __future__ import annotations\n\n");
+    module.write(format_args!("from typing import {typing_imports}\n\n"));
     module.block(
         "from ptfkit._ptfkit import (",
         |writer| {
@@ -148,8 +142,7 @@ fn module_source(
         },
         ")",
     );
-    module.blank_line();
-    module.blank_line();
+    module.write("\n\n");
     module.line("if TYPE_CHECKING:");
     module.indented(|writer| {
         writer.line("from numpy import floating");
@@ -356,7 +349,7 @@ fn result_class_docstring(function: &Function) -> String {
 }
 
 fn parameter_documentation(parameter: &Parameter) -> String {
-    documentation::parameter_documentation(parameter)
+    docs::parameter_documentation(parameter)
 }
 
 fn definition_list_block(lines: &mut Vec<String>, name: &str, text: &str) {

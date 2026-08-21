@@ -1,8 +1,11 @@
 use std::collections::BTreeMap;
 
-use crate::model::{CompiledFunction, Function, Outputs, PythonGeneration};
+use crate::{
+    model::{CompiledFunction, Function, Outputs, PythonGeneration},
+    output::GeneratedFile,
+};
 
-use super::{super::GeneratedFile, WRAPPER_HEADER, natural_sort_key, syntax::Module};
+use super::{WRAPPER_HEADER, natural_sort_key, syntax::Module};
 
 pub(super) fn render(functions: &[CompiledFunction]) -> Vec<GeneratedFile> {
     let mut modules: BTreeMap<String, Vec<&CompiledFunction>> = BTreeMap::new();
@@ -40,11 +43,7 @@ fn module_source(slug: &str, functions: &[&CompiledFunction]) -> String {
     imports.sort_by_key(|name| natural_sort_key(name));
     imports.dedup();
     let mut module = Module::new(WRAPPER_HEADER);
-    module.line("");
-    module.future_annotations();
-    module.blank_line();
-    module.line("import pytest");
-    module.blank_line();
+    module.write("\nfrom __future__ import annotations\n\nimport pytest\n\n");
     module.import("_helpers", "prepare_vector_case");
     module.import(&format!("ptfkit.{slug}"), imports.join(", "));
     module.blank_line();
@@ -72,9 +71,7 @@ fn function_source(module: &mut Module, function: &Function) {
             float(case.atol),
         ));
     }
-    module.line("]");
-    module.blank_line();
-    module.blank_line();
+    module.write("]\n\n\n");
     let name = &function.public_api.name;
     module.line(format_args!(
         "@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), {cases_name})"
@@ -82,8 +79,7 @@ fn function_source(module: &mut Module, function: &Function) {
     module.line(format_args!(
         "def test_{name}_golden(inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float):"
     ));
-    module.line(format_args!("    result = {name}(**inputs)"));
-    module.line("");
+    module.write(format_args!("    result = {name}(**inputs)\n\n"));
     module.line(expected_assertion(function, "    ", ""));
     if !function.golden_tests.is_empty() {
         vector_test_source(module, function, &cases_name);
@@ -106,13 +102,9 @@ fn vector_test_source(module: &mut Module, function: &Function, cases_name: &str
     module.blank_line();
     module.blank_line();
     module.line(format_args!("def test_{name}_array():"));
-    module.line(format_args!(
-        "    inputs, expected, rtol, atol, _out = prepare_vector_case({cases_name}{result_cls})"
+    module.write(format_args!(
+        "    inputs, expected, rtol, atol, _out = prepare_vector_case({cases_name}{result_cls})\n    result = {name}(**inputs, out=None)\n{array_assertion}\n\n\n"
     ));
-    module.line(format_args!("    result = {name}(**inputs, out=None)"));
-    module.line(&array_assertion);
-    module.blank_line();
-    module.blank_line();
     module.line(format_args!("def test_{name}_out():"));
     module.line(format_args!(
         "    inputs, expected, rtol, atol, out = prepare_vector_case({cases_name}{result_cls})"

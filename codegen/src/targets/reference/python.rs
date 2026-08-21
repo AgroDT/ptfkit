@@ -1,15 +1,11 @@
 use crate::{
     model::Entry,
-    render::{Render, Writer},
+    output::GeneratedFile,
+    render::{Render, Writer, markdown},
+    targets::python::natural_sort_key,
 };
 
-use super::{
-    GeneratedFile,
-    documentation::{self as markdown},
-    py::natural_sort_key,
-};
-
-pub(super) fn render(entries: &[Entry]) -> Vec<GeneratedFile> {
+pub(crate) fn render(entries: &[Entry]) -> Vec<GeneratedFile> {
     let mut entries = entries.iter().collect::<Vec<_>>();
     entries.sort_by_key(|entry| natural_sort_key(&entry.slug));
 
@@ -34,12 +30,9 @@ impl Render for IndexPage<'_> {
         markdown::generated_frontmatter(writer, |writer| {
             writer.line("title: Python API reference");
         });
-        writer.line("# Python API reference");
-        writer.blank_line();
-        writer.line("ptfkit's Python API is organized around public source modules.");
-        writer.blank_line();
-        writer.line("## Modules");
-        writer.blank_line();
+        writer.write(
+            "# Python API reference\n\nptfkit's Python API is organized around public source modules.\n\n## Modules\n\n",
+        );
         for entry in self.entries {
             ModuleReference { entry }.render(writer);
         }

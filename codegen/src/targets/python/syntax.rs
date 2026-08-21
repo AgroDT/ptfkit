@@ -28,10 +28,6 @@ impl Module {
         self.writer.write(value);
     }
 
-    pub(super) fn future_annotations(&mut self) {
-        self.line("from __future__ import annotations");
-    }
-
     pub(super) fn import(&mut self, module: &str, names: impl Display) {
         self.line(format_args!("from {module} import {names}"));
     }

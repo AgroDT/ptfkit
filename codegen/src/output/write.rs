@@ -19,9 +19,9 @@ struct StagedWrite {
 
 static TEMPORARY_SEQUENCE: AtomicU64 = AtomicU64::new(0);
 
-pub(super) struct GeneratedTree(BTreeMap<PathBuf, Vec<u8>>);
+pub(crate) struct GeneratedTree(BTreeMap<PathBuf, Vec<u8>>);
 
-pub(super) fn snapshot_generated(root: &Path) -> Result<GeneratedTree> {
+pub(crate) fn snapshot_generated(root: &Path) -> Result<GeneratedTree> {
     let mut files = BTreeMap::new();
     for layout in LAYOUTS {
         collect_generated(
@@ -34,7 +34,7 @@ pub(super) fn snapshot_generated(root: &Path) -> Result<GeneratedTree> {
     Ok(GeneratedTree(files))
 }
 
-pub(super) fn assert_unchanged(root: &Path, before: GeneratedTree) -> Result<()> {
+pub(crate) fn assert_unchanged(root: &Path, before: GeneratedTree) -> Result<()> {
     let after = snapshot_generated(root)?;
     if let Some(report) = drift_report(&before.0, &after.0) {
         bail!("generated output drift after regeneration:\n{report}")
@@ -112,7 +112,7 @@ fn append_paths(report: &mut String, label: &str, paths: &[&PathBuf]) {
     }
 }
 
-pub(super) fn commit(root: &Path, outputs: &[Output]) -> Result<()> {
+pub(crate) fn commit(root: &Path, outputs: &[Output]) -> Result<()> {
     let staged = stage(root, outputs)?;
     if let Err(error) = format(root, &staged) {
         remove_temporary(&staged);
@@ -212,9 +212,9 @@ fn remove_obsolete(directory: &Path, expected: &BTreeSet<PathBuf>, header: &str)
 
 fn is_generated(contents: &[u8], header: &str) -> bool {
     contents.starts_with(header.as_bytes())
-        || (header == super::documentation::HEADER
+        || (header == super::MARKDOWN_HEADER
             && (contents.strip_prefix(b"---\n").is_some_and(|contents| {
-                contents.starts_with(super::documentation::FRONTMATTER_HEADER.as_bytes())
+                contents.starts_with(crate::render::markdown::FRONTMATTER_HEADER.as_bytes())
             }) || (contents.starts_with(b"---\n")
                 && contents
                     .windows(header.len())
@@ -311,7 +311,10 @@ mod tests {
     use std::{collections::BTreeMap, fs, path::Path};
 
     use super::*;
-    use crate::targets::{GeneratedFile, Output, PYTHON_DOCUMENTATION, documentation::HEADER};
+    use crate::{
+        output::{GeneratedFile, Output, REFERENCE_PYTHON},
+        render::markdown::HEADER,
+    };
 
     fn temporary_root(label: &str) -> PathBuf {
         std::env::temp_dir().join(format!(
@@ -339,7 +342,7 @@ mod tests {
         .expect("write C page");
 
         let output = Output::new(
-            &PYTHON_DOCUMENTATION,
+            &REFERENCE_PYTHON,
             vec![GeneratedFile::new(
                 "index.md".into(),
                 format!("{HEADER}# Python\n"),
@@ -363,7 +366,7 @@ mod tests {
         assert!(is_generated(
             format!(
                 "---\n{}title: ptfkit.test\n---\n",
-                super::super::documentation::FRONTMATTER_HEADER
+                crate::render::markdown::FRONTMATTER_HEADER
             )
             .as_bytes(),
             HEADER,

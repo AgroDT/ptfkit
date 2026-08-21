@@ -3,12 +3,12 @@ use std::fmt;
 use crate::semantic::{BinaryOp, Expr, MathFunction, Reference, UnaryOp, Variable};
 
 #[derive(Clone, Copy)]
-pub(super) enum Dialect {
+pub(crate) enum Dialect {
     C,
     Cpp,
 }
 
-pub(super) fn expression<'a>(
+pub(crate) fn expression<'a>(
     value: &'a Expr,
     inputs: &'a [String],
     variables: &'a [Variable],
@@ -22,7 +22,7 @@ pub(super) fn expression<'a>(
     }
 }
 
-pub(super) fn float_literal(lexeme: &str) -> String {
+pub(crate) fn float_literal(lexeme: &str) -> String {
     if lexeme.contains(['.', 'e', 'E']) {
         lexeme.to_owned()
     } else {
@@ -30,11 +30,11 @@ pub(super) fn float_literal(lexeme: &str) -> String {
     }
 }
 
-pub(super) fn test_float_literal(value: f64) -> String {
+pub(crate) fn test_float_literal(value: f64) -> String {
     float_literal(&value.to_string())
 }
 
-pub(super) fn requires_math(expression: &Expr) -> bool {
+pub(crate) fn requires_math(expression: &Expr) -> bool {
     match expression {
         Expr::Number(_) | Expr::Reference(_) => false,
         Expr::Unary { operand, .. } => requires_math(operand),

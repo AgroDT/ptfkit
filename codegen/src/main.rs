@@ -5,9 +5,11 @@ use std::{path::Path, process::ExitCode};
 use anyhow::{Context, Result, bail};
 use clap::{Parser, Subcommand};
 
+mod compile;
 mod documentation;
 mod formula;
 mod model;
+mod output;
 mod render;
 mod semantic;
 mod specs;
