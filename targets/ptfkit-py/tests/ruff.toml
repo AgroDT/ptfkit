@@ -1,4 +1,0 @@
-extend = "../../../ruff.toml"
-
-[lint]
-ignore = ["ANN201", "PLR2004", "S101"]

@@ -1,0 +1,7 @@
+extend = "../../ruff.toml"
+
+[lint.isort]
+known-first-party = ["ptfkit", "_helpers"]
+
+[lint.per-file-ignores]
+"tests/**.py" = ["ANN201", "INP001", "PLR2004", "S101"]

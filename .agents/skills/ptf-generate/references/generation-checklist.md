@@ -19,15 +19,15 @@ Run the relevant project gates after
 `cargo run --manifest-path codegen/Cargo.toml -- generate`:
 
 ```sh
-just codegen::format
-just codegen::lint
-just codegen::test
-just rust::format
-just rust::lint
-just rust::test
-just python::test
-just python::lint
-just python::format
+mise run codegen:format
+mise run codegen:lint
+mise run codegen:test
+mise run rust:format
+mise run rust:lint
+mise run rust:test
+mise run python:format
+mise run python:lint
+mise run python:test
 ```
 
 Run `cargo run --manifest-path codegen/Cargo.toml -- generate` a second time and

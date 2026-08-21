@@ -1,0 +1,26 @@
+["docs:build"]
+description = "Build the documentation site with strict validation"
+dir = "docs"
+run = "uv run mkdocs build --strict"
+
+["docs:serve"]
+description = "Serve the documentation site with strict validation"
+dir = "docs"
+run = "uv run mkdocs serve --strict"
+
+["docs:lint"]
+description = "Run Ruff lint checks for documentation Python sources"
+run = "ruff check docs"
+
+["docs:format"]
+description = "Check documentation Python source formatting"
+run = "ruff format docs --check"
+
+["docs:typecheck"]
+description = "Run ty for documentation Python sources"
+dir = "docs"
+run = "uv run --no-sync ty check"
+
+["docs:verify"]
+description = "Run documentation quality checks and build the site"
+depends = ["docs:lint", "docs:format", "docs:typecheck", "docs:build"]

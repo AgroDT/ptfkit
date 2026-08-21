@@ -1,0 +1,53 @@
+[settings]
+lockfile = true
+
+[tools]
+rust = { version = "stable", components = ["rustfmt", "clippy"] }
+uv = "0.12.3"
+cmake = "4.4.2"
+ninja = "1.13.2"
+clang = "22.1.8"
+ruff = "0.16.1"
+ty = "0.0.71"
+prek = "0.4.12"
+
+[task_config]
+includes = [
+    "docs/tasks.toml",
+    "codegen/tasks.toml",
+    "targets/ptfkit-native/tasks.toml",
+    "targets/ptfkit-py/tasks.toml",
+    "targets/ptfkit-rs/tasks.toml",
+]
+
+[tasks.validate]
+description = "Validate all PTF specifications without generating targets"
+dir = "codegen"
+run = "cargo run validate"
+
+[tasks.generate]
+description = "Generate target sources from validated PTF specifications"
+dir = "codegen"
+run = "cargo run generate"
+
+[tasks.generate-check]
+description = "Regenerate codegen-owned files and fail on output drift"
+dir = "codegen"
+run = "cargo run check-generated"
+
+[tasks.version]
+description = "Set the package version and refresh dependent lockfiles"
+usage = 'arg "<version>" help="Package version"'
+run = [
+  'cargo run --manifest-path codegen/Cargo.toml -- version "{{ usage.version }}"',
+  "cargo check --manifest-path targets/ptfkit-rs/Cargo.toml --quiet",
+  "uv lock --project targets/ptfkit-py",
+]
+
+[tasks.test]
+description = "Run the complete target test suite"
+depends = ["codegen:test", "native:test", "python:test", "rust:test"]
+
+[tasks.verify]
+description = "Run all component verification suites"
+depends = ["codegen:verify", "native:verify", "python:verify", "rust:verify"]

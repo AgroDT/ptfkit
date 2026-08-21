@@ -1,0 +1,53 @@
+["python:sync"]
+description = "Synchronize the locked Python development environment"
+dir = "targets/ptfkit-py"
+run = "uv sync --frozen --all-groups"
+
+["python:lock"]
+description = "Verify that the Python lockfile is current"
+dir = "targets/ptfkit-py"
+run = "uv lock --check"
+
+["python:build"]
+description = "Build Python source and wheel distributions"
+dir = "targets/ptfkit-py"
+run = "uv build"
+
+["python:test"]
+description = "Run the Python test suite"
+dir = "targets/ptfkit-py"
+run = "uv run --no-sync pytest"
+
+["python:lint"]
+description = "Run Ruff lint checks for the Python target"
+dir = "targets/ptfkit-py"
+run = "ruff check"
+
+["python:lint-fix"]
+description = "Apply safe Ruff lint fixes for the Python target"
+dir = "targets/ptfkit-py"
+run = "ruff check --fix"
+
+["python:format"]
+description = "Check Python target formatting"
+dir = "targets/ptfkit-py"
+run = "ruff format --check"
+
+["python:format-fix"]
+description = "Format the Python target"
+dir = "targets/ptfkit-py"
+run = "ruff format"
+
+["python:typecheck"]
+description = "Run ty for the Python target"
+dir = "targets/ptfkit-py"
+run = "ty check"
+
+["python:typecheck-fix"]
+description = "Apply ty fixes for the Python target"
+dir = "targets/ptfkit-py"
+run = "ty check --fix"
+
+["python:verify"]
+description = "Run all Python target quality checks"
+depends = ["python:lint", "python:format", "python:typecheck", "python:test"]

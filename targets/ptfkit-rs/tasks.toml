@@ -1,0 +1,18 @@
+["rust:lint"]
+description = "Run Clippy for the Rust target"
+dir = "targets/ptfkit-rs"
+run = "cargo clippy --all-targets -- -D warnings"
+
+["rust:format"]
+description = "Check Rust target formatting"
+dir = "targets/ptfkit-rs"
+run = "cargo fmt --all --check"
+
+["rust:test"]
+description = "Run the Rust target test suite"
+dir = "targets/ptfkit-rs"
+run = "cargo test"
+
+["rust:verify"]
+description = "Run all Rust target quality checks"
+depends = ["rust:format", "rust:lint", "rust:test"]

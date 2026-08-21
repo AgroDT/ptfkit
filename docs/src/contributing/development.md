@@ -24,11 +24,25 @@ the [PTF source specification guide](../ptf-catalog/index.md).
 
 ## Toolchains and dependencies
 
-Install Rust using your preferred method or via [rustup](https://rustup.rs/),
-and install [`uv`](https://docs.astral.sh/uv/getting-started/installation/).
-We also recommend to install [`just`](https://just.systems/) for running
-repository commands. The native target also requires CMake and a
-C11/C++20 compiler.
+Install [Mise](https://mise.jdx.dev/getting-started/) and activate it in your
+shell. `mise.toml` is the source of truth for the pinned Rust, uv, CMake,
+Ninja, Clang, Ruff, ty, and prek toolchains; `mise.lock` records their resolved
+downloads and checksums. The native target requires the C11/C++20 compiler
+provided by Clang.
+
+From the repository root, trust the repository configuration and install the
+pinned toolchains:
+
+```sh
+mise trust
+mise install
+```
+
+Install the Git hook shim once the `prek` toolchain is available:
+
+```sh
+prek install
+```
 
 Use `cargo` to manage dependencies for the codegen and Rust target, and use `uv`
 to manage the Python environment. Add, update, or remove dependencies through
@@ -38,20 +52,34 @@ these tools instead of manually editing dependency lists in `pyproject.toml` or
 Prepare the Python environment with:
 
 ```sh
-just python::sync
+mise run python:sync
 ```
+
+List the available project tasks with `mise tasks ls`, inspect one with
+`mise tasks info <task>`, and run one with `mise run <task>`. For example:
+
+```sh
+mise tasks ls
+mise run python:test
+```
+
+To update a toolchain, change its exact version in `mise.toml`, regenerate the
+corresponding lock entry with `mise lock <tool>`, and install it locally with
+`mise install <tool>`. Commit both `mise.toml` and `mise.lock`; do not edit the
+lockfile by hand. Use `mise lock` without a tool name to refresh every existing
+lock entry.
 
 ## Specifications and generated targets
 
 The [PTF source specification guide](../ptf-catalog/index.md) explains the
 scientific information represented by each YAML file. The JSON Schema and
-`just validate` define the complete structural and semantic contract.
+`mise run validate` define the complete structural and semantic contract.
 
 Do not edit generated target sources, tests, the PTF catalog, or generated API
 reference pages directly. Regenerate every target and the PTF catalog with:
 
 ```sh
-just generate
+mise run generate
 ```
 
 A second generation run must leave the working tree unchanged.
@@ -59,7 +87,7 @@ A second generation run must leave the working tree unchanged.
 To check this across every codegen-owned target family, run:
 
 ```sh
-just check-generated
+mise run check-generated
 ```
 
 The command regenerates the targets through the normal pipeline and reports
@@ -104,20 +132,20 @@ Use the smallest relevant checks while iterating. Before submitting changes that
 affect multiple targets, run the complete target verification suite:
 
 ```sh
-just verify
+mise run verify
 ```
 
 For a narrower change, run the component verification suite:
 
 ```sh
-just codegen::verify
-just rust::verify
-just native::verify
-just python::verify
+mise run codegen:verify
+mise run rust:verify
+mise run native:verify
+mise run python:verify
 ```
 
 Each component `verify` runs all of its format, lint, type-checking, and test
-checks. `just test` runs only the target test suites together. Python tests
+checks. `mise run test` runs only the target test suites together. Python tests
 build the local native extension before exercising the public API.
 
 ## Documentation
@@ -125,11 +153,11 @@ build the local native extension before exercising the public API.
 Build or serve the site through the locked MkDocs environment:
 
 ```sh
-just docs build
-just docs serve
+mise run docs:build
+mise run docs:serve
 ```
 
-Run `just generate` before building documentation if specifications or codegen
+Run `mise run generate` before building documentation if specifications or codegen
 changed.
 
 The MkDocs configuration is `docs/mkdocs.yml`; it renders `docs/src/` into
