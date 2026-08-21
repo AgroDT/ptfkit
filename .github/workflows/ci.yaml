@@ -1,4 +1,4 @@
-name: PR Checks
+name: CI
 
 on:
   push:
@@ -215,7 +215,7 @@ jobs:
         run: uv --directory=docs run mkdocs build --strict --config-file mkdocs.yml
 
   summary:
-    name: PR Checks Summary
+    name: CI Summary
     runs-on: ubuntu-latest
     if: always()
     needs: [code-quality, docs, native, pytest]
