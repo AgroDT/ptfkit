@@ -29,14 +29,18 @@ pub(super) fn group_by_source(
     sources
 }
 
-pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> Result<()> {
+pub(crate) fn run(
+    root: &Path,
+    entries: Vec<Entry>,
+    usda_texture: &crate::usda_texture::Specification,
+) -> Result<()> {
     let catalog = catalog::render(&entries);
     let reference_python = reference::python::render(&entries);
     let compiled = compile::functions(entries)?;
     let reference_c = reference::c::render(&compiled)?;
     let reference_cpp = reference::cpp::render(&compiled)?;
     let rust = rust::render(&compiled)?;
-    let python = python::render(&compiled)?;
+    let python = python::render(&compiled, usda_texture)?;
     let native = native::render(&compiled)?;
 
     output::commit(
@@ -60,8 +64,12 @@ pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> Result<()> {
 }
 
 /// Regenerate every target and fail when that changes a codegen-owned file.
-pub(crate) fn check_generated(root: &Path, entries: Vec<Entry>) -> Result<()> {
+pub(crate) fn check_generated(
+    root: &Path,
+    entries: Vec<Entry>,
+    usda_texture: &crate::usda_texture::Specification,
+) -> Result<()> {
     let before = output::snapshot_generated(root)?;
-    run(root, entries)?;
+    run(root, entries, usda_texture)?;
     output::assert_unchanged(root, before)
 }

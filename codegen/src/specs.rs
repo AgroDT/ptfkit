@@ -271,6 +271,15 @@ mod tests {
         .unwrap();
     }
 
+    fn specification_with_adapter(adapter: &str) -> String {
+        specification(
+            "adapter",
+            "    implementation:\n      variables: [{name: value, expr: x}]\n",
+            "",
+        )
+        .replace("    inputs:\n", &format!("{adapter}    inputs:\n"))
+    }
+
     #[test]
     fn rejects_a_code_generating_function_without_implementation() {
         let root = fixture_root("mixed");
@@ -454,5 +463,88 @@ mod tests {
         };
 
         assert!(error.contains("filename stem must be an APA-style slug"));
+    }
+
+    #[test]
+    fn accepts_supported_unsupported_unknown_and_absent_usda_adapters() {
+        for (label, adapter) in [
+            (
+                "supported",
+                "    input_adapters:\n      usda_texture:\n        status: supported\n        inputs: {sand: x}\n        evidence: The source defines x as USDA total sand by mass of fine earth.\n",
+            ),
+            (
+                "unsupported",
+                "    input_adapters:\n      usda_texture:\n        status: unsupported\n        evidence: The source uses incompatible particle-size boundaries.\n",
+            ),
+            (
+                "unknown",
+                "    input_adapters:\n      usda_texture:\n        status: unknown\n        inputs: {sand: x}\n        evidence: The source does not report the sand particle-size boundary.\n",
+            ),
+            ("absent", ""),
+        ] {
+            let root = fixture_root(label);
+            fs::write(
+                root.join("specs/functions/adapter.yaml"),
+                specification_with_adapter(adapter),
+            )
+            .unwrap();
+            let entries = load(&root).expect("adapter fixture must satisfy the schema");
+            assert!(crate::validate::specifications(&entries).is_empty());
+            fs::remove_dir_all(root).unwrap();
+        }
+    }
+
+    #[test]
+    fn schema_rejects_supported_adapter_without_evidence_or_mapped_input() {
+        for (label, adapter, expected) in [
+            (
+                "no-evidence",
+                "    input_adapters:\n      usda_texture:\n        status: supported\n        inputs: {sand: x}\n",
+                "evidence",
+            ),
+            (
+                "no-mapping",
+                "    input_adapters:\n      usda_texture:\n        status: supported\n        inputs: {}\n        evidence: Explicit USDA definitions are reported.\n",
+                "not valid under any",
+            ),
+        ] {
+            let root = fixture_root(label);
+            fs::write(
+                root.join("specs/functions/adapter.yaml"),
+                specification_with_adapter(adapter),
+            )
+            .unwrap();
+            let error = load(&root)
+                .expect_err("invalid adapter must fail")
+                .to_string();
+            assert!(error.contains(expected), "{error}");
+            fs::remove_dir_all(root).unwrap();
+        }
+    }
+
+    #[test]
+    fn semantic_validation_rejects_unknown_and_duplicate_mapped_inputs() {
+        for (label, mapping, expected) in [
+            ("missing", "{sand: missing}", "is not declared"),
+            (
+                "duplicate",
+                "{sand: x, silt: x}",
+                "mapped to multiple texture roles",
+            ),
+        ] {
+            let root = fixture_root(label);
+            let adapter = format!(
+                "    input_adapters:\n      usda_texture:\n        status: unknown\n        inputs: {mapping}\n        evidence: Particle-size compatibility is not reported.\n"
+            );
+            fs::write(
+                root.join("specs/functions/adapter.yaml"),
+                specification_with_adapter(&adapter),
+            )
+            .unwrap();
+            let entries = load(&root).expect("fixture must satisfy structural schema");
+            let errors = crate::validate::specifications(&entries).join("\n");
+            assert!(errors.contains(expected), "{errors}");
+            fs::remove_dir_all(root).unwrap();
+        }
     }
 }

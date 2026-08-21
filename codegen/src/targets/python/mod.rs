@@ -17,7 +17,10 @@ pub(super) struct Output {
     pub(super) tests: Vec<GeneratedFile>,
 }
 
-pub(super) fn render(functions: &[CompiledFunction]) -> anyhow::Result<Output> {
+pub(super) fn render(
+    functions: &[CompiledFunction],
+    usda_texture: &crate::usda_texture::Specification,
+) -> anyhow::Result<Output> {
     Ok(Output {
         extension: extension::render(functions)?,
         wrappers: {
@@ -26,9 +29,14 @@ pub(super) fn render(functions: &[CompiledFunction]) -> anyhow::Result<Output> {
                 "ptfkit/_ptfkit.pyi".into(),
                 stub::render(functions),
             ));
+            wrappers.push(crate::usda_texture::render_module(usda_texture));
             wrappers
         },
-        tests: test::render(functions),
+        tests: {
+            let mut tests = test::render(functions);
+            tests.push(crate::usda_texture::render_tests(usda_texture));
+            tests
+        },
     })
 }
 

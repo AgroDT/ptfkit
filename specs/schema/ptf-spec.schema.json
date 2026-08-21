@@ -239,6 +239,7 @@
           }
         },
         "scope": { "$ref": "#/$defs/functionScope" },
+        "input_adapters": { "$ref": "#/$defs/inputAdapters" },
         "inputs": {
           "type": "array",
           "minItems": 1,
@@ -272,6 +273,49 @@
           }
         },
         "implementation": { "$ref": "#/$defs/implementation" }
+      }
+    },
+    "textureInputMapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sand": { "$ref": "#/$defs/stringOrNull" },
+        "silt": { "$ref": "#/$defs/stringOrNull" },
+        "clay": { "$ref": "#/$defs/stringOrNull" }
+      }
+    },
+    "usdaTextureAdapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "evidence"],
+      "properties": {
+        "status": { "enum": ["supported", "unsupported", "unknown"] },
+        "inputs": { "$ref": "#/$defs/textureInputMapping" },
+        "evidence": { "type": "string", "minLength": 1 }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "supported" } }, "required": ["status"] },
+          "then": {
+            "required": ["inputs"],
+            "properties": {
+              "inputs": {
+                "anyOf": [
+                  { "required": ["sand"], "properties": { "sand": { "type": "string", "minLength": 1 } } },
+                  { "required": ["silt"], "properties": { "silt": { "type": "string", "minLength": 1 } } },
+                  { "required": ["clay"], "properties": { "clay": { "type": "string", "minLength": 1 } } }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "inputAdapters": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "usda_texture": { "$ref": "#/$defs/usdaTextureAdapter" }
       }
     }
   }

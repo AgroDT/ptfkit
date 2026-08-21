@@ -3,7 +3,7 @@
 //! Targets choose their own section ordering and markup. This module only
 //! describes the information they have available to render.
 
-use crate::model::{Function, Outputs, Parameter, Scope, Source};
+use crate::model::{Function, InputAdapters, Outputs, Parameter, Scope, Source};
 
 #[derive(Clone, Copy, Debug)]
 pub(crate) struct SourceDocument<'a> {
@@ -35,6 +35,7 @@ pub(crate) struct FunctionDocument<'a> {
     pub(crate) remarks: Remarks<'a>,
     pub(crate) notes: &'a [String],
     pub(crate) warnings: &'a [String],
+    pub(crate) input_adapters: Option<&'a InputAdapters>,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -90,6 +91,7 @@ pub(crate) fn for_function(function: &Function) -> FunctionDocument<'_> {
         },
         notes: &function.documentation.notes,
         warnings: &function.documentation.warnings,
+        input_adapters: function.input_adapters.as_ref(),
     }
 }
 
@@ -133,6 +135,7 @@ mod tests {
                 prediction_target: "Test property.".into(),
                 models: Models::default(),
             },
+            input_adapters: None,
             inputs: Vec::new(),
             outputs: Outputs::Scalar {
                 field: parameter("result"),
@@ -169,6 +172,7 @@ mod tests {
                     k_h: Some("Conductivity model.".into()),
                 },
             },
+            input_adapters: None,
             inputs: vec![parameter("sand")],
             outputs: Outputs::Record {
                 name: "TestResult".into(),
