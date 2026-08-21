@@ -1,0 +1,360 @@
+source:
+  summary: Oosterveld and Chang (1980), soil-moisture retention from texture and depth.
+  citation_apa: >-
+    Oosterveld, M., & Chang, C. (1980). Empirical relations between laboratory
+    determinations of soil texture and moisture retention. Canadian Agricultural
+    Engineering, 22, 149-151.
+  doi: null
+scope:
+  territory: Southern Alberta, Canada
+  dataset: >-
+    1,137 pressure-plate analyses on 298 soil samples from the Lethbridge Research
+    Station laboratory; the field-capacity tension regression used 134 samples.
+$defs:
+  clay:
+    name: clay
+    symbol: C
+    unit: '% mass'
+    domain: null
+    description: Clay content in percent by weight.
+  clay_field_capacity:
+    name: clay
+    symbol: C
+    unit: '% mass'
+    domain: 2 <= value <= 72
+    description: >-
+      Clay content in percent by weight; the field-capacity tension experiment
+      covered 2% to 72% clay.
+  sand:
+    name: sand
+    symbol: S
+    unit: '% mass'
+    domain: null
+    description: Sand content in percent by weight.
+  mean_depth:
+    name: mean_depth
+    symbol: D
+    unit: cm
+    domain: 8 <= value <= 180
+    description: Mean depth of the soil sample.
+  tension:
+    name: tension
+    symbol: T
+    unit: kPa
+    domain: 10 <= value <= 1500
+    description: Soil-moisture tension.
+functions:
+  - name: calc_ptf_oosterveld1980_field_capacity_tension
+    status: implemented
+    public_api:
+      name: calc_ptf_oosterveld1980_field_capacity_tension
+      result_class: null
+      summary: Estimate field-capacity tension from clay content.
+    scope:
+      prediction_target: >-
+        Tension at which pressure-plate moisture content equals field capacity
+        determined by the cylinder method.
+      models:
+        h_theta: Field-capacity tension point estimate
+        k_h: null
+    inputs:
+      - $ref: "#/$defs/clay_field_capacity"
+    outputs:
+      type: scalar
+      name: field_capacity_tension
+      symbol: T_Pr
+      unit: kPa
+      domain: value > 0
+      description: Predicted tension corresponding to cylinder-method field capacity.
+    golden_tests:
+      - id: table_1_loamy_sand
+        inputs:
+          clay: 6.6
+        expected:
+          field_capacity_tension: 11.8540994164288
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: >-
+          Direct evaluation of Equation 1; Table I reports the value rounded to
+          11.8 kPa.
+    edge_cases:
+      - id: nan_clay
+        inputs:
+          clay: .nan
+        expected_behavior: Propagate NaN to the output.
+        notes: Reviewed IEEE-754 and NumPy-compatible numeric policy.
+    documentation:
+      notes:
+        - Equation 1 reports r = 0.67 and n = 134.
+      warnings: []
+    implementation:
+      variables:
+        - name: field_capacity_tension
+          expr: 5.356 * clay ^ 0.421
+
+  - name: calc_ptf_oosterveld1980_retention
+    status: implemented
+    public_api:
+      name: calc_ptf_oosterveld1980_retention
+      result_class: null
+      summary: Estimate gravimetric soil-moisture content from texture, depth, and tension.
+    scope:
+      prediction_target: Gravimetric soil-moisture content at a specified tension.
+      models:
+        h_theta: Empirical power-law moisture-retention relation
+        k_h: null
+    inputs:
+      - $ref: "#/$defs/clay"
+      - $ref: "#/$defs/sand"
+      - $ref: "#/$defs/mean_depth"
+      - $ref: "#/$defs/tension"
+    outputs:
+      type: scalar
+      name: moisture_content
+      symbol: theta
+      unit: '% mass'
+      domain: null
+      description: Predicted soil-moisture content in percent by weight.
+    golden_tests:
+      - id: table_1_loamy_sand_inputs
+        inputs:
+          clay: 6.6
+          sand: 86.3
+          mean_depth: 105
+          tension: 11.8
+        expected:
+          moisture_content: 8.2782468100413
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: >-
+          Direct evaluation of the corrected Equation 2 at the Table I loamy-sand
+          inputs and its rounded field-capacity tension. Table I instead reports
+          the separate Equation 3 field-capacity prediction.
+    edge_cases:
+      - id: nan_tension
+        inputs:
+          clay: 6.6
+          sand: 86.3
+          mean_depth: 105
+          tension: .nan
+        expected_behavior: Propagate NaN to the output.
+        notes: Reviewed IEEE-754 and NumPy-compatible numeric policy.
+    documentation:
+      notes:
+        - Equation 2 reports r = 0.96 and n = 1,137.
+      warnings:
+        - The paper reports slight inaccuracy at very high clay content and high tension.
+    implementation:
+      variables:
+        - name: moisture_content
+          expr: (35.367 + 0.644 * clay - 0.251 * sand - 0.045 * mean_depth) * tension ^ (-0.190)
+
+  - name: calc_ptf_oosterveld1980_field_capacity
+    status: implemented
+    public_api:
+      name: calc_ptf_oosterveld1980_field_capacity
+      result_class: null
+      summary: Estimate gravimetric soil-moisture content at field capacity.
+    scope:
+      prediction_target: Gravimetric soil-moisture content at field capacity.
+      models:
+        h_theta: Field-capacity point estimate derived from Equations 1 and 2
+        k_h: null
+    inputs:
+      - $ref: "#/$defs/clay_field_capacity"
+      - $ref: "#/$defs/sand"
+      - $ref: "#/$defs/mean_depth"
+    outputs:
+      type: scalar
+      name: field_capacity_moisture
+      symbol: theta_fc
+      unit: '% mass'
+      domain: null
+      description: Predicted soil-moisture content at field capacity in percent by weight.
+    golden_tests:
+      - id: table_1_loamy_sand
+        inputs:
+          clay: 6.6
+          sand: 86.3
+          mean_depth: 105
+        expected:
+          field_capacity_moisture: 8.14707947394088
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: >-
+          Direct evaluation of corrected Equation 3; Table I reports the value
+          rounded to 8.1%.
+    edge_cases:
+      - id: nan_clay
+        inputs:
+          clay: .nan
+          sand: 86.3
+          mean_depth: 105
+        expected_behavior: Propagate NaN to the output.
+        notes: Reviewed IEEE-754 and NumPy-compatible numeric policy.
+    documentation:
+      notes:
+        - >-
+          Equation 3 is obtained by substituting the Equation 1 field-capacity
+          tension into Equation 2.
+      warnings: []
+    implementation:
+      variables:
+        - name: field_capacity_moisture
+          expr: (25.713 + 0.469 * clay - 0.184 * sand - 0.0329 * mean_depth) * clay ^ (-0.080)
+
+  - name: calc_ptf_oosterveld1980_wilting_point
+    status: implemented
+    public_api:
+      name: calc_ptf_oosterveld1980_wilting_point
+      result_class: null
+      summary: Estimate gravimetric soil-moisture content at the 1500 kPa wilting point.
+    scope:
+      prediction_target: Gravimetric soil-moisture content at 1500 kPa.
+      models:
+        h_theta: Wilting-point estimate at 1500 kPa
+        k_h: null
+    inputs:
+      - $ref: "#/$defs/clay"
+      - $ref: "#/$defs/sand"
+      - $ref: "#/$defs/mean_depth"
+    outputs:
+      type: scalar
+      name: wilting_point_moisture
+      symbol: theta_1500_kPa
+      unit: '% mass'
+      domain: null
+      description: Predicted soil-moisture content at 1500 kPa in percent by weight.
+    golden_tests:
+      - id: table_1_loamy_sand
+        inputs:
+          clay: 6.6
+          sand: 86.3
+          mean_depth: 105
+        expected:
+          wilting_point_moisture: 1.3942
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: >-
+          Direct evaluation of Equation 4; Table I reports the value rounded to
+          1.4%.
+    edge_cases:
+      - id: nan_sand
+        inputs:
+          clay: 6.6
+          sand: .nan
+          mean_depth: 105
+        expected_behavior: Propagate NaN to the output.
+        notes: Reviewed IEEE-754 and NumPy-compatible numeric policy.
+    documentation:
+      notes:
+        - Equation 4 reports r = 0.96 and n = 298.
+        - The paper takes moisture content at 1500 kPa as the wilting point.
+      warnings: []
+    implementation:
+      variables:
+        - name: wilting_point_moisture
+          expr: 4.035 + 0.299 * clay - 0.034 * sand - 0.016 * mean_depth
+
+  - name: calc_ptf_oosterveld1980_available_water
+    status: implemented
+    public_api:
+      name: calc_ptf_oosterveld1980_available_water
+      result_class: null
+      summary: Estimate available gravimetric soil moisture between field capacity and wilting point.
+    scope:
+      prediction_target: >-
+        Difference between gravimetric moisture content at field capacity and at
+        the 1500 kPa wilting point.
+      models:
+        h_theta: Available-moisture point estimate from Equations 3 and 4
+        k_h: null
+    inputs:
+      - $ref: "#/$defs/clay_field_capacity"
+      - $ref: "#/$defs/sand"
+      - $ref: "#/$defs/mean_depth"
+    outputs:
+      type: scalar
+      name: available_moisture
+      symbol: null
+      unit: '% mass'
+      domain: null
+      description: >-
+        Predicted field-capacity moisture minus predicted wilting-point moisture,
+        in percentage points by weight.
+    golden_tests:
+      - id: table_1_loamy_sand
+        inputs:
+          clay: 6.6
+          sand: 86.3
+          mean_depth: 105
+        expected:
+          available_moisture: 6.75287947394088
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: >-
+          Direct evaluation of Equations 3 and 4 followed by subtraction; Table I
+          reports the value rounded to 6.7%.
+    edge_cases:
+      - id: nan_mean_depth
+        inputs:
+          clay: 6.6
+          sand: 86.3
+          mean_depth: .nan
+        expected_behavior: Propagate NaN to the output.
+        notes: Reviewed IEEE-754 and NumPy-compatible numeric policy.
+    documentation:
+      notes:
+        - The paper defines available soil water by subtracting Equation 4 from Equation 3.
+      warnings: []
+    implementation:
+      variables:
+        - name: field_capacity_moisture
+          expr: (25.713 + 0.469 * clay - 0.184 * sand - 0.0329 * mean_depth) * clay ^ (-0.080)
+        - name: wilting_point_moisture
+          expr: 4.035 + 0.299 * clay - 0.034 * sand - 0.016 * mean_depth
+        - name: available_moisture
+          expr: field_capacity_moisture - wilting_point_moisture
+
+scientific_notes: |
+  # Oosterveld and Chang (1980)
+
+  ## Supported models
+
+  - Equation 1 relates clay content to the tension corresponding to cylinder-method
+    field capacity. Equation 2 is a general gravimetric moisture-retention relation.
+  - Equation 3 substitutes Equation 1 into Equation 2 to estimate field-capacity
+    moisture. Equation 4 estimates moisture at 1500 kPa, which the paper treats as
+    wilting point. Available moisture is Equation 3 minus Equation 4.
+
+  ## Review decisions
+
+  - The prepared source correction overrides damaged OCR in Equation 2: its tension
+    exponent is `-0.190`, not the transcribed `-0.180`.
+  - The same correction establishes the Equation 3 clay factor as `C^(-0.080)`, not
+    the transcribed `C^(-0.000)`. This exponent follows from substituting the
+    Equation 1 tension relation into corrected Equation 2.
+  - Preserve all moisture outputs as percent by weight. The prepared source
+    explicitly excludes a bulk-density factor and percent-to-fraction conversion.
+  - Use volume 22 in the citation, following the prepared source's canonical
+    provenance; the appended transcription prints volume 21.
+  - Golden values are unrounded direct evaluations of the printed or corrected
+    equations. Rounded Table I predictions provide source-native cross-checks.
+
+  ## Documented limitations
+
+  - Apply these relationships only to southern Alberta soils or soils with similar
+    organic matter content and structure. The paper reports surface-soil organic
+    carbon of about 1.6% to 1.8% for the source area.
+  - Equation 2 is slightly inaccurate at the combination of very high clay content
+    and high tension. The separate 1500 kPa Equation 4 was fitted across the full
+    texture range to address that limitation at wilting point.
+  - Field water retained in macropores depends strongly on structure; the paper
+    recommends site measurement when an accurate field-capacity estimate is needed.
+
+  ## Numeric policy
+
+  - Evaluate in `f64` without rounding intermediate or returned values. Propagate
+    NaN and infinities according to IEEE-754 and NumPy-compatible arithmetic.
+  - Treat documented input domains as applicability guidance rather than runtime
+    clamps. Do not clamp outputs or finite out-of-domain inputs.

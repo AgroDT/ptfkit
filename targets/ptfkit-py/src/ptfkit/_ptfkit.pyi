@@ -72,6 +72,11 @@ calc_ptf_hodnett2002: ufunc
 calc_ptf_jabro1992: ufunc
 calc_ptf_li2007: ufunc
 calc_ptf_mayr1999: ufunc
+calc_ptf_oosterveld1980_available_water: ufunc
+calc_ptf_oosterveld1980_field_capacity: ufunc
+calc_ptf_oosterveld1980_field_capacity_tension: ufunc
+calc_ptf_oosterveld1980_retention: ufunc
+calc_ptf_oosterveld1980_wilting_point: ufunc
 calc_ptf_pidgeon1972_awc: ufunc
 calc_ptf_pidgeon1972_awc_coarse_sand: ufunc
 calc_ptf_pidgeon1972_awc_fine_sand: ufunc
