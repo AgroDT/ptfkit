@@ -36,6 +36,7 @@ the adopted regressions."]
 
 Prediction target: Gravimetric field capacity
 The reviewed organic-matter coefficient is 1.54."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_pidgeon1972_fc(silt: f64, clay: f64, organic_matter: f64) -> f64 {
     7.38f64 + 0.16f64 * silt + 0.30f64 * clay + 1.54f64 * organic_matter
@@ -72,6 +73,7 @@ mod calc_ptf_pidgeon1972_fc_tests {
 # Notes
 
 Prediction target: Gravimetric field capacity"]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_pidgeon1972_fc_sand(sand: f64) -> f64 {
     36.16f64 - 0.25f64 * sand
@@ -109,6 +111,7 @@ mod calc_ptf_pidgeon1972_fc_sand_tests {
 # Notes
 
 Prediction target: Gravimetric field capacity"]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_pidgeon1972_fc_sand_organic_matter(sand: f64, organic_matter: f64) -> f64 {
     34.27f64 - 0.27f64 * sand + 1.25f64 * organic_matter
@@ -146,6 +149,7 @@ mod calc_ptf_pidgeon1972_fc_sand_organic_matter_tests {
 # Notes
 
 Prediction target: Volumetric field capacity"]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(sand: f64, organic_matter: f64) -> f64 {
     38.15f64 - 0.17f64 * sand + 0.77f64 * organic_matter
@@ -184,6 +188,7 @@ mod calc_ptf_pidgeon1972_fc_vol_sand_organic_matter_tests {
 # Notes
 
 Prediction target: Gravimetric permanent wilting point"]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_pidgeon1972_pwp(silt: f64, clay: f64, organic_matter: f64) -> f64 {
     -4.19f64 + 0.19f64 * silt + 0.39f64 * clay + 0.90f64 * organic_matter
@@ -220,6 +225,7 @@ mod calc_ptf_pidgeon1972_pwp_tests {
 # Notes
 
 Prediction target: Gravimetric permanent wilting point"]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_pidgeon1972_pwp_sand(sand: f64) -> f64 {
     28.41f64 - 0.29f64 * sand
@@ -257,6 +263,7 @@ mod calc_ptf_pidgeon1972_pwp_sand_tests {
 # Notes
 
 Prediction target: Gravimetric permanent wilting point"]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_pidgeon1972_pwp_sand_organic_matter(sand: f64, organic_matter: f64) -> f64 {
     32.90f64 - 0.37f64 * sand + 0.44f64 * organic_matter
@@ -294,6 +301,7 @@ mod calc_ptf_pidgeon1972_pwp_sand_organic_matter_tests {
 # Notes
 
 Prediction target: Available water capacity"]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_pidgeon1972_awc(clay: f64, organic_matter: f64) -> f64 {
     169.3f64 - 1.50f64 * clay + 6.09f64 * organic_matter
@@ -331,6 +339,7 @@ mod calc_ptf_pidgeon1972_awc_tests {
 # Notes
 
 Prediction target: Available water capacity"]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_pidgeon1972_awc_sand_organic_matter(sand: f64, organic_matter: f64) -> f64 {
     1.0f64 + 1.84f64 * sand + 8.12f64 * organic_matter
@@ -367,6 +376,7 @@ mod calc_ptf_pidgeon1972_awc_sand_organic_matter_tests {
 # Notes
 
 Prediction target: Available water capacity"]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_pidgeon1972_awc_coarse_sand(coarse_sand: f64) -> f64 {
     68.5f64 + 2.33f64 * coarse_sand
@@ -403,6 +413,7 @@ mod calc_ptf_pidgeon1972_awc_coarse_sand_tests {
 # Notes
 
 Prediction target: Available water capacity"]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_pidgeon1972_awc_fine_sand(fine_sand: f64) -> f64 {
     66.7f64 + 2.66f64 * fine_sand
@@ -439,6 +450,7 @@ mod calc_ptf_pidgeon1972_awc_fine_sand_tests {
 # Notes
 
 Prediction target: Available water capacity"]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_pidgeon1972_awc_very_fine_sand(very_fine_sand: f64) -> f64 {
     66.9f64 + 4.58f64 * very_fine_sand
@@ -477,6 +489,7 @@ mod calc_ptf_pidgeon1972_awc_very_fine_sand_tests {
 # Notes
 
 Prediction target: Extended available water capacity"]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_pidgeon1972_eawc(silt: f64, clay: f64, organic_matter: f64) -> f64 {
     121.1f64 - 3.03f64 * silt - 1.38f64 * clay + 6.76f64 * organic_matter
@@ -513,6 +526,7 @@ mod calc_ptf_pidgeon1972_eawc_tests {
 # Notes
 
 Prediction target: Extended available water capacity"]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_pidgeon1972_eawc_sand(sand: f64) -> f64 {
     -25.8f64 + 1.55f64 * sand
@@ -550,6 +564,7 @@ mod calc_ptf_pidgeon1972_eawc_sand_tests {
 # Notes
 
 Prediction target: Extended available water capacity"]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_pidgeon1972_eawc_sand_organic_matter(sand: f64, organic_matter: f64) -> f64 {
     -10.8f64 + 1.15f64 * sand + 4.78f64 * organic_matter
@@ -587,6 +602,7 @@ mod calc_ptf_pidgeon1972_eawc_sand_organic_matter_tests {
 # Notes
 
 Prediction target: Extended available water capacity"]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(
     coarse_sand: f64,
@@ -627,6 +643,7 @@ mod calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter_tests {
 # Notes
 
 Prediction target: Extended available water capacity"]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(
     fine_sand: f64,

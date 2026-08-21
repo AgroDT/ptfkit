@@ -57,6 +57,7 @@ conductivity.
 # Warnings
 
 The formulas use natural logarithms of selected inputs."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_li2007(
     sand: f64,

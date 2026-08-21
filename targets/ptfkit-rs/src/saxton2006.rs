@@ -70,6 +70,7 @@ The 1500 and 33 kPa values are also termed wilting point and field capacity.
 Do not apply the regression above 8% organic matter or 60% clay.
 Sand and clay fractions must describe one soil and therefore must sum to at most 1.
 These statistical-average estimates should be calibrated to local measurements when available."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_saxton2006(sand: f64, clay: f64, organic_matter: f64) -> Saxton2006PTFResult {
     let theta_1500_preliminary = -0.024f64 * sand
@@ -239,6 +240,7 @@ The source limits the saturation-minus-33 kPa difference to at least 0.005 m^3/m
 # Warnings
 
 The source recommends density factors only from 0.9 to 1.3."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_saxton2006_density(
     normal_density: f64,
@@ -323,6 +325,7 @@ Prediction target: Matric tension for water content between theta_1500 and theta
 # Warnings
 
 Use only for the 1500 to 33 kPa segment defined by the source."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_saxton2006_tension_dry(theta: f64, theta_1500: f64, theta_33: f64) -> f64 {
     let retention_b = (1500.0f64.ln() - 33.0f64.ln()) / (theta_33.ln() - theta_1500.ln());
@@ -378,6 +381,7 @@ At tensions below air entry, Equation 13 fixes water content at theta_s.
 # Warnings
 
 Use only for the 33 kPa to air-entry segment defined by the source."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_saxton2006_tension_wet(
     theta: f64,
@@ -436,6 +440,7 @@ Prediction target: Unsaturated hydraulic conductivity of the matric soil.
 # Warnings
 
 The equation does not include residual water content."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_saxton2006_conductivity(
     theta: f64,
@@ -510,6 +515,7 @@ Gravel density is fixed at 2.65 g/cm^3 in the source equations.
 
 The conductivity correction does not represent extra macropores sometimes found in gravelly
 soils."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_saxton2006_gravel(
     gravel_weight_fraction: f64,
@@ -608,6 +614,7 @@ falls.
 # Warnings
 
 Precipitation, bonding, ionic nutrition, and toxicity can modify actual salinity effects."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_saxton2006_salinity(
     electrical_conductivity: f64,

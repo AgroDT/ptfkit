@@ -74,6 +74,7 @@ The PTF did not reproduce water-retention curves accurately for soils with bulk 
 0.8 Mg/m^3, most of which were Andosols.
 The PTF did not reproduce very low alpha values well because high-alpha soils dominated the
 calibration data; mineralogy and structure were not directly represented."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_hodnett2002(
     sand: f64,

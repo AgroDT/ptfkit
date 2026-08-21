@@ -100,6 +100,7 @@ fn module_tokens(
         #definition
 
         #function_docs
+        #[cfg_attr(feature = "inline", inline)]
         #[must_use]
         pub fn #name(#(#inputs: f64),*) -> #return_type {
             #(#variables)*

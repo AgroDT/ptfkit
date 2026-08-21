@@ -70,6 +70,7 @@ The regressions were developed for soils with similar genesis and clay mineralog
 # Warnings
 
 Use outside Lower Coastal Plain Ultisols requires independent validation."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_puckett1985(
     sand: f64,

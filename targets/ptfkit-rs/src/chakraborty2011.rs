@@ -56,6 +56,7 @@ respective potentials.
 # Warnings
 
 Use outside the source Indian-soil dataset requires independent validation."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_chakraborty2011_eq1(clay: f64, silt: f64) -> Chakraborty2011PTFResult {
     let water_content_33 = (0.297f64 * clay + 0.478f64 * silt + 4.600f64) / 100.0f64;
@@ -133,6 +134,7 @@ respective potentials.
 # Warnings
 
 Use outside the source Indian-soil dataset requires independent validation."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_chakraborty2011_eq2(sand: f64, bulk_density: f64) -> Chakraborty2011PTFResult {
     let water_content_33 = (-0.377f64 * sand - 0.215f64 * bulk_density + 41.114f64) / 100.0f64;
@@ -211,6 +213,7 @@ respective potentials.
 # Warnings
 
 Use outside the source Indian-soil dataset requires independent validation."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_chakraborty2011_eq3(
     clay: f64,
@@ -297,6 +300,7 @@ respective potentials.
 # Warnings
 
 Use outside the source Indian-soil dataset requires independent validation."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_chakraborty2011_eq4(clay: f64, silt: f64, sand: f64) -> Chakraborty2011PTFResult {
     let water_content_33 =
@@ -380,6 +384,7 @@ respective potentials.
 # Warnings
 
 Use outside the source Indian-soil dataset requires independent validation."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_chakraborty2011_eq5(
     clay: f64,
@@ -473,6 +478,7 @@ respective potentials.
 # Warnings
 
 Use outside the source Indian-soil dataset requires independent validation."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_chakraborty2011_eq6(
     clay: f64,

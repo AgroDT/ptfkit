@@ -61,6 +61,7 @@ The source reports 95% relative errors of 14% for theta_0, 34% for m, and 25% fo
 Use is described as approximate by the source.
 The source does not report exact calibration ranges; avoid extrapolation beyond comparable
 Hungarian meadow-series soils."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_varallyai1982_meadow(
     bulk_density: f64,
@@ -137,6 +138,7 @@ The source reports 95% relative errors of 10% for theta_0, 29% for m, and 18% fo
 Use is described as approximate by the source.
 The source does not report exact calibration ranges; avoid extrapolation beyond comparable
 Hungarian chernozem A horizons."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_varallyai1982_chernozem_a(
     bulk_density: f64,
@@ -210,6 +212,7 @@ The source reports 95% relative errors of 11% for theta_0, 34% for m, and 18% fo
 Use is described as approximate by the source.
 The source does not report exact calibration ranges; avoid extrapolation beyond comparable
 Hungarian chernozem B horizons."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_varallyai1982_chernozem_b(
     bulk_density: f64,
@@ -283,6 +286,7 @@ The source reports 95% relative errors of 7% for theta_0, 22% for m, and 11% for
 Use is described as approximate by the source.
 The source does not report exact calibration ranges; avoid extrapolation beyond comparable
 Hungarian chernozem C horizons."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_varallyai1982_chernozem_c(
     bulk_density: f64,

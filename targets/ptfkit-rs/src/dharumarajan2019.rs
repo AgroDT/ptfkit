@@ -59,6 +59,7 @@ Reported cross-validation RMSE values are 5.25% for FC and 3.71% for PWP.
 The paper does not state whether its water-content percentages are gravimetric or volumetric.
 The source gives inconsistent profile counts and district lists for the Northern dataset; see
 the scientific notes."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_dharumarajan2019_nkp(
     clay: f64,
@@ -130,6 +131,7 @@ Reported cross-validation RMSE values are 7.05% for FC and 4.74% for PWP.
 The paper does not state whether its water-content percentages are gravimetric or volumetric.
 The source gives inconsistent profile counts and district lists for the Northern dataset; see
 the scientific notes."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_dharumarajan2019_nkp_clay(clay: f64) -> Dharumarajan2019WaterRetentionResult {
     let field_capacity = 4.968f64 + 0.586f64 * clay;
@@ -195,6 +197,7 @@ Reported cross-validation RMSE values are 3.05% for FC and 2.17% for PWP.
 # Warnings
 
 The paper does not state whether its water-content percentages are gravimetric or volumetric."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_dharumarajan2019_skp(
     clay: f64,
@@ -264,6 +267,7 @@ Reported cross-validation RMSE values are 5.39% for FC and 3.13% for PWP.
 # Warnings
 
 The paper does not state whether its water-content percentages are gravimetric or volumetric."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_dharumarajan2019_skp_clay(clay: f64) -> Dharumarajan2019WaterRetentionResult {
     let field_capacity = 3.724f64 + 0.581f64 * clay;
@@ -328,6 +332,7 @@ The reported model R-squared is 41%, and the reported RMSE is 6.71%.
 # Warnings
 
 Predictor calibration ranges are not reported for the 100-observation dataset."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_dharumarajan2019_infiltration(sand: f64, silt: f64, clay: f64) -> f64 {
     177.55f64 - 1.47f64 * sand - 1.80f64 * clay - 1.58f64 * silt

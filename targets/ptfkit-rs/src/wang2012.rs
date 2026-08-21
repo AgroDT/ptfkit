@@ -60,6 +60,7 @@ volumetric fractions.
 # Warnings
 
 This normalization intentionally changes the legacy water-content outputs by a factor of 100."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_wang2012(
     sand: f64,

@@ -37,6 +37,7 @@ regressions used 3172 horizons with sufficient data."]
 
 Prediction target: Saturated hydraulic conductivity.
 Reproduced in Section 4.2 for comparison with the new Spanish-soil PTFs."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_campbell_shiozawa(sand: f64, clay: f64) -> f64 {
     54.0f64 * (-0.07f64 * sand - 0.167f64 * clay).exp()
@@ -85,6 +86,7 @@ Reproduced in Section 4.2 for comparison with the new Spanish-soil PTFs.
 
 The denominator contains log10(clay) and the source does not state its valid domain or
 singularity policy."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_saxton(sand: f64, clay: f64) -> f64 {
     10.0f64
@@ -131,6 +133,7 @@ mod calc_ptf_ferrerjulia2004_saxton_tests {
 
 Prediction target: Saturated hydraulic conductivity.
 Reproduced in Section 4.2 for comparison with the new Spanish-soil PTFs."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_dane_puckett(clay: f64) -> f64 {
     303.84f64 * (-0.144f64 * clay).exp()
@@ -173,6 +176,7 @@ mod calc_ptf_ferrerjulia2004_dane_puckett_tests {
 
 Prediction target: Saturated hydraulic conductivity.
 Reproduced in Section 4.2 for comparison with the new Spanish-soil PTFs."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_puckett(clay: f64) -> f64 {
     156.96f64 * (-0.1975f64 * clay).exp()
@@ -216,6 +220,7 @@ mod calc_ptf_ferrerjulia2004_puckett_tests {
 
 Prediction target: Saturated hydraulic conductivity.
 Reproduced in Section 4.2 for comparison with the new Spanish-soil PTFs."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_cosby(sand: f64, clay: f64) -> f64 {
     25.4f64 + 10.0f64.powf(-0.6f64 + 0.012f64 * sand - 0.0064f64 * clay)
@@ -258,6 +263,7 @@ mod calc_ptf_ferrerjulia2004_cosby_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Humic Acrisol.
 Table 3; R^2 = 0.723."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_humic_acrisol_sand(sand: f64) -> f64 {
     1.5162f64 * (0.0452f64 * sand).exp()
@@ -302,6 +308,7 @@ mod calc_ptf_ferrerjulia2004_humic_acrisol_sand_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Humic Acrisol.
 Table 3; R^2 = 0.701."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter(
     sand: f64,
@@ -344,6 +351,7 @@ mod calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Calcic Cambisol.
 Table 3; R^2 = 0.521."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_calcic_cambisol_sand(sand: f64) -> f64 {
     1.043f64 * (0.0452f64 * sand).exp()
@@ -388,6 +396,7 @@ mod calc_ptf_ferrerjulia2004_calcic_cambisol_sand_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Calcic Cambisol.
 Table 3; R^2 = 0.468."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter(
     sand: f64,
@@ -430,6 +439,7 @@ mod calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Dystric Cambisol.
 Table 3; R^2 = 0.750."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_dystric_cambisol_sand(sand: f64) -> f64 {
     1.3182f64 * (0.0464f64 * sand).exp()
@@ -474,6 +484,7 @@ mod calc_ptf_ferrerjulia2004_dystric_cambisol_sand_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Dystric Cambisol.
 Table 3; R^2 = 0.779."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter(
     sand: f64,
@@ -516,6 +527,7 @@ mod calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Eutric Cambisol.
 Table 3; R^2 = 0.734."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_eutric_cambisol_sand(sand: f64) -> f64 {
     0.9356f64 * (0.0503f64 * sand).exp()
@@ -560,6 +572,7 @@ mod calc_ptf_ferrerjulia2004_eutric_cambisol_sand_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Eutric Cambisol.
 Table 3; R^2 = 0.686."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter(
     sand: f64,
@@ -602,6 +615,7 @@ mod calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Gleyic Cambisol.
 Table 3; R^2 = 0.807."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_gleyic_cambisol_sand(sand: f64) -> f64 {
     0.2336f64 * (0.0667f64 * sand).exp()
@@ -646,6 +660,7 @@ mod calc_ptf_ferrerjulia2004_gleyic_cambisol_sand_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Gleyic Cambisol.
 Table 3; R^2 = 0.824."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter(
     sand: f64,
@@ -688,6 +703,7 @@ mod calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Humic Cambisol.
 Table 3; R^2 = 0.592."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_humic_cambisol_sand(sand: f64) -> f64 {
     2.1622f64 * (0.0371f64 * sand).exp()
@@ -732,6 +748,7 @@ mod calc_ptf_ferrerjulia2004_humic_cambisol_sand_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Humic Cambisol.
 Table 3; R^2 = 0.632."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter(
     sand: f64,
@@ -774,6 +791,7 @@ mod calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Calcaric Fluvisol.
 Table 3; R^2 = 0.772."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand(sand: f64) -> f64 {
     0.814f64 * (0.052f64 * sand).exp()
@@ -818,6 +836,7 @@ mod calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Calcaric Fluvisol.
 Table 3; R^2 = 0.792."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter(
     sand: f64,
@@ -864,6 +883,7 @@ Table 3; R^2 = 0.412.
 # Warnings
 
 The paper reports weak fit and suggests missing clay-mineralogy information."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_calcic_luvisol_sand(sand: f64) -> f64 {
     0.671f64 * (0.0467f64 * sand).exp()
@@ -912,6 +932,7 @@ Table 3; R^2 = 0.473.
 # Warnings
 
 The paper reports weak fit and suggests missing clay-mineralogy information."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter(
     sand: f64,
@@ -954,6 +975,7 @@ mod calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Chromic Luvisol.
 Table 3; R^2 = 0.534."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_chromic_luvisol_sand(sand: f64) -> f64 {
     0.898f64 * (0.0494f64 * sand).exp()
@@ -998,6 +1020,7 @@ mod calc_ptf_ferrerjulia2004_chromic_luvisol_sand_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Chromic Luvisol.
 Table 3; R^2 = 0.557."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter(
     sand: f64,
@@ -1040,6 +1063,7 @@ mod calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Gleyic Luvisol.
 Table 3; R^2 = 0.876."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_gleyic_luvisol_sand(sand: f64) -> f64 {
     0.5395f64 * (0.0514f64 * sand).exp()
@@ -1084,6 +1108,7 @@ mod calc_ptf_ferrerjulia2004_gleyic_luvisol_sand_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Gleyic Luvisol.
 Table 3; R^2 = 0.917."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter(
     sand: f64,
@@ -1126,6 +1151,7 @@ mod calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Orthic Luvisol.
 Table 3; R^2 = 0.676."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_orthic_luvisol_sand(sand: f64) -> f64 {
     1.3958f64 * (0.0431f64 * sand).exp()
@@ -1170,6 +1196,7 @@ mod calc_ptf_ferrerjulia2004_orthic_luvisol_sand_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Orthic Luvisol.
 Table 3; R^2 = 0.729."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter(
     sand: f64,
@@ -1212,6 +1239,7 @@ mod calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Ranker.
 Table 3; R^2 = 0.726."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_ranker_sand(sand: f64) -> f64 {
     0.9847f64 * (0.0507f64 * sand).exp()
@@ -1256,6 +1284,7 @@ mod calc_ptf_ferrerjulia2004_ranker_sand_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Ranker.
 Table 3; R^2 = 0.717."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_ranker_texture_organic_matter(
     sand: f64,
@@ -1297,6 +1326,7 @@ mod calc_ptf_ferrerjulia2004_ranker_texture_organic_matter_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Calcaric Regosol.
 Table 3; R^2 = 0.655."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_calcaric_regosol_sand(sand: f64) -> f64 {
     0.8931f64 * (0.0524f64 * sand).exp()
@@ -1341,6 +1371,7 @@ mod calc_ptf_ferrerjulia2004_calcaric_regosol_sand_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Calcaric Regosol.
 Table 3; R^2 = 0.705."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter(
     sand: f64,
@@ -1383,6 +1414,7 @@ mod calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Dystric Regosol.
 Table 3; R^2 = 0.834."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_dystric_regosol_sand(sand: f64) -> f64 {
     1.096f64 * (0.048f64 * sand).exp()
@@ -1427,6 +1459,7 @@ mod calc_ptf_ferrerjulia2004_dystric_regosol_sand_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Dystric Regosol.
 Table 3; R^2 = 0.862."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter(
     sand: f64,
@@ -1469,6 +1502,7 @@ mod calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Eutric Regosol.
 Table 3; R^2 = 0.824."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_eutric_regosol_sand(sand: f64) -> f64 {
     1.0005f64 * (0.0523f64 * sand).exp()
@@ -1513,6 +1547,7 @@ mod calc_ptf_ferrerjulia2004_eutric_regosol_sand_tests {
 
 Prediction target: Saturated hydraulic conductivity for FAO 1974 Eutric Regosol.
 Table 3; R^2 = 0.702."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter(
     sand: f64,
@@ -1561,6 +1596,7 @@ without coefficients.
 
 The horizon-level regression has weak fit and is affected by converted qualitative conductivity
 values."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_rendzina_sand(sand: f64) -> f64 {
     2.4645f64 * (0.0325f64 * sand).exp()
@@ -1609,6 +1645,7 @@ Table 3; R^2 = 0.340.
 # Warnings
 
 The regression has weak fit and is affected by converted qualitative conductivity values."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter(
     sand: f64,
@@ -1654,6 +1691,7 @@ Table 3 prints R^2 = 0.399; the prose later states 0.435.
 # Warnings
 
 The source gives inconsistent R^2 values for this regression."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_gleyic_solonchak_sand(sand: f64) -> f64 {
     0.7602f64 * (0.0372f64 * sand).exp()
@@ -1704,6 +1742,7 @@ Human review corrected the anomalous printed intercept from -90917 to -0.90917.
 
 The implementation intentionally differs from the original published Table 3
 which prints the intercept as -90917."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter(
     sand: f64,
@@ -1751,6 +1790,7 @@ Section 5.1; 3172 horizons; R^2 = 0.696.
 
 The paper recommends use when data are statistically similar to its Spanish-soil calibration
 data."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_general_sand(sand: f64) -> f64 {
     0.920f64 * (0.0491f64 * sand).exp()
@@ -1800,6 +1840,7 @@ Section 5.1; 3172 horizons; R^2 = 0.715.
 
 The paper recommends use when data are statistically similar to its Spanish-soil calibration
 data."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ferrerjulia2004_general_texture_organic_matter(
     sand: f64,

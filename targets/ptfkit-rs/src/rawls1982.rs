@@ -33,6 +33,7 @@ Agricultural soils from 32 states of the USA
 # Notes
 
 Prediction target: Volumetric soil water content at -1500 kPa."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_rawls1982_theta_1500(clay: f64, organic_matter: f64) -> f64 {
     0.0260f64 + 0.0050f64 * clay + 0.0158f64 * organic_matter
@@ -71,6 +72,7 @@ mod calc_ptf_rawls1982_theta_1500_tests {
 # Notes
 
 Prediction target: Volumetric soil water content at -33 kPa."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_rawls1982_theta_33(sand: f64, organic_matter: f64, theta_1500: f64) -> f64 {
     0.2391f64 - 0.0019f64 * sand + 0.0210f64 * organic_matter + 0.72f64 * theta_1500
@@ -145,6 +147,7 @@ for the intermediate points.
 # Warnings
 
 The source value 0.8888 is retained literally for the theta_7 intercept."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_rawls1982_full_wrc(
     sand: f64,

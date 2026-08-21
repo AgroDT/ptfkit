@@ -71,6 +71,7 @@ further research.
 
 The DS2 inequality is treated as a source typographical error; the tau regression is interpreted
 as being based on nonpositive tau_vgm values."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_weber2020(
     theta_r_vgm: f64,

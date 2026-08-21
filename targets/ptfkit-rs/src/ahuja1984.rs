@@ -59,6 +59,7 @@ for the soil being evaluated.
 Callers must supply the exponent. The paper evaluates both n = 4 and n = 5 and does not select
 one as a unique transferable value.
 total_porosity must be greater than or equal to theta_33."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_ahuja1984(
     total_porosity: f64,

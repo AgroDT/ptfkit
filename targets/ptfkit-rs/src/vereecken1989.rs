@@ -61,6 +61,7 @@ descriptions for many of the measured curves.
 
 The bulk-density maximum is reviewed as 1.730 g/cm^3 because the supplied transcription's 1.230
 value is inconsistent with the reported mean."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_vereecken1989(
     sand: f64,
@@ -177,6 +178,7 @@ The detailed log(alpha) formula restores the carbon and bulk-density terms shown
 omitted from the supplied Table 8 transcription.
 The bulk-density maximum is reviewed as 1.730 g/cm^3 because the supplied transcription's 1.230
 value is inconsistent with the reported mean."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_vereecken1989_detailed(
     particle_2000_1000: f64,
