@@ -3,6 +3,8 @@ use std::fmt::{self, Display, Write as _};
 pub(crate) mod c;
 pub(crate) mod markdown;
 
+const DEFAULT_CAPACITY: usize = 16 * 1024;
+
 /// Renders a structured value into a [`Writer`].
 pub(crate) trait Render {
     fn render(&self, writer: &mut Writer);
@@ -18,8 +20,13 @@ pub(crate) struct Writer {
 
 impl Writer {
     pub(crate) fn new() -> Self {
+        Self::with_capacity(DEFAULT_CAPACITY)
+    }
+
+    /// Creates a writer with space reserved for at least `capacity` bytes.
+    pub(crate) fn with_capacity(capacity: usize) -> Self {
         Self {
-            contents: String::new(),
+            contents: String::with_capacity(capacity),
             indentation: 0,
             indent: "    ",
             at_line_start: true,
