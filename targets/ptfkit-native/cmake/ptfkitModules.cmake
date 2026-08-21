@@ -13,6 +13,7 @@ set(PTFKIT_CPP_MODULES
     "${CMAKE_CURRENT_LIST_DIR}/../cpp/jabro1992.cppm"
     "${CMAKE_CURRENT_LIST_DIR}/../cpp/li2007.cppm"
     "${CMAKE_CURRENT_LIST_DIR}/../cpp/mayr1999.cppm"
+    "${CMAKE_CURRENT_LIST_DIR}/../cpp/oosterveld1980.cppm"
     "${CMAKE_CURRENT_LIST_DIR}/../cpp/pidgeon1972.cppm"
     "${CMAKE_CURRENT_LIST_DIR}/../cpp/puckett1985.cppm"
     "${CMAKE_CURRENT_LIST_DIR}/../cpp/rawls1982.cppm"
