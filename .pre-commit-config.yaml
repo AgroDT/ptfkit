@@ -16,7 +16,7 @@ repos:
         language: system
         entry: cargo
         args: [run, --manifest-path, codegen/Cargo.toml, generate]
-        files: '^(codegen/|specs/|targets/ptfkit-(rs|py)/src/)'
+        files: '^(codegen/|specs/|targets/)'
         pass_filenames: false
       - id: rustfmt-codegen
         name: rustfmt codegen
@@ -37,36 +37,62 @@ repos:
         language: system
         entry: clang-format
         args: [--style=file, -i]
-        files: '\\.(c|h|cc|cpp|cppm|cxx|hpp)$'
-      - id: uv-lock
-        name: uv lock
+        files: '\.(c|h|cc|cpp|cppm|cxx|hpp)$'
+      - id: uv-lock-ptfkit-py
+        name: uv lock ptfkit-py
         language: system
         entry: uv
         args: [--project, targets/ptfkit-py, lock, --check]
-        files: .*(uv\.lock|pyproject\.toml|uv\.toml)$
+        files: '^targets/ptfkit-py/(uv\.lock|pyproject\.toml|uv\.toml)$'
         pass_filenames: false
-      - id: uv-sync
-        name: uv sync
+      - id: uv-sync-ptfkit-py
+        name: uv sync ptfkit-py
         language: system
         entry: uv
-        args: [--project, targets/ptfkit-py, sync, --frozen, --all-groups, --all-extras, --all-packages]
+        args: [--project, targets/ptfkit-py, sync, --frozen]
+        always_run: true
+        pass_filenames: false
+      - id: uv-lock-docs
+        name: uv lock docs
+        language: system
+        entry: uv
+        args: [--project, docs, lock, --check]
+        files: '^docs/(uv\.lock|pyproject\.toml|uv\.toml)$'
+        pass_filenames: false
+      - id: uv-sync-docs
+        name: uv sync docs
+        language: system
+        entry: uv
+        args: [--project, docs, sync, --frozen]
         always_run: true
         pass_filenames: false
       - id: ruff-check
         name: ruff check
         language: system
-        entry: uv
-        args: [--project, targets/ptfkit-py, run, --no-sync, ruff, check, --fix]
+        entry: ruff
+        args: [check, --fix]
         types: [file, python]
       - id: ruff-format
         name: ruff format
         language: system
-        entry: uv
-        args: [--project, targets/ptfkit-py, run, --no-sync, ruff, format]
+        entry: ruff
+        args: [format]
         types: [file, python]
-      - id: ty-check
-        name: ty check
+      - id: ty-check-python
+        name: ty check ptfkit-py
+        language: system
+        entry: ty
+        args: [check, --project, targets/ptfkit-py]
+        files: '^targets/ptfkit-py/.*\.py$'
+      - id: ty-check-docs
+        name: ty check documentation
         language: system
         entry: uv
-        args: [--project, targets/ptfkit-py, run, --no-sync, ty, check]
-        files: '^targets/ptfkit-py/.*\.py$'
+        args: [--project, docs, run, --no-sync, ty, check]
+        files: '^docs/.*\.py$'
+      - id: ty-check-github
+        name: ty check GitHub scripts
+        language: system
+        entry: ty
+        args: [check]
+        files: '^\.github/scripts/.*\.py$'

@@ -18,7 +18,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Install uv
+      - name: Set up uv
         uses: astral-sh/setup-uv@v10.0.1
         with:
           enable-cache: true
@@ -34,16 +34,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Set up Rust
-        uses: dtolnay/rust-toolchain@stable
+      - name: Set up uv cache
+        uses: astral-sh/setup-uv@v10.0.1
         with:
-          components: clippy, rustfmt
+          enable-cache: true
 
-      - name: Install clang-format
-        uses: awalsh128/cache-apt-pkgs-action@v1
-        with:
-          packages: clang-format
-          version: 1.0
+      - name: Set up development toolchains
+        uses: jdx/mise-action@v4
 
       - name: Cache Rust dependencies and codegen artifacts
         uses: Swatinem/rust-cache@v2
@@ -53,16 +50,6 @@ jobs:
 
       - name: Set up Rust problem matchers
         uses: r7kamura/rust-problem-matchers@v1
-
-      - name: Set up Python
-        uses: actions/setup-python@v7
-        with:
-          python-version-file: targets/ptfkit-py/pyproject.toml
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v10.0.1
-        with:
-          enable-cache: true
 
       - name: Check ptfkit-py uv.lock
         run: uv lock --project targets/ptfkit-py --check
@@ -88,20 +75,25 @@ jobs:
         continue-on-error: true
         run: cargo test --manifest-path codegen/Cargo.toml
 
-      - name: Check ptfkit-py lint
+      - name: Check Python target and GitHub script lint
         id: ptfkit-py-lint
         continue-on-error: true
-        run: uv run --directory targets/ptfkit-py --no-sync ruff check --output-format=github
+        run: ruff check targets/ptfkit-py .github/scripts --output-format=github
 
-      - name: Check ptfkit-py formatting
+      - name: Check Python target and GitHub script formatting
         id: ptfkit-py-format
         continue-on-error: true
-        run: uv run --directory targets/ptfkit-py --no-sync ruff format --check --output-format=github
+        run: ruff format targets/ptfkit-py .github/scripts --check --output-format=github
 
       - name: Check ptfkit-py types
         id: ptfkit-py-typescheck
         continue-on-error: true
         run: uv run --directory targets/ptfkit-py --no-sync ty check --output-format=github
+
+      - name: Check GitHub script types
+        id: github-script-typescheck
+        continue-on-error: true
+        run: ty check .github/scripts --output-format=github
 
       - name: Check ptfkit-rs formatting
         id: ptfkit-rs-format
@@ -133,6 +125,7 @@ jobs:
           steps.ptfkit-py-lint.outcome == 'failure' ||
           steps.ptfkit-py-format.outcome == 'failure' ||
           steps.ptfkit-py-typescheck.outcome == 'failure' ||
+          steps.github-script-typescheck.outcome == 'failure' ||
           steps.ptfkit-rs-format.outcome == 'failure' ||
           steps.c-family-format.outcome == 'failure' ||
           steps.ptfkit-rs-lint.outcome == 'failure' ||
@@ -150,15 +143,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v10.0.1
+        with:
+          enable-cache: true
+
       - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
           allow-prereleases: true
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v10.0.1
-        with:
-          enable-cache: true
 
       - name: Run pytest
         run: uv run --directory targets/ptfkit-py pytest --no-cov
@@ -174,10 +167,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      - name: Set up development toolchains
+        uses: jdx/mise-action@v4
+
       - name: Configure ptfkit-native
         run: >
           cmake -S targets/ptfkit-native -B targets/ptfkit-native/build
-          -DBUILD_TESTING=ON -DPTFKIT_BUILD_CPP_MODULES=ON
+          -GNinja -DBUILD_TESTING=ON -DPTFKIT_BUILD_CPP_MODULES=ON
 
       - name: Build ptfkit-native
         run: cmake --build targets/ptfkit-native/build
@@ -192,19 +188,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Install uv
+      - name: Set up development toolchains
+        uses: jdx/mise-action@v4
+
+      - name: Set up uv cache
         uses: astral-sh/setup-uv@v10.0.1
         with:
           enable-cache: true
-          cache-dependency-glob: |
-            docs/pyproject.toml
-            docs/uv.lock
 
       - name: Check documentation lock
         run: uv lock --project docs --check
 
       - name: Sync documentation environment
         run: uv sync --project docs --frozen
+
+      - name: Check documentation lint
+        run: ruff check docs --output-format=github
+
+      - name: Check documentation formatting
+        run: ruff format docs --check --output-format=github
+
+      - name: Check documentation types
+        run: uv run --directory docs --no-sync ty check --output-format=github
 
       - name: Build documentation
         run: uv --directory=docs run mkdocs build --strict --config-file mkdocs.yml

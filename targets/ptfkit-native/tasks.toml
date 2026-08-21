@@ -1,0 +1,30 @@
+["native:configure"]
+description = "Configure the native build with tests enabled"
+dir = "targets/ptfkit-native"
+run = 'cmake -S . -B build -GNinja -DBUILD_TESTING=ON'
+
+["native:build"]
+description = "Build the native target"
+depends = ["native:configure"]
+dir = "targets/ptfkit-native"
+run = 'cmake --build build'
+
+["native:test"]
+description = "Build and run native CTest tests"
+depends = ["native:build"]
+dir = "targets/ptfkit-native"
+run = 'ctest --test-dir build --output-on-failure'
+
+["native:format"]
+description = "Check C and C++ source formatting"
+run = "git ls-files -z -- '*.c' '*.h' '*.cc' '*.cpp' '*.cppm' '*.cxx' '*.hpp' | xargs -0 --no-run-if-empty clang-format --style=file --dry-run --Werror"
+run_windows = "& { $files = git ls-files -- '*.c' '*.h' '*.cc' '*.cpp' '*.cppm' '*.cxx' '*.hpp'; if ($files) { clang-format --style=file --dry-run --Werror $files } }"
+
+["native:verify"]
+description = "Run all native target quality checks"
+depends = ["native:format", "native:test"]
+
+["native:clean"]
+description = "Remove native build artifacts"
+dir = "targets/ptfkit-native"
+run = "cmake -E rm -rf build"

@@ -46,20 +46,14 @@ Documentation = "https://agrodt.github.io/ptfkit/"
 
 [dependency-groups]
 dev = [
-    "pre-commit~=4.5",
     "pytest~=9.0",
     "pytest-cov~=7.0",
-    "ruff~=0.14",
-    "ty~=0.0.71",
 ]
 
 [[tool.dynamic-metadata]]
 provider = "scikit_build_core.metadata.regex"
 field = "version"
 input = "src/ptfkit/_version.py"
-
-[tool.ruff]
-extend = "../../ruff.toml"
 
 [tool.pytest.ini_options]
 addopts = "--cov=ptfkit"

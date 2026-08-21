@@ -1,0 +1,18 @@
+["codegen:lint"]
+description = "Run Clippy for the code generator"
+dir = "codegen"
+run = "cargo clippy --all-targets -- -D warnings"
+
+["codegen:format"]
+description = "Check code generator Rust formatting"
+dir = "codegen"
+run = "cargo fmt --all --check"
+
+["codegen:test"]
+description = "Run code generator tests"
+dir = "codegen"
+run = "cargo test"
+
+["codegen:verify"]
+description = "Run all code generator quality checks"
+depends = ["codegen:format", "codegen:lint", "codegen:test"]

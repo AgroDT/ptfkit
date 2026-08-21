@@ -251,8 +251,8 @@ pub(super) fn format_rust(paths: &[PathBuf]) -> Result<()> {
 
 pub(super) fn format_python(root: &Path, paths: &[PathBuf]) -> Result<()> {
     run(
-        "uv",
-        &["run", "--no-sync", "ruff", "format"],
+        "ruff",
+        &["format"],
         paths,
         Some(&root.join("targets/ptfkit-py")),
     )
