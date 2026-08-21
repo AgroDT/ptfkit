@@ -1,6 +1,6 @@
 # ptfkit
 
-[![CI](https://img.shields.io/github/actions/workflow/status/AgroDT/ptfkit/pr.yaml?branch=main)](https://github.com/AgroDT/ptfkit/actions/workflows/pr.yaml)
+[![CI](https://img.shields.io/github/actions/workflow/status/AgroDT/ptfkit/ci.yaml?branch=main)](https://github.com/AgroDT/ptfkit/actions/workflows/ci.yaml)
 [![Documentation](https://img.shields.io/github/actions/workflow/status/AgroDT/ptfkit/deploy-docs.yaml?label=docs)](https://agrodt.github.io/ptfkit/)
 [![PyPI version](https://img.shields.io/pypi/v/ptfkit)](https://pypi.org/project/ptfkit/)
 [![crates.io version](https://img.shields.io/crates/v/ptfkit)](https://crates.io/crates/ptfkit)
