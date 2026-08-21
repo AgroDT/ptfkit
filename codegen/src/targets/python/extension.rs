@@ -56,13 +56,10 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile
     }
     entry.write("\n\nstatic struct PyModuleDef module_def = { PyModuleDef_HEAD_INIT, \"_ptfkit\", NULL, -1, NULL };\n\nPyMODINIT_FUNC PyInit__ptfkit(void) {\n");
     entry.indented(|writer| {
-        writer.write(
-            r#"PyObject *module = PyModule_Create(&module_def);
-if (module == NULL) return NULL;
-import_array();
-import_ufunc();
-"#,
-        );
+        writer.line("PyObject *module = PyModule_Create(&module_def);");
+        writer.line("if (module == NULL) return NULL;");
+        writer.line("import_array();");
+        writer.line("import_ufunc();");
         for slug in sources.keys() {
             writer.line(format_args!(
                 "if (ptfkit_register_{slug}(module) < 0) {{ Py_DECREF(module); return NULL; }}"

@@ -43,7 +43,10 @@ fn module_source(slug: &str, functions: &[&CompiledFunction]) -> String {
     imports.sort_by_key(|name| natural_sort_key(name));
     imports.dedup();
     let mut module = Module::new(WRAPPER_HEADER);
-    module.write("\nfrom __future__ import annotations\n\nimport pytest\n\n");
+    module.line("\nfrom __future__ import annotations");
+    module.blank_line();
+    module.line("import pytest");
+    module.blank_line();
     module.import("_helpers", "prepare_vector_case");
     module.import(&format!("ptfkit.{slug}"), imports.join(", "));
     module.blank_line();
@@ -62,16 +65,20 @@ fn module_source(slug: &str, functions: &[&CompiledFunction]) -> String {
 fn function_source(module: &mut Module, function: &Function) {
     let cases_name = format!("CASES_{}", function.public_api.name.to_ascii_uppercase());
     module.assignment(&cases_name, "[");
-    for case in &function.golden_tests {
-        module.line(format_args!(
-            "    ({}, {}, {}, {}),",
-            dictionary(&case.inputs),
-            dictionary(&case.expected),
-            float(case.rtol),
-            float(case.atol),
-        ));
-    }
-    module.write("]\n\n\n");
+    module.indented(|writer| {
+        for case in &function.golden_tests {
+            writer.line(format_args!(
+                "({}, {}, {}, {}),",
+                dictionary(&case.inputs),
+                dictionary(&case.expected),
+                float(case.rtol),
+                float(case.atol),
+            ));
+        }
+    });
+    module.line("]");
+    module.blank_line();
+    module.blank_line();
     let name = &function.public_api.name;
     module.line(format_args!(
         "@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), {cases_name})"
@@ -79,21 +86,17 @@ fn function_source(module: &mut Module, function: &Function) {
     module.line(format_args!(
         "def test_{name}_golden(inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float):"
     ));
-    module.write(format_args!("    result = {name}(**inputs)\n\n"));
-    module.line(expected_assertion(function, "    ", ""));
+    module.indented(|writer| {
+        writer.line(format_args!("result = {name}(**inputs)"));
+        writer.blank_line();
+        render_expected_assertion(writer, function, "");
+    });
     if !function.golden_tests.is_empty() {
         vector_test_source(module, function, &cases_name);
     }
 }
 
 fn vector_test_source(module: &mut Module, function: &Function, cases_name: &str) {
-    let array_assertion = expected_assertion(function, "    ", "[0]");
-    let out_assertion = match &function.outputs {
-        Outputs::Scalar { .. } => "    assert result is out",
-        Outputs::Record { .. } => {
-            "    for actual, expected_out in zip(result, out, strict=True):\n        assert actual is expected_out"
-        }
-    };
     let result_cls = function
         .result_class()
         .map(|result_class| format!(", {result_class}"))
@@ -102,34 +105,50 @@ fn vector_test_source(module: &mut Module, function: &Function, cases_name: &str
     module.blank_line();
     module.blank_line();
     module.line(format_args!("def test_{name}_array():"));
-    module.write(format_args!(
-        "    inputs, expected, rtol, atol, _out = prepare_vector_case({cases_name}{result_cls})\n    result = {name}(**inputs, out=None)\n{array_assertion}\n\n\n"
-    ));
+    module.indented(|writer| {
+        writer.line(format_args!(
+            "inputs, expected, rtol, atol, _out = prepare_vector_case({cases_name}{result_cls})"
+        ));
+        writer.line(format_args!("result = {name}(**inputs, out=None)"));
+        render_expected_assertion(writer, function, "[0]");
+    });
+    module.blank_line();
+    module.blank_line();
     module.line(format_args!("def test_{name}_out():"));
-    module.line(format_args!(
-        "    inputs, expected, rtol, atol, out = prepare_vector_case({cases_name}{result_cls})"
-    ));
-    module.line(format_args!("    result = {name}(**inputs, out=out)"));
-    module.line(out_assertion);
-    module.line(array_assertion);
+    module.indented(|writer| {
+        writer.line(format_args!(
+            "inputs, expected, rtol, atol, out = prepare_vector_case({cases_name}{result_cls})"
+        ));
+        writer.line(format_args!("result = {name}(**inputs, out=out)"));
+        render_out_assertion(writer, function);
+        render_expected_assertion(writer, function, "[0]");
+    });
 }
 
-fn expected_assertion(function: &Function, indent: &str, index: &str) -> String {
+fn render_expected_assertion(writer: &mut crate::render::Writer, function: &Function, index: &str) {
     match &function.outputs {
-        Outputs::Scalar { field } => format!(
-            "{indent}assert result{index} == pytest.approx(expected['{}'], rel=rtol, abs=atol)",
+        Outputs::Scalar { field } => writer.line(format_args!(
+            "assert result{index} == pytest.approx(expected['{}'], rel=rtol, abs=atol)",
             field.name
-        ),
-        Outputs::Record { fields, .. } => fields
-            .iter()
-            .map(|field| {
-                format!(
-                    "{indent}assert result.{}{index} == pytest.approx(expected['{}'], rel=rtol, abs=atol)",
+        )),
+        Outputs::Record { fields, .. } => {
+            for field in fields {
+                writer.line(format_args!(
+                    "assert result.{}{index} == pytest.approx(expected['{}'], rel=rtol, abs=atol)",
                     field.name, field.name
-                )
-            })
-            .collect::<Vec<_>>()
-            .join("\n"),
+                ));
+            }
+        }
+    }
+}
+
+fn render_out_assertion(writer: &mut crate::render::Writer, function: &Function) {
+    match &function.outputs {
+        Outputs::Scalar { .. } => writer.line("assert result is out"),
+        Outputs::Record { .. } => {
+            writer.line("for actual, expected_out in zip(result, out, strict=True):");
+            writer.indented(|writer| writer.line("assert actual is expected_out"));
+        }
     }
 }
 

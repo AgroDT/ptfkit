@@ -39,26 +39,29 @@ impl Writer {
         self
     }
 
-    /// Writes a text fragment, adding indentation only at the start of its lines.
+    /// Writes one text fragment, adding indentation only at its start.
     ///
-    /// Keep large static templates as single fragments. Use [`Self::line`] and
-    /// [`Self::indented`] for dynamic or nested structure; templates must not
-    /// include their own leading indentation for a surrounding block.
+    /// Keep large static templates as single fragments outside an indented
+    /// block. Within [`Self::indented`], write each line separately with
+    /// [`Self::line`] or [`Self::blank_line`]; this method does not inspect
+    /// embedded newlines.
     pub(crate) fn write(&mut self, value: impl Display) {
         self.write_fmt(format_args!("{value}"))
             .expect("writing to a String cannot fail");
     }
 
     pub(crate) fn line(&mut self, value: impl Display) {
-        self.write(value);
-        self.write("\n");
+        self.write_fmt(format_args!("{value}\n"))
+            .expect("writing to a String cannot fail");
     }
 
     pub(crate) fn blank_line(&mut self) {
-        if !self.at_line_start {
-            self.write("\n");
-        }
-        self.write("\n");
+        let res = if self.at_line_start {
+            self.write_char('\n')
+        } else {
+            self.write_str("\n\n")
+        };
+        res.expect("writing to a String cannot fail");
     }
 
     /// Renders a nested block with one additional indentation level.
@@ -75,15 +78,17 @@ impl Writer {
 
 impl fmt::Write for Writer {
     fn write_str(&mut self, text: &str) -> fmt::Result {
-        for part in text.split_inclusive('\n') {
-            if self.at_line_start && part != "\n" {
-                for _ in 0..self.indentation {
-                    self.contents.push_str(self.indent);
-                }
+        debug_assert!(
+            self.indentation == 0 || !text.contains('\n') || text == "\n",
+            "write each indented line separately"
+        );
+        if self.at_line_start && !text.is_empty() && !text.starts_with('\n') {
+            for _ in 0..self.indentation {
+                self.contents.push_str(self.indent);
             }
-            self.contents.push_str(part);
-            self.at_line_start = part.ends_with('\n');
         }
+        self.contents.push_str(text);
+        self.at_line_start = text.ends_with('\n');
         Ok(())
     }
 }
