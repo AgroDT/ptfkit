@@ -56,6 +56,15 @@ just generate
 
 A second generation run must leave the working tree unchanged.
 
+To check this across every codegen-owned target family, run:
+
+```sh
+just check-generated
+```
+
+The command regenerates the targets through the normal pipeline and reports
+added, removed, or modified generated files.
+
 ### Generation conventions
 
 The specification filename stem is the APA-style source slug. Codegen uses it

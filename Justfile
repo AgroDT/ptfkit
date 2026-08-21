@@ -18,6 +18,11 @@ mod rust 'targets/ptfkit-rs'
 @generate:
     cargo run generate
 
+# Regenerate all codegen-owned files and fail if any output drifts.
+[working-directory: 'codegen']
+@check-generated:
+    cargo run check-generated
+
 # Set the package version and refresh dependent lockfiles.
 @version value:
     cargo run --manifest-path codegen/Cargo.toml -- version {{quote(value)}}
