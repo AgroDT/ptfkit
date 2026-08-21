@@ -93,6 +93,13 @@ calc_ptf_puckett1985: ufunc
 calc_ptf_rawls1982_full_wrc: ufunc
 calc_ptf_rawls1982_theta_1500: ufunc
 calc_ptf_rawls1982_theta_33: ufunc
+calc_ptf_saxton2006: ufunc
+calc_ptf_saxton2006_conductivity: ufunc
+calc_ptf_saxton2006_density: ufunc
+calc_ptf_saxton2006_gravel: ufunc
+calc_ptf_saxton2006_salinity: ufunc
+calc_ptf_saxton2006_tension_dry: ufunc
+calc_ptf_saxton2006_tension_wet: ufunc
 calc_ptf_tiwary2014_bsr: ufunc
 calc_ptf_tiwary2014_igp: ufunc
 calc_ptf_varallyai1982_chernozem_a: ufunc

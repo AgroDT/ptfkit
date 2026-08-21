@@ -24,6 +24,7 @@ ptfkit's Python API is organized around public source modules.
 - [`ptfkit.pidgeon1972`](pidgeon1972.md) — Pidgeon (1972), available-water regressions for ferrallitic soils in Uganda.
 - [`ptfkit.puckett1985`](puckett1985.md) — Puckett et al. (1985), Alabama Lower Coastal Plain Ultisols.
 - [`ptfkit.rawls1982`](rawls1982.md) — Rawls et al. (1982), water-retention regressions for soils across the USA.
+- [`ptfkit.saxton2006`](saxton2006.md) — Saxton and Rawls (2006), soil water characteristics from texture and organic matter.
 - [`ptfkit.tiwary2014`](tiwary2014.md) — Tiwary et al. (2014), hydraulic PTFs for two major soil regions of India.
 - [`ptfkit.varallyai1982`](varallyai1982.md) — Varallyai et al. (1982), water-retention parameter regressions for Hungarian soils.
 - [`ptfkit.vereecken1989`](vereecken1989.md) — Vereecken et al. soil-moisture retention regressions for Belgian soils.

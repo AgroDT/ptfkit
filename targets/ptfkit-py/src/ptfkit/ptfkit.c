@@ -19,6 +19,7 @@
 #include "pidgeon1972.c"
 #include "puckett1985.c"
 #include "rawls1982.c"
+#include "saxton2006.c"
 #include "tiwary2014.c"
 #include "varallyai1982.c"
 #include "vereecken1989.c"
@@ -86,6 +87,10 @@ PyMODINIT_FUNC PyInit__ptfkit(void) {
         return NULL;
     }
     if (ptfkit_register_rawls1982(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_saxton2006(module) < 0) {
         Py_DECREF(module);
         return NULL;
     }

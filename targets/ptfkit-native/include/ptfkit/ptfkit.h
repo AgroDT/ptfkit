@@ -17,6 +17,7 @@
 #include <ptfkit/pidgeon1972.h>
 #include <ptfkit/puckett1985.h>
 #include <ptfkit/rawls1982.h>
+#include <ptfkit/saxton2006.h>
 #include <ptfkit/tiwary2014.h>
 #include <ptfkit/varallyai1982.h>
 #include <ptfkit/vereecken1989.h>
