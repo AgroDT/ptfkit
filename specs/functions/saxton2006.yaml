@@ -1,0 +1,639 @@
+source:
+  summary: Saxton and Rawls (2006), soil water characteristics from texture and organic matter.
+  citation_apa: >-
+    Saxton, K. E., & Rawls, W. J. (2006). Soil water characteristic
+    estimates by texture and organic matter for hydrologic solutions. Soil
+    Science Society of America Journal, 70(5), 1569-1578.
+  doi:
+    identifier: 10.2136/ssaj2005.0117
+    url: https://doi.org/10.2136/ssaj2005.0117
+scope:
+  territory: United States
+  dataset: >-
+    1,722 mineral-soil A-horizon samples retained from the USDA/NRCS National
+    Soil Characterization database after exclusions from 2,149 samples.
+functions:
+  - name: calc_ptf_saxton2006
+    status: implemented
+    public_api:
+      name: calc_ptf_saxton2006
+      result_class: Saxton2006PTFResult
+      summary: >-
+        Estimate soil water characteristics from sand, clay, and organic
+        matter.
+    scope:
+      prediction_target: >-
+        Water contents at 1500, 33, and 0 kPa, plant-available water, air-entry
+        tension, retention coefficients, normal density, and saturated
+        hydraulic conductivity.
+      models:
+        h_theta: Campbell power function with a linear wet-range segment
+        k_h: Campbell unsaturated conductivity model
+    inputs:
+      - name: sand
+        symbol: S
+        unit: g/g
+        domain: 0 <= value <= 1
+        description: Sand mass fraction of the fine-earth soil.
+      - name: clay
+        symbol: C
+        unit: g/g
+        domain: 0 <= value <= 0.60
+        description: Clay mass fraction of the fine-earth soil.
+      - name: organic_matter
+        symbol: OM
+        unit: '% mass'
+        domain: 0 <= value <= 8
+        description: Organic matter content on a mass percentage basis.
+    outputs:
+      type: record
+      name: Saxton2006PTFResult
+      fields:
+        - name: theta_1500
+          symbol: theta_1500
+          unit: m^3/m^3
+          domain: value > 0
+          description: Volumetric water content at 1500 kPa matric tension.
+        - name: theta_33
+          symbol: theta_33
+          unit: m^3/m^3
+          domain: value > 0
+          description: Volumetric water content at 33 kPa matric tension.
+        - name: theta_s
+          symbol: theta_s
+          unit: m^3/m^3
+          domain: value > 0
+          description: Saturated volumetric water content at normal density.
+        - name: plant_available_water
+          symbol: PAW
+          unit: m^3/m^3
+          domain: value >= 0
+          description: Difference between the 33 and 1500 kPa water contents.
+        - name: air_entry_tension
+          symbol: psi_e
+          unit: kPa
+          domain: value > 0
+          description: Air-entry or bubbling-pressure tension.
+        - name: retention_a
+          symbol: A
+          unit: kPa
+          domain: value > 0
+          description: Coefficient A of the dry-range moisture-tension curve.
+        - name: retention_b
+          symbol: B
+          unit: dimensionless
+          domain: value > 0
+          description: Exponent B of the dry-range moisture-tension curve.
+        - name: conductivity_lambda
+          symbol: lambda
+          unit: dimensionless
+          domain: value > 0
+          description: Inverse of retention exponent B.
+        - name: saturated_conductivity
+          symbol: K_s
+          unit: mm/h
+          domain: value >= 0
+          description: Saturated hydraulic conductivity of the matric soil.
+        - name: normal_density
+          symbol: rho_N
+          unit: g/cm^3
+          domain: value > 0
+          description: Normal dry bulk density assuming particle density 2.65 g/cm^3.
+    golden_tests:
+      - id: table_3_sand
+        inputs:
+          sand: 0.88
+          clay: 0.05
+          organic_matter: 2.5
+        expected:
+          theta_1500: 0.05022058
+          theta_33: 0.10282792364858702
+          theta_s: 0.46172240764858724
+          plant_available_water: 0.05260734364858702
+          air_entry_tension: 0.5986789729513293
+          retention_a: 0.00018076452552206025
+          retention_b: 5.325903100453899
+          conductivity_lambda: 0.18776158355467926
+          saturated_conductivity: 108.1478278507403
+          normal_density: 1.4264356197312436
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: >-
+          Calculated directly from Table 1. The source-native rounded Table 3
+          values are 0.05, 0.10, 0.46, 0.05, 108.1 mm/h, and 1.43 g/cm^3 for
+          theta_1500, theta_33, theta_s, PAW, K_s, and rho_N, respectively.
+    edge_cases: []
+    documentation:
+      notes:
+        - Sand and clay are decimal mass fractions, while organic matter is a percentage.
+        - The 1500 and 33 kPa values are also termed wilting point and field capacity.
+      warnings:
+        - Do not apply the regression above 8% organic matter or 60% clay.
+        - Sand and clay fractions must describe one soil and therefore must sum to at most 1.
+        - These statistical-average estimates should be calibrated to local measurements when available.
+    implementation:
+      variables:
+        - name: theta_1500_preliminary
+          expr: -0.024 * sand + 0.487 * clay + 0.006 * organic_matter + 0.005 * sand * organic_matter - 0.013 * clay * organic_matter + 0.068 * sand * clay + 0.031
+        - name: theta_1500
+          expr: theta_1500_preliminary + 0.14 * theta_1500_preliminary - 0.02
+        - name: theta_33_preliminary
+          expr: -0.251 * sand + 0.195 * clay + 0.011 * organic_matter + 0.006 * sand * organic_matter - 0.027 * clay * organic_matter + 0.452 * sand * clay + 0.299
+        - name: theta_33
+          expr: theta_33_preliminary + 1.283 * theta_33_preliminary ^ 2 - 0.374 * theta_33_preliminary - 0.015
+        - name: theta_s_minus_33_preliminary
+          expr: 0.278 * sand + 0.034 * clay + 0.022 * organic_matter - 0.018 * sand * organic_matter - 0.027 * clay * organic_matter - 0.584 * sand * clay + 0.078
+        - name: theta_s_minus_33
+          expr: theta_s_minus_33_preliminary + 0.636 * theta_s_minus_33_preliminary - 0.107
+        - name: theta_s
+          expr: theta_33 + theta_s_minus_33 - 0.097 * sand + 0.043
+        - name: plant_available_water
+          expr: theta_33 - theta_1500
+        - name: air_entry_preliminary
+          expr: -21.67 * sand - 27.93 * clay - 81.97 * theta_s_minus_33_preliminary + 71.12 * sand * theta_s_minus_33_preliminary + 8.29 * clay * theta_s_minus_33_preliminary + 14.05 * sand * clay + 27.16
+        - name: air_entry_tension
+          expr: air_entry_preliminary + 0.02 * air_entry_preliminary ^ 2 - 0.113 * air_entry_preliminary - 0.70
+        - name: retention_b
+          expr: (ln(1500) - ln(33)) / (ln(theta_33) - ln(theta_1500))
+        - name: retention_a
+          expr: exp(ln(33) + retention_b * ln(theta_33))
+        - name: conductivity_lambda
+          expr: 1 / retention_b
+        - name: saturated_conductivity
+          expr: 1930 * (theta_s - theta_33) ^ (3 - conductivity_lambda)
+        - name: normal_density
+          expr: (1 - theta_s) * 2.65
+
+  - name: calc_ptf_saxton2006_density
+    status: implemented
+    public_api:
+      name: calc_density_adjustment_saxton2006
+      result_class: Saxton2006DensityResult
+      summary: Adjust Saxton and Rawls water characteristics for soil density.
+    scope:
+      prediction_target: Density-adjusted saturation and 33 kPa water contents.
+      models:
+        h_theta: Density adjustment to the point estimates
+        k_h: null
+    inputs:
+      - name: normal_density
+        symbol: rho_N
+        unit: g/cm^3
+        domain: value > 0
+        description: Normal dry bulk density estimated by the base model.
+      - name: theta_s
+        symbol: theta_s
+        unit: m^3/m^3
+        domain: value > 0
+        description: Saturated water content at normal density.
+      - name: theta_33
+        symbol: theta_33
+        unit: m^3/m^3
+        domain: value > 0
+        description: Water content at 33 kPa and normal density.
+      - name: density_factor
+        symbol: DF
+        unit: dimensionless
+        domain: 0.9 <= value <= 1.3
+        description: Multiplicative adjustment to normal density.
+    outputs:
+      type: record
+      name: Saxton2006DensityResult
+      fields:
+        - name: adjusted_density
+          symbol: rho_DF
+          unit: g/cm^3
+          domain: value > 0
+          description: Density after applying the density factor.
+        - name: adjusted_theta_s
+          symbol: theta_S-DF
+          unit: m^3/m^3
+          domain: value > 0
+          description: Saturated water content after the density adjustment.
+        - name: adjusted_theta_33
+          symbol: theta_33-DF
+          unit: m^3/m^3
+          domain: value > 0
+          description: Water content at 33 kPa after the density adjustment.
+        - name: adjusted_theta_s_minus_33
+          symbol: theta_(S-33)DF
+          unit: m^3/m^3
+          domain: value >= 0.005
+          description: Density-adjusted difference between saturation and 33 kPa.
+    golden_tests:
+      - id: table_3_sand_compacted
+        inputs:
+          normal_density: 1.4264356197312436
+          theta_s: 0.46172240764858724
+          theta_33: 0.10282792364858702
+          density_factor: 1.1
+        expected:
+          adjusted_density: 1.569079181704368
+          adjusted_theta_s: 0.407894648413446
+          adjusted_theta_33: 0.09206237180155877
+          adjusted_theta_s_minus_33: 0.3158322766118873
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: Calculated directly from Table 1, Equations 7-10.
+    edge_cases: []
+    documentation:
+      notes:
+        - The source limits the saturation-minus-33 kPa difference to at least 0.005 m^3/m^3.
+      warnings:
+        - The source recommends density factors only from 0.9 to 1.3.
+    implementation:
+      variables:
+        - name: adjusted_density
+          expr: normal_density * density_factor
+        - name: adjusted_theta_s
+          expr: 1 - adjusted_density / 2.65
+        - name: adjusted_theta_33
+          expr: theta_33 - 0.2 * (theta_s - adjusted_theta_s)
+        - name: adjusted_theta_s_minus_33
+          expr: max(adjusted_theta_s - adjusted_theta_33, 0.005)
+
+  - name: calc_ptf_saxton2006_tension_dry
+    status: implemented
+    public_api:
+      name: calc_tension_dry_saxton2006
+      result_class: null
+      summary: Estimate matric tension in the 1500 to 33 kPa segment.
+    scope:
+      prediction_target: Matric tension for water content between theta_1500 and theta_33.
+      models:
+        h_theta: Campbell power function
+        k_h: null
+    inputs:
+      - name: theta
+        symbol: theta
+        unit: m^3/m^3
+        domain: theta_1500 <= value <= theta_33
+        description: Volumetric water content.
+      - name: theta_1500
+        symbol: theta_1500
+        unit: m^3/m^3
+        domain: value > 0
+        description: Volumetric water content at 1500 kPa.
+      - name: theta_33
+        symbol: theta_33
+        unit: m^3/m^3
+        domain: value > theta_1500
+        description: Volumetric water content at 33 kPa.
+    outputs:
+      type: scalar
+      name: tension
+      symbol: psi_theta
+      unit: kPa
+      domain: 33 <= value <= 1500
+      description: Matric tension at the supplied water content.
+    golden_tests:
+      - id: table_3_sand_midpoint
+        inputs:
+          theta: 0.07652425182429351
+          theta_1500: 0.05022058
+          theta_33: 0.10282792364858702
+        expected:
+          tension: 159.18094591362183
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: Calculated directly from Table 1, Equations 11, 14, and 15.
+    edge_cases: []
+    documentation:
+      notes: []
+      warnings:
+        - Use only for the 1500 to 33 kPa segment defined by the source.
+    implementation:
+      variables:
+        - name: retention_b
+          expr: (ln(1500) - ln(33)) / (ln(theta_33) - ln(theta_1500))
+        - name: retention_a
+          expr: exp(ln(33) + retention_b * ln(theta_33))
+        - name: tension
+          expr: retention_a * theta ^ (-retention_b)
+
+  - name: calc_ptf_saxton2006_tension_wet
+    status: implemented
+    public_api:
+      name: calc_tension_wet_saxton2006
+      result_class: null
+      summary: Estimate matric tension in the 33 kPa to air-entry segment.
+    scope:
+      prediction_target: Matric tension for water content between theta_33 and theta_s.
+      models:
+        h_theta: Linear wet-range segment
+        k_h: null
+    inputs:
+      - name: theta
+        symbol: theta
+        unit: m^3/m^3
+        domain: theta_33 <= value <= theta_s
+        description: Volumetric water content.
+      - name: theta_33
+        symbol: theta_33
+        unit: m^3/m^3
+        domain: value > 0
+        description: Volumetric water content at 33 kPa.
+      - name: theta_s
+        symbol: theta_s
+        unit: m^3/m^3
+        domain: value > theta_33
+        description: Saturated volumetric water content.
+      - name: air_entry_tension
+        symbol: psi_e
+        unit: kPa
+        domain: 0 <= value < 33
+        description: Air-entry tension estimated by the base model.
+    outputs:
+      type: scalar
+      name: tension
+      symbol: psi_theta
+      unit: kPa
+      domain: air_entry_tension <= value <= 33
+      description: Matric tension at the supplied water content.
+    golden_tests:
+      - id: table_3_sand_theta_0_2
+        inputs:
+          theta: 0.2
+          theta_33: 0.10282792364858702
+          theta_s: 0.46172240764858724
+          air_entry_tension: 0.5986789729513293
+        expected:
+          tension: 24.227216407352152
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: Calculated directly from Table 1, Equation 12.
+    edge_cases: []
+    documentation:
+      notes:
+        - At tensions below air entry, Equation 13 fixes water content at theta_s.
+      warnings:
+        - Use only for the 33 kPa to air-entry segment defined by the source.
+    implementation:
+      variables:
+        - name: tension
+          expr: 33 - (theta - theta_33) * (33 - air_entry_tension) / (theta_s - theta_33)
+
+  - name: calc_ptf_saxton2006_conductivity
+    status: implemented
+    public_api:
+      name: calc_conductivity_saxton2006
+      result_class: null
+      summary: Estimate unsaturated hydraulic conductivity from water content.
+    scope:
+      prediction_target: Unsaturated hydraulic conductivity of the matric soil.
+      models:
+        h_theta: null
+        k_h: Campbell unsaturated conductivity model
+    inputs:
+      - name: theta
+        symbol: theta
+        unit: m^3/m^3
+        domain: 0 < value <= theta_s
+        description: Volumetric water content.
+      - name: theta_s
+        symbol: theta_s
+        unit: m^3/m^3
+        domain: value > 0
+        description: Saturated volumetric water content.
+      - name: saturated_conductivity
+        symbol: K_s
+        unit: mm/h
+        domain: value >= 0
+        description: Saturated hydraulic conductivity of the matric soil.
+      - name: conductivity_lambda
+        symbol: lambda
+        unit: dimensionless
+        domain: value > 0
+        description: Inverse of retention exponent B.
+    outputs:
+      type: scalar
+      name: conductivity
+      symbol: K_theta
+      unit: mm/h
+      domain: value >= 0
+      description: Unsaturated hydraulic conductivity at the supplied water content.
+    golden_tests:
+      - id: table_3_sand_theta_0_3
+        inputs:
+          theta: 0.3
+          theta_s: 0.46172240764858724
+          saturated_conductivity: 108.1478278507403
+          conductivity_lambda: 0.18776158355467926
+        expected:
+          conductivity: 0.3003203142764693
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: Calculated directly from corrected Table 1, Equation 17.
+    edge_cases: []
+    documentation:
+      notes: []
+      warnings:
+        - The equation does not include residual water content.
+    implementation:
+      variables:
+        - name: conductivity
+          expr: saturated_conductivity * (theta / theta_s) ^ (3 + 2 / conductivity_lambda)
+
+  - name: calc_ptf_saxton2006_gravel
+    status: implemented
+    public_api:
+      name: calc_gravel_adjustment_saxton2006
+      result_class: Saxton2006GravelResult
+      summary: Adjust matric-soil properties for gravel content.
+    scope:
+      prediction_target: Gravel volume, bulk density, available water, and saturated conductivity.
+      models:
+        h_theta: Gravel reduction of plant-available water
+        k_h: Peck-Watson conductivity reduction
+    inputs:
+      - name: gravel_weight_fraction
+        symbol: R_w
+        unit: g/g
+        domain: 0 <= value < 1
+        description: Gravel mass fraction of the bulk soil.
+      - name: matric_density
+        symbol: rho
+        unit: g/cm^3
+        domain: 0 < value <= 2.65
+        description: Dry bulk density of the fine-earth matric soil.
+      - name: plant_available_water
+        symbol: PAW
+        unit: m^3/m^3
+        domain: value >= 0
+        description: Plant-available water of the matric soil.
+      - name: saturated_conductivity
+        symbol: K_s
+        unit: mm/h
+        domain: value >= 0
+        description: Saturated hydraulic conductivity of the matric soil.
+    outputs:
+      type: record
+      name: Saxton2006GravelResult
+      fields:
+        - name: gravel_volume_fraction
+          symbol: R_v
+          unit: m^3/m^3
+          domain: 0 <= value < 1
+          description: Gravel volume fraction of the bulk soil.
+        - name: bulk_density
+          symbol: rho_B
+          unit: g/cm^3
+          domain: value > 0
+          description: Dry bulk density of matric soil plus gravel.
+        - name: bulk_plant_available_water
+          symbol: PAW_B
+          unit: m^3/m^3
+          domain: value >= 0
+          description: Plant-available water on a bulk-soil volume basis.
+        - name: bulk_saturated_conductivity
+          symbol: K_b
+          unit: mm/h
+          domain: value >= 0
+          description: Saturated conductivity after the gravel reduction.
+    golden_tests:
+      - id: table_3_sand_twenty_percent_gravel
+        inputs:
+          gravel_weight_fraction: 0.2
+          matric_density: 1.4264356197312436
+          plant_available_water: 0.05260734364858702
+          saturated_conductivity: 108.1478278507403
+        expected:
+          gravel_volume_fraction: 0.11860834455314037
+          bulk_density: 1.5715605653291098
+          bulk_plant_available_water: 0.04636767370708995
+          bulk_saturated_conductivity: 97.54880510583706
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: Calculated directly from Table 1, Equations 19-22.
+    edge_cases: []
+    documentation:
+      notes:
+        - Gravel comprises particles larger than 2 mm.
+        - Gravel density is fixed at 2.65 g/cm^3 in the source equations.
+      warnings:
+        - The conductivity correction does not represent extra macropores sometimes found in gravelly soils.
+    implementation:
+      variables:
+        - name: density_ratio
+          expr: matric_density / 2.65
+        - name: gravel_volume_fraction
+          expr: density_ratio * gravel_weight_fraction / (1 - gravel_weight_fraction * (1 - density_ratio))
+        - name: bulk_density
+          expr: matric_density * (1 - gravel_volume_fraction) + gravel_volume_fraction * 2.65
+        - name: bulk_plant_available_water
+          expr: plant_available_water * (1 - gravel_volume_fraction)
+        - name: bulk_saturated_conductivity
+          expr: saturated_conductivity * (1 - gravel_volume_fraction) / (1 - gravel_volume_fraction * (1 - 3 * density_ratio / 2))
+
+  - name: calc_ptf_saxton2006_salinity
+    status: implemented
+    public_api:
+      name: calc_osmotic_potential_saxton2006
+      result_class: Saxton2006SalinityResult
+      summary: Estimate saturated and moisture-adjusted osmotic potential.
+    scope:
+      prediction_target: Osmotic potential from saturated-extract electrical conductivity.
+      models:
+        h_theta: Matric-plus-osmotic tension adjustment
+        k_h: null
+    inputs:
+      - name: electrical_conductivity
+        symbol: EC
+        unit: dS/m
+        domain: value >= 0
+        description: Electrical conductivity of a saturated soil extract.
+      - name: theta
+        symbol: theta
+        unit: m^3/m^3
+        domain: 0 < value <= theta_s
+        description: Current volumetric water content.
+      - name: theta_s
+        symbol: theta_s
+        unit: m^3/m^3
+        domain: value > 0
+        description: Saturated volumetric water content.
+    outputs:
+      type: record
+      name: Saxton2006SalinityResult
+      fields:
+        - name: saturated_osmotic_potential
+          symbol: psi_O
+          unit: kPa
+          domain: value >= 0
+          description: Osmotic potential at saturation.
+        - name: osmotic_potential
+          symbol: psi_Otheta
+          unit: kPa
+          domain: value >= 0
+          description: Osmotic potential at the supplied water content.
+    golden_tests:
+      - id: saline_partly_saturated_soil
+        inputs:
+          electrical_conductivity: 4.0
+          theta: 0.3
+          theta_s: 0.46172240764858724
+        expected:
+          saturated_osmotic_potential: 144.0
+          osmotic_potential: 221.6267556713219
+        rtol: 1.0e-12
+        atol: 1.0e-12
+        notes: Calculated directly from Table 1, Equations 23 and 24.
+    edge_cases: []
+    documentation:
+      notes:
+        - The moisture adjustment assumes dissolved salt quantity remains near constant as water content falls.
+      warnings:
+        - Precipitation, bonding, ionic nutrition, and toxicity can modify actual salinity effects.
+    implementation:
+      variables:
+        - name: saturated_osmotic_potential
+          expr: 36 * electrical_conductivity
+        - name: osmotic_potential
+          expr: theta_s / theta * saturated_osmotic_potential
+
+scientific_notes: |
+  # Saxton and Rawls (2006)
+
+  ## Supported models
+
+  The source combines regressions for water contents at 1500 and 33 kPa,
+  saturation-minus-33 kPa, and air-entry tension with a three-segment
+  moisture-tension relationship. The dry segment is a Campbell power function,
+  the intermediate segment is linear, and water content is constant at
+  saturation below air entry. Saturated conductivity follows Equation 16 and
+  unsaturated conductivity follows the Campbell relationship in Equation 17.
+  Separate transformations represent density, gravel, and salinity effects.
+
+  ## Review decisions
+
+  Sand and clay are represented as decimal mass fractions because that
+  interpretation reproduces Table 3; organic matter remains a mass percentage.
+  The prepared source resolves the preliminary-variable OCR collisions in
+  Equations 1-4. In particular, the air-entry regression uses the preliminary
+  saturation-minus-33 kPa value. The plus sign in the Equation 2 lack-of-fit
+  adjustment is retained because it reproduces every rounded sand-texture value
+  supplied by Table 3, whereas the damaged transcription's minus sign does not.
+
+  The prepared correction supplies the parentheses in
+  `B = [ln(1500)-ln(33)] / [ln(theta_33)-ln(theta_1500)]`, distinguishes gravel
+  mass fraction `R_w` from volume fraction `R_v`, retains the Equation 16
+  exponent `3-lambda`, and corrects the Equation 17 exponent to
+  `3+2/lambda`. Equation 24 is represented as `theta_s/theta` times saturated
+  osmotic potential, consistent with the source's statement that concentration
+  and osmotic potential increase as soil water decreases from saturation.
+
+  ## Documented limitations
+
+  The regression data excluded bulk densities below 1.0 or above 1.8 g/cm^3,
+  organic matter above 8%, and clay above 60%. Only A-horizon samples were used
+  to fit the regressions. The estimates are statistical averages, and the paper
+  recommends calibration to site-specific data when available. The gravel
+  conductivity model treats gravel as nonconducting inclusions and does not
+  account for associated macropores. Salinity chemistry may depart from the
+  constant-dissolved-salt approximation.
+
+  ## Blockers
+
+  None. The prepared source handoff explicitly resolves the material OCR
+  collisions, and the Table 3 sand case provides source-native numerical
+  validation for the base predictive sequence.

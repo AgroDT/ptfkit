@@ -16,6 +16,7 @@ export import ptfkit.mayr1999;
 export import ptfkit.pidgeon1972;
 export import ptfkit.puckett1985;
 export import ptfkit.rawls1982;
+export import ptfkit.saxton2006;
 export import ptfkit.tiwary2014;
 export import ptfkit.varallyai1982;
 export import ptfkit.vereecken1989;
