@@ -52,6 +52,7 @@ Source regressions operate in percentage points; outputs are divided by 100 to r
 
 Developed from Moroccan agricultural topsoils and not independently validated outside the source
 territory."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_beniaich2023_slr1(clay: f64) -> Beniaich2023PTFResult {
     let water_saturation = (46.307f64 + 0.556f64 * clay) / 100.0f64;
@@ -118,6 +119,7 @@ Source regressions operate in percentage points; outputs are divided by 100 to r
 
 Developed from Moroccan agricultural topsoils and not independently validated outside the source
 territory."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_beniaich2023_slr2(silt: f64) -> Beniaich2023PTFResult {
     let water_saturation = (59.508f64 + 0.299f64 * silt) / 100.0f64;
@@ -184,6 +186,7 @@ Source regressions operate in percentage points; outputs are divided by 100 to r
 
 Developed from Moroccan agricultural topsoils and not independently validated outside the source
 territory."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_beniaich2023_slr3(sand: f64) -> Beniaich2023PTFResult {
     let water_saturation = (81.420f64 - 0.427f64 * sand) / 100.0f64;
@@ -251,6 +254,7 @@ Source regressions operate in percentage points; outputs are divided by 100 to r
 
 Developed from Moroccan agricultural topsoils and not independently validated outside the source
 territory."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_beniaich2023_slr4(clay: f64, silt: f64) -> Beniaich2023PTFResult {
     let clay_silt = clay + silt;
@@ -319,6 +323,7 @@ Source regressions operate in percentage points; outputs are divided by 100 to r
 
 Developed from Moroccan agricultural topsoils and not independently validated outside the source
 territory."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_beniaich2023_slr5(clay: f64, silt: f64) -> Beniaich2023PTFResult {
     let clay_silt_ratio = clay / silt;
@@ -386,6 +391,7 @@ Source regressions operate in percentage points; outputs are divided by 100 to r
 
 Developed from Moroccan agricultural topsoils and not independently validated outside the source
 territory."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_beniaich2023_slr6(soil_organic_matter: f64) -> Beniaich2023PTFResult {
     let water_saturation = (61.163f64 + 2.793f64 * soil_organic_matter) / 100.0f64;
@@ -454,6 +460,7 @@ Source regressions operate in percentage points; outputs are divided by 100 to r
 
 Developed from Moroccan agricultural topsoils and not independently validated outside the source
 territory."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_beniaich2023_mlr1(
     silt: f64,
@@ -528,6 +535,7 @@ Source regressions operate in percentage points; outputs are divided by 100 to r
 
 Developed from Moroccan agricultural topsoils and not independently validated outside the source
 territory."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_beniaich2023_mlr2(sand: f64, soil_organic_matter: f64) -> Beniaich2023PTFResult {
     let water_saturation =
@@ -598,6 +606,7 @@ Source regressions operate in percentage points; outputs are divided by 100 to r
 
 Developed from Moroccan agricultural topsoils and not independently validated outside the source
 territory."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_beniaich2023_mlr3(silt: f64, soil_organic_matter: f64) -> Beniaich2023PTFResult {
     let water_saturation =
@@ -668,6 +677,7 @@ Source regressions operate in percentage points; outputs are divided by 100 to r
 
 Developed from Moroccan agricultural topsoils and not independently validated outside the source
 territory."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_beniaich2023_mlr4(clay: f64, soil_organic_matter: f64) -> Beniaich2023PTFResult {
     let water_saturation =
@@ -739,6 +749,7 @@ Source regressions operate in percentage points; outputs are divided by 100 to r
 
 Developed from Moroccan agricultural topsoils and not independently validated outside the source
 territory."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_beniaich2023_mlr5(
     clay: f64,

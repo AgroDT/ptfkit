@@ -41,6 +41,7 @@ Sand is not an input to the model.
 # Warnings
 
 The formula uses base-10 logarithms of silt and clay."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_jabro1992(silt: f64, clay: f64, bulk_density: f64) -> f64 {
     let log10_k_sat_cm_per_hour =

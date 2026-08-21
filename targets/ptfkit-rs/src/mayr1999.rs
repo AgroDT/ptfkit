@@ -63,6 +63,7 @@ Do not apply the functions to organic soils with organic carbon above 5% or soil
 density below 0.9 g/cm^3.
 Treat application outside the calibration particle-size distribution with great care; the paper
 provides that distribution only graphically."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_mayr1999(
     sand: f64,

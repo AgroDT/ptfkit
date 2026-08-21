@@ -63,6 +63,7 @@ Public API names are provisional for pilot testing.
 # Warnings
 
 Log-transformed output units use the pilot contract `reported log value`."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_cosby1984_univariate(
     sand: f64,

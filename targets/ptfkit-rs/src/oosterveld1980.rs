@@ -37,6 +37,7 @@ laboratory; the field-capacity tension regression used 134 samples."]
 Prediction target: Tension at which pressure-plate moisture content equals field capacity
 determined by the cylinder method.
 Equation 1 reports r = 0.67 and n = 134."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_oosterveld1980_field_capacity_tension(clay: f64) -> f64 {
     5.356f64 * clay.powf(0.421f64)
@@ -86,6 +87,7 @@ Equation 2 reports r = 0.96 and n = 1,137.
 # Warnings
 
 The paper reports slight inaccuracy at very high clay content and high tension."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_oosterveld1980_retention(
     clay: f64,
@@ -138,6 +140,7 @@ mod calc_ptf_oosterveld1980_retention_tests {
 
 Prediction target: Gravimetric soil-moisture content at field capacity.
 Equation 3 is obtained by substituting the Equation 1 field-capacity tension into Equation 2."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_oosterveld1980_field_capacity(clay: f64, sand: f64, mean_depth: f64) -> f64 {
     (25.713f64 + 0.469f64 * clay - 0.184f64 * sand - 0.0329f64 * mean_depth) * clay.powf(-0.080f64)
@@ -184,6 +187,7 @@ mod calc_ptf_oosterveld1980_field_capacity_tests {
 Prediction target: Gravimetric soil-moisture content at 1500 kPa.
 Equation 4 reports r = 0.96 and n = 298.
 The paper takes moisture content at 1500 kPa as the wilting point."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_oosterveld1980_wilting_point(clay: f64, sand: f64, mean_depth: f64) -> f64 {
     4.035f64 + 0.299f64 * clay - 0.034f64 * sand - 0.016f64 * mean_depth
@@ -226,6 +230,7 @@ mod calc_ptf_oosterveld1980_wilting_point_tests {
 Prediction target: Difference between gravimetric moisture content at field capacity and at the
 1500 kPa wilting point.
 The paper defines available soil water by subtracting Equation 4 from Equation 3."]
+#[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_oosterveld1980_available_water(clay: f64, sand: f64, mean_depth: f64) -> f64 {
     let field_capacity_moisture =
