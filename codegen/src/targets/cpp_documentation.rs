@@ -5,46 +5,64 @@ use anyhow::{Result, anyhow};
 use crate::{
     documentation::{self as docs},
     model::{CompiledFunction, Output, Parameter},
+    render::Writer,
 };
 
-use super::{GeneratedFile, documentation::FRONTMATTER_HEADER, group_by_source};
+use super::{
+    GeneratedFile,
+    documentation::{self as markdown},
+    group_by_source,
+};
 
 pub(super) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile>> {
     let sources = group_by_source(functions);
-    let mut files = vec![file("index.md", index(&sources))];
-    files.push(GeneratedFile::new(
-        "modules/ptfkit.md".into(),
-        umbrella(&sources),
-    ));
+    let mut files = vec![markdown::markdown_file("index.md", |writer| {
+        render_index(writer, &sources);
+    })];
+    files.push(markdown::markdown_file("modules/ptfkit.md", |writer| {
+        render_umbrella(writer, &sources);
+    }));
 
     let mut index_entries = Vec::new();
     for (slug, functions) in sources {
-        files.push(GeneratedFile::new(
-            format!("modules/{slug}.md").into(),
-            module(slug, &functions)?,
-        ));
+        files.push(module_file(slug, &functions)?);
         for function in functions {
             index_entries.push((slug, function));
         }
     }
     index_entries.sort_by_key(|(_, function)| natural_sort_key(&function.core.name));
-    files.push(file("functions.md", functions_index(&index_entries)));
+    files.push(markdown::markdown_file("functions.md", |writer| {
+        render_functions_index(writer, &index_entries);
+    }));
     Ok(files)
 }
 
-fn file(path: impl Into<PathBuf>, contents: String) -> GeneratedFile {
-    GeneratedFile::new(path.into(), format!("{}\n", contents.trim_end()))
+fn module_file(slug: &str, functions: &[&CompiledFunction]) -> Result<GeneratedFile> {
+    let mut writer = Writer::new();
+    render_module(&mut writer, slug, functions)?;
+    Ok(GeneratedFile::new(
+        PathBuf::from(format!("modules/{slug}.md")),
+        markdown::markdown_contents(writer),
+    ))
 }
 
-fn index(sources: &std::collections::BTreeMap<&str, Vec<&CompiledFunction>>) -> String {
-    let mut text = format!("---\n{FRONTMATTER_HEADER}title: C++ API reference\n---\n\n");
-    text.push_str("# C++ API reference\n\n");
-    text.push_str("ptfkit's C++ API is organized around C++20 modules.\n\n");
-    text.push_str("## Modules\n\n");
-    text.push_str("- [`ptfkit`](modules/ptfkit.md) — Re-exports every ptfkit source module.\n");
+fn render_index(
+    writer: &mut Writer,
+    sources: &std::collections::BTreeMap<&str, Vec<&CompiledFunction>>,
+) {
+    markdown::generated_frontmatter(writer, |writer| {
+        writer.line("title: C++ API reference");
+    });
+    writer.line("# C++ API reference");
+    writer.blank_line();
+    writer.line("ptfkit's C++ API is organized around C++20 modules.");
+    writer.blank_line();
+    writer.line("## Modules");
+    writer.blank_line();
+    writer.line("- [`ptfkit`](modules/ptfkit.md) — Re-exports every ptfkit source module.");
     for (slug, functions) in sources {
-        text.push_str(&format!(
-            "- [`ptfkit.{slug}`](modules/{slug}.md) — {}\n",
+        writer.line(format_args!(
+            "- [`ptfkit.{slug}`](modules/{slug}.md) — {}",
             escape_text(
                 docs::for_source(
                     &functions[0].entry.spec.source,
@@ -54,19 +72,30 @@ fn index(sources: &std::collections::BTreeMap<&str, Vec<&CompiledFunction>>) -> 
             )
         ));
     }
-    text.push_str("\nSee the [function index](functions.md) for all public C++ functions.\n");
-    text
+    writer.blank_line();
+    writer.line("See the [function index](functions.md) for all public C++ functions.");
 }
 
-fn umbrella(sources: &std::collections::BTreeMap<&str, Vec<&CompiledFunction>>) -> String {
-    let mut text =
-        format!("---\n{FRONTMATTER_HEADER}title: C++ module ptfkit\nnav-title: ptfkit\n---\n\n");
-    text.push_str("# `ptfkit`\n\n```cpp\nimport ptfkit;\n```\n\n");
-    text.push_str("This umbrella module re-exports every public ptfkit source module. Import an individual module when only one source is needed.\n\n");
-    text.push_str("## Re-exported modules\n\n");
+fn render_umbrella(
+    writer: &mut Writer,
+    sources: &std::collections::BTreeMap<&str, Vec<&CompiledFunction>>,
+) {
+    markdown::generated_frontmatter(writer, |writer| {
+        writer.line("title: C++ module ptfkit");
+        writer.line("nav-title: ptfkit");
+    });
+    writer.line("# `ptfkit`");
+    writer.blank_line();
+    markdown::code_block(writer, "cpp", |writer| {
+        writer.line("import ptfkit;");
+    });
+    writer.line("This umbrella module re-exports every public ptfkit source module. Import an individual module when only one source is needed.");
+    writer.blank_line();
+    writer.line("## Re-exported modules");
+    writer.blank_line();
     for (slug, functions) in sources {
-        text.push_str(&format!(
-            "- [`ptfkit.{slug}`]({slug}.md) — {}\n",
+        writer.line(format_args!(
+            "- [`ptfkit.{slug}`]({slug}.md) — {}",
             escape_text(
                 docs::for_source(
                     &functions[0].entry.spec.source,
@@ -76,124 +105,157 @@ fn umbrella(sources: &std::collections::BTreeMap<&str, Vec<&CompiledFunction>>) 
             )
         ));
     }
-    text
 }
 
-fn module(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
+fn render_module(writer: &mut Writer, slug: &str, functions: &[&CompiledFunction]) -> Result<()> {
     let first = functions
         .first()
         .expect("compiled source contains at least one function");
     let source = docs::for_source(&first.entry.spec.source, &first.entry.spec.scope);
-    let mut text = format!(
-        "---\n{FRONTMATTER_HEADER}title: C++ module ptfkit.{slug}\nnav-title: ptfkit.{slug}\n---\n\n"
-    );
-    text.push_str(&format!(
-        "# `ptfkit.{slug}`\n\n```cpp\nimport ptfkit.{slug};\n```\n\n"
-    ));
-    text.push_str(&format!("**Exported namespace:** `ptfkit::{slug}`\n\n"));
-    text.push_str(&format!("{}\n\n", escape_text(source.summary)));
-    text.push_str("## Source\n\n");
-    text.push_str(&escape_text(source.reference.citation));
-    text.push_str("\n\n");
+    markdown::generated_frontmatter(writer, |writer| {
+        writer.line(format_args!("title: C++ module ptfkit.{slug}"));
+        writer.line(format_args!("nav-title: ptfkit.{slug}"));
+    });
+    writer.line(format_args!("# `ptfkit.{slug}`"));
+    writer.blank_line();
+    markdown::code_block(writer, "cpp", |writer| {
+        writer.line(format_args!("import ptfkit.{slug};"));
+    });
+    writer.line(format_args!("**Exported namespace:** `ptfkit::{slug}`"));
+    writer.blank_line();
+    writer.line(escape_text(source.summary));
+    writer.blank_line();
+    writer.line("## Source");
+    writer.blank_line();
+    writer.line(escape_text(source.reference.citation));
+    writer.blank_line();
     if let Some(doi) = source.reference.doi {
-        text.push_str(&format!(
-            "[DOI: {}]({})\n\n",
+        writer.line(format_args!(
+            "[DOI: {}]({})",
             escape_text(doi.identifier),
             doi.url
         ));
+        writer.blank_line();
     }
     if source.territory.is_some() || source.dataset.is_some() {
-        text.push_str("## Scope\n\n");
+        writer.line("## Scope");
+        writer.blank_line();
         if let Some(territory) = source.territory {
-            text.push_str(&format!("**Territory:** {}\n\n", escape_text(territory)));
+            writer.line(format_args!("**Territory:** {}", escape_text(territory)));
+            writer.blank_line();
         }
         if let Some(dataset) = source.dataset {
-            text.push_str(&format!("**Dataset:** {}\n\n", escape_text(dataset)));
+            writer.line(format_args!("**Dataset:** {}", escape_text(dataset)));
+            writer.blank_line();
         }
     }
-    text.push_str(&format!(
-        "[PTF catalog page](../../../ptf-catalog/sources/{slug}.md)\n\n"
+    writer.line(format_args!(
+        "[PTF catalog page](../../../ptf-catalog/sources/{slug}.md)"
     ));
+    writer.blank_line();
 
     let mut structures = BTreeSet::new();
     for function in functions {
         if let Output::Struct(_) = &function.core.output {
             let result = result_class(function)?;
             if structures.insert(result) {
-                text.push_str(&structure(result, spec(function).outputs.fields()));
+                render_structure(writer, result, spec(function).outputs.fields());
             }
         }
     }
-    text.push_str("## Functions\n\n");
+    writer.line("## Functions");
+    writer.blank_line();
     for function in functions {
-        text.push_str(&function_documentation(function)?);
+        render_function_documentation(writer, function)?;
     }
-    text.pop();
-    Ok(text)
+    Ok(())
 }
 
-fn structure(name: &str, fields: &[Parameter]) -> String {
-    let mut text = format!("## `{name}`\n\n```cpp\nstruct {name} {{\n");
+fn render_structure(writer: &mut Writer, name: &str, fields: &[Parameter]) {
+    writer.line(format_args!("## `{name}`"));
+    writer.blank_line();
+    markdown::code_block(writer, "cpp", |writer| {
+        writer.line(format_args!("struct {name} {{"));
+        writer.indented(|writer| {
+            for field in fields {
+                writer.line(format_args!("double {};", field.name));
+            }
+        });
+        writer.line("};");
+    });
+    writer.line("| Field | Description |");
+    writer.line("| --- | --- |");
     for field in fields {
-        text.push_str(&format!("    double {};\n", field.name));
-    }
-    text.push_str("};\n```\n\n| Field | Description |\n| --- | --- |\n");
-    for field in fields {
-        text.push_str(&format!(
-            "| `{}` | {} |\n",
+        writer.line(format_args!(
+            "| `{}` | {} |",
             field.name,
             parameter_details(field)
         ));
     }
-    text.push('\n');
-    text
+    writer.blank_line();
 }
 
-fn function_documentation(function: &CompiledFunction) -> Result<String> {
+fn render_function_documentation(writer: &mut Writer, function: &CompiledFunction) -> Result<()> {
     let spec = spec(function);
     let document = docs::for_function(spec);
     let anchor = function_anchor(&function.core.name);
-    let mut text = format!("### `{}` {{#{anchor}}}\n\n", function.core.name);
-    text.push_str(&format!("{}\n\n", escape_text(document.summary)));
-    text.push_str("```cpp\n");
-    text.push_str(&signature(function)?);
-    text.push_str("\n```\n\n");
-    text.push_str("#### Parameters\n\n| Name | Description |\n| --- | --- |\n");
+    writer.line(format_args!("### `{}` {{#{anchor}}}", function.core.name));
+    writer.blank_line();
+    writer.line(escape_text(document.summary));
+    writer.blank_line();
+    let signature = signature(function)?;
+    markdown::code_block(writer, "cpp", |writer| {
+        writer.line(signature);
+    });
+    writer.line("#### Parameters");
+    writer.blank_line();
+    writer.line("| Name | Description |");
+    writer.line("| --- | --- |");
     for parameter in document.parameters {
-        text.push_str(&format!(
-            "| `{}` | {} |\n",
+        writer.line(format_args!(
+            "| `{}` | {} |",
             parameter.name,
             parameter_details(parameter)
         ));
     }
-    text.push_str("\n#### Returns\n\n");
+    writer.blank_line();
+    writer.line("#### Returns");
+    writer.blank_line();
     match document.returns {
-        docs::Returns::Scalar(field) => text.push_str(&format!("{}\n\n", parameter_details(field))),
+        docs::Returns::Scalar(field) => {
+            writer.line(parameter_details(field));
+            writer.blank_line();
+        }
         docs::Returns::Record { .. } => {
-            text.push_str(&format!("A `{}` value.\n\n", result_class(function)?))
+            writer.line(format_args!("A `{}` value.", result_class(function)?));
+            writer.blank_line();
         }
     }
     for note in document.notes {
-        admonition(&mut text, "note", note);
+        render_admonition(writer, "note", note);
     }
     for warning in document.warnings {
-        admonition(&mut text, "warning", warning);
+        render_admonition(writer, "warning", warning);
     }
-    Ok(text)
+    Ok(())
 }
 
-fn functions_index(functions: &[(&str, &CompiledFunction)]) -> String {
-    let mut text = format!("---\n{FRONTMATTER_HEADER}title: C++ function index\n---\n\n");
-    text.push_str("# C++ function index\n\n| Function | Summary | Module |\n| --- | --- | --- |\n");
+fn render_functions_index(writer: &mut Writer, functions: &[(&str, &CompiledFunction)]) {
+    markdown::generated_frontmatter(writer, |writer| {
+        writer.line("title: C++ function index");
+    });
+    writer.line("# C++ function index");
+    writer.blank_line();
+    writer.line("| Function | Summary | Module |");
+    writer.line("| --- | --- | --- |");
     for (slug, function) in functions {
         let qualified = format!("ptfkit::{slug}::{}", function.core.name);
-        text.push_str(&format!(
-            "| [`{qualified}`](modules/{slug}.md#{}) | {} | [`ptfkit.{slug}`](modules/{slug}.md) |\n",
+        writer.line(format_args!(
+            "| [`{qualified}`](modules/{slug}.md#{}) | {} | [`ptfkit.{slug}`](modules/{slug}.md) |",
             function_anchor(&function.core.name),
             escape_table(docs::for_function(spec(function)).summary),
         ));
     }
-    text
 }
 
 fn signature(function: &CompiledFunction) -> Result<String> {
@@ -236,12 +298,8 @@ fn parameter_details(parameter: &Parameter) -> String {
     )
 }
 
-fn admonition(text: &mut String, kind: &str, body: &str) {
-    text.push_str(&format!("!!! {kind}\n\n"));
-    for line in body.lines() {
-        text.push_str(&format!("    {}\n", escape_text(line)));
-    }
-    text.push('\n');
+fn render_admonition(writer: &mut Writer, kind: &str, body: &str) {
+    markdown::admonition(writer, kind, body, escape_text);
 }
 
 fn escape_text(value: &str) -> String {
@@ -320,7 +378,11 @@ mod tests {
             .count();
 
         assert_eq!(umbrella.matches("- [`ptfkit.").count(), source_modules);
-        assert!(index.find("[`ptfkit`](").unwrap() < index.find("ptfkit.ahuja1984").unwrap());
+        assert!(index.find("[`ptfkit`]( ").is_none());
+        assert!(
+            index.find("[`ptfkit`](modules/ptfkit.md)").unwrap()
+                < index.find("ptfkit.ahuja1984").unwrap()
+        );
         assert!(
             umbrella.find("ptfkit.ahuja1984").unwrap()
                 < umbrella.find("ptfkit.aimrun2009").unwrap()

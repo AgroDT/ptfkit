@@ -44,22 +44,6 @@ impl Writer {
         self.indentation -= 1;
     }
 
-    pub(crate) fn block(
-        &mut self,
-        opening: impl Display,
-        indent_contents: bool,
-        render: impl FnOnce(&mut Self),
-        closing: impl Display,
-    ) {
-        self.line(opening);
-        if indent_contents {
-            self.indented(render);
-        } else {
-            render(self);
-        }
-        self.line(closing);
-    }
-
     pub(crate) fn into_string(self) -> String {
         self.contents
     }
@@ -101,25 +85,6 @@ mod tests {
         writer.line("next");
 
         assert_eq!(writer.into_string(), "value: 42\n\nnext\n");
-    }
-
-    #[test]
-    fn renders_nested_blocks_with_indentation() {
-        let mut writer = Writer::new();
-        writer.block(
-            "outer {",
-            true,
-            |writer| {
-                writer.line("first;");
-                writer.block("inner {", true, |writer| writer.line("second;"), "}");
-            },
-            "}",
-        );
-
-        assert_eq!(
-            writer.into_string(),
-            "outer {\n    first;\n    inner {\n        second;\n    }\n}\n"
-        );
     }
 
     #[test]
