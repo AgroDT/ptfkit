@@ -134,7 +134,13 @@ jobs:
           archive="ptfkit-native-${version}.tar.gz"
           tar --sort=name --mtime="UTC 1970-01-01" --owner=0 --group=0 --numeric-owner \
             --transform="s,^targets/ptfkit-native,ptfkit-native-${version}," \
-            -czf "$archive" targets/ptfkit-native
+            -czf "$archive" \
+            targets/ptfkit-native/CMakeLists.txt \
+            targets/ptfkit-native/LICENSE \
+            targets/ptfkit-native/README.md \
+            targets/ptfkit-native/cmake \
+            targets/ptfkit-native/cpp \
+            targets/ptfkit-native/include
           sha256sum "$archive" > "$archive.sha256"
           echo "archive=$archive" >> "$GITHUB_ENV"
       - name: Attest native archive provenance
