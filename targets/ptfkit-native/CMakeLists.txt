@@ -11,7 +11,9 @@ add_library(ptfkit_c INTERFACE)
 add_library(ptfkit::c ALIAS ptfkit_c)
 set_target_properties(ptfkit_c PROPERTIES EXPORT_NAME c)
 target_compile_features(ptfkit_c INTERFACE c_std_11)
-target_compile_definitions(ptfkit_c INTERFACE PTFKIT_VERSION=\"${PROJECT_VERSION}\")
+target_compile_definitions(ptfkit_c INTERFACE
+    PTFKIT_VERSION=\"${PROJECT_VERSION}\"
+)
 target_include_directories(ptfkit_c INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
@@ -26,21 +28,8 @@ cmake_dependent_option(
 )
 
 if(PTFKIT_BUILD_CPP_MODULES)
-    include(cmake/ptfkitModules.cmake)
-    add_library(ptfkit_cpp)
-    add_library(ptfkit::cpp ALIAS ptfkit_cpp)
-    set_target_properties(ptfkit_cpp PROPERTIES
-        EXPORT_NAME cpp CXX_SCAN_FOR_MODULES ON
-    )
-    target_compile_features(ptfkit_cpp PUBLIC cxx_std_20)
-    target_compile_definitions(ptfkit_cpp PUBLIC PTFKIT_VERSION=\"${PROJECT_VERSION}\")
-    target_compile_options(ptfkit_cpp PUBLIC
-        $<$<CXX_COMPILER_ID:GNU>:-fmodules-ts>
-    )
-    target_sources(ptfkit_cpp PUBLIC
-        FILE_SET CXX_MODULES
-        FILES ${PTFKIT_CPP_MODULES}
-    )
+    add_subdirectory(cpp)
+    set(INSTALL_EXPORT_ARGS CXX_MODULES_DIRECTORY cxx-modules)
 endif()
 
 install(TARGETS ptfkit_c EXPORT ptfkitTargets)
@@ -52,17 +41,11 @@ install(
     FILES README.md LICENSE
     DESTINATION ${CMAKE_INSTALL_DOCDIR}
 )
-if(PTFKIT_BUILD_CPP_MODULES)
-    install(
-        TARGETS ptfkit_cpp
-        EXPORT ptfkitTargets
-        FILE_SET CXX_MODULES DESTINATION ${CMAKE_INSTALL_LIBDIR}/ptfkit/modules
-    )
-endif()
 install(
     EXPORT ptfkitTargets
     NAMESPACE ptfkit::
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ptfkit
+    ${INSTALL_EXPORT_ARGS}
 )
 configure_package_config_file(
     cmake/ptfkitConfig.cmake.in
