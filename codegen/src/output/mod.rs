@@ -109,13 +109,6 @@ layout!(
     Formatter::Cpp
 );
 layout!(
-    NATIVE_CPP_CMAKE,
-    "targets/ptfkit-native/cmake",
-    "targets/ptfkit-native/cmake",
-    PYTHON_HEADER,
-    Formatter::None
-);
-layout!(
     NATIVE_C_TEST,
     "targets/ptfkit-native/tests/c",
     "targets/ptfkit-native/tests/c",
@@ -130,7 +123,7 @@ layout!(
     Formatter::Cpp
 );
 
-pub(crate) const LAYOUTS: [&Layout; 13] = [
+pub(crate) const LAYOUTS: [&Layout; 12] = [
     &CATALOG,
     &REFERENCE_C,
     &REFERENCE_CPP,
@@ -141,7 +134,6 @@ pub(crate) const LAYOUTS: [&Layout; 13] = [
     &PYTHON_TEST,
     &NATIVE_C,
     &NATIVE_CPP_MODULE,
-    &NATIVE_CPP_CMAKE,
     &NATIVE_C_TEST,
     &NATIVE_CPP_TEST,
 ];
