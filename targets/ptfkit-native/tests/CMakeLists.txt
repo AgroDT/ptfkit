@@ -24,7 +24,13 @@ endfunction()
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(c)
-add_subdirectory(cpp_fallback)
+
+include(CheckLanguage)
+check_language(CXX)
+if(CMAKE_CXX_COMPILER)
+    enable_language(CXX)
+    add_subdirectory(cpp_fallback)
+endif()
 
 if(PTFKIT_BUILD_CPP_MODULES)
     add_subdirectory(cpp)

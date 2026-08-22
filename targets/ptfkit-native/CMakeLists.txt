@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 
 include(cmake/ptfkitVersion.cmake)
-project(ptfkit VERSION ${PTFKIT_VERSION} LANGUAGES C CXX)
+project(ptfkit VERSION ${PTFKIT_VERSION} LANGUAGES C)
 
 include(CMakePackageConfigHelpers)
 include(CMakeDependentOption)
@@ -14,6 +14,9 @@ target_compile_features(ptfkit_c INTERFACE c_std_11)
 target_compile_definitions(ptfkit_c INTERFACE
     PTFKIT_VERSION=\"${PROJECT_VERSION}\"
 )
+if(UNIX)
+    target_link_libraries(ptfkit_c INTERFACE m)
+endif()
 target_include_directories(ptfkit_c INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
@@ -28,6 +31,7 @@ cmake_dependent_option(
 )
 
 if(PTFKIT_BUILD_CPP_MODULES)
+    enable_language(CXX)
     add_subdirectory(cpp)
     set(INSTALL_EXPORT_ARGS CXX_MODULES_DIRECTORY cxx-modules)
 endif()
