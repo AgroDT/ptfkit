@@ -33,11 +33,11 @@ Estimate saturated hydraulic conductivity from silt, clay, and bulk density.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `silt` | % | value > 0 | Silt content, 0.002-0.05 mm. |
-| `clay` | % | value > 0 | Clay content, <0.002 mm. |
-| `bulk_density` | g/cm^3 | value > 0 | Bulk density. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `silt` | `number` | % | value > 0 | Silt content, 0.002-0.05 mm. |
+| `clay` | `number` | % | value > 0 | Clay content, <0.002 mm. |
+| `bulk_density` | `number` | g/cm^3 | value > 0 | Bulk density. |
 
 #### Outputs
 

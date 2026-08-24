@@ -33,12 +33,12 @@ Estimate four parameters of the reduced van Genuchten moisture-retention model f
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 5.60 <= value <= 97.80 | Sand content in the 50-2000 micrometre particle-size fraction. |
-| `clay` | % | 0 <= value <= 54.46 | Clay content in the less-than-2-micrometre particle-size fraction. |
-| `carbon` | % | 0.01 <= value <= 6.60 | Carbon content determined by the Walkley-Black method. |
-| `bulk_density` | g/cm^3 | 1.040 <= value <= 1.730 | Dry bulk density measured after drying undisturbed 100-cm^3 cores for 24 hours at 105 degrees Celsius. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 5.60 <= value <= 97.80 | Sand content in the 50-2000 micrometre particle-size fraction. |
+| `clay` | `number` | % | 0 <= value <= 54.46 | Clay content in the less-than-2-micrometre particle-size fraction. |
+| `carbon` | `number` | % | 0.01 <= value <= 6.60 | Carbon content determined by the Walkley-Black method. |
+| `bulk_density` | `number` | g/cm^3 | 1.040 <= value <= 1.730 | Dry bulk density measured after drying undisturbed 100-cm^3 cores for 24 hours at 105 degrees Celsius. |
 
 #### Outputs
 
@@ -73,21 +73,21 @@ Estimate van Genuchten parameters from nine particle-size fractions and particle
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `particle_2000_1000` | % | 0 <= value <= 4.50 | Particle content from 2000 to 1000 micrometres. |
-| `particle_1000_500` | % | 0 <= value <= 9.30 | Particle content from 1000 to 500 micrometres. |
-| `particle_500_200` | % | 0.10 <= value <= 85.70 | Particle content from 500 to 200 micrometres. |
-| `particle_200_100` | % | 0.10 <= value <= 68.90 | Particle content from 200 to 100 micrometres. |
-| `particle_100_50` | % | 0.70 <= value <= 51.00 | Particle content from 100 to 50 micrometres. |
-| `particle_50_20` | % | 0 <= value <= 62.80 | Particle content from 50 to 20 micrometres. |
-| `particle_20_10` | % | 0 <= value <= 19.00 | Particle content from 20 to 10 micrometres. |
-| `particle_10_2` | % | 0 <= value <= 23.33 | Particle content from 10 to 2 micrometres. |
-| `clay` | % | 0 <= value <= 54.46 | Particle content below 2 micrometres. |
-| `geometric_mean_particle_size` | cm | value > 0 | Geometrical mean particle size calculated using the method cited by the paper. |
-| `geometric_standard_deviation` | dimensionless | value > 0 | Geometrical standard deviation of particle size calculated using the method cited by the paper. |
-| `carbon` | % | 0.01 <= value <= 6.60 | Carbon content determined by the Walkley-Black method. |
-| `bulk_density` | g/cm^3 | 1.040 <= value <= 1.730 | Dry bulk density measured after drying undisturbed 100-cm^3 cores for 24 hours at 105 degrees Celsius. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `particle_2000_1000` | `number` | % | 0 <= value <= 4.50 | Particle content from 2000 to 1000 micrometres. |
+| `particle_1000_500` | `number` | % | 0 <= value <= 9.30 | Particle content from 1000 to 500 micrometres. |
+| `particle_500_200` | `number` | % | 0.10 <= value <= 85.70 | Particle content from 500 to 200 micrometres. |
+| `particle_200_100` | `number` | % | 0.10 <= value <= 68.90 | Particle content from 200 to 100 micrometres. |
+| `particle_100_50` | `number` | % | 0.70 <= value <= 51.00 | Particle content from 100 to 50 micrometres. |
+| `particle_50_20` | `number` | % | 0 <= value <= 62.80 | Particle content from 50 to 20 micrometres. |
+| `particle_20_10` | `number` | % | 0 <= value <= 19.00 | Particle content from 20 to 10 micrometres. |
+| `particle_10_2` | `number` | % | 0 <= value <= 23.33 | Particle content from 10 to 2 micrometres. |
+| `clay` | `number` | % | 0 <= value <= 54.46 | Particle content below 2 micrometres. |
+| `geometric_mean_particle_size` | `number` | cm | value > 0 | Geometrical mean particle size calculated using the method cited by the paper. |
+| `geometric_standard_deviation` | `number` | dimensionless | value > 0 | Geometrical standard deviation of particle size calculated using the method cited by the paper. |
+| `carbon` | `number` | % | 0.01 <= value <= 6.60 | Carbon content determined by the Walkley-Black method. |
+| `bulk_density` | `number` | g/cm^3 | 1.040 <= value <= 1.730 | Dry bulk density measured after drying undisturbed 100-cm^3 cores for 24 hours at 105 degrees Celsius. |
 
 #### Outputs
 

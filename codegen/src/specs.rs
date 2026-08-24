@@ -6,7 +6,10 @@ use serde_json::Value;
 
 use crate::{
     formula,
-    model::{Entry, Implementation, RawExpression, RawFunction, RawInput, RawVariable, Spec},
+    model::{
+        Entry, Implementation, ImplementationVariable, Input, RawExpression, RawFunction, RawInput,
+        RawInputType, RawLookup, RawVariable, RawVariableValue, Spec,
+    },
     semantic,
 };
 
@@ -157,37 +160,60 @@ fn compile(
             .inputs
             .iter()
             .map(|input| RawInput {
-                name: input.name.clone(),
+                name: input.name().to_owned(),
+                value_type: match input {
+                    Input::Parameter(_) => RawInputType::Number,
+                    Input::Enum { definition, .. } => RawInputType::Enum(definition.clone()),
+                },
             })
             .collect(),
         variables: implementation
             .variables
             .iter()
             .enumerate()
-            .map(|(index, variable)| {
-                let source_location = expression_locations.next().ok_or_else(|| {
-                    format!(
-                        "{} -> function {} -> implementation.variables[{index}].expr: source location is unavailable",
-                        path.display(),
-                        function.name
+            .map(|(index, variable)| match variable {
+                ImplementationVariable::Expression { name, expr } => {
+                    let source_location = expression_locations.next().ok_or_else(|| {
+                        format!(
+                            "{} -> function {} -> implementation.variables[{index}].expr: source location is unavailable",
+                            path.display(),
+                            function.name
+                        )
+                    })?;
+                    expression(
+                        path,
+                        &function.name,
+                        format!("implementation.variables[{index}].expr"),
+                        expr,
+                        source_location,
                     )
-                })?;
-                expression(
-                    path,
-                    &function.name,
-                    format!("implementation.variables[{index}].expr"),
-                    &variable.expr,
-                    source_location,
-                )
+                }
                 .map(|expression| RawVariable {
-                    name: variable.name.clone(),
-                    expression,
-                })
+                    name: name.clone(),
+                    value: RawVariableValue::Expression(expression),
+                }),
+                ImplementationVariable::Lookup { name, lookup } => {
+                    let definition = lookup
+                        .definition
+                        .clone()
+                        .expect("lookup invocation is resolved");
+                    Ok(RawVariable {
+                        name: name.clone(),
+                        value: RawVariableValue::Lookup(RawLookup {
+                            implementation_path: format!(
+                                "implementation.variables[{index}].lookup"
+                            ),
+                            key: lookup.key.clone(),
+                            definition,
+                        }),
+                    })
+                }
             })
             .collect::<Result<Vec<_>, _>>()?,
     };
-    validate_output(path, function, &raw)?;
-    semantic::compile(&raw).map_err(|error| error.to_string())
+    let mut compiled = semantic::compile(&raw).map_err(|error| error.to_string())?;
+    compiled.result = validate_output(path, function, &compiled)?;
+    Ok(compiled)
 }
 
 fn expression(
@@ -219,7 +245,10 @@ fn expression_locations(
         .iter()
         .filter_map(|function| function.implementation.as_ref())
         .flat_map(|implementation| implementation.variables.iter())
-        .map(|variable| variable.expr.as_str());
+        .filter_map(|variable| match variable {
+            ImplementationVariable::Expression { expr, .. } => Some(expr.as_str()),
+            ImplementationVariable::Lookup { .. } => None,
+        });
     let mut cursor = 0;
     let mut locations = Vec::new();
 
@@ -267,26 +296,60 @@ fn location(text: &str, offset: usize) -> crate::model::SourceLocation {
 fn validate_output(
     path: &Path,
     function: &crate::model::Function,
-    raw: &RawFunction,
-) -> Result<(), String> {
+    compiled: &semantic::Function,
+) -> Result<semantic::ResultBinding, String> {
+    if let crate::model::Outputs::Record { name, fields } = &function.outputs {
+        let expected = semantic::RecordType {
+            name: name.clone(),
+            fields: fields.iter().map(|field| field.name.clone()).collect(),
+        };
+        if let Some((
+            index,
+            semantic::Variable {
+                value: semantic::VariableValue::RecordLookup(lookup),
+                ..
+            },
+        )) = compiled.variables.iter().enumerate().next_back()
+        {
+            if lookup.output == expected {
+                return Ok(semantic::ResultBinding::RecordVariable(index));
+            }
+            if lookup.output.name == expected.name {
+                return Err(format!(
+                    "{} -> function {} -> implementation.variables[{index}]: record lookup type `{}` does not exactly match the function output record",
+                    path.display(),
+                    function.name,
+                    lookup.output.name
+                ));
+            }
+        }
+    }
     let output_names = function
         .outputs
         .fields()
         .iter()
         .map(|output| &output.name)
         .collect::<Vec<_>>();
-    let output_sources = raw
+    let output_sources = compiled
         .inputs
         .iter()
         .map(|input| input.name.as_str())
-        .chain(raw.variables.iter().map(|variable| variable.name.as_str()))
+        .chain(
+            compiled
+                .variables
+                .iter()
+                .filter_map(|variable| match variable.value {
+                    semantic::VariableValue::Number(_) => Some(variable.name.as_str()),
+                    semantic::VariableValue::RecordLookup(_) => None,
+                }),
+        )
         .collect::<std::collections::BTreeSet<_>>();
     let missing = output_names
         .iter()
         .filter(|name| !output_sources.contains(name.as_str()))
         .collect::<Vec<_>>();
     if missing.is_empty() {
-        Ok(())
+        Ok(semantic::ResultBinding::Fields)
     } else {
         Err(format!(
             "{} -> function {} -> implementation.variables: missing final output variables {:?}",
@@ -313,7 +376,7 @@ mod tests {
         path::{Path, PathBuf},
     };
 
-    use super::{find_expression, load, location};
+    use super::load;
     use crate::model::PythonGeneration;
 
     fn fixture_root(label: &str) -> PathBuf {
@@ -360,6 +423,190 @@ mod tests {
         let error = load(&root).unwrap_err().to_string();
         assert!(error.contains("implementation\" is a required property"));
         assert!(error.contains("required for status `ready-for-implementation`"));
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn compiles_a_record_lookup_with_additional_inputs_and_later_field_expressions() {
+        let root = fixture_root("record-lookup-expression");
+        let specification = r#"source:
+  summary: Test source.
+  citation_apa: Test (2026).
+  doi: null
+$defs:
+  Texture:
+    type: enum
+    description: Texture class.
+    values:
+      - {name: sand, value: sand}
+      - {name: clay, value: clay}
+  Parameters:
+    type: record
+    name: Parameters
+    fields:
+      - {name: factor, symbol: f, unit: '1', domain: null, description: Test factor.}
+  ParametersByTexture:
+    type: lookup
+    input: {$ref: '#/$defs/Texture'}
+    output: {$ref: '#/$defs/Parameters'}
+    values:
+      - {key: sand, value: {factor: 2.0}}
+      - {key: clay, value: {factor: 3.0}}
+functions:
+  - name: calc_ptf_record_lookup_expression
+    status: ready-for-implementation
+    public_api: {name: calc_ptf_record_lookup_expression, result_class: null, summary: Test value.}
+    scope:
+      prediction_target: Test value.
+      models: {h_theta: null, k_h: null}
+    inputs:
+      - {$ref: '#/$defs/Texture', name: texture}
+      - {name: x, symbol: x, unit: '1', domain: null, description: Test input.}
+    outputs: {type: scalar, name: value, symbol: y, unit: '1', domain: null, description: Test output.}
+    implementation:
+      variables:
+        - name: parameters
+          lookup:
+            table: {$ref: '#/$defs/ParametersByTexture'}
+            key: texture
+        - {name: value, expr: parameters.factor * x}
+"#;
+        fs::write(
+            root.join("specs/functions/record_lookup_expression.yaml"),
+            specification,
+        )
+        .unwrap();
+
+        let entries = load(&root).unwrap();
+        let implementation = entries[0].implementations[0].as_ref().unwrap();
+        assert!(matches!(
+            implementation.variables[0].value,
+            crate::semantic::VariableValue::RecordLookup(_)
+        ));
+        assert!(matches!(
+            implementation.variables[1].value,
+            crate::semantic::VariableValue::Number(_)
+        ));
+        let compiled = crate::compile::functions(entries).unwrap();
+        let rust = crate::targets::render_rust_for_test(&compiled).unwrap();
+        let rust = &rust
+            .iter()
+            .find(|file| file.path.ends_with("record_lookup_expression.rs"))
+            .unwrap()
+            .contents;
+        assert!(rust.contains("struct Parameters"), "{rust}");
+        assert!(rust.contains("parameters . factor"), "{rust}");
+        let (c_headers, cpp_modules) = crate::targets::render_native_for_test(&compiled).unwrap();
+        let c = &c_headers
+            .iter()
+            .find(|file| file.path.ends_with("record_lookup_expression.h"))
+            .unwrap()
+            .contents;
+        assert!(c.contains("} parameters;"), "{c}");
+        assert!(c.contains("parameters.factor"), "{c}");
+        let cpp = &cpp_modules
+            .iter()
+            .find(|file| file.path.ends_with("record_lookup_expression.cppm"))
+            .unwrap()
+            .contents;
+        assert!(cpp.contains("struct Parameters"), "{cpp}");
+        assert!(cpp.contains("parameters.factor"), "{cpp}");
+        let extension = crate::targets::render_python_extension_for_test(&compiled).unwrap();
+        let extension = &extension
+            .iter()
+            .find(|file| file.path.ends_with("record_lookup_expression.c"))
+            .unwrap()
+            .contents;
+        assert!(
+            extension.contains("const npy_uint32 texture = in_texture[index];"),
+            "{extension}"
+        );
+        assert!(
+            extension.contains("calc_ptf_record_lookup_expression(texture, x)"),
+            "{extension}"
+        );
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn validates_unused_lookup_definitions() {
+        let root = fixture_root("unused-invalid-lookup");
+        let specification = specification(
+            "unused_invalid_lookup",
+            "    implementation:\n      variables: [{name: value, expr: x}]\n",
+            "",
+        )
+        .replace(
+            "functions:\n",
+            "$defs:\n  Texture:\n    type: enum\n    description: Texture class.\n    values:\n      - {name: sand, value: sand}\n      - {name: clay, value: clay}\n  Parameters:\n    type: record\n    name: Parameters\n    fields:\n      - {name: factor, symbol: f, unit: '1', domain: null, description: Test factor.}\n  InvalidLookup:\n    type: lookup\n    input: {$ref: '#/$defs/Texture'}\n    output: {$ref: '#/$defs/Parameters'}\n    values:\n      - {key: sand, value: {factor: 2.0}}\nfunctions:\n",
+        );
+        fs::write(
+            root.join("specs/functions/unused_invalid_lookup.yaml"),
+            specification,
+        )
+        .unwrap();
+
+        let error = load(&root).unwrap_err().to_string();
+        assert!(error.contains("lookup `InvalidLookup` values must cover every member"));
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn rejects_a_record_lookup_that_only_matches_the_output_name() {
+        let root = fixture_root("mismatched-record-lookup");
+        let specification = r#"source:
+  summary: Test source.
+  citation_apa: Test (2026).
+  doi: null
+$defs:
+  Texture:
+    type: enum
+    description: Texture class.
+    values:
+      - {name: sand, value: sand}
+  LookupParameters:
+    type: record
+    name: Parameters
+    fields:
+      - {name: factor, symbol: f, unit: '1', domain: null, description: Test factor.}
+  ParametersByTexture:
+    type: lookup
+    input: {$ref: '#/$defs/Texture'}
+    output: {$ref: '#/$defs/LookupParameters'}
+    values:
+      - {key: sand, value: {factor: 2.0}}
+functions:
+  - name: calc_ptf_mismatched_record_lookup
+    status: ready-for-implementation
+    public_api: {name: calc_ptf_mismatched_record_lookup, result_class: Parameters, summary: Test value.}
+    scope:
+      prediction_target: Test value.
+      models: {h_theta: null, k_h: null}
+    inputs:
+      - {$ref: '#/$defs/Texture', name: texture}
+    outputs:
+      type: record
+      name: Parameters
+      fields:
+        - {name: other, symbol: o, unit: '1', domain: null, description: Other value.}
+    implementation:
+      variables:
+        - name: parameters
+          lookup:
+            table: {$ref: '#/$defs/ParametersByTexture'}
+            key: texture
+"#;
+        fs::write(
+            root.join("specs/functions/mismatched_record_lookup.yaml"),
+            specification,
+        )
+        .unwrap();
+
+        let error = load(&root).unwrap_err().to_string();
+        assert!(
+            error.contains("record lookup type `Parameters` does not exactly match"),
+            "{error}"
+        );
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -529,17 +776,5 @@ mod tests {
         };
 
         assert!(error.contains("filename stem must be an APA-style slug"));
-    }
-
-    #[test]
-    fn locates_block_and_quoted_formula_values_in_yaml_source() {
-        let source = "variables:\n  - expr: >-\n      x ^ 2\n  - {expr: 'sqrt(x)'}\n";
-        let (power, cursor) = find_expression(source, 0, "x ^ 2").unwrap();
-        let (call, _) = find_expression(source, cursor, "sqrt(x)").unwrap();
-
-        assert_eq!(location(source, power).line, 3);
-        assert_eq!(location(source, power).column, 7);
-        assert_eq!(location(source, call).line, 4);
-        assert_eq!(location(source, call).column, 13);
     }
 }

@@ -1,7 +1,8 @@
 use anyhow::{Context, Result};
 
 use crate::model::{
-    CompiledFunction, CompiledGoldenTest, CoreFunction, Entry, Function, Output, Outputs,
+    CompiledFunction, CompiledGoldenTest, CompiledInput, CoreFunction, Entry, Function,
+    GoldenInput, Output, Outputs,
 };
 
 pub(super) fn functions(entries: Vec<Entry>) -> Result<Vec<CompiledFunction>> {
@@ -28,12 +29,12 @@ pub(super) fn functions(entries: Vec<Entry>) -> Result<Vec<CompiledFunction>> {
                 inputs: function
                     .inputs
                     .iter()
-                    .map(|input| input.name.clone())
+                    .map(|input| input.name().to_owned())
                     .collect(),
                 output,
             };
             compiled.push(CompiledFunction {
-                golden_tests: golden_tests(function, &core)?,
+                golden_tests: golden_tests(function)?,
                 core,
                 entry: entry.clone(),
                 function_index,
@@ -44,18 +45,52 @@ pub(super) fn functions(entries: Vec<Entry>) -> Result<Vec<CompiledFunction>> {
     Ok(compiled)
 }
 
-fn golden_tests(function: &Function, core: &CoreFunction) -> Result<Vec<CompiledGoldenTest>> {
+fn golden_tests(function: &Function) -> Result<Vec<CompiledGoldenTest>> {
     function
         .golden_tests
         .iter()
         .map(|case| {
-            let inputs = core
+            let inputs = function
                 .inputs
                 .iter()
-                .map(|name| {
-                    case.inputs.get(name).copied().with_context(|| {
-                        format!("golden test `{}` is missing input `{name}`", case.id)
-                    })
+                .map(|input| {
+                    let input_name = input.name();
+                    let value = case.inputs.get(input_name).with_context(|| {
+                        format!(
+                            "golden test `{}` is missing input `{}`",
+                            case.id, input_name
+                        )
+                    })?;
+                    match (input.enum_type(), value) {
+                        (None, GoldenInput::Number(value)) => Ok(CompiledInput::Number(*value)),
+                        (Some(enum_type), GoldenInput::Enum(member_name)) => {
+                            enum_type
+                                .values
+                                .iter()
+                                .find(|member| member.name == *member_name)
+                                .with_context(|| {
+                                    format!(
+                                        "golden test `{}` input `{}` references unknown member `{member_name}` of enum `{}`",
+                                        case.id, input_name, enum_type.name
+                                    )
+                                })?;
+                            Ok(CompiledInput::Enum {
+                                enum_name: enum_type.name.clone(),
+                                member_name: member_name.clone(),
+                            })
+                        }
+                        (None, GoldenInput::Enum(_)) => anyhow::bail!(
+                            "golden test `{}` input `{}` must be numeric",
+                            case.id,
+                            input_name
+                        ),
+                        (Some(enum_type), GoldenInput::Number(_)) => anyhow::bail!(
+                            "golden test `{}` input `{}` must name a member of enum `{}`",
+                            case.id,
+                            input_name,
+                            enum_type.name
+                        ),
+                    }
                 })
                 .collect::<Result<Vec<_>>>()?;
             let expected = function

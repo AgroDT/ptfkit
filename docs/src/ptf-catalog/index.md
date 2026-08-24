@@ -63,19 +63,26 @@ The `status` communicates how far the function has progressed:
 The catalog may therefore document functions that are not yet callable. Users
 should check both the function status and the API reference for their target.
 
-## Quantities, units, and domains
+## Inputs, quantities, units, and domains
 
-Every input and output identifies the scientific quantity through a name,
+Quantitative inputs and outputs identify a scientific quantity through a name,
 symbol, unit, domain, and description. These values must preserve the source's
 definitions and conversions. A domain records the published calibration or
 mathematical range; it does not imply that every target performs runtime range
 validation.
 
+Categorical inputs reference a self-contained enum definition and bind it to a
+function argument name. The enum owns its type description and admissible
+values, while the binding may optionally describe the argument's role in that
+function. Units, numeric domains, and scientific symbols do not apply to enum
+inputs. The binding name belongs to the function, so one enum type can be used
+under different argument names.
+
 Outputs are either scalar values or records with ordered fields. Record names
 are stable public type names, while field order is part of the cross-target
-result contract. Reusable parameters and record shapes may be declared once in
-`$defs` and referenced by multiple functions. The `$defs` key is the canonical
-name of a reusable model or record.
+result contract. Reusable parameter declarations, enum types, and record shapes
+may be declared once in `$defs` and referenced by multiple functions. The
+`$defs` key is the canonical name of a reusable declaration, type, or record.
 
 ## Scientific evidence and numerical expectations
 
@@ -96,9 +103,23 @@ can prevent a function from advancing beyond `draft` or `blocked`.
 ## Implementation data
 
 Functions marked `ready-for-implementation` or `implemented` include an
-`implementation`. It expresses the ordered intermediate and output variables
-used to reproduce the published PTF. Scalar outputs resolve to one value;
-record outputs resolve their declared fields by name.
+`implementation`. Implementations express ordered variables used to reproduce
+the published PTF. A variable can be populated by a formula or by a typed lookup.
+Enums, records, and lookups are independent reusable definitions: a lookup maps
+an enum member to a record, and later formulas can access fields of that record.
+Enum definitions give each categorical member a stable schema `name`, its exact
+canonical textual `value`, and optional documentation-only `description`.
+Lookup rows reference the member `name`; they do not define public numeric codes
+or match canonical strings at runtime. Targets may encode members with private
+ordinals as an implementation detail. Scalar outputs resolve to one value,
+while record outputs resolve their declared fields by name or return a compatible
+record-valued variable directly.
+
+Python exposes scalar categories as ordinary `Enum` members. Reusable arrays
+are constructed once with `EnumType.array(...)` and represented by a typed
+`EnumArray[EnumType]`; generated wrappers pass its private `uint32` NumPy array
+to the native ufunc without re-encoding it on each call. Strings, integers, and
+arbitrary arrays are not accepted as enum inputs.
 
 The YAML is the canonical target-independent representation. Language-specific
 details, generated file ownership, and the commands used to validate and

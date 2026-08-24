@@ -2,6 +2,9 @@
 #include <ptfkit/weber2020.h>
 #include "ufunc.h"
 
+static const int calc_ptf_weber2020_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_weber2020_contiguous_loop(PyArrayMethod_Context *context, char *const *data,
                                               const npy_intp *dimensions, const npy_intp *strides,
                                               NpyAuxData *transferdata) {
@@ -79,7 +82,8 @@ static PyArrayMethod_Spec calc_ptf_weber2020_spec = {
 };
 
 int ptfkit_register_weber2020(PyObject *module) {
-    if (ptfkit_add_ufunc(module, "calc_ptf_weber2020", 6, 7, &calc_ptf_weber2020_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_weber2020", calc_ptf_weber2020_types, 6, 7,
+                         &calc_ptf_weber2020_spec) < 0)
         return -1;
     return 0;
 }

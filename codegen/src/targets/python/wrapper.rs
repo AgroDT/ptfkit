@@ -4,7 +4,7 @@ use anyhow::{Result, bail};
 
 use crate::{
     documentation::{self as docs, FunctionDocument},
-    model::{CompiledFunction, Function, Parameter, PythonGeneration, Scope, Source},
+    model::{CompiledFunction, EnumDefinition, Function, PythonGeneration, Scope, Source},
     output::GeneratedFile,
     render::Writer,
 };
@@ -22,6 +22,26 @@ struct PythonFunction<'a> {
     keyword_inputs: Vec<String>,
     parameters: String,
     docstring: PythonDocstring,
+    enum_inputs: Vec<PythonEnumInput>,
+}
+
+struct PythonEnumInput {
+    input: String,
+    enum_name: String,
+}
+
+#[derive(Clone)]
+struct PythonEnum {
+    name: String,
+    description: String,
+    members: Vec<PythonEnumMember>,
+}
+
+#[derive(Clone)]
+struct PythonEnumMember {
+    name: String,
+    value: String,
+    description: Option<String>,
 }
 
 #[derive(PartialEq, Eq)]
@@ -77,6 +97,16 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile
                 classes.insert(class_name.to_owned(), result_class);
             }
         }
+        let mut enums = BTreeMap::<String, PythonEnum>::new();
+        for resolved in &functions {
+            for input in &resolved.entry.spec.functions[resolved.function_index].inputs {
+                if let Some(definition) = input.enum_type() {
+                    enums
+                        .entry(definition.name.clone())
+                        .or_insert_with(|| python_enum(definition));
+                }
+            }
+        }
         let functions = functions
             .iter()
             .map(|resolved| view(resolved))
@@ -85,9 +115,17 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile
             .keys()
             .cloned()
             .chain(functions.iter().map(|function| function.name.to_owned()))
+            .chain(
+                functions
+                    .iter()
+                    .flat_map(|function| function.enum_inputs.iter())
+                    .map(|input| input.enum_name.clone()),
+            )
             .collect::<Vec<_>>();
         exports.sort_by_key(|export| natural_sort_key(export));
+        exports.dedup();
         let classes = classes.into_values().collect::<Vec<_>>();
+        let enums = enums.into_values().collect::<Vec<_>>();
         let typing_imports = if classes.is_empty() {
             "TYPE_CHECKING, overload"
         } else {
@@ -98,6 +136,7 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile
             scope,
             typing_imports,
             &classes,
+            &enums,
             &functions,
             &exports,
         );
@@ -114,6 +153,7 @@ fn module_source(
     scope: &Scope,
     typing_imports: &str,
     classes: &[PythonResultClass],
+    enums: &[PythonEnum],
     functions: &[PythonFunction<'_>],
     exports: &[String],
 ) -> String {
@@ -137,9 +177,11 @@ fn module_source(
     }
     module.blank_line();
     render_module_docstring(&mut module, source, scope);
-    module.write(format_args!(
-        "from __future__ import annotations\n\nfrom typing import {typing_imports}\n\n"
-    ));
+    module.write("from __future__ import annotations\n\n");
+    if !enums.is_empty() {
+        module.write("from enum import Enum\n");
+    }
+    module.write(format_args!("from typing import {typing_imports}\n\n"));
     module.line("from ptfkit._dispatch import call as _call");
     module.block(
         "from ptfkit._ptfkit import (",
@@ -153,11 +195,37 @@ fn module_source(
         },
         ")",
     );
+    if !enums.is_empty() {
+        module.line("from ptfkit.enums import EnumArray");
+    }
     module.line("\n\nif TYPE_CHECKING:");
     module.indented(|writer| {
-        writer.line("from numpy import floating");
-        writer.line("from numpy.typing import ArrayLike, NDArray");
+        if !enums.is_empty() {
+            writer.line("from collections.abc import Iterable");
+            writer.blank_line();
+        }
+        writer.line(if enums.is_empty() {
+            "from numpy import floating"
+        } else {
+            "from numpy import floating, uint32"
+        });
+        let has_numeric_inputs = functions
+            .iter()
+            .any(|function| function.enum_inputs.len() < function.scalar_inputs.len());
+        writer.line(if has_numeric_inputs {
+            "from numpy.typing import ArrayLike, NDArray"
+        } else {
+            "from numpy.typing import NDArray"
+        });
     });
+    for enum_definition in enums {
+        render_enum(&mut module, enum_definition);
+    }
+    for function in functions {
+        for enum_input in &function.enum_inputs {
+            render_enum_encoder(&mut module, function.name, enum_input);
+        }
+    }
     if !classes.is_empty() {
         module.blank_line();
         module.assignment("T", "TypeVar('T')");
@@ -255,28 +323,176 @@ fn render_function(module: &mut Module, function: &PythonFunction<'_>) {
 
 fn view(resolved: &CompiledFunction) -> PythonFunction<'_> {
     let function = &resolved.entry.spec.functions[resolved.function_index];
+    let enum_inputs = function
+        .inputs
+        .iter()
+        .filter_map(|input| {
+            input.enum_type().map(|definition| PythonEnumInput {
+                input: input.name().to_owned(),
+                enum_name: definition.name.clone(),
+            })
+        })
+        .collect::<Vec<_>>();
     let names = function
         .inputs
         .iter()
-        .map(|input| input.name.clone())
+        .map(|input| input.name().to_owned())
         .collect::<Vec<_>>();
     PythonFunction {
         name: &function.public_api.name,
         rust_name: &resolved.core.name,
         result_class: function.result_class(),
-        scalar_inputs: names.iter().map(|name| format!("{name}: float")).collect(),
+        scalar_inputs: names
+            .iter()
+            .map(
+                |name| match enum_inputs.iter().find(|input| input.input == **name) {
+                    Some(input) => format!("{name}: {}", input.enum_name),
+                    None => format!("{name}: float"),
+                },
+            )
+            .collect(),
         array_inputs: names
             .iter()
-            .map(|name| format!("{name}: ArrayLike"))
+            .map(
+                |name| match enum_inputs.iter().find(|input| input.input == **name) {
+                    Some(input) => format!("{name}: EnumArray[{}]", input.enum_name),
+                    None => format!("{name}: ArrayLike"),
+                },
+            )
             .collect(),
         keyword_inputs: function
             .inputs
             .iter()
-            .map(|input| format!("{}: float | ArrayLike,", input.name))
+            .map(
+                |input| match enum_inputs.iter().find(|item| item.input == input.name()) {
+                    Some(item) => format!(
+                        "{}: {} | EnumArray[{}],",
+                        input.name(),
+                        item.enum_name,
+                        item.enum_name
+                    ),
+                    None => format!("{}: float | ArrayLike,", input.name()),
+                },
+            )
             .collect(),
-        parameters: names.join(", "),
+        parameters: names
+            .iter()
+            .map(
+                |name| match enum_inputs.iter().find(|input| input.input == **name) {
+                    Some(_) => format!("_encode_{}_{}({name})", function.public_api.name, name),
+                    None => name.clone(),
+                },
+            )
+            .collect::<Vec<_>>()
+            .join(", "),
         docstring: function_docstring(function),
+        enum_inputs,
     }
+}
+
+fn python_enum(definition: &EnumDefinition) -> PythonEnum {
+    PythonEnum {
+        name: definition.name.clone(),
+        description: definition.description.clone(),
+        members: definition
+            .values
+            .iter()
+            .map(|member| PythonEnumMember {
+                name: enum_member(&member.name),
+                value: member.value.clone(),
+                description: member.description.clone(),
+            })
+            .collect(),
+    }
+}
+
+fn render_enum(module: &mut Module, definition: &PythonEnum) {
+    module.blank_line();
+    module.blank_line();
+    module.line(format_args!("class {}(Enum):", definition.name));
+    module.indented(|writer| {
+        writer.line(format_args!("\"\"\"{}", definition.description));
+        if definition
+            .members
+            .iter()
+            .any(|member| member.description.is_some())
+        {
+            writer.blank_line();
+            writer.line("Attributes:");
+            for member in &definition.members {
+                if let Some(description) = &member.description {
+                    writer.line(format_args!("    {}: {description}", member.name));
+                }
+            }
+        }
+        writer.blank_line();
+        writer.line("\"\"\"");
+        writer.blank_line();
+        for member in &definition.members {
+            writer.line(format_args!("{} = {:?}", member.name, member.value));
+        }
+        writer.blank_line();
+        writer.line("@classmethod");
+        writer.line(format_args!(
+            "def array(cls, values: Iterable[{}]) -> EnumArray[{}]:",
+            definition.name, definition.name
+        ));
+        writer.indented(|writer| {
+            writer.line("\"\"\"Encode members once as a reusable typed enum array.\"\"\"");
+            writer.line("return EnumArray._from_members(cls, values)  # noqa: SLF001")
+        });
+    });
+}
+
+fn render_enum_encoder(module: &mut Module, function_name: &str, enum_input: &PythonEnumInput) {
+    module.blank_line();
+    module.blank_line();
+    let encoder = format!("_encode_{function_name}_{}", enum_input.input);
+    module.line(format_args!(
+        "def {encoder}(value: {} | EnumArray[{}]) -> uint32 | NDArray[uint32]:",
+        enum_input.enum_name, enum_input.enum_name
+    ));
+    module.indented(|writer| {
+        writer.line(format_args!(
+            "if isinstance(value, {}):",
+            enum_input.enum_name
+        ));
+        writer.indented(|writer| {
+            writer.line(format_args!(
+                "return EnumArray._encode_member({}, value)  # noqa: SLF001",
+                enum_input.enum_name
+            ));
+        });
+        writer.line("if isinstance(value, EnumArray):");
+        writer.indented(|writer| {
+            writer.line(format_args!(
+                "return value._codes_for({})  # noqa: SLF001",
+                enum_input.enum_name
+            ));
+        });
+        writer.line(format_args!(
+            "message = 'expected {} or EnumArray[{}]'",
+            enum_input.enum_name, enum_input.enum_name
+        ));
+        writer.line("raise TypeError(message)");
+    });
+}
+
+fn enum_member(label: &str) -> String {
+    label
+        .chars()
+        .map(|character| {
+            if character.is_ascii_alphanumeric() {
+                character.to_ascii_uppercase()
+            } else {
+                '_'
+            }
+        })
+        .collect::<String>()
+        .split('_')
+        .filter(|part| !part.is_empty())
+        .collect::<Vec<_>>()
+        .join("_")
 }
 
 fn render_module_docstring(module: &mut Module, source: &Source, scope: &Scope) {
@@ -379,7 +595,7 @@ fn result_class_docstring(function: &Function) -> PythonDocstring {
     }
 }
 
-fn parameter_documentation(parameter: &Parameter) -> String {
+fn parameter_documentation(parameter: &impl docs::ParameterMetadata) -> String {
     docs::parameter_documentation(parameter)
 }
 
@@ -478,7 +694,9 @@ fn wrap_doc_line(text: &str, first_width: usize, continuation_width: usize) -> V
 
 #[cfg(test)]
 mod tests {
-    use super::{function_docstring, render_module_docstring};
+    use super::{
+        PythonEnum, PythonEnumMember, function_docstring, render_enum, render_module_docstring,
+    };
     use crate::{
         model::{Documentation, Function, FunctionScope, Models, PublicApi, Scope, Source},
         targets::python::syntax::Module,
@@ -552,5 +770,25 @@ mod tests {
             Some("r\"\"\"Test et al. (2026), short territory.")
         );
         assert!(docstring.contains("[DOI: 10.1234/test](https://example.test/doi/10.1234/test)"));
+    }
+
+    #[test]
+    fn renders_enum_and_member_descriptions_as_attributes() {
+        let definition = PythonEnum {
+            name: "TestCategory".into(),
+            description: "Test category type.".into(),
+            members: vec![PythonEnumMember {
+                name: "FIRST".into(),
+                value: "first".into(),
+                description: Some("First test category.".into()),
+            }],
+        };
+
+        let mut module = Module::new("");
+        render_enum(&mut module, &definition);
+        let rendered = module.into_string();
+
+        assert!(rendered.contains("\"\"\"Test category type."));
+        assert!(rendered.contains("Attributes:\n        FIRST: First test category."));
     }
 }

@@ -2,6 +2,9 @@
 #include <ptfkit/saxton2006.h>
 #include "ufunc.h"
 
+static const int calc_ptf_saxton2006_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_saxton2006_contiguous_loop(PyArrayMethod_Context *context, char *const *data,
                                                const npy_intp *dimensions, const npy_intp *strides,
                                                NpyAuxData *transferdata) {
@@ -76,6 +79,8 @@ static PyArrayMethod_Spec calc_ptf_saxton2006_spec = {
     .slots = calc_ptf_saxton2006_slots,
 };
 
+static const int calc_ptf_saxton2006_density_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_saxton2006_density_contiguous_loop(PyArrayMethod_Context *context,
                                                        char *const *data,
                                                        const npy_intp *dimensions,
@@ -140,6 +145,8 @@ static PyArrayMethod_Spec calc_ptf_saxton2006_density_spec = {
     .slots = calc_ptf_saxton2006_density_slots,
 };
 
+static const int calc_ptf_saxton2006_tension_dry_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                            NPY_DOUBLE};
 static int calc_ptf_saxton2006_tension_dry_contiguous_loop(PyArrayMethod_Context *context,
                                                            char *const *data,
                                                            const npy_intp *dimensions,
@@ -191,6 +198,8 @@ static PyArrayMethod_Spec calc_ptf_saxton2006_tension_dry_spec = {
     .slots = calc_ptf_saxton2006_tension_dry_slots,
 };
 
+static const int calc_ptf_saxton2006_tension_wet_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                            NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_saxton2006_tension_wet_contiguous_loop(PyArrayMethod_Context *context,
                                                            char *const *data,
                                                            const npy_intp *dimensions,
@@ -247,6 +256,8 @@ static PyArrayMethod_Spec calc_ptf_saxton2006_tension_wet_spec = {
     .slots = calc_ptf_saxton2006_tension_wet_slots,
 };
 
+static const int calc_ptf_saxton2006_conductivity_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                             NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_saxton2006_conductivity_contiguous_loop(PyArrayMethod_Context *context,
                                                             char *const *data,
                                                             const npy_intp *dimensions,
@@ -303,6 +314,8 @@ static PyArrayMethod_Spec calc_ptf_saxton2006_conductivity_spec = {
     .slots = calc_ptf_saxton2006_conductivity_slots,
 };
 
+static const int calc_ptf_saxton2006_gravel_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_saxton2006_gravel_contiguous_loop(PyArrayMethod_Context *context,
                                                       char *const *data, const npy_intp *dimensions,
                                                       const npy_intp *strides,
@@ -366,6 +379,8 @@ static PyArrayMethod_Spec calc_ptf_saxton2006_gravel_spec = {
     .slots = calc_ptf_saxton2006_gravel_slots,
 };
 
+static const int calc_ptf_saxton2006_salinity_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                         NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_saxton2006_salinity_contiguous_loop(PyArrayMethod_Context *context,
                                                         char *const *data,
                                                         const npy_intp *dimensions,
@@ -422,25 +437,29 @@ static PyArrayMethod_Spec calc_ptf_saxton2006_salinity_spec = {
 };
 
 int ptfkit_register_saxton2006(PyObject *module) {
-    if (ptfkit_add_ufunc(module, "calc_ptf_saxton2006", 3, 10, &calc_ptf_saxton2006_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_saxton2006", calc_ptf_saxton2006_types, 3, 10,
+                         &calc_ptf_saxton2006_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_saxton2006_density", 4, 4,
-                         &calc_ptf_saxton2006_density_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_saxton2006_density", calc_ptf_saxton2006_density_types,
+                         4, 4, &calc_ptf_saxton2006_density_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_saxton2006_tension_dry", 3, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_saxton2006_tension_dry",
+                         calc_ptf_saxton2006_tension_dry_types, 3, 1,
                          &calc_ptf_saxton2006_tension_dry_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_saxton2006_tension_wet", 4, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_saxton2006_tension_wet",
+                         calc_ptf_saxton2006_tension_wet_types, 4, 1,
                          &calc_ptf_saxton2006_tension_wet_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_saxton2006_conductivity", 4, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_saxton2006_conductivity",
+                         calc_ptf_saxton2006_conductivity_types, 4, 1,
                          &calc_ptf_saxton2006_conductivity_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_saxton2006_gravel", 4, 4,
-                         &calc_ptf_saxton2006_gravel_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_saxton2006_gravel", calc_ptf_saxton2006_gravel_types, 4,
+                         4, &calc_ptf_saxton2006_gravel_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_saxton2006_salinity", 3, 2,
-                         &calc_ptf_saxton2006_salinity_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_saxton2006_salinity", calc_ptf_saxton2006_salinity_types,
+                         3, 2, &calc_ptf_saxton2006_salinity_spec) < 0)
         return -1;
     return 0;
 }

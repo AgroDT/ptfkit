@@ -2,6 +2,7 @@
 #include <ptfkit/pidgeon1972.h>
 #include "ufunc.h"
 
+static const int calc_ptf_pidgeon1972_fc_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_pidgeon1972_fc_contiguous_loop(PyArrayMethod_Context *context,
                                                    char *const *data, const npy_intp *dimensions,
                                                    const npy_intp *strides,
@@ -50,6 +51,7 @@ static PyArrayMethod_Spec calc_ptf_pidgeon1972_fc_spec = {
     .slots = calc_ptf_pidgeon1972_fc_slots,
 };
 
+static const int calc_ptf_pidgeon1972_fc_sand_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_pidgeon1972_fc_sand_contiguous_loop(PyArrayMethod_Context *context,
                                                         char *const *data,
                                                         const npy_intp *dimensions,
@@ -94,6 +96,8 @@ static PyArrayMethod_Spec calc_ptf_pidgeon1972_fc_sand_spec = {
     .slots = calc_ptf_pidgeon1972_fc_sand_slots,
 };
 
+static const int calc_ptf_pidgeon1972_fc_sand_organic_matter_types[] = {NPY_DOUBLE, NPY_DOUBLE,
+                                                                        NPY_DOUBLE};
 static int calc_ptf_pidgeon1972_fc_sand_organic_matter_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -142,6 +146,8 @@ static PyArrayMethod_Spec calc_ptf_pidgeon1972_fc_sand_organic_matter_spec = {
     .slots = calc_ptf_pidgeon1972_fc_sand_organic_matter_slots,
 };
 
+static const int calc_ptf_pidgeon1972_fc_vol_sand_organic_matter_types[] = {NPY_DOUBLE, NPY_DOUBLE,
+                                                                            NPY_DOUBLE};
 static int calc_ptf_pidgeon1972_fc_vol_sand_organic_matter_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -188,6 +194,8 @@ static PyArrayMethod_Spec calc_ptf_pidgeon1972_fc_vol_sand_organic_matter_spec =
     .slots = calc_ptf_pidgeon1972_fc_vol_sand_organic_matter_slots,
 };
 
+static const int calc_ptf_pidgeon1972_pwp_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                     NPY_DOUBLE};
 static int calc_ptf_pidgeon1972_pwp_contiguous_loop(PyArrayMethod_Context *context,
                                                     char *const *data, const npy_intp *dimensions,
                                                     const npy_intp *strides,
@@ -237,6 +245,7 @@ static PyArrayMethod_Spec calc_ptf_pidgeon1972_pwp_spec = {
     .slots = calc_ptf_pidgeon1972_pwp_slots,
 };
 
+static const int calc_ptf_pidgeon1972_pwp_sand_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_pidgeon1972_pwp_sand_contiguous_loop(PyArrayMethod_Context *context,
                                                          char *const *data,
                                                          const npy_intp *dimensions,
@@ -281,6 +290,8 @@ static PyArrayMethod_Spec calc_ptf_pidgeon1972_pwp_sand_spec = {
     .slots = calc_ptf_pidgeon1972_pwp_sand_slots,
 };
 
+static const int calc_ptf_pidgeon1972_pwp_sand_organic_matter_types[] = {NPY_DOUBLE, NPY_DOUBLE,
+                                                                         NPY_DOUBLE};
 static int calc_ptf_pidgeon1972_pwp_sand_organic_matter_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -329,6 +340,7 @@ static PyArrayMethod_Spec calc_ptf_pidgeon1972_pwp_sand_organic_matter_spec = {
     .slots = calc_ptf_pidgeon1972_pwp_sand_organic_matter_slots,
 };
 
+static const int calc_ptf_pidgeon1972_awc_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_pidgeon1972_awc_contiguous_loop(PyArrayMethod_Context *context,
                                                     char *const *data, const npy_intp *dimensions,
                                                     const npy_intp *strides,
@@ -375,6 +387,8 @@ static PyArrayMethod_Spec calc_ptf_pidgeon1972_awc_spec = {
     .slots = calc_ptf_pidgeon1972_awc_slots,
 };
 
+static const int calc_ptf_pidgeon1972_awc_sand_organic_matter_types[] = {NPY_DOUBLE, NPY_DOUBLE,
+                                                                         NPY_DOUBLE};
 static int calc_ptf_pidgeon1972_awc_sand_organic_matter_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -423,6 +437,7 @@ static PyArrayMethod_Spec calc_ptf_pidgeon1972_awc_sand_organic_matter_spec = {
     .slots = calc_ptf_pidgeon1972_awc_sand_organic_matter_slots,
 };
 
+static const int calc_ptf_pidgeon1972_awc_coarse_sand_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_pidgeon1972_awc_coarse_sand_contiguous_loop(PyArrayMethod_Context *context,
                                                                 char *const *data,
                                                                 const npy_intp *dimensions,
@@ -468,6 +483,7 @@ static PyArrayMethod_Spec calc_ptf_pidgeon1972_awc_coarse_sand_spec = {
     .slots = calc_ptf_pidgeon1972_awc_coarse_sand_slots,
 };
 
+static const int calc_ptf_pidgeon1972_awc_fine_sand_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_pidgeon1972_awc_fine_sand_contiguous_loop(PyArrayMethod_Context *context,
                                                               char *const *data,
                                                               const npy_intp *dimensions,
@@ -513,6 +529,7 @@ static PyArrayMethod_Spec calc_ptf_pidgeon1972_awc_fine_sand_spec = {
     .slots = calc_ptf_pidgeon1972_awc_fine_sand_slots,
 };
 
+static const int calc_ptf_pidgeon1972_awc_very_fine_sand_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_pidgeon1972_awc_very_fine_sand_contiguous_loop(PyArrayMethod_Context *context,
                                                                    char *const *data,
                                                                    const npy_intp *dimensions,
@@ -558,6 +575,8 @@ static PyArrayMethod_Spec calc_ptf_pidgeon1972_awc_very_fine_sand_spec = {
     .slots = calc_ptf_pidgeon1972_awc_very_fine_sand_slots,
 };
 
+static const int calc_ptf_pidgeon1972_eawc_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                      NPY_DOUBLE};
 static int calc_ptf_pidgeon1972_eawc_contiguous_loop(PyArrayMethod_Context *context,
                                                      char *const *data, const npy_intp *dimensions,
                                                      const npy_intp *strides,
@@ -607,6 +626,7 @@ static PyArrayMethod_Spec calc_ptf_pidgeon1972_eawc_spec = {
     .slots = calc_ptf_pidgeon1972_eawc_slots,
 };
 
+static const int calc_ptf_pidgeon1972_eawc_sand_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_pidgeon1972_eawc_sand_contiguous_loop(PyArrayMethod_Context *context,
                                                           char *const *data,
                                                           const npy_intp *dimensions,
@@ -652,6 +672,8 @@ static PyArrayMethod_Spec calc_ptf_pidgeon1972_eawc_sand_spec = {
     .slots = calc_ptf_pidgeon1972_eawc_sand_slots,
 };
 
+static const int calc_ptf_pidgeon1972_eawc_sand_organic_matter_types[] = {NPY_DOUBLE, NPY_DOUBLE,
+                                                                          NPY_DOUBLE};
 static int calc_ptf_pidgeon1972_eawc_sand_organic_matter_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -698,6 +720,8 @@ static PyArrayMethod_Spec calc_ptf_pidgeon1972_eawc_sand_organic_matter_spec = {
     .slots = calc_ptf_pidgeon1972_eawc_sand_organic_matter_slots,
 };
 
+static const int calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -745,6 +769,8 @@ static PyArrayMethod_Spec calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter_s
     .slots = calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter_slots,
 };
 
+static const int calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -792,55 +818,67 @@ static PyArrayMethod_Spec calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter_spe
 };
 
 int ptfkit_register_pidgeon1972(PyObject *module) {
-    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_fc", 3, 1, &calc_ptf_pidgeon1972_fc_spec) <
-        0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_fc", calc_ptf_pidgeon1972_fc_types, 3, 1,
+                         &calc_ptf_pidgeon1972_fc_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_fc_sand", 1, 1,
-                         &calc_ptf_pidgeon1972_fc_sand_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_fc_sand", calc_ptf_pidgeon1972_fc_sand_types,
+                         1, 1, &calc_ptf_pidgeon1972_fc_sand_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_fc_sand_organic_matter", 2, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_fc_sand_organic_matter",
+                         calc_ptf_pidgeon1972_fc_sand_organic_matter_types, 2, 1,
                          &calc_ptf_pidgeon1972_fc_sand_organic_matter_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_fc_vol_sand_organic_matter", 2, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_fc_vol_sand_organic_matter",
+                         calc_ptf_pidgeon1972_fc_vol_sand_organic_matter_types, 2, 1,
                          &calc_ptf_pidgeon1972_fc_vol_sand_organic_matter_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_pwp", 3, 1, &calc_ptf_pidgeon1972_pwp_spec) <
-        0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_pwp", calc_ptf_pidgeon1972_pwp_types, 3, 1,
+                         &calc_ptf_pidgeon1972_pwp_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_pwp_sand", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_pwp_sand",
+                         calc_ptf_pidgeon1972_pwp_sand_types, 1, 1,
                          &calc_ptf_pidgeon1972_pwp_sand_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_pwp_sand_organic_matter", 2, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_pwp_sand_organic_matter",
+                         calc_ptf_pidgeon1972_pwp_sand_organic_matter_types, 2, 1,
                          &calc_ptf_pidgeon1972_pwp_sand_organic_matter_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_awc", 2, 1, &calc_ptf_pidgeon1972_awc_spec) <
-        0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_awc", calc_ptf_pidgeon1972_awc_types, 2, 1,
+                         &calc_ptf_pidgeon1972_awc_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_awc_sand_organic_matter", 2, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_awc_sand_organic_matter",
+                         calc_ptf_pidgeon1972_awc_sand_organic_matter_types, 2, 1,
                          &calc_ptf_pidgeon1972_awc_sand_organic_matter_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_awc_coarse_sand", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_awc_coarse_sand",
+                         calc_ptf_pidgeon1972_awc_coarse_sand_types, 1, 1,
                          &calc_ptf_pidgeon1972_awc_coarse_sand_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_awc_fine_sand", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_awc_fine_sand",
+                         calc_ptf_pidgeon1972_awc_fine_sand_types, 1, 1,
                          &calc_ptf_pidgeon1972_awc_fine_sand_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_awc_very_fine_sand", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_awc_very_fine_sand",
+                         calc_ptf_pidgeon1972_awc_very_fine_sand_types, 1, 1,
                          &calc_ptf_pidgeon1972_awc_very_fine_sand_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_eawc", 3, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_eawc", calc_ptf_pidgeon1972_eawc_types, 3, 1,
                          &calc_ptf_pidgeon1972_eawc_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_eawc_sand", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_eawc_sand",
+                         calc_ptf_pidgeon1972_eawc_sand_types, 1, 1,
                          &calc_ptf_pidgeon1972_eawc_sand_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_eawc_sand_organic_matter", 2, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_eawc_sand_organic_matter",
+                         calc_ptf_pidgeon1972_eawc_sand_organic_matter_types, 2, 1,
                          &calc_ptf_pidgeon1972_eawc_sand_organic_matter_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter", 2, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter",
+                         calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter_types, 2, 1,
                          &calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter", 2, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter",
+                         calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter_types, 2, 1,
                          &calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter_spec) < 0)
         return -1;
     return 0;

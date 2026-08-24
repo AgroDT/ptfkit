@@ -2,6 +2,7 @@
 #include <ptfkit/rawls1982.h>
 #include "ufunc.h"
 
+static const int calc_ptf_rawls1982_theta_1500_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_rawls1982_theta_1500_contiguous_loop(PyArrayMethod_Context *context,
                                                          char *const *data,
                                                          const npy_intp *dimensions,
@@ -49,6 +50,8 @@ static PyArrayMethod_Spec calc_ptf_rawls1982_theta_1500_spec = {
     .slots = calc_ptf_rawls1982_theta_1500_slots,
 };
 
+static const int calc_ptf_rawls1982_theta_33_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                        NPY_DOUBLE};
 static int calc_ptf_rawls1982_theta_33_contiguous_loop(PyArrayMethod_Context *context,
                                                        char *const *data,
                                                        const npy_intp *dimensions,
@@ -99,6 +102,10 @@ static PyArrayMethod_Spec calc_ptf_rawls1982_theta_33_spec = {
     .slots = calc_ptf_rawls1982_theta_33_slots,
 };
 
+static const int calc_ptf_rawls1982_full_wrc_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_rawls1982_full_wrc_contiguous_loop(PyArrayMethod_Context *context,
                                                        char *const *data,
                                                        const npy_intp *dimensions,
@@ -191,14 +198,15 @@ static PyArrayMethod_Spec calc_ptf_rawls1982_full_wrc_spec = {
 };
 
 int ptfkit_register_rawls1982(PyObject *module) {
-    if (ptfkit_add_ufunc(module, "calc_ptf_rawls1982_theta_1500", 2, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_rawls1982_theta_1500",
+                         calc_ptf_rawls1982_theta_1500_types, 2, 1,
                          &calc_ptf_rawls1982_theta_1500_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_rawls1982_theta_33", 3, 1,
-                         &calc_ptf_rawls1982_theta_33_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_rawls1982_theta_33", calc_ptf_rawls1982_theta_33_types,
+                         3, 1, &calc_ptf_rawls1982_theta_33_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_rawls1982_full_wrc", 5, 12,
-                         &calc_ptf_rawls1982_full_wrc_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_rawls1982_full_wrc", calc_ptf_rawls1982_full_wrc_types,
+                         5, 12, &calc_ptf_rawls1982_full_wrc_spec) < 0)
         return -1;
     return 0;
 }

@@ -1,6 +1,6 @@
 ---
 name: ptf-generate
-description: Generate and verify ptfkit Rust and NumPy targets for one reviewed APA-style source slug. Use after human review of a YAML source file in specs/functions to validate, generate, test, prove idempotence, and atomically mark the source implemented.
+description: Generate and verify all retained ptfkit targets for one reviewed APA-style source slug. Use after human review of a YAML source file in specs/functions to validate, generate, test, prove idempotence, and atomically mark the source implemented.
 ---
 
 # PTF Generate
@@ -23,8 +23,11 @@ status when input validation fails; report the blocking input error.
 2. Reject unresolved blockers, `TODO` values, schema or semantic failures, and
    output-metadata mismatches. Record `outputs.name` is PascalCase and names
    generated structures and classes; `$defs` keys only resolve local references.
-   Do not infer missing science.
-3. Validate, generate both retained targets, and run the required verification
+   For categorical inputs and lookups, verify the named enum binding, exact
+   member names and canonical values, complete enum-to-record mapping, lookup
+   key type, row fields, and categorical golden inputs. Do not infer missing
+   science.
+3. Validate, generate all retained targets, and run the required verification
    gates. Before validation, extract each repeated nontrivial formula
    expression within a function into one earlier local implementation variable
    and reference it thereafter; retain published numeric lexemes and do not

@@ -2,6 +2,7 @@
 #include <ptfkit/tiwary2014.h>
 #include "ufunc.h"
 
+static const int calc_ptf_tiwary2014_igp_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_tiwary2014_igp_contiguous_loop(PyArrayMethod_Context *context,
                                                    char *const *data, const npy_intp *dimensions,
                                                    const npy_intp *strides,
@@ -50,6 +51,9 @@ static PyArrayMethod_Spec calc_ptf_tiwary2014_igp_spec = {
     .slots = calc_ptf_tiwary2014_igp_slots,
 };
 
+static const int calc_ptf_tiwary2014_bsr_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                    NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_tiwary2014_bsr_contiguous_loop(PyArrayMethod_Context *context,
                                                    char *const *data, const npy_intp *dimensions,
                                                    const npy_intp *strides,
@@ -119,11 +123,11 @@ static PyArrayMethod_Spec calc_ptf_tiwary2014_bsr_spec = {
 };
 
 int ptfkit_register_tiwary2014(PyObject *module) {
-    if (ptfkit_add_ufunc(module, "calc_ptf_tiwary2014_igp", 3, 1, &calc_ptf_tiwary2014_igp_spec) <
-        0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_tiwary2014_igp", calc_ptf_tiwary2014_igp_types, 3, 1,
+                         &calc_ptf_tiwary2014_igp_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_tiwary2014_bsr", 6, 4, &calc_ptf_tiwary2014_bsr_spec) <
-        0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_tiwary2014_bsr", calc_ptf_tiwary2014_bsr_types, 6, 4,
+                         &calc_ptf_tiwary2014_bsr_spec) < 0)
         return -1;
     return 0;
 }

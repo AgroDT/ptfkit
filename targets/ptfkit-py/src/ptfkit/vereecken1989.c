@@ -2,6 +2,8 @@
 #include <ptfkit/vereecken1989.h>
 #include "ufunc.h"
 
+static const int calc_ptf_vereecken1989_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                   NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_vereecken1989_contiguous_loop(PyArrayMethod_Context *context, char *const *data,
                                                   const npy_intp *dimensions,
                                                   const npy_intp *strides,
@@ -64,6 +66,10 @@ static PyArrayMethod_Spec calc_ptf_vereecken1989_spec = {
     .slots = calc_ptf_vereecken1989_slots,
 };
 
+static const int calc_ptf_vereecken1989_detailed_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_vereecken1989_detailed_contiguous_loop(PyArrayMethod_Context *context,
                                                            char *const *data,
                                                            const npy_intp *dimensions,
@@ -162,9 +168,11 @@ static PyArrayMethod_Spec calc_ptf_vereecken1989_detailed_spec = {
 };
 
 int ptfkit_register_vereecken1989(PyObject *module) {
-    if (ptfkit_add_ufunc(module, "calc_ptf_vereecken1989", 4, 4, &calc_ptf_vereecken1989_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_vereecken1989", calc_ptf_vereecken1989_types, 4, 4,
+                         &calc_ptf_vereecken1989_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_vereecken1989_detailed", 13, 4,
+    if (ptfkit_add_ufunc(module, "calc_ptf_vereecken1989_detailed",
+                         calc_ptf_vereecken1989_detailed_types, 13, 4,
                          &calc_ptf_vereecken1989_detailed_spec) < 0)
         return -1;
     return 0;

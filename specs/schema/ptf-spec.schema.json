@@ -29,13 +29,34 @@
       }
     },
     "implementationVariable": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["name", "expr"],
-      "properties": {
-        "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
-        "expr": { "type": "string", "minLength": 1 }
-      }
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "expr"],
+          "properties": {
+            "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+            "expr": { "type": "string", "minLength": 1 }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "lookup"],
+          "properties": {
+            "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+            "lookup": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["table", "key"],
+              "properties": {
+                "table": { "$ref": "#/$defs/localReference" },
+                "key": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" }
+              }
+            }
+          }
+        }
+      ]
     },
     "implementation": {
       "type": "object",
@@ -46,6 +67,34 @@
           "type": "array",
           "minItems": 1,
           "items": { "$ref": "#/$defs/implementationVariable" }
+        }
+      }
+    },
+    "lookupDefinition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "input", "output", "values"],
+      "properties": {
+        "type": { "const": "lookup" },
+        "input": { "$ref": "#/$defs/localReference" },
+        "output": { "$ref": "#/$defs/localReference" },
+        "values": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/lookupValue" }
+        }
+      }
+    },
+    "lookupValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "value"],
+      "properties": {
+        "key": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "value": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "type": "number" }
         }
       }
     },
@@ -122,13 +171,52 @@
         "description": { "type": "string", "minLength": 1 }
       }
     },
+    "inputReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "$ref"],
+      "properties": {
+        "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "description": { "type": "string", "minLength": 1 },
+        "$ref": {
+          "type": "string",
+          "pattern": "^#/\\$defs/[A-Za-z][A-Za-z0-9_]*$"
+        }
+      }
+    },
+    "enumDefinition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "description", "values"],
+      "properties": {
+        "type": { "const": "enum" },
+        "description": { "type": "string", "minLength": 1 },
+        "values": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/enumValue" }
+        }
+      }
+    },
+    "enumValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "value"],
+      "properties": {
+        "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "value": { "type": "string", "minLength": 1 },
+        "description": { "type": "string", "minLength": 1 }
+      }
+    },
     "sourceDefinitions": {
       "type": "object",
       "propertyNames": { "pattern": "^[A-Za-z][A-Za-z0-9_]*$" },
       "additionalProperties": {
         "oneOf": [
-          { "$ref": "#/$defs/parameter" },
-          { "$ref": "#/$defs/outputs" }
+          { "$ref": "#/$defs/enumDefinition" },
+          { "$ref": "#/$defs/lookupDefinition" },
+          { "$ref": "#/$defs/outputs" },
+          { "$ref": "#/$defs/parameter" }
         ]
       }
     },
@@ -245,6 +333,7 @@
           "items": {
             "oneOf": [
               { "$ref": "#/$defs/parameter" },
+              { "$ref": "#/$defs/inputReference" },
               { "$ref": "#/$defs/localReference" }
             ]
           }

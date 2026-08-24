@@ -2,6 +2,8 @@
 #include <ptfkit/chakraborty2011.h>
 #include "ufunc.h"
 
+static const int calc_ptf_chakraborty2011_eq1_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                         NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_chakraborty2011_eq1_contiguous_loop(PyArrayMethod_Context *context,
                                                         char *const *data,
                                                         const npy_intp *dimensions,
@@ -58,6 +60,8 @@ static PyArrayMethod_Spec calc_ptf_chakraborty2011_eq1_spec = {
     .slots = calc_ptf_chakraborty2011_eq1_slots,
 };
 
+static const int calc_ptf_chakraborty2011_eq2_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                         NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_chakraborty2011_eq2_contiguous_loop(PyArrayMethod_Context *context,
                                                         char *const *data,
                                                         const npy_intp *dimensions,
@@ -116,6 +120,8 @@ static PyArrayMethod_Spec calc_ptf_chakraborty2011_eq2_spec = {
     .slots = calc_ptf_chakraborty2011_eq2_slots,
 };
 
+static const int calc_ptf_chakraborty2011_eq3_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_chakraborty2011_eq3_contiguous_loop(PyArrayMethod_Context *context,
                                                         char *const *data,
                                                         const npy_intp *dimensions,
@@ -177,6 +183,8 @@ static PyArrayMethod_Spec calc_ptf_chakraborty2011_eq3_spec = {
     .slots = calc_ptf_chakraborty2011_eq3_slots,
 };
 
+static const int calc_ptf_chakraborty2011_eq4_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_chakraborty2011_eq4_contiguous_loop(PyArrayMethod_Context *context,
                                                         char *const *data,
                                                         const npy_intp *dimensions,
@@ -238,6 +246,8 @@ static PyArrayMethod_Spec calc_ptf_chakraborty2011_eq4_spec = {
     .slots = calc_ptf_chakraborty2011_eq4_slots,
 };
 
+static const int calc_ptf_chakraborty2011_eq5_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_chakraborty2011_eq5_contiguous_loop(PyArrayMethod_Context *context,
                                                         char *const *data,
                                                         const npy_intp *dimensions,
@@ -302,6 +312,9 @@ static PyArrayMethod_Spec calc_ptf_chakraborty2011_eq5_spec = {
     .slots = calc_ptf_chakraborty2011_eq5_slots,
 };
 
+static const int calc_ptf_chakraborty2011_eq6_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                         NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                         NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_chakraborty2011_eq6_contiguous_loop(PyArrayMethod_Context *context,
                                                         char *const *data,
                                                         const npy_intp *dimensions,
@@ -370,23 +383,23 @@ static PyArrayMethod_Spec calc_ptf_chakraborty2011_eq6_spec = {
 };
 
 int ptfkit_register_chakraborty2011(PyObject *module) {
-    if (ptfkit_add_ufunc(module, "calc_ptf_chakraborty2011_eq1", 2, 4,
-                         &calc_ptf_chakraborty2011_eq1_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_chakraborty2011_eq1", calc_ptf_chakraborty2011_eq1_types,
+                         2, 4, &calc_ptf_chakraborty2011_eq1_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_chakraborty2011_eq2", 2, 4,
-                         &calc_ptf_chakraborty2011_eq2_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_chakraborty2011_eq2", calc_ptf_chakraborty2011_eq2_types,
+                         2, 4, &calc_ptf_chakraborty2011_eq2_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_chakraborty2011_eq3", 3, 4,
-                         &calc_ptf_chakraborty2011_eq3_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_chakraborty2011_eq3", calc_ptf_chakraborty2011_eq3_types,
+                         3, 4, &calc_ptf_chakraborty2011_eq3_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_chakraborty2011_eq4", 3, 4,
-                         &calc_ptf_chakraborty2011_eq4_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_chakraborty2011_eq4", calc_ptf_chakraborty2011_eq4_types,
+                         3, 4, &calc_ptf_chakraborty2011_eq4_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_chakraborty2011_eq5", 4, 4,
-                         &calc_ptf_chakraborty2011_eq5_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_chakraborty2011_eq5", calc_ptf_chakraborty2011_eq5_types,
+                         4, 4, &calc_ptf_chakraborty2011_eq5_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_chakraborty2011_eq6", 5, 4,
-                         &calc_ptf_chakraborty2011_eq6_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_chakraborty2011_eq6", calc_ptf_chakraborty2011_eq6_types,
+                         5, 4, &calc_ptf_chakraborty2011_eq6_spec) < 0)
         return -1;
     return 0;
 }

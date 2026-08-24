@@ -31,11 +31,11 @@ Estimate equation (9) water-retention parameters for meadow-series soils.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `bulk_density` | g/cm^3 | value > 0 | Undisturbed-soil bulk density. |
-| `fine_sand_fraction` | fraction | 0 <= value <= 1 | Mass fraction in the 0.25-0.05 mm particle-size class. |
-| `fine_fraction` | fraction | 0 <= value <= 1 | Fine-particle mass fraction reported as particles smaller than 0.002 mm. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `bulk_density` | `number` | g/cm^3 | value > 0 | Undisturbed-soil bulk density. |
+| `fine_sand_fraction` | `number` | fraction | 0 <= value <= 1 | Mass fraction in the 0.25-0.05 mm particle-size class. |
+| `fine_fraction` | `number` | fraction | 0 <= value <= 1 | Fine-particle mass fraction reported as particles smaller than 0.002 mm. |
 
 #### Outputs
 
@@ -77,10 +77,10 @@ Estimate equation (9) water-retention parameters for chernozem A horizons.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `bulk_density` | g/cm^3 | value > 0 | Undisturbed-soil bulk density. |
-| `fine_fraction` | fraction | 0 <= value <= 1 | Fine-particle mass fraction reported as particles smaller than 0.002 mm. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `bulk_density` | `number` | g/cm^3 | value > 0 | Undisturbed-soil bulk density. |
+| `fine_fraction` | `number` | fraction | 0 <= value <= 1 | Fine-particle mass fraction reported as particles smaller than 0.002 mm. |
 
 #### Outputs
 
@@ -118,10 +118,10 @@ Estimate equation (9) water-retention parameters for chernozem B horizons.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `bulk_density` | g/cm^3 | value > 0 | Undisturbed-soil bulk density. |
-| `fine_fraction` | fraction | 0 <= value <= 1 | Fine-particle mass fraction reported as particles smaller than 0.002 mm. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `bulk_density` | `number` | g/cm^3 | value > 0 | Undisturbed-soil bulk density. |
+| `fine_fraction` | `number` | fraction | 0 <= value <= 1 | Fine-particle mass fraction reported as particles smaller than 0.002 mm. |
 
 #### Outputs
 
@@ -159,10 +159,10 @@ Estimate equation (9) water-retention parameters for chernozem C horizons.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `bulk_density` | g/cm^3 | value > 0 | Undisturbed-soil bulk density. |
-| `fine_fraction` | fraction | 0 <= value <= 1 | Fine-particle mass fraction reported as particles smaller than 0.002 mm. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `bulk_density` | `number` | g/cm^3 | value > 0 | Undisturbed-soil bulk density. |
+| `fine_fraction` | `number` | fraction | 0 <= value <= 1 | Fine-particle mass fraction reported as particles smaller than 0.002 mm. |
 
 #### Outputs
 

@@ -2,6 +2,7 @@
 #include <ptfkit/oosterveld1980.h>
 #include "ufunc.h"
 
+static const int calc_ptf_oosterveld1980_field_capacity_tension_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_oosterveld1980_field_capacity_tension_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -43,6 +44,8 @@ static PyArrayMethod_Spec calc_ptf_oosterveld1980_field_capacity_tension_spec = 
     .slots = calc_ptf_oosterveld1980_field_capacity_tension_slots,
 };
 
+static const int calc_ptf_oosterveld1980_retention_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                              NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_oosterveld1980_retention_contiguous_loop(PyArrayMethod_Context *context,
                                                              char *const *data,
                                                              const npy_intp *dimensions,
@@ -99,6 +102,8 @@ static PyArrayMethod_Spec calc_ptf_oosterveld1980_retention_spec = {
     .slots = calc_ptf_oosterveld1980_retention_slots,
 };
 
+static const int calc_ptf_oosterveld1980_field_capacity_types[] = {NPY_DOUBLE, NPY_DOUBLE,
+                                                                   NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_oosterveld1980_field_capacity_contiguous_loop(PyArrayMethod_Context *context,
                                                                   char *const *data,
                                                                   const npy_intp *dimensions,
@@ -150,6 +155,8 @@ static PyArrayMethod_Spec calc_ptf_oosterveld1980_field_capacity_spec = {
     .slots = calc_ptf_oosterveld1980_field_capacity_slots,
 };
 
+static const int calc_ptf_oosterveld1980_wilting_point_types[] = {NPY_DOUBLE, NPY_DOUBLE,
+                                                                  NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_oosterveld1980_wilting_point_contiguous_loop(PyArrayMethod_Context *context,
                                                                  char *const *data,
                                                                  const npy_intp *dimensions,
@@ -201,6 +208,8 @@ static PyArrayMethod_Spec calc_ptf_oosterveld1980_wilting_point_spec = {
     .slots = calc_ptf_oosterveld1980_wilting_point_slots,
 };
 
+static const int calc_ptf_oosterveld1980_available_water_types[] = {NPY_DOUBLE, NPY_DOUBLE,
+                                                                    NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_oosterveld1980_available_water_contiguous_loop(PyArrayMethod_Context *context,
                                                                    char *const *data,
                                                                    const npy_intp *dimensions,
@@ -255,19 +264,24 @@ static PyArrayMethod_Spec calc_ptf_oosterveld1980_available_water_spec = {
 };
 
 int ptfkit_register_oosterveld1980(PyObject *module) {
-    if (ptfkit_add_ufunc(module, "calc_ptf_oosterveld1980_field_capacity_tension", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_oosterveld1980_field_capacity_tension",
+                         calc_ptf_oosterveld1980_field_capacity_tension_types, 1, 1,
                          &calc_ptf_oosterveld1980_field_capacity_tension_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_oosterveld1980_retention", 4, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_oosterveld1980_retention",
+                         calc_ptf_oosterveld1980_retention_types, 4, 1,
                          &calc_ptf_oosterveld1980_retention_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_oosterveld1980_field_capacity", 3, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_oosterveld1980_field_capacity",
+                         calc_ptf_oosterveld1980_field_capacity_types, 3, 1,
                          &calc_ptf_oosterveld1980_field_capacity_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_oosterveld1980_wilting_point", 3, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_oosterveld1980_wilting_point",
+                         calc_ptf_oosterveld1980_wilting_point_types, 3, 1,
                          &calc_ptf_oosterveld1980_wilting_point_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_oosterveld1980_available_water", 3, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_oosterveld1980_available_water",
+                         calc_ptf_oosterveld1980_available_water_types, 3, 1,
                          &calc_ptf_oosterveld1980_available_water_spec) < 0)
         return -1;
     return 0;

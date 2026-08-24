@@ -26,7 +26,7 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile
         source.indented(|writer| {
             for function in functions {
                 writer.line(format_args!(
-                    "if (ptfkit_add_ufunc(module, \"{name}\", {nin}, {nout}, &{name}_spec) < 0) return -1;",
+                    "if (ptfkit_add_ufunc(module, \"{name}\", {name}_types, {nin}, {nout}, &{name}_spec) < 0) return -1;",
                     name = function.core.name,
                     nin = function.core.inputs.len(),
                     nout = output_count(&function.core.output),
@@ -78,6 +78,7 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile
 fn ufunc(function: &CompiledFunction) -> Result<String> {
     let name = &function.core.name;
     let inputs = &function.core.inputs;
+    let specification = &function.entry.spec.functions[function.function_index];
     let values = match &function.core.output {
         Output::Scalar => vec![
             function.entry.spec.functions[function.function_index]
@@ -90,6 +91,22 @@ fn ufunc(function: &CompiledFunction) -> Result<String> {
     };
     let mut writer = Writer::new();
     writer.line(format_args!(
+        "static const int {name}_types[] = {{{}}};",
+        specification
+            .inputs
+            .iter()
+            .map(|input| {
+                if input.enum_type().is_some() {
+                    "NPY_UINT32"
+                } else {
+                    "NPY_DOUBLE"
+                }
+            })
+            .chain(std::iter::repeat_n("NPY_DOUBLE", values.len()))
+            .collect::<Vec<_>>()
+            .join(", "),
+    ));
+    writer.line(format_args!(
         "static int {name}_contiguous_loop(PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions, const npy_intp *strides, NpyAuxData *transferdata) {{"
     ));
     writer.indented(|writer| {
@@ -97,8 +114,13 @@ fn ufunc(function: &CompiledFunction) -> Result<String> {
         writer.line("(void)strides;");
         writer.line("(void)transferdata;");
         for (index, input) in inputs.iter().enumerate() {
+            let value_type = if specification.inputs[index].enum_type().is_some() {
+                "npy_uint32"
+            } else {
+                "double"
+            };
             writer.line(format_args!(
-                "const double *in_{input} = (const double *)data[{index}];"
+                "const {value_type} *in_{input} = (const {value_type} *)data[{index}];"
             ));
         }
         for (index, value) in values.iter().enumerate() {
@@ -110,7 +132,18 @@ fn ufunc(function: &CompiledFunction) -> Result<String> {
         writer.line("for (npy_intp index = 0; index < dimensions[0]; index++) {");
         writer.indented(|writer| {
             for input in inputs {
-                writer.line(format_args!("const double {input} = in_{input}[index];"));
+                let input_index = inputs
+                    .iter()
+                    .position(|item| item == input)
+                    .expect("input exists");
+                let value_type = if specification.inputs[input_index].enum_type().is_some() {
+                    "npy_uint32"
+                } else {
+                    "double"
+                };
+                writer.line(format_args!(
+                    "const {value_type} {input} = in_{input}[index];"
+                ));
             }
             render_kernel_call(writer, function, inputs, &values, Some("[index]"));
         });
@@ -128,9 +161,12 @@ fn ufunc(function: &CompiledFunction) -> Result<String> {
         writer.line("for (npy_intp index = 0; index < dimensions[0]; index++) {");
         writer.indented(|writer| {
             for (index, input) in inputs.iter().enumerate() {
-                writer.line(format_args!(
-                    "const double {input} = *(const double *)(data[{index}] + index * strides[{index}]);"
-                ));
+                let value_type = if specification.inputs[index].enum_type().is_some() {
+                    "npy_uint32"
+                } else {
+                    "double"
+                };
+                writer.line(format_args!("const {value_type} {input} = *(const {value_type} *)(data[{index}] + index * strides[{index}]);"));
             }
             render_kernel_call(writer, function, inputs, &values, None);
         });

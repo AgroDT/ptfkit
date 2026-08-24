@@ -2,6 +2,8 @@
 #include <ptfkit/beniaich2023.h>
 #include "ufunc.h"
 
+static const int calc_ptf_beniaich2023_slr1_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                       NPY_DOUBLE};
 static int calc_ptf_beniaich2023_slr1_contiguous_loop(PyArrayMethod_Context *context,
                                                       char *const *data, const npy_intp *dimensions,
                                                       const npy_intp *strides,
@@ -51,6 +53,8 @@ static PyArrayMethod_Spec calc_ptf_beniaich2023_slr1_spec = {
     .slots = calc_ptf_beniaich2023_slr1_slots,
 };
 
+static const int calc_ptf_beniaich2023_slr2_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                       NPY_DOUBLE};
 static int calc_ptf_beniaich2023_slr2_contiguous_loop(PyArrayMethod_Context *context,
                                                       char *const *data, const npy_intp *dimensions,
                                                       const npy_intp *strides,
@@ -100,6 +104,8 @@ static PyArrayMethod_Spec calc_ptf_beniaich2023_slr2_spec = {
     .slots = calc_ptf_beniaich2023_slr2_slots,
 };
 
+static const int calc_ptf_beniaich2023_slr3_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                       NPY_DOUBLE};
 static int calc_ptf_beniaich2023_slr3_contiguous_loop(PyArrayMethod_Context *context,
                                                       char *const *data, const npy_intp *dimensions,
                                                       const npy_intp *strides,
@@ -149,6 +155,8 @@ static PyArrayMethod_Spec calc_ptf_beniaich2023_slr3_spec = {
     .slots = calc_ptf_beniaich2023_slr3_slots,
 };
 
+static const int calc_ptf_beniaich2023_slr4_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                       NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_beniaich2023_slr4_contiguous_loop(PyArrayMethod_Context *context,
                                                       char *const *data, const npy_intp *dimensions,
                                                       const npy_intp *strides,
@@ -201,6 +209,8 @@ static PyArrayMethod_Spec calc_ptf_beniaich2023_slr4_spec = {
     .slots = calc_ptf_beniaich2023_slr4_slots,
 };
 
+static const int calc_ptf_beniaich2023_slr5_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                       NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_beniaich2023_slr5_contiguous_loop(PyArrayMethod_Context *context,
                                                       char *const *data, const npy_intp *dimensions,
                                                       const npy_intp *strides,
@@ -253,6 +263,8 @@ static PyArrayMethod_Spec calc_ptf_beniaich2023_slr5_spec = {
     .slots = calc_ptf_beniaich2023_slr5_slots,
 };
 
+static const int calc_ptf_beniaich2023_slr6_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                       NPY_DOUBLE};
 static int calc_ptf_beniaich2023_slr6_contiguous_loop(PyArrayMethod_Context *context,
                                                       char *const *data, const npy_intp *dimensions,
                                                       const npy_intp *strides,
@@ -304,6 +316,8 @@ static PyArrayMethod_Spec calc_ptf_beniaich2023_slr6_spec = {
     .slots = calc_ptf_beniaich2023_slr6_slots,
 };
 
+static const int calc_ptf_beniaich2023_mlr1_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                       NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_beniaich2023_mlr1_contiguous_loop(PyArrayMethod_Context *context,
                                                       char *const *data, const npy_intp *dimensions,
                                                       const npy_intp *strides,
@@ -361,6 +375,8 @@ static PyArrayMethod_Spec calc_ptf_beniaich2023_mlr1_spec = {
     .slots = calc_ptf_beniaich2023_mlr1_slots,
 };
 
+static const int calc_ptf_beniaich2023_mlr2_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                       NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_beniaich2023_mlr2_contiguous_loop(PyArrayMethod_Context *context,
                                                       char *const *data, const npy_intp *dimensions,
                                                       const npy_intp *strides,
@@ -415,6 +431,8 @@ static PyArrayMethod_Spec calc_ptf_beniaich2023_mlr2_spec = {
     .slots = calc_ptf_beniaich2023_mlr2_slots,
 };
 
+static const int calc_ptf_beniaich2023_mlr3_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                       NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_beniaich2023_mlr3_contiguous_loop(PyArrayMethod_Context *context,
                                                       char *const *data, const npy_intp *dimensions,
                                                       const npy_intp *strides,
@@ -469,6 +487,8 @@ static PyArrayMethod_Spec calc_ptf_beniaich2023_mlr3_spec = {
     .slots = calc_ptf_beniaich2023_mlr3_slots,
 };
 
+static const int calc_ptf_beniaich2023_mlr4_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                       NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_beniaich2023_mlr4_contiguous_loop(PyArrayMethod_Context *context,
                                                       char *const *data, const npy_intp *dimensions,
                                                       const npy_intp *strides,
@@ -523,6 +543,8 @@ static PyArrayMethod_Spec calc_ptf_beniaich2023_mlr4_spec = {
     .slots = calc_ptf_beniaich2023_mlr4_slots,
 };
 
+static const int calc_ptf_beniaich2023_mlr5_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                       NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_beniaich2023_mlr5_contiguous_loop(PyArrayMethod_Context *context,
                                                       char *const *data, const npy_intp *dimensions,
                                                       const npy_intp *strides,
@@ -581,38 +603,38 @@ static PyArrayMethod_Spec calc_ptf_beniaich2023_mlr5_spec = {
 };
 
 int ptfkit_register_beniaich2023(PyObject *module) {
-    if (ptfkit_add_ufunc(module, "calc_ptf_beniaich2023_slr1", 1, 3,
-                         &calc_ptf_beniaich2023_slr1_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_beniaich2023_slr1", calc_ptf_beniaich2023_slr1_types, 1,
+                         3, &calc_ptf_beniaich2023_slr1_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_beniaich2023_slr2", 1, 3,
-                         &calc_ptf_beniaich2023_slr2_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_beniaich2023_slr2", calc_ptf_beniaich2023_slr2_types, 1,
+                         3, &calc_ptf_beniaich2023_slr2_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_beniaich2023_slr3", 1, 3,
-                         &calc_ptf_beniaich2023_slr3_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_beniaich2023_slr3", calc_ptf_beniaich2023_slr3_types, 1,
+                         3, &calc_ptf_beniaich2023_slr3_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_beniaich2023_slr4", 2, 3,
-                         &calc_ptf_beniaich2023_slr4_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_beniaich2023_slr4", calc_ptf_beniaich2023_slr4_types, 2,
+                         3, &calc_ptf_beniaich2023_slr4_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_beniaich2023_slr5", 2, 3,
-                         &calc_ptf_beniaich2023_slr5_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_beniaich2023_slr5", calc_ptf_beniaich2023_slr5_types, 2,
+                         3, &calc_ptf_beniaich2023_slr5_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_beniaich2023_slr6", 1, 3,
-                         &calc_ptf_beniaich2023_slr6_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_beniaich2023_slr6", calc_ptf_beniaich2023_slr6_types, 1,
+                         3, &calc_ptf_beniaich2023_slr6_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_beniaich2023_mlr1", 3, 3,
-                         &calc_ptf_beniaich2023_mlr1_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_beniaich2023_mlr1", calc_ptf_beniaich2023_mlr1_types, 3,
+                         3, &calc_ptf_beniaich2023_mlr1_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_beniaich2023_mlr2", 2, 3,
-                         &calc_ptf_beniaich2023_mlr2_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_beniaich2023_mlr2", calc_ptf_beniaich2023_mlr2_types, 2,
+                         3, &calc_ptf_beniaich2023_mlr2_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_beniaich2023_mlr3", 2, 3,
-                         &calc_ptf_beniaich2023_mlr3_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_beniaich2023_mlr3", calc_ptf_beniaich2023_mlr3_types, 2,
+                         3, &calc_ptf_beniaich2023_mlr3_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_beniaich2023_mlr4", 2, 3,
-                         &calc_ptf_beniaich2023_mlr4_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_beniaich2023_mlr4", calc_ptf_beniaich2023_mlr4_types, 2,
+                         3, &calc_ptf_beniaich2023_mlr4_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_beniaich2023_mlr5", 3, 3,
-                         &calc_ptf_beniaich2023_mlr5_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_beniaich2023_mlr5", calc_ptf_beniaich2023_mlr5_types, 3,
+                         3, &calc_ptf_beniaich2023_mlr5_spec) < 0)
         return -1;
     return 0;
 }

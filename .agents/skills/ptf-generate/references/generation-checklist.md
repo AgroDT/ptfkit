@@ -10,6 +10,13 @@
   matching ordered output metadata.
 - Every record `outputs.name` is PascalCase and names generated structures and
   classes.
+- Every categorical input binds a function-local `name` to an enum `$ref`.
+  Enum member names and canonical textual values are unique, and categorical
+  golden inputs name enum members rather than textual values or ordinals.
+- Every lookup references an enum input and record output, covers every enum
+  member exactly once, and gives every row exactly the record's fields. Each
+  lookup invocation uses an in-scope key of the declared enum type; field
+  access and direct record return match the resolved record type.
 - Run `cargo run --manifest-path codegen/Cargo.toml -- validate` before
   generation.
 
@@ -39,7 +46,9 @@ second generation idempotence check. Investigate every unexpected diff.
 
 - Invalid, incomplete, or ambiguous science: return a spec blocker for the
   user to resolve.
-- Valid semantic IR unsupported by Rust or the native NumPy backend: return a
-  generator capability blocker. Do not hand-write a retained target.
+- Valid semantic IR unsupported by any retained Rust, C, C++, or Python path:
+  return a generator capability blocker. This includes categorical types, typed
+  lookups, and record-field access. Do not hand-write a retained computational
+  target.
 - A manual public module may only wrap its generated native ufunc; it does not
   disable native generation or allow a duplicate formula.

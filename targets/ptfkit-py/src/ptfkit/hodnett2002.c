@@ -2,6 +2,9 @@
 #include <ptfkit/hodnett2002.h>
 #include "ufunc.h"
 
+static const int calc_ptf_hodnett2002_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                 NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                 NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_hodnett2002_contiguous_loop(PyArrayMethod_Context *context, char *const *data,
                                                 const npy_intp *dimensions, const npy_intp *strides,
                                                 NpyAuxData *transferdata) {
@@ -73,7 +76,8 @@ static PyArrayMethod_Spec calc_ptf_hodnett2002_spec = {
 };
 
 int ptfkit_register_hodnett2002(PyObject *module) {
-    if (ptfkit_add_ufunc(module, "calc_ptf_hodnett2002", 7, 4, &calc_ptf_hodnett2002_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_hodnett2002", calc_ptf_hodnett2002_types, 7, 4,
+                         &calc_ptf_hodnett2002_spec) < 0)
         return -1;
     return 0;
 }

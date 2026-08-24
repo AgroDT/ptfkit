@@ -29,6 +29,10 @@ pub(crate) struct Number {
 pub(crate) enum ExprKind {
     Number(Number),
     Variable(String),
+    Field {
+        base: String,
+        field: String,
+    },
     Unary {
         op: UnaryOp,
         operand: Box<Expr>,
@@ -130,6 +134,7 @@ fn expected_token(rule: &Rule) -> Option<&'static str> {
         Rule::lparen => Some("`(`"),
         Rule::rparen => Some("`)`"),
         Rule::comma => Some("`,`"),
+        Rule::dot => Some("`.`"),
         Rule::plus => Some("`+`"),
         Rule::minus => Some("`-`"),
         Rule::times => Some("`*`"),
@@ -178,6 +183,27 @@ fn build_expression(pair: Pair<'_, Rule>, location: &str) -> Result<Expr, ParseE
             kind: ExprKind::Variable(pair.as_str().to_owned()),
             span: span(&pair),
         }),
+        Rule::field => {
+            let expression_span = span(&pair);
+            let mut identifiers = pair
+                .into_inner()
+                .filter(|child| child.as_rule() == Rule::identifier);
+            Ok(Expr {
+                kind: ExprKind::Field {
+                    base: identifiers
+                        .next()
+                        .expect("field has a base")
+                        .as_str()
+                        .to_owned(),
+                    field: identifiers
+                        .next()
+                        .expect("field has a member")
+                        .as_str()
+                        .to_owned(),
+                },
+                span: expression_span,
+            })
+        }
         Rule::call => build_call(pair, location),
         Rule::parenthesized => {
             let span = span(&pair);
@@ -317,6 +343,7 @@ mod tests {
         match &expression.kind {
             ExprKind::Number(number) => format!("{}", number.value),
             ExprKind::Variable(name) => name.clone(),
+            ExprKind::Field { base, field } => format!("{base}.{field}"),
             ExprKind::Unary { op, operand } => match op {
                 UnaryOp::Plus => format!("(+ {})", shape(operand)),
                 UnaryOp::Minus => format!("(- {})", shape(operand)),

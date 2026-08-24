@@ -2,6 +2,9 @@
 #include <ptfkit/puckett1985.h>
 #include "ufunc.h"
 
+static const int calc_ptf_puckett1985_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_puckett1985_contiguous_loop(PyArrayMethod_Context *context, char *const *data,
                                                 const npy_intp *dimensions, const npy_intp *strides,
                                                 NpyAuxData *transferdata) {
@@ -88,7 +91,8 @@ static PyArrayMethod_Spec calc_ptf_puckett1985_spec = {
 };
 
 int ptfkit_register_puckett1985(PyObject *module) {
-    if (ptfkit_add_ufunc(module, "calc_ptf_puckett1985", 5, 11, &calc_ptf_puckett1985_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_puckett1985", calc_ptf_puckett1985_types, 5, 11,
+                         &calc_ptf_puckett1985_spec) < 0)
         return -1;
     return 0;
 }

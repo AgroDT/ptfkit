@@ -31,11 +31,11 @@ Estimate Cosby et al. (1984) univariate hydraulic parameter statistics from soil
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content. |
-| `silt` | % | 0 <= value <= 100 | Silt content. |
-| `clay` | % | 0 <= value <= 100 | Clay content. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content. |
+| `silt` | `number` | % | 0 <= value <= 100 | Silt content. |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content. |
 
 #### Outputs
 

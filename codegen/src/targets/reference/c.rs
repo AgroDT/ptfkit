@@ -5,10 +5,13 @@ use anyhow::Result;
 use crate::render::markdown::HEADER;
 use crate::{
     documentation::{self as docs},
-    model::{CompiledFunction, Output, Parameter},
+    model::{CompiledFunction, EnumDefinition, Output, Parameter},
     output::GeneratedFile,
     render::{Writer, markdown},
-    targets::{group_by_source, native::c_result_name},
+    targets::{
+        group_by_source,
+        native::{c_enum_member, c_enum_name, c_result_name},
+    },
 };
 
 pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile>> {
@@ -142,6 +145,16 @@ fn render_header(writer: &mut Writer, slug: &str, functions: &[&CompiledFunction
         "[PTF catalog page](../../../ptf-catalog/sources/{slug}.md)\n\n"
     ));
 
+    let mut enums = BTreeSet::new();
+    for function in functions {
+        for input in &spec(function).inputs {
+            if let Some(definition) = input.enum_type()
+                && enums.insert(definition.name.clone())
+            {
+                render_enum(writer, slug, definition, true);
+            }
+        }
+    }
     let mut structures = BTreeSet::new();
     for function in functions {
         if let Output::Struct(_) = &function.core.output {
@@ -160,6 +173,52 @@ fn render_header(writer: &mut Writer, slug: &str, functions: &[&CompiledFunction
         render_function_documentation(writer, function)?;
     }
     Ok(())
+}
+
+fn render_enum(writer: &mut Writer, module: &str, definition: &EnumDefinition, c: bool) {
+    let name = if c {
+        c_enum_name(module, &definition.name)
+    } else {
+        definition.name.clone()
+    };
+    writer.write(format_args!("## `{name}`\n\n"));
+    markdown::code_block(writer, if c { "c" } else { "cpp" }, |writer| {
+        writer.line(if c { "typedef enum {" } else { "enum class {" });
+        writer.indented(|writer| {
+            for member in &definition.values {
+                let member_name = if c {
+                    c_enum_member(module, &definition.name, &member.name)
+                } else {
+                    member.name.clone()
+                };
+                writer.line(format_args!("{member_name},"));
+            }
+        });
+        if c {
+            writer.line(format_args!("}} {name};"));
+        } else {
+            writer.line("};");
+        }
+    });
+    writer.line("| Member | Canonical value | Description |");
+    writer.line("| --- | --- | --- |");
+    for member in &definition.values {
+        let member_name = if c {
+            c_enum_member(module, &definition.name, &member.name)
+        } else {
+            member.name.clone()
+        };
+        writer.line(format_args!(
+            "| `{member_name}` | `{}` | {} |",
+            escape_table(&member.value),
+            member
+                .description
+                .as_deref()
+                .map(escape_table)
+                .unwrap_or_default()
+        ));
+    }
+    writer.blank_line();
 }
 
 fn render_structure(writer: &mut Writer, name: &str, fields: &[Parameter]) {
@@ -202,7 +261,7 @@ fn render_function_documentation(writer: &mut Writer, function: &CompiledFunctio
     for parameter in document.parameters {
         writer.line(format_args!(
             "| `{}` | in | {} |",
-            parameter.name,
+            parameter.name(),
             parameter_details(parameter)
         ));
     }
@@ -256,11 +315,16 @@ fn signature(function: &CompiledFunction) -> Result<String> {
     Ok(format!(
         "static inline {result} {}({})",
         function.core.name,
-        function
-            .core
-            .inputs
+        spec.inputs
             .iter()
-            .map(|input| format!("double {input}"))
+            .map(|input| match input.enum_type() {
+                Some(definition) => format!(
+                    "{} {}",
+                    c_enum_name(&function.entry.slug, &definition.name),
+                    input.name()
+                ),
+                None => format!("double {}", input.name()),
+            })
             .collect::<Vec<_>>()
             .join(", ")
     ))
@@ -274,12 +338,8 @@ fn function_anchor(name: &str) -> String {
     format!("function-{name}")
 }
 
-fn parameter_details(parameter: &Parameter) -> String {
-    format!(
-        "{} ({})",
-        escape_table(&parameter.description),
-        escape_table(&parameter.unit)
-    )
+fn parameter_details(parameter: &impl docs::ParameterMetadata) -> String {
+    escape_table(&docs::parameter_details(parameter))
 }
 
 fn render_admonition(writer: &mut Writer, kind: &str, body: &str) {
