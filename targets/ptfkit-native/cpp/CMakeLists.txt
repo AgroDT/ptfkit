@@ -10,6 +10,7 @@ target_compile_definitions(ptfkit_cpp PUBLIC
 target_compile_options(ptfkit_cpp PUBLIC
     $<$<CXX_COMPILER_ID:GNU>:-fmodules-ts>
 )
+target_link_libraries(ptfkit_cpp PRIVATE ptfkit::c)
 file(GLOB_RECURSE PTFKIT_CPP_MODULES CONFIGURE_DEPENDS *.cppm)
 target_sources(ptfkit_cpp PUBLIC
     FILE_SET CXX_MODULES

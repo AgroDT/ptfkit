@@ -87,18 +87,18 @@ inline Hodnett2002PTFResult calc_ptf_hodnett2002(double sand, double silt, doubl
                                                  double cation_exchange_capacity, double ph) {
     const double ln_alpha =
         (-2.294 - 3.526 * silt + 2.440 * organic_carbon - 0.076 * cation_exchange_capacity -
-         11.331 * ph + 0.019 * std::pow(silt, 2.0)) /
+         11.331 * ph + 0.019 * (silt * silt)) /
         100.0;
     const double alpha = std::exp(ln_alpha);
     const double ln_n = (62.986 - 0.833 * clay - 0.529 * organic_carbon + 0.593 * ph +
-                         0.0070 * std::pow(clay, 2.0) - 0.014 * sand * silt) /
+                         0.0070 * (clay * clay) - 0.014 * sand * silt) /
                         100.0;
     const double n = std::exp(ln_n);
     const double theta_s = (81.799 + 0.099 * clay - 31.420 * bulk_density +
                             0.018 * cation_exchange_capacity + 0.451 * ph - 0.0005 * sand * clay) /
                            100.0;
     const double theta_r = (22.733 - 0.164 * sand + 0.235 * cation_exchange_capacity - 0.831 * ph +
-                            0.0018 * std::pow(clay, 2.0) + 0.0026 * sand * clay) /
+                            0.0018 * (clay * clay) + 0.0026 * sand * clay) /
                            100.0;
     return Hodnett2002PTFResult{alpha, n, theta_s, theta_r};
 }

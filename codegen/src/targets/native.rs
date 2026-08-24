@@ -79,8 +79,14 @@ fn c_header(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
     writer.write(format_args!(
         "{HEADER}\n\n#ifndef {guard}\n#define {guard}\n\n"
     ));
+    if requires_pow4(functions) {
+        writer.write("#include <ptfkit/detail/power.h>\n");
+    }
     if requires_math(functions) {
-        writer.write("#include <math.h>\n\n");
+        writer.write("#include <math.h>\n");
+    }
+    if requires_pow4(functions) || requires_math(functions) {
+        writer.blank_line();
     }
     let first = functions
         .first()
@@ -116,8 +122,15 @@ fn c_header(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
 fn cpp_module(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
     let mut writer = Writer::new();
     writer.write(format_args!("{HEADER}\n\n"));
-    if requires_math(functions) {
-        writer.write("module;\n#include <cmath>\n\n");
+    if requires_pow4(functions) || requires_math(functions) {
+        writer.write("module;\n");
+        if requires_pow4(functions) {
+            writer.write("#include <ptfkit/detail/power.h>\n");
+        }
+        if requires_math(functions) {
+            writer.write("#include <cmath>\n");
+        }
+        writer.blank_line();
     }
     writer.write(format_args!("export module ptfkit.{slug};\n\n"));
     let first = functions
@@ -479,6 +492,16 @@ fn requires_math(functions: &[&CompiledFunction]) -> bool {
     })
 }
 
+fn requires_pow4(functions: &[&CompiledFunction]) -> bool {
+    functions.iter().any(|function| {
+        function
+            .ir
+            .variables
+            .iter()
+            .any(|variable| c::requires_pow4(&variable.expression))
+    })
+}
+
 fn c_test(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
     c_compatibility_test(slug, functions)
 }
@@ -616,6 +639,14 @@ mod tests {
         let power = Expr::Binary {
             op: BinaryOp::Power,
             left: Box::new(value.clone()),
+            right: Box::new(Expr::Number(crate::semantic::Number {
+                value: 2.0,
+                lexeme: "2".to_owned(),
+            })),
+        };
+        let non_optimized_power = Expr::Binary {
+            op: BinaryOp::Power,
+            left: Box::new(value.clone()),
             right: Box::new(value.clone()),
         };
         let logarithm = Expr::Call {
@@ -624,7 +655,8 @@ mod tests {
         };
 
         assert!(!c::requires_math(&arithmetic));
-        assert!(c::requires_math(&power));
+        assert!(!c::requires_math(&power));
+        assert!(c::requires_math(&non_optimized_power));
         assert!(c::requires_math(&logarithm));
     }
 

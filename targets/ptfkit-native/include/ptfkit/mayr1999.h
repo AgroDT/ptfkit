@@ -70,18 +70,18 @@ static inline mayr1999_ptf_result calc_ptf_mayr1999(double sand, double silt, do
                                                     double bulk_density, double organic_carbon) {
     const double log10_a_hc = -4.9840297533 + 0.0509226283 * sand + 0.1575152771 * silt +
                               0.1240901644 * bulk_density - 0.1640033143 * organic_carbon -
-                              0.0021767278 * pow(silt, 2.0) + 1.438224e-5 * pow(silt, 3.0) +
-                              8.040715e-4 * pow(clay, 2.0) +
-                              0.0044067117 * pow(organic_carbon, 2.0);
+                              0.0021767278 * (silt * silt) + 1.438224e-5 * (silt * silt * silt) +
+                              8.040715e-4 * (clay * clay) +
+                              0.0044067117 * (organic_carbon * organic_carbon);
     const double log10_inv_b_hc = -0.8466880654 - 0.0046806123 * sand + 0.0092463819 * silt -
                                   0.4542769707 * bulk_density - 0.0497915563 * organic_carbon +
-                                  3.294687e-4 * pow(sand, 2.0) - 1.689056e-6 * pow(sand, 3.0) +
-                                  0.0011225373 * pow(organic_carbon, 2.0);
+                                  3.294687e-4 * (sand * sand) - 1.689056e-6 * (sand * sand * sand) +
+                                  0.0011225373 * (organic_carbon * organic_carbon);
     const double a_hc = pow(10.0, log10_a_hc);
     const double b_hc = pow(10.0, -log10_inv_b_hc);
     const double theta_s = 0.2345971971 + 0.0046614221 * sand + 0.0088163314 * silt +
                            0.0064338641 * clay - 0.3028160229 * bulk_density +
-                           1.79762e-5 * pow(sand, 2.0) - 3.134631e-5 * pow(silt, 2.0);
+                           1.79762e-5 * (sand * sand) - 3.134631e-5 * (silt * silt);
 #ifdef __cplusplus
     return mayr1999_ptf_result{a_hc, b_hc, theta_s};
 #else

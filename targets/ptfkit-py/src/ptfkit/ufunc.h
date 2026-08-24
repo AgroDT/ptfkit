@@ -2,6 +2,11 @@
 
 #include <math.h>
 
+static inline double ptfkit_pow4(double value) {
+    const double square = value * value;
+    return square * square;
+}
+
 static inline int ptfkit_add_ufunc(PyObject *module, const char *name,
                                    PyUFuncGenericFunction *functions, char *types, int nin,
                                    int nout) {

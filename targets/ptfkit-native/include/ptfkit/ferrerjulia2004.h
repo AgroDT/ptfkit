@@ -50,7 +50,7 @@ static inline double calc_ptf_ferrerjulia2004_campbell_shiozawa(double sand, dou
  */
 static inline double calc_ptf_ferrerjulia2004_saxton(double sand, double clay) {
     return 10.0 * exp(1.01 - 0.0755 * sand +
-                      (-3.895 + 0.03671 * sand - 0.1103 * clay + 0.00087546 * pow(clay, 2.0)) /
+                      (-3.895 + 0.03671 * sand - 0.1103 * clay + 0.00087546 * (clay * clay)) /
                           (0.33 - 0.000751 * sand + 0.176 * log10(clay)));
 }
 
