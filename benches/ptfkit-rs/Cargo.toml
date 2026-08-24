@@ -1,0 +1,12 @@
+[package]
+name = "ptfkit-rs-benchmarks"
+version = "0.1.0"
+edition = "2024"
+
+[features]
+default = ["inline"]
+inline = ["ptfkit/inline"]
+
+[dependencies]
+npyz = "0.9.1"
+ptfkit = { path = "../../targets/ptfkit-rs", default-features = false }

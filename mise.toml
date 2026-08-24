@@ -13,6 +13,7 @@ prek = "0.4.12"
 
 [task_config]
 includes = [
+    "benches/tasks.toml",
     "docs/tasks.toml",
     "codegen/tasks.toml",
     "targets/ptfkit-native/tasks.toml",
