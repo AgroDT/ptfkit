@@ -355,7 +355,14 @@ pub(crate) struct RawVariable {
 #[derive(Clone, Debug)]
 pub(crate) struct RawExpression {
     pub(crate) implementation_path: String,
+    pub(crate) source_location: SourceLocation,
     pub(crate) expression: crate::formula::Expr,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub(crate) struct SourceLocation {
+    pub(crate) line: usize,
+    pub(crate) column: usize,
 }
 
 #[cfg(test)]

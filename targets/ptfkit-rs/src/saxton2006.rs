@@ -73,6 +73,7 @@ These statistical-average estimates should be calibrated to local measurements w
 #[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_saxton2006(sand: f64, clay: f64, organic_matter: f64) -> Saxton2006PTFResult {
+    let clay_organic_matter_term = 0.027f64 * clay * organic_matter;
     let theta_1500_preliminary = -0.024f64 * sand
         + 0.487f64 * clay
         + 0.006f64 * organic_matter
@@ -85,7 +86,7 @@ pub fn calc_ptf_saxton2006(sand: f64, clay: f64, organic_matter: f64) -> Saxton2
         + 0.195f64 * clay
         + 0.011f64 * organic_matter
         + 0.006f64 * sand * organic_matter
-        - 0.027f64 * clay * organic_matter
+        - clay_organic_matter_term
         + 0.452f64 * sand * clay
         + 0.299f64;
     let theta_33 = theta_33_preliminary + 1.283f64 * theta_33_preliminary.powi(2)
@@ -94,7 +95,7 @@ pub fn calc_ptf_saxton2006(sand: f64, clay: f64, organic_matter: f64) -> Saxton2
     let theta_s_minus_33_preliminary =
         0.278f64 * sand + 0.034f64 * clay + 0.022f64 * organic_matter
             - 0.018f64 * sand * organic_matter
-            - 0.027f64 * clay * organic_matter
+            - clay_organic_matter_term
             - 0.584f64 * sand * clay
             + 0.078f64;
     let theta_s_minus_33 =
@@ -110,8 +111,10 @@ pub fn calc_ptf_saxton2006(sand: f64, clay: f64, organic_matter: f64) -> Saxton2
     let air_entry_tension = air_entry_preliminary + 0.02f64 * air_entry_preliminary.powi(2)
         - 0.113f64 * air_entry_preliminary
         - 0.70f64;
-    let retention_b = (1500.0f64.ln() - 33.0f64.ln()) / (theta_33.ln() - theta_1500.ln());
-    let retention_a = (33.0f64.ln() + retention_b * theta_33.ln()).exp();
+    let ln_33 = 33.0f64.ln();
+    let ln_theta_33 = theta_33.ln();
+    let retention_b = (1500.0f64.ln() - ln_33) / (ln_theta_33 - theta_1500.ln());
+    let retention_a = (ln_33 + retention_b * ln_theta_33).exp();
     let conductivity_lambda = 1.0f64 / retention_b;
     let saturated_conductivity =
         1930.0f64 * (theta_s - theta_33).powf(3.0f64 - conductivity_lambda);
@@ -328,8 +331,10 @@ Use only for the 1500 to 33 kPa segment defined by the source."]
 #[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_saxton2006_tension_dry(theta: f64, theta_1500: f64, theta_33: f64) -> f64 {
-    let retention_b = (1500.0f64.ln() - 33.0f64.ln()) / (theta_33.ln() - theta_1500.ln());
-    let retention_a = (33.0f64.ln() + retention_b * theta_33.ln()).exp();
+    let ln_33 = 33.0f64.ln();
+    let ln_theta_33 = theta_33.ln();
+    let retention_b = (1500.0f64.ln() - ln_33) / (ln_theta_33 - theta_1500.ln());
+    let retention_a = (ln_33 + retention_b * ln_theta_33).exp();
     retention_a * theta.powf(-retention_b)
 }
 #[cfg(test)]

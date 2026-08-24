@@ -71,20 +71,22 @@ struct Mayr1999PTFResult {
 [[nodiscard]]
 inline Mayr1999PTFResult calc_ptf_mayr1999(double sand, double silt, double clay,
                                            double bulk_density, double organic_carbon) {
+    const double silt_squared = silt * silt;
+    const double sand_squared = sand * sand;
+    const double organic_carbon_squared = organic_carbon * organic_carbon;
     const double log10_a_hc = -4.9840297533 + 0.0509226283 * sand + 0.1575152771 * silt +
                               0.1240901644 * bulk_density - 0.1640033143 * organic_carbon -
-                              0.0021767278 * (silt * silt) + 1.438224e-5 * (silt * silt * silt) +
-                              8.040715e-4 * (clay * clay) +
-                              0.0044067117 * (organic_carbon * organic_carbon);
+                              0.0021767278 * silt_squared + 1.438224e-5 * (silt * silt * silt) +
+                              8.040715e-4 * (clay * clay) + 0.0044067117 * organic_carbon_squared;
     const double log10_inv_b_hc = -0.8466880654 - 0.0046806123 * sand + 0.0092463819 * silt -
                                   0.4542769707 * bulk_density - 0.0497915563 * organic_carbon +
-                                  3.294687e-4 * (sand * sand) - 1.689056e-6 * (sand * sand * sand) +
-                                  0.0011225373 * (organic_carbon * organic_carbon);
+                                  3.294687e-4 * sand_squared - 1.689056e-6 * (sand * sand * sand) +
+                                  0.0011225373 * organic_carbon_squared;
     const double a_hc = std::pow(10.0, log10_a_hc);
     const double b_hc = std::pow(10.0, -log10_inv_b_hc);
     const double theta_s = 0.2345971971 + 0.0046614221 * sand + 0.0088163314 * silt +
                            0.0064338641 * clay - 0.3028160229 * bulk_density +
-                           1.79762e-5 * (sand * sand) - 3.134631e-5 * (silt * silt);
+                           1.79762e-5 * sand_squared - 3.134631e-5 * silt_squared;
     return Mayr1999PTFResult{a_hc, b_hc, theta_s};
 }
 

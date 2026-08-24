@@ -85,6 +85,7 @@ pub fn calc_ptf_hodnett2002(
     cation_exchange_capacity: f64,
     ph: f64,
 ) -> Hodnett2002PTFResult {
+    let clay_squared = clay.powi(2);
     let ln_alpha = (-2.294f64 - 3.526f64 * silt + 2.440f64 * organic_carbon
         - 0.076f64 * cation_exchange_capacity
         - 11.331f64 * ph
@@ -93,7 +94,7 @@ pub fn calc_ptf_hodnett2002(
     let alpha = ln_alpha.exp();
     let ln_n = (62.986f64 - 0.833f64 * clay - 0.529f64 * organic_carbon
         + 0.593f64 * ph
-        + 0.0070f64 * clay.powi(2)
+        + 0.0070f64 * clay_squared
         - 0.014f64 * sand * silt)
         / 100.0f64;
     let n = ln_n.exp();
@@ -104,7 +105,7 @@ pub fn calc_ptf_hodnett2002(
         / 100.0f64;
     let theta_r = (22.733f64 - 0.164f64 * sand + 0.235f64 * cation_exchange_capacity
         - 0.831f64 * ph
-        + 0.0018f64 * clay.powi(2)
+        + 0.0018f64 * clay_squared
         + 0.0026f64 * sand * clay)
         / 100.0f64;
     Hodnett2002PTFResult {

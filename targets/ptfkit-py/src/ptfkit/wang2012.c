@@ -12,19 +12,21 @@ static void calc_ptf_wang2012_loop(char **args, const npy_intp *dimensions, cons
         const double soil_organic_carbon = *(const double *)args[4];
         const double altitude = *(const double *)args[5];
         const double soil_organic_carbon_g_per_kg = 10.0 * soil_organic_carbon;
-        const double log10_k_sat_cm_per_day = 1.173 + 0.038 * silt + 0.690 * log10(sand) +
+        const double bulk_density_squared = bulk_density * bulk_density;
+        const double log10_sand = log10(sand);
+        const double log10_k_sat_cm_per_day = 1.173 + 0.038 * silt + 0.690 * log10_sand +
                                               0.865 / sand - 0.030 * bulk_density * silt -
                                               0.00000995 * soil_organic_carbon_g_per_kg * altitude;
         const double k_sat_cm_per_day = pow(10.0, log10_k_sat_cm_per_day);
         const double fc_percent =
             46.481 - 4.757 * soil_organic_carbon_g_per_kg - 14.028 * log10(clay) -
-            13.991 * log10(sand) + 42.261 * log10(soil_organic_carbon_g_per_kg) - 11.763 / sand +
-            19.198 / soil_organic_carbon_g_per_kg - 5.448 * (bulk_density * bulk_density) +
+            13.991 * log10_sand + 42.261 * log10(soil_organic_carbon_g_per_kg) - 11.763 / sand +
+            19.198 / soil_organic_carbon_g_per_kg - 5.448 * bulk_density_squared +
             0.044 * (soil_organic_carbon_g_per_kg * soil_organic_carbon_g_per_kg) +
             1.975 * bulk_density * soil_organic_carbon_g_per_kg;
         const double sswc_percent = 98.813 - 21.555 / bulk_density - 39.735 / silt - 2.091 / sand +
                                     3.247 / soil_organic_carbon_g_per_kg -
-                                    17.096 * (bulk_density * bulk_density);
+                                    17.096 * bulk_density_squared;
         const double theta_s = sswc_percent / 100.0;
         const double theta_fc = fc_percent / 100.0;
         const double k_sat = k_sat_cm_per_day / 8640000.0;

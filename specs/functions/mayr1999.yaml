@@ -141,16 +141,22 @@ functions:
       great care; the paper provides that distribution only graphically.
   implementation:
     variables:
+    - name: silt_squared
+      expr: silt ^ 2
+    - name: sand_squared
+      expr: sand ^ 2
+    - name: organic_carbon_squared
+      expr: organic_carbon ^ 2
     - name: log10_a_hc
-      expr: -4.9840297533 + 0.0509226283 * sand + 0.1575152771 * silt + 0.1240901644 * bulk_density - 0.1640033143 * organic_carbon - 0.0021767278 * silt ^ 2 + 1.438224e-5 * silt ^ 3 + 8.040715e-4 * clay ^ 2 + 0.0044067117 * organic_carbon ^ 2
+      expr: -4.9840297533 + 0.0509226283 * sand + 0.1575152771 * silt + 0.1240901644 * bulk_density - 0.1640033143 * organic_carbon - 0.0021767278 * silt_squared + 1.438224e-5 * silt ^ 3 + 8.040715e-4 * clay ^ 2 + 0.0044067117 * organic_carbon_squared
     - name: log10_inv_b_hc
-      expr: -0.8466880654 - 0.0046806123 * sand + 0.0092463819 * silt - 0.4542769707 * bulk_density - 0.0497915563 * organic_carbon + 3.294687e-4 * sand ^ 2 - 1.689056e-6 * sand ^ 3 + 0.0011225373 * organic_carbon ^ 2
+      expr: -0.8466880654 - 0.0046806123 * sand + 0.0092463819 * silt - 0.4542769707 * bulk_density - 0.0497915563 * organic_carbon + 3.294687e-4 * sand_squared - 1.689056e-6 * sand ^ 3 + 0.0011225373 * organic_carbon_squared
     - name: a_hc
       expr: 10 ^ log10_a_hc
     - name: b_hc
       expr: 10 ^ (-log10_inv_b_hc)
     - name: theta_s
-      expr: 0.2345971971 + 0.0046614221 * sand + 0.0088163314 * silt + 0.0064338641 * clay - 0.3028160229 * bulk_density + 1.79762e-5 * sand ^ 2 - 3.134631e-5 * silt ^ 2
+      expr: 0.2345971971 + 0.0046614221 * sand + 0.0088163314 * silt + 0.0064338641 * clay - 0.3028160229 * bulk_density + 1.79762e-5 * sand_squared - 3.134631e-5 * silt_squared
 scientific_notes: |
   # Mayr and Jarvis (1999)
 
