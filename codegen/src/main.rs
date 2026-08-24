@@ -14,6 +14,7 @@ mod render;
 mod semantic;
 mod specs;
 mod targets;
+mod usda_texture;
 mod validate;
 mod version;
 
@@ -41,6 +42,7 @@ impl Cli {
         match self.command {
             Command::Validate => {
                 let entries = load_validated_specifications(root)?;
+                usda_texture::load(root)?;
                 println!(
                     "validated {} PTF specification files containing {} functions",
                     entries.len(),
@@ -53,11 +55,13 @@ impl Cli {
             }
             Command::Generate => {
                 let entries = load_validated_specifications(root)?;
-                targets::run(root, entries)
+                let usda_texture = usda_texture::load(root)?;
+                targets::run(root, entries, &usda_texture)
             }
             Command::CheckGenerated => {
                 let entries = load_validated_specifications(root)?;
-                targets::check_generated(root, entries)
+                let usda_texture = usda_texture::load(root)?;
+                targets::check_generated(root, entries, &usda_texture)
             }
             Command::Version { version } => version::run(root, &version),
         }

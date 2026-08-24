@@ -506,6 +506,7 @@ mod tests {
                 prediction_target: "Test property.".into(),
                 models: Models::default(),
             },
+            input_adapters: None,
             inputs: Vec::new(),
             outputs: crate::model::Outputs::Record {
                 name: "TestResult".into(),

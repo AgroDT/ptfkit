@@ -121,6 +121,28 @@ impl Render for FunctionSection<'_> {
             parameters: self.document.parameters,
         }
         .render(writer);
+        if let Some(adapter) = self
+            .document
+            .input_adapters
+            .and_then(|adapters| adapters.usda_texture.as_ref())
+        {
+            writer.write("#### USDA texture adapter\n\n");
+            writer.line(format_args!("**Status:** `{}`", adapter.status.as_str()));
+            writer.blank_line();
+            if let Some(inputs) = &adapter.inputs {
+                let mappings = inputs
+                    .roles()
+                    .into_iter()
+                    .filter_map(|(role, input)| input.map(|input| format!("{role} → `{input}`")))
+                    .collect::<Vec<_>>();
+                if !mappings.is_empty() {
+                    writer.line(format_args!("**Inputs:** {}", mappings.join(", ")));
+                    writer.blank_line();
+                }
+            }
+            writer.line(format_args!("**Evidence:** {}", adapter.evidence));
+            writer.blank_line();
+        }
         ParameterTable {
             title: "Outputs",
             parameters: match self.document.returns {

@@ -37,6 +37,8 @@ struct FunctionReference {
     status: String,
     public_api: PublicApi,
     scope: FunctionScope,
+    #[serde(default)]
+    input_adapters: Option<InputAdapters>,
     inputs: Vec<InputReference>,
     outputs: OutputReference,
     implementation: Option<Implementation>,
@@ -119,6 +121,7 @@ impl<'de> Deserialize<'de> for Spec {
                     status: function.status,
                     public_api: function.public_api,
                     scope: function.scope,
+                    input_adapters: function.input_adapters,
                     inputs,
                     outputs,
                     implementation: function.implementation,
@@ -176,6 +179,8 @@ pub(crate) struct Function {
     pub(crate) status: String,
     pub(crate) public_api: PublicApi,
     pub(crate) scope: FunctionScope,
+    #[serde(default)]
+    pub(crate) input_adapters: Option<InputAdapters>,
     pub(crate) inputs: Vec<Parameter>,
     pub(crate) outputs: Outputs,
     pub(crate) implementation: Option<Implementation>,
@@ -183,6 +188,54 @@ pub(crate) struct Function {
     pub(crate) golden_tests: Vec<GoldenTest>,
     #[serde(default)]
     pub(crate) documentation: Documentation,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub(crate) struct InputAdapters {
+    pub(crate) usda_texture: Option<UsdaTextureAdapter>,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub(crate) struct UsdaTextureAdapter {
+    pub(crate) status: AdapterStatus,
+    #[serde(default)]
+    pub(crate) inputs: Option<TextureInputMapping>,
+    pub(crate) evidence: String,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
+pub(crate) enum AdapterStatus {
+    Supported,
+    Unsupported,
+    Unknown,
+}
+
+impl AdapterStatus {
+    pub(crate) fn as_str(self) -> &'static str {
+        match self {
+            Self::Supported => "supported",
+            Self::Unsupported => "unsupported",
+            Self::Unknown => "unknown",
+        }
+    }
+}
+
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+pub(crate) struct TextureInputMapping {
+    pub(crate) sand: Option<String>,
+    pub(crate) silt: Option<String>,
+    pub(crate) clay: Option<String>,
+}
+
+impl TextureInputMapping {
+    pub(crate) fn roles(&self) -> [(&'static str, Option<&str>); 3] {
+        [
+            ("sand", self.sand.as_deref()),
+            ("silt", self.silt.as_deref()),
+            ("clay", self.clay.as_deref()),
+        ]
+    }
 }
 
 impl Function {

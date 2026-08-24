@@ -17,15 +17,37 @@ functions:
       models:
         h_theta: null
         k_h: null
-    inputs: []
-    outputs: []
+    input_adapters:
+      usda_texture:
+        status: unknown
+        inputs:
+          sand: sand
+          silt: null
+          clay: clay
+        evidence: Particle-size boundaries are not yet established from the source.
+    inputs:
+      - name: sand
+        symbol: null
+        unit: '%'
+        domain: '[0, 100]'
+        description: Sand content defined by the source.
+      - name: clay
+        symbol: null
+        unit: '%'
+        domain: '[0, 100]'
+        description: Clay content defined by the source.
+    outputs:
+      type: scalar
+      name: result
+      symbol: null
+      unit: '1'
+      domain: null
+      description: Target quantity predicted by the source.
     golden_tests: []
     edge_cases: []
     documentation:
       notes: []
       warnings: []
-    implementation:
-      variables: []
 scientific_notes: |
   ## Supported models
 
