@@ -147,19 +147,20 @@ struct Saxton2006SalinityResult {
  */
 [[nodiscard]]
 inline Saxton2006PTFResult calc_ptf_saxton2006(double sand, double clay, double organic_matter) {
+    const double clay_organic_matter_term = 0.027 * clay * organic_matter;
     const double theta_1500_preliminary =
         -0.024 * sand + 0.487 * clay + 0.006 * organic_matter + 0.005 * sand * organic_matter -
         0.013 * clay * organic_matter + 0.068 * sand * clay + 0.031;
     const double theta_1500 = theta_1500_preliminary + 0.14 * theta_1500_preliminary - 0.02;
     const double theta_33_preliminary = -0.251 * sand + 0.195 * clay + 0.011 * organic_matter +
-                                        0.006 * sand * organic_matter -
-                                        0.027 * clay * organic_matter + 0.452 * sand * clay + 0.299;
+                                        0.006 * sand * organic_matter - clay_organic_matter_term +
+                                        0.452 * sand * clay + 0.299;
     const double theta_33 = theta_33_preliminary +
                             1.283 * (theta_33_preliminary * theta_33_preliminary) -
                             0.374 * theta_33_preliminary - 0.015;
     const double theta_s_minus_33_preliminary =
         0.278 * sand + 0.034 * clay + 0.022 * organic_matter - 0.018 * sand * organic_matter -
-        0.027 * clay * organic_matter - 0.584 * sand * clay + 0.078;
+        clay_organic_matter_term - 0.584 * sand * clay + 0.078;
     const double theta_s_minus_33 =
         theta_s_minus_33_preliminary + 0.636 * theta_s_minus_33_preliminary - 0.107;
     const double theta_s = theta_33 + theta_s_minus_33 - 0.097 * sand + 0.043;
@@ -171,9 +172,10 @@ inline Saxton2006PTFResult calc_ptf_saxton2006(double sand, double clay, double 
     const double air_entry_tension = air_entry_preliminary +
                                      0.02 * (air_entry_preliminary * air_entry_preliminary) -
                                      0.113 * air_entry_preliminary - 0.70;
-    const double retention_b =
-        (std::log(1500.0) - std::log(33.0)) / (std::log(theta_33) - std::log(theta_1500));
-    const double retention_a = std::exp(std::log(33.0) + retention_b * std::log(theta_33));
+    const double ln_33 = std::log(33.0);
+    const double ln_theta_33 = std::log(theta_33);
+    const double retention_b = (std::log(1500.0) - ln_33) / (ln_theta_33 - std::log(theta_1500));
+    const double retention_a = std::exp(ln_33 + retention_b * ln_theta_33);
     const double conductivity_lambda = 1.0 / retention_b;
     const double saturated_conductivity =
         1930.0 * std::pow(theta_s - theta_33, 3.0 - conductivity_lambda);
@@ -232,9 +234,10 @@ inline Saxton2006DensityResult calc_ptf_saxton2006_density(double normal_density
  */
 [[nodiscard]]
 inline double calc_ptf_saxton2006_tension_dry(double theta, double theta_1500, double theta_33) {
-    const double retention_b =
-        (std::log(1500.0) - std::log(33.0)) / (std::log(theta_33) - std::log(theta_1500));
-    const double retention_a = std::exp(std::log(33.0) + retention_b * std::log(theta_33));
+    const double ln_33 = std::log(33.0);
+    const double ln_theta_33 = std::log(theta_33);
+    const double retention_b = (std::log(1500.0) - ln_33) / (ln_theta_33 - std::log(theta_1500));
+    const double retention_a = std::exp(ln_33 + retention_b * ln_theta_33);
     return retention_a * std::pow(theta, -retention_b);
 }
 

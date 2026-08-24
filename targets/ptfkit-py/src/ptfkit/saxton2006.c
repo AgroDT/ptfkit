@@ -8,19 +8,20 @@ static void calc_ptf_saxton2006_loop(char **args, const npy_intp *dimensions, co
         const double sand = *(const double *)args[0];
         const double clay = *(const double *)args[1];
         const double organic_matter = *(const double *)args[2];
+        const double clay_organic_matter_term = 0.027 * clay * organic_matter;
         const double theta_1500_preliminary =
             -0.024 * sand + 0.487 * clay + 0.006 * organic_matter + 0.005 * sand * organic_matter -
             0.013 * clay * organic_matter + 0.068 * sand * clay + 0.031;
         const double theta_1500 = theta_1500_preliminary + 0.14 * theta_1500_preliminary - 0.02;
-        const double theta_33_preliminary =
-            -0.251 * sand + 0.195 * clay + 0.011 * organic_matter + 0.006 * sand * organic_matter -
-            0.027 * clay * organic_matter + 0.452 * sand * clay + 0.299;
+        const double theta_33_preliminary = -0.251 * sand + 0.195 * clay + 0.011 * organic_matter +
+                                            0.006 * sand * organic_matter -
+                                            clay_organic_matter_term + 0.452 * sand * clay + 0.299;
         const double theta_33 = theta_33_preliminary +
                                 1.283 * (theta_33_preliminary * theta_33_preliminary) -
                                 0.374 * theta_33_preliminary - 0.015;
         const double theta_s_minus_33_preliminary =
             0.278 * sand + 0.034 * clay + 0.022 * organic_matter - 0.018 * sand * organic_matter -
-            0.027 * clay * organic_matter - 0.584 * sand * clay + 0.078;
+            clay_organic_matter_term - 0.584 * sand * clay + 0.078;
         const double theta_s_minus_33 =
             theta_s_minus_33_preliminary + 0.636 * theta_s_minus_33_preliminary - 0.107;
         const double theta_s = theta_33 + theta_s_minus_33 - 0.097 * sand + 0.043;
@@ -32,8 +33,10 @@ static void calc_ptf_saxton2006_loop(char **args, const npy_intp *dimensions, co
         const double air_entry_tension = air_entry_preliminary +
                                          0.02 * (air_entry_preliminary * air_entry_preliminary) -
                                          0.113 * air_entry_preliminary - 0.70;
-        const double retention_b = (log(1500.0) - log(33.0)) / (log(theta_33) - log(theta_1500));
-        const double retention_a = exp(log(33.0) + retention_b * log(theta_33));
+        const double ln_33 = log(33.0);
+        const double ln_theta_33 = log(theta_33);
+        const double retention_b = (log(1500.0) - ln_33) / (ln_theta_33 - log(theta_1500));
+        const double retention_a = exp(ln_33 + retention_b * ln_theta_33);
         const double conductivity_lambda = 1.0 / retention_b;
         const double saturated_conductivity =
             1930.0 * pow(theta_s - theta_33, 3.0 - conductivity_lambda);
@@ -89,8 +92,10 @@ static void calc_ptf_saxton2006_tension_dry_loop(char **args, const npy_intp *di
         const double theta = *(const double *)args[0];
         const double theta_1500 = *(const double *)args[1];
         const double theta_33 = *(const double *)args[2];
-        const double retention_b = (log(1500.0) - log(33.0)) / (log(theta_33) - log(theta_1500));
-        const double retention_a = exp(log(33.0) + retention_b * log(theta_33));
+        const double ln_33 = log(33.0);
+        const double ln_theta_33 = log(theta_33);
+        const double retention_b = (log(1500.0) - ln_33) / (ln_theta_33 - log(theta_1500));
+        const double retention_a = exp(ln_33 + retention_b * ln_theta_33);
         const double tension = retention_a * pow(theta, -retention_b);
         *(double *)args[3] = tension;
         for (int arg = 0; arg < 4; arg++)

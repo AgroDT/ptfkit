@@ -25,8 +25,12 @@ status when input validation fails; report the blocking input error.
    generated structures and classes; `$defs` keys only resolve local references.
    Do not infer missing science.
 3. Validate, generate both retained targets, and run the required verification
-   gates. A generator capability gap is a blocker, never an invitation to
-   hand-write that computational target.
+   gates. Before validation, extract each repeated nontrivial formula
+   expression within a function into one earlier local implementation variable
+   and reference it thereafter; retain published numeric lexemes and do not
+   invent scientific semantics for the calculation intermediate. A generator
+   capability gap is a blocker, never an invitation to hand-write that
+   computational target.
 4. After every required check passes, change the selected source functions from
    `ready-for-implementation` to `implemented`, then revalidate, regenerate,
    and prove the second generation pass is idempotent.

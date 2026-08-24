@@ -1,8 +1,11 @@
-use std::{collections::BTreeMap, fmt};
+use std::{
+    collections::{BTreeMap, HashMap},
+    fmt,
+};
 
 use crate::{
     formula::{self, Span},
-    model::{RawExpression, RawFunction},
+    model::{RawExpression, RawFunction, SourceLocation},
 };
 
 #[derive(Clone, Debug, PartialEq)]
@@ -108,11 +111,23 @@ pub(crate) struct Error {
     pub(crate) function: String,
     pub(crate) implementation_path: String,
     pub(crate) span: Span,
+    source_location: Option<Box<SourceLocation>>,
     message: String,
 }
 
 impl fmt::Display for Error {
     fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
+        if let Some(source_location) = self.source_location.as_deref() {
+            return write!(
+                formatter,
+                "{}:{}:{}..{}: {}",
+                self.specification_path,
+                source_location.line,
+                source_location.column + self.span.start,
+                source_location.column + self.span.end,
+                self.message,
+            );
+        }
         write!(
             formatter,
             "{} -> function {} -> {}:{}..{}: {}",
@@ -140,6 +155,8 @@ pub(crate) fn compile(raw: &RawFunction) -> Result<Function, Error> {
         )?;
         debug_assert_eq!(inputs[&input.name], index);
     }
+
+    validate_repeated_expressions(raw)?;
 
     let variable_names: BTreeMap<_, _> = raw
         .variables
@@ -177,6 +194,140 @@ pub(crate) fn compile(raw: &RawFunction) -> Result<Function, Error> {
             .collect(),
         variables,
     })
+}
+
+#[derive(Clone, Debug, Eq, Hash, PartialEq)]
+enum StructuralExpr {
+    Number(String),
+    Variable(String),
+    Unary {
+        op: formula::UnaryOp,
+        operand: Box<Self>,
+    },
+    Binary {
+        op: formula::BinaryOp,
+        left: Box<Self>,
+        right: Box<Self>,
+    },
+    Call {
+        name: String,
+        args: Vec<Self>,
+    },
+    Grouped(Box<Self>),
+}
+
+#[derive(Clone, Debug)]
+struct Occurrence {
+    source_location: SourceLocation,
+    span: Span,
+}
+
+fn validate_repeated_expressions(raw: &RawFunction) -> Result<(), Error> {
+    let mut occurrences = HashMap::new();
+    for variable in &raw.variables {
+        let expression = &variable.expression;
+        if let Some((first, later)) = find_repeated_expression(
+            &expression.expression,
+            expression.source_location,
+            &mut occurrences,
+        ) {
+            return Err(source_error(
+                raw,
+                first.source_location,
+                first.span,
+                format!(
+                    "expression is repeated at {}:{}:{}..{}; it must be extracted into an earlier implementation variable",
+                    raw.specification_path.display(),
+                    later.source_location.line,
+                    later.source_location.column + later.span.start,
+                    later.source_location.column + later.span.end,
+                ),
+            ));
+        }
+    }
+    Ok(())
+}
+
+fn find_repeated_expression(
+    expression: &formula::Expr,
+    source_location: SourceLocation,
+    occurrences: &mut HashMap<StructuralExpr, Occurrence>,
+) -> Option<(Occurrence, Occurrence)> {
+    if requires_extraction(expression) {
+        let structural = structural_expr(expression);
+        let occurrence = Occurrence {
+            source_location,
+            span: expression.span,
+        };
+        if let Some(first) = occurrences.get(&structural) {
+            return Some((first.clone(), occurrence));
+        }
+        occurrences.insert(structural, occurrence);
+    }
+
+    match &expression.kind {
+        formula::ExprKind::Unary { operand, .. } | formula::ExprKind::Grouped(operand) => {
+            find_repeated_expression(operand, source_location, occurrences)
+        }
+        formula::ExprKind::Binary { left, right, .. } => {
+            find_repeated_expression(left, source_location, occurrences)
+                .or_else(|| find_repeated_expression(right, source_location, occurrences))
+        }
+        formula::ExprKind::Call { args, .. } => args
+            .iter()
+            .find_map(|argument| find_repeated_expression(argument, source_location, occurrences)),
+        formula::ExprKind::Number(_) | formula::ExprKind::Variable(_) => None,
+    }
+}
+
+fn requires_extraction(expression: &formula::Expr) -> bool {
+    match &expression.kind {
+        formula::ExprKind::Call { .. } => true,
+        formula::ExprKind::Binary {
+            op: formula::BinaryOp::Divide | formula::BinaryOp::Power,
+            ..
+        } => true,
+        formula::ExprKind::Binary { .. } => arithmetic_operation_count(expression) > 1,
+        formula::ExprKind::Unary { operand, .. } | formula::ExprKind::Grouped(operand) => {
+            arithmetic_operation_count(expression) > 1 || requires_extraction(operand)
+        }
+        formula::ExprKind::Number(_) | formula::ExprKind::Variable(_) => false,
+    }
+}
+
+fn arithmetic_operation_count(expression: &formula::Expr) -> usize {
+    match &expression.kind {
+        formula::ExprKind::Number(_) | formula::ExprKind::Variable(_) => 0,
+        formula::ExprKind::Call { args, .. } => args.iter().map(arithmetic_operation_count).sum(),
+        formula::ExprKind::Grouped(operand) => arithmetic_operation_count(operand),
+        formula::ExprKind::Unary { operand, .. } => 1 + arithmetic_operation_count(operand),
+        formula::ExprKind::Binary { left, right, .. } => {
+            1 + arithmetic_operation_count(left) + arithmetic_operation_count(right)
+        }
+    }
+}
+
+fn structural_expr(expression: &formula::Expr) -> StructuralExpr {
+    match &expression.kind {
+        formula::ExprKind::Number(number) => StructuralExpr::Number(number.lexeme.clone()),
+        formula::ExprKind::Variable(name) => StructuralExpr::Variable(name.clone()),
+        formula::ExprKind::Unary { op, operand } => StructuralExpr::Unary {
+            op: *op,
+            operand: Box::new(structural_expr(operand)),
+        },
+        formula::ExprKind::Binary { op, left, right } => StructuralExpr::Binary {
+            op: *op,
+            left: Box::new(structural_expr(left)),
+            right: Box::new(structural_expr(right)),
+        },
+        formula::ExprKind::Call { name, args } => StructuralExpr::Call {
+            name: name.clone(),
+            args: args.iter().map(structural_expr).collect(),
+        },
+        formula::ExprKind::Grouped(operand) => {
+            StructuralExpr::Grouped(Box::new(structural_expr(operand)))
+        }
+    }
 }
 
 fn insert_name(
@@ -334,6 +485,23 @@ fn error(
         function: raw.name.clone(),
         implementation_path: implementation_path.to_owned(),
         span,
+        source_location: None,
+        message: message.into(),
+    }
+}
+
+fn source_error(
+    raw: &RawFunction,
+    source_location: SourceLocation,
+    span: Span,
+    message: impl Into<String>,
+) -> Error {
+    Error {
+        specification_path: raw.specification_path.display().to_string(),
+        function: raw.name.clone(),
+        implementation_path: String::new(),
+        span,
+        source_location: Some(Box::new(source_location)),
         message: message.into(),
     }
 }
@@ -353,7 +521,7 @@ mod tests {
 
     use crate::{
         formula::parse,
-        model::{RawExpression, RawFunction, RawInput, RawVariable},
+        model::{RawExpression, RawFunction, RawInput, RawVariable, SourceLocation},
     };
 
     use super::{BinaryOp, Expr, compile};
@@ -361,6 +529,7 @@ mod tests {
     fn expression(path: &str, source: &str) -> RawExpression {
         RawExpression {
             implementation_path: path.into(),
+            source_location: SourceLocation { line: 1, column: 1 },
             expression: parse(path, source).unwrap(),
         }
     }
@@ -418,6 +587,147 @@ mod tests {
             compiled.variables[1].expression,
             Expr::Binary { .. }
         ));
+    }
+
+    #[test]
+    fn permits_repeated_simple_multiplication() {
+        let raw = function(
+            &["x", "y"],
+            vec![
+                RawVariable {
+                    name: "first".into(),
+                    expression: expression("implementation.variables[0].expr", "x * y"),
+                },
+                RawVariable {
+                    name: "second".into(),
+                    expression: expression("implementation.variables[1].expr", "x * y"),
+                },
+            ],
+        );
+
+        assert!(compile(&raw).is_ok());
+    }
+
+    #[test]
+    fn rejects_repeated_power_with_both_expression_locations() {
+        let mut raw = function(
+            &["x"],
+            vec![
+                RawVariable {
+                    name: "first".into(),
+                    expression: expression("implementation.variables[0].expr", "x ^ 2"),
+                },
+                RawVariable {
+                    name: "second".into(),
+                    expression: expression("implementation.variables[1].expr", "x ^ 2"),
+                },
+            ],
+        );
+        raw.variables[1].expression.source_location = SourceLocation { line: 2, column: 3 };
+
+        let error = compile(&raw).unwrap_err().to_string();
+        assert!(
+            error.contains("specs/functions/example.md:1:1..6"),
+            "{error}"
+        );
+        assert!(
+            error.contains("specs/functions/example.md:2:3..8"),
+            "{error}"
+        );
+        assert!(
+            error.contains("must be extracted into an earlier implementation variable"),
+            "{error}"
+        );
+    }
+
+    #[test]
+    fn rejects_repeated_math_function_calls() {
+        let raw = function(
+            &["x"],
+            vec![
+                RawVariable {
+                    name: "first".into(),
+                    expression: expression("implementation.variables[0].expr", "sqrt(x)"),
+                },
+                RawVariable {
+                    name: "second".into(),
+                    expression: expression("implementation.variables[1].expr", "sqrt(x)"),
+                },
+            ],
+        );
+
+        assert!(
+            compile(&raw)
+                .unwrap_err()
+                .to_string()
+                .contains("must be extracted into an earlier implementation variable")
+        );
+    }
+
+    #[test]
+    fn rejects_repeated_compound_arithmetic_expressions() {
+        let raw = function(
+            &["x", "y", "z"],
+            vec![
+                RawVariable {
+                    name: "first".into(),
+                    expression: expression("implementation.variables[0].expr", "x + y * z"),
+                },
+                RawVariable {
+                    name: "second".into(),
+                    expression: expression("implementation.variables[1].expr", "x + y * z"),
+                },
+            ],
+        );
+
+        assert!(
+            compile(&raw)
+                .unwrap_err()
+                .to_string()
+                .contains("must be extracted into an earlier implementation variable")
+        );
+    }
+
+    #[test]
+    fn distinguishes_operand_order() {
+        let raw = function(
+            &["x", "y"],
+            vec![
+                RawVariable {
+                    name: "first".into(),
+                    expression: expression("implementation.variables[0].expr", "x / y"),
+                },
+                RawVariable {
+                    name: "second".into(),
+                    expression: expression("implementation.variables[1].expr", "y / x"),
+                },
+            ],
+        );
+
+        assert!(compile(&raw).is_ok());
+    }
+
+    #[test]
+    fn permits_references_to_an_earlier_extracted_expression() {
+        let raw = function(
+            &["x"],
+            vec![
+                RawVariable {
+                    name: "x_squared".into(),
+                    expression: expression("implementation.variables[0].expr", "x ^ 2"),
+                },
+                RawVariable {
+                    name: "first".into(),
+                    expression: expression("implementation.variables[1].expr", "x_squared + 1"),
+                },
+                RawVariable {
+                    name: "second".into(),
+                    expression: expression("implementation.variables[2].expr", "x_squared + 2"),
+                },
+            ],
+        );
+
+        assert!(compile(&raw).is_ok());
     }
 
     #[test]

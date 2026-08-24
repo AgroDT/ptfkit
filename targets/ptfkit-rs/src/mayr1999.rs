@@ -72,28 +72,31 @@ pub fn calc_ptf_mayr1999(
     bulk_density: f64,
     organic_carbon: f64,
 ) -> Mayr1999PTFResult {
+    let silt_squared = silt.powi(2);
+    let sand_squared = sand.powi(2);
+    let organic_carbon_squared = organic_carbon.powi(2);
     let log10_a_hc = -4.9840297533f64
         + 0.0509226283f64 * sand
         + 0.1575152771f64 * silt
         + 0.1240901644f64 * bulk_density
         - 0.1640033143f64 * organic_carbon
-        - 0.0021767278f64 * silt.powi(2)
+        - 0.0021767278f64 * silt_squared
         + 1.438224e-5f64 * silt.powi(3)
         + 8.040715e-4f64 * clay.powi(2)
-        + 0.0044067117f64 * organic_carbon.powi(2);
+        + 0.0044067117f64 * organic_carbon_squared;
     let log10_inv_b_hc = -0.8466880654f64 - 0.0046806123f64 * sand + 0.0092463819f64 * silt
         - 0.4542769707f64 * bulk_density
         - 0.0497915563f64 * organic_carbon
-        + 3.294687e-4f64 * sand.powi(2)
+        + 3.294687e-4f64 * sand_squared
         - 1.689056e-6f64 * sand.powi(3)
-        + 0.0011225373f64 * organic_carbon.powi(2);
+        + 0.0011225373f64 * organic_carbon_squared;
     let a_hc = 10.0f64.powf(log10_a_hc);
     let b_hc = 10.0f64.powf(-log10_inv_b_hc);
     let theta_s =
         0.2345971971f64 + 0.0046614221f64 * sand + 0.0088163314f64 * silt + 0.0064338641f64 * clay
             - 0.3028160229f64 * bulk_density
-            + 1.79762e-5f64 * sand.powi(2)
-            - 3.134631e-5f64 * silt.powi(2);
+            + 1.79762e-5f64 * sand_squared
+            - 3.134631e-5f64 * silt_squared;
     Mayr1999PTFResult {
         a_hc,
         b_hc,

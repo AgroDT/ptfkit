@@ -26,8 +26,11 @@ input error.
    blockers and set affected functions to `blocked`; otherwise set reviewed,
    complete functions to `ready-for-implementation`.
 4. Run `cargo run --manifest-path codegen/Cargo.toml -- validate` and fix
-   validation errors before finishing. Validation never justifies inferred
-   science.
+   validation errors before finishing. When a nontrivial formula expression is
+   repeated within one implementation, declare it once as an earlier local
+   implementation variable and reference that variable; retain the published
+   numeric lexemes and do not assign extra scientific semantics. Validation
+   never justifies inferred science.
 
 ## Output
 

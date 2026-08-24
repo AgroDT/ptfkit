@@ -86,11 +86,21 @@ pub(crate) fn load(root: &Path) -> Result<Vec<Entry>> {
                 ));
             }
         }
+        let expression_locations = match expression_locations(&text, &spec) {
+            Ok(locations) => locations,
+            Err(error) => {
+                errors.push(format!("{}:\n  $:\n    {error}", path.display()));
+                continue;
+            }
+        };
+        let mut expression_locations = expression_locations.into_iter();
         let implementations = spec
             .functions
             .iter()
             .map(|function| match &function.implementation {
-                Some(implementation) => compile(&path, function, implementation).map(Some),
+                Some(implementation) => {
+                    compile(&path, function, implementation, &mut expression_locations).map(Some)
+                }
                 None => Ok(None),
             })
             .collect::<Result<Vec<_>, _>>();
@@ -138,6 +148,7 @@ fn compile(
     path: &Path,
     function: &crate::model::Function,
     implementation: &Implementation,
+    expression_locations: &mut impl Iterator<Item = crate::model::SourceLocation>,
 ) -> Result<semantic::Function, String> {
     let raw = RawFunction {
         specification_path: path.to_owned(),
@@ -154,11 +165,19 @@ fn compile(
             .iter()
             .enumerate()
             .map(|(index, variable)| {
+                let source_location = expression_locations.next().ok_or_else(|| {
+                    format!(
+                        "{} -> function {} -> implementation.variables[{index}].expr: source location is unavailable",
+                        path.display(),
+                        function.name
+                    )
+                })?;
                 expression(
                     path,
                     &function.name,
                     format!("implementation.variables[{index}].expr"),
                     &variable.expr,
+                    source_location,
                 )
                 .map(|expression| RawVariable {
                     name: variable.name.clone(),
@@ -176,6 +195,7 @@ fn expression(
     function: &str,
     implementation_path: String,
     source: &str,
+    source_location: crate::model::SourceLocation,
 ) -> Result<RawExpression, String> {
     let location = format!(
         "{} -> function {function} -> {implementation_path}",
@@ -184,9 +204,64 @@ fn expression(
     formula::parse(location, source)
         .map(|expression| RawExpression {
             implementation_path,
+            source_location,
             expression,
         })
         .map_err(|error| error.to_string())
+}
+
+fn expression_locations(
+    text: &str,
+    spec: &Spec,
+) -> Result<Vec<crate::model::SourceLocation>, String> {
+    let expressions = spec
+        .functions
+        .iter()
+        .filter_map(|function| function.implementation.as_ref())
+        .flat_map(|implementation| implementation.variables.iter())
+        .map(|variable| variable.expr.as_str());
+    let mut cursor = 0;
+    let mut locations = Vec::new();
+
+    for expression in expressions {
+        let Some((offset, next_cursor)) = find_expression(text, cursor, expression) else {
+            return Err(format!(
+                "could not locate formula expression `{expression}` in YAML source"
+            ));
+        };
+        locations.push(location(text, offset));
+        cursor = next_cursor;
+    }
+    Ok(locations)
+}
+
+fn find_expression(text: &str, mut cursor: usize, expression: &str) -> Option<(usize, usize)> {
+    while let Some(relative) = text[cursor..].find("expr:") {
+        let field = cursor + relative;
+        let value_start = field + "expr:".len();
+        let value_end = text[value_start..]
+            .find("expr:")
+            .map_or(text.len(), |next| value_start + next);
+        if let Some(relative) = text[value_start..value_end].find(expression) {
+            let value = value_start + relative;
+            return Some((value, value + expression.len()));
+        }
+        cursor = field + "expr:".len();
+    }
+    None
+}
+
+fn location(text: &str, offset: usize) -> crate::model::SourceLocation {
+    let prefix = &text[..offset];
+    crate::model::SourceLocation {
+        line: prefix.bytes().filter(|byte| *byte == b'\n').count() + 1,
+        column: prefix
+            .rsplit_once('\n')
+            .map_or(prefix, |(_, line)| line)
+            .chars()
+            .count()
+            + 1,
+    }
 }
 
 fn validate_output(
@@ -238,7 +313,7 @@ mod tests {
         path::{Path, PathBuf},
     };
 
-    use super::load;
+    use super::{find_expression, load, location};
     use crate::model::PythonGeneration;
 
     fn fixture_root(label: &str) -> PathBuf {
@@ -454,5 +529,17 @@ mod tests {
         };
 
         assert!(error.contains("filename stem must be an APA-style slug"));
+    }
+
+    #[test]
+    fn locates_block_and_quoted_formula_values_in_yaml_source() {
+        let source = "variables:\n  - expr: >-\n      x ^ 2\n  - {expr: 'sqrt(x)'}\n";
+        let (power, cursor) = find_expression(source, 0, "x ^ 2").unwrap();
+        let (call, _) = find_expression(source, cursor, "sqrt(x)").unwrap();
+
+        assert_eq!(location(source, power).line, 3);
+        assert_eq!(location(source, power).column, 7);
+        assert_eq!(location(source, call).line, 4);
+        assert_eq!(location(source, call).column, 13);
     }
 }

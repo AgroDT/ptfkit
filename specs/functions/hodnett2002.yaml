@@ -144,18 +144,20 @@ functions:
           directly represented.
     implementation:
       variables:
+        - name: clay_squared
+          expr: clay ^ 2
         - name: ln_alpha
           expr: (-2.294 - 3.526 * silt + 2.440 * organic_carbon - 0.076 * cation_exchange_capacity - 11.331 * ph + 0.019 * silt ^ 2) / 100
         - name: alpha
           expr: exp(ln_alpha)
         - name: ln_n
-          expr: (62.986 - 0.833 * clay - 0.529 * organic_carbon + 0.593 * ph + 0.0070 * clay ^ 2 - 0.014 * sand * silt) / 100
+          expr: (62.986 - 0.833 * clay - 0.529 * organic_carbon + 0.593 * ph + 0.0070 * clay_squared - 0.014 * sand * silt) / 100
         - name: n
           expr: exp(ln_n)
         - name: theta_s
           expr: (81.799 + 0.099 * clay - 31.420 * bulk_density + 0.018 * cation_exchange_capacity + 0.451 * ph - 0.0005 * sand * clay) / 100
         - name: theta_r
-          expr: (22.733 - 0.164 * sand + 0.235 * cation_exchange_capacity - 0.831 * ph + 0.0018 * clay ^ 2 + 0.0026 * sand * clay) / 100
+          expr: (22.733 - 0.164 * sand + 0.235 * cation_exchange_capacity - 0.831 * ph + 0.0018 * clay_squared + 0.0026 * sand * clay) / 100
 scientific_notes: |
   ## Supported models
 

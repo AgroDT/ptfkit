@@ -45,13 +45,13 @@ pub(crate) enum ExprKind {
     Grouped(Box<Expr>),
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub(crate) enum UnaryOp {
     Plus,
     Minus,
 }
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub(crate) enum BinaryOp {
     Add,
     Subtract,
