@@ -1,10 +1,11 @@
 use std::{collections::BTreeSet, path::PathBuf};
 
 use anyhow::{Result, anyhow};
+use convert_case::{Case, Casing};
 
 use crate::{
     documentation::{self as docs},
-    model::{CompiledFunction, Output, Parameter},
+    model::{CompiledFunction, EnumDefinition, Output, Parameter},
     output::GeneratedFile,
     render::{Writer, markdown},
     targets::group_by_source,
@@ -138,6 +139,16 @@ fn render_module(writer: &mut Writer, slug: &str, functions: &[&CompiledFunction
         "[PTF catalog page](../../../ptf-catalog/sources/{slug}.md)\n\n"
     ));
 
+    let mut enums = BTreeSet::new();
+    for function in functions {
+        for input in &spec(function).inputs {
+            if let Some(definition) = input.enum_type()
+                && enums.insert(definition.name.clone())
+            {
+                render_enum(writer, definition);
+            }
+        }
+    }
     let mut structures = BTreeSet::new();
     for function in functions {
         if let Output::Struct(_) = &function.core.output {
@@ -152,6 +163,34 @@ fn render_module(writer: &mut Writer, slug: &str, functions: &[&CompiledFunction
         render_function_documentation(writer, function)?;
     }
     Ok(())
+}
+
+fn render_enum(writer: &mut Writer, definition: &EnumDefinition) {
+    writer.write(format_args!("## `{}`\n\n", definition.name));
+    markdown::code_block(writer, "cpp", |writer| {
+        writer.line(format_args!("enum class {} {{", definition.name));
+        writer.indented(|writer| {
+            for member in &definition.values {
+                writer.line(format_args!("{},", member.name.to_case(Case::Pascal)));
+            }
+        });
+        writer.line("};");
+    });
+    writer.line("| Member | Canonical value | Description |");
+    writer.line("| --- | --- | --- |");
+    for member in &definition.values {
+        writer.line(format_args!(
+            "| `{}` | `{}` | {} |",
+            member.name.to_case(Case::Pascal),
+            escape_table(&member.value),
+            member
+                .description
+                .as_deref()
+                .map(escape_table)
+                .unwrap_or_default()
+        ));
+    }
+    writer.blank_line();
 }
 
 fn render_structure(writer: &mut Writer, name: &str, fields: &[Parameter]) {
@@ -194,7 +233,7 @@ fn render_function_documentation(writer: &mut Writer, function: &CompiledFunctio
     for parameter in document.parameters {
         writer.line(format_args!(
             "| `{}` | {} |",
-            parameter.name,
+            parameter.name(),
             parameter_details(parameter)
         ));
     }
@@ -233,6 +272,7 @@ fn render_functions_index(writer: &mut Writer, functions: &[(&str, &CompiledFunc
 }
 
 fn signature(function: &CompiledFunction) -> Result<String> {
+    let spec = spec(function);
     let result = match &function.core.output {
         Output::Scalar => "double".to_owned(),
         Output::Struct(_) => result_class(function)?.to_owned(),
@@ -240,11 +280,12 @@ fn signature(function: &CompiledFunction) -> Result<String> {
     Ok(format!(
         "[[nodiscard]]\ninline {result} {}({})",
         function.core.name,
-        function
-            .core
-            .inputs
+        spec.inputs
             .iter()
-            .map(|input| format!("double {input}"))
+            .map(|input| match input.enum_type() {
+                Some(definition) => format!("{} {}", definition.name, input.name()),
+                None => format!("double {}", input.name()),
+            })
             .collect::<Vec<_>>()
             .join(", ")
     ))
@@ -264,12 +305,8 @@ fn function_anchor(name: &str) -> String {
     format!("function-{name}")
 }
 
-fn parameter_details(parameter: &Parameter) -> String {
-    format!(
-        "{} ({})",
-        escape_table(&parameter.description),
-        escape_table(&parameter.unit)
-    )
+fn parameter_details(parameter: &impl docs::ParameterMetadata) -> String {
+    escape_table(&docs::parameter_details(parameter))
 }
 
 fn render_admonition(writer: &mut Writer, kind: &str, body: &str) {

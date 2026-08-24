@@ -2,6 +2,8 @@
 #include <ptfkit/varallyai1982.h>
 #include "ufunc.h"
 
+static const int calc_ptf_varallyai1982_meadow_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                          NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_varallyai1982_meadow_contiguous_loop(PyArrayMethod_Context *context,
                                                          char *const *data,
                                                          const npy_intp *dimensions,
@@ -60,6 +62,8 @@ static PyArrayMethod_Spec calc_ptf_varallyai1982_meadow_spec = {
     .slots = calc_ptf_varallyai1982_meadow_slots,
 };
 
+static const int calc_ptf_varallyai1982_chernozem_a_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                               NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_varallyai1982_chernozem_a_contiguous_loop(PyArrayMethod_Context *context,
                                                               char *const *data,
                                                               const npy_intp *dimensions,
@@ -116,6 +120,8 @@ static PyArrayMethod_Spec calc_ptf_varallyai1982_chernozem_a_spec = {
     .slots = calc_ptf_varallyai1982_chernozem_a_slots,
 };
 
+static const int calc_ptf_varallyai1982_chernozem_b_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                               NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_varallyai1982_chernozem_b_contiguous_loop(PyArrayMethod_Context *context,
                                                               char *const *data,
                                                               const npy_intp *dimensions,
@@ -172,6 +178,8 @@ static PyArrayMethod_Spec calc_ptf_varallyai1982_chernozem_b_spec = {
     .slots = calc_ptf_varallyai1982_chernozem_b_slots,
 };
 
+static const int calc_ptf_varallyai1982_chernozem_c_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                               NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_varallyai1982_chernozem_c_contiguous_loop(PyArrayMethod_Context *context,
                                                               char *const *data,
                                                               const npy_intp *dimensions,
@@ -229,16 +237,20 @@ static PyArrayMethod_Spec calc_ptf_varallyai1982_chernozem_c_spec = {
 };
 
 int ptfkit_register_varallyai1982(PyObject *module) {
-    if (ptfkit_add_ufunc(module, "calc_ptf_varallyai1982_meadow", 3, 3,
+    if (ptfkit_add_ufunc(module, "calc_ptf_varallyai1982_meadow",
+                         calc_ptf_varallyai1982_meadow_types, 3, 3,
                          &calc_ptf_varallyai1982_meadow_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_varallyai1982_chernozem_a", 2, 3,
+    if (ptfkit_add_ufunc(module, "calc_ptf_varallyai1982_chernozem_a",
+                         calc_ptf_varallyai1982_chernozem_a_types, 2, 3,
                          &calc_ptf_varallyai1982_chernozem_a_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_varallyai1982_chernozem_b", 2, 3,
+    if (ptfkit_add_ufunc(module, "calc_ptf_varallyai1982_chernozem_b",
+                         calc_ptf_varallyai1982_chernozem_b_types, 2, 3,
                          &calc_ptf_varallyai1982_chernozem_b_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_varallyai1982_chernozem_c", 2, 3,
+    if (ptfkit_add_ufunc(module, "calc_ptf_varallyai1982_chernozem_c",
+                         calc_ptf_varallyai1982_chernozem_c_types, 2, 3,
                          &calc_ptf_varallyai1982_chernozem_c_spec) < 0)
         return -1;
     return 0;

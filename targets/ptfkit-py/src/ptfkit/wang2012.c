@@ -2,6 +2,9 @@
 #include <ptfkit/wang2012.h>
 #include "ufunc.h"
 
+static const int calc_ptf_wang2012_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                              NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                              NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_wang2012_contiguous_loop(PyArrayMethod_Context *context, char *const *data,
                                              const npy_intp *dimensions, const npy_intp *strides,
                                              NpyAuxData *transferdata) {
@@ -67,7 +70,8 @@ static PyArrayMethod_Spec calc_ptf_wang2012_spec = {
 };
 
 int ptfkit_register_wang2012(PyObject *module) {
-    if (ptfkit_add_ufunc(module, "calc_ptf_wang2012", 6, 3, &calc_ptf_wang2012_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_wang2012", calc_ptf_wang2012_types, 6, 3,
+                         &calc_ptf_wang2012_spec) < 0)
         return -1;
     return 0;
 }

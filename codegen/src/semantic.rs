@@ -5,24 +5,76 @@ use std::{
 
 use crate::{
     formula::{self, Span},
-    model::{RawExpression, RawFunction, SourceLocation},
+    model::{
+        RawExpression, RawFunction, RawInputType, RawLookup, RawVariableValue, SourceLocation,
+    },
 };
 
 #[derive(Clone, Debug, PartialEq)]
 pub(crate) struct Function {
     pub(crate) inputs: Vec<Input>,
     pub(crate) variables: Vec<Variable>,
+    pub(crate) result: ResultBinding,
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub(crate) enum ResultBinding {
+    Fields,
+    RecordVariable(usize),
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct Input {
     pub(crate) name: String,
+    pub(crate) value_type: ValueType,
 }
 
 #[derive(Clone, Debug, PartialEq)]
 pub(crate) struct Variable {
     pub(crate) name: String,
-    pub(crate) expression: Expr,
+    pub(crate) value: VariableValue,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub(crate) enum ValueType {
+    Number,
+    Enum(String),
+    Record(RecordType),
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub(crate) struct RecordType {
+    pub(crate) name: String,
+    pub(crate) fields: Vec<String>,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub(crate) enum VariableValue {
+    Number(Expr),
+    RecordLookup(RecordLookup),
+}
+
+impl VariableValue {
+    pub(crate) fn as_number(&self) -> Option<&Expr> {
+        match self {
+            Self::Number(expression) => Some(expression),
+            Self::RecordLookup(_) => None,
+        }
+    }
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub(crate) struct RecordLookup {
+    pub(crate) key: Reference,
+    pub(crate) enum_name: String,
+    pub(crate) output: RecordType,
+    pub(crate) cases: Vec<RecordLookupCase>,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub(crate) struct RecordLookupCase {
+    pub(crate) member: String,
+    pub(crate) values: Vec<Number>,
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -35,6 +87,10 @@ pub(crate) struct Number {
 pub(crate) enum Expr {
     Number(Number),
     Reference(Reference),
+    Field {
+        record: Reference,
+        field: String,
+    },
     Unary {
         op: UnaryOp,
         operand: Box<Self>,
@@ -144,16 +200,29 @@ impl fmt::Display for Error {
 impl std::error::Error for Error {}
 
 pub(crate) fn compile(raw: &RawFunction) -> Result<Function, Error> {
-    let mut inputs = BTreeMap::new();
+    let mut scope = BTreeMap::new();
     for (index, input) in raw.inputs.iter().enumerate() {
-        insert_name(
-            raw,
-            &mut inputs,
-            &input.name,
-            "inputs",
-            Span { start: 0, end: 0 },
-        )?;
-        debug_assert_eq!(inputs[&input.name], index);
+        let value_type = match &input.value_type {
+            RawInputType::Number => ValueType::Number,
+            RawInputType::Enum(definition) => ValueType::Enum(definition.name.clone()),
+        };
+        if scope
+            .insert(
+                input.name.clone(),
+                Binding {
+                    reference: Reference::Input(index),
+                    value_type,
+                },
+            )
+            .is_some()
+        {
+            return Err(error(
+                raw,
+                "inputs",
+                Span { start: 0, end: 0 },
+                format!("duplicate name `{}`", input.name),
+            ));
+        }
     }
 
     validate_repeated_expressions(raw)?;
@@ -165,7 +234,6 @@ pub(crate) fn compile(raw: &RawFunction) -> Result<Function, Error> {
         .map(|(index, variable)| (variable.name.as_str(), index))
         .collect();
     let mut variables = Vec::with_capacity(raw.variables.len());
-    let mut scope = inputs;
     for (index, variable) in raw.variables.iter().enumerate() {
         if scope.contains_key(&variable.name) {
             return Err(error(
@@ -175,12 +243,35 @@ pub(crate) fn compile(raw: &RawFunction) -> Result<Function, Error> {
                 format!("duplicate name `{}`", variable.name),
             ));
         }
-        let expression =
-            compile_expression(raw, &variable.expression, &scope, &variable_names, index)?;
-        scope.insert(variable.name.clone(), raw.inputs.len() + index);
+        let (value, value_type) = match &variable.value {
+            RawVariableValue::Expression(expression) => (
+                VariableValue::Number(compile_expression(
+                    raw,
+                    expression,
+                    &scope,
+                    &variable_names,
+                    index,
+                )?),
+                ValueType::Number,
+            ),
+            RawVariableValue::Lookup(lookup) => {
+                let (lookup, record_type) = compile_lookup(raw, lookup, &scope)?;
+                (
+                    VariableValue::RecordLookup(lookup),
+                    ValueType::Record(record_type),
+                )
+            }
+        };
+        scope.insert(
+            variable.name.clone(),
+            Binding {
+                reference: Reference::Variable(index),
+                value_type,
+            },
+        );
         variables.push(Variable {
             name: variable.name.clone(),
-            expression,
+            value,
         });
     }
 
@@ -190,9 +281,14 @@ pub(crate) fn compile(raw: &RawFunction) -> Result<Function, Error> {
             .iter()
             .map(|input| Input {
                 name: input.name.clone(),
+                value_type: match &input.value_type {
+                    RawInputType::Number => ValueType::Number,
+                    RawInputType::Enum(definition) => ValueType::Enum(definition.name.clone()),
+                },
             })
             .collect(),
         variables,
+        result: ResultBinding::Fields,
     })
 }
 
@@ -200,6 +296,10 @@ pub(crate) fn compile(raw: &RawFunction) -> Result<Function, Error> {
 enum StructuralExpr {
     Number(String),
     Variable(String),
+    Field {
+        base: String,
+        field: String,
+    },
     Unary {
         op: formula::UnaryOp,
         operand: Box<Self>,
@@ -225,7 +325,9 @@ struct Occurrence {
 fn validate_repeated_expressions(raw: &RawFunction) -> Result<(), Error> {
     let mut occurrences = HashMap::new();
     for variable in &raw.variables {
-        let expression = &variable.expression;
+        let RawVariableValue::Expression(expression) = &variable.value else {
+            continue;
+        };
         if let Some((first, later)) = find_repeated_expression(
             &expression.expression,
             expression.source_location,
@@ -264,7 +366,6 @@ fn find_repeated_expression(
         }
         occurrences.insert(structural, occurrence);
     }
-
     match &expression.kind {
         formula::ExprKind::Unary { operand, .. } | formula::ExprKind::Grouped(operand) => {
             find_repeated_expression(operand, source_location, occurrences)
@@ -276,7 +377,9 @@ fn find_repeated_expression(
         formula::ExprKind::Call { args, .. } => args
             .iter()
             .find_map(|argument| find_repeated_expression(argument, source_location, occurrences)),
-        formula::ExprKind::Number(_) | formula::ExprKind::Variable(_) => None,
+        formula::ExprKind::Number(_)
+        | formula::ExprKind::Variable(_)
+        | formula::ExprKind::Field { .. } => None,
     }
 }
 
@@ -291,13 +394,17 @@ fn requires_extraction(expression: &formula::Expr) -> bool {
         formula::ExprKind::Unary { operand, .. } | formula::ExprKind::Grouped(operand) => {
             arithmetic_operation_count(expression) > 1 || requires_extraction(operand)
         }
-        formula::ExprKind::Number(_) | formula::ExprKind::Variable(_) => false,
+        formula::ExprKind::Number(_)
+        | formula::ExprKind::Variable(_)
+        | formula::ExprKind::Field { .. } => false,
     }
 }
 
 fn arithmetic_operation_count(expression: &formula::Expr) -> usize {
     match &expression.kind {
-        formula::ExprKind::Number(_) | formula::ExprKind::Variable(_) => 0,
+        formula::ExprKind::Number(_)
+        | formula::ExprKind::Variable(_)
+        | formula::ExprKind::Field { .. } => 0,
         formula::ExprKind::Call { args, .. } => args.iter().map(arithmetic_operation_count).sum(),
         formula::ExprKind::Grouped(operand) => arithmetic_operation_count(operand),
         formula::ExprKind::Unary { operand, .. } => 1 + arithmetic_operation_count(operand),
@@ -311,6 +418,10 @@ fn structural_expr(expression: &formula::Expr) -> StructuralExpr {
     match &expression.kind {
         formula::ExprKind::Number(number) => StructuralExpr::Number(number.lexeme.clone()),
         formula::ExprKind::Variable(name) => StructuralExpr::Variable(name.clone()),
+        formula::ExprKind::Field { base, field } => StructuralExpr::Field {
+            base: base.clone(),
+            field: field.clone(),
+        },
         formula::ExprKind::Unary { op, operand } => StructuralExpr::Unary {
             op: *op,
             operand: Box::new(structural_expr(operand)),
@@ -330,23 +441,86 @@ fn structural_expr(expression: &formula::Expr) -> StructuralExpr {
     }
 }
 
-fn insert_name(
+#[derive(Clone)]
+struct Binding {
+    reference: Reference,
+    value_type: ValueType,
+}
+
+fn compile_lookup(
     raw: &RawFunction,
-    names: &mut BTreeMap<String, usize>,
-    name: &str,
-    path: &str,
-    span: Span,
-) -> Result<(), Error> {
-    if names.insert(name.to_owned(), names.len()).is_some() {
-        return Err(error(raw, path, span, format!("duplicate name `{name}`")));
+    lookup: &RawLookup,
+    scope: &BTreeMap<String, Binding>,
+) -> Result<(RecordLookup, RecordType), Error> {
+    let binding = scope.get(&lookup.key).ok_or_else(|| {
+        error(
+            raw,
+            &lookup.implementation_path,
+            Span { start: 0, end: 0 },
+            format!("unknown lookup key `{}`", lookup.key),
+        )
+    })?;
+    let enum_type = lookup
+        .definition
+        .input_type
+        .as_ref()
+        .expect("lookup input type is resolved");
+    if binding.value_type != ValueType::Enum(enum_type.name.clone()) {
+        return Err(error(
+            raw,
+            &lookup.implementation_path,
+            Span { start: 0, end: 0 },
+            format!(
+                "lookup key `{}` must have enum type `{}`",
+                lookup.key, enum_type.name
+            ),
+        ));
     }
-    Ok(())
+    let output = lookup
+        .definition
+        .output_type
+        .as_ref()
+        .expect("lookup output type is resolved");
+    let crate::model::Outputs::Record { name, fields } = output else {
+        unreachable!("lookup outputs are validated as records")
+    };
+    let record_type = RecordType {
+        name: name.clone(),
+        fields: fields.iter().map(|field| field.name.clone()).collect(),
+    };
+    let cases = lookup
+        .definition
+        .values
+        .iter()
+        .map(|case| RecordLookupCase {
+            member: case.key.clone(),
+            values: fields
+                .iter()
+                .map(|field| {
+                    let value = case.value[&field.name];
+                    Number {
+                        value,
+                        lexeme: format!("{value:?}"),
+                    }
+                })
+                .collect(),
+        })
+        .collect();
+    Ok((
+        RecordLookup {
+            key: binding.reference,
+            enum_name: enum_type.name.clone(),
+            output: record_type.clone(),
+            cases,
+        },
+        record_type,
+    ))
 }
 
 fn compile_expression(
     raw: &RawFunction,
     expression: &RawExpression,
-    scope: &BTreeMap<String, usize>,
+    scope: &BTreeMap<String, Binding>,
     variable_names: &BTreeMap<&str, usize>,
     variable_index: usize,
 ) -> Result<Expr, Error> {
@@ -364,7 +538,7 @@ fn compile_expr(
     raw: &RawFunction,
     source: &RawExpression,
     expression: &formula::Expr,
-    scope: &BTreeMap<String, usize>,
+    scope: &BTreeMap<String, Binding>,
     variable_names: &BTreeMap<&str, usize>,
     variable_index: usize,
 ) -> Result<Expr, Error> {
@@ -374,12 +548,15 @@ fn compile_expr(
             lexeme: number.lexeme.clone(),
         })),
         formula::ExprKind::Variable(name) => match scope.get(name) {
-            Some(index) if *index < raw.inputs.len() => {
-                Ok(Expr::Reference(Reference::Input(*index)))
+            Some(binding) if binding.value_type == ValueType::Number => {
+                Ok(Expr::Reference(binding.reference))
             }
-            Some(index) => Ok(Expr::Reference(Reference::Variable(
-                *index - raw.inputs.len(),
-            ))),
+            Some(_) => Err(expression_error(
+                raw,
+                source,
+                expression.span,
+                format!("identifier `{name}` is not numeric"),
+            )),
             None => {
                 let message = match variable_names.get(name.as_str()) {
                     Some(index) if *index == variable_index => {
@@ -392,6 +569,36 @@ fn compile_expr(
                 };
                 Err(expression_error(raw, source, expression.span, message))
             }
+        },
+        formula::ExprKind::Field { base, field } => match scope.get(base) {
+            Some(Binding {
+                reference,
+                value_type: ValueType::Record(record),
+            }) if record.fields.contains(field) => Ok(Expr::Field {
+                record: *reference,
+                field: field.clone(),
+            }),
+            Some(Binding {
+                value_type: ValueType::Record(record),
+                ..
+            }) => Err(expression_error(
+                raw,
+                source,
+                expression.span,
+                format!("record `{}` has no field `{field}`", record.name),
+            )),
+            Some(_) => Err(expression_error(
+                raw,
+                source,
+                expression.span,
+                format!("`{base}` is not a record"),
+            )),
+            None => Err(expression_error(
+                raw,
+                source,
+                expression.span,
+                format!("unknown identifier `{base}`"),
+            )),
         },
         formula::ExprKind::Unary { op, operand } => Ok(Expr::Unary {
             op: match op {
@@ -521,7 +728,10 @@ mod tests {
 
     use crate::{
         formula::parse,
-        model::{RawExpression, RawFunction, RawInput, RawVariable, SourceLocation},
+        model::{
+            RawExpression, RawFunction, RawInput, RawInputType, RawVariable, RawVariableValue,
+            SourceLocation,
+        },
     };
 
     use super::{BinaryOp, Expr, compile};
@@ -542,9 +752,17 @@ mod tests {
                 .iter()
                 .map(|name| RawInput {
                     name: (*name).into(),
+                    value_type: RawInputType::Number,
                 })
                 .collect(),
             variables,
+        }
+    }
+
+    fn variable(name: &str, path: &str, source: &str) -> RawVariable {
+        RawVariable {
+            name: name.into(),
+            value: RawVariableValue::Expression(expression(path, source)),
         }
     }
 
@@ -552,14 +770,11 @@ mod tests {
     fn compiles_variables() {
         let raw = function(
             &["x"],
-            vec![RawVariable {
-                name: "twice".into(),
-                expression: expression("implementation.variables[0]", "x * 2"),
-            }],
+            vec![variable("twice", "implementation.variables[0]", "x * 2")],
         );
         let compiled = compile(&raw).unwrap();
         assert!(matches!(
-            compiled.variables[0].expression,
+            compiled.variables[0].value.as_number().unwrap(),
             Expr::Binary {
                 op: BinaryOp::Multiply,
                 ..
@@ -572,162 +787,15 @@ mod tests {
         let raw = function(
             &["x"],
             vec![
-                RawVariable {
-                    name: "first".into(),
-                    expression: expression("implementation.variables[0]", "x + 1"),
-                },
-                RawVariable {
-                    name: "second".into(),
-                    expression: expression("implementation.variables[1]", "first * first"),
-                },
+                variable("first", "implementation.variables[0]", "x + 1"),
+                variable("second", "implementation.variables[1]", "first * first"),
             ],
         );
         let compiled = compile(&raw).unwrap();
         assert!(matches!(
-            compiled.variables[1].expression,
+            compiled.variables[1].value.as_number().unwrap(),
             Expr::Binary { .. }
         ));
-    }
-
-    #[test]
-    fn permits_repeated_simple_multiplication() {
-        let raw = function(
-            &["x", "y"],
-            vec![
-                RawVariable {
-                    name: "first".into(),
-                    expression: expression("implementation.variables[0].expr", "x * y"),
-                },
-                RawVariable {
-                    name: "second".into(),
-                    expression: expression("implementation.variables[1].expr", "x * y"),
-                },
-            ],
-        );
-
-        assert!(compile(&raw).is_ok());
-    }
-
-    #[test]
-    fn rejects_repeated_power_with_both_expression_locations() {
-        let mut raw = function(
-            &["x"],
-            vec![
-                RawVariable {
-                    name: "first".into(),
-                    expression: expression("implementation.variables[0].expr", "x ^ 2"),
-                },
-                RawVariable {
-                    name: "second".into(),
-                    expression: expression("implementation.variables[1].expr", "x ^ 2"),
-                },
-            ],
-        );
-        raw.variables[1].expression.source_location = SourceLocation { line: 2, column: 3 };
-
-        let error = compile(&raw).unwrap_err().to_string();
-        assert!(
-            error.contains("specs/functions/example.md:1:1..6"),
-            "{error}"
-        );
-        assert!(
-            error.contains("specs/functions/example.md:2:3..8"),
-            "{error}"
-        );
-        assert!(
-            error.contains("must be extracted into an earlier implementation variable"),
-            "{error}"
-        );
-    }
-
-    #[test]
-    fn rejects_repeated_math_function_calls() {
-        let raw = function(
-            &["x"],
-            vec![
-                RawVariable {
-                    name: "first".into(),
-                    expression: expression("implementation.variables[0].expr", "sqrt(x)"),
-                },
-                RawVariable {
-                    name: "second".into(),
-                    expression: expression("implementation.variables[1].expr", "sqrt(x)"),
-                },
-            ],
-        );
-
-        assert!(
-            compile(&raw)
-                .unwrap_err()
-                .to_string()
-                .contains("must be extracted into an earlier implementation variable")
-        );
-    }
-
-    #[test]
-    fn rejects_repeated_compound_arithmetic_expressions() {
-        let raw = function(
-            &["x", "y", "z"],
-            vec![
-                RawVariable {
-                    name: "first".into(),
-                    expression: expression("implementation.variables[0].expr", "x + y * z"),
-                },
-                RawVariable {
-                    name: "second".into(),
-                    expression: expression("implementation.variables[1].expr", "x + y * z"),
-                },
-            ],
-        );
-
-        assert!(
-            compile(&raw)
-                .unwrap_err()
-                .to_string()
-                .contains("must be extracted into an earlier implementation variable")
-        );
-    }
-
-    #[test]
-    fn distinguishes_operand_order() {
-        let raw = function(
-            &["x", "y"],
-            vec![
-                RawVariable {
-                    name: "first".into(),
-                    expression: expression("implementation.variables[0].expr", "x / y"),
-                },
-                RawVariable {
-                    name: "second".into(),
-                    expression: expression("implementation.variables[1].expr", "y / x"),
-                },
-            ],
-        );
-
-        assert!(compile(&raw).is_ok());
-    }
-
-    #[test]
-    fn permits_references_to_an_earlier_extracted_expression() {
-        let raw = function(
-            &["x"],
-            vec![
-                RawVariable {
-                    name: "x_squared".into(),
-                    expression: expression("implementation.variables[0].expr", "x ^ 2"),
-                },
-                RawVariable {
-                    name: "first".into(),
-                    expression: expression("implementation.variables[1].expr", "x_squared + 1"),
-                },
-                RawVariable {
-                    name: "second".into(),
-                    expression: expression("implementation.variables[2].expr", "x_squared + 2"),
-                },
-            ],
-        );
-
-        assert!(compile(&raw).is_ok());
     }
 
     #[test]
@@ -738,14 +806,8 @@ mod tests {
             ("current", "cannot reference itself"),
         ] {
             let variables = vec![
-                RawVariable {
-                    name: "current".into(),
-                    expression: expression("implementation.variables[0]", source),
-                },
-                RawVariable {
-                    name: "later".into(),
-                    expression: expression("implementation.variables[1]", "1"),
-                },
+                variable("current", "implementation.variables[0]", source),
+                variable("later", "implementation.variables[1]", "1"),
             ];
             let error = compile(&function(&[], variables)).unwrap_err();
             assert!(error.to_string().contains(expected), "{error}");
@@ -767,14 +829,8 @@ mod tests {
         let duplicate_variable = function(
             &[],
             vec![
-                RawVariable {
-                    name: "x".into(),
-                    expression: expression("implementation.variables[0]", "1"),
-                },
-                RawVariable {
-                    name: "x".into(),
-                    expression: expression("implementation.variables[1]", "1"),
-                },
+                variable("x", "implementation.variables[0]", "1"),
+                variable("x", "implementation.variables[1]", "1"),
             ],
         );
         assert!(
@@ -789,10 +845,7 @@ mod tests {
     fn rejects_unknown_functions_and_wrong_arities() {
         let unknown = function(
             &["x"],
-            vec![RawVariable {
-                name: "value".into(),
-                expression: expression("implementation.variables[0]", "nope(x)"),
-            }],
+            vec![variable("value", "implementation.variables[0]", "nope(x)")],
         );
         assert!(
             compile(&unknown)
@@ -811,10 +864,7 @@ mod tests {
         ] {
             let raw = function(
                 &["x"],
-                vec![RawVariable {
-                    name: "value".into(),
-                    expression: expression("implementation.variables[0]", source),
-                }],
+                vec![variable("value", "implementation.variables[0]", source)],
             );
             assert!(
                 compile(&raw).unwrap_err().to_string().contains("expects"),

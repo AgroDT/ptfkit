@@ -31,12 +31,12 @@ Estimate saturated hydraulic conductivity from total porosity and water content 
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `total_porosity` | cm^3/cm^3 | 0 <= value <= 1 | Total porosity; in the experiments it was taken as saturated volumetric water content. |
-| `theta_33` | cm^3/cm^3 | 0 <= value <= 1 | Volumetric soil water content at -33 kPa pressure head. |
-| `coefficient_b` | cm/h | value > 0 | Soil-specific empirical coefficient in the generalized Kozeny-Carman relation. |
-| `exponent_n` | 1 | value > 0 | Empirical exponent; the paper evaluates values of 4 and 5 for deriving conductivity scaling-factor distributions. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `total_porosity` | `number` | cm^3/cm^3 | 0 <= value <= 1 | Total porosity; in the experiments it was taken as saturated volumetric water content. |
+| `theta_33` | `number` | cm^3/cm^3 | 0 <= value <= 1 | Volumetric soil water content at -33 kPa pressure head. |
+| `coefficient_b` | `number` | cm/h | value > 0 | Soil-specific empirical coefficient in the generalized Kozeny-Carman relation. |
+| `exponent_n` | `number` | 1 | value > 0 | Empirical exponent; the paper evaluates values of 4 and 5 for deriving conductivity scaling-factor distributions. |
 
 #### Outputs
 

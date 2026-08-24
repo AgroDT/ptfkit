@@ -2,6 +2,9 @@
 #include <ptfkit/cosby1984.h>
 #include "ufunc.h"
 
+static const int calc_ptf_cosby1984_univariate_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_cosby1984_univariate_contiguous_loop(PyArrayMethod_Context *context,
                                                          char *const *data,
                                                          const npy_intp *dimensions,
@@ -73,7 +76,8 @@ static PyArrayMethod_Spec calc_ptf_cosby1984_univariate_spec = {
 };
 
 int ptfkit_register_cosby1984(PyObject *module) {
-    if (ptfkit_add_ufunc(module, "calc_ptf_cosby1984_univariate", 3, 7,
+    if (ptfkit_add_ufunc(module, "calc_ptf_cosby1984_univariate",
+                         calc_ptf_cosby1984_univariate_types, 3, 7,
                          &calc_ptf_cosby1984_univariate_spec) < 0)
         return -1;
     return 0;

@@ -19,6 +19,8 @@ input error.
 
 1. Read the supplied local paper, `specs/schema/ptf-spec.schema.json`, and
    `references/extraction-quality-gate.md`.
+   If the source defines a finite categorical input or a table selected by that
+   input, also read `references/categorical-lookups.md`.
 2. Extract only facts explicitly supported by the paper. Write its standalone
    YAML directly to `specs/functions/<apa_article_key>.yaml`, following
    `references/spec-template.yaml`.
@@ -42,6 +44,9 @@ exact YAML path and explicit blockers.
 - Do not set `implemented`, run target generation, or edit generated files.
 - Do not invent formulas, units, metadata, golden values, applicability, or
   API details. Keep uncertainty explicit in the YAML.
+- Do not normalize, alias, abbreviate, or otherwise broaden source-defined
+  categorical values. Keep enum member names, canonical textual values, lookup
+  rows, and their evidence distinct.
 - Give every `type: record` output a PascalCase `name`, whether it is inline or
   declared in `$defs`. It names generated structures and classes; `$defs` keys
   only resolve local `$ref` targets.

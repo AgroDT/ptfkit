@@ -2,6 +2,8 @@
 #include <ptfkit/dharumarajan2019.h>
 #include "ufunc.h"
 
+static const int calc_ptf_dharumarajan2019_nkp_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                          NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_dharumarajan2019_nkp_contiguous_loop(PyArrayMethod_Context *context,
                                                          char *const *data,
                                                          const npy_intp *dimensions,
@@ -57,6 +59,7 @@ static PyArrayMethod_Spec calc_ptf_dharumarajan2019_nkp_spec = {
     .slots = calc_ptf_dharumarajan2019_nkp_slots,
 };
 
+static const int calc_ptf_dharumarajan2019_nkp_clay_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_dharumarajan2019_nkp_clay_contiguous_loop(PyArrayMethod_Context *context,
                                                               char *const *data,
                                                               const npy_intp *dimensions,
@@ -107,6 +110,8 @@ static PyArrayMethod_Spec calc_ptf_dharumarajan2019_nkp_clay_spec = {
     .slots = calc_ptf_dharumarajan2019_nkp_clay_slots,
 };
 
+static const int calc_ptf_dharumarajan2019_skp_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                                          NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_dharumarajan2019_skp_contiguous_loop(PyArrayMethod_Context *context,
                                                          char *const *data,
                                                          const npy_intp *dimensions,
@@ -162,6 +167,7 @@ static PyArrayMethod_Spec calc_ptf_dharumarajan2019_skp_spec = {
     .slots = calc_ptf_dharumarajan2019_skp_slots,
 };
 
+static const int calc_ptf_dharumarajan2019_skp_clay_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_dharumarajan2019_skp_clay_contiguous_loop(PyArrayMethod_Context *context,
                                                               char *const *data,
                                                               const npy_intp *dimensions,
@@ -212,6 +218,8 @@ static PyArrayMethod_Spec calc_ptf_dharumarajan2019_skp_clay_spec = {
     .slots = calc_ptf_dharumarajan2019_skp_clay_slots,
 };
 
+static const int calc_ptf_dharumarajan2019_infiltration_types[] = {NPY_DOUBLE, NPY_DOUBLE,
+                                                                   NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_dharumarajan2019_infiltration_contiguous_loop(PyArrayMethod_Context *context,
                                                                   char *const *data,
                                                                   const npy_intp *dimensions,
@@ -264,19 +272,24 @@ static PyArrayMethod_Spec calc_ptf_dharumarajan2019_infiltration_spec = {
 };
 
 int ptfkit_register_dharumarajan2019(PyObject *module) {
-    if (ptfkit_add_ufunc(module, "calc_ptf_dharumarajan2019_nkp", 3, 2,
+    if (ptfkit_add_ufunc(module, "calc_ptf_dharumarajan2019_nkp",
+                         calc_ptf_dharumarajan2019_nkp_types, 3, 2,
                          &calc_ptf_dharumarajan2019_nkp_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_dharumarajan2019_nkp_clay", 1, 2,
+    if (ptfkit_add_ufunc(module, "calc_ptf_dharumarajan2019_nkp_clay",
+                         calc_ptf_dharumarajan2019_nkp_clay_types, 1, 2,
                          &calc_ptf_dharumarajan2019_nkp_clay_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_dharumarajan2019_skp", 3, 2,
+    if (ptfkit_add_ufunc(module, "calc_ptf_dharumarajan2019_skp",
+                         calc_ptf_dharumarajan2019_skp_types, 3, 2,
                          &calc_ptf_dharumarajan2019_skp_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_dharumarajan2019_skp_clay", 1, 2,
+    if (ptfkit_add_ufunc(module, "calc_ptf_dharumarajan2019_skp_clay",
+                         calc_ptf_dharumarajan2019_skp_clay_types, 1, 2,
                          &calc_ptf_dharumarajan2019_skp_clay_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_dharumarajan2019_infiltration", 3, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_dharumarajan2019_infiltration",
+                         calc_ptf_dharumarajan2019_infiltration_types, 3, 1,
                          &calc_ptf_dharumarajan2019_infiltration_spec) < 0)
         return -1;
     return 0;

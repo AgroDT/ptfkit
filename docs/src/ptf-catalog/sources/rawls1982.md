@@ -31,10 +31,10 @@ Estimate volumetric water content at -1500 kPa.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % | 0.1 <= value <= 94 | Clay content. |
-| `organic_matter` | % | 0.1 <= value <= 12.5 | Organic matter content. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % | 0.1 <= value <= 94 | Clay content. |
+| `organic_matter` | `number` | % | 0.1 <= value <= 12.5 | Organic matter content. |
 
 #### Outputs
 
@@ -54,11 +54,11 @@ Estimate volumetric water content at -33 kPa using measured or estimated theta_1
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0.1 <= value <= 99 | Sand content. |
-| `organic_matter` | % | 0.1 <= value <= 12.5 | Organic matter content. |
-| `theta_1500` | cm^3/cm^3 | value >= 0 | Measured or estimated volumetric water content at -1500 kPa. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0.1 <= value <= 99 | Sand content. |
+| `organic_matter` | `number` | % | 0.1 <= value <= 12.5 | Organic matter content. |
+| `theta_1500` | `number` | cm^3/cm^3 | value >= 0 | Measured or estimated volumetric water content at -1500 kPa. |
 
 #### Outputs
 
@@ -78,13 +78,13 @@ Estimate a twelve-point water-retention curve using theta_33 and theta_1500.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0.1 <= value <= 99 | Sand content. |
-| `organic_matter` | % | 0.1 <= value <= 12.5 | Organic matter content. |
-| `bulk_density` | g/cm^3 | 0.1 <= value <= 2.09 | Bulk density. |
-| `theta_33` | cm^3/cm^3 | value >= 0 | Measured or estimated volumetric water content at -33 kPa. |
-| `theta_1500` | cm^3/cm^3 | value >= 0 | Measured or estimated volumetric water content at -1500 kPa. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0.1 <= value <= 99 | Sand content. |
+| `organic_matter` | `number` | % | 0.1 <= value <= 12.5 | Organic matter content. |
+| `bulk_density` | `number` | g/cm^3 | 0.1 <= value <= 2.09 | Bulk density. |
+| `theta_33` | `number` | cm^3/cm^3 | value >= 0 | Measured or estimated volumetric water content at -33 kPa. |
+| `theta_1500` | `number` | cm^3/cm^3 | value >= 0 | Measured or estimated volumetric water content at -1500 kPa. |
 
 #### Outputs
 

@@ -33,12 +33,12 @@ Estimate saturated hydraulic conductivity for lowland paddy soils.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % | value > 0 | Clay content, <2 um. |
-| `bulk_density` | g/cm^3 | value > 0 | Dry bulk density. |
-| `organic_matter` | % | value > 0 | Organic matter content. |
-| `gmd` | mm | value > 0 | Geometric mean diameter of texture. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % | value > 0 | Clay content, <2 um. |
+| `bulk_density` | `number` | g/cm^3 | value > 0 | Dry bulk density. |
+| `organic_matter` | `number` | % | value > 0 | Organic matter content. |
+| `gmd` | `number` | mm | value > 0 | Geometric mean diameter of texture. |
 
 #### Outputs
 

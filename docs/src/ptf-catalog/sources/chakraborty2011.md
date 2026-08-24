@@ -31,10 +31,10 @@ Estimate four gravimetric water contents from clay and silt.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % | — | Clay content by mass. |
-| `silt` | % | — | Silt content by mass. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % | — | Clay content by mass. |
+| `silt` | `number` | % | — | Silt content by mass. |
 
 #### Outputs
 
@@ -69,10 +69,10 @@ Estimate four gravimetric water contents from sand and bulk density.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | — | Sand content by mass. |
-| `bulk_density` | Mg/m^3 | 1.17 <= value <= 1.98 | Dry soil bulk density. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | — | Sand content by mass. |
+| `bulk_density` | `number` | Mg/m^3 | 1.17 <= value <= 1.98 | Dry soil bulk density. |
 
 #### Outputs
 
@@ -107,11 +107,11 @@ Estimate four gravimetric water contents from clay, silt, and bulk density.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % | — | Clay content by mass. |
-| `silt` | % | — | Silt content by mass. |
-| `bulk_density` | Mg/m^3 | 1.17 <= value <= 1.98 | Dry soil bulk density. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % | — | Clay content by mass. |
+| `silt` | `number` | % | — | Silt content by mass. |
+| `bulk_density` | `number` | Mg/m^3 | 1.17 <= value <= 1.98 | Dry soil bulk density. |
 
 #### Outputs
 
@@ -146,11 +146,11 @@ Estimate four gravimetric water contents from clay, silt, and sand.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % | — | Clay content by mass. |
-| `silt` | % | — | Silt content by mass. |
-| `sand` | % | — | Sand content by mass. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % | — | Clay content by mass. |
+| `silt` | `number` | % | — | Silt content by mass. |
+| `sand` | `number` | % | — | Sand content by mass. |
 
 #### Outputs
 
@@ -185,12 +185,12 @@ Estimate four gravimetric water contents from clay, silt, sand, and bulk density
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % | — | Clay content by mass. |
-| `silt` | % | — | Silt content by mass. |
-| `sand` | % | — | Sand content by mass. |
-| `bulk_density` | Mg/m^3 | 1.17 <= value <= 1.98 | Dry soil bulk density. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % | — | Clay content by mass. |
+| `silt` | `number` | % | — | Silt content by mass. |
+| `sand` | `number` | % | — | Sand content by mass. |
+| `bulk_density` | `number` | Mg/m^3 | 1.17 <= value <= 1.98 | Dry soil bulk density. |
 
 #### Outputs
 
@@ -225,13 +225,13 @@ Estimate four gravimetric water contents from texture, organic carbon, and bulk 
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % | — | Clay content by mass. |
-| `silt` | % | — | Silt content by mass. |
-| `sand` | % | — | Sand content by mass. |
-| `organic_carbon` | % | 0.02 <= value <= 1.18 | Soil organic carbon content by mass. |
-| `bulk_density` | Mg/m^3 | 1.17 <= value <= 1.98 | Dry soil bulk density. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % | — | Clay content by mass. |
+| `silt` | `number` | % | — | Silt content by mass. |
+| `sand` | `number` | % | — | Sand content by mass. |
+| `organic_carbon` | `number` | % | 0.02 <= value <= 1.18 | Soil organic carbon content by mass. |
+| `bulk_density` | `number` | Mg/m^3 | 1.17 <= value <= 1.98 | Dry soil bulk density. |
 
 #### Outputs
 

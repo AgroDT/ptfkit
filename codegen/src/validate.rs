@@ -26,7 +26,8 @@ pub(crate) fn specifications(entries: &[Entry]) -> Vec<String> {
                 "functions[].public_api",
                 &mut errors,
             );
-            duplicate_names(entry, function, &function.inputs, "inputs", &mut errors);
+            duplicate_input_names(entry, function, &mut errors);
+            validate_enums(entry, function, &mut errors);
             duplicate_names(
                 entry,
                 function,
@@ -61,6 +62,69 @@ pub(crate) fn specifications(entries: &[Entry]) -> Vec<String> {
         }
     }
     errors
+}
+
+fn duplicate_input_names(entry: &Entry, function: &Function, errors: &mut Vec<String>) {
+    let mut seen = BTreeSet::new();
+    for value in &function.inputs {
+        if !seen.insert(value.name()) {
+            errors.push(diag(
+                entry,
+                "inputs",
+                Some(&function.name),
+                &format!("duplicate name `{}`", value.name()),
+            ));
+        }
+    }
+}
+
+fn validate_enums(entry: &Entry, function: &Function, errors: &mut Vec<String>) {
+    let mut validated = BTreeSet::new();
+    for input in &function.inputs {
+        let Some(enum_type) = input.enum_type() else {
+            continue;
+        };
+        if !validated.insert(&enum_type.name) {
+            continue;
+        }
+        let mut names = BTreeSet::new();
+        let mut values = BTreeSet::new();
+        for member in &enum_type.values {
+            if !names.insert(&member.name) {
+                errors.push(diag(
+                    entry,
+                    "$defs",
+                    Some(&function.name),
+                    &format!(
+                        "enum `{}` contains duplicate member name `{}`",
+                        enum_type.name, member.name
+                    ),
+                ));
+            }
+            if !values.insert(&member.value) {
+                errors.push(diag(
+                    entry,
+                    "$defs",
+                    Some(&function.name),
+                    &format!(
+                        "enum `{}` contains duplicate canonical value `{}`",
+                        enum_type.name, member.value
+                    ),
+                ));
+            }
+        }
+        if enum_type.values.len() > u32::MAX as usize {
+            errors.push(diag(
+                entry,
+                "$defs",
+                Some(&function.name),
+                &format!(
+                    "enum `{}` exceeds the target ordinal capacity",
+                    enum_type.name
+                ),
+            ));
+        }
+    }
 }
 
 fn duplicate<K: Ord + Clone + std::fmt::Display>(

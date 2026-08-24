@@ -3,7 +3,7 @@ add_library(ptfkit::cpp ALIAS ptfkit_cpp)
 set_target_properties(ptfkit_cpp PROPERTIES
     EXPORT_NAME cpp CXX_SCAN_FOR_MODULES ON
 )
-target_compile_features(ptfkit_cpp PUBLIC cxx_std_20)
+target_compile_features(ptfkit_cpp PUBLIC cxx_std_23)
 target_compile_definitions(ptfkit_cpp PUBLIC
     PTFKIT_VERSION=\"${PROJECT_VERSION}\"
 )

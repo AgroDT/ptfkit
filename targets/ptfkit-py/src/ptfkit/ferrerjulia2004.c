@@ -2,6 +2,8 @@
 #include <ptfkit/ferrerjulia2004.h>
 #include "ufunc.h"
 
+static const int calc_ptf_ferrerjulia2004_campbell_shiozawa_types[] = {NPY_DOUBLE, NPY_DOUBLE,
+                                                                       NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_campbell_shiozawa_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -48,6 +50,7 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_campbell_shiozawa_spec = {
     .slots = calc_ptf_ferrerjulia2004_campbell_shiozawa_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_saxton_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_saxton_contiguous_loop(PyArrayMethod_Context *context,
                                                            char *const *data,
                                                            const npy_intp *dimensions,
@@ -96,6 +99,7 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_saxton_spec = {
     .slots = calc_ptf_ferrerjulia2004_saxton_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_dane_puckett_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_dane_puckett_contiguous_loop(PyArrayMethod_Context *context,
                                                                  char *const *data,
                                                                  const npy_intp *dimensions,
@@ -141,6 +145,7 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_dane_puckett_spec = {
     .slots = calc_ptf_ferrerjulia2004_dane_puckett_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_puckett_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_puckett_contiguous_loop(PyArrayMethod_Context *context,
                                                             char *const *data,
                                                             const npy_intp *dimensions,
@@ -186,6 +191,7 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_puckett_spec = {
     .slots = calc_ptf_ferrerjulia2004_puckett_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_cosby_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_cosby_contiguous_loop(PyArrayMethod_Context *context,
                                                           char *const *data,
                                                           const npy_intp *dimensions,
@@ -234,6 +240,7 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_cosby_spec = {
     .slots = calc_ptf_ferrerjulia2004_cosby_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_humic_acrisol_sand_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_humic_acrisol_sand_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -277,6 +284,8 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_humic_acrisol_sand_spec = {
     .slots = calc_ptf_ferrerjulia2004_humic_acrisol_sand_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -328,6 +337,7 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic
     .slots = calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_calcic_cambisol_sand_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_calcic_cambisol_sand_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -369,6 +379,8 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_calcic_cambisol_sand_spec = {
     .slots = calc_ptf_ferrerjulia2004_calcic_cambisol_sand_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -422,6 +434,7 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organ
     .slots = calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_dystric_cambisol_sand_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_dystric_cambisol_sand_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -463,6 +476,8 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_dystric_cambisol_sand_spec = 
     .slots = calc_ptf_ferrerjulia2004_dystric_cambisol_sand_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -516,6 +531,7 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_dystric_cambisol_texture_orga
     .slots = calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_eutric_cambisol_sand_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_eutric_cambisol_sand_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -557,6 +573,8 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_eutric_cambisol_sand_spec = {
     .slots = calc_ptf_ferrerjulia2004_eutric_cambisol_sand_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -610,6 +628,7 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organ
     .slots = calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_gleyic_cambisol_sand_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_gleyic_cambisol_sand_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -651,6 +670,8 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_gleyic_cambisol_sand_spec = {
     .slots = calc_ptf_ferrerjulia2004_gleyic_cambisol_sand_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -704,6 +725,7 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organ
     .slots = calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_humic_cambisol_sand_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_humic_cambisol_sand_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -747,6 +769,8 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_humic_cambisol_sand_spec = {
     .slots = calc_ptf_ferrerjulia2004_humic_cambisol_sand_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -798,6 +822,7 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_humic_cambisol_texture_organi
     .slots = calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -839,6 +864,8 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand_spec =
     .slots = calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -892,6 +919,7 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_org
     .slots = calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_calcic_luvisol_sand_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_calcic_luvisol_sand_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -935,6 +963,8 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_calcic_luvisol_sand_spec = {
     .slots = calc_ptf_ferrerjulia2004_calcic_luvisol_sand_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -986,6 +1016,7 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organi
     .slots = calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_chromic_luvisol_sand_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_chromic_luvisol_sand_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -1027,6 +1058,8 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_chromic_luvisol_sand_spec = {
     .slots = calc_ptf_ferrerjulia2004_chromic_luvisol_sand_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -1080,6 +1113,7 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organ
     .slots = calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_gleyic_luvisol_sand_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_gleyic_luvisol_sand_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -1123,6 +1157,8 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_gleyic_luvisol_sand_spec = {
     .slots = calc_ptf_ferrerjulia2004_gleyic_luvisol_sand_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -1174,6 +1210,7 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organi
     .slots = calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_orthic_luvisol_sand_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_orthic_luvisol_sand_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -1217,6 +1254,8 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_orthic_luvisol_sand_spec = {
     .slots = calc_ptf_ferrerjulia2004_orthic_luvisol_sand_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -1268,6 +1307,7 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organi
     .slots = calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_ranker_sand_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_ranker_sand_contiguous_loop(PyArrayMethod_Context *context,
                                                                 char *const *data,
                                                                 const npy_intp *dimensions,
@@ -1313,6 +1353,8 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_ranker_sand_spec = {
     .slots = calc_ptf_ferrerjulia2004_ranker_sand_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_ranker_texture_organic_matter_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_ranker_texture_organic_matter_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -1363,6 +1405,7 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_ranker_texture_organic_matter
     .slots = calc_ptf_ferrerjulia2004_ranker_texture_organic_matter_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_calcaric_regosol_sand_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_calcaric_regosol_sand_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -1404,6 +1447,8 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_calcaric_regosol_sand_spec = 
     .slots = calc_ptf_ferrerjulia2004_calcaric_regosol_sand_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -1457,6 +1502,7 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_calcaric_regosol_texture_orga
     .slots = calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_dystric_regosol_sand_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_dystric_regosol_sand_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -1498,6 +1544,8 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_dystric_regosol_sand_spec = {
     .slots = calc_ptf_ferrerjulia2004_dystric_regosol_sand_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -1551,6 +1599,7 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_dystric_regosol_texture_organ
     .slots = calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_eutric_regosol_sand_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_eutric_regosol_sand_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -1594,6 +1643,8 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_eutric_regosol_sand_spec = {
     .slots = calc_ptf_ferrerjulia2004_eutric_regosol_sand_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -1645,6 +1696,7 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_eutric_regosol_texture_organi
     .slots = calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_rendzina_sand_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_rendzina_sand_contiguous_loop(PyArrayMethod_Context *context,
                                                                   char *const *data,
                                                                   const npy_intp *dimensions,
@@ -1690,6 +1742,8 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_rendzina_sand_spec = {
     .slots = calc_ptf_ferrerjulia2004_rendzina_sand_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -1740,6 +1794,7 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_rendzina_texture_organic_matt
     .slots = calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_gleyic_solonchak_sand_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_gleyic_solonchak_sand_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -1781,6 +1836,8 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_gleyic_solonchak_sand_spec = 
     .slots = calc_ptf_ferrerjulia2004_gleyic_solonchak_sand_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -1834,6 +1891,7 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_orga
     .slots = calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_general_sand_types[] = {NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_general_sand_contiguous_loop(PyArrayMethod_Context *context,
                                                                  char *const *data,
                                                                  const npy_intp *dimensions,
@@ -1879,6 +1937,8 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_general_sand_spec = {
     .slots = calc_ptf_ferrerjulia2004_general_sand_slots,
 };
 
+static const int calc_ptf_ferrerjulia2004_general_texture_organic_matter_types[] = {
+    NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_ferrerjulia2004_general_texture_organic_matter_contiguous_loop(
     PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions,
     const npy_intp *strides, NpyAuxData *transferdata) {
@@ -1930,142 +1990,177 @@ static PyArrayMethod_Spec calc_ptf_ferrerjulia2004_general_texture_organic_matte
 };
 
 int ptfkit_register_ferrerjulia2004(PyObject *module) {
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_campbell_shiozawa", 2, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_campbell_shiozawa",
+                         calc_ptf_ferrerjulia2004_campbell_shiozawa_types, 2, 1,
                          &calc_ptf_ferrerjulia2004_campbell_shiozawa_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_saxton", 2, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_saxton",
+                         calc_ptf_ferrerjulia2004_saxton_types, 2, 1,
                          &calc_ptf_ferrerjulia2004_saxton_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_dane_puckett", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_dane_puckett",
+                         calc_ptf_ferrerjulia2004_dane_puckett_types, 1, 1,
                          &calc_ptf_ferrerjulia2004_dane_puckett_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_puckett", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_puckett",
+                         calc_ptf_ferrerjulia2004_puckett_types, 1, 1,
                          &calc_ptf_ferrerjulia2004_puckett_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_cosby", 2, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_cosby",
+                         calc_ptf_ferrerjulia2004_cosby_types, 2, 1,
                          &calc_ptf_ferrerjulia2004_cosby_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_humic_acrisol_sand", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_humic_acrisol_sand",
+                         calc_ptf_ferrerjulia2004_humic_acrisol_sand_types, 1, 1,
                          &calc_ptf_ferrerjulia2004_humic_acrisol_sand_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter", 3,
-                         1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter",
+                         calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter_types, 3, 1,
                          &calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_calcic_cambisol_sand", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_calcic_cambisol_sand",
+                         calc_ptf_ferrerjulia2004_calcic_cambisol_sand_types, 1, 1,
                          &calc_ptf_ferrerjulia2004_calcic_cambisol_sand_spec) < 0)
         return -1;
     if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter",
-                         3, 1,
+                         calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter_types, 3,
+                         1,
                          &calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_dystric_cambisol_sand", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_dystric_cambisol_sand",
+                         calc_ptf_ferrerjulia2004_dystric_cambisol_sand_types, 1, 1,
                          &calc_ptf_ferrerjulia2004_dystric_cambisol_sand_spec) < 0)
         return -1;
     if (ptfkit_add_ufunc(
-            module, "calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter", 3, 1,
+            module, "calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter",
+            calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter_types, 3, 1,
             &calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_eutric_cambisol_sand", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_eutric_cambisol_sand",
+                         calc_ptf_ferrerjulia2004_eutric_cambisol_sand_types, 1, 1,
                          &calc_ptf_ferrerjulia2004_eutric_cambisol_sand_spec) < 0)
         return -1;
     if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter",
-                         3, 1,
+                         calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter_types, 3,
+                         1,
                          &calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_gleyic_cambisol_sand", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_gleyic_cambisol_sand",
+                         calc_ptf_ferrerjulia2004_gleyic_cambisol_sand_types, 1, 1,
                          &calc_ptf_ferrerjulia2004_gleyic_cambisol_sand_spec) < 0)
         return -1;
     if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter",
-                         3, 1,
+                         calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter_types, 3,
+                         1,
                          &calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_humic_cambisol_sand", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_humic_cambisol_sand",
+                         calc_ptf_ferrerjulia2004_humic_cambisol_sand_types, 1, 1,
                          &calc_ptf_ferrerjulia2004_humic_cambisol_sand_spec) < 0)
         return -1;
     if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter",
-                         3, 1,
+                         calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter_types, 3, 1,
                          &calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand",
+                         calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand_types, 1, 1,
                          &calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand_spec) < 0)
         return -1;
     if (ptfkit_add_ufunc(
-            module, "calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter", 3, 1,
+            module, "calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter",
+            calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter_types, 3, 1,
             &calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_calcic_luvisol_sand", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_calcic_luvisol_sand",
+                         calc_ptf_ferrerjulia2004_calcic_luvisol_sand_types, 1, 1,
                          &calc_ptf_ferrerjulia2004_calcic_luvisol_sand_spec) < 0)
         return -1;
     if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter",
-                         3, 1,
+                         calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter_types, 3, 1,
                          &calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_chromic_luvisol_sand", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_chromic_luvisol_sand",
+                         calc_ptf_ferrerjulia2004_chromic_luvisol_sand_types, 1, 1,
                          &calc_ptf_ferrerjulia2004_chromic_luvisol_sand_spec) < 0)
         return -1;
     if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter",
-                         3, 1,
+                         calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter_types, 3,
+                         1,
                          &calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_gleyic_luvisol_sand", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_gleyic_luvisol_sand",
+                         calc_ptf_ferrerjulia2004_gleyic_luvisol_sand_types, 1, 1,
                          &calc_ptf_ferrerjulia2004_gleyic_luvisol_sand_spec) < 0)
         return -1;
     if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter",
-                         3, 1,
+                         calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter_types, 3, 1,
                          &calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_orthic_luvisol_sand", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_orthic_luvisol_sand",
+                         calc_ptf_ferrerjulia2004_orthic_luvisol_sand_types, 1, 1,
                          &calc_ptf_ferrerjulia2004_orthic_luvisol_sand_spec) < 0)
         return -1;
     if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter",
-                         3, 1,
+                         calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter_types, 3, 1,
                          &calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_ranker_sand", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_ranker_sand",
+                         calc_ptf_ferrerjulia2004_ranker_sand_types, 1, 1,
                          &calc_ptf_ferrerjulia2004_ranker_sand_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_ranker_texture_organic_matter", 3, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_ranker_texture_organic_matter",
+                         calc_ptf_ferrerjulia2004_ranker_texture_organic_matter_types, 3, 1,
                          &calc_ptf_ferrerjulia2004_ranker_texture_organic_matter_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_calcaric_regosol_sand", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_calcaric_regosol_sand",
+                         calc_ptf_ferrerjulia2004_calcaric_regosol_sand_types, 1, 1,
                          &calc_ptf_ferrerjulia2004_calcaric_regosol_sand_spec) < 0)
         return -1;
     if (ptfkit_add_ufunc(
-            module, "calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter", 3, 1,
+            module, "calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter",
+            calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter_types, 3, 1,
             &calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_dystric_regosol_sand", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_dystric_regosol_sand",
+                         calc_ptf_ferrerjulia2004_dystric_regosol_sand_types, 1, 1,
                          &calc_ptf_ferrerjulia2004_dystric_regosol_sand_spec) < 0)
         return -1;
     if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter",
-                         3, 1,
+                         calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter_types, 3,
+                         1,
                          &calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_eutric_regosol_sand", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_eutric_regosol_sand",
+                         calc_ptf_ferrerjulia2004_eutric_regosol_sand_types, 1, 1,
                          &calc_ptf_ferrerjulia2004_eutric_regosol_sand_spec) < 0)
         return -1;
     if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter",
-                         3, 1,
+                         calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter_types, 3, 1,
                          &calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_rendzina_sand", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_rendzina_sand",
+                         calc_ptf_ferrerjulia2004_rendzina_sand_types, 1, 1,
                          &calc_ptf_ferrerjulia2004_rendzina_sand_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter", 3, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter",
+                         calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter_types, 3, 1,
                          &calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_gleyic_solonchak_sand", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_gleyic_solonchak_sand",
+                         calc_ptf_ferrerjulia2004_gleyic_solonchak_sand_types, 1, 1,
                          &calc_ptf_ferrerjulia2004_gleyic_solonchak_sand_spec) < 0)
         return -1;
     if (ptfkit_add_ufunc(
-            module, "calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter", 3, 1,
+            module, "calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter",
+            calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter_types, 3, 1,
             &calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_general_sand", 1, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_general_sand",
+                         calc_ptf_ferrerjulia2004_general_sand_types, 1, 1,
                          &calc_ptf_ferrerjulia2004_general_sand_spec) < 0)
         return -1;
-    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_general_texture_organic_matter", 3, 1,
+    if (ptfkit_add_ufunc(module, "calc_ptf_ferrerjulia2004_general_texture_organic_matter",
+                         calc_ptf_ferrerjulia2004_general_texture_organic_matter_types, 3, 1,
                          &calc_ptf_ferrerjulia2004_general_texture_organic_matter_spec) < 0)
         return -1;
     return 0;

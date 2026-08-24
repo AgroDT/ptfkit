@@ -1,6 +1,6 @@
 ---
 name: ptf-review
-description: Independently review a generated ptfkit PTF source against its YAML specification, semantic IR, retained Rust and NumPy targets, generation policy, and public API parity. Use for read-only pre-merge review after $ptf-generate.
+description: Independently review a generated ptfkit PTF source against its YAML specification, semantic IR, retained targets, generation policy, and public API parity. Use for read-only pre-merge review after $ptf-generate.
 ---
 
 # PTF Review
@@ -18,12 +18,13 @@ modifying repository state.
 ## Procedure
 
 1. Read `specs/schema/ptf-spec.schema.json`, the selected YAML specification,
-   implementation diff, generated Rust and native NumPy targets, golden tests,
-   and relevant public wrapper.
+   implementation diff, generated Rust, C, C++, and native NumPy targets,
+   golden tests, and relevant public wrapper.
 2. Load `references/implementation-review-checklist.md`.
-3. Check schema and semantic IR fidelity, both retained targets, deterministic
-   regeneration, status transition evidence, output order, NumPy broadcasting,
-   `out`, `NamedTuple` compatibility, docstring fidelity, and public API parity.
+3. Check schema and semantic IR fidelity, all retained targets, deterministic
+   regeneration, status transition evidence, categorical type and lookup
+   fidelity, output order, NumPy broadcasting, `out`, enum-array typing,
+   `NamedTuple` compatibility, docstring fidelity, and public API parity.
 4. Run or request the project checks appropriate to the changed files.
 5. Report findings first, ordered by severity, with file and line references.
 

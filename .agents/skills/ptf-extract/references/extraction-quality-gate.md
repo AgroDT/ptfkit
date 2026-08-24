@@ -11,6 +11,14 @@ APA-style slug and identifies the generated public module, for example
   golden and edge cases, documentation, scope, and semantic `implementation`
   fields required by the schema.
 - Every record output has an explicit PascalCase `name`.
+- When the source uses a finite categorical predictor, represent its reusable
+  type as an enum in `$defs` and bind it to each function-local argument with
+  `name` plus `$ref`. The enum owns its type description and admissible values;
+  the binding description, when present, explains only that argument's role.
+- When the source publishes a table selected by a category, model it as a typed
+  lookup from the enum to a record in `$defs`. Preserve one row per enum member
+  and one numeric value per output-record field. Use enum member names in lookup
+  keys and golden inputs, not canonical textual values or target ordinals.
 - Use the formula DSL only in `implementation` expressions. In
   `scientific_notes`, retain source-supported scientific context, derivations
   needed to justify an interpretation, evidence for review decisions, citations,

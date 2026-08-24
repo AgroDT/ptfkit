@@ -33,14 +33,14 @@ Convert VGM parameters to Brunswick-VGM parameters.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `theta_r_vgm` | dimensionless | 0.001 <= value <= 0.35 | VGM residual volumetric water content. |
-| `theta_s_vgm` | dimensionless | 0.2 <= value <= 0.7 | VGM saturated volumetric water content. |
-| `alpha_vgm` | cm^-1 | 0.001 <= value <= 0.1 | VGM inverse pressure-head scale parameter. |
-| `n_vgm` | dimensionless | 1.1 <= value <= 11 | VGM pore-size distribution shape parameter. |
-| `tau_vgm` | dimensionless | -2 <= value <= 10 | VGM hydraulic-conductivity shape parameter. |
-| `k_s_vgm` | cm d^-1 | 1 <= value <= 1000 | VGM saturated hydraulic conductivity. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `theta_r_vgm` | `number` | dimensionless | 0.001 <= value <= 0.35 | VGM residual volumetric water content. |
+| `theta_s_vgm` | `number` | dimensionless | 0.2 <= value <= 0.7 | VGM saturated volumetric water content. |
+| `alpha_vgm` | `number` | cm^-1 | 0.001 <= value <= 0.1 | VGM inverse pressure-head scale parameter. |
+| `n_vgm` | `number` | dimensionless | 1.1 <= value <= 11 | VGM pore-size distribution shape parameter. |
+| `tau_vgm` | `number` | dimensionless | -2 <= value <= 10 | VGM hydraulic-conductivity shape parameter. |
+| `k_s_vgm` | `number` | cm d^-1 | 1 <= value <= 1000 | VGM saturated hydraulic conductivity. |
 
 #### Outputs
 

@@ -27,8 +27,10 @@ struct RawSpec {
 #[derive(Clone, Debug, Deserialize)]
 #[serde(untagged)]
 enum Definition {
-    Input(Parameter),
+    Enum(EnumDefinition),
+    Lookup(LookupDefinition),
     Output(Outputs),
+    Parameter(Parameter),
 }
 
 #[derive(Clone, Debug, Deserialize)]
@@ -49,8 +51,17 @@ struct FunctionReference {
 #[derive(Clone, Debug, Deserialize)]
 #[serde(untagged)]
 enum InputReference {
-    Inline(Parameter),
+    Parameter(Parameter),
+    Type(NamedReference),
     Reference(Reference),
+}
+
+#[derive(Clone, Debug, Deserialize)]
+struct NamedReference {
+    name: String,
+    description: Option<String>,
+    #[serde(flatten)]
+    reference: Reference,
 }
 
 #[derive(Clone, Debug, Deserialize)]
@@ -60,8 +71,8 @@ enum OutputReference {
     Reference(Reference),
 }
 
-#[derive(Clone, Debug, Deserialize)]
-struct Reference {
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub(crate) struct Reference {
     #[serde(rename = "$ref")]
     target: String,
 }
@@ -72,6 +83,18 @@ impl<'de> Deserialize<'de> for Spec {
         D: Deserializer<'de>,
     {
         let raw = RawSpec::deserialize(deserializer)?;
+        let lookup_definitions = raw
+            .definitions
+            .iter()
+            .filter_map(|(name, definition)| match definition {
+                Definition::Lookup(definition) => Some(
+                    resolve_lookup_definition(name, definition, &raw.definitions)
+                        .map(|definition| (name.clone(), definition)),
+                ),
+                _ => None,
+            })
+            .collect::<Result<BTreeMap<_, _>, _>>()
+            .map_err(serde::de::Error::custom)?;
         let functions = raw
             .functions
             .into_iter()
@@ -80,11 +103,24 @@ impl<'de> Deserialize<'de> for Spec {
                     .inputs
                     .into_iter()
                     .map(|input| match input {
-                        InputReference::Inline(input) => Ok(input),
+                        InputReference::Parameter(parameter) => Ok(Input::Parameter(parameter)),
+                        InputReference::Type(reference) => resolve_input_type(
+                            reference,
+                            &raw.definitions,
+                            &function.name,
+                        ),
                         InputReference::Reference(reference) => {
                             let name = definition_name(&reference.target)?;
                             match raw.definitions.get(name) {
-                                Some(Definition::Input(input)) => Ok(input.clone()),
+                                Some(Definition::Parameter(parameter)) => {
+                                    Ok(Input::Parameter(parameter.clone()))
+                                }
+                                Some(Definition::Enum(_)) | Some(Definition::Lookup(_)) => {
+                                    Err(format!(
+                                        "function {} must bind a name when referencing type definition `{name}` as an input",
+                                        function.name
+                                    ))
+                                }
                                 Some(Definition::Output(_)) => Err(format!(
                                     "function {} references output definition `{name}` as an input",
                                     function.name
@@ -102,8 +138,12 @@ impl<'de> Deserialize<'de> for Spec {
                     OutputReference::Reference(reference) => {
                         let name = definition_name(&reference.target)?;
                         match raw.definitions.get(name) {
-                            Some(Definition::Input(_)) => Err(format!(
-                                "function {} references input definition `{name}` as an output",
+                            Some(Definition::Enum(_)) | Some(Definition::Lookup(_)) => Err(format!(
+                                "function {} references non-output definition `{name}` as an output",
+                                function.name
+                            )),
+                            Some(Definition::Parameter(_)) => Err(format!(
+                                "function {} references parameter definition `{name}` as an output",
                                 function.name
                             )),
                             Some(Definition::Output(outputs)) => Ok(outputs.clone()),
@@ -114,6 +154,25 @@ impl<'de> Deserialize<'de> for Spec {
                         }
                     }
                 }?;
+                let implementation = function
+                    .implementation
+                    .map(|mut implementation| {
+                        for variable in &mut implementation.variables {
+                            if let ImplementationVariable::Lookup { lookup, .. } = variable {
+                                let name = definition_name(&lookup.table.target)?;
+                                lookup.definition = Some(
+                                    lookup_definitions.get(name).cloned().ok_or_else(|| {
+                                        format!(
+                                            "function {} references unknown lookup definition `{name}`",
+                                            function.name
+                                        )
+                                    })?,
+                                );
+                            }
+                        }
+                        Ok::<_, String>(implementation)
+                    })
+                    .transpose()?;
                 Ok(Function {
                     name: function.name,
                     status: function.status,
@@ -121,7 +180,7 @@ impl<'de> Deserialize<'de> for Spec {
                     scope: function.scope,
                     inputs,
                     outputs,
-                    implementation: function.implementation,
+                    implementation,
                     golden_tests: function.golden_tests,
                     documentation: function.documentation,
                 })
@@ -135,6 +194,134 @@ impl<'de> Deserialize<'de> for Spec {
             functions,
         })
     }
+}
+
+fn resolve_input_type(
+    input: NamedReference,
+    definitions: &BTreeMap<String, Definition>,
+    function: &str,
+) -> Result<Input, String> {
+    let type_name = definition_name(&input.reference.target)?;
+    match definitions.get(type_name) {
+        Some(Definition::Enum(definition)) => {
+            let mut definition = definition.clone();
+            definition.name = type_name.to_owned();
+            Ok(Input::Enum {
+                name: input.name,
+                description: input.description,
+                definition,
+            })
+        }
+        Some(Definition::Output(_))
+        | Some(Definition::Lookup(_))
+        | Some(Definition::Parameter(_)) => Err(format!(
+            "function {function} input {} references non-enum definition `{type_name}` as its type",
+            input.name
+        )),
+        None => Err(format!(
+            "function {function} input {} references unknown enum definition `{type_name}`",
+            input.name
+        )),
+    }
+}
+
+fn resolve_lookup_definition(
+    name: &str,
+    definition: &LookupDefinition,
+    definitions: &BTreeMap<String, Definition>,
+) -> Result<LookupDefinition, String> {
+    let input_name = definition_name(&definition.input.target)?;
+    let input_type = match definitions.get(input_name) {
+        Some(Definition::Enum(definition)) => {
+            let mut definition = definition.clone();
+            definition.name = input_name.to_owned();
+            definition
+        }
+        Some(_) => {
+            return Err(format!(
+                "lookup `{name}` input must reference an enum definition"
+            ));
+        }
+        None => {
+            return Err(format!(
+                "lookup `{name}` references unknown input type `{input_name}`"
+            ));
+        }
+    };
+    let output_name = definition_name(&definition.output.target)?;
+    let output_type = match definitions.get(output_name) {
+        Some(Definition::Output(output @ Outputs::Record { .. })) => output.clone(),
+        Some(_) => {
+            return Err(format!(
+                "lookup `{name}` output must reference a record definition"
+            ));
+        }
+        None => {
+            return Err(format!(
+                "lookup `{name}` references unknown output type `{output_name}`"
+            ));
+        }
+    };
+    let mut resolved = definition.clone();
+    resolved.name = name.to_owned();
+    resolved.input_type = Some(input_type);
+    resolved.output_type = Some(output_type);
+    validate_lookup_values(&resolved)?;
+    Ok(resolved)
+}
+
+fn validate_lookup_values(lookup: &LookupDefinition) -> Result<(), String> {
+    let enum_type = lookup
+        .input_type
+        .as_ref()
+        .expect("lookup input type is resolved");
+    let output = lookup
+        .output_type
+        .as_ref()
+        .expect("lookup output type is resolved");
+    let output_names = output
+        .fields()
+        .iter()
+        .map(|field| field.name.as_str())
+        .collect::<std::collections::BTreeSet<_>>();
+    let mut keys = std::collections::BTreeSet::new();
+    for (index, row) in lookup.values.iter().enumerate() {
+        if !keys.insert(row.key.as_str()) {
+            return Err(format!(
+                "lookup `{}` has duplicate key `{}` at value {index}",
+                lookup.name, row.key
+            ));
+        }
+        if !enum_type.values.iter().any(|member| member.name == row.key) {
+            return Err(format!(
+                "lookup `{}` has unknown enum member `{}` at value {index}",
+                lookup.name, row.key
+            ));
+        }
+        let row_names = row
+            .value
+            .keys()
+            .map(String::as_str)
+            .collect::<std::collections::BTreeSet<_>>();
+        if row_names != output_names {
+            return Err(format!(
+                "lookup `{}` value {index} keys must exactly match output fields",
+                lookup.name
+            ));
+        }
+    }
+    let enum_members = enum_type
+        .values
+        .iter()
+        .map(|member| member.name.as_str())
+        .collect::<std::collections::BTreeSet<_>>();
+    if keys != enum_members {
+        return Err(format!(
+            "lookup `{}` values must cover every member of enum `{}` exactly once",
+            lookup.name, enum_type.name
+        ));
+    }
+    Ok(())
 }
 
 fn definition_name(reference: &str) -> Result<&str, String> {
@@ -170,13 +357,13 @@ pub(crate) struct Scope {
     pub(crate) dataset: Option<String>,
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Serialize)]
 pub(crate) struct Function {
     pub(crate) name: String,
     pub(crate) status: String,
     pub(crate) public_api: PublicApi,
     pub(crate) scope: FunctionScope,
-    pub(crate) inputs: Vec<Parameter>,
+    pub(crate) inputs: Vec<Input>,
     pub(crate) outputs: Outputs,
     pub(crate) implementation: Option<Implementation>,
     #[serde(default)]
@@ -197,10 +384,17 @@ impl Function {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub(crate) struct GoldenTest {
     pub(crate) id: String,
-    pub(crate) inputs: BTreeMap<String, f64>,
+    pub(crate) inputs: BTreeMap<String, GoldenInput>,
     pub(crate) expected: BTreeMap<String, f64>,
     pub(crate) rtol: f64,
     pub(crate) atol: f64,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(untagged)]
+pub(crate) enum GoldenInput {
+    Number(f64),
+    Enum(String),
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -234,6 +428,105 @@ pub(crate) struct Parameter {
     #[allow(dead_code)]
     pub(crate) domain: Option<String>,
     pub(crate) description: String,
+}
+
+#[derive(Clone, Debug, Serialize)]
+#[serde(untagged)]
+pub(crate) enum Input {
+    Parameter(Parameter),
+    Enum {
+        name: String,
+        description: Option<String>,
+        #[serde(skip)]
+        definition: EnumDefinition,
+    },
+}
+
+impl Input {
+    pub(crate) fn name(&self) -> &str {
+        match self {
+            Self::Parameter(parameter) => &parameter.name,
+            Self::Enum { name, .. } => name,
+        }
+    }
+
+    pub(crate) fn description(&self) -> &str {
+        match self {
+            Self::Parameter(parameter) => &parameter.description,
+            Self::Enum { description, .. } => description.as_deref().unwrap_or_default(),
+        }
+    }
+
+    pub(crate) fn unit(&self) -> Option<&str> {
+        match self {
+            Self::Parameter(parameter) => Some(&parameter.unit),
+            Self::Enum { .. } => None,
+        }
+    }
+
+    pub(crate) fn domain(&self) -> Option<&str> {
+        match self {
+            Self::Parameter(parameter) => parameter.domain.as_deref(),
+            Self::Enum { .. } => None,
+        }
+    }
+
+    pub(crate) fn enum_type(&self) -> Option<&EnumDefinition> {
+        match self {
+            Self::Parameter(_) => None,
+            Self::Enum { definition, .. } => Some(definition),
+        }
+    }
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub(crate) struct EnumDefinition {
+    #[serde(skip)]
+    pub(crate) name: String,
+    #[serde(rename = "type")]
+    kind: EnumKind,
+    pub(crate) description: String,
+    pub(crate) values: Vec<EnumValue>,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "lowercase")]
+enum EnumKind {
+    Enum,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub(crate) struct EnumValue {
+    pub(crate) name: String,
+    pub(crate) value: String,
+    pub(crate) description: Option<String>,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub(crate) struct LookupDefinition {
+    #[serde(skip)]
+    pub(crate) name: String,
+    #[serde(rename = "type")]
+    kind: LookupKind,
+    pub(crate) input: Reference,
+    pub(crate) output: Reference,
+    pub(crate) values: Vec<LookupValue>,
+    #[serde(skip)]
+    pub(crate) input_type: Option<EnumDefinition>,
+    #[serde(skip)]
+    pub(crate) output_type: Option<Outputs>,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
+enum LookupKind {
+    Lookup,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub(crate) struct LookupValue {
+    pub(crate) key: String,
+    pub(crate) value: BTreeMap<String, f64>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -282,14 +575,28 @@ pub(crate) struct Generation {
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub(crate) struct Implementation {
-    #[serde(default)]
     pub(crate) variables: Vec<ImplementationVariable>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub(crate) struct ImplementationVariable {
-    pub(crate) name: String,
-    pub(crate) expr: String,
+#[serde(untagged)]
+pub(crate) enum ImplementationVariable {
+    Expression {
+        name: String,
+        expr: String,
+    },
+    Lookup {
+        name: String,
+        lookup: Box<LookupInvocation>,
+    },
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub(crate) struct LookupInvocation {
+    pub(crate) table: Reference,
+    pub(crate) key: String,
+    #[serde(skip)]
+    pub(crate) definition: Option<LookupDefinition>,
 }
 
 #[derive(Clone, Debug)]
@@ -313,10 +620,19 @@ pub(crate) struct CompiledFunction {
 #[derive(Clone, Debug)]
 pub(crate) struct CompiledGoldenTest {
     pub(crate) id: String,
-    pub(crate) inputs: Vec<f64>,
+    pub(crate) inputs: Vec<CompiledInput>,
     pub(crate) expected: Vec<f64>,
     pub(crate) rtol: f64,
     pub(crate) atol: f64,
+}
+
+#[derive(Clone, Debug)]
+pub(crate) enum CompiledInput {
+    Number(f64),
+    Enum {
+        enum_name: String,
+        member_name: String,
+    },
 }
 
 #[derive(Clone, Debug)]
@@ -344,12 +660,32 @@ pub(crate) struct RawFunction {
 #[derive(Clone, Debug)]
 pub(crate) struct RawInput {
     pub(crate) name: String,
+    pub(crate) value_type: RawInputType,
+}
+
+#[derive(Clone, Debug)]
+pub(crate) enum RawInputType {
+    Number,
+    Enum(EnumDefinition),
 }
 
 #[derive(Clone, Debug)]
 pub(crate) struct RawVariable {
     pub(crate) name: String,
-    pub(crate) expression: RawExpression,
+    pub(crate) value: RawVariableValue,
+}
+
+#[derive(Clone, Debug)]
+pub(crate) enum RawVariableValue {
+    Expression(RawExpression),
+    Lookup(RawLookup),
+}
+
+#[derive(Clone, Debug)]
+pub(crate) struct RawLookup {
+    pub(crate) implementation_path: String,
+    pub(crate) key: String,
+    pub(crate) definition: LookupDefinition,
 }
 
 #[derive(Clone, Debug)]
@@ -389,7 +725,7 @@ mod tests {
     }
 
     #[test]
-    fn resolves_reusable_input_and_output_names() {
+    fn resolves_named_enum_input_and_reusable_output() {
         let spec: Spec = serde_yaml::from_str(
             r##"
 source:
@@ -397,12 +733,12 @@ source:
   citation_apa: Test (2026).
   doi: null
 $defs:
-  x:
-    name: x
-    symbol: x
-    unit: '1'
-    domain: null
-    description: Test input.
+  TestCategory:
+    type: enum
+    description: Test category type.
+    values:
+    - name: first
+      value: first
   reusable_result:
     type: record
     name: TestResult
@@ -422,7 +758,9 @@ functions:
     prediction_target: Test result.
     models: {h_theta: null, k_h: null}
   inputs:
-  - $ref: "#/$defs/x"
+  - $ref: "#/$defs/TestCategory"
+    name: x
+    description: Test input category.
   outputs:
     $ref: "#/$defs/reusable_result"
 "##,
@@ -430,8 +768,39 @@ functions:
         .expect("reusable schemas deserialize");
 
         let function = &spec.functions[0];
-        assert_eq!(function.inputs[0].name, "x");
+        assert_eq!(function.inputs[0].name(), "x");
+        assert_eq!(function.inputs[0].description(), "Test input category.");
+        assert_eq!(
+            function.inputs[0]
+                .enum_type()
+                .expect("enum input is resolved")
+                .name,
+            "TestCategory"
+        );
         assert_eq!(function.outputs.fields()[0].name, "value");
         assert_eq!(function.result_class(), Some("TestResult"));
+    }
+
+    #[test]
+    fn does_not_use_an_enum_type_description_for_an_undocumented_binding() {
+        let input = Input::Enum {
+            name: "topsoil_texture".into(),
+            description: None,
+            definition: EnumDefinition {
+                name: "TestCategory".into(),
+                kind: EnumKind::Enum,
+                description: "Test category type.".into(),
+                values: Vec::new(),
+            },
+        };
+
+        assert_eq!(input.description(), "");
+        assert_eq!(
+            input
+                .enum_type()
+                .expect("enum input retains its type")
+                .description,
+            "Test category type."
+        );
     }
 }

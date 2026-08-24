@@ -33,11 +33,11 @@ Estimate soil water characteristics from sand, clay, and organic matter.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | g/g | 0 <= value <= 1 | Sand mass fraction of the fine-earth soil. |
-| `clay` | g/g | 0 <= value <= 0.60 | Clay mass fraction of the fine-earth soil. |
-| `organic_matter` | % mass | 0 <= value <= 8 | Organic matter content on a mass percentage basis. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | g/g | 0 <= value <= 1 | Sand mass fraction of the fine-earth soil. |
+| `clay` | `number` | g/g | 0 <= value <= 0.60 | Clay mass fraction of the fine-earth soil. |
+| `organic_matter` | `number` | % mass | 0 <= value <= 8 | Organic matter content on a mass percentage basis. |
 
 #### Outputs
 
@@ -86,12 +86,12 @@ Adjust Saxton and Rawls water characteristics for soil density.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `normal_density` | g/cm^3 | value > 0 | Normal dry bulk density estimated by the base model. |
-| `theta_s` | m^3/m^3 | value > 0 | Saturated water content at normal density. |
-| `theta_33` | m^3/m^3 | value > 0 | Water content at 33 kPa and normal density. |
-| `density_factor` | dimensionless | 0.9 <= value <= 1.3 | Multiplicative adjustment to normal density. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `normal_density` | `number` | g/cm^3 | value > 0 | Normal dry bulk density estimated by the base model. |
+| `theta_s` | `number` | m^3/m^3 | value > 0 | Saturated water content at normal density. |
+| `theta_33` | `number` | m^3/m^3 | value > 0 | Water content at 33 kPa and normal density. |
+| `density_factor` | `number` | dimensionless | 0.9 <= value <= 1.3 | Multiplicative adjustment to normal density. |
 
 #### Outputs
 
@@ -122,11 +122,11 @@ Estimate matric tension in the 1500 to 33 kPa segment.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `theta` | m^3/m^3 | theta_1500 <= value <= theta_33 | Volumetric water content. |
-| `theta_1500` | m^3/m^3 | value > 0 | Volumetric water content at 1500 kPa. |
-| `theta_33` | m^3/m^3 | value > theta_1500 | Volumetric water content at 33 kPa. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `theta` | `number` | m^3/m^3 | theta_1500 <= value <= theta_33 | Volumetric water content. |
+| `theta_1500` | `number` | m^3/m^3 | value > 0 | Volumetric water content at 1500 kPa. |
+| `theta_33` | `number` | m^3/m^3 | value > theta_1500 | Volumetric water content at 33 kPa. |
 
 #### Outputs
 
@@ -150,12 +150,12 @@ Estimate matric tension in the 33 kPa to air-entry segment.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `theta` | m^3/m^3 | theta_33 <= value <= theta_s | Volumetric water content. |
-| `theta_33` | m^3/m^3 | value > 0 | Volumetric water content at 33 kPa. |
-| `theta_s` | m^3/m^3 | value > theta_33 | Saturated volumetric water content. |
-| `air_entry_tension` | kPa | 0 <= value < 33 | Air-entry tension estimated by the base model. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `theta` | `number` | m^3/m^3 | theta_33 <= value <= theta_s | Volumetric water content. |
+| `theta_33` | `number` | m^3/m^3 | value > 0 | Volumetric water content at 33 kPa. |
+| `theta_s` | `number` | m^3/m^3 | value > theta_33 | Saturated volumetric water content. |
+| `air_entry_tension` | `number` | kPa | 0 <= value < 33 | Air-entry tension estimated by the base model. |
 
 #### Outputs
 
@@ -183,12 +183,12 @@ Estimate unsaturated hydraulic conductivity from water content.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `theta` | m^3/m^3 | 0 < value <= theta_s | Volumetric water content. |
-| `theta_s` | m^3/m^3 | value > 0 | Saturated volumetric water content. |
-| `saturated_conductivity` | mm/h | value >= 0 | Saturated hydraulic conductivity of the matric soil. |
-| `conductivity_lambda` | dimensionless | value > 0 | Inverse of retention exponent B. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `theta` | `number` | m^3/m^3 | 0 < value <= theta_s | Volumetric water content. |
+| `theta_s` | `number` | m^3/m^3 | value > 0 | Saturated volumetric water content. |
+| `saturated_conductivity` | `number` | mm/h | value >= 0 | Saturated hydraulic conductivity of the matric soil. |
+| `conductivity_lambda` | `number` | dimensionless | value > 0 | Inverse of retention exponent B. |
 
 #### Outputs
 
@@ -212,12 +212,12 @@ Adjust matric-soil properties for gravel content.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `gravel_weight_fraction` | g/g | 0 <= value < 1 | Gravel mass fraction of the bulk soil. |
-| `matric_density` | g/cm^3 | 0 < value <= 2.65 | Dry bulk density of the fine-earth matric soil. |
-| `plant_available_water` | m^3/m^3 | value >= 0 | Plant-available water of the matric soil. |
-| `saturated_conductivity` | mm/h | value >= 0 | Saturated hydraulic conductivity of the matric soil. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `gravel_weight_fraction` | `number` | g/g | 0 <= value < 1 | Gravel mass fraction of the bulk soil. |
+| `matric_density` | `number` | g/cm^3 | 0 < value <= 2.65 | Dry bulk density of the fine-earth matric soil. |
+| `plant_available_water` | `number` | m^3/m^3 | value >= 0 | Plant-available water of the matric soil. |
+| `saturated_conductivity` | `number` | mm/h | value >= 0 | Saturated hydraulic conductivity of the matric soil. |
 
 #### Outputs
 
@@ -252,11 +252,11 @@ Estimate saturated and moisture-adjusted osmotic potential.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `electrical_conductivity` | dS/m | value >= 0 | Electrical conductivity of a saturated soil extract. |
-| `theta` | m^3/m^3 | 0 < value <= theta_s | Current volumetric water content. |
-| `theta_s` | m^3/m^3 | value > 0 | Saturated volumetric water content. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `electrical_conductivity` | `number` | dS/m | value >= 0 | Electrical conductivity of a saturated soil extract. |
+| `theta` | `number` | m^3/m^3 | 0 < value <= theta_s | Current volumetric water content. |
+| `theta_s` | `number` | m^3/m^3 | value > 0 | Saturated volumetric water content. |
 
 #### Outputs
 

@@ -2,6 +2,9 @@
 #include <ptfkit/li2007.h>
 #include "ufunc.h"
 
+static const int calc_ptf_li2007_types[] = {NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                            NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE,
+                                            NPY_DOUBLE, NPY_DOUBLE, NPY_DOUBLE};
 static int calc_ptf_li2007_contiguous_loop(PyArrayMethod_Context *context, char *const *data,
                                            const npy_intp *dimensions, const npy_intp *strides,
                                            NpyAuxData *transferdata) {
@@ -67,7 +70,8 @@ static PyArrayMethod_Spec calc_ptf_li2007_spec = {
 };
 
 int ptfkit_register_li2007(PyObject *module) {
-    if (ptfkit_add_ufunc(module, "calc_ptf_li2007", 5, 4, &calc_ptf_li2007_spec) < 0)
+    if (ptfkit_add_ufunc(module, "calc_ptf_li2007", calc_ptf_li2007_types, 5, 4,
+                         &calc_ptf_li2007_spec) < 0)
         return -1;
     return 0;
 }

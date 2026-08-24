@@ -33,10 +33,10 @@ Evaluate the Campbell and Shiozawa saturated-conductivity PTF.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
-| `clay` | % | 0 <= value <= 100 | Clay content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by percentage. |
 
 #### Outputs
 
@@ -60,10 +60,10 @@ Evaluate the Saxton et al. saturated-conductivity PTF.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
-| `clay` | % | 0 < value <= 100 | Clay content by percentage; strictly positive for the base-10 logarithm. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
+| `clay` | `number` | % | 0 < value <= 100 | Clay content by percentage; strictly positive for the base-10 logarithm. |
 
 #### Outputs
 
@@ -91,9 +91,9 @@ Evaluate the Dane and Puckett saturated-conductivity PTF.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % | 0 <= value <= 100 | Clay content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by percentage. |
 
 #### Outputs
 
@@ -117,9 +117,9 @@ Evaluate the Puckett et al. saturated-conductivity PTF.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % | 0 <= value <= 100 | Clay content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by percentage. |
 
 #### Outputs
 
@@ -143,10 +143,10 @@ Evaluate the Cosby et al. saturated-conductivity PTF.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
-| `clay` | % | 0 <= value <= 100 | Clay content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by percentage. |
 
 #### Outputs
 
@@ -170,9 +170,9 @@ Estimate saturated conductivity for Humic Acrisol from sand content.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
 
 #### Outputs
 
@@ -196,11 +196,11 @@ Estimate saturated conductivity for Humic Acrisol from texture and organic matte
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
-| `clay` | % | 0 <= value <= 100 | Clay content by percentage. |
-| `organic_matter` | % | 0 <= value <= 100 | Organic matter content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by percentage. |
+| `organic_matter` | `number` | % | 0 <= value <= 100 | Organic matter content by percentage. |
 
 #### Outputs
 
@@ -224,9 +224,9 @@ Estimate saturated conductivity for Calcic Cambisol from sand content.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
 
 #### Outputs
 
@@ -250,11 +250,11 @@ Estimate saturated conductivity for Calcic Cambisol from texture and organic mat
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
-| `clay` | % | 0 <= value <= 100 | Clay content by percentage. |
-| `organic_matter` | % | 0 <= value <= 100 | Organic matter content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by percentage. |
+| `organic_matter` | `number` | % | 0 <= value <= 100 | Organic matter content by percentage. |
 
 #### Outputs
 
@@ -278,9 +278,9 @@ Estimate saturated conductivity for Dystric Cambisol from sand content.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
 
 #### Outputs
 
@@ -304,11 +304,11 @@ Estimate saturated conductivity for Dystric Cambisol from texture and organic ma
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
-| `clay` | % | 0 <= value <= 100 | Clay content by percentage. |
-| `organic_matter` | % | 0 <= value <= 100 | Organic matter content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by percentage. |
+| `organic_matter` | `number` | % | 0 <= value <= 100 | Organic matter content by percentage. |
 
 #### Outputs
 
@@ -332,9 +332,9 @@ Estimate saturated conductivity for Eutric Cambisol from sand content.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
 
 #### Outputs
 
@@ -358,11 +358,11 @@ Estimate saturated conductivity for Eutric Cambisol from texture and organic mat
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
-| `clay` | % | 0 <= value <= 100 | Clay content by percentage. |
-| `organic_matter` | % | 0 <= value <= 100 | Organic matter content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by percentage. |
+| `organic_matter` | `number` | % | 0 <= value <= 100 | Organic matter content by percentage. |
 
 #### Outputs
 
@@ -386,9 +386,9 @@ Estimate saturated conductivity for Gleyic Cambisol from sand content.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
 
 #### Outputs
 
@@ -412,11 +412,11 @@ Estimate saturated conductivity for Gleyic Cambisol from texture and organic mat
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
-| `clay` | % | 0 <= value <= 100 | Clay content by percentage. |
-| `organic_matter` | % | 0 <= value <= 100 | Organic matter content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by percentage. |
+| `organic_matter` | `number` | % | 0 <= value <= 100 | Organic matter content by percentage. |
 
 #### Outputs
 
@@ -440,9 +440,9 @@ Estimate saturated conductivity for Humic Cambisol from sand content.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
 
 #### Outputs
 
@@ -466,11 +466,11 @@ Estimate saturated conductivity for Humic Cambisol from texture and organic matt
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
-| `clay` | % | 0 <= value <= 100 | Clay content by percentage. |
-| `organic_matter` | % | 0 <= value <= 100 | Organic matter content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by percentage. |
+| `organic_matter` | `number` | % | 0 <= value <= 100 | Organic matter content by percentage. |
 
 #### Outputs
 
@@ -494,9 +494,9 @@ Estimate saturated conductivity for Calcaric Fluvisol from sand content.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
 
 #### Outputs
 
@@ -520,11 +520,11 @@ Estimate saturated conductivity for Calcaric Fluvisol from texture and organic m
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
-| `clay` | % | 0 <= value <= 100 | Clay content by percentage. |
-| `organic_matter` | % | 0 <= value <= 100 | Organic matter content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by percentage. |
+| `organic_matter` | `number` | % | 0 <= value <= 100 | Organic matter content by percentage. |
 
 #### Outputs
 
@@ -548,9 +548,9 @@ Estimate saturated conductivity for Calcic Luvisol from sand content.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
 
 #### Outputs
 
@@ -578,11 +578,11 @@ Estimate saturated conductivity for Calcic Luvisol from texture and organic matt
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
-| `clay` | % | 0 <= value <= 100 | Clay content by percentage. |
-| `organic_matter` | % | 0 <= value <= 100 | Organic matter content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by percentage. |
+| `organic_matter` | `number` | % | 0 <= value <= 100 | Organic matter content by percentage. |
 
 #### Outputs
 
@@ -610,9 +610,9 @@ Estimate saturated conductivity for Chromic Luvisol from sand content.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
 
 #### Outputs
 
@@ -636,11 +636,11 @@ Estimate saturated conductivity for Chromic Luvisol from texture and organic mat
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
-| `clay` | % | 0 <= value <= 100 | Clay content by percentage. |
-| `organic_matter` | % | 0 <= value <= 100 | Organic matter content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by percentage. |
+| `organic_matter` | `number` | % | 0 <= value <= 100 | Organic matter content by percentage. |
 
 #### Outputs
 
@@ -664,9 +664,9 @@ Estimate saturated conductivity for Gleyic Luvisol from sand content.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
 
 #### Outputs
 
@@ -690,11 +690,11 @@ Estimate saturated conductivity for Gleyic Luvisol from texture and organic matt
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
-| `clay` | % | 0 <= value <= 100 | Clay content by percentage. |
-| `organic_matter` | % | 0 <= value <= 100 | Organic matter content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by percentage. |
+| `organic_matter` | `number` | % | 0 <= value <= 100 | Organic matter content by percentage. |
 
 #### Outputs
 
@@ -718,9 +718,9 @@ Estimate saturated conductivity for Orthic Luvisol from sand content.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
 
 #### Outputs
 
@@ -744,11 +744,11 @@ Estimate saturated conductivity for Orthic Luvisol from texture and organic matt
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
-| `clay` | % | 0 <= value <= 100 | Clay content by percentage. |
-| `organic_matter` | % | 0 <= value <= 100 | Organic matter content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by percentage. |
+| `organic_matter` | `number` | % | 0 <= value <= 100 | Organic matter content by percentage. |
 
 #### Outputs
 
@@ -772,9 +772,9 @@ Estimate saturated conductivity for Ranker from sand content.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
 
 #### Outputs
 
@@ -798,11 +798,11 @@ Estimate saturated conductivity for Ranker from texture and organic matter.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
-| `clay` | % | 0 <= value <= 100 | Clay content by percentage. |
-| `organic_matter` | % | 0 <= value <= 100 | Organic matter content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by percentage. |
+| `organic_matter` | `number` | % | 0 <= value <= 100 | Organic matter content by percentage. |
 
 #### Outputs
 
@@ -826,9 +826,9 @@ Estimate saturated conductivity for Calcaric Regosol from sand content.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
 
 #### Outputs
 
@@ -852,11 +852,11 @@ Estimate saturated conductivity for Calcaric Regosol from texture and organic ma
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
-| `clay` | % | 0 <= value <= 100 | Clay content by percentage. |
-| `organic_matter` | % | 0 <= value <= 100 | Organic matter content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by percentage. |
+| `organic_matter` | `number` | % | 0 <= value <= 100 | Organic matter content by percentage. |
 
 #### Outputs
 
@@ -880,9 +880,9 @@ Estimate saturated conductivity for Dystric Regosol from sand content.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
 
 #### Outputs
 
@@ -906,11 +906,11 @@ Estimate saturated conductivity for Dystric Regosol from texture and organic mat
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
-| `clay` | % | 0 <= value <= 100 | Clay content by percentage. |
-| `organic_matter` | % | 0 <= value <= 100 | Organic matter content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by percentage. |
+| `organic_matter` | `number` | % | 0 <= value <= 100 | Organic matter content by percentage. |
 
 #### Outputs
 
@@ -934,9 +934,9 @@ Estimate saturated conductivity for Eutric Regosol from sand content.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
 
 #### Outputs
 
@@ -960,11 +960,11 @@ Estimate saturated conductivity for Eutric Regosol from texture and organic matt
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
-| `clay` | % | 0 <= value <= 100 | Clay content by percentage. |
-| `organic_matter` | % | 0 <= value <= 100 | Organic matter content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by percentage. |
+| `organic_matter` | `number` | % | 0 <= value <= 100 | Organic matter content by percentage. |
 
 #### Outputs
 
@@ -988,9 +988,9 @@ Estimate saturated conductivity for Rendzina from sand content.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
 
 #### Outputs
 
@@ -1018,11 +1018,11 @@ Estimate saturated conductivity for Rendzina from texture and organic matter.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
-| `clay` | % | 0 <= value <= 100 | Clay content by percentage. |
-| `organic_matter` | % | 0 <= value <= 100 | Organic matter content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by percentage. |
+| `organic_matter` | `number` | % | 0 <= value <= 100 | Organic matter content by percentage. |
 
 #### Outputs
 
@@ -1050,9 +1050,9 @@ Estimate saturated conductivity for Gleyic Solonchak from sand content.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
 
 #### Outputs
 
@@ -1080,11 +1080,11 @@ Estimate saturated conductivity for Gleyic Solonchak from texture and organic ma
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
-| `clay` | % | 0 <= value <= 100 | Clay content by percentage. |
-| `organic_matter` | % | 0 <= value <= 100 | Organic matter content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by percentage. |
+| `organic_matter` | `number` | % | 0 <= value <= 100 | Organic matter content by percentage. |
 
 #### Outputs
 
@@ -1120,9 +1120,9 @@ Estimate saturated conductivity for Spanish soils from sand content.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
 
 #### Outputs
 
@@ -1150,11 +1150,11 @@ Estimate saturated conductivity for Spanish soils from texture and organic matte
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by percentage. |
-| `clay` | % | 0 <= value <= 100 | Clay content by percentage. |
-| `organic_matter` | % | 0 <= value <= 100 | Organic matter content by percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by percentage. |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by percentage. |
+| `organic_matter` | `number` | % | 0 <= value <= 100 | Organic matter content by percentage. |
 
 #### Outputs
 

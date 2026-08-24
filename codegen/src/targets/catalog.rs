@@ -116,19 +116,15 @@ impl Render for FunctionSection<'_> {
             writer.blank_line();
         }
 
-        ParameterTable {
-            title: "Inputs",
-            parameters: self.document.parameters,
-        }
-        .render(writer);
-        ParameterTable {
-            title: "Outputs",
-            parameters: match self.document.returns {
+        render_input_table(writer, self.document.parameters);
+        render_parameter_table(
+            writer,
+            "Outputs",
+            match self.document.returns {
                 docs::Returns::Scalar(field) => std::slice::from_ref(field),
                 docs::Returns::Record { fields, .. } => fields,
             },
-        }
-        .render(writer);
+        );
         for note in self.document.notes {
             Admonition {
                 kind: "note",
@@ -146,32 +142,72 @@ impl Render for FunctionSection<'_> {
     }
 }
 
-struct ParameterTable<'a> {
-    title: &'a str,
-    parameters: &'a [Parameter],
+trait CatalogParameter {
+    fn name(&self) -> &str;
+    fn unit(&self) -> &str;
+    fn domain(&self) -> Option<&str>;
+    fn description(&self) -> &str;
 }
 
-impl Render for ParameterTable<'_> {
-    fn render(&self, writer: &mut Writer) {
-        writer.write(format_args!(
-            "#### {}\n\n| Name | Unit | Domain | Description |\n| --- | --- | --- | --- |\n",
-            self.title
-        ));
-        for parameter in self.parameters {
-            writer.line(format_args!(
-                "| `{}` | {} | {} | {} |",
-                parameter.name,
-                escape_table(&parameter.unit),
-                parameter
-                    .domain
-                    .as_deref()
-                    .map(escape_table)
-                    .unwrap_or_else(|| "\u{2014}".into()),
-                escape_table(&parameter.description),
-            ));
-        }
-        writer.blank_line();
+impl CatalogParameter for Parameter {
+    fn name(&self) -> &str {
+        &self.name
     }
+    fn unit(&self) -> &str {
+        &self.unit
+    }
+    fn domain(&self) -> Option<&str> {
+        self.domain.as_deref()
+    }
+    fn description(&self) -> &str {
+        &self.description
+    }
+}
+
+fn render_input_table(writer: &mut Writer, inputs: &[crate::model::Input]) {
+    writer.write(
+        "#### Inputs\n\n| Name | Type | Unit | Domain | Description |\n| --- | --- | --- | --- | --- |\n",
+    );
+    for input in inputs {
+        let value_type = input
+            .enum_type()
+            .map(|definition| format!("`{}`", definition.name))
+            .unwrap_or_else(|| "`number`".to_owned());
+        writer.line(format_args!(
+            "| `{}` | {} | {} | {} | {} |",
+            input.name(),
+            value_type,
+            input
+                .unit()
+                .map(escape_table)
+                .unwrap_or_else(|| "\u{2014}".into()),
+            input
+                .domain()
+                .map(escape_table)
+                .unwrap_or_else(|| "\u{2014}".into()),
+            escape_table(input.description()),
+        ));
+    }
+    writer.blank_line();
+}
+
+fn render_parameter_table(writer: &mut Writer, title: &str, parameters: &[impl CatalogParameter]) {
+    writer.write(format_args!(
+        "#### {title}\n\n| Name | Unit | Domain | Description |\n| --- | --- | --- | --- |\n"
+    ));
+    for parameter in parameters {
+        writer.line(format_args!(
+            "| `{}` | {} | {} | {} |",
+            parameter.name(),
+            escape_table(parameter.unit()),
+            parameter
+                .domain()
+                .map(escape_table)
+                .unwrap_or_else(|| "\u{2014}".into()),
+            escape_table(parameter.description()),
+        ));
+    }
+    writer.blank_line();
 }
 
 struct Admonition<'a> {

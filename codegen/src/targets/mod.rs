@@ -12,9 +12,70 @@ use anyhow::Result;
 
 use crate::{
     compile,
-    model::{CompiledFunction, Entry},
+    model::{CompiledFunction, Entry, Output as FunctionOutput},
     output::{self, Output},
+    semantic::VariableValue,
 };
+
+pub(super) fn record_types(
+    functions: &[&CompiledFunction],
+) -> Result<BTreeMap<String, Vec<String>>> {
+    let mut records = BTreeMap::new();
+    for function in functions {
+        if let FunctionOutput::Struct(fields) = &function.core.output {
+            let name = function.entry.spec.functions[function.function_index]
+                .result_class()
+                .expect("record output has a result class");
+            insert_record_type(&mut records, name, fields)?;
+        }
+        for lookup in function.ir.variables.iter().filter_map(|variable| {
+            if let VariableValue::RecordLookup(lookup) = &variable.value {
+                Some(lookup)
+            } else {
+                None
+            }
+        }) {
+            insert_record_type(&mut records, &lookup.output.name, &lookup.output.fields)?;
+        }
+    }
+    Ok(records)
+}
+
+fn insert_record_type(
+    records: &mut BTreeMap<String, Vec<String>>,
+    name: &str,
+    fields: &[String],
+) -> Result<()> {
+    if let Some(previous) = records.get(name)
+        && previous != fields
+    {
+        anyhow::bail!("record type `{name}` has conflicting field definitions");
+    }
+    records.insert(name.to_owned(), fields.to_vec());
+    Ok(())
+}
+
+#[cfg(test)]
+pub(crate) fn render_rust_for_test(
+    functions: &[CompiledFunction],
+) -> Result<Vec<output::GeneratedFile>> {
+    rust::render(functions)
+}
+
+#[cfg(test)]
+pub(crate) fn render_native_for_test(
+    functions: &[CompiledFunction],
+) -> Result<(Vec<output::GeneratedFile>, Vec<output::GeneratedFile>)> {
+    let rendered = native::render(functions)?;
+    Ok((rendered.c_headers, rendered.cpp_modules))
+}
+
+#[cfg(test)]
+pub(crate) fn render_python_extension_for_test(
+    functions: &[CompiledFunction],
+) -> Result<Vec<output::GeneratedFile>> {
+    Ok(python::render(functions)?.extension)
+}
 
 pub(super) fn group_by_source(
     functions: &[CompiledFunction],

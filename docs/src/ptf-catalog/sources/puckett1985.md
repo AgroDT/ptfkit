@@ -31,13 +31,13 @@ Estimate a point water-retention curve and saturated hydraulic conductivity.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 35 <= value <= 89 | Sand content, 0.05-2 mm. |
-| `fine_sand` | % | — | Fine sand content, 0.106-0.25 mm. |
-| `clay` | % | 1 <= value <= 42 | Clay content, <0.002 mm. |
-| `bulk_density` | Mg/m^3 | 1.47 <= value <= 1.86 | Oven-dry bulk density. |
-| `porosity` | cm^3/cm^3 | 0.30 <= value <= 0.48 | Porosity calculated from measured bulk and particle densities. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 35 <= value <= 89 | Sand content, 0.05-2 mm. |
+| `fine_sand` | `number` | % | — | Fine sand content, 0.106-0.25 mm. |
+| `clay` | `number` | % | 1 <= value <= 42 | Clay content, <0.002 mm. |
+| `bulk_density` | `number` | Mg/m^3 | 1.47 <= value <= 1.86 | Oven-dry bulk density. |
+| `porosity` | `number` | cm^3/cm^3 | 0.30 <= value <= 0.48 | Porosity calculated from measured bulk and particle densities. |
 
 #### Outputs
 

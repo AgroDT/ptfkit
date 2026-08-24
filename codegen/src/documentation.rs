@@ -3,7 +3,7 @@
 //! Targets choose their own section ordering and markup. This module only
 //! describes the information they have available to render.
 
-use crate::model::{Function, Outputs, Parameter, Scope, Source};
+use crate::model::{Function, Input, Outputs, Parameter, Scope, Source};
 
 #[derive(Clone, Copy, Debug)]
 pub(crate) struct SourceDocument<'a> {
@@ -28,7 +28,7 @@ pub(crate) struct Doi<'a> {
 #[derive(Clone, Copy, Debug)]
 pub(crate) struct FunctionDocument<'a> {
     pub(crate) summary: &'a str,
-    pub(crate) parameters: &'a [Parameter],
+    pub(crate) parameters: &'a [Input],
     pub(crate) returns: Returns<'a>,
     pub(crate) territory: Option<&'a str>,
     pub(crate) models: Models<'a>,
@@ -93,21 +93,70 @@ pub(crate) fn for_function(function: &Function) -> FunctionDocument<'_> {
     }
 }
 
-pub(crate) fn parameter_details(parameter: &Parameter) -> String {
-    format!("{} ({})", parameter.description, parameter.unit)
+pub(crate) trait ParameterMetadata {
+    fn name(&self) -> &str;
+    fn description(&self) -> &str;
+    fn unit(&self) -> Option<&str>;
 }
 
-pub(crate) fn parameter_documentation(parameter: &Parameter) -> String {
-    format!("{}: {}", parameter.name, parameter_details(parameter))
+impl ParameterMetadata for Parameter {
+    fn name(&self) -> &str {
+        &self.name
+    }
+    fn description(&self) -> &str {
+        &self.description
+    }
+    fn unit(&self) -> Option<&str> {
+        Some(&self.unit)
+    }
+}
+
+impl ParameterMetadata for Input {
+    fn name(&self) -> &str {
+        self.name()
+    }
+    fn description(&self) -> &str {
+        self.description()
+    }
+    fn unit(&self) -> Option<&str> {
+        self.unit()
+    }
+}
+
+pub(crate) fn parameter_details(parameter: &impl ParameterMetadata) -> String {
+    match parameter.unit() {
+        Some(unit) => format!("{} ({unit})", parameter.description()),
+        None => parameter.description().to_owned(),
+    }
+}
+
+pub(crate) fn parameter_documentation(parameter: &impl ParameterMetadata) -> String {
+    format!("{}: {}", parameter.name(), parameter_details(parameter))
 }
 
 #[cfg(test)]
 mod tests {
     use crate::model::{
-        Documentation, Function, FunctionScope, Models, Outputs, Parameter, PublicApi,
+        Documentation, Function, FunctionScope, Input, Models, Outputs, Parameter, PublicApi,
     };
 
-    use super::{Returns, for_function};
+    use super::{ParameterMetadata, Returns, for_function, parameter_details};
+
+    struct EnumInputMetadata;
+
+    impl ParameterMetadata for EnumInputMetadata {
+        fn name(&self) -> &str {
+            "soil_texture"
+        }
+
+        fn description(&self) -> &str {
+            "USDA soil textural class."
+        }
+
+        fn unit(&self) -> Option<&str> {
+            None
+        }
+    }
 
     fn parameter(name: &str) -> Parameter {
         Parameter {
@@ -116,6 +165,23 @@ mod tests {
             domain: None,
             description: format!("{name} description."),
         }
+    }
+
+    fn input(name: &str) -> Input {
+        Input::Parameter(Parameter {
+            name: name.into(),
+            unit: "cm^3/cm^3".into(),
+            domain: None,
+            description: format!("{name} description."),
+        })
+    }
+
+    #[test]
+    fn omits_a_unit_suffix_for_enum_input_metadata() {
+        assert_eq!(
+            parameter_details(&EnumInputMetadata),
+            "USDA soil textural class."
+        );
     }
 
     #[test]
@@ -169,7 +235,7 @@ mod tests {
                     k_h: Some("Conductivity model.".into()),
                 },
             },
-            inputs: vec![parameter("sand")],
+            inputs: vec![input("sand")],
             outputs: Outputs::Record {
                 name: "TestResult".into(),
                 fields: vec![parameter("theta_33"), parameter("theta_1500")],

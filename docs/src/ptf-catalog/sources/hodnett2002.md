@@ -33,15 +33,15 @@ Estimate four van Genuchten water-retention parameters for tropical soils.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0.5 <= value <= 99.0 | Sand content in the 0.05-2 mm USDA particle-size fraction, expressed as a percentage. |
-| `silt` | % | 0.4 <= value <= 77.4 | Silt content in the 0.002-0.05 mm USDA particle-size fraction, expressed as a percentage. |
-| `clay` | % | 0.0 <= value <= 95.4 | Clay content in the less-than-0.002 mm USDA particle-size fraction, expressed as a percentage. |
-| `organic_carbon` | % | 0.0 <= value <= 30.8 | Soil organic carbon content expressed as a percentage. |
-| `bulk_density` | Mg/m^3 | 0.28 <= value <= 1.88 | Soil bulk density. |
-| `cation_exchange_capacity` | cmol/kg | 0.0 <= value <= 93.7 | Soil cation exchange capacity. |
-| `ph` | dimensionless | 3.60 <= value <= 9.60 | Soil pH. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0.5 <= value <= 99.0 | Sand content in the 0.05-2 mm USDA particle-size fraction, expressed as a percentage. |
+| `silt` | `number` | % | 0.4 <= value <= 77.4 | Silt content in the 0.002-0.05 mm USDA particle-size fraction, expressed as a percentage. |
+| `clay` | `number` | % | 0.0 <= value <= 95.4 | Clay content in the less-than-0.002 mm USDA particle-size fraction, expressed as a percentage. |
+| `organic_carbon` | `number` | % | 0.0 <= value <= 30.8 | Soil organic carbon content expressed as a percentage. |
+| `bulk_density` | `number` | Mg/m^3 | 0.28 <= value <= 1.88 | Soil bulk density. |
+| `cation_exchange_capacity` | `number` | cmol/kg | 0.0 <= value <= 93.7 | Soil cation exchange capacity. |
+| `ph` | `number` | dimensionless | 3.60 <= value <= 9.60 | Soil pH. |
 
 #### Outputs
 

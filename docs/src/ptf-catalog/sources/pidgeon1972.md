@@ -31,11 +31,11 @@ Estimate gravimetric field capacity from silt, clay, and organic matter.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `silt` | % | — | Silt measured by particle-size method 2. |
-| `clay` | % | — | Clay measured by particle-size method 2. |
-| `organic_matter` | % | — | Organic matter content. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `silt` | `number` | % | — | Silt measured by particle-size method 2. |
+| `clay` | `number` | % | — | Clay measured by particle-size method 2. |
+| `organic_matter` | `number` | % | — | Organic matter content. |
 
 #### Outputs
 
@@ -59,9 +59,9 @@ Estimate gravimetric field capacity from sand.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | — | Sand measured by particle-size method 2. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | — | Sand measured by particle-size method 2. |
 
 #### Outputs
 
@@ -81,10 +81,10 @@ Estimate gravimetric field capacity from sand and organic matter.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | — | Sand measured by particle-size method 2. |
-| `organic_matter` | % | — | Organic matter content. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | — | Sand measured by particle-size method 2. |
+| `organic_matter` | `number` | % | — | Organic matter content. |
 
 #### Outputs
 
@@ -104,10 +104,10 @@ Estimate volumetric field capacity from sand and organic matter.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | — | Sand measured by particle-size method 2. |
-| `organic_matter` | % | — | Organic matter content. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | — | Sand measured by particle-size method 2. |
+| `organic_matter` | `number` | % | — | Organic matter content. |
 
 #### Outputs
 
@@ -127,11 +127,11 @@ Estimate permanent wilting point from silt, clay, and organic matter.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `silt` | % | — | Silt measured by particle-size method 2. |
-| `clay` | % | — | Clay measured by particle-size method 2. |
-| `organic_matter` | % | — | Organic matter content. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `silt` | `number` | % | — | Silt measured by particle-size method 2. |
+| `clay` | `number` | % | — | Clay measured by particle-size method 2. |
+| `organic_matter` | `number` | % | — | Organic matter content. |
 
 #### Outputs
 
@@ -151,9 +151,9 @@ Estimate permanent wilting point from sand.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | — | Sand measured by particle-size method 1. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | — | Sand measured by particle-size method 1. |
 
 #### Outputs
 
@@ -173,10 +173,10 @@ Estimate permanent wilting point from sand and organic matter.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | — | Sand measured by particle-size method 2. |
-| `organic_matter` | % | — | Organic matter content. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | — | Sand measured by particle-size method 2. |
+| `organic_matter` | `number` | % | — | Organic matter content. |
 
 #### Outputs
 
@@ -196,10 +196,10 @@ Estimate available water capacity from clay and organic matter.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % | — | Clay measured by particle-size method 1. |
-| `organic_matter` | % | — | Organic matter content. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % | — | Clay measured by particle-size method 1. |
+| `organic_matter` | `number` | % | — | Organic matter content. |
 
 #### Outputs
 
@@ -219,10 +219,10 @@ Estimate available water capacity from sand and organic matter.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | — | Sand measured by particle-size method 2. |
-| `organic_matter` | % | — | Organic matter content. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | — | Sand measured by particle-size method 2. |
+| `organic_matter` | `number` | % | — | Organic matter content. |
 
 #### Outputs
 
@@ -242,9 +242,9 @@ Estimate available water capacity from coarse sand.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `coarse_sand` | % | — | Coarse sand measured by particle-size method 1. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `coarse_sand` | `number` | % | — | Coarse sand measured by particle-size method 1. |
 
 #### Outputs
 
@@ -264,9 +264,9 @@ Estimate available water capacity from fine sand.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `fine_sand` | % | — | Fine sand measured by particle-size method 1. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `fine_sand` | `number` | % | — | Fine sand measured by particle-size method 1. |
 
 #### Outputs
 
@@ -286,9 +286,9 @@ Estimate available water capacity from very fine sand.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `very_fine_sand` | % | — | Very fine sand measured by particle-size method 1. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `very_fine_sand` | `number` | % | — | Very fine sand measured by particle-size method 1. |
 
 #### Outputs
 
@@ -308,11 +308,11 @@ Estimate extended available water capacity from silt, clay, and organic matter.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `silt` | % | — | Silt measured by particle-size method 2. |
-| `clay` | % | — | Clay measured by particle-size method 2. |
-| `organic_matter` | % | — | Organic matter content. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `silt` | `number` | % | — | Silt measured by particle-size method 2. |
+| `clay` | `number` | % | — | Clay measured by particle-size method 2. |
+| `organic_matter` | `number` | % | — | Organic matter content. |
 
 #### Outputs
 
@@ -332,9 +332,9 @@ Estimate extended available water capacity from sand.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | — | Sand measured by particle-size method 2. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | — | Sand measured by particle-size method 2. |
 
 #### Outputs
 
@@ -354,10 +354,10 @@ Estimate extended available water capacity from sand and organic matter.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | — | Sand measured by particle-size method 1. |
-| `organic_matter` | % | — | Organic matter content. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | — | Sand measured by particle-size method 1. |
+| `organic_matter` | `number` | % | — | Organic matter content. |
 
 #### Outputs
 
@@ -377,10 +377,10 @@ Estimate extended available water capacity from coarse sand and organic matter.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `coarse_sand` | % | — | Coarse sand measured by particle-size method 1. |
-| `organic_matter` | % | — | Organic matter content. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `coarse_sand` | `number` | % | — | Coarse sand measured by particle-size method 1. |
+| `organic_matter` | `number` | % | — | Organic matter content. |
 
 #### Outputs
 
@@ -400,10 +400,10 @@ Estimate extended available water capacity from fine sand and organic matter.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `fine_sand` | % | — | Fine sand measured by particle-size method 1. |
-| `organic_matter` | % | — | Organic matter content. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `fine_sand` | `number` | % | — | Fine sand measured by particle-size method 1. |
+| `organic_matter` | `number` | % | — | Organic matter content. |
 
 #### Outputs
 

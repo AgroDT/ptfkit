@@ -31,9 +31,9 @@ Estimate field-capacity tension from clay content.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % mass | 2 <= value <= 72 | Clay content in percent by weight; the field-capacity tension experiment covered 2% to 72% clay. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % mass | 2 <= value <= 72 | Clay content in percent by weight; the field-capacity tension experiment covered 2% to 72% clay. |
 
 #### Outputs
 
@@ -57,12 +57,12 @@ Estimate gravimetric soil-moisture content from texture, depth, and tension.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % mass | — | Clay content in percent by weight. |
-| `sand` | % mass | — | Sand content in percent by weight. |
-| `mean_depth` | cm | 8 <= value <= 180 | Mean depth of the soil sample. |
-| `tension` | kPa | 10 <= value <= 1500 | Soil-moisture tension. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % mass | — | Clay content in percent by weight. |
+| `sand` | `number` | % mass | — | Sand content in percent by weight. |
+| `mean_depth` | `number` | cm | 8 <= value <= 180 | Mean depth of the soil sample. |
+| `tension` | `number` | kPa | 10 <= value <= 1500 | Soil-moisture tension. |
 
 #### Outputs
 
@@ -90,11 +90,11 @@ Estimate gravimetric soil-moisture content at field capacity.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % mass | 2 <= value <= 72 | Clay content in percent by weight; the field-capacity tension experiment covered 2% to 72% clay. |
-| `sand` | % mass | — | Sand content in percent by weight. |
-| `mean_depth` | cm | 8 <= value <= 180 | Mean depth of the soil sample. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % mass | 2 <= value <= 72 | Clay content in percent by weight; the field-capacity tension experiment covered 2% to 72% clay. |
+| `sand` | `number` | % mass | — | Sand content in percent by weight. |
+| `mean_depth` | `number` | cm | 8 <= value <= 180 | Mean depth of the soil sample. |
 
 #### Outputs
 
@@ -118,11 +118,11 @@ Estimate gravimetric soil-moisture content at the 1500 kPa wilting point.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % mass | — | Clay content in percent by weight. |
-| `sand` | % mass | — | Sand content in percent by weight. |
-| `mean_depth` | cm | 8 <= value <= 180 | Mean depth of the soil sample. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % mass | — | Clay content in percent by weight. |
+| `sand` | `number` | % mass | — | Sand content in percent by weight. |
+| `mean_depth` | `number` | cm | 8 <= value <= 180 | Mean depth of the soil sample. |
 
 #### Outputs
 
@@ -150,11 +150,11 @@ Estimate available gravimetric soil moisture between field capacity and wilting 
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % mass | 2 <= value <= 72 | Clay content in percent by weight; the field-capacity tension experiment covered 2% to 72% clay. |
-| `sand` | % mass | — | Sand content in percent by weight. |
-| `mean_depth` | cm | 8 <= value <= 180 | Mean depth of the soil sample. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % mass | 2 <= value <= 72 | Clay content in percent by weight; the field-capacity tension experiment covered 2% to 72% clay. |
+| `sand` | `number` | % mass | — | Sand content in percent by weight. |
+| `mean_depth` | `number` | cm | 8 <= value <= 180 | Mean depth of the soil sample. |
 
 #### Outputs
 

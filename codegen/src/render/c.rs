@@ -36,7 +36,7 @@ pub(crate) fn test_float_literal(value: f64) -> String {
 
 pub(crate) fn requires_math(expression: &Expr) -> bool {
     match expression {
-        Expr::Number(_) | Expr::Reference(_) => false,
+        Expr::Number(_) | Expr::Reference(_) | Expr::Field { .. } => false,
         Expr::Unary { operand, .. } => requires_math(operand),
         Expr::Binary { op, left, right } => {
             (matches!(op, BinaryOp::Power) && small_integer_exponent(right).is_none())
@@ -49,7 +49,7 @@ pub(crate) fn requires_math(expression: &Expr) -> bool {
 
 pub(crate) fn requires_pow4(expression: &Expr) -> bool {
     match expression {
-        Expr::Number(_) | Expr::Reference(_) => false,
+        Expr::Number(_) | Expr::Reference(_) | Expr::Field { .. } => false,
         Expr::Unary { operand, .. } => requires_pow4(operand),
         Expr::Binary { op, left, right } => {
             (matches!(op, BinaryOp::Power) && small_integer_exponent(right) == Some(4))
@@ -111,6 +111,13 @@ impl Expression<'_> {
             }
             Expr::Reference(Reference::Variable(index)) => {
                 write!(formatter, "{}", self.variables[*index].name)?;
+            }
+            Expr::Field { record, field } => {
+                let name = match record {
+                    Reference::Input(index) => &self.inputs[*index],
+                    Reference::Variable(index) => &self.variables[*index].name,
+                };
+                write!(formatter, "{name}.{field}")?
             }
             Expr::Unary { op, operand } => match op {
                 UnaryOp::Plus => unreachable!("unary plus is handled before parenthesizing"),
@@ -245,9 +252,11 @@ fn precedence(expression: &Expr) -> Precedence {
             right,
             ..
         } if small_integer_exponent(right).is_some() => Precedence::Product,
-        Expr::Number(_) | Expr::Reference(_) | Expr::Binary { .. } | Expr::Call { .. } => {
-            Precedence::Primary
-        }
+        Expr::Number(_)
+        | Expr::Reference(_)
+        | Expr::Field { .. }
+        | Expr::Binary { .. }
+        | Expr::Call { .. } => Precedence::Primary,
     }
 }
 
@@ -429,5 +438,27 @@ mod tests {
             super::expression(&expression, &inputs(), &[], Dialect::C).to_string(),
             "x / (y * y)"
         );
+    }
+
+    #[test]
+    fn renders_record_field_access_for_native_dialects() {
+        let expression = Expr::Field {
+            record: Reference::Variable(0),
+            field: "b".into(),
+        };
+        let variables = [Variable {
+            name: "parameters".into(),
+            value: crate::semantic::VariableValue::Number(Expr::Number(Number {
+                value: 0.0,
+                lexeme: "0.0".into(),
+            })),
+        }];
+
+        assert_eq!(
+            super::expression(&expression, &[], &variables, Dialect::C).to_string(),
+            "parameters.b"
+        );
+        assert!(!requires_math(&expression));
+        assert!(!requires_pow4(&expression));
     }
 }

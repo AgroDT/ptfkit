@@ -33,9 +33,9 @@ Estimate three gravimetric water contents from clay.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % | 0 <= value <= 100 | Clay content by mass. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by mass. |
 
 #### Outputs
 
@@ -65,9 +65,9 @@ Estimate three gravimetric water contents from silt.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `silt` | % | 0 <= value <= 100 | Silt content by mass. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `silt` | `number` | % | 0 <= value <= 100 | Silt content by mass. |
 
 #### Outputs
 
@@ -97,9 +97,9 @@ Estimate three gravimetric water contents from sand.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by mass. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by mass. |
 
 #### Outputs
 
@@ -129,10 +129,10 @@ Estimate three gravimetric water contents from clay plus silt.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % | 0 <= value <= 100 | Clay content by mass. |
-| `silt` | % | 0 <= value <= 100 | Silt content by mass. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by mass. |
+| `silt` | `number` | % | 0 <= value <= 100 | Silt content by mass. |
 
 #### Outputs
 
@@ -162,10 +162,10 @@ Estimate three gravimetric water contents from the clay-to-silt ratio.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % | 0 <= value <= 100 | Clay content by mass. |
-| `silt` | % | 0 < value <= 100 | Silt content by mass and denominator of the clay-to-silt ratio. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by mass. |
+| `silt` | `number` | % | 0 < value <= 100 | Silt content by mass and denominator of the clay-to-silt ratio. |
 
 #### Outputs
 
@@ -195,9 +195,9 @@ Estimate three gravimetric water contents from soil organic matter.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `soil_organic_matter` | % | value >= 0 | Soil organic matter content by mass. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `soil_organic_matter` | `number` | % | value >= 0 | Soil organic matter content by mass. |
 
 #### Outputs
 
@@ -227,11 +227,11 @@ Estimate three gravimetric water contents from silt, sand, and organic matter.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `silt` | % | 0 <= value <= 100 | Silt content by mass. |
-| `sand` | % | 0 <= value <= 100 | Sand content by mass. |
-| `soil_organic_matter` | % | value >= 0 | Soil organic matter content by mass. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `silt` | `number` | % | 0 <= value <= 100 | Silt content by mass. |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by mass. |
+| `soil_organic_matter` | `number` | % | value >= 0 | Soil organic matter content by mass. |
 
 #### Outputs
 
@@ -261,10 +261,10 @@ Estimate three gravimetric water contents from sand and organic matter.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content by mass. |
-| `soil_organic_matter` | % | value >= 0 | Soil organic matter content by mass. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by mass. |
+| `soil_organic_matter` | `number` | % | value >= 0 | Soil organic matter content by mass. |
 
 #### Outputs
 
@@ -294,10 +294,10 @@ Estimate three gravimetric water contents from silt and organic matter.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `silt` | % | 0 <= value <= 100 | Silt content by mass. |
-| `soil_organic_matter` | % | value >= 0 | Soil organic matter content by mass. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `silt` | `number` | % | 0 <= value <= 100 | Silt content by mass. |
+| `soil_organic_matter` | `number` | % | value >= 0 | Soil organic matter content by mass. |
 
 #### Outputs
 
@@ -327,10 +327,10 @@ Estimate three gravimetric water contents from clay and organic matter.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % | 0 <= value <= 100 | Clay content by mass. |
-| `soil_organic_matter` | % | value >= 0 | Soil organic matter content by mass. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by mass. |
+| `soil_organic_matter` | `number` | % | value >= 0 | Soil organic matter content by mass. |
 
 #### Outputs
 
@@ -360,11 +360,11 @@ Estimate three gravimetric water contents from clay, silt, and organic matter.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % | 0 <= value <= 100 | Clay content by mass. |
-| `silt` | % | 0 <= value <= 100 | Silt content by mass. |
-| `soil_organic_matter` | % | value >= 0 | Soil organic matter content by mass. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by mass. |
+| `silt` | `number` | % | 0 <= value <= 100 | Silt content by mass. |
+| `soil_organic_matter` | `number` | % | value >= 0 | Soil organic matter content by mass. |
 
 #### Outputs
 
@@ -394,12 +394,12 @@ Estimate three gravimetric water contents with the fitted regression trees.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % | 0 <= value <= 100 | Clay content by mass. |
-| `silt` | % | 0 <= value <= 100 | Silt content by mass. |
-| `sand` | % | 0 <= value <= 100 | Sand content by mass. |
-| `soil_organic_matter` | % | value >= 0 | Soil organic matter content by mass. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by mass. |
+| `silt` | `number` | % | 0 <= value <= 100 | Silt content by mass. |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by mass. |
+| `soil_organic_matter` | `number` | % | value >= 0 | Soil organic matter content by mass. |
 
 #### Outputs
 
@@ -429,12 +429,12 @@ Estimate three gravimetric water contents with the fitted Cubist models.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % | 0 <= value <= 100 | Clay content by mass. |
-| `silt` | % | 0 <= value <= 100 | Silt content by mass. |
-| `sand` | % | 0 <= value <= 100 | Sand content by mass. |
-| `soil_organic_matter` | % | value >= 0 | Soil organic matter content by mass. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by mass. |
+| `silt` | `number` | % | 0 <= value <= 100 | Silt content by mass. |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by mass. |
+| `soil_organic_matter` | `number` | % | value >= 0 | Soil organic matter content by mass. |
 
 #### Outputs
 
@@ -472,12 +472,12 @@ Estimate three gravimetric water contents with the fitted random forests.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % | 0 <= value <= 100 | Clay content by mass. |
-| `silt` | % | 0 <= value <= 100 | Silt content by mass. |
-| `sand` | % | 0 <= value <= 100 | Sand content by mass. |
-| `soil_organic_matter` | % | value >= 0 | Soil organic matter content by mass. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content by mass. |
+| `silt` | `number` | % | 0 <= value <= 100 | Silt content by mass. |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content by mass. |
+| `soil_organic_matter` | `number` | % | value >= 0 | Soil organic matter content by mass. |
 
 #### Outputs
 

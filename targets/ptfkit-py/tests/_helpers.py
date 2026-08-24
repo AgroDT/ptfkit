@@ -1,18 +1,22 @@
 from __future__ import annotations
 
+from enum import Enum
 from typing import TYPE_CHECKING, NamedTuple, TypeVar, overload
 
 import numpy as np
 
+from ptfkit.enums import EnumArray
+
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
+    from collections.abc import Mapping, Sequence
+    from typing import Any
 
     R = TypeVar('R', bound=NamedTuple)
 
-    GoldenCase = tuple[dict[str, float], dict[str, float], float, float]
+    GoldenCase = tuple[Mapping[str, Any], dict[str, float], float, float]
     VectorCasePart = tuple[
-        dict[str, np.ndarray],
+        dict[str, Any],
         dict[str, float],
         float,
         float,
@@ -34,7 +38,14 @@ def prepare_vector_case(
     result_cls: type[R] | None = None,
 ) -> VectorCaseScalar | VectorCaseTuple:
     inputs, expected, rtol, atol = cases[0]
-    vector_inputs = {name: np.array([value]) for name, value in inputs.items()}
+    vector_inputs = {
+        name: (
+            EnumArray._from_members(type(value), [value])  # noqa: SLF001
+            if isinstance(value, Enum)
+            else np.array([value])
+        )
+        for name, value in inputs.items()
+    }
     out: np.ndarray | R
 
     if result_cls is None:

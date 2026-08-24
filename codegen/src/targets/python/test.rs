@@ -1,7 +1,7 @@
 use std::collections::BTreeMap;
 
 use crate::{
-    model::{CompiledFunction, Function, Outputs, PythonGeneration},
+    model::{CompiledFunction, Function, GoldenInput, Outputs, PythonGeneration},
     output::GeneratedFile,
 };
 
@@ -39,6 +39,11 @@ fn module_source(slug: &str, functions: &[&CompiledFunction]) -> String {
         if let Some(result_class) = function.result_class() {
             imports.push(result_class);
         }
+        for input in &function.inputs {
+            if let Some(enum_type) = input.enum_type() {
+                imports.push(&enum_type.name);
+            }
+        }
     }
     imports.sort_by_key(|name| natural_sort_key(name));
     imports.dedup();
@@ -69,8 +74,8 @@ fn function_source(module: &mut Module, function: &Function) {
         for case in &function.golden_tests {
             writer.line(format_args!(
                 "({}, {}, {}, {}),",
-                dictionary(&case.inputs),
-                dictionary(&case.expected),
+                dictionary(&case.inputs, function),
+                numeric_dictionary(&case.expected),
                 float(case.rtol),
                 float(case.atol),
             ));
@@ -80,14 +85,33 @@ fn function_source(module: &mut Module, function: &Function) {
     module.blank_line();
     module.blank_line();
     let name = &function.public_api.name;
+    let input_value_type = if function
+        .inputs
+        .iter()
+        .any(|input| input.enum_type().is_some())
+    {
+        "object"
+    } else {
+        "float"
+    };
     module.line(format_args!(
         "@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), {cases_name})"
     ));
     module.line(format_args!(
-        "def test_{name}_golden(inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float):"
+        "def test_{name}_golden(inputs: dict[str, {input_value_type}], expected: dict[str, float], rtol: float, atol: float):"
     ));
     module.indented(|writer| {
-        writer.line(format_args!("result = {name}(**inputs)"));
+        if function
+            .inputs
+            .iter()
+            .any(|input| input.enum_type().is_some())
+        {
+            writer.line(format_args!(
+                "result = {name}(**inputs)  # ty: ignore[no-matching-overload]"
+            ));
+        } else {
+            writer.line(format_args!("result = {name}(**inputs)"));
+        }
         writer.blank_line();
         render_expected_assertion(writer, function, "");
     });
@@ -152,7 +176,32 @@ fn render_out_assertion(writer: &mut crate::render::Writer, function: &Function)
     }
 }
 
-fn dictionary(values: &BTreeMap<String, f64>) -> String {
+fn dictionary(values: &BTreeMap<String, GoldenInput>, function: &Function) -> String {
+    let entries = values
+        .iter()
+        .map(|(name, value)| {
+            let value = match value {
+                GoldenInput::Number(value) => float(*value),
+                GoldenInput::Enum(member) => {
+                    let enum_name = function
+                        .inputs
+                        .iter()
+                        .find(|input| input.name() == name)
+                        .and_then(|input| input.enum_type())
+                        .expect("enum golden input has a resolved enum type")
+                        .name
+                        .as_str();
+                    format!("{enum_name}.{}", member.to_ascii_uppercase())
+                }
+            };
+            format!("'{name}': {value}")
+        })
+        .collect::<Vec<_>>()
+        .join(", ");
+    format!("{{{entries}}}")
+}
+
+fn numeric_dictionary(values: &BTreeMap<String, f64>) -> String {
     let entries = values
         .iter()
         .map(|(name, value)| format!("'{name}': {}", float(*value)))
