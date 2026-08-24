@@ -19,12 +19,12 @@ static void calc_ptf_wang2012_loop(char **args, const npy_intp *dimensions, cons
         const double fc_percent =
             46.481 - 4.757 * soil_organic_carbon_g_per_kg - 14.028 * log10(clay) -
             13.991 * log10(sand) + 42.261 * log10(soil_organic_carbon_g_per_kg) - 11.763 / sand +
-            19.198 / soil_organic_carbon_g_per_kg - 5.448 * pow(bulk_density, 2.0) +
-            0.044 * pow(soil_organic_carbon_g_per_kg, 2.0) +
+            19.198 / soil_organic_carbon_g_per_kg - 5.448 * (bulk_density * bulk_density) +
+            0.044 * (soil_organic_carbon_g_per_kg * soil_organic_carbon_g_per_kg) +
             1.975 * bulk_density * soil_organic_carbon_g_per_kg;
         const double sswc_percent = 98.813 - 21.555 / bulk_density - 39.735 / silt - 2.091 / sand +
                                     3.247 / soil_organic_carbon_g_per_kg -
-                                    17.096 * pow(bulk_density, 2.0);
+                                    17.096 * (bulk_density * bulk_density);
         const double theta_s = sswc_percent / 100.0;
         const double theta_fc = fc_percent / 100.0;
         const double k_sat = k_sat_cm_per_day / 8640000.0;

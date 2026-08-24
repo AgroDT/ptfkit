@@ -1,6 +1,6 @@
 use std::fmt;
 
-use crate::semantic::{BinaryOp, Expr, MathFunction, Reference, UnaryOp, Variable};
+use crate::semantic::{BinaryOp, Expr, MathFunction, Number, Reference, UnaryOp, Variable};
 
 #[derive(Clone, Copy)]
 pub(crate) enum Dialect {
@@ -39,9 +39,24 @@ pub(crate) fn requires_math(expression: &Expr) -> bool {
         Expr::Number(_) | Expr::Reference(_) => false,
         Expr::Unary { operand, .. } => requires_math(operand),
         Expr::Binary { op, left, right } => {
-            matches!(op, BinaryOp::Power) || requires_math(left) || requires_math(right)
+            (matches!(op, BinaryOp::Power) && small_integer_exponent(right).is_none())
+                || requires_math(left)
+                || requires_math(right)
         }
         Expr::Call { .. } => true,
+    }
+}
+
+pub(crate) fn requires_pow4(expression: &Expr) -> bool {
+    match expression {
+        Expr::Number(_) | Expr::Reference(_) => false,
+        Expr::Unary { operand, .. } => requires_pow4(operand),
+        Expr::Binary { op, left, right } => {
+            (matches!(op, BinaryOp::Power) && small_integer_exponent(right) == Some(4))
+                || requires_pow4(left)
+                || requires_pow4(right)
+        }
+        Expr::Call { args, .. } => args.iter().any(requires_pow4),
     }
 }
 
@@ -116,11 +131,19 @@ impl Expression<'_> {
                     self.write_binary(formatter, left, right, Precedence::Product, "/")?
                 }
                 BinaryOp::Power => {
-                    write!(formatter, "{}(", self.math_name("pow"))?;
-                    self.write_expression(formatter, left, None)?;
-                    write!(formatter, ", ")?;
-                    self.write_expression(formatter, right, None)?;
-                    write!(formatter, ")")?;
+                    if small_integer_exponent(right) == Some(4) {
+                        write!(formatter, "ptfkit_pow4(")?;
+                        self.write_expression(formatter, left, None)?;
+                        write!(formatter, ")")?;
+                    } else if let Some(exponent) = small_integer_exponent(right) {
+                        self.write_small_integer_power(formatter, left, exponent)?;
+                    } else {
+                        write!(formatter, "{}(", self.math_name("pow"))?;
+                        self.write_expression(formatter, left, None)?;
+                        write!(formatter, ", ")?;
+                        self.write_expression(formatter, right, None)?;
+                        write!(formatter, ")")?;
+                    }
                 }
             },
             Expr::Call { function, args } => {
@@ -152,6 +175,21 @@ impl Expression<'_> {
         self.write_expression(formatter, left, Some((precedence, false)))?;
         write!(formatter, " {operator} ")?;
         self.write_expression(formatter, right, Some((precedence, true)))
+    }
+
+    fn write_small_integer_power(
+        &self,
+        formatter: &mut fmt::Formatter<'_>,
+        base: &Expr,
+        exponent: usize,
+    ) -> fmt::Result {
+        for index in 0..exponent {
+            if index > 0 {
+                write!(formatter, " * ")?;
+            }
+            self.write_expression(formatter, base, Some((Precedence::Product, index > 0)))?;
+        }
+        Ok(())
     }
 
     fn function_name(&self, function: MathFunction) -> &'static str {
@@ -202,16 +240,33 @@ fn precedence(expression: &Expr) -> Precedence {
             op: UnaryOp::Plus,
             operand,
         } => precedence(operand),
+        Expr::Binary {
+            op: BinaryOp::Power,
+            right,
+            ..
+        } if small_integer_exponent(right).is_some() => Precedence::Product,
         Expr::Number(_) | Expr::Reference(_) | Expr::Binary { .. } | Expr::Call { .. } => {
             Precedence::Primary
         }
     }
 }
 
+fn small_integer_exponent(expression: &Expr) -> Option<usize> {
+    let Expr::Number(Number { value, .. }) = expression else {
+        return None;
+    };
+    match *value {
+        2.0 => Some(2),
+        3.0 => Some(3),
+        4.0 => Some(4),
+        _ => None,
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::semantic::{BinaryOp, Reference};
+    use crate::semantic::{BinaryOp, Number, Reference};
 
     fn inputs() -> Vec<String> {
         vec!["x".into(), "y".into(), "z".into()]
@@ -219,6 +274,13 @@ mod tests {
 
     fn input(index: usize) -> Expr {
         Expr::Reference(Reference::Input(index))
+    }
+
+    fn number(value: f64) -> Expr {
+        Expr::Number(Number {
+            value,
+            lexeme: value.to_string(),
+        })
     }
 
     #[test]
@@ -328,6 +390,44 @@ mod tests {
         assert_eq!(
             super::expression(&expression, &inputs(), &[], Dialect::Cpp).to_string(),
             "std::fmin(std::pow(x + y, -z), std::sqrt(x * y))"
+        );
+    }
+
+    #[test]
+    fn renders_small_integer_powers_as_multiplication_for_all_c_dialects() {
+        for (exponent, expected) in [(2.0, "x * x"), (3.0, "x * x * x"), (4.0, "ptfkit_pow4(x)")] {
+            let expression = Expr::Binary {
+                op: BinaryOp::Power,
+                left: Box::new(input(0)),
+                right: Box::new(number(exponent)),
+            };
+            assert_eq!(
+                super::expression(&expression, &inputs(), &[], Dialect::C).to_string(),
+                expected
+            );
+            assert_eq!(
+                super::expression(&expression, &inputs(), &[], Dialect::Cpp).to_string(),
+                expected
+            );
+            assert!(!requires_math(&expression));
+            assert_eq!(requires_pow4(&expression), exponent == 4.0);
+        }
+    }
+
+    #[test]
+    fn parenthesizes_small_integer_powers_when_required_by_division() {
+        let expression = Expr::Binary {
+            op: BinaryOp::Divide,
+            left: Box::new(input(0)),
+            right: Box::new(Expr::Binary {
+                op: BinaryOp::Power,
+                left: Box::new(input(1)),
+                right: Box::new(number(2.0)),
+            }),
+        };
+        assert_eq!(
+            super::expression(&expression, &inputs(), &[], Dialect::C).to_string(),
+            "x / (y * y)"
         );
     }
 }

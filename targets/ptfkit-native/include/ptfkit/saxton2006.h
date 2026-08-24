@@ -152,7 +152,8 @@ static inline saxton2006_ptf_result calc_ptf_saxton2006(double sand, double clay
     const double theta_33_preliminary = -0.251 * sand + 0.195 * clay + 0.011 * organic_matter +
                                         0.006 * sand * organic_matter -
                                         0.027 * clay * organic_matter + 0.452 * sand * clay + 0.299;
-    const double theta_33 = theta_33_preliminary + 1.283 * pow(theta_33_preliminary, 2.0) -
+    const double theta_33 = theta_33_preliminary +
+                            1.283 * (theta_33_preliminary * theta_33_preliminary) -
                             0.374 * theta_33_preliminary - 0.015;
     const double theta_s_minus_33_preliminary =
         0.278 * sand + 0.034 * clay + 0.022 * organic_matter - 0.018 * sand * organic_matter -
@@ -166,7 +167,7 @@ static inline saxton2006_ptf_result calc_ptf_saxton2006(double sand, double clay
         71.12 * sand * theta_s_minus_33_preliminary + 8.29 * clay * theta_s_minus_33_preliminary +
         14.05 * sand * clay + 27.16;
     const double air_entry_tension = air_entry_preliminary +
-                                     0.02 * pow(air_entry_preliminary, 2.0) -
+                                     0.02 * (air_entry_preliminary * air_entry_preliminary) -
                                      0.113 * air_entry_preliminary - 0.70;
     const double retention_b = (log(1500.0) - log(33.0)) / (log(theta_33) - log(theta_1500));
     const double retention_a = exp(log(33.0) + retention_b * log(theta_33));

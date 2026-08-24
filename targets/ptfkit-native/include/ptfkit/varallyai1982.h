@@ -3,8 +3,6 @@
 #ifndef PTFKIT_VARALLYAI1982_H
 #define PTFKIT_VARALLYAI1982_H
 
-#include <math.h>
-
 /**
  * @brief Varallyai et al. (1982), water-retention parameter regressions for Hungarian soils.
  *
@@ -65,9 +63,10 @@ typedef struct {
 static inline varallyai1982_parameters calc_ptf_varallyai1982_meadow(double bulk_density,
                                                                      double fine_sand_fraction,
                                                                      double fine_fraction) {
-    const double theta_0 = -8.78 * pow(bulk_density, 2.0) + 14.46 * pow(fine_fraction, 2.0) + 62.85;
-    const double m =
-        0.576 * pow(fine_sand_fraction, 2.0) - 1.434 * fine_sand_fraction * fine_fraction + 0.156;
+    const double theta_0 =
+        -8.78 * (bulk_density * bulk_density) + 14.46 * (fine_fraction * fine_fraction) + 62.85;
+    const double m = 0.576 * (fine_sand_fraction * fine_sand_fraction) -
+                     1.434 * fine_sand_fraction * fine_fraction + 0.156;
     const double pf_star =
         -1.702 * fine_sand_fraction + 1.103 * bulk_density * fine_fraction + 3.749;
 #ifdef __cplusplus
@@ -145,7 +144,7 @@ static inline varallyai1982_parameters calc_ptf_varallyai1982_chernozem_a(double
  */
 static inline varallyai1982_parameters calc_ptf_varallyai1982_chernozem_b(double bulk_density,
                                                                           double fine_fraction) {
-    const double theta_0 = -62.20 * bulk_density - 49.14 * pow(fine_fraction, 2.0) + 140.70;
+    const double theta_0 = -62.20 * bulk_density - 49.14 * (fine_fraction * fine_fraction) + 140.70;
     const double m = 0.635 * bulk_density - 0.482;
     const double pf_star = 4.270 * bulk_density * fine_fraction + 3.509 * bulk_density - 3.075;
 #ifdef __cplusplus
@@ -186,7 +185,7 @@ static inline varallyai1982_parameters calc_ptf_varallyai1982_chernozem_c(double
     const double theta_0 = -46.80 * bulk_density + 115.39;
     const double m = 0.439 * bulk_density * fine_fraction + 0.625;
     const double pf_star =
-        3.268 * bulk_density * fine_fraction + 0.865 * pow(bulk_density, 2.0) + 0.301;
+        3.268 * bulk_density * fine_fraction + 0.865 * (bulk_density * bulk_density) + 0.301;
 #ifdef __cplusplus
     return varallyai1982_parameters{theta_0, m, pf_star};
 #else

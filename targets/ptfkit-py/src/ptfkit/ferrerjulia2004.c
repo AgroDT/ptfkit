@@ -26,7 +26,7 @@ static void calc_ptf_ferrerjulia2004_saxton_loop(char **args, const npy_intp *di
         const double clay = *(const double *)args[1];
         const double k_sat =
             10.0 * exp(1.01 - 0.0755 * sand +
-                       (-3.895 + 0.03671 * sand - 0.1103 * clay + 0.00087546 * pow(clay, 2.0)) /
+                       (-3.895 + 0.03671 * sand - 0.1103 * clay + 0.00087546 * (clay * clay)) /
                            (0.33 - 0.000751 * sand + 0.176 * log10(clay)));
         *(double *)args[2] = k_sat;
         for (int arg = 0; arg < 3; arg++)

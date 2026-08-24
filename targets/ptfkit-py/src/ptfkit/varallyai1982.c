@@ -9,8 +9,8 @@ static void calc_ptf_varallyai1982_meadow_loop(char **args, const npy_intp *dime
         const double fine_sand_fraction = *(const double *)args[1];
         const double fine_fraction = *(const double *)args[2];
         const double theta_0 =
-            -8.78 * pow(bulk_density, 2.0) + 14.46 * pow(fine_fraction, 2.0) + 62.85;
-        const double m = 0.576 * pow(fine_sand_fraction, 2.0) -
+            -8.78 * (bulk_density * bulk_density) + 14.46 * (fine_fraction * fine_fraction) + 62.85;
+        const double m = 0.576 * (fine_sand_fraction * fine_sand_fraction) -
                          1.434 * fine_sand_fraction * fine_fraction + 0.156;
         const double pf_star =
             -1.702 * fine_sand_fraction + 1.103 * bulk_density * fine_fraction + 3.749;
@@ -53,7 +53,8 @@ static void calc_ptf_varallyai1982_chernozem_b_loop(char **args, const npy_intp 
     for (index = 0; index < dimensions[0]; index++) {
         const double bulk_density = *(const double *)args[0];
         const double fine_fraction = *(const double *)args[1];
-        const double theta_0 = -62.20 * bulk_density - 49.14 * pow(fine_fraction, 2.0) + 140.70;
+        const double theta_0 =
+            -62.20 * bulk_density - 49.14 * (fine_fraction * fine_fraction) + 140.70;
         const double m = 0.635 * bulk_density - 0.482;
         const double pf_star = 4.270 * bulk_density * fine_fraction + 3.509 * bulk_density - 3.075;
         *(double *)args[2] = theta_0;
@@ -77,7 +78,7 @@ static void calc_ptf_varallyai1982_chernozem_c_loop(char **args, const npy_intp 
         const double theta_0 = -46.80 * bulk_density + 115.39;
         const double m = 0.439 * bulk_density * fine_fraction + 0.625;
         const double pf_star =
-            3.268 * bulk_density * fine_fraction + 0.865 * pow(bulk_density, 2.0) + 0.301;
+            3.268 * bulk_density * fine_fraction + 0.865 * (bulk_density * bulk_density) + 0.301;
         *(double *)args[2] = theta_0;
         *(double *)args[3] = m;
         *(double *)args[4] = pf_star;
