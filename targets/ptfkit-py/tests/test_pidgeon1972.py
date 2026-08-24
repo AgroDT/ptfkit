@@ -40,13 +40,17 @@ def test_calc_ptf_pidgeon1972_fc_golden(
 
 
 def test_calc_ptf_pidgeon1972_fc_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_FC)
+    inputs, expected, rtol, atol, _out = prepare_vector_case(
+        CASES_CALC_PTF_PIDGEON1972_FC, categorical_inputs=()
+    )
     result = calc_ptf_pidgeon1972_fc(**inputs, out=None)
     assert result[0] == pytest.approx(expected['field_capacity'], rel=rtol, abs=atol)
 
 
 def test_calc_ptf_pidgeon1972_fc_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_FC)
+    inputs, expected, rtol, atol, out = prepare_vector_case(
+        CASES_CALC_PTF_PIDGEON1972_FC, categorical_inputs=()
+    )
     result = calc_ptf_pidgeon1972_fc(**inputs, out=out)
     assert result is out
     assert result[0] == pytest.approx(expected['field_capacity'], rel=rtol, abs=atol)
@@ -67,13 +71,17 @@ def test_calc_ptf_pidgeon1972_fc_sand_golden(
 
 
 def test_calc_ptf_pidgeon1972_fc_sand_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_FC_SAND)
+    inputs, expected, rtol, atol, _out = prepare_vector_case(
+        CASES_CALC_PTF_PIDGEON1972_FC_SAND, categorical_inputs=()
+    )
     result = calc_ptf_pidgeon1972_fc_sand(**inputs, out=None)
     assert result[0] == pytest.approx(expected['field_capacity'], rel=rtol, abs=atol)
 
 
 def test_calc_ptf_pidgeon1972_fc_sand_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_FC_SAND)
+    inputs, expected, rtol, atol, out = prepare_vector_case(
+        CASES_CALC_PTF_PIDGEON1972_FC_SAND, categorical_inputs=()
+    )
     result = calc_ptf_pidgeon1972_fc_sand(**inputs, out=out)
     assert result is out
     assert result[0] == pytest.approx(expected['field_capacity'], rel=rtol, abs=atol)
@@ -97,7 +105,7 @@ def test_calc_ptf_pidgeon1972_fc_sand_organic_matter_golden(
 
 def test_calc_ptf_pidgeon1972_fc_sand_organic_matter_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_FC_SAND_ORGANIC_MATTER
+        CASES_CALC_PTF_PIDGEON1972_FC_SAND_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_pidgeon1972_fc_sand_organic_matter(**inputs, out=None)
     assert result[0] == pytest.approx(expected['field_capacity'], rel=rtol, abs=atol)
@@ -105,7 +113,7 @@ def test_calc_ptf_pidgeon1972_fc_sand_organic_matter_array():
 
 def test_calc_ptf_pidgeon1972_fc_sand_organic_matter_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_FC_SAND_ORGANIC_MATTER
+        CASES_CALC_PTF_PIDGEON1972_FC_SAND_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_pidgeon1972_fc_sand_organic_matter(**inputs, out=out)
     assert result is out
@@ -130,7 +138,7 @@ def test_calc_ptf_pidgeon1972_fc_vol_sand_organic_matter_golden(
 
 def test_calc_ptf_pidgeon1972_fc_vol_sand_organic_matter_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_FC_VOL_SAND_ORGANIC_MATTER
+        CASES_CALC_PTF_PIDGEON1972_FC_VOL_SAND_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(**inputs, out=None)
     assert result[0] == pytest.approx(expected['field_capacity'], rel=rtol, abs=atol)
@@ -138,7 +146,7 @@ def test_calc_ptf_pidgeon1972_fc_vol_sand_organic_matter_array():
 
 def test_calc_ptf_pidgeon1972_fc_vol_sand_organic_matter_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_FC_VOL_SAND_ORGANIC_MATTER
+        CASES_CALC_PTF_PIDGEON1972_FC_VOL_SAND_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(**inputs, out=out)
     assert result is out
@@ -165,13 +173,17 @@ def test_calc_ptf_pidgeon1972_pwp_golden(
 
 
 def test_calc_ptf_pidgeon1972_pwp_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_PWP)
+    inputs, expected, rtol, atol, _out = prepare_vector_case(
+        CASES_CALC_PTF_PIDGEON1972_PWP, categorical_inputs=()
+    )
     result = calc_ptf_pidgeon1972_pwp(**inputs, out=None)
     assert result[0] == pytest.approx(expected['permanent_wilting_point'], rel=rtol, abs=atol)
 
 
 def test_calc_ptf_pidgeon1972_pwp_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_PWP)
+    inputs, expected, rtol, atol, out = prepare_vector_case(
+        CASES_CALC_PTF_PIDGEON1972_PWP, categorical_inputs=()
+    )
     result = calc_ptf_pidgeon1972_pwp(**inputs, out=out)
     assert result is out
     assert result[0] == pytest.approx(expected['permanent_wilting_point'], rel=rtol, abs=atol)
@@ -194,13 +206,17 @@ def test_calc_ptf_pidgeon1972_pwp_sand_golden(
 
 
 def test_calc_ptf_pidgeon1972_pwp_sand_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_PWP_SAND)
+    inputs, expected, rtol, atol, _out = prepare_vector_case(
+        CASES_CALC_PTF_PIDGEON1972_PWP_SAND, categorical_inputs=()
+    )
     result = calc_ptf_pidgeon1972_pwp_sand(**inputs, out=None)
     assert result[0] == pytest.approx(expected['permanent_wilting_point'], rel=rtol, abs=atol)
 
 
 def test_calc_ptf_pidgeon1972_pwp_sand_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_PWP_SAND)
+    inputs, expected, rtol, atol, out = prepare_vector_case(
+        CASES_CALC_PTF_PIDGEON1972_PWP_SAND, categorical_inputs=()
+    )
     result = calc_ptf_pidgeon1972_pwp_sand(**inputs, out=out)
     assert result is out
     assert result[0] == pytest.approx(expected['permanent_wilting_point'], rel=rtol, abs=atol)
@@ -224,7 +240,7 @@ def test_calc_ptf_pidgeon1972_pwp_sand_organic_matter_golden(
 
 def test_calc_ptf_pidgeon1972_pwp_sand_organic_matter_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_PWP_SAND_ORGANIC_MATTER
+        CASES_CALC_PTF_PIDGEON1972_PWP_SAND_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_pidgeon1972_pwp_sand_organic_matter(**inputs, out=None)
     assert result[0] == pytest.approx(expected['permanent_wilting_point'], rel=rtol, abs=atol)
@@ -232,7 +248,7 @@ def test_calc_ptf_pidgeon1972_pwp_sand_organic_matter_array():
 
 def test_calc_ptf_pidgeon1972_pwp_sand_organic_matter_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_PWP_SAND_ORGANIC_MATTER
+        CASES_CALC_PTF_PIDGEON1972_PWP_SAND_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_pidgeon1972_pwp_sand_organic_matter(**inputs, out=out)
     assert result is out
@@ -254,13 +270,17 @@ def test_calc_ptf_pidgeon1972_awc_golden(
 
 
 def test_calc_ptf_pidgeon1972_awc_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_AWC)
+    inputs, expected, rtol, atol, _out = prepare_vector_case(
+        CASES_CALC_PTF_PIDGEON1972_AWC, categorical_inputs=()
+    )
     result = calc_ptf_pidgeon1972_awc(**inputs, out=None)
     assert result[0] == pytest.approx(expected['available_water_capacity'], rel=rtol, abs=atol)
 
 
 def test_calc_ptf_pidgeon1972_awc_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_AWC)
+    inputs, expected, rtol, atol, out = prepare_vector_case(
+        CASES_CALC_PTF_PIDGEON1972_AWC, categorical_inputs=()
+    )
     result = calc_ptf_pidgeon1972_awc(**inputs, out=out)
     assert result is out
     assert result[0] == pytest.approx(expected['available_water_capacity'], rel=rtol, abs=atol)
@@ -284,7 +304,7 @@ def test_calc_ptf_pidgeon1972_awc_sand_organic_matter_golden(
 
 def test_calc_ptf_pidgeon1972_awc_sand_organic_matter_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER
+        CASES_CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_pidgeon1972_awc_sand_organic_matter(**inputs, out=None)
     assert result[0] == pytest.approx(expected['available_water_capacity'], rel=rtol, abs=atol)
@@ -292,7 +312,7 @@ def test_calc_ptf_pidgeon1972_awc_sand_organic_matter_array():
 
 def test_calc_ptf_pidgeon1972_awc_sand_organic_matter_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER
+        CASES_CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_pidgeon1972_awc_sand_organic_matter(**inputs, out=out)
     assert result is out
@@ -317,7 +337,7 @@ def test_calc_ptf_pidgeon1972_awc_coarse_sand_golden(
 
 def test_calc_ptf_pidgeon1972_awc_coarse_sand_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_AWC_COARSE_SAND
+        CASES_CALC_PTF_PIDGEON1972_AWC_COARSE_SAND, categorical_inputs=()
     )
     result = calc_ptf_pidgeon1972_awc_coarse_sand(**inputs, out=None)
     assert result[0] == pytest.approx(expected['available_water_capacity'], rel=rtol, abs=atol)
@@ -325,7 +345,7 @@ def test_calc_ptf_pidgeon1972_awc_coarse_sand_array():
 
 def test_calc_ptf_pidgeon1972_awc_coarse_sand_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_AWC_COARSE_SAND
+        CASES_CALC_PTF_PIDGEON1972_AWC_COARSE_SAND, categorical_inputs=()
     )
     result = calc_ptf_pidgeon1972_awc_coarse_sand(**inputs, out=out)
     assert result is out
@@ -350,7 +370,7 @@ def test_calc_ptf_pidgeon1972_awc_fine_sand_golden(
 
 def test_calc_ptf_pidgeon1972_awc_fine_sand_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_AWC_FINE_SAND
+        CASES_CALC_PTF_PIDGEON1972_AWC_FINE_SAND, categorical_inputs=()
     )
     result = calc_ptf_pidgeon1972_awc_fine_sand(**inputs, out=None)
     assert result[0] == pytest.approx(expected['available_water_capacity'], rel=rtol, abs=atol)
@@ -358,7 +378,7 @@ def test_calc_ptf_pidgeon1972_awc_fine_sand_array():
 
 def test_calc_ptf_pidgeon1972_awc_fine_sand_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_AWC_FINE_SAND
+        CASES_CALC_PTF_PIDGEON1972_AWC_FINE_SAND, categorical_inputs=()
     )
     result = calc_ptf_pidgeon1972_awc_fine_sand(**inputs, out=out)
     assert result is out
@@ -383,7 +403,7 @@ def test_calc_ptf_pidgeon1972_awc_very_fine_sand_golden(
 
 def test_calc_ptf_pidgeon1972_awc_very_fine_sand_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND
+        CASES_CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND, categorical_inputs=()
     )
     result = calc_ptf_pidgeon1972_awc_very_fine_sand(**inputs, out=None)
     assert result[0] == pytest.approx(expected['available_water_capacity'], rel=rtol, abs=atol)
@@ -391,7 +411,7 @@ def test_calc_ptf_pidgeon1972_awc_very_fine_sand_array():
 
 def test_calc_ptf_pidgeon1972_awc_very_fine_sand_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND
+        CASES_CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND, categorical_inputs=()
     )
     result = calc_ptf_pidgeon1972_awc_very_fine_sand(**inputs, out=out)
     assert result is out
@@ -420,7 +440,9 @@ def test_calc_ptf_pidgeon1972_eawc_golden(
 
 
 def test_calc_ptf_pidgeon1972_eawc_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_EAWC)
+    inputs, expected, rtol, atol, _out = prepare_vector_case(
+        CASES_CALC_PTF_PIDGEON1972_EAWC, categorical_inputs=()
+    )
     result = calc_ptf_pidgeon1972_eawc(**inputs, out=None)
     assert result[0] == pytest.approx(
         expected['extended_available_water_capacity'], rel=rtol, abs=atol
@@ -428,7 +450,9 @@ def test_calc_ptf_pidgeon1972_eawc_array():
 
 
 def test_calc_ptf_pidgeon1972_eawc_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_EAWC)
+    inputs, expected, rtol, atol, out = prepare_vector_case(
+        CASES_CALC_PTF_PIDGEON1972_EAWC, categorical_inputs=()
+    )
     result = calc_ptf_pidgeon1972_eawc(**inputs, out=out)
     assert result is out
     assert result[0] == pytest.approx(
@@ -455,7 +479,9 @@ def test_calc_ptf_pidgeon1972_eawc_sand_golden(
 
 
 def test_calc_ptf_pidgeon1972_eawc_sand_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_EAWC_SAND)
+    inputs, expected, rtol, atol, _out = prepare_vector_case(
+        CASES_CALC_PTF_PIDGEON1972_EAWC_SAND, categorical_inputs=()
+    )
     result = calc_ptf_pidgeon1972_eawc_sand(**inputs, out=None)
     assert result[0] == pytest.approx(
         expected['extended_available_water_capacity'], rel=rtol, abs=atol
@@ -463,7 +489,9 @@ def test_calc_ptf_pidgeon1972_eawc_sand_array():
 
 
 def test_calc_ptf_pidgeon1972_eawc_sand_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_EAWC_SAND)
+    inputs, expected, rtol, atol, out = prepare_vector_case(
+        CASES_CALC_PTF_PIDGEON1972_EAWC_SAND, categorical_inputs=()
+    )
     result = calc_ptf_pidgeon1972_eawc_sand(**inputs, out=out)
     assert result is out
     assert result[0] == pytest.approx(
@@ -496,7 +524,7 @@ def test_calc_ptf_pidgeon1972_eawc_sand_organic_matter_golden(
 
 def test_calc_ptf_pidgeon1972_eawc_sand_organic_matter_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER
+        CASES_CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_pidgeon1972_eawc_sand_organic_matter(**inputs, out=None)
     assert result[0] == pytest.approx(
@@ -506,7 +534,7 @@ def test_calc_ptf_pidgeon1972_eawc_sand_organic_matter_array():
 
 def test_calc_ptf_pidgeon1972_eawc_sand_organic_matter_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER
+        CASES_CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_pidgeon1972_eawc_sand_organic_matter(**inputs, out=out)
     assert result is out
@@ -541,7 +569,7 @@ def test_calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter_golden(
 
 def test_calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER
+        CASES_CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(**inputs, out=None)
     assert result[0] == pytest.approx(
@@ -551,7 +579,7 @@ def test_calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter_array():
 
 def test_calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER
+        CASES_CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(**inputs, out=out)
     assert result is out
@@ -585,7 +613,7 @@ def test_calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter_golden(
 
 def test_calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER
+        CASES_CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(**inputs, out=None)
     assert result[0] == pytest.approx(
@@ -595,7 +623,7 @@ def test_calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter_array():
 
 def test_calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER
+        CASES_CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(**inputs, out=out)
     assert result is out

@@ -41,7 +41,7 @@ def test_calc_ptf_vereecken1989_golden(
 
 def test_calc_ptf_vereecken1989_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_VEREECKEN1989, Vereecken1989PTFResult
+        CASES_CALC_PTF_VEREECKEN1989, Vereecken1989PTFResult, categorical_inputs=()
     )
     result = calc_ptf_vereecken1989(**inputs, out=None)
     assert result.theta_r[0] == pytest.approx(expected['theta_r'], rel=rtol, abs=atol)
@@ -52,7 +52,7 @@ def test_calc_ptf_vereecken1989_array():
 
 def test_calc_ptf_vereecken1989_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_VEREECKEN1989, Vereecken1989PTFResult
+        CASES_CALC_PTF_VEREECKEN1989, Vereecken1989PTFResult, categorical_inputs=()
     )
     result = calc_ptf_vereecken1989(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
@@ -108,7 +108,7 @@ def test_calc_ptf_vereecken1989_detailed_golden(
 
 def test_calc_ptf_vereecken1989_detailed_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_VEREECKEN1989_DETAILED, Vereecken1989DetailedPTFResult
+        CASES_CALC_PTF_VEREECKEN1989_DETAILED, Vereecken1989DetailedPTFResult, categorical_inputs=()
     )
     result = calc_ptf_vereecken1989_detailed(**inputs, out=None)
     assert result.theta_r[0] == pytest.approx(expected['theta_r'], rel=rtol, abs=atol)
@@ -119,7 +119,7 @@ def test_calc_ptf_vereecken1989_detailed_array():
 
 def test_calc_ptf_vereecken1989_detailed_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_VEREECKEN1989_DETAILED, Vereecken1989DetailedPTFResult
+        CASES_CALC_PTF_VEREECKEN1989_DETAILED, Vereecken1989DetailedPTFResult, categorical_inputs=()
     )
     result = calc_ptf_vereecken1989_detailed(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):

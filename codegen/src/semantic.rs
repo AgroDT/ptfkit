@@ -1,4 +1,7 @@
-use std::{collections::BTreeMap, fmt};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    fmt,
+};
 
 use crate::{
     formula::{self, Span},
@@ -8,12 +11,24 @@ use crate::{
 #[derive(Clone, Debug, PartialEq)]
 pub(crate) struct Function {
     pub(crate) inputs: Vec<Input>,
+    pub(crate) derived_inputs: Vec<DerivedInput>,
     pub(crate) variables: Vec<Variable>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) struct Input {
     pub(crate) name: String,
+    pub(crate) input_type: String,
+    pub(crate) numeric: bool,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub(crate) struct DerivedInput {
+    pub(crate) adapter: String,
+    pub(crate) source_input: usize,
+    pub(crate) component: String,
+    pub(crate) symbol: String,
+    pub(crate) evidence: String,
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -49,7 +64,8 @@ pub(crate) enum Expr {
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub(crate) enum Reference {
-    Input(usize),
+    NumericInput(usize),
+    DerivedInput(usize),
     Variable(usize),
 }
 
@@ -129,16 +145,31 @@ impl fmt::Display for Error {
 impl std::error::Error for Error {}
 
 pub(crate) fn compile(raw: &RawFunction) -> Result<Function, Error> {
-    let mut inputs = BTreeMap::new();
+    let mut public_names = BTreeSet::new();
+    let mut scope = BTreeMap::new();
     for (index, input) in raw.inputs.iter().enumerate() {
-        insert_name(
-            raw,
-            &mut inputs,
-            &input.name,
-            "inputs",
-            Span { start: 0, end: 0 },
-        )?;
-        debug_assert_eq!(inputs[&input.name], index);
+        if !public_names.insert(input.name.clone()) {
+            return Err(error(
+                raw,
+                "inputs",
+                Span { start: 0, end: 0 },
+                format!("duplicate name `{}`", input.name),
+            ));
+        }
+        if input.r#type.is_numeric() {
+            scope.insert(input.name.clone(), Reference::NumericInput(index));
+        }
+    }
+    for (index, derived) in raw.derived_inputs.iter().enumerate() {
+        if public_names.contains(&derived.symbol) || scope.contains_key(&derived.symbol) {
+            return Err(error(
+                raw,
+                "derived_inputs",
+                Span { start: 0, end: 0 },
+                format!("duplicate or colliding derived symbol `{}`", derived.symbol),
+            ));
+        }
+        scope.insert(derived.symbol.clone(), Reference::DerivedInput(index));
     }
 
     let variable_names: BTreeMap<_, _> = raw
@@ -148,9 +179,8 @@ pub(crate) fn compile(raw: &RawFunction) -> Result<Function, Error> {
         .map(|(index, variable)| (variable.name.as_str(), index))
         .collect();
     let mut variables = Vec::with_capacity(raw.variables.len());
-    let mut scope = inputs;
     for (index, variable) in raw.variables.iter().enumerate() {
-        if scope.contains_key(&variable.name) {
+        if public_names.contains(&variable.name) || scope.contains_key(&variable.name) {
             return Err(error(
                 raw,
                 "variables",
@@ -160,7 +190,7 @@ pub(crate) fn compile(raw: &RawFunction) -> Result<Function, Error> {
         }
         let expression =
             compile_expression(raw, &variable.expression, &scope, &variable_names, index)?;
-        scope.insert(variable.name.clone(), raw.inputs.len() + index);
+        scope.insert(variable.name.clone(), Reference::Variable(index));
         variables.push(Variable {
             name: variable.name.clone(),
             expression,
@@ -173,29 +203,29 @@ pub(crate) fn compile(raw: &RawFunction) -> Result<Function, Error> {
             .iter()
             .map(|input| Input {
                 name: input.name.clone(),
+                input_type: input.r#type.as_str().to_owned(),
+                numeric: input.r#type.is_numeric(),
+            })
+            .collect(),
+        derived_inputs: raw
+            .derived_inputs
+            .iter()
+            .map(|binding| DerivedInput {
+                adapter: binding.adapter.clone(),
+                source_input: binding.input_index,
+                component: binding.component.clone(),
+                symbol: binding.symbol.clone(),
+                evidence: binding.evidence.clone(),
             })
             .collect(),
         variables,
     })
 }
 
-fn insert_name(
-    raw: &RawFunction,
-    names: &mut BTreeMap<String, usize>,
-    name: &str,
-    path: &str,
-    span: Span,
-) -> Result<(), Error> {
-    if names.insert(name.to_owned(), names.len()).is_some() {
-        return Err(error(raw, path, span, format!("duplicate name `{name}`")));
-    }
-    Ok(())
-}
-
 fn compile_expression(
     raw: &RawFunction,
     expression: &RawExpression,
-    scope: &BTreeMap<String, usize>,
+    scope: &BTreeMap<String, Reference>,
     variable_names: &BTreeMap<&str, usize>,
     variable_index: usize,
 ) -> Result<Expr, Error> {
@@ -213,7 +243,7 @@ fn compile_expr(
     raw: &RawFunction,
     source: &RawExpression,
     expression: &formula::Expr,
-    scope: &BTreeMap<String, usize>,
+    scope: &BTreeMap<String, Reference>,
     variable_names: &BTreeMap<&str, usize>,
     variable_index: usize,
 ) -> Result<Expr, Error> {
@@ -223,12 +253,7 @@ fn compile_expr(
             lexeme: number.lexeme.clone(),
         })),
         formula::ExprKind::Variable(name) => match scope.get(name) {
-            Some(index) if *index < raw.inputs.len() => {
-                Ok(Expr::Reference(Reference::Input(*index)))
-            }
-            Some(index) => Ok(Expr::Reference(Reference::Variable(
-                *index - raw.inputs.len(),
-            ))),
+            Some(reference) => Ok(Expr::Reference(*reference)),
             None => {
                 let message = match variable_names.get(name.as_str()) {
                     Some(index) if *index == variable_index => {
@@ -236,6 +261,15 @@ fn compile_expr(
                     }
                     Some(index) if *index > variable_index => {
                         format!("variable `{name}` cannot reference a later variable")
+                    }
+                    _ if raw
+                        .inputs
+                        .iter()
+                        .any(|input| input.name == *name && !input.r#type.is_numeric()) =>
+                    {
+                        format!(
+                            "categorical input `{name}` cannot be used as a numeric formula symbol"
+                        )
                     }
                     _ => format!("unknown identifier `{name}`"),
                 };
@@ -373,8 +407,10 @@ mod tests {
                 .iter()
                 .map(|name| RawInput {
                     name: (*name).into(),
+                    r#type: crate::model::InputType::default(),
                 })
                 .collect(),
+            derived_inputs: Vec::new(),
             variables,
         }
     }

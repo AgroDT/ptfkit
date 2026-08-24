@@ -2,6 +2,7 @@
 
 export module ptfkit;
 
+export import ptfkit.adapters.usda_texture;
 export import ptfkit.ahuja1984;
 export import ptfkit.aimrun2009;
 export import ptfkit.beniaich2023;

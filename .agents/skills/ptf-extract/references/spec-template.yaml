@@ -17,14 +17,6 @@ functions:
       models:
         h_theta: null
         k_h: null
-    input_adapters:
-      usda_texture:
-        status: unknown
-        inputs:
-          sand: sand
-          silt: null
-          clay: clay
-        evidence: Particle-size boundaries are not yet established from the source.
     inputs:
       - name: sand
         symbol: null
@@ -65,3 +57,11 @@ scientific_notes: |
   ## Blockers
 
   - Replace this blocker only with evidence explicitly present in the paper.
+
+# When the source explicitly supports an adapter-backed variant, use a distinct
+# function with a typed public input and a binding such as:
+# derived_inputs:
+#   - adapter: usda_texture
+#     input: texture_class
+#     evidence: Exact source-backed compatibility evidence.
+#     components: {sand: sand, silt: silt, clay: clay}

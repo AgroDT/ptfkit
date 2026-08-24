@@ -12,6 +12,10 @@
   classes.
 - Run `cargo run --manifest-path codegen/Cargo.toml -- validate` before
   generation.
+- Registered categorical inputs and derived bindings resolve through the loaded
+  adapter registry; categorical golden values are exact canonical strings.
+- Generated C, C++, Rust, and CPython targets lower bindings before evaluating
+  the formula and do not expose derived symbols as caller parameters.
 
 ## Required commands
 

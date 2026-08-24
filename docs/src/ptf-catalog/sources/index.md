@@ -14,7 +14,7 @@ Each page describes the source, scope, inputs, outputs, status, and limitations 
 | [Aimrun & Amin (2009), Tanjung Karang Rice Irrigation Project, Malaysia.](./aimrun2009.md) | Tanjung Karang Rice Irrigation Project, located on a flat coastal plain in the Integrated Agricultural Development Area (IADA Barat Laut Selangor), Malaysia | 1 |
 | [Beniaich et al. (2023), soil-water PTFs for four Moroccan regions.](./beniaich2023.md) | Agricultural topsoils in Doukkala, Gharb-Loukouss, Moulouya, and Tadla, Morocco | 14 |
 | [Chakraborty et al. (2011), point water-retention PTFs for Indian soils.](./chakraborty2011.md) | India | 6 |
-| [Cosby et al. (1984), United States.](./cosby1984.md) | United States | 1 |
+| [Cosby et al. (1984), United States.](./cosby1984.md) | United States | 2 |
 | [Dharumarajan et al. (2019) hydraulic PTFs for the Karnataka Plateau.](./dharumarajan2019.md) | Karnataka Plateau, India | 5 |
 | [Ferrer Julià et al. (2004), saturated-conductivity PTFs for Spanish soils.](./ferrerjulia2004.md) | Spanish mainland on the Iberian Peninsula | 41 |
 | [Hodnett & Tomasella (2002), tropical-soil regressions for four van Genuchten parameters.](./hodnett2002.md) | Tropical soils between approximately 25 degrees N and 25 degrees S. | 1 |

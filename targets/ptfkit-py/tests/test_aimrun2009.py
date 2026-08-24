@@ -45,13 +45,17 @@ def test_calc_ptf_aimrun2009_golden(
 
 
 def test_calc_ptf_aimrun2009_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_AIMRUN2009)
+    inputs, expected, rtol, atol, _out = prepare_vector_case(
+        CASES_CALC_PTF_AIMRUN2009, categorical_inputs=()
+    )
     result = calc_ptf_aimrun2009(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
 
 
 def test_calc_ptf_aimrun2009_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_AIMRUN2009)
+    inputs, expected, rtol, atol, out = prepare_vector_case(
+        CASES_CALC_PTF_AIMRUN2009, categorical_inputs=()
+    )
     result = calc_ptf_aimrun2009(**inputs, out=out)
     assert result is out
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)

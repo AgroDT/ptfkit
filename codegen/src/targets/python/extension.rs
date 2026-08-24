@@ -1,6 +1,7 @@
 use anyhow::Result;
 
 use crate::{
+    adapters::{Adapter, Registry},
     model::{CompiledFunction, Output},
     output::GeneratedFile,
     render::{
@@ -12,7 +13,10 @@ use crate::{
 
 use super::C_HEADER;
 
-pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile>> {
+pub(crate) fn render(
+    functions: &[CompiledFunction],
+    adapters: &Registry,
+) -> Result<Vec<GeneratedFile>> {
     let sources = group_by_source(functions);
     let mut writes = Vec::new();
     for (slug, functions) in &sources {
@@ -20,6 +24,12 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile
         let mut source = Writer::new();
         source.write(C_HEADER);
         source.write("#include \"ufunc.h\"\n\n");
+        if functions
+            .iter()
+            .any(|function| !function.ir.derived_inputs.is_empty())
+        {
+            source.write("#include \"usda_texture_adapter.h\"\n\n");
+        }
         for function in functions {
             source.write(ufunc(function)?);
         }
@@ -50,11 +60,12 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile
 #include <numpy/arrayobject.h>
 #include <numpy/ufuncobject.h>"#,
     );
+    entry.write("\n#include \"usda_texture_parser.h\"\n");
     entry.blank_line();
     for slug in sources.keys() {
         entry.line(format_args!("#include \"{slug}.c\""));
     }
-    entry.write("\n\nstatic struct PyModuleDef module_def = { PyModuleDef_HEAD_INIT, \"_ptfkit\", NULL, -1, NULL };\n\nPyMODINIT_FUNC PyInit__ptfkit(void) {\n");
+    entry.write("\n\nstatic PyMethodDef ptfkit_methods[] = {\n    {\"_prepare_usda_texture\", ptfkit_prepare_usda_texture, METH_O, NULL},\n    {NULL, NULL, 0, NULL}\n};\n\nstatic struct PyModuleDef module_def = { PyModuleDef_HEAD_INIT, \"_ptfkit\", NULL, -1, ptfkit_methods };\n\nPyMODINIT_FUNC PyInit__ptfkit(void) {\n");
     entry.indented(|writer| {
         writer.line("PyObject *module = PyModule_Create(&module_def);");
         writer.line("if (module == NULL) return NULL;");
@@ -72,6 +83,12 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile
         "src/ptfkit/ptfkit.c".into(),
         entry.into_string(),
     ));
+    for adapter in adapters.adapters() {
+        writes.push(GeneratedFile::new(
+            format!("src/ptfkit/{}_adapter.h", adapter.adapter_id).into(),
+            adapter_header(adapter),
+        ));
+    }
     Ok(writes)
 }
 
@@ -88,7 +105,16 @@ fn ufunc(function: &CompiledFunction) -> Result<String> {
         ],
         Output::Struct(fields) => fields.clone(),
     };
-    let types = std::iter::repeat_n("NPY_DOUBLE", inputs.len() + values.len())
+    let types = inputs
+        .iter()
+        .map(|input| {
+            if input.r#type.is_numeric() {
+                "NPY_DOUBLE"
+            } else {
+                "NPY_UINT8"
+            }
+        })
+        .chain(std::iter::repeat_n("NPY_DOUBLE", values.len()))
         .collect::<Vec<_>>()
         .join(", ");
     let mut writer = Writer::new();
@@ -98,15 +124,26 @@ fn ufunc(function: &CompiledFunction) -> Result<String> {
         writer.line("for (index = 0; index < dimensions[0]; index++) {");
         writer.indented(|writer| {
             for (index, input) in inputs.iter().enumerate() {
-                writer.line(format_args!(
-                    "const double {input} = *(const double *)args[{index}];"
-                ));
+                if input.r#type.is_numeric() {
+                    writer.line(format_args!("const double {} = *(const double *)args[{index}];", input.name));
+                } else {
+                    writer.line(format_args!("const uint8_t {} = *(const uint8_t *)args[{index}];", input.name));
+                }
+            }
+            let mut lowered = std::collections::BTreeSet::new();
+            for binding in &function.ir.derived_inputs {
+                let source_name = &inputs[binding.source_input].name;
+                if lowered.insert((binding.adapter.as_str(), source_name.as_str())) {
+                    writer.line(format_args!("const ptfkit_usda_texture_fractions {source_name}_fractions = ptfkit_usda_texture_to_fractions({source_name});"));
+                }
+                writer.line(format_args!("const double {} = {source_name}_fractions.{};", binding.symbol, binding.component));
             }
             for variable in &function.ir.variables {
                 writer.write(format_args!("const double {} = ", variable.name));
                 writer.write(c::expression(
                     &variable.expression,
                     inputs,
+                    &function.ir.derived_inputs,
                     &function.ir.variables,
                     Dialect::C,
                 ));
@@ -132,6 +169,23 @@ fn ufunc(function: &CompiledFunction) -> Result<String> {
     Ok(writer.into_string())
 }
 
+fn adapter_header(adapter: &Adapter) -> String {
+    let mut writer = Writer::new();
+    writer.write(format_args!("{C_HEADER}\n#ifndef PTFKIT_USDA_TEXTURE_ADAPTER_H\n#define PTFKIT_USDA_TEXTURE_ADAPTER_H\n\n#include <math.h>\n#include <stdint.h>\n\ntypedef struct {{ double sand; double silt; double clay; }} ptfkit_usda_texture_fractions;\n\nstatic inline ptfkit_usda_texture_fractions ptfkit_usda_texture_to_fractions(uint8_t value) {{\n    switch (value) {{\n"));
+    writer.indented(|writer| {
+        for (code, row) in adapter.representatives.iter().enumerate() {
+            writer.line(format_args!(
+                "case {code}: return (ptfkit_usda_texture_fractions){{{}, {}, {}}};",
+                row.values["sand"], row.values["silt"], row.values["clay"]
+            ));
+        }
+    });
+    writer.write(
+        "    default: return (ptfkit_usda_texture_fractions){NAN, NAN, NAN};\n    }\n}\n\n#endif\n",
+    );
+    writer.into_string()
+}
+
 fn output_count(output: &Output) -> usize {
     match output {
         Output::Scalar => 1,
@@ -145,8 +199,16 @@ mod tests {
 
     #[test]
     fn entry_source_initializes_the_private_module() {
-        let rendered = render(&[]).unwrap();
-        let entry = &rendered.last().unwrap().contents;
+        let root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+            .parent()
+            .unwrap();
+        let adapters = Registry::load(root).unwrap();
+        let rendered = render(&[], &adapters).unwrap();
+        let entry = &rendered
+            .iter()
+            .find(|file| file.path == std::path::Path::new("src/ptfkit/ptfkit.c"))
+            .unwrap()
+            .contents;
         assert!(entry.contains("PyInit__ptfkit"));
         assert!(!entry.contains("#include \"ufunc.h\""));
     }

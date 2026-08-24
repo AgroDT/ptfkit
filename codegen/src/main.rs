@@ -5,6 +5,7 @@ use std::{path::Path, process::ExitCode};
 use anyhow::{Context, Result, bail};
 use clap::{Parser, Subcommand};
 
+mod adapters;
 mod compile;
 mod documentation;
 mod formula;
@@ -14,7 +15,6 @@ mod render;
 mod semantic;
 mod specs;
 mod targets;
-mod usda_texture;
 mod validate;
 mod version;
 
@@ -41,8 +41,8 @@ impl Cli {
 
         match self.command {
             Command::Validate => {
-                let entries = load_validated_specifications(root)?;
-                usda_texture::load(root)?;
+                let adapters = adapters::Registry::load(root)?;
+                let entries = load_validated_specifications(root, &adapters)?;
                 println!(
                     "validated {} PTF specification files containing {} functions",
                     entries.len(),
@@ -54,23 +54,26 @@ impl Cli {
                 Ok(())
             }
             Command::Generate => {
-                let entries = load_validated_specifications(root)?;
-                let usda_texture = usda_texture::load(root)?;
-                targets::run(root, entries, &usda_texture)
+                let adapters = adapters::Registry::load(root)?;
+                let entries = load_validated_specifications(root, &adapters)?;
+                targets::run(root, entries, &adapters)
             }
             Command::CheckGenerated => {
-                let entries = load_validated_specifications(root)?;
-                let usda_texture = usda_texture::load(root)?;
-                targets::check_generated(root, entries, &usda_texture)
+                let adapters = adapters::Registry::load(root)?;
+                let entries = load_validated_specifications(root, &adapters)?;
+                targets::check_generated(root, entries, &adapters)
             }
             Command::Version { version } => version::run(root, &version),
         }
     }
 }
 
-fn load_validated_specifications(root: &Path) -> Result<Vec<model::Entry>> {
-    let entries = specs::load(root)?;
-    let errors = validate::specifications(&entries);
+fn load_validated_specifications(
+    root: &Path,
+    adapters: &adapters::Registry,
+) -> Result<Vec<model::Entry>> {
+    let entries = specs::load_with_registry(root, adapters)?;
+    let errors = validate::specifications(&entries, adapters);
     if !errors.is_empty() {
         bail!("validation failed:\n{}", errors.join("\n"))
     }

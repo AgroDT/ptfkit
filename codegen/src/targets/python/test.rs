@@ -1,7 +1,7 @@
 use std::collections::BTreeMap;
 
 use crate::{
-    model::{CompiledFunction, Function, Outputs, PythonGeneration},
+    model::{CompiledFunction, Function, Outputs, PythonGeneration, TestValue},
     output::GeneratedFile,
 };
 
@@ -45,10 +45,27 @@ fn module_source(slug: &str, functions: &[&CompiledFunction]) -> String {
     let mut module = Module::new(WRAPPER_HEADER);
     module.line("\nfrom __future__ import annotations");
     module.blank_line();
+    if functions.iter().any(|resolved| {
+        resolved.entry.spec.functions[resolved.function_index]
+            .inputs
+            .iter()
+            .any(|input| !input.r#type.is_numeric())
+    }) {
+        module.import("typing", "Any");
+        module.blank_line();
+    }
     module.line("import pytest");
     module.blank_line();
     module.import("_helpers", "prepare_vector_case");
     module.import(&format!("ptfkit.{slug}"), imports.join(", "));
+    if functions.iter().any(|resolved| {
+        resolved.entry.spec.functions[resolved.function_index]
+            .inputs
+            .iter()
+            .any(|input| !input.r#type.is_numeric())
+    }) {
+        module.import("ptfkit.texture", "prepare_usda_texture");
+    }
     module.blank_line();
     module.blank_line();
     for (index, resolved) in functions.iter().enumerate() {
@@ -70,7 +87,7 @@ fn function_source(module: &mut Module, function: &Function) {
             writer.line(format_args!(
                 "({}, {}, {}, {}),",
                 dictionary(&case.inputs),
-                dictionary(&case.expected),
+                numeric_dictionary(&case.expected),
                 float(case.rtol),
                 float(case.atol),
             ));
@@ -84,9 +101,27 @@ fn function_source(module: &mut Module, function: &Function) {
         "@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), {cases_name})"
     ));
     module.line(format_args!(
-        "def test_{name}_golden(inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float):"
+        "def test_{name}_golden(inputs: dict[str, {}], expected: dict[str, float], rtol: float, atol: float):",
+        if function.inputs.iter().all(|input| input.r#type.is_numeric()) { "float" } else { "Any" }
     ));
     module.indented(|writer| {
+        if function
+            .inputs
+            .iter()
+            .any(|input| !input.r#type.is_numeric())
+        {
+            writer.line("inputs = dict(inputs)");
+        }
+        for input in function
+            .inputs
+            .iter()
+            .filter(|input| !input.r#type.is_numeric())
+        {
+            writer.line(format_args!(
+                "inputs['{}'] = prepare_usda_texture(inputs['{}'])",
+                input.name, input.name
+            ));
+        }
         writer.line(format_args!("result = {name}(**inputs)"));
         writer.blank_line();
         render_expected_assertion(writer, function, "");
@@ -107,7 +142,8 @@ fn vector_test_source(module: &mut Module, function: &Function, cases_name: &str
     module.line(format_args!("def test_{name}_array():"));
     module.indented(|writer| {
         writer.line(format_args!(
-            "inputs, expected, rtol, atol, _out = prepare_vector_case({cases_name}{result_cls})"
+            "inputs, expected, rtol, atol, _out = prepare_vector_case({cases_name}{result_cls}, categorical_inputs={})",
+            categorical_tuple(function)
         ));
         writer.line(format_args!("result = {name}(**inputs, out=None)"));
         render_expected_assertion(writer, function, "[0]");
@@ -117,7 +153,8 @@ fn vector_test_source(module: &mut Module, function: &Function, cases_name: &str
     module.line(format_args!("def test_{name}_out():"));
     module.indented(|writer| {
         writer.line(format_args!(
-            "inputs, expected, rtol, atol, out = prepare_vector_case({cases_name}{result_cls})"
+            "inputs, expected, rtol, atol, out = prepare_vector_case({cases_name}{result_cls}, categorical_inputs={})",
+            categorical_tuple(function)
         ));
         writer.line(format_args!("result = {name}(**inputs, out=out)"));
         render_out_assertion(writer, function);
@@ -152,7 +189,33 @@ fn render_out_assertion(writer: &mut crate::render::Writer, function: &Function)
     }
 }
 
-fn dictionary(values: &BTreeMap<String, f64>) -> String {
+fn categorical_tuple(function: &Function) -> String {
+    let names = function
+        .inputs
+        .iter()
+        .filter(|input| !input.r#type.is_numeric())
+        .map(|input| format!("'{}'", input.name))
+        .collect::<Vec<_>>();
+    if names.len() == 1 {
+        format!("({},)", names[0])
+    } else {
+        format!("({})", names.join(", "))
+    }
+}
+
+fn dictionary(values: &BTreeMap<String, TestValue>) -> String {
+    let entries = values
+        .iter()
+        .map(|(name, value)| match value {
+            TestValue::Number(value) => format!("'{name}': {}", float(*value)),
+            TestValue::Category(value) => format!("'{name}': {value:?}"),
+        })
+        .collect::<Vec<_>>()
+        .join(", ");
+    format!("{{{entries}}}")
+}
+
+fn numeric_dictionary(values: &BTreeMap<String, f64>) -> String {
     let entries = values
         .iter()
         .map(|(name, value)| format!("'{name}': {}", float(*value)))

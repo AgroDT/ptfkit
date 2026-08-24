@@ -195,7 +195,7 @@ fn render_function_documentation(writer: &mut Writer, function: &CompiledFunctio
         writer.line(format_args!(
             "| `{}` | {} |",
             parameter.name,
-            parameter_details(parameter)
+            input_details(parameter)
         ));
     }
     writer.blank_line();
@@ -244,7 +244,15 @@ fn signature(function: &CompiledFunction) -> Result<String> {
             .core
             .inputs
             .iter()
-            .map(|input| format!("double {input}"))
+            .map(|input| format!(
+                "{} {}",
+                if input.r#type.is_numeric() {
+                    "double"
+                } else {
+                    "ptfkit::adapters::UsdaTexture"
+                },
+                input.name
+            ))
             .collect::<Vec<_>>()
             .join(", ")
     ))
@@ -265,6 +273,14 @@ fn function_anchor(name: &str) -> String {
 }
 
 fn parameter_details(parameter: &Parameter) -> String {
+    format!(
+        "{} ({})",
+        escape_table(&parameter.description),
+        escape_table(&parameter.unit)
+    )
+}
+
+fn input_details(parameter: &crate::model::InputParameter) -> String {
     format!(
         "{} ({})",
         escape_table(&parameter.description),

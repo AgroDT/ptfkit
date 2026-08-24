@@ -52,7 +52,7 @@ def test_calc_ptf_chakraborty2011_eq1_golden(
 
 def test_calc_ptf_chakraborty2011_eq1_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_CHAKRABORTY2011_EQ1, Chakraborty2011PTFResult
+        CASES_CALC_PTF_CHAKRABORTY2011_EQ1, Chakraborty2011PTFResult, categorical_inputs=()
     )
     result = calc_ptf_chakraborty2011_eq1(**inputs, out=None)
     assert result.water_content_33[0] == pytest.approx(
@@ -71,7 +71,7 @@ def test_calc_ptf_chakraborty2011_eq1_array():
 
 def test_calc_ptf_chakraborty2011_eq1_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_CHAKRABORTY2011_EQ1, Chakraborty2011PTFResult
+        CASES_CALC_PTF_CHAKRABORTY2011_EQ1, Chakraborty2011PTFResult, categorical_inputs=()
     )
     result = calc_ptf_chakraborty2011_eq1(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
@@ -127,7 +127,7 @@ def test_calc_ptf_chakraborty2011_eq2_golden(
 
 def test_calc_ptf_chakraborty2011_eq2_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_CHAKRABORTY2011_EQ2, Chakraborty2011PTFResult
+        CASES_CALC_PTF_CHAKRABORTY2011_EQ2, Chakraborty2011PTFResult, categorical_inputs=()
     )
     result = calc_ptf_chakraborty2011_eq2(**inputs, out=None)
     assert result.water_content_33[0] == pytest.approx(
@@ -146,7 +146,7 @@ def test_calc_ptf_chakraborty2011_eq2_array():
 
 def test_calc_ptf_chakraborty2011_eq2_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_CHAKRABORTY2011_EQ2, Chakraborty2011PTFResult
+        CASES_CALC_PTF_CHAKRABORTY2011_EQ2, Chakraborty2011PTFResult, categorical_inputs=()
     )
     result = calc_ptf_chakraborty2011_eq2(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
@@ -202,7 +202,7 @@ def test_calc_ptf_chakraborty2011_eq3_golden(
 
 def test_calc_ptf_chakraborty2011_eq3_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_CHAKRABORTY2011_EQ3, Chakraborty2011PTFResult
+        CASES_CALC_PTF_CHAKRABORTY2011_EQ3, Chakraborty2011PTFResult, categorical_inputs=()
     )
     result = calc_ptf_chakraborty2011_eq3(**inputs, out=None)
     assert result.water_content_33[0] == pytest.approx(
@@ -221,7 +221,7 @@ def test_calc_ptf_chakraborty2011_eq3_array():
 
 def test_calc_ptf_chakraborty2011_eq3_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_CHAKRABORTY2011_EQ3, Chakraborty2011PTFResult
+        CASES_CALC_PTF_CHAKRABORTY2011_EQ3, Chakraborty2011PTFResult, categorical_inputs=()
     )
     result = calc_ptf_chakraborty2011_eq3(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
@@ -277,7 +277,7 @@ def test_calc_ptf_chakraborty2011_eq4_golden(
 
 def test_calc_ptf_chakraborty2011_eq4_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_CHAKRABORTY2011_EQ4, Chakraborty2011PTFResult
+        CASES_CALC_PTF_CHAKRABORTY2011_EQ4, Chakraborty2011PTFResult, categorical_inputs=()
     )
     result = calc_ptf_chakraborty2011_eq4(**inputs, out=None)
     assert result.water_content_33[0] == pytest.approx(
@@ -296,7 +296,7 @@ def test_calc_ptf_chakraborty2011_eq4_array():
 
 def test_calc_ptf_chakraborty2011_eq4_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_CHAKRABORTY2011_EQ4, Chakraborty2011PTFResult
+        CASES_CALC_PTF_CHAKRABORTY2011_EQ4, Chakraborty2011PTFResult, categorical_inputs=()
     )
     result = calc_ptf_chakraborty2011_eq4(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
@@ -352,7 +352,7 @@ def test_calc_ptf_chakraborty2011_eq5_golden(
 
 def test_calc_ptf_chakraborty2011_eq5_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_CHAKRABORTY2011_EQ5, Chakraborty2011PTFResult
+        CASES_CALC_PTF_CHAKRABORTY2011_EQ5, Chakraborty2011PTFResult, categorical_inputs=()
     )
     result = calc_ptf_chakraborty2011_eq5(**inputs, out=None)
     assert result.water_content_33[0] == pytest.approx(
@@ -371,7 +371,7 @@ def test_calc_ptf_chakraborty2011_eq5_array():
 
 def test_calc_ptf_chakraborty2011_eq5_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_CHAKRABORTY2011_EQ5, Chakraborty2011PTFResult
+        CASES_CALC_PTF_CHAKRABORTY2011_EQ5, Chakraborty2011PTFResult, categorical_inputs=()
     )
     result = calc_ptf_chakraborty2011_eq5(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
@@ -427,7 +427,7 @@ def test_calc_ptf_chakraborty2011_eq6_golden(
 
 def test_calc_ptf_chakraborty2011_eq6_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_CHAKRABORTY2011_EQ6, Chakraborty2011PTFResult
+        CASES_CALC_PTF_CHAKRABORTY2011_EQ6, Chakraborty2011PTFResult, categorical_inputs=()
     )
     result = calc_ptf_chakraborty2011_eq6(**inputs, out=None)
     assert result.water_content_33[0] == pytest.approx(
@@ -446,7 +446,7 @@ def test_calc_ptf_chakraborty2011_eq6_array():
 
 def test_calc_ptf_chakraborty2011_eq6_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_CHAKRABORTY2011_EQ6, Chakraborty2011PTFResult
+        CASES_CALC_PTF_CHAKRABORTY2011_EQ6, Chakraborty2011PTFResult, categorical_inputs=()
     )
     result = calc_ptf_chakraborty2011_eq6(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):

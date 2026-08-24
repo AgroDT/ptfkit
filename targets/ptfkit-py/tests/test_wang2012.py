@@ -37,7 +37,7 @@ def test_calc_ptf_wang2012_golden(
 
 def test_calc_ptf_wang2012_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_WANG2012, Wang2012PTFResult
+        CASES_CALC_PTF_WANG2012, Wang2012PTFResult, categorical_inputs=()
     )
     result = calc_ptf_wang2012(**inputs, out=None)
     assert result.theta_s[0] == pytest.approx(expected['theta_s'], rel=rtol, abs=atol)
@@ -47,7 +47,7 @@ def test_calc_ptf_wang2012_array():
 
 def test_calc_ptf_wang2012_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_WANG2012, Wang2012PTFResult
+        CASES_CALC_PTF_WANG2012, Wang2012PTFResult, categorical_inputs=()
     )
     result = calc_ptf_wang2012(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):

@@ -4,8 +4,9 @@ use anyhow::Result;
 use convert_case::{Boundary, Case, Casing};
 
 use crate::{
+    adapters::{Adapter, Registry},
     documentation::{self as docs, FunctionDocument, SourceDocument},
-    model::{CompiledFunction, Function, Output, Parameter, Scope, Source},
+    model::{CompiledFunction, Function, Output, Parameter, Scope, Source, TestValue},
     render::{Render, Writer},
 };
 
@@ -26,7 +27,7 @@ pub(super) struct OutputFiles {
     pub(super) cpp_tests: Vec<GeneratedFile>,
 }
 
-pub(super) fn render(functions: &[CompiledFunction]) -> Result<OutputFiles> {
+pub(super) fn render(functions: &[CompiledFunction], adapters: &Registry) -> Result<OutputFiles> {
     let mut c_headers = Vec::new();
     let mut cpp_modules = Vec::new();
     let mut c_tests = Vec::new();
@@ -40,6 +41,22 @@ pub(super) fn render(functions: &[CompiledFunction]) -> Result<OutputFiles> {
     root_module.write(format_args!("{HEADER}\n\nexport module ptfkit;\n\n"));
 
     let mut module_paths = vec!["cpp/ptfkit.cppm".to_owned()];
+    for adapter in adapters.adapters() {
+        c_headers.push(file(
+            format!("ptfkit/adapters/{}.h", adapter.adapter_id),
+            c_adapter(adapter),
+        ));
+        let module_path = format!("cpp/adapters.{}.cppm", adapter.adapter_id);
+        module_paths.push(module_path);
+        root_module.line(format_args!(
+            "export import ptfkit.adapters.{};",
+            adapter.adapter_id
+        ));
+        cpp_modules.push(file(
+            format!("adapters.{}.cppm", adapter.adapter_id),
+            cpp_adapter(adapter),
+        ));
+    }
     for (slug, functions) in group_by_source(functions) {
         umbrella.line(format_args!("#include <ptfkit/{slug}.h>"));
         c_headers.push(file(
@@ -93,6 +110,12 @@ fn c_header(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
     if requires_math(functions) {
         writer.write("#include <math.h>\n\n");
     }
+    for adapter in used_adapters(functions) {
+        writer.line(format_args!("#include <ptfkit/adapters/{adapter}.h>"));
+    }
+    if !used_adapters(functions).is_empty() {
+        writer.blank_line();
+    }
     let first = functions
         .first()
         .expect("generated source contains at least one function");
@@ -131,6 +154,12 @@ fn cpp_module(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
         writer.write("module;\n#include <cmath>\n\n");
     }
     writer.write(format_args!("export module ptfkit.{slug};\n\n"));
+    for adapter in used_adapters(functions) {
+        writer.line(format_args!("export import ptfkit.adapters.{adapter};"));
+    }
+    if !used_adapters(functions).is_empty() {
+        writer.blank_line();
+    }
     let first = functions
         .first()
         .expect("generated source contains at least one function");
@@ -233,11 +262,13 @@ impl Render for NativeFunction<'_> {
             if index > 0 {
                 writer.write(", ");
             }
-            writer.write("double ");
-            writer.write(input);
+            writer.write(native_input_type(input.r#type.as_str(), self.dialect));
+            writer.write(" ");
+            writer.write(&input.name);
         }
         writer.line(") {");
         writer.indented(|writer| {
+            render_native_lowering(writer, self.function, self.dialect);
             for variable in self
                 .function
                 .ir
@@ -249,6 +280,7 @@ impl Render for NativeFunction<'_> {
                 writer.write(c::expression(
                     &variable.expression,
                     &self.function.core.inputs,
+                    &self.function.ir.derived_inputs,
                     &self.function.ir.variables,
                     self.expression_dialect(),
                 ));
@@ -258,6 +290,116 @@ impl Render for NativeFunction<'_> {
         });
         writer.line("}");
     }
+}
+
+fn native_input_type(input_type: &str, dialect: NativeDialect) -> &'static str {
+    match (input_type, dialect) {
+        ("number", _) => "double",
+        ("usda_texture_class", NativeDialect::C) => "ptfkit_usda_texture",
+        ("usda_texture_class", NativeDialect::Cpp) => "ptfkit::adapters::UsdaTexture",
+        _ => unreachable!("validated registered input type"),
+    }
+}
+
+fn render_native_lowering(
+    writer: &mut Writer,
+    function: &CompiledFunction,
+    dialect: NativeDialect,
+) {
+    let mut lowered = BTreeSet::new();
+    for binding in &function.ir.derived_inputs {
+        let source = &function.core.inputs[binding.source_input].name;
+        let key = (binding.adapter.as_str(), source.as_str());
+        if lowered.insert(key) {
+            match dialect {
+                NativeDialect::C => writer.line(format_args!("const ptfkit_usda_texture_fractions {source}_fractions = ptfkit_usda_texture_to_fractions({source});")),
+                NativeDialect::Cpp => writer.line(format_args!("const auto {source}_fractions = ptfkit::adapters::fractions({source});")),
+            }
+        }
+        writer.line(format_args!(
+            "const double {} = {source}_fractions.{};",
+            binding.symbol, binding.component
+        ));
+    }
+}
+
+fn used_adapters<'a>(functions: &'a [&'a CompiledFunction]) -> BTreeSet<&'a str> {
+    functions
+        .iter()
+        .flat_map(|function| {
+            function
+                .ir
+                .derived_inputs
+                .iter()
+                .map(|binding| binding.adapter.as_str())
+        })
+        .collect()
+}
+
+fn constant_name(category: &str) -> String {
+    category.to_ascii_uppercase().replace(' ', "_")
+}
+fn variant_name(category: &str) -> String {
+    category
+        .split(' ')
+        .map(|part| {
+            let mut chars = part.chars();
+            match chars.next() {
+                Some(first) => first.to_ascii_uppercase().to_string() + chars.as_str(),
+                None => String::new(),
+            }
+        })
+        .collect()
+}
+
+fn c_adapter(adapter: &Adapter) -> String {
+    let guard = format!(
+        "PTFKIT_ADAPTER_{}_H",
+        adapter.adapter_id.to_ascii_uppercase()
+    );
+    let mut writer = Writer::new();
+    writer.write(format_args!("{HEADER}\n#ifndef {guard}\n#define {guard}\n\n#include <math.h>\n#include <stdint.h>\n\ntypedef uint8_t ptfkit_usda_texture;\n\n"));
+    for (code, category) in adapter.input_type.categories.iter().enumerate() {
+        writer.line(format_args!(
+            "#define PTFKIT_USDA_TEXTURE_{} ((ptfkit_usda_texture){code})",
+            constant_name(category)
+        ));
+    }
+    writer.write("\ntypedef struct {\n    double sand;\n    double silt;\n    double clay;\n} ptfkit_usda_texture_fractions;\n\nstatic inline ptfkit_usda_texture_fractions ptfkit_make_usda_texture_fractions(double sand, double silt, double clay) {\n    ptfkit_usda_texture_fractions result = {sand, silt, clay};\n    return result;\n}\n\nstatic inline ptfkit_usda_texture_fractions ptfkit_usda_texture_to_fractions(ptfkit_usda_texture value) {\n    switch (value) {\n");
+    writer.indented(|writer| {
+        for (code, row) in adapter.representatives.iter().enumerate() {
+            writer.line(format_args!(
+                "case {code}: return ptfkit_make_usda_texture_fractions({}, {}, {});",
+                row.values["sand"], row.values["silt"], row.values["clay"]
+            ));
+        }
+    });
+    writer.write("    default: return ptfkit_make_usda_texture_fractions(NAN, NAN, NAN);\n    }\n}\n\n#endif\n");
+    writer.into_string()
+}
+
+fn cpp_adapter(adapter: &Adapter) -> String {
+    let mut writer = Writer::new();
+    writer.write(format_args!("{HEADER}\nmodule;\n#include <cstdint>\n#include <limits>\n\nexport module ptfkit.adapters.{};\n\nexport namespace ptfkit::adapters {{\n\nenum class UsdaTexture : std::uint8_t {{\n", adapter.adapter_id));
+    writer.indented(|writer| {
+        for (code, category) in adapter.input_type.categories.iter().enumerate() {
+            writer.line(format_args!("{} = {code},", variant_name(category)));
+        }
+    });
+    writer.write("};\n\nstruct UsdaTextureFractions { double sand; double silt; double clay; };\n\n[[nodiscard]] constexpr UsdaTextureFractions fractions(UsdaTexture value) {\n    switch (value) {\n");
+    writer.indented(|writer| {
+        for row in &adapter.representatives {
+            writer.line(format_args!(
+                "case UsdaTexture::{}: return {{{}, {}, {}}};",
+                variant_name(&row.category),
+                row.values["sand"],
+                row.values["silt"],
+                row.values["clay"]
+            ));
+        }
+    });
+    writer.write("    }\n    const auto nan = std::numeric_limits<double>::quiet_NaN();\n    return {nan, nan, nan};\n}\n\n}  // namespace ptfkit::adapters\n");
+    writer.into_string()
 }
 
 impl NativeFunction<'_> {
@@ -285,6 +427,7 @@ impl NativeFunction<'_> {
                         .expect("terminal variable")
                         .expression,
                     &self.function.core.inputs,
+                    &self.function.ir.derived_inputs,
                     &self.function.ir.variables,
                     self.expression_dialect(),
                 ));
@@ -394,7 +537,7 @@ fn function_comment_from_document(document: FunctionDocument<'_>) -> Comment {
         format!(
             "@param {} {}",
             parameter.name,
-            docs::parameter_details(parameter)
+            docs::input_details(parameter)
         )
     }));
 
@@ -520,7 +663,7 @@ fn c_compatibility_test(slug: &str, functions: &[&CompiledFunction]) -> Result<S
                     writer.write(" result = ");
                     writer.write(&function.core.name);
                     writer.write("(");
-                    render_literals(writer, &case.inputs);
+                    render_literals(writer, function, &case.inputs, NativeDialect::C);
                     writer.line(");");
                     for (field, expected) in spec.outputs.fields().iter().zip(&case.expected) {
                         writer.write("assert_close_enough(");
@@ -566,7 +709,7 @@ fn module_test(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
             writer.line("{");
             writer.indented(|writer| {
             writer.write(format_args!("const auto result = ptfkit::{slug}::{}(", function.core.name));
-            render_literals(writer, &case.inputs);
+            render_literals(writer, function, &case.inputs, NativeDialect::Cpp);
             writer.line(");");
             if matches!(function.core.output, Output::Struct(_)) {
                 let result = spec
@@ -599,12 +742,29 @@ fn module_test(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
     Ok(writer.into_string())
 }
 
-fn render_literals(writer: &mut Writer, values: &[f64]) {
+fn render_literals(
+    writer: &mut Writer,
+    _function: &CompiledFunction,
+    values: &[TestValue],
+    dialect: NativeDialect,
+) {
     for (index, value) in values.iter().enumerate() {
         if index > 0 {
             writer.write(", ");
         }
-        writer.write(c::test_float_literal(*value));
+        match value {
+            TestValue::Number(value) => writer.write(c::test_float_literal(*value)),
+            TestValue::Category(category) => match dialect {
+                NativeDialect::C => writer.write(format_args!(
+                    "PTFKIT_USDA_TEXTURE_{}",
+                    constant_name(category)
+                )),
+                NativeDialect::Cpp => writer.write(format_args!(
+                    "ptfkit::adapters::UsdaTexture::{}",
+                    variant_name(category)
+                )),
+            },
+        }
     }
 }
 

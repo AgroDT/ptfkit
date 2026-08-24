@@ -44,7 +44,7 @@ def test_calc_ptf_hodnett2002_golden(
 
 def test_calc_ptf_hodnett2002_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_HODNETT2002, Hodnett2002PTFResult
+        CASES_CALC_PTF_HODNETT2002, Hodnett2002PTFResult, categorical_inputs=()
     )
     result = calc_ptf_hodnett2002(**inputs, out=None)
     assert result.alpha[0] == pytest.approx(expected['alpha'], rel=rtol, abs=atol)
@@ -55,7 +55,7 @@ def test_calc_ptf_hodnett2002_array():
 
 def test_calc_ptf_hodnett2002_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_HODNETT2002, Hodnett2002PTFResult
+        CASES_CALC_PTF_HODNETT2002, Hodnett2002PTFResult, categorical_inputs=()
     )
     result = calc_ptf_hodnett2002(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):

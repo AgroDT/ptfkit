@@ -81,3 +81,33 @@ A `cosby1984_univariate_ptf_result` value.
 !!! warning
 
     Log-transformed output units use the pilot contract \`reported log value\`.
+
+### `calc_ptf_cosby1984_univariate_usda_texture` {#function-calc_ptf_cosby1984_univariate_usda_texture}
+
+Estimate Cosby et al. (1984) univariate statistics from a prepared USDA texture class.
+
+```c
+static inline cosby1984_univariate_ptf_result calc_ptf_cosby1984_univariate_usda_texture(ptfkit_usda_texture texture_class);
+```
+
+#### Parameters
+
+| Name | Direction | Description |
+| --- | --- | --- |
+| `texture_class` | in | Basic USDA fine-earth texture class prepared as a native categorical value. (USDA texture class) |
+
+#### Returns
+
+A `cosby1984_univariate_ptf_result` value.
+
+!!! note
+
+    The adapter supplies representative fractions, not measured particle-size data.
+
+!!! note
+
+    Prepare exact class strings once with prepare_usda_texture and reuse the result.
+
+!!! warning
+
+    Representative compositions add uncertainty beyond the published regression.

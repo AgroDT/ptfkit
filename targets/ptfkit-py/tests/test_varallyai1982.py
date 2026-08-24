@@ -38,7 +38,7 @@ def test_calc_ptf_varallyai1982_meadow_golden(
 
 def test_calc_ptf_varallyai1982_meadow_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_VARALLYAI1982_MEADOW, Varallyai1982Parameters
+        CASES_CALC_PTF_VARALLYAI1982_MEADOW, Varallyai1982Parameters, categorical_inputs=()
     )
     result = calc_ptf_varallyai1982_meadow(**inputs, out=None)
     assert result.theta_0[0] == pytest.approx(expected['theta_0'], rel=rtol, abs=atol)
@@ -48,7 +48,7 @@ def test_calc_ptf_varallyai1982_meadow_array():
 
 def test_calc_ptf_varallyai1982_meadow_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_VARALLYAI1982_MEADOW, Varallyai1982Parameters
+        CASES_CALC_PTF_VARALLYAI1982_MEADOW, Varallyai1982Parameters, categorical_inputs=()
     )
     result = calc_ptf_varallyai1982_meadow(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
@@ -83,7 +83,7 @@ def test_calc_ptf_varallyai1982_chernozem_a_golden(
 
 def test_calc_ptf_varallyai1982_chernozem_a_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_A, Varallyai1982Parameters
+        CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_A, Varallyai1982Parameters, categorical_inputs=()
     )
     result = calc_ptf_varallyai1982_chernozem_a(**inputs, out=None)
     assert result.theta_0[0] == pytest.approx(expected['theta_0'], rel=rtol, abs=atol)
@@ -93,7 +93,7 @@ def test_calc_ptf_varallyai1982_chernozem_a_array():
 
 def test_calc_ptf_varallyai1982_chernozem_a_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_A, Varallyai1982Parameters
+        CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_A, Varallyai1982Parameters, categorical_inputs=()
     )
     result = calc_ptf_varallyai1982_chernozem_a(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
@@ -128,7 +128,7 @@ def test_calc_ptf_varallyai1982_chernozem_b_golden(
 
 def test_calc_ptf_varallyai1982_chernozem_b_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_B, Varallyai1982Parameters
+        CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_B, Varallyai1982Parameters, categorical_inputs=()
     )
     result = calc_ptf_varallyai1982_chernozem_b(**inputs, out=None)
     assert result.theta_0[0] == pytest.approx(expected['theta_0'], rel=rtol, abs=atol)
@@ -138,7 +138,7 @@ def test_calc_ptf_varallyai1982_chernozem_b_array():
 
 def test_calc_ptf_varallyai1982_chernozem_b_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_B, Varallyai1982Parameters
+        CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_B, Varallyai1982Parameters, categorical_inputs=()
     )
     result = calc_ptf_varallyai1982_chernozem_b(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
@@ -173,7 +173,7 @@ def test_calc_ptf_varallyai1982_chernozem_c_golden(
 
 def test_calc_ptf_varallyai1982_chernozem_c_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_C, Varallyai1982Parameters
+        CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_C, Varallyai1982Parameters, categorical_inputs=()
     )
     result = calc_ptf_varallyai1982_chernozem_c(**inputs, out=None)
     assert result.theta_0[0] == pytest.approx(expected['theta_0'], rel=rtol, abs=atol)
@@ -183,7 +183,7 @@ def test_calc_ptf_varallyai1982_chernozem_c_array():
 
 def test_calc_ptf_varallyai1982_chernozem_c_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_C, Varallyai1982Parameters
+        CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_C, Varallyai1982Parameters, categorical_inputs=()
     )
     result = calc_ptf_varallyai1982_chernozem_c(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):

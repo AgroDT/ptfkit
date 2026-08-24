@@ -141,6 +141,79 @@ functions:
       expr: 0.459 + 0.00321 * silt
     - name: sd_theta_s
       expr: 7.73 - 0.0730 * clay
+- name: calc_ptf_cosby1984_univariate_usda_texture
+  status: implemented
+  public_api:
+    name: calc_ptf_cosby1984_univariate_usda_texture
+    result_class: Cosby1984UnivariatePTFResult
+    summary: Estimate Cosby et al. (1984) univariate statistics from a prepared USDA texture class.
+  scope:
+    prediction_target: Mean and standard deviation estimates for hydraulic parameters from representative USDA sand, silt, and clay percentages.
+    models:
+      h_theta: Power function moisture characteristic
+      k_h: Saturated hydraulic conductivity parameter statistics
+  inputs:
+  - name: texture_class
+    type: usda_texture_class
+    symbol: null
+    unit: USDA texture class
+    domain: null
+    description: Basic USDA fine-earth texture class prepared as a native categorical value.
+  derived_inputs:
+  - adapter: usda_texture
+    input: texture_class
+    evidence: >-
+      Cosby et al. (1984), page 684, state that the source samples had assigned
+      textural classes but no measured particle-size distributions, and that the
+      regression analysis assigned percent sand, silt, and clay from representative
+      points on the U.S. Department of Agriculture (1951) textural triangle. This
+      directly establishes the published regression's use of USDA textural classes
+      and USDA sand, silt, and clay definitions.
+    components:
+      sand: sand
+      silt: silt
+      clay: clay
+  outputs:
+    type: record
+    name: Cosby1984UnivariatePTFResult
+    fields:
+    - {name: mean_b, symbol: b, unit: dimensionless, domain: null, description: Mean slope of the moisture characteristic.}
+    - {name: mean_log_psi_s, symbol: log_psi_s, unit: reported log value, domain: null, description: Mean log saturation matric potential; the underlying potential is expressed in cm H2O.}
+    - {name: mean_log_k_sat, symbol: log_k_sat, unit: reported log value, domain: null, description: Mean log saturated hydraulic conductivity; the underlying conductivity is expressed in inches per hour.}
+    - {name: mean_theta_s, symbol: theta_s, unit: '% volume/volume', domain: null, description: Mean saturated water content.}
+    - {name: sd_b, symbol: b, unit: dimensionless, domain: null, description: Standard deviation of b.}
+    - {name: sd_log_k_sat, symbol: log_k_sat, unit: reported log value, domain: null, description: Standard deviation of log saturated hydraulic conductivity.}
+    - {name: sd_theta_s, symbol: theta_s, unit: '% volume/volume', domain: null, description: Standard deviation of saturated water content.}
+  golden_tests:
+  - id: representative_loam
+    inputs: {texture_class: loam}
+    expected:
+      mean_b: 5.613
+      mean_log_psi_s: 1.3429
+      mean_log_k_sat: -0.2567
+      mean_theta_s: 43.734
+      sd_b: 2.19
+      sd_log_k_sat: 0.59382
+      sd_theta_s: 6.489
+    rtol: 1.0e-12
+    atol: 1.0e-12
+    notes: Regression evaluation using the registry's official representative loam fractions; not a source-reported observation.
+  edge_cases: []
+  documentation:
+    notes:
+    - The adapter supplies representative fractions, not measured particle-size data.
+    - Prepare exact class strings once with prepare_usda_texture and reuse the result.
+    warnings:
+    - Representative compositions add uncertainty beyond the published regression.
+  implementation:
+    variables:
+    - {name: mean_b, expr: 2.91 + 0.159 * clay}
+    - {name: mean_log_psi_s, expr: 1.88 - 0.0131 * sand}
+    - {name: mean_log_k_sat, expr: -0.884 + 0.0153 * sand}
+    - {name: mean_theta_s, expr: 48.9 - 0.126 * sand}
+    - {name: sd_b, expr: 1.34 + 0.0500 * clay}
+    - {name: sd_log_k_sat, expr: 0.459 + 0.00321 * silt}
+    - {name: sd_theta_s, expr: 7.73 - 0.0730 * clay}
 scientific_notes: |
   # Cosby et al. (1984)
 
@@ -149,3 +222,11 @@ scientific_notes: |
   The implementation contains the significant univariate regressions from Table
   5. `sd_log_psi_s` is excluded because the table reports no significant
   univariate regression for it.
+
+  ## USDA adapter evidence
+
+  Page 684 reports that actual particle-size distributions were unavailable and
+  that representative percent sand, silt, and clay values were assigned from
+  the U.S. Department of Agriculture (1951) texture triangle. The additive
+  adapter-backed variant therefore preserves the source's categorical-to-USDA-
+  fractions modeling step while leaving the measured-fractions API unchanged.

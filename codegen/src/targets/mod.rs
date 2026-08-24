@@ -32,16 +32,16 @@ pub(super) fn group_by_source(
 pub(crate) fn run(
     root: &Path,
     entries: Vec<Entry>,
-    usda_texture: &crate::usda_texture::Specification,
+    adapters: &crate::adapters::Registry,
 ) -> Result<()> {
     let catalog = catalog::render(&entries);
     let reference_python = reference::python::render(&entries);
     let compiled = compile::functions(entries)?;
     let reference_c = reference::c::render(&compiled)?;
     let reference_cpp = reference::cpp::render(&compiled)?;
-    let rust = rust::render(&compiled)?;
-    let python = python::render(&compiled, usda_texture)?;
-    let native = native::render(&compiled)?;
+    let rust = rust::render(&compiled, adapters)?;
+    let python = python::render(&compiled, adapters)?;
+    let native = native::render(&compiled, adapters)?;
 
     output::commit(
         root,
@@ -67,9 +67,9 @@ pub(crate) fn run(
 pub(crate) fn check_generated(
     root: &Path,
     entries: Vec<Entry>,
-    usda_texture: &crate::usda_texture::Specification,
+    adapters: &crate::adapters::Registry,
 ) -> Result<()> {
     let before = output::snapshot_generated(root)?;
-    run(root, entries, usda_texture)?;
+    run(root, entries, adapters)?;
     output::assert_unchanged(root, before)
 }

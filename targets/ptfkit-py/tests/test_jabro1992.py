@@ -45,13 +45,17 @@ def test_calc_ptf_jabro1992_golden(
 
 
 def test_calc_ptf_jabro1992_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_JABRO1992)
+    inputs, expected, rtol, atol, _out = prepare_vector_case(
+        CASES_CALC_PTF_JABRO1992, categorical_inputs=()
+    )
     result = calc_ptf_jabro1992(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
 
 
 def test_calc_ptf_jabro1992_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_JABRO1992)
+    inputs, expected, rtol, atol, out = prepare_vector_case(
+        CASES_CALC_PTF_JABRO1992, categorical_inputs=()
+    )
     result = calc_ptf_jabro1992(**inputs, out=out)
     assert result is out
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)

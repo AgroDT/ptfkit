@@ -22,13 +22,17 @@ def test_calc_ptf_tiwary2014_igp_golden(
 
 
 def test_calc_ptf_tiwary2014_igp_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_TIWARY2014_IGP)
+    inputs, expected, rtol, atol, _out = prepare_vector_case(
+        CASES_CALC_PTF_TIWARY2014_IGP, categorical_inputs=()
+    )
     result = calc_ptf_tiwary2014_igp(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
 
 
 def test_calc_ptf_tiwary2014_igp_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_TIWARY2014_IGP)
+    inputs, expected, rtol, atol, out = prepare_vector_case(
+        CASES_CALC_PTF_TIWARY2014_IGP, categorical_inputs=()
+    )
     result = calc_ptf_tiwary2014_igp(**inputs, out=out)
     assert result is out
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -65,7 +69,7 @@ def test_calc_ptf_tiwary2014_bsr_golden(
 
 def test_calc_ptf_tiwary2014_bsr_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_TIWARY2014_BSR, Tiwary2014PTFResult
+        CASES_CALC_PTF_TIWARY2014_BSR, Tiwary2014PTFResult, categorical_inputs=()
     )
     result = calc_ptf_tiwary2014_bsr(**inputs, out=None)
     assert result.w_33[0] == pytest.approx(expected['w_33'], rel=rtol, abs=atol)
@@ -76,7 +80,7 @@ def test_calc_ptf_tiwary2014_bsr_array():
 
 def test_calc_ptf_tiwary2014_bsr_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_TIWARY2014_BSR, Tiwary2014PTFResult
+        CASES_CALC_PTF_TIWARY2014_BSR, Tiwary2014PTFResult, categorical_inputs=()
     )
     result = calc_ptf_tiwary2014_bsr(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):

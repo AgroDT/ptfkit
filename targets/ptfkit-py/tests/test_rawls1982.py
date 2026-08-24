@@ -27,13 +27,17 @@ def test_calc_theta_1500_rawls1982_golden(
 
 
 def test_calc_theta_1500_rawls1982_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_THETA_1500_RAWLS1982)
+    inputs, expected, rtol, atol, _out = prepare_vector_case(
+        CASES_CALC_THETA_1500_RAWLS1982, categorical_inputs=()
+    )
     result = calc_theta_1500_rawls1982(**inputs, out=None)
     assert result[0] == pytest.approx(expected['theta_1500'], rel=rtol, abs=atol)
 
 
 def test_calc_theta_1500_rawls1982_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_THETA_1500_RAWLS1982)
+    inputs, expected, rtol, atol, out = prepare_vector_case(
+        CASES_CALC_THETA_1500_RAWLS1982, categorical_inputs=()
+    )
     result = calc_theta_1500_rawls1982(**inputs, out=out)
     assert result is out
     assert result[0] == pytest.approx(expected['theta_1500'], rel=rtol, abs=atol)
@@ -59,13 +63,17 @@ def test_calc_theta_33_rawls1982_golden(
 
 
 def test_calc_theta_33_rawls1982_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_THETA_33_RAWLS1982)
+    inputs, expected, rtol, atol, _out = prepare_vector_case(
+        CASES_CALC_THETA_33_RAWLS1982, categorical_inputs=()
+    )
     result = calc_theta_33_rawls1982(**inputs, out=None)
     assert result[0] == pytest.approx(expected['theta_33'], rel=rtol, abs=atol)
 
 
 def test_calc_theta_33_rawls1982_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_THETA_33_RAWLS1982)
+    inputs, expected, rtol, atol, out = prepare_vector_case(
+        CASES_CALC_THETA_33_RAWLS1982, categorical_inputs=()
+    )
     result = calc_theta_33_rawls1982(**inputs, out=out)
     assert result is out
     assert result[0] == pytest.approx(expected['theta_33'], rel=rtol, abs=atol)
@@ -122,7 +130,7 @@ def test_calc_full_wrc_rawls1982_golden(
 
 def test_calc_full_wrc_rawls1982_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_FULL_WRC_RAWLS1982, Rawls1982PTFResult
+        CASES_CALC_FULL_WRC_RAWLS1982, Rawls1982PTFResult, categorical_inputs=()
     )
     result = calc_full_wrc_rawls1982(**inputs, out=None)
     assert result.theta_4[0] == pytest.approx(expected['theta_4'], rel=rtol, abs=atol)
@@ -141,7 +149,7 @@ def test_calc_full_wrc_rawls1982_array():
 
 def test_calc_full_wrc_rawls1982_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_FULL_WRC_RAWLS1982, Rawls1982PTFResult
+        CASES_CALC_FULL_WRC_RAWLS1982, Rawls1982PTFResult, categorical_inputs=()
     )
     result = calc_full_wrc_rawls1982(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):

@@ -33,13 +33,17 @@ def test_calc_ptf_ahuja1984_golden(
 
 
 def test_calc_ptf_ahuja1984_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_AHUJA1984)
+    inputs, expected, rtol, atol, _out = prepare_vector_case(
+        CASES_CALC_PTF_AHUJA1984, categorical_inputs=()
+    )
     result = calc_ptf_ahuja1984(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
 
 
 def test_calc_ptf_ahuja1984_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_AHUJA1984)
+    inputs, expected, rtol, atol, out = prepare_vector_case(
+        CASES_CALC_PTF_AHUJA1984, categorical_inputs=()
+    )
     result = calc_ptf_ahuja1984(**inputs, out=out)
     assert result is out
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)

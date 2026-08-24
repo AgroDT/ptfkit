@@ -21,6 +21,7 @@ struct PythonFunction<'a> {
     array_inputs: Vec<String>,
     keyword_inputs: Vec<String>,
     parameters: String,
+    uses_categorical: bool,
     docstring: PythonDocstring,
 }
 
@@ -140,6 +141,9 @@ fn module_source(
     module.write(format_args!(
         "from __future__ import annotations\n\nfrom typing import {typing_imports}\n\n"
     ));
+    if functions.iter().any(|function| function.uses_categorical) {
+        module.line("from ptfkit.texture import PreparedUsdaTexture, _codes_for_ptf");
+    }
     module.block(
         "from ptfkit._ptfkit import (",
         |writer| {
@@ -263,26 +267,60 @@ fn render_function(module: &mut Module, function: &PythonFunction<'_>) {
 
 fn view(resolved: &CompiledFunction) -> PythonFunction<'_> {
     let function = &resolved.entry.spec.functions[resolved.function_index];
-    let names = function
+    let uses_categorical = function
         .inputs
         .iter()
-        .map(|input| input.name.clone())
-        .collect::<Vec<_>>();
+        .any(|input| !input.r#type.is_numeric());
     PythonFunction {
         name: &function.public_api.name,
         rust_name: &resolved.core.name,
         result_class: function.result_class(),
-        scalar_inputs: names.iter().map(|name| format!("{name}: float")).collect(),
-        array_inputs: names
+        scalar_inputs: function
+            .inputs
             .iter()
-            .map(|name| format!("{name}: ArrayLike"))
+            .map(|input| {
+                if input.r#type.is_numeric() {
+                    format!("{}: float", input.name)
+                } else {
+                    format!("{}: PreparedUsdaTexture", input.name)
+                }
+            })
+            .collect(),
+        array_inputs: function
+            .inputs
+            .iter()
+            .map(|input| {
+                if input.r#type.is_numeric() {
+                    format!("{}: ArrayLike", input.name)
+                } else {
+                    format!("{}: PreparedUsdaTexture", input.name)
+                }
+            })
             .collect(),
         keyword_inputs: function
             .inputs
             .iter()
-            .map(|input| format!("{}: float | ArrayLike,", input.name))
+            .map(|input| {
+                if input.r#type.is_numeric() {
+                    format!("{}: float | ArrayLike,", input.name)
+                } else {
+                    format!("{}: PreparedUsdaTexture,", input.name)
+                }
+            })
             .collect(),
-        parameters: names.join(", "),
+        parameters: function
+            .inputs
+            .iter()
+            .map(|input| {
+                if input.r#type.is_numeric() {
+                    input.name.clone()
+                } else {
+                    format!("_codes_for_ptf({})", input.name)
+                }
+            })
+            .collect::<Vec<_>>()
+            .join(", "),
+        uses_categorical,
         docstring: function_docstring(function),
     }
 }
@@ -322,7 +360,7 @@ fn function_docstring_from_document(
     let mut arguments = document
         .parameters
         .iter()
-        .map(parameter_documentation)
+        .map(docs::input_documentation)
         .collect::<Vec<_>>();
     arguments.push("out: Optional output arrays for in-place calculation.".into());
     let returns = if let Some(result_class) = result_class {
@@ -506,7 +544,7 @@ mod tests {
                 prediction_target: "Test property.".into(),
                 models: Models::default(),
             },
-            input_adapters: None,
+            derived_inputs: Vec::new(),
             inputs: Vec::new(),
             outputs: crate::model::Outputs::Record {
                 name: "TestResult".into(),

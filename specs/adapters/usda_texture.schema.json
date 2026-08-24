@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/AgroDT/ptfkit/blob/main/specs/adapters/usda_texture.schema.json",
+  "title": "USDA texture categorical-to-fractions adapter",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["adapter_id", "input_type", "outputs", "representatives", "sum_constraint", "provenance"],
+  "properties": {
+    "adapter_id": { "const": "usda_texture" },
+    "input_type": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "description", "categories"],
+      "properties": {
+        "name": { "const": "usda_texture_class" },
+        "description": { "type": "string", "minLength": 1 },
+        "categories": {
+          "type": "array", "minItems": 12, "maxItems": 12, "uniqueItems": true,
+          "prefixItems": [
+            {"const": "sand"}, {"const": "loamy sand"}, {"const": "sandy loam"},
+            {"const": "loam"}, {"const": "silt loam"}, {"const": "silt"},
+            {"const": "sandy clay loam"}, {"const": "clay loam"},
+            {"const": "silty clay loam"}, {"const": "sandy clay"},
+            {"const": "silty clay"}, {"const": "clay"}
+          ],
+          "items": false
+        }
+      }
+    },
+    "outputs": {
+      "type": "array", "minItems": 3, "maxItems": 3,
+      "items": {"$ref": "#/$defs/output"}
+    },
+    "representatives": {
+      "type": "array", "minItems": 12, "maxItems": 12,
+      "items": {"$ref": "#/$defs/representative"}
+    },
+    "sum_constraint": {
+      "type": "object", "additionalProperties": false, "required": ["target", "tolerance"],
+      "properties": {
+        "target": {"const": 100},
+        "tolerance": {"type": "number", "exclusiveMinimum": 0, "maximum": 1e-9}
+      }
+    },
+    "provenance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["organization", "title", "artifact", "retrieved", "url", "sha256", "value_rule"],
+      "properties": {
+        "organization": {"type": "string", "minLength": 1},
+        "title": {"type": "string", "minLength": 1},
+        "artifact": {"type": "string", "minLength": 1},
+        "retrieved": {"type": "string", "format": "date"},
+        "url": {"type": "string", "format": "uri"},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "value_rule": {"type": "string", "minLength": 1}
+      }
+    }
+  },
+  "$defs": {
+    "output": {
+      "type": "object", "additionalProperties": false,
+      "required": ["name", "unit", "domain", "description"],
+      "properties": {
+        "name": {"enum": ["sand", "silt", "clay"]},
+        "unit": {"const": "percent by mass of fine earth"},
+        "domain": {"type": "array", "prefixItems": [{"const": 0}, {"const": 100}], "items": false},
+        "description": {"type": "string", "minLength": 1}
+      }
+    },
+    "representative": {
+      "type": "object", "additionalProperties": false, "required": ["category", "values"],
+      "properties": {
+        "category": {"type": "string", "minLength": 1},
+        "values": {
+          "type": "object", "additionalProperties": false, "required": ["sand", "silt", "clay"],
+          "properties": {
+            "sand": {"type": "number", "minimum": 0, "maximum": 100},
+            "silt": {"type": "number", "minimum": 0, "maximum": 100},
+            "clay": {"type": "number", "minimum": 0, "maximum": 100}
+          }
+        }
+      }
+    }
+  }
+}

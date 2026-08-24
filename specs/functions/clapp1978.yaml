@@ -1,0 +1,285 @@
+source:
+  summary: Representative hydraulic parameters for eleven USDA soil texture classes.
+  citation_apa: >-
+    Clapp, R. B., & Hornberger, G. M. (1978). Empirical equations for some soil
+    hydraulic properties. Water Resources Research, 14(4), 601-604.
+  doi:
+    identifier: 10.1029/WR014i004p00601
+    url: https://doi.org/10.1029/WR014i004p00601
+scope:
+  territory: United States
+  dataset: >-
+    Desorption measurements reported by Holtan et al. (1968), reduced from more
+    than 1,800 samples to 1,446 accepted soils from 34 United States localities.
+functions:
+- name: calc_ptf_clapp1978_texture_class
+  status: blocked
+  public_api:
+    name: calc_ptf_clapp1978_texture_class
+    result_class: Clapp1978TextureClassPTFResult
+    summary: Look up representative hydraulic parameters by USDA soil texture class.
+  scope:
+    prediction_target: >-
+      Representative moisture-characteristic, conductivity, wetting-front, and
+      sorptivity parameters for a soil texture class.
+    models:
+      h_theta: 'psi = psi_s * W^(-b), with a parabolic section near saturation'
+      k_h: 'k = W^(2b+3), using the verified correction to the damaged OCR'
+  inputs:
+  - name: soil_texture
+    type: usda_texture_class
+    symbol: null
+    unit: USDA texture class
+    domain: >-
+      sand, loamy sand, sandy loam, silt loam, loam, sandy clay loam,
+      silty clay loam, clay loam, sandy clay, silty clay, or clay
+    description: >-
+      USDA textural class assigned to the source soil and represented in Table 2.
+  outputs:
+    type: record
+    name: Clapp1978TextureClassPTFResult
+    fields:
+    - name: mean_clay_fraction
+      symbol: null
+      unit: '1'
+      domain: '[0, 1]'
+      description: Clay fraction read at the center of the USDA textural class.
+    - name: mean_b
+      symbol: null
+      unit: '1'
+      domain: null
+      description: Mean fitted exponent of the moisture-characteristic power curve.
+    - name: mean_psi_s
+      symbol: null
+      unit: cm
+      domain: null
+      description: Arithmetic mean fitted saturation suction.
+    - name: representative_psi_s_log
+      symbol: null
+      unit: cm
+      domain: null
+      description: Antilog of the mean logarithm of fitted saturation suction.
+    - name: wetting_front_suction
+      symbol: null
+      unit: cm
+      domain: null
+      description: Representative Green-Ampt wetting-front suction.
+    - name: saturated_water_content
+      symbol: null
+      unit: cm^3/cm^3
+      domain: '[0, 1]'
+      description: Mean saturated volumetric water content or total porosity.
+    - name: saturated_hydraulic_conductivity
+      symbol: null
+      unit: cm/min
+      domain: '[0, +inf)'
+      description: Average saturated hydraulic conductivity reported by Li et al. (1976).
+    - name: sorptivity
+      symbol: null
+      unit: cm/min^(1/2)
+      domain: '[0, +inf)'
+      description: Representative sorptivity for the source-defined initial moisture deficit.
+  golden_tests:
+  - id: table_2_sand
+    inputs: {soil_texture: sand}
+    expected:
+      mean_clay_fraction: 0.03
+      mean_b: 4.05
+      mean_psi_s: 12.1
+      representative_psi_s_log: 3.50
+      wetting_front_suction: 4.66
+      saturated_water_content: 0.395
+      saturated_hydraulic_conductivity: 1.056
+      sorptivity: 1.52
+    rtol: 0
+    atol: 0
+    notes: Source-native values from Table 2.
+  - id: table_2_loamy_sand
+    inputs: {soil_texture: loamy sand}
+    expected:
+      mean_clay_fraction: 0.06
+      mean_b: 4.38
+      mean_psi_s: 9.0
+      representative_psi_s_log: 1.78
+      wetting_front_suction: 2.38
+      saturated_water_content: 0.410
+      saturated_hydraulic_conductivity: 0.938
+      sorptivity: 1.04
+    rtol: 0
+    atol: 0
+    notes: Source-native values from Table 2.
+  - id: table_2_sandy_loam
+    inputs: {soil_texture: sandy loam}
+    expected:
+      mean_clay_fraction: 0.09
+      mean_b: 4.90
+      mean_psi_s: 21.8
+      representative_psi_s_log: 7.18
+      wetting_front_suction: 9.52
+      saturated_water_content: 0.435
+      saturated_hydraulic_conductivity: 0.208
+      sorptivity: 1.03
+    rtol: 0
+    atol: 0
+    notes: Source-native values from Table 2.
+  - id: table_2_silt_loam
+    inputs: {soil_texture: silt loam}
+    expected:
+      mean_clay_fraction: 0.14
+      mean_b: 5.30
+      mean_psi_s: 78.6
+      representative_psi_s_log: 56.6
+      wetting_front_suction: 75.3
+      saturated_water_content: 0.485
+      saturated_hydraulic_conductivity: 0.0432
+      sorptivity: 1.26
+    rtol: 0
+    atol: 0
+    notes: Source-native values from Table 2.
+  - id: table_2_loam
+    inputs: {soil_texture: loam}
+    expected:
+      mean_clay_fraction: 0.19
+      mean_b: 5.39
+      mean_psi_s: 47.8
+      representative_psi_s_log: 14.6
+      wetting_front_suction: 20.0
+      saturated_water_content: 0.451
+      saturated_hydraulic_conductivity: 0.0417
+      sorptivity: 0.693
+    rtol: 0
+    atol: 0
+    notes: Source-native values from Table 2.
+  - id: table_2_sandy_clay_loam
+    inputs: {soil_texture: sandy clay loam}
+    expected:
+      mean_clay_fraction: 0.28
+      mean_b: 7.12
+      mean_psi_s: 29.9
+      representative_psi_s_log: 8.63
+      wetting_front_suction: 11.7
+      saturated_water_content: 0.420
+      saturated_hydraulic_conductivity: 0.0378
+      sorptivity: 0.488
+    rtol: 0
+    atol: 0
+    notes: Source-native values from Table 2.
+  - id: table_2_silty_clay_loam
+    inputs: {soil_texture: silty clay loam}
+    expected:
+      mean_clay_fraction: 0.34
+      mean_b: 7.75
+      mean_psi_s: 35.6
+      representative_psi_s_log: 14.6
+      wetting_front_suction: 19.7
+      saturated_water_content: 0.477
+      saturated_hydraulic_conductivity: 0.0102
+      sorptivity: 0.310
+    rtol: 0
+    atol: 0
+    notes: Source-native values from Table 2.
+  - id: table_2_clay_loam
+    inputs: {soil_texture: clay loam}
+    expected:
+      mean_clay_fraction: 0.34
+      mean_b: 8.52
+      mean_psi_s: 63.0
+      representative_psi_s_log: 36.1
+      wetting_front_suction: 48.1
+      saturated_water_content: 0.476
+      saturated_hydraulic_conductivity: 0.0147
+      sorptivity: 0.537
+    rtol: 0
+    atol: 0
+    notes: Source-native values from Table 2.
+  - id: table_2_sandy_clay
+    inputs: {soil_texture: sandy clay}
+    expected:
+      mean_clay_fraction: 0.43
+      mean_b: 10.4
+      mean_psi_s: 15.3
+      representative_psi_s_log: 6.16
+      wetting_front_suction: 8.18
+      saturated_water_content: 0.426
+      saturated_hydraulic_conductivity: 0.0130
+      sorptivity: 0.223
+    rtol: 0
+    atol: 0
+    notes: Source-native values from Table 2.
+  - id: table_2_silty_clay
+    inputs: {soil_texture: silty clay}
+    expected:
+      mean_clay_fraction: 0.49
+      mean_b: 10.4
+      mean_psi_s: 49.0
+      representative_psi_s_log: 17.4
+      wetting_front_suction: 23.0
+      saturated_water_content: 0.492
+      saturated_hydraulic_conductivity: 0.0062
+      sorptivity: 0.242
+    rtol: 0
+    atol: 0
+    notes: Source-native values from Table 2.
+  - id: table_2_clay
+    inputs: {soil_texture: clay}
+    expected:
+      mean_clay_fraction: 0.63
+      mean_b: 11.4
+      mean_psi_s: 40.5
+      representative_psi_s_log: 18.6
+      wetting_front_suction: 24.3
+      saturated_water_content: 0.482
+      saturated_hydraulic_conductivity: 0.0077
+      sorptivity: 0.268
+    rtol: 0
+    atol: 0
+    notes: Source-native values from Table 2.
+  edge_cases:
+  - id: source_has_no_silt_row
+    inputs: {soil_texture: silt}
+    expected_behavior: Reject the class because Table 2 publishes no value for silt.
+    notes: The registered USDA type includes silt, but the source lookup has only eleven rows.
+  documentation:
+    notes:
+    - Table 2 values are direct source-native class averages, not values calculated
+      from the repository USDA representative-fraction adapter.
+    - The source uses the USDA (1951) textural triangle to read the clay fraction
+      at the center of each textural class.
+    warnings:
+    - The source states that the average values were not verified and that blind
+      use may be erroneous because several parameters have large within-class variability.
+    - Sorptivity combines source-derived parameters with average saturated
+      conductivity values reported by Li et al. (1976).
+scientific_notes: |
+  ## Supported model
+
+  - Table 2 directly maps eleven USDA soil texture classes to representative
+    hydraulic parameters. These rows are source-native golden values.
+  - The source defines W as theta/theta_s and fits psi = psi_s * W^(-b).
+  - The prepared-source correction establishes that the empirical working
+    conductivity relation is k = W^(2b+3); the damaged OCR prints 2b+2.
+
+  ## Texture interpretation
+
+  - Holtan et al. assigned a textural class to each soil but supplied no measured
+    particle-size distributions. Clapp and Hornberger used the USDA (1951)
+    triangle center only to read a mean clay fraction for ordering and comparison.
+  - The publication does not provide a numerical regression that predicts the
+    Table 2 hydraulic parameters from clay, sand, or silt fractions. Therefore
+    this categorical lookup must not be rewritten as adapter-derived fractions
+    followed by an invented formula.
+  - The USDA adapter is used only to resolve the exact categorical input type.
+    No derived_inputs binding is declared, and no repository representative
+    fractions are copied into this specification.
+
+  ## Documented limitations
+
+  - The source describes the averages as unverified and reports substantial
+    within-class variability, particularly for psi_s.
+  - The source table has no row for the USDA silt class.
+  ## Blockers
+
+  - The current semantic implementation model has no source-defined categorical
+    lookup primitive. Human review must select a representation that preserves
+    the eleven published rows and rejects the unsupported silt class without
+    lowering through representative sand, silt, and clay fractions.

@@ -19,24 +19,19 @@ pub(super) struct Output {
 
 pub(super) fn render(
     functions: &[CompiledFunction],
-    usda_texture: &crate::usda_texture::Specification,
+    adapters: &crate::adapters::Registry,
 ) -> anyhow::Result<Output> {
     Ok(Output {
-        extension: extension::render(functions)?,
+        extension: extension::render(functions, adapters)?,
         wrappers: {
             let mut wrappers = wrapper::render(functions)?;
             wrappers.push(GeneratedFile::new(
                 "ptfkit/_ptfkit.pyi".into(),
                 stub::render(functions),
             ));
-            wrappers.push(crate::usda_texture::render_module(usda_texture));
             wrappers
         },
-        tests: {
-            let mut tests = test::render(functions);
-            tests.push(crate::usda_texture::render_tests(usda_texture));
-            tests
-        },
+        tests: test::render(functions),
     })
 }
 

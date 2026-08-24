@@ -8,6 +8,11 @@
 - [ ] Every public function name, argument, output, unit, and IR expression
   matches the YAML specification.
 - [ ] No scientific assumption is present only in generated code.
+- [ ] Every categorical input resolves through the adapter registry; every
+  derived binding retains adapter, source input, component, numeric symbol, and
+  meaningful source evidence in semantic IR.
+- [ ] Categorical public inputs are never compiled as numeric formula symbols,
+  and derived values are not exposed as public parameters.
 
 ## Formula and units
 
@@ -18,6 +23,9 @@
 
 - [ ] Generated Rust uses `f64` scalar computation from the semantic IR.
 - [ ] Generated native NumPy ufuncs use the same IR.
+- [ ] Generated adapter types/constants and category-to-value mappings exist
+  once per retained target; handwritten parsers are separate from generated
+  mappings and accept only exact canonical text.
 - [ ] Generated target tests cover every structured golden case.
 - [ ] Valid IR unsupported by a retained target is reported as a generator
   capability blocker, not replaced with hand-written computation.

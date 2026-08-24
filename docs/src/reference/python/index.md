@@ -10,7 +10,6 @@ ptfkit's Python API is organized around public source modules.
 
 ## Modules
 
-- [`ptfkit.usda_texture`](usda_texture.md) — representative USDA texture fractions
 - [`ptfkit.ahuja1984`](ahuja1984.md) — Ahuja et al. (1984), effective-porosity relations for saturated conductivity.
 - [`ptfkit.aimrun2009`](aimrun2009.md) — Aimrun & Amin (2009), Tanjung Karang Rice Irrigation Project, Malaysia.
 - [`ptfkit.beniaich2023`](beniaich2023.md) — Beniaich et al. (2023), soil-water PTFs for four Moroccan regions.

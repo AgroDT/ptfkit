@@ -24,6 +24,9 @@ modifying repository state.
 3. Check schema and semantic IR fidelity, both retained targets, deterministic
    regeneration, status transition evidence, output order, NumPy broadcasting,
    `out`, `NamedTuple` compatibility, docstring fidelity, and public API parity.
+   For typed inputs, also inspect adapter resolution, explicit derived reference
+   kinds, generated target-native mappings, strict handwritten parsing, and the
+   source evidence supporting each adapter application.
 4. Run or request the project checks appropriate to the changed files.
 5. Report findings first, ordered by severity, with file and line references.
 

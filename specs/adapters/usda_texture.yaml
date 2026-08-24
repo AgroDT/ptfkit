@@ -1,0 +1,55 @@
+adapter_id: usda_texture
+input_type:
+  name: usda_texture_class
+  description: One of the 12 basic USDA-NRCS fine-earth texture classes.
+  categories:
+    - sand
+    - loamy sand
+    - sandy loam
+    - loam
+    - silt loam
+    - silt
+    - sandy clay loam
+    - clay loam
+    - silty clay loam
+    - sandy clay
+    - silty clay
+    - clay
+outputs:
+  - name: sand
+    unit: percent by mass of fine earth
+    domain: [0, 100]
+    description: Representative total sand fraction.
+  - name: silt
+    unit: percent by mass of fine earth
+    domain: [0, 100]
+    description: Representative total silt fraction.
+  - name: clay
+    unit: percent by mass of fine earth
+    domain: [0, 100]
+    description: Representative clay fraction.
+representatives:
+  - {category: sand, values: {sand: 90, silt: 5, clay: 5}}
+  - {category: loamy sand, values: {sand: 79, silt: 14, clay: 7}}
+  - {category: sandy loam, values: {sand: 65, silt: 25, clay: 10}}
+  - {category: loam, values: {sand: 41, silt: 42, clay: 17}}
+  - {category: silt loam, values: {sand: 22, silt: 65, clay: 13}}
+  - {category: silt, values: {sand: 7, silt: 87, clay: 6}}
+  - {category: sandy clay loam, values: {sand: 61, silt: 12, clay: 27}}
+  - {category: clay loam, values: {sand: 33, silt: 34, clay: 33}}
+  - {category: silty clay loam, values: {sand: 11, silt: 56, clay: 33}}
+  - {category: sandy clay, values: {sand: 50, silt: 5, clay: 45}}
+  - {category: silty clay, values: {sand: 5, silt: 45, clay: 50}}
+  - {category: clay, values: {sand: 17, silt: 13, clay: 70}}
+sum_constraint:
+  target: 100
+  tolerance: 1.0e-12
+provenance:
+  organization: USDA Natural Resources Conservation Service
+  title: Soil Texture Calculator
+  artifact: USDA_Soil_Texture_Calculator.xlsm
+  retrieved: 2026-08-21
+  url: https://www.nrcs.usda.gov/sites/default/files/2022-11/USDA_Soil_Texture_Calculator.xlsm
+  sha256: f81aedb7525709be04b3dbb4989a2d5204dd5a56e53d6c4f5f68e4ba9a9ce8ab
+  value_rule: Values are the workbook's representative values for the 12 basic texture classes, without normalization or substitution.
+

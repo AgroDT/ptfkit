@@ -23,7 +23,9 @@ status when input validation fails; report the blocking input error.
 2. Reject unresolved blockers, `TODO` values, schema or semantic failures, and
    output-metadata mismatches. Record `outputs.name` is PascalCase and names
    generated structures and classes; `$defs` keys only resolve local references.
-   Do not infer missing science.
+   Do not infer missing science. Resolve every typed input through the adapter
+   registry and verify that each derived binding retains its adapter, public
+   input, component, numeric symbol, and source evidence in semantic IR.
 3. Validate, generate both retained targets, and run the required verification
    gates. A generator capability gap is a blocker, never an invitation to
    hand-write that computational target.
@@ -37,3 +39,5 @@ status when input validation fails; report the blocking input error.
 - `generation.public_python: manual` permits only a hand-written public wrapper
   that delegates to the generated native ufunc.
 - Do not change status unless all required retained targets pass.
+- Verify adapter artifacts are generated once per retained target and that
+  adapter-backed functions expose only public typed inputs.

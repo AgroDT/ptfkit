@@ -28,22 +28,17 @@ input error.
    particle-size or texture-classification system; whether the fractions should
    sum to 100; and whether the source directly uses a categorical texture-class
    predictor.
-4. For functions with numeric particle-size inputs that could potentially be
-   supplied through the common USDA texture adapter, record
-   `input_adapters.usda_texture` as:
-   - `supported` only when the source provides explicit compatibility evidence;
-   - `unsupported` only when the source provides explicit incompatibility
-     evidence;
-   - `unknown` when the relevant definitions are absent or ambiguous.
+4. Treat registered adapters as globally available capabilities, but never apply
+   one automatically. Add a `derived_inputs` binding only when the source itself
+   establishes compatibility with the adapter particle-size definitions. The
+   binding must name the registered adapter, its typed public input, the exact
+   output components used by the formula, their derived numeric symbols, and
+   meaningful source-backed evidence. Parameter names alone never justify it.
 
-   Require non-empty evidence for every recorded status. Do not add this adapter
-   metadata merely because input parameters are named `sand`, `silt`, or
-   `clay`. If the source directly uses a categorical texture-class predictor,
-   preserve that predictor as part of the published model rather than replacing
-   it with representative numeric fractions.
-
-   An `unknown` adapter status blocks only a USDA compatibility claim, not an
-   otherwise complete PTF specification.
+   Missing adapter evidence does not block an otherwise complete numeric PTF;
+   omit the adapter-backed variant. Preserve a source categorical predictor as
+   categorical, and do not transform it to representative fractions unless the
+   publication supports that transformation.
 5. Record missing or ambiguous scientific information required to interpret or
    implement the published PTF as explicit blockers and set affected functions
    to `blocked`; otherwise set reviewed, complete functions to
@@ -79,5 +74,6 @@ exact YAML path and explicit blockers.
   sand-silt-clay model.
 - Never copy the common USDA representative-value table into an individual PTF
   specification.
-- `ptf-extract` records compatibility evidence; it does not perform user-data
-  conversion.
+- `ptf-extract` does not convert user data or copy representative values into a
+  PTF specification.
+- Do not create a derived adapter variant unless the source supports it.

@@ -1,6 +1,9 @@
 use std::fmt;
 
-use crate::semantic::{BinaryOp, Expr, MathFunction, Reference, UnaryOp, Variable};
+use crate::{
+    model::CoreInput,
+    semantic::{BinaryOp, DerivedInput, Expr, MathFunction, Reference, UnaryOp, Variable},
+};
 
 #[derive(Clone, Copy)]
 pub(crate) enum Dialect {
@@ -10,13 +13,15 @@ pub(crate) enum Dialect {
 
 pub(crate) fn expression<'a>(
     value: &'a Expr,
-    inputs: &'a [String],
+    inputs: &'a [CoreInput],
+    derived_inputs: &'a [DerivedInput],
     variables: &'a [Variable],
     dialect: Dialect,
 ) -> impl fmt::Display + 'a {
     Expression {
         expression: value,
         inputs,
+        derived_inputs,
         variables,
         dialect,
     }
@@ -55,7 +60,8 @@ enum Precedence {
 
 struct Expression<'a> {
     expression: &'a Expr,
-    inputs: &'a [String],
+    inputs: &'a [CoreInput],
+    derived_inputs: &'a [DerivedInput],
     variables: &'a [Variable],
     dialect: Dialect,
 }
@@ -91,8 +97,11 @@ impl Expression<'_> {
 
         match expression {
             Expr::Number(number) => write!(formatter, "{}", float_literal(&number.lexeme))?,
-            Expr::Reference(Reference::Input(index)) => {
-                write!(formatter, "{}", self.inputs[*index])?
+            Expr::Reference(Reference::NumericInput(index)) => {
+                write!(formatter, "{}", self.inputs[*index].name)?
+            }
+            Expr::Reference(Reference::DerivedInput(index)) => {
+                write!(formatter, "{}", self.derived_inputs[*index].symbol)?
             }
             Expr::Reference(Reference::Variable(index)) => {
                 write!(formatter, "{}", self.variables[*index].name)?;
@@ -213,12 +222,18 @@ mod tests {
     use super::*;
     use crate::semantic::{BinaryOp, Reference};
 
-    fn inputs() -> Vec<String> {
-        vec!["x".into(), "y".into(), "z".into()]
+    fn inputs() -> Vec<CoreInput> {
+        ["x", "y", "z"]
+            .into_iter()
+            .map(|name| CoreInput {
+                name: name.into(),
+                r#type: crate::model::InputType::default(),
+            })
+            .collect()
     }
 
     fn input(index: usize) -> Expr {
-        Expr::Reference(Reference::Input(index))
+        Expr::Reference(Reference::NumericInput(index))
     }
 
     #[test]
@@ -234,11 +249,11 @@ mod tests {
         };
 
         assert_eq!(
-            super::expression(&expression, &inputs(), &[], Dialect::C).to_string(),
+            super::expression(&expression, &inputs(), &[], &[], Dialect::C).to_string(),
             "x - (y - z)"
         );
         assert_eq!(
-            super::expression(&expression, &inputs(), &[], Dialect::Cpp).to_string(),
+            super::expression(&expression, &inputs(), &[], &[], Dialect::Cpp).to_string(),
             "x - (y - z)"
         );
     }
@@ -267,7 +282,7 @@ mod tests {
         };
 
         assert_eq!(
-            super::expression(&expression, &inputs(), &[], Dialect::C).to_string(),
+            super::expression(&expression, &inputs(), &[], &[], Dialect::C).to_string(),
             "-(x + y) / (z * (x - y))"
         );
     }
@@ -288,7 +303,7 @@ mod tests {
         };
 
         assert_eq!(
-            super::expression(&expression, &inputs(), &[], Dialect::C).to_string(),
+            super::expression(&expression, &inputs(), &[], &[], Dialect::C).to_string(),
             "(x + y) * z"
         );
     }
@@ -322,11 +337,11 @@ mod tests {
         };
 
         assert_eq!(
-            super::expression(&expression, &inputs(), &[], Dialect::C).to_string(),
+            super::expression(&expression, &inputs(), &[], &[], Dialect::C).to_string(),
             "fmin(pow(x + y, -z), sqrt(x * y))"
         );
         assert_eq!(
-            super::expression(&expression, &inputs(), &[], Dialect::Cpp).to_string(),
+            super::expression(&expression, &inputs(), &[], &[], Dialect::Cpp).to_string(),
             "std::fmin(std::pow(x + y, -z), std::sqrt(x * y))"
         );
     }

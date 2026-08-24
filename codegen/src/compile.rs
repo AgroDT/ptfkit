@@ -1,7 +1,7 @@
 use anyhow::{Context, Result};
 
 use crate::model::{
-    CompiledFunction, CompiledGoldenTest, CoreFunction, Entry, Function, Output, Outputs,
+    CompiledFunction, CompiledGoldenTest, CoreFunction, CoreInput, Entry, Function, Output, Outputs,
 };
 
 pub(super) fn functions(entries: Vec<Entry>) -> Result<Vec<CompiledFunction>> {
@@ -28,7 +28,10 @@ pub(super) fn functions(entries: Vec<Entry>) -> Result<Vec<CompiledFunction>> {
                 inputs: function
                     .inputs
                     .iter()
-                    .map(|input| input.name.clone())
+                    .map(|input| CoreInput {
+                        name: input.name.clone(),
+                        r#type: input.r#type.clone(),
+                    })
                     .collect(),
                 output,
             };
@@ -52,9 +55,12 @@ fn golden_tests(function: &Function, core: &CoreFunction) -> Result<Vec<Compiled
             let inputs = core
                 .inputs
                 .iter()
-                .map(|name| {
-                    case.inputs.get(name).copied().with_context(|| {
-                        format!("golden test `{}` is missing input `{name}`", case.id)
+                .map(|input| {
+                    case.inputs.get(&input.name).cloned().with_context(|| {
+                        format!(
+                            "golden test `{}` is missing input `{}`",
+                            case.id, input.name
+                        )
                     })
                 })
                 .collect::<Result<Vec<_>>>()?;

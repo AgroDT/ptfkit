@@ -67,7 +67,7 @@ def test_calc_ptf_ferrerjulia2004_campbell_shiozawa_golden(
 
 def test_calc_ptf_ferrerjulia2004_campbell_shiozawa_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CAMPBELL_SHIOZAWA
+        CASES_CALC_PTF_FERRERJULIA2004_CAMPBELL_SHIOZAWA, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_campbell_shiozawa(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -75,7 +75,7 @@ def test_calc_ptf_ferrerjulia2004_campbell_shiozawa_array():
 
 def test_calc_ptf_ferrerjulia2004_campbell_shiozawa_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CAMPBELL_SHIOZAWA
+        CASES_CALC_PTF_FERRERJULIA2004_CAMPBELL_SHIOZAWA, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_campbell_shiozawa(**inputs, out=out)
     assert result is out
@@ -99,13 +99,17 @@ def test_calc_ptf_ferrerjulia2004_saxton_golden(
 
 
 def test_calc_ptf_ferrerjulia2004_saxton_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_SAXTON)
+    inputs, expected, rtol, atol, _out = prepare_vector_case(
+        CASES_CALC_PTF_FERRERJULIA2004_SAXTON, categorical_inputs=()
+    )
     result = calc_ptf_ferrerjulia2004_saxton(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
 
 
 def test_calc_ptf_ferrerjulia2004_saxton_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_SAXTON)
+    inputs, expected, rtol, atol, out = prepare_vector_case(
+        CASES_CALC_PTF_FERRERJULIA2004_SAXTON, categorical_inputs=()
+    )
     result = calc_ptf_ferrerjulia2004_saxton(**inputs, out=out)
     assert result is out
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -129,7 +133,7 @@ def test_calc_ptf_ferrerjulia2004_dane_puckett_golden(
 
 def test_calc_ptf_ferrerjulia2004_dane_puckett_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_DANE_PUCKETT
+        CASES_CALC_PTF_FERRERJULIA2004_DANE_PUCKETT, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_dane_puckett(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -137,7 +141,7 @@ def test_calc_ptf_ferrerjulia2004_dane_puckett_array():
 
 def test_calc_ptf_ferrerjulia2004_dane_puckett_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_DANE_PUCKETT
+        CASES_CALC_PTF_FERRERJULIA2004_DANE_PUCKETT, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_dane_puckett(**inputs, out=out)
     assert result is out
@@ -161,13 +165,17 @@ def test_calc_ptf_ferrerjulia2004_puckett_golden(
 
 
 def test_calc_ptf_ferrerjulia2004_puckett_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_PUCKETT)
+    inputs, expected, rtol, atol, _out = prepare_vector_case(
+        CASES_CALC_PTF_FERRERJULIA2004_PUCKETT, categorical_inputs=()
+    )
     result = calc_ptf_ferrerjulia2004_puckett(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
 
 
 def test_calc_ptf_ferrerjulia2004_puckett_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_PUCKETT)
+    inputs, expected, rtol, atol, out = prepare_vector_case(
+        CASES_CALC_PTF_FERRERJULIA2004_PUCKETT, categorical_inputs=()
+    )
     result = calc_ptf_ferrerjulia2004_puckett(**inputs, out=out)
     assert result is out
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -190,13 +198,17 @@ def test_calc_ptf_ferrerjulia2004_cosby_golden(
 
 
 def test_calc_ptf_ferrerjulia2004_cosby_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_COSBY)
+    inputs, expected, rtol, atol, _out = prepare_vector_case(
+        CASES_CALC_PTF_FERRERJULIA2004_COSBY, categorical_inputs=()
+    )
     result = calc_ptf_ferrerjulia2004_cosby(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
 
 
 def test_calc_ptf_ferrerjulia2004_cosby_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_COSBY)
+    inputs, expected, rtol, atol, out = prepare_vector_case(
+        CASES_CALC_PTF_FERRERJULIA2004_COSBY, categorical_inputs=()
+    )
     result = calc_ptf_ferrerjulia2004_cosby(**inputs, out=out)
     assert result is out
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -220,7 +232,7 @@ def test_calc_ptf_ferrerjulia2004_humic_acrisol_sand_golden(
 
 def test_calc_ptf_ferrerjulia2004_humic_acrisol_sand_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_HUMIC_ACRISOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_HUMIC_ACRISOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_humic_acrisol_sand(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -228,7 +240,7 @@ def test_calc_ptf_ferrerjulia2004_humic_acrisol_sand_array():
 
 def test_calc_ptf_ferrerjulia2004_humic_acrisol_sand_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_HUMIC_ACRISOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_HUMIC_ACRISOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_humic_acrisol_sand(**inputs, out=out)
     assert result is out
@@ -254,7 +266,7 @@ def test_calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter_golden(
 
 def test_calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_HUMIC_ACRISOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_HUMIC_ACRISOL_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -262,7 +274,7 @@ def test_calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter_array():
 
 def test_calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_HUMIC_ACRISOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_HUMIC_ACRISOL_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter(**inputs, out=out)
     assert result is out
@@ -287,7 +299,7 @@ def test_calc_ptf_ferrerjulia2004_calcic_cambisol_sand_golden(
 
 def test_calc_ptf_ferrerjulia2004_calcic_cambisol_sand_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CALCIC_CAMBISOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_CALCIC_CAMBISOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_calcic_cambisol_sand(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -295,7 +307,7 @@ def test_calc_ptf_ferrerjulia2004_calcic_cambisol_sand_array():
 
 def test_calc_ptf_ferrerjulia2004_calcic_cambisol_sand_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CALCIC_CAMBISOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_CALCIC_CAMBISOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_calcic_cambisol_sand(**inputs, out=out)
     assert result is out
@@ -321,7 +333,7 @@ def test_calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter_golden(
 
 def test_calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CALCIC_CAMBISOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_CALCIC_CAMBISOL_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -329,7 +341,7 @@ def test_calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter_array()
 
 def test_calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CALCIC_CAMBISOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_CALCIC_CAMBISOL_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter(**inputs, out=out)
     assert result is out
@@ -354,7 +366,7 @@ def test_calc_ptf_ferrerjulia2004_dystric_cambisol_sand_golden(
 
 def test_calc_ptf_ferrerjulia2004_dystric_cambisol_sand_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_CAMBISOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_CAMBISOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_dystric_cambisol_sand(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -362,7 +374,7 @@ def test_calc_ptf_ferrerjulia2004_dystric_cambisol_sand_array():
 
 def test_calc_ptf_ferrerjulia2004_dystric_cambisol_sand_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_CAMBISOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_CAMBISOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_dystric_cambisol_sand(**inputs, out=out)
     assert result is out
@@ -388,7 +400,8 @@ def test_calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter_golden
 
 def test_calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_CAMBISOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_CAMBISOL_TEXTURE_ORGANIC_MATTER,
+        categorical_inputs=(),
     )
     result = calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -396,7 +409,8 @@ def test_calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter_array(
 
 def test_calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_CAMBISOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_CAMBISOL_TEXTURE_ORGANIC_MATTER,
+        categorical_inputs=(),
     )
     result = calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter(**inputs, out=out)
     assert result is out
@@ -421,7 +435,7 @@ def test_calc_ptf_ferrerjulia2004_eutric_cambisol_sand_golden(
 
 def test_calc_ptf_ferrerjulia2004_eutric_cambisol_sand_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_CAMBISOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_CAMBISOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_eutric_cambisol_sand(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -429,7 +443,7 @@ def test_calc_ptf_ferrerjulia2004_eutric_cambisol_sand_array():
 
 def test_calc_ptf_ferrerjulia2004_eutric_cambisol_sand_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_CAMBISOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_CAMBISOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_eutric_cambisol_sand(**inputs, out=out)
     assert result is out
@@ -455,7 +469,7 @@ def test_calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter_golden(
 
 def test_calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_CAMBISOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_CAMBISOL_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -463,7 +477,7 @@ def test_calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter_array()
 
 def test_calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_CAMBISOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_CAMBISOL_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter(**inputs, out=out)
     assert result is out
@@ -488,7 +502,7 @@ def test_calc_ptf_ferrerjulia2004_gleyic_cambisol_sand_golden(
 
 def test_calc_ptf_ferrerjulia2004_gleyic_cambisol_sand_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_CAMBISOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_CAMBISOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_gleyic_cambisol_sand(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -496,7 +510,7 @@ def test_calc_ptf_ferrerjulia2004_gleyic_cambisol_sand_array():
 
 def test_calc_ptf_ferrerjulia2004_gleyic_cambisol_sand_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_CAMBISOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_CAMBISOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_gleyic_cambisol_sand(**inputs, out=out)
     assert result is out
@@ -522,7 +536,7 @@ def test_calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter_golden(
 
 def test_calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_CAMBISOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_CAMBISOL_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -530,7 +544,7 @@ def test_calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter_array()
 
 def test_calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_CAMBISOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_CAMBISOL_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter(**inputs, out=out)
     assert result is out
@@ -555,7 +569,7 @@ def test_calc_ptf_ferrerjulia2004_humic_cambisol_sand_golden(
 
 def test_calc_ptf_ferrerjulia2004_humic_cambisol_sand_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_HUMIC_CAMBISOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_HUMIC_CAMBISOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_humic_cambisol_sand(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -563,7 +577,7 @@ def test_calc_ptf_ferrerjulia2004_humic_cambisol_sand_array():
 
 def test_calc_ptf_ferrerjulia2004_humic_cambisol_sand_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_HUMIC_CAMBISOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_HUMIC_CAMBISOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_humic_cambisol_sand(**inputs, out=out)
     assert result is out
@@ -589,7 +603,7 @@ def test_calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter_golden(
 
 def test_calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_HUMIC_CAMBISOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_HUMIC_CAMBISOL_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -597,7 +611,7 @@ def test_calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter_array():
 
 def test_calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_HUMIC_CAMBISOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_HUMIC_CAMBISOL_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter(**inputs, out=out)
     assert result is out
@@ -622,7 +636,7 @@ def test_calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand_golden(
 
 def test_calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_FLUVISOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_FLUVISOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -630,7 +644,7 @@ def test_calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand_array():
 
 def test_calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_FLUVISOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_FLUVISOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand(**inputs, out=out)
     assert result is out
@@ -656,7 +670,8 @@ def test_calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter_golde
 
 def test_calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_FLUVISOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_FLUVISOL_TEXTURE_ORGANIC_MATTER,
+        categorical_inputs=(),
     )
     result = calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -664,7 +679,8 @@ def test_calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter_array
 
 def test_calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_FLUVISOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_FLUVISOL_TEXTURE_ORGANIC_MATTER,
+        categorical_inputs=(),
     )
     result = calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter(**inputs, out=out)
     assert result is out
@@ -689,7 +705,7 @@ def test_calc_ptf_ferrerjulia2004_calcic_luvisol_sand_golden(
 
 def test_calc_ptf_ferrerjulia2004_calcic_luvisol_sand_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CALCIC_LUVISOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_CALCIC_LUVISOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_calcic_luvisol_sand(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -697,7 +713,7 @@ def test_calc_ptf_ferrerjulia2004_calcic_luvisol_sand_array():
 
 def test_calc_ptf_ferrerjulia2004_calcic_luvisol_sand_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CALCIC_LUVISOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_CALCIC_LUVISOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_calcic_luvisol_sand(**inputs, out=out)
     assert result is out
@@ -723,7 +739,7 @@ def test_calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter_golden(
 
 def test_calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CALCIC_LUVISOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_CALCIC_LUVISOL_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -731,7 +747,7 @@ def test_calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter_array():
 
 def test_calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CALCIC_LUVISOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_CALCIC_LUVISOL_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter(**inputs, out=out)
     assert result is out
@@ -756,7 +772,7 @@ def test_calc_ptf_ferrerjulia2004_chromic_luvisol_sand_golden(
 
 def test_calc_ptf_ferrerjulia2004_chromic_luvisol_sand_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CHROMIC_LUVISOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_CHROMIC_LUVISOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_chromic_luvisol_sand(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -764,7 +780,7 @@ def test_calc_ptf_ferrerjulia2004_chromic_luvisol_sand_array():
 
 def test_calc_ptf_ferrerjulia2004_chromic_luvisol_sand_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CHROMIC_LUVISOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_CHROMIC_LUVISOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_chromic_luvisol_sand(**inputs, out=out)
     assert result is out
@@ -790,7 +806,7 @@ def test_calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter_golden(
 
 def test_calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CHROMIC_LUVISOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_CHROMIC_LUVISOL_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -798,7 +814,7 @@ def test_calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter_array()
 
 def test_calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CHROMIC_LUVISOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_CHROMIC_LUVISOL_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter(**inputs, out=out)
     assert result is out
@@ -823,7 +839,7 @@ def test_calc_ptf_ferrerjulia2004_gleyic_luvisol_sand_golden(
 
 def test_calc_ptf_ferrerjulia2004_gleyic_luvisol_sand_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_LUVISOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_LUVISOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_gleyic_luvisol_sand(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -831,7 +847,7 @@ def test_calc_ptf_ferrerjulia2004_gleyic_luvisol_sand_array():
 
 def test_calc_ptf_ferrerjulia2004_gleyic_luvisol_sand_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_LUVISOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_LUVISOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_gleyic_luvisol_sand(**inputs, out=out)
     assert result is out
@@ -857,7 +873,7 @@ def test_calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter_golden(
 
 def test_calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_LUVISOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_LUVISOL_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -865,7 +881,7 @@ def test_calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter_array():
 
 def test_calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_LUVISOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_LUVISOL_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter(**inputs, out=out)
     assert result is out
@@ -890,7 +906,7 @@ def test_calc_ptf_ferrerjulia2004_orthic_luvisol_sand_golden(
 
 def test_calc_ptf_ferrerjulia2004_orthic_luvisol_sand_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_ORTHIC_LUVISOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_ORTHIC_LUVISOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_orthic_luvisol_sand(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -898,7 +914,7 @@ def test_calc_ptf_ferrerjulia2004_orthic_luvisol_sand_array():
 
 def test_calc_ptf_ferrerjulia2004_orthic_luvisol_sand_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_ORTHIC_LUVISOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_ORTHIC_LUVISOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_orthic_luvisol_sand(**inputs, out=out)
     assert result is out
@@ -924,7 +940,7 @@ def test_calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter_golden(
 
 def test_calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_ORTHIC_LUVISOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_ORTHIC_LUVISOL_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -932,7 +948,7 @@ def test_calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter_array():
 
 def test_calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_ORTHIC_LUVISOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_ORTHIC_LUVISOL_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter(**inputs, out=out)
     assert result is out
@@ -957,7 +973,7 @@ def test_calc_ptf_ferrerjulia2004_ranker_sand_golden(
 
 def test_calc_ptf_ferrerjulia2004_ranker_sand_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_RANKER_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_RANKER_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_ranker_sand(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -965,7 +981,7 @@ def test_calc_ptf_ferrerjulia2004_ranker_sand_array():
 
 def test_calc_ptf_ferrerjulia2004_ranker_sand_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_RANKER_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_RANKER_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_ranker_sand(**inputs, out=out)
     assert result is out
@@ -991,7 +1007,7 @@ def test_calc_ptf_ferrerjulia2004_ranker_texture_organic_matter_golden(
 
 def test_calc_ptf_ferrerjulia2004_ranker_texture_organic_matter_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_RANKER_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_RANKER_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_ranker_texture_organic_matter(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -999,7 +1015,7 @@ def test_calc_ptf_ferrerjulia2004_ranker_texture_organic_matter_array():
 
 def test_calc_ptf_ferrerjulia2004_ranker_texture_organic_matter_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_RANKER_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_RANKER_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_ranker_texture_organic_matter(**inputs, out=out)
     assert result is out
@@ -1024,7 +1040,7 @@ def test_calc_ptf_ferrerjulia2004_calcaric_regosol_sand_golden(
 
 def test_calc_ptf_ferrerjulia2004_calcaric_regosol_sand_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_REGOSOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_REGOSOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_calcaric_regosol_sand(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -1032,7 +1048,7 @@ def test_calc_ptf_ferrerjulia2004_calcaric_regosol_sand_array():
 
 def test_calc_ptf_ferrerjulia2004_calcaric_regosol_sand_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_REGOSOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_REGOSOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_calcaric_regosol_sand(**inputs, out=out)
     assert result is out
@@ -1058,7 +1074,8 @@ def test_calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter_golden
 
 def test_calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_REGOSOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_REGOSOL_TEXTURE_ORGANIC_MATTER,
+        categorical_inputs=(),
     )
     result = calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -1066,7 +1083,8 @@ def test_calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter_array(
 
 def test_calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_REGOSOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_REGOSOL_TEXTURE_ORGANIC_MATTER,
+        categorical_inputs=(),
     )
     result = calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter(**inputs, out=out)
     assert result is out
@@ -1091,7 +1109,7 @@ def test_calc_ptf_ferrerjulia2004_dystric_regosol_sand_golden(
 
 def test_calc_ptf_ferrerjulia2004_dystric_regosol_sand_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_REGOSOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_REGOSOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_dystric_regosol_sand(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -1099,7 +1117,7 @@ def test_calc_ptf_ferrerjulia2004_dystric_regosol_sand_array():
 
 def test_calc_ptf_ferrerjulia2004_dystric_regosol_sand_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_REGOSOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_REGOSOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_dystric_regosol_sand(**inputs, out=out)
     assert result is out
@@ -1125,7 +1143,7 @@ def test_calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter_golden(
 
 def test_calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_REGOSOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_REGOSOL_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -1133,7 +1151,7 @@ def test_calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter_array()
 
 def test_calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_REGOSOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_REGOSOL_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter(**inputs, out=out)
     assert result is out
@@ -1158,7 +1176,7 @@ def test_calc_ptf_ferrerjulia2004_eutric_regosol_sand_golden(
 
 def test_calc_ptf_ferrerjulia2004_eutric_regosol_sand_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_REGOSOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_REGOSOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_eutric_regosol_sand(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -1166,7 +1184,7 @@ def test_calc_ptf_ferrerjulia2004_eutric_regosol_sand_array():
 
 def test_calc_ptf_ferrerjulia2004_eutric_regosol_sand_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_REGOSOL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_REGOSOL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_eutric_regosol_sand(**inputs, out=out)
     assert result is out
@@ -1192,7 +1210,7 @@ def test_calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter_golden(
 
 def test_calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_REGOSOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_REGOSOL_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -1200,7 +1218,7 @@ def test_calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter_array():
 
 def test_calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_REGOSOL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_REGOSOL_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter(**inputs, out=out)
     assert result is out
@@ -1225,7 +1243,7 @@ def test_calc_ptf_ferrerjulia2004_rendzina_sand_golden(
 
 def test_calc_ptf_ferrerjulia2004_rendzina_sand_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_RENDZINA_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_RENDZINA_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_rendzina_sand(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -1233,7 +1251,7 @@ def test_calc_ptf_ferrerjulia2004_rendzina_sand_array():
 
 def test_calc_ptf_ferrerjulia2004_rendzina_sand_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_RENDZINA_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_RENDZINA_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_rendzina_sand(**inputs, out=out)
     assert result is out
@@ -1259,7 +1277,7 @@ def test_calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter_golden(
 
 def test_calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_RENDZINA_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_RENDZINA_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -1267,7 +1285,7 @@ def test_calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter_array():
 
 def test_calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_RENDZINA_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_RENDZINA_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter(**inputs, out=out)
     assert result is out
@@ -1292,7 +1310,7 @@ def test_calc_ptf_ferrerjulia2004_gleyic_solonchak_sand_golden(
 
 def test_calc_ptf_ferrerjulia2004_gleyic_solonchak_sand_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_SOLONCHAK_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_SOLONCHAK_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_gleyic_solonchak_sand(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -1300,7 +1318,7 @@ def test_calc_ptf_ferrerjulia2004_gleyic_solonchak_sand_array():
 
 def test_calc_ptf_ferrerjulia2004_gleyic_solonchak_sand_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_SOLONCHAK_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_SOLONCHAK_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_gleyic_solonchak_sand(**inputs, out=out)
     assert result is out
@@ -1326,7 +1344,8 @@ def test_calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter_golden
 
 def test_calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_SOLONCHAK_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_SOLONCHAK_TEXTURE_ORGANIC_MATTER,
+        categorical_inputs=(),
     )
     result = calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -1334,7 +1353,8 @@ def test_calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter_array(
 
 def test_calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_SOLONCHAK_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_SOLONCHAK_TEXTURE_ORGANIC_MATTER,
+        categorical_inputs=(),
     )
     result = calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter(**inputs, out=out)
     assert result is out
@@ -1359,7 +1379,7 @@ def test_calc_ptf_ferrerjulia2004_general_sand_golden(
 
 def test_calc_ptf_ferrerjulia2004_general_sand_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_GENERAL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_GENERAL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_general_sand(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -1367,7 +1387,7 @@ def test_calc_ptf_ferrerjulia2004_general_sand_array():
 
 def test_calc_ptf_ferrerjulia2004_general_sand_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_GENERAL_SAND
+        CASES_CALC_PTF_FERRERJULIA2004_GENERAL_SAND, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_general_sand(**inputs, out=out)
     assert result is out
@@ -1393,7 +1413,7 @@ def test_calc_ptf_ferrerjulia2004_general_texture_organic_matter_golden(
 
 def test_calc_ptf_ferrerjulia2004_general_texture_organic_matter_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_GENERAL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_GENERAL_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_general_texture_organic_matter(**inputs, out=None)
     assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
@@ -1401,7 +1421,7 @@ def test_calc_ptf_ferrerjulia2004_general_texture_organic_matter_array():
 
 def test_calc_ptf_ferrerjulia2004_general_texture_organic_matter_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_GENERAL_TEXTURE_ORGANIC_MATTER
+        CASES_CALC_PTF_FERRERJULIA2004_GENERAL_TEXTURE_ORGANIC_MATTER, categorical_inputs=()
     )
     result = calc_ptf_ferrerjulia2004_general_texture_organic_matter(**inputs, out=out)
     assert result is out

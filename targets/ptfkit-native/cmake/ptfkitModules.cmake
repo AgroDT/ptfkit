@@ -2,6 +2,7 @@
 
 set(PTFKIT_CPP_MODULES
     "${CMAKE_CURRENT_LIST_DIR}/../cpp/ptfkit.cppm"
+    "${CMAKE_CURRENT_LIST_DIR}/../cpp/adapters.usda_texture.cppm"
     "${CMAKE_CURRENT_LIST_DIR}/../cpp/ahuja1984.cppm"
     "${CMAKE_CURRENT_LIST_DIR}/../cpp/aimrun2009.cppm"
     "${CMAKE_CURRENT_LIST_DIR}/../cpp/beniaich2023.cppm"

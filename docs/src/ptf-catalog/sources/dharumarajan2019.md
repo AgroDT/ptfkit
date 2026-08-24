@@ -33,11 +33,11 @@ Estimate field capacity and wilting point for Northern Karnataka soils.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % | Northern study range: 1.2 <= value <= 80.8 | Clay content. |
-| `sand` | % | Northern study range: 2.7 <= value <= 94.0 | Sand content. |
-| `cation_exchange_capacity` | C mol p+/kg | Northern study range: 1.7 <= value <= 80.9 | Cation exchange capacity. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % | Northern study range: 1.2 <= value <= 80.8 | Clay content. |
+| `sand` | `number` | % | Northern study range: 2.7 <= value <= 94.0 | Sand content. |
+| `cation_exchange_capacity` | `number` | C mol p+/kg | Northern study range: 1.7 <= value <= 80.9 | Cation exchange capacity. |
 
 #### Outputs
 
@@ -74,9 +74,9 @@ Estimate Northern Karnataka field capacity and wilting point from clay.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % | Northern study range: 1.2 <= value <= 80.8 | Clay content. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % | Northern study range: 1.2 <= value <= 80.8 | Clay content. |
 
 #### Outputs
 
@@ -113,11 +113,11 @@ Estimate field capacity and wilting point for Southern Karnataka soils.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % | Southern study range: 5.8 <= value <= 67.8 | Clay content. |
-| `sand` | % | Southern study range: 4.4 <= value <= 92.3 | Sand content. |
-| `cation_exchange_capacity` | C mol p+/kg | Southern study range: 1.2 <= value <= 52.6 | Cation exchange capacity. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % | Southern study range: 5.8 <= value <= 67.8 | Clay content. |
+| `sand` | `number` | % | Southern study range: 4.4 <= value <= 92.3 | Sand content. |
+| `cation_exchange_capacity` | `number` | C mol p+/kg | Southern study range: 1.2 <= value <= 52.6 | Cation exchange capacity. |
 
 #### Outputs
 
@@ -150,9 +150,9 @@ Estimate Southern Karnataka field capacity and wilting point from clay.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % | Southern study range: 5.8 <= value <= 67.8 | Clay content. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % | Southern study range: 5.8 <= value <= 67.8 | Clay content. |
 
 #### Outputs
 
@@ -185,11 +185,11 @@ Estimate infiltration rate for Karnataka soils from texture fractions.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | — | Sand content in the Karnataka infiltration dataset. |
-| `silt` | % | — | Silt content in the Karnataka infiltration dataset. |
-| `clay` | % | — | Clay content in the Karnataka infiltration dataset. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | — | Sand content in the Karnataka infiltration dataset. |
+| `silt` | `number` | % | — | Silt content in the Karnataka infiltration dataset. |
+| `clay` | `number` | % | — | Clay content in the Karnataka infiltration dataset. |
 
 #### Outputs
 

@@ -40,7 +40,9 @@ def test_calc_ptf_dharumarajan2019_nkp_golden(
 
 def test_calc_ptf_dharumarajan2019_nkp_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_DHARUMARAJAN2019_NKP, Dharumarajan2019WaterRetentionResult
+        CASES_CALC_PTF_DHARUMARAJAN2019_NKP,
+        Dharumarajan2019WaterRetentionResult,
+        categorical_inputs=(),
     )
     result = calc_ptf_dharumarajan2019_nkp(**inputs, out=None)
     assert result.field_capacity[0] == pytest.approx(expected['field_capacity'], rel=rtol, abs=atol)
@@ -51,7 +53,9 @@ def test_calc_ptf_dharumarajan2019_nkp_array():
 
 def test_calc_ptf_dharumarajan2019_nkp_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_DHARUMARAJAN2019_NKP, Dharumarajan2019WaterRetentionResult
+        CASES_CALC_PTF_DHARUMARAJAN2019_NKP,
+        Dharumarajan2019WaterRetentionResult,
+        categorical_inputs=(),
     )
     result = calc_ptf_dharumarajan2019_nkp(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
@@ -83,7 +87,9 @@ def test_calc_ptf_dharumarajan2019_nkp_clay_golden(
 
 def test_calc_ptf_dharumarajan2019_nkp_clay_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_DHARUMARAJAN2019_NKP_CLAY, Dharumarajan2019WaterRetentionResult
+        CASES_CALC_PTF_DHARUMARAJAN2019_NKP_CLAY,
+        Dharumarajan2019WaterRetentionResult,
+        categorical_inputs=(),
     )
     result = calc_ptf_dharumarajan2019_nkp_clay(**inputs, out=None)
     assert result.field_capacity[0] == pytest.approx(expected['field_capacity'], rel=rtol, abs=atol)
@@ -94,7 +100,9 @@ def test_calc_ptf_dharumarajan2019_nkp_clay_array():
 
 def test_calc_ptf_dharumarajan2019_nkp_clay_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_DHARUMARAJAN2019_NKP_CLAY, Dharumarajan2019WaterRetentionResult
+        CASES_CALC_PTF_DHARUMARAJAN2019_NKP_CLAY,
+        Dharumarajan2019WaterRetentionResult,
+        categorical_inputs=(),
     )
     result = calc_ptf_dharumarajan2019_nkp_clay(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
@@ -131,7 +139,9 @@ def test_calc_ptf_dharumarajan2019_skp_golden(
 
 def test_calc_ptf_dharumarajan2019_skp_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_DHARUMARAJAN2019_SKP, Dharumarajan2019WaterRetentionResult
+        CASES_CALC_PTF_DHARUMARAJAN2019_SKP,
+        Dharumarajan2019WaterRetentionResult,
+        categorical_inputs=(),
     )
     result = calc_ptf_dharumarajan2019_skp(**inputs, out=None)
     assert result.field_capacity[0] == pytest.approx(expected['field_capacity'], rel=rtol, abs=atol)
@@ -142,7 +152,9 @@ def test_calc_ptf_dharumarajan2019_skp_array():
 
 def test_calc_ptf_dharumarajan2019_skp_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_DHARUMARAJAN2019_SKP, Dharumarajan2019WaterRetentionResult
+        CASES_CALC_PTF_DHARUMARAJAN2019_SKP,
+        Dharumarajan2019WaterRetentionResult,
+        categorical_inputs=(),
     )
     result = calc_ptf_dharumarajan2019_skp(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
@@ -174,7 +186,9 @@ def test_calc_ptf_dharumarajan2019_skp_clay_golden(
 
 def test_calc_ptf_dharumarajan2019_skp_clay_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_DHARUMARAJAN2019_SKP_CLAY, Dharumarajan2019WaterRetentionResult
+        CASES_CALC_PTF_DHARUMARAJAN2019_SKP_CLAY,
+        Dharumarajan2019WaterRetentionResult,
+        categorical_inputs=(),
     )
     result = calc_ptf_dharumarajan2019_skp_clay(**inputs, out=None)
     assert result.field_capacity[0] == pytest.approx(expected['field_capacity'], rel=rtol, abs=atol)
@@ -185,7 +199,9 @@ def test_calc_ptf_dharumarajan2019_skp_clay_array():
 
 def test_calc_ptf_dharumarajan2019_skp_clay_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_DHARUMARAJAN2019_SKP_CLAY, Dharumarajan2019WaterRetentionResult
+        CASES_CALC_PTF_DHARUMARAJAN2019_SKP_CLAY,
+        Dharumarajan2019WaterRetentionResult,
+        categorical_inputs=(),
     )
     result = calc_ptf_dharumarajan2019_skp_clay(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
@@ -214,7 +230,7 @@ def test_calc_ptf_dharumarajan2019_infiltration_golden(
 
 def test_calc_ptf_dharumarajan2019_infiltration_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_DHARUMARAJAN2019_INFILTRATION
+        CASES_CALC_PTF_DHARUMARAJAN2019_INFILTRATION, categorical_inputs=()
     )
     result = calc_ptf_dharumarajan2019_infiltration(**inputs, out=None)
     assert result[0] == pytest.approx(expected['infiltration_rate'], rel=rtol, abs=atol)
@@ -222,7 +238,7 @@ def test_calc_ptf_dharumarajan2019_infiltration_array():
 
 def test_calc_ptf_dharumarajan2019_infiltration_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_DHARUMARAJAN2019_INFILTRATION
+        CASES_CALC_PTF_DHARUMARAJAN2019_INFILTRATION, categorical_inputs=()
     )
     result = calc_ptf_dharumarajan2019_infiltration(**inputs, out=out)
     assert result is out

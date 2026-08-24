@@ -49,7 +49,7 @@ def test_calc_ptf_weber2020_golden(
 
 def test_calc_ptf_weber2020_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_WEBER2020, Weber2020PTFResult
+        CASES_CALC_PTF_WEBER2020, Weber2020PTFResult, categorical_inputs=()
     )
     result = calc_ptf_weber2020(**inputs, out=None)
     assert result.theta_snc_bw[0] == pytest.approx(expected['theta_snc_bw'], rel=rtol, abs=atol)
@@ -63,7 +63,7 @@ def test_calc_ptf_weber2020_array():
 
 def test_calc_ptf_weber2020_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_WEBER2020, Weber2020PTFResult
+        CASES_CALC_PTF_WEBER2020, Weber2020PTFResult, categorical_inputs=()
     )
     result = calc_ptf_weber2020(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):

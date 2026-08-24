@@ -5,12 +5,22 @@ use jsonschema::Draft;
 use serde_json::Value;
 
 use crate::{
+    adapters::Registry,
     formula,
-    model::{Entry, Implementation, RawExpression, RawFunction, RawInput, RawVariable, Spec},
+    model::{
+        Entry, Implementation, RawDerivedInput, RawExpression, RawFunction, RawInput, RawVariable,
+        Spec, TestValue,
+    },
     semantic,
 };
 
+#[cfg(test)]
 pub(crate) fn load(root: &Path) -> Result<Vec<Entry>> {
+    let adapters = Registry::load(root)?;
+    load_with_registry(root, &adapters)
+}
+
+pub(crate) fn load_with_registry(root: &Path, adapters: &Registry) -> Result<Vec<Entry>> {
     let schema: Value =
         serde_json::from_slice(&fs::read(root.join("specs/schema/ptf-spec.schema.json"))?)?;
     let validator = jsonschema::options()
@@ -90,7 +100,9 @@ pub(crate) fn load(root: &Path) -> Result<Vec<Entry>> {
             .functions
             .iter()
             .map(|function| match &function.implementation {
-                Some(implementation) => compile(&path, function, implementation).map(Some),
+                Some(implementation) => {
+                    compile(&path, function, implementation, adapters).map(Some)
+                }
                 None => Ok(None),
             })
             .collect::<Result<Vec<_>, _>>();
@@ -138,7 +150,70 @@ fn compile(
     path: &Path,
     function: &crate::model::Function,
     implementation: &Implementation,
+    adapters: &Registry,
 ) -> Result<semantic::Function, String> {
+    let mut derived_inputs = Vec::new();
+    for input in &function.inputs {
+        if !input.r#type.is_numeric() && adapters.adapter_for_type(input.r#type.as_str()).is_none()
+        {
+            return Err(format!(
+                "{} -> function {} -> inputs: unknown registered input type `{}`",
+                path.display(),
+                function.name,
+                input.r#type.as_str()
+            ));
+        }
+    }
+    let mut bound_sources = std::collections::BTreeSet::new();
+    for (binding_index, binding) in function.derived_inputs.iter().enumerate() {
+        let adapter = adapters.adapter(&binding.adapter).ok_or_else(|| format!("{} -> function {} -> derived_inputs[{binding_index}].adapter: unknown adapter `{}`", path.display(), function.name, binding.adapter))?;
+        let input_index = function.inputs.iter().position(|input| input.name == binding.input).ok_or_else(|| format!("{} -> function {} -> derived_inputs[{binding_index}].input: unknown public input `{}`", path.display(), function.name, binding.input))?;
+        let input = &function.inputs[input_index];
+        if input.r#type.as_str() != adapter.input_type.name {
+            return Err(format!(
+                "{} -> function {} -> derived_inputs[{binding_index}].input: input `{}` has type `{}`, expected `{}`",
+                path.display(),
+                function.name,
+                input.name,
+                input.r#type.as_str(),
+                adapter.input_type.name
+            ));
+        }
+        if binding.evidence.trim().is_empty() {
+            return Err(format!(
+                "{} -> function {} -> derived_inputs[{binding_index}].evidence: must contain source-backed evidence",
+                path.display(),
+                function.name
+            ));
+        }
+        for (component, symbol) in &binding.components {
+            if !adapter
+                .outputs
+                .iter()
+                .any(|output| output.name == *component)
+            {
+                return Err(format!(
+                    "{} -> function {} -> derived_inputs[{binding_index}].components: unknown adapter component `{component}`",
+                    path.display(),
+                    function.name
+                ));
+            }
+            if !bound_sources.insert((binding.adapter.clone(), input_index, component.clone())) {
+                return Err(format!(
+                    "{} -> function {} -> derived_inputs[{binding_index}].components: conflicting duplicate binding for `{component}`",
+                    path.display(),
+                    function.name
+                ));
+            }
+            derived_inputs.push(RawDerivedInput {
+                adapter: binding.adapter.clone(),
+                input_index,
+                component: component.clone(),
+                symbol: symbol.clone(),
+                evidence: binding.evidence.clone(),
+            });
+        }
+    }
     let raw = RawFunction {
         specification_path: path.to_owned(),
         name: function.name.clone(),
@@ -147,8 +222,10 @@ fn compile(
             .iter()
             .map(|input| RawInput {
                 name: input.name.clone(),
+                r#type: input.r#type.clone(),
             })
             .collect(),
+        derived_inputs,
         variables: implementation
             .variables
             .iter()
@@ -168,7 +245,65 @@ fn compile(
             .collect::<Result<Vec<_>, _>>()?,
     };
     validate_output(path, function, &raw)?;
-    semantic::compile(&raw).map_err(|error| error.to_string())
+    let semantic = semantic::compile(&raw).map_err(|error| error.to_string())?;
+    validate_golden_inputs(path, function, adapters)?;
+    Ok(semantic)
+}
+
+fn validate_golden_inputs(
+    path: &Path,
+    function: &crate::model::Function,
+    adapters: &Registry,
+) -> Result<(), String> {
+    for case in &function.golden_tests {
+        for input in &function.inputs {
+            let value = case.inputs.get(&input.name).ok_or_else(|| {
+                format!(
+                    "{} -> function {} -> golden test `{}`: missing input `{}`",
+                    path.display(),
+                    function.name,
+                    case.id,
+                    input.name
+                )
+            })?;
+            match (input.r#type.is_numeric(), value) {
+                (true, TestValue::Number(_)) => {}
+                (false, TestValue::Category(category)) => {
+                    let adapter = adapters
+                        .adapter_for_type(input.r#type.as_str())
+                        .expect("input type was resolved");
+                    if !adapter.input_type.categories.contains(category) {
+                        return Err(format!(
+                            "{} -> function {} -> golden test `{}`: invalid `{}` value `{category}`",
+                            path.display(),
+                            function.name,
+                            case.id,
+                            input.r#type.as_str()
+                        ));
+                    }
+                }
+                (true, _) => {
+                    return Err(format!(
+                        "{} -> function {} -> golden test `{}`: numeric input `{}` requires a number",
+                        path.display(),
+                        function.name,
+                        case.id,
+                        input.name
+                    ));
+                }
+                (false, _) => {
+                    return Err(format!(
+                        "{} -> function {} -> golden test `{}`: categorical input `{}` requires an exact canonical string",
+                        path.display(),
+                        function.name,
+                        case.id,
+                        input.name
+                    ));
+                }
+            }
+        }
+    }
+    Ok(())
 }
 
 fn expression(
@@ -203,7 +338,9 @@ fn validate_output(
     let output_sources = raw
         .inputs
         .iter()
+        .filter(|input| input.r#type.is_numeric())
         .map(|input| input.name.as_str())
+        .chain(raw.derived_inputs.iter().map(|input| input.symbol.as_str()))
         .chain(raw.variables.iter().map(|variable| variable.name.as_str()))
         .collect::<std::collections::BTreeSet<_>>();
     let missing = output_names
@@ -249,11 +386,21 @@ mod tests {
         ));
         fs::create_dir_all(root.join("specs/functions")).unwrap();
         fs::create_dir_all(root.join("specs/schema")).unwrap();
+        fs::create_dir_all(root.join("specs/adapters")).unwrap();
         fs::copy(
             Path::new(env!("CARGO_MANIFEST_DIR")).join("../specs/schema/ptf-spec.schema.json"),
             root.join("specs/schema/ptf-spec.schema.json"),
         )
         .unwrap();
+        for name in ["usda_texture.yaml", "usda_texture.schema.json"] {
+            fs::copy(
+                Path::new(env!("CARGO_MANIFEST_DIR"))
+                    .join("../specs/adapters")
+                    .join(name),
+                root.join("specs/adapters").join(name),
+            )
+            .unwrap();
+        }
         root
     }
 
@@ -269,15 +416,6 @@ mod tests {
             specification(key, implementation, generation),
         )
         .unwrap();
-    }
-
-    fn specification_with_adapter(adapter: &str) -> String {
-        specification(
-            "adapter",
-            "    implementation:\n      variables: [{name: value, expr: x}]\n",
-            "",
-        )
-        .replace("    inputs:\n", &format!("{adapter}    inputs:\n"))
     }
 
     #[test]
@@ -465,85 +603,71 @@ mod tests {
         assert!(error.contains("filename stem must be an APA-style slug"));
     }
 
-    #[test]
-    fn accepts_supported_unsupported_unknown_and_absent_usda_adapters() {
-        for (label, adapter) in [
-            (
-                "supported",
-                "    input_adapters:\n      usda_texture:\n        status: supported\n        inputs: {sand: x}\n        evidence: The source defines x as USDA total sand by mass of fine earth.\n",
-            ),
-            (
-                "unsupported",
-                "    input_adapters:\n      usda_texture:\n        status: unsupported\n        evidence: The source uses incompatible particle-size boundaries.\n",
-            ),
-            (
-                "unknown",
-                "    input_adapters:\n      usda_texture:\n        status: unknown\n        inputs: {sand: x}\n        evidence: The source does not report the sand particle-size boundary.\n",
-            ),
-            ("absent", ""),
-        ] {
-            let root = fixture_root(label);
-            fs::write(
-                root.join("specs/functions/adapter.yaml"),
-                specification_with_adapter(adapter),
-            )
-            .unwrap();
-            let entries = load(&root).expect("adapter fixture must satisfy the schema");
-            assert!(crate::validate::specifications(&entries).is_empty());
-            fs::remove_dir_all(root).unwrap();
-        }
+    fn adapter_spec(derived: &str, expression: &str) -> String {
+        specification("adapter", &format!("    implementation:\n      variables: [{{name: value, expr: {expression}}}]\n"), "")
+            .replace("      - {name: x, symbol: x, unit: '1', domain: null, description: Test input.}", "      - {name: texture_class, type: usda_texture_class, symbol: null, unit: USDA texture class, domain: null, description: Test input.}")
+            .replace("    outputs:", &format!("{derived}    outputs:"))
     }
 
     #[test]
-    fn schema_rejects_supported_adapter_without_evidence_or_mapped_input() {
-        for (label, adapter, expected) in [
-            (
-                "no-evidence",
-                "    input_adapters:\n      usda_texture:\n        status: supported\n        inputs: {sand: x}\n",
-                "evidence",
-            ),
-            (
-                "no-mapping",
-                "    input_adapters:\n      usda_texture:\n        status: supported\n        inputs: {}\n        evidence: Explicit USDA definitions are reported.\n",
-                "not valid under any",
-            ),
-        ] {
-            let root = fixture_root(label);
-            fs::write(
-                root.join("specs/functions/adapter.yaml"),
-                specification_with_adapter(adapter),
-            )
-            .unwrap();
-            let error = load(&root)
-                .expect_err("invalid adapter must fail")
-                .to_string();
-            assert!(error.contains(expected), "{error}");
-            fs::remove_dir_all(root).unwrap();
-        }
+    fn resolves_a_registered_categorical_input_and_derived_binding() {
+        let root = fixture_root("typed-adapter");
+        let derived = "    derived_inputs:\n      - adapter: usda_texture\n        input: texture_class\n        evidence: The source explicitly uses USDA particle-size definitions.\n        components: {sand: sand}\n";
+        fs::write(
+            root.join("specs/functions/adapter.yaml"),
+            adapter_spec(derived, "sand"),
+        )
+        .unwrap();
+        let entries = load(&root).unwrap();
+        let ir = entries[0].implementations[0].as_ref().unwrap();
+        assert_eq!(ir.inputs[0].input_type, "usda_texture_class");
+        assert_eq!(ir.derived_inputs[0].component, "sand");
+        fs::remove_dir_all(root).unwrap();
     }
 
     #[test]
-    fn semantic_validation_rejects_unknown_and_duplicate_mapped_inputs() {
-        for (label, mapping, expected) in [
-            ("missing", "{sand: missing}", "is not declared"),
+    fn rejects_invalid_typed_bindings_and_numeric_category_use() {
+        for (label, derived, expression, expected) in [
             (
-                "duplicate",
-                "{sand: x, silt: x}",
-                "mapped to multiple texture roles",
+                "unknown-adapter",
+                "    derived_inputs:\n      - {adapter: missing, input: texture_class, evidence: Source evidence., components: {sand: sand}}\n",
+                "sand",
+                "unknown adapter",
             ),
+            (
+                "missing-input",
+                "    derived_inputs:\n      - {adapter: usda_texture, input: missing, evidence: Source evidence., components: {sand: sand}}\n",
+                "sand",
+                "unknown public input",
+            ),
+            (
+                "unknown-component",
+                "    derived_inputs:\n      - {adapter: usda_texture, input: texture_class, evidence: Source evidence., components: {gravel: sand}}\n",
+                "sand",
+                "unknown adapter component",
+            ),
+            (
+                "empty-evidence",
+                "    derived_inputs:\n      - {adapter: usda_texture, input: texture_class, evidence: ' ', components: {sand: sand}}\n",
+                "sand",
+                "source-backed evidence",
+            ),
+            (
+                "category-as-number",
+                "",
+                "texture_class",
+                "cannot be used as a numeric",
+            ),
+            ("unbound", "", "sand", "unknown identifier"),
         ] {
             let root = fixture_root(label);
-            let adapter = format!(
-                "    input_adapters:\n      usda_texture:\n        status: unknown\n        inputs: {mapping}\n        evidence: Particle-size compatibility is not reported.\n"
-            );
             fs::write(
                 root.join("specs/functions/adapter.yaml"),
-                specification_with_adapter(&adapter),
+                adapter_spec(derived, expression),
             )
             .unwrap();
-            let entries = load(&root).expect("fixture must satisfy structural schema");
-            let errors = crate::validate::specifications(&entries).join("\n");
-            assert!(errors.contains(expected), "{errors}");
+            let error = load(&root).unwrap_err().to_string();
+            assert!(error.contains(expected), "{label}: {error}");
             fs::remove_dir_all(root).unwrap();
         }
     }

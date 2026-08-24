@@ -1,8 +1,10 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, NamedTuple, TypeVar, overload
+from typing import TYPE_CHECKING, Any, NamedTuple, TypeVar, overload
 
 import numpy as np
+
+from ptfkit.texture import prepare_usda_texture
 
 
 if TYPE_CHECKING:
@@ -10,9 +12,9 @@ if TYPE_CHECKING:
 
     R = TypeVar('R', bound=NamedTuple)
 
-    GoldenCase = tuple[dict[str, float], dict[str, float], float, float]
+    GoldenCase = tuple[dict[str, Any], dict[str, float], float, float]
     VectorCasePart = tuple[
-        dict[str, np.ndarray],
+        dict[str, Any],
         dict[str, float],
         float,
         float,
@@ -22,19 +24,31 @@ if TYPE_CHECKING:
 
 
 @overload
-def prepare_vector_case(cases: Sequence[GoldenCase]) -> VectorCaseScalar: ...
+def prepare_vector_case(
+    cases: Sequence[GoldenCase], *, categorical_inputs: tuple[str, ...] = ()
+) -> VectorCaseScalar: ...
 
 
 @overload
-def prepare_vector_case(cases: Sequence[GoldenCase], result_type: type[R]) -> VectorCaseTuple: ...
+def prepare_vector_case(
+    cases: Sequence[GoldenCase],
+    result_type: type[R],
+    *,
+    categorical_inputs: tuple[str, ...] = (),
+) -> VectorCaseTuple: ...
 
 
 def prepare_vector_case(
     cases: Sequence[GoldenCase],
     result_cls: type[R] | None = None,
+    *,
+    categorical_inputs: tuple[str, ...] = (),
 ) -> VectorCaseScalar | VectorCaseTuple:
     inputs, expected, rtol, atol = cases[0]
-    vector_inputs = {name: np.array([value]) for name, value in inputs.items()}
+    vector_inputs = {
+        name: prepare_usda_texture([value]) if name in categorical_inputs else np.array([value])
+        for name, value in inputs.items()
+    }
     out: np.ndarray | R
 
     if result_cls is None:

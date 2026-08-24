@@ -160,13 +160,17 @@ fn stage(root: &Path, outputs: &[Output]) -> Result<Vec<StagedWrite>> {
 }
 
 fn temporary_path(target: &Path) -> PathBuf {
+    let file_name = target
+        .file_name()
+        .and_then(|name| name.to_str())
+        .unwrap_or("generated");
     let extension = target
         .extension()
         .and_then(|extension| extension.to_str())
         .unwrap_or("generated");
     let sequence = TEMPORARY_SEQUENCE.fetch_add(1, Ordering::Relaxed);
-    target.with_extension(format!(
-        "{extension}.{}.{}.tmp",
+    target.with_file_name(format!(
+        "{file_name}.{}.{}.tmp.{extension}",
         std::process::id(),
         sequence
     ))

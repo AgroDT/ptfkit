@@ -34,5 +34,18 @@ int main() {
         assert_close_enough(result.sd_log_k_sat, 0.50715, 0.000000000001, 0.000000000001);
         assert_close_enough(result.sd_theta_s, 7.365, 0.000000000001, 0.000000000001);
     }
+    {
+        const auto result = ptfkit::cosby1984::calc_ptf_cosby1984_univariate_usda_texture(
+            ptfkit::adapters::UsdaTexture::Loam);
+        static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
+                                     ptfkit::cosby1984::Cosby1984UnivariatePTFResult>);
+        assert_close_enough(result.mean_b, 5.613, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.mean_log_psi_s, 1.3429, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.mean_log_k_sat, -0.2567, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.mean_theta_s, 43.734, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.sd_b, 2.19, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.sd_log_k_sat, 0.59382, 0.000000000001, 0.000000000001);
+        assert_close_enough(result.sd_theta_s, 6.489, 0.000000000001, 0.000000000001);
+    }
     return 0;
 }

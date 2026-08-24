@@ -31,11 +31,11 @@ Estimate saturated conductivity for Indo-Gangetic Plains soils.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | — | Sand content. |
-| `bulk_density` | Mg/m^3 | value > 0 | Bulk density. |
-| `esp` | % | — | Exchangeable sodium percentage. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | — | Sand content. |
+| `bulk_density` | `number` | Mg/m^3 | value > 0 | Bulk density. |
+| `esp` | `number` | % | — | Exchangeable sodium percentage. |
 
 #### Outputs
 
@@ -63,14 +63,14 @@ Estimate water retention and saturated conductivity for the black soil region.
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `clay` | % | — | Clay content. |
-| `ph` | dimensionless | value > 0 | Soil pH. |
-| `cation_exchange_capacity` | cmol(c)/kg | — | Cation exchange capacity. |
-| `esp` | % | — | Exchangeable sodium percentage. |
-| `emp` | % | — | Exchangeable magnesium percentage. |
-| `excm` | dimensionless | — | Exchangeable calcium-to-magnesium ratio. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `clay` | `number` | % | — | Clay content. |
+| `ph` | `number` | dimensionless | value > 0 | Soil pH. |
+| `cation_exchange_capacity` | `number` | cmol(c)/kg | — | Cation exchange capacity. |
+| `esp` | `number` | % | — | Exchangeable sodium percentage. |
+| `emp` | `number` | % | — | Exchangeable magnesium percentage. |
+| `excm` | `number` | dimensionless | — | Exchangeable calcium-to-magnesium ratio. |
 
 #### Outputs
 

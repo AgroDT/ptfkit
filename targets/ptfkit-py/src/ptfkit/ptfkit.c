@@ -4,6 +4,7 @@
 #include <Python.h>
 #include <numpy/arrayobject.h>
 #include <numpy/ufuncobject.h>
+#include "usda_texture_parser.h"
 
 #include "ahuja1984.c"
 #include "aimrun2009.c"
@@ -25,7 +26,10 @@
 #include "wang2012.c"
 #include "weber2020.c"
 
-static struct PyModuleDef module_def = {PyModuleDef_HEAD_INIT, "_ptfkit", NULL, -1, NULL};
+static PyMethodDef ptfkit_methods[] = {
+    {"_prepare_usda_texture", ptfkit_prepare_usda_texture, METH_O, NULL}, {NULL, NULL, 0, NULL}};
+
+static struct PyModuleDef module_def = {PyModuleDef_HEAD_INIT, "_ptfkit", NULL, -1, ptfkit_methods};
 
 PyMODINIT_FUNC PyInit__ptfkit(void) {
     PyObject *module = PyModule_Create(&module_def);

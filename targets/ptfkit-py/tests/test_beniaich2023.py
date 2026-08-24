@@ -53,7 +53,7 @@ def test_calc_ptf_beniaich2023_slr1_golden(
 
 def test_calc_ptf_beniaich2023_slr1_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_BENIAICH2023_SLR1, Beniaich2023PTFResult
+        CASES_CALC_PTF_BENIAICH2023_SLR1, Beniaich2023PTFResult, categorical_inputs=()
     )
     result = calc_ptf_beniaich2023_slr1(**inputs, out=None)
     assert result.water_saturation[0] == pytest.approx(
@@ -69,7 +69,7 @@ def test_calc_ptf_beniaich2023_slr1_array():
 
 def test_calc_ptf_beniaich2023_slr1_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_BENIAICH2023_SLR1, Beniaich2023PTFResult
+        CASES_CALC_PTF_BENIAICH2023_SLR1, Beniaich2023PTFResult, categorical_inputs=()
     )
     result = calc_ptf_beniaich2023_slr1(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
@@ -118,7 +118,7 @@ def test_calc_ptf_beniaich2023_slr2_golden(
 
 def test_calc_ptf_beniaich2023_slr2_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_BENIAICH2023_SLR2, Beniaich2023PTFResult
+        CASES_CALC_PTF_BENIAICH2023_SLR2, Beniaich2023PTFResult, categorical_inputs=()
     )
     result = calc_ptf_beniaich2023_slr2(**inputs, out=None)
     assert result.water_saturation[0] == pytest.approx(
@@ -134,7 +134,7 @@ def test_calc_ptf_beniaich2023_slr2_array():
 
 def test_calc_ptf_beniaich2023_slr2_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_BENIAICH2023_SLR2, Beniaich2023PTFResult
+        CASES_CALC_PTF_BENIAICH2023_SLR2, Beniaich2023PTFResult, categorical_inputs=()
     )
     result = calc_ptf_beniaich2023_slr2(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
@@ -183,7 +183,7 @@ def test_calc_ptf_beniaich2023_slr3_golden(
 
 def test_calc_ptf_beniaich2023_slr3_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_BENIAICH2023_SLR3, Beniaich2023PTFResult
+        CASES_CALC_PTF_BENIAICH2023_SLR3, Beniaich2023PTFResult, categorical_inputs=()
     )
     result = calc_ptf_beniaich2023_slr3(**inputs, out=None)
     assert result.water_saturation[0] == pytest.approx(
@@ -199,7 +199,7 @@ def test_calc_ptf_beniaich2023_slr3_array():
 
 def test_calc_ptf_beniaich2023_slr3_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_BENIAICH2023_SLR3, Beniaich2023PTFResult
+        CASES_CALC_PTF_BENIAICH2023_SLR3, Beniaich2023PTFResult, categorical_inputs=()
     )
     result = calc_ptf_beniaich2023_slr3(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
@@ -248,7 +248,7 @@ def test_calc_ptf_beniaich2023_slr4_golden(
 
 def test_calc_ptf_beniaich2023_slr4_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_BENIAICH2023_SLR4, Beniaich2023PTFResult
+        CASES_CALC_PTF_BENIAICH2023_SLR4, Beniaich2023PTFResult, categorical_inputs=()
     )
     result = calc_ptf_beniaich2023_slr4(**inputs, out=None)
     assert result.water_saturation[0] == pytest.approx(
@@ -264,7 +264,7 @@ def test_calc_ptf_beniaich2023_slr4_array():
 
 def test_calc_ptf_beniaich2023_slr4_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_BENIAICH2023_SLR4, Beniaich2023PTFResult
+        CASES_CALC_PTF_BENIAICH2023_SLR4, Beniaich2023PTFResult, categorical_inputs=()
     )
     result = calc_ptf_beniaich2023_slr4(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
@@ -313,7 +313,7 @@ def test_calc_ptf_beniaich2023_slr5_golden(
 
 def test_calc_ptf_beniaich2023_slr5_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_BENIAICH2023_SLR5, Beniaich2023PTFResult
+        CASES_CALC_PTF_BENIAICH2023_SLR5, Beniaich2023PTFResult, categorical_inputs=()
     )
     result = calc_ptf_beniaich2023_slr5(**inputs, out=None)
     assert result.water_saturation[0] == pytest.approx(
@@ -329,7 +329,7 @@ def test_calc_ptf_beniaich2023_slr5_array():
 
 def test_calc_ptf_beniaich2023_slr5_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_BENIAICH2023_SLR5, Beniaich2023PTFResult
+        CASES_CALC_PTF_BENIAICH2023_SLR5, Beniaich2023PTFResult, categorical_inputs=()
     )
     result = calc_ptf_beniaich2023_slr5(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
@@ -378,7 +378,7 @@ def test_calc_ptf_beniaich2023_slr6_golden(
 
 def test_calc_ptf_beniaich2023_slr6_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_BENIAICH2023_SLR6, Beniaich2023PTFResult
+        CASES_CALC_PTF_BENIAICH2023_SLR6, Beniaich2023PTFResult, categorical_inputs=()
     )
     result = calc_ptf_beniaich2023_slr6(**inputs, out=None)
     assert result.water_saturation[0] == pytest.approx(
@@ -394,7 +394,7 @@ def test_calc_ptf_beniaich2023_slr6_array():
 
 def test_calc_ptf_beniaich2023_slr6_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_BENIAICH2023_SLR6, Beniaich2023PTFResult
+        CASES_CALC_PTF_BENIAICH2023_SLR6, Beniaich2023PTFResult, categorical_inputs=()
     )
     result = calc_ptf_beniaich2023_slr6(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
@@ -443,7 +443,7 @@ def test_calc_ptf_beniaich2023_mlr1_golden(
 
 def test_calc_ptf_beniaich2023_mlr1_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_BENIAICH2023_MLR1, Beniaich2023PTFResult
+        CASES_CALC_PTF_BENIAICH2023_MLR1, Beniaich2023PTFResult, categorical_inputs=()
     )
     result = calc_ptf_beniaich2023_mlr1(**inputs, out=None)
     assert result.water_saturation[0] == pytest.approx(
@@ -459,7 +459,7 @@ def test_calc_ptf_beniaich2023_mlr1_array():
 
 def test_calc_ptf_beniaich2023_mlr1_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_BENIAICH2023_MLR1, Beniaich2023PTFResult
+        CASES_CALC_PTF_BENIAICH2023_MLR1, Beniaich2023PTFResult, categorical_inputs=()
     )
     result = calc_ptf_beniaich2023_mlr1(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
@@ -508,7 +508,7 @@ def test_calc_ptf_beniaich2023_mlr2_golden(
 
 def test_calc_ptf_beniaich2023_mlr2_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_BENIAICH2023_MLR2, Beniaich2023PTFResult
+        CASES_CALC_PTF_BENIAICH2023_MLR2, Beniaich2023PTFResult, categorical_inputs=()
     )
     result = calc_ptf_beniaich2023_mlr2(**inputs, out=None)
     assert result.water_saturation[0] == pytest.approx(
@@ -524,7 +524,7 @@ def test_calc_ptf_beniaich2023_mlr2_array():
 
 def test_calc_ptf_beniaich2023_mlr2_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_BENIAICH2023_MLR2, Beniaich2023PTFResult
+        CASES_CALC_PTF_BENIAICH2023_MLR2, Beniaich2023PTFResult, categorical_inputs=()
     )
     result = calc_ptf_beniaich2023_mlr2(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
@@ -573,7 +573,7 @@ def test_calc_ptf_beniaich2023_mlr3_golden(
 
 def test_calc_ptf_beniaich2023_mlr3_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_BENIAICH2023_MLR3, Beniaich2023PTFResult
+        CASES_CALC_PTF_BENIAICH2023_MLR3, Beniaich2023PTFResult, categorical_inputs=()
     )
     result = calc_ptf_beniaich2023_mlr3(**inputs, out=None)
     assert result.water_saturation[0] == pytest.approx(
@@ -589,7 +589,7 @@ def test_calc_ptf_beniaich2023_mlr3_array():
 
 def test_calc_ptf_beniaich2023_mlr3_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_BENIAICH2023_MLR3, Beniaich2023PTFResult
+        CASES_CALC_PTF_BENIAICH2023_MLR3, Beniaich2023PTFResult, categorical_inputs=()
     )
     result = calc_ptf_beniaich2023_mlr3(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
@@ -638,7 +638,7 @@ def test_calc_ptf_beniaich2023_mlr4_golden(
 
 def test_calc_ptf_beniaich2023_mlr4_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_BENIAICH2023_MLR4, Beniaich2023PTFResult
+        CASES_CALC_PTF_BENIAICH2023_MLR4, Beniaich2023PTFResult, categorical_inputs=()
     )
     result = calc_ptf_beniaich2023_mlr4(**inputs, out=None)
     assert result.water_saturation[0] == pytest.approx(
@@ -654,7 +654,7 @@ def test_calc_ptf_beniaich2023_mlr4_array():
 
 def test_calc_ptf_beniaich2023_mlr4_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_BENIAICH2023_MLR4, Beniaich2023PTFResult
+        CASES_CALC_PTF_BENIAICH2023_MLR4, Beniaich2023PTFResult, categorical_inputs=()
     )
     result = calc_ptf_beniaich2023_mlr4(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
@@ -703,7 +703,7 @@ def test_calc_ptf_beniaich2023_mlr5_golden(
 
 def test_calc_ptf_beniaich2023_mlr5_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_BENIAICH2023_MLR5, Beniaich2023PTFResult
+        CASES_CALC_PTF_BENIAICH2023_MLR5, Beniaich2023PTFResult, categorical_inputs=()
     )
     result = calc_ptf_beniaich2023_mlr5(**inputs, out=None)
     assert result.water_saturation[0] == pytest.approx(
@@ -719,7 +719,7 @@ def test_calc_ptf_beniaich2023_mlr5_array():
 
 def test_calc_ptf_beniaich2023_mlr5_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_BENIAICH2023_MLR5, Beniaich2023PTFResult
+        CASES_CALC_PTF_BENIAICH2023_MLR5, Beniaich2023PTFResult, categorical_inputs=()
     )
     result = calc_ptf_beniaich2023_mlr5(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):

@@ -6,7 +6,7 @@ nav:
           - Python: targets/python.md
           - Rust: targets/rust.md
   - PTF Catalog: ptf-catalog
-  - Utilities: utilities
+  - Input adapters: adapters
   - Contributing: contributing
   - API Reference:
       - C: reference/c

@@ -116,33 +116,11 @@ impl Render for FunctionSection<'_> {
             writer.blank_line();
         }
 
-        ParameterTable {
+        InputTable {
             title: "Inputs",
             parameters: self.document.parameters,
         }
         .render(writer);
-        if let Some(adapter) = self
-            .document
-            .input_adapters
-            .and_then(|adapters| adapters.usda_texture.as_ref())
-        {
-            writer.write("#### USDA texture adapter\n\n");
-            writer.line(format_args!("**Status:** `{}`", adapter.status.as_str()));
-            writer.blank_line();
-            if let Some(inputs) = &adapter.inputs {
-                let mappings = inputs
-                    .roles()
-                    .into_iter()
-                    .filter_map(|(role, input)| input.map(|input| format!("{role} → `{input}`")))
-                    .collect::<Vec<_>>();
-                if !mappings.is_empty() {
-                    writer.line(format_args!("**Inputs:** {}", mappings.join(", ")));
-                    writer.blank_line();
-                }
-            }
-            writer.line(format_args!("**Evidence:** {}", adapter.evidence));
-            writer.blank_line();
-        }
         ParameterTable {
             title: "Outputs",
             parameters: match self.document.returns {
@@ -165,6 +143,35 @@ impl Render for FunctionSection<'_> {
             }
             .render(writer);
         }
+    }
+}
+
+struct InputTable<'a> {
+    title: &'a str,
+    parameters: &'a [crate::model::InputParameter],
+}
+
+impl Render for InputTable<'_> {
+    fn render(&self, writer: &mut Writer) {
+        writer.write(format_args!(
+            "#### {}\n\n| Name | Type | Unit | Domain | Description |\n| --- | --- | --- | --- | --- |\n",
+            self.title
+        ));
+        for parameter in self.parameters {
+            writer.line(format_args!(
+                "| `{}` | `{}` | {} | {} | {} |",
+                parameter.name,
+                parameter.r#type.as_str(),
+                escape_table(&parameter.unit),
+                parameter
+                    .domain
+                    .as_deref()
+                    .map(escape_table)
+                    .unwrap_or_else(|| "\u{2014}".into()),
+                escape_table(&parameter.description),
+            ));
+        }
+        writer.blank_line();
     }
 }
 

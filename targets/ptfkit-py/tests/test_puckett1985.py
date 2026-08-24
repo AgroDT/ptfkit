@@ -50,7 +50,7 @@ def test_calc_ptf_puckett1985_golden(
 
 def test_calc_ptf_puckett1985_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_PUCKETT1985, Puckett1985PTFResult
+        CASES_CALC_PTF_PUCKETT1985, Puckett1985PTFResult, categorical_inputs=()
     )
     result = calc_ptf_puckett1985(**inputs, out=None)
     assert result.theta_0[0] == pytest.approx(expected['theta_0'], rel=rtol, abs=atol)
@@ -68,7 +68,7 @@ def test_calc_ptf_puckett1985_array():
 
 def test_calc_ptf_puckett1985_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_PUCKETT1985, Puckett1985PTFResult
+        CASES_CALC_PTF_PUCKETT1985, Puckett1985PTFResult, categorical_inputs=()
     )
     result = calc_ptf_puckett1985(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):

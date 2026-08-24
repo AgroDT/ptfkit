@@ -31,11 +31,11 @@ Estimate Cosby et al. (1984) univariate hydraulic parameter statistics from soil
 
 #### Inputs
 
-| Name | Unit | Domain | Description |
-| --- | --- | --- | --- |
-| `sand` | % | 0 <= value <= 100 | Sand content. |
-| `silt` | % | 0 <= value <= 100 | Silt content. |
-| `clay` | % | 0 <= value <= 100 | Clay content. |
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `sand` | `number` | % | 0 <= value <= 100 | Sand content. |
+| `silt` | `number` | % | 0 <= value <= 100 | Silt content. |
+| `clay` | `number` | % | 0 <= value <= 100 | Clay content. |
 
 #### Outputs
 
@@ -60,3 +60,43 @@ Estimate Cosby et al. (1984) univariate hydraulic parameter statistics from soil
 !!! warning
 
     Log-transformed output units use the pilot contract `reported log value`.
+
+### `calc_ptf_cosby1984_univariate_usda_texture`
+
+Estimate Cosby et al. (1984) univariate statistics from a prepared USDA texture class.
+
+**Status:** `implemented`
+
+**Prediction target:** Mean and standard deviation estimates for hydraulic parameters from representative USDA sand, silt, and clay percentages.
+
+**Models:** $h(\theta)$ — Power function moisture characteristic; $k(h)$ — Saturated hydraulic conductivity parameter statistics
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `texture_class` | `usda_texture_class` | USDA texture class | — | Basic USDA fine-earth texture class prepared as a native categorical value. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `mean_b` | dimensionless | — | Mean slope of the moisture characteristic. |
+| `mean_log_psi_s` | reported log value | — | Mean log saturation matric potential; the underlying potential is expressed in cm H2O. |
+| `mean_log_k_sat` | reported log value | — | Mean log saturated hydraulic conductivity; the underlying conductivity is expressed in inches per hour. |
+| `mean_theta_s` | % volume/volume | — | Mean saturated water content. |
+| `sd_b` | dimensionless | — | Standard deviation of b. |
+| `sd_log_k_sat` | reported log value | — | Standard deviation of log saturated hydraulic conductivity. |
+| `sd_theta_s` | % volume/volume | — | Standard deviation of saturated water content. |
+
+!!! note
+
+    The adapter supplies representative fractions, not measured particle-size data.
+
+!!! note
+
+    Prepare exact class strings once with prepare_usda_texture and reuse the result.
+
+!!! warning
+
+    Representative compositions add uncertainty beyond the published regression.

@@ -3,9 +3,12 @@ use std::{
     path::PathBuf,
 };
 
-use crate::model::{AdapterStatus, Entry, Function, Parameter};
+use crate::{
+    adapters::Registry,
+    model::{Entry, Function, Parameter},
+};
 
-pub(crate) fn specifications(entries: &[Entry]) -> Vec<String> {
+pub(crate) fn specifications(entries: &[Entry], adapters: &Registry) -> Vec<String> {
     let mut errors = Vec::new();
     let mut functions = BTreeMap::new();
     let mut public = BTreeMap::new();
@@ -26,7 +29,7 @@ pub(crate) fn specifications(entries: &[Entry]) -> Vec<String> {
                 "functions[].public_api",
                 &mut errors,
             );
-            duplicate_names(entry, function, &function.inputs, "inputs", &mut errors);
+            duplicate_input_names(entry, function, &mut errors);
             duplicate_names(
                 entry,
                 function,
@@ -34,7 +37,7 @@ pub(crate) fn specifications(entries: &[Entry]) -> Vec<String> {
                 "outputs.fields",
                 &mut errors,
             );
-            input_adapters(entry, function, &mut errors);
+            derived_inputs(entry, function, adapters, &mut errors);
             match (
                 function.outputs.fields().len(),
                 function.result_class().is_some(),
@@ -64,57 +67,90 @@ pub(crate) fn specifications(entries: &[Entry]) -> Vec<String> {
     errors
 }
 
-fn input_adapters(entry: &Entry, function: &Function, errors: &mut Vec<String>) {
-    let Some(adapter) = function
-        .input_adapters
-        .as_ref()
-        .and_then(|adapters| adapters.usda_texture.as_ref())
-    else {
-        return;
-    };
-    if adapter.evidence.trim().is_empty() {
-        errors.push(diag(
-            entry,
-            "input_adapters.usda_texture.evidence",
-            Some(&function.name),
-            "must contain scientific compatibility evidence",
-        ));
-    }
-
-    let declared = function
-        .inputs
-        .iter()
-        .map(|input| input.name.as_str())
-        .collect::<BTreeSet<_>>();
-    let mut mapped = BTreeSet::new();
-    if let Some(mapping) = &adapter.inputs {
-        for (role, name) in mapping.roles() {
-            let Some(name) = name else { continue };
-            if !declared.contains(name) {
-                errors.push(diag(
-                    entry,
-                    &format!("input_adapters.usda_texture.inputs.{role}"),
-                    Some(&function.name),
-                    &format!("mapped input `{name}` is not declared by the function"),
-                ));
-            }
-            if !mapped.insert(name) {
-                errors.push(diag(
-                    entry,
-                    "input_adapters.usda_texture.inputs",
-                    Some(&function.name),
-                    &format!("input `{name}` is mapped to multiple texture roles"),
-                ));
-            }
+fn derived_inputs(
+    entry: &Entry,
+    function: &Function,
+    adapters: &Registry,
+    errors: &mut Vec<String>,
+) {
+    for input in &function.inputs {
+        if !input.r#type.is_numeric() && adapters.adapter_for_type(input.r#type.as_str()).is_none()
+        {
+            errors.push(diag(
+                entry,
+                "inputs[].type",
+                Some(&function.name),
+                &format!("unknown registered input type `{}`", input.r#type.as_str()),
+            ));
         }
     }
-    if matches!(adapter.status, AdapterStatus::Supported) && mapped.is_empty() {
-        errors.push(diag(
-            entry,
-            "input_adapters.usda_texture.inputs",
-            Some(&function.name),
-            "supported compatibility must map at least one texture role",
-        ));
+    for (index, binding) in function.derived_inputs.iter().enumerate() {
+        if binding.evidence.trim().is_empty() {
+            errors.push(diag(
+                entry,
+                &format!("derived_inputs[{index}].evidence"),
+                Some(&function.name),
+                "must contain source-backed scientific evidence",
+            ));
+        }
+        if let Some(adapter) = adapters.adapter(&binding.adapter) {
+            if let Some(input) = function
+                .inputs
+                .iter()
+                .find(|input| input.name == binding.input)
+            {
+                if input.r#type.as_str() != adapter.input_type.name {
+                    errors.push(diag(
+                        entry,
+                        &format!("derived_inputs[{index}].input"),
+                        Some(&function.name),
+                        "adapter input type does not match the public input type",
+                    ));
+                }
+            } else {
+                errors.push(diag(
+                    entry,
+                    &format!("derived_inputs[{index}].input"),
+                    Some(&function.name),
+                    "references an unknown public input",
+                ));
+            }
+            for component in binding.components.keys() {
+                if !adapter
+                    .outputs
+                    .iter()
+                    .any(|output| output.name == *component)
+                {
+                    errors.push(diag(
+                        entry,
+                        &format!("derived_inputs[{index}].components"),
+                        Some(&function.name),
+                        &format!("unknown adapter component `{component}`"),
+                    ));
+                }
+            }
+        } else {
+            errors.push(diag(
+                entry,
+                &format!("derived_inputs[{index}].adapter"),
+                Some(&function.name),
+                &format!("unknown adapter `{}`", binding.adapter),
+            ));
+        }
+    }
+}
+
+fn duplicate_input_names(entry: &Entry, function: &Function, errors: &mut Vec<String>) {
+    let mut seen = BTreeSet::new();
+    for value in &function.inputs {
+        if !seen.insert(&value.name) {
+            errors.push(diag(
+                entry,
+                "inputs",
+                Some(&function.name),
+                &format!("duplicate name `{}`", value.name),
+            ));
+        }
     }
 }
 

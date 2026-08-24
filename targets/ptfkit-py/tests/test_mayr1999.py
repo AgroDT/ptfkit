@@ -42,7 +42,7 @@ def test_calc_ptf_mayr1999_golden(
 
 def test_calc_ptf_mayr1999_array():
     inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_MAYR1999, Mayr1999PTFResult
+        CASES_CALC_PTF_MAYR1999, Mayr1999PTFResult, categorical_inputs=()
     )
     result = calc_ptf_mayr1999(**inputs, out=None)
     assert result.a_hc[0] == pytest.approx(expected['a_hc'], rel=rtol, abs=atol)
@@ -52,7 +52,7 @@ def test_calc_ptf_mayr1999_array():
 
 def test_calc_ptf_mayr1999_out():
     inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_MAYR1999, Mayr1999PTFResult
+        CASES_CALC_PTF_MAYR1999, Mayr1999PTFResult, categorical_inputs=()
     )
     result = calc_ptf_mayr1999(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):

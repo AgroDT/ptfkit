@@ -87,7 +87,7 @@ pub fn calc_ptf_cosby1984_univariate(
     }
 }
 #[cfg(test)]
-mod tests {
+mod calc_ptf_cosby1984_univariate_tests {
     use super::*;
     fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
         assert!(
@@ -168,6 +168,108 @@ mod tests {
         assert_close(
             result.sd_theta_s,
             7.365f64,
+            0.000000000001f64,
+            0.000000000001f64,
+        );
+    }
+}
+#[doc = r"Estimate Cosby et al. (1984) univariate statistics from a prepared USDA texture class.
+
+# Arguments
+
+  * texture_class: Basic USDA fine-earth texture class prepared as a native categorical value.
+    (USDA texture class)
+
+# Returns
+
+A [`Cosby1984UnivariatePTFResult`].
+
+# Models
+
+  * h(theta): Power function moisture characteristic
+  * k(h): Saturated hydraulic conductivity parameter statistics
+
+# Notes
+
+Prediction target: Mean and standard deviation estimates for hydraulic parameters from
+representative USDA sand, silt, and clay percentages.
+The adapter supplies representative fractions, not measured particle-size data.
+Prepare exact class strings once with prepare_usda_texture and reuse the result.
+
+# Warnings
+
+Representative compositions add uncertainty beyond the published regression."]
+#[must_use]
+pub fn calc_ptf_cosby1984_univariate_usda_texture(
+    texture_class: crate::adapters::UsdaTexture,
+) -> Cosby1984UnivariatePTFResult {
+    let texture_class_fractions: crate::adapters::UsdaTextureFractions = texture_class.into();
+    let clay = texture_class_fractions.clay;
+    let sand = texture_class_fractions.sand;
+    let silt = texture_class_fractions.silt;
+    let mean_b = 2.91f64 + 0.159f64 * clay;
+    let mean_log_psi_s = 1.88f64 - 0.0131f64 * sand;
+    let mean_log_k_sat = -0.884f64 + 0.0153f64 * sand;
+    let mean_theta_s = 48.9f64 - 0.126f64 * sand;
+    let sd_b = 1.34f64 + 0.0500f64 * clay;
+    let sd_log_k_sat = 0.459f64 + 0.00321f64 * silt;
+    let sd_theta_s = 7.73f64 - 0.0730f64 * clay;
+    Cosby1984UnivariatePTFResult {
+        mean_b,
+        mean_log_psi_s,
+        mean_log_k_sat,
+        mean_theta_s,
+        sd_b,
+        sd_log_k_sat,
+        sd_theta_s,
+    }
+}
+#[cfg(test)]
+mod calc_ptf_cosby1984_univariate_usda_texture_tests {
+    use super::*;
+    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+        assert!(
+            (actual - expected).abs() <= atol + rtol * expected.abs(),
+            "actual {actual} != expected {expected}"
+        );
+    }
+    #[test]
+    fn representative_loam() {
+        let result = calc_ptf_cosby1984_univariate_usda_texture(crate::adapters::UsdaTexture::Loam);
+        assert_close(
+            result.mean_b,
+            5.613f64,
+            0.000000000001f64,
+            0.000000000001f64,
+        );
+        assert_close(
+            result.mean_log_psi_s,
+            1.3429f64,
+            0.000000000001f64,
+            0.000000000001f64,
+        );
+        assert_close(
+            result.mean_log_k_sat,
+            -0.2567f64,
+            0.000000000001f64,
+            0.000000000001f64,
+        );
+        assert_close(
+            result.mean_theta_s,
+            43.734f64,
+            0.000000000001f64,
+            0.000000000001f64,
+        );
+        assert_close(result.sd_b, 2.19f64, 0.000000000001f64, 0.000000000001f64);
+        assert_close(
+            result.sd_log_k_sat,
+            0.59382f64,
+            0.000000000001f64,
+            0.000000000001f64,
+        );
+        assert_close(
+            result.sd_theta_s,
+            6.489f64,
             0.000000000001f64,
             0.000000000001f64,
         );

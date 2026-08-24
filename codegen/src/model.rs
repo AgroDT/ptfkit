@@ -27,7 +27,7 @@ struct RawSpec {
 #[derive(Clone, Debug, Deserialize)]
 #[serde(untagged)]
 enum Definition {
-    Input(Parameter),
+    Input(InputParameter),
     Output(Outputs),
 }
 
@@ -38,7 +38,7 @@ struct FunctionReference {
     public_api: PublicApi,
     scope: FunctionScope,
     #[serde(default)]
-    input_adapters: Option<InputAdapters>,
+    derived_inputs: Vec<DerivedInput>,
     inputs: Vec<InputReference>,
     outputs: OutputReference,
     implementation: Option<Implementation>,
@@ -51,7 +51,7 @@ struct FunctionReference {
 #[derive(Clone, Debug, Deserialize)]
 #[serde(untagged)]
 enum InputReference {
-    Inline(Parameter),
+    Inline(InputParameter),
     Reference(Reference),
 }
 
@@ -121,7 +121,7 @@ impl<'de> Deserialize<'de> for Spec {
                     status: function.status,
                     public_api: function.public_api,
                     scope: function.scope,
-                    input_adapters: function.input_adapters,
+                    derived_inputs: function.derived_inputs,
                     inputs,
                     outputs,
                     implementation: function.implementation,
@@ -180,8 +180,8 @@ pub(crate) struct Function {
     pub(crate) public_api: PublicApi,
     pub(crate) scope: FunctionScope,
     #[serde(default)]
-    pub(crate) input_adapters: Option<InputAdapters>,
-    pub(crate) inputs: Vec<Parameter>,
+    pub(crate) derived_inputs: Vec<DerivedInput>,
+    pub(crate) inputs: Vec<InputParameter>,
     pub(crate) outputs: Outputs,
     pub(crate) implementation: Option<Implementation>,
     #[serde(default)]
@@ -191,51 +191,11 @@ pub(crate) struct Function {
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub(crate) struct InputAdapters {
-    pub(crate) usda_texture: Option<UsdaTextureAdapter>,
-}
-
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub(crate) struct UsdaTextureAdapter {
-    pub(crate) status: AdapterStatus,
-    #[serde(default)]
-    pub(crate) inputs: Option<TextureInputMapping>,
+pub(crate) struct DerivedInput {
+    pub(crate) adapter: String,
+    pub(crate) input: String,
     pub(crate) evidence: String,
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
-#[serde(rename_all = "lowercase")]
-pub(crate) enum AdapterStatus {
-    Supported,
-    Unsupported,
-    Unknown,
-}
-
-impl AdapterStatus {
-    pub(crate) fn as_str(self) -> &'static str {
-        match self {
-            Self::Supported => "supported",
-            Self::Unsupported => "unsupported",
-            Self::Unknown => "unknown",
-        }
-    }
-}
-
-#[derive(Clone, Debug, Default, Deserialize, Serialize)]
-pub(crate) struct TextureInputMapping {
-    pub(crate) sand: Option<String>,
-    pub(crate) silt: Option<String>,
-    pub(crate) clay: Option<String>,
-}
-
-impl TextureInputMapping {
-    pub(crate) fn roles(&self) -> [(&'static str, Option<&str>); 3] {
-        [
-            ("sand", self.sand.as_deref()),
-            ("silt", self.silt.as_deref()),
-            ("clay", self.clay.as_deref()),
-        ]
-    }
+    pub(crate) components: BTreeMap<String, String>,
 }
 
 impl Function {
@@ -250,10 +210,17 @@ impl Function {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub(crate) struct GoldenTest {
     pub(crate) id: String,
-    pub(crate) inputs: BTreeMap<String, f64>,
+    pub(crate) inputs: BTreeMap<String, TestValue>,
     pub(crate) expected: BTreeMap<String, f64>,
     pub(crate) rtol: f64,
     pub(crate) atol: f64,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(untagged)]
+pub(crate) enum TestValue {
+    Number(f64),
+    Category(String),
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -287,6 +254,36 @@ pub(crate) struct Parameter {
     #[allow(dead_code)]
     pub(crate) domain: Option<String>,
     pub(crate) description: String,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub(crate) struct InputParameter {
+    pub(crate) name: String,
+    #[serde(default)]
+    pub(crate) r#type: InputType,
+    pub(crate) unit: String,
+    #[allow(dead_code)]
+    pub(crate) domain: Option<String>,
+    pub(crate) description: String,
+}
+
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(transparent)]
+pub(crate) struct InputType(pub(crate) String);
+
+impl Default for InputType {
+    fn default() -> Self {
+        Self("number".into())
+    }
+}
+
+impl InputType {
+    pub(crate) fn as_str(&self) -> &str {
+        &self.0
+    }
+    pub(crate) fn is_numeric(&self) -> bool {
+        self.0 == "number"
+    }
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -366,7 +363,7 @@ pub(crate) struct CompiledFunction {
 #[derive(Clone, Debug)]
 pub(crate) struct CompiledGoldenTest {
     pub(crate) id: String,
-    pub(crate) inputs: Vec<f64>,
+    pub(crate) inputs: Vec<TestValue>,
     pub(crate) expected: Vec<f64>,
     pub(crate) rtol: f64,
     pub(crate) atol: f64,
@@ -375,8 +372,14 @@ pub(crate) struct CompiledGoldenTest {
 #[derive(Clone, Debug)]
 pub(crate) struct CoreFunction {
     pub(crate) name: String,
-    pub(crate) inputs: Vec<String>,
+    pub(crate) inputs: Vec<CoreInput>,
     pub(crate) output: Output,
+}
+
+#[derive(Clone, Debug)]
+pub(crate) struct CoreInput {
+    pub(crate) name: String,
+    pub(crate) r#type: InputType,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -391,12 +394,23 @@ pub(crate) struct RawFunction {
     pub(crate) specification_path: PathBuf,
     pub(crate) name: String,
     pub(crate) inputs: Vec<RawInput>,
+    pub(crate) derived_inputs: Vec<RawDerivedInput>,
     pub(crate) variables: Vec<RawVariable>,
 }
 
 #[derive(Clone, Debug)]
 pub(crate) struct RawInput {
     pub(crate) name: String,
+    pub(crate) r#type: InputType,
+}
+
+#[derive(Clone, Debug)]
+pub(crate) struct RawDerivedInput {
+    pub(crate) adapter: String,
+    pub(crate) input_index: usize,
+    pub(crate) component: String,
+    pub(crate) symbol: String,
+    pub(crate) evidence: String,
 }
 
 #[derive(Clone, Debug)]

@@ -3,7 +3,7 @@
 //! Targets choose their own section ordering and markup. This module only
 //! describes the information they have available to render.
 
-use crate::model::{Function, InputAdapters, Outputs, Parameter, Scope, Source};
+use crate::model::{Function, InputParameter, Outputs, Parameter, Scope, Source};
 
 #[derive(Clone, Copy, Debug)]
 pub(crate) struct SourceDocument<'a> {
@@ -28,14 +28,13 @@ pub(crate) struct Doi<'a> {
 #[derive(Clone, Copy, Debug)]
 pub(crate) struct FunctionDocument<'a> {
     pub(crate) summary: &'a str,
-    pub(crate) parameters: &'a [Parameter],
+    pub(crate) parameters: &'a [InputParameter],
     pub(crate) returns: Returns<'a>,
     pub(crate) territory: Option<&'a str>,
     pub(crate) models: Models<'a>,
     pub(crate) remarks: Remarks<'a>,
     pub(crate) notes: &'a [String],
     pub(crate) warnings: &'a [String],
-    pub(crate) input_adapters: Option<&'a InputAdapters>,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -91,7 +90,6 @@ pub(crate) fn for_function(function: &Function) -> FunctionDocument<'_> {
         },
         notes: &function.documentation.notes,
         warnings: &function.documentation.warnings,
-        input_adapters: function.input_adapters.as_ref(),
     }
 }
 
@@ -103,10 +101,19 @@ pub(crate) fn parameter_documentation(parameter: &Parameter) -> String {
     format!("{}: {}", parameter.name, parameter_details(parameter))
 }
 
+pub(crate) fn input_details(parameter: &InputParameter) -> String {
+    format!("{} ({})", parameter.description, parameter.unit)
+}
+
+pub(crate) fn input_documentation(parameter: &InputParameter) -> String {
+    format!("{}: {}", parameter.name, input_details(parameter))
+}
+
 #[cfg(test)]
 mod tests {
     use crate::model::{
-        Documentation, Function, FunctionScope, Models, Outputs, Parameter, PublicApi,
+        Documentation, Function, FunctionScope, InputParameter, InputType, Models, Outputs,
+        Parameter, PublicApi,
     };
 
     use super::{Returns, for_function};
@@ -114,6 +121,16 @@ mod tests {
     fn parameter(name: &str) -> Parameter {
         Parameter {
             name: name.into(),
+            unit: "cm^3/cm^3".into(),
+            domain: None,
+            description: format!("{name} description."),
+        }
+    }
+
+    fn input(name: &str) -> InputParameter {
+        InputParameter {
+            name: name.into(),
+            r#type: InputType::default(),
             unit: "cm^3/cm^3".into(),
             domain: None,
             description: format!("{name} description."),
@@ -135,7 +152,7 @@ mod tests {
                 prediction_target: "Test property.".into(),
                 models: Models::default(),
             },
-            input_adapters: None,
+            derived_inputs: Vec::new(),
             inputs: Vec::new(),
             outputs: Outputs::Scalar {
                 field: parameter("result"),
@@ -172,8 +189,8 @@ mod tests {
                     k_h: Some("Conductivity model.".into()),
                 },
             },
-            input_adapters: None,
-            inputs: vec![parameter("sand")],
+            derived_inputs: Vec::new(),
+            inputs: vec![input("sand")],
             outputs: Outputs::Record {
                 name: "TestResult".into(),
                 fields: vec![parameter("theta_33"), parameter("theta_1500")],

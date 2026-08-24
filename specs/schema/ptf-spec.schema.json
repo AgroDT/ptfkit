@@ -122,12 +122,30 @@
         "description": { "type": "string", "minLength": 1 }
       }
     },
+    "inputParameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "symbol", "unit", "domain", "description"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "type": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "not": { "enum": ["scalar", "record"] },
+          "default": "number"
+        },
+        "symbol": { "$ref": "#/$defs/stringOrNull" },
+        "unit": { "type": "string", "minLength": 1 },
+        "domain": { "$ref": "#/$defs/stringOrNull" },
+        "description": { "type": "string", "minLength": 1 }
+      }
+    },
     "sourceDefinitions": {
       "type": "object",
       "propertyNames": { "pattern": "^[A-Za-z][A-Za-z0-9_]*$" },
       "additionalProperties": {
         "oneOf": [
-          { "$ref": "#/$defs/parameter" },
+          { "$ref": "#/$defs/inputParameter" },
           { "$ref": "#/$defs/outputs" }
         ]
       }
@@ -176,7 +194,11 @@
       "required": ["id", "inputs", "expected", "rtol", "atol", "notes"],
       "properties": {
         "id": { "type": "string", "minLength": 1 },
-        "inputs": { "type": "object", "minProperties": 1 },
+        "inputs": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "type": ["number", "string"] }
+        },
         "expected": { "type": "object", "minProperties": 1 },
         "rtol": { "type": "number", "minimum": 0 },
         "atol": { "type": "number", "minimum": 0 },
@@ -239,13 +261,17 @@
           }
         },
         "scope": { "$ref": "#/$defs/functionScope" },
-        "input_adapters": { "$ref": "#/$defs/inputAdapters" },
+        "derived_inputs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/derivedInput" }
+        },
         "inputs": {
           "type": "array",
           "minItems": 1,
           "items": {
             "oneOf": [
-              { "$ref": "#/$defs/parameter" },
+              { "$ref": "#/$defs/inputParameter" },
               { "$ref": "#/$defs/localReference" }
             ]
           }
@@ -275,47 +301,20 @@
         "implementation": { "$ref": "#/$defs/implementation" }
       }
     },
-    "textureInputMapping": {
+    "derivedInput": {
       "type": "object",
       "additionalProperties": false,
+      "required": ["adapter", "input", "evidence", "components"],
       "properties": {
-        "sand": { "$ref": "#/$defs/stringOrNull" },
-        "silt": { "$ref": "#/$defs/stringOrNull" },
-        "clay": { "$ref": "#/$defs/stringOrNull" }
-      }
-    },
-    "usdaTextureAdapter": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["status", "evidence"],
-      "properties": {
-        "status": { "enum": ["supported", "unsupported", "unknown"] },
-        "inputs": { "$ref": "#/$defs/textureInputMapping" },
-        "evidence": { "type": "string", "minLength": 1 }
-      },
-      "allOf": [
-        {
-          "if": { "properties": { "status": { "const": "supported" } }, "required": ["status"] },
-          "then": {
-            "required": ["inputs"],
-            "properties": {
-              "inputs": {
-                "anyOf": [
-                  { "required": ["sand"], "properties": { "sand": { "type": "string", "minLength": 1 } } },
-                  { "required": ["silt"], "properties": { "silt": { "type": "string", "minLength": 1 } } },
-                  { "required": ["clay"], "properties": { "clay": { "type": "string", "minLength": 1 } } }
-                ]
-              }
-            }
-          }
+        "adapter": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "input": { "type": "string", "minLength": 1 },
+        "evidence": { "type": "string", "minLength": 1 },
+        "components": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": { "pattern": "^[a-z][a-z0-9_]*$" },
+          "additionalProperties": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" }
         }
-      ]
-    },
-    "inputAdapters": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "usda_texture": { "$ref": "#/$defs/usdaTextureAdapter" }
       }
     }
   }

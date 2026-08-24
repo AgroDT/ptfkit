@@ -2,6 +2,8 @@
 
 export module ptfkit.cosby1984;
 
+export import ptfkit.adapters.usda_texture;
+
 /**
  * @brief Cosby et al. (1984), United States.
  *
@@ -80,6 +82,48 @@ struct Cosby1984UnivariatePTFResult {
 [[nodiscard]]
 inline Cosby1984UnivariatePTFResult calc_ptf_cosby1984_univariate(double sand, double silt,
                                                                   double clay) {
+    const double mean_b = 2.91 + 0.159 * clay;
+    const double mean_log_psi_s = 1.88 - 0.0131 * sand;
+    const double mean_log_k_sat = -0.884 + 0.0153 * sand;
+    const double mean_theta_s = 48.9 - 0.126 * sand;
+    const double sd_b = 1.34 + 0.0500 * clay;
+    const double sd_log_k_sat = 0.459 + 0.00321 * silt;
+    const double sd_theta_s = 7.73 - 0.0730 * clay;
+    return Cosby1984UnivariatePTFResult{mean_b, mean_log_psi_s, mean_log_k_sat, mean_theta_s,
+                                        sd_b,   sd_log_k_sat,   sd_theta_s};
+}
+
+/**
+ * @brief Estimate Cosby et al. (1984) univariate statistics from a prepared USDA texture
+ * class.
+ * @param texture_class Basic USDA fine-earth texture class prepared as a native categorical
+ * value. (USDA texture class)
+ * @return A result with the following fields:
+ * - `mean_b` — Mean slope of the moisture characteristic. (dimensionless)
+ * - `mean_log_psi_s` — Mean log saturation matric potential; the underlying potential is
+ * expressed in cm H2O. (reported log value)
+ * - `mean_log_k_sat` — Mean log saturated hydraulic conductivity; the underlying
+ * conductivity is expressed in inches per hour. (reported log value)
+ * - `mean_theta_s` — Mean saturated water content. (% volume/volume)
+ * - `sd_b` — Standard deviation of b. (dimensionless)
+ * - `sd_log_k_sat` — Standard deviation of log saturated hydraulic conductivity. (reported
+ * log value)
+ * - `sd_theta_s` — Standard deviation of saturated water content. (% volume/volume)
+ *
+ * @details Prediction target:
+ * Mean and standard deviation estimates for hydraulic parameters from representative USDA
+ * sand, silt, and clay percentages.
+ * @note The adapter supplies representative fractions, not measured particle-size data.
+ * @note Prepare exact class strings once with prepare_usda_texture and reuse the result.
+ * @warning Representative compositions add uncertainty beyond the published regression.
+ */
+[[nodiscard]]
+inline Cosby1984UnivariatePTFResult
+calc_ptf_cosby1984_univariate_usda_texture(ptfkit::adapters::UsdaTexture texture_class) {
+    const auto texture_class_fractions = ptfkit::adapters::fractions(texture_class);
+    const double clay = texture_class_fractions.clay;
+    const double sand = texture_class_fractions.sand;
+    const double silt = texture_class_fractions.silt;
     const double mean_b = 2.91 + 0.159 * clay;
     const double mean_log_psi_s = 1.88 - 0.0131 * sand;
     const double mean_log_k_sat = -0.884 + 0.0153 * sand;
