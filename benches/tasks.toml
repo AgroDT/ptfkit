@@ -1,0 +1,26 @@
+["bench:native-build"]
+dir = "benches"
+run = [
+  "cmake -S ptfkit-native -B ptfkit-native/build -GNinja -DCMAKE_BUILD_TYPE=Release",
+  "cmake --build ptfkit-native/build",
+]
+
+["bench:python-build"]
+dir = "benches/ptfkit-py"
+run = "uv sync"
+
+["bench:rust-build"]
+dir = "benches/ptfkit-rs"
+run = [
+  "CARGO_TARGET_DIR=target/inline cargo build --release --locked",
+  "CARGO_TARGET_DIR=target/no-inline cargo build --release --no-default-features --locked",
+]
+
+["bench:build"]
+depends = ["bench:native-build", "bench:python-build", "bench:rust-build"]
+
+["bench:run"]
+depends = ["bench:build"]
+dir = "benches"
+run = "uv run --no-project run.py"
+output = "interleave"

@@ -1,0 +1,8 @@
+extend = "../ruff.toml"
+target-version = "py314"
+
+[lint]
+ignore = [
+    "D102", "D107",
+    "T201",
+]
