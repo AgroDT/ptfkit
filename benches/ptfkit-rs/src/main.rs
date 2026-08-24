@@ -1,6 +1,7 @@
 use std::error::Error;
 use std::fs::File;
 use std::hint::black_box;
+use std::io::BufReader;
 use std::path::Path;
 use std::time::Instant;
 
@@ -24,7 +25,8 @@ fn parse_arguments() -> Result<Arguments, Box<dyn Error>> {
 
 fn load_array(dataset: &Path, name: &str) -> Result<Vec<f64>, Box<dyn Error>> {
     let file = File::open(dataset.join(format!("{name}.npy")))?;
-    Ok(npyz::NpyFile::new(file)?.into_vec::<f64>()?)
+    let reader = BufReader::new(file);
+    Ok(npyz::NpyFile::new(reader)?.into_vec::<f64>()?)
 }
 
 fn print_record(case: &str, samples: usize, elapsed_ns: u128) {
