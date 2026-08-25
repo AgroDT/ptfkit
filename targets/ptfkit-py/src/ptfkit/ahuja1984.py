@@ -23,6 +23,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, overload
 
+from ptfkit._dispatch import call as _call
 from ptfkit._ptfkit import (
     calc_ptf_ahuja1984 as _calc_ptf_ahuja1984,
 )
@@ -100,9 +101,11 @@ def calc_ptf_ahuja1984(
         total_porosity must be greater than or equal to theta_33.
 
     """
-    if out is None:
-        values = _calc_ptf_ahuja1984(total_porosity, theta_33, coefficient_b, exponent_n)
-    else:
-        values = _calc_ptf_ahuja1984(total_porosity, theta_33, coefficient_b, exponent_n, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_ahuja1984,
+        total_porosity,
+        theta_33,
+        coefficient_b,
+        exponent_n,
+        out=out,
+    )

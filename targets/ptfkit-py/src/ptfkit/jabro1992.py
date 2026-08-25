@@ -22,6 +22,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, overload
 
+from ptfkit._dispatch import call as _call
 from ptfkit._ptfkit import (
     calc_ptf_jabro1992 as _calc_ptf_jabro1992,
 )
@@ -77,9 +78,10 @@ def calc_ptf_jabro1992(
         The formula uses base-10 logarithms of silt and clay.
 
     """
-    if out is None:
-        values = _calc_ptf_jabro1992(silt, clay, bulk_density)
-    else:
-        values = _calc_ptf_jabro1992(silt, clay, bulk_density, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_jabro1992,
+        silt,
+        clay,
+        bulk_density,
+        out=out,
+    )

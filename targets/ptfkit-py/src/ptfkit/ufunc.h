@@ -7,12 +7,19 @@ static inline double ptfkit_pow4(double value) {
     return square * square;
 }
 
-static inline int ptfkit_add_ufunc(PyObject *module, const char *name,
-                                   PyUFuncGenericFunction *functions, char *types, int nin,
-                                   int nout) {
+static inline int ptfkit_add_ufunc(PyObject *module, const char *name, int nin, int nout,
+                                   PyArrayMethod_Spec *spec) {
+    PyArray_DTypeMeta *dtypes[NPY_MAXARGS];
+    for (int argument = 0; argument < nin + nout; argument++)
+        dtypes[argument] = &PyArray_DoubleDType;
+    spec->dtypes = dtypes;
     PyObject *ufunc =
-        PyUFunc_FromFuncAndData(functions, NULL, types, 1, nin, nout, PyUFunc_None, name, NULL, 0);
+        PyUFunc_FromFuncAndData(NULL, NULL, NULL, 0, nin, nout, PyUFunc_None, name, NULL, 0);
     if (ufunc == NULL)
         return -1;
+    if (PyUFunc_AddLoopFromSpec(ufunc, spec) < 0) {
+        Py_DECREF(ufunc);
+        return -1;
+    }
     return PyModule_AddObject(module, name, ufunc);
 }

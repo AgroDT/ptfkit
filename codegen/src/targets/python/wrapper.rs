@@ -140,6 +140,7 @@ fn module_source(
     module.write(format_args!(
         "from __future__ import annotations\n\nfrom typing import {typing_imports}\n\n"
     ));
+    module.line("from ptfkit._dispatch import call as _call");
     module.block(
         "from ptfkit._ptfkit import (",
         |writer| {
@@ -204,16 +205,6 @@ fn render_function(module: &mut Module, function: &PythonFunction<'_>) {
         .result_class
         .map(|class| format!("{class}[NDArray[floating]]"))
         .unwrap_or_else(|| "NDArray[floating]".into());
-    let out = if function.result_class.is_some() {
-        "tuple(out)"
-    } else {
-        "out"
-    };
-    let result = if let Some(result_class) = function.result_class {
-        format!("return {result_class}(*values)")
-    } else {
-        "return values".into()
-    };
     module.line("@overload");
     module.line(format_args!(
         "def {}(*, {}) -> {scalar_result}: ...",
@@ -242,22 +233,23 @@ fn render_function(module: &mut Module, function: &PythonFunction<'_>) {
     module.line(format_args!(") -> {scalar_result} | {array_result}:"));
     module.indented(|writer| {
         render_docstring(writer, &function.docstring, 4);
-        writer.line("if out is None:");
+        if function.result_class.is_some() {
+            writer.line("values = _call(");
+        } else {
+            writer.line("return _call(");
+        }
         writer.indented(|writer| {
-            writer.line(format_args!(
-                "values = _{}({})",
-                function.rust_name, function.parameters
-            ));
+            writer.line(format_args!("_{},", function.rust_name));
+            for parameter in function.parameters.split(", ") {
+                writer.line(format_args!("{parameter},"));
+            }
+            writer.line("out=out,");
         });
-        writer.line("else:");
-        writer.indented(|writer| {
-            writer.line(format_args!(
-                "values = _{}({}, out={out})",
-                function.rust_name, function.parameters
-            ));
-        });
-        writer.blank_line();
-        writer.line(result);
+        writer.line(")");
+        if let Some(result_class) = function.result_class {
+            writer.blank_line();
+            writer.line(format_args!("return {result_class}(*values)"));
+        }
     });
 }
 

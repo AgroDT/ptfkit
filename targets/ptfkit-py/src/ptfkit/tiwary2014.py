@@ -24,6 +24,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Generic, NamedTuple, TypeVar, overload
 
+from ptfkit._dispatch import call as _call
 from ptfkit._ptfkit import (
     calc_ptf_tiwary2014_igp as _calc_ptf_tiwary2014_igp,
     calc_ptf_tiwary2014_bsr as _calc_ptf_tiwary2014_bsr,
@@ -101,12 +102,13 @@ def calc_ptf_tiwary2014_igp(
             defines them only for BSR soils.
 
     """
-    if out is None:
-        values = _calc_ptf_tiwary2014_igp(sand, bulk_density, esp)
-    else:
-        values = _calc_ptf_tiwary2014_igp(sand, bulk_density, esp, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_tiwary2014_igp,
+        sand,
+        bulk_density,
+        esp,
+        out=out,
+    )
 
 
 @overload
@@ -163,11 +165,15 @@ def calc_ptf_tiwary2014_bsr(
             46 profiles.
 
     """
-    if out is None:
-        values = _calc_ptf_tiwary2014_bsr(clay, ph, cation_exchange_capacity, esp, emp, excm)
-    else:
-        values = _calc_ptf_tiwary2014_bsr(
-            clay, ph, cation_exchange_capacity, esp, emp, excm, out=tuple(out)
-        )
+    values = _call(
+        _calc_ptf_tiwary2014_bsr,
+        clay,
+        ph,
+        cation_exchange_capacity,
+        esp,
+        emp,
+        excm,
+        out=out,
+    )
 
     return Tiwary2014PTFResult(*values)

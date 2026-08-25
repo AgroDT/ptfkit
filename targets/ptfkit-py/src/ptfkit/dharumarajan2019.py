@@ -26,6 +26,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Generic, NamedTuple, TypeVar, overload
 
+from ptfkit._dispatch import call as _call
 from ptfkit._ptfkit import (
     calc_ptf_dharumarajan2019_nkp as _calc_ptf_dharumarajan2019_nkp,
     calc_ptf_dharumarajan2019_nkp_clay as _calc_ptf_dharumarajan2019_nkp_clay,
@@ -121,12 +122,13 @@ def calc_ptf_dharumarajan2019_nkp(
             see the scientific notes.
 
     """
-    if out is None:
-        values = _calc_ptf_dharumarajan2019_nkp(clay, sand, cation_exchange_capacity)
-    else:
-        values = _calc_ptf_dharumarajan2019_nkp(
-            clay, sand, cation_exchange_capacity, out=tuple(out)
-        )
+    values = _call(
+        _calc_ptf_dharumarajan2019_nkp,
+        clay,
+        sand,
+        cation_exchange_capacity,
+        out=out,
+    )
 
     return Dharumarajan2019WaterRetentionResult(*values)
 
@@ -181,10 +183,11 @@ def calc_ptf_dharumarajan2019_nkp_clay(
             see the scientific notes.
 
     """
-    if out is None:
-        values = _calc_ptf_dharumarajan2019_nkp_clay(clay)
-    else:
-        values = _calc_ptf_dharumarajan2019_nkp_clay(clay, out=tuple(out))
+    values = _call(
+        _calc_ptf_dharumarajan2019_nkp_clay,
+        clay,
+        out=out,
+    )
 
     return Dharumarajan2019WaterRetentionResult(*values)
 
@@ -243,12 +246,13 @@ def calc_ptf_dharumarajan2019_skp(
             volumetric.
 
     """
-    if out is None:
-        values = _calc_ptf_dharumarajan2019_skp(clay, sand, cation_exchange_capacity)
-    else:
-        values = _calc_ptf_dharumarajan2019_skp(
-            clay, sand, cation_exchange_capacity, out=tuple(out)
-        )
+    values = _call(
+        _calc_ptf_dharumarajan2019_skp,
+        clay,
+        sand,
+        cation_exchange_capacity,
+        out=out,
+    )
 
     return Dharumarajan2019WaterRetentionResult(*values)
 
@@ -301,10 +305,11 @@ def calc_ptf_dharumarajan2019_skp_clay(
             volumetric.
 
     """
-    if out is None:
-        values = _calc_ptf_dharumarajan2019_skp_clay(clay)
-    else:
-        values = _calc_ptf_dharumarajan2019_skp_clay(clay, out=tuple(out))
+    values = _call(
+        _calc_ptf_dharumarajan2019_skp_clay,
+        clay,
+        out=out,
+    )
 
     return Dharumarajan2019WaterRetentionResult(*values)
 
@@ -358,9 +363,10 @@ def calc_ptf_dharumarajan2019_infiltration(
         Predictor calibration ranges are not reported for the 100-observation dataset.
 
     """
-    if out is None:
-        values = _calc_ptf_dharumarajan2019_infiltration(sand, silt, clay)
-    else:
-        values = _calc_ptf_dharumarajan2019_infiltration(sand, silt, clay, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_dharumarajan2019_infiltration,
+        sand,
+        silt,
+        clay,
+        out=out,
+    )

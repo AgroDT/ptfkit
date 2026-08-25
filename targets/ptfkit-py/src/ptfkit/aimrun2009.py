@@ -22,6 +22,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, overload
 
+from ptfkit._dispatch import call as _call
 from ptfkit._ptfkit import (
     calc_ptf_aimrun2009 as _calc_ptf_aimrun2009,
 )
@@ -84,9 +85,11 @@ def calc_ptf_aimrun2009(
         The formula uses natural logarithms of all inputs.
 
     """
-    if out is None:
-        values = _calc_ptf_aimrun2009(clay, bulk_density, organic_matter, gmd)
-    else:
-        values = _calc_ptf_aimrun2009(clay, bulk_density, organic_matter, gmd, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_aimrun2009,
+        clay,
+        bulk_density,
+        organic_matter,
+        gmd,
+        out=out,
+    )

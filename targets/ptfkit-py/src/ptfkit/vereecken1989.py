@@ -24,6 +24,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Generic, NamedTuple, TypeVar, overload
 
+from ptfkit._dispatch import call as _call
 from ptfkit._ptfkit import (
     calc_ptf_vereecken1989 as _calc_ptf_vereecken1989,
     calc_ptf_vereecken1989_detailed as _calc_ptf_vereecken1989_detailed,
@@ -136,10 +137,14 @@ def calc_ptf_vereecken1989(
             1.230 value is inconsistent with the reported mean.
 
     """
-    if out is None:
-        values = _calc_ptf_vereecken1989(sand, clay, carbon, bulk_density)
-    else:
-        values = _calc_ptf_vereecken1989(sand, clay, carbon, bulk_density, out=tuple(out))
+    values = _call(
+        _calc_ptf_vereecken1989,
+        sand,
+        clay,
+        carbon,
+        bulk_density,
+        out=out,
+    )
 
     return Vereecken1989PTFResult(*values)
 
@@ -245,38 +250,22 @@ def calc_ptf_vereecken1989_detailed(
             1.230 value is inconsistent with the reported mean.
 
     """
-    if out is None:
-        values = _calc_ptf_vereecken1989_detailed(
-            particle_2000_1000,
-            particle_1000_500,
-            particle_500_200,
-            particle_200_100,
-            particle_100_50,
-            particle_50_20,
-            particle_20_10,
-            particle_10_2,
-            clay,
-            geometric_mean_particle_size,
-            geometric_standard_deviation,
-            carbon,
-            bulk_density,
-        )
-    else:
-        values = _calc_ptf_vereecken1989_detailed(
-            particle_2000_1000,
-            particle_1000_500,
-            particle_500_200,
-            particle_200_100,
-            particle_100_50,
-            particle_50_20,
-            particle_20_10,
-            particle_10_2,
-            clay,
-            geometric_mean_particle_size,
-            geometric_standard_deviation,
-            carbon,
-            bulk_density,
-            out=tuple(out),
-        )
+    values = _call(
+        _calc_ptf_vereecken1989_detailed,
+        particle_2000_1000,
+        particle_1000_500,
+        particle_500_200,
+        particle_200_100,
+        particle_100_50,
+        particle_50_20,
+        particle_20_10,
+        particle_10_2,
+        clay,
+        geometric_mean_particle_size,
+        geometric_standard_deviation,
+        carbon,
+        bulk_density,
+        out=out,
+    )
 
     return Vereecken1989DetailedPTFResult(*values)

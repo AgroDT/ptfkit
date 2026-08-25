@@ -26,6 +26,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Generic, NamedTuple, TypeVar, overload
 
+from ptfkit._dispatch import call as _call
 from ptfkit._ptfkit import (
     calc_ptf_beniaich2023_slr1 as _calc_ptf_beniaich2023_slr1,
     calc_ptf_beniaich2023_slr2 as _calc_ptf_beniaich2023_slr2,
@@ -117,10 +118,11 @@ def calc_ptf_beniaich2023_slr1(
             source territory.
 
     """
-    if out is None:
-        values = _calc_ptf_beniaich2023_slr1(clay)
-    else:
-        values = _calc_ptf_beniaich2023_slr1(clay, out=tuple(out))
+    values = _call(
+        _calc_ptf_beniaich2023_slr1,
+        clay,
+        out=out,
+    )
 
     return Beniaich2023PTFResult(*values)
 
@@ -163,10 +165,11 @@ def calc_ptf_beniaich2023_slr2(
             source territory.
 
     """
-    if out is None:
-        values = _calc_ptf_beniaich2023_slr2(silt)
-    else:
-        values = _calc_ptf_beniaich2023_slr2(silt, out=tuple(out))
+    values = _call(
+        _calc_ptf_beniaich2023_slr2,
+        silt,
+        out=out,
+    )
 
     return Beniaich2023PTFResult(*values)
 
@@ -209,10 +212,11 @@ def calc_ptf_beniaich2023_slr3(
             source territory.
 
     """
-    if out is None:
-        values = _calc_ptf_beniaich2023_slr3(sand)
-    else:
-        values = _calc_ptf_beniaich2023_slr3(sand, out=tuple(out))
+    values = _call(
+        _calc_ptf_beniaich2023_slr3,
+        sand,
+        out=out,
+    )
 
     return Beniaich2023PTFResult(*values)
 
@@ -258,10 +262,12 @@ def calc_ptf_beniaich2023_slr4(
             source territory.
 
     """
-    if out is None:
-        values = _calc_ptf_beniaich2023_slr4(clay, silt)
-    else:
-        values = _calc_ptf_beniaich2023_slr4(clay, silt, out=tuple(out))
+    values = _call(
+        _calc_ptf_beniaich2023_slr4,
+        clay,
+        silt,
+        out=out,
+    )
 
     return Beniaich2023PTFResult(*values)
 
@@ -307,10 +313,12 @@ def calc_ptf_beniaich2023_slr5(
             source territory.
 
     """
-    if out is None:
-        values = _calc_ptf_beniaich2023_slr5(clay, silt)
-    else:
-        values = _calc_ptf_beniaich2023_slr5(clay, silt, out=tuple(out))
+    values = _call(
+        _calc_ptf_beniaich2023_slr5,
+        clay,
+        silt,
+        out=out,
+    )
 
     return Beniaich2023PTFResult(*values)
 
@@ -355,10 +363,11 @@ def calc_ptf_beniaich2023_slr6(
             source territory.
 
     """
-    if out is None:
-        values = _calc_ptf_beniaich2023_slr6(soil_organic_matter)
-    else:
-        values = _calc_ptf_beniaich2023_slr6(soil_organic_matter, out=tuple(out))
+    values = _call(
+        _calc_ptf_beniaich2023_slr6,
+        soil_organic_matter,
+        out=out,
+    )
 
     return Beniaich2023PTFResult(*values)
 
@@ -409,10 +418,13 @@ def calc_ptf_beniaich2023_mlr1(
             source territory.
 
     """
-    if out is None:
-        values = _calc_ptf_beniaich2023_mlr1(silt, sand, soil_organic_matter)
-    else:
-        values = _calc_ptf_beniaich2023_mlr1(silt, sand, soil_organic_matter, out=tuple(out))
+    values = _call(
+        _calc_ptf_beniaich2023_mlr1,
+        silt,
+        sand,
+        soil_organic_matter,
+        out=out,
+    )
 
     return Beniaich2023PTFResult(*values)
 
@@ -460,10 +472,12 @@ def calc_ptf_beniaich2023_mlr2(
             source territory.
 
     """
-    if out is None:
-        values = _calc_ptf_beniaich2023_mlr2(sand, soil_organic_matter)
-    else:
-        values = _calc_ptf_beniaich2023_mlr2(sand, soil_organic_matter, out=tuple(out))
+    values = _call(
+        _calc_ptf_beniaich2023_mlr2,
+        sand,
+        soil_organic_matter,
+        out=out,
+    )
 
     return Beniaich2023PTFResult(*values)
 
@@ -511,10 +525,12 @@ def calc_ptf_beniaich2023_mlr3(
             source territory.
 
     """
-    if out is None:
-        values = _calc_ptf_beniaich2023_mlr3(silt, soil_organic_matter)
-    else:
-        values = _calc_ptf_beniaich2023_mlr3(silt, soil_organic_matter, out=tuple(out))
+    values = _call(
+        _calc_ptf_beniaich2023_mlr3,
+        silt,
+        soil_organic_matter,
+        out=out,
+    )
 
     return Beniaich2023PTFResult(*values)
 
@@ -562,10 +578,12 @@ def calc_ptf_beniaich2023_mlr4(
             source territory.
 
     """
-    if out is None:
-        values = _calc_ptf_beniaich2023_mlr4(clay, soil_organic_matter)
-    else:
-        values = _calc_ptf_beniaich2023_mlr4(clay, soil_organic_matter, out=tuple(out))
+    values = _call(
+        _calc_ptf_beniaich2023_mlr4,
+        clay,
+        soil_organic_matter,
+        out=out,
+    )
 
     return Beniaich2023PTFResult(*values)
 
@@ -616,9 +634,12 @@ def calc_ptf_beniaich2023_mlr5(
             source territory.
 
     """
-    if out is None:
-        values = _calc_ptf_beniaich2023_mlr5(clay, silt, soil_organic_matter)
-    else:
-        values = _calc_ptf_beniaich2023_mlr5(clay, silt, soil_organic_matter, out=tuple(out))
+    values = _call(
+        _calc_ptf_beniaich2023_mlr5,
+        clay,
+        silt,
+        soil_organic_matter,
+        out=out,
+    )
 
     return Beniaich2023PTFResult(*values)

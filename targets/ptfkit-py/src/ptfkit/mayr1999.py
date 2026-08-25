@@ -23,6 +23,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Generic, NamedTuple, TypeVar, overload
 
+from ptfkit._dispatch import call as _call
 from ptfkit._ptfkit import (
     calc_ptf_mayr1999 as _calc_ptf_mayr1999,
 )
@@ -115,9 +116,14 @@ def calc_ptf_mayr1999(
             paper provides that distribution only graphically.
 
     """
-    if out is None:
-        values = _calc_ptf_mayr1999(sand, silt, clay, bulk_density, organic_carbon)
-    else:
-        values = _calc_ptf_mayr1999(sand, silt, clay, bulk_density, organic_carbon, out=tuple(out))
+    values = _call(
+        _calc_ptf_mayr1999,
+        sand,
+        silt,
+        clay,
+        bulk_density,
+        organic_carbon,
+        out=out,
+    )
 
     return Mayr1999PTFResult(*values)

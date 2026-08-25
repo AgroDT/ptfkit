@@ -23,6 +23,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, overload
 
+from ptfkit._dispatch import call as _call
 from ptfkit._ptfkit import (
     calc_ptf_oosterveld1980_field_capacity_tension as _calc_ptf_oosterveld1980_field_capacity_tension,
     calc_ptf_oosterveld1980_retention as _calc_ptf_oosterveld1980_retention,
@@ -82,12 +83,11 @@ def calc_ptf_oosterveld1980_field_capacity_tension(
         Equation 1 reports r = 0.67 and n = 134.
 
     """
-    if out is None:
-        values = _calc_ptf_oosterveld1980_field_capacity_tension(clay)
-    else:
-        values = _calc_ptf_oosterveld1980_field_capacity_tension(clay, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_oosterveld1980_field_capacity_tension,
+        clay,
+        out=out,
+    )
 
 
 @overload
@@ -138,12 +138,14 @@ def calc_ptf_oosterveld1980_retention(
         The paper reports slight inaccuracy at very high clay content and high tension.
 
     """
-    if out is None:
-        values = _calc_ptf_oosterveld1980_retention(clay, sand, mean_depth, tension)
-    else:
-        values = _calc_ptf_oosterveld1980_retention(clay, sand, mean_depth, tension, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_oosterveld1980_retention,
+        clay,
+        sand,
+        mean_depth,
+        tension,
+        out=out,
+    )
 
 
 @overload
@@ -191,12 +193,13 @@ def calc_ptf_oosterveld1980_field_capacity(
             2.
 
     """
-    if out is None:
-        values = _calc_ptf_oosterveld1980_field_capacity(clay, sand, mean_depth)
-    else:
-        values = _calc_ptf_oosterveld1980_field_capacity(clay, sand, mean_depth, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_oosterveld1980_field_capacity,
+        clay,
+        sand,
+        mean_depth,
+        out=out,
+    )
 
 
 @overload
@@ -243,12 +246,13 @@ def calc_ptf_oosterveld1980_wilting_point(
         The paper takes moisture content at 1500 kPa as the wilting point.
 
     """
-    if out is None:
-        values = _calc_ptf_oosterveld1980_wilting_point(clay, sand, mean_depth)
-    else:
-        values = _calc_ptf_oosterveld1980_wilting_point(clay, sand, mean_depth, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_oosterveld1980_wilting_point,
+        clay,
+        sand,
+        mean_depth,
+        out=out,
+    )
 
 
 @overload
@@ -296,9 +300,10 @@ def calc_ptf_oosterveld1980_available_water(
         The paper defines available soil water by subtracting Equation 4 from Equation 3.
 
     """
-    if out is None:
-        values = _calc_ptf_oosterveld1980_available_water(clay, sand, mean_depth)
-    else:
-        values = _calc_ptf_oosterveld1980_available_water(clay, sand, mean_depth, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_oosterveld1980_available_water,
+        clay,
+        sand,
+        mean_depth,
+        out=out,
+    )

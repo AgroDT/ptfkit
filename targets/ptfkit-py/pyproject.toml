@@ -62,3 +62,6 @@ testpaths = ["tests"]
 [tool.scikit-build]
 minimum-version = "build-system.requires"
 wheel.exclude = ["*.c", "*.h"]
+
+[tool.scikit-build.sdist.force-include]
+"../ptfkit-native/include" = "vendor/ptfkit-native/include"

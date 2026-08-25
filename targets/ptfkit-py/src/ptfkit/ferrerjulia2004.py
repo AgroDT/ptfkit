@@ -25,6 +25,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, overload
 
+from ptfkit._dispatch import call as _call
 from ptfkit._ptfkit import (
     calc_ptf_ferrerjulia2004_campbell_shiozawa as _calc_ptf_ferrerjulia2004_campbell_shiozawa,
     calc_ptf_ferrerjulia2004_saxton as _calc_ptf_ferrerjulia2004_saxton,
@@ -156,12 +157,12 @@ def calc_ptf_ferrerjulia2004_campbell_shiozawa(
         Reproduced in Section 4.2 for comparison with the new Spanish-soil PTFs.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_campbell_shiozawa(sand, clay)
-    else:
-        values = _calc_ptf_ferrerjulia2004_campbell_shiozawa(sand, clay, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_campbell_shiozawa,
+        sand,
+        clay,
+        out=out,
+    )
 
 
 @overload
@@ -205,12 +206,12 @@ def calc_ptf_ferrerjulia2004_saxton(
             singularity policy.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_saxton(sand, clay)
-    else:
-        values = _calc_ptf_ferrerjulia2004_saxton(sand, clay, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_saxton,
+        sand,
+        clay,
+        out=out,
+    )
 
 
 @overload
@@ -247,12 +248,11 @@ def calc_ptf_ferrerjulia2004_dane_puckett(
         Reproduced in Section 4.2 for comparison with the new Spanish-soil PTFs.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_dane_puckett(clay)
-    else:
-        values = _calc_ptf_ferrerjulia2004_dane_puckett(clay, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_dane_puckett,
+        clay,
+        out=out,
+    )
 
 
 @overload
@@ -289,12 +289,11 @@ def calc_ptf_ferrerjulia2004_puckett(
         Reproduced in Section 4.2 for comparison with the new Spanish-soil PTFs.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_puckett(clay)
-    else:
-        values = _calc_ptf_ferrerjulia2004_puckett(clay, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_puckett,
+        clay,
+        out=out,
+    )
 
 
 @overload
@@ -334,12 +333,12 @@ def calc_ptf_ferrerjulia2004_cosby(
         Reproduced in Section 4.2 for comparison with the new Spanish-soil PTFs.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_cosby(sand, clay)
-    else:
-        values = _calc_ptf_ferrerjulia2004_cosby(sand, clay, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_cosby,
+        sand,
+        clay,
+        out=out,
+    )
 
 
 @overload
@@ -376,12 +375,11 @@ def calc_ptf_ferrerjulia2004_humic_acrisol_sand(
         Table 3; R^2 = 0.723.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_humic_acrisol_sand(sand)
-    else:
-        values = _calc_ptf_ferrerjulia2004_humic_acrisol_sand(sand, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_humic_acrisol_sand,
+        sand,
+        out=out,
+    )
 
 
 @overload
@@ -426,16 +424,13 @@ def calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter(
         Table 3; R^2 = 0.701.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter(
-            sand, clay, organic_matter
-        )
-    else:
-        values = _calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter(
-            sand, clay, organic_matter, out=out
-        )
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter,
+        sand,
+        clay,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -472,12 +467,11 @@ def calc_ptf_ferrerjulia2004_calcic_cambisol_sand(
         Table 3; R^2 = 0.521.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_calcic_cambisol_sand(sand)
-    else:
-        values = _calc_ptf_ferrerjulia2004_calcic_cambisol_sand(sand, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_calcic_cambisol_sand,
+        sand,
+        out=out,
+    )
 
 
 @overload
@@ -522,16 +516,13 @@ def calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter(
         Table 3; R^2 = 0.468.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter(
-            sand, clay, organic_matter
-        )
-    else:
-        values = _calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter(
-            sand, clay, organic_matter, out=out
-        )
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter,
+        sand,
+        clay,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -568,12 +559,11 @@ def calc_ptf_ferrerjulia2004_dystric_cambisol_sand(
         Table 3; R^2 = 0.750.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_dystric_cambisol_sand(sand)
-    else:
-        values = _calc_ptf_ferrerjulia2004_dystric_cambisol_sand(sand, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_dystric_cambisol_sand,
+        sand,
+        out=out,
+    )
 
 
 @overload
@@ -618,16 +608,13 @@ def calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter(
         Table 3; R^2 = 0.779.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter(
-            sand, clay, organic_matter
-        )
-    else:
-        values = _calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter(
-            sand, clay, organic_matter, out=out
-        )
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter,
+        sand,
+        clay,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -664,12 +651,11 @@ def calc_ptf_ferrerjulia2004_eutric_cambisol_sand(
         Table 3; R^2 = 0.734.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_eutric_cambisol_sand(sand)
-    else:
-        values = _calc_ptf_ferrerjulia2004_eutric_cambisol_sand(sand, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_eutric_cambisol_sand,
+        sand,
+        out=out,
+    )
 
 
 @overload
@@ -714,16 +700,13 @@ def calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter(
         Table 3; R^2 = 0.686.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter(
-            sand, clay, organic_matter
-        )
-    else:
-        values = _calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter(
-            sand, clay, organic_matter, out=out
-        )
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter,
+        sand,
+        clay,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -760,12 +743,11 @@ def calc_ptf_ferrerjulia2004_gleyic_cambisol_sand(
         Table 3; R^2 = 0.807.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_gleyic_cambisol_sand(sand)
-    else:
-        values = _calc_ptf_ferrerjulia2004_gleyic_cambisol_sand(sand, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_gleyic_cambisol_sand,
+        sand,
+        out=out,
+    )
 
 
 @overload
@@ -810,16 +792,13 @@ def calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter(
         Table 3; R^2 = 0.824.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter(
-            sand, clay, organic_matter
-        )
-    else:
-        values = _calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter(
-            sand, clay, organic_matter, out=out
-        )
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter,
+        sand,
+        clay,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -856,12 +835,11 @@ def calc_ptf_ferrerjulia2004_humic_cambisol_sand(
         Table 3; R^2 = 0.592.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_humic_cambisol_sand(sand)
-    else:
-        values = _calc_ptf_ferrerjulia2004_humic_cambisol_sand(sand, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_humic_cambisol_sand,
+        sand,
+        out=out,
+    )
 
 
 @overload
@@ -906,16 +884,13 @@ def calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter(
         Table 3; R^2 = 0.632.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter(
-            sand, clay, organic_matter
-        )
-    else:
-        values = _calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter(
-            sand, clay, organic_matter, out=out
-        )
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter,
+        sand,
+        clay,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -952,12 +927,11 @@ def calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand(
         Table 3; R^2 = 0.772.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand(sand)
-    else:
-        values = _calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand(sand, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand,
+        sand,
+        out=out,
+    )
 
 
 @overload
@@ -1002,16 +976,13 @@ def calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter(
         Table 3; R^2 = 0.792.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter(
-            sand, clay, organic_matter
-        )
-    else:
-        values = _calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter(
-            sand, clay, organic_matter, out=out
-        )
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter,
+        sand,
+        clay,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -1051,12 +1022,11 @@ def calc_ptf_ferrerjulia2004_calcic_luvisol_sand(
         The paper reports weak fit and suggests missing clay-mineralogy information.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_calcic_luvisol_sand(sand)
-    else:
-        values = _calc_ptf_ferrerjulia2004_calcic_luvisol_sand(sand, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_calcic_luvisol_sand,
+        sand,
+        out=out,
+    )
 
 
 @overload
@@ -1104,16 +1074,13 @@ def calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter(
         The paper reports weak fit and suggests missing clay-mineralogy information.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter(
-            sand, clay, organic_matter
-        )
-    else:
-        values = _calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter(
-            sand, clay, organic_matter, out=out
-        )
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter,
+        sand,
+        clay,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -1150,12 +1117,11 @@ def calc_ptf_ferrerjulia2004_chromic_luvisol_sand(
         Table 3; R^2 = 0.534.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_chromic_luvisol_sand(sand)
-    else:
-        values = _calc_ptf_ferrerjulia2004_chromic_luvisol_sand(sand, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_chromic_luvisol_sand,
+        sand,
+        out=out,
+    )
 
 
 @overload
@@ -1200,16 +1166,13 @@ def calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter(
         Table 3; R^2 = 0.557.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter(
-            sand, clay, organic_matter
-        )
-    else:
-        values = _calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter(
-            sand, clay, organic_matter, out=out
-        )
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter,
+        sand,
+        clay,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -1246,12 +1209,11 @@ def calc_ptf_ferrerjulia2004_gleyic_luvisol_sand(
         Table 3; R^2 = 0.876.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_gleyic_luvisol_sand(sand)
-    else:
-        values = _calc_ptf_ferrerjulia2004_gleyic_luvisol_sand(sand, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_gleyic_luvisol_sand,
+        sand,
+        out=out,
+    )
 
 
 @overload
@@ -1296,16 +1258,13 @@ def calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter(
         Table 3; R^2 = 0.917.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter(
-            sand, clay, organic_matter
-        )
-    else:
-        values = _calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter(
-            sand, clay, organic_matter, out=out
-        )
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter,
+        sand,
+        clay,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -1342,12 +1301,11 @@ def calc_ptf_ferrerjulia2004_orthic_luvisol_sand(
         Table 3; R^2 = 0.676.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_orthic_luvisol_sand(sand)
-    else:
-        values = _calc_ptf_ferrerjulia2004_orthic_luvisol_sand(sand, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_orthic_luvisol_sand,
+        sand,
+        out=out,
+    )
 
 
 @overload
@@ -1392,16 +1350,13 @@ def calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter(
         Table 3; R^2 = 0.729.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter(
-            sand, clay, organic_matter
-        )
-    else:
-        values = _calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter(
-            sand, clay, organic_matter, out=out
-        )
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter,
+        sand,
+        clay,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -1438,12 +1393,11 @@ def calc_ptf_ferrerjulia2004_ranker_sand(
         Table 3; R^2 = 0.726.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_ranker_sand(sand)
-    else:
-        values = _calc_ptf_ferrerjulia2004_ranker_sand(sand, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_ranker_sand,
+        sand,
+        out=out,
+    )
 
 
 @overload
@@ -1488,14 +1442,13 @@ def calc_ptf_ferrerjulia2004_ranker_texture_organic_matter(
         Table 3; R^2 = 0.717.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_ranker_texture_organic_matter(sand, clay, organic_matter)
-    else:
-        values = _calc_ptf_ferrerjulia2004_ranker_texture_organic_matter(
-            sand, clay, organic_matter, out=out
-        )
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_ranker_texture_organic_matter,
+        sand,
+        clay,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -1532,12 +1485,11 @@ def calc_ptf_ferrerjulia2004_calcaric_regosol_sand(
         Table 3; R^2 = 0.655.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_calcaric_regosol_sand(sand)
-    else:
-        values = _calc_ptf_ferrerjulia2004_calcaric_regosol_sand(sand, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_calcaric_regosol_sand,
+        sand,
+        out=out,
+    )
 
 
 @overload
@@ -1582,16 +1534,13 @@ def calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter(
         Table 3; R^2 = 0.705.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter(
-            sand, clay, organic_matter
-        )
-    else:
-        values = _calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter(
-            sand, clay, organic_matter, out=out
-        )
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter,
+        sand,
+        clay,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -1628,12 +1577,11 @@ def calc_ptf_ferrerjulia2004_dystric_regosol_sand(
         Table 3; R^2 = 0.834.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_dystric_regosol_sand(sand)
-    else:
-        values = _calc_ptf_ferrerjulia2004_dystric_regosol_sand(sand, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_dystric_regosol_sand,
+        sand,
+        out=out,
+    )
 
 
 @overload
@@ -1678,16 +1626,13 @@ def calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter(
         Table 3; R^2 = 0.862.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter(
-            sand, clay, organic_matter
-        )
-    else:
-        values = _calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter(
-            sand, clay, organic_matter, out=out
-        )
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter,
+        sand,
+        clay,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -1724,12 +1669,11 @@ def calc_ptf_ferrerjulia2004_eutric_regosol_sand(
         Table 3; R^2 = 0.824.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_eutric_regosol_sand(sand)
-    else:
-        values = _calc_ptf_ferrerjulia2004_eutric_regosol_sand(sand, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_eutric_regosol_sand,
+        sand,
+        out=out,
+    )
 
 
 @overload
@@ -1774,16 +1718,13 @@ def calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter(
         Table 3; R^2 = 0.702.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter(
-            sand, clay, organic_matter
-        )
-    else:
-        values = _calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter(
-            sand, clay, organic_matter, out=out
-        )
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter,
+        sand,
+        clay,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -1825,12 +1766,11 @@ def calc_ptf_ferrerjulia2004_rendzina_sand(
             conductivity values.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_rendzina_sand(sand)
-    else:
-        values = _calc_ptf_ferrerjulia2004_rendzina_sand(sand, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_rendzina_sand,
+        sand,
+        out=out,
+    )
 
 
 @overload
@@ -1878,16 +1818,13 @@ def calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter(
         The regression has weak fit and is affected by converted qualitative conductivity values.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter(
-            sand, clay, organic_matter
-        )
-    else:
-        values = _calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter(
-            sand, clay, organic_matter, out=out
-        )
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter,
+        sand,
+        clay,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -1927,12 +1864,11 @@ def calc_ptf_ferrerjulia2004_gleyic_solonchak_sand(
         The source gives inconsistent R^2 values for this regression.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_gleyic_solonchak_sand(sand)
-    else:
-        values = _calc_ptf_ferrerjulia2004_gleyic_solonchak_sand(sand, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_gleyic_solonchak_sand,
+        sand,
+        out=out,
+    )
 
 
 @overload
@@ -1982,16 +1918,13 @@ def calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter(
         which prints the intercept as -90917.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter(
-            sand, clay, organic_matter
-        )
-    else:
-        values = _calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter(
-            sand, clay, organic_matter, out=out
-        )
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter,
+        sand,
+        clay,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -2032,12 +1965,11 @@ def calc_ptf_ferrerjulia2004_general_sand(
             data.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_general_sand(sand)
-    else:
-        values = _calc_ptf_ferrerjulia2004_general_sand(sand, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_general_sand,
+        sand,
+        out=out,
+    )
 
 
 @overload
@@ -2086,13 +2018,10 @@ def calc_ptf_ferrerjulia2004_general_texture_organic_matter(
             data.
 
     """
-    if out is None:
-        values = _calc_ptf_ferrerjulia2004_general_texture_organic_matter(
-            sand, clay, organic_matter
-        )
-    else:
-        values = _calc_ptf_ferrerjulia2004_general_texture_organic_matter(
-            sand, clay, organic_matter, out=out
-        )
-
-    return values
+    return _call(
+        _calc_ptf_ferrerjulia2004_general_texture_organic_matter,
+        sand,
+        clay,
+        organic_matter,
+        out=out,
+    )

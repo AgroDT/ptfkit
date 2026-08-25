@@ -24,6 +24,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Generic, NamedTuple, TypeVar, overload
 
+from ptfkit._dispatch import call as _call
 from ptfkit._ptfkit import (
     calc_ptf_saxton2006 as _calc_ptf_saxton2006,
     calc_ptf_saxton2006_density as _calc_ptf_saxton2006_density,
@@ -185,10 +186,13 @@ def calc_ptf_saxton2006(
             available.
 
     """
-    if out is None:
-        values = _calc_ptf_saxton2006(sand, clay, organic_matter)
-    else:
-        values = _calc_ptf_saxton2006(sand, clay, organic_matter, out=tuple(out))
+    values = _call(
+        _calc_ptf_saxton2006,
+        sand,
+        clay,
+        organic_matter,
+        out=out,
+    )
 
     return Saxton2006PTFResult(*values)
 
@@ -241,12 +245,14 @@ def calc_density_adjustment_saxton2006(
         The source recommends density factors only from 0.9 to 1.3.
 
     """
-    if out is None:
-        values = _calc_ptf_saxton2006_density(normal_density, theta_s, theta_33, density_factor)
-    else:
-        values = _calc_ptf_saxton2006_density(
-            normal_density, theta_s, theta_33, density_factor, out=tuple(out)
-        )
+    values = _call(
+        _calc_ptf_saxton2006_density,
+        normal_density,
+        theta_s,
+        theta_33,
+        density_factor,
+        out=out,
+    )
 
     return Saxton2006DensityResult(*values)
 
@@ -295,12 +301,13 @@ def calc_tension_dry_saxton2006(
         Use only for the 1500 to 33 kPa segment defined by the source.
 
     """
-    if out is None:
-        values = _calc_ptf_saxton2006_tension_dry(theta, theta_1500, theta_33)
-    else:
-        values = _calc_ptf_saxton2006_tension_dry(theta, theta_1500, theta_33, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_saxton2006_tension_dry,
+        theta,
+        theta_1500,
+        theta_33,
+        out=out,
+    )
 
 
 @overload
@@ -351,14 +358,14 @@ def calc_tension_wet_saxton2006(
         Use only for the 33 kPa to air-entry segment defined by the source.
 
     """
-    if out is None:
-        values = _calc_ptf_saxton2006_tension_wet(theta, theta_33, theta_s, air_entry_tension)
-    else:
-        values = _calc_ptf_saxton2006_tension_wet(
-            theta, theta_33, theta_s, air_entry_tension, out=out
-        )
-
-    return values
+    return _call(
+        _calc_ptf_saxton2006_tension_wet,
+        theta,
+        theta_33,
+        theta_s,
+        air_entry_tension,
+        out=out,
+    )
 
 
 @overload
@@ -408,16 +415,14 @@ def calc_conductivity_saxton2006(
         The equation does not include residual water content.
 
     """
-    if out is None:
-        values = _calc_ptf_saxton2006_conductivity(
-            theta, theta_s, saturated_conductivity, conductivity_lambda
-        )
-    else:
-        values = _calc_ptf_saxton2006_conductivity(
-            theta, theta_s, saturated_conductivity, conductivity_lambda, out=out
-        )
-
-    return values
+    return _call(
+        _calc_ptf_saxton2006_conductivity,
+        theta,
+        theta_s,
+        saturated_conductivity,
+        conductivity_lambda,
+        out=out,
+    )
 
 
 @overload
@@ -475,18 +480,14 @@ def calc_gravel_adjustment_saxton2006(
             soils.
 
     """
-    if out is None:
-        values = _calc_ptf_saxton2006_gravel(
-            gravel_weight_fraction, matric_density, plant_available_water, saturated_conductivity
-        )
-    else:
-        values = _calc_ptf_saxton2006_gravel(
-            gravel_weight_fraction,
-            matric_density,
-            plant_available_water,
-            saturated_conductivity,
-            out=tuple(out),
-        )
+    values = _call(
+        _calc_ptf_saxton2006_gravel,
+        gravel_weight_fraction,
+        matric_density,
+        plant_available_water,
+        saturated_conductivity,
+        out=out,
+    )
 
     return Saxton2006GravelResult(*values)
 
@@ -537,11 +538,12 @@ def calc_osmotic_potential_saxton2006(
         Precipitation, bonding, ionic nutrition, and toxicity can modify actual salinity effects.
 
     """
-    if out is None:
-        values = _calc_ptf_saxton2006_salinity(electrical_conductivity, theta, theta_s)
-    else:
-        values = _calc_ptf_saxton2006_salinity(
-            electrical_conductivity, theta, theta_s, out=tuple(out)
-        )
+    values = _call(
+        _calc_ptf_saxton2006_salinity,
+        electrical_conductivity,
+        theta,
+        theta_s,
+        out=out,
+    )
 
     return Saxton2006SalinityResult(*values)
