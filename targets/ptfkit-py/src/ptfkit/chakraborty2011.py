@@ -25,6 +25,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Generic, NamedTuple, TypeVar, overload
 
+from ptfkit._dispatch import call as _call
 from ptfkit._ptfkit import (
     calc_ptf_chakraborty2011_eq1 as _calc_ptf_chakraborty2011_eq1,
     calc_ptf_chakraborty2011_eq2 as _calc_ptf_chakraborty2011_eq2,
@@ -115,10 +116,12 @@ def calc_ptf_chakraborty2011_eq1(
         Use outside the source Indian-soil dataset requires independent validation.
 
     """
-    if out is None:
-        values = _calc_ptf_chakraborty2011_eq1(clay, silt)
-    else:
-        values = _calc_ptf_chakraborty2011_eq1(clay, silt, out=tuple(out))
+    values = _call(
+        _calc_ptf_chakraborty2011_eq1,
+        clay,
+        silt,
+        out=out,
+    )
 
     return Chakraborty2011PTFResult(*values)
 
@@ -168,10 +171,12 @@ def calc_ptf_chakraborty2011_eq2(
         Use outside the source Indian-soil dataset requires independent validation.
 
     """
-    if out is None:
-        values = _calc_ptf_chakraborty2011_eq2(sand, bulk_density)
-    else:
-        values = _calc_ptf_chakraborty2011_eq2(sand, bulk_density, out=tuple(out))
+    values = _call(
+        _calc_ptf_chakraborty2011_eq2,
+        sand,
+        bulk_density,
+        out=out,
+    )
 
     return Chakraborty2011PTFResult(*values)
 
@@ -224,10 +229,13 @@ def calc_ptf_chakraborty2011_eq3(
         Use outside the source Indian-soil dataset requires independent validation.
 
     """
-    if out is None:
-        values = _calc_ptf_chakraborty2011_eq3(clay, silt, bulk_density)
-    else:
-        values = _calc_ptf_chakraborty2011_eq3(clay, silt, bulk_density, out=tuple(out))
+    values = _call(
+        _calc_ptf_chakraborty2011_eq3,
+        clay,
+        silt,
+        bulk_density,
+        out=out,
+    )
 
     return Chakraborty2011PTFResult(*values)
 
@@ -280,10 +288,13 @@ def calc_ptf_chakraborty2011_eq4(
         Use outside the source Indian-soil dataset requires independent validation.
 
     """
-    if out is None:
-        values = _calc_ptf_chakraborty2011_eq4(clay, silt, sand)
-    else:
-        values = _calc_ptf_chakraborty2011_eq4(clay, silt, sand, out=tuple(out))
+    values = _call(
+        _calc_ptf_chakraborty2011_eq4,
+        clay,
+        silt,
+        sand,
+        out=out,
+    )
 
     return Chakraborty2011PTFResult(*values)
 
@@ -339,10 +350,14 @@ def calc_ptf_chakraborty2011_eq5(
         Use outside the source Indian-soil dataset requires independent validation.
 
     """
-    if out is None:
-        values = _calc_ptf_chakraborty2011_eq5(clay, silt, sand, bulk_density)
-    else:
-        values = _calc_ptf_chakraborty2011_eq5(clay, silt, sand, bulk_density, out=tuple(out))
+    values = _call(
+        _calc_ptf_chakraborty2011_eq5,
+        clay,
+        silt,
+        sand,
+        bulk_density,
+        out=out,
+    )
 
     return Chakraborty2011PTFResult(*values)
 
@@ -401,11 +416,14 @@ def calc_ptf_chakraborty2011_eq6(
         Use outside the source Indian-soil dataset requires independent validation.
 
     """
-    if out is None:
-        values = _calc_ptf_chakraborty2011_eq6(clay, silt, sand, organic_carbon, bulk_density)
-    else:
-        values = _calc_ptf_chakraborty2011_eq6(
-            clay, silt, sand, organic_carbon, bulk_density, out=tuple(out)
-        )
+    values = _call(
+        _calc_ptf_chakraborty2011_eq6,
+        clay,
+        silt,
+        sand,
+        organic_carbon,
+        bulk_density,
+        out=out,
+    )
 
     return Chakraborty2011PTFResult(*values)

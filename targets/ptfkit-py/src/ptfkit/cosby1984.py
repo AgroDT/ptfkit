@@ -21,6 +21,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Generic, NamedTuple, TypeVar, overload
 
+from ptfkit._dispatch import call as _call
 from ptfkit._ptfkit import (
     calc_ptf_cosby1984_univariate as _calc_ptf_cosby1984_univariate,
 )
@@ -110,9 +111,12 @@ def calc_ptf_cosby1984_univariate(
         Log-transformed output units use the pilot contract `reported log value`.
 
     """
-    if out is None:
-        values = _calc_ptf_cosby1984_univariate(sand, silt, clay)
-    else:
-        values = _calc_ptf_cosby1984_univariate(sand, silt, clay, out=tuple(out))
+    values = _call(
+        _calc_ptf_cosby1984_univariate,
+        sand,
+        silt,
+        clay,
+        out=out,
+    )
 
     return Cosby1984UnivariatePTFResult(*values)

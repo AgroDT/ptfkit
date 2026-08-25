@@ -3,11 +3,8 @@ use anyhow::Result;
 use crate::{
     model::{CompiledFunction, Output},
     output::GeneratedFile,
-    render::{
-        Writer,
-        c::{self, Dialect},
-    },
-    targets::group_by_source,
+    render::Writer,
+    targets::{group_by_source, native::c_result_name},
 };
 
 use super::C_HEADER;
@@ -19,7 +16,9 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile
         let register = format!("ptfkit_register_{slug}");
         let mut source = Writer::new();
         source.write(C_HEADER);
-        source.write("#include \"ufunc.h\"\n\n");
+        source.write(format_args!(
+            "#include <ptfkit/{slug}.h>\n#include \"ufunc.h\"\n\n"
+        ));
         for function in functions {
             source.write(ufunc(function)?);
         }
@@ -27,7 +26,7 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile
         source.indented(|writer| {
             for function in functions {
                 writer.line(format_args!(
-                    "if (ptfkit_add_ufunc(module, \"{name}\", {name}_functions, {name}_types, {nin}, {nout}) < 0) return -1;",
+                    "if (ptfkit_add_ufunc(module, \"{name}\", {nin}, {nout}, &{name}_spec) < 0) return -1;",
                     name = function.core.name,
                     nin = function.core.inputs.len(),
                     nout = output_count(&function.core.output),
@@ -46,6 +45,7 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile
     entry.write(
         r#"#define PY_SSIZE_T_CLEAN
 #define PY_ARRAY_UNIQUE_SYMBOL PTFKIT_ARRAY_API
+#define NPY_TARGET_VERSION NPY_2_0_API_VERSION
 #include <Python.h>
 #include <numpy/arrayobject.h>
 #include <numpy/ufuncobject.h>"#,
@@ -88,48 +88,100 @@ fn ufunc(function: &CompiledFunction) -> Result<String> {
         ],
         Output::Struct(fields) => fields.clone(),
     };
-    let types = std::iter::repeat_n("NPY_DOUBLE", inputs.len() + values.len())
-        .collect::<Vec<_>>()
-        .join(", ");
     let mut writer = Writer::new();
-    writer.line(format_args!("static void {name}_loop(char **args, const npy_intp *dimensions, const npy_intp *steps, void *data) {{"));
+    writer.line(format_args!(
+        "static int {name}_contiguous_loop(PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions, const npy_intp *strides, NpyAuxData *transferdata) {{"
+    ));
     writer.indented(|writer| {
-        writer.line("npy_intp index;");
-        writer.line("for (index = 0; index < dimensions[0]; index++) {");
+        writer.line("(void)context;");
+        writer.line("(void)strides;");
+        writer.line("(void)transferdata;");
+        for (index, input) in inputs.iter().enumerate() {
+            writer.line(format_args!(
+                "const double *in_{input} = (const double *)data[{index}];"
+            ));
+        }
+        for (index, value) in values.iter().enumerate() {
+            writer.line(format_args!(
+                "double *out_{value} = (double *)data[{}];",
+                inputs.len() + index
+            ));
+        }
+        writer.line("for (npy_intp index = 0; index < dimensions[0]; index++) {");
+        writer.indented(|writer| {
+            for input in inputs {
+                writer.line(format_args!("const double {input} = in_{input}[index];"));
+            }
+            render_kernel_call(writer, function, inputs, &values, Some("[index]"));
+        });
+        writer.line("}");
+        writer.line("return 0;");
+    });
+    writer.line("}");
+    writer.blank_line();
+    writer.line(format_args!(
+        "static int {name}_strided_loop(PyArrayMethod_Context *context, char *const *data, const npy_intp *dimensions, const npy_intp *strides, NpyAuxData *transferdata) {{"
+    ));
+    writer.indented(|writer| {
+        writer.line("(void)context;");
+        writer.line("(void)transferdata;");
+        writer.line("for (npy_intp index = 0; index < dimensions[0]; index++) {");
         writer.indented(|writer| {
             for (index, input) in inputs.iter().enumerate() {
                 writer.line(format_args!(
-                    "const double {input} = *(const double *)args[{index}];"
+                    "const double {input} = *(const double *)(data[{index}] + index * strides[{index}]);"
                 ));
             }
-            for variable in &function.ir.variables {
-                writer.write(format_args!("const double {} = ", variable.name));
-                writer.write(c::expression(
-                    &variable.expression,
-                    inputs,
-                    &function.ir.variables,
-                    Dialect::C,
-                ));
-                writer.line(";");
-            }
-            for (index, value) in values.iter().enumerate() {
-                writer.line(format_args!(
-                    "*(double *)args[{}] = {value};",
-                    inputs.len() + index
-                ));
-            }
-            writer.line(format_args!(
-                "for (int arg = 0; arg < {}; arg++) args[arg] += steps[arg];",
-                inputs.len() + values.len()
-            ));
+            render_kernel_call(writer, function, inputs, &values, None);
         });
         writer.line("}");
+        writer.line("return 0;");
     });
     writer.line("}");
     writer.write(format_args!(
-        "static PyUFuncGenericFunction {name}_functions[] = {{ {name}_loop }};\nstatic char {name}_types[] = {{ {types} }};\n\n"
+        "static PyType_Slot {name}_slots[] = {{\n    {{NPY_METH_strided_loop, {name}_strided_loop}},\n    {{NPY_METH_contiguous_loop, {name}_contiguous_loop}},\n    {{0, NULL}},\n}};\nstatic PyArrayMethod_Spec {name}_spec = {{\n    .name = \"{name}\",\n    .nin = {},\n    .nout = {},\n    .casting = NPY_SAME_KIND_CASTING,\n    .slots = {name}_slots,\n}};\n\n",
+        inputs.len(),
+        values.len(),
     ));
     Ok(writer.into_string())
+}
+
+fn render_kernel_call(
+    writer: &mut Writer,
+    function: &CompiledFunction,
+    inputs: &[String],
+    values: &[String],
+    output_index: Option<&str>,
+) {
+    let arguments = inputs.join(", ");
+    let result = match &function.core.output {
+        Output::Scalar => "double".to_owned(),
+        Output::Struct(_) => c_result_name(
+            function.entry.spec.functions[function.function_index]
+                .result_class()
+                .expect("record output has a result class"),
+        ),
+    };
+    writer.line(format_args!(
+        "const {result} ptfkit_result = {}({arguments});",
+        function.core.name
+    ));
+    for (index, value) in values.iter().enumerate() {
+        let result_value = match &function.core.output {
+            Output::Scalar => "ptfkit_result".to_owned(),
+            Output::Struct(_) => format!("ptfkit_result.{value}"),
+        };
+        match output_index {
+            None => writer.line(format_args!(
+                "*(double *)(data[{}] + index * strides[{}]) = {result_value};",
+                inputs.len() + index,
+                inputs.len() + index
+            )),
+            Some(output_index) => {
+                writer.line(format_args!("out_{value}{output_index} = {result_value};"))
+            }
+        }
+    }
 }
 
 fn output_count(output: &Output) -> usize {

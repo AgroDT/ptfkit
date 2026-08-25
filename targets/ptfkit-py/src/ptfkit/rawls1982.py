@@ -22,6 +22,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Generic, NamedTuple, TypeVar, overload
 
+from ptfkit._dispatch import call as _call
 from ptfkit._ptfkit import (
     calc_ptf_rawls1982_theta_1500 as _calc_ptf_rawls1982_theta_1500,
     calc_ptf_rawls1982_theta_33 as _calc_ptf_rawls1982_theta_33,
@@ -113,12 +114,12 @@ def calc_theta_1500_rawls1982(
         Prediction target: Volumetric soil water content at -1500 kPa.
 
     """
-    if out is None:
-        values = _calc_ptf_rawls1982_theta_1500(clay, organic_matter)
-    else:
-        values = _calc_ptf_rawls1982_theta_1500(clay, organic_matter, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_rawls1982_theta_1500,
+        clay,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -162,12 +163,13 @@ def calc_theta_33_rawls1982(
         Prediction target: Volumetric soil water content at -33 kPa.
 
     """
-    if out is None:
-        values = _calc_ptf_rawls1982_theta_33(sand, organic_matter, theta_1500)
-    else:
-        values = _calc_ptf_rawls1982_theta_33(sand, organic_matter, theta_1500, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_rawls1982_theta_33,
+        sand,
+        organic_matter,
+        theta_1500,
+        out=out,
+    )
 
 
 @overload
@@ -222,13 +224,14 @@ def calc_full_wrc_rawls1982(
         The source value 0.8888 is retained literally for the theta_7 intercept.
 
     """
-    if out is None:
-        values = _calc_ptf_rawls1982_full_wrc(
-            sand, organic_matter, bulk_density, theta_33, theta_1500
-        )
-    else:
-        values = _calc_ptf_rawls1982_full_wrc(
-            sand, organic_matter, bulk_density, theta_33, theta_1500, out=tuple(out)
-        )
+    values = _call(
+        _calc_ptf_rawls1982_full_wrc,
+        sand,
+        organic_matter,
+        bulk_density,
+        theta_33,
+        theta_1500,
+        out=out,
+    )
 
     return Rawls1982PTFResult(*values)

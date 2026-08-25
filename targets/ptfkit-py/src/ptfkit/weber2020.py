@@ -24,6 +24,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Generic, NamedTuple, TypeVar, overload
 
+from ptfkit._dispatch import call as _call
 from ptfkit._ptfkit import (
     calc_ptf_weber2020 as _calc_ptf_weber2020,
 )
@@ -131,11 +132,15 @@ def calc_ptf_weber2020(
             interpreted as being based on nonpositive tau_vgm values.
 
     """
-    if out is None:
-        values = _calc_ptf_weber2020(theta_r_vgm, theta_s_vgm, alpha_vgm, n_vgm, tau_vgm, k_s_vgm)
-    else:
-        values = _calc_ptf_weber2020(
-            theta_r_vgm, theta_s_vgm, alpha_vgm, n_vgm, tau_vgm, k_s_vgm, out=tuple(out)
-        )
+    values = _call(
+        _calc_ptf_weber2020,
+        theta_r_vgm,
+        theta_s_vgm,
+        alpha_vgm,
+        n_vgm,
+        tau_vgm,
+        k_s_vgm,
+        out=out,
+    )
 
     return Weber2020PTFResult(*values)

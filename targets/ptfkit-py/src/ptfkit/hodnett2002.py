@@ -23,6 +23,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Generic, NamedTuple, TypeVar, overload
 
+from ptfkit._dispatch import call as _call
 from ptfkit._ptfkit import (
     calc_ptf_hodnett2002 as _calc_ptf_hodnett2002,
 )
@@ -136,20 +137,16 @@ def calc_ptf_hodnett2002(
             calibration data; mineralogy and structure were not directly represented.
 
     """
-    if out is None:
-        values = _calc_ptf_hodnett2002(
-            sand, silt, clay, organic_carbon, bulk_density, cation_exchange_capacity, ph
-        )
-    else:
-        values = _calc_ptf_hodnett2002(
-            sand,
-            silt,
-            clay,
-            organic_carbon,
-            bulk_density,
-            cation_exchange_capacity,
-            ph,
-            out=tuple(out),
-        )
+    values = _call(
+        _calc_ptf_hodnett2002,
+        sand,
+        silt,
+        clay,
+        organic_carbon,
+        bulk_density,
+        cation_exchange_capacity,
+        ph,
+        out=out,
+    )
 
     return Hodnett2002PTFResult(*values)

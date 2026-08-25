@@ -21,6 +21,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Generic, NamedTuple, TypeVar, overload
 
+from ptfkit._dispatch import call as _call
 from ptfkit._ptfkit import (
     calc_ptf_wang2012 as _calc_ptf_wang2012,
 )
@@ -119,11 +120,15 @@ def calc_ptf_wang2012(
             100.
 
     """
-    if out is None:
-        values = _calc_ptf_wang2012(sand, silt, clay, bulk_density, soil_organic_carbon, altitude)
-    else:
-        values = _calc_ptf_wang2012(
-            sand, silt, clay, bulk_density, soil_organic_carbon, altitude, out=tuple(out)
-        )
+    values = _call(
+        _calc_ptf_wang2012,
+        sand,
+        silt,
+        clay,
+        bulk_density,
+        soil_organic_carbon,
+        altitude,
+        out=out,
+    )
 
     return Wang2012PTFResult(*values)

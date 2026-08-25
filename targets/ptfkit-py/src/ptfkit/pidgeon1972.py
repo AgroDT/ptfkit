@@ -23,6 +23,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, overload
 
+from ptfkit._dispatch import call as _call
 from ptfkit._ptfkit import (
     calc_ptf_pidgeon1972_fc as _calc_ptf_pidgeon1972_fc,
     calc_ptf_pidgeon1972_fc_sand as _calc_ptf_pidgeon1972_fc_sand,
@@ -109,12 +110,13 @@ def calc_ptf_pidgeon1972_fc(
         The reviewed organic-matter coefficient is 1.54.
 
     """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_fc(silt, clay, organic_matter)
-    else:
-        values = _calc_ptf_pidgeon1972_fc(silt, clay, organic_matter, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_pidgeon1972_fc,
+        silt,
+        clay,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -150,12 +152,11 @@ def calc_ptf_pidgeon1972_fc_sand(
         Prediction target: Gravimetric field capacity
 
     """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_fc_sand(sand)
-    else:
-        values = _calc_ptf_pidgeon1972_fc_sand(sand, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_pidgeon1972_fc_sand,
+        sand,
+        out=out,
+    )
 
 
 @overload
@@ -196,12 +197,12 @@ def calc_ptf_pidgeon1972_fc_sand_organic_matter(
         Prediction target: Gravimetric field capacity
 
     """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_fc_sand_organic_matter(sand, organic_matter)
-    else:
-        values = _calc_ptf_pidgeon1972_fc_sand_organic_matter(sand, organic_matter, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_pidgeon1972_fc_sand_organic_matter,
+        sand,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -242,12 +243,12 @@ def calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(
         Prediction target: Volumetric field capacity
 
     """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(sand, organic_matter)
-    else:
-        values = _calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(sand, organic_matter, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_pidgeon1972_fc_vol_sand_organic_matter,
+        sand,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -289,12 +290,13 @@ def calc_ptf_pidgeon1972_pwp(
         Prediction target: Gravimetric permanent wilting point
 
     """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_pwp(silt, clay, organic_matter)
-    else:
-        values = _calc_ptf_pidgeon1972_pwp(silt, clay, organic_matter, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_pidgeon1972_pwp,
+        silt,
+        clay,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -330,12 +332,11 @@ def calc_ptf_pidgeon1972_pwp_sand(
         Prediction target: Gravimetric permanent wilting point
 
     """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_pwp_sand(sand)
-    else:
-        values = _calc_ptf_pidgeon1972_pwp_sand(sand, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_pidgeon1972_pwp_sand,
+        sand,
+        out=out,
+    )
 
 
 @overload
@@ -376,12 +377,12 @@ def calc_ptf_pidgeon1972_pwp_sand_organic_matter(
         Prediction target: Gravimetric permanent wilting point
 
     """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_pwp_sand_organic_matter(sand, organic_matter)
-    else:
-        values = _calc_ptf_pidgeon1972_pwp_sand_organic_matter(sand, organic_matter, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_pidgeon1972_pwp_sand_organic_matter,
+        sand,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -420,12 +421,12 @@ def calc_ptf_pidgeon1972_awc(
         Prediction target: Available water capacity
 
     """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_awc(clay, organic_matter)
-    else:
-        values = _calc_ptf_pidgeon1972_awc(clay, organic_matter, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_pidgeon1972_awc,
+        clay,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -466,12 +467,12 @@ def calc_ptf_pidgeon1972_awc_sand_organic_matter(
         Prediction target: Available water capacity
 
     """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_awc_sand_organic_matter(sand, organic_matter)
-    else:
-        values = _calc_ptf_pidgeon1972_awc_sand_organic_matter(sand, organic_matter, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_pidgeon1972_awc_sand_organic_matter,
+        sand,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -507,12 +508,11 @@ def calc_ptf_pidgeon1972_awc_coarse_sand(
         Prediction target: Available water capacity
 
     """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_awc_coarse_sand(coarse_sand)
-    else:
-        values = _calc_ptf_pidgeon1972_awc_coarse_sand(coarse_sand, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_pidgeon1972_awc_coarse_sand,
+        coarse_sand,
+        out=out,
+    )
 
 
 @overload
@@ -548,12 +548,11 @@ def calc_ptf_pidgeon1972_awc_fine_sand(
         Prediction target: Available water capacity
 
     """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_awc_fine_sand(fine_sand)
-    else:
-        values = _calc_ptf_pidgeon1972_awc_fine_sand(fine_sand, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_pidgeon1972_awc_fine_sand,
+        fine_sand,
+        out=out,
+    )
 
 
 @overload
@@ -589,12 +588,11 @@ def calc_ptf_pidgeon1972_awc_very_fine_sand(
         Prediction target: Available water capacity
 
     """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_awc_very_fine_sand(very_fine_sand)
-    else:
-        values = _calc_ptf_pidgeon1972_awc_very_fine_sand(very_fine_sand, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_pidgeon1972_awc_very_fine_sand,
+        very_fine_sand,
+        out=out,
+    )
 
 
 @overload
@@ -636,12 +634,13 @@ def calc_ptf_pidgeon1972_eawc(
         Prediction target: Extended available water capacity
 
     """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_eawc(silt, clay, organic_matter)
-    else:
-        values = _calc_ptf_pidgeon1972_eawc(silt, clay, organic_matter, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_pidgeon1972_eawc,
+        silt,
+        clay,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -677,12 +676,11 @@ def calc_ptf_pidgeon1972_eawc_sand(
         Prediction target: Extended available water capacity
 
     """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_eawc_sand(sand)
-    else:
-        values = _calc_ptf_pidgeon1972_eawc_sand(sand, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_pidgeon1972_eawc_sand,
+        sand,
+        out=out,
+    )
 
 
 @overload
@@ -723,12 +721,12 @@ def calc_ptf_pidgeon1972_eawc_sand_organic_matter(
         Prediction target: Extended available water capacity
 
     """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_eawc_sand_organic_matter(sand, organic_matter)
-    else:
-        values = _calc_ptf_pidgeon1972_eawc_sand_organic_matter(sand, organic_matter, out=out)
-
-    return values
+    return _call(
+        _calc_ptf_pidgeon1972_eawc_sand_organic_matter,
+        sand,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -769,14 +767,12 @@ def calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(
         Prediction target: Extended available water capacity
 
     """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(coarse_sand, organic_matter)
-    else:
-        values = _calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(
-            coarse_sand, organic_matter, out=out
-        )
-
-    return values
+    return _call(
+        _calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter,
+        coarse_sand,
+        organic_matter,
+        out=out,
+    )
 
 
 @overload
@@ -817,11 +813,9 @@ def calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(
         Prediction target: Extended available water capacity
 
     """
-    if out is None:
-        values = _calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(fine_sand, organic_matter)
-    else:
-        values = _calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(
-            fine_sand, organic_matter, out=out
-        )
-
-    return values
+    return _call(
+        _calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter,
+        fine_sand,
+        organic_matter,
+        out=out,
+    )

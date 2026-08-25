@@ -24,6 +24,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Generic, NamedTuple, TypeVar, overload
 
+from ptfkit._dispatch import call as _call
 from ptfkit._ptfkit import (
     calc_ptf_varallyai1982_meadow as _calc_ptf_varallyai1982_meadow,
     calc_ptf_varallyai1982_chernozem_a as _calc_ptf_varallyai1982_chernozem_a,
@@ -117,12 +118,13 @@ def calc_ptf_varallyai1982_meadow(
             Hungarian meadow-series soils.
 
     """
-    if out is None:
-        values = _calc_ptf_varallyai1982_meadow(bulk_density, fine_sand_fraction, fine_fraction)
-    else:
-        values = _calc_ptf_varallyai1982_meadow(
-            bulk_density, fine_sand_fraction, fine_fraction, out=tuple(out)
-        )
+    values = _call(
+        _calc_ptf_varallyai1982_meadow,
+        bulk_density,
+        fine_sand_fraction,
+        fine_fraction,
+        out=out,
+    )
 
     return Varallyai1982Parameters(*values)
 
@@ -177,10 +179,12 @@ def calc_ptf_varallyai1982_chernozem_a(
             Hungarian chernozem A horizons.
 
     """
-    if out is None:
-        values = _calc_ptf_varallyai1982_chernozem_a(bulk_density, fine_fraction)
-    else:
-        values = _calc_ptf_varallyai1982_chernozem_a(bulk_density, fine_fraction, out=tuple(out))
+    values = _call(
+        _calc_ptf_varallyai1982_chernozem_a,
+        bulk_density,
+        fine_fraction,
+        out=out,
+    )
 
     return Varallyai1982Parameters(*values)
 
@@ -235,10 +239,12 @@ def calc_ptf_varallyai1982_chernozem_b(
             Hungarian chernozem B horizons.
 
     """
-    if out is None:
-        values = _calc_ptf_varallyai1982_chernozem_b(bulk_density, fine_fraction)
-    else:
-        values = _calc_ptf_varallyai1982_chernozem_b(bulk_density, fine_fraction, out=tuple(out))
+    values = _call(
+        _calc_ptf_varallyai1982_chernozem_b,
+        bulk_density,
+        fine_fraction,
+        out=out,
+    )
 
     return Varallyai1982Parameters(*values)
 
@@ -293,9 +299,11 @@ def calc_ptf_varallyai1982_chernozem_c(
             Hungarian chernozem C horizons.
 
     """
-    if out is None:
-        values = _calc_ptf_varallyai1982_chernozem_c(bulk_density, fine_fraction)
-    else:
-        values = _calc_ptf_varallyai1982_chernozem_c(bulk_density, fine_fraction, out=tuple(out))
+    values = _call(
+        _calc_ptf_varallyai1982_chernozem_c,
+        bulk_density,
+        fine_fraction,
+        out=out,
+    )
 
     return Varallyai1982Parameters(*values)
