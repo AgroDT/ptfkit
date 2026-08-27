@@ -82,12 +82,12 @@ reference pages directly. Regenerate every target and the PTF catalog with:
 mise run generate
 ```
 
-A second generation run must leave the working tree unchanged.
-
-To check this across every codegen-owned target family, run:
+When changing the generator, specification schema, output formatting, or
+generation infrastructure, verify deterministic regeneration across every
+codegen-owned target family with:
 
 ```sh
-mise run check-generated
+mise run generate-check
 ```
 
 The command regenerates the targets through the normal pipeline and reports
@@ -118,8 +118,8 @@ The assisted workflow uses the skills in `.agents/skills/`:
    review-ready draft under `specs/functions/` using only information supported
    by that source.
 2. Review the YAML and resolve every blocker, including missing metadata.
-3. Run `ptf-generate <apa_article_key>` to validate, generate, test, prove
-   idempotence, and mark the reviewed source implemented.
+3. Run `ptf-generate <apa_article_key>` to validate, generate, run the complete
+   verification suite, and mark the reviewed source implemented.
 4. Optionally run `ptf-review <apa_article_key>` for an independent, read-only
    pre-merge review.
 
