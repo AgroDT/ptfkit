@@ -16,3 +16,8 @@ run = "cargo test"
 ["codegen:verify"]
 description = "Run all code generator quality checks"
 depends = ["codegen:format", "codegen:lint", "codegen:test"]
+
+["codegen:clean"]
+description = "Remove code generator Cargo build artifacts"
+dir = "codegen"
+run = "cargo clean"

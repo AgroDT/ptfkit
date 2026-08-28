@@ -24,3 +24,8 @@ depends = ["bench:build"]
 dir = "benches"
 run = "uv run --no-project run.py"
 output = "interleave"
+
+["bench:clean"]
+description = "Remove benchmark build artifacts and environments"
+dir = "benches"
+run = "cmake -E rm -rf .venv ptfkit-native/build ptfkit-py/.venv ptfkit-rs/target"

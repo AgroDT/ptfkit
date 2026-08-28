@@ -51,3 +51,8 @@ run = "ty check --fix"
 ["python:verify"]
 description = "Run all Python target quality checks"
 depends = ["python:lint", "python:format", "python:typecheck", "python:test"]
+
+["python:clean"]
+description = "Remove Python build artifacts and development environment"
+dir = "targets/ptfkit-py"
+run = "cmake -E rm -rf .venv build dist wheelhouse src/ptfkit.egg-info"
