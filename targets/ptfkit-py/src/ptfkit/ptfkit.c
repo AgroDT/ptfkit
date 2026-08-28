@@ -12,10 +12,15 @@
 #include "chakraborty2011.c"
 #include "cosby1984.c"
 #include "dharumarajan2019.c"
+#include "dharumarajan2019_batch.c"
+#include "dharumarajan2019_batch_avx512.c"
 #include "ferrerjulia2004.c"
 #include "hodnett2002.c"
 #include "jabro1992.c"
 #include "li2007.c"
+#include "li2007_batch.c"
+#include "li2007_batch_avx512.c"
+#include "li2007_batch_u35.c"
 #include "mayr1999.c"
 #include "oosterveld1980.c"
 #include "pidgeon1972.c"
@@ -60,6 +65,14 @@ PyMODINIT_FUNC PyInit__ptfkit(void) {
         Py_DECREF(module);
         return NULL;
     }
+    if (ptfkit_register_dharumarajan2019_batch(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_dharumarajan2019_batch_avx512(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
     if (ptfkit_register_ferrerjulia2004(module) < 0) {
         Py_DECREF(module);
         return NULL;
@@ -73,6 +86,18 @@ PyMODINIT_FUNC PyInit__ptfkit(void) {
         return NULL;
     }
     if (ptfkit_register_li2007(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_li2007_batch(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_li2007_batch_u35(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_li2007_batch_avx512(module) < 0) {
         Py_DECREF(module);
         return NULL;
     }

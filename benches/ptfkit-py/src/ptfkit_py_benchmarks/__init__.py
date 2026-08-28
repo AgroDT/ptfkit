@@ -6,6 +6,14 @@ import time
 from pathlib import Path
 
 import numpy as np
+from ptfkit._ptfkit import (
+    calc_ptf_dharumarajan2019_infiltration_batch,
+    calc_ptf_dharumarajan2019_infiltration_batch_avx512,
+    calc_ptf_li2007_batch,
+    calc_ptf_li2007_batch_avx512,
+    calc_ptf_li2007_batch_avx512_u35,
+    calc_ptf_li2007_batch_u35,
+)
 from ptfkit.dharumarajan2019 import calc_ptf_dharumarajan2019_infiltration
 from ptfkit.li2007 import Li2007PTFResult, calc_ptf_li2007
 from ptfkit.mayr1999 import Mayr1999PTFResult, calc_ptf_mayr1999
@@ -53,6 +61,22 @@ def main() -> None:
             _ = infiltration.sum()
             print_record('dharumarajan2019_infiltration', samples, elapsed_ns)
 
+    for iteration in range(arguments.warmups + 1):
+        started = time.perf_counter_ns()
+        calc_ptf_dharumarajan2019_infiltration_batch(sand, silt, clay, out=infiltration)
+        elapsed_ns = time.perf_counter_ns() - started
+        if iteration == arguments.warmups:
+            _ = infiltration.sum()
+            print_record('dharumarajan2019_infiltration_batch', samples, elapsed_ns)
+
+    for iteration in range(arguments.warmups + 1):
+        started = time.perf_counter_ns()
+        calc_ptf_dharumarajan2019_infiltration_batch_avx512(sand, silt, clay, out=infiltration)
+        elapsed_ns = time.perf_counter_ns() - started
+        if iteration == arguments.warmups:
+            _ = infiltration.sum()
+            print_record('dharumarajan2019_infiltration_batch_avx512', samples, elapsed_ns)
+
     mayr_out = Mayr1999PTFResult(*(np.empty(samples, dtype=np.float64) for _ in range(3)))
     for iteration in range(arguments.warmups + 1):
         started = time.perf_counter_ns()
@@ -84,3 +108,69 @@ def main() -> None:
         if iteration == arguments.warmups:
             _ = sum(output.sum() for output in li_out)
             print_record('li2007', samples, elapsed_ns)
+
+    li_batch_out = Li2007PTFResult(*(np.empty(samples, dtype=np.float64) for _ in range(4)))
+    for iteration in range(arguments.warmups + 1):
+        started = time.perf_counter_ns()
+        calc_ptf_li2007_batch(
+            sand,
+            silt,
+            clay,
+            bulk_density,
+            organic_carbon,
+            out=tuple(li_batch_out),
+        )
+        elapsed_ns = time.perf_counter_ns() - started
+        if iteration == arguments.warmups:
+            _ = sum(output.sum() for output in li_batch_out)
+            print_record('li2007_batch', samples, elapsed_ns)
+
+    li_batch_u35_out = Li2007PTFResult(*(np.empty(samples, dtype=np.float64) for _ in range(4)))
+    for iteration in range(arguments.warmups + 1):
+        started = time.perf_counter_ns()
+        calc_ptf_li2007_batch_u35(
+            sand,
+            silt,
+            clay,
+            bulk_density,
+            organic_carbon,
+            out=tuple(li_batch_u35_out),
+        )
+        elapsed_ns = time.perf_counter_ns() - started
+        if iteration == arguments.warmups:
+            _ = sum(output.sum() for output in li_batch_u35_out)
+            print_record('li2007_batch_u35', samples, elapsed_ns)
+
+    li_batch_avx512_out = Li2007PTFResult(*(np.empty(samples, dtype=np.float64) for _ in range(4)))
+    for iteration in range(arguments.warmups + 1):
+        started = time.perf_counter_ns()
+        calc_ptf_li2007_batch_avx512(
+            sand,
+            silt,
+            clay,
+            bulk_density,
+            organic_carbon,
+            out=tuple(li_batch_avx512_out),
+        )
+        elapsed_ns = time.perf_counter_ns() - started
+        if iteration == arguments.warmups:
+            _ = sum(output.sum() for output in li_batch_avx512_out)
+            print_record('li2007_batch_avx512', samples, elapsed_ns)
+
+    li_batch_avx512_u35_out = Li2007PTFResult(
+        *(np.empty(samples, dtype=np.float64) for _ in range(4))
+    )
+    for iteration in range(arguments.warmups + 1):
+        started = time.perf_counter_ns()
+        calc_ptf_li2007_batch_avx512_u35(
+            sand,
+            silt,
+            clay,
+            bulk_density,
+            organic_carbon,
+            out=tuple(li_batch_avx512_u35_out),
+        )
+        elapsed_ns = time.perf_counter_ns() - started
+        if iteration == arguments.warmups:
+            _ = sum(output.sum() for output in li_batch_avx512_u35_out)
+            print_record('li2007_batch_avx512_u35', samples, elapsed_ns)

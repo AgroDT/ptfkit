@@ -18,7 +18,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(ptfkit)
 
 add_executable(ptfkit-c-benchmarks src/bench.c)
-target_link_libraries(ptfkit-c-benchmarks PRIVATE ptfkit::c)
+target_link_libraries(ptfkit-c-benchmarks PRIVATE ptfkit::batch_avx512)
 
 add_executable(ptfkit-cpp-benchmarks src/bench.cpp)
 target_link_libraries(ptfkit-cpp-benchmarks PRIVATE ptfkit::cpp)

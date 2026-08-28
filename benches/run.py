@@ -109,14 +109,14 @@ def main() -> None:
     root = Path(__file__).parent.relative_to(Path.cwd())
     dataset_dir = extract_dataset(root)
     run_target = Runner(dataset_dir, arguments)
-    rs_prefix = root.joinpath('ptfkit-rs', 'target')
+    # rs_prefix = root.joinpath('ptfkit-rs', 'target')
     native_prefix = root.joinpath('ptfkit-native', 'build')
     targets = [
         ('c', native_prefix / 'ptfkit-c-benchmarks'),
-        ('cpp', native_prefix / 'ptfkit-cpp-benchmarks'),
+        # ('cpp', native_prefix / 'ptfkit-cpp-benchmarks'),
         ('python', root.joinpath('ptfkit-py', '.venv', 'bin', 'ptfkit-py-benchmarks')),
-        ('rust-inline', rs_prefix.joinpath('inline', 'release', 'ptfkit-rs-benchmarks')),
-        ('rust-no-inline', rs_prefix.joinpath('no-inline', 'release', 'ptfkit-rs-benchmarks')),
+        # ('rust-inline', rs_prefix.joinpath('inline', 'release', 'ptfkit-rs-benchmarks')),
+        # ('rust-no-inline', rs_prefix.joinpath('no-inline', 'release', 'ptfkit-rs-benchmarks')),
     ]
     records = []
     for iteration in range(arguments.iterations):

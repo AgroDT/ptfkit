@@ -1,5 +1,9 @@
 #include <ptfkit/dharumarajan2019.h>
+#include <ptfkit/dharumarajan2019_batch.h>
+#include <ptfkit/dharumarajan2019_batch_avx512.h>
 #include <ptfkit/li2007.h>
+#include <ptfkit/li2007_batch.h>
+#include <ptfkit/li2007_batch_avx512.h>
 #include <ptfkit/mayr1999.h>
 
 #include "npy.h"
@@ -82,6 +86,27 @@ int main(int argc, char **argv) {
     }
     for (size_t iteration = 0; iteration <= warmups; ++iteration) {
         clock_gettime(CLOCK_MONOTONIC, &started);
+        calc_ptf_dharumarajan2019_infiltration_batch_avx512(sand, silt, clay, infiltration,
+                                                            samples);
+        clock_gettime(CLOCK_MONOTONIC, &finished);
+        observe(infiltration, samples);
+        if (iteration == warmups) {
+            print_record("dharumarajan2019_infiltration_batch_avx512", samples,
+                         elapsed_ns(started, finished));
+        }
+    }
+    for (size_t iteration = 0; iteration <= warmups; ++iteration) {
+        clock_gettime(CLOCK_MONOTONIC, &started);
+        calc_ptf_dharumarajan2019_infiltration_batch(sand, silt, clay, infiltration, samples);
+        clock_gettime(CLOCK_MONOTONIC, &finished);
+        observe(infiltration, samples);
+        if (iteration == warmups) {
+            print_record("dharumarajan2019_infiltration_batch", samples,
+                         elapsed_ns(started, finished));
+        }
+    }
+    for (size_t iteration = 0; iteration <= warmups; ++iteration) {
+        clock_gettime(CLOCK_MONOTONIC, &started);
         for (size_t index = 0; index < samples; ++index) {
             const mayr1999_ptf_result result = calc_ptf_mayr1999(
                 sand[index], silt[index], clay[index], bulk_density[index], organic_carbon[index]);
@@ -114,6 +139,58 @@ int main(int argc, char **argv) {
         observe(li_k_sat, samples);
         if (iteration == warmups) {
             print_record("li2007", samples, elapsed_ns(started, finished));
+        }
+    }
+    for (size_t iteration = 0; iteration <= warmups; ++iteration) {
+        clock_gettime(CLOCK_MONOTONIC, &started);
+        calc_ptf_li2007_batch(sand, silt, clay, bulk_density, organic_carbon, li_theta_s, li_a_vg,
+                              li_n_vg, li_k_sat, samples);
+        clock_gettime(CLOCK_MONOTONIC, &finished);
+        observe(li_theta_s, samples);
+        observe(li_a_vg, samples);
+        observe(li_n_vg, samples);
+        observe(li_k_sat, samples);
+        if (iteration == warmups) {
+            print_record("li2007_batch", samples, elapsed_ns(started, finished));
+        }
+    }
+    for (size_t iteration = 0; iteration <= warmups; ++iteration) {
+        clock_gettime(CLOCK_MONOTONIC, &started);
+        calc_ptf_li2007_batch_u35(sand, silt, clay, bulk_density, organic_carbon, li_theta_s,
+                                  li_a_vg, li_n_vg, li_k_sat, samples);
+        clock_gettime(CLOCK_MONOTONIC, &finished);
+        observe(li_theta_s, samples);
+        observe(li_a_vg, samples);
+        observe(li_n_vg, samples);
+        observe(li_k_sat, samples);
+        if (iteration == warmups) {
+            print_record("li2007_batch_u35", samples, elapsed_ns(started, finished));
+        }
+    }
+    for (size_t iteration = 0; iteration <= warmups; ++iteration) {
+        clock_gettime(CLOCK_MONOTONIC, &started);
+        calc_ptf_li2007_batch_avx512(sand, silt, clay, bulk_density, organic_carbon, li_theta_s,
+                                     li_a_vg, li_n_vg, li_k_sat, samples);
+        clock_gettime(CLOCK_MONOTONIC, &finished);
+        observe(li_theta_s, samples);
+        observe(li_a_vg, samples);
+        observe(li_n_vg, samples);
+        observe(li_k_sat, samples);
+        if (iteration == warmups) {
+            print_record("li2007_batch_avx512", samples, elapsed_ns(started, finished));
+        }
+    }
+    for (size_t iteration = 0; iteration <= warmups; ++iteration) {
+        clock_gettime(CLOCK_MONOTONIC, &started);
+        calc_ptf_li2007_batch_avx512_u35(sand, silt, clay, bulk_density, organic_carbon, li_theta_s,
+                                         li_a_vg, li_n_vg, li_k_sat, samples);
+        clock_gettime(CLOCK_MONOTONIC, &finished);
+        observe(li_theta_s, samples);
+        observe(li_a_vg, samples);
+        observe(li_n_vg, samples);
+        observe(li_k_sat, samples);
+        if (iteration == warmups) {
+            print_record("li2007_batch_avx512_u35", samples, elapsed_ns(started, finished));
         }
     }
 
