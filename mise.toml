@@ -52,3 +52,7 @@ depends = ["codegen:test", "native:test", "python:test", "rust:test"]
 [tasks.verify]
 description = "Run all component verification suites"
 depends = ["codegen:verify", "native:verify", "python:verify", "rust:verify"]
+
+[tasks.clean]
+description = "Remove all local build artifacts and development environments"
+depends = ["bench:clean", "codegen:clean", "docs:clean", "native:clean", "python:clean", "rust:clean"]

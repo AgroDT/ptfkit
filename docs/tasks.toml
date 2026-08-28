@@ -24,3 +24,8 @@ run = "uv run --no-sync ty check"
 ["docs:verify"]
 description = "Run documentation quality checks and build the site"
 depends = ["docs:lint", "docs:format", "docs:typecheck", "docs:build"]
+
+["docs:clean"]
+description = "Remove documentation build artifacts and environment"
+dir = "docs"
+run = "cmake -E rm -rf .venv dist __pycache__"

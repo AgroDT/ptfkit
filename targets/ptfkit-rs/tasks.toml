@@ -16,3 +16,8 @@ run = "cargo test"
 ["rust:verify"]
 description = "Run all Rust target quality checks"
 depends = ["rust:format", "rust:lint", "rust:test"]
+
+["rust:clean"]
+description = "Remove Rust target Cargo build artifacts"
+dir = "targets/ptfkit-rs"
+run = "cargo clean"
