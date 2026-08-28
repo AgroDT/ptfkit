@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use ptfkit in your research, please cite it using these metadata."
+title: "ptfkit: Pedotransfer functions for estimating soil hydraulic properties"
+type: software
+abstract: >-
+  ptfkit is a specification-driven collection of pedotransfer functions for
+  estimating soil hydraulic properties through consistent Python, Rust, C,
+  and C++ interfaces.
+authors:
+  - family-names: Fomin
+    given-names: Dmitry
+    email: "fomin_ds@esoil.ru"
+  - family-names: Shumilin
+    given-names: Petr
+    email: "shumpet03@yandex.ru"
+  - family-names: Tolstygin
+    given-names: Kirill
+    email: "tolstygin_kd@esoil.ru"
+  - family-names: Tsymbarovich
+    given-names: Petr
+    email: "tpr@esoil.ru"
+version: 0.2.0
+date-released: "2026-08-20"
+license: MIT
+repository-code: "https://github.com/AgroDT/ptfkit"
+url: "https://agrodt.github.io/ptfkit/"
+keywords:
+  - pedotransfer functions
+  - soil hydraulic properties
+  - soil science
+  - scientific software
