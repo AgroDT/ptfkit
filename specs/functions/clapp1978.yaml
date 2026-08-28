@@ -1,0 +1,268 @@
+source:
+  summary: Clapp and Hornberger (1978) representative soil hydraulic parameters by texture.
+  citation_apa: >-
+    Clapp, R. B., & Hornberger, G. M. (1978). Empirical equations for some
+    soil hydraulic properties. Water Resources Research.
+  doi: null
+scope:
+  territory: United States
+  dataset: >-
+    Desorption data reported by Holtan et al. (1968) for soils collected at 34
+    United States localities; 1,446 soils remained from an initial set of more
+    than 1,800 after the exclusions described by the paper.
+$defs:
+  UsdaTextureClass:
+    type: enum
+    description: USDA soil textural class used to select a row of Table 2.
+    values:
+      - name: sand
+        value: "sand"
+        description: USDA sand soil textural class.
+      - name: loamy_sand
+        value: "loamy sand"
+        description: USDA loamy sand soil textural class.
+      - name: sandy_loam
+        value: "sandy loam"
+        description: USDA sandy loam soil textural class.
+      - name: silt_loam
+        value: "silt loam"
+        description: USDA silt loam soil textural class.
+      - name: loam
+        value: "loam"
+        description: USDA loam soil textural class.
+      - name: sandy_clay_loam
+        value: "sandy clay loam"
+        description: USDA sandy clay loam soil textural class.
+      - name: silty_clay_loam
+        value: "silty clay loam"
+        description: USDA silty clay loam soil textural class.
+      - name: clay_loam
+        value: "clay loam"
+        description: USDA clay loam soil textural class.
+      - name: sandy_clay
+        value: "sandy clay"
+        description: USDA sandy clay soil textural class.
+      - name: silty_clay
+        value: "silty clay"
+        description: USDA silty clay soil textural class.
+      - name: clay
+        value: "clay"
+        description: USDA clay soil textural class.
+  Clapp1978Parameters:
+    type: record
+    name: Clapp1978Parameters
+    fields:
+      - name: b
+        symbol: b
+        unit: "1"
+        domain: value > 0
+        description: Mean exponent of the moisture-characteristic power curve.
+      - name: saturation_suction
+        symbol: psi_s(log)
+        unit: cm
+        domain: value > 0
+        description: >-
+          Representative saturation suction, calculated as the antilog of the
+          mean logarithm of fitted saturation-suction values.
+      - name: wetting_front_suction
+        symbol: psi_f
+        unit: cm
+        domain: value > 0
+        description: Representative Green-Ampt wetting-front suction.
+      - name: saturated_water_content
+        symbol: theta_s
+        unit: "1"
+        domain: 0 < value < 1
+        description: Mean saturated volumetric water content, taken as total porosity.
+      - name: saturated_hydraulic_conductivity
+        symbol: K_s
+        unit: cm/min
+        domain: value > 0
+        description: Mean saturated hydraulic conductivity reported by Li et al. (1976).
+      - name: sorptivity
+        symbol: S
+        unit: cm/min^(1/2)
+        domain: value > 0
+        description: >-
+          Representative sorptivity for the paper's single initial moisture
+          deficit corresponding to 500-cm initial suction.
+  Clapp1978ParametersByTexture:
+    type: lookup
+    input:
+      $ref: "#/$defs/UsdaTextureClass"
+    output:
+      $ref: "#/$defs/Clapp1978Parameters"
+    values:
+      - key: sand
+        value: {b: 4.05, saturation_suction: 3.50, wetting_front_suction: 4.66, saturated_water_content: 0.395, saturated_hydraulic_conductivity: 1.056, sorptivity: 1.52}
+      - key: loamy_sand
+        value: {b: 4.38, saturation_suction: 1.78, wetting_front_suction: 2.38, saturated_water_content: 0.410, saturated_hydraulic_conductivity: 0.938, sorptivity: 1.04}
+      - key: sandy_loam
+        value: {b: 4.90, saturation_suction: 7.18, wetting_front_suction: 9.52, saturated_water_content: 0.435, saturated_hydraulic_conductivity: 0.208, sorptivity: 1.03}
+      - key: silt_loam
+        value: {b: 5.30, saturation_suction: 56.6, wetting_front_suction: 75.3, saturated_water_content: 0.485, saturated_hydraulic_conductivity: 0.0432, sorptivity: 1.26}
+      - key: loam
+        value: {b: 5.39, saturation_suction: 14.6, wetting_front_suction: 20.0, saturated_water_content: 0.451, saturated_hydraulic_conductivity: 0.0417, sorptivity: 0.693}
+      - key: sandy_clay_loam
+        value: {b: 7.12, saturation_suction: 8.63, wetting_front_suction: 11.7, saturated_water_content: 0.420, saturated_hydraulic_conductivity: 0.0378, sorptivity: 0.488}
+      - key: silty_clay_loam
+        value: {b: 7.75, saturation_suction: 14.6, wetting_front_suction: 19.7, saturated_water_content: 0.477, saturated_hydraulic_conductivity: 0.0102, sorptivity: 0.310}
+      - key: clay_loam
+        value: {b: 8.52, saturation_suction: 36.1, wetting_front_suction: 48.1, saturated_water_content: 0.476, saturated_hydraulic_conductivity: 0.0147, sorptivity: 0.537}
+      - key: sandy_clay
+        value: {b: 10.4, saturation_suction: 6.16, wetting_front_suction: 8.18, saturated_water_content: 0.426, saturated_hydraulic_conductivity: 0.0130, sorptivity: 0.223}
+      - key: silty_clay
+        value: {b: 10.4, saturation_suction: 17.4, wetting_front_suction: 23.0, saturated_water_content: 0.492, saturated_hydraulic_conductivity: 0.0062, sorptivity: 0.242}
+      - key: clay
+        value: {b: 11.4, saturation_suction: 18.6, wetting_front_suction: 24.3, saturated_water_content: 0.482, saturated_hydraulic_conductivity: 0.0077, sorptivity: 0.268}
+functions:
+  - name: calc_ptf_clapp1978
+    status: implemented
+    public_api:
+      name: calc_ptf_clapp1978
+      result_class: Clapp1978Parameters
+      summary: Return representative soil hydraulic parameters for a USDA texture class.
+    scope:
+      prediction_target: >-
+        Representative moisture-characteristic exponent, saturation suction,
+        wetting-front suction, saturated water content, saturated hydraulic
+        conductivity, and sorptivity for a soil textural class.
+      models:
+        h_theta: >-
+          Power-curve moisture characteristic with a parabolic gradual-air-entry
+          section near saturation
+        k_h: Campbell relative-conductivity power relation
+    inputs:
+      - $ref: "#/$defs/UsdaTextureClass"
+        name: soil_texture
+        description: USDA soil textural class used to select a row of Table 2.
+    outputs:
+      $ref: "#/$defs/Clapp1978Parameters"
+    golden_tests:
+      - id: table_2_sand
+        inputs: {soil_texture: sand}
+        expected: {b: 4.05, saturation_suction: 3.50, wetting_front_suction: 4.66, saturated_water_content: 0.395, saturated_hydraulic_conductivity: 1.056, sorptivity: 1.52}
+        rtol: 0.0
+        atol: 0.0
+        notes: Direct representative values for Sand from Table 2.
+      - id: table_2_loamy_sand
+        inputs: {soil_texture: loamy_sand}
+        expected: {b: 4.38, saturation_suction: 1.78, wetting_front_suction: 2.38, saturated_water_content: 0.410, saturated_hydraulic_conductivity: 0.938, sorptivity: 1.04}
+        rtol: 0.0
+        atol: 0.0
+        notes: Direct representative values for Loamy sand from Table 2.
+      - id: table_2_sandy_loam
+        inputs: {soil_texture: sandy_loam}
+        expected: {b: 4.90, saturation_suction: 7.18, wetting_front_suction: 9.52, saturated_water_content: 0.435, saturated_hydraulic_conductivity: 0.208, sorptivity: 1.03}
+        rtol: 0.0
+        atol: 0.0
+        notes: Direct representative values for Sandy loam from Table 2.
+      - id: table_2_silt_loam
+        inputs: {soil_texture: silt_loam}
+        expected: {b: 5.30, saturation_suction: 56.6, wetting_front_suction: 75.3, saturated_water_content: 0.485, saturated_hydraulic_conductivity: 0.0432, sorptivity: 1.26}
+        rtol: 0.0
+        atol: 0.0
+        notes: Direct representative values for Silt loam from Table 2.
+      - id: table_2_loam
+        inputs: {soil_texture: loam}
+        expected: {b: 5.39, saturation_suction: 14.6, wetting_front_suction: 20.0, saturated_water_content: 0.451, saturated_hydraulic_conductivity: 0.0417, sorptivity: 0.693}
+        rtol: 0.0
+        atol: 0.0
+        notes: Direct representative values for Loam from Table 2.
+      - id: table_2_sandy_clay_loam
+        inputs: {soil_texture: sandy_clay_loam}
+        expected: {b: 7.12, saturation_suction: 8.63, wetting_front_suction: 11.7, saturated_water_content: 0.420, saturated_hydraulic_conductivity: 0.0378, sorptivity: 0.488}
+        rtol: 0.0
+        atol: 0.0
+        notes: Direct representative values for Sandy clay loam from Table 2.
+      - id: table_2_silty_clay_loam
+        inputs: {soil_texture: silty_clay_loam}
+        expected: {b: 7.75, saturation_suction: 14.6, wetting_front_suction: 19.7, saturated_water_content: 0.477, saturated_hydraulic_conductivity: 0.0102, sorptivity: 0.310}
+        rtol: 0.0
+        atol: 0.0
+        notes: Direct representative values for Silty clay loam from Table 2.
+      - id: table_2_clay_loam
+        inputs: {soil_texture: clay_loam}
+        expected: {b: 8.52, saturation_suction: 36.1, wetting_front_suction: 48.1, saturated_water_content: 0.476, saturated_hydraulic_conductivity: 0.0147, sorptivity: 0.537}
+        rtol: 0.0
+        atol: 0.0
+        notes: Direct representative values for Clay loam from Table 2.
+      - id: table_2_sandy_clay
+        inputs: {soil_texture: sandy_clay}
+        expected: {b: 10.4, saturation_suction: 6.16, wetting_front_suction: 8.18, saturated_water_content: 0.426, saturated_hydraulic_conductivity: 0.0130, sorptivity: 0.223}
+        rtol: 0.0
+        atol: 0.0
+        notes: Direct representative values for Sandy clay from Table 2.
+      - id: table_2_silty_clay
+        inputs: {soil_texture: silty_clay}
+        expected: {b: 10.4, saturation_suction: 17.4, wetting_front_suction: 23.0, saturated_water_content: 0.492, saturated_hydraulic_conductivity: 0.0062, sorptivity: 0.242}
+        rtol: 0.0
+        atol: 0.0
+        notes: Direct representative values for Silty clay from Table 2.
+      - id: table_2_clay
+        inputs: {soil_texture: clay}
+        expected: {b: 11.4, saturation_suction: 18.6, wetting_front_suction: 24.3, saturated_water_content: 0.482, saturated_hydraulic_conductivity: 0.0077, sorptivity: 0.268}
+        rtol: 0.0
+        atol: 0.0
+        notes: Direct representative values for Clay from Table 2.
+    edge_cases: []
+    documentation:
+      notes:
+        - >-
+          The representative wetting-front suctions use an inflection wetness of
+          0.92 to model gradual air entry near saturation.
+        - >-
+          The sorptivity values use the average saturated hydraulic conductivities
+          reported by Li et al. (1976) and one initial moisture deficit at 500-cm
+          suction.
+      warnings:
+        - >-
+          The paper states that these unverified average values should not be used
+          blindly because saturation suction varies substantially within texture classes.
+        - >-
+          Sorptivity values must be treated cautiously because the conductivity
+          averages may not represent the same average soils as the other parameters.
+    implementation:
+      variables:
+        - name: parameters
+          lookup:
+            table:
+              $ref: "#/$defs/Clapp1978ParametersByTexture"
+            key: soil_texture
+
+scientific_notes: |
+  # Clapp and Hornberger (1978)
+
+  ## Supported models
+
+  - Table 2 gives representative hydraulic parameters for 11 USDA soil textural
+    classes. The prepared source handoff identifies the class lookup and its six
+    outputs as the PTF represented by the paper.
+  - The moisture characteristic is `psi = psi_s W^(-b)`, where
+    `W = theta / theta_s`, away from the gradual-air-entry region. Near saturation,
+    the paper joins this power curve to a parabola through an inflection point.
+  - The prepared correction distinguishes Campbell's theoretical relation
+    `k = W^(2b+2)` from the Clapp-Hornberger empirical working relation
+    `k = W^(2b+3)`. The latter governs the representative calculations.
+
+  ## Review decisions
+
+  - Preserve the Table 2 `psi_s(log)` column as `saturation_suction`. It is the
+    antilog of the mean log of fitted saturation-suction values, not a logarithmic
+    output, and is reported in centimeters.
+  - Preserve saturated water content as a dimensionless volumetric fraction. The
+    prose defines it as volumetric water content at saturation or total porosity;
+    the supplied table's unit glyph is damaged.
+  - `UsdaTextureClass` preserves a stable schema identifier and the canonical lowercase
+    USDA textual value for each class. Lookup rows reference member identifiers;
+    numeric target ordinals are not part of the source specification.
+
+  ## Documented limitations
+
+  - The fitted data are desorption measurements, although wetting-front suction
+    describes imbibition. The paper applies no hysteresis correction because the
+    applicability of proposed corrections across the investigated soils is unclear.
+  - The paper deleted rocky soils, fits with `b > 25`, and soils whose calculated
+    wetness exceeded one at 0.1-bar tension before computing the class statistics.
+  - Texture strongly indicates `b`, but the paper states that texture is not a good
+    indicator of saturation suction because within-class variability is large.
