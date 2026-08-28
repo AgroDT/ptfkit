@@ -98,20 +98,6 @@ specification must preserve.
 
 ## Citation
 
-### APA
-
-```text
-AgroDT lab (2025). ptfkit repository [Computer software]. https://github.com/AgroDT/ptfkit
-```
-
-### BibTeX
-
-```bibtex
-@misc{ptfkit,
-  author       = {AgroDT lab},
-  title        = {ptfkit repository},
-  year         = {2025},
-  howpublished = {\url{https://github.com/AgroDT/ptfkit}},
-  url          = {https://github.com/AgroDT/ptfkit}
-}
-```
+If you use ptfkit in research, cite the software using the metadata in
+[`CITATION.cff`](./CITATION.cff). On GitHub, select **Cite this repository** in
+the repository sidebar to export the citation in APA or BibTeX format.
