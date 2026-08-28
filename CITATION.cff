@@ -10,15 +10,18 @@ authors:
   - family-names: Fomin
     given-names: Dmitry
     email: "fomin_ds@esoil.ru"
+    orcid: "https://orcid.org/0000-0003-3733-0284"
   - family-names: Shumilin
     given-names: Petr
     email: "shumpet03@yandex.ru"
   - family-names: Tolstygin
     given-names: Kirill
     email: "tolstygin_kd@esoil.ru"
+    orcid: "https://orcid.org/0009-0005-1395-3745"
   - family-names: Tsymbarovich
     given-names: Petr
     email: "tpr@esoil.ru"
+    orcid: "https://orcid.org/0000-0001-8591-2612"
 version: 0.2.0
 date-released: "2026-08-20"
 license: MIT
