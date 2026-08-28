@@ -7,6 +7,7 @@
 #include <ptfkit/aimrun2009.h>
 #include <ptfkit/beniaich2023.h>
 #include <ptfkit/chakraborty2011.h>
+#include <ptfkit/clapp1978.h>
 #include <ptfkit/cosby1984.h>
 #include <ptfkit/dharumarajan2019.h>
 #include <ptfkit/ferrerjulia2004.h>

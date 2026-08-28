@@ -21,6 +21,7 @@ calc_ptf_chakraborty2011_eq3: ufunc
 calc_ptf_chakraborty2011_eq4: ufunc
 calc_ptf_chakraborty2011_eq5: ufunc
 calc_ptf_chakraborty2011_eq6: ufunc
+calc_ptf_clapp1978: ufunc
 calc_ptf_cosby1984_univariate: ufunc
 calc_ptf_dharumarajan2019_infiltration: ufunc
 calc_ptf_dharumarajan2019_nkp: ufunc

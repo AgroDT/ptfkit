@@ -18,6 +18,7 @@ This umbrella header aggregates every public ptfkit source header. Include an in
 - [`<ptfkit/aimrun2009.h>`](aimrun2009.md) — Aimrun & Amin (2009), Tanjung Karang Rice Irrigation Project, Malaysia.
 - [`<ptfkit/beniaich2023.h>`](beniaich2023.md) — Beniaich et al. (2023), soil-water PTFs for four Moroccan regions.
 - [`<ptfkit/chakraborty2011.h>`](chakraborty2011.md) — Chakraborty et al. (2011), point water-retention PTFs for Indian soils.
+- [`<ptfkit/clapp1978.h>`](clapp1978.md) — Clapp and Hornberger (1978) representative soil hydraulic parameters by texture.
 - [`<ptfkit/cosby1984.h>`](cosby1984.md) — Cosby et al. (1984), United States.
 - [`<ptfkit/dharumarajan2019.h>`](dharumarajan2019.md) — Dharumarajan et al. (2019) hydraulic PTFs for the Karnataka Plateau.
 - [`<ptfkit/ferrerjulia2004.h>`](ferrerjulia2004.md) — Ferrer Julià et al. (2004), saturated-conductivity PTFs for Spanish soils.

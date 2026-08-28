@@ -15,6 +15,7 @@ ptfkit's C++ API is organized around C++20 modules.
 - [`ptfkit.aimrun2009`](modules/aimrun2009.md) — Aimrun & Amin (2009), Tanjung Karang Rice Irrigation Project, Malaysia.
 - [`ptfkit.beniaich2023`](modules/beniaich2023.md) — Beniaich et al. (2023), soil-water PTFs for four Moroccan regions.
 - [`ptfkit.chakraborty2011`](modules/chakraborty2011.md) — Chakraborty et al. (2011), point water-retention PTFs for Indian soils.
+- [`ptfkit.clapp1978`](modules/clapp1978.md) — Clapp and Hornberger (1978) representative soil hydraulic parameters by texture.
 - [`ptfkit.cosby1984`](modules/cosby1984.md) — Cosby et al. (1984), United States.
 - [`ptfkit.dharumarajan2019`](modules/dharumarajan2019.md) — Dharumarajan et al. (2019) hydraulic PTFs for the Karnataka Plateau.
 - [`ptfkit.ferrerjulia2004`](modules/ferrerjulia2004.md) — Ferrer Julià et al. (2004), saturated-conductivity PTFs for Spanish soils.
