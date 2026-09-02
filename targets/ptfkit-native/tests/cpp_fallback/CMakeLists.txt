@@ -7,5 +7,5 @@ set_source_files_properties(
 
 ptfkit_add_native_tests(cpp_fallback
     SOURCES ${sources}
-    LIBRARIES ptfkit::c m
+    LIBRARIES ptfkit::c
 )

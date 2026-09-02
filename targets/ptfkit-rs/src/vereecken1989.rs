@@ -86,39 +86,31 @@ pub fn calc_ptf_vereecken1989(
 #[cfg(test)]
 mod calc_ptf_vereecken1989_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
     fn dataset_mean_properties() {
         let result = calc_ptf_vereecken1989(52.14f64, 10.93f64, 1.03f64, 1.466f64);
-        assert_close(
+        assert_in_interval(
             result.theta_r,
-            0.08406999999999999f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.08406999999999912f64,
+            0.0840700000000009f64,
         );
-        assert_close(
+        assert_in_interval(
             result.theta_s,
-            0.4060520000000001f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.40605199999999647f64,
+            0.4060520000000036f64,
         );
-        assert_close(
+        assert_in_interval(
             result.alpha,
-            0.003581613076579849f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0035816130765798197f64,
+            0.0035816130765798752f64,
         );
-        assert_close(
-            result.n,
-            0.8602234826041976f64,
-            0.000000000001f64,
-            0.000000000001f64,
-        );
+        assert_in_interval(result.n, 0.8602234826041903f64, 0.8602234826042046f64);
     }
 }
 #[doc = r"Results returned by `calc_ptf_vereecken1989_detailed`."]
@@ -245,10 +237,10 @@ pub fn calc_ptf_vereecken1989_detailed(
 #[cfg(test)]
 mod calc_ptf_vereecken1989_detailed_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
@@ -257,29 +249,21 @@ mod calc_ptf_vereecken1989_detailed_tests {
             0.25f64, 0.88f64, 13.53f64, 21.15f64, 16.3f64, 24.83f64, 7f64, 5.15f64, 10.93f64,
             0.07f64, 4.07f64, 1.03f64, 1.466f64,
         );
-        assert_close(
+        assert_in_interval(
             result.theta_r,
-            0.08277820000000001f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.08277819999999911f64,
+            0.08277820000000088f64,
         );
-        assert_close(
+        assert_in_interval(
             result.theta_s,
-            0.4060520000000001f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.40605199999999647f64,
+            0.4060520000000036f64,
         );
-        assert_close(
+        assert_in_interval(
             result.alpha,
-            0.02522115884641546f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.025221158846415237f64,
+            0.02522115884641568f64,
         );
-        assert_close(
-            result.n,
-            0.517175605329397f64,
-            0.000000000001f64,
-            0.000000000001f64,
-        );
+        assert_in_interval(result.n, 0.5171756053293899f64, 0.5171756053294041f64);
     }
 }

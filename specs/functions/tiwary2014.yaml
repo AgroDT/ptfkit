@@ -50,10 +50,8 @@ functions:
       sand: 37.3
       bulk_density: 1.674
       esp: 4.6
-    expected:
-      k_sat: 5.103578e-07
-    rtol: 1.0e-10
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated directly from equation 11.
   edge_cases: []
   documentation:
@@ -145,13 +143,8 @@ functions:
       esp: 7.3
       emp: 21.4
       excm: 3.32
-    expected:
-      w_33: 41.1729
-      w_100: 36.8273
-      w_1500: 21.6976
-      k_sat: 5.373367e-06
-    rtol: 1.0e-10
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated directly from equations 7-10 for BSR soils.
   edge_cases: []
   documentation:

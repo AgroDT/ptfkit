@@ -90,87 +90,72 @@ pub fn calc_ptf_cosby1984_univariate(
 #[cfg(test)]
 mod tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
     fn scalar_mid_texture() {
         let result = calc_ptf_cosby1984_univariate(50f64, 30f64, 20f64);
-        assert_close(result.mean_b, 6.09f64, 0.000000000001f64, 0.000000000001f64);
-        assert_close(
+        assert_in_interval(result.mean_b, 6.089999999999993f64, 6.090000000000007f64);
+        assert_in_interval(
             result.mean_log_psi_s,
-            1.225f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            1.2249999999999983f64,
+            1.2250000000000019f64,
         );
-        assert_close(
+        assert_in_interval(
             result.mean_log_k_sat,
-            -0.119f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            -0.1190000000000001f64,
+            -0.11899999999999988f64,
         );
-        assert_close(
+        assert_in_interval(
             result.mean_theta_s,
-            42.6f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            42.599999999999945f64,
+            42.60000000000006f64,
         );
-        assert_close(result.sd_b, 2.34f64, 0.000000000001f64, 0.000000000001f64);
-        assert_close(
+        assert_in_interval(result.sd_b, 2.3399999999999963f64, 2.3400000000000034f64);
+        assert_in_interval(
             result.sd_log_k_sat,
-            0.5553f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.5552999999999991f64,
+            0.5553000000000009f64,
         );
-        assert_close(
+        assert_in_interval(
             result.sd_theta_s,
-            6.27f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            6.2699999999999925f64,
+            6.270000000000007f64,
         );
     }
     #[test]
     fn scalar_sandy_texture() {
         let result = calc_ptf_cosby1984_univariate(80f64, 15f64, 5f64);
-        assert_close(
-            result.mean_b,
-            3.705f64,
-            0.000000000001f64,
-            0.000000000001f64,
-        );
-        assert_close(
+        assert_in_interval(result.mean_b, 3.7049999999999965f64, 3.7050000000000036f64);
+        assert_in_interval(
             result.mean_log_psi_s,
-            0.832f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.8319999999999991f64,
+            0.8320000000000008f64,
         );
-        assert_close(
+        assert_in_interval(
             result.mean_log_k_sat,
-            0.34f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.3399999999999996f64,
+            0.34000000000000047f64,
         );
-        assert_close(
+        assert_in_interval(
             result.mean_theta_s,
-            38.82f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            38.81999999999994f64,
+            38.82000000000006f64,
         );
-        assert_close(result.sd_b, 1.59f64, 0.000000000001f64, 0.000000000001f64);
-        assert_close(
+        assert_in_interval(result.sd_b, 1.5899999999999983f64, 1.5900000000000019f64);
+        assert_in_interval(
             result.sd_log_k_sat,
-            0.50715f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.5071499999999991f64,
+            0.5071500000000009f64,
         );
-        assert_close(
+        assert_in_interval(
             result.sd_theta_s,
-            7.365f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            7.364999999999993f64,
+            7.365000000000007f64,
         );
     }
 }

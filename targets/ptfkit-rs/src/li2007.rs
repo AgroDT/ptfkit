@@ -102,94 +102,50 @@ pub fn calc_ptf_li2007(
 #[cfg(test)]
 mod tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
     fn loamy_sand() {
         let result = calc_ptf_li2007(85f64, 10f64, 5f64, 1.2f64, 0.21f64);
-        assert_close(
-            result.theta_s,
-            0.5256803583157499f64,
-            0.000000000001f64,
-            0.00000001f64,
-        );
-        assert_close(
-            result.a_vg,
-            0.9491464758307142f64,
-            0.000000000001f64,
-            0.00000001f64,
-        );
-        assert_close(
-            result.n_vg,
-            1.1657804980997006f64,
-            0.000000000001f64,
-            0.00000001f64,
-        );
-        assert_close(
+        assert_in_interval(result.theta_s, 0.5256803583157428f64, 0.525680358315757f64);
+        assert_in_interval(result.a_vg, 0.9491464758307003f64, 0.9491464758307145f64);
+        assert_in_interval(result.n_vg, 1.1657804980996864f64, 1.1657804980997148f64);
+        assert_in_interval(
             result.k_sat,
-            0.000006549110367333547f64,
-            0.000000000001f64,
-            0.00000001f64,
+            0.000006549110367333487f64,
+            0.000006549110367333595f64,
         );
     }
     #[test]
     fn loam() {
         let result = calc_ptf_li2007(50.23f64, 38.72f64, 11.05f64, 1.42f64, 0.65f64);
-        assert_close(
-            result.theta_s,
-            0.49659526127697506f64,
-            0.000000000001f64,
-            0.00000001f64,
-        );
-        assert_close(
-            result.a_vg,
-            0.009519989841950734f64,
-            0.000000000001f64,
-            0.00000001f64,
-        );
-        assert_close(
-            result.n_vg,
-            1.1806286355149054f64,
-            0.000000000001f64,
-            0.00000001f64,
-        );
-        assert_close(
+        assert_in_interval(result.theta_s, 0.4965952612769715f64, 0.4965952612769786f64);
+        assert_in_interval(result.a_vg, 0.00951998984195053f64, 0.009519989841950752f64);
+        assert_in_interval(result.n_vg, 1.1806286355148912f64, 1.1806286355149196f64);
+        assert_in_interval(
             result.k_sat,
-            0.00000045117324656202257f64,
-            0.000000000001f64,
-            0.00000001f64,
+            0.00000045117324656201886f64,
+            0.00000045117324656202564f64,
         );
     }
     #[test]
     fn silty_clay() {
         let result = calc_ptf_li2007(12.88f64, 60f64, 27.12f64, 1.48f64, 1.02f64);
-        assert_close(
-            result.theta_s,
-            0.4053061510618609f64,
-            0.000000000001f64,
-            0.00000001f64,
-        );
-        assert_close(
+        assert_in_interval(result.theta_s, 0.4053061510618573f64, 0.4053061510618644f64);
+        assert_in_interval(
             result.a_vg,
-            0.0018530400762371828f64,
-            0.000000000001f64,
-            0.00000001f64,
+            0.0018530400762371648f64,
+            0.0018530400762371926f64,
         );
-        assert_close(
-            result.n_vg,
-            1.2080428739797433f64,
-            0.000000000001f64,
-            0.00000001f64,
-        );
-        assert_close(
+        assert_in_interval(result.n_vg, 1.208042873979729f64, 1.2080428739797575f64);
+        assert_in_interval(
             result.k_sat,
-            0.0000015151432632107234f64,
-            0.000000000001f64,
-            0.00000001f64,
+            0.0000015151432632107082f64,
+            0.0000015151432632107353f64,
         );
     }
 }

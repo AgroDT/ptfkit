@@ -135,74 +135,64 @@ pub fn calc_ptf_saxton2006(sand: f64, clay: f64, organic_matter: f64) -> Saxton2
 #[cfg(test)]
 mod calc_ptf_saxton2006_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
     fn table_3_sand() {
         let result = calc_ptf_saxton2006(0.88f64, 0.05f64, 2.5f64);
-        assert_close(
+        assert_in_interval(
             result.theta_1500,
-            0.05022058f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.05022057999999956f64,
+            0.050220580000000445f64,
         );
-        assert_close(
+        assert_in_interval(
             result.theta_33,
-            0.10282792364858702f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.10282792364858612f64,
+            0.1028279236485879f64,
         );
-        assert_close(
+        assert_in_interval(
             result.theta_s,
-            0.46172240764858724f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.46172240764858347f64,
+            0.46172240764859057f64,
         );
-        assert_close(
+        assert_in_interval(
             result.plant_available_water,
-            0.05260734364858702f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.05260734364858655f64,
+            0.05260734364858744f64,
         );
-        assert_close(
+        assert_in_interval(
             result.air_entry_tension,
-            0.5986789729513293f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.5986789729513134f64,
+            0.5986789729513277f64,
         );
-        assert_close(
+        assert_in_interval(
             result.retention_a,
-            0.00018076452552206025f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001807645255220579f64,
+            0.00018076452552206137f64,
         );
-        assert_close(
+        assert_in_interval(
             result.retention_b,
-            5.325903100453899f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            5.325903100453843f64,
+            5.3259031004539565f64,
         );
-        assert_close(
+        assert_in_interval(
             result.conductivity_lambda,
-            0.18776158355467926f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.18776158355467742f64,
+            0.18776158355468098f64,
         );
-        assert_close(
+        assert_in_interval(
             result.saturated_conductivity,
-            108.1478278507403f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            108.14782785073919f64,
+            108.14782785074101f64,
         );
-        assert_close(
+        assert_in_interval(
             result.normal_density,
-            1.4264356197312436f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            1.4264356197312302f64,
+            1.4264356197312587f64,
         );
     }
 }
@@ -265,10 +255,10 @@ pub fn calc_ptf_saxton2006_density(
 #[cfg(test)]
 mod calc_ptf_saxton2006_density_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
@@ -279,29 +269,25 @@ mod calc_ptf_saxton2006_density_tests {
             0.10282792364858702f64,
             1.1f64,
         );
-        assert_close(
+        assert_in_interval(
             result.adjusted_density,
-            1.569079181704368f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            1.5690791817043663f64,
+            1.5690791817043699f64,
         );
-        assert_close(
+        assert_in_interval(
             result.adjusted_theta_s,
-            0.407894648413446f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.4078946484134456f64,
+            0.40789464841344647f64,
         );
-        assert_close(
+        assert_in_interval(
             result.adjusted_theta_33,
-            0.09206237180155877f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.09206237180155867f64,
+            0.09206237180155889f64,
         );
-        assert_close(
+        assert_in_interval(
             result.adjusted_theta_s_minus_33,
-            0.3158322766118873f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.3158322766118868f64,
+            0.3158322766118877f64,
         );
     }
 }
@@ -340,10 +326,10 @@ pub fn calc_ptf_saxton2006_tension_dry(theta: f64, theta_1500: f64, theta_33: f6
 #[cfg(test)]
 mod calc_ptf_saxton2006_tension_dry_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
@@ -353,12 +339,7 @@ mod calc_ptf_saxton2006_tension_dry_tests {
             0.05022058f64,
             0.10282792364858702f64,
         );
-        assert_close(
-            result,
-            159.18094591362183f64,
-            0.000000000001f64,
-            0.000000000001f64,
-        );
+        assert_in_interval(result, 159.18094591362f64, 159.18094591362365f64);
     }
 }
 #[doc = r"Estimate matric tension in the 33 kPa to air-entry segment.
@@ -399,10 +380,10 @@ pub fn calc_ptf_saxton2006_tension_wet(
 #[cfg(test)]
 mod calc_ptf_saxton2006_tension_wet_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
@@ -413,12 +394,7 @@ mod calc_ptf_saxton2006_tension_wet_tests {
             0.46172240764858724f64,
             0.5986789729513293f64,
         );
-        assert_close(
-            result,
-            24.227216407352152f64,
-            0.000000000001f64,
-            0.000000000001f64,
-        );
+        assert_in_interval(result, 24.227216407352127f64, 24.227216407352184f64);
     }
 }
 #[doc = r"Estimate unsaturated hydraulic conductivity from water content.
@@ -458,10 +434,10 @@ pub fn calc_ptf_saxton2006_conductivity(
 #[cfg(test)]
 mod calc_ptf_saxton2006_conductivity_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
@@ -472,12 +448,7 @@ mod calc_ptf_saxton2006_conductivity_tests {
             108.1478278507403f64,
             0.18776158355467926f64,
         );
-        assert_close(
-            result,
-            0.3003203142764693f64,
-            0.000000000001f64,
-            0.000000000001f64,
-        );
+        assert_in_interval(result, 0.3003203142764656f64, 0.3003203142764727f64);
     }
 }
 #[doc = r"Results returned by `calc_ptf_saxton2006_gravel`."]
@@ -546,10 +517,10 @@ pub fn calc_ptf_saxton2006_gravel(
 #[cfg(test)]
 mod calc_ptf_saxton2006_gravel_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
@@ -560,29 +531,25 @@ mod calc_ptf_saxton2006_gravel_tests {
             0.05260734364858702f64,
             108.1478278507403f64,
         );
-        assert_close(
+        assert_in_interval(
             result.gravel_volume_fraction,
-            0.11860834455314037f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.11860834455314026f64,
+            0.11860834455314048f64,
         );
-        assert_close(
+        assert_in_interval(
             result.bulk_density,
-            1.5715605653291098f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            1.571560565329108f64,
+            1.5715605653291116f64,
         );
-        assert_close(
+        assert_in_interval(
             result.bulk_plant_available_water,
-            0.04636767370708995f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.04636767370708989f64,
+            0.04636767370709f64,
         );
-        assert_close(
+        assert_in_interval(
             result.bulk_saturated_conductivity,
-            97.54880510583706f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            97.54880510583695f64,
+            97.54880510583718f64,
         );
     }
 }
@@ -636,26 +603,24 @@ pub fn calc_ptf_saxton2006_salinity(
 #[cfg(test)]
 mod calc_ptf_saxton2006_salinity_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
     fn saline_partly_saturated_soil() {
         let result = calc_ptf_saxton2006_salinity(4f64, 0.3f64, 0.46172240764858724f64);
-        assert_close(
+        assert_in_interval(
             result.saturated_osmotic_potential,
-            144f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            143.99999999999977f64,
+            144.00000000000023f64,
         );
-        assert_close(
+        assert_in_interval(
             result.osmotic_potential,
-            221.6267556713219f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            221.62675567132166f64,
+            221.62675567132212f64,
         );
     }
 }

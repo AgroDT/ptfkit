@@ -84,32 +84,16 @@ functions:
       sand: 50.0
       silt: 30.0
       clay: 20.0
-    expected:
-      mean_b: 6.09
-      mean_log_psi_s: 1.225
-      mean_log_k_sat: -0.119
-      mean_theta_s: 42.6
-      sd_b: 2.34
-      sd_log_k_sat: 0.5553
-      sd_theta_s: 6.27
-    rtol: 1.0e-12
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated directly from Table 5 formulas for pilot testing.
   - id: scalar_sandy_texture
     inputs:
       sand: 80.0
       silt: 15.0
       clay: 5.0
-    expected:
-      mean_b: 3.705
-      mean_log_psi_s: 0.832
-      mean_log_k_sat: 0.34
-      mean_theta_s: 38.82
-      sd_b: 1.59
-      sd_log_k_sat: 0.50715
-      sd_theta_s: 7.365
-    rtol: 1.0e-12
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated directly from Table 5 formulas for pilot testing.
   edge_cases:
   - id: nan_input

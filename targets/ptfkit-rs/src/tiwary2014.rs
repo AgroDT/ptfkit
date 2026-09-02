@@ -51,20 +51,19 @@ pub fn calc_ptf_tiwary2014_igp(sand: f64, bulk_density: f64, esp: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_tiwary2014_igp_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
     fn igp_saturated_conductivity_case() {
         let result = calc_ptf_tiwary2014_igp(37.3f64, 1.674f64, 4.6f64);
-        assert_close(
+        assert_in_interval(
             result,
-            0.0000005103578f64,
-            0.000000000001f64,
-            0.0000000001f64,
+            0.000000510357777777777f64,
+            0.0000005103577777777786f64,
         );
     }
 }
@@ -131,28 +130,22 @@ pub fn calc_ptf_tiwary2014_bsr(
 #[cfg(test)]
 mod calc_ptf_tiwary2014_bsr_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
     fn black_soil_compatibility_case() {
         let result = calc_ptf_tiwary2014_bsr(54.9f64, 7.6f64, 61.6f64, 7.3f64, 21.4f64, 3.32f64);
-        assert_close(result.w_33, 41.1729f64, 0.000000000001f64, 0.0000000001f64);
-        assert_close(result.w_100, 36.8273f64, 0.000000000001f64, 0.0000000001f64);
-        assert_close(
-            result.w_1500,
-            21.6976f64,
-            0.000000000001f64,
-            0.0000000001f64,
-        );
-        assert_close(
+        assert_in_interval(result.w_33, 41.17289999999994f64, 41.172900000000055f64);
+        assert_in_interval(result.w_100, 36.827299999999944f64, 36.82730000000006f64);
+        assert_in_interval(result.w_1500, 21.697599999999973f64, 21.69760000000003f64);
+        assert_in_interval(
             result.k_sat,
-            0.000005373367f64,
-            0.000000000001f64,
-            0.0000000001f64,
+            0.000005373366666666661f64,
+            0.000005373366666666674f64,
         );
     }
 }

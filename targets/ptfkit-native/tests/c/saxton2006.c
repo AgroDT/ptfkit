@@ -6,69 +6,57 @@
 int main() {
     {
         const saxton2006_ptf_result result = calc_ptf_saxton2006(0.88, 0.05, 2.5);
-        assert_close_enough(result.theta_1500, 0.05022058, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.theta_33, 0.10282792364858702, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.theta_s, 0.46172240764858724, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.plant_available_water, 0.05260734364858702, 0.000000000001,
-                            0.000000000001);
-        assert_close_enough(result.air_entry_tension, 0.5986789729513293, 0.000000000001,
-                            0.000000000001);
-        assert_close_enough(result.retention_a, 0.00018076452552206025, 0.000000000001,
-                            0.000000000001);
-        assert_close_enough(result.retention_b, 5.325903100453899, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.conductivity_lambda, 0.18776158355467926, 0.000000000001,
-                            0.000000000001);
-        assert_close_enough(result.saturated_conductivity, 108.1478278507403, 0.000000000001,
-                            0.000000000001);
-        assert_close_enough(result.normal_density, 1.4264356197312436, 0.000000000001,
-                            0.000000000001);
+        assert_in_interval(result.theta_1500, 0.05022057999999956, 0.050220580000000445);
+        assert_in_interval(result.theta_33, 0.10282792364858612, 0.1028279236485879);
+        assert_in_interval(result.theta_s, 0.46172240764858347, 0.46172240764859057);
+        assert_in_interval(result.plant_available_water, 0.05260734364858655, 0.05260734364858744);
+        assert_in_interval(result.air_entry_tension, 0.5986789729513134, 0.5986789729513277);
+        assert_in_interval(result.retention_a, 0.0001807645255220579, 0.00018076452552206137);
+        assert_in_interval(result.retention_b, 5.325903100453843, 5.3259031004539565);
+        assert_in_interval(result.conductivity_lambda, 0.18776158355467742, 0.18776158355468098);
+        assert_in_interval(result.saturated_conductivity, 108.14782785073919, 108.14782785074101);
+        assert_in_interval(result.normal_density, 1.4264356197312302, 1.4264356197312587);
     }
     {
         const saxton2006_density_result result = calc_ptf_saxton2006_density(
             1.4264356197312436, 0.46172240764858724, 0.10282792364858702, 1.1);
-        assert_close_enough(result.adjusted_density, 1.569079181704368, 0.000000000001,
-                            0.000000000001);
-        assert_close_enough(result.adjusted_theta_s, 0.407894648413446, 0.000000000001,
-                            0.000000000001);
-        assert_close_enough(result.adjusted_theta_33, 0.09206237180155877, 0.000000000001,
-                            0.000000000001);
-        assert_close_enough(result.adjusted_theta_s_minus_33, 0.3158322766118873, 0.000000000001,
-                            0.000000000001);
+        assert_in_interval(result.adjusted_density, 1.5690791817043663, 1.5690791817043699);
+        assert_in_interval(result.adjusted_theta_s, 0.4078946484134456, 0.40789464841344647);
+        assert_in_interval(result.adjusted_theta_33, 0.09206237180155867, 0.09206237180155889);
+        assert_in_interval(result.adjusted_theta_s_minus_33, 0.3158322766118868,
+                           0.3158322766118877);
     }
     {
         const double result =
             calc_ptf_saxton2006_tension_dry(0.07652425182429351, 0.05022058, 0.10282792364858702);
-        assert_close_enough(result, 159.18094591362183, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 159.18094591362, 159.18094591362365);
     }
     {
         const double result = calc_ptf_saxton2006_tension_wet(
             0.2, 0.10282792364858702, 0.46172240764858724, 0.5986789729513293);
-        assert_close_enough(result, 24.227216407352152, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 24.227216407352127, 24.227216407352184);
     }
     {
         const double result = calc_ptf_saxton2006_conductivity(
             0.3, 0.46172240764858724, 108.1478278507403, 0.18776158355467926);
-        assert_close_enough(result, 0.3003203142764693, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 0.3003203142764656, 0.3003203142764727);
     }
     {
         const saxton2006_gravel_result result = calc_ptf_saxton2006_gravel(
             0.2, 1.4264356197312436, 0.05260734364858702, 108.1478278507403);
-        assert_close_enough(result.gravel_volume_fraction, 0.11860834455314037, 0.000000000001,
-                            0.000000000001);
-        assert_close_enough(result.bulk_density, 1.5715605653291098, 0.000000000001,
-                            0.000000000001);
-        assert_close_enough(result.bulk_plant_available_water, 0.04636767370708995, 0.000000000001,
-                            0.000000000001);
-        assert_close_enough(result.bulk_saturated_conductivity, 97.54880510583706, 0.000000000001,
-                            0.000000000001);
+        assert_in_interval(result.gravel_volume_fraction, 0.11860834455314026, 0.11860834455314048);
+        assert_in_interval(result.bulk_density, 1.571560565329108, 1.5715605653291116);
+        assert_in_interval(result.bulk_plant_available_water, 0.04636767370708989,
+                           0.04636767370709);
+        assert_in_interval(result.bulk_saturated_conductivity, 97.54880510583695,
+                           97.54880510583718);
     }
     {
         const saxton2006_salinity_result result =
             calc_ptf_saxton2006_salinity(4.0, 0.3, 0.46172240764858724);
-        assert_close_enough(result.saturated_osmotic_potential, 144.0, 0.000000000001,
-                            0.000000000001);
-        assert_close_enough(result.osmotic_potential, 221.6267556713219, 0.000000000001,
-                            0.000000000001);
+        assert_in_interval(result.saturated_osmotic_potential, 143.99999999999977,
+                           144.00000000000023);
+        assert_in_interval(result.osmotic_potential, 221.62675567132166, 221.62675567132212);
     }
     return 0;
 }

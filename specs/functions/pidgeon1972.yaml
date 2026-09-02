@@ -50,10 +50,8 @@ functions:
       silt: 30.0
       clay: 20.0
       organic_matter: 2.0
-    expected:
-      field_capacity: 21.26
-    rtol: 1.0e-12
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from Table 3 using the reviewed 1.54 organic-matter coefficient.
   edge_cases: []
   documentation:
@@ -92,10 +90,8 @@ functions:
   - id: regression_case
     inputs:
       sand: 50.0
-    expected:
-      field_capacity: 23.66
-    rtol: 1.0e-12
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from Table 3.
   edge_cases: []
   documentation:
@@ -139,10 +135,8 @@ functions:
     inputs:
       sand: 50.0
       organic_matter: 2.0
-    expected:
-      field_capacity: 23.27
-    rtol: 1.0e-12
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from Table 3.
   edge_cases: []
   documentation:
@@ -186,10 +180,8 @@ functions:
     inputs:
       sand: 50.0
       organic_matter: 2.0
-    expected:
-      field_capacity: 31.19
-    rtol: 1.0e-12
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from Table 3.
   edge_cases: []
   documentation:
@@ -239,10 +231,8 @@ functions:
       silt: 30.0
       clay: 20.0
       organic_matter: 2.0
-    expected:
-      permanent_wilting_point: 11.11
-    rtol: 1.0e-12
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from Table 3.
   edge_cases: []
   documentation:
@@ -280,10 +270,8 @@ functions:
   - id: regression_case
     inputs:
       sand: 50.0
-    expected:
-      permanent_wilting_point: 13.91
-    rtol: 1.0e-12
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from Table 3.
   edge_cases: []
   documentation:
@@ -327,10 +315,8 @@ functions:
     inputs:
       sand: 50.0
       organic_matter: 2.0
-    expected:
-      permanent_wilting_point: 15.28
-    rtol: 1.0e-12
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from Table 3.
   edge_cases: []
   documentation:
@@ -374,10 +360,8 @@ functions:
     inputs:
       clay: 20.0
       organic_matter: 2.0
-    expected:
-      available_water_capacity: 151.48
-    rtol: 1.0e-12
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from Table 3.
   edge_cases: []
   documentation:
@@ -421,10 +405,8 @@ functions:
     inputs:
       sand: 50.0
       organic_matter: 2.0
-    expected:
-      available_water_capacity: 109.24
-    rtol: 1.0e-12
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from Table 3.
   edge_cases: []
   documentation:
@@ -462,10 +444,8 @@ functions:
   - id: regression_case
     inputs:
       coarse_sand: 20.0
-    expected:
-      available_water_capacity: 115.1
-    rtol: 1.0e-12
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from Table 3.
   edge_cases: []
   documentation:
@@ -503,10 +483,8 @@ functions:
   - id: regression_case
     inputs:
       fine_sand: 20.0
-    expected:
-      available_water_capacity: 119.9
-    rtol: 1.0e-12
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from Table 3.
   edge_cases: []
   documentation:
@@ -544,10 +522,8 @@ functions:
   - id: regression_case
     inputs:
       very_fine_sand: 10.0
-    expected:
-      available_water_capacity: 112.7
-    rtol: 1.0e-12
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from Table 3.
   edge_cases: []
   documentation:
@@ -598,10 +574,8 @@ functions:
       silt: 30.0
       clay: 20.0
       organic_matter: 2.0
-    expected:
-      extended_available_water_capacity: 16.12
-    rtol: 1.0e-12
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from Table 3.
   edge_cases: []
   documentation:
@@ -639,10 +613,8 @@ functions:
   - id: regression_case
     inputs:
       sand: 50.0
-    expected:
-      extended_available_water_capacity: 51.7
-    rtol: 1.0e-12
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from Table 3.
   edge_cases: []
   documentation:
@@ -686,10 +658,8 @@ functions:
     inputs:
       sand: 50.0
       organic_matter: 2.0
-    expected:
-      extended_available_water_capacity: 56.26
-    rtol: 1.0e-12
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from Table 3.
   edge_cases: []
   documentation:
@@ -734,10 +704,8 @@ functions:
     inputs:
       coarse_sand: 20.0
       organic_matter: 2.0
-    expected:
-      extended_available_water_capacity: 53.72
-    rtol: 1.0e-12
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from Table 3.
   edge_cases: []
   documentation:
@@ -782,10 +750,8 @@ functions:
     inputs:
       fine_sand: 20.0
       organic_matter: 2.0
-    expected:
-      extended_available_water_capacity: 59.58
-    rtol: 1.0e-12
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from Table 3.
   edge_cases: []
   documentation:

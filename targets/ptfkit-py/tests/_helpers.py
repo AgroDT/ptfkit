@@ -14,12 +14,11 @@ if TYPE_CHECKING:
 
     R = TypeVar('R', bound=NamedTuple)
 
-    GoldenCase = tuple[Mapping[str, Any], dict[str, float], float, float]
+    Acceptance = dict[str, tuple[float, float, bool]]
+    GoldenCase = tuple[Mapping[str, Any], Acceptance]
     VectorCasePart = tuple[
         dict[str, Any],
-        dict[str, float],
-        float,
-        float,
+        Acceptance,
     ]
     VectorCaseScalar = tuple[*VectorCasePart, np.ndarray]
     VectorCaseTuple = tuple[*VectorCasePart, R]
@@ -37,7 +36,7 @@ def prepare_vector_case(
     cases: Sequence[GoldenCase],
     result_cls: type[R] | None = None,
 ) -> VectorCaseScalar | VectorCaseTuple:
-    inputs, expected, rtol, atol = cases[0]
+    inputs, acceptance = cases[0]
     vector_inputs = {
         name: (
             EnumArray._from_members(type(value), [value])  # noqa: SLF001
@@ -54,4 +53,4 @@ def prepare_vector_case(
         field_count = len(result_cls._fields)
         out = result_cls(*(np.empty(1, dtype=float) for _ in range(field_count)))
 
-    return vector_inputs, expected, rtol, atol, out
+    return vector_inputs, acceptance, out

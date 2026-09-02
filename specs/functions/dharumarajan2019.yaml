@@ -111,11 +111,8 @@ functions:
           clay: 43.2
           sand: 39.8
           cation_exchange_capacity: 33.6
-        expected:
-          field_capacity: 29.7912
-          permanent_wilting_point: 18.9276
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Calculated from the Table 3 coefficients at the Table 1 mean inputs.
     edge_cases: []
     documentation:
@@ -157,11 +154,8 @@ functions:
       - id: northern_study_mean_clay_case
         inputs:
           clay: 43.2
-        expected:
-          field_capacity: 30.2832
-          permanent_wilting_point: 19.157
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Calculated from the Table 4 coefficients at the Table 1 mean clay content.
     edge_cases: []
     documentation:
@@ -209,11 +203,8 @@ functions:
           clay: 31.5
           sand: 53.5
           cation_exchange_capacity: 14.7
-        expected:
-          field_capacity: 21.8169
-          permanent_wilting_point: 11.3054
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Calculated from the Table 5 coefficients at the Table 2 mean inputs.
     edge_cases: []
     documentation:
@@ -252,11 +243,8 @@ functions:
       - id: southern_study_mean_clay_case
         inputs:
           clay: 31.5
-        expected:
-          field_capacity: 22.0255
-          permanent_wilting_point: 11.503
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Calculated from the Table 7 coefficients at the Table 2 mean clay content.
     edge_cases: []
     documentation:
@@ -304,10 +292,8 @@ functions:
           sand: 50.0
           silt: 20.0
           clay: 30.0
-        expected:
-          infiltration_rate: 18.45
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Calculated directly from the reported equation for a texture summing to 100%.
     edge_cases: []
     documentation:

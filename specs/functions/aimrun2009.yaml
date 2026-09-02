@@ -58,10 +58,8 @@ functions:
       bulk_density: 0.94
       organic_matter: 12.07
       gmd: 0.01
-    expected:
-      k_sat: 7.358406556179513e-08
-    rtol: 1.0e-08
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from equation (10) and unit conversion.
   - id: mean_hardpan_layer
     inputs:
@@ -69,10 +67,8 @@ functions:
       bulk_density: 1.19
       organic_matter: 8.55
       gmd: 0.007
-    expected:
-      k_sat: 3.07872446717209e-08
-    rtol: 1.0e-08
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from equation (10) and unit conversion.
   - id: mean_subsoil_layer
     inputs:
@@ -80,10 +76,8 @@ functions:
       bulk_density: 1.13
       organic_matter: 5.12
       gmd: 0.005
-    expected:
-      k_sat: 2.3343051908963327e-08
-    rtol: 1.0e-08
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from equation (10) and unit conversion.
   - id: min_organic_matter
     inputs:
@@ -91,10 +85,8 @@ functions:
       bulk_density: 1.08
       organic_matter: 1.43
       gmd: 0.008
-    expected:
-      k_sat: 3.831168764444974e-08
-    rtol: 1.0e-08
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from equation (10) and unit conversion.
   edge_cases:
   - id: non_positive_log_input

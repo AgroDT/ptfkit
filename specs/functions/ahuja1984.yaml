@@ -70,10 +70,8 @@ functions:
           theta_33: 0.25
           coefficient_b: 100.0
           exponent_n: 4.0
-        expected:
-          k_sat: 0.16
-        rtol: 1.0e-12
-        atol: 1.0e-14
+        verification:
+          kind: calculated_reference
         notes: Algebraic verification of equation 3 with the paper's typical exponent n = 4.
       - id: exponent_five
         inputs:
@@ -81,10 +79,8 @@ functions:
           theta_33: 0.2
           coefficient_b: 100.0
           exponent_n: 5.0
-        expected:
-          k_sat: 0.243
-        rtol: 1.0e-12
-        atol: 1.0e-14
+        verification:
+          kind: calculated_reference
         notes: Algebraic verification of equation 3 with the evaluated exponent n = 5.
     edge_cases:
       - id: zero_effective_porosity

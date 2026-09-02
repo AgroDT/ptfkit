@@ -395,9 +395,83 @@ impl Function {
 pub(crate) struct GoldenTest {
     pub(crate) id: String,
     pub(crate) inputs: BTreeMap<String, GoldenInput>,
+    #[serde(default)]
     pub(crate) expected: BTreeMap<String, f64>,
-    pub(crate) rtol: f64,
-    pub(crate) atol: f64,
+    pub(crate) verification: Verification,
+    #[serde(default)]
+    pub(crate) output_verification: BTreeMap<String, Verification>,
+    pub(crate) notes: String,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub(crate) enum Verification {
+    Exact,
+    CalculatedReference,
+    PublishedRounded {
+        precision: PublishedPrecision,
+    },
+    PublishedInterval {
+        lower: f64,
+        upper: f64,
+    },
+    PublishedUncertainty {
+        value: f64,
+        absolute_uncertainty: f64,
+    },
+}
+
+impl Verification {
+    pub(crate) fn kind(&self) -> VerificationKind {
+        match self {
+            Self::Exact => VerificationKind::Exact,
+            Self::CalculatedReference => VerificationKind::CalculatedReference,
+            Self::PublishedRounded { .. } => VerificationKind::PublishedRounded,
+            Self::PublishedInterval { .. } => VerificationKind::PublishedInterval,
+            Self::PublishedUncertainty { .. } => VerificationKind::PublishedUncertainty,
+        }
+    }
+
+    pub(crate) fn is_source_based(&self) -> bool {
+        !matches!(self, Self::CalculatedReference)
+    }
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
+#[serde(untagged)]
+pub(crate) enum PublishedPrecision {
+    DecimalPlaces { decimal_places: u32 },
+    SignificantDigits { significant_digits: u32 },
+}
+
+#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub(crate) enum VerificationKind {
+    Exact,
+    CalculatedReference,
+    PublishedRounded,
+    PublishedInterval,
+    PublishedUncertainty,
+}
+
+impl VerificationKind {
+    pub(crate) const ALL: [Self; 5] = [
+        Self::Exact,
+        Self::CalculatedReference,
+        Self::PublishedRounded,
+        Self::PublishedInterval,
+        Self::PublishedUncertainty,
+    ];
+
+    pub(crate) const fn label(self) -> &'static str {
+        match self {
+            Self::Exact => "exact",
+            Self::CalculatedReference => "calculated_reference",
+            Self::PublishedRounded => "published_rounded",
+            Self::PublishedInterval => "published_interval",
+            Self::PublishedUncertainty => "published_uncertainty",
+        }
+    }
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -631,9 +705,13 @@ pub(crate) struct CompiledFunction {
 pub(crate) struct CompiledGoldenTest {
     pub(crate) id: String,
     pub(crate) inputs: Vec<CompiledInput>,
-    pub(crate) expected: Vec<f64>,
-    pub(crate) rtol: f64,
-    pub(crate) atol: f64,
+    pub(crate) acceptance: Vec<Acceptance>,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub(crate) enum Acceptance {
+    Exact(f64),
+    Interval { lower: f64, upper: f64 },
 }
 
 #[derive(Clone, Debug)]

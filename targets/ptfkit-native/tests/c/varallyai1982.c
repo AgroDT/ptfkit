@@ -6,27 +6,27 @@
 int main() {
     {
         const varallyai1982_parameters result = calc_ptf_varallyai1982_meadow(1.4, 0.3, 0.25);
-        assert_close_enough(result.theta_0, 46.54495, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.m, 0.10029, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.pf_star, 3.62445, 0.000000000001, 0.000000000001);
+        assert_in_interval(result.theta_0, 46.544949999999545, 46.544950000000455);
+        assert_in_interval(result.m, 0.10028999999999912, 0.10029000000000089);
+        assert_in_interval(result.pf_star, 3.6244499999999715, 3.6244500000000284);
     }
     {
         const varallyai1982_parameters result = calc_ptf_varallyai1982_chernozem_a(1.4, 0.35);
-        assert_close_enough(result.theta_0, 52.005, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.m, 0.4174, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.pf_star, 4.00469, 0.000000000001, 0.000000000001);
+        assert_in_interval(result.theta_0, 52.004999999999946, 52.00500000000006);
+        assert_in_interval(result.m, 0.41739999999999955, 0.41740000000000044);
+        assert_in_interval(result.pf_star, 4.004689999999992, 4.004690000000006);
     }
     {
         const varallyai1982_parameters result = calc_ptf_varallyai1982_chernozem_b(1.4, 0.35);
-        assert_close_enough(result.theta_0, 47.60035, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.m, 0.407, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.pf_star, 3.9299, 0.000000000001, 0.000000000001);
+        assert_in_interval(result.theta_0, 47.60034999999955, 47.60035000000046);
+        assert_in_interval(result.m, 0.40699999999999636, 0.40700000000000347);
+        assert_in_interval(result.pf_star, 3.929899999999971, 3.929900000000028);
     }
     {
         const varallyai1982_parameters result = calc_ptf_varallyai1982_chernozem_c(1.4, 0.35);
-        assert_close_enough(result.theta_0, 49.87, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.m, 0.84011, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.pf_star, 3.59772, 0.000000000001, 0.000000000001);
+        assert_in_interval(result.theta_0, 49.86999999999955, 49.87000000000046);
+        assert_in_interval(result.m, 0.8401099999999929, 0.8401100000000071);
+        assert_in_interval(result.pf_star, 3.597719999999971, 3.597720000000028);
     }
     return 0;
 }

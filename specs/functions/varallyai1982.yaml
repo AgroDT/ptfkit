@@ -76,12 +76,8 @@ functions:
           bulk_density: 1.4
           fine_sand_fraction: 0.3
           fine_fraction: 0.25
-        expected:
-          theta_0: 46.54495
-          m: 0.10029
-          pf_star: 3.62445
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Calculated directly from equation (14) during specification review.
     edge_cases:
       - id: nan_fine_fraction
@@ -129,12 +125,8 @@ functions:
         inputs:
           bulk_density: 1.4
           fine_fraction: 0.35
-        expected:
-          theta_0: 52.005
-          m: 0.4174
-          pf_star: 4.00469
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Calculated directly from equation (15) during specification review.
     edge_cases:
       - id: nan_bulk_density
@@ -180,12 +172,8 @@ functions:
         inputs:
           bulk_density: 1.4
           fine_fraction: 0.35
-        expected:
-          theta_0: 47.60035
-          m: 0.407
-          pf_star: 3.9299
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Calculated directly from equation (16) during specification review.
     edge_cases:
       - id: nan_bulk_density
@@ -231,12 +219,8 @@ functions:
         inputs:
           bulk_density: 1.4
           fine_fraction: 0.35
-        expected:
-          theta_0: 49.87
-          m: 0.84011
-          pf_star: 3.59772
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Calculated directly from equation (17) during specification review.
     edge_cases:
       - id: nan_bulk_density

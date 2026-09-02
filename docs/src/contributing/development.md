@@ -74,6 +74,11 @@ lock entry.
 The [PTF source specification guide](../ptf-catalog/index.md) explains the
 scientific information represented by each YAML file. The JSON Schema and
 `mise run validate` define the complete structural and semantic contract.
+Golden-case provenance, high-precision reference evaluation, and the shared
+cross-target acceptance policy are documented in the
+[scientific verification policy](verification.md). Changes to semantic IR must
+keep that evaluator exhaustive; an unsupported operation is a verification
+capability gap and must not fall back to a generated target.
 
 Do not edit generated target sources, tests, the PTF catalog, or generated API
 reference pages directly. Regenerate every target and the PTF catalog with:

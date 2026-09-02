@@ -14,89 +14,89 @@ int main() {
         const auto result = ptfkit::beniaich2023::calc_ptf_beniaich2023_slr1(20.0);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::beniaich2023::Beniaich2023PTFResult>);
-        assert_close_enough(result.water_saturation, 0.57427, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.water_field_capacity, 0.17577, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.water_wilting_point, 0.09621, 0.000000000001, 0.000000000001);
+        assert_in_interval(result.water_saturation, 0.5742699999999991, 0.5742700000000008);
+        assert_in_interval(result.water_field_capacity, 0.1757699999999998, 0.17577000000000023);
+        assert_in_interval(result.water_wilting_point, 0.09620999999999989, 0.09621000000000011);
     }
     {
         const auto result = ptfkit::beniaich2023::calc_ptf_beniaich2023_slr2(30.0);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::beniaich2023::Beniaich2023PTFResult>);
-        assert_close_enough(result.water_saturation, 0.68478, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.water_field_capacity, 0.24878, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.water_wilting_point, 0.16131, 0.000000000001, 0.000000000001);
+        assert_in_interval(result.water_saturation, 0.6847799999999992, 0.6847800000000009);
+        assert_in_interval(result.water_field_capacity, 0.24877999999999978, 0.24878000000000022);
+        assert_in_interval(result.water_wilting_point, 0.1613099999999998, 0.16131000000000023);
     }
     {
         const auto result = ptfkit::beniaich2023::calc_ptf_beniaich2023_slr3(50.0);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::beniaich2023::Beniaich2023PTFResult>);
-        assert_close_enough(result.water_saturation, 0.6007, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.water_field_capacity, 0.1848, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.water_wilting_point, 0.11077, 0.000000000001, 0.000000000001);
+        assert_in_interval(result.water_saturation, 0.6006999999999991, 0.6007000000000009);
+        assert_in_interval(result.water_field_capacity, 0.18479999999999977, 0.18480000000000021);
+        assert_in_interval(result.water_wilting_point, 0.11076999999999988, 0.1107700000000001);
     }
     {
         const auto result = ptfkit::beniaich2023::calc_ptf_beniaich2023_slr4(20.0, 30.0);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::beniaich2023::Beniaich2023PTFResult>);
-        assert_close_enough(result.water_saturation, 0.74501, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.water_field_capacity, 0.30678, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.water_wilting_point, 0.19915, 0.000000000001, 0.000000000001);
+        assert_in_interval(result.water_saturation, 0.7450099999999991, 0.7450100000000008);
+        assert_in_interval(result.water_field_capacity, 0.30677999999999955, 0.30678000000000044);
+        assert_in_interval(result.water_wilting_point, 0.19914999999999977, 0.19915000000000022);
     }
     {
         const auto result = ptfkit::beniaich2023::calc_ptf_beniaich2023_slr5(20.0, 40.0);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::beniaich2023::Beniaich2023PTFResult>);
-        assert_close_enough(result.water_saturation, 0.68578, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.water_field_capacity, 0.241875, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.water_wilting_point, 0.16176, 0.000000000001, 0.000000000001);
+        assert_in_interval(result.water_saturation, 0.6857799999999991, 0.6857800000000008);
+        assert_in_interval(result.water_field_capacity, 0.24187499999999978, 0.24187500000000023);
+        assert_in_interval(result.water_wilting_point, 0.16175999999999977, 0.1617600000000002);
     }
     {
         const auto result = ptfkit::beniaich2023::calc_ptf_beniaich2023_slr6(2.0);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::beniaich2023::Beniaich2023PTFResult>);
-        assert_close_enough(result.water_saturation, 0.66749, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.water_field_capacity, 0.24009, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.water_wilting_point, 0.15562, 0.000000000001, 0.000000000001);
+        assert_in_interval(result.water_saturation, 0.6674899999999991, 0.6674900000000009);
+        assert_in_interval(result.water_field_capacity, 0.24008999999999978, 0.24009000000000022);
+        assert_in_interval(result.water_wilting_point, 0.1556199999999998, 0.15562000000000023);
     }
     {
         const auto result = ptfkit::beniaich2023::calc_ptf_beniaich2023_mlr1(30.0, 50.0, 2.0);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::beniaich2023::Beniaich2023PTFResult>);
-        assert_close_enough(result.water_saturation, 0.56266, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.water_field_capacity, 0.17238, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.water_wilting_point, 0.09366, 0.000000000001, 0.000000000001);
+        assert_in_interval(result.water_saturation, 0.5626599999999992, 0.5626600000000009);
+        assert_in_interval(result.water_field_capacity, 0.17237999999999978, 0.17238000000000023);
+        assert_in_interval(result.water_wilting_point, 0.09365999999999988, 0.0936600000000001);
     }
     {
         const auto result = ptfkit::beniaich2023::calc_ptf_beniaich2023_mlr2(50.0, 2.0);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::beniaich2023::Beniaich2023PTFResult>);
-        assert_close_enough(result.water_saturation, 0.58954, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.water_field_capacity, 0.18025, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.water_wilting_point, 0.10825, 0.000000000001, 0.000000000001);
+        assert_in_interval(result.water_saturation, 0.5895399999999991, 0.5895400000000008);
+        assert_in_interval(result.water_field_capacity, 0.18024999999999977, 0.18025000000000022);
+        assert_in_interval(result.water_wilting_point, 0.10824999999999989, 0.10825000000000011);
     }
     {
         const auto result = ptfkit::beniaich2023::calc_ptf_beniaich2023_mlr3(30.0, 2.0);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::beniaich2023::Beniaich2023PTFResult>);
-        assert_close_enough(result.water_saturation, 0.67031, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.water_field_capacity, 0.24275, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.water_wilting_point, 0.15755, 0.000000000001, 0.000000000001);
+        assert_in_interval(result.water_saturation, 0.6703099999999991, 0.6703100000000008);
+        assert_in_interval(result.water_field_capacity, 0.24274999999999977, 0.24275000000000022);
+        assert_in_interval(result.water_wilting_point, 0.15754999999999977, 0.15755000000000022);
     }
     {
         const auto result = ptfkit::beniaich2023::calc_ptf_beniaich2023_mlr4(20.0, 2.0);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::beniaich2023::Beniaich2023PTFResult>);
-        assert_close_enough(result.water_saturation, 0.5589, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.water_field_capacity, 0.16859, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.water_wilting_point, 0.09157, 0.000000000001, 0.000000000001);
+        assert_in_interval(result.water_saturation, 0.5588999999999991, 0.5589000000000008);
+        assert_in_interval(result.water_field_capacity, 0.16858999999999977, 0.1685900000000002);
+        assert_in_interval(result.water_wilting_point, 0.09156999999999989, 0.09157000000000011);
     }
     {
         const auto result = ptfkit::beniaich2023::calc_ptf_beniaich2023_mlr5(20.0, 30.0, 2.0);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::beniaich2023::Beniaich2023PTFResult>);
-        assert_close_enough(result.water_saturation, 0.56229, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.water_field_capacity, 0.172, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.water_wilting_point, 0.09379, 0.000000000001, 0.000000000001);
+        assert_in_interval(result.water_saturation, 0.5622899999999991, 0.5622900000000008);
+        assert_in_interval(result.water_field_capacity, 0.17199999999999976, 0.1720000000000002);
+        assert_in_interval(result.water_wilting_point, 0.09378999999999989, 0.09379000000000011);
     }
     return 0;
 }

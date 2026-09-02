@@ -14,25 +14,25 @@ int main() {
         const auto result = ptfkit::cosby1984::calc_ptf_cosby1984_univariate(50.0, 30.0, 20.0);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::cosby1984::Cosby1984UnivariatePTFResult>);
-        assert_close_enough(result.mean_b, 6.09, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.mean_log_psi_s, 1.225, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.mean_log_k_sat, -0.119, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.mean_theta_s, 42.6, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.sd_b, 2.34, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.sd_log_k_sat, 0.5553, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.sd_theta_s, 6.27, 0.000000000001, 0.000000000001);
+        assert_in_interval(result.mean_b, 6.089999999999993, 6.090000000000007);
+        assert_in_interval(result.mean_log_psi_s, 1.2249999999999983, 1.2250000000000019);
+        assert_in_interval(result.mean_log_k_sat, -0.1190000000000001, -0.11899999999999988);
+        assert_in_interval(result.mean_theta_s, 42.599999999999945, 42.60000000000006);
+        assert_in_interval(result.sd_b, 2.3399999999999963, 2.3400000000000034);
+        assert_in_interval(result.sd_log_k_sat, 0.5552999999999991, 0.5553000000000009);
+        assert_in_interval(result.sd_theta_s, 6.2699999999999925, 6.270000000000007);
     }
     {
         const auto result = ptfkit::cosby1984::calc_ptf_cosby1984_univariate(80.0, 15.0, 5.0);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::cosby1984::Cosby1984UnivariatePTFResult>);
-        assert_close_enough(result.mean_b, 3.705, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.mean_log_psi_s, 0.832, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.mean_log_k_sat, 0.34, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.mean_theta_s, 38.82, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.sd_b, 1.59, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.sd_log_k_sat, 0.50715, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.sd_theta_s, 7.365, 0.000000000001, 0.000000000001);
+        assert_in_interval(result.mean_b, 3.7049999999999965, 3.7050000000000036);
+        assert_in_interval(result.mean_log_psi_s, 0.8319999999999991, 0.8320000000000008);
+        assert_in_interval(result.mean_log_k_sat, 0.3399999999999996, 0.34000000000000047);
+        assert_in_interval(result.mean_theta_s, 38.81999999999994, 38.82000000000006);
+        assert_in_interval(result.sd_b, 1.5899999999999983, 1.5900000000000019);
+        assert_in_interval(result.sd_log_k_sat, 0.5071499999999991, 0.5071500000000009);
+        assert_in_interval(result.sd_theta_s, 7.364999999999993, 7.365000000000007);
     }
     return 0;
 }

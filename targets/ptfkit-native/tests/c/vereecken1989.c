@@ -6,18 +6,18 @@
 int main() {
     {
         const vereecken1989_ptf_result result = calc_ptf_vereecken1989(52.14, 10.93, 1.03, 1.466);
-        assert_close_enough(result.theta_r, 0.08406999999999999, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.theta_s, 0.4060520000000001, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.alpha, 0.003581613076579849, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.n, 0.8602234826041976, 0.000000000001, 0.000000000001);
+        assert_in_interval(result.theta_r, 0.08406999999999912, 0.0840700000000009);
+        assert_in_interval(result.theta_s, 0.40605199999999647, 0.4060520000000036);
+        assert_in_interval(result.alpha, 0.0035816130765798197, 0.0035816130765798752);
+        assert_in_interval(result.n, 0.8602234826041903, 0.8602234826042046);
     }
     {
         const vereecken1989_detailed_ptf_result result = calc_ptf_vereecken1989_detailed(
             0.25, 0.88, 13.53, 21.15, 16.3, 24.83, 7.0, 5.15, 10.93, 0.07, 4.07, 1.03, 1.466);
-        assert_close_enough(result.theta_r, 0.08277820000000001, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.theta_s, 0.4060520000000001, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.alpha, 0.02522115884641546, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.n, 0.517175605329397, 0.000000000001, 0.000000000001);
+        assert_in_interval(result.theta_r, 0.08277819999999911, 0.08277820000000088);
+        assert_in_interval(result.theta_s, 0.40605199999999647, 0.4060520000000036);
+        assert_in_interval(result.alpha, 0.025221158846415237, 0.02522115884641568);
+        assert_in_interval(result.n, 0.5171756053293899, 0.5171756053294041);
     }
     return 0;
 }

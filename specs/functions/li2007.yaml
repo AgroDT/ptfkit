@@ -82,13 +82,8 @@ functions:
       clay: 5.0
       soil_organic_matter: 0.21
       bulk_density: 1.2
-    expected:
-      theta_s: 0.5256803583157499
-      a_vg: 0.9491464758307142
-      n_vg: 1.1657804980997006
-      k_sat: 6.549110367333547e-06
-    rtol: 1.0e-08
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from Table 6 formulas and unit conversion.
   - id: loam
     inputs:
@@ -97,13 +92,8 @@ functions:
       clay: 11.05
       soil_organic_matter: 0.65
       bulk_density: 1.42
-    expected:
-      theta_s: 0.49659526127697506
-      a_vg: 0.009519989841950734
-      n_vg: 1.1806286355149054
-      k_sat: 4.5117324656202257e-07
-    rtol: 1.0e-08
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from Table 6 formulas and unit conversion.
   - id: silty_clay
     inputs:
@@ -112,13 +102,8 @@ functions:
       clay: 27.12
       soil_organic_matter: 1.02
       bulk_density: 1.48
-    expected:
-      theta_s: 0.4053061510618609
-      a_vg: 0.0018530400762371828
-      n_vg: 1.2080428739797433
-      k_sat: 1.5151432632107234e-06
-    rtol: 1.0e-08
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from Table 6 formulas and unit conversion.
   edge_cases:
   - id: non_positive_log_input

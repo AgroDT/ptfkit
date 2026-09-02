@@ -1,8 +1,13 @@
+use std::{
+    collections::HashMap,
+    sync::{Mutex, OnceLock},
+};
+
 use anyhow::{Context, Result};
 
 use crate::model::{
     CompiledFunction, CompiledGoldenTest, CompiledInput, CoreFunction, Entry, Function,
-    GoldenInput, Output, Outputs,
+    GoldenInput, Output, Outputs, Verification,
 };
 
 pub(super) fn functions(entries: Vec<Entry>) -> Result<Vec<CompiledFunction>> {
@@ -34,7 +39,7 @@ pub(super) fn functions(entries: Vec<Entry>) -> Result<Vec<CompiledFunction>> {
                 output,
             };
             compiled.push(CompiledFunction {
-                golden_tests: golden_tests(function)?,
+                golden_tests: golden_tests(function, &ir)?,
                 core,
                 entry: entry.clone(),
                 function_index,
@@ -45,7 +50,10 @@ pub(super) fn functions(entries: Vec<Entry>) -> Result<Vec<CompiledFunction>> {
     Ok(compiled)
 }
 
-fn golden_tests(function: &Function) -> Result<Vec<CompiledGoldenTest>> {
+fn golden_tests(
+    function: &Function,
+    ir: &crate::semantic::Function,
+) -> Result<Vec<CompiledGoldenTest>> {
     function
         .golden_tests
         .iter()
@@ -93,25 +101,55 @@ fn golden_tests(function: &Function) -> Result<Vec<CompiledGoldenTest>> {
                     }
                 })
                 .collect::<Result<Vec<_>>>()?;
-            let expected = function
+            for name in case.expected.keys().chain(case.output_verification.keys()) {
+                if !function.outputs.fields().iter().any(|field| field.name == *name) {
+                    anyhow::bail!(
+                        "golden test `{}` references unknown output `{name}`",
+                        case.id
+                    );
+                }
+            }
+            static CACHE: OnceLock<Mutex<HashMap<String, Vec<crate::model::Acceptance>>>> = OnceLock::new();
+            let cache_key = format!("{ir:?}|{case:?}");
+            let mut cache = CACHE
+                .get_or_init(|| Mutex::new(HashMap::new()))
+                .lock()
+                .expect("verification cache lock is not poisoned");
+            if let Some(acceptance) = cache.get(&cache_key).cloned() {
+                return Ok(CompiledGoldenTest { id: case.id.clone(), inputs, acceptance });
+            }
+            let oracle = crate::verification::oracle_outputs(ir, &function.outputs, &inputs)
+                .with_context(|| format!("evaluating golden test `{}`", case.id))?;
+            let acceptance = function
                 .outputs
                 .fields()
                 .iter()
-                .map(|field| {
-                    case.expected.get(&field.name).copied().with_context(|| {
-                        format!(
-                            "golden test `{}` is missing output `{}`",
-                            case.id, field.name
-                        )
-                    })
+                .zip(&oracle)
+                .map(|(field, oracle)| {
+                    let verification = case
+                        .output_verification
+                        .get(&field.name)
+                        .unwrap_or(&case.verification);
+                    let nominal = case.expected.get(&field.name).copied();
+                    if nominal.is_none()
+                        && matches!(verification, Verification::Exact | Verification::PublishedRounded { .. })
+                    {
+                        anyhow::bail!(
+                            "golden test `{}` is missing required expected output `{}`",
+                            case.id,
+                            field.name
+                        );
+                    }
+                    crate::verification::acceptance(verification, nominal, oracle, ir).with_context(
+                        || format!("golden test `{}` output `{}`", case.id, field.name),
+                    )
                 })
                 .collect::<Result<Vec<_>>>()?;
+            cache.insert(cache_key, acceptance.clone());
             Ok(CompiledGoldenTest {
                 id: case.id.clone(),
                 inputs,
-                expected,
-                rtol: case.rtol,
-                atol: case.atol,
+                acceptance,
             })
         })
         .collect()

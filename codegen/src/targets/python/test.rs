@@ -1,7 +1,7 @@
 use std::collections::BTreeMap;
 
 use crate::{
-    model::{CompiledFunction, Function, GoldenInput, Outputs, PythonGeneration},
+    model::{Acceptance, CompiledFunction, Function, GoldenInput, Outputs, PythonGeneration},
     output::GeneratedFile,
 };
 
@@ -50,10 +50,20 @@ fn module_source(slug: &str, functions: &[&CompiledFunction]) -> String {
     let mut module = Module::new(WRAPPER_HEADER);
     module.line("\nfrom __future__ import annotations");
     module.blank_line();
+    module.line("from typing import Any, cast");
+    module.blank_line();
     module.line("import pytest");
     module.blank_line();
     module.import("_helpers", "prepare_vector_case");
     module.import(&format!("ptfkit.{slug}"), imports.join(", "));
+    module.blank_line();
+    module.blank_line();
+    module.line("def assert_accepted(actual: object, acceptance: tuple[float, float, bool]):");
+    module.indented(|writer| {
+        writer.line("actual_float = float(cast(\"Any\", actual))");
+        writer.line("lower, upper, exact = acceptance");
+        writer.line("assert actual_float == lower if exact else lower <= actual_float <= upper");
+    });
     module.blank_line();
     module.blank_line();
     for (index, resolved) in functions.iter().enumerate() {
@@ -61,23 +71,21 @@ fn module_source(slug: &str, functions: &[&CompiledFunction]) -> String {
             module.blank_line();
             module.blank_line();
         }
-        let function = &resolved.entry.spec.functions[resolved.function_index];
-        function_source(&mut module, function);
+        function_source(&mut module, resolved);
     }
     module.into_string()
 }
 
-fn function_source(module: &mut Module, function: &Function) {
+fn function_source(module: &mut Module, resolved: &CompiledFunction) {
+    let function = &resolved.entry.spec.functions[resolved.function_index];
     let cases_name = format!("CASES_{}", function.public_api.name.to_ascii_uppercase());
     module.assignment(&cases_name, "[");
     module.indented(|writer| {
-        for case in &function.golden_tests {
+        for (case, compiled) in function.golden_tests.iter().zip(&resolved.golden_tests) {
             writer.line(format_args!(
-                "({}, {}, {}, {}),",
+                "({}, {}),",
                 dictionary(&case.inputs, function),
-                numeric_dictionary(&case.expected),
-                float(case.rtol),
-                float(case.atol),
+                acceptance_dictionary(function, &compiled.acceptance),
             ));
         }
     });
@@ -95,10 +103,10 @@ fn function_source(module: &mut Module, function: &Function) {
         "float"
     };
     module.line(format_args!(
-        "@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), {cases_name})"
+        "@pytest.mark.parametrize(('inputs', 'acceptance'), {cases_name})"
     ));
     module.line(format_args!(
-        "def test_{name}_golden(inputs: dict[str, {input_value_type}], expected: dict[str, float], rtol: float, atol: float):"
+        "def test_{name}_golden(inputs: dict[str, {input_value_type}], acceptance: dict[str, tuple[float, float, bool]]):"
     ));
     module.indented(|writer| {
         if function
@@ -131,7 +139,7 @@ fn vector_test_source(module: &mut Module, function: &Function, cases_name: &str
     module.line(format_args!("def test_{name}_array():"));
     module.indented(|writer| {
         writer.line(format_args!(
-            "inputs, expected, rtol, atol, _out = prepare_vector_case({cases_name}{result_cls})"
+            "inputs, acceptance, _out = prepare_vector_case({cases_name}{result_cls})"
         ));
         writer.line(format_args!("result = {name}(**inputs, out=None)"));
         render_expected_assertion(writer, function, "[0]");
@@ -141,7 +149,7 @@ fn vector_test_source(module: &mut Module, function: &Function, cases_name: &str
     module.line(format_args!("def test_{name}_out():"));
     module.indented(|writer| {
         writer.line(format_args!(
-            "inputs, expected, rtol, atol, out = prepare_vector_case({cases_name}{result_cls})"
+            "inputs, acceptance, out = prepare_vector_case({cases_name}{result_cls})"
         ));
         writer.line(format_args!("result = {name}(**inputs, out=out)"));
         render_out_assertion(writer, function);
@@ -152,13 +160,13 @@ fn vector_test_source(module: &mut Module, function: &Function, cases_name: &str
 fn render_expected_assertion(writer: &mut crate::render::Writer, function: &Function, index: &str) {
     match &function.outputs {
         Outputs::Scalar { field } => writer.line(format_args!(
-            "assert result{index} == pytest.approx(expected['{}'], rel=rtol, abs=atol)",
+            "assert_accepted(result{index}, acceptance['{}'])",
             field.name
         )),
         Outputs::Record { fields, .. } => {
             for field in fields {
                 writer.line(format_args!(
-                    "assert result.{}{index} == pytest.approx(expected['{}'], rel=rtol, abs=atol)",
+                    "assert_accepted(result.{}{index}, acceptance['{}'])",
                     field.name, field.name
                 ));
             }
@@ -201,10 +209,21 @@ fn dictionary(values: &BTreeMap<String, GoldenInput>, function: &Function) -> St
     format!("{{{entries}}}")
 }
 
-fn numeric_dictionary(values: &BTreeMap<String, f64>) -> String {
-    let entries = values
+fn acceptance_dictionary(function: &Function, values: &[Acceptance]) -> String {
+    let entries = function
+        .outputs
+        .fields()
         .iter()
-        .map(|(name, value)| format!("'{name}': {}", float(*value)))
+        .zip(values)
+        .map(|(field, acceptance)| {
+            let value = match acceptance {
+                Acceptance::Exact(value) => format!("({}, {}, True)", float(*value), float(*value)),
+                Acceptance::Interval { lower, upper } => {
+                    format!("({}, {}, False)", float(*lower), float(*upper))
+                }
+            };
+            format!("'{}': {value}", field.name)
+        })
         .collect::<Vec<_>>()
         .join(", ");
     format!("{{{entries}}}")

@@ -105,13 +105,8 @@ functions:
           bulk_density: 1.20
           cation_exchange_capacity: 15.9
           ph: 5.85
-        expected:
-          alpha: 0.245183615037873
-          n: 1.36739326352383
-          theta_s: 0.4993353
-          theta_r: 0.21344216
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: >-
           Calculated from the reoptimised Step 3 coefficients in Table 8 using
           the calibration-set means in Table 3 and the table's factor-of-100 note.

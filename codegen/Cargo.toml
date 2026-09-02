@@ -5,6 +5,7 @@ publish = false
 
 [dependencies]
 anyhow = "1.0"
+astro-float = "0.9.6"
 clap = { version = "4.6", features = ["derive"] }
 convert_case = "0.11"
 jsonschema = "0.50"

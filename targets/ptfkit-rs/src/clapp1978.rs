@@ -194,175 +194,120 @@ pub fn calc_ptf_clapp1978(soil_texture: UsdaTextureClass) -> Clapp1978Parameters
 #[cfg(test)]
 mod tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
     fn table_2_sand() {
         let result = calc_ptf_clapp1978(UsdaTextureClass::Sand);
-        assert_close(result.b, 4.05f64, 0f64, 0f64);
-        assert_close(result.saturation_suction, 3.5f64, 0f64, 0f64);
-        assert_close(result.wetting_front_suction, 4.66f64, 0f64, 0f64);
-        assert_close(result.saturated_water_content, 0.395f64, 0f64, 0f64);
-        assert_close(
-            result.saturated_hydraulic_conductivity,
-            1.056f64,
-            0f64,
-            0f64,
-        );
-        assert_close(result.sorptivity, 1.52f64, 0f64, 0f64);
+        assert_eq!(result.b, 4.05f64);
+        assert_eq!(result.saturation_suction, 3.5f64);
+        assert_eq!(result.wetting_front_suction, 4.66f64);
+        assert_eq!(result.saturated_water_content, 0.395f64);
+        assert_eq!(result.saturated_hydraulic_conductivity, 1.056f64);
+        assert_eq!(result.sorptivity, 1.52f64);
     }
     #[test]
     fn table_2_loamy_sand() {
         let result = calc_ptf_clapp1978(UsdaTextureClass::LoamySand);
-        assert_close(result.b, 4.38f64, 0f64, 0f64);
-        assert_close(result.saturation_suction, 1.78f64, 0f64, 0f64);
-        assert_close(result.wetting_front_suction, 2.38f64, 0f64, 0f64);
-        assert_close(result.saturated_water_content, 0.41f64, 0f64, 0f64);
-        assert_close(
-            result.saturated_hydraulic_conductivity,
-            0.938f64,
-            0f64,
-            0f64,
-        );
-        assert_close(result.sorptivity, 1.04f64, 0f64, 0f64);
+        assert_eq!(result.b, 4.38f64);
+        assert_eq!(result.saturation_suction, 1.78f64);
+        assert_eq!(result.wetting_front_suction, 2.38f64);
+        assert_eq!(result.saturated_water_content, 0.41f64);
+        assert_eq!(result.saturated_hydraulic_conductivity, 0.938f64);
+        assert_eq!(result.sorptivity, 1.04f64);
     }
     #[test]
     fn table_2_sandy_loam() {
         let result = calc_ptf_clapp1978(UsdaTextureClass::SandyLoam);
-        assert_close(result.b, 4.9f64, 0f64, 0f64);
-        assert_close(result.saturation_suction, 7.18f64, 0f64, 0f64);
-        assert_close(result.wetting_front_suction, 9.52f64, 0f64, 0f64);
-        assert_close(result.saturated_water_content, 0.435f64, 0f64, 0f64);
-        assert_close(
-            result.saturated_hydraulic_conductivity,
-            0.208f64,
-            0f64,
-            0f64,
-        );
-        assert_close(result.sorptivity, 1.03f64, 0f64, 0f64);
+        assert_eq!(result.b, 4.9f64);
+        assert_eq!(result.saturation_suction, 7.18f64);
+        assert_eq!(result.wetting_front_suction, 9.52f64);
+        assert_eq!(result.saturated_water_content, 0.435f64);
+        assert_eq!(result.saturated_hydraulic_conductivity, 0.208f64);
+        assert_eq!(result.sorptivity, 1.03f64);
     }
     #[test]
     fn table_2_silt_loam() {
         let result = calc_ptf_clapp1978(UsdaTextureClass::SiltLoam);
-        assert_close(result.b, 5.3f64, 0f64, 0f64);
-        assert_close(result.saturation_suction, 56.6f64, 0f64, 0f64);
-        assert_close(result.wetting_front_suction, 75.3f64, 0f64, 0f64);
-        assert_close(result.saturated_water_content, 0.485f64, 0f64, 0f64);
-        assert_close(
-            result.saturated_hydraulic_conductivity,
-            0.0432f64,
-            0f64,
-            0f64,
-        );
-        assert_close(result.sorptivity, 1.26f64, 0f64, 0f64);
+        assert_eq!(result.b, 5.3f64);
+        assert_eq!(result.saturation_suction, 56.6f64);
+        assert_eq!(result.wetting_front_suction, 75.3f64);
+        assert_eq!(result.saturated_water_content, 0.485f64);
+        assert_eq!(result.saturated_hydraulic_conductivity, 0.0432f64);
+        assert_eq!(result.sorptivity, 1.26f64);
     }
     #[test]
     fn table_2_loam() {
         let result = calc_ptf_clapp1978(UsdaTextureClass::Loam);
-        assert_close(result.b, 5.39f64, 0f64, 0f64);
-        assert_close(result.saturation_suction, 14.6f64, 0f64, 0f64);
-        assert_close(result.wetting_front_suction, 20f64, 0f64, 0f64);
-        assert_close(result.saturated_water_content, 0.451f64, 0f64, 0f64);
-        assert_close(
-            result.saturated_hydraulic_conductivity,
-            0.0417f64,
-            0f64,
-            0f64,
-        );
-        assert_close(result.sorptivity, 0.693f64, 0f64, 0f64);
+        assert_eq!(result.b, 5.39f64);
+        assert_eq!(result.saturation_suction, 14.6f64);
+        assert_eq!(result.wetting_front_suction, 20f64);
+        assert_eq!(result.saturated_water_content, 0.451f64);
+        assert_eq!(result.saturated_hydraulic_conductivity, 0.0417f64);
+        assert_eq!(result.sorptivity, 0.693f64);
     }
     #[test]
     fn table_2_sandy_clay_loam() {
         let result = calc_ptf_clapp1978(UsdaTextureClass::SandyClayLoam);
-        assert_close(result.b, 7.12f64, 0f64, 0f64);
-        assert_close(result.saturation_suction, 8.63f64, 0f64, 0f64);
-        assert_close(result.wetting_front_suction, 11.7f64, 0f64, 0f64);
-        assert_close(result.saturated_water_content, 0.42f64, 0f64, 0f64);
-        assert_close(
-            result.saturated_hydraulic_conductivity,
-            0.0378f64,
-            0f64,
-            0f64,
-        );
-        assert_close(result.sorptivity, 0.488f64, 0f64, 0f64);
+        assert_eq!(result.b, 7.12f64);
+        assert_eq!(result.saturation_suction, 8.63f64);
+        assert_eq!(result.wetting_front_suction, 11.7f64);
+        assert_eq!(result.saturated_water_content, 0.42f64);
+        assert_eq!(result.saturated_hydraulic_conductivity, 0.0378f64);
+        assert_eq!(result.sorptivity, 0.488f64);
     }
     #[test]
     fn table_2_silty_clay_loam() {
         let result = calc_ptf_clapp1978(UsdaTextureClass::SiltyClayLoam);
-        assert_close(result.b, 7.75f64, 0f64, 0f64);
-        assert_close(result.saturation_suction, 14.6f64, 0f64, 0f64);
-        assert_close(result.wetting_front_suction, 19.7f64, 0f64, 0f64);
-        assert_close(result.saturated_water_content, 0.477f64, 0f64, 0f64);
-        assert_close(
-            result.saturated_hydraulic_conductivity,
-            0.0102f64,
-            0f64,
-            0f64,
-        );
-        assert_close(result.sorptivity, 0.31f64, 0f64, 0f64);
+        assert_eq!(result.b, 7.75f64);
+        assert_eq!(result.saturation_suction, 14.6f64);
+        assert_eq!(result.wetting_front_suction, 19.7f64);
+        assert_eq!(result.saturated_water_content, 0.477f64);
+        assert_eq!(result.saturated_hydraulic_conductivity, 0.0102f64);
+        assert_eq!(result.sorptivity, 0.31f64);
     }
     #[test]
     fn table_2_clay_loam() {
         let result = calc_ptf_clapp1978(UsdaTextureClass::ClayLoam);
-        assert_close(result.b, 8.52f64, 0f64, 0f64);
-        assert_close(result.saturation_suction, 36.1f64, 0f64, 0f64);
-        assert_close(result.wetting_front_suction, 48.1f64, 0f64, 0f64);
-        assert_close(result.saturated_water_content, 0.476f64, 0f64, 0f64);
-        assert_close(
-            result.saturated_hydraulic_conductivity,
-            0.0147f64,
-            0f64,
-            0f64,
-        );
-        assert_close(result.sorptivity, 0.537f64, 0f64, 0f64);
+        assert_eq!(result.b, 8.52f64);
+        assert_eq!(result.saturation_suction, 36.1f64);
+        assert_eq!(result.wetting_front_suction, 48.1f64);
+        assert_eq!(result.saturated_water_content, 0.476f64);
+        assert_eq!(result.saturated_hydraulic_conductivity, 0.0147f64);
+        assert_eq!(result.sorptivity, 0.537f64);
     }
     #[test]
     fn table_2_sandy_clay() {
         let result = calc_ptf_clapp1978(UsdaTextureClass::SandyClay);
-        assert_close(result.b, 10.4f64, 0f64, 0f64);
-        assert_close(result.saturation_suction, 6.16f64, 0f64, 0f64);
-        assert_close(result.wetting_front_suction, 8.18f64, 0f64, 0f64);
-        assert_close(result.saturated_water_content, 0.426f64, 0f64, 0f64);
-        assert_close(
-            result.saturated_hydraulic_conductivity,
-            0.013f64,
-            0f64,
-            0f64,
-        );
-        assert_close(result.sorptivity, 0.223f64, 0f64, 0f64);
+        assert_eq!(result.b, 10.4f64);
+        assert_eq!(result.saturation_suction, 6.16f64);
+        assert_eq!(result.wetting_front_suction, 8.18f64);
+        assert_eq!(result.saturated_water_content, 0.426f64);
+        assert_eq!(result.saturated_hydraulic_conductivity, 0.013f64);
+        assert_eq!(result.sorptivity, 0.223f64);
     }
     #[test]
     fn table_2_silty_clay() {
         let result = calc_ptf_clapp1978(UsdaTextureClass::SiltyClay);
-        assert_close(result.b, 10.4f64, 0f64, 0f64);
-        assert_close(result.saturation_suction, 17.4f64, 0f64, 0f64);
-        assert_close(result.wetting_front_suction, 23f64, 0f64, 0f64);
-        assert_close(result.saturated_water_content, 0.492f64, 0f64, 0f64);
-        assert_close(
-            result.saturated_hydraulic_conductivity,
-            0.0062f64,
-            0f64,
-            0f64,
-        );
-        assert_close(result.sorptivity, 0.242f64, 0f64, 0f64);
+        assert_eq!(result.b, 10.4f64);
+        assert_eq!(result.saturation_suction, 17.4f64);
+        assert_eq!(result.wetting_front_suction, 23f64);
+        assert_eq!(result.saturated_water_content, 0.492f64);
+        assert_eq!(result.saturated_hydraulic_conductivity, 0.0062f64);
+        assert_eq!(result.sorptivity, 0.242f64);
     }
     #[test]
     fn table_2_clay() {
         let result = calc_ptf_clapp1978(UsdaTextureClass::Clay);
-        assert_close(result.b, 11.4f64, 0f64, 0f64);
-        assert_close(result.saturation_suction, 18.6f64, 0f64, 0f64);
-        assert_close(result.wetting_front_suction, 24.3f64, 0f64, 0f64);
-        assert_close(result.saturated_water_content, 0.482f64, 0f64, 0f64);
-        assert_close(
-            result.saturated_hydraulic_conductivity,
-            0.0077f64,
-            0f64,
-            0f64,
-        );
-        assert_close(result.sorptivity, 0.268f64, 0f64, 0f64);
+        assert_eq!(result.b, 11.4f64);
+        assert_eq!(result.saturation_suction, 18.6f64);
+        assert_eq!(result.wetting_front_suction, 24.3f64);
+        assert_eq!(result.saturated_water_content, 0.482f64);
+        assert_eq!(result.saturated_hydraulic_conductivity, 0.0077f64);
+        assert_eq!(result.sorptivity, 0.268f64);
     }
 }

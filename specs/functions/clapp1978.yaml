@@ -142,68 +142,68 @@ functions:
       - id: table_2_sand
         inputs: {soil_texture: sand}
         expected: {b: 4.05, saturation_suction: 3.50, wetting_front_suction: 4.66, saturated_water_content: 0.395, saturated_hydraulic_conductivity: 1.056, sorptivity: 1.52}
-        rtol: 0.0
-        atol: 0.0
+        verification:
+          kind: exact
         notes: Direct representative values for Sand from Table 2.
       - id: table_2_loamy_sand
         inputs: {soil_texture: loamy_sand}
         expected: {b: 4.38, saturation_suction: 1.78, wetting_front_suction: 2.38, saturated_water_content: 0.410, saturated_hydraulic_conductivity: 0.938, sorptivity: 1.04}
-        rtol: 0.0
-        atol: 0.0
+        verification:
+          kind: exact
         notes: Direct representative values for Loamy sand from Table 2.
       - id: table_2_sandy_loam
         inputs: {soil_texture: sandy_loam}
         expected: {b: 4.90, saturation_suction: 7.18, wetting_front_suction: 9.52, saturated_water_content: 0.435, saturated_hydraulic_conductivity: 0.208, sorptivity: 1.03}
-        rtol: 0.0
-        atol: 0.0
+        verification:
+          kind: exact
         notes: Direct representative values for Sandy loam from Table 2.
       - id: table_2_silt_loam
         inputs: {soil_texture: silt_loam}
         expected: {b: 5.30, saturation_suction: 56.6, wetting_front_suction: 75.3, saturated_water_content: 0.485, saturated_hydraulic_conductivity: 0.0432, sorptivity: 1.26}
-        rtol: 0.0
-        atol: 0.0
+        verification:
+          kind: exact
         notes: Direct representative values for Silt loam from Table 2.
       - id: table_2_loam
         inputs: {soil_texture: loam}
         expected: {b: 5.39, saturation_suction: 14.6, wetting_front_suction: 20.0, saturated_water_content: 0.451, saturated_hydraulic_conductivity: 0.0417, sorptivity: 0.693}
-        rtol: 0.0
-        atol: 0.0
+        verification:
+          kind: exact
         notes: Direct representative values for Loam from Table 2.
       - id: table_2_sandy_clay_loam
         inputs: {soil_texture: sandy_clay_loam}
         expected: {b: 7.12, saturation_suction: 8.63, wetting_front_suction: 11.7, saturated_water_content: 0.420, saturated_hydraulic_conductivity: 0.0378, sorptivity: 0.488}
-        rtol: 0.0
-        atol: 0.0
+        verification:
+          kind: exact
         notes: Direct representative values for Sandy clay loam from Table 2.
       - id: table_2_silty_clay_loam
         inputs: {soil_texture: silty_clay_loam}
         expected: {b: 7.75, saturation_suction: 14.6, wetting_front_suction: 19.7, saturated_water_content: 0.477, saturated_hydraulic_conductivity: 0.0102, sorptivity: 0.310}
-        rtol: 0.0
-        atol: 0.0
+        verification:
+          kind: exact
         notes: Direct representative values for Silty clay loam from Table 2.
       - id: table_2_clay_loam
         inputs: {soil_texture: clay_loam}
         expected: {b: 8.52, saturation_suction: 36.1, wetting_front_suction: 48.1, saturated_water_content: 0.476, saturated_hydraulic_conductivity: 0.0147, sorptivity: 0.537}
-        rtol: 0.0
-        atol: 0.0
+        verification:
+          kind: exact
         notes: Direct representative values for Clay loam from Table 2.
       - id: table_2_sandy_clay
         inputs: {soil_texture: sandy_clay}
         expected: {b: 10.4, saturation_suction: 6.16, wetting_front_suction: 8.18, saturated_water_content: 0.426, saturated_hydraulic_conductivity: 0.0130, sorptivity: 0.223}
-        rtol: 0.0
-        atol: 0.0
+        verification:
+          kind: exact
         notes: Direct representative values for Sandy clay from Table 2.
       - id: table_2_silty_clay
         inputs: {soil_texture: silty_clay}
         expected: {b: 10.4, saturation_suction: 17.4, wetting_front_suction: 23.0, saturated_water_content: 0.492, saturated_hydraulic_conductivity: 0.0062, sorptivity: 0.242}
-        rtol: 0.0
-        atol: 0.0
+        verification:
+          kind: exact
         notes: Direct representative values for Silty clay from Table 2.
       - id: table_2_clay
         inputs: {soil_texture: clay}
         expected: {b: 11.4, saturation_suction: 18.6, wetting_front_suction: 24.3, saturated_water_content: 0.482, saturated_hydraulic_conductivity: 0.0077, sorptivity: 0.268}
-        rtol: 0.0
-        atol: 0.0
+        verification:
+          kind: exact
         notes: Direct representative values for Clay from Table 2.
     edge_cases: []
     documentation:

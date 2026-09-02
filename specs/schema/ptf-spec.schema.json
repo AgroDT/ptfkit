@@ -261,15 +261,79 @@
     "goldenTest": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "inputs", "expected", "rtol", "atol", "notes"],
+      "required": ["id", "inputs", "verification", "notes"],
       "properties": {
         "id": { "type": "string", "minLength": 1 },
         "inputs": { "type": "object", "minProperties": 1 },
         "expected": { "type": "object", "minProperties": 1 },
-        "rtol": { "type": "number", "minimum": 0 },
-        "atol": { "type": "number", "minimum": 0 },
+        "verification": { "$ref": "#/$defs/verification" },
+        "output_verification": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "$ref": "#/$defs/verification" }
+        },
         "notes": { "type": "string" }
       }
+    },
+    "verification": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind"],
+          "properties": { "kind": { "const": "exact" } }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind"],
+          "properties": { "kind": { "const": "calculated_reference" } }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "precision"],
+          "properties": {
+            "kind": { "const": "published_rounded" },
+            "precision": {
+              "oneOf": [
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["decimal_places"],
+                  "properties": { "decimal_places": { "type": "integer", "minimum": 0, "maximum": 308 } }
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["significant_digits"],
+                  "properties": { "significant_digits": { "type": "integer", "minimum": 1, "maximum": 17 } }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "lower", "upper"],
+          "properties": {
+            "kind": { "const": "published_interval" },
+            "lower": { "type": "number" },
+            "upper": { "type": "number" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "value", "absolute_uncertainty"],
+          "properties": {
+            "kind": { "const": "published_uncertainty" },
+            "value": { "type": "number" },
+            "absolute_uncertainty": { "type": "number", "exclusiveMinimum": 0 }
+          }
+        }
+      ]
     },
     "edgeCase": {
       "type": "object",

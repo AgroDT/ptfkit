@@ -42,10 +42,8 @@ functions:
     inputs:
       clay: 5.12
       organic_matter: 0.1
-    expected:
-      theta_1500: 0.05318
-    rtol: 1.0e-10
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated directly from the -15 bar first-level regression in Table 3.
   edge_cases: []
   documentation:
@@ -96,10 +94,8 @@ functions:
       sand: 85.0
       organic_matter: 0.1
       theta_1500: 0.05318
-    expected:
-      theta_33: 0.1179896
-    rtol: 1.0e-10
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated directly from the -0.33 bar second-level regression in Table
       3.
   edge_cases: []
@@ -219,21 +215,8 @@ functions:
       bulk_density: 1.22
       theta_33: 0.091
       theta_1500: 0.033
-    expected:
-      theta_4: 0.247242
-      theta_7: 0.968738
-      theta_10: 0.145588
-      theta_20: 0.10483
-      theta_33: 0.091
-      theta_60: 0.075428
-      theta_100: 0.063192
-      theta_200: 0.052946
-      theta_400: 0.045826
-      theta_700: 0.041824
-      theta_1000: 0.038932
-      theta_1500: 0.033
-    rtol: 1.0e-10
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from the third-level regressions in Table 3 using the given
       endpoint water contents.
   edge_cases: []

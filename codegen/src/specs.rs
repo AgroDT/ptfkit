@@ -777,4 +777,84 @@ functions:
 
         assert!(error.contains("filename stem must be an APA-style slug"));
     }
+
+    fn verification_specification(slug: &str, golden: &str) -> String {
+        specification(
+            slug,
+            &format!(
+                "    implementation:\n      variables: [{{name: value, expr: x}}]\n    golden_tests:\n      - id: reference\n        inputs: {{x: 1.0}}\n{golden}        notes: Test provenance.\n"
+            ),
+            "",
+        )
+    }
+
+    #[test]
+    fn accepts_each_unambiguous_verification_policy() {
+        let policies = [
+            (
+                "exact",
+                "        expected: {value: 1.0}\n        verification: {kind: exact}\n",
+            ),
+            (
+                "calculated",
+                "        verification: {kind: calculated_reference}\n",
+            ),
+            (
+                "decimal",
+                "        expected: {value: 1.0}\n        verification: {kind: published_rounded, precision: {decimal_places: 2}}\n",
+            ),
+            (
+                "significant",
+                "        expected: {value: 1.0}\n        verification: {kind: published_rounded, precision: {significant_digits: 3}}\n",
+            ),
+            (
+                "interval",
+                "        verification: {kind: published_interval, lower: 0.9, upper: 1.1}\n",
+            ),
+            (
+                "uncertainty",
+                "        verification: {kind: published_uncertainty, value: 1.0, absolute_uncertainty: 0.1}\n",
+            ),
+        ];
+        for (slug, golden) in policies {
+            let root = fixture_root(slug);
+            fs::write(
+                root.join(format!("specs/functions/{slug}.yaml")),
+                verification_specification(slug, golden),
+            )
+            .unwrap();
+            load(&root).unwrap_or_else(|error| panic!("{slug} policy failed: {error}"));
+            fs::remove_dir_all(root).unwrap();
+        }
+    }
+
+    #[test]
+    fn rejects_legacy_tolerances_and_ambiguous_precision() {
+        for (slug, golden) in [
+            (
+                "legacy_tolerance",
+                "        expected: {value: 1.0}\n        verification: {kind: exact}\n        rtol: 1e-6\n        atol: 1e-9\n",
+            ),
+            (
+                "ambiguous_precision",
+                "        expected: {value: 1.0}\n        verification:\n          kind: published_rounded\n          precision: {decimal_places: 2, significant_digits: 3}\n",
+            ),
+        ] {
+            let root = fixture_root(slug);
+            fs::write(
+                root.join(format!("specs/functions/{slug}.yaml")),
+                verification_specification(slug, golden),
+            )
+            .unwrap();
+            let error = load(&root)
+                .expect_err("invalid verification policy must fail")
+                .to_string();
+            assert!(
+                error.contains("Additional properties are not allowed")
+                    || error.contains("not valid under any of the schemas"),
+                "{error}"
+            );
+            fs::remove_dir_all(root).unwrap();
+        }
+    }
 }

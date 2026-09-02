@@ -105,16 +105,8 @@ functions:
       n_vgm: 1.6
       tau_vgm: -0.5
       k_s_vgm: 100.0
-    expected:
-      theta_snc_bw: 0.06267
-      theta_sc_bw: 0.38607
-      alpha_bw: 0.0201472407335197
-      n_bw: 1.71980542683289
-      tau_bw: -0.887
-      k_sc_bw: 172.186857498601
-      k_snc_bw: 0.0190546071796325
-    rtol: 1.0e-12
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated directly from the Table 3 regressions using the confirmed constrained-tau
       interpretation.
   edge_cases:

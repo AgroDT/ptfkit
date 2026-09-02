@@ -73,20 +73,20 @@ pub fn calc_ptf_ahuja1984(
 #[cfg(test)]
 mod tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
     fn exponent_four() {
         let result = calc_ptf_ahuja1984(0.45f64, 0.25f64, 100f64, 4f64);
-        assert_close(result, 0.16f64, 0.00000000000001f64, 0.000000000001f64);
+        assert_in_interval(result, 0.15999999999999825f64, 0.1600000000000018f64);
     }
     #[test]
     fn exponent_five() {
         let result = calc_ptf_ahuja1984(0.5f64, 0.2f64, 100f64, 5f64);
-        assert_close(result, 0.243f64, 0.00000000000001f64, 0.000000000001f64);
+        assert_in_interval(result, 0.2429999999999982f64, 0.24300000000000174f64);
     }
 }

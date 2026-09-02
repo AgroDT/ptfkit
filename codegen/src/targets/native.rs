@@ -820,19 +820,27 @@ fn c_compatibility_test(slug: &str, functions: &[&CompiledFunction]) -> Result<S
                     writer.write("(");
                     render_literals(writer, &case.inputs, NativeDialect::C, Some(slug));
                     writer.line(");");
-                    for (field, expected) in spec.outputs.fields().iter().zip(&case.expected) {
-                        writer.write("assert_close_enough(");
+                    for (field, acceptance) in spec.outputs.fields().iter().zip(&case.acceptance) {
+                        writer.write(match acceptance {
+                            crate::model::Acceptance::Exact(_) => "assert_exact(",
+                            crate::model::Acceptance::Interval { .. } => "assert_in_interval(",
+                        });
                         if matches!(function.core.output, Output::Scalar) {
                             writer.write("result");
                         } else {
                             writer.write(format_args!("result.{}", field.name));
                         }
                         writer.write(", ");
-                        writer.write(c::test_float_literal(*expected));
-                        writer.write(", ");
-                        writer.write(c::test_float_literal(case.atol));
-                        writer.write(", ");
-                        writer.write(c::test_float_literal(case.rtol));
+                        match acceptance {
+                            crate::model::Acceptance::Exact(expected) => {
+                                writer.write(c::test_float_literal(*expected))
+                            }
+                            crate::model::Acceptance::Interval { lower, upper } => {
+                                writer.write(c::test_float_literal(*lower));
+                                writer.write(", ");
+                                writer.write(c::test_float_literal(*upper));
+                            }
+                        }
                         writer.line(");");
                     }
                 });
@@ -872,19 +880,25 @@ fn module_test(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
                     .expect("record output has a result class");
                 writer.line(format_args!("static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>, ptfkit::{slug}::{result}>);"));
             }
-            for (field, expected) in spec.outputs.fields().iter().zip(&case.expected) {
-                writer.write("assert_close_enough(");
+            for (field, acceptance) in spec.outputs.fields().iter().zip(&case.acceptance) {
+                writer.write(match acceptance {
+                    crate::model::Acceptance::Exact(_) => "assert_exact(",
+                    crate::model::Acceptance::Interval { .. } => "assert_in_interval(",
+                });
                 if matches!(function.core.output, Output::Scalar) {
                     writer.write("result");
                 } else {
                     writer.write(format_args!("result.{}", field.name));
                 }
                 writer.write(", ");
-                writer.write(c::test_float_literal(*expected));
-                writer.write(", ");
-                writer.write(c::test_float_literal(case.atol));
-                writer.write(", ");
-                writer.write(c::test_float_literal(case.rtol));
+                match acceptance {
+                    crate::model::Acceptance::Exact(expected) => writer.write(c::test_float_literal(*expected)),
+                    crate::model::Acceptance::Interval { lower, upper } => {
+                        writer.write(c::test_float_literal(*lower));
+                        writer.write(", ");
+                        writer.write(c::test_float_literal(*upper));
+                    }
+                }
                 writer.line(");");
             }
             });

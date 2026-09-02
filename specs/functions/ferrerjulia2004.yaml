@@ -57,10 +57,8 @@ functions:
         inputs:
           sand: 50
           clay: 25
-        expected:
-          k_sat: 0.025071690110308933
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: [Reproduced in Section 4.2 for comparison with the new Spanish-soil PTFs.], warnings: []}
@@ -78,10 +76,8 @@ functions:
         inputs:
           sand: 50
           clay: 25
-        expected:
-          k_sat: 0.00022673430784327228
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: [Reproduced in Section 4.2 for comparison with the new Spanish-soil PTFs.], warnings: [The denominator contains log10(clay) and the source does not state its valid domain or singularity policy.]}
@@ -99,10 +95,8 @@ functions:
       - id: reviewer_reference_vector
         inputs:
           clay: 25
-        expected:
-          k_sat: 8.302039828385373
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: [Reproduced in Section 4.2 for comparison with the new Spanish-soil PTFs.], warnings: []}
@@ -119,10 +113,8 @@ functions:
       - id: reviewer_reference_vector
         inputs:
           clay: 25
-        expected:
-          k_sat: 1.1257967371765654
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: [Reproduced in Section 4.2 for comparison with the new Spanish-soil PTFs.], warnings: []}
@@ -140,10 +132,8 @@ functions:
         inputs:
           sand: 50
           clay: 25
-        expected:
-          k_sat: 26.091830970918934
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: [Reproduced in Section 4.2 for comparison with the new Spanish-soil PTFs.], warnings: []}
@@ -161,10 +151,8 @@ functions:
       - id: reviewer_reference_vector
         inputs:
           sand: 50
-        expected:
-          k_sat: 14.529879794648146
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.723.'], warnings: []}
@@ -181,10 +169,8 @@ functions:
           sand: 50
           clay: 25
           organic_matter: 2.5
-        expected:
-          k_sat: 19.563475
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.701.'], warnings: []}
@@ -199,10 +185,8 @@ functions:
       - id: reviewer_reference_vector
         inputs:
           sand: 50
-        expected:
-          k_sat: 9.995162000935244
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.521.'], warnings: []}
@@ -219,10 +203,8 @@ functions:
           sand: 50
           clay: 25
           organic_matter: 2.5
-        expected:
-          k_sat: 16.51625
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.468.'], warnings: []}
@@ -237,10 +219,8 @@ functions:
       - id: reviewer_reference_vector
         inputs:
           sand: 50
-        expected:
-          k_sat: 13.413573870265868
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.750.'], warnings: []}
@@ -257,10 +237,8 @@ functions:
           sand: 50
           clay: 25
           organic_matter: 2.5
-        expected:
-          k_sat: 20.79
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.779.'], warnings: []}
@@ -275,10 +253,8 @@ functions:
       - id: reviewer_reference_vector
         inputs:
           sand: 50
-        expected:
-          k_sat: 11.570199173737363
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.734.'], warnings: []}
@@ -295,10 +271,8 @@ functions:
           sand: 50
           clay: 25
           organic_matter: 2.5
-        expected:
-          k_sat: 19.5235
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.686.'], warnings: []}
@@ -313,10 +287,8 @@ functions:
       - id: reviewer_reference_vector
         inputs:
           sand: 50
-        expected:
-          k_sat: 6.559110321079926
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.807.'], warnings: []}
@@ -333,10 +305,8 @@ functions:
           sand: 50
           clay: 25
           organic_matter: 2.5
-        expected:
-          k_sat: 11.514
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.824.'], warnings: []}
@@ -351,10 +321,8 @@ functions:
       - id: reviewer_reference_vector
         inputs:
           sand: 50
-        expected:
-          k_sat: 13.820129957492508
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.592.'], warnings: []}
@@ -371,10 +339,8 @@ functions:
           sand: 50
           clay: 25
           organic_matter: 2.5
-        expected:
-          k_sat: 20.9029
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.632.'], warnings: []}
@@ -389,10 +355,8 @@ functions:
       - id: reviewer_reference_vector
         inputs:
           sand: 50
-        expected:
-          k_sat: 10.959482760491376
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.772.'], warnings: []}
@@ -409,10 +373,8 @@ functions:
           sand: 50
           clay: 25
           organic_matter: 2.5
-        expected:
-          k_sat: 13.101
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.792.'], warnings: []}
@@ -427,10 +389,8 @@ functions:
       - id: reviewer_reference_vector
         inputs:
           sand: 50
-        expected:
-          k_sat: 6.931067612606957
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.412.'], warnings: [The paper reports weak fit and suggests missing clay-mineralogy information.]}
@@ -447,10 +407,8 @@ functions:
           sand: 50
           clay: 25
           organic_matter: 2.5
-        expected:
-          k_sat: 8.9332
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.473.'], warnings: [The paper reports weak fit and suggests missing clay-mineralogy information.]}
@@ -465,10 +423,8 @@ functions:
       - id: reviewer_reference_vector
         inputs:
           sand: 50
-        expected:
-          k_sat: 10.61655727277843
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.534.'], warnings: []}
@@ -485,10 +441,8 @@ functions:
           sand: 50
           clay: 25
           organic_matter: 2.5
-        expected:
-          k_sat: 17.1465
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.557.'], warnings: []}
@@ -503,10 +457,8 @@ functions:
       - id: reviewer_reference_vector
         inputs:
           sand: 50
-        expected:
-          k_sat: 7.049012285884197
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.876.'], warnings: []}
@@ -523,10 +475,8 @@ functions:
           sand: 50
           clay: 25
           organic_matter: 2.5
-        expected:
-          k_sat: 19.55
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.917.'], warnings: []}
@@ -541,10 +491,8 @@ functions:
       - id: reviewer_reference_vector
         inputs:
           sand: 50
-        expected:
-          k_sat: 12.04280911180458
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.676.'], warnings: []}
@@ -561,10 +509,8 @@ functions:
           sand: 50
           clay: 25
           organic_matter: 2.5
-        expected:
-          k_sat: 21.40425
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.729.'], warnings: []}
@@ -579,10 +525,8 @@ functions:
       - id: reviewer_reference_vector
         inputs:
           sand: 50
-        expected:
-          k_sat: 12.423399456061938
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.726.'], warnings: []}
@@ -599,10 +543,8 @@ functions:
           sand: 50
           clay: 25
           organic_matter: 2.5
-        expected:
-          k_sat: 22.4515
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.717.'], warnings: []}
@@ -617,10 +559,8 @@ functions:
       - id: reviewer_reference_vector
         inputs:
           sand: 50
-        expected:
-          k_sat: 12.267374733833096
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.655.'], warnings: []}
@@ -637,10 +577,8 @@ functions:
           sand: 50
           clay: 25
           organic_matter: 2.5
-        expected:
-          k_sat: 20.532
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.705.'], warnings: []}
@@ -655,10 +593,8 @@ functions:
       - id: reviewer_reference_vector
         inputs:
           sand: 50
-        expected:
-          k_sat: 12.081401313183196
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.834.'], warnings: []}
@@ -675,10 +611,8 @@ functions:
           sand: 50
           clay: 25
           organic_matter: 2.5
-        expected:
-          k_sat: 17.1335
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.862.'], warnings: []}
@@ -693,10 +627,8 @@ functions:
       - id: reviewer_reference_vector
         inputs:
           sand: 50
-        expected:
-          k_sat: 13.674049986082728
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.824.'], warnings: []}
@@ -713,10 +645,8 @@ functions:
           sand: 50
           clay: 25
           organic_matter: 2.5
-        expected:
-          k_sat: 24.06375
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.702.'], warnings: []}
@@ -731,10 +661,8 @@ functions:
       - id: reviewer_reference_vector
         inputs:
           sand: 50
-        expected:
-          k_sat: 12.515763717130312
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; horizon-level R^2 = 0.221; the paper separately reports profile-average R^2 = 0.727 without coefficients.'], warnings: [The horizon-level regression has weak fit and is affected by converted qualitative conductivity values.]}
@@ -751,10 +679,8 @@ functions:
           sand: 50
           clay: 25
           organic_matter: 2.5
-        expected:
-          k_sat: 16.2905
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.340.'], warnings: [The regression has weak fit and is affected by converted qualitative conductivity values.]}
@@ -769,10 +695,8 @@ functions:
       - id: reviewer_reference_vector
         inputs:
           sand: 50
-        expected:
-          k_sat: 4.883324693640427
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3 prints R^2 = 0.399; the prose later states 0.435.'], warnings: [The source gives inconsistent R^2 values for this regression.]}
@@ -789,10 +713,8 @@ functions:
           sand: 50
           clay: 25
           organic_matter: 2.5
-        expected:
-          k_sat: 10.53583
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.682.', 'Human review corrected the anomalous printed intercept from -90917 to -0.90917.'], warnings: [The implementation intentionally differs from the original published Table 3, which prints the intercept as -90917.]}
@@ -808,10 +730,8 @@ functions:
       - id: reviewer_reference_vector
         inputs:
           sand: 50
-        expected:
-          k_sat: 10.714718864969111
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Section 5.1; 3172 horizons; R^2 = 0.696.'], warnings: [The paper recommends use when data are statistically similar to its Spanish-soil calibration data.]}
@@ -828,10 +748,8 @@ functions:
           sand: 50
           clay: 25
           organic_matter: 2.5
-        expected:
-          k_sat: 20.06325
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Section 5.1; 3172 horizons; R^2 = 0.715.'], warnings: [The paper recommends use when data are statistically similar to its Spanish-soil calibration data.]}

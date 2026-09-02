@@ -2,52 +2,38 @@
 #define PTFKIT_TEST_CLOSE_ENOUGH_H
 
 #ifdef __cplusplus
-#include <cstdlib>
 #include <cstdio>
-#include <cmath>
+#include <cstdlib>
 #include <print>
 
-inline void _close_enough_impl(const char *file, int line, double actual, double expected,
-                               double atol, double rtol) {
-    if (std::fabs(actual - expected) > atol + rtol * std::fabs(expected)) {
-        std::println(stderr, "asserion failed: {}:{}:\n\n\t{} ≈ {}", file, line, actual, expected);
+inline void _in_interval_impl(const char *file, int line, double actual, double lower,
+                              double upper) {
+    if (!(actual >= lower && actual <= upper)) {
+        std::println(stderr, "assertion failed: {}:{}: {} not in [{}, {}]", file, line, actual,
+                     lower, upper);
         std::exit(EXIT_FAILURE);
     }
 }
 
 #else
-#include <stdlib.h>
-#include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-static inline void _close_enough_impl(const char *file, int line, double actual, double expected,
-                                      double atol, double rtol) {
-    if (fabs(actual - expected) > atol + rtol * fabs(expected)) {
-        fprintf(stderr, "asserion failed: %s:%d:\n\n\t%f ≈ %f\n", file, line, actual, expected);
+static inline void _in_interval_impl(const char *file, int line, double actual, double lower,
+                                     double upper) {
+    if (!(actual >= lower && actual <= upper)) {
+        fprintf(stderr, "assertion failed: %s:%d: %.17g not in [%.17g, %.17g]\n", file, line,
+                actual, lower, upper);
         exit(EXIT_FAILURE);
     }
 }
-
 #endif
 
-#define assert_close_enough(actual, expected, atol, rtol)                                          \
+#define assert_in_interval(actual, lower, upper)                                                   \
     do {                                                                                           \
-        _close_enough_impl(__FILE__, __LINE__, (actual), (expected), (atol), (rtol));              \
+        _in_interval_impl(__FILE__, __LINE__, (actual), (lower), (upper));                         \
     } while (0)
 
-// #define assert_close_enough(actual, expected, atol, rtol)       \
-//     do {                                                        \
-//         if (!(close_enough(actual, expected, atol, rtol))) {    \
-//             fprintf(                                            \
-//                 stderr,                                         \
-//                 "asserion failed: %s:%d: %s ≈ %\n",             \
-//                 __FILE__,                                       \
-//                 __LINE__,                                       \
-//                 #actual,                                        \
-//                 #expected                                       \
-//             );                                                  \
-//             return 1;                                           \
-//         }                                                       \
-//     } while (0)
+#define assert_exact(actual, expected) assert_in_interval((actual), (expected), (expected))
 
 #endif

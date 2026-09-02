@@ -15,10 +15,10 @@ int main() {
             ptfkit::hodnett2002::calc_ptf_hodnett2002(39.2, 24.2, 36.7, 1.4, 1.2, 15.9, 5.85);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::hodnett2002::Hodnett2002PTFResult>);
-        assert_close_enough(result.alpha, 0.245183615037873, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.n, 1.36739326352383, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.theta_s, 0.4993353, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.theta_r, 0.21344216, 0.000000000001, 0.000000000001);
+        assert_in_interval(result.alpha, 0.24518361503787134, 0.2451836150378749);
+        assert_in_interval(result.n, 1.3673932635238206, 1.367393263523849);
+        assert_in_interval(result.theta_s, 0.4993352999999965, 0.4993353000000036);
+        assert_in_interval(result.theta_r, 0.21344215999999824, 0.2134421600000018);
     }
     return 0;
 }

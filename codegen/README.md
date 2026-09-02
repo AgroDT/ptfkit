@@ -9,6 +9,8 @@ contract; internal generator APIs are not.
 
 1. `specs` loads source specifications and `validate` checks their contracts.
 2. `compile` resolves formulas and golden cases into `CompiledFunction` values.
+   `verification` evaluates calculated cases from the validated IR at 256-bit
+   precision and centrally derives exact or interval acceptance criteria.
 3. `documentation` provides borrowed source/function facts without target
    markup. `render` contains shared text, Markdown, and C-family expression
    rendering support.
@@ -52,7 +54,8 @@ validation, and compilation path. It counts every schema-valid function,
 including `draft` and `blocked` functions. Verification coverage counts declared
 `golden_tests` and `edge_cases`; it does not describe external predictive
 validation on soil datasets, and a declared edge case is not necessarily an
-executable test.
+executable test. Golden provenance counts distinguish source-based evidence
+from calculated references derived from the same semantic IR.
 
 The JSON document has stable top-level `sources`, `functions`, `verification`,
 `inputs`, `outputs`, `scope`, and `blocked_functions` sections. Category tables

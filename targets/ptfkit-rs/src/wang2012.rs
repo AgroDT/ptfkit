@@ -103,32 +103,25 @@ pub fn calc_ptf_wang2012(
 #[cfg(test)]
 mod tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
     fn derivation_minimum_soc_case() {
         let result = calc_ptf_wang2012(85f64, 10f64, 5f64, 1.22f64, 0.033f64, 1193f64);
-        assert_close(
-            result.theta_s,
-            0.61540575f64,
-            0.000000000001f64,
-            0.000001f64,
-        );
-        assert_close(
+        assert_in_interval(result.theta_s, 0.6154057475250798f64, 0.615405747525094f64);
+        assert_in_interval(
             result.theta_fc,
-            0.38491949f64,
-            0.000000000001f64,
-            0.000001f64,
+            0.38491948943148163f64,
+            0.38491948943148874f64,
         );
-        assert_close(
+        assert_in_interval(
             result.k_sat,
-            0.00003872974f64,
-            0.000000000001f64,
-            0.000001f64,
+            0.00003872973909542171f64,
+            0.000038729739095422574f64,
         );
     }
 }

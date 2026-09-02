@@ -12,29 +12,29 @@ import ptfkit.rawls1982;
 int main() {
     {
         const auto result = ptfkit::rawls1982::calc_ptf_rawls1982_theta_1500(5.12, 0.1);
-        assert_close_enough(result, 0.05318, 0.000000000001, 0.0000000001);
+        assert_in_interval(result, 0.05317999999999994, 0.053180000000000054);
     }
     {
         const auto result = ptfkit::rawls1982::calc_ptf_rawls1982_theta_33(85.0, 0.1, 0.05318);
-        assert_close_enough(result, 0.1179896, 0.000000000001, 0.0000000001);
+        assert_in_interval(result, 0.11798959999999989, 0.11798960000000011);
     }
     {
         const auto result =
             ptfkit::rawls1982::calc_ptf_rawls1982_full_wrc(85.0, 0.66, 1.22, 0.091, 0.033);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::rawls1982::Rawls1982PTFResult>);
-        assert_close_enough(result.theta_4, 0.247242, 0.000000000001, 0.0000000001);
-        assert_close_enough(result.theta_7, 0.968738, 0.000000000001, 0.0000000001);
-        assert_close_enough(result.theta_10, 0.145588, 0.000000000001, 0.0000000001);
-        assert_close_enough(result.theta_20, 0.10483, 0.000000000001, 0.0000000001);
-        assert_close_enough(result.theta_33, 0.091, 0.000000000001, 0.0000000001);
-        assert_close_enough(result.theta_60, 0.075428, 0.000000000001, 0.0000000001);
-        assert_close_enough(result.theta_100, 0.063192, 0.000000000001, 0.0000000001);
-        assert_close_enough(result.theta_200, 0.052946, 0.000000000001, 0.0000000001);
-        assert_close_enough(result.theta_400, 0.045826, 0.000000000001, 0.0000000001);
-        assert_close_enough(result.theta_700, 0.041824, 0.000000000001, 0.0000000001);
-        assert_close_enough(result.theta_1000, 0.038932, 0.000000000001, 0.0000000001);
-        assert_close_enough(result.theta_1500, 0.033, 0.000000000001, 0.0000000001);
+        assert_in_interval(result.theta_4, 0.24724199999999977, 0.2472420000000002);
+        assert_in_interval(result.theta_7, 0.9687379999999991, 0.9687380000000009);
+        assert_in_interval(result.theta_10, 0.14558799999999977, 0.14558800000000022);
+        assert_in_interval(result.theta_20, 0.10482999999999988, 0.1048300000000001);
+        assert_in_interval(result.theta_33, 0.09099999999999989, 0.09100000000000011);
+        assert_in_interval(result.theta_60, 0.07542799999999988, 0.0754280000000001);
+        assert_in_interval(result.theta_100, 0.06319199999999989, 0.06319200000000011);
+        assert_in_interval(result.theta_200, 0.052945999999999944, 0.052946000000000056);
+        assert_in_interval(result.theta_400, 0.04582599999999994, 0.045826000000000054);
+        assert_in_interval(result.theta_700, 0.041823999999999945, 0.041824000000000056);
+        assert_in_interval(result.theta_1000, 0.038931999999999946, 0.03893200000000006);
+        assert_in_interval(result.theta_1500, 0.032999999999999946, 0.03300000000000006);
     }
     return 0;
 }

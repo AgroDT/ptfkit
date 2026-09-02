@@ -717,30 +717,36 @@ fn golden_test_tokens(resolved: &CompiledFunction, unique_test_module: bool) -> 
                     }
                 })
                 .collect::<Vec<_>>();
-            let expected = case
-                .expected
-                .iter()
-                .map(|value| Literal::f64_suffixed(*value))
-                .collect::<Vec<_>>();
-            let atol = Literal::f64_suffixed(case.atol);
-            let rtol = Literal::f64_suffixed(case.rtol);
+            let assertions_for =
+                |actual: TokenStream, acceptance: &crate::model::Acceptance| match acceptance {
+                    crate::model::Acceptance::Exact(expected) => {
+                        let expected = Literal::f64_suffixed(*expected);
+                        quote!(assert_eq!(#actual, #expected);)
+                    }
+                    crate::model::Acceptance::Interval { lower, upper } => {
+                        let lower = Literal::f64_suffixed(*lower);
+                        let upper = Literal::f64_suffixed(*upper);
+                        quote!(assert_in_interval(#actual, #lower, #upper);)
+                    }
+                };
             let assertions = match &resolved.core.output {
-                Output::Scalar => {
-                    let expected = &expected[0];
-                    quote!(assert_close(result, #expected, #atol, #rtol);)
-                }
+                Output::Scalar => assertions_for(quote!(result), &case.acceptance[0]),
                 Output::Struct(fields) => {
-                    let assertions = fields.iter().zip(&expected).map(|(field, expected)| {
-                        let field = format_ident!("{field}");
-                        quote!(assert_close(result.#field, #expected, #atol, #rtol);)
-                    });
+                    let assertions =
+                        fields
+                            .iter()
+                            .zip(&case.acceptance)
+                            .map(|(field, acceptance)| {
+                                let field = format_ident!("{field}");
+                                assertions_for(quote!(result.#field), acceptance)
+                            });
                     quote!(#(#assertions)*)
                 }
             };
             quote!(#[test] fn #name() { let result = #function(#(#values),*); #assertions })
         })
         .collect::<Vec<_>>();
-    quote! { #[cfg(test)] mod #module { use super::*; fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) { assert!((actual - expected).abs() <= atol + rtol * expected.abs(), "actual {actual} != expected {expected}"); } #(#tests)* } }
+    quote! { #[cfg(test)] mod #module { use super::*; fn assert_in_interval(actual: f64, lower: f64, upper: f64) { assert!(actual >= lower && actual <= upper, "actual {actual} is outside [{lower}, {upper}]"); } #(#tests)* } }
 }
 
 fn render_tokens(module_docs: TokenStream, tokens: TokenStream) -> String {

@@ -6,19 +6,19 @@
 int main() {
     {
         const double result = calc_ptf_jabro1992(10.0, 5.0, 1.26);
-        assert_close_enough(result, 0.0003849640675896946, 0.000000000001, 0.00000001);
+        assert_in_interval(result, 0.000384964067589691, 0.00038496406758969795);
     }
     {
         const double result = calc_ptf_jabro1992(38.72, 11.05, 1.42);
-        assert_close_enough(result, 0.000009804037952717678, 0.000000000001, 0.00000001);
+        assert_in_interval(result, 0.000009804037952717552, 0.000009804037952717769);
     }
     {
         const double result = calc_ptf_jabro1992(52.0, 30.0, 1.97);
-        assert_close_enough(result, 0.000000007292435947882127, 0.000000000001, 0.00000001);
+        assert_in_interval(result, 0.0000000072924359478820595, 0.000000007292435947882165);
     }
     {
         const double result = calc_ptf_jabro1992(0.2, 44.0, 1.61);
-        assert_close_enough(result, 0.00002032824027706267, 0.000000000001, 0.00000001);
+        assert_in_interval(result, 0.00002032824027706239, 0.000020328240277062823);
     }
     return 0;
 }

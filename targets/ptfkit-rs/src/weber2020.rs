@@ -103,56 +103,41 @@ pub fn calc_ptf_weber2020(
 #[cfg(test)]
 mod tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
     fn representative_vgm_parameters() {
         let result = calc_ptf_weber2020(0.05f64, 0.45f64, 0.02f64, 1.6f64, -0.5f64, 100f64);
-        assert_close(
+        assert_in_interval(
             result.theta_snc_bw,
-            0.06267f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.06266999999999912f64,
+            0.06267000000000089f64,
         );
-        assert_close(
+        assert_in_interval(
             result.theta_sc_bw,
-            0.38607f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.38606999999999647f64,
+            0.3860700000000036f64,
         );
-        assert_close(
+        assert_in_interval(
             result.alpha_bw,
-            0.0201472407335197f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.020147240733519457f64,
+            0.0201472407335199f64,
         );
-        assert_close(
-            result.n_bw,
-            1.71980542683289f64,
-            0.000000000001f64,
-            0.000000000001f64,
-        );
-        assert_close(
+        assert_in_interval(result.n_bw, 1.7198054268328802f64, 1.7198054268329086f64);
+        assert_in_interval(
             result.tau_bw,
-            -0.887f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            -0.8870000000000071f64,
+            -0.8869999999999929f64,
         );
-        assert_close(
-            result.k_sc_bw,
-            172.186857498601f64,
-            0.000000000001f64,
-            0.000000000001f64,
-        );
-        assert_close(
+        assert_in_interval(result.k_sc_bw, 172.18685749859887f64, 172.1868574986025f64);
+        assert_in_interval(
             result.k_snc_bw,
-            0.0190546071796325f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.01905460717963225f64,
+            0.019054607179632695f64,
         );
     }
 }

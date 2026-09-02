@@ -83,12 +83,8 @@ functions:
       bulk_density: 1.22
       soil_organic_carbon: 0.033
       altitude: 1193.0
-    expected:
-      theta_s: 0.61540575
-      theta_fc: 0.38491949
-      k_sat: 3.872974e-05
-    rtol: 1.0e-06
-    atol: 1.0e-12
+    verification:
+      kind: calculated_reference
     notes: Calculated from Table 6, converting SOC percent to g/kg and water-content
       percentage points to volumetric fractions.
   edge_cases:

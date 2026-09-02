@@ -67,32 +67,29 @@ pub fn calc_ptf_beniaich2023_slr1(clay: f64) -> Beniaich2023PTFResult {
 #[cfg(test)]
 mod calc_ptf_beniaich2023_slr1_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_slr1(20f64);
-        assert_close(
+        assert_in_interval(
             result.water_saturation,
-            0.57427f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.5742699999999991f64,
+            0.5742700000000008f64,
         );
-        assert_close(
+        assert_in_interval(
             result.water_field_capacity,
-            0.17577f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.1757699999999998f64,
+            0.17577000000000023f64,
         );
-        assert_close(
+        assert_in_interval(
             result.water_wilting_point,
-            0.09621f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.09620999999999989f64,
+            0.09621000000000011f64,
         );
     }
 }
@@ -134,32 +131,29 @@ pub fn calc_ptf_beniaich2023_slr2(silt: f64) -> Beniaich2023PTFResult {
 #[cfg(test)]
 mod calc_ptf_beniaich2023_slr2_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_slr2(30f64);
-        assert_close(
+        assert_in_interval(
             result.water_saturation,
-            0.68478f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.6847799999999992f64,
+            0.6847800000000009f64,
         );
-        assert_close(
+        assert_in_interval(
             result.water_field_capacity,
-            0.24878f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.24877999999999978f64,
+            0.24878000000000022f64,
         );
-        assert_close(
+        assert_in_interval(
             result.water_wilting_point,
-            0.16131f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.1613099999999998f64,
+            0.16131000000000023f64,
         );
     }
 }
@@ -201,32 +195,29 @@ pub fn calc_ptf_beniaich2023_slr3(sand: f64) -> Beniaich2023PTFResult {
 #[cfg(test)]
 mod calc_ptf_beniaich2023_slr3_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_slr3(50f64);
-        assert_close(
+        assert_in_interval(
             result.water_saturation,
-            0.6007f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.6006999999999991f64,
+            0.6007000000000009f64,
         );
-        assert_close(
+        assert_in_interval(
             result.water_field_capacity,
-            0.1848f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.18479999999999977f64,
+            0.18480000000000021f64,
         );
-        assert_close(
+        assert_in_interval(
             result.water_wilting_point,
-            0.11077f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.11076999999999988f64,
+            0.1107700000000001f64,
         );
     }
 }
@@ -270,32 +261,29 @@ pub fn calc_ptf_beniaich2023_slr4(clay: f64, silt: f64) -> Beniaich2023PTFResult
 #[cfg(test)]
 mod calc_ptf_beniaich2023_slr4_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_slr4(20f64, 30f64);
-        assert_close(
+        assert_in_interval(
             result.water_saturation,
-            0.74501f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.7450099999999991f64,
+            0.7450100000000008f64,
         );
-        assert_close(
+        assert_in_interval(
             result.water_field_capacity,
-            0.30678f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.30677999999999955f64,
+            0.30678000000000044f64,
         );
-        assert_close(
+        assert_in_interval(
             result.water_wilting_point,
-            0.19915f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.19914999999999977f64,
+            0.19915000000000022f64,
         );
     }
 }
@@ -339,32 +327,29 @@ pub fn calc_ptf_beniaich2023_slr5(clay: f64, silt: f64) -> Beniaich2023PTFResult
 #[cfg(test)]
 mod calc_ptf_beniaich2023_slr5_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_slr5(20f64, 40f64);
-        assert_close(
+        assert_in_interval(
             result.water_saturation,
-            0.68578f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.6857799999999991f64,
+            0.6857800000000008f64,
         );
-        assert_close(
+        assert_in_interval(
             result.water_field_capacity,
-            0.241875f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.24187499999999978f64,
+            0.24187500000000023f64,
         );
-        assert_close(
+        assert_in_interval(
             result.water_wilting_point,
-            0.16176f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.16175999999999977f64,
+            0.1617600000000002f64,
         );
     }
 }
@@ -406,32 +391,29 @@ pub fn calc_ptf_beniaich2023_slr6(soil_organic_matter: f64) -> Beniaich2023PTFRe
 #[cfg(test)]
 mod calc_ptf_beniaich2023_slr6_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_slr6(2f64);
-        assert_close(
+        assert_in_interval(
             result.water_saturation,
-            0.66749f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.6674899999999991f64,
+            0.6674900000000009f64,
         );
-        assert_close(
+        assert_in_interval(
             result.water_field_capacity,
-            0.24009f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.24008999999999978f64,
+            0.24009000000000022f64,
         );
-        assert_close(
+        assert_in_interval(
             result.water_wilting_point,
-            0.15562f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.1556199999999998f64,
+            0.15562000000000023f64,
         );
     }
 }
@@ -482,32 +464,29 @@ pub fn calc_ptf_beniaich2023_mlr1(
 #[cfg(test)]
 mod calc_ptf_beniaich2023_mlr1_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_mlr1(30f64, 50f64, 2f64);
-        assert_close(
+        assert_in_interval(
             result.water_saturation,
-            0.56266f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.5626599999999992f64,
+            0.5626600000000009f64,
         );
-        assert_close(
+        assert_in_interval(
             result.water_field_capacity,
-            0.17238f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.17237999999999978f64,
+            0.17238000000000023f64,
         );
-        assert_close(
+        assert_in_interval(
             result.water_wilting_point,
-            0.09366f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.09365999999999988f64,
+            0.0936600000000001f64,
         );
     }
 }
@@ -553,32 +532,29 @@ pub fn calc_ptf_beniaich2023_mlr2(sand: f64, soil_organic_matter: f64) -> Beniai
 #[cfg(test)]
 mod calc_ptf_beniaich2023_mlr2_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_mlr2(50f64, 2f64);
-        assert_close(
+        assert_in_interval(
             result.water_saturation,
-            0.58954f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.5895399999999991f64,
+            0.5895400000000008f64,
         );
-        assert_close(
+        assert_in_interval(
             result.water_field_capacity,
-            0.18025f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.18024999999999977f64,
+            0.18025000000000022f64,
         );
-        assert_close(
+        assert_in_interval(
             result.water_wilting_point,
-            0.10825f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.10824999999999989f64,
+            0.10825000000000011f64,
         );
     }
 }
@@ -624,32 +600,29 @@ pub fn calc_ptf_beniaich2023_mlr3(silt: f64, soil_organic_matter: f64) -> Beniai
 #[cfg(test)]
 mod calc_ptf_beniaich2023_mlr3_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_mlr3(30f64, 2f64);
-        assert_close(
+        assert_in_interval(
             result.water_saturation,
-            0.67031f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.6703099999999991f64,
+            0.6703100000000008f64,
         );
-        assert_close(
+        assert_in_interval(
             result.water_field_capacity,
-            0.24275f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.24274999999999977f64,
+            0.24275000000000022f64,
         );
-        assert_close(
+        assert_in_interval(
             result.water_wilting_point,
-            0.15755f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.15754999999999977f64,
+            0.15755000000000022f64,
         );
     }
 }
@@ -695,32 +668,29 @@ pub fn calc_ptf_beniaich2023_mlr4(clay: f64, soil_organic_matter: f64) -> Beniai
 #[cfg(test)]
 mod calc_ptf_beniaich2023_mlr4_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_mlr4(20f64, 2f64);
-        assert_close(
+        assert_in_interval(
             result.water_saturation,
-            0.5589f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.5588999999999991f64,
+            0.5589000000000008f64,
         );
-        assert_close(
+        assert_in_interval(
             result.water_field_capacity,
-            0.16859f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.16858999999999977f64,
+            0.1685900000000002f64,
         );
-        assert_close(
+        assert_in_interval(
             result.water_wilting_point,
-            0.09157f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.09156999999999989f64,
+            0.09157000000000011f64,
         );
     }
 }
@@ -771,32 +741,29 @@ pub fn calc_ptf_beniaich2023_mlr5(
 #[cfg(test)]
 mod calc_ptf_beniaich2023_mlr5_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
+    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
         assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
+            actual >= lower && actual <= upper,
+            "actual {actual} is outside [{lower}, {upper}]"
         );
     }
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_mlr5(20f64, 30f64, 2f64);
-        assert_close(
+        assert_in_interval(
             result.water_saturation,
-            0.56229f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.5622899999999991f64,
+            0.5622900000000008f64,
         );
-        assert_close(
+        assert_in_interval(
             result.water_field_capacity,
-            0.172f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.17199999999999976f64,
+            0.1720000000000002f64,
         );
-        assert_close(
+        assert_in_interval(
             result.water_wilting_point,
-            0.09379f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.09378999999999989f64,
+            0.09379000000000011f64,
         );
     }
 }

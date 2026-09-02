@@ -12,209 +12,209 @@ int main() {
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_campbell_shiozawa(50.0, 25.0);
-        assert_close_enough(result, 0.025071690110308933, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 0.025071690110308728, 0.025071690110309172);
     }
     {
         const auto result = ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_saxton(50.0, 25.0);
-        assert_close_enough(result, 0.00022673430784327228, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 0.00022673430784327062, 0.0002267343078432741);
     }
     {
         const auto result = ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_dane_puckett(25.0);
-        assert_close_enough(result, 8.302039828385373, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 8.302039828385258, 8.302039828385485);
     }
     {
         const auto result = ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_puckett(25.0);
-        assert_close_enough(result, 1.1257967371765654, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 1.1257967371765512, 1.1257967371765796);
     }
     {
         const auto result = ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_cosby(50.0, 25.0);
-        assert_close_enough(result, 26.091830970918934, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 26.09183097091871, 26.091830970919165);
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_humic_acrisol_sand(50.0);
-        assert_close_enough(result, 14.529879794648146, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 14.529879794648036, 14.529879794648263);
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter(
                 50.0, 25.0, 2.5);
-        assert_close_enough(result, 19.563475, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 19.563474999999972, 19.56347500000003);
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_calcic_cambisol_sand(50.0);
-        assert_close_enough(result, 9.995162000935244, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 9.995162000935132, 9.995162000935359);
     }
     {
         const auto result = ptfkit::ferrerjulia2004::
             calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter(50.0, 25.0, 2.5);
-        assert_close_enough(result, 16.51625, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 16.51624999999997, 16.516250000000028);
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_dystric_cambisol_sand(50.0);
-        assert_close_enough(result, 13.413573870265868, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 13.413573870265756, 13.413573870265983);
     }
     {
         const auto result = ptfkit::ferrerjulia2004::
             calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter(50.0, 25.0, 2.5);
-        assert_close_enough(result, 20.79, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 20.78999999999997, 20.790000000000028);
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_eutric_cambisol_sand(50.0);
-        assert_close_enough(result, 11.570199173737363, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 11.570199173737253, 11.57019917373748);
     }
     {
         const auto result = ptfkit::ferrerjulia2004::
             calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter(50.0, 25.0, 2.5);
-        assert_close_enough(result, 19.5235, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 19.52349999999997, 19.523500000000027);
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_gleyic_cambisol_sand(50.0);
-        assert_close_enough(result, 6.559110321079926, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 6.559110321079869, 6.559110321079983);
     }
     {
         const auto result = ptfkit::ferrerjulia2004::
             calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter(50.0, 25.0, 2.5);
-        assert_close_enough(result, 11.514, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 11.513999999999985, 11.514000000000014);
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_humic_cambisol_sand(50.0);
-        assert_close_enough(result, 13.820129957492508, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 13.820129957492394, 13.820129957492622);
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter(
                 50.0, 25.0, 2.5);
-        assert_close_enough(result, 20.9029, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 20.90289999999997, 20.902900000000027);
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand(50.0);
-        assert_close_enough(result, 10.959482760491376, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 10.959482760491262, 10.95948276049149);
     }
     {
         const auto result = ptfkit::ferrerjulia2004::
             calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter(50.0, 25.0, 2.5);
-        assert_close_enough(result, 13.101, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 13.100999999999987, 13.101000000000015);
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_calcic_luvisol_sand(50.0);
-        assert_close_enough(result, 6.931067612606957, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 6.931067612606899, 6.931067612607013);
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter(
                 50.0, 25.0, 2.5);
-        assert_close_enough(result, 8.9332, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 8.933199999999985, 8.933200000000014);
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_chromic_luvisol_sand(50.0);
-        assert_close_enough(result, 10.61655727277843, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 10.616557272778318, 10.616557272778545);
     }
     {
         const auto result = ptfkit::ferrerjulia2004::
             calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter(50.0, 25.0, 2.5);
-        assert_close_enough(result, 17.1465, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 17.14649999999997, 17.146500000000028);
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_gleyic_luvisol_sand(50.0);
-        assert_close_enough(result, 7.049012285884197, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 7.049012285884137, 7.049012285884251);
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter(
                 50.0, 25.0, 2.5);
-        assert_close_enough(result, 19.55, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 19.549999999999972, 19.55000000000003);
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_orthic_luvisol_sand(50.0);
-        assert_close_enough(result, 12.04280911180458, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 12.042809111804472, 12.042809111804699);
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter(
                 50.0, 25.0, 2.5);
-        assert_close_enough(result, 21.40425, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 21.404249999999973, 21.40425000000003);
     }
     {
         const auto result = ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_ranker_sand(50.0);
-        assert_close_enough(result, 12.423399456061938, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 12.423399456061821, 12.423399456062048);
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_ranker_texture_organic_matter(
                 50.0, 25.0, 2.5);
-        assert_close_enough(result, 22.4515, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 22.45149999999997, 22.451500000000028);
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_calcaric_regosol_sand(50.0);
-        assert_close_enough(result, 12.267374733833096, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 12.26737473383298, 12.267374733833208);
     }
     {
         const auto result = ptfkit::ferrerjulia2004::
             calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter(50.0, 25.0, 2.5);
-        assert_close_enough(result, 20.532, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 20.53199999999997, 20.53200000000003);
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_dystric_regosol_sand(50.0);
-        assert_close_enough(result, 12.081401313183196, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 12.08140131318308, 12.081401313183308);
     }
     {
         const auto result = ptfkit::ferrerjulia2004::
             calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter(50.0, 25.0, 2.5);
-        assert_close_enough(result, 17.1335, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 17.133499999999973, 17.13350000000003);
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_eutric_regosol_sand(50.0);
-        assert_close_enough(result, 13.674049986082728, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 13.674049986082617, 13.674049986082844);
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter(
                 50.0, 25.0, 2.5);
-        assert_close_enough(result, 24.06375, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 24.06374999999997, 24.063750000000027);
     }
     {
         const auto result = ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_rendzina_sand(50.0);
-        assert_close_enough(result, 12.515763717130312, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 12.515763717130197, 12.515763717130424);
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter(
                 50.0, 25.0, 2.5);
-        assert_close_enough(result, 16.2905, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 16.290499999999973, 16.29050000000003);
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_gleyic_solonchak_sand(50.0);
-        assert_close_enough(result, 4.883324693640427, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 4.883324693640371, 4.883324693640485);
     }
     {
         const auto result = ptfkit::ferrerjulia2004::
             calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter(50.0, 25.0, 2.5);
-        assert_close_enough(result, 10.53583, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 10.535829999999986, 10.535830000000015);
     }
     {
         const auto result = ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_general_sand(50.0);
-        assert_close_enough(result, 10.714718864969111, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 10.714718864968997, 10.714718864969225);
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_general_texture_organic_matter(
                 50.0, 25.0, 2.5);
-        assert_close_enough(result, 20.06325, 0.000000000001, 0.000000000001);
+        assert_in_interval(result, 20.06324999999997, 20.06325000000003);
     }
     return 0;
 }

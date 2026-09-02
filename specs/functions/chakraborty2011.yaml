@@ -100,13 +100,8 @@ functions:
         inputs:
           clay: 20.0
           silt: 30.0
-        expected:
-          water_content_33: 0.2488
-          water_content_100: 0.19758
-          water_content_500: 0.13528
-          water_content_1500: 0.11702
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Calculated directly from Table 3 and divided by 100.
     edge_cases: []
     documentation:
@@ -151,13 +146,8 @@ functions:
         inputs:
           sand: 50.0
           bulk_density: 1.5
-        expected:
-          water_content_33: 0.219415
-          water_content_100: 0.175765
-          water_content_500: 0.141025
-          water_content_1500: 0.118315
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Calculated directly from Table 3 and divided by 100.
     edge_cases: []
     documentation:
@@ -204,13 +194,8 @@ functions:
           clay: 20.0
           silt: 30.0
           bulk_density: 1.5
-        expected:
-          water_content_33: 0.25776
-          water_content_100: 0.201085
-          water_content_500: 0.139175
-          water_content_1500: 0.117865
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Calculated directly from Table 3 and divided by 100.
     edge_cases: []
     documentation:
@@ -257,13 +242,8 @@ functions:
           clay: 20.0
           silt: 30.0
           sand: 50.0
-        expected:
-          water_content_33: 0.24397
-          water_content_100: 0.19235
-          water_content_500: 0.13116
-          water_content_1500: 0.11325
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Calculated directly from Table 3 and divided by 100.
     edge_cases: []
     documentation:
@@ -317,13 +297,8 @@ functions:
           silt: 30.0
           sand: 50.0
           bulk_density: 1.5
-        expected:
-          water_content_33: 0.249785
-          water_content_100: 0.19166
-          water_content_500: 0.131065
-          water_content_1500: 0.110595
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Calculated directly from Table 3 and divided by 100.
     edge_cases: []
     documentation:
@@ -380,13 +355,8 @@ functions:
           sand: 50.0
           organic_carbon: 0.5
           bulk_density: 1.5
-        expected:
-          water_content_33: 0.25207
-          water_content_100: 0.19695
-          water_content_500: 0.13364
-          water_content_1500: 0.113175
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: Calculated directly from Table 3 and divided by 100.
     edge_cases: []
     documentation:

@@ -70,10 +70,8 @@ functions:
       - id: table_1_loamy_sand
         inputs:
           clay: 6.6
-        expected:
-          field_capacity_tension: 11.8540994164288
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: >-
           Direct evaluation of Equation 1; Table I reports the value rounded to
           11.8 kPa.
@@ -122,10 +120,8 @@ functions:
           sand: 86.3
           mean_depth: 105
           tension: 11.8
-        expected:
-          moisture_content: 8.2782468100413
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: >-
           Direct evaluation of the corrected Equation 2 at the Table I loamy-sand
           inputs and its rounded field-capacity tension. Table I instead reports
@@ -177,10 +173,8 @@ functions:
           clay: 6.6
           sand: 86.3
           mean_depth: 105
-        expected:
-          field_capacity_moisture: 8.14707947394088
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: >-
           Direct evaluation of corrected Equation 3; Table I reports the value
           rounded to 8.1%.
@@ -231,10 +225,8 @@ functions:
           clay: 6.6
           sand: 86.3
           mean_depth: 105
-        expected:
-          wilting_point_moisture: 1.3942
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: >-
           Direct evaluation of Equation 4; Table I reports the value rounded to
           1.4%.
@@ -288,10 +280,8 @@ functions:
           clay: 6.6
           sand: 86.3
           mean_depth: 105
-        expected:
-          available_moisture: 6.75287947394088
-        rtol: 1.0e-12
-        atol: 1.0e-12
+        verification:
+          kind: calculated_reference
         notes: >-
           Direct evaluation of Equations 3 and 4 followed by subtraction; Table I
           reports the value rounded to 6.7%.
