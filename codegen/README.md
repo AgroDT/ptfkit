@@ -30,3 +30,40 @@ indentation-aware text composition is natural; Rust remains token-based with
 needs a distinct root, cleanup root, marker, or formatter. Do not introduce a
 cross-language syntax AST or let renderers own filesystem, staging, formatting,
 or cleanup policy.
+
+## Corpus report
+
+Generate a human-readable summary of the current specification corpus from the
+repository root:
+
+```sh
+mise run corpus-report
+```
+
+Use `--format json` for a deterministic, machine-readable report suitable for
+CI checks and publication tables:
+
+```sh
+mise run corpus-report --format json
+```
+
+The command uses the normal specification loader, schema and semantic
+validation, and compilation path. It counts every schema-valid function,
+including `draft` and `blocked` functions. Verification coverage counts declared
+`golden_tests` and `edge_cases`; it does not describe external predictive
+validation on soil datasets, and a declared edge case is not necessarily an
+executable test.
+
+The JSON document has stable top-level `sources`, `functions`, `verification`,
+`inputs`, `outputs`, `scope`, and `blocked_functions` sections. Category tables
+are emitted as sorted arrays with explicit counts and percentages. Inputs are
+resolved by the specification loader and reported separately as `numeric` or
+`categorical`.
+
+The schema does not have an explicit publication-year field. The report accepts
+the final four characters of the APA-style source slug only when all four are
+ASCII digits and lists unresolved source slugs separately. It reports the
+existing `prediction_target`, `h_theta`, and `k_h` strings without attempting
+free-text scientific-property classification. Blocker evidence is retained from
+function documentation and source `scientific_notes`, but the current schema
+does not provide structured blocker categories.

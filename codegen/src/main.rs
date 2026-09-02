@@ -3,9 +3,10 @@
 use std::{path::Path, process::ExitCode};
 
 use anyhow::{Context, Result, bail};
-use clap::{Parser, Subcommand};
+use clap::{Parser, Subcommand, ValueEnum};
 
 mod compile;
+mod corpus_report;
 mod documentation;
 mod formula;
 mod model;
@@ -29,7 +30,21 @@ enum Command {
     Validate,
     Generate,
     CheckGenerated,
-    Version { version: String },
+    /// Summarize the validated specification corpus.
+    CorpusReport {
+        #[arg(long, value_enum, default_value_t)]
+        format: ReportFormat,
+    },
+    Version {
+        version: String,
+    },
+}
+
+#[derive(Clone, Copy, Default, ValueEnum)]
+enum ReportFormat {
+    #[default]
+    Text,
+    Json,
 }
 
 impl Cli {
@@ -58,6 +73,16 @@ impl Cli {
             Command::CheckGenerated => {
                 let entries = load_validated_specifications(root)?;
                 targets::check_generated(root, entries)
+            }
+            Command::CorpusReport { format } => {
+                let entries = load_validated_specifications(root)?;
+                compile::functions(entries.clone())?;
+                let report = corpus_report::Report::from_entries(&entries);
+                match format {
+                    ReportFormat::Text => print!("{}", report.to_text()),
+                    ReportFormat::Json => println!("{}", serde_json::to_string_pretty(&report)?),
+                }
+                Ok(())
             }
             Command::Version { version } => version::run(root, &version),
         }

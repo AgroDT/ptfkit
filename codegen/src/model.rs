@@ -9,6 +9,8 @@ pub(crate) struct Spec {
     pub(crate) scope: Scope,
     #[serde(default)]
     pub(crate) generation: Generation,
+    #[serde(default)]
+    pub(crate) scientific_notes: String,
     pub(crate) functions: Vec<Function>,
 }
 
@@ -19,6 +21,8 @@ struct RawSpec {
     scope: Scope,
     #[serde(default)]
     generation: Generation,
+    #[serde(default)]
+    scientific_notes: String,
     #[serde(default, rename = "$defs")]
     definitions: BTreeMap<String, Definition>,
     functions: Vec<FunctionReference>,
@@ -44,6 +48,8 @@ struct FunctionReference {
     implementation: Option<Implementation>,
     #[serde(default)]
     golden_tests: Vec<GoldenTest>,
+    #[serde(default)]
+    edge_cases: Vec<serde_json::Value>,
     #[serde(default)]
     documentation: Documentation,
 }
@@ -182,6 +188,7 @@ impl<'de> Deserialize<'de> for Spec {
                     outputs,
                     implementation,
                     golden_tests: function.golden_tests,
+                    edge_cases: function.edge_cases,
                     documentation: function.documentation,
                 })
             })
@@ -191,6 +198,7 @@ impl<'de> Deserialize<'de> for Spec {
             source: raw.source,
             scope: raw.scope,
             generation: raw.generation,
+            scientific_notes: raw.scientific_notes,
             functions,
         })
     }
@@ -368,6 +376,8 @@ pub(crate) struct Function {
     pub(crate) implementation: Option<Implementation>,
     #[serde(default)]
     pub(crate) golden_tests: Vec<GoldenTest>,
+    #[serde(default)]
+    pub(crate) edge_cases: Vec<serde_json::Value>,
     #[serde(default)]
     pub(crate) documentation: Documentation,
 }
@@ -715,6 +725,7 @@ mod tests {
             },
             scope: Scope::default(),
             generation: Generation::default(),
+            scientific_notes: String::new(),
             functions: Vec::new(),
         };
 

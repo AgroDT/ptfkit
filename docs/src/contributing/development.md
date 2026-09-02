@@ -126,6 +126,36 @@ The assisted workflow uses the skills in `.agents/skills/`:
 The source paper is transient input. The reviewed specification is the
 persisted record and the source of truth for generated implementations.
 
+## Corpus reporting
+
+The code generator can summarize the current validated specification corpus in
+the terminal:
+
+```sh
+mise run corpus-report
+```
+
+Generate deterministic JSON for CI or publication-oriented tables with:
+
+```sh
+mise run corpus-report --format json
+```
+
+All counts are derived from `specs/functions/` through the normal loader,
+validation, and compilation pipeline. The report intentionally includes
+schema-valid `blocked` functions. Its verification coverage describes declared
+golden tests and edge cases in the specifications; it is neither predictive
+benchmarking nor external validation against soil datasets, and descriptive
+edge cases are not claimed to be executable tests.
+
+Publication years are derived only from a four-digit suffix on the APA-style
+source slug because the current schema has no explicit year field. Unresolved
+slugs are reported rather than guessed. Prediction targets and hydraulic model
+descriptions are reported exactly as structured in the schema; the command does
+not infer scientific-property groups from free text. The JSON document uses
+stable `sources`, `functions`, `verification`, `inputs`, `outputs`, `scope`, and
+`blocked_functions` sections with explicit counts.
+
 ## Checks
 
 Use the smallest relevant checks while iterating. Before submitting changes that
