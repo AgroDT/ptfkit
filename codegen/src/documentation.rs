@@ -206,6 +206,7 @@ mod tests {
             documentation: Documentation::default(),
             implementation: None,
             golden_tests: Vec::new(),
+            edge_cases: Vec::new(),
         };
 
         let document = for_function(&function);
@@ -246,6 +247,7 @@ mod tests {
             },
             implementation: None,
             golden_tests: Vec::new(),
+            edge_cases: Vec::new(),
         };
 
         let document = for_function(&function);
