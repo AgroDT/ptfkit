@@ -37,14 +37,14 @@ Generate a human-readable summary of the current specification corpus from the
 repository root:
 
 ```sh
-cargo run --manifest-path codegen/Cargo.toml -- corpus-report
+mise run corpus-report
 ```
 
 Use `--format json` for a deterministic, machine-readable report suitable for
 CI checks and publication tables:
 
 ```sh
-cargo run --manifest-path codegen/Cargo.toml -- corpus-report --format json
+mise run corpus-report --format json
 ```
 
 The command uses the normal specification loader, schema and semantic

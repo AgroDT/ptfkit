@@ -56,3 +56,14 @@ depends = ["codegen:verify", "native:verify", "python:verify", "rust:verify"]
 [tasks.clean]
 description = "Remove all local build artifacts and development environments"
 depends = ["bench:clean", "codegen:clean", "docs:clean", "native:clean", "python:clean", "rust:clean"]
+
+[tasks.corpus-report]
+description = "Summarize the validated specification corpus"
+usage = '''
+flag "--format <value>" help="Output format" {
+  choices "text" "json"
+  default "text"
+}
+'''
+dir = "codegen"
+run = "cargo run corpus-report --format {{ usage.format }}"

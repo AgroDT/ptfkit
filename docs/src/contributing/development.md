@@ -132,13 +132,13 @@ The code generator can summarize the current validated specification corpus in
 the terminal:
 
 ```sh
-cargo run --manifest-path codegen/Cargo.toml -- corpus-report
+mise run corpus-report
 ```
 
 Generate deterministic JSON for CI or publication-oriented tables with:
 
 ```sh
-cargo run --manifest-path codegen/Cargo.toml -- corpus-report --format json
+mise run corpus-report --format json
 ```
 
 All counts are derived from `specs/functions/` through the normal loader,
