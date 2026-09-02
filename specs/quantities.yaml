@@ -1,0 +1,200 @@
+volumetric_water_content:
+  description: Volumetric soil water content or an equivalent volumetric fraction.
+  units:
+    volume_fraction:
+      absolute: 0.001
+      rationale: Project-default meaningful resolution for a volumetric fraction.
+    volume_percent:
+      absolute: 0.1
+      rationale: Project-default meaningful resolution in volume percentage points.
+
+gravimetric_water_content:
+  description: Gravimetric soil water content or a difference between such contents.
+  units:
+    mass_fraction:
+      absolute: 0.001
+      rationale: Project-default meaningful resolution for a gravimetric fraction.
+    mass_percent:
+      absolute: 0.1
+      rationale: Project-default meaningful resolution in mass percentage points.
+
+available_water_capacity:
+  description: Available water expressed as an equivalent depth per soil depth.
+  units:
+    millimeter_per_meter:
+      absolute: 0.1
+      rationale: Project-default meaningful resolution for water-storage depth.
+
+saturated_hydraulic_conductivity:
+  description: Saturated hydraulic conductivity, including pore-domain components.
+  units:
+    meter_per_second:
+      absolute: 1.0e-10
+      relative: 0.01
+      rationale: Conductivity spans orders of magnitude; use one percent with a lower resolution.
+    centimeter_per_hour:
+      absolute: 1.0e-5
+      relative: 0.01
+      rationale: Conductivity spans orders of magnitude; use one percent with a lower resolution.
+    millimeter_per_hour:
+      absolute: 1.0e-4
+      relative: 0.01
+      rationale: Conductivity spans orders of magnitude; use one percent with a lower resolution.
+    centimeter_per_minute:
+      absolute: 1.0e-5
+      relative: 0.01
+      rationale: Conductivity spans orders of magnitude; use one percent with a lower resolution.
+    centimeter_per_day:
+      absolute: 1.0e-4
+      relative: 0.01
+      rationale: Conductivity spans orders of magnitude; use one percent with a lower resolution.
+
+unsaturated_hydraulic_conductivity:
+  description: Hydraulic conductivity below saturation.
+  units:
+    millimeter_per_hour:
+      absolute: 1.0e-4
+      relative: 0.01
+      rationale: Conductivity spans orders of magnitude; use one percent with a lower resolution.
+
+infiltration_rate:
+  description: Soil infiltration rate.
+  units:
+    millimeter_per_hour:
+      absolute: 1.0e-4
+      relative: 0.01
+      rationale: Infiltration rate spans a broad range; use one percent with a lower resolution.
+
+dry_bulk_density:
+  description: Dry bulk density, including density adjusted for gravel or compaction.
+  units:
+    gram_per_cubic_centimeter:
+      absolute: 0.001
+      rationale: Project-default meaningful resolution for dry bulk density.
+
+matric_potential:
+  description: Soil matric potential, tension, suction, or pressure head.
+  units:
+    kilopascal:
+      absolute: 0.01
+      rationale: Project-default meaningful resolution for pressure or tension.
+    centimeter_water_head:
+      absolute: 0.01
+      rationale: Project-default meaningful resolution for pressure head.
+
+osmotic_potential:
+  description: Soil-water osmotic potential.
+  units:
+    kilopascal:
+      absolute: 0.01
+      rationale: Project-default meaningful resolution for osmotic potential.
+
+van_genuchten_alpha:
+  description: Inverse pressure-scale parameter of a van Genuchten retention model.
+  units:
+    inverse_centimeter:
+      absolute: 1.0e-5
+      rationale: Project-default meaningful resolution for an inverse-length parameter.
+    inverse_kilopascal:
+      absolute: 1.0e-5
+      rationale: Project-default meaningful resolution for an inverse-pressure parameter.
+
+van_genuchten_n:
+  description: Dimensionless van Genuchten pore-size distribution parameter.
+  units:
+    dimensionless:
+      absolute: 0.001
+      rationale: Project-default meaningful resolution for a fitted shape parameter.
+
+campbell_b:
+  description: Campbell moisture-characteristic exponent.
+  units:
+    dimensionless:
+      absolute: 0.001
+      rationale: Project-default meaningful resolution for a fitted shape parameter.
+
+sorptivity:
+  description: Soil-water sorptivity.
+  units:
+    centimeter_per_square_root_minute:
+      absolute: 1.0e-4
+      relative: 0.01
+      rationale: Sorptivity varies in scale; use one percent with a lower resolution.
+
+hutson_cass_b:
+  description: Dimensionless Hutson-Cass retention-curve shape parameter.
+  units:
+    dimensionless:
+      absolute: 0.001
+      rationale: Project-default meaningful resolution for a fitted shape parameter.
+
+varallyai_m:
+  description: Shape parameter of the Varallyay retention equation.
+  units:
+    dimensionless:
+      absolute: 0.001
+      rationale: Project-default meaningful resolution for a fitted shape parameter.
+
+varallyai_pf_star:
+  description: Logarithmic suction-scale parameter of the Varallyay retention equation.
+  units:
+    dimensionless:
+      absolute: 0.001
+      rationale: Project-default meaningful resolution for a logarithmic fitted parameter.
+
+retention_coefficient_a:
+  description: Pressure-dimensional coefficient of an empirical retention relation.
+  units:
+    kilopascal:
+      absolute: 1.0e-9
+      relative: 1.0e-6
+      rationale: Resolves small positive fitted coefficients while allowing insignificant cross-target floating-point variation.
+
+retention_coefficient_b:
+  description: Dimensionless exponent of an empirical retention relation.
+  units:
+    dimensionless:
+      absolute: 0.001
+      rationale: Project-default meaningful resolution for a fitted shape parameter.
+
+conductivity_shape_parameter:
+  description: Dimensionless hydraulic-conductivity shape parameter.
+  units:
+    dimensionless:
+      absolute: 0.001
+      rationale: Project-default meaningful resolution for a fitted shape parameter.
+
+log_saturated_hydraulic_conductivity:
+  description: Reported logarithm of saturated hydraulic conductivity.
+  units:
+    reported_log_value:
+      absolute: 0.001
+      rationale: Project-default meaningful resolution for a reported logarithmic value.
+
+log_saturation_potential:
+  description: Reported logarithm of saturation matric potential.
+  units:
+    reported_log_value:
+      absolute: 0.001
+      rationale: Project-default meaningful resolution for a reported logarithmic value.
+
+gravel_volume_fraction:
+  description: Volumetric fraction of gravel in bulk soil.
+  units:
+    volume_fraction:
+      absolute: 0.001
+      rationale: Project-default meaningful resolution for a volumetric fraction.
+
+brunswick_n:
+  description: Brunswick-VGM pore-size distribution shape parameter.
+  units:
+    dimensionless:
+      absolute: 0.001
+      rationale: Project-default meaningful resolution for a fitted shape parameter.
+
+brunswick_tau:
+  description: Brunswick hydraulic-conductivity shape parameter.
+  units:
+    dimensionless:
+      absolute: 0.001
+      rationale: Project-default meaningful resolution for a fitted shape parameter.

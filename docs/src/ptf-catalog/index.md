@@ -65,9 +65,11 @@ should check both the function status and the API reference for their target.
 
 ## Inputs, quantities, units, and domains
 
-Quantitative inputs and outputs identify a scientific quantity through a name,
-symbol, unit, domain, and description. These values must preserve the source's
-definitions and conversions. A domain records the published calibration or
+Quantitative inputs identify a source variable through a name, symbol, unit,
+domain, and description. Outputs additionally carry a stable `quantity`
+identifier resolved against `specs/quantities.yaml`, a normalized `unit` identifier
+from `specs/units.yaml`, and `reported_unit` preserving the literal source notation.
+These values must preserve the source's definitions and numerical values. A domain records the published calibration or
 mathematical range; it does not imply that every target performs runtime range
 validation.
 
@@ -83,6 +85,30 @@ are stable public type names, while field order is part of the cross-target
 result contract. Reusable parameter declarations, enum types, and record shapes
 may be declared once in `$defs` and referenced by multiple functions. The
 `$defs` key is the canonical name of a reusable declaration, type, or record.
+Both registries are top-level maps keyed by stable identifiers. The unit registry
+owns only `preferred_notation` and equivalent `aliases`. The quantity registry
+lists allowed unit identifiers and owns each quantity × unit tolerance.
+
+```yaml
+quantity: volumetric_water_content
+unit: volume_percent
+reported_unit: "vol.%"
+```
+
+Alias matching is exact and contextual: the reported notation must equal the
+selected unit's preferred notation or an alias, and the quantity must permit that
+unit. Ambiguous notations such as `%`, `1`, and `dimensionless` are interpreted
+only within the quantity's allowed units. Multiple units within one quantity
+must not claim the same notation.
+
+Aliases preserve numerical values exactly. `vol.%`, `% v/v`, and
+`% volume/volume` share a representation; `cm³/cm³` and `cm^3/cm^3` do too.
+Volume fractions and volume percentages, `mm/h` and `cm/h`, and `kPa` and
+`cm H2O` remain distinct. Normalization never multiplies, divides, offsets, or
+otherwise transforms a value. Missing identifiers, unsupported quantity/unit
+pairs, and unmatched source notations block validation and require an explicit
+registry decision. Registry edits must be reviewed for numerical equivalence;
+validation checks the declared aliases, not physical conversion formulas.
 
 ## Scientific evidence and numerical expectations
 
@@ -91,8 +117,10 @@ Specifications retain more than executable formulas:
 - `scientific_notes` records derivations, source notation, numerical policy,
   and review decisions that apply to the source;
 - documentation notes and warnings communicate function-specific limitations;
-- `golden_tests` preserve representative input and expected-output cases with
-  explicit tolerances and provenance notes;
+- `verification_cases` preserve representative inputs and fixed expected
+  outputs with `published` or `calculated` provenance; comparison is defined by
+  the [verification policy](../contributing/verification.md), with reviewed
+  function-output overrides recorded in YAML when the source supports them;
 - `edge_cases` record boundary conditions and the expected behavior.
 
 This information must be supported by the publication or by an explicit,
@@ -103,7 +131,10 @@ can prevent a function from advancing beyond `draft` or `blocked`.
 ## Implementation data
 
 Functions marked `ready-for-implementation` or `implemented` include an
-`implementation`. Implementations express ordered variables used to reproduce
+`implementation` and at least one verification case. Verification-case IDs are
+unique within each function and must be valid Rust identifiers because they
+become generated Rust test names; lowercase `snake_case` is recommended.
+Implementations express ordered variables used to reproduce
 the published PTF. A variable can be populated by a formula or by a typed lookup.
 Enums, records, and lookups are independent reusable definitions: a lookup maps
 an enum member to a record, and later formulas can access fields of that record.

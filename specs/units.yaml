@@ -1,0 +1,71 @@
+volume_fraction:
+  preferred_notation: "m^3/m^3"
+  aliases: ["cm^3/cm^3", "cm³/cm³", "m³/m³", "1", "dimensionless"]
+
+volume_percent:
+  preferred_notation: "% v/v"
+  aliases: ["vol.%", "% volume/volume", "%"]
+
+mass_fraction:
+  preferred_notation: "kg/kg"
+  aliases: ["g/g"]
+
+mass_percent:
+  preferred_notation: "% w/w"
+  aliases: ["%", "% mass"]
+
+millimeter_per_meter:
+  preferred_notation: "mm/m"
+  aliases: []
+
+meter_per_second:
+  preferred_notation: "m/s"
+  aliases: []
+
+centimeter_per_hour:
+  preferred_notation: "cm/h"
+  aliases: []
+
+millimeter_per_hour:
+  preferred_notation: "mm/h"
+  aliases: ["mm h^-1"]
+
+centimeter_per_minute:
+  preferred_notation: "cm/min"
+  aliases: []
+
+centimeter_per_day:
+  preferred_notation: "cm d^-1"
+  aliases: ["cm/day"]
+
+gram_per_cubic_centimeter:
+  preferred_notation: "g/cm^3"
+  aliases: []
+
+kilopascal:
+  preferred_notation: "kPa"
+  aliases: []
+
+centimeter_water_head:
+  preferred_notation: "cm H2O"
+  aliases: ["cm"]
+
+inverse_centimeter:
+  preferred_notation: "cm^-1"
+  aliases: []
+
+inverse_kilopascal:
+  preferred_notation: "kPa^-1"
+  aliases: []
+
+dimensionless:
+  preferred_notation: "dimensionless"
+  aliases: ["1"]
+
+centimeter_per_square_root_minute:
+  preferred_notation: "cm/min^(1/2)"
+  aliases: []
+
+reported_log_value:
+  preferred_notation: "reported log value"
+  aliases: []

@@ -59,12 +59,15 @@ functions:
     outputs:
       type: scalar
       name: k_sat
+      quantity: saturated_hydraulic_conductivity
       symbol: Ks
-      unit: cm/h
+      unit: centimeter_per_hour
+      reported_unit: cm/h
       domain: value >= 0
       description: Saturated hydraulic conductivity.
-    golden_tests:
+    verification_cases:
       - id: exponent_four
+        kind: calculated
         inputs:
           total_porosity: 0.45
           theta_33: 0.25
@@ -72,10 +75,9 @@ functions:
           exponent_n: 4.0
         expected:
           k_sat: 0.16
-        rtol: 1.0e-12
-        atol: 1.0e-14
-        notes: Algebraic verification of equation 3 with the paper's typical exponent n = 4.
+        rationale: Algebraic verification of equation 3 with the paper's typical exponent n = 4.
       - id: exponent_five
+        kind: calculated
         inputs:
           total_porosity: 0.5
           theta_33: 0.2
@@ -83,9 +85,7 @@ functions:
           exponent_n: 5.0
         expected:
           k_sat: 0.243
-        rtol: 1.0e-12
-        atol: 1.0e-14
-        notes: Algebraic verification of equation 3 with the evaluated exponent n = 5.
+        rationale: Algebraic verification of equation 3 with the evaluated exponent n = 5.
     edge_cases:
       - id: zero_effective_porosity
         inputs:
@@ -155,7 +155,7 @@ scientific_notes: |
 
   `B` and `n` are explicit inputs because the paper does not provide transferable
   values for either empirical constant. This API implements equation 3 without
-  presenting a soil-specific fit as universal. The golden cases are algebraic
+  presenting a soil-specific fit as universal. The verification cases are algebraic
   checks of equation 3, not observed values from the experimental datasets.
 
   The sample-reduction scaling equations remain outside this scalar API. Their
