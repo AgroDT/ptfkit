@@ -951,7 +951,7 @@ inline void _close_enough_impl(const char *file, int line, double actual, double
                                const char *unit, const char *source) {{
     const double tolerance = resolved_tolerance(expected, absolute, relative);
     const double difference = std::abs(actual - expected);
-    if (difference > tolerance) {{
+    if (!is_close(actual, expected, absolute, relative)) {{
         std::println(stderr, "assertion failed: {{}}:{{}}: actual={{}}, expected={{}}, difference={{}}, tolerance={{}}, quantity={{}}, unit={{}}, source={{}}",
                      file, line, actual, expected, difference, tolerance, quantity, unit, source);
         std::exit(EXIT_FAILURE);
@@ -976,7 +976,7 @@ static inline void _close_enough_impl(const char *file, int line, double actual,
                                       const char *unit, const char *source) {{
     const double tolerance = resolved_tolerance(expected, absolute, relative);
     const double difference = fabs(actual - expected);
-    if (difference > tolerance) {{
+    if (!is_close(actual, expected, absolute, relative)) {{
         fprintf(stderr, "assertion failed: %s:%d: actual=%.17g, expected=%.17g, difference=%.17g, tolerance=%.17g, quantity=%s, unit=%s, source=%s\n",
                 file, line, actual, expected, difference, tolerance, quantity, unit, source);
         exit(EXIT_FAILURE);
@@ -1014,6 +1014,9 @@ fn comparator_test(cpp: bool) -> String {
         if (is_close(expected + tolerance * 2.0, expected, absolute, relative)) {{
             return EXIT_FAILURE;
         }}
+    }}
+    if (is_close(NAN, 1.0, absolute, relative)) {{
+        return EXIT_FAILURE;
     }}
     return EXIT_SUCCESS;
 }}

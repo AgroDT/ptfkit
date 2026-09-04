@@ -15,5 +15,8 @@ int main(void) {
             return EXIT_FAILURE;
         }
     }
+    if (is_close(NAN, 1.0, absolute, relative)) {
+        return EXIT_FAILURE;
+    }
     return EXIT_SUCCESS;
 }
