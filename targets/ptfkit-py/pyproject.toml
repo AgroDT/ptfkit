@@ -5,11 +5,19 @@ build-backend = "scikit_build_core.build"
 [project]
 name = "ptfkit"
 dynamic = ["version"]
-description = "Pedotransfer functions for estimating soil hydraulic properties"
+description = "Collection of published pedotransfer functions for estimating soil hydraulic properties"
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
 requires-python = ">=3.11"
+keywords = [
+    "pedotransfer functions",
+    "soil hydraulic properties",
+    "soil water retention",
+    "hydraulic conductivity",
+    "soil science",
+    "hydrology",
+]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
