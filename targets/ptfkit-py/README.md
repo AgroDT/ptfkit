@@ -32,7 +32,7 @@ optional `out` array can be supplied for in-place calculation.
 ## Documentation
 
 - [PTF source catalogue](https://agrodt.github.io/ptfkit/ptf-catalog/)
-- [Python API](https://agrodt.github.io/ptfkit/reference/python.)
+- [Python API](https://agrodt.github.io/ptfkit/reference/python/)
 - [Repository](https://github.com/AgroDT/ptfkit)
 
 The applicability of each PTF depends on the dataset, territory, measurement
