@@ -6,24 +6,28 @@ import ptfkit;
 import ptfkit.aimrun2009;
 #endif
 
-#include "close_enough.h"
+#include "support/close_enough.h"
 
 int main() {
     {
         const auto result = ptfkit::aimrun2009::calc_ptf_aimrun2009(43.88, 0.94, 12.07, 0.01);
-        assert_close(result, 0.00000007358406556179513, 0.0);
+        assert_close(result, 0.00000007358406556179513, 0.0000000001, 0.01,
+                     "saturated_hydraulic_conductivity", "m/s", "registry");
     }
     {
         const auto result = ptfkit::aimrun2009::calc_ptf_aimrun2009(50.21, 1.19, 8.55, 0.007);
-        assert_close(result, 0.0000000307872446717209, 0.0);
+        assert_close(result, 0.0000000307872446717209, 0.0000000001, 0.01,
+                     "saturated_hydraulic_conductivity", "m/s", "registry");
     }
     {
         const auto result = ptfkit::aimrun2009::calc_ptf_aimrun2009(58.81, 1.13, 5.12, 0.005);
-        assert_close(result, 0.000000023343051908963327, 0.0);
+        assert_close(result, 0.000000023343051908963327, 0.0000000001, 0.01,
+                     "saturated_hydraulic_conductivity", "m/s", "registry");
     }
     {
         const auto result = ptfkit::aimrun2009::calc_ptf_aimrun2009(47.5, 1.08, 1.43, 0.008);
-        assert_close(result, 0.00000003831168764444974, 0.0);
+        assert_close(result, 0.00000003831168764444974, 0.0000000001, 0.01,
+                     "saturated_hydraulic_conductivity", "m/s", "registry");
     }
     return 0;
 }

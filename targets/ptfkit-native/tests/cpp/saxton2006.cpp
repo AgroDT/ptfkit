@@ -6,7 +6,7 @@ import ptfkit;
 import ptfkit.saxton2006;
 #endif
 
-#include "close_enough.h"
+#include "support/close_enough.h"
 #include <type_traits>
 
 int main() {
@@ -14,59 +14,80 @@ int main() {
         const auto result = ptfkit::saxton2006::calc_ptf_saxton2006(0.88, 0.05, 2.5);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::saxton2006::Saxton2006PTFResult>);
-        assert_close(result.theta_1500, 0.05022058, 0.0);
-        assert_close(result.theta_33, 0.10282792364858702, 0.0);
-        assert_close(result.theta_s, 0.46172240764858724, 0.0);
-        assert_close(result.plant_available_water, 0.05260734364858702, 0.0);
-        assert_close(result.air_entry_tension, 0.5986789729513293, 0.0);
-        assert_close(result.retention_a, 0.00018076452552206025, 0.0);
-        assert_close(result.retention_b, 5.325903100453899, 0.0);
-        assert_close(result.conductivity_lambda, 0.18776158355467926, 0.0);
-        assert_close(result.saturated_conductivity, 108.1478278507403, 0.0);
-        assert_close(result.normal_density, 1.4264356197312436, 0.0);
+        assert_close(result.theta_1500, 0.05022058, 0.001, 0.0, "volumetric_water_content",
+                     "m^3/m^3", "registry");
+        assert_close(result.theta_33, 0.10282792364858702, 0.001, 0.0, "volumetric_water_content",
+                     "m^3/m^3", "registry");
+        assert_close(result.theta_s, 0.46172240764858724, 0.001, 0.0, "volumetric_water_content",
+                     "m^3/m^3", "registry");
+        assert_close(result.plant_available_water, 0.05260734364858702, 0.001, 0.0,
+                     "volumetric_water_content", "m^3/m^3", "registry");
+        assert_close(result.air_entry_tension, 0.5986789729513293, 0.01, 0.0, "matric_potential",
+                     "kPa", "registry");
+        assert_close(result.retention_a, 0.00018076452552206025, 0.01, 0.0,
+                     "retention_coefficient_a", "kPa", "registry");
+        assert_close(result.retention_b, 5.325903100453899, 0.001, 0.0, "retention_coefficient_b",
+                     "dimensionless", "registry");
+        assert_close(result.conductivity_lambda, 0.18776158355467926, 0.001, 0.0,
+                     "conductivity_shape_parameter", "dimensionless", "registry");
+        assert_close(result.saturated_conductivity, 108.1478278507403, 0.0001, 0.01,
+                     "saturated_hydraulic_conductivity", "mm/h", "registry");
+        assert_close(result.normal_density, 1.4264356197312436, 0.001, 0.0, "dry_bulk_density",
+                     "g/cm^3", "registry");
     }
     {
         const auto result = ptfkit::saxton2006::calc_ptf_saxton2006_density(
             1.4264356197312436, 0.46172240764858724, 0.10282792364858702, 1.1);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::saxton2006::Saxton2006DensityResult>);
-        assert_close(result.adjusted_density, 1.569079181704368, 0.0);
-        assert_close(result.adjusted_theta_s, 0.407894648413446, 0.0);
-        assert_close(result.adjusted_theta_33, 0.09206237180155877, 0.0);
-        assert_close(result.adjusted_theta_s_minus_33, 0.3158322766118873, 0.0);
+        assert_close(result.adjusted_density, 1.569079181704368, 0.001, 0.0, "dry_bulk_density",
+                     "g/cm^3", "registry");
+        assert_close(result.adjusted_theta_s, 0.407894648413446, 0.001, 0.0,
+                     "volumetric_water_content", "m^3/m^3", "registry");
+        assert_close(result.adjusted_theta_33, 0.09206237180155877, 0.001, 0.0,
+                     "volumetric_water_content", "m^3/m^3", "registry");
+        assert_close(result.adjusted_theta_s_minus_33, 0.3158322766118873, 0.001, 0.0,
+                     "volumetric_water_content", "m^3/m^3", "registry");
     }
     {
         const auto result = ptfkit::saxton2006::calc_ptf_saxton2006_tension_dry(
             0.07652425182429351, 0.05022058, 0.10282792364858702);
-        assert_close(result, 159.18094591362183, 0.0);
+        assert_close(result, 159.18094591362183, 0.01, 0.0, "matric_potential", "kPa", "registry");
     }
     {
         const auto result = ptfkit::saxton2006::calc_ptf_saxton2006_tension_wet(
             0.2, 0.10282792364858702, 0.46172240764858724, 0.5986789729513293);
-        assert_close(result, 24.227216407352152, 0.0);
+        assert_close(result, 24.227216407352152, 0.01, 0.0, "matric_potential", "kPa", "registry");
     }
     {
         const auto result = ptfkit::saxton2006::calc_ptf_saxton2006_conductivity(
             0.3, 0.46172240764858724, 108.1478278507403, 0.18776158355467926);
-        assert_close(result, 0.3003203142764693, 0.0);
+        assert_close(result, 0.3003203142764693, 0.0001, 0.01, "unsaturated_hydraulic_conductivity",
+                     "mm/h", "registry");
     }
     {
         const auto result = ptfkit::saxton2006::calc_ptf_saxton2006_gravel(
             0.2, 1.4264356197312436, 0.05260734364858702, 108.1478278507403);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::saxton2006::Saxton2006GravelResult>);
-        assert_close(result.gravel_volume_fraction, 0.11860834455314037, 0.0);
-        assert_close(result.bulk_density, 1.5715605653291098, 0.0);
-        assert_close(result.bulk_plant_available_water, 0.04636767370708995, 0.0);
-        assert_close(result.bulk_saturated_conductivity, 97.54880510583706, 0.0);
+        assert_close(result.gravel_volume_fraction, 0.11860834455314037, 0.001, 0.0,
+                     "gravel_volume_fraction", "m^3/m^3", "registry");
+        assert_close(result.bulk_density, 1.5715605653291098, 0.001, 0.0, "dry_bulk_density",
+                     "g/cm^3", "registry");
+        assert_close(result.bulk_plant_available_water, 0.04636767370708995, 0.001, 0.0,
+                     "volumetric_water_content", "m^3/m^3", "registry");
+        assert_close(result.bulk_saturated_conductivity, 97.54880510583706, 0.0001, 0.01,
+                     "saturated_hydraulic_conductivity", "mm/h", "registry");
     }
     {
         const auto result =
             ptfkit::saxton2006::calc_ptf_saxton2006_salinity(4.0, 0.3, 0.46172240764858724);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::saxton2006::Saxton2006SalinityResult>);
-        assert_close(result.saturated_osmotic_potential, 144.0, 0.0);
-        assert_close(result.osmotic_potential, 221.6267556713219, 0.0);
+        assert_close(result.saturated_osmotic_potential, 144.0, 0.01, 0.0, "osmotic_potential",
+                     "kPa", "registry");
+        assert_close(result.osmotic_potential, 221.6267556713219, 0.01, 0.0, "osmotic_potential",
+                     "kPa", "registry");
     }
     return 0;
 }

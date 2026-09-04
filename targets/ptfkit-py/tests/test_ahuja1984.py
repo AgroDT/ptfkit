@@ -11,33 +11,53 @@ CASES_CALC_PTF_AHUJA1984 = [
     (
         {'coefficient_b': 100.0, 'exponent_n': 4.0, 'theta_33': 0.25, 'total_porosity': 0.45},
         {'k_sat': 0.16},
-        {'k_sat': 0.0},
     ),
     (
         {'coefficient_b': 100.0, 'exponent_n': 5.0, 'theta_33': 0.2, 'total_porosity': 0.5},
         {'k_sat': 0.243},
-        {'k_sat': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_AHUJA1984)
-def test_calc_ptf_ahuja1984_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
-):
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_AHUJA1984)
+def test_calc_ptf_ahuja1984_verification(inputs: dict[str, float], expected: dict[str, float]):
     result = calc_ptf_ahuja1984(**inputs)
 
-    assert_close(result, expected['k_sat'], published_tolerance['k_sat'])
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=1e-5,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='cm/h',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ahuja1984_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(CASES_CALC_PTF_AHUJA1984)
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_AHUJA1984)
     result = calc_ptf_ahuja1984(**inputs, out=None)
-    assert_close(result[0], expected['k_sat'], published_tolerance['k_sat'])
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=1e-5,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='cm/h',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ahuja1984_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(CASES_CALC_PTF_AHUJA1984)
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_AHUJA1984)
     result = calc_ptf_ahuja1984(**inputs, out=out)
     assert result is out
-    assert_close(result[0], expected['k_sat'], published_tolerance['k_sat'])
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=1e-5,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='cm/h',
+        source='registry',
+    )

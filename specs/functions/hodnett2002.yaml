@@ -76,21 +76,25 @@ functions:
       name: Hodnett2002PTFResult
       fields:
         - name: alpha
+          quantity: van_genuchten_alpha
           symbol: alpha
           unit: kPa^-1
           domain: value > 0
           description: Shape parameter of the van Genuchten water-retention model.
         - name: n
+          quantity: van_genuchten_n
           symbol: n
           unit: dimensionless
           domain: value > 0
           description: Shape parameter controlling water-retention curve steepness.
         - name: theta_s
+          quantity: volumetric_water_content
           symbol: theta_s
           unit: m^3/m^3
           domain: null
           description: Saturated volumetric soil water content.
         - name: theta_r
+          quantity: volumetric_water_content
           symbol: theta_r
           unit: m^3/m^3
           domain: null

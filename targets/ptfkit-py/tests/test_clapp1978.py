@@ -18,14 +18,6 @@ CASES_CALC_PTF_CLAPP1978 = [
             'saturated_hydraulic_conductivity': 1.056,
             'sorptivity': 1.52,
         },
-        {
-            'b': 0.0,
-            'saturation_suction': 0.0,
-            'wetting_front_suction': 0.0,
-            'saturated_water_content': 0.0,
-            'saturated_hydraulic_conductivity': 0.0,
-            'sorptivity': 0.0,
-        },
     ),
     (
         {'soil_texture': UsdaTextureClass.LOAMY_SAND},
@@ -36,14 +28,6 @@ CASES_CALC_PTF_CLAPP1978 = [
             'saturated_water_content': 0.41,
             'saturated_hydraulic_conductivity': 0.938,
             'sorptivity': 1.04,
-        },
-        {
-            'b': 0.0,
-            'saturation_suction': 0.0,
-            'wetting_front_suction': 0.0,
-            'saturated_water_content': 0.0,
-            'saturated_hydraulic_conductivity': 0.0,
-            'sorptivity': 0.0,
         },
     ),
     (
@@ -56,14 +40,6 @@ CASES_CALC_PTF_CLAPP1978 = [
             'saturated_hydraulic_conductivity': 0.208,
             'sorptivity': 1.03,
         },
-        {
-            'b': 0.0,
-            'saturation_suction': 0.0,
-            'wetting_front_suction': 0.0,
-            'saturated_water_content': 0.0,
-            'saturated_hydraulic_conductivity': 0.0,
-            'sorptivity': 0.0,
-        },
     ),
     (
         {'soil_texture': UsdaTextureClass.SILT_LOAM},
@@ -74,14 +50,6 @@ CASES_CALC_PTF_CLAPP1978 = [
             'saturated_water_content': 0.485,
             'saturated_hydraulic_conductivity': 0.0432,
             'sorptivity': 1.26,
-        },
-        {
-            'b': 0.0,
-            'saturation_suction': 0.0,
-            'wetting_front_suction': 0.0,
-            'saturated_water_content': 0.0,
-            'saturated_hydraulic_conductivity': 0.0,
-            'sorptivity': 0.0,
         },
     ),
     (
@@ -94,14 +62,6 @@ CASES_CALC_PTF_CLAPP1978 = [
             'saturated_hydraulic_conductivity': 0.0417,
             'sorptivity': 0.693,
         },
-        {
-            'b': 0.0,
-            'saturation_suction': 0.0,
-            'wetting_front_suction': 0.0,
-            'saturated_water_content': 0.0,
-            'saturated_hydraulic_conductivity': 0.0,
-            'sorptivity': 0.0,
-        },
     ),
     (
         {'soil_texture': UsdaTextureClass.SANDY_CLAY_LOAM},
@@ -112,14 +72,6 @@ CASES_CALC_PTF_CLAPP1978 = [
             'saturated_water_content': 0.42,
             'saturated_hydraulic_conductivity': 0.0378,
             'sorptivity': 0.488,
-        },
-        {
-            'b': 0.0,
-            'saturation_suction': 0.0,
-            'wetting_front_suction': 0.0,
-            'saturated_water_content': 0.0,
-            'saturated_hydraulic_conductivity': 0.0,
-            'sorptivity': 0.0,
         },
     ),
     (
@@ -132,14 +84,6 @@ CASES_CALC_PTF_CLAPP1978 = [
             'saturated_hydraulic_conductivity': 0.0102,
             'sorptivity': 0.31,
         },
-        {
-            'b': 0.0,
-            'saturation_suction': 0.0,
-            'wetting_front_suction': 0.0,
-            'saturated_water_content': 0.0,
-            'saturated_hydraulic_conductivity': 0.0,
-            'sorptivity': 0.0,
-        },
     ),
     (
         {'soil_texture': UsdaTextureClass.CLAY_LOAM},
@@ -150,14 +94,6 @@ CASES_CALC_PTF_CLAPP1978 = [
             'saturated_water_content': 0.476,
             'saturated_hydraulic_conductivity': 0.0147,
             'sorptivity': 0.537,
-        },
-        {
-            'b': 0.0,
-            'saturation_suction': 0.0,
-            'wetting_front_suction': 0.0,
-            'saturated_water_content': 0.0,
-            'saturated_hydraulic_conductivity': 0.0,
-            'sorptivity': 0.0,
         },
     ),
     (
@@ -170,14 +106,6 @@ CASES_CALC_PTF_CLAPP1978 = [
             'saturated_hydraulic_conductivity': 0.013,
             'sorptivity': 0.223,
         },
-        {
-            'b': 0.0,
-            'saturation_suction': 0.0,
-            'wetting_front_suction': 0.0,
-            'saturated_water_content': 0.0,
-            'saturated_hydraulic_conductivity': 0.0,
-            'sorptivity': 0.0,
-        },
     ),
     (
         {'soil_texture': UsdaTextureClass.SILTY_CLAY},
@@ -188,14 +116,6 @@ CASES_CALC_PTF_CLAPP1978 = [
             'saturated_water_content': 0.492,
             'saturated_hydraulic_conductivity': 0.0062,
             'sorptivity': 0.242,
-        },
-        {
-            'b': 0.0,
-            'saturation_suction': 0.0,
-            'wetting_front_suction': 0.0,
-            'saturated_water_content': 0.0,
-            'saturated_hydraulic_conductivity': 0.0,
-            'sorptivity': 0.0,
         },
     ),
     (
@@ -208,103 +128,185 @@ CASES_CALC_PTF_CLAPP1978 = [
             'saturated_hydraulic_conductivity': 0.0077,
             'sorptivity': 0.268,
         },
-        {
-            'b': 0.0,
-            'saturation_suction': 0.0,
-            'wetting_front_suction': 0.0,
-            'saturated_water_content': 0.0,
-            'saturated_hydraulic_conductivity': 0.0,
-            'sorptivity': 0.0,
-        },
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_CLAPP1978)
-def test_calc_ptf_clapp1978_verification(
-    inputs: dict[str, object], expected: dict[str, float], published_tolerance: dict[str, float]
-):
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_CLAPP1978)
+def test_calc_ptf_clapp1978_verification(inputs: dict[str, object], expected: dict[str, float]):
     result = calc_ptf_clapp1978(**inputs)  # ty: ignore[no-matching-overload]
 
-    assert_close(result.b, expected['b'], published_tolerance['b'])
+    assert_close(
+        result.b,
+        expected['b'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='campbell_b',
+        unit='1',
+        source='registry',
+    )
     assert_close(
         result.saturation_suction,
         expected['saturation_suction'],
-        published_tolerance['saturation_suction'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='cm',
+        source='registry',
     )
     assert_close(
         result.wetting_front_suction,
         expected['wetting_front_suction'],
-        published_tolerance['wetting_front_suction'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='cm',
+        source='registry',
     )
     assert_close(
         result.saturated_water_content,
         expected['saturated_water_content'],
-        published_tolerance['saturated_water_content'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='1',
+        source='registry',
     )
     assert_close(
         result.saturated_hydraulic_conductivity,
         expected['saturated_hydraulic_conductivity'],
-        published_tolerance['saturated_hydraulic_conductivity'],
+        absolute=1e-5,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='cm/min',
+        source='registry',
     )
-    assert_close(result.sorptivity, expected['sorptivity'], published_tolerance['sorptivity'])
+    assert_close(
+        result.sorptivity,
+        expected['sorptivity'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='sorptivity',
+        unit='cm/min^(1/2)',
+        source='registry',
+    )
 
 
 def test_calc_ptf_clapp1978_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
-        CASES_CALC_PTF_CLAPP1978, Clapp1978Parameters
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_CLAPP1978, Clapp1978Parameters)
     result = calc_ptf_clapp1978(**inputs, out=None)
-    assert_close(result.b[0], expected['b'], published_tolerance['b'])
+    assert_close(
+        result.b[0],
+        expected['b'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='campbell_b',
+        unit='1',
+        source='registry',
+    )
     assert_close(
         result.saturation_suction[0],
         expected['saturation_suction'],
-        published_tolerance['saturation_suction'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='cm',
+        source='registry',
     )
     assert_close(
         result.wetting_front_suction[0],
         expected['wetting_front_suction'],
-        published_tolerance['wetting_front_suction'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='cm',
+        source='registry',
     )
     assert_close(
         result.saturated_water_content[0],
         expected['saturated_water_content'],
-        published_tolerance['saturated_water_content'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='1',
+        source='registry',
     )
     assert_close(
         result.saturated_hydraulic_conductivity[0],
         expected['saturated_hydraulic_conductivity'],
-        published_tolerance['saturated_hydraulic_conductivity'],
+        absolute=1e-5,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='cm/min',
+        source='registry',
     )
-    assert_close(result.sorptivity[0], expected['sorptivity'], published_tolerance['sorptivity'])
+    assert_close(
+        result.sorptivity[0],
+        expected['sorptivity'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='sorptivity',
+        unit='cm/min^(1/2)',
+        source='registry',
+    )
 
 
 def test_calc_ptf_clapp1978_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
-        CASES_CALC_PTF_CLAPP1978, Clapp1978Parameters
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_CLAPP1978, Clapp1978Parameters)
     result = calc_ptf_clapp1978(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert_close(result.b[0], expected['b'], published_tolerance['b'])
+    assert_close(
+        result.b[0],
+        expected['b'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='campbell_b',
+        unit='1',
+        source='registry',
+    )
     assert_close(
         result.saturation_suction[0],
         expected['saturation_suction'],
-        published_tolerance['saturation_suction'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='cm',
+        source='registry',
     )
     assert_close(
         result.wetting_front_suction[0],
         expected['wetting_front_suction'],
-        published_tolerance['wetting_front_suction'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='cm',
+        source='registry',
     )
     assert_close(
         result.saturated_water_content[0],
         expected['saturated_water_content'],
-        published_tolerance['saturated_water_content'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='1',
+        source='registry',
     )
     assert_close(
         result.saturated_hydraulic_conductivity[0],
         expected['saturated_hydraulic_conductivity'],
-        published_tolerance['saturated_hydraulic_conductivity'],
+        absolute=1e-5,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='cm/min',
+        source='registry',
     )
-    assert_close(result.sorptivity[0], expected['sorptivity'], published_tolerance['sorptivity'])
+    assert_close(
+        result.sorptivity[0],
+        expected['sorptivity'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='sorptivity',
+        unit='cm/min^(1/2)',
+        source='registry',
+    )

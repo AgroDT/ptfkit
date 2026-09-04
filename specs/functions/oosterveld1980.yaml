@@ -62,6 +62,7 @@ functions:
     outputs:
       type: scalar
       name: field_capacity_tension
+      quantity: matric_potential
       symbol: T_Pr
       unit: kPa
       domain: value > 0
@@ -110,6 +111,7 @@ functions:
     outputs:
       type: scalar
       name: moisture_content
+      quantity: gravimetric_water_content
       symbol: theta
       unit: '% mass'
       domain: null
@@ -165,6 +167,7 @@ functions:
     outputs:
       type: scalar
       name: field_capacity_moisture
+      quantity: gravimetric_water_content
       symbol: theta_fc
       unit: '% mass'
       domain: null
@@ -218,6 +221,7 @@ functions:
     outputs:
       type: scalar
       name: wilting_point_moisture
+      quantity: gravimetric_water_content
       symbol: theta_1500_kPa
       unit: '% mass'
       domain: null
@@ -272,6 +276,7 @@ functions:
     outputs:
       type: scalar
       name: available_moisture
+      quantity: gravimetric_water_content
       symbol: null
       unit: '% mass'
       domain: null

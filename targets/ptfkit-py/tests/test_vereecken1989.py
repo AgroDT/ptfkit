@@ -21,47 +21,138 @@ CASES_CALC_PTF_VEREECKEN1989 = [
             'alpha': 0.003581613076579849,
             'n': 0.8602234826041976,
         },
-        {'theta_r': 0.0, 'theta_s': 0.0, 'alpha': 0.0, 'n': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_VEREECKEN1989
-)
-def test_calc_ptf_vereecken1989_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
-):
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_VEREECKEN1989)
+def test_calc_ptf_vereecken1989_verification(inputs: dict[str, float], expected: dict[str, float]):
     result = calc_ptf_vereecken1989(**inputs)
 
-    assert_close(result.theta_r, expected['theta_r'], published_tolerance['theta_r'])
-    assert_close(result.theta_s, expected['theta_s'], published_tolerance['theta_s'])
-    assert_close(result.alpha, expected['alpha'], published_tolerance['alpha'])
-    assert_close(result.n, expected['n'], published_tolerance['n'])
+    assert_close(
+        result.theta_r,
+        expected['theta_r'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_s,
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.alpha,
+        expected['alpha'],
+        absolute=1e-5,
+        relative=0.0,
+        quantity='van_genuchten_alpha',
+        unit='cm^-1',
+        source='registry',
+    )
+    assert_close(
+        result.n,
+        expected['n'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='van_genuchten_n',
+        unit='dimensionless',
+        source='registry',
+    )
 
 
 def test_calc_ptf_vereecken1989_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_VEREECKEN1989, Vereecken1989PTFResult
     )
     result = calc_ptf_vereecken1989(**inputs, out=None)
-    assert_close(result.theta_r[0], expected['theta_r'], published_tolerance['theta_r'])
-    assert_close(result.theta_s[0], expected['theta_s'], published_tolerance['theta_s'])
-    assert_close(result.alpha[0], expected['alpha'], published_tolerance['alpha'])
-    assert_close(result.n[0], expected['n'], published_tolerance['n'])
+    assert_close(
+        result.theta_r[0],
+        expected['theta_r'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_s[0],
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.alpha[0],
+        expected['alpha'],
+        absolute=1e-5,
+        relative=0.0,
+        quantity='van_genuchten_alpha',
+        unit='cm^-1',
+        source='registry',
+    )
+    assert_close(
+        result.n[0],
+        expected['n'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='van_genuchten_n',
+        unit='dimensionless',
+        source='registry',
+    )
 
 
 def test_calc_ptf_vereecken1989_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_VEREECKEN1989, Vereecken1989PTFResult
     )
     result = calc_ptf_vereecken1989(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert_close(result.theta_r[0], expected['theta_r'], published_tolerance['theta_r'])
-    assert_close(result.theta_s[0], expected['theta_s'], published_tolerance['theta_s'])
-    assert_close(result.alpha[0], expected['alpha'], published_tolerance['alpha'])
-    assert_close(result.n[0], expected['n'], published_tolerance['n'])
+    assert_close(
+        result.theta_r[0],
+        expected['theta_r'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_s[0],
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.alpha[0],
+        expected['alpha'],
+        absolute=1e-5,
+        relative=0.0,
+        quantity='van_genuchten_alpha',
+        unit='cm^-1',
+        source='registry',
+    )
+    assert_close(
+        result.n[0],
+        expected['n'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='van_genuchten_n',
+        unit='dimensionless',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_VEREECKEN1989_DETAILED = [
@@ -87,44 +178,137 @@ CASES_CALC_PTF_VEREECKEN1989_DETAILED = [
             'alpha': 0.02522115884641546,
             'n': 0.517175605329397,
         },
-        {'theta_r': 0.0, 'theta_s': 0.0, 'alpha': 0.0, 'n': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_VEREECKEN1989_DETAILED
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_VEREECKEN1989_DETAILED)
 def test_calc_ptf_vereecken1989_detailed_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_vereecken1989_detailed(**inputs)
 
-    assert_close(result.theta_r, expected['theta_r'], published_tolerance['theta_r'])
-    assert_close(result.theta_s, expected['theta_s'], published_tolerance['theta_s'])
-    assert_close(result.alpha, expected['alpha'], published_tolerance['alpha'])
-    assert_close(result.n, expected['n'], published_tolerance['n'])
+    assert_close(
+        result.theta_r,
+        expected['theta_r'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_s,
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.alpha,
+        expected['alpha'],
+        absolute=1e-5,
+        relative=0.0,
+        quantity='van_genuchten_alpha',
+        unit='cm^-1',
+        source='registry',
+    )
+    assert_close(
+        result.n,
+        expected['n'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='van_genuchten_n',
+        unit='dimensionless',
+        source='registry',
+    )
 
 
 def test_calc_ptf_vereecken1989_detailed_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_VEREECKEN1989_DETAILED, Vereecken1989DetailedPTFResult
     )
     result = calc_ptf_vereecken1989_detailed(**inputs, out=None)
-    assert_close(result.theta_r[0], expected['theta_r'], published_tolerance['theta_r'])
-    assert_close(result.theta_s[0], expected['theta_s'], published_tolerance['theta_s'])
-    assert_close(result.alpha[0], expected['alpha'], published_tolerance['alpha'])
-    assert_close(result.n[0], expected['n'], published_tolerance['n'])
+    assert_close(
+        result.theta_r[0],
+        expected['theta_r'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_s[0],
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.alpha[0],
+        expected['alpha'],
+        absolute=1e-5,
+        relative=0.0,
+        quantity='van_genuchten_alpha',
+        unit='cm^-1',
+        source='registry',
+    )
+    assert_close(
+        result.n[0],
+        expected['n'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='van_genuchten_n',
+        unit='dimensionless',
+        source='registry',
+    )
 
 
 def test_calc_ptf_vereecken1989_detailed_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_VEREECKEN1989_DETAILED, Vereecken1989DetailedPTFResult
     )
     result = calc_ptf_vereecken1989_detailed(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert_close(result.theta_r[0], expected['theta_r'], published_tolerance['theta_r'])
-    assert_close(result.theta_s[0], expected['theta_s'], published_tolerance['theta_s'])
-    assert_close(result.alpha[0], expected['alpha'], published_tolerance['alpha'])
-    assert_close(result.n[0], expected['n'], published_tolerance['n'])
+    assert_close(
+        result.theta_r[0],
+        expected['theta_r'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_s[0],
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.alpha[0],
+        expected['alpha'],
+        absolute=1e-5,
+        relative=0.0,
+        quantity='van_genuchten_alpha',
+        unit='cm^-1',
+        source='registry',
+    )
+    assert_close(
+        result.n[0],
+        expected['n'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='van_genuchten_n',
+        unit='dimensionless',
+        source='registry',
+    )

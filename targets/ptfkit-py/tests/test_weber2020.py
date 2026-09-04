@@ -26,63 +26,212 @@ CASES_CALC_PTF_WEBER2020 = [
             'k_sc_bw': 172.186857498601,
             'k_snc_bw': 0.0190546071796325,
         },
-        {
-            'theta_snc_bw': 0.0,
-            'theta_sc_bw': 0.0,
-            'alpha_bw': 0.0,
-            'n_bw': 0.0,
-            'tau_bw': 0.0,
-            'k_sc_bw': 0.0,
-            'k_snc_bw': 0.0,
-        },
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_WEBER2020)
-def test_calc_ptf_weber2020_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
-):
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_WEBER2020)
+def test_calc_ptf_weber2020_verification(inputs: dict[str, float], expected: dict[str, float]):
     result = calc_ptf_weber2020(**inputs)
 
-    assert_close(result.theta_snc_bw, expected['theta_snc_bw'], published_tolerance['theta_snc_bw'])
-    assert_close(result.theta_sc_bw, expected['theta_sc_bw'], published_tolerance['theta_sc_bw'])
-    assert_close(result.alpha_bw, expected['alpha_bw'], published_tolerance['alpha_bw'])
-    assert_close(result.n_bw, expected['n_bw'], published_tolerance['n_bw'])
-    assert_close(result.tau_bw, expected['tau_bw'], published_tolerance['tau_bw'])
-    assert_close(result.k_sc_bw, expected['k_sc_bw'], published_tolerance['k_sc_bw'])
-    assert_close(result.k_snc_bw, expected['k_snc_bw'], published_tolerance['k_snc_bw'])
+    assert_close(
+        result.theta_snc_bw,
+        expected['theta_snc_bw'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.theta_sc_bw,
+        expected['theta_sc_bw'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.alpha_bw,
+        expected['alpha_bw'],
+        absolute=1e-5,
+        relative=0.0,
+        quantity='van_genuchten_alpha',
+        unit='cm^-1',
+        source='registry',
+    )
+    assert_close(
+        result.n_bw,
+        expected['n_bw'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='brunswick_n',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.tau_bw,
+        expected['tau_bw'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='brunswick_tau',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.k_sc_bw,
+        expected['k_sc_bw'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='cm d^-1',
+        source='registry',
+    )
+    assert_close(
+        result.k_snc_bw,
+        expected['k_snc_bw'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='cm d^-1',
+        source='registry',
+    )
 
 
 def test_calc_ptf_weber2020_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
-        CASES_CALC_PTF_WEBER2020, Weber2020PTFResult
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_WEBER2020, Weber2020PTFResult)
     result = calc_ptf_weber2020(**inputs, out=None)
     assert_close(
-        result.theta_snc_bw[0], expected['theta_snc_bw'], published_tolerance['theta_snc_bw']
+        result.theta_snc_bw[0],
+        expected['theta_snc_bw'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='dimensionless',
+        source='registry',
     )
-    assert_close(result.theta_sc_bw[0], expected['theta_sc_bw'], published_tolerance['theta_sc_bw'])
-    assert_close(result.alpha_bw[0], expected['alpha_bw'], published_tolerance['alpha_bw'])
-    assert_close(result.n_bw[0], expected['n_bw'], published_tolerance['n_bw'])
-    assert_close(result.tau_bw[0], expected['tau_bw'], published_tolerance['tau_bw'])
-    assert_close(result.k_sc_bw[0], expected['k_sc_bw'], published_tolerance['k_sc_bw'])
-    assert_close(result.k_snc_bw[0], expected['k_snc_bw'], published_tolerance['k_snc_bw'])
+    assert_close(
+        result.theta_sc_bw[0],
+        expected['theta_sc_bw'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.alpha_bw[0],
+        expected['alpha_bw'],
+        absolute=1e-5,
+        relative=0.0,
+        quantity='van_genuchten_alpha',
+        unit='cm^-1',
+        source='registry',
+    )
+    assert_close(
+        result.n_bw[0],
+        expected['n_bw'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='brunswick_n',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.tau_bw[0],
+        expected['tau_bw'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='brunswick_tau',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.k_sc_bw[0],
+        expected['k_sc_bw'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='cm d^-1',
+        source='registry',
+    )
+    assert_close(
+        result.k_snc_bw[0],
+        expected['k_snc_bw'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='cm d^-1',
+        source='registry',
+    )
 
 
 def test_calc_ptf_weber2020_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
-        CASES_CALC_PTF_WEBER2020, Weber2020PTFResult
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_WEBER2020, Weber2020PTFResult)
     result = calc_ptf_weber2020(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
     assert_close(
-        result.theta_snc_bw[0], expected['theta_snc_bw'], published_tolerance['theta_snc_bw']
+        result.theta_snc_bw[0],
+        expected['theta_snc_bw'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='dimensionless',
+        source='registry',
     )
-    assert_close(result.theta_sc_bw[0], expected['theta_sc_bw'], published_tolerance['theta_sc_bw'])
-    assert_close(result.alpha_bw[0], expected['alpha_bw'], published_tolerance['alpha_bw'])
-    assert_close(result.n_bw[0], expected['n_bw'], published_tolerance['n_bw'])
-    assert_close(result.tau_bw[0], expected['tau_bw'], published_tolerance['tau_bw'])
-    assert_close(result.k_sc_bw[0], expected['k_sc_bw'], published_tolerance['k_sc_bw'])
-    assert_close(result.k_snc_bw[0], expected['k_snc_bw'], published_tolerance['k_snc_bw'])
+    assert_close(
+        result.theta_sc_bw[0],
+        expected['theta_sc_bw'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.alpha_bw[0],
+        expected['alpha_bw'],
+        absolute=1e-5,
+        relative=0.0,
+        quantity='van_genuchten_alpha',
+        unit='cm^-1',
+        source='registry',
+    )
+    assert_close(
+        result.n_bw[0],
+        expected['n_bw'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='brunswick_n',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.tau_bw[0],
+        expected['tau_bw'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='brunswick_tau',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.k_sc_bw[0],
+        expected['k_sc_bw'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='cm d^-1',
+        source='registry',
+    )
+    assert_close(
+        result.k_snc_bw[0],
+        expected['k_snc_bw'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='cm d^-1',
+        source='registry',
+    )

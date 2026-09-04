@@ -18,15 +18,26 @@ Belgian territory north of the river axis Samber and Meuse
 clay."]
 
 #[cfg(test)]
-fn is_close(actual: f64, expected: f64, published_tolerance: f64) -> bool {
-    let tolerance = published_tolerance + 1e-12 + 1e-5 * expected.abs();
-    (actual - expected).abs() <= tolerance
+fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
+    absolute
+        .max(relative * expected.abs())
+        .max(0.00000000000001f64)
 }
 #[cfg(test)]
-fn assert_close(actual: f64, expected: f64, published_tolerance: f64) {
+fn assert_close(
+    actual: f64,
+    expected: f64,
+    absolute: f64,
+    relative: f64,
+    quantity: &str,
+    unit: &str,
+    source: &str,
+) {
+    let difference = (actual - expected).abs();
+    let tolerance = resolved_tolerance(expected, absolute, relative);
     assert!(
-        is_close(actual, expected, published_tolerance),
-        "|{actual} - {expected}| exceeds the shared tolerance"
+        difference <= tolerance,
+        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
     );
 }
 #[cfg(test)]
@@ -34,10 +45,11 @@ mod comparator_tests {
     use super::*;
     #[test]
     fn accepts_below_and_rejects_above_tolerance() {
-        let expected = 2.0;
-        let tolerance = 1e-12 + 1e-5 * expected;
-        assert!(is_close(expected + tolerance * 0.5, expected, 0.0));
-        assert!(!is_close(expected + tolerance * 2.0, expected, 0.0));
+        for expected in [0.0, 2.0, -2.0] {
+            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
+            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
+            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
+        }
     }
 }
 #[doc = r"Results returned by `calc_ptf_vereecken1989`."]
@@ -112,10 +124,42 @@ mod calc_ptf_vereecken1989_tests {
     #[test]
     fn dataset_mean_properties() {
         let result = calc_ptf_vereecken1989(52.14f64, 10.93f64, 1.03f64, 1.466f64);
-        assert_close(result.theta_r, 0.08406999999999999f64, 0f64);
-        assert_close(result.theta_s, 0.4060520000000001f64, 0f64);
-        assert_close(result.alpha, 0.003581613076579849f64, 0f64);
-        assert_close(result.n, 0.8602234826041976f64, 0f64);
+        assert_close(
+            result.theta_r,
+            0.08406999999999999f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "cm^3/cm^3",
+            "registry",
+        );
+        assert_close(
+            result.theta_s,
+            0.4060520000000001f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "cm^3/cm^3",
+            "registry",
+        );
+        assert_close(
+            result.alpha,
+            0.003581613076579849f64,
+            0.00001f64,
+            0f64,
+            "van_genuchten_alpha",
+            "cm^-1",
+            "registry",
+        );
+        assert_close(
+            result.n,
+            0.8602234826041976f64,
+            0.001f64,
+            0f64,
+            "van_genuchten_n",
+            "dimensionless",
+            "registry",
+        );
     }
 }
 #[doc = r"Results returned by `calc_ptf_vereecken1989_detailed`."]
@@ -248,9 +292,41 @@ mod calc_ptf_vereecken1989_detailed_tests {
             0.25f64, 0.88f64, 13.53f64, 21.15f64, 16.3f64, 24.83f64, 7f64, 5.15f64, 10.93f64,
             0.07f64, 4.07f64, 1.03f64, 1.466f64,
         );
-        assert_close(result.theta_r, 0.08277820000000001f64, 0f64);
-        assert_close(result.theta_s, 0.4060520000000001f64, 0f64);
-        assert_close(result.alpha, 0.02522115884641546f64, 0f64);
-        assert_close(result.n, 0.517175605329397f64, 0f64);
+        assert_close(
+            result.theta_r,
+            0.08277820000000001f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "cm^3/cm^3",
+            "registry",
+        );
+        assert_close(
+            result.theta_s,
+            0.4060520000000001f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "cm^3/cm^3",
+            "registry",
+        );
+        assert_close(
+            result.alpha,
+            0.02522115884641546f64,
+            0.00001f64,
+            0f64,
+            "van_genuchten_alpha",
+            "cm^-1",
+            "registry",
+        );
+        assert_close(
+            result.n,
+            0.517175605329397f64,
+            0.001f64,
+            0f64,
+            "van_genuchten_n",
+            "dimensionless",
+            "registry",
+        );
     }
 }

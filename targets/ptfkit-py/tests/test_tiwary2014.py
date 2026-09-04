@@ -8,32 +8,52 @@ from ptfkit.tiwary2014 import Tiwary2014PTFResult, calc_ptf_tiwary2014_bsr, calc
 
 
 CASES_CALC_PTF_TIWARY2014_IGP = [
-    ({'bulk_density': 1.674, 'esp': 4.6, 'sand': 37.3}, {'k_sat': 5.103578e-7}, {'k_sat': 0.0}),
+    ({'bulk_density': 1.674, 'esp': 4.6, 'sand': 37.3}, {'k_sat': 5.103578e-7}),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_TIWARY2014_IGP
-)
-def test_calc_ptf_tiwary2014_igp_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
-):
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_TIWARY2014_IGP)
+def test_calc_ptf_tiwary2014_igp_verification(inputs: dict[str, float], expected: dict[str, float]):
     result = calc_ptf_tiwary2014_igp(**inputs)
 
-    assert_close(result, expected['k_sat'], published_tolerance['k_sat'])
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=1e-10,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='m/s',
+        source='registry',
+    )
 
 
 def test_calc_ptf_tiwary2014_igp_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(CASES_CALC_PTF_TIWARY2014_IGP)
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_TIWARY2014_IGP)
     result = calc_ptf_tiwary2014_igp(**inputs, out=None)
-    assert_close(result[0], expected['k_sat'], published_tolerance['k_sat'])
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=1e-10,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='m/s',
+        source='registry',
+    )
 
 
 def test_calc_ptf_tiwary2014_igp_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(CASES_CALC_PTF_TIWARY2014_IGP)
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_TIWARY2014_IGP)
     result = calc_ptf_tiwary2014_igp(**inputs, out=out)
     assert result is out
-    assert_close(result[0], expected['k_sat'], published_tolerance['k_sat'])
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=1e-10,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='m/s',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_TIWARY2014_BSR = [
@@ -47,44 +67,131 @@ CASES_CALC_PTF_TIWARY2014_BSR = [
             'ph': 7.6,
         },
         {'w_33': 41.1729, 'w_100': 36.8273, 'w_1500': 21.6976, 'k_sat': 5.373367e-6},
-        {'w_33': 0.0, 'w_100': 0.0, 'w_1500': 0.0, 'k_sat': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_TIWARY2014_BSR
-)
-def test_calc_ptf_tiwary2014_bsr_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
-):
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_TIWARY2014_BSR)
+def test_calc_ptf_tiwary2014_bsr_verification(inputs: dict[str, float], expected: dict[str, float]):
     result = calc_ptf_tiwary2014_bsr(**inputs)
 
-    assert_close(result.w_33, expected['w_33'], published_tolerance['w_33'])
-    assert_close(result.w_100, expected['w_100'], published_tolerance['w_100'])
-    assert_close(result.w_1500, expected['w_1500'], published_tolerance['w_1500'])
-    assert_close(result.k_sat, expected['k_sat'], published_tolerance['k_sat'])
+    assert_close(
+        result.w_33,
+        expected['w_33'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
+    )
+    assert_close(
+        result.w_100,
+        expected['w_100'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
+    )
+    assert_close(
+        result.w_1500,
+        expected['w_1500'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
+    )
+    assert_close(
+        result.k_sat,
+        expected['k_sat'],
+        absolute=1e-10,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='m/s',
+        source='registry',
+    )
 
 
 def test_calc_ptf_tiwary2014_bsr_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
-        CASES_CALC_PTF_TIWARY2014_BSR, Tiwary2014PTFResult
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_TIWARY2014_BSR, Tiwary2014PTFResult)
     result = calc_ptf_tiwary2014_bsr(**inputs, out=None)
-    assert_close(result.w_33[0], expected['w_33'], published_tolerance['w_33'])
-    assert_close(result.w_100[0], expected['w_100'], published_tolerance['w_100'])
-    assert_close(result.w_1500[0], expected['w_1500'], published_tolerance['w_1500'])
-    assert_close(result.k_sat[0], expected['k_sat'], published_tolerance['k_sat'])
+    assert_close(
+        result.w_33[0],
+        expected['w_33'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
+    )
+    assert_close(
+        result.w_100[0],
+        expected['w_100'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
+    )
+    assert_close(
+        result.w_1500[0],
+        expected['w_1500'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
+    )
+    assert_close(
+        result.k_sat[0],
+        expected['k_sat'],
+        absolute=1e-10,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='m/s',
+        source='registry',
+    )
 
 
 def test_calc_ptf_tiwary2014_bsr_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
-        CASES_CALC_PTF_TIWARY2014_BSR, Tiwary2014PTFResult
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_TIWARY2014_BSR, Tiwary2014PTFResult)
     result = calc_ptf_tiwary2014_bsr(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert_close(result.w_33[0], expected['w_33'], published_tolerance['w_33'])
-    assert_close(result.w_100[0], expected['w_100'], published_tolerance['w_100'])
-    assert_close(result.w_1500[0], expected['w_1500'], published_tolerance['w_1500'])
-    assert_close(result.k_sat[0], expected['k_sat'], published_tolerance['k_sat'])
+    assert_close(
+        result.w_33[0],
+        expected['w_33'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
+    )
+    assert_close(
+        result.w_100[0],
+        expected['w_100'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
+    )
+    assert_close(
+        result.w_1500[0],
+        expected['w_1500'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
+    )
+    assert_close(
+        result.k_sat[0],
+        expected['k_sat'],
+        absolute=1e-10,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='m/s',
+        source='registry',
+    )

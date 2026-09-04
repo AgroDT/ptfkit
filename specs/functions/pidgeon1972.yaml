@@ -40,6 +40,7 @@ functions:
   outputs:
     type: scalar
     name: field_capacity
+    quantity: gravimetric_water_content
     symbol: FC
     unit: '% w/w'
     domain: null
@@ -83,6 +84,7 @@ functions:
   outputs:
     type: scalar
     name: field_capacity
+    quantity: gravimetric_water_content
     symbol: FC
     unit: '% w/w'
     domain: null
@@ -128,6 +130,7 @@ functions:
   outputs:
     type: scalar
     name: field_capacity
+    quantity: gravimetric_water_content
     symbol: FC
     unit: '% w/w'
     domain: null
@@ -174,6 +177,7 @@ functions:
   outputs:
     type: scalar
     name: field_capacity
+    quantity: volumetric_water_content
     symbol: FCvol
     unit: '% v/v'
     domain: null
@@ -225,6 +229,7 @@ functions:
   outputs:
     type: scalar
     name: permanent_wilting_point
+    quantity: gravimetric_water_content
     symbol: PWP
     unit: '% w/w'
     domain: null
@@ -267,6 +272,7 @@ functions:
   outputs:
     type: scalar
     name: permanent_wilting_point
+    quantity: gravimetric_water_content
     symbol: PWP
     unit: '% w/w'
     domain: null
@@ -312,6 +318,7 @@ functions:
   outputs:
     type: scalar
     name: permanent_wilting_point
+    quantity: gravimetric_water_content
     symbol: PWP
     unit: '% w/w'
     domain: null
@@ -358,6 +365,7 @@ functions:
   outputs:
     type: scalar
     name: available_water_capacity
+    quantity: available_water_capacity
     symbol: AWC
     unit: mm/m
     domain: null
@@ -404,6 +412,7 @@ functions:
   outputs:
     type: scalar
     name: available_water_capacity
+    quantity: available_water_capacity
     symbol: AWC
     unit: mm/m
     domain: null
@@ -445,6 +454,7 @@ functions:
   outputs:
     type: scalar
     name: available_water_capacity
+    quantity: available_water_capacity
     symbol: AWC
     unit: mm/m
     domain: null
@@ -485,6 +495,7 @@ functions:
   outputs:
     type: scalar
     name: available_water_capacity
+    quantity: available_water_capacity
     symbol: AWC
     unit: mm/m
     domain: null
@@ -525,6 +536,7 @@ functions:
   outputs:
     type: scalar
     name: available_water_capacity
+    quantity: available_water_capacity
     symbol: AWC
     unit: mm/m
     domain: null
@@ -576,6 +588,7 @@ functions:
   outputs:
     type: scalar
     name: extended_available_water_capacity
+    quantity: available_water_capacity
     symbol: EAWC
     unit: mm/m
     domain: null
@@ -618,6 +631,7 @@ functions:
   outputs:
     type: scalar
     name: extended_available_water_capacity
+    quantity: available_water_capacity
     symbol: EAWC
     unit: mm/m
     domain: null
@@ -663,6 +677,7 @@ functions:
   outputs:
     type: scalar
     name: extended_available_water_capacity
+    quantity: available_water_capacity
     symbol: EAWC
     unit: mm/m
     domain: null
@@ -710,6 +725,7 @@ functions:
   outputs:
     type: scalar
     name: extended_available_water_capacity
+    quantity: available_water_capacity
     symbol: EAWC
     unit: mm/m
     domain: null
@@ -757,6 +773,7 @@ functions:
   outputs:
     type: scalar
     name: extended_available_water_capacity
+    quantity: available_water_capacity
     symbol: EAWC
     unit: mm/m
     domain: null

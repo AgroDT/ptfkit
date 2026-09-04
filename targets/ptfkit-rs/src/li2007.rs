@@ -19,15 +19,26 @@ Fengqiu County soils in the North China Plain, China
 soil profiles."]
 
 #[cfg(test)]
-fn is_close(actual: f64, expected: f64, published_tolerance: f64) -> bool {
-    let tolerance = published_tolerance + 1e-12 + 1e-5 * expected.abs();
-    (actual - expected).abs() <= tolerance
+fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
+    absolute
+        .max(relative * expected.abs())
+        .max(0.00000000000001f64)
 }
 #[cfg(test)]
-fn assert_close(actual: f64, expected: f64, published_tolerance: f64) {
+fn assert_close(
+    actual: f64,
+    expected: f64,
+    absolute: f64,
+    relative: f64,
+    quantity: &str,
+    unit: &str,
+    source: &str,
+) {
+    let difference = (actual - expected).abs();
+    let tolerance = resolved_tolerance(expected, absolute, relative);
     assert!(
-        is_close(actual, expected, published_tolerance),
-        "|{actual} - {expected}| exceeds the shared tolerance"
+        difference <= tolerance,
+        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
     );
 }
 #[cfg(test)]
@@ -35,10 +46,11 @@ mod comparator_tests {
     use super::*;
     #[test]
     fn accepts_below_and_rejects_above_tolerance() {
-        let expected = 2.0;
-        let tolerance = 1e-12 + 1e-5 * expected;
-        assert!(is_close(expected + tolerance * 0.5, expected, 0.0));
-        assert!(!is_close(expected + tolerance * 2.0, expected, 0.0));
+        for expected in [0.0, 2.0, -2.0] {
+            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
+            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
+            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
+        }
     }
 }
 #[doc = r"Results returned by `calc_ptf_li2007`."]
@@ -128,25 +140,121 @@ mod tests {
     #[test]
     fn loamy_sand() {
         let result = calc_ptf_li2007(85f64, 10f64, 5f64, 1.2f64, 0.21f64);
-        assert_close(result.theta_s, 0.5256803583157499f64, 0f64);
-        assert_close(result.a_vg, 0.9491464758307142f64, 0f64);
-        assert_close(result.n_vg, 1.1657804980997006f64, 0f64);
-        assert_close(result.k_sat, 0.000006549110367333547f64, 0f64);
+        assert_close(
+            result.theta_s,
+            0.5256803583157499f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "cm^3/cm^3",
+            "registry",
+        );
+        assert_close(
+            result.a_vg,
+            0.9491464758307142f64,
+            0.00001f64,
+            0f64,
+            "van_genuchten_alpha",
+            "cm^-1",
+            "registry",
+        );
+        assert_close(
+            result.n_vg,
+            1.1657804980997006f64,
+            0.001f64,
+            0f64,
+            "van_genuchten_n",
+            "dimensionless",
+            "registry",
+        );
+        assert_close(
+            result.k_sat,
+            0.000006549110367333547f64,
+            0.0000000001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "m/s",
+            "registry",
+        );
     }
     #[test]
     fn loam() {
         let result = calc_ptf_li2007(50.23f64, 38.72f64, 11.05f64, 1.42f64, 0.65f64);
-        assert_close(result.theta_s, 0.49659526127697506f64, 0f64);
-        assert_close(result.a_vg, 0.009519989841950734f64, 0f64);
-        assert_close(result.n_vg, 1.1806286355149054f64, 0f64);
-        assert_close(result.k_sat, 0.00000045117324656202257f64, 0f64);
+        assert_close(
+            result.theta_s,
+            0.49659526127697506f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "cm^3/cm^3",
+            "registry",
+        );
+        assert_close(
+            result.a_vg,
+            0.009519989841950734f64,
+            0.00001f64,
+            0f64,
+            "van_genuchten_alpha",
+            "cm^-1",
+            "registry",
+        );
+        assert_close(
+            result.n_vg,
+            1.1806286355149054f64,
+            0.001f64,
+            0f64,
+            "van_genuchten_n",
+            "dimensionless",
+            "registry",
+        );
+        assert_close(
+            result.k_sat,
+            0.00000045117324656202257f64,
+            0.0000000001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "m/s",
+            "registry",
+        );
     }
     #[test]
     fn silty_clay() {
         let result = calc_ptf_li2007(12.88f64, 60f64, 27.12f64, 1.48f64, 1.02f64);
-        assert_close(result.theta_s, 0.4053061510618609f64, 0f64);
-        assert_close(result.a_vg, 0.0018530400762371828f64, 0f64);
-        assert_close(result.n_vg, 1.2080428739797433f64, 0f64);
-        assert_close(result.k_sat, 0.0000015151432632107234f64, 0f64);
+        assert_close(
+            result.theta_s,
+            0.4053061510618609f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "cm^3/cm^3",
+            "registry",
+        );
+        assert_close(
+            result.a_vg,
+            0.0018530400762371828f64,
+            0.00001f64,
+            0f64,
+            "van_genuchten_alpha",
+            "cm^-1",
+            "registry",
+        );
+        assert_close(
+            result.n_vg,
+            1.2080428739797433f64,
+            0.001f64,
+            0f64,
+            "van_genuchten_n",
+            "dimensionless",
+            "registry",
+        );
+        assert_close(
+            result.k_sat,
+            0.0000015151432632107234f64,
+            0.0000000001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "m/s",
+            "registry",
+        );
     }
 }

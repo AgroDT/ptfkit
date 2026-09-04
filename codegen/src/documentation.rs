@@ -3,7 +3,7 @@
 //! Targets choose their own section ordering and markup. This module only
 //! describes the information they have available to render.
 
-use crate::model::{Function, Input, Outputs, Parameter, Scope, Source};
+use crate::model::{Function, Input, OutputField, Outputs, Parameter, Scope, Source};
 
 #[derive(Clone, Copy, Debug)]
 pub(crate) struct SourceDocument<'a> {
@@ -39,10 +39,10 @@ pub(crate) struct FunctionDocument<'a> {
 
 #[derive(Clone, Copy, Debug)]
 pub(crate) enum Returns<'a> {
-    Scalar(&'a Parameter),
+    Scalar(&'a OutputField),
     Record {
         name: &'a str,
-        fields: &'a [Parameter],
+        fields: &'a [OutputField],
     },
 }
 
@@ -111,6 +111,18 @@ impl ParameterMetadata for Parameter {
     }
 }
 
+impl ParameterMetadata for OutputField {
+    fn name(&self) -> &str {
+        &self.name
+    }
+    fn description(&self) -> &str {
+        &self.description
+    }
+    fn unit(&self) -> Option<&str> {
+        Some(&self.unit)
+    }
+}
+
 impl ParameterMetadata for Input {
     fn name(&self) -> &str {
         self.name()
@@ -137,7 +149,8 @@ pub(crate) fn parameter_documentation(parameter: &impl ParameterMetadata) -> Str
 #[cfg(test)]
 mod tests {
     use crate::model::{
-        Documentation, Function, FunctionScope, Input, Models, Outputs, Parameter, PublicApi,
+        Documentation, Function, FunctionScope, Input, Models, OutputField, Outputs, Parameter,
+        PublicApi,
     };
 
     use super::{ParameterMetadata, Returns, for_function, parameter_details};
@@ -158,9 +171,11 @@ mod tests {
         }
     }
 
-    fn parameter(name: &str) -> Parameter {
-        Parameter {
+    fn output(name: &str) -> OutputField {
+        OutputField {
             name: name.into(),
+            quantity: "volumetric_water_content".into(),
+            symbol: None,
             unit: "cm^3/cm^3".into(),
             domain: None,
             description: format!("{name} description."),
@@ -201,8 +216,9 @@ mod tests {
             },
             inputs: Vec::new(),
             outputs: Outputs::Scalar {
-                field: parameter("result"),
+                field: output("result"),
             },
+            verification_tolerances: Default::default(),
             documentation: Documentation::default(),
             implementation: None,
             verification_cases: Vec::new(),
@@ -239,8 +255,9 @@ mod tests {
             inputs: vec![input("sand")],
             outputs: Outputs::Record {
                 name: "TestResult".into(),
-                fields: vec![parameter("theta_33"), parameter("theta_1500")],
+                fields: vec![output("theta_33"), output("theta_1500")],
             },
+            verification_tolerances: Default::default(),
             documentation: Documentation {
                 notes: vec!["A note.".into()],
                 warnings: vec!["A warning.".into()],

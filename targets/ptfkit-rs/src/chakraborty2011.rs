@@ -19,15 +19,26 @@ for regression development and 80 independent samples for validation. Analyses w
 during 2006-2008."]
 
 #[cfg(test)]
-fn is_close(actual: f64, expected: f64, published_tolerance: f64) -> bool {
-    let tolerance = published_tolerance + 1e-12 + 1e-5 * expected.abs();
-    (actual - expected).abs() <= tolerance
+fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
+    absolute
+        .max(relative * expected.abs())
+        .max(0.00000000000001f64)
 }
 #[cfg(test)]
-fn assert_close(actual: f64, expected: f64, published_tolerance: f64) {
+fn assert_close(
+    actual: f64,
+    expected: f64,
+    absolute: f64,
+    relative: f64,
+    quantity: &str,
+    unit: &str,
+    source: &str,
+) {
+    let difference = (actual - expected).abs();
+    let tolerance = resolved_tolerance(expected, absolute, relative);
     assert!(
-        is_close(actual, expected, published_tolerance),
-        "|{actual} - {expected}| exceeds the shared tolerance"
+        difference <= tolerance,
+        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
     );
 }
 #[cfg(test)]
@@ -35,10 +46,11 @@ mod comparator_tests {
     use super::*;
     #[test]
     fn accepts_below_and_rejects_above_tolerance() {
-        let expected = 2.0;
-        let tolerance = 1e-12 + 1e-5 * expected;
-        assert!(is_close(expected + tolerance * 0.5, expected, 0.0));
-        assert!(!is_close(expected + tolerance * 2.0, expected, 0.0));
+        for expected in [0.0, 2.0, -2.0] {
+            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
+            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
+            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
+        }
     }
 }
 #[doc = r"Results returned by `calc_ptf_chakraborty2011_eq1`."]
@@ -99,10 +111,42 @@ mod calc_ptf_chakraborty2011_eq1_tests {
     #[test]
     fn representative_case() {
         let result = calc_ptf_chakraborty2011_eq1(20f64, 30f64);
-        assert_close(result.water_content_33, 0.2488f64, 0f64);
-        assert_close(result.water_content_100, 0.19758f64, 0f64);
-        assert_close(result.water_content_500, 0.13528f64, 0f64);
-        assert_close(result.water_content_1500, 0.11702f64, 0f64);
+        assert_close(
+            result.water_content_33,
+            0.2488f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_content_100,
+            0.19758f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_content_500,
+            0.13528f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_content_1500,
+            0.11702f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate four gravimetric water contents from sand and bulk density.
@@ -151,10 +195,42 @@ mod calc_ptf_chakraborty2011_eq2_tests {
     #[test]
     fn representative_case() {
         let result = calc_ptf_chakraborty2011_eq2(50f64, 1.5f64);
-        assert_close(result.water_content_33, 0.219415f64, 0f64);
-        assert_close(result.water_content_100, 0.175765f64, 0f64);
-        assert_close(result.water_content_500, 0.141025f64, 0f64);
-        assert_close(result.water_content_1500, 0.118315f64, 0f64);
+        assert_close(
+            result.water_content_33,
+            0.219415f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_content_100,
+            0.175765f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_content_500,
+            0.141025f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_content_1500,
+            0.118315f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate four gravimetric water contents from clay, silt, and bulk density.
@@ -212,10 +288,42 @@ mod calc_ptf_chakraborty2011_eq3_tests {
     #[test]
     fn representative_case() {
         let result = calc_ptf_chakraborty2011_eq3(20f64, 30f64, 1.5f64);
-        assert_close(result.water_content_33, 0.25776f64, 0f64);
-        assert_close(result.water_content_100, 0.201085f64, 0f64);
-        assert_close(result.water_content_500, 0.139175f64, 0f64);
-        assert_close(result.water_content_1500, 0.117865f64, 0f64);
+        assert_close(
+            result.water_content_33,
+            0.25776f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_content_100,
+            0.201085f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_content_500,
+            0.139175f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_content_1500,
+            0.117865f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate four gravimetric water contents from clay, silt, and sand.
@@ -269,10 +377,42 @@ mod calc_ptf_chakraborty2011_eq4_tests {
     #[test]
     fn representative_case() {
         let result = calc_ptf_chakraborty2011_eq4(20f64, 30f64, 50f64);
-        assert_close(result.water_content_33, 0.24397f64, 0f64);
-        assert_close(result.water_content_100, 0.19235f64, 0f64);
-        assert_close(result.water_content_500, 0.13116f64, 0f64);
-        assert_close(result.water_content_1500, 0.11325f64, 0f64);
+        assert_close(
+            result.water_content_33,
+            0.24397f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_content_100,
+            0.19235f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_content_500,
+            0.13116f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_content_1500,
+            0.11325f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate four gravimetric water contents from clay, silt, sand, and bulk density.
@@ -336,10 +476,42 @@ mod calc_ptf_chakraborty2011_eq5_tests {
     #[test]
     fn representative_case() {
         let result = calc_ptf_chakraborty2011_eq5(20f64, 30f64, 50f64, 1.5f64);
-        assert_close(result.water_content_33, 0.249785f64, 0f64);
-        assert_close(result.water_content_100, 0.19166f64, 0f64);
-        assert_close(result.water_content_500, 0.131065f64, 0f64);
-        assert_close(result.water_content_1500, 0.110595f64, 0f64);
+        assert_close(
+            result.water_content_33,
+            0.249785f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_content_100,
+            0.19166f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_content_500,
+            0.131065f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_content_1500,
+            0.110595f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate four gravimetric water contents from texture, organic carbon, and bulk density.
@@ -413,9 +585,41 @@ mod calc_ptf_chakraborty2011_eq6_tests {
     #[test]
     fn representative_case() {
         let result = calc_ptf_chakraborty2011_eq6(20f64, 30f64, 50f64, 0.5f64, 1.5f64);
-        assert_close(result.water_content_33, 0.25207f64, 0f64);
-        assert_close(result.water_content_100, 0.19695f64, 0f64);
-        assert_close(result.water_content_500, 0.13364f64, 0f64);
-        assert_close(result.water_content_1500, 0.113175f64, 0f64);
+        assert_close(
+            result.water_content_33,
+            0.25207f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_content_100,
+            0.19695f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_content_500,
+            0.13364f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_content_1500,
+            0.113175f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
     }
 }

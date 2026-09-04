@@ -52,56 +52,67 @@ functions:
     name: Puckett1985PTFResult
     fields:
     - name: theta_0
+      quantity: volumetric_water_content
       symbol: theta_0
       unit: cm^3/cm^3
       domain: null
       description: Volumetric water content at 0 kPa.
     - name: theta_1
+      quantity: volumetric_water_content
       symbol: theta_1
       unit: cm^3/cm^3
       domain: null
       description: Volumetric water content at -1 kPa.
     - name: theta_5
+      quantity: volumetric_water_content
       symbol: theta_5
       unit: cm^3/cm^3
       domain: null
       description: Volumetric water content at -5 kPa.
     - name: theta_10
+      quantity: volumetric_water_content
       symbol: theta_10
       unit: cm^3/cm^3
       domain: null
       description: Volumetric water content at -10 kPa.
     - name: theta_30
+      quantity: volumetric_water_content
       symbol: theta_30
       unit: cm^3/cm^3
       domain: null
       description: Volumetric water content at -30 kPa.
     - name: theta_60
+      quantity: volumetric_water_content
       symbol: theta_60
       unit: cm^3/cm^3
       domain: null
       description: Volumetric water content at -60 kPa.
     - name: theta_100
+      quantity: volumetric_water_content
       symbol: theta_100
       unit: cm^3/cm^3
       domain: null
       description: Volumetric water content at -100 kPa.
     - name: theta_500
+      quantity: volumetric_water_content
       symbol: theta_500
       unit: cm^3/cm^3
       domain: null
       description: Volumetric water content at -500 kPa.
     - name: theta_1000
+      quantity: volumetric_water_content
       symbol: theta_1000
       unit: cm^3/cm^3
       domain: null
       description: Volumetric water content at -1000 kPa.
     - name: theta_1500
+      quantity: volumetric_water_content
       symbol: theta_1500
       unit: cm^3/cm^3
       domain: null
       description: Volumetric water content at -1500 kPa.
     - name: k_sat
+      quantity: saturated_hydraulic_conductivity
       symbol: Ks
       unit: m/s
       domain: value >= 0

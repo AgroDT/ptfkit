@@ -1,9 +1,11 @@
 use anyhow::{Context, Result};
 
 use crate::model::{
-    CompiledFunction, CompiledInput, CompiledVerificationCase, CoreFunction, Entry, Function,
-    GoldenInput, Output, Outputs, PublishedPrecision, VerificationKind,
+    CompiledFunction, CompiledInput, CompiledTolerance, CompiledVerificationCase, CoreFunction,
+    Entry, Function, GoldenInput, Output, Outputs, ToleranceSource,
 };
+
+pub(crate) const FLOATING_POINT_GUARD: f64 = 1e-14;
 
 pub(super) fn functions(entries: Vec<Entry>) -> Result<Vec<CompiledFunction>> {
     let mut compiled = Vec::new();
@@ -35,6 +37,7 @@ pub(super) fn functions(entries: Vec<Entry>) -> Result<Vec<CompiledFunction>> {
             };
             compiled.push(CompiledFunction {
                 verification_cases: verification_cases(function)?,
+                output_tolerances: output_tolerances(&entry, function)?,
                 core,
                 entry: entry.clone(),
                 function_index,
@@ -50,6 +53,14 @@ fn verification_cases(function: &Function) -> Result<Vec<CompiledVerificationCas
         .verification_cases
         .iter()
         .map(|case| {
+            for name in case.inputs.keys() {
+                if !function.inputs.iter().any(|input| input.name() == name) {
+                    anyhow::bail!(
+                        "verification case `{}` references unknown input `{name}`",
+                        case.id
+                    );
+                }
+            }
             let inputs = function
                 .inputs
                 .iter()
@@ -101,14 +112,6 @@ fn verification_cases(function: &Function) -> Result<Vec<CompiledVerificationCas
                     );
                 }
             }
-            for name in case.precision.keys() {
-                if !function.outputs.fields().iter().any(|field| field.name == *name) {
-                    anyhow::bail!(
-                        "verification case `{}` references unknown precision output `{name}`",
-                        case.id
-                    );
-                }
-            }
             let expected = function
                 .outputs
                 .fields()
@@ -122,39 +125,54 @@ fn verification_cases(function: &Function) -> Result<Vec<CompiledVerificationCas
                     })
                 })
                 .collect::<Result<Vec<_>>>()?;
-            let published_tolerance = function
-                .outputs
-                .fields()
-                .iter()
-                .zip(&expected)
-                .map(|(field, expected)| {
-                    if case.kind != VerificationKind::Published {
-                        return 0.0;
-                    }
-                    case.precision
-                        .get(&field.name)
-                        .map_or(0.0, |precision| rounding_tolerance(*expected, *precision))
-                })
-                .collect();
             Ok(CompiledVerificationCase {
                 id: case.id.clone(),
                 inputs,
                 expected,
-                published_tolerance,
             })
         })
         .collect()
 }
 
-fn rounding_tolerance(expected: f64, precision: PublishedPrecision) -> f64 {
-    match precision {
-        PublishedPrecision::DecimalPlaces { decimal_places } => {
-            0.5 * 10.0_f64.powi(-(decimal_places as i32))
-        }
-        PublishedPrecision::SignificantDigits { significant_digits } if expected != 0.0 => {
-            let exponent = expected.abs().log10().floor() as i32 - significant_digits as i32 + 1;
-            0.5 * 10.0_f64.powi(exponent)
-        }
-        PublishedPrecision::SignificantDigits { .. } => 0.0,
-    }
+fn output_tolerances(entry: &Entry, function: &Function) -> Result<Vec<CompiledTolerance>> {
+    function
+        .outputs
+        .fields()
+        .iter()
+        .map(|field| {
+            if let Some(override_) = function.verification_tolerances.get(&field.name) {
+                return Ok(CompiledTolerance {
+                    absolute: override_.absolute,
+                    relative: override_.relative.unwrap_or_default(),
+                    quantity: field.quantity.clone(),
+                    unit: field.unit.clone(),
+                    source: ToleranceSource::SourceOverride(override_.source_location.clone()),
+                });
+            }
+            let quantity = entry
+                .quantities
+                .quantities
+                .iter()
+                .find(|quantity| quantity.id == field.quantity)
+                .with_context(|| {
+                    format!(
+                        "function `{}` output `{}` references unknown quantity `{}`",
+                        function.name, field.name, field.quantity
+                    )
+                })?;
+            let tolerance = quantity.units.get(&field.unit).with_context(|| {
+                format!(
+                    "function `{}` output `{}` quantity `{}` has no registered unit `{}`",
+                    function.name, field.name, field.quantity, field.unit
+                )
+            })?;
+            Ok(CompiledTolerance {
+                absolute: tolerance.absolute,
+                relative: tolerance.relative.unwrap_or_default(),
+                quantity: field.quantity.clone(),
+                unit: field.unit.clone(),
+                source: ToleranceSource::Registry,
+            })
+        })
+        .collect()
 }

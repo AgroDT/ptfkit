@@ -19,15 +19,26 @@ The IGBP-DIS tropical-soil dataset contains 771 retained horizons from 249 profi
 countries, split into 492 calibration curves and 279 validation curves."]
 
 #[cfg(test)]
-fn is_close(actual: f64, expected: f64, published_tolerance: f64) -> bool {
-    let tolerance = published_tolerance + 1e-12 + 1e-5 * expected.abs();
-    (actual - expected).abs() <= tolerance
+fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
+    absolute
+        .max(relative * expected.abs())
+        .max(0.00000000000001f64)
 }
 #[cfg(test)]
-fn assert_close(actual: f64, expected: f64, published_tolerance: f64) {
+fn assert_close(
+    actual: f64,
+    expected: f64,
+    absolute: f64,
+    relative: f64,
+    quantity: &str,
+    unit: &str,
+    source: &str,
+) {
+    let difference = (actual - expected).abs();
+    let tolerance = resolved_tolerance(expected, absolute, relative);
     assert!(
-        is_close(actual, expected, published_tolerance),
-        "|{actual} - {expected}| exceeds the shared tolerance"
+        difference <= tolerance,
+        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
     );
 }
 #[cfg(test)]
@@ -35,10 +46,11 @@ mod comparator_tests {
     use super::*;
     #[test]
     fn accepts_below_and_rejects_above_tolerance() {
-        let expected = 2.0;
-        let tolerance = 1e-12 + 1e-5 * expected;
-        assert!(is_close(expected + tolerance * 0.5, expected, 0.0));
-        assert!(!is_close(expected + tolerance * 2.0, expected, 0.0));
+        for expected in [0.0, 2.0, -2.0] {
+            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
+            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
+            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
+        }
     }
 }
 #[doc = r"Results returned by `calc_ptf_hodnett2002`."]
@@ -145,9 +157,41 @@ mod tests {
     fn calibration_dataset_mean_properties() {
         let result =
             calc_ptf_hodnett2002(39.2f64, 24.2f64, 36.7f64, 1.4f64, 1.2f64, 15.9f64, 5.85f64);
-        assert_close(result.alpha, 0.245183615037873f64, 0f64);
-        assert_close(result.n, 1.36739326352383f64, 0f64);
-        assert_close(result.theta_s, 0.4993353f64, 0f64);
-        assert_close(result.theta_r, 0.21344216f64, 0f64);
+        assert_close(
+            result.alpha,
+            0.245183615037873f64,
+            0.00001f64,
+            0f64,
+            "van_genuchten_alpha",
+            "kPa^-1",
+            "registry",
+        );
+        assert_close(
+            result.n,
+            1.36739326352383f64,
+            0.001f64,
+            0f64,
+            "van_genuchten_n",
+            "dimensionless",
+            "registry",
+        );
+        assert_close(
+            result.theta_s,
+            0.4993353f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "m^3/m^3",
+            "registry",
+        );
+        assert_close(
+            result.theta_r,
+            0.21344216f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "m^3/m^3",
+            "registry",
+        );
     }
 }

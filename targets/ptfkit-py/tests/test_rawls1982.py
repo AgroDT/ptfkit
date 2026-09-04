@@ -13,69 +13,103 @@ from ptfkit.rawls1982 import (
 
 
 CASES_CALC_THETA_1500_RAWLS1982 = [
-    ({'clay': 5.12, 'organic_matter': 0.1}, {'theta_1500': 0.05318}, {'theta_1500': 0.0}),
+    ({'clay': 5.12, 'organic_matter': 0.1}, {'theta_1500': 0.05318}),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_THETA_1500_RAWLS1982
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_THETA_1500_RAWLS1982)
 def test_calc_theta_1500_rawls1982_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_theta_1500_rawls1982(**inputs)
 
-    assert_close(result, expected['theta_1500'], published_tolerance['theta_1500'])
+    assert_close(
+        result,
+        expected['theta_1500'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
 
 
 def test_calc_theta_1500_rawls1982_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
-        CASES_CALC_THETA_1500_RAWLS1982
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_THETA_1500_RAWLS1982)
     result = calc_theta_1500_rawls1982(**inputs, out=None)
-    assert_close(result[0], expected['theta_1500'], published_tolerance['theta_1500'])
+    assert_close(
+        result[0],
+        expected['theta_1500'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
 
 
 def test_calc_theta_1500_rawls1982_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
-        CASES_CALC_THETA_1500_RAWLS1982
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_THETA_1500_RAWLS1982)
     result = calc_theta_1500_rawls1982(**inputs, out=out)
     assert result is out
-    assert_close(result[0], expected['theta_1500'], published_tolerance['theta_1500'])
+    assert_close(
+        result[0],
+        expected['theta_1500'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
 
 
 CASES_CALC_THETA_33_RAWLS1982 = [
-    (
-        {'organic_matter': 0.1, 'sand': 85.0, 'theta_1500': 0.05318},
-        {'theta_33': 0.1179896},
-        {'theta_33': 0.0},
-    ),
+    ({'organic_matter': 0.1, 'sand': 85.0, 'theta_1500': 0.05318}, {'theta_33': 0.1179896}),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_THETA_33_RAWLS1982
-)
-def test_calc_theta_33_rawls1982_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
-):
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_THETA_33_RAWLS1982)
+def test_calc_theta_33_rawls1982_verification(inputs: dict[str, float], expected: dict[str, float]):
     result = calc_theta_33_rawls1982(**inputs)
 
-    assert_close(result, expected['theta_33'], published_tolerance['theta_33'])
+    assert_close(
+        result,
+        expected['theta_33'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
 
 
 def test_calc_theta_33_rawls1982_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(CASES_CALC_THETA_33_RAWLS1982)
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_THETA_33_RAWLS1982)
     result = calc_theta_33_rawls1982(**inputs, out=None)
-    assert_close(result[0], expected['theta_33'], published_tolerance['theta_33'])
+    assert_close(
+        result[0],
+        expected['theta_33'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
 
 
 def test_calc_theta_33_rawls1982_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(CASES_CALC_THETA_33_RAWLS1982)
+    inputs, expected, out = prepare_vector_case(CASES_CALC_THETA_33_RAWLS1982)
     result = calc_theta_33_rawls1982(**inputs, out=out)
     assert result is out
-    assert_close(result[0], expected['theta_33'], published_tolerance['theta_33'])
+    assert_close(
+        result[0],
+        expected['theta_33'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
 
 
 CASES_CALC_FULL_WRC_RAWLS1982 = [
@@ -101,81 +135,347 @@ CASES_CALC_FULL_WRC_RAWLS1982 = [
             'theta_1000': 0.038932,
             'theta_1500': 0.033,
         },
-        {
-            'theta_4': 0.0,
-            'theta_7': 0.0,
-            'theta_10': 0.0,
-            'theta_20': 0.0,
-            'theta_33': 0.0,
-            'theta_60': 0.0,
-            'theta_100': 0.0,
-            'theta_200': 0.0,
-            'theta_400': 0.0,
-            'theta_700': 0.0,
-            'theta_1000': 0.0,
-            'theta_1500': 0.0,
-        },
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_FULL_WRC_RAWLS1982
-)
-def test_calc_full_wrc_rawls1982_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
-):
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_FULL_WRC_RAWLS1982)
+def test_calc_full_wrc_rawls1982_verification(inputs: dict[str, float], expected: dict[str, float]):
     result = calc_full_wrc_rawls1982(**inputs)
 
-    assert_close(result.theta_4, expected['theta_4'], published_tolerance['theta_4'])
-    assert_close(result.theta_7, expected['theta_7'], published_tolerance['theta_7'])
-    assert_close(result.theta_10, expected['theta_10'], published_tolerance['theta_10'])
-    assert_close(result.theta_20, expected['theta_20'], published_tolerance['theta_20'])
-    assert_close(result.theta_33, expected['theta_33'], published_tolerance['theta_33'])
-    assert_close(result.theta_60, expected['theta_60'], published_tolerance['theta_60'])
-    assert_close(result.theta_100, expected['theta_100'], published_tolerance['theta_100'])
-    assert_close(result.theta_200, expected['theta_200'], published_tolerance['theta_200'])
-    assert_close(result.theta_400, expected['theta_400'], published_tolerance['theta_400'])
-    assert_close(result.theta_700, expected['theta_700'], published_tolerance['theta_700'])
-    assert_close(result.theta_1000, expected['theta_1000'], published_tolerance['theta_1000'])
-    assert_close(result.theta_1500, expected['theta_1500'], published_tolerance['theta_1500'])
+    assert_close(
+        result.theta_4,
+        expected['theta_4'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_7,
+        expected['theta_7'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_10,
+        expected['theta_10'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_20,
+        expected['theta_20'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_33,
+        expected['theta_33'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_60,
+        expected['theta_60'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_100,
+        expected['theta_100'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_200,
+        expected['theta_200'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_400,
+        expected['theta_400'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_700,
+        expected['theta_700'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_1000,
+        expected['theta_1000'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_1500,
+        expected['theta_1500'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
 
 
 def test_calc_full_wrc_rawls1982_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
-        CASES_CALC_FULL_WRC_RAWLS1982, Rawls1982PTFResult
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_FULL_WRC_RAWLS1982, Rawls1982PTFResult)
     result = calc_full_wrc_rawls1982(**inputs, out=None)
-    assert_close(result.theta_4[0], expected['theta_4'], published_tolerance['theta_4'])
-    assert_close(result.theta_7[0], expected['theta_7'], published_tolerance['theta_7'])
-    assert_close(result.theta_10[0], expected['theta_10'], published_tolerance['theta_10'])
-    assert_close(result.theta_20[0], expected['theta_20'], published_tolerance['theta_20'])
-    assert_close(result.theta_33[0], expected['theta_33'], published_tolerance['theta_33'])
-    assert_close(result.theta_60[0], expected['theta_60'], published_tolerance['theta_60'])
-    assert_close(result.theta_100[0], expected['theta_100'], published_tolerance['theta_100'])
-    assert_close(result.theta_200[0], expected['theta_200'], published_tolerance['theta_200'])
-    assert_close(result.theta_400[0], expected['theta_400'], published_tolerance['theta_400'])
-    assert_close(result.theta_700[0], expected['theta_700'], published_tolerance['theta_700'])
-    assert_close(result.theta_1000[0], expected['theta_1000'], published_tolerance['theta_1000'])
-    assert_close(result.theta_1500[0], expected['theta_1500'], published_tolerance['theta_1500'])
+    assert_close(
+        result.theta_4[0],
+        expected['theta_4'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_7[0],
+        expected['theta_7'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_10[0],
+        expected['theta_10'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_20[0],
+        expected['theta_20'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_33[0],
+        expected['theta_33'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_60[0],
+        expected['theta_60'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_100[0],
+        expected['theta_100'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_200[0],
+        expected['theta_200'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_400[0],
+        expected['theta_400'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_700[0],
+        expected['theta_700'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_1000[0],
+        expected['theta_1000'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_1500[0],
+        expected['theta_1500'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
 
 
 def test_calc_full_wrc_rawls1982_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
-        CASES_CALC_FULL_WRC_RAWLS1982, Rawls1982PTFResult
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_FULL_WRC_RAWLS1982, Rawls1982PTFResult)
     result = calc_full_wrc_rawls1982(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert_close(result.theta_4[0], expected['theta_4'], published_tolerance['theta_4'])
-    assert_close(result.theta_7[0], expected['theta_7'], published_tolerance['theta_7'])
-    assert_close(result.theta_10[0], expected['theta_10'], published_tolerance['theta_10'])
-    assert_close(result.theta_20[0], expected['theta_20'], published_tolerance['theta_20'])
-    assert_close(result.theta_33[0], expected['theta_33'], published_tolerance['theta_33'])
-    assert_close(result.theta_60[0], expected['theta_60'], published_tolerance['theta_60'])
-    assert_close(result.theta_100[0], expected['theta_100'], published_tolerance['theta_100'])
-    assert_close(result.theta_200[0], expected['theta_200'], published_tolerance['theta_200'])
-    assert_close(result.theta_400[0], expected['theta_400'], published_tolerance['theta_400'])
-    assert_close(result.theta_700[0], expected['theta_700'], published_tolerance['theta_700'])
-    assert_close(result.theta_1000[0], expected['theta_1000'], published_tolerance['theta_1000'])
-    assert_close(result.theta_1500[0], expected['theta_1500'], published_tolerance['theta_1500'])
+    assert_close(
+        result.theta_4[0],
+        expected['theta_4'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_7[0],
+        expected['theta_7'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_10[0],
+        expected['theta_10'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_20[0],
+        expected['theta_20'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_33[0],
+        expected['theta_33'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_60[0],
+        expected['theta_60'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_100[0],
+        expected['theta_100'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_200[0],
+        expected['theta_200'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_400[0],
+        expected['theta_400'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_700[0],
+        expected['theta_700'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_1000[0],
+        expected['theta_1000'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_1500[0],
+        expected['theta_1500'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )

@@ -3,10 +3,13 @@ use std::{
     path::PathBuf,
 };
 
-use crate::model::{Entry, Function, Parameter};
+use crate::model::{Entry, Function, OutputField, QuantityRegistry};
 
 pub(crate) fn specifications(entries: &[Entry]) -> Vec<String> {
     let mut errors = Vec::new();
+    if let Some(entry) = entries.first() {
+        validate_quantity_registry(&entry.quantities, &mut errors);
+    }
     let mut functions = BTreeMap::new();
     let mut public = BTreeMap::new();
     for entry in entries {
@@ -35,6 +38,8 @@ pub(crate) fn specifications(entries: &[Entry]) -> Vec<String> {
                 "outputs.fields",
                 &mut errors,
             );
+            validate_output_quantities(entry, function, &mut errors);
+            validate_tolerance_overrides(entry, function, &mut errors);
             match (
                 function.outputs.fields().len(),
                 function.result_class().is_some(),
@@ -62,6 +67,154 @@ pub(crate) fn specifications(entries: &[Entry]) -> Vec<String> {
         }
     }
     errors
+}
+
+fn validate_quantity_registry(registry: &QuantityRegistry, errors: &mut Vec<String>) {
+    let mut identifiers = BTreeSet::new();
+    for quantity in &registry.quantities {
+        let valid_identifier = !quantity.id.is_empty()
+            && quantity.id.chars().enumerate().all(|(index, character)| {
+                if index == 0 {
+                    character.is_ascii_lowercase()
+                } else {
+                    character.is_ascii_lowercase() || character.is_ascii_digit() || character == '_'
+                }
+            });
+        if !valid_identifier {
+            errors.push(format!(
+                "specs/quantities.yaml:\n  {}:\n    quantity identifier must match ^[a-z][a-z0-9_]*$",
+                quantity.id
+            ));
+        }
+        if !identifiers.insert(&quantity.id) {
+            errors.push(format!(
+                "specs/quantities.yaml:\n  {}:\n    duplicate quantity identifier",
+                quantity.id
+            ));
+        }
+        if quantity.description.trim().is_empty() {
+            errors.push(format!(
+                "specs/quantities.yaml:\n  {}:\n    description must not be empty",
+                quantity.id
+            ));
+        }
+        if quantity.units.is_empty() {
+            errors.push(format!(
+                "specs/quantities.yaml:\n  {}:\n    at least one unit is required",
+                quantity.id
+            ));
+        }
+        for (unit, tolerance) in &quantity.units {
+            if unit.is_empty() {
+                errors.push(format!(
+                    "specs/quantities.yaml:\n  {}:\n    unit must not be empty",
+                    quantity.id
+                ));
+            }
+            validate_tolerance(
+                "specs/quantities.yaml",
+                &quantity.id,
+                unit,
+                tolerance.absolute,
+                tolerance.relative,
+                errors,
+            );
+            if tolerance.rationale.trim().is_empty() {
+                errors.push(format!(
+                    "specs/quantities.yaml:\n  {} [{}]:\n    rationale must not be empty",
+                    quantity.id, unit
+                ));
+            }
+        }
+    }
+}
+
+fn validate_output_quantities(entry: &Entry, function: &Function, errors: &mut Vec<String>) {
+    for field in function.outputs.fields() {
+        let Some(quantity) = entry
+            .quantities
+            .quantities
+            .iter()
+            .find(|quantity| quantity.id == field.quantity)
+        else {
+            errors.push(diag(
+                entry,
+                "outputs",
+                Some(&function.name),
+                &format!(
+                    "output `{}` references unknown quantity `{}` with unit `{}`",
+                    field.name, field.quantity, field.unit
+                ),
+            ));
+            continue;
+        };
+        if !quantity.units.contains_key(&field.unit) {
+            errors.push(diag(
+                entry,
+                "outputs",
+                Some(&function.name),
+                &format!(
+                    "output `{}` quantity `{}` has no registered unit `{}`",
+                    field.name, field.quantity, field.unit
+                ),
+            ));
+        }
+    }
+}
+
+fn validate_tolerance_overrides(entry: &Entry, function: &Function, errors: &mut Vec<String>) {
+    for (name, tolerance) in &function.verification_tolerances {
+        let Some(field) = function
+            .outputs
+            .fields()
+            .iter()
+            .find(|field| field.name == *name)
+        else {
+            errors.push(diag(
+                entry,
+                "verification_tolerances",
+                Some(&function.name),
+                &format!("override references unknown output `{name}`"),
+            ));
+            continue;
+        };
+        validate_tolerance(
+            &entry.path.display().to_string(),
+            &field.quantity,
+            &field.unit,
+            tolerance.absolute,
+            tolerance.relative,
+            errors,
+        );
+        if tolerance.source_location.trim().is_empty() {
+            errors.push(diag(
+                entry,
+                "verification_tolerances",
+                Some(&function.name),
+                &format!("override for output `{name}` requires source_location"),
+            ));
+        }
+    }
+}
+
+fn validate_tolerance(
+    path: &str,
+    quantity: &str,
+    unit: &str,
+    absolute: f64,
+    relative: Option<f64>,
+    errors: &mut Vec<String>,
+) {
+    if !absolute.is_finite() || absolute <= 0.0 {
+        errors.push(format!(
+            "{path}:\n  {quantity} [{unit}]:\n    absolute tolerance must be finite and positive"
+        ));
+    }
+    if relative.is_some_and(|value| !value.is_finite() || value < 0.0) {
+        errors.push(format!(
+            "{path}:\n  {quantity} [{unit}]:\n    relative tolerance must be finite and non-negative"
+        ));
+    }
 }
 
 fn duplicate_input_names(entry: &Entry, function: &Function, errors: &mut Vec<String>) {
@@ -146,7 +299,7 @@ fn duplicate<K: Ord + Clone + std::fmt::Display>(
 fn duplicate_names(
     entry: &Entry,
     function: &Function,
-    values: &[Parameter],
+    values: &[OutputField],
     field: &str,
     errors: &mut Vec<String>,
 ) {

@@ -6,215 +6,256 @@ import ptfkit;
 import ptfkit.ferrerjulia2004;
 #endif
 
-#include "close_enough.h"
+#include "support/close_enough.h"
 
 int main() {
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_campbell_shiozawa(50.0, 25.0);
-        assert_close(result, 0.025071690110308933, 0.0);
+        assert_close(result, 0.025071690110308933, 0.0001, 0.01, "saturated_hydraulic_conductivity",
+                     "mm/h", "registry");
     }
     {
         const auto result = ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_saxton(50.0, 25.0);
-        assert_close(result, 0.00022673430784327228, 0.0);
+        assert_close(result, 0.00022673430784327228, 0.0001, 0.01,
+                     "saturated_hydraulic_conductivity", "mm/h", "registry");
     }
     {
         const auto result = ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_dane_puckett(25.0);
-        assert_close(result, 8.302039828385373, 0.0);
+        assert_close(result, 8.302039828385373, 0.0001, 0.01, "saturated_hydraulic_conductivity",
+                     "mm/h", "registry");
     }
     {
         const auto result = ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_puckett(25.0);
-        assert_close(result, 1.1257967371765654, 0.0);
+        assert_close(result, 1.1257967371765654, 0.0001, 0.01, "saturated_hydraulic_conductivity",
+                     "mm/h", "registry");
     }
     {
         const auto result = ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_cosby(50.0, 25.0);
-        assert_close(result, 26.091830970918934, 0.0);
+        assert_close(result, 26.091830970918934, 0.0001, 0.01, "saturated_hydraulic_conductivity",
+                     "mm/h", "registry");
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_humic_acrisol_sand(50.0);
-        assert_close(result, 14.529879794648146, 0.0);
+        assert_close(result, 14.529879794648146, 0.0001, 0.01, "saturated_hydraulic_conductivity",
+                     "mm/h", "registry");
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter(
                 50.0, 25.0, 2.5);
-        assert_close(result, 19.563475, 0.0);
+        assert_close(result, 19.563475, 0.0001, 0.01, "saturated_hydraulic_conductivity", "mm/h",
+                     "registry");
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_calcic_cambisol_sand(50.0);
-        assert_close(result, 9.995162000935244, 0.0);
+        assert_close(result, 9.995162000935244, 0.0001, 0.01, "saturated_hydraulic_conductivity",
+                     "mm/h", "registry");
     }
     {
         const auto result = ptfkit::ferrerjulia2004::
             calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter(50.0, 25.0, 2.5);
-        assert_close(result, 16.51625, 0.0);
+        assert_close(result, 16.51625, 0.0001, 0.01, "saturated_hydraulic_conductivity", "mm/h",
+                     "registry");
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_dystric_cambisol_sand(50.0);
-        assert_close(result, 13.413573870265868, 0.0);
+        assert_close(result, 13.413573870265868, 0.0001, 0.01, "saturated_hydraulic_conductivity",
+                     "mm/h", "registry");
     }
     {
         const auto result = ptfkit::ferrerjulia2004::
             calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter(50.0, 25.0, 2.5);
-        assert_close(result, 20.79, 0.0);
+        assert_close(result, 20.79, 0.0001, 0.01, "saturated_hydraulic_conductivity", "mm/h",
+                     "registry");
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_eutric_cambisol_sand(50.0);
-        assert_close(result, 11.570199173737363, 0.0);
+        assert_close(result, 11.570199173737363, 0.0001, 0.01, "saturated_hydraulic_conductivity",
+                     "mm/h", "registry");
     }
     {
         const auto result = ptfkit::ferrerjulia2004::
             calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter(50.0, 25.0, 2.5);
-        assert_close(result, 19.5235, 0.0);
+        assert_close(result, 19.5235, 0.0001, 0.01, "saturated_hydraulic_conductivity", "mm/h",
+                     "registry");
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_gleyic_cambisol_sand(50.0);
-        assert_close(result, 6.559110321079926, 0.0);
+        assert_close(result, 6.559110321079926, 0.0001, 0.01, "saturated_hydraulic_conductivity",
+                     "mm/h", "registry");
     }
     {
         const auto result = ptfkit::ferrerjulia2004::
             calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter(50.0, 25.0, 2.5);
-        assert_close(result, 11.514, 0.0);
+        assert_close(result, 11.514, 0.0001, 0.01, "saturated_hydraulic_conductivity", "mm/h",
+                     "registry");
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_humic_cambisol_sand(50.0);
-        assert_close(result, 13.820129957492508, 0.0);
+        assert_close(result, 13.820129957492508, 0.0001, 0.01, "saturated_hydraulic_conductivity",
+                     "mm/h", "registry");
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter(
                 50.0, 25.0, 2.5);
-        assert_close(result, 20.9029, 0.0);
+        assert_close(result, 20.9029, 0.0001, 0.01, "saturated_hydraulic_conductivity", "mm/h",
+                     "registry");
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand(50.0);
-        assert_close(result, 10.959482760491376, 0.0);
+        assert_close(result, 10.959482760491376, 0.0001, 0.01, "saturated_hydraulic_conductivity",
+                     "mm/h", "registry");
     }
     {
         const auto result = ptfkit::ferrerjulia2004::
             calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter(50.0, 25.0, 2.5);
-        assert_close(result, 13.101, 0.0);
+        assert_close(result, 13.101, 0.0001, 0.01, "saturated_hydraulic_conductivity", "mm/h",
+                     "registry");
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_calcic_luvisol_sand(50.0);
-        assert_close(result, 6.931067612606957, 0.0);
+        assert_close(result, 6.931067612606957, 0.0001, 0.01, "saturated_hydraulic_conductivity",
+                     "mm/h", "registry");
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter(
                 50.0, 25.0, 2.5);
-        assert_close(result, 8.9332, 0.0);
+        assert_close(result, 8.9332, 0.0001, 0.01, "saturated_hydraulic_conductivity", "mm/h",
+                     "registry");
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_chromic_luvisol_sand(50.0);
-        assert_close(result, 10.61655727277843, 0.0);
+        assert_close(result, 10.61655727277843, 0.0001, 0.01, "saturated_hydraulic_conductivity",
+                     "mm/h", "registry");
     }
     {
         const auto result = ptfkit::ferrerjulia2004::
             calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter(50.0, 25.0, 2.5);
-        assert_close(result, 17.1465, 0.0);
+        assert_close(result, 17.1465, 0.0001, 0.01, "saturated_hydraulic_conductivity", "mm/h",
+                     "registry");
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_gleyic_luvisol_sand(50.0);
-        assert_close(result, 7.049012285884197, 0.0);
+        assert_close(result, 7.049012285884197, 0.0001, 0.01, "saturated_hydraulic_conductivity",
+                     "mm/h", "registry");
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter(
                 50.0, 25.0, 2.5);
-        assert_close(result, 19.55, 0.0);
+        assert_close(result, 19.55, 0.0001, 0.01, "saturated_hydraulic_conductivity", "mm/h",
+                     "registry");
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_orthic_luvisol_sand(50.0);
-        assert_close(result, 12.04280911180458, 0.0);
+        assert_close(result, 12.04280911180458, 0.0001, 0.01, "saturated_hydraulic_conductivity",
+                     "mm/h", "registry");
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter(
                 50.0, 25.0, 2.5);
-        assert_close(result, 21.40425, 0.0);
+        assert_close(result, 21.40425, 0.0001, 0.01, "saturated_hydraulic_conductivity", "mm/h",
+                     "registry");
     }
     {
         const auto result = ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_ranker_sand(50.0);
-        assert_close(result, 12.423399456061938, 0.0);
+        assert_close(result, 12.423399456061938, 0.0001, 0.01, "saturated_hydraulic_conductivity",
+                     "mm/h", "registry");
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_ranker_texture_organic_matter(
                 50.0, 25.0, 2.5);
-        assert_close(result, 22.4515, 0.0);
+        assert_close(result, 22.4515, 0.0001, 0.01, "saturated_hydraulic_conductivity", "mm/h",
+                     "registry");
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_calcaric_regosol_sand(50.0);
-        assert_close(result, 12.267374733833096, 0.0);
+        assert_close(result, 12.267374733833096, 0.0001, 0.01, "saturated_hydraulic_conductivity",
+                     "mm/h", "registry");
     }
     {
         const auto result = ptfkit::ferrerjulia2004::
             calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter(50.0, 25.0, 2.5);
-        assert_close(result, 20.532, 0.0);
+        assert_close(result, 20.532, 0.0001, 0.01, "saturated_hydraulic_conductivity", "mm/h",
+                     "registry");
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_dystric_regosol_sand(50.0);
-        assert_close(result, 12.081401313183196, 0.0);
+        assert_close(result, 12.081401313183196, 0.0001, 0.01, "saturated_hydraulic_conductivity",
+                     "mm/h", "registry");
     }
     {
         const auto result = ptfkit::ferrerjulia2004::
             calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter(50.0, 25.0, 2.5);
-        assert_close(result, 17.1335, 0.0);
+        assert_close(result, 17.1335, 0.0001, 0.01, "saturated_hydraulic_conductivity", "mm/h",
+                     "registry");
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_eutric_regosol_sand(50.0);
-        assert_close(result, 13.674049986082728, 0.0);
+        assert_close(result, 13.674049986082728, 0.0001, 0.01, "saturated_hydraulic_conductivity",
+                     "mm/h", "registry");
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter(
                 50.0, 25.0, 2.5);
-        assert_close(result, 24.06375, 0.0);
+        assert_close(result, 24.06375, 0.0001, 0.01, "saturated_hydraulic_conductivity", "mm/h",
+                     "registry");
     }
     {
         const auto result = ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_rendzina_sand(50.0);
-        assert_close(result, 12.515763717130312, 0.0);
+        assert_close(result, 12.515763717130312, 0.0001, 0.01, "saturated_hydraulic_conductivity",
+                     "mm/h", "registry");
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter(
                 50.0, 25.0, 2.5);
-        assert_close(result, 16.2905, 0.0);
+        assert_close(result, 16.2905, 0.0001, 0.01, "saturated_hydraulic_conductivity", "mm/h",
+                     "registry");
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_gleyic_solonchak_sand(50.0);
-        assert_close(result, 4.883324693640427, 0.0);
+        assert_close(result, 4.883324693640427, 0.0001, 0.01, "saturated_hydraulic_conductivity",
+                     "mm/h", "registry");
     }
     {
         const auto result = ptfkit::ferrerjulia2004::
             calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter(50.0, 25.0, 2.5);
-        assert_close(result, 10.53583, 0.0);
+        assert_close(result, 10.53583, 0.0001, 0.01, "saturated_hydraulic_conductivity", "mm/h",
+                     "registry");
     }
     {
         const auto result = ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_general_sand(50.0);
-        assert_close(result, 10.714718864969111, 0.0);
+        assert_close(result, 10.714718864969111, 0.0001, 0.01, "saturated_hydraulic_conductivity",
+                     "mm/h", "registry");
     }
     {
         const auto result =
             ptfkit::ferrerjulia2004::calc_ptf_ferrerjulia2004_general_texture_organic_matter(
                 50.0, 25.0, 2.5);
-        assert_close(result, 20.06325, 0.0);
+        assert_close(result, 20.06325, 0.0001, 0.01, "saturated_hydraulic_conductivity", "mm/h",
+                     "registry");
     }
     return 0;
 }

@@ -48,21 +48,25 @@ $defs:
     name: Chakraborty2011PTFResult
     fields:
       - name: water_content_33
+        quantity: gravimetric_water_content
         symbol: w_33
         unit: g/g
         domain: null
         description: Gravimetric water content at -33 kPa matric potential.
       - name: water_content_100
+        quantity: gravimetric_water_content
         symbol: w_100
         unit: g/g
         domain: null
         description: Gravimetric water content at -100 kPa matric potential.
       - name: water_content_500
+        quantity: gravimetric_water_content
         symbol: w_500
         unit: g/g
         domain: null
         description: Gravimetric water content at -500 kPa matric potential.
       - name: water_content_1500
+        quantity: gravimetric_water_content
         symbol: w_1500
         unit: g/g
         domain: null

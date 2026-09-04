@@ -6,7 +6,8 @@ use convert_case::{Boundary, Case, Casing};
 use crate::{
     documentation::{self as docs, FunctionDocument, SourceDocument},
     model::{
-        CompiledFunction, CompiledInput, EnumDefinition, Function, Output, Parameter, Scope, Source,
+        CompiledFunction, CompiledInput, EnumDefinition, Function, Output, OutputField, Scope,
+        Source,
     },
     render::{Render, Writer},
     semantic::{RecordLookup, Reference, ResultBinding, VariableValue},
@@ -25,13 +26,15 @@ pub(super) struct OutputFiles {
     pub(super) cpp_modules: Vec<GeneratedFile>,
     pub(super) c_tests: Vec<GeneratedFile>,
     pub(super) cpp_tests: Vec<GeneratedFile>,
+    pub(super) test_support: Vec<GeneratedFile>,
 }
 
 pub(super) fn render(functions: &[CompiledFunction]) -> Result<OutputFiles> {
     let mut c_headers = Vec::new();
     let mut cpp_modules = Vec::new();
-    let mut c_tests = Vec::new();
-    let mut cpp_tests = Vec::new();
+    let mut c_tests = vec![file("comparator.c", comparator_test(false))];
+    let mut cpp_tests = vec![file("comparator.cpp", comparator_test(true))];
+    let test_support = vec![file("close_enough.h", close_enough_header())];
     let mut umbrella = Writer::new();
     umbrella.write(format_args!(
         "{HEADER}\n\n#ifndef PTFKIT_PTFKIT_H\n#define PTFKIT_PTFKIT_H\n\n"
@@ -63,6 +66,7 @@ pub(super) fn render(functions: &[CompiledFunction]) -> Result<OutputFiles> {
         cpp_modules,
         c_tests,
         cpp_tests,
+        test_support,
     })
 }
 
@@ -706,7 +710,7 @@ fn function_comment_from_document(document: FunctionDocument<'_>) -> Comment {
     Comment(lines)
 }
 
-fn field_comment(parameter: &Parameter) -> Comment {
+fn field_comment(parameter: &OutputField) -> Comment {
     Comment(vec![format!(
         "@brief {}",
         docs::parameter_details(parameter)
@@ -798,7 +802,7 @@ fn cpp_test(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
 fn c_compatibility_test(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
     let mut writer = Writer::new();
     writer.write(format_args!(
-        "{HEADER}\n\n#include <ptfkit/{slug}.h>\n#include \"close_enough.h\"\n\n"
+        "{HEADER}\n\n#include <ptfkit/{slug}.h>\n#include \"support/close_enough.h\"\n\n"
     ));
     writer.line("int main() {");
     writer.indented(|writer| {
@@ -820,12 +824,12 @@ fn c_compatibility_test(slug: &str, functions: &[&CompiledFunction]) -> Result<S
                     writer.write("(");
                     render_literals(writer, &case.inputs, NativeDialect::C, Some(slug));
                     writer.line(");");
-                    for ((field, expected), published_tolerance) in spec
+                    for ((field, expected), tolerance) in spec
                         .outputs
                         .fields()
                         .iter()
                         .zip(&case.expected)
-                        .zip(&case.published_tolerance)
+                        .zip(&function.output_tolerances)
                     {
                         writer.write("assert_close(");
                         if matches!(function.core.output, Output::Scalar) {
@@ -836,7 +840,7 @@ fn c_compatibility_test(slug: &str, functions: &[&CompiledFunction]) -> Result<S
                         writer.write(", ");
                         writer.write(c::test_float_literal(*expected));
                         writer.write(", ");
-                        writer.write(c::test_float_literal(*published_tolerance));
+                        write_tolerance_arguments(writer, tolerance);
                         writer.line(");");
                     }
                 });
@@ -854,7 +858,7 @@ fn module_test(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
         .iter()
         .any(|function| matches!(function.core.output, Output::Struct(_)));
     let mut writer = Writer::new();
-    writer.write(format_args!("{HEADER}\n\n#ifdef IMPORT_UMBRELLA\nimport ptfkit;\n#else\nimport ptfkit.{slug};\n#endif\n\n#include \"close_enough.h\""));
+    writer.write(format_args!("{HEADER}\n\n#ifdef IMPORT_UMBRELLA\nimport ptfkit;\n#else\nimport ptfkit.{slug};\n#endif\n\n#include \"support/close_enough.h\""));
     if type_traits {
         writer.write("\n#include <type_traits>\n\n");
     } else {
@@ -876,12 +880,12 @@ fn module_test(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
                     .expect("record output has a result class");
                 writer.line(format_args!("static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>, ptfkit::{slug}::{result}>);"));
             }
-            for ((field, expected), published_tolerance) in spec
+            for ((field, expected), tolerance) in spec
                 .outputs
                 .fields()
                 .iter()
                 .zip(&case.expected)
-                .zip(&case.published_tolerance)
+                .zip(&function.output_tolerances)
             {
                 writer.write("assert_close(");
                 if matches!(function.core.output, Output::Scalar) {
@@ -892,7 +896,7 @@ fn module_test(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
                 writer.write(", ");
                 writer.write(c::test_float_literal(*expected));
                 writer.write(", ");
-                writer.write(c::test_float_literal(*published_tolerance));
+                write_tolerance_arguments(writer, tolerance);
                 writer.line(");");
             }
             });
@@ -903,6 +907,118 @@ fn module_test(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
     });
     writer.line("}");
     Ok(writer.into_string())
+}
+
+fn write_tolerance_arguments(writer: &mut Writer, tolerance: &crate::model::CompiledTolerance) {
+    let source = match &tolerance.source {
+        crate::model::ToleranceSource::Registry => "registry",
+        crate::model::ToleranceSource::SourceOverride(_) => "source override",
+    };
+    writer.write(c::test_float_literal(tolerance.absolute));
+    writer.write(", ");
+    writer.write(c::test_float_literal(tolerance.relative));
+    writer.write(format_args!(
+        ", \"{}\", \"{}\", \"{}\"",
+        tolerance.quantity, tolerance.unit, source
+    ));
+}
+
+fn close_enough_header() -> String {
+    let guard = c::test_float_literal(crate::compile::FLOATING_POINT_GUARD);
+    format!(
+        r#"{HEADER}
+
+#ifndef PTFKIT_TEST_CLOSE_ENOUGH_H
+#define PTFKIT_TEST_CLOSE_ENOUGH_H
+
+#ifdef __cplusplus
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <print>
+
+inline double resolved_tolerance(double expected, double absolute, double relative) {{
+    return std::max({{absolute, relative * std::abs(expected), {guard}}});
+}}
+
+inline bool is_close(double actual, double expected, double absolute, double relative) {{
+    return std::abs(actual - expected) <= resolved_tolerance(expected, absolute, relative);
+}}
+
+inline void _close_enough_impl(const char *file, int line, double actual, double expected,
+                               double absolute, double relative, const char *quantity,
+                               const char *unit, const char *source) {{
+    const double tolerance = resolved_tolerance(expected, absolute, relative);
+    const double difference = std::abs(actual - expected);
+    if (difference > tolerance) {{
+        std::println(stderr, "assertion failed: {{}}:{{}}: actual={{}}, expected={{}}, difference={{}}, tolerance={{}}, quantity={{}}, unit={{}}, source={{}}",
+                     file, line, actual, expected, difference, tolerance, quantity, unit, source);
+        std::exit(EXIT_FAILURE);
+    }}
+}}
+
+#else
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+static inline double resolved_tolerance(double expected, double absolute, double relative) {{
+    return fmax(fmax(absolute, relative * fabs(expected)), {guard});
+}}
+
+static inline int is_close(double actual, double expected, double absolute, double relative) {{
+    return fabs(actual - expected) <= resolved_tolerance(expected, absolute, relative);
+}}
+
+static inline void _close_enough_impl(const char *file, int line, double actual, double expected,
+                                      double absolute, double relative, const char *quantity,
+                                      const char *unit, const char *source) {{
+    const double tolerance = resolved_tolerance(expected, absolute, relative);
+    const double difference = fabs(actual - expected);
+    if (difference > tolerance) {{
+        fprintf(stderr, "assertion failed: %s:%d: actual=%.17g, expected=%.17g, difference=%.17g, tolerance=%.17g, quantity=%s, unit=%s, source=%s\n",
+                file, line, actual, expected, difference, tolerance, quantity, unit, source);
+        exit(EXIT_FAILURE);
+    }}
+}}
+#endif
+
+#define assert_close(actual, expected, absolute, relative, quantity, unit, source)                 \
+    do {{                                                                                           \
+        _close_enough_impl(__FILE__, __LINE__, (actual), (expected), (absolute), (relative),       \
+                           (quantity), (unit), (source));                                           \
+    }} while (0)
+
+#endif
+"#
+    )
+}
+
+fn comparator_test(cpp: bool) -> String {
+    let main = if cpp { "int main()" } else { "int main(void)" };
+    format!(
+        r#"{HEADER}
+
+#include "support/close_enough.h"
+
+{main} {{
+    const double absolute = 0.001;
+    const double relative = 0.01;
+    const double expected_values[] = {{0.0, 2.0, -2.0}};
+    for (int index = 0; index < 3; ++index) {{
+        const double expected = expected_values[index];
+        const double tolerance = resolved_tolerance(expected, absolute, relative);
+        _close_enough_impl(__FILE__, __LINE__, expected + tolerance * 0.5, expected, absolute,
+                           relative, "test_quantity", "1", "registry");
+        if (is_close(expected + tolerance * 2.0, expected, absolute, relative)) {{
+            return EXIT_FAILURE;
+        }}
+    }}
+    return EXIT_SUCCESS;
+}}
+"#
+    )
 }
 
 fn render_literals(

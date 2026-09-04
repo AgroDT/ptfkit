@@ -113,6 +113,7 @@ pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> Result<()> {
             Output::new(&output::PYTHON_TEST, python.tests),
             Output::new(&output::NATIVE_C, native.c_headers),
             Output::new(&output::NATIVE_CPP_MODULE, native.cpp_modules),
+            Output::new(&output::NATIVE_TEST_SUPPORT, native.test_support),
             Output::new(&output::NATIVE_C_TEST, native.c_tests),
             Output::new(&output::NATIVE_CPP_TEST, native.cpp_tests),
         ],

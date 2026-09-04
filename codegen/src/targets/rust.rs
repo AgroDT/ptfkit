@@ -721,25 +721,37 @@ fn golden_test_tokens(resolved: &CompiledFunction, unique_test_module: bool) -> 
                     }
                 })
                 .collect::<Vec<_>>();
-            let assertion_for = |actual: TokenStream, expected: &f64, published_tolerance: &f64| {
+            let assertion_for = |actual: TokenStream,
+                                 expected: &f64,
+                                 tolerance: &crate::model::CompiledTolerance| {
                 let expected = Literal::f64_suffixed(*expected);
-                let published_tolerance = Literal::f64_suffixed(*published_tolerance);
-                quote!(assert_close(#actual, #expected, #published_tolerance);)
+                let absolute = Literal::f64_suffixed(tolerance.absolute);
+                let relative = Literal::f64_suffixed(tolerance.relative);
+                let quantity = Literal::string(&tolerance.quantity);
+                let unit = Literal::string(&tolerance.unit);
+                let source = match &tolerance.source {
+                    crate::model::ToleranceSource::Registry => "registry".to_owned(),
+                    crate::model::ToleranceSource::SourceOverride(location) => {
+                        format!("source override: {location}")
+                    }
+                };
+                let source = Literal::string(&source);
+                quote!(assert_close(#actual, #expected, #absolute, #relative, #quantity, #unit, #source);)
             };
             let assertions = match &resolved.core.output {
                 Output::Scalar => assertion_for(
                     quote!(result),
                     &case.expected[0],
-                    &case.published_tolerance[0],
+                    &resolved.output_tolerances[0],
                 ),
                 Output::Struct(fields) => {
                     let assertions = fields
                         .iter()
                         .zip(&case.expected)
-                        .zip(&case.published_tolerance)
-                        .map(|((field, expected), published_tolerance)| {
+                        .zip(&resolved.output_tolerances)
+                        .map(|((field, expected), tolerance)| {
                             let field = format_ident!("{field}");
-                            assertion_for(quote!(result.#field), expected, published_tolerance)
+                            assertion_for(quote!(result.#field), expected, tolerance)
                         });
                     quote!(#(#assertions)*)
                 }
@@ -751,16 +763,18 @@ fn golden_test_tokens(resolved: &CompiledFunction, unique_test_module: bool) -> 
 }
 
 fn verification_test_helpers() -> TokenStream {
+    let floating_point_guard = Literal::f64_suffixed(crate::compile::FLOATING_POINT_GUARD);
     quote! {
         #[cfg(test)]
-        fn is_close(actual: f64, expected: f64, published_tolerance: f64) -> bool {
-            let tolerance = published_tolerance + 1e-12 + 1e-5 * expected.abs();
-            (actual - expected).abs() <= tolerance
+        fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
+            absolute.max(relative * expected.abs()).max(#floating_point_guard)
         }
 
         #[cfg(test)]
-        fn assert_close(actual: f64, expected: f64, published_tolerance: f64) {
-            assert!(is_close(actual, expected, published_tolerance), "|{actual} - {expected}| exceeds the shared tolerance");
+        fn assert_close(actual: f64, expected: f64, absolute: f64, relative: f64, quantity: &str, unit: &str, source: &str) {
+            let difference = (actual - expected).abs();
+            let tolerance = resolved_tolerance(expected, absolute, relative);
+            assert!(difference <= tolerance, "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}");
         }
 
         #[cfg(test)]
@@ -769,10 +783,11 @@ fn verification_test_helpers() -> TokenStream {
 
             #[test]
             fn accepts_below_and_rejects_above_tolerance() {
-                let expected = 2.0;
-                let tolerance = 1e-12 + 1e-5 * expected;
-                assert!(is_close(expected + tolerance * 0.5, expected, 0.0));
-                assert!(!is_close(expected + tolerance * 2.0, expected, 0.0));
+                for expected in [0.0, 2.0, -2.0] {
+                    let tolerance = resolved_tolerance(expected, 0.001, 0.01);
+                    assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
+                    assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
+                }
             }
         }
     }
@@ -786,7 +801,7 @@ fn render_tokens(module_docs: TokenStream, tokens: TokenStream) -> String {
 mod tests {
     use super::*;
     use crate::documentation::Returns;
-    use crate::model::Parameter;
+    use crate::model::{OutputField, Parameter};
     use crate::semantic::{BinaryOp, Expr, MathFunction, Reference};
 
     fn number(value: f64) -> Expr {
@@ -967,8 +982,10 @@ mod tests {
         assert_eq!(
             return_doc_lines(Returns::Record {
                 name: "Li2007PTFResult",
-                fields: &[Parameter {
+                fields: &[OutputField {
                     name: "theta_s".into(),
+                    quantity: "volumetric_water_content".into(),
+                    symbol: None,
                     unit: "cm^3/cm^3".into(),
                     domain: None,
                     description: "Saturated water content.".into(),

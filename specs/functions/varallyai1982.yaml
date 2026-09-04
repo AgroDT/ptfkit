@@ -35,16 +35,19 @@ $defs:
     name: Varallyai1982Parameters
     fields:
       - name: theta_0
+        quantity: volumetric_water_content
         symbol: theta_0
         unit: vol.%
         domain: null
         description: Upper-asymptote water content parameter of equation (9).
       - name: m
+        quantity: varallyai_m
         symbol: m
         unit: dimensionless
         domain: null
         description: Shape parameter of equation (9).
       - name: pf_star
+        quantity: varallyai_pf_star
         symbol: pF_*
         unit: dimensionless
         domain: null

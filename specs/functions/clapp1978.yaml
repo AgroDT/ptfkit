@@ -53,11 +53,13 @@ $defs:
     name: Clapp1978Parameters
     fields:
       - name: b
+        quantity: campbell_b
         symbol: b
         unit: "1"
         domain: value > 0
         description: Mean exponent of the moisture-characteristic power curve.
       - name: saturation_suction
+        quantity: matric_potential
         symbol: psi_s(log)
         unit: cm
         domain: value > 0
@@ -65,21 +67,25 @@ $defs:
           Representative saturation suction, calculated as the antilog of the
           mean logarithm of fitted saturation-suction values.
       - name: wetting_front_suction
+        quantity: matric_potential
         symbol: psi_f
         unit: cm
         domain: value > 0
         description: Representative Green-Ampt wetting-front suction.
       - name: saturated_water_content
+        quantity: volumetric_water_content
         symbol: theta_s
         unit: "1"
         domain: 0 < value < 1
         description: Mean saturated volumetric water content, taken as total porosity.
       - name: saturated_hydraulic_conductivity
+        quantity: saturated_hydraulic_conductivity
         symbol: K_s
         unit: cm/min
         domain: value > 0
         description: Mean saturated hydraulic conductivity reported by Li et al. (1976).
       - name: sorptivity
+        quantity: sorptivity
         symbol: S
         unit: cm/min^(1/2)
         domain: value > 0

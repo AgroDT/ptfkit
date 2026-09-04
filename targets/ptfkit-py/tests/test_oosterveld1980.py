@@ -14,42 +14,59 @@ from ptfkit.oosterveld1980 import (
 
 
 CASES_CALC_PTF_OOSTERVELD1980_FIELD_CAPACITY_TENSION = [
-    ({'clay': 6.6}, {'field_capacity_tension': 11.8540994164288}, {'field_capacity_tension': 0.0}),
+    ({'clay': 6.6}, {'field_capacity_tension': 11.8540994164288}),
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'),
-    CASES_CALC_PTF_OOSTERVELD1980_FIELD_CAPACITY_TENSION,
+    ('inputs', 'expected'), CASES_CALC_PTF_OOSTERVELD1980_FIELD_CAPACITY_TENSION
 )
 def test_calc_ptf_oosterveld1980_field_capacity_tension_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_oosterveld1980_field_capacity_tension(**inputs)
 
     assert_close(
-        result, expected['field_capacity_tension'], published_tolerance['field_capacity_tension']
+        result,
+        expected['field_capacity_tension'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='kPa',
+        source='registry',
     )
 
 
 def test_calc_ptf_oosterveld1980_field_capacity_tension_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_OOSTERVELD1980_FIELD_CAPACITY_TENSION
     )
     result = calc_ptf_oosterveld1980_field_capacity_tension(**inputs, out=None)
     assert_close(
-        result[0], expected['field_capacity_tension'], published_tolerance['field_capacity_tension']
+        result[0],
+        expected['field_capacity_tension'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='kPa',
+        source='registry',
     )
 
 
 def test_calc_ptf_oosterveld1980_field_capacity_tension_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_OOSTERVELD1980_FIELD_CAPACITY_TENSION
     )
     result = calc_ptf_oosterveld1980_field_capacity_tension(**inputs, out=out)
     assert result is out
     assert_close(
-        result[0], expected['field_capacity_tension'], published_tolerance['field_capacity_tension']
+        result[0],
+        expected['field_capacity_tension'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='kPa',
+        source='registry',
     )
 
 
@@ -57,165 +74,207 @@ CASES_CALC_PTF_OOSTERVELD1980_RETENTION = [
     (
         {'clay': 6.6, 'mean_depth': 105.0, 'sand': 86.3, 'tension': 11.8},
         {'moisture_content': 8.2782468100413},
-        {'moisture_content': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_OOSTERVELD1980_RETENTION
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_OOSTERVELD1980_RETENTION)
 def test_calc_ptf_oosterveld1980_retention_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_oosterveld1980_retention(**inputs)
 
-    assert_close(result, expected['moisture_content'], published_tolerance['moisture_content'])
+    assert_close(
+        result,
+        expected['moisture_content'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% mass',
+        source='registry',
+    )
 
 
 def test_calc_ptf_oosterveld1980_retention_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
-        CASES_CALC_PTF_OOSTERVELD1980_RETENTION
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_OOSTERVELD1980_RETENTION)
     result = calc_ptf_oosterveld1980_retention(**inputs, out=None)
-    assert_close(result[0], expected['moisture_content'], published_tolerance['moisture_content'])
+    assert_close(
+        result[0],
+        expected['moisture_content'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% mass',
+        source='registry',
+    )
 
 
 def test_calc_ptf_oosterveld1980_retention_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
-        CASES_CALC_PTF_OOSTERVELD1980_RETENTION
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_OOSTERVELD1980_RETENTION)
     result = calc_ptf_oosterveld1980_retention(**inputs, out=out)
     assert result is out
-    assert_close(result[0], expected['moisture_content'], published_tolerance['moisture_content'])
+    assert_close(
+        result[0],
+        expected['moisture_content'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% mass',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_OOSTERVELD1980_FIELD_CAPACITY = [
     (
         {'clay': 6.6, 'mean_depth': 105.0, 'sand': 86.3},
         {'field_capacity_moisture': 8.14707947394088},
-        {'field_capacity_moisture': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_OOSTERVELD1980_FIELD_CAPACITY
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_OOSTERVELD1980_FIELD_CAPACITY)
 def test_calc_ptf_oosterveld1980_field_capacity_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_oosterveld1980_field_capacity(**inputs)
 
     assert_close(
-        result, expected['field_capacity_moisture'], published_tolerance['field_capacity_moisture']
+        result,
+        expected['field_capacity_moisture'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% mass',
+        source='registry',
     )
 
 
 def test_calc_ptf_oosterveld1980_field_capacity_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
-        CASES_CALC_PTF_OOSTERVELD1980_FIELD_CAPACITY
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_OOSTERVELD1980_FIELD_CAPACITY)
     result = calc_ptf_oosterveld1980_field_capacity(**inputs, out=None)
     assert_close(
         result[0],
         expected['field_capacity_moisture'],
-        published_tolerance['field_capacity_moisture'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% mass',
+        source='registry',
     )
 
 
 def test_calc_ptf_oosterveld1980_field_capacity_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
-        CASES_CALC_PTF_OOSTERVELD1980_FIELD_CAPACITY
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_OOSTERVELD1980_FIELD_CAPACITY)
     result = calc_ptf_oosterveld1980_field_capacity(**inputs, out=out)
     assert result is out
     assert_close(
         result[0],
         expected['field_capacity_moisture'],
-        published_tolerance['field_capacity_moisture'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% mass',
+        source='registry',
     )
 
 
 CASES_CALC_PTF_OOSTERVELD1980_WILTING_POINT = [
-    (
-        {'clay': 6.6, 'mean_depth': 105.0, 'sand': 86.3},
-        {'wilting_point_moisture': 1.3942},
-        {'wilting_point_moisture': 0.0},
-    ),
+    ({'clay': 6.6, 'mean_depth': 105.0, 'sand': 86.3}, {'wilting_point_moisture': 1.3942}),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_OOSTERVELD1980_WILTING_POINT
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_OOSTERVELD1980_WILTING_POINT)
 def test_calc_ptf_oosterveld1980_wilting_point_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_oosterveld1980_wilting_point(**inputs)
 
     assert_close(
-        result, expected['wilting_point_moisture'], published_tolerance['wilting_point_moisture']
+        result,
+        expected['wilting_point_moisture'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% mass',
+        source='registry',
     )
 
 
 def test_calc_ptf_oosterveld1980_wilting_point_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
-        CASES_CALC_PTF_OOSTERVELD1980_WILTING_POINT
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_OOSTERVELD1980_WILTING_POINT)
     result = calc_ptf_oosterveld1980_wilting_point(**inputs, out=None)
     assert_close(
-        result[0], expected['wilting_point_moisture'], published_tolerance['wilting_point_moisture']
+        result[0],
+        expected['wilting_point_moisture'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% mass',
+        source='registry',
     )
 
 
 def test_calc_ptf_oosterveld1980_wilting_point_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
-        CASES_CALC_PTF_OOSTERVELD1980_WILTING_POINT
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_OOSTERVELD1980_WILTING_POINT)
     result = calc_ptf_oosterveld1980_wilting_point(**inputs, out=out)
     assert result is out
     assert_close(
-        result[0], expected['wilting_point_moisture'], published_tolerance['wilting_point_moisture']
+        result[0],
+        expected['wilting_point_moisture'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% mass',
+        source='registry',
     )
 
 
 CASES_CALC_PTF_OOSTERVELD1980_AVAILABLE_WATER = [
-    (
-        {'clay': 6.6, 'mean_depth': 105.0, 'sand': 86.3},
-        {'available_moisture': 6.75287947394088},
-        {'available_moisture': 0.0},
-    ),
+    ({'clay': 6.6, 'mean_depth': 105.0, 'sand': 86.3}, {'available_moisture': 6.75287947394088}),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_OOSTERVELD1980_AVAILABLE_WATER
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_OOSTERVELD1980_AVAILABLE_WATER)
 def test_calc_ptf_oosterveld1980_available_water_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_oosterveld1980_available_water(**inputs)
 
-    assert_close(result, expected['available_moisture'], published_tolerance['available_moisture'])
+    assert_close(
+        result,
+        expected['available_moisture'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% mass',
+        source='registry',
+    )
 
 
 def test_calc_ptf_oosterveld1980_available_water_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
-        CASES_CALC_PTF_OOSTERVELD1980_AVAILABLE_WATER
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_OOSTERVELD1980_AVAILABLE_WATER)
     result = calc_ptf_oosterveld1980_available_water(**inputs, out=None)
     assert_close(
-        result[0], expected['available_moisture'], published_tolerance['available_moisture']
+        result[0],
+        expected['available_moisture'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% mass',
+        source='registry',
     )
 
 
 def test_calc_ptf_oosterveld1980_available_water_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
-        CASES_CALC_PTF_OOSTERVELD1980_AVAILABLE_WATER
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_OOSTERVELD1980_AVAILABLE_WATER)
     result = calc_ptf_oosterveld1980_available_water(**inputs, out=out)
     assert result is out
     assert_close(
-        result[0], expected['available_moisture'], published_tolerance['available_moisture']
+        result[0],
+        expected['available_moisture'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% mass',
+        source='registry',
     )

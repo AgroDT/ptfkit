@@ -18,117 +18,168 @@ CASES_CALC_PTF_DHARUMARAJAN2019_NKP = [
     (
         {'cation_exchange_capacity': 33.6, 'clay': 43.2, 'sand': 39.8},
         {'field_capacity': 29.7912, 'permanent_wilting_point': 18.9276},
-        {'field_capacity': 0.0, 'permanent_wilting_point': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_DHARUMARAJAN2019_NKP
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_DHARUMARAJAN2019_NKP)
 def test_calc_ptf_dharumarajan2019_nkp_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_dharumarajan2019_nkp(**inputs)
 
     assert_close(
-        result.field_capacity, expected['field_capacity'], published_tolerance['field_capacity']
+        result.field_capacity,
+        expected['field_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
     )
     assert_close(
         result.permanent_wilting_point,
         expected['permanent_wilting_point'],
-        published_tolerance['permanent_wilting_point'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
     )
 
 
 def test_calc_ptf_dharumarajan2019_nkp_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_DHARUMARAJAN2019_NKP, Dharumarajan2019WaterRetentionResult
     )
     result = calc_ptf_dharumarajan2019_nkp(**inputs, out=None)
     assert_close(
-        result.field_capacity[0], expected['field_capacity'], published_tolerance['field_capacity']
+        result.field_capacity[0],
+        expected['field_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
     )
     assert_close(
         result.permanent_wilting_point[0],
         expected['permanent_wilting_point'],
-        published_tolerance['permanent_wilting_point'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
     )
 
 
 def test_calc_ptf_dharumarajan2019_nkp_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_DHARUMARAJAN2019_NKP, Dharumarajan2019WaterRetentionResult
     )
     result = calc_ptf_dharumarajan2019_nkp(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
     assert_close(
-        result.field_capacity[0], expected['field_capacity'], published_tolerance['field_capacity']
+        result.field_capacity[0],
+        expected['field_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
     )
     assert_close(
         result.permanent_wilting_point[0],
         expected['permanent_wilting_point'],
-        published_tolerance['permanent_wilting_point'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
     )
 
 
 CASES_CALC_PTF_DHARUMARAJAN2019_NKP_CLAY = [
-    (
-        {'clay': 43.2},
-        {'field_capacity': 30.2832, 'permanent_wilting_point': 19.157},
-        {'field_capacity': 0.0, 'permanent_wilting_point': 0.0},
-    ),
+    ({'clay': 43.2}, {'field_capacity': 30.2832, 'permanent_wilting_point': 19.157}),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_DHARUMARAJAN2019_NKP_CLAY
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_DHARUMARAJAN2019_NKP_CLAY)
 def test_calc_ptf_dharumarajan2019_nkp_clay_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_dharumarajan2019_nkp_clay(**inputs)
 
     assert_close(
-        result.field_capacity, expected['field_capacity'], published_tolerance['field_capacity']
+        result.field_capacity,
+        expected['field_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
     )
     assert_close(
         result.permanent_wilting_point,
         expected['permanent_wilting_point'],
-        published_tolerance['permanent_wilting_point'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
     )
 
 
 def test_calc_ptf_dharumarajan2019_nkp_clay_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_DHARUMARAJAN2019_NKP_CLAY, Dharumarajan2019WaterRetentionResult
     )
     result = calc_ptf_dharumarajan2019_nkp_clay(**inputs, out=None)
     assert_close(
-        result.field_capacity[0], expected['field_capacity'], published_tolerance['field_capacity']
+        result.field_capacity[0],
+        expected['field_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
     )
     assert_close(
         result.permanent_wilting_point[0],
         expected['permanent_wilting_point'],
-        published_tolerance['permanent_wilting_point'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
     )
 
 
 def test_calc_ptf_dharumarajan2019_nkp_clay_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_DHARUMARAJAN2019_NKP_CLAY, Dharumarajan2019WaterRetentionResult
     )
     result = calc_ptf_dharumarajan2019_nkp_clay(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
     assert_close(
-        result.field_capacity[0], expected['field_capacity'], published_tolerance['field_capacity']
+        result.field_capacity[0],
+        expected['field_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
     )
     assert_close(
         result.permanent_wilting_point[0],
         expected['permanent_wilting_point'],
-        published_tolerance['permanent_wilting_point'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
     )
 
 
@@ -136,152 +187,217 @@ CASES_CALC_PTF_DHARUMARAJAN2019_SKP = [
     (
         {'cation_exchange_capacity': 14.7, 'clay': 31.5, 'sand': 53.5},
         {'field_capacity': 21.8169, 'permanent_wilting_point': 11.3054},
-        {'field_capacity': 0.0, 'permanent_wilting_point': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_DHARUMARAJAN2019_SKP
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_DHARUMARAJAN2019_SKP)
 def test_calc_ptf_dharumarajan2019_skp_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_dharumarajan2019_skp(**inputs)
 
     assert_close(
-        result.field_capacity, expected['field_capacity'], published_tolerance['field_capacity']
+        result.field_capacity,
+        expected['field_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
     )
     assert_close(
         result.permanent_wilting_point,
         expected['permanent_wilting_point'],
-        published_tolerance['permanent_wilting_point'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
     )
 
 
 def test_calc_ptf_dharumarajan2019_skp_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_DHARUMARAJAN2019_SKP, Dharumarajan2019WaterRetentionResult
     )
     result = calc_ptf_dharumarajan2019_skp(**inputs, out=None)
     assert_close(
-        result.field_capacity[0], expected['field_capacity'], published_tolerance['field_capacity']
+        result.field_capacity[0],
+        expected['field_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
     )
     assert_close(
         result.permanent_wilting_point[0],
         expected['permanent_wilting_point'],
-        published_tolerance['permanent_wilting_point'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
     )
 
 
 def test_calc_ptf_dharumarajan2019_skp_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_DHARUMARAJAN2019_SKP, Dharumarajan2019WaterRetentionResult
     )
     result = calc_ptf_dharumarajan2019_skp(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
     assert_close(
-        result.field_capacity[0], expected['field_capacity'], published_tolerance['field_capacity']
+        result.field_capacity[0],
+        expected['field_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
     )
     assert_close(
         result.permanent_wilting_point[0],
         expected['permanent_wilting_point'],
-        published_tolerance['permanent_wilting_point'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
     )
 
 
 CASES_CALC_PTF_DHARUMARAJAN2019_SKP_CLAY = [
-    (
-        {'clay': 31.5},
-        {'field_capacity': 22.0255, 'permanent_wilting_point': 11.503},
-        {'field_capacity': 0.0, 'permanent_wilting_point': 0.0},
-    ),
+    ({'clay': 31.5}, {'field_capacity': 22.0255, 'permanent_wilting_point': 11.503}),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_DHARUMARAJAN2019_SKP_CLAY
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_DHARUMARAJAN2019_SKP_CLAY)
 def test_calc_ptf_dharumarajan2019_skp_clay_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_dharumarajan2019_skp_clay(**inputs)
 
     assert_close(
-        result.field_capacity, expected['field_capacity'], published_tolerance['field_capacity']
+        result.field_capacity,
+        expected['field_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
     )
     assert_close(
         result.permanent_wilting_point,
         expected['permanent_wilting_point'],
-        published_tolerance['permanent_wilting_point'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
     )
 
 
 def test_calc_ptf_dharumarajan2019_skp_clay_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_DHARUMARAJAN2019_SKP_CLAY, Dharumarajan2019WaterRetentionResult
     )
     result = calc_ptf_dharumarajan2019_skp_clay(**inputs, out=None)
     assert_close(
-        result.field_capacity[0], expected['field_capacity'], published_tolerance['field_capacity']
+        result.field_capacity[0],
+        expected['field_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
     )
     assert_close(
         result.permanent_wilting_point[0],
         expected['permanent_wilting_point'],
-        published_tolerance['permanent_wilting_point'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
     )
 
 
 def test_calc_ptf_dharumarajan2019_skp_clay_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_DHARUMARAJAN2019_SKP_CLAY, Dharumarajan2019WaterRetentionResult
     )
     result = calc_ptf_dharumarajan2019_skp_clay(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
     assert_close(
-        result.field_capacity[0], expected['field_capacity'], published_tolerance['field_capacity']
+        result.field_capacity[0],
+        expected['field_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
     )
     assert_close(
         result.permanent_wilting_point[0],
         expected['permanent_wilting_point'],
-        published_tolerance['permanent_wilting_point'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='%',
+        source='registry',
     )
 
 
 CASES_CALC_PTF_DHARUMARAJAN2019_INFILTRATION = [
-    (
-        {'clay': 30.0, 'sand': 50.0, 'silt': 20.0},
-        {'infiltration_rate': 18.45},
-        {'infiltration_rate': 0.0},
-    ),
+    ({'clay': 30.0, 'sand': 50.0, 'silt': 20.0}, {'infiltration_rate': 18.45}),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_DHARUMARAJAN2019_INFILTRATION
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_DHARUMARAJAN2019_INFILTRATION)
 def test_calc_ptf_dharumarajan2019_infiltration_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_dharumarajan2019_infiltration(**inputs)
 
-    assert_close(result, expected['infiltration_rate'], published_tolerance['infiltration_rate'])
+    assert_close(
+        result,
+        expected['infiltration_rate'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='infiltration_rate',
+        unit='mm/h',
+        source='registry',
+    )
 
 
 def test_calc_ptf_dharumarajan2019_infiltration_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
-        CASES_CALC_PTF_DHARUMARAJAN2019_INFILTRATION
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_DHARUMARAJAN2019_INFILTRATION)
     result = calc_ptf_dharumarajan2019_infiltration(**inputs, out=None)
-    assert_close(result[0], expected['infiltration_rate'], published_tolerance['infiltration_rate'])
+    assert_close(
+        result[0],
+        expected['infiltration_rate'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='infiltration_rate',
+        unit='mm/h',
+        source='registry',
+    )
 
 
 def test_calc_ptf_dharumarajan2019_infiltration_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
-        CASES_CALC_PTF_DHARUMARAJAN2019_INFILTRATION
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_DHARUMARAJAN2019_INFILTRATION)
     result = calc_ptf_dharumarajan2019_infiltration(**inputs, out=out)
     assert result is out
-    assert_close(result[0], expected['infiltration_rate'], published_tolerance['infiltration_rate'])
+    assert_close(
+        result[0],
+        expected['infiltration_rate'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='infiltration_rate',
+        unit='mm/h',
+        source='registry',
+    )

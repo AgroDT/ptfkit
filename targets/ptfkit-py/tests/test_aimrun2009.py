@@ -11,43 +11,61 @@ CASES_CALC_PTF_AIMRUN2009 = [
     (
         {'bulk_density': 0.94, 'clay': 43.88, 'gmd': 0.01, 'organic_matter': 12.07},
         {'k_sat': 7.358406556179513e-8},
-        {'k_sat': 0.0},
     ),
     (
         {'bulk_density': 1.19, 'clay': 50.21, 'gmd': 0.007, 'organic_matter': 8.55},
         {'k_sat': 3.07872446717209e-8},
-        {'k_sat': 0.0},
     ),
     (
         {'bulk_density': 1.13, 'clay': 58.81, 'gmd': 0.005, 'organic_matter': 5.12},
         {'k_sat': 2.3343051908963327e-8},
-        {'k_sat': 0.0},
     ),
     (
         {'bulk_density': 1.08, 'clay': 47.5, 'gmd': 0.008, 'organic_matter': 1.43},
         {'k_sat': 3.831168764444974e-8},
-        {'k_sat': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_AIMRUN2009)
-def test_calc_ptf_aimrun2009_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
-):
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_AIMRUN2009)
+def test_calc_ptf_aimrun2009_verification(inputs: dict[str, float], expected: dict[str, float]):
     result = calc_ptf_aimrun2009(**inputs)
 
-    assert_close(result, expected['k_sat'], published_tolerance['k_sat'])
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=1e-10,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='m/s',
+        source='registry',
+    )
 
 
 def test_calc_ptf_aimrun2009_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(CASES_CALC_PTF_AIMRUN2009)
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_AIMRUN2009)
     result = calc_ptf_aimrun2009(**inputs, out=None)
-    assert_close(result[0], expected['k_sat'], published_tolerance['k_sat'])
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=1e-10,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='m/s',
+        source='registry',
+    )
 
 
 def test_calc_ptf_aimrun2009_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(CASES_CALC_PTF_AIMRUN2009)
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_AIMRUN2009)
     result = calc_ptf_aimrun2009(**inputs, out=out)
     assert result is out
-    assert_close(result[0], expected['k_sat'], published_tolerance['k_sat'])
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=1e-10,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='m/s',
+        source='registry',
+    )

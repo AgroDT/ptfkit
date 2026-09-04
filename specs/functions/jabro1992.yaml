@@ -43,6 +43,7 @@ functions:
   outputs:
     type: scalar
     name: k_sat
+    quantity: saturated_hydraulic_conductivity
     symbol: Ks
     unit: m/s
     domain: value >= 0

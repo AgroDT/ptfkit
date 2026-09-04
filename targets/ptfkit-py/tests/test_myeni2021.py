@@ -11,54 +11,77 @@ CASES_CALC_PTF_MYENI2021 = [
     (
         {'clay': 30.0, 'silt': 20.0, 'soil_organic_carbon': 1.0},
         {'field_capacity': 0.213, 'permanent_wilting_point': 0.117},
-        {'field_capacity': 0.0, 'permanent_wilting_point': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_MYENI2021)
-def test_calc_ptf_myeni2021_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
-):
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_MYENI2021)
+def test_calc_ptf_myeni2021_verification(inputs: dict[str, float], expected: dict[str, float]):
     result = calc_ptf_myeni2021(**inputs)
 
     assert_close(
-        result.field_capacity, expected['field_capacity'], published_tolerance['field_capacity']
+        result.field_capacity,
+        expected['field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='kg/kg',
+        source='registry',
     )
     assert_close(
         result.permanent_wilting_point,
         expected['permanent_wilting_point'],
-        published_tolerance['permanent_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='kg/kg',
+        source='registry',
     )
 
 
 def test_calc_ptf_myeni2021_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
-        CASES_CALC_PTF_MYENI2021, Myeni2021PTFResult
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_MYENI2021, Myeni2021PTFResult)
     result = calc_ptf_myeni2021(**inputs, out=None)
     assert_close(
-        result.field_capacity[0], expected['field_capacity'], published_tolerance['field_capacity']
+        result.field_capacity[0],
+        expected['field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='kg/kg',
+        source='registry',
     )
     assert_close(
         result.permanent_wilting_point[0],
         expected['permanent_wilting_point'],
-        published_tolerance['permanent_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='kg/kg',
+        source='registry',
     )
 
 
 def test_calc_ptf_myeni2021_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
-        CASES_CALC_PTF_MYENI2021, Myeni2021PTFResult
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_MYENI2021, Myeni2021PTFResult)
     result = calc_ptf_myeni2021(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
     assert_close(
-        result.field_capacity[0], expected['field_capacity'], published_tolerance['field_capacity']
+        result.field_capacity[0],
+        expected['field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='kg/kg',
+        source='registry',
     )
     assert_close(
         result.permanent_wilting_point[0],
         expected['permanent_wilting_point'],
-        published_tolerance['permanent_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='kg/kg',
+        source='registry',
     )

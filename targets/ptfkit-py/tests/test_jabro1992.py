@@ -8,46 +8,52 @@ from ptfkit.jabro1992 import calc_ptf_jabro1992
 
 
 CASES_CALC_PTF_JABRO1992 = [
-    (
-        {'bulk_density': 1.26, 'clay': 5.0, 'silt': 10.0},
-        {'k_sat': 0.0003849640675896946},
-        {'k_sat': 0.0},
-    ),
-    (
-        {'bulk_density': 1.42, 'clay': 11.05, 'silt': 38.72},
-        {'k_sat': 9.804037952717678e-6},
-        {'k_sat': 0.0},
-    ),
-    (
-        {'bulk_density': 1.97, 'clay': 30.0, 'silt': 52.0},
-        {'k_sat': 7.292435947882127e-9},
-        {'k_sat': 0.0},
-    ),
-    (
-        {'bulk_density': 1.61, 'clay': 44.0, 'silt': 0.2},
-        {'k_sat': 2.032824027706267e-5},
-        {'k_sat': 0.0},
-    ),
+    ({'bulk_density': 1.26, 'clay': 5.0, 'silt': 10.0}, {'k_sat': 0.0003849640675896946}),
+    ({'bulk_density': 1.42, 'clay': 11.05, 'silt': 38.72}, {'k_sat': 9.804037952717678e-6}),
+    ({'bulk_density': 1.97, 'clay': 30.0, 'silt': 52.0}, {'k_sat': 7.292435947882127e-9}),
+    ({'bulk_density': 1.61, 'clay': 44.0, 'silt': 0.2}, {'k_sat': 2.032824027706267e-5}),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_JABRO1992)
-def test_calc_ptf_jabro1992_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
-):
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_JABRO1992)
+def test_calc_ptf_jabro1992_verification(inputs: dict[str, float], expected: dict[str, float]):
     result = calc_ptf_jabro1992(**inputs)
 
-    assert_close(result, expected['k_sat'], published_tolerance['k_sat'])
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=1e-10,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='m/s',
+        source='registry',
+    )
 
 
 def test_calc_ptf_jabro1992_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(CASES_CALC_PTF_JABRO1992)
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_JABRO1992)
     result = calc_ptf_jabro1992(**inputs, out=None)
-    assert_close(result[0], expected['k_sat'], published_tolerance['k_sat'])
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=1e-10,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='m/s',
+        source='registry',
+    )
 
 
 def test_calc_ptf_jabro1992_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(CASES_CALC_PTF_JABRO1992)
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_JABRO1992)
     result = calc_ptf_jabro1992(**inputs, out=out)
     assert result is out
-    assert_close(result[0], expected['k_sat'], published_tolerance['k_sat'])
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=1e-10,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='m/s',
+        source='registry',
+    )

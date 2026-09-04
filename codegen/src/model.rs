@@ -1,6 +1,9 @@
-use std::{collections::BTreeMap, path::PathBuf};
+use std::{collections::BTreeMap, path::PathBuf, sync::Arc};
 
-use serde::{Deserialize, Deserializer, Serialize};
+use serde::{
+    Deserialize, Deserializer, Serialize,
+    de::{Error as _, MapAccess, Visitor},
+};
 
 #[derive(Clone, Debug, Serialize)]
 pub(crate) struct Spec {
@@ -45,6 +48,8 @@ struct FunctionReference {
     scope: FunctionScope,
     inputs: Vec<InputReference>,
     outputs: OutputReference,
+    #[serde(default)]
+    verification_tolerances: BTreeMap<String, VerificationToleranceOverride>,
     implementation: Option<Implementation>,
     #[serde(default)]
     verification_cases: Vec<VerificationCase>,
@@ -186,6 +191,7 @@ impl<'de> Deserialize<'de> for Spec {
                     scope: function.scope,
                     inputs,
                     outputs,
+                    verification_tolerances: function.verification_tolerances,
                     implementation,
                     verification_cases: function.verification_cases,
                     edge_cases: function.edge_cases,
@@ -373,6 +379,8 @@ pub(crate) struct Function {
     pub(crate) scope: FunctionScope,
     pub(crate) inputs: Vec<Input>,
     pub(crate) outputs: Outputs,
+    #[serde(default)]
+    pub(crate) verification_tolerances: BTreeMap<String, VerificationToleranceOverride>,
     pub(crate) implementation: Option<Implementation>,
     #[serde(default)]
     pub(crate) verification_cases: Vec<VerificationCase>,
@@ -398,8 +406,6 @@ pub(crate) struct VerificationCase {
     pub(crate) inputs: BTreeMap<String, GoldenInput>,
     pub(crate) expected: BTreeMap<String, f64>,
     pub(crate) source_location: Option<String>,
-    #[serde(default)]
-    pub(crate) precision: BTreeMap<String, PublishedPrecision>,
     pub(crate) rationale: Option<String>,
     pub(crate) notes: Option<String>,
 }
@@ -420,13 +426,6 @@ impl VerificationKind {
             Self::Calculated => "calculated",
         }
     }
-}
-
-#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
-#[serde(untagged)]
-pub(crate) enum PublishedPrecision {
-    DecimalPlaces { decimal_places: u32 },
-    SignificantDigits { significant_digits: u32 },
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -463,6 +462,18 @@ pub(crate) struct Models {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub(crate) struct Parameter {
     pub(crate) name: String,
+    pub(crate) unit: String,
+    #[allow(dead_code)]
+    pub(crate) domain: Option<String>,
+    pub(crate) description: String,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub(crate) struct OutputField {
+    pub(crate) name: String,
+    #[serde(default)]
+    pub(crate) quantity: String,
+    pub(crate) symbol: Option<String>,
     pub(crate) unit: String,
     #[allow(dead_code)]
     pub(crate) domain: Option<String>,
@@ -573,16 +584,16 @@ pub(crate) struct LookupValue {
 pub(crate) enum Outputs {
     Scalar {
         #[serde(flatten)]
-        field: Parameter,
+        field: OutputField,
     },
     Record {
         name: String,
-        fields: Vec<Parameter>,
+        fields: Vec<OutputField>,
     },
 }
 
 impl Outputs {
-    pub(crate) fn fields(&self) -> &[Parameter] {
+    pub(crate) fn fields(&self) -> &[OutputField] {
         match self {
             Self::Scalar { field } => std::slice::from_ref(field),
             Self::Record { fields, .. } => fields,
@@ -638,12 +649,76 @@ pub(crate) struct LookupInvocation {
     pub(crate) definition: Option<LookupDefinition>,
 }
 
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub(crate) struct VerificationToleranceOverride {
+    pub(crate) absolute: f64,
+    #[serde(default)]
+    pub(crate) relative: Option<f64>,
+    pub(crate) source_location: String,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct QuantityUnit {
+    pub(crate) absolute: f64,
+    #[serde(default)]
+    pub(crate) relative: Option<f64>,
+    pub(crate) rationale: String,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct Quantity {
+    pub(crate) id: String,
+    pub(crate) description: String,
+    #[serde(deserialize_with = "deserialize_unique_units")]
+    pub(crate) units: BTreeMap<String, QuantityUnit>,
+}
+
+fn deserialize_unique_units<'de, D>(
+    deserializer: D,
+) -> Result<BTreeMap<String, QuantityUnit>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    struct UniqueUnitsVisitor;
+
+    impl<'de> Visitor<'de> for UniqueUnitsVisitor {
+        type Value = BTreeMap<String, QuantityUnit>;
+
+        fn expecting(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            formatter.write_str("a map with unique unit keys")
+        }
+
+        fn visit_map<A>(self, mut map: A) -> Result<Self::Value, A::Error>
+        where
+            A: MapAccess<'de>,
+        {
+            let mut units = BTreeMap::new();
+            while let Some((unit, tolerance)) = map.next_entry()? {
+                if units.insert(unit, tolerance).is_some() {
+                    return Err(A::Error::custom("duplicate entry in quantity units"));
+                }
+            }
+            Ok(units)
+        }
+    }
+
+    deserializer.deserialize_map(UniqueUnitsVisitor)
+}
+
+#[derive(Clone, Debug, Default)]
+pub(crate) struct QuantityRegistry {
+    pub(crate) quantities: Vec<Quantity>,
+}
+
 #[derive(Clone, Debug)]
 pub(crate) struct Entry {
     pub(crate) path: PathBuf,
     pub(crate) slug: String,
     pub(crate) spec: Spec,
     pub(crate) implementations: Vec<Option<crate::semantic::Function>>,
+    pub(crate) quantities: Arc<QuantityRegistry>,
 }
 
 /// A validated source function paired with its immutable semantic IR.
@@ -654,6 +729,7 @@ pub(crate) struct CompiledFunction {
     pub(crate) ir: crate::semantic::Function,
     pub(crate) core: CoreFunction,
     pub(crate) verification_cases: Vec<CompiledVerificationCase>,
+    pub(crate) output_tolerances: Vec<CompiledTolerance>,
 }
 
 #[derive(Clone, Debug)]
@@ -661,7 +737,21 @@ pub(crate) struct CompiledVerificationCase {
     pub(crate) id: String,
     pub(crate) inputs: Vec<CompiledInput>,
     pub(crate) expected: Vec<f64>,
-    pub(crate) published_tolerance: Vec<f64>,
+}
+
+#[derive(Clone, Debug)]
+pub(crate) struct CompiledTolerance {
+    pub(crate) absolute: f64,
+    pub(crate) relative: f64,
+    pub(crate) quantity: String,
+    pub(crate) unit: String,
+    pub(crate) source: ToleranceSource,
+}
+
+#[derive(Clone, Debug)]
+pub(crate) enum ToleranceSource {
+    Registry,
+    SourceOverride(String),
 }
 
 #[derive(Clone, Debug)]
@@ -716,7 +806,7 @@ pub(crate) struct RawVariable {
 #[derive(Clone, Debug)]
 pub(crate) enum RawVariableValue {
     Expression(RawExpression),
-    Lookup(RawLookup),
+    Lookup(Box<RawLookup>),
 }
 
 #[derive(Clone, Debug)]

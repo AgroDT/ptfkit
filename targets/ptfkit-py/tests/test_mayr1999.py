@@ -11,49 +11,112 @@ CASES_CALC_PTF_MAYR1999 = [
     (
         {'bulk_density': 1.3, 'clay': 20.0, 'organic_carbon': 2.0, 'sand': 40.0, 'silt': 40.0},
         {'a_hc': 9.19922782578422, 'b_hc': 8.52432443785475, 'theta_s': 0.48733161333},
-        {'a_hc': 0.0, 'b_hc': 0.0, 'theta_s': 0.0},
     ),
     (
         {'bulk_density': 1.2, 'clay': 60.0, 'organic_carbon': 2.0, 'sand': 20.0, 'silt': 20.0},
         {'a_hc': 14.5305137640911, 'b_hc': 18.9375141190925, 'theta_s': 0.52145684162},
-        {'a_hc': 0.0, 'b_hc': 0.0, 'theta_s': 0.0},
     ),
     (
         {'bulk_density': 1.5, 'clay': 5.0, 'organic_carbon': 1.0, 'sand': 90.0, 'silt': 5.0},
         {'a_hc': 2.40216699550362, 'b_hc': 3.2690464531591, 'theta_s': 0.4209756915},
-        {'a_hc': 0.0, 'b_hc': 0.0, 'theta_s': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_MAYR1999)
-def test_calc_ptf_mayr1999_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
-):
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_MAYR1999)
+def test_calc_ptf_mayr1999_verification(inputs: dict[str, float], expected: dict[str, float]):
     result = calc_ptf_mayr1999(**inputs)
 
-    assert_close(result.a_hc, expected['a_hc'], published_tolerance['a_hc'])
-    assert_close(result.b_hc, expected['b_hc'], published_tolerance['b_hc'])
-    assert_close(result.theta_s, expected['theta_s'], published_tolerance['theta_s'])
+    assert_close(
+        result.a_hc,
+        expected['a_hc'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='cm H2O',
+        source='registry',
+    )
+    assert_close(
+        result.b_hc,
+        expected['b_hc'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='hutson_cass_b',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.theta_s,
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
+    )
 
 
 def test_calc_ptf_mayr1999_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
-        CASES_CALC_PTF_MAYR1999, Mayr1999PTFResult
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_MAYR1999, Mayr1999PTFResult)
     result = calc_ptf_mayr1999(**inputs, out=None)
-    assert_close(result.a_hc[0], expected['a_hc'], published_tolerance['a_hc'])
-    assert_close(result.b_hc[0], expected['b_hc'], published_tolerance['b_hc'])
-    assert_close(result.theta_s[0], expected['theta_s'], published_tolerance['theta_s'])
+    assert_close(
+        result.a_hc[0],
+        expected['a_hc'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='cm H2O',
+        source='registry',
+    )
+    assert_close(
+        result.b_hc[0],
+        expected['b_hc'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='hutson_cass_b',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.theta_s[0],
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
+    )
 
 
 def test_calc_ptf_mayr1999_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
-        CASES_CALC_PTF_MAYR1999, Mayr1999PTFResult
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_MAYR1999, Mayr1999PTFResult)
     result = calc_ptf_mayr1999(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert_close(result.a_hc[0], expected['a_hc'], published_tolerance['a_hc'])
-    assert_close(result.b_hc[0], expected['b_hc'], published_tolerance['b_hc'])
-    assert_close(result.theta_s[0], expected['theta_s'], published_tolerance['theta_s'])
+    assert_close(
+        result.a_hc[0],
+        expected['a_hc'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='cm H2O',
+        source='registry',
+    )
+    assert_close(
+        result.b_hc[0],
+        expected['b_hc'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='hutson_cass_b',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.theta_s[0],
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
+    )

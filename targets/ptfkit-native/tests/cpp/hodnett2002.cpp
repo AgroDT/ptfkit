@@ -6,7 +6,7 @@ import ptfkit;
 import ptfkit.hodnett2002;
 #endif
 
-#include "close_enough.h"
+#include "support/close_enough.h"
 #include <type_traits>
 
 int main() {
@@ -15,10 +15,14 @@ int main() {
             ptfkit::hodnett2002::calc_ptf_hodnett2002(39.2, 24.2, 36.7, 1.4, 1.2, 15.9, 5.85);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::hodnett2002::Hodnett2002PTFResult>);
-        assert_close(result.alpha, 0.245183615037873, 0.0);
-        assert_close(result.n, 1.36739326352383, 0.0);
-        assert_close(result.theta_s, 0.4993353, 0.0);
-        assert_close(result.theta_r, 0.21344216, 0.0);
+        assert_close(result.alpha, 0.245183615037873, 0.00001, 0.0, "van_genuchten_alpha", "kPa^-1",
+                     "registry");
+        assert_close(result.n, 1.36739326352383, 0.001, 0.0, "van_genuchten_n", "dimensionless",
+                     "registry");
+        assert_close(result.theta_s, 0.4993353, 0.001, 0.0, "volumetric_water_content", "m^3/m^3",
+                     "registry");
+        assert_close(result.theta_r, 0.21344216, 0.001, 0.0, "volumetric_water_content", "m^3/m^3",
+                     "registry");
     }
     return 0;
 }

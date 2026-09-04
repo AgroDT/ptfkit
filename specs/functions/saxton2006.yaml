@@ -50,51 +50,61 @@ functions:
       name: Saxton2006PTFResult
       fields:
         - name: theta_1500
+          quantity: volumetric_water_content
           symbol: theta_1500
           unit: m^3/m^3
           domain: value > 0
           description: Volumetric water content at 1500 kPa matric tension.
         - name: theta_33
+          quantity: volumetric_water_content
           symbol: theta_33
           unit: m^3/m^3
           domain: value > 0
           description: Volumetric water content at 33 kPa matric tension.
         - name: theta_s
+          quantity: volumetric_water_content
           symbol: theta_s
           unit: m^3/m^3
           domain: value > 0
           description: Saturated volumetric water content at normal density.
         - name: plant_available_water
+          quantity: volumetric_water_content
           symbol: PAW
           unit: m^3/m^3
           domain: value >= 0
           description: Difference between the 33 and 1500 kPa water contents.
         - name: air_entry_tension
+          quantity: matric_potential
           symbol: psi_e
           unit: kPa
           domain: value > 0
           description: Air-entry or bubbling-pressure tension.
         - name: retention_a
+          quantity: retention_coefficient_a
           symbol: A
           unit: kPa
           domain: value > 0
           description: Coefficient A of the dry-range moisture-tension curve.
         - name: retention_b
+          quantity: retention_coefficient_b
           symbol: B
           unit: dimensionless
           domain: value > 0
           description: Exponent B of the dry-range moisture-tension curve.
         - name: conductivity_lambda
+          quantity: conductivity_shape_parameter
           symbol: lambda
           unit: dimensionless
           domain: value > 0
           description: Inverse of retention exponent B.
         - name: saturated_conductivity
+          quantity: saturated_hydraulic_conductivity
           symbol: K_s
           unit: mm/h
           domain: value >= 0
           description: Saturated hydraulic conductivity of the matric soil.
         - name: normal_density
+          quantity: dry_bulk_density
           symbol: rho_N
           unit: g/cm^3
           domain: value > 0
@@ -206,21 +216,25 @@ functions:
       name: Saxton2006DensityResult
       fields:
         - name: adjusted_density
+          quantity: dry_bulk_density
           symbol: rho_DF
           unit: g/cm^3
           domain: value > 0
           description: Density after applying the density factor.
         - name: adjusted_theta_s
+          quantity: volumetric_water_content
           symbol: theta_S-DF
           unit: m^3/m^3
           domain: value > 0
           description: Saturated water content after the density adjustment.
         - name: adjusted_theta_33
+          quantity: volumetric_water_content
           symbol: theta_33-DF
           unit: m^3/m^3
           domain: value > 0
           description: Water content at 33 kPa after the density adjustment.
         - name: adjusted_theta_s_minus_33
+          quantity: volumetric_water_content
           symbol: theta_(S-33)DF
           unit: m^3/m^3
           domain: value >= 0.005
@@ -286,6 +300,7 @@ functions:
     outputs:
       type: scalar
       name: tension
+      quantity: matric_potential
       symbol: psi_theta
       unit: kPa
       domain: 33 <= value <= 1500
@@ -353,6 +368,7 @@ functions:
     outputs:
       type: scalar
       name: tension
+      quantity: matric_potential
       symbol: psi_theta
       unit: kPa
       domain: air_entry_tension <= value <= 33
@@ -414,6 +430,7 @@ functions:
     outputs:
       type: scalar
       name: conductivity
+      quantity: unsaturated_hydraulic_conductivity
       symbol: K_theta
       unit: mm/h
       domain: value >= 0
@@ -476,21 +493,25 @@ functions:
       name: Saxton2006GravelResult
       fields:
         - name: gravel_volume_fraction
+          quantity: gravel_volume_fraction
           symbol: R_v
           unit: m^3/m^3
           domain: 0 <= value < 1
           description: Gravel volume fraction of the bulk soil.
         - name: bulk_density
+          quantity: dry_bulk_density
           symbol: rho_B
           unit: g/cm^3
           domain: value > 0
           description: Dry bulk density of matric soil plus gravel.
         - name: bulk_plant_available_water
+          quantity: volumetric_water_content
           symbol: PAW_B
           unit: m^3/m^3
           domain: value >= 0
           description: Plant-available water on a bulk-soil volume basis.
         - name: bulk_saturated_conductivity
+          quantity: saturated_hydraulic_conductivity
           symbol: K_b
           unit: mm/h
           domain: value >= 0
@@ -561,11 +582,13 @@ functions:
       name: Saxton2006SalinityResult
       fields:
         - name: saturated_osmotic_potential
+          quantity: osmotic_potential
           symbol: psi_O
           unit: kPa
           domain: value >= 0
           description: Osmotic potential at saturation.
         - name: osmotic_potential
+          quantity: osmotic_potential
           symbol: psi_Otheta
           unit: kPa
           domain: value >= 0

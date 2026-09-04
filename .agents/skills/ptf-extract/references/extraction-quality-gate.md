@@ -11,6 +11,9 @@ APA-style slug and identifies the generated public module, for example
   verification and edge cases, documentation, scope, and semantic `implementation`
   fields required by the schema.
 - Every record output has an explicit PascalCase `name`.
+- Every scalar output and record field has a stable `quantity` whose exact unit
+  exists in `specs/quantities.yaml`. Registry tolerances are reviewed project
+  policy, not claims of measurement uncertainty or model predictive accuracy.
 - When the source uses a finite categorical predictor, represent its reusable
   type as an enum in `$defs` and bind it to each function-local argument with
   `name` plus `$ref`. The enum owns its type description and admissible values;
@@ -56,9 +59,10 @@ positive logarithm arguments, and respect physical relations such as
 For piecewise models and trees, cover every material computational branch with
 a published case where available and a calculated case otherwise.
 
-For record outputs, `expected` contains every output field. Do not add `rtol`
-or `atol`; generated tests use the repository comparator. A published case may
-record explicitly reported precision per output under `precision`.
+For record outputs, `expected` contains every output field. Verification cases
+contain provenance but no tolerance or precision fields. Generated tests use
+the resolved function-output policy from `specs/quantities.yaml` or an explicit
+function-level `verification_tolerances` override with `source_location`.
 
 The lack of a published case is not an extraction or release blocker.
 

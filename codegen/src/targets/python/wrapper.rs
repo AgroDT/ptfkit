@@ -721,6 +721,7 @@ mod tests {
                 name: "TestResult".into(),
                 fields: Vec::new(),
             },
+            verification_tolerances: Default::default(),
             documentation: Documentation::default(),
             implementation: None,
             verification_cases: Vec::new(),

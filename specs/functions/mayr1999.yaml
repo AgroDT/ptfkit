@@ -62,17 +62,20 @@ functions:
     name: Mayr1999PTFResult
     fields:
     - name: a_hc
+      quantity: matric_potential
       symbol: a
       unit: cm H2O
       domain: value > 0
       description: >-
         Hutson-Cass fitting parameter with pressure-head dimensions.
     - name: b_hc
+      quantity: hutson_cass_b
       symbol: b
       unit: dimensionless
       domain: value > 0
       description: Hutson-Cass fitting parameter controlling retention-curve shape.
     - name: theta_s
+      quantity: volumetric_water_content
       symbol: theta_s
       unit: m^3/m^3
       domain: 0 <= value <= 1

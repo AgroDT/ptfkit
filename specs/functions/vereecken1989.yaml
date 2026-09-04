@@ -57,21 +57,25 @@ functions:
       name: Vereecken1989PTFResult
       fields:
         - name: theta_r
+          quantity: volumetric_water_content
           symbol: theta_r
           unit: cm^3/cm^3
           domain: 0 <= value <= 1
           description: Residual volumetric soil water content.
         - name: theta_s
+          quantity: volumetric_water_content
           symbol: theta_s
           unit: cm^3/cm^3
           domain: 0 <= value <= 1
           description: Saturated volumetric soil water content.
         - name: alpha
+          quantity: van_genuchten_alpha
           symbol: alpha
           unit: cm^-1
           domain: value > 0
           description: Shape parameter of the van Genuchten moisture-retention model.
         - name: n
+          quantity: van_genuchten_n
           symbol: n
           unit: dimensionless
           domain: value > 0
@@ -220,21 +224,25 @@ functions:
       name: Vereecken1989DetailedPTFResult
       fields:
         - name: theta_r
+          quantity: volumetric_water_content
           symbol: theta_r
           unit: cm^3/cm^3
           domain: 0 <= value <= 1
           description: Residual volumetric soil water content.
         - name: theta_s
+          quantity: volumetric_water_content
           symbol: theta_s
           unit: cm^3/cm^3
           domain: 0 <= value <= 1
           description: Saturated volumetric soil water content.
         - name: alpha
+          quantity: van_genuchten_alpha
           symbol: alpha
           unit: cm^-1
           domain: value > 0
           description: Shape parameter of the van Genuchten moisture-retention model.
         - name: n
+          quantity: van_genuchten_n
           symbol: n
           unit: dimensionless
           domain: value > 0

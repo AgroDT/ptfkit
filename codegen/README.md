@@ -7,7 +7,8 @@ contract; internal generator APIs are not.
 
 ## Pipeline
 
-1. `specs` loads source specifications and `validate` checks their contracts.
+1. `specs` loads source specifications and `specs/quantities.yaml`; `validate`
+   checks output coverage and their remaining contracts.
 2. `compile` resolves formulas and fixed verification cases into
    `CompiledFunction` values and validates their complete input-output shape.
 3. `documentation` provides borrowed source/function facts without target
@@ -57,7 +58,9 @@ executable test. Provenance counts distinguish published examples from
 calculated implementation checks.
 
 The JSON document has stable top-level `sources`, `functions`, `verification`,
-`inputs`, `outputs`, `scope`, and `blocked_functions` sections. Category tables
+`quantity_registry`, `inputs`, `outputs`, `scope`, and `blocked_functions`
+sections. Quantity-registry coverage reports used and unused quantity-unit
+entries and whether outputs use registry defaults or cited source overrides. Category tables
 are emitted as sorted arrays with explicit counts and percentages. Inputs are
 resolved by the specification loader and reported separately as `numeric` or
 `categorical`.

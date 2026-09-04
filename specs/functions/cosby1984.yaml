@@ -42,38 +42,45 @@ functions:
     name: Cosby1984UnivariatePTFResult
     fields:
     - name: mean_b
+      quantity: campbell_b
       symbol: b
       unit: dimensionless
       domain: null
       description: Mean slope of the moisture characteristic.
     - name: mean_log_psi_s
+      quantity: log_saturation_potential
       symbol: log_psi_s
       unit: reported log value
       domain: null
       description: Mean log saturation matric potential; the underlying potential is
         expressed in cm H2O.
     - name: mean_log_k_sat
+      quantity: log_saturated_hydraulic_conductivity
       symbol: log_k_sat
       unit: reported log value
       domain: null
       description: Mean log saturated hydraulic conductivity; the underlying conductivity
         is expressed in inches per hour.
     - name: mean_theta_s
+      quantity: volumetric_water_content
       symbol: theta_s
       unit: '% volume/volume'
       domain: null
       description: Mean saturated water content.
     - name: sd_b
+      quantity: campbell_b
       symbol: b
       unit: dimensionless
       domain: null
       description: Standard deviation of b.
     - name: sd_log_k_sat
+      quantity: log_saturated_hydraulic_conductivity
       symbol: log_k_sat
       unit: reported log value
       domain: null
       description: Standard deviation of log saturated hydraulic conductivity.
     - name: sd_theta_s
+      quantity: volumetric_water_content
       symbol: theta_s
       unit: '% volume/volume'
       domain: null

@@ -17,173 +17,449 @@ CASES_CALC_PTF_VARALLYAI1982_MEADOW = [
     (
         {'bulk_density': 1.4, 'fine_fraction': 0.25, 'fine_sand_fraction': 0.3},
         {'theta_0': 46.54495, 'm': 0.10029, 'pf_star': 3.62445},
-        {'theta_0': 0.0, 'm': 0.0, 'pf_star': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_VARALLYAI1982_MEADOW
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_VARALLYAI1982_MEADOW)
 def test_calc_ptf_varallyai1982_meadow_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_varallyai1982_meadow(**inputs)
 
-    assert_close(result.theta_0, expected['theta_0'], published_tolerance['theta_0'])
-    assert_close(result.m, expected['m'], published_tolerance['m'])
-    assert_close(result.pf_star, expected['pf_star'], published_tolerance['pf_star'])
+    assert_close(
+        result.theta_0,
+        expected['theta_0'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='vol.%',
+        source='registry',
+    )
+    assert_close(
+        result.m,
+        expected['m'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='varallyai_m',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.pf_star,
+        expected['pf_star'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='varallyai_pf_star',
+        unit='dimensionless',
+        source='registry',
+    )
 
 
 def test_calc_ptf_varallyai1982_meadow_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_VARALLYAI1982_MEADOW, Varallyai1982Parameters
     )
     result = calc_ptf_varallyai1982_meadow(**inputs, out=None)
-    assert_close(result.theta_0[0], expected['theta_0'], published_tolerance['theta_0'])
-    assert_close(result.m[0], expected['m'], published_tolerance['m'])
-    assert_close(result.pf_star[0], expected['pf_star'], published_tolerance['pf_star'])
+    assert_close(
+        result.theta_0[0],
+        expected['theta_0'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='vol.%',
+        source='registry',
+    )
+    assert_close(
+        result.m[0],
+        expected['m'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='varallyai_m',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.pf_star[0],
+        expected['pf_star'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='varallyai_pf_star',
+        unit='dimensionless',
+        source='registry',
+    )
 
 
 def test_calc_ptf_varallyai1982_meadow_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_VARALLYAI1982_MEADOW, Varallyai1982Parameters
     )
     result = calc_ptf_varallyai1982_meadow(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert_close(result.theta_0[0], expected['theta_0'], published_tolerance['theta_0'])
-    assert_close(result.m[0], expected['m'], published_tolerance['m'])
-    assert_close(result.pf_star[0], expected['pf_star'], published_tolerance['pf_star'])
+    assert_close(
+        result.theta_0[0],
+        expected['theta_0'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='vol.%',
+        source='registry',
+    )
+    assert_close(
+        result.m[0],
+        expected['m'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='varallyai_m',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.pf_star[0],
+        expected['pf_star'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='varallyai_pf_star',
+        unit='dimensionless',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_A = [
     (
         {'bulk_density': 1.4, 'fine_fraction': 0.35},
         {'theta_0': 52.005, 'm': 0.4174, 'pf_star': 4.00469},
-        {'theta_0': 0.0, 'm': 0.0, 'pf_star': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_A
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_A)
 def test_calc_ptf_varallyai1982_chernozem_a_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_varallyai1982_chernozem_a(**inputs)
 
-    assert_close(result.theta_0, expected['theta_0'], published_tolerance['theta_0'])
-    assert_close(result.m, expected['m'], published_tolerance['m'])
-    assert_close(result.pf_star, expected['pf_star'], published_tolerance['pf_star'])
+    assert_close(
+        result.theta_0,
+        expected['theta_0'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='vol.%',
+        source='registry',
+    )
+    assert_close(
+        result.m,
+        expected['m'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='varallyai_m',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.pf_star,
+        expected['pf_star'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='varallyai_pf_star',
+        unit='dimensionless',
+        source='registry',
+    )
 
 
 def test_calc_ptf_varallyai1982_chernozem_a_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_A, Varallyai1982Parameters
     )
     result = calc_ptf_varallyai1982_chernozem_a(**inputs, out=None)
-    assert_close(result.theta_0[0], expected['theta_0'], published_tolerance['theta_0'])
-    assert_close(result.m[0], expected['m'], published_tolerance['m'])
-    assert_close(result.pf_star[0], expected['pf_star'], published_tolerance['pf_star'])
+    assert_close(
+        result.theta_0[0],
+        expected['theta_0'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='vol.%',
+        source='registry',
+    )
+    assert_close(
+        result.m[0],
+        expected['m'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='varallyai_m',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.pf_star[0],
+        expected['pf_star'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='varallyai_pf_star',
+        unit='dimensionless',
+        source='registry',
+    )
 
 
 def test_calc_ptf_varallyai1982_chernozem_a_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_A, Varallyai1982Parameters
     )
     result = calc_ptf_varallyai1982_chernozem_a(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert_close(result.theta_0[0], expected['theta_0'], published_tolerance['theta_0'])
-    assert_close(result.m[0], expected['m'], published_tolerance['m'])
-    assert_close(result.pf_star[0], expected['pf_star'], published_tolerance['pf_star'])
+    assert_close(
+        result.theta_0[0],
+        expected['theta_0'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='vol.%',
+        source='registry',
+    )
+    assert_close(
+        result.m[0],
+        expected['m'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='varallyai_m',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.pf_star[0],
+        expected['pf_star'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='varallyai_pf_star',
+        unit='dimensionless',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_B = [
     (
         {'bulk_density': 1.4, 'fine_fraction': 0.35},
         {'theta_0': 47.60035, 'm': 0.407, 'pf_star': 3.9299},
-        {'theta_0': 0.0, 'm': 0.0, 'pf_star': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_B
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_B)
 def test_calc_ptf_varallyai1982_chernozem_b_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_varallyai1982_chernozem_b(**inputs)
 
-    assert_close(result.theta_0, expected['theta_0'], published_tolerance['theta_0'])
-    assert_close(result.m, expected['m'], published_tolerance['m'])
-    assert_close(result.pf_star, expected['pf_star'], published_tolerance['pf_star'])
+    assert_close(
+        result.theta_0,
+        expected['theta_0'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='vol.%',
+        source='registry',
+    )
+    assert_close(
+        result.m,
+        expected['m'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='varallyai_m',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.pf_star,
+        expected['pf_star'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='varallyai_pf_star',
+        unit='dimensionless',
+        source='registry',
+    )
 
 
 def test_calc_ptf_varallyai1982_chernozem_b_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_B, Varallyai1982Parameters
     )
     result = calc_ptf_varallyai1982_chernozem_b(**inputs, out=None)
-    assert_close(result.theta_0[0], expected['theta_0'], published_tolerance['theta_0'])
-    assert_close(result.m[0], expected['m'], published_tolerance['m'])
-    assert_close(result.pf_star[0], expected['pf_star'], published_tolerance['pf_star'])
+    assert_close(
+        result.theta_0[0],
+        expected['theta_0'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='vol.%',
+        source='registry',
+    )
+    assert_close(
+        result.m[0],
+        expected['m'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='varallyai_m',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.pf_star[0],
+        expected['pf_star'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='varallyai_pf_star',
+        unit='dimensionless',
+        source='registry',
+    )
 
 
 def test_calc_ptf_varallyai1982_chernozem_b_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_B, Varallyai1982Parameters
     )
     result = calc_ptf_varallyai1982_chernozem_b(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert_close(result.theta_0[0], expected['theta_0'], published_tolerance['theta_0'])
-    assert_close(result.m[0], expected['m'], published_tolerance['m'])
-    assert_close(result.pf_star[0], expected['pf_star'], published_tolerance['pf_star'])
+    assert_close(
+        result.theta_0[0],
+        expected['theta_0'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='vol.%',
+        source='registry',
+    )
+    assert_close(
+        result.m[0],
+        expected['m'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='varallyai_m',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.pf_star[0],
+        expected['pf_star'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='varallyai_pf_star',
+        unit='dimensionless',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_C = [
     (
         {'bulk_density': 1.4, 'fine_fraction': 0.35},
         {'theta_0': 49.87, 'm': 0.84011, 'pf_star': 3.59772},
-        {'theta_0': 0.0, 'm': 0.0, 'pf_star': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_C
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_C)
 def test_calc_ptf_varallyai1982_chernozem_c_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_varallyai1982_chernozem_c(**inputs)
 
-    assert_close(result.theta_0, expected['theta_0'], published_tolerance['theta_0'])
-    assert_close(result.m, expected['m'], published_tolerance['m'])
-    assert_close(result.pf_star, expected['pf_star'], published_tolerance['pf_star'])
+    assert_close(
+        result.theta_0,
+        expected['theta_0'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='vol.%',
+        source='registry',
+    )
+    assert_close(
+        result.m,
+        expected['m'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='varallyai_m',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.pf_star,
+        expected['pf_star'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='varallyai_pf_star',
+        unit='dimensionless',
+        source='registry',
+    )
 
 
 def test_calc_ptf_varallyai1982_chernozem_c_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_C, Varallyai1982Parameters
     )
     result = calc_ptf_varallyai1982_chernozem_c(**inputs, out=None)
-    assert_close(result.theta_0[0], expected['theta_0'], published_tolerance['theta_0'])
-    assert_close(result.m[0], expected['m'], published_tolerance['m'])
-    assert_close(result.pf_star[0], expected['pf_star'], published_tolerance['pf_star'])
+    assert_close(
+        result.theta_0[0],
+        expected['theta_0'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='vol.%',
+        source='registry',
+    )
+    assert_close(
+        result.m[0],
+        expected['m'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='varallyai_m',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.pf_star[0],
+        expected['pf_star'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='varallyai_pf_star',
+        unit='dimensionless',
+        source='registry',
+    )
 
 
 def test_calc_ptf_varallyai1982_chernozem_c_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_VARALLYAI1982_CHERNOZEM_C, Varallyai1982Parameters
     )
     result = calc_ptf_varallyai1982_chernozem_c(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert_close(result.theta_0[0], expected['theta_0'], published_tolerance['theta_0'])
-    assert_close(result.m[0], expected['m'], published_tolerance['m'])
-    assert_close(result.pf_star[0], expected['pf_star'], published_tolerance['pf_star'])
+    assert_close(
+        result.theta_0[0],
+        expected['theta_0'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='vol.%',
+        source='registry',
+    )
+    assert_close(
+        result.m[0],
+        expected['m'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='varallyai_m',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.pf_star[0],
+        expected['pf_star'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='varallyai_pf_star',
+        unit='dimensionless',
+        source='registry',
+    )

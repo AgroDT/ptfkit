@@ -6,35 +6,49 @@ import ptfkit;
 import ptfkit.rawls1982;
 #endif
 
-#include "close_enough.h"
+#include "support/close_enough.h"
 #include <type_traits>
 
 int main() {
     {
         const auto result = ptfkit::rawls1982::calc_ptf_rawls1982_theta_1500(5.12, 0.1);
-        assert_close(result, 0.05318, 0.0);
+        assert_close(result, 0.05318, 0.001, 0.0, "volumetric_water_content", "cm^3/cm^3",
+                     "registry");
     }
     {
         const auto result = ptfkit::rawls1982::calc_ptf_rawls1982_theta_33(85.0, 0.1, 0.05318);
-        assert_close(result, 0.1179896, 0.0);
+        assert_close(result, 0.1179896, 0.001, 0.0, "volumetric_water_content", "cm^3/cm^3",
+                     "registry");
     }
     {
         const auto result =
             ptfkit::rawls1982::calc_ptf_rawls1982_full_wrc(85.0, 0.66, 1.22, 0.091, 0.033);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::rawls1982::Rawls1982PTFResult>);
-        assert_close(result.theta_4, 0.247242, 0.0);
-        assert_close(result.theta_7, 0.968738, 0.0);
-        assert_close(result.theta_10, 0.145588, 0.0);
-        assert_close(result.theta_20, 0.10483, 0.0);
-        assert_close(result.theta_33, 0.091, 0.0);
-        assert_close(result.theta_60, 0.075428, 0.0);
-        assert_close(result.theta_100, 0.063192, 0.0);
-        assert_close(result.theta_200, 0.052946, 0.0);
-        assert_close(result.theta_400, 0.045826, 0.0);
-        assert_close(result.theta_700, 0.041824, 0.0);
-        assert_close(result.theta_1000, 0.038932, 0.0);
-        assert_close(result.theta_1500, 0.033, 0.0);
+        assert_close(result.theta_4, 0.247242, 0.001, 0.0, "volumetric_water_content", "cm^3/cm^3",
+                     "registry");
+        assert_close(result.theta_7, 0.968738, 0.001, 0.0, "volumetric_water_content", "cm^3/cm^3",
+                     "registry");
+        assert_close(result.theta_10, 0.145588, 0.001, 0.0, "volumetric_water_content", "cm^3/cm^3",
+                     "registry");
+        assert_close(result.theta_20, 0.10483, 0.001, 0.0, "volumetric_water_content", "cm^3/cm^3",
+                     "registry");
+        assert_close(result.theta_33, 0.091, 0.001, 0.0, "volumetric_water_content", "cm^3/cm^3",
+                     "registry");
+        assert_close(result.theta_60, 0.075428, 0.001, 0.0, "volumetric_water_content", "cm^3/cm^3",
+                     "registry");
+        assert_close(result.theta_100, 0.063192, 0.001, 0.0, "volumetric_water_content",
+                     "cm^3/cm^3", "registry");
+        assert_close(result.theta_200, 0.052946, 0.001, 0.0, "volumetric_water_content",
+                     "cm^3/cm^3", "registry");
+        assert_close(result.theta_400, 0.045826, 0.001, 0.0, "volumetric_water_content",
+                     "cm^3/cm^3", "registry");
+        assert_close(result.theta_700, 0.041824, 0.001, 0.0, "volumetric_water_content",
+                     "cm^3/cm^3", "registry");
+        assert_close(result.theta_1000, 0.038932, 0.001, 0.0, "volumetric_water_content",
+                     "cm^3/cm^3", "registry");
+        assert_close(result.theta_1500, 0.033, 0.001, 0.0, "volumetric_water_content", "cm^3/cm^3",
+                     "registry");
     }
     return 0;
 }

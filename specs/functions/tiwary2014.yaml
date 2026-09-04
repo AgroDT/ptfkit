@@ -40,6 +40,7 @@ functions:
   outputs:
     type: scalar
     name: k_sat
+    quantity: saturated_hydraulic_conductivity
     symbol: sHC
     unit: m/s
     domain: null
@@ -116,21 +117,25 @@ functions:
     name: Tiwary2014PTFResult
     fields:
     - name: w_33
+      quantity: gravimetric_water_content
       symbol: w33
       unit: '%'
       domain: null
       description: Gravimetric water content at 33 kPa.
     - name: w_100
+      quantity: gravimetric_water_content
       symbol: w100
       unit: '%'
       domain: null
       description: Gravimetric water content at 100 kPa.
     - name: w_1500
+      quantity: gravimetric_water_content
       symbol: w1500
       unit: '%'
       domain: null
       description: Gravimetric water content at 1500 kPa.
     - name: k_sat
+      quantity: saturated_hydraulic_conductivity
       symbol: sHC
       unit: m/s
       domain: null

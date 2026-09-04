@@ -55,21 +55,25 @@ functions:
     name: Li2007PTFResult
     fields:
     - name: theta_s
+      quantity: volumetric_water_content
       symbol: theta_s
       unit: cm^3/cm^3
       domain: value >= 0
       description: Saturated water content.
     - name: a_vg
+      quantity: van_genuchten_alpha
       symbol: alpha
       unit: cm^-1
       domain: value >= 0
       description: Van Genuchten alpha parameter, inversely related to air-entry suction.
     - name: n_vg
+      quantity: van_genuchten_n
       symbol: n
       unit: dimensionless
       domain: value > 1
       description: Van Genuchten n parameter that characterizes pore-size distribution.
     - name: k_sat
+      quantity: saturated_hydraulic_conductivity
       symbol: Ks
       unit: m/s
       domain: value >= 0

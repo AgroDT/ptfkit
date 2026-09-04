@@ -58,18 +58,21 @@ functions:
     name: Wang2012PTFResult
     fields:
     - name: theta_s
+      quantity: volumetric_water_content
       symbol: SSWC
       unit: cm^3/cm^3
       domain: value >= 0
       description: Saturated volumetric water content normalized from the regression's
         volume-percent scale.
     - name: theta_fc
+      quantity: volumetric_water_content
       symbol: FC
       unit: cm^3/cm^3
       domain: value >= 0
       description: Volumetric water content at -33 kPa normalized from the regression's
         volume-percent scale.
     - name: k_sat
+      quantity: saturated_hydraulic_conductivity
       symbol: Ks
       unit: m/s
       domain: value >= 0

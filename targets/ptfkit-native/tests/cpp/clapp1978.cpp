@@ -6,7 +6,7 @@ import ptfkit;
 import ptfkit.clapp1978;
 #endif
 
-#include "close_enough.h"
+#include "support/close_enough.h"
 #include <type_traits>
 
 int main() {
@@ -15,132 +15,187 @@ int main() {
             ptfkit::clapp1978::calc_ptf_clapp1978(ptfkit::clapp1978::UsdaTextureClass::Sand);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::clapp1978::Clapp1978Parameters>);
-        assert_close(result.b, 4.05, 0.0);
-        assert_close(result.saturation_suction, 3.5, 0.0);
-        assert_close(result.wetting_front_suction, 4.66, 0.0);
-        assert_close(result.saturated_water_content, 0.395, 0.0);
-        assert_close(result.saturated_hydraulic_conductivity, 1.056, 0.0);
-        assert_close(result.sorptivity, 1.52, 0.0);
+        assert_close(result.b, 4.05, 0.001, 0.0, "campbell_b", "1", "registry");
+        assert_close(result.saturation_suction, 3.5, 0.01, 0.0, "matric_potential", "cm",
+                     "registry");
+        assert_close(result.wetting_front_suction, 4.66, 0.01, 0.0, "matric_potential", "cm",
+                     "registry");
+        assert_close(result.saturated_water_content, 0.395, 0.001, 0.0, "volumetric_water_content",
+                     "1", "registry");
+        assert_close(result.saturated_hydraulic_conductivity, 1.056, 0.00001, 0.01,
+                     "saturated_hydraulic_conductivity", "cm/min", "registry");
+        assert_close(result.sorptivity, 1.52, 0.0001, 0.01, "sorptivity", "cm/min^(1/2)",
+                     "registry");
     }
     {
         const auto result =
             ptfkit::clapp1978::calc_ptf_clapp1978(ptfkit::clapp1978::UsdaTextureClass::LoamySand);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::clapp1978::Clapp1978Parameters>);
-        assert_close(result.b, 4.38, 0.0);
-        assert_close(result.saturation_suction, 1.78, 0.0);
-        assert_close(result.wetting_front_suction, 2.38, 0.0);
-        assert_close(result.saturated_water_content, 0.41, 0.0);
-        assert_close(result.saturated_hydraulic_conductivity, 0.938, 0.0);
-        assert_close(result.sorptivity, 1.04, 0.0);
+        assert_close(result.b, 4.38, 0.001, 0.0, "campbell_b", "1", "registry");
+        assert_close(result.saturation_suction, 1.78, 0.01, 0.0, "matric_potential", "cm",
+                     "registry");
+        assert_close(result.wetting_front_suction, 2.38, 0.01, 0.0, "matric_potential", "cm",
+                     "registry");
+        assert_close(result.saturated_water_content, 0.41, 0.001, 0.0, "volumetric_water_content",
+                     "1", "registry");
+        assert_close(result.saturated_hydraulic_conductivity, 0.938, 0.00001, 0.01,
+                     "saturated_hydraulic_conductivity", "cm/min", "registry");
+        assert_close(result.sorptivity, 1.04, 0.0001, 0.01, "sorptivity", "cm/min^(1/2)",
+                     "registry");
     }
     {
         const auto result =
             ptfkit::clapp1978::calc_ptf_clapp1978(ptfkit::clapp1978::UsdaTextureClass::SandyLoam);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::clapp1978::Clapp1978Parameters>);
-        assert_close(result.b, 4.9, 0.0);
-        assert_close(result.saturation_suction, 7.18, 0.0);
-        assert_close(result.wetting_front_suction, 9.52, 0.0);
-        assert_close(result.saturated_water_content, 0.435, 0.0);
-        assert_close(result.saturated_hydraulic_conductivity, 0.208, 0.0);
-        assert_close(result.sorptivity, 1.03, 0.0);
+        assert_close(result.b, 4.9, 0.001, 0.0, "campbell_b", "1", "registry");
+        assert_close(result.saturation_suction, 7.18, 0.01, 0.0, "matric_potential", "cm",
+                     "registry");
+        assert_close(result.wetting_front_suction, 9.52, 0.01, 0.0, "matric_potential", "cm",
+                     "registry");
+        assert_close(result.saturated_water_content, 0.435, 0.001, 0.0, "volumetric_water_content",
+                     "1", "registry");
+        assert_close(result.saturated_hydraulic_conductivity, 0.208, 0.00001, 0.01,
+                     "saturated_hydraulic_conductivity", "cm/min", "registry");
+        assert_close(result.sorptivity, 1.03, 0.0001, 0.01, "sorptivity", "cm/min^(1/2)",
+                     "registry");
     }
     {
         const auto result =
             ptfkit::clapp1978::calc_ptf_clapp1978(ptfkit::clapp1978::UsdaTextureClass::SiltLoam);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::clapp1978::Clapp1978Parameters>);
-        assert_close(result.b, 5.3, 0.0);
-        assert_close(result.saturation_suction, 56.6, 0.0);
-        assert_close(result.wetting_front_suction, 75.3, 0.0);
-        assert_close(result.saturated_water_content, 0.485, 0.0);
-        assert_close(result.saturated_hydraulic_conductivity, 0.0432, 0.0);
-        assert_close(result.sorptivity, 1.26, 0.0);
+        assert_close(result.b, 5.3, 0.001, 0.0, "campbell_b", "1", "registry");
+        assert_close(result.saturation_suction, 56.6, 0.01, 0.0, "matric_potential", "cm",
+                     "registry");
+        assert_close(result.wetting_front_suction, 75.3, 0.01, 0.0, "matric_potential", "cm",
+                     "registry");
+        assert_close(result.saturated_water_content, 0.485, 0.001, 0.0, "volumetric_water_content",
+                     "1", "registry");
+        assert_close(result.saturated_hydraulic_conductivity, 0.0432, 0.00001, 0.01,
+                     "saturated_hydraulic_conductivity", "cm/min", "registry");
+        assert_close(result.sorptivity, 1.26, 0.0001, 0.01, "sorptivity", "cm/min^(1/2)",
+                     "registry");
     }
     {
         const auto result =
             ptfkit::clapp1978::calc_ptf_clapp1978(ptfkit::clapp1978::UsdaTextureClass::Loam);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::clapp1978::Clapp1978Parameters>);
-        assert_close(result.b, 5.39, 0.0);
-        assert_close(result.saturation_suction, 14.6, 0.0);
-        assert_close(result.wetting_front_suction, 20.0, 0.0);
-        assert_close(result.saturated_water_content, 0.451, 0.0);
-        assert_close(result.saturated_hydraulic_conductivity, 0.0417, 0.0);
-        assert_close(result.sorptivity, 0.693, 0.0);
+        assert_close(result.b, 5.39, 0.001, 0.0, "campbell_b", "1", "registry");
+        assert_close(result.saturation_suction, 14.6, 0.01, 0.0, "matric_potential", "cm",
+                     "registry");
+        assert_close(result.wetting_front_suction, 20.0, 0.01, 0.0, "matric_potential", "cm",
+                     "registry");
+        assert_close(result.saturated_water_content, 0.451, 0.001, 0.0, "volumetric_water_content",
+                     "1", "registry");
+        assert_close(result.saturated_hydraulic_conductivity, 0.0417, 0.00001, 0.01,
+                     "saturated_hydraulic_conductivity", "cm/min", "registry");
+        assert_close(result.sorptivity, 0.693, 0.0001, 0.01, "sorptivity", "cm/min^(1/2)",
+                     "registry");
     }
     {
         const auto result = ptfkit::clapp1978::calc_ptf_clapp1978(
             ptfkit::clapp1978::UsdaTextureClass::SandyClayLoam);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::clapp1978::Clapp1978Parameters>);
-        assert_close(result.b, 7.12, 0.0);
-        assert_close(result.saturation_suction, 8.63, 0.0);
-        assert_close(result.wetting_front_suction, 11.7, 0.0);
-        assert_close(result.saturated_water_content, 0.42, 0.0);
-        assert_close(result.saturated_hydraulic_conductivity, 0.0378, 0.0);
-        assert_close(result.sorptivity, 0.488, 0.0);
+        assert_close(result.b, 7.12, 0.001, 0.0, "campbell_b", "1", "registry");
+        assert_close(result.saturation_suction, 8.63, 0.01, 0.0, "matric_potential", "cm",
+                     "registry");
+        assert_close(result.wetting_front_suction, 11.7, 0.01, 0.0, "matric_potential", "cm",
+                     "registry");
+        assert_close(result.saturated_water_content, 0.42, 0.001, 0.0, "volumetric_water_content",
+                     "1", "registry");
+        assert_close(result.saturated_hydraulic_conductivity, 0.0378, 0.00001, 0.01,
+                     "saturated_hydraulic_conductivity", "cm/min", "registry");
+        assert_close(result.sorptivity, 0.488, 0.0001, 0.01, "sorptivity", "cm/min^(1/2)",
+                     "registry");
     }
     {
         const auto result = ptfkit::clapp1978::calc_ptf_clapp1978(
             ptfkit::clapp1978::UsdaTextureClass::SiltyClayLoam);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::clapp1978::Clapp1978Parameters>);
-        assert_close(result.b, 7.75, 0.0);
-        assert_close(result.saturation_suction, 14.6, 0.0);
-        assert_close(result.wetting_front_suction, 19.7, 0.0);
-        assert_close(result.saturated_water_content, 0.477, 0.0);
-        assert_close(result.saturated_hydraulic_conductivity, 0.0102, 0.0);
-        assert_close(result.sorptivity, 0.31, 0.0);
+        assert_close(result.b, 7.75, 0.001, 0.0, "campbell_b", "1", "registry");
+        assert_close(result.saturation_suction, 14.6, 0.01, 0.0, "matric_potential", "cm",
+                     "registry");
+        assert_close(result.wetting_front_suction, 19.7, 0.01, 0.0, "matric_potential", "cm",
+                     "registry");
+        assert_close(result.saturated_water_content, 0.477, 0.001, 0.0, "volumetric_water_content",
+                     "1", "registry");
+        assert_close(result.saturated_hydraulic_conductivity, 0.0102, 0.00001, 0.01,
+                     "saturated_hydraulic_conductivity", "cm/min", "registry");
+        assert_close(result.sorptivity, 0.31, 0.0001, 0.01, "sorptivity", "cm/min^(1/2)",
+                     "registry");
     }
     {
         const auto result =
             ptfkit::clapp1978::calc_ptf_clapp1978(ptfkit::clapp1978::UsdaTextureClass::ClayLoam);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::clapp1978::Clapp1978Parameters>);
-        assert_close(result.b, 8.52, 0.0);
-        assert_close(result.saturation_suction, 36.1, 0.0);
-        assert_close(result.wetting_front_suction, 48.1, 0.0);
-        assert_close(result.saturated_water_content, 0.476, 0.0);
-        assert_close(result.saturated_hydraulic_conductivity, 0.0147, 0.0);
-        assert_close(result.sorptivity, 0.537, 0.0);
+        assert_close(result.b, 8.52, 0.001, 0.0, "campbell_b", "1", "registry");
+        assert_close(result.saturation_suction, 36.1, 0.01, 0.0, "matric_potential", "cm",
+                     "registry");
+        assert_close(result.wetting_front_suction, 48.1, 0.01, 0.0, "matric_potential", "cm",
+                     "registry");
+        assert_close(result.saturated_water_content, 0.476, 0.001, 0.0, "volumetric_water_content",
+                     "1", "registry");
+        assert_close(result.saturated_hydraulic_conductivity, 0.0147, 0.00001, 0.01,
+                     "saturated_hydraulic_conductivity", "cm/min", "registry");
+        assert_close(result.sorptivity, 0.537, 0.0001, 0.01, "sorptivity", "cm/min^(1/2)",
+                     "registry");
     }
     {
         const auto result =
             ptfkit::clapp1978::calc_ptf_clapp1978(ptfkit::clapp1978::UsdaTextureClass::SandyClay);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::clapp1978::Clapp1978Parameters>);
-        assert_close(result.b, 10.4, 0.0);
-        assert_close(result.saturation_suction, 6.16, 0.0);
-        assert_close(result.wetting_front_suction, 8.18, 0.0);
-        assert_close(result.saturated_water_content, 0.426, 0.0);
-        assert_close(result.saturated_hydraulic_conductivity, 0.013, 0.0);
-        assert_close(result.sorptivity, 0.223, 0.0);
+        assert_close(result.b, 10.4, 0.001, 0.0, "campbell_b", "1", "registry");
+        assert_close(result.saturation_suction, 6.16, 0.01, 0.0, "matric_potential", "cm",
+                     "registry");
+        assert_close(result.wetting_front_suction, 8.18, 0.01, 0.0, "matric_potential", "cm",
+                     "registry");
+        assert_close(result.saturated_water_content, 0.426, 0.001, 0.0, "volumetric_water_content",
+                     "1", "registry");
+        assert_close(result.saturated_hydraulic_conductivity, 0.013, 0.00001, 0.01,
+                     "saturated_hydraulic_conductivity", "cm/min", "registry");
+        assert_close(result.sorptivity, 0.223, 0.0001, 0.01, "sorptivity", "cm/min^(1/2)",
+                     "registry");
     }
     {
         const auto result =
             ptfkit::clapp1978::calc_ptf_clapp1978(ptfkit::clapp1978::UsdaTextureClass::SiltyClay);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::clapp1978::Clapp1978Parameters>);
-        assert_close(result.b, 10.4, 0.0);
-        assert_close(result.saturation_suction, 17.4, 0.0);
-        assert_close(result.wetting_front_suction, 23.0, 0.0);
-        assert_close(result.saturated_water_content, 0.492, 0.0);
-        assert_close(result.saturated_hydraulic_conductivity, 0.0062, 0.0);
-        assert_close(result.sorptivity, 0.242, 0.0);
+        assert_close(result.b, 10.4, 0.001, 0.0, "campbell_b", "1", "registry");
+        assert_close(result.saturation_suction, 17.4, 0.01, 0.0, "matric_potential", "cm",
+                     "registry");
+        assert_close(result.wetting_front_suction, 23.0, 0.01, 0.0, "matric_potential", "cm",
+                     "registry");
+        assert_close(result.saturated_water_content, 0.492, 0.001, 0.0, "volumetric_water_content",
+                     "1", "registry");
+        assert_close(result.saturated_hydraulic_conductivity, 0.0062, 0.00001, 0.01,
+                     "saturated_hydraulic_conductivity", "cm/min", "registry");
+        assert_close(result.sorptivity, 0.242, 0.0001, 0.01, "sorptivity", "cm/min^(1/2)",
+                     "registry");
     }
     {
         const auto result =
             ptfkit::clapp1978::calc_ptf_clapp1978(ptfkit::clapp1978::UsdaTextureClass::Clay);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::clapp1978::Clapp1978Parameters>);
-        assert_close(result.b, 11.4, 0.0);
-        assert_close(result.saturation_suction, 18.6, 0.0);
-        assert_close(result.wetting_front_suction, 24.3, 0.0);
-        assert_close(result.saturated_water_content, 0.482, 0.0);
-        assert_close(result.saturated_hydraulic_conductivity, 0.0077, 0.0);
-        assert_close(result.sorptivity, 0.268, 0.0);
+        assert_close(result.b, 11.4, 0.001, 0.0, "campbell_b", "1", "registry");
+        assert_close(result.saturation_suction, 18.6, 0.01, 0.0, "matric_potential", "cm",
+                     "registry");
+        assert_close(result.wetting_front_suction, 24.3, 0.01, 0.0, "matric_potential", "cm",
+                     "registry");
+        assert_close(result.saturated_water_content, 0.482, 0.001, 0.0, "volumetric_water_content",
+                     "1", "registry");
+        assert_close(result.saturated_hydraulic_conductivity, 0.0077, 0.00001, 0.01,
+                     "saturated_hydraulic_conductivity", "cm/min", "registry");
+        assert_close(result.sorptivity, 0.268, 0.0001, 0.01, "sorptivity", "cm/min^(1/2)",
+                     "registry");
     }
     return 0;
 }

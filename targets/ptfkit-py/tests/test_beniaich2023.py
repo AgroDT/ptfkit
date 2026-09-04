@@ -28,60 +28,81 @@ CASES_CALC_PTF_BENIAICH2023_SLR1 = [
             'water_field_capacity': 0.17577,
             'water_wilting_point': 0.09621,
         },
-        {'water_saturation': 0.0, 'water_field_capacity': 0.0, 'water_wilting_point': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_BENIAICH2023_SLR1
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_BENIAICH2023_SLR1)
 def test_calc_ptf_beniaich2023_slr1_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_beniaich2023_slr1(**inputs)
 
     assert_close(
         result.water_saturation,
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity,
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point,
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_slr1_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_SLR1, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_slr1(**inputs, out=None)
     assert_close(
         result.water_saturation[0],
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity[0],
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point[0],
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_slr1_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_SLR1, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_slr1(**inputs, out=out)
@@ -90,17 +111,29 @@ def test_calc_ptf_beniaich2023_slr1_out():
     assert_close(
         result.water_saturation[0],
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity[0],
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point[0],
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
@@ -112,60 +145,81 @@ CASES_CALC_PTF_BENIAICH2023_SLR2 = [
             'water_field_capacity': 0.24878,
             'water_wilting_point': 0.16131,
         },
-        {'water_saturation': 0.0, 'water_field_capacity': 0.0, 'water_wilting_point': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_BENIAICH2023_SLR2
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_BENIAICH2023_SLR2)
 def test_calc_ptf_beniaich2023_slr2_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_beniaich2023_slr2(**inputs)
 
     assert_close(
         result.water_saturation,
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity,
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point,
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_slr2_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_SLR2, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_slr2(**inputs, out=None)
     assert_close(
         result.water_saturation[0],
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity[0],
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point[0],
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_slr2_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_SLR2, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_slr2(**inputs, out=out)
@@ -174,17 +228,29 @@ def test_calc_ptf_beniaich2023_slr2_out():
     assert_close(
         result.water_saturation[0],
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity[0],
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point[0],
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
@@ -196,60 +262,81 @@ CASES_CALC_PTF_BENIAICH2023_SLR3 = [
             'water_field_capacity': 0.1848,
             'water_wilting_point': 0.11077,
         },
-        {'water_saturation': 0.0, 'water_field_capacity': 0.0, 'water_wilting_point': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_BENIAICH2023_SLR3
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_BENIAICH2023_SLR3)
 def test_calc_ptf_beniaich2023_slr3_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_beniaich2023_slr3(**inputs)
 
     assert_close(
         result.water_saturation,
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity,
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point,
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_slr3_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_SLR3, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_slr3(**inputs, out=None)
     assert_close(
         result.water_saturation[0],
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity[0],
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point[0],
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_slr3_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_SLR3, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_slr3(**inputs, out=out)
@@ -258,17 +345,29 @@ def test_calc_ptf_beniaich2023_slr3_out():
     assert_close(
         result.water_saturation[0],
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity[0],
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point[0],
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
@@ -280,60 +379,81 @@ CASES_CALC_PTF_BENIAICH2023_SLR4 = [
             'water_field_capacity': 0.30678,
             'water_wilting_point': 0.19915,
         },
-        {'water_saturation': 0.0, 'water_field_capacity': 0.0, 'water_wilting_point': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_BENIAICH2023_SLR4
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_BENIAICH2023_SLR4)
 def test_calc_ptf_beniaich2023_slr4_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_beniaich2023_slr4(**inputs)
 
     assert_close(
         result.water_saturation,
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity,
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point,
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_slr4_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_SLR4, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_slr4(**inputs, out=None)
     assert_close(
         result.water_saturation[0],
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity[0],
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point[0],
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_slr4_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_SLR4, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_slr4(**inputs, out=out)
@@ -342,17 +462,29 @@ def test_calc_ptf_beniaich2023_slr4_out():
     assert_close(
         result.water_saturation[0],
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity[0],
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point[0],
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
@@ -364,60 +496,81 @@ CASES_CALC_PTF_BENIAICH2023_SLR5 = [
             'water_field_capacity': 0.241875,
             'water_wilting_point': 0.16176,
         },
-        {'water_saturation': 0.0, 'water_field_capacity': 0.0, 'water_wilting_point': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_BENIAICH2023_SLR5
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_BENIAICH2023_SLR5)
 def test_calc_ptf_beniaich2023_slr5_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_beniaich2023_slr5(**inputs)
 
     assert_close(
         result.water_saturation,
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity,
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point,
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_slr5_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_SLR5, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_slr5(**inputs, out=None)
     assert_close(
         result.water_saturation[0],
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity[0],
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point[0],
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_slr5_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_SLR5, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_slr5(**inputs, out=out)
@@ -426,17 +579,29 @@ def test_calc_ptf_beniaich2023_slr5_out():
     assert_close(
         result.water_saturation[0],
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity[0],
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point[0],
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
@@ -448,60 +613,81 @@ CASES_CALC_PTF_BENIAICH2023_SLR6 = [
             'water_field_capacity': 0.24009,
             'water_wilting_point': 0.15562,
         },
-        {'water_saturation': 0.0, 'water_field_capacity': 0.0, 'water_wilting_point': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_BENIAICH2023_SLR6
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_BENIAICH2023_SLR6)
 def test_calc_ptf_beniaich2023_slr6_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_beniaich2023_slr6(**inputs)
 
     assert_close(
         result.water_saturation,
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity,
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point,
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_slr6_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_SLR6, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_slr6(**inputs, out=None)
     assert_close(
         result.water_saturation[0],
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity[0],
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point[0],
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_slr6_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_SLR6, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_slr6(**inputs, out=out)
@@ -510,17 +696,29 @@ def test_calc_ptf_beniaich2023_slr6_out():
     assert_close(
         result.water_saturation[0],
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity[0],
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point[0],
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
@@ -532,60 +730,81 @@ CASES_CALC_PTF_BENIAICH2023_MLR1 = [
             'water_field_capacity': 0.17238,
             'water_wilting_point': 0.09366,
         },
-        {'water_saturation': 0.0, 'water_field_capacity': 0.0, 'water_wilting_point': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_BENIAICH2023_MLR1
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_BENIAICH2023_MLR1)
 def test_calc_ptf_beniaich2023_mlr1_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_beniaich2023_mlr1(**inputs)
 
     assert_close(
         result.water_saturation,
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity,
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point,
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_mlr1_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_MLR1, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_mlr1(**inputs, out=None)
     assert_close(
         result.water_saturation[0],
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity[0],
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point[0],
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_mlr1_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_MLR1, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_mlr1(**inputs, out=out)
@@ -594,17 +813,29 @@ def test_calc_ptf_beniaich2023_mlr1_out():
     assert_close(
         result.water_saturation[0],
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity[0],
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point[0],
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
@@ -616,60 +847,81 @@ CASES_CALC_PTF_BENIAICH2023_MLR2 = [
             'water_field_capacity': 0.18025,
             'water_wilting_point': 0.10825,
         },
-        {'water_saturation': 0.0, 'water_field_capacity': 0.0, 'water_wilting_point': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_BENIAICH2023_MLR2
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_BENIAICH2023_MLR2)
 def test_calc_ptf_beniaich2023_mlr2_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_beniaich2023_mlr2(**inputs)
 
     assert_close(
         result.water_saturation,
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity,
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point,
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_mlr2_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_MLR2, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_mlr2(**inputs, out=None)
     assert_close(
         result.water_saturation[0],
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity[0],
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point[0],
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_mlr2_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_MLR2, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_mlr2(**inputs, out=out)
@@ -678,17 +930,29 @@ def test_calc_ptf_beniaich2023_mlr2_out():
     assert_close(
         result.water_saturation[0],
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity[0],
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point[0],
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
@@ -700,60 +964,81 @@ CASES_CALC_PTF_BENIAICH2023_MLR3 = [
             'water_field_capacity': 0.24275,
             'water_wilting_point': 0.15755,
         },
-        {'water_saturation': 0.0, 'water_field_capacity': 0.0, 'water_wilting_point': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_BENIAICH2023_MLR3
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_BENIAICH2023_MLR3)
 def test_calc_ptf_beniaich2023_mlr3_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_beniaich2023_mlr3(**inputs)
 
     assert_close(
         result.water_saturation,
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity,
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point,
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_mlr3_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_MLR3, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_mlr3(**inputs, out=None)
     assert_close(
         result.water_saturation[0],
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity[0],
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point[0],
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_mlr3_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_MLR3, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_mlr3(**inputs, out=out)
@@ -762,17 +1047,29 @@ def test_calc_ptf_beniaich2023_mlr3_out():
     assert_close(
         result.water_saturation[0],
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity[0],
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point[0],
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
@@ -784,60 +1081,81 @@ CASES_CALC_PTF_BENIAICH2023_MLR4 = [
             'water_field_capacity': 0.16859,
             'water_wilting_point': 0.09157,
         },
-        {'water_saturation': 0.0, 'water_field_capacity': 0.0, 'water_wilting_point': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_BENIAICH2023_MLR4
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_BENIAICH2023_MLR4)
 def test_calc_ptf_beniaich2023_mlr4_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_beniaich2023_mlr4(**inputs)
 
     assert_close(
         result.water_saturation,
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity,
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point,
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_mlr4_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_MLR4, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_mlr4(**inputs, out=None)
     assert_close(
         result.water_saturation[0],
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity[0],
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point[0],
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_mlr4_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_MLR4, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_mlr4(**inputs, out=out)
@@ -846,17 +1164,29 @@ def test_calc_ptf_beniaich2023_mlr4_out():
     assert_close(
         result.water_saturation[0],
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity[0],
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point[0],
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
@@ -868,60 +1198,81 @@ CASES_CALC_PTF_BENIAICH2023_MLR5 = [
             'water_field_capacity': 0.172,
             'water_wilting_point': 0.09379,
         },
-        {'water_saturation': 0.0, 'water_field_capacity': 0.0, 'water_wilting_point': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_BENIAICH2023_MLR5
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_BENIAICH2023_MLR5)
 def test_calc_ptf_beniaich2023_mlr5_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_beniaich2023_mlr5(**inputs)
 
     assert_close(
         result.water_saturation,
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity,
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point,
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_mlr5_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_MLR5, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_mlr5(**inputs, out=None)
     assert_close(
         result.water_saturation[0],
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity[0],
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point[0],
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_mlr5_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_MLR5, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_mlr5(**inputs, out=out)
@@ -930,15 +1281,27 @@ def test_calc_ptf_beniaich2023_mlr5_out():
     assert_close(
         result.water_saturation[0],
         expected['water_saturation'],
-        published_tolerance['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_field_capacity[0],
         expected['water_field_capacity'],
-        published_tolerance['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
     assert_close(
         result.water_wilting_point[0],
         expected['water_wilting_point'],
-        published_tolerance['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )

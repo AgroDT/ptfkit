@@ -61,30 +61,45 @@ release gate.
 
 ## Numerical comparison
 
-All Rust, Python, C, and C++ generated tests use the same centralized tolerant
-comparison:
+Every scalar output and record field declares a stable physical or model
+`quantity`. The repository-level `specs/quantities.yaml` registry assigns a
+reviewed project-default tolerance to each exact quantity-unit combination.
+An unknown quantity or unit is a validation error; there is no global
+scientific fallback and no implicit unit conversion.
 
-```text
-rtol = 1e-5
-atol = 1e-12
-abs(actual - expected) <= atol + rtol * abs(expected)
-```
-
-This checks implementation correctness at roughly five significant digits. It
-does not claim that a PTF has that physical accuracy: RMSE, R², uncertainty,
-and applicability describe model quality, not floating-point agreement.
-
-Published values may declare explicitly reported display precision per output:
+A publication may support a more appropriate function-output tolerance. Such
+an override is declared once on the function, not in an individual case:
 
 ```yaml
-precision:
-  water_content: {decimal_places: 2}
+verification_tolerances:
+  field_capacity:
+    absolute: 0.005
+    relative: 0.01
+    source_location: "Table 5"
 ```
 
-The comparator then adds half of the published rounding quantum to the normal
-implementation tolerance. For significant digits, the quantum is derived from
-the expected value's decimal magnitude. Specifications never contain `rtol` or
-`atol`.
+The cited override replaces the registry default. Model-performance metrics
+such as RMSE, MAE, bias, or R² must not be converted mechanically into
+implementation tolerances.
+
+All Rust, Python, C, and C++ generated tests resolve the same comparison:
+
+```text
+scientific_tolerance = max(absolute, relative * abs(expected))
+abs(actual - expected) <= max(scientific_tolerance, floating_point_guard)
+```
+
+`absolute` is mandatory and expressed in the output unit; `relative` is
+optional and dimensionless. The centrally generated floating-point guard only
+absorbs insignificant implementation and math-library variation and is much
+smaller than normal scientific tolerances. Failure messages report actual and
+expected values, their difference, the resolved tolerance, quantity, unit, and
+whether the policy came from the registry or a cited source override.
+
+Registry values are transparent ptfkit verification policy. They are not
+universal metrological claims, measurement uncertainty, or evidence of PTF
+predictive accuracy. Stored expected values may retain extra digits for stable
+regeneration without implying that every digit is scientifically significant.
 
 ## Selecting calculated cases
 

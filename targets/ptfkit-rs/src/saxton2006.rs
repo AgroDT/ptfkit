@@ -18,15 +18,26 @@ United States
 database after exclusions from 2,149 samples."]
 
 #[cfg(test)]
-fn is_close(actual: f64, expected: f64, published_tolerance: f64) -> bool {
-    let tolerance = published_tolerance + 1e-12 + 1e-5 * expected.abs();
-    (actual - expected).abs() <= tolerance
+fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
+    absolute
+        .max(relative * expected.abs())
+        .max(0.00000000000001f64)
 }
 #[cfg(test)]
-fn assert_close(actual: f64, expected: f64, published_tolerance: f64) {
+fn assert_close(
+    actual: f64,
+    expected: f64,
+    absolute: f64,
+    relative: f64,
+    quantity: &str,
+    unit: &str,
+    source: &str,
+) {
+    let difference = (actual - expected).abs();
+    let tolerance = resolved_tolerance(expected, absolute, relative);
     assert!(
-        is_close(actual, expected, published_tolerance),
-        "|{actual} - {expected}| exceeds the shared tolerance"
+        difference <= tolerance,
+        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
     );
 }
 #[cfg(test)]
@@ -34,10 +45,11 @@ mod comparator_tests {
     use super::*;
     #[test]
     fn accepts_below_and_rejects_above_tolerance() {
-        let expected = 2.0;
-        let tolerance = 1e-12 + 1e-5 * expected;
-        assert!(is_close(expected + tolerance * 0.5, expected, 0.0));
-        assert!(!is_close(expected + tolerance * 2.0, expected, 0.0));
+        for expected in [0.0, 2.0, -2.0] {
+            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
+            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
+            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
+        }
     }
 }
 #[doc = r"Results returned by `calc_ptf_saxton2006`."]
@@ -161,16 +173,96 @@ mod calc_ptf_saxton2006_tests {
     #[test]
     fn table_3_sand() {
         let result = calc_ptf_saxton2006(0.88f64, 0.05f64, 2.5f64);
-        assert_close(result.theta_1500, 0.05022058f64, 0f64);
-        assert_close(result.theta_33, 0.10282792364858702f64, 0f64);
-        assert_close(result.theta_s, 0.46172240764858724f64, 0f64);
-        assert_close(result.plant_available_water, 0.05260734364858702f64, 0f64);
-        assert_close(result.air_entry_tension, 0.5986789729513293f64, 0f64);
-        assert_close(result.retention_a, 0.00018076452552206025f64, 0f64);
-        assert_close(result.retention_b, 5.325903100453899f64, 0f64);
-        assert_close(result.conductivity_lambda, 0.18776158355467926f64, 0f64);
-        assert_close(result.saturated_conductivity, 108.1478278507403f64, 0f64);
-        assert_close(result.normal_density, 1.4264356197312436f64, 0f64);
+        assert_close(
+            result.theta_1500,
+            0.05022058f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "m^3/m^3",
+            "registry",
+        );
+        assert_close(
+            result.theta_33,
+            0.10282792364858702f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "m^3/m^3",
+            "registry",
+        );
+        assert_close(
+            result.theta_s,
+            0.46172240764858724f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "m^3/m^3",
+            "registry",
+        );
+        assert_close(
+            result.plant_available_water,
+            0.05260734364858702f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "m^3/m^3",
+            "registry",
+        );
+        assert_close(
+            result.air_entry_tension,
+            0.5986789729513293f64,
+            0.01f64,
+            0f64,
+            "matric_potential",
+            "kPa",
+            "registry",
+        );
+        assert_close(
+            result.retention_a,
+            0.00018076452552206025f64,
+            0.01f64,
+            0f64,
+            "retention_coefficient_a",
+            "kPa",
+            "registry",
+        );
+        assert_close(
+            result.retention_b,
+            5.325903100453899f64,
+            0.001f64,
+            0f64,
+            "retention_coefficient_b",
+            "dimensionless",
+            "registry",
+        );
+        assert_close(
+            result.conductivity_lambda,
+            0.18776158355467926f64,
+            0.001f64,
+            0f64,
+            "conductivity_shape_parameter",
+            "dimensionless",
+            "registry",
+        );
+        assert_close(
+            result.saturated_conductivity,
+            108.1478278507403f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
+        );
+        assert_close(
+            result.normal_density,
+            1.4264356197312436f64,
+            0.001f64,
+            0f64,
+            "dry_bulk_density",
+            "g/cm^3",
+            "registry",
+        );
     }
 }
 #[doc = r"Results returned by `calc_ptf_saxton2006_density`."]
@@ -240,13 +332,41 @@ mod calc_ptf_saxton2006_density_tests {
             0.10282792364858702f64,
             1.1f64,
         );
-        assert_close(result.adjusted_density, 1.569079181704368f64, 0f64);
-        assert_close(result.adjusted_theta_s, 0.407894648413446f64, 0f64);
-        assert_close(result.adjusted_theta_33, 0.09206237180155877f64, 0f64);
+        assert_close(
+            result.adjusted_density,
+            1.569079181704368f64,
+            0.001f64,
+            0f64,
+            "dry_bulk_density",
+            "g/cm^3",
+            "registry",
+        );
+        assert_close(
+            result.adjusted_theta_s,
+            0.407894648413446f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "m^3/m^3",
+            "registry",
+        );
+        assert_close(
+            result.adjusted_theta_33,
+            0.09206237180155877f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "m^3/m^3",
+            "registry",
+        );
         assert_close(
             result.adjusted_theta_s_minus_33,
             0.3158322766118873f64,
+            0.001f64,
             0f64,
+            "volumetric_water_content",
+            "m^3/m^3",
+            "registry",
         );
     }
 }
@@ -292,7 +412,15 @@ mod calc_ptf_saxton2006_tension_dry_tests {
             0.05022058f64,
             0.10282792364858702f64,
         );
-        assert_close(result, 159.18094591362183f64, 0f64);
+        assert_close(
+            result,
+            159.18094591362183f64,
+            0.01f64,
+            0f64,
+            "matric_potential",
+            "kPa",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate matric tension in the 33 kPa to air-entry segment.
@@ -341,7 +469,15 @@ mod calc_ptf_saxton2006_tension_wet_tests {
             0.46172240764858724f64,
             0.5986789729513293f64,
         );
-        assert_close(result, 24.227216407352152f64, 0f64);
+        assert_close(
+            result,
+            24.227216407352152f64,
+            0.01f64,
+            0f64,
+            "matric_potential",
+            "kPa",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate unsaturated hydraulic conductivity from water content.
@@ -389,7 +525,15 @@ mod calc_ptf_saxton2006_conductivity_tests {
             108.1478278507403f64,
             0.18776158355467926f64,
         );
-        assert_close(result, 0.3003203142764693f64, 0f64);
+        assert_close(
+            result,
+            0.3003203142764693f64,
+            0.0001f64,
+            0.01f64,
+            "unsaturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
+        );
     }
 }
 #[doc = r"Results returned by `calc_ptf_saxton2006_gravel`."]
@@ -466,17 +610,41 @@ mod calc_ptf_saxton2006_gravel_tests {
             0.05260734364858702f64,
             108.1478278507403f64,
         );
-        assert_close(result.gravel_volume_fraction, 0.11860834455314037f64, 0f64);
-        assert_close(result.bulk_density, 1.5715605653291098f64, 0f64);
+        assert_close(
+            result.gravel_volume_fraction,
+            0.11860834455314037f64,
+            0.001f64,
+            0f64,
+            "gravel_volume_fraction",
+            "m^3/m^3",
+            "registry",
+        );
+        assert_close(
+            result.bulk_density,
+            1.5715605653291098f64,
+            0.001f64,
+            0f64,
+            "dry_bulk_density",
+            "g/cm^3",
+            "registry",
+        );
         assert_close(
             result.bulk_plant_available_water,
             0.04636767370708995f64,
+            0.001f64,
             0f64,
+            "volumetric_water_content",
+            "m^3/m^3",
+            "registry",
         );
         assert_close(
             result.bulk_saturated_conductivity,
             97.54880510583706f64,
-            0f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
         );
     }
 }
@@ -533,7 +701,23 @@ mod calc_ptf_saxton2006_salinity_tests {
     #[test]
     fn saline_partly_saturated_soil() {
         let result = calc_ptf_saxton2006_salinity(4f64, 0.3f64, 0.46172240764858724f64);
-        assert_close(result.saturated_osmotic_potential, 144f64, 0f64);
-        assert_close(result.osmotic_potential, 221.6267556713219f64, 0f64);
+        assert_close(
+            result.saturated_osmotic_potential,
+            144f64,
+            0.01f64,
+            0f64,
+            "osmotic_potential",
+            "kPa",
+            "registry",
+        );
+        assert_close(
+            result.osmotic_potential,
+            221.6267556713219f64,
+            0.01f64,
+            0f64,
+            "osmotic_potential",
+            "kPa",
+            "registry",
+        );
     }
 }

@@ -75,11 +75,13 @@ $defs:
     name: Dharumarajan2019WaterRetentionResult
     fields:
       - name: field_capacity
+        quantity: gravimetric_water_content
         symbol: FC
         unit: "%"
         domain: null
         description: Soil water content at -33 kPa matric potential.
       - name: permanent_wilting_point
+        quantity: gravimetric_water_content
         symbol: PWP
         unit: "%"
         domain: null
@@ -290,6 +292,7 @@ functions:
     outputs:
       type: scalar
       name: infiltration_rate
+      quantity: infiltration_rate
       symbol: null
       unit: mm/h
       domain: "Observed study range: 2.3 <= value <= 35"

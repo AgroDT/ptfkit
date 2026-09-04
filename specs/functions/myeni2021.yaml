@@ -39,6 +39,7 @@ $defs:
     name: Myeni2021PTFResult
     fields:
       - name: field_capacity
+        quantity: gravimetric_water_content
         symbol: FC
         unit: kg/kg
         domain: null
@@ -46,6 +47,7 @@ $defs:
           Gravimetric soil moisture content at field capacity, corresponding
           to -33 kPa matric potential.
       - name: permanent_wilting_point
+        quantity: gravimetric_water_content
         symbol: PWP
         unit: kg/kg
         domain: null

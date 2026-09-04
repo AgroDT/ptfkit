@@ -26,507 +26,618 @@ from ptfkit.pidgeon1972 import (
 
 
 CASES_CALC_PTF_PIDGEON1972_FC = [
-    (
-        {'clay': 20.0, 'organic_matter': 2.0, 'silt': 30.0},
-        {'field_capacity': 21.26},
-        {'field_capacity': 0.0},
-    ),
+    ({'clay': 20.0, 'organic_matter': 2.0, 'silt': 30.0}, {'field_capacity': 21.26}),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_PIDGEON1972_FC
-)
-def test_calc_ptf_pidgeon1972_fc_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
-):
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_PIDGEON1972_FC)
+def test_calc_ptf_pidgeon1972_fc_verification(inputs: dict[str, float], expected: dict[str, float]):
     result = calc_ptf_pidgeon1972_fc(**inputs)
 
-    assert_close(result, expected['field_capacity'], published_tolerance['field_capacity'])
+    assert_close(
+        result,
+        expected['field_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% w/w',
+        source='registry',
+    )
 
 
 def test_calc_ptf_pidgeon1972_fc_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_FC)
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_FC)
     result = calc_ptf_pidgeon1972_fc(**inputs, out=None)
-    assert_close(result[0], expected['field_capacity'], published_tolerance['field_capacity'])
+    assert_close(
+        result[0],
+        expected['field_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% w/w',
+        source='registry',
+    )
 
 
 def test_calc_ptf_pidgeon1972_fc_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_FC)
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_FC)
     result = calc_ptf_pidgeon1972_fc(**inputs, out=out)
     assert result is out
-    assert_close(result[0], expected['field_capacity'], published_tolerance['field_capacity'])
+    assert_close(
+        result[0],
+        expected['field_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% w/w',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_PIDGEON1972_FC_SAND = [
-    ({'sand': 50.0}, {'field_capacity': 23.66}, {'field_capacity': 0.0}),
+    ({'sand': 50.0}, {'field_capacity': 23.66}),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_PIDGEON1972_FC_SAND
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_PIDGEON1972_FC_SAND)
 def test_calc_ptf_pidgeon1972_fc_sand_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_pidgeon1972_fc_sand(**inputs)
 
-    assert_close(result, expected['field_capacity'], published_tolerance['field_capacity'])
+    assert_close(
+        result,
+        expected['field_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% w/w',
+        source='registry',
+    )
 
 
 def test_calc_ptf_pidgeon1972_fc_sand_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_FC_SAND
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_FC_SAND)
     result = calc_ptf_pidgeon1972_fc_sand(**inputs, out=None)
-    assert_close(result[0], expected['field_capacity'], published_tolerance['field_capacity'])
+    assert_close(
+        result[0],
+        expected['field_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% w/w',
+        source='registry',
+    )
 
 
 def test_calc_ptf_pidgeon1972_fc_sand_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_FC_SAND
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_FC_SAND)
     result = calc_ptf_pidgeon1972_fc_sand(**inputs, out=out)
     assert result is out
-    assert_close(result[0], expected['field_capacity'], published_tolerance['field_capacity'])
+    assert_close(
+        result[0],
+        expected['field_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% w/w',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_PIDGEON1972_FC_SAND_ORGANIC_MATTER = [
-    ({'organic_matter': 2.0, 'sand': 50.0}, {'field_capacity': 23.27}, {'field_capacity': 0.0}),
+    ({'organic_matter': 2.0, 'sand': 50.0}, {'field_capacity': 23.27}),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_PIDGEON1972_FC_SAND_ORGANIC_MATTER
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_PIDGEON1972_FC_SAND_ORGANIC_MATTER)
 def test_calc_ptf_pidgeon1972_fc_sand_organic_matter_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_pidgeon1972_fc_sand_organic_matter(**inputs)
 
-    assert_close(result, expected['field_capacity'], published_tolerance['field_capacity'])
+    assert_close(
+        result,
+        expected['field_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% w/w',
+        source='registry',
+    )
 
 
 def test_calc_ptf_pidgeon1972_fc_sand_organic_matter_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_FC_SAND_ORGANIC_MATTER
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_FC_SAND_ORGANIC_MATTER)
     result = calc_ptf_pidgeon1972_fc_sand_organic_matter(**inputs, out=None)
-    assert_close(result[0], expected['field_capacity'], published_tolerance['field_capacity'])
+    assert_close(
+        result[0],
+        expected['field_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% w/w',
+        source='registry',
+    )
 
 
 def test_calc_ptf_pidgeon1972_fc_sand_organic_matter_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_FC_SAND_ORGANIC_MATTER
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_FC_SAND_ORGANIC_MATTER)
     result = calc_ptf_pidgeon1972_fc_sand_organic_matter(**inputs, out=out)
     assert result is out
-    assert_close(result[0], expected['field_capacity'], published_tolerance['field_capacity'])
+    assert_close(
+        result[0],
+        expected['field_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% w/w',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_PIDGEON1972_FC_VOL_SAND_ORGANIC_MATTER = [
-    ({'organic_matter': 2.0, 'sand': 50.0}, {'field_capacity': 31.19}, {'field_capacity': 0.0}),
+    ({'organic_matter': 2.0, 'sand': 50.0}, {'field_capacity': 31.19}),
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'),
-    CASES_CALC_PTF_PIDGEON1972_FC_VOL_SAND_ORGANIC_MATTER,
+    ('inputs', 'expected'), CASES_CALC_PTF_PIDGEON1972_FC_VOL_SAND_ORGANIC_MATTER
 )
 def test_calc_ptf_pidgeon1972_fc_vol_sand_organic_matter_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(**inputs)
 
-    assert_close(result, expected['field_capacity'], published_tolerance['field_capacity'])
+    assert_close(
+        result,
+        expected['field_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='% v/v',
+        source='registry',
+    )
 
 
 def test_calc_ptf_pidgeon1972_fc_vol_sand_organic_matter_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_PIDGEON1972_FC_VOL_SAND_ORGANIC_MATTER
     )
     result = calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(**inputs, out=None)
-    assert_close(result[0], expected['field_capacity'], published_tolerance['field_capacity'])
+    assert_close(
+        result[0],
+        expected['field_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='% v/v',
+        source='registry',
+    )
 
 
 def test_calc_ptf_pidgeon1972_fc_vol_sand_organic_matter_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_PIDGEON1972_FC_VOL_SAND_ORGANIC_MATTER
     )
     result = calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(**inputs, out=out)
     assert result is out
-    assert_close(result[0], expected['field_capacity'], published_tolerance['field_capacity'])
+    assert_close(
+        result[0],
+        expected['field_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='% v/v',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_PIDGEON1972_PWP = [
-    (
-        {'clay': 20.0, 'organic_matter': 2.0, 'silt': 30.0},
-        {'permanent_wilting_point': 11.11},
-        {'permanent_wilting_point': 0.0},
-    ),
+    ({'clay': 20.0, 'organic_matter': 2.0, 'silt': 30.0}, {'permanent_wilting_point': 11.11}),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_PIDGEON1972_PWP
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_PIDGEON1972_PWP)
 def test_calc_ptf_pidgeon1972_pwp_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_pidgeon1972_pwp(**inputs)
 
     assert_close(
-        result, expected['permanent_wilting_point'], published_tolerance['permanent_wilting_point']
+        result,
+        expected['permanent_wilting_point'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% w/w',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_pwp_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_PWP
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_PWP)
     result = calc_ptf_pidgeon1972_pwp(**inputs, out=None)
     assert_close(
         result[0],
         expected['permanent_wilting_point'],
-        published_tolerance['permanent_wilting_point'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% w/w',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_pwp_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_PWP)
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_PWP)
     result = calc_ptf_pidgeon1972_pwp(**inputs, out=out)
     assert result is out
     assert_close(
         result[0],
         expected['permanent_wilting_point'],
-        published_tolerance['permanent_wilting_point'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% w/w',
+        source='registry',
     )
 
 
 CASES_CALC_PTF_PIDGEON1972_PWP_SAND = [
-    ({'sand': 50.0}, {'permanent_wilting_point': 13.91}, {'permanent_wilting_point': 0.0}),
+    ({'sand': 50.0}, {'permanent_wilting_point': 13.91}),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_PIDGEON1972_PWP_SAND
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_PIDGEON1972_PWP_SAND)
 def test_calc_ptf_pidgeon1972_pwp_sand_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_pidgeon1972_pwp_sand(**inputs)
 
     assert_close(
-        result, expected['permanent_wilting_point'], published_tolerance['permanent_wilting_point']
+        result,
+        expected['permanent_wilting_point'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% w/w',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_pwp_sand_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_PWP_SAND
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_PWP_SAND)
     result = calc_ptf_pidgeon1972_pwp_sand(**inputs, out=None)
     assert_close(
         result[0],
         expected['permanent_wilting_point'],
-        published_tolerance['permanent_wilting_point'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% w/w',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_pwp_sand_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_PWP_SAND
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_PWP_SAND)
     result = calc_ptf_pidgeon1972_pwp_sand(**inputs, out=out)
     assert result is out
     assert_close(
         result[0],
         expected['permanent_wilting_point'],
-        published_tolerance['permanent_wilting_point'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% w/w',
+        source='registry',
     )
 
 
 CASES_CALC_PTF_PIDGEON1972_PWP_SAND_ORGANIC_MATTER = [
-    (
-        {'organic_matter': 2.0, 'sand': 50.0},
-        {'permanent_wilting_point': 15.28},
-        {'permanent_wilting_point': 0.0},
-    ),
+    ({'organic_matter': 2.0, 'sand': 50.0}, {'permanent_wilting_point': 15.28}),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'),
-    CASES_CALC_PTF_PIDGEON1972_PWP_SAND_ORGANIC_MATTER,
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_PIDGEON1972_PWP_SAND_ORGANIC_MATTER)
 def test_calc_ptf_pidgeon1972_pwp_sand_organic_matter_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_pidgeon1972_pwp_sand_organic_matter(**inputs)
 
     assert_close(
-        result, expected['permanent_wilting_point'], published_tolerance['permanent_wilting_point']
+        result,
+        expected['permanent_wilting_point'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% w/w',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_pwp_sand_organic_matter_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_PWP_SAND_ORGANIC_MATTER
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_PWP_SAND_ORGANIC_MATTER)
     result = calc_ptf_pidgeon1972_pwp_sand_organic_matter(**inputs, out=None)
     assert_close(
         result[0],
         expected['permanent_wilting_point'],
-        published_tolerance['permanent_wilting_point'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% w/w',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_pwp_sand_organic_matter_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_PWP_SAND_ORGANIC_MATTER
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_PWP_SAND_ORGANIC_MATTER)
     result = calc_ptf_pidgeon1972_pwp_sand_organic_matter(**inputs, out=out)
     assert result is out
     assert_close(
         result[0],
         expected['permanent_wilting_point'],
-        published_tolerance['permanent_wilting_point'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='% w/w',
+        source='registry',
     )
 
 
 CASES_CALC_PTF_PIDGEON1972_AWC = [
-    (
-        {'clay': 20.0, 'organic_matter': 2.0},
-        {'available_water_capacity': 151.48},
-        {'available_water_capacity': 0.0},
-    ),
+    ({'clay': 20.0, 'organic_matter': 2.0}, {'available_water_capacity': 151.48}),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_PIDGEON1972_AWC
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_PIDGEON1972_AWC)
 def test_calc_ptf_pidgeon1972_awc_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_pidgeon1972_awc(**inputs)
 
     assert_close(
         result,
         expected['available_water_capacity'],
-        published_tolerance['available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_awc_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_AWC
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_AWC)
     result = calc_ptf_pidgeon1972_awc(**inputs, out=None)
     assert_close(
         result[0],
         expected['available_water_capacity'],
-        published_tolerance['available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_awc_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_AWC)
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_AWC)
     result = calc_ptf_pidgeon1972_awc(**inputs, out=out)
     assert result is out
     assert_close(
         result[0],
         expected['available_water_capacity'],
-        published_tolerance['available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 CASES_CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER = [
-    (
-        {'organic_matter': 2.0, 'sand': 50.0},
-        {'available_water_capacity': 109.24},
-        {'available_water_capacity': 0.0},
-    ),
+    ({'organic_matter': 2.0, 'sand': 50.0}, {'available_water_capacity': 109.24}),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'),
-    CASES_CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER,
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER)
 def test_calc_ptf_pidgeon1972_awc_sand_organic_matter_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_pidgeon1972_awc_sand_organic_matter(**inputs)
 
     assert_close(
         result,
         expected['available_water_capacity'],
-        published_tolerance['available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_awc_sand_organic_matter_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER)
     result = calc_ptf_pidgeon1972_awc_sand_organic_matter(**inputs, out=None)
     assert_close(
         result[0],
         expected['available_water_capacity'],
-        published_tolerance['available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_awc_sand_organic_matter_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_AWC_SAND_ORGANIC_MATTER)
     result = calc_ptf_pidgeon1972_awc_sand_organic_matter(**inputs, out=out)
     assert result is out
     assert_close(
         result[0],
         expected['available_water_capacity'],
-        published_tolerance['available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 CASES_CALC_PTF_PIDGEON1972_AWC_COARSE_SAND = [
-    ({'coarse_sand': 20.0}, {'available_water_capacity': 115.1}, {'available_water_capacity': 0.0}),
+    ({'coarse_sand': 20.0}, {'available_water_capacity': 115.1}),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_PIDGEON1972_AWC_COARSE_SAND
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_PIDGEON1972_AWC_COARSE_SAND)
 def test_calc_ptf_pidgeon1972_awc_coarse_sand_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_pidgeon1972_awc_coarse_sand(**inputs)
 
     assert_close(
         result,
         expected['available_water_capacity'],
-        published_tolerance['available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_awc_coarse_sand_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_AWC_COARSE_SAND
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_AWC_COARSE_SAND)
     result = calc_ptf_pidgeon1972_awc_coarse_sand(**inputs, out=None)
     assert_close(
         result[0],
         expected['available_water_capacity'],
-        published_tolerance['available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_awc_coarse_sand_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_AWC_COARSE_SAND
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_AWC_COARSE_SAND)
     result = calc_ptf_pidgeon1972_awc_coarse_sand(**inputs, out=out)
     assert result is out
     assert_close(
         result[0],
         expected['available_water_capacity'],
-        published_tolerance['available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 CASES_CALC_PTF_PIDGEON1972_AWC_FINE_SAND = [
-    ({'fine_sand': 20.0}, {'available_water_capacity': 119.9}, {'available_water_capacity': 0.0}),
+    ({'fine_sand': 20.0}, {'available_water_capacity': 119.9}),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_PIDGEON1972_AWC_FINE_SAND
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_PIDGEON1972_AWC_FINE_SAND)
 def test_calc_ptf_pidgeon1972_awc_fine_sand_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_pidgeon1972_awc_fine_sand(**inputs)
 
     assert_close(
         result,
         expected['available_water_capacity'],
-        published_tolerance['available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_awc_fine_sand_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_AWC_FINE_SAND
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_AWC_FINE_SAND)
     result = calc_ptf_pidgeon1972_awc_fine_sand(**inputs, out=None)
     assert_close(
         result[0],
         expected['available_water_capacity'],
-        published_tolerance['available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_awc_fine_sand_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_AWC_FINE_SAND
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_AWC_FINE_SAND)
     result = calc_ptf_pidgeon1972_awc_fine_sand(**inputs, out=out)
     assert result is out
     assert_close(
         result[0],
         expected['available_water_capacity'],
-        published_tolerance['available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 CASES_CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND = [
-    (
-        {'very_fine_sand': 10.0},
-        {'available_water_capacity': 112.7},
-        {'available_water_capacity': 0.0},
-    ),
+    ({'very_fine_sand': 10.0}, {'available_water_capacity': 112.7}),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND)
 def test_calc_ptf_pidgeon1972_awc_very_fine_sand_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_pidgeon1972_awc_very_fine_sand(**inputs)
 
     assert_close(
         result,
         expected['available_water_capacity'],
-        published_tolerance['available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_awc_very_fine_sand_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND)
     result = calc_ptf_pidgeon1972_awc_very_fine_sand(**inputs, out=None)
     assert_close(
         result[0],
         expected['available_water_capacity'],
-        published_tolerance['available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_awc_very_fine_sand_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_AWC_VERY_FINE_SAND)
     result = calc_ptf_pidgeon1972_awc_very_fine_sand(**inputs, out=out)
     assert result is out
     assert_close(
         result[0],
         expected['available_water_capacity'],
-        published_tolerance['available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
@@ -534,189 +645,204 @@ CASES_CALC_PTF_PIDGEON1972_EAWC = [
     (
         {'clay': 20.0, 'organic_matter': 2.0, 'silt': 30.0},
         {'extended_available_water_capacity': 16.12},
-        {'extended_available_water_capacity': 0.0},
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_PIDGEON1972_EAWC
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_PIDGEON1972_EAWC)
 def test_calc_ptf_pidgeon1972_eawc_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_pidgeon1972_eawc(**inputs)
 
     assert_close(
         result,
         expected['extended_available_water_capacity'],
-        published_tolerance['extended_available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_eawc_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_EAWC
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_EAWC)
     result = calc_ptf_pidgeon1972_eawc(**inputs, out=None)
     assert_close(
         result[0],
         expected['extended_available_water_capacity'],
-        published_tolerance['extended_available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_eawc_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_EAWC
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_EAWC)
     result = calc_ptf_pidgeon1972_eawc(**inputs, out=out)
     assert result is out
     assert_close(
         result[0],
         expected['extended_available_water_capacity'],
-        published_tolerance['extended_available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 CASES_CALC_PTF_PIDGEON1972_EAWC_SAND = [
-    (
-        {'sand': 50.0},
-        {'extended_available_water_capacity': 51.7},
-        {'extended_available_water_capacity': 0.0},
-    ),
+    ({'sand': 50.0}, {'extended_available_water_capacity': 51.7}),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_PIDGEON1972_EAWC_SAND
-)
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_PIDGEON1972_EAWC_SAND)
 def test_calc_ptf_pidgeon1972_eawc_sand_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_pidgeon1972_eawc_sand(**inputs)
 
     assert_close(
         result,
         expected['extended_available_water_capacity'],
-        published_tolerance['extended_available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_eawc_sand_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_EAWC_SAND
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_EAWC_SAND)
     result = calc_ptf_pidgeon1972_eawc_sand(**inputs, out=None)
     assert_close(
         result[0],
         expected['extended_available_water_capacity'],
-        published_tolerance['extended_available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_eawc_sand_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_EAWC_SAND
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_EAWC_SAND)
     result = calc_ptf_pidgeon1972_eawc_sand(**inputs, out=out)
     assert result is out
     assert_close(
         result[0],
         expected['extended_available_water_capacity'],
-        published_tolerance['extended_available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 CASES_CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER = [
-    (
-        {'organic_matter': 2.0, 'sand': 50.0},
-        {'extended_available_water_capacity': 56.26},
-        {'extended_available_water_capacity': 0.0},
-    ),
+    ({'organic_matter': 2.0, 'sand': 50.0}, {'extended_available_water_capacity': 56.26}),
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'),
-    CASES_CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER,
+    ('inputs', 'expected'), CASES_CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER
 )
 def test_calc_ptf_pidgeon1972_eawc_sand_organic_matter_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_pidgeon1972_eawc_sand_organic_matter(**inputs)
 
     assert_close(
         result,
         expected['extended_available_water_capacity'],
-        published_tolerance['extended_available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_eawc_sand_organic_matter_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER
     )
     result = calc_ptf_pidgeon1972_eawc_sand_organic_matter(**inputs, out=None)
     assert_close(
         result[0],
         expected['extended_available_water_capacity'],
-        published_tolerance['extended_available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_eawc_sand_organic_matter_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
-        CASES_CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_PIDGEON1972_EAWC_SAND_ORGANIC_MATTER)
     result = calc_ptf_pidgeon1972_eawc_sand_organic_matter(**inputs, out=out)
     assert result is out
     assert_close(
         result[0],
         expected['extended_available_water_capacity'],
-        published_tolerance['extended_available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 CASES_CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER = [
-    (
-        {'coarse_sand': 20.0, 'organic_matter': 2.0},
-        {'extended_available_water_capacity': 53.72},
-        {'extended_available_water_capacity': 0.0},
-    ),
+    ({'coarse_sand': 20.0, 'organic_matter': 2.0}, {'extended_available_water_capacity': 53.72}),
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'),
-    CASES_CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER,
+    ('inputs', 'expected'), CASES_CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER
 )
 def test_calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(**inputs)
 
     assert_close(
         result,
         expected['extended_available_water_capacity'],
-        published_tolerance['extended_available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER
     )
     result = calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(**inputs, out=None)
     assert_close(
         result[0],
         expected['extended_available_water_capacity'],
-        published_tolerance['extended_available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_PIDGEON1972_EAWC_COARSE_SAND_ORGANIC_MATTER
     )
     result = calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(**inputs, out=out)
@@ -724,49 +850,56 @@ def test_calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter_out():
     assert_close(
         result[0],
         expected['extended_available_water_capacity'],
-        published_tolerance['extended_available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 CASES_CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER = [
-    (
-        {'fine_sand': 20.0, 'organic_matter': 2.0},
-        {'extended_available_water_capacity': 59.58},
-        {'extended_available_water_capacity': 0.0},
-    ),
+    ({'fine_sand': 20.0, 'organic_matter': 2.0}, {'extended_available_water_capacity': 59.58}),
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'published_tolerance'),
-    CASES_CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER,
+    ('inputs', 'expected'), CASES_CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER
 )
 def test_calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(**inputs)
 
     assert_close(
         result,
         expected['extended_available_water_capacity'],
-        published_tolerance['extended_available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER
     )
     result = calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(**inputs, out=None)
     assert_close(
         result[0],
         expected['extended_available_water_capacity'],
-        published_tolerance['extended_available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )
 
 
 def test_calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_PIDGEON1972_EAWC_FINE_SAND_ORGANIC_MATTER
     )
     result = calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(**inputs, out=out)
@@ -774,5 +907,9 @@ def test_calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter_out():
     assert_close(
         result[0],
         expected['extended_available_water_capacity'],
-        published_tolerance['extended_available_water_capacity'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='available_water_capacity',
+        unit='mm/m',
+        source='registry',
     )

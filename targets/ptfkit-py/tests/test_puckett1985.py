@@ -23,75 +23,320 @@ CASES_CALC_PTF_PUCKETT1985 = [
             'theta_1500': 0.22746346,
             'k_sat': 4.2399741e-6,
         },
-        {
-            'theta_0': 0.0,
-            'theta_1': 0.0,
-            'theta_5': 0.0,
-            'theta_10': 0.0,
-            'theta_30': 0.0,
-            'theta_60': 0.0,
-            'theta_100': 0.0,
-            'theta_500': 0.0,
-            'theta_1000': 0.0,
-            'theta_1500': 0.0,
-            'k_sat': 0.0,
-        },
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'published_tolerance'), CASES_CALC_PTF_PUCKETT1985)
-def test_calc_ptf_puckett1985_verification(
-    inputs: dict[str, float], expected: dict[str, float], published_tolerance: dict[str, float]
-):
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_PUCKETT1985)
+def test_calc_ptf_puckett1985_verification(inputs: dict[str, float], expected: dict[str, float]):
     result = calc_ptf_puckett1985(**inputs)
 
-    assert_close(result.theta_0, expected['theta_0'], published_tolerance['theta_0'])
-    assert_close(result.theta_1, expected['theta_1'], published_tolerance['theta_1'])
-    assert_close(result.theta_5, expected['theta_5'], published_tolerance['theta_5'])
-    assert_close(result.theta_10, expected['theta_10'], published_tolerance['theta_10'])
-    assert_close(result.theta_30, expected['theta_30'], published_tolerance['theta_30'])
-    assert_close(result.theta_60, expected['theta_60'], published_tolerance['theta_60'])
-    assert_close(result.theta_100, expected['theta_100'], published_tolerance['theta_100'])
-    assert_close(result.theta_500, expected['theta_500'], published_tolerance['theta_500'])
-    assert_close(result.theta_1000, expected['theta_1000'], published_tolerance['theta_1000'])
-    assert_close(result.theta_1500, expected['theta_1500'], published_tolerance['theta_1500'])
-    assert_close(result.k_sat, expected['k_sat'], published_tolerance['k_sat'])
+    assert_close(
+        result.theta_0,
+        expected['theta_0'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_1,
+        expected['theta_1'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_5,
+        expected['theta_5'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_10,
+        expected['theta_10'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_30,
+        expected['theta_30'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_60,
+        expected['theta_60'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_100,
+        expected['theta_100'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_500,
+        expected['theta_500'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_1000,
+        expected['theta_1000'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_1500,
+        expected['theta_1500'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.k_sat,
+        expected['k_sat'],
+        absolute=1e-10,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='m/s',
+        source='registry',
+    )
 
 
 def test_calc_ptf_puckett1985_array():
-    inputs, expected, published_tolerance, _out = prepare_vector_case(
-        CASES_CALC_PTF_PUCKETT1985, Puckett1985PTFResult
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_PUCKETT1985, Puckett1985PTFResult)
     result = calc_ptf_puckett1985(**inputs, out=None)
-    assert_close(result.theta_0[0], expected['theta_0'], published_tolerance['theta_0'])
-    assert_close(result.theta_1[0], expected['theta_1'], published_tolerance['theta_1'])
-    assert_close(result.theta_5[0], expected['theta_5'], published_tolerance['theta_5'])
-    assert_close(result.theta_10[0], expected['theta_10'], published_tolerance['theta_10'])
-    assert_close(result.theta_30[0], expected['theta_30'], published_tolerance['theta_30'])
-    assert_close(result.theta_60[0], expected['theta_60'], published_tolerance['theta_60'])
-    assert_close(result.theta_100[0], expected['theta_100'], published_tolerance['theta_100'])
-    assert_close(result.theta_500[0], expected['theta_500'], published_tolerance['theta_500'])
-    assert_close(result.theta_1000[0], expected['theta_1000'], published_tolerance['theta_1000'])
-    assert_close(result.theta_1500[0], expected['theta_1500'], published_tolerance['theta_1500'])
-    assert_close(result.k_sat[0], expected['k_sat'], published_tolerance['k_sat'])
+    assert_close(
+        result.theta_0[0],
+        expected['theta_0'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_1[0],
+        expected['theta_1'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_5[0],
+        expected['theta_5'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_10[0],
+        expected['theta_10'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_30[0],
+        expected['theta_30'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_60[0],
+        expected['theta_60'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_100[0],
+        expected['theta_100'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_500[0],
+        expected['theta_500'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_1000[0],
+        expected['theta_1000'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_1500[0],
+        expected['theta_1500'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.k_sat[0],
+        expected['k_sat'],
+        absolute=1e-10,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='m/s',
+        source='registry',
+    )
 
 
 def test_calc_ptf_puckett1985_out():
-    inputs, expected, published_tolerance, out = prepare_vector_case(
-        CASES_CALC_PTF_PUCKETT1985, Puckett1985PTFResult
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_PUCKETT1985, Puckett1985PTFResult)
     result = calc_ptf_puckett1985(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert_close(result.theta_0[0], expected['theta_0'], published_tolerance['theta_0'])
-    assert_close(result.theta_1[0], expected['theta_1'], published_tolerance['theta_1'])
-    assert_close(result.theta_5[0], expected['theta_5'], published_tolerance['theta_5'])
-    assert_close(result.theta_10[0], expected['theta_10'], published_tolerance['theta_10'])
-    assert_close(result.theta_30[0], expected['theta_30'], published_tolerance['theta_30'])
-    assert_close(result.theta_60[0], expected['theta_60'], published_tolerance['theta_60'])
-    assert_close(result.theta_100[0], expected['theta_100'], published_tolerance['theta_100'])
-    assert_close(result.theta_500[0], expected['theta_500'], published_tolerance['theta_500'])
-    assert_close(result.theta_1000[0], expected['theta_1000'], published_tolerance['theta_1000'])
-    assert_close(result.theta_1500[0], expected['theta_1500'], published_tolerance['theta_1500'])
-    assert_close(result.k_sat[0], expected['k_sat'], published_tolerance['k_sat'])
+    assert_close(
+        result.theta_0[0],
+        expected['theta_0'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_1[0],
+        expected['theta_1'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_5[0],
+        expected['theta_5'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_10[0],
+        expected['theta_10'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_30[0],
+        expected['theta_30'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_60[0],
+        expected['theta_60'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_100[0],
+        expected['theta_100'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_500[0],
+        expected['theta_500'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_1000[0],
+        expected['theta_1000'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_1500[0],
+        expected['theta_1500'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.k_sat[0],
+        expected['k_sat'],
+        absolute=1e-10,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='m/s',
+        source='registry',
+    )

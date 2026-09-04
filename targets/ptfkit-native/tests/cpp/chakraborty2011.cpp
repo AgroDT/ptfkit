@@ -6,7 +6,7 @@ import ptfkit;
 import ptfkit.chakraborty2011;
 #endif
 
-#include "close_enough.h"
+#include "support/close_enough.h"
 #include <type_traits>
 
 int main() {
@@ -14,57 +14,81 @@ int main() {
         const auto result = ptfkit::chakraborty2011::calc_ptf_chakraborty2011_eq1(20.0, 30.0);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::chakraborty2011::Chakraborty2011PTFResult>);
-        assert_close(result.water_content_33, 0.2488, 0.0);
-        assert_close(result.water_content_100, 0.19758, 0.0);
-        assert_close(result.water_content_500, 0.13528, 0.0);
-        assert_close(result.water_content_1500, 0.11702, 0.0);
+        assert_close(result.water_content_33, 0.2488, 0.001, 0.0, "gravimetric_water_content",
+                     "g/g", "registry");
+        assert_close(result.water_content_100, 0.19758, 0.001, 0.0, "gravimetric_water_content",
+                     "g/g", "registry");
+        assert_close(result.water_content_500, 0.13528, 0.001, 0.0, "gravimetric_water_content",
+                     "g/g", "registry");
+        assert_close(result.water_content_1500, 0.11702, 0.001, 0.0, "gravimetric_water_content",
+                     "g/g", "registry");
     }
     {
         const auto result = ptfkit::chakraborty2011::calc_ptf_chakraborty2011_eq2(50.0, 1.5);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::chakraborty2011::Chakraborty2011PTFResult>);
-        assert_close(result.water_content_33, 0.219415, 0.0);
-        assert_close(result.water_content_100, 0.175765, 0.0);
-        assert_close(result.water_content_500, 0.141025, 0.0);
-        assert_close(result.water_content_1500, 0.118315, 0.0);
+        assert_close(result.water_content_33, 0.219415, 0.001, 0.0, "gravimetric_water_content",
+                     "g/g", "registry");
+        assert_close(result.water_content_100, 0.175765, 0.001, 0.0, "gravimetric_water_content",
+                     "g/g", "registry");
+        assert_close(result.water_content_500, 0.141025, 0.001, 0.0, "gravimetric_water_content",
+                     "g/g", "registry");
+        assert_close(result.water_content_1500, 0.118315, 0.001, 0.0, "gravimetric_water_content",
+                     "g/g", "registry");
     }
     {
         const auto result = ptfkit::chakraborty2011::calc_ptf_chakraborty2011_eq3(20.0, 30.0, 1.5);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::chakraborty2011::Chakraborty2011PTFResult>);
-        assert_close(result.water_content_33, 0.25776, 0.0);
-        assert_close(result.water_content_100, 0.201085, 0.0);
-        assert_close(result.water_content_500, 0.139175, 0.0);
-        assert_close(result.water_content_1500, 0.117865, 0.0);
+        assert_close(result.water_content_33, 0.25776, 0.001, 0.0, "gravimetric_water_content",
+                     "g/g", "registry");
+        assert_close(result.water_content_100, 0.201085, 0.001, 0.0, "gravimetric_water_content",
+                     "g/g", "registry");
+        assert_close(result.water_content_500, 0.139175, 0.001, 0.0, "gravimetric_water_content",
+                     "g/g", "registry");
+        assert_close(result.water_content_1500, 0.117865, 0.001, 0.0, "gravimetric_water_content",
+                     "g/g", "registry");
     }
     {
         const auto result = ptfkit::chakraborty2011::calc_ptf_chakraborty2011_eq4(20.0, 30.0, 50.0);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::chakraborty2011::Chakraborty2011PTFResult>);
-        assert_close(result.water_content_33, 0.24397, 0.0);
-        assert_close(result.water_content_100, 0.19235, 0.0);
-        assert_close(result.water_content_500, 0.13116, 0.0);
-        assert_close(result.water_content_1500, 0.11325, 0.0);
+        assert_close(result.water_content_33, 0.24397, 0.001, 0.0, "gravimetric_water_content",
+                     "g/g", "registry");
+        assert_close(result.water_content_100, 0.19235, 0.001, 0.0, "gravimetric_water_content",
+                     "g/g", "registry");
+        assert_close(result.water_content_500, 0.13116, 0.001, 0.0, "gravimetric_water_content",
+                     "g/g", "registry");
+        assert_close(result.water_content_1500, 0.11325, 0.001, 0.0, "gravimetric_water_content",
+                     "g/g", "registry");
     }
     {
         const auto result =
             ptfkit::chakraborty2011::calc_ptf_chakraborty2011_eq5(20.0, 30.0, 50.0, 1.5);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::chakraborty2011::Chakraborty2011PTFResult>);
-        assert_close(result.water_content_33, 0.249785, 0.0);
-        assert_close(result.water_content_100, 0.19166, 0.0);
-        assert_close(result.water_content_500, 0.131065, 0.0);
-        assert_close(result.water_content_1500, 0.110595, 0.0);
+        assert_close(result.water_content_33, 0.249785, 0.001, 0.0, "gravimetric_water_content",
+                     "g/g", "registry");
+        assert_close(result.water_content_100, 0.19166, 0.001, 0.0, "gravimetric_water_content",
+                     "g/g", "registry");
+        assert_close(result.water_content_500, 0.131065, 0.001, 0.0, "gravimetric_water_content",
+                     "g/g", "registry");
+        assert_close(result.water_content_1500, 0.110595, 0.001, 0.0, "gravimetric_water_content",
+                     "g/g", "registry");
     }
     {
         const auto result =
             ptfkit::chakraborty2011::calc_ptf_chakraborty2011_eq6(20.0, 30.0, 50.0, 0.5, 1.5);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::chakraborty2011::Chakraborty2011PTFResult>);
-        assert_close(result.water_content_33, 0.25207, 0.0);
-        assert_close(result.water_content_100, 0.19695, 0.0);
-        assert_close(result.water_content_500, 0.13364, 0.0);
-        assert_close(result.water_content_1500, 0.113175, 0.0);
+        assert_close(result.water_content_33, 0.25207, 0.001, 0.0, "gravimetric_water_content",
+                     "g/g", "registry");
+        assert_close(result.water_content_100, 0.19695, 0.001, 0.0, "gravimetric_water_content",
+                     "g/g", "registry");
+        assert_close(result.water_content_500, 0.13364, 0.001, 0.0, "gravimetric_water_content",
+                     "g/g", "registry");
+        assert_close(result.water_content_1500, 0.113175, 0.001, 0.0, "gravimetric_water_content",
+                     "g/g", "registry");
     }
     return 0;
 }

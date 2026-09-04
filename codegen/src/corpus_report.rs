@@ -11,6 +11,7 @@ pub(crate) struct Report {
     pub(crate) sources: Sources,
     pub(crate) functions: Functions,
     pub(crate) verification: Verification,
+    pub(crate) quantity_registry: QuantityRegistryReport,
     pub(crate) inputs: Vec<InputFrequency>,
     pub(crate) outputs: OutputsReport,
     pub(crate) scope: ScopeReport,
@@ -79,6 +80,22 @@ pub(crate) struct OutputsReport {
     pub(crate) record_functions: usize,
     pub(crate) field_names: Vec<Frequency>,
     pub(crate) structured_property_grouping_available: bool,
+}
+
+#[derive(Debug, Serialize)]
+pub(crate) struct QuantityRegistryReport {
+    pub(crate) registered_quantities: usize,
+    pub(crate) quantity_unit_combinations_in_use: usize,
+    pub(crate) outputs_using_registry_defaults: usize,
+    pub(crate) outputs_using_source_specific_overrides: usize,
+    pub(crate) unused_quantity_unit_entries: Vec<QuantityUnitEntry>,
+    pub(crate) missing_quantity_or_unit_validation_failures: usize,
+}
+
+#[derive(Debug, Ord, PartialOrd, Eq, PartialEq, Serialize)]
+pub(crate) struct QuantityUnitEntry {
+    pub(crate) quantity: String,
+    pub(crate) unit: String,
 }
 
 #[derive(Debug, Serialize)]
@@ -164,6 +181,9 @@ impl Report {
         let mut source_territories = BTreeMap::new();
         let mut functions_with_territory = 0;
         let mut blocked_functions = Vec::new();
+        let mut used_quantity_units = BTreeSet::new();
+        let mut registry_defaults = 0;
+        let mut source_overrides = 0;
 
         for entry in entries {
             if let Some(territory) = &entry.spec.scope.territory {
@@ -204,6 +224,12 @@ impl Report {
                 }
                 for field in function.outputs.fields() {
                     increment(&mut output_fields, &field.name);
+                    used_quantity_units.insert((field.quantity.clone(), field.unit.clone()));
+                    if function.verification_tolerances.contains_key(&field.name) {
+                        source_overrides += 1;
+                    } else {
+                        registry_defaults += 1;
+                    }
                 }
 
                 add_verification(&mut all_verification, function);
@@ -242,6 +268,24 @@ impl Report {
             (&left.source_identifier, &left.function_name)
                 .cmp(&(&right.source_identifier, &right.function_name))
         });
+        let registry = entries.first().map(|entry| entry.quantities.as_ref());
+        let registered_quantity_units = registry
+            .into_iter()
+            .flat_map(|registry| &registry.quantities)
+            .flat_map(|quantity| {
+                quantity
+                    .units
+                    .keys()
+                    .map(move |unit| (quantity.id.clone(), unit.clone()))
+            })
+            .collect::<BTreeSet<_>>();
+        let unused_quantity_unit_entries = registered_quantity_units
+            .difference(&used_quantity_units)
+            .map(|(quantity, unit)| QuantityUnitEntry {
+                quantity: quantity.clone(),
+                unit: unit.clone(),
+            })
+            .collect();
 
         let territory_names = source_territories
             .keys()
@@ -288,6 +332,14 @@ impl Report {
                 implemented_functions: implemented_verification,
                 ready_for_implementation_functions: ready_verification,
                 edge_case_interpretation: "declared specification metadata; not a claim that the cases are executable or externally validated",
+            },
+            quantity_registry: QuantityRegistryReport {
+                registered_quantities: registry.map_or(0, |registry| registry.quantities.len()),
+                quantity_unit_combinations_in_use: used_quantity_units.len(),
+                outputs_using_registry_defaults: registry_defaults,
+                outputs_using_source_specific_overrides: source_overrides,
+                unused_quantity_unit_entries,
+                missing_quantity_or_unit_validation_failures: 0,
             },
             inputs: sorted_inputs(inputs, total_functions),
             outputs: OutputsReport {
@@ -369,6 +421,20 @@ impl Report {
             "All functions",
             &self.verification.all_functions,
         );
+
+        output.push_str("\nQuantity registry\n-----------------\n");
+        output.push_str(&format!(
+            "Registered quantities: {}\nQuantity-unit combinations in use: {}\nOutputs using registry defaults: {}\nOutputs using source-specific overrides: {}\nMissing quantity or unit validation failures: {}\n",
+            self.quantity_registry.registered_quantities,
+            self.quantity_registry.quantity_unit_combinations_in_use,
+            self.quantity_registry.outputs_using_registry_defaults,
+            self.quantity_registry.outputs_using_source_specific_overrides,
+            self.quantity_registry.missing_quantity_or_unit_validation_failures,
+        ));
+        output.push_str("Unused quantity-unit entries:\n");
+        for entry in &self.quantity_registry.unused_quantity_unit_entries {
+            output.push_str(&format!("  {} [{}]\n", entry.quantity, entry.unit));
+        }
         render_verification(
             &mut output,
             "Implemented functions",
@@ -582,7 +648,10 @@ fn render_values(output: &mut String, values: &[Frequency]) {
 
 #[cfg(test)]
 mod tests {
-    use std::path::{Path, PathBuf};
+    use std::{
+        path::{Path, PathBuf},
+        sync::Arc,
+    };
 
     use super::{InputKind, Report};
     use crate::model::{Entry, Spec};
@@ -595,6 +664,7 @@ mod tests {
             slug: slug.to_owned(),
             spec,
             implementations,
+            quantities: Arc::default(),
         }
     }
 

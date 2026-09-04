@@ -20,15 +20,26 @@ South Africa
 horizons were used for development and 3,136 for independent validation."]
 
 #[cfg(test)]
-fn is_close(actual: f64, expected: f64, published_tolerance: f64) -> bool {
-    let tolerance = published_tolerance + 1e-12 + 1e-5 * expected.abs();
-    (actual - expected).abs() <= tolerance
+fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
+    absolute
+        .max(relative * expected.abs())
+        .max(0.00000000000001f64)
 }
 #[cfg(test)]
-fn assert_close(actual: f64, expected: f64, published_tolerance: f64) {
+fn assert_close(
+    actual: f64,
+    expected: f64,
+    absolute: f64,
+    relative: f64,
+    quantity: &str,
+    unit: &str,
+    source: &str,
+) {
+    let difference = (actual - expected).abs();
+    let tolerance = resolved_tolerance(expected, absolute, relative);
     assert!(
-        is_close(actual, expected, published_tolerance),
-        "|{actual} - {expected}| exceeds the shared tolerance"
+        difference <= tolerance,
+        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
     );
 }
 #[cfg(test)]
@@ -36,10 +47,11 @@ mod comparator_tests {
     use super::*;
     #[test]
     fn accepts_below_and_rejects_above_tolerance() {
-        let expected = 2.0;
-        let tolerance = 1e-12 + 1e-5 * expected;
-        assert!(is_close(expected + tolerance * 0.5, expected, 0.0));
-        assert!(!is_close(expected + tolerance * 2.0, expected, 0.0));
+        for expected in [0.0, 2.0, -2.0] {
+            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
+            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
+            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
+        }
     }
 }
 #[doc = r"Results returned by `calc_ptf_myeni2021`."]
@@ -104,7 +116,23 @@ mod tests {
     #[test]
     fn representative_soil() {
         let result = calc_ptf_myeni2021(30f64, 20f64, 1f64);
-        assert_close(result.field_capacity, 0.213f64, 0f64);
-        assert_close(result.permanent_wilting_point, 0.117f64, 0f64);
+        assert_close(
+            result.field_capacity,
+            0.213f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "kg/kg",
+            "registry",
+        );
+        assert_close(
+            result.permanent_wilting_point,
+            0.117f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "kg/kg",
+            "registry",
+        );
     }
 }

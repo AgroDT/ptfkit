@@ -48,16 +48,19 @@ $defs:
     name: Beniaich2023PTFResult
     fields:
     - name: water_saturation
+      quantity: gravimetric_water_content
       symbol: w_0
       unit: g/g
       domain: null
       description: Gravimetric water content at saturation.
     - name: water_field_capacity
+      quantity: gravimetric_water_content
       symbol: w_330
       unit: g/g
       domain: null
       description: Gravimetric water content at -33 kPa.
     - name: water_wilting_point
+      quantity: gravimetric_water_content
       symbol: w_15000
       unit: g/g
       domain: null

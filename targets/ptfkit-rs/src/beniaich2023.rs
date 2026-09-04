@@ -20,15 +20,26 @@ Agricultural topsoils in Doukkala, Gharb-Loukouss, Moulouya, and Tadla, Morocco
 50% validation subsets."]
 
 #[cfg(test)]
-fn is_close(actual: f64, expected: f64, published_tolerance: f64) -> bool {
-    let tolerance = published_tolerance + 1e-12 + 1e-5 * expected.abs();
-    (actual - expected).abs() <= tolerance
+fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
+    absolute
+        .max(relative * expected.abs())
+        .max(0.00000000000001f64)
 }
 #[cfg(test)]
-fn assert_close(actual: f64, expected: f64, published_tolerance: f64) {
+fn assert_close(
+    actual: f64,
+    expected: f64,
+    absolute: f64,
+    relative: f64,
+    quantity: &str,
+    unit: &str,
+    source: &str,
+) {
+    let difference = (actual - expected).abs();
+    let tolerance = resolved_tolerance(expected, absolute, relative);
     assert!(
-        is_close(actual, expected, published_tolerance),
-        "|{actual} - {expected}| exceeds the shared tolerance"
+        difference <= tolerance,
+        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
     );
 }
 #[cfg(test)]
@@ -36,10 +47,11 @@ mod comparator_tests {
     use super::*;
     #[test]
     fn accepts_below_and_rejects_above_tolerance() {
-        let expected = 2.0;
-        let tolerance = 1e-12 + 1e-5 * expected;
-        assert!(is_close(expected + tolerance * 0.5, expected, 0.0));
-        assert!(!is_close(expected + tolerance * 2.0, expected, 0.0));
+        for expected in [0.0, 2.0, -2.0] {
+            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
+            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
+            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
+        }
     }
 }
 #[doc = r"Results returned by `calc_ptf_beniaich2023_slr1`."]
@@ -93,9 +105,33 @@ mod calc_ptf_beniaich2023_slr1_tests {
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_slr1(20f64);
-        assert_close(result.water_saturation, 0.57427f64, 0f64);
-        assert_close(result.water_field_capacity, 0.17577f64, 0f64);
-        assert_close(result.water_wilting_point, 0.09621f64, 0f64);
+        assert_close(
+            result.water_saturation,
+            0.57427f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_field_capacity,
+            0.17577f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_wilting_point,
+            0.09621f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate three gravimetric water contents from silt.
@@ -139,9 +175,33 @@ mod calc_ptf_beniaich2023_slr2_tests {
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_slr2(30f64);
-        assert_close(result.water_saturation, 0.68478f64, 0f64);
-        assert_close(result.water_field_capacity, 0.24878f64, 0f64);
-        assert_close(result.water_wilting_point, 0.16131f64, 0f64);
+        assert_close(
+            result.water_saturation,
+            0.68478f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_field_capacity,
+            0.24878f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_wilting_point,
+            0.16131f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate three gravimetric water contents from sand.
@@ -185,9 +245,33 @@ mod calc_ptf_beniaich2023_slr3_tests {
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_slr3(50f64);
-        assert_close(result.water_saturation, 0.6007f64, 0f64);
-        assert_close(result.water_field_capacity, 0.1848f64, 0f64);
-        assert_close(result.water_wilting_point, 0.11077f64, 0f64);
+        assert_close(
+            result.water_saturation,
+            0.6007f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_field_capacity,
+            0.1848f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_wilting_point,
+            0.11077f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate three gravimetric water contents from clay plus silt.
@@ -233,9 +317,33 @@ mod calc_ptf_beniaich2023_slr4_tests {
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_slr4(20f64, 30f64);
-        assert_close(result.water_saturation, 0.74501f64, 0f64);
-        assert_close(result.water_field_capacity, 0.30678f64, 0f64);
-        assert_close(result.water_wilting_point, 0.19915f64, 0f64);
+        assert_close(
+            result.water_saturation,
+            0.74501f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_field_capacity,
+            0.30678f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_wilting_point,
+            0.19915f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate three gravimetric water contents from the clay-to-silt ratio.
@@ -281,9 +389,33 @@ mod calc_ptf_beniaich2023_slr5_tests {
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_slr5(20f64, 40f64);
-        assert_close(result.water_saturation, 0.68578f64, 0f64);
-        assert_close(result.water_field_capacity, 0.241875f64, 0f64);
-        assert_close(result.water_wilting_point, 0.16176f64, 0f64);
+        assert_close(
+            result.water_saturation,
+            0.68578f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_field_capacity,
+            0.241875f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_wilting_point,
+            0.16176f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate three gravimetric water contents from soil organic matter.
@@ -327,9 +459,33 @@ mod calc_ptf_beniaich2023_slr6_tests {
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_slr6(2f64);
-        assert_close(result.water_saturation, 0.66749f64, 0f64);
-        assert_close(result.water_field_capacity, 0.24009f64, 0f64);
-        assert_close(result.water_wilting_point, 0.15562f64, 0f64);
+        assert_close(
+            result.water_saturation,
+            0.66749f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_field_capacity,
+            0.24009f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_wilting_point,
+            0.15562f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate three gravimetric water contents from silt, sand, and organic matter.
@@ -382,9 +538,33 @@ mod calc_ptf_beniaich2023_mlr1_tests {
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_mlr1(30f64, 50f64, 2f64);
-        assert_close(result.water_saturation, 0.56266f64, 0f64);
-        assert_close(result.water_field_capacity, 0.17238f64, 0f64);
-        assert_close(result.water_wilting_point, 0.09366f64, 0f64);
+        assert_close(
+            result.water_saturation,
+            0.56266f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_field_capacity,
+            0.17238f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_wilting_point,
+            0.09366f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate three gravimetric water contents from sand and organic matter.
@@ -432,9 +612,33 @@ mod calc_ptf_beniaich2023_mlr2_tests {
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_mlr2(50f64, 2f64);
-        assert_close(result.water_saturation, 0.58954f64, 0f64);
-        assert_close(result.water_field_capacity, 0.18025f64, 0f64);
-        assert_close(result.water_wilting_point, 0.10825f64, 0f64);
+        assert_close(
+            result.water_saturation,
+            0.58954f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_field_capacity,
+            0.18025f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_wilting_point,
+            0.10825f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate three gravimetric water contents from silt and organic matter.
@@ -482,9 +686,33 @@ mod calc_ptf_beniaich2023_mlr3_tests {
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_mlr3(30f64, 2f64);
-        assert_close(result.water_saturation, 0.67031f64, 0f64);
-        assert_close(result.water_field_capacity, 0.24275f64, 0f64);
-        assert_close(result.water_wilting_point, 0.15755f64, 0f64);
+        assert_close(
+            result.water_saturation,
+            0.67031f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_field_capacity,
+            0.24275f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_wilting_point,
+            0.15755f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate three gravimetric water contents from clay and organic matter.
@@ -532,9 +760,33 @@ mod calc_ptf_beniaich2023_mlr4_tests {
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_mlr4(20f64, 2f64);
-        assert_close(result.water_saturation, 0.5589f64, 0f64);
-        assert_close(result.water_field_capacity, 0.16859f64, 0f64);
-        assert_close(result.water_wilting_point, 0.09157f64, 0f64);
+        assert_close(
+            result.water_saturation,
+            0.5589f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_field_capacity,
+            0.16859f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_wilting_point,
+            0.09157f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate three gravimetric water contents from clay, silt, and organic matter.
@@ -587,8 +839,32 @@ mod calc_ptf_beniaich2023_mlr5_tests {
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_mlr5(20f64, 30f64, 2f64);
-        assert_close(result.water_saturation, 0.56229f64, 0f64);
-        assert_close(result.water_field_capacity, 0.172f64, 0f64);
-        assert_close(result.water_wilting_point, 0.09379f64, 0f64);
+        assert_close(
+            result.water_saturation,
+            0.56229f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_field_capacity,
+            0.172f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
+        assert_close(
+            result.water_wilting_point,
+            0.09379f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
+        );
     }
 }

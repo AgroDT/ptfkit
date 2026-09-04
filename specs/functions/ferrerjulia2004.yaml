@@ -41,6 +41,7 @@ $defs:
   k_sat_mm_h: &k_sat_mm_h
     type: scalar
     name: k_sat
+    quantity: saturated_hydraulic_conductivity
     symbol: K_s
     unit: mm/h
     domain: null
