@@ -37,7 +37,7 @@ ptfkit exposes generated implementations for several programming languages:
 | Python | Scalar and NumPy array inputs backed by native ufuncs | [Python target](targets/python.md) · [Python API](reference/python/index.md) |
 | Rust | Scalar functions grouped by source publication | [Rust target](targets/rust.md) · [docs.rs](https://docs.rs/ptfkit/) |
 | C | Header-only C11 functions | [C and C++ target](targets/native.md) · [C API](reference/c/index.md) |
-| C++ | Optional C++20 modules | [C and C++ target](targets/native.md) · [C++ API](reference/cpp/index.md) |
+| C++ | Optional C++23 modules | [C and C++ target](targets/native.md) · [C++ API](reference/cpp/index.md) |
 
 Packages are distributed through [PyPI](https://pypi.org/project/ptfkit/) and
 [crates.io](https://crates.io/crates/ptfkit); C and C++ releases are available
