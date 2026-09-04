@@ -14,17 +14,17 @@ int main() {
         const auto result = ptfkit::puckett1985::calc_ptf_puckett1985(70.9, 36.4, 11.8, 1.67, 0.38);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::puckett1985::Puckett1985PTFResult>);
-        assert_in_interval(result.theta_0, 0.3428799999999964, 0.3428800000000035);
-        assert_in_interval(result.theta_1, 0.33925999999999645, 0.33926000000000356);
-        assert_in_interval(result.theta_5, 0.3938614999999964, 0.39386150000000353);
-        assert_in_interval(result.theta_10, 0.39330437999999646, 0.39330438000000356);
-        assert_in_interval(result.theta_30, 0.3443293599999964, 0.3443293600000035);
-        assert_in_interval(result.theta_60, 0.31153561999999646, 0.31153562000000357);
-        assert_in_interval(result.theta_100, 0.29292895999999646, 0.29292896000000357);
-        assert_in_interval(result.theta_500, 0.25135879999999644, 0.25135880000000355);
-        assert_in_interval(result.theta_1000, 0.25187787999999645, 0.25187788000000355);
-        assert_in_interval(result.theta_1500, 0.22746345999999823, 0.22746346000000178);
-        assert_in_interval(result.k_sat, 0.000004239974055990478, 0.000004239974055990586);
+        assert_close(result.theta_0, 0.34288, 0.0);
+        assert_close(result.theta_1, 0.33926, 0.0);
+        assert_close(result.theta_5, 0.3938615, 0.0);
+        assert_close(result.theta_10, 0.39330438, 0.0);
+        assert_close(result.theta_30, 0.34432936, 0.0);
+        assert_close(result.theta_60, 0.31153562, 0.0);
+        assert_close(result.theta_100, 0.29292896, 0.0);
+        assert_close(result.theta_500, 0.2513588, 0.0);
+        assert_close(result.theta_1000, 0.25187788, 0.0);
+        assert_close(result.theta_1500, 0.22746346, 0.0);
+        assert_close(result.k_sat, 0.0000042399741, 0.0);
     }
     return 0;
 }

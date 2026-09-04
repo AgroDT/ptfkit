@@ -76,16 +76,20 @@ functions:
           unit: dimensionless
           domain: value > 0
           description: Shape parameter of the van Genuchten moisture-retention model.
-    golden_tests:
+    verification_cases:
       - id: dataset_mean_properties
+        kind: calculated
         inputs:
           sand: 52.14
           clay: 10.93
           carbon: 1.03
           bulk_density: 1.466
-        verification:
-          kind: calculated_reference
-        notes: >-
+        expected:
+          theta_r: 0.08406999999999999
+          theta_s: 0.4060520000000001
+          alpha: 0.003581613076579849
+          n: 0.8602234826041976
+        rationale: >-
           Calculated from the Table 7 regressions using the dataset means reported
           in Tables 1 and 6 and the reviewed natural-log back-transformation.
     edge_cases:
@@ -235,8 +239,9 @@ functions:
           unit: dimensionless
           domain: value > 0
           description: Shape parameter of the van Genuchten moisture-retention model.
-    golden_tests:
+    verification_cases:
       - id: dataset_mean_properties
+        kind: calculated
         inputs:
           particle_2000_1000: 0.25
           particle_1000_500: 0.88
@@ -251,9 +256,12 @@ functions:
           geometric_standard_deviation: 4.07
           carbon: 1.03
           bulk_density: 1.466
-        verification:
-          kind: calculated_reference
-        notes: >-
+        expected:
+          theta_r: 0.08277820000000001
+          theta_s: 0.4060520000000001
+          alpha: 0.02522115884641546
+          n: 0.517175605329397
+        rationale: >-
           Calculated from the reviewed detailed regressions using dataset means from
           Tables 1 and 6, including restored carbon and bulk-density terms.
     edge_cases:

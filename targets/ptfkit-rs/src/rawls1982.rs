@@ -15,6 +15,29 @@ Agricultural soils from 32 states of the USA
 
 1,323 soils with about 5,350 horizons; regression equations used 2,541 horizons."]
 
+#[cfg(test)]
+fn is_close(actual: f64, expected: f64, published_tolerance: f64) -> bool {
+    let tolerance = published_tolerance + 1e-12 + 1e-5 * expected.abs();
+    (actual - expected).abs() <= tolerance
+}
+#[cfg(test)]
+fn assert_close(actual: f64, expected: f64, published_tolerance: f64) {
+    assert!(
+        is_close(actual, expected, published_tolerance),
+        "|{actual} - {expected}| exceeds the shared tolerance"
+    );
+}
+#[cfg(test)]
+mod comparator_tests {
+    use super::*;
+    #[test]
+    fn accepts_below_and_rejects_above_tolerance() {
+        let expected = 2.0;
+        let tolerance = 1e-12 + 1e-5 * expected;
+        assert!(is_close(expected + tolerance * 0.5, expected, 0.0));
+        assert!(!is_close(expected + tolerance * 2.0, expected, 0.0));
+    }
+}
 #[doc = r"Estimate volumetric water content at -1500 kPa.
 
 # Arguments
@@ -41,16 +64,10 @@ pub fn calc_ptf_rawls1982_theta_1500(clay: f64, organic_matter: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_rawls1982_theta_1500_tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn loamy_sand() {
         let result = calc_ptf_rawls1982_theta_1500(5.12f64, 0.1f64);
-        assert_in_interval(result, 0.05317999999999994f64, 0.053180000000000054f64);
+        assert_close(result, 0.05318f64, 0f64);
     }
 }
 #[doc = r"Estimate volumetric water content at -33 kPa using measured or estimated theta_1500.
@@ -80,16 +97,10 @@ pub fn calc_ptf_rawls1982_theta_33(sand: f64, organic_matter: f64, theta_1500: f
 #[cfg(test)]
 mod calc_ptf_rawls1982_theta_33_tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn loamy_sand_with_estimated_theta_1500() {
         let result = calc_ptf_rawls1982_theta_33(85f64, 0.1f64, 0.05318f64);
-        assert_in_interval(result, 0.11798959999999989f64, 0.11798960000000011f64);
+        assert_close(result, 0.1179896f64, 0f64);
     }
 }
 #[doc = r"Results returned by `calc_ptf_rawls1982_full_wrc`."]
@@ -193,70 +204,20 @@ pub fn calc_ptf_rawls1982_full_wrc(
 #[cfg(test)]
 mod calc_ptf_rawls1982_full_wrc_tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn loamy_sand() {
         let result = calc_ptf_rawls1982_full_wrc(85f64, 0.66f64, 1.22f64, 0.091f64, 0.033f64);
-        assert_in_interval(
-            result.theta_4,
-            0.24724199999999977f64,
-            0.2472420000000002f64,
-        );
-        assert_in_interval(result.theta_7, 0.9687379999999991f64, 0.9687380000000009f64);
-        assert_in_interval(
-            result.theta_10,
-            0.14558799999999977f64,
-            0.14558800000000022f64,
-        );
-        assert_in_interval(
-            result.theta_20,
-            0.10482999999999988f64,
-            0.1048300000000001f64,
-        );
-        assert_in_interval(
-            result.theta_33,
-            0.09099999999999989f64,
-            0.09100000000000011f64,
-        );
-        assert_in_interval(
-            result.theta_60,
-            0.07542799999999988f64,
-            0.0754280000000001f64,
-        );
-        assert_in_interval(
-            result.theta_100,
-            0.06319199999999989f64,
-            0.06319200000000011f64,
-        );
-        assert_in_interval(
-            result.theta_200,
-            0.052945999999999944f64,
-            0.052946000000000056f64,
-        );
-        assert_in_interval(
-            result.theta_400,
-            0.04582599999999994f64,
-            0.045826000000000054f64,
-        );
-        assert_in_interval(
-            result.theta_700,
-            0.041823999999999945f64,
-            0.041824000000000056f64,
-        );
-        assert_in_interval(
-            result.theta_1000,
-            0.038931999999999946f64,
-            0.03893200000000006f64,
-        );
-        assert_in_interval(
-            result.theta_1500,
-            0.032999999999999946f64,
-            0.03300000000000006f64,
-        );
+        assert_close(result.theta_4, 0.247242f64, 0f64);
+        assert_close(result.theta_7, 0.968738f64, 0f64);
+        assert_close(result.theta_10, 0.145588f64, 0f64);
+        assert_close(result.theta_20, 0.10483f64, 0f64);
+        assert_close(result.theta_33, 0.091f64, 0f64);
+        assert_close(result.theta_60, 0.075428f64, 0f64);
+        assert_close(result.theta_100, 0.063192f64, 0f64);
+        assert_close(result.theta_200, 0.052946f64, 0f64);
+        assert_close(result.theta_400, 0.045826f64, 0f64);
+        assert_close(result.theta_700, 0.041824f64, 0f64);
+        assert_close(result.theta_1000, 0.038932f64, 0f64);
+        assert_close(result.theta_1500, 0.033f64, 0f64);
     }
 }

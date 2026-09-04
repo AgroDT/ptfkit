@@ -15,132 +15,132 @@ int main() {
             ptfkit::clapp1978::calc_ptf_clapp1978(ptfkit::clapp1978::UsdaTextureClass::Sand);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::clapp1978::Clapp1978Parameters>);
-        assert_exact(result.b, 4.05);
-        assert_exact(result.saturation_suction, 3.5);
-        assert_exact(result.wetting_front_suction, 4.66);
-        assert_exact(result.saturated_water_content, 0.395);
-        assert_exact(result.saturated_hydraulic_conductivity, 1.056);
-        assert_exact(result.sorptivity, 1.52);
+        assert_close(result.b, 4.05, 0.0);
+        assert_close(result.saturation_suction, 3.5, 0.0);
+        assert_close(result.wetting_front_suction, 4.66, 0.0);
+        assert_close(result.saturated_water_content, 0.395, 0.0);
+        assert_close(result.saturated_hydraulic_conductivity, 1.056, 0.0);
+        assert_close(result.sorptivity, 1.52, 0.0);
     }
     {
         const auto result =
             ptfkit::clapp1978::calc_ptf_clapp1978(ptfkit::clapp1978::UsdaTextureClass::LoamySand);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::clapp1978::Clapp1978Parameters>);
-        assert_exact(result.b, 4.38);
-        assert_exact(result.saturation_suction, 1.78);
-        assert_exact(result.wetting_front_suction, 2.38);
-        assert_exact(result.saturated_water_content, 0.41);
-        assert_exact(result.saturated_hydraulic_conductivity, 0.938);
-        assert_exact(result.sorptivity, 1.04);
+        assert_close(result.b, 4.38, 0.0);
+        assert_close(result.saturation_suction, 1.78, 0.0);
+        assert_close(result.wetting_front_suction, 2.38, 0.0);
+        assert_close(result.saturated_water_content, 0.41, 0.0);
+        assert_close(result.saturated_hydraulic_conductivity, 0.938, 0.0);
+        assert_close(result.sorptivity, 1.04, 0.0);
     }
     {
         const auto result =
             ptfkit::clapp1978::calc_ptf_clapp1978(ptfkit::clapp1978::UsdaTextureClass::SandyLoam);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::clapp1978::Clapp1978Parameters>);
-        assert_exact(result.b, 4.9);
-        assert_exact(result.saturation_suction, 7.18);
-        assert_exact(result.wetting_front_suction, 9.52);
-        assert_exact(result.saturated_water_content, 0.435);
-        assert_exact(result.saturated_hydraulic_conductivity, 0.208);
-        assert_exact(result.sorptivity, 1.03);
+        assert_close(result.b, 4.9, 0.0);
+        assert_close(result.saturation_suction, 7.18, 0.0);
+        assert_close(result.wetting_front_suction, 9.52, 0.0);
+        assert_close(result.saturated_water_content, 0.435, 0.0);
+        assert_close(result.saturated_hydraulic_conductivity, 0.208, 0.0);
+        assert_close(result.sorptivity, 1.03, 0.0);
     }
     {
         const auto result =
             ptfkit::clapp1978::calc_ptf_clapp1978(ptfkit::clapp1978::UsdaTextureClass::SiltLoam);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::clapp1978::Clapp1978Parameters>);
-        assert_exact(result.b, 5.3);
-        assert_exact(result.saturation_suction, 56.6);
-        assert_exact(result.wetting_front_suction, 75.3);
-        assert_exact(result.saturated_water_content, 0.485);
-        assert_exact(result.saturated_hydraulic_conductivity, 0.0432);
-        assert_exact(result.sorptivity, 1.26);
+        assert_close(result.b, 5.3, 0.0);
+        assert_close(result.saturation_suction, 56.6, 0.0);
+        assert_close(result.wetting_front_suction, 75.3, 0.0);
+        assert_close(result.saturated_water_content, 0.485, 0.0);
+        assert_close(result.saturated_hydraulic_conductivity, 0.0432, 0.0);
+        assert_close(result.sorptivity, 1.26, 0.0);
     }
     {
         const auto result =
             ptfkit::clapp1978::calc_ptf_clapp1978(ptfkit::clapp1978::UsdaTextureClass::Loam);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::clapp1978::Clapp1978Parameters>);
-        assert_exact(result.b, 5.39);
-        assert_exact(result.saturation_suction, 14.6);
-        assert_exact(result.wetting_front_suction, 20.0);
-        assert_exact(result.saturated_water_content, 0.451);
-        assert_exact(result.saturated_hydraulic_conductivity, 0.0417);
-        assert_exact(result.sorptivity, 0.693);
+        assert_close(result.b, 5.39, 0.0);
+        assert_close(result.saturation_suction, 14.6, 0.0);
+        assert_close(result.wetting_front_suction, 20.0, 0.0);
+        assert_close(result.saturated_water_content, 0.451, 0.0);
+        assert_close(result.saturated_hydraulic_conductivity, 0.0417, 0.0);
+        assert_close(result.sorptivity, 0.693, 0.0);
     }
     {
         const auto result = ptfkit::clapp1978::calc_ptf_clapp1978(
             ptfkit::clapp1978::UsdaTextureClass::SandyClayLoam);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::clapp1978::Clapp1978Parameters>);
-        assert_exact(result.b, 7.12);
-        assert_exact(result.saturation_suction, 8.63);
-        assert_exact(result.wetting_front_suction, 11.7);
-        assert_exact(result.saturated_water_content, 0.42);
-        assert_exact(result.saturated_hydraulic_conductivity, 0.0378);
-        assert_exact(result.sorptivity, 0.488);
+        assert_close(result.b, 7.12, 0.0);
+        assert_close(result.saturation_suction, 8.63, 0.0);
+        assert_close(result.wetting_front_suction, 11.7, 0.0);
+        assert_close(result.saturated_water_content, 0.42, 0.0);
+        assert_close(result.saturated_hydraulic_conductivity, 0.0378, 0.0);
+        assert_close(result.sorptivity, 0.488, 0.0);
     }
     {
         const auto result = ptfkit::clapp1978::calc_ptf_clapp1978(
             ptfkit::clapp1978::UsdaTextureClass::SiltyClayLoam);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::clapp1978::Clapp1978Parameters>);
-        assert_exact(result.b, 7.75);
-        assert_exact(result.saturation_suction, 14.6);
-        assert_exact(result.wetting_front_suction, 19.7);
-        assert_exact(result.saturated_water_content, 0.477);
-        assert_exact(result.saturated_hydraulic_conductivity, 0.0102);
-        assert_exact(result.sorptivity, 0.31);
+        assert_close(result.b, 7.75, 0.0);
+        assert_close(result.saturation_suction, 14.6, 0.0);
+        assert_close(result.wetting_front_suction, 19.7, 0.0);
+        assert_close(result.saturated_water_content, 0.477, 0.0);
+        assert_close(result.saturated_hydraulic_conductivity, 0.0102, 0.0);
+        assert_close(result.sorptivity, 0.31, 0.0);
     }
     {
         const auto result =
             ptfkit::clapp1978::calc_ptf_clapp1978(ptfkit::clapp1978::UsdaTextureClass::ClayLoam);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::clapp1978::Clapp1978Parameters>);
-        assert_exact(result.b, 8.52);
-        assert_exact(result.saturation_suction, 36.1);
-        assert_exact(result.wetting_front_suction, 48.1);
-        assert_exact(result.saturated_water_content, 0.476);
-        assert_exact(result.saturated_hydraulic_conductivity, 0.0147);
-        assert_exact(result.sorptivity, 0.537);
+        assert_close(result.b, 8.52, 0.0);
+        assert_close(result.saturation_suction, 36.1, 0.0);
+        assert_close(result.wetting_front_suction, 48.1, 0.0);
+        assert_close(result.saturated_water_content, 0.476, 0.0);
+        assert_close(result.saturated_hydraulic_conductivity, 0.0147, 0.0);
+        assert_close(result.sorptivity, 0.537, 0.0);
     }
     {
         const auto result =
             ptfkit::clapp1978::calc_ptf_clapp1978(ptfkit::clapp1978::UsdaTextureClass::SandyClay);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::clapp1978::Clapp1978Parameters>);
-        assert_exact(result.b, 10.4);
-        assert_exact(result.saturation_suction, 6.16);
-        assert_exact(result.wetting_front_suction, 8.18);
-        assert_exact(result.saturated_water_content, 0.426);
-        assert_exact(result.saturated_hydraulic_conductivity, 0.013);
-        assert_exact(result.sorptivity, 0.223);
+        assert_close(result.b, 10.4, 0.0);
+        assert_close(result.saturation_suction, 6.16, 0.0);
+        assert_close(result.wetting_front_suction, 8.18, 0.0);
+        assert_close(result.saturated_water_content, 0.426, 0.0);
+        assert_close(result.saturated_hydraulic_conductivity, 0.013, 0.0);
+        assert_close(result.sorptivity, 0.223, 0.0);
     }
     {
         const auto result =
             ptfkit::clapp1978::calc_ptf_clapp1978(ptfkit::clapp1978::UsdaTextureClass::SiltyClay);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::clapp1978::Clapp1978Parameters>);
-        assert_exact(result.b, 10.4);
-        assert_exact(result.saturation_suction, 17.4);
-        assert_exact(result.wetting_front_suction, 23.0);
-        assert_exact(result.saturated_water_content, 0.492);
-        assert_exact(result.saturated_hydraulic_conductivity, 0.0062);
-        assert_exact(result.sorptivity, 0.242);
+        assert_close(result.b, 10.4, 0.0);
+        assert_close(result.saturation_suction, 17.4, 0.0);
+        assert_close(result.wetting_front_suction, 23.0, 0.0);
+        assert_close(result.saturated_water_content, 0.492, 0.0);
+        assert_close(result.saturated_hydraulic_conductivity, 0.0062, 0.0);
+        assert_close(result.sorptivity, 0.242, 0.0);
     }
     {
         const auto result =
             ptfkit::clapp1978::calc_ptf_clapp1978(ptfkit::clapp1978::UsdaTextureClass::Clay);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::clapp1978::Clapp1978Parameters>);
-        assert_exact(result.b, 11.4);
-        assert_exact(result.saturation_suction, 18.6);
-        assert_exact(result.wetting_front_suction, 24.3);
-        assert_exact(result.saturated_water_content, 0.482);
-        assert_exact(result.saturated_hydraulic_conductivity, 0.0077);
-        assert_exact(result.sorptivity, 0.268);
+        assert_close(result.b, 11.4, 0.0);
+        assert_close(result.saturation_suction, 18.6, 0.0);
+        assert_close(result.wetting_front_suction, 24.3, 0.0);
+        assert_close(result.saturated_water_content, 0.482, 0.0);
+        assert_close(result.saturated_hydraulic_conductivity, 0.0077, 0.0);
+        assert_close(result.sorptivity, 0.268, 0.0);
     }
     return 0;
 }

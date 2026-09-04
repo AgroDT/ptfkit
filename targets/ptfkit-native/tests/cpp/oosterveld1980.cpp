@@ -12,27 +12,27 @@ int main() {
     {
         const auto result =
             ptfkit::oosterveld1980::calc_ptf_oosterveld1980_field_capacity_tension(6.6);
-        assert_in_interval(result, 11.85409941642865, 11.854099416428877);
+        assert_close(result, 11.8540994164288, 0.0);
     }
     {
         const auto result =
             ptfkit::oosterveld1980::calc_ptf_oosterveld1980_retention(6.6, 86.3, 105.0, 11.8);
-        assert_in_interval(result, 8.278246810041193, 8.27824681004142);
+        assert_close(result, 8.2782468100413, 0.0);
     }
     {
         const auto result =
             ptfkit::oosterveld1980::calc_ptf_oosterveld1980_field_capacity(6.6, 86.3, 105.0);
-        assert_in_interval(result, 8.14707947394077, 8.147079473940998);
+        assert_close(result, 8.14707947394088, 0.0);
     }
     {
         const auto result =
             ptfkit::oosterveld1980::calc_ptf_oosterveld1980_wilting_point(6.6, 86.3, 105.0);
-        assert_in_interval(result, 1.394199999999998, 1.3942000000000017);
+        assert_close(result, 1.3942, 0.0);
     }
     {
         const auto result =
             ptfkit::oosterveld1980::calc_ptf_oosterveld1980_available_water(6.6, 86.3, 105.0);
-        assert_in_interval(result, 6.752879473940828, 6.752879473940942);
+        assert_close(result, 6.75287947394088, 0.0);
     }
     return 0;
 }

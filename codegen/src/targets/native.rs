@@ -804,7 +804,7 @@ fn c_compatibility_test(slug: &str, functions: &[&CompiledFunction]) -> Result<S
     writer.indented(|writer| {
         for function in functions {
             let spec = &function.entry.spec.functions[function.function_index];
-            for case in &function.golden_tests {
+            for case in &function.verification_cases {
                 writer.line("{");
                 writer.indented(|writer| {
                     if matches!(function.core.output, Output::Scalar) {
@@ -820,27 +820,23 @@ fn c_compatibility_test(slug: &str, functions: &[&CompiledFunction]) -> Result<S
                     writer.write("(");
                     render_literals(writer, &case.inputs, NativeDialect::C, Some(slug));
                     writer.line(");");
-                    for (field, acceptance) in spec.outputs.fields().iter().zip(&case.acceptance) {
-                        writer.write(match acceptance {
-                            crate::model::Acceptance::Exact(_) => "assert_exact(",
-                            crate::model::Acceptance::Interval { .. } => "assert_in_interval(",
-                        });
+                    for ((field, expected), published_tolerance) in spec
+                        .outputs
+                        .fields()
+                        .iter()
+                        .zip(&case.expected)
+                        .zip(&case.published_tolerance)
+                    {
+                        writer.write("assert_close(");
                         if matches!(function.core.output, Output::Scalar) {
                             writer.write("result");
                         } else {
                             writer.write(format_args!("result.{}", field.name));
                         }
                         writer.write(", ");
-                        match acceptance {
-                            crate::model::Acceptance::Exact(expected) => {
-                                writer.write(c::test_float_literal(*expected))
-                            }
-                            crate::model::Acceptance::Interval { lower, upper } => {
-                                writer.write(c::test_float_literal(*lower));
-                                writer.write(", ");
-                                writer.write(c::test_float_literal(*upper));
-                            }
-                        }
+                        writer.write(c::test_float_literal(*expected));
+                        writer.write(", ");
+                        writer.write(c::test_float_literal(*published_tolerance));
                         writer.line(");");
                     }
                 });
@@ -868,7 +864,7 @@ fn module_test(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
     writer.indented(|writer| {
     for function in functions {
         let spec = &function.entry.spec.functions[function.function_index];
-        for case in &function.golden_tests {
+        for case in &function.verification_cases {
             writer.line("{");
             writer.indented(|writer| {
             writer.write(format_args!("const auto result = ptfkit::{slug}::{}(", function.core.name));
@@ -880,25 +876,23 @@ fn module_test(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
                     .expect("record output has a result class");
                 writer.line(format_args!("static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>, ptfkit::{slug}::{result}>);"));
             }
-            for (field, acceptance) in spec.outputs.fields().iter().zip(&case.acceptance) {
-                writer.write(match acceptance {
-                    crate::model::Acceptance::Exact(_) => "assert_exact(",
-                    crate::model::Acceptance::Interval { .. } => "assert_in_interval(",
-                });
+            for ((field, expected), published_tolerance) in spec
+                .outputs
+                .fields()
+                .iter()
+                .zip(&case.expected)
+                .zip(&case.published_tolerance)
+            {
+                writer.write("assert_close(");
                 if matches!(function.core.output, Output::Scalar) {
                     writer.write("result");
                 } else {
                     writer.write(format_args!("result.{}", field.name));
                 }
                 writer.write(", ");
-                match acceptance {
-                    crate::model::Acceptance::Exact(expected) => writer.write(c::test_float_literal(*expected)),
-                    crate::model::Acceptance::Interval { lower, upper } => {
-                        writer.write(c::test_float_literal(*lower));
-                        writer.write(", ");
-                        writer.write(c::test_float_literal(*upper));
-                    }
-                }
+                writer.write(c::test_float_literal(*expected));
+                writer.write(", ");
+                writer.write(c::test_float_literal(*published_tolerance));
                 writer.line(");");
             }
             });

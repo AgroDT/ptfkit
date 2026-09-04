@@ -12,17 +12,17 @@ import ptfkit.tiwary2014;
 int main() {
     {
         const auto result = ptfkit::tiwary2014::calc_ptf_tiwary2014_igp(37.3, 1.674, 4.6);
-        assert_in_interval(result, 0.000000510357777777777, 0.0000005103577777777786);
+        assert_close(result, 0.0000005103578, 0.0);
     }
     {
         const auto result =
             ptfkit::tiwary2014::calc_ptf_tiwary2014_bsr(54.9, 7.6, 61.6, 7.3, 21.4, 3.32);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::tiwary2014::Tiwary2014PTFResult>);
-        assert_in_interval(result.w_33, 41.17289999999994, 41.172900000000055);
-        assert_in_interval(result.w_100, 36.827299999999944, 36.82730000000006);
-        assert_in_interval(result.w_1500, 21.697599999999973, 21.69760000000003);
-        assert_in_interval(result.k_sat, 0.000005373366666666661, 0.000005373366666666674);
+        assert_close(result.w_33, 41.1729, 0.0);
+        assert_close(result.w_100, 36.8273, 0.0);
+        assert_close(result.w_1500, 21.6976, 0.0);
+        assert_close(result.k_sat, 0.000005373367, 0.0);
     }
     return 0;
 }

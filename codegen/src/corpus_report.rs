@@ -36,24 +36,23 @@ pub(crate) struct Functions {
 
 #[derive(Debug, Serialize)]
 pub(crate) struct Verification {
-    pub(crate) golden_tests_total: usize,
+    pub(crate) cases_total: usize,
     pub(crate) by_kind: BTreeMap<&'static str, usize>,
-    pub(crate) source_based_cases: usize,
-    pub(crate) calculated_reference_cases: usize,
-    pub(crate) cases_requiring_human_review: usize,
-    pub(crate) implemented_functions_with_any_golden_test: usize,
-    pub(crate) implemented_functions_with_source_based_test: usize,
+    pub(crate) published_cases: usize,
+    pub(crate) calculated_cases: usize,
+    pub(crate) functions_without_cases: usize,
     pub(crate) all_functions: VerificationCoverage,
     pub(crate) implemented_functions: VerificationCoverage,
+    pub(crate) ready_for_implementation_functions: VerificationCoverage,
     pub(crate) edge_case_interpretation: &'static str,
 }
 
 #[derive(Debug, Default, Serialize)]
 pub(crate) struct VerificationCoverage {
     pub(crate) functions: usize,
-    pub(crate) golden_tests: usize,
-    pub(crate) functions_with_golden_tests: usize,
-    pub(crate) functions_with_golden_tests_percentage: f64,
+    pub(crate) verification_cases: usize,
+    pub(crate) functions_with_verification_cases: usize,
+    pub(crate) functions_with_verification_cases_percentage: f64,
     pub(crate) edge_cases: usize,
     pub(crate) functions_with_edge_cases: usize,
     pub(crate) functions_with_edge_cases_percentage: f64,
@@ -154,13 +153,13 @@ impl Report {
         let mut record_functions = 0;
         let mut all_verification = VerificationCoverage::default();
         let mut implemented_verification = VerificationCoverage::default();
+        let mut ready_verification = VerificationCoverage::default();
         let mut verification_by_kind = VerificationKind::ALL
             .into_iter()
             .map(|kind| (kind.label(), 0))
             .collect::<BTreeMap<_, _>>();
-        let mut source_based_cases = 0;
-        let mut calculated_reference_cases = 0;
-        let mut implemented_functions_with_source_based_test = 0;
+        let mut published_cases = 0;
+        let mut calculated_cases = 0;
         let mut function_territories = BTreeMap::new();
         let mut source_territories = BTreeMap::new();
         let mut functions_with_territory = 0;
@@ -208,26 +207,20 @@ impl Report {
                 }
 
                 add_verification(&mut all_verification, function);
-                for case in &function.golden_tests {
+                for case in &function.verification_cases {
                     *verification_by_kind
-                        .get_mut(case.verification.kind().label())
+                        .get_mut(case.kind.label())
                         .expect("all verification kinds are initialized") += 1;
-                    if case.verification.is_source_based() {
-                        source_based_cases += 1;
-                    } else {
-                        calculated_reference_cases += 1;
+                    match case.kind {
+                        VerificationKind::Published => published_cases += 1,
+                        VerificationKind::Calculated => calculated_cases += 1,
                     }
                 }
                 if function.status == "implemented" {
                     add_verification(&mut implemented_verification, function);
-                    implemented_functions_with_source_based_test +=
-                        usize::from(function.golden_tests.iter().any(|case| {
-                            case.verification.is_source_based()
-                                || case
-                                    .output_verification
-                                    .values()
-                                    .any(|policy| policy.is_source_based())
-                        }));
+                }
+                if function.status == "ready-for-implementation" {
+                    add_verification(&mut ready_verification, function);
                 }
                 if function.status == "blocked" {
                     blocked_functions.push(BlockedFunction {
@@ -244,6 +237,7 @@ impl Report {
         }
         finish_verification(&mut all_verification);
         finish_verification(&mut implemented_verification);
+        finish_verification(&mut ready_verification);
         blocked_functions.sort_by(|left, right| {
             (&left.source_identifier, &left.function_name)
                 .cmp(&(&right.source_identifier, &right.function_name))
@@ -284,16 +278,15 @@ impl Report {
                 by_status: status_frequencies(statuses, total_functions),
             },
             verification: Verification {
-                golden_tests_total: all_verification.golden_tests,
+                cases_total: all_verification.verification_cases,
                 by_kind: verification_by_kind,
-                source_based_cases,
-                calculated_reference_cases,
-                cases_requiring_human_review: 0,
-                implemented_functions_with_any_golden_test: implemented_verification
-                    .functions_with_golden_tests,
-                implemented_functions_with_source_based_test,
+                published_cases,
+                calculated_cases,
+                functions_without_cases: all_verification.functions
+                    - all_verification.functions_with_verification_cases,
                 all_functions: all_verification,
                 implemented_functions: implemented_verification,
+                ready_for_implementation_functions: ready_verification,
                 edge_case_interpretation: "declared specification metadata; not a claim that the cases are executable or externally validated",
             },
             inputs: sorted_inputs(inputs, total_functions),
@@ -361,21 +354,16 @@ impl Report {
 
         output.push_str("\nVerification\n------------\n");
         output.push_str(&format!(
-            "Total golden cases: {}\nSource-based cases: {}\nCalculated equation references: {}\nCases requiring human review: {}\n",
-            self.verification.golden_tests_total,
-            self.verification.source_based_cases,
-            self.verification.calculated_reference_cases,
-            self.verification.cases_requiring_human_review,
+            "Total verification cases: {}\nPublished cases: {}\nCalculated cases: {}\nFunctions without verification cases: {}\n",
+            self.verification.cases_total,
+            self.verification.published_cases,
+            self.verification.calculated_cases,
+            self.verification.functions_without_cases,
         ));
         output.push_str("Cases by provenance:\n");
         for (kind, count) in &self.verification.by_kind {
             output.push_str(&format!("  {kind}: {count}\n"));
         }
-        output.push_str(&format!(
-            "Implemented functions with any golden case: {}\nImplemented functions with source-based evidence: {}\n",
-            self.verification.implemented_functions_with_any_golden_test,
-            self.verification.implemented_functions_with_source_based_test,
-        ));
         render_verification(
             &mut output,
             "All functions",
@@ -385,6 +373,11 @@ impl Report {
             &mut output,
             "Implemented functions",
             &self.verification.implemented_functions,
+        );
+        render_verification(
+            &mut output,
+            "Ready-for-implementation functions",
+            &self.verification.ready_for_implementation_functions,
         );
 
         output.push_str("\nInputs\n------\n");
@@ -471,15 +464,18 @@ fn publication_year(slug: &str) -> Option<u16> {
 
 fn add_verification(coverage: &mut VerificationCoverage, function: &crate::model::Function) {
     coverage.functions += 1;
-    coverage.golden_tests += function.golden_tests.len();
+    coverage.verification_cases += function.verification_cases.len();
     coverage.edge_cases += function.edge_cases.len();
-    coverage.functions_with_golden_tests += usize::from(!function.golden_tests.is_empty());
+    coverage.functions_with_verification_cases +=
+        usize::from(!function.verification_cases.is_empty());
     coverage.functions_with_edge_cases += usize::from(!function.edge_cases.is_empty());
 }
 
 fn finish_verification(coverage: &mut VerificationCoverage) {
-    coverage.functions_with_golden_tests_percentage =
-        percentage(coverage.functions_with_golden_tests, coverage.functions);
+    coverage.functions_with_verification_cases_percentage = percentage(
+        coverage.functions_with_verification_cases,
+        coverage.functions,
+    );
     coverage.functions_with_edge_cases_percentage =
         percentage(coverage.functions_with_edge_cases, coverage.functions);
 }
@@ -564,10 +560,10 @@ fn status_label(status: &str) -> String {
 
 fn render_verification(output: &mut String, label: &str, coverage: &VerificationCoverage) {
     output.push_str(&format!(
-        "{label}:\n  Golden tests: {}\n  Functions with golden tests: {} ({:.1}%)\n  Edge cases: {}\n  Functions with edge cases: {} ({:.1}%)\n",
-        coverage.golden_tests,
-        coverage.functions_with_golden_tests,
-        coverage.functions_with_golden_tests_percentage,
+        "{label}:\n  Verification cases: {}\n  Functions with verification cases: {} ({:.1}%)\n  Edge cases: {}\n  Functions with edge cases: {} ({:.1}%)\n",
+        coverage.verification_cases,
+        coverage.functions_with_verification_cases,
+        coverage.functions_with_verification_cases_percentage,
         coverage.edge_cases,
         coverage.functions_with_edge_cases,
         coverage.functions_with_edge_cases_percentage
@@ -641,9 +637,9 @@ functions:
       - {$ref: '#/$defs/x'}
       - {$ref: '#/$defs/x'}
     outputs: {$ref: '#/$defs/Result'}
-    golden_tests:
-      - {id: one, inputs: {x: 1.0}, expected: {alpha: 1.0, zeta: 2.0}, verification: {kind: exact}, notes: Source lookup.}
-      - {id: two, inputs: {x: 2.0}, expected: {alpha: 2.0, zeta: 3.0}, verification: {kind: exact}, notes: Source lookup.}
+    verification_cases:
+      - {id: one, kind: published, inputs: {x: 1.0}, expected: {alpha: 1.0, zeta: 2.0}, source_location: 'Table 1, row 1'}
+      - {id: two, kind: calculated, inputs: {x: 2.0}, expected: {alpha: 2.0, zeta: 3.0}, rationale: Interior input.}
     edge_cases:
       - {id: edge, inputs: {x: 0.0}, expected_behavior: Finite., notes: Metadata only.}
   - name: calc_ptf_test_blocked
@@ -655,7 +651,7 @@ functions:
     inputs:
       - {$ref: '#/$defs/Category', name: category}
     outputs: {type: scalar, name: beta, symbol: b, unit: '1', domain: null, description: Beta.}
-    golden_tests: []
+    verification_cases: []
     edge_cases: []
     documentation:
       notes: [Known source limitation.]
@@ -692,16 +688,17 @@ functions:
                 .iter()
                 .all(|status| status.count == 1)
         );
-        assert_eq!(report.verification.all_functions.golden_tests, 2);
-        assert_eq!(report.verification.by_kind["exact"], 2);
-        assert_eq!(report.verification.source_based_cases, 2);
-        assert_eq!(report.verification.calculated_reference_cases, 0);
+        assert_eq!(report.verification.all_functions.verification_cases, 2);
+        assert_eq!(report.verification.by_kind["published"], 1);
+        assert_eq!(report.verification.by_kind["calculated"], 1);
+        assert_eq!(report.verification.published_cases, 1);
+        assert_eq!(report.verification.calculated_cases, 1);
         assert_eq!(report.verification.all_functions.edge_cases, 1);
         assert_eq!(
             report
                 .verification
                 .all_functions
-                .functions_with_golden_tests,
+                .functions_with_verification_cases,
             1
         );
         assert_eq!(report.verification.implemented_functions.functions, 1);
@@ -785,10 +782,9 @@ functions:
         crate::compile::functions(entries.clone()).expect("repository specifications compile");
 
         let report = Report::from_entries(&entries);
-        assert_eq!(report.verification.golden_tests_total, 136);
-        assert_eq!(report.verification.by_kind["calculated_reference"], 125);
-        assert_eq!(report.verification.by_kind["exact"], 11);
-        assert_eq!(report.verification.cases_requiring_human_review, 0);
+        assert_eq!(report.verification.cases_total, 137);
+        assert_eq!(report.verification.by_kind["calculated"], 126);
+        assert_eq!(report.verification.by_kind["published"], 11);
         assert_eq!(report.sources.specification_files, entries.len());
         assert_eq!(
             report.functions.total,

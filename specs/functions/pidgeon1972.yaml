@@ -44,15 +44,16 @@ functions:
     unit: '% w/w'
     domain: null
     description: Gravimetric field capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       silt: 30.0
       clay: 20.0
       organic_matter: 2.0
-    verification:
-      kind: calculated_reference
-    notes: Calculated from Table 3 using the reviewed 1.54 organic-matter coefficient.
+    expected:
+      field_capacity: 21.26
+    rationale: Calculated from Table 3 using the reviewed 1.54 organic-matter coefficient.
   edge_cases: []
   documentation:
     notes:
@@ -86,13 +87,14 @@ functions:
     unit: '% w/w'
     domain: null
     description: Gravimetric field capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       sand: 50.0
-    verification:
-      kind: calculated_reference
-    notes: Calculated from Table 3.
+    expected:
+      field_capacity: 23.66
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -130,14 +132,15 @@ functions:
     unit: '% w/w'
     domain: null
     description: Gravimetric field capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       sand: 50.0
       organic_matter: 2.0
-    verification:
-      kind: calculated_reference
-    notes: Calculated from Table 3.
+    expected:
+      field_capacity: 23.27
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -175,14 +178,15 @@ functions:
     unit: '% v/v'
     domain: null
     description: Volumetric field capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       sand: 50.0
       organic_matter: 2.0
-    verification:
-      kind: calculated_reference
-    notes: Calculated from Table 3.
+    expected:
+      field_capacity: 31.19
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -225,15 +229,16 @@ functions:
     unit: '% w/w'
     domain: null
     description: Permanent wilting point.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       silt: 30.0
       clay: 20.0
       organic_matter: 2.0
-    verification:
-      kind: calculated_reference
-    notes: Calculated from Table 3.
+    expected:
+      permanent_wilting_point: 11.11
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -266,13 +271,14 @@ functions:
     unit: '% w/w'
     domain: null
     description: Permanent wilting point.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       sand: 50.0
-    verification:
-      kind: calculated_reference
-    notes: Calculated from Table 3.
+    expected:
+      permanent_wilting_point: 13.91
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -310,14 +316,15 @@ functions:
     unit: '% w/w'
     domain: null
     description: Permanent wilting point.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       sand: 50.0
       organic_matter: 2.0
-    verification:
-      kind: calculated_reference
-    notes: Calculated from Table 3.
+    expected:
+      permanent_wilting_point: 15.28
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -355,14 +362,15 @@ functions:
     unit: mm/m
     domain: null
     description: Available water capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       clay: 20.0
       organic_matter: 2.0
-    verification:
-      kind: calculated_reference
-    notes: Calculated from Table 3.
+    expected:
+      available_water_capacity: 151.48
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -400,14 +408,15 @@ functions:
     unit: mm/m
     domain: null
     description: Available water capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       sand: 50.0
       organic_matter: 2.0
-    verification:
-      kind: calculated_reference
-    notes: Calculated from Table 3.
+    expected:
+      available_water_capacity: 109.24
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -440,13 +449,14 @@ functions:
     unit: mm/m
     domain: null
     description: Available water capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       coarse_sand: 20.0
-    verification:
-      kind: calculated_reference
-    notes: Calculated from Table 3.
+    expected:
+      available_water_capacity: 115.1
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -479,13 +489,14 @@ functions:
     unit: mm/m
     domain: null
     description: Available water capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       fine_sand: 20.0
-    verification:
-      kind: calculated_reference
-    notes: Calculated from Table 3.
+    expected:
+      available_water_capacity: 119.9
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -518,13 +529,14 @@ functions:
     unit: mm/m
     domain: null
     description: Available water capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       very_fine_sand: 10.0
-    verification:
-      kind: calculated_reference
-    notes: Calculated from Table 3.
+    expected:
+      available_water_capacity: 112.7
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -568,15 +580,16 @@ functions:
     unit: mm/m
     domain: null
     description: Extended available water capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       silt: 30.0
       clay: 20.0
       organic_matter: 2.0
-    verification:
-      kind: calculated_reference
-    notes: Calculated from Table 3.
+    expected:
+      extended_available_water_capacity: 16.12
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -609,13 +622,14 @@ functions:
     unit: mm/m
     domain: null
     description: Extended available water capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       sand: 50.0
-    verification:
-      kind: calculated_reference
-    notes: Calculated from Table 3.
+    expected:
+      extended_available_water_capacity: 51.7
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -653,14 +667,15 @@ functions:
     unit: mm/m
     domain: null
     description: Extended available water capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       sand: 50.0
       organic_matter: 2.0
-    verification:
-      kind: calculated_reference
-    notes: Calculated from Table 3.
+    expected:
+      extended_available_water_capacity: 56.26
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -699,14 +714,15 @@ functions:
     unit: mm/m
     domain: null
     description: Extended available water capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       coarse_sand: 20.0
       organic_matter: 2.0
-    verification:
-      kind: calculated_reference
-    notes: Calculated from Table 3.
+    expected:
+      extended_available_water_capacity: 53.72
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -745,14 +761,15 @@ functions:
     unit: mm/m
     domain: null
     description: Extended available water capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       fine_sand: 20.0
       organic_matter: 2.0
-    verification:
-      kind: calculated_reference
-    notes: Calculated from Table 3.
+    expected:
+      extended_available_water_capacity: 59.58
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []

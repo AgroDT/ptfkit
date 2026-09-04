@@ -74,11 +74,9 @@ lock entry.
 The [PTF source specification guide](../ptf-catalog/index.md) explains the
 scientific information represented by each YAML file. The JSON Schema and
 `mise run validate` define the complete structural and semantic contract.
-Golden-case provenance, high-precision reference evaluation, and the shared
-cross-target acceptance policy are documented in the
-[scientific verification policy](verification.md). Changes to semantic IR must
-keep that evaluator exhaustive; an unsupported operation is a verification
-capability gap and must not fall back to a generated target.
+Verification-case provenance and the shared cross-target comparison policy are
+documented in the [scientific verification policy](verification.md). Calculated
+expected values are fixed in YAML and are not regenerated from semantic IR.
 
 Do not edit generated target sources, tests, the PTF catalog, or generated API
 reference pages directly. Regenerate every target and the PTF catalog with:
@@ -149,7 +147,7 @@ mise run corpus-report --format json
 All counts are derived from `specs/functions/` through the normal loader,
 validation, and compilation pipeline. The report intentionally includes
 schema-valid `blocked` functions. Its verification coverage describes declared
-golden tests and edge cases in the specifications; it is neither predictive
+verification cases and edge cases in the specifications; it is neither predictive
 benchmarking nor external validation against soil datasets, and descriptive
 edge cases are not claimed to be executable tests.
 

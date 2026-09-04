@@ -723,7 +723,7 @@ mod tests {
             },
             documentation: Documentation::default(),
             implementation: None,
-            golden_tests: Vec::new(),
+            verification_cases: Vec::new(),
             edge_cases: Vec::new(),
         }
     }

@@ -74,8 +74,9 @@ functions:
       unit: m/s
       domain: value >= 0
       description: Saturated hydraulic conductivity converted from cm/day.
-  golden_tests:
+  verification_cases:
   - id: derivation_minimum_soc_case
+    kind: calculated
     inputs:
       sand: 85.0
       silt: 10.0
@@ -83,9 +84,11 @@ functions:
       bulk_density: 1.22
       soil_organic_carbon: 0.033
       altitude: 1193.0
-    verification:
-      kind: calculated_reference
-    notes: Calculated from Table 6, converting SOC percent to g/kg and water-content
+    expected:
+      theta_s: 0.61540575
+      theta_fc: 0.38491949
+      k_sat: 3.872974e-05
+    rationale: Calculated from Table 6, converting SOC percent to g/kg and water-content
       percentage points to volumetric fractions.
   edge_cases:
   - id: non_positive_log_or_reciprocal_input

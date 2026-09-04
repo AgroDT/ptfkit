@@ -74,37 +74,49 @@ functions:
       unit: m/s
       domain: value >= 0
       description: Saturated hydraulic conductivity.
-  golden_tests:
+  verification_cases:
   - id: loamy_sand
+    kind: calculated
     inputs:
       sand: 85.0
       silt: 10.0
       clay: 5.0
       soil_organic_matter: 0.21
       bulk_density: 1.2
-    verification:
-      kind: calculated_reference
-    notes: Calculated from Table 6 formulas and unit conversion.
+    expected:
+      theta_s: 0.5256803583157499
+      a_vg: 0.9491464758307142
+      n_vg: 1.1657804980997006
+      k_sat: 6.549110367333547e-06
+    rationale: Calculated from Table 6 formulas and unit conversion.
   - id: loam
+    kind: calculated
     inputs:
       sand: 50.23
       silt: 38.72
       clay: 11.05
       soil_organic_matter: 0.65
       bulk_density: 1.42
-    verification:
-      kind: calculated_reference
-    notes: Calculated from Table 6 formulas and unit conversion.
+    expected:
+      theta_s: 0.49659526127697506
+      a_vg: 0.009519989841950734
+      n_vg: 1.1806286355149054
+      k_sat: 4.5117324656202257e-07
+    rationale: Calculated from Table 6 formulas and unit conversion.
   - id: silty_clay
+    kind: calculated
     inputs:
       sand: 12.88
       silt: 60.0
       clay: 27.12
       soil_organic_matter: 1.02
       bulk_density: 1.48
-    verification:
-      kind: calculated_reference
-    notes: Calculated from Table 6 formulas and unit conversion.
+    expected:
+      theta_s: 0.4053061510618609
+      a_vg: 0.0018530400762371828
+      n_vg: 1.2080428739797433
+      k_sat: 1.5151432632107234e-06
+    rationale: Calculated from Table 6 formulas and unit conversion.
   edge_cases:
   - id: non_positive_log_input
     inputs:

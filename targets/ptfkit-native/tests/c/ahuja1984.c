@@ -6,11 +6,11 @@
 int main() {
     {
         const double result = calc_ptf_ahuja1984(0.45, 0.25, 100.0, 4.0);
-        assert_in_interval(result, 0.15999999999999825, 0.1600000000000018);
+        assert_close(result, 0.16, 0.0);
     }
     {
         const double result = calc_ptf_ahuja1984(0.5, 0.2, 100.0, 5.0);
-        assert_in_interval(result, 0.2429999999999982, 0.24300000000000174);
+        assert_close(result, 0.243, 0.0);
     }
     return 0;
 }

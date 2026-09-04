@@ -47,7 +47,7 @@ struct FunctionReference {
     outputs: OutputReference,
     implementation: Option<Implementation>,
     #[serde(default)]
-    golden_tests: Vec<GoldenTest>,
+    verification_cases: Vec<VerificationCase>,
     #[serde(default)]
     edge_cases: Vec<serde_json::Value>,
     #[serde(default)]
@@ -187,7 +187,7 @@ impl<'de> Deserialize<'de> for Spec {
                     inputs,
                     outputs,
                     implementation,
-                    golden_tests: function.golden_tests,
+                    verification_cases: function.verification_cases,
                     edge_cases: function.edge_cases,
                     documentation: function.documentation,
                 })
@@ -375,7 +375,7 @@ pub(crate) struct Function {
     pub(crate) outputs: Outputs,
     pub(crate) implementation: Option<Implementation>,
     #[serde(default)]
-    pub(crate) golden_tests: Vec<GoldenTest>,
+    pub(crate) verification_cases: Vec<VerificationCase>,
     #[serde(default)]
     pub(crate) edge_cases: Vec<serde_json::Value>,
     #[serde(default)]
@@ -392,48 +392,33 @@ impl Function {
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
-pub(crate) struct GoldenTest {
+pub(crate) struct VerificationCase {
     pub(crate) id: String,
+    pub(crate) kind: VerificationKind,
     pub(crate) inputs: BTreeMap<String, GoldenInput>,
-    #[serde(default)]
     pub(crate) expected: BTreeMap<String, f64>,
-    pub(crate) verification: Verification,
+    pub(crate) source_location: Option<String>,
     #[serde(default)]
-    pub(crate) output_verification: BTreeMap<String, Verification>,
-    pub(crate) notes: String,
+    pub(crate) precision: BTreeMap<String, PublishedPrecision>,
+    pub(crate) rationale: Option<String>,
+    pub(crate) notes: Option<String>,
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
-#[serde(tag = "kind", rename_all = "snake_case")]
-pub(crate) enum Verification {
-    Exact,
-    CalculatedReference,
-    PublishedRounded {
-        precision: PublishedPrecision,
-    },
-    PublishedInterval {
-        lower: f64,
-        upper: f64,
-    },
-    PublishedUncertainty {
-        value: f64,
-        absolute_uncertainty: f64,
-    },
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Ord, PartialEq, PartialOrd, Serialize)]
+#[serde(rename_all = "lowercase")]
+pub(crate) enum VerificationKind {
+    Published,
+    Calculated,
 }
 
-impl Verification {
-    pub(crate) fn kind(&self) -> VerificationKind {
+impl VerificationKind {
+    pub(crate) const ALL: [Self; 2] = [Self::Published, Self::Calculated];
+
+    pub(crate) const fn label(self) -> &'static str {
         match self {
-            Self::Exact => VerificationKind::Exact,
-            Self::CalculatedReference => VerificationKind::CalculatedReference,
-            Self::PublishedRounded { .. } => VerificationKind::PublishedRounded,
-            Self::PublishedInterval { .. } => VerificationKind::PublishedInterval,
-            Self::PublishedUncertainty { .. } => VerificationKind::PublishedUncertainty,
+            Self::Published => "published",
+            Self::Calculated => "calculated",
         }
-    }
-
-    pub(crate) fn is_source_based(&self) -> bool {
-        !matches!(self, Self::CalculatedReference)
     }
 }
 
@@ -442,36 +427,6 @@ impl Verification {
 pub(crate) enum PublishedPrecision {
     DecimalPlaces { decimal_places: u32 },
     SignificantDigits { significant_digits: u32 },
-}
-
-#[derive(Clone, Copy, Debug, Eq, Ord, PartialEq, PartialOrd, Serialize)]
-#[serde(rename_all = "snake_case")]
-pub(crate) enum VerificationKind {
-    Exact,
-    CalculatedReference,
-    PublishedRounded,
-    PublishedInterval,
-    PublishedUncertainty,
-}
-
-impl VerificationKind {
-    pub(crate) const ALL: [Self; 5] = [
-        Self::Exact,
-        Self::CalculatedReference,
-        Self::PublishedRounded,
-        Self::PublishedInterval,
-        Self::PublishedUncertainty,
-    ];
-
-    pub(crate) const fn label(self) -> &'static str {
-        match self {
-            Self::Exact => "exact",
-            Self::CalculatedReference => "calculated_reference",
-            Self::PublishedRounded => "published_rounded",
-            Self::PublishedInterval => "published_interval",
-            Self::PublishedUncertainty => "published_uncertainty",
-        }
-    }
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -698,20 +653,15 @@ pub(crate) struct CompiledFunction {
     pub(crate) function_index: usize,
     pub(crate) ir: crate::semantic::Function,
     pub(crate) core: CoreFunction,
-    pub(crate) golden_tests: Vec<CompiledGoldenTest>,
+    pub(crate) verification_cases: Vec<CompiledVerificationCase>,
 }
 
 #[derive(Clone, Debug)]
-pub(crate) struct CompiledGoldenTest {
+pub(crate) struct CompiledVerificationCase {
     pub(crate) id: String,
     pub(crate) inputs: Vec<CompiledInput>,
-    pub(crate) acceptance: Vec<Acceptance>,
-}
-
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub(crate) enum Acceptance {
-    Exact(f64),
-    Interval { lower: f64, upper: f64 },
+    pub(crate) expected: Vec<f64>,
+    pub(crate) published_tolerance: Vec<f64>,
 }
 
 #[derive(Clone, Debug)]

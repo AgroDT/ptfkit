@@ -73,6 +73,7 @@ calc_ptf_hodnett2002: ufunc
 calc_ptf_jabro1992: ufunc
 calc_ptf_li2007: ufunc
 calc_ptf_mayr1999: ufunc
+calc_ptf_myeni2021: ufunc
 calc_ptf_oosterveld1980_available_water: ufunc
 calc_ptf_oosterveld1980_field_capacity: ufunc
 calc_ptf_oosterveld1980_field_capacity_tension: ufunc

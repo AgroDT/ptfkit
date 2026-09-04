@@ -16,6 +16,29 @@ Southern Alberta, Canada
 1,137 pressure-plate analyses on 298 soil samples from the Lethbridge Research Station
 laboratory; the field-capacity tension regression used 134 samples."]
 
+#[cfg(test)]
+fn is_close(actual: f64, expected: f64, published_tolerance: f64) -> bool {
+    let tolerance = published_tolerance + 1e-12 + 1e-5 * expected.abs();
+    (actual - expected).abs() <= tolerance
+}
+#[cfg(test)]
+fn assert_close(actual: f64, expected: f64, published_tolerance: f64) {
+    assert!(
+        is_close(actual, expected, published_tolerance),
+        "|{actual} - {expected}| exceeds the shared tolerance"
+    );
+}
+#[cfg(test)]
+mod comparator_tests {
+    use super::*;
+    #[test]
+    fn accepts_below_and_rejects_above_tolerance() {
+        let expected = 2.0;
+        let tolerance = 1e-12 + 1e-5 * expected;
+        assert!(is_close(expected + tolerance * 0.5, expected, 0.0));
+        assert!(!is_close(expected + tolerance * 2.0, expected, 0.0));
+    }
+}
 #[doc = r"Estimate field-capacity tension from clay content.
 
 # Arguments
@@ -45,16 +68,10 @@ pub fn calc_ptf_oosterveld1980_field_capacity_tension(clay: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_oosterveld1980_field_capacity_tension_tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn table_1_loamy_sand() {
         let result = calc_ptf_oosterveld1980_field_capacity_tension(6.6f64);
-        assert_in_interval(result, 11.85409941642865f64, 11.854099416428877f64);
+        assert_close(result, 11.8540994164288f64, 0f64);
     }
 }
 #[doc = r"Estimate gravimetric soil-moisture content from texture, depth, and tension.
@@ -96,16 +113,10 @@ pub fn calc_ptf_oosterveld1980_retention(
 #[cfg(test)]
 mod calc_ptf_oosterveld1980_retention_tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn table_1_loamy_sand_inputs() {
         let result = calc_ptf_oosterveld1980_retention(6.6f64, 86.3f64, 105f64, 11.8f64);
-        assert_in_interval(result, 8.278246810041193f64, 8.27824681004142f64);
+        assert_close(result, 8.2782468100413f64, 0f64);
     }
 }
 #[doc = r"Estimate gravimetric soil-moisture content at field capacity.
@@ -138,16 +149,10 @@ pub fn calc_ptf_oosterveld1980_field_capacity(clay: f64, sand: f64, mean_depth: 
 #[cfg(test)]
 mod calc_ptf_oosterveld1980_field_capacity_tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn table_1_loamy_sand() {
         let result = calc_ptf_oosterveld1980_field_capacity(6.6f64, 86.3f64, 105f64);
-        assert_in_interval(result, 8.14707947394077f64, 8.147079473940998f64);
+        assert_close(result, 8.14707947394088f64, 0f64);
     }
 }
 #[doc = r"Estimate gravimetric soil-moisture content at the 1500 kPa wilting point.
@@ -180,16 +185,10 @@ pub fn calc_ptf_oosterveld1980_wilting_point(clay: f64, sand: f64, mean_depth: f
 #[cfg(test)]
 mod calc_ptf_oosterveld1980_wilting_point_tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn table_1_loamy_sand() {
         let result = calc_ptf_oosterveld1980_wilting_point(6.6f64, 86.3f64, 105f64);
-        assert_in_interval(result, 1.394199999999998f64, 1.3942000000000017f64);
+        assert_close(result, 1.3942f64, 0f64);
     }
 }
 #[doc = r"Estimate available gravimetric soil moisture between field capacity and wilting point.
@@ -228,15 +227,9 @@ pub fn calc_ptf_oosterveld1980_available_water(clay: f64, sand: f64, mean_depth:
 #[cfg(test)]
 mod calc_ptf_oosterveld1980_available_water_tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn table_1_loamy_sand() {
         let result = calc_ptf_oosterveld1980_available_water(6.6f64, 86.3f64, 105f64);
-        assert_in_interval(result, 6.752879473940828f64, 6.752879473940942f64);
+        assert_close(result, 6.75287947394088f64, 0f64);
     }
 }

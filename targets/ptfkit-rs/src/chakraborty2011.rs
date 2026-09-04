@@ -18,6 +18,29 @@ India
 for regression development and 80 independent samples for validation. Analyses were performed
 during 2006-2008."]
 
+#[cfg(test)]
+fn is_close(actual: f64, expected: f64, published_tolerance: f64) -> bool {
+    let tolerance = published_tolerance + 1e-12 + 1e-5 * expected.abs();
+    (actual - expected).abs() <= tolerance
+}
+#[cfg(test)]
+fn assert_close(actual: f64, expected: f64, published_tolerance: f64) {
+    assert!(
+        is_close(actual, expected, published_tolerance),
+        "|{actual} - {expected}| exceeds the shared tolerance"
+    );
+}
+#[cfg(test)]
+mod comparator_tests {
+    use super::*;
+    #[test]
+    fn accepts_below_and_rejects_above_tolerance() {
+        let expected = 2.0;
+        let tolerance = 1e-12 + 1e-5 * expected;
+        assert!(is_close(expected + tolerance * 0.5, expected, 0.0));
+        assert!(!is_close(expected + tolerance * 2.0, expected, 0.0));
+    }
+}
 #[doc = r"Results returned by `calc_ptf_chakraborty2011_eq1`."]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Chakraborty2011PTFResult {
@@ -73,35 +96,13 @@ pub fn calc_ptf_chakraborty2011_eq1(clay: f64, silt: f64) -> Chakraborty2011PTFR
 #[cfg(test)]
 mod calc_ptf_chakraborty2011_eq1_tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn representative_case() {
         let result = calc_ptf_chakraborty2011_eq1(20f64, 30f64);
-        assert_in_interval(
-            result.water_content_33,
-            0.24879999999999977f64,
-            0.24880000000000022f64,
-        );
-        assert_in_interval(
-            result.water_content_100,
-            0.19757999999999978f64,
-            0.19758000000000023f64,
-        );
-        assert_in_interval(
-            result.water_content_500,
-            0.1352799999999998f64,
-            0.13528000000000023f64,
-        );
-        assert_in_interval(
-            result.water_content_1500,
-            0.11701999999999989f64,
-            0.11702000000000011f64,
-        );
+        assert_close(result.water_content_33, 0.2488f64, 0f64);
+        assert_close(result.water_content_100, 0.19758f64, 0f64);
+        assert_close(result.water_content_500, 0.13528f64, 0f64);
+        assert_close(result.water_content_1500, 0.11702f64, 0f64);
     }
 }
 #[doc = r"Estimate four gravimetric water contents from sand and bulk density.
@@ -147,35 +148,13 @@ pub fn calc_ptf_chakraborty2011_eq2(sand: f64, bulk_density: f64) -> Chakraborty
 #[cfg(test)]
 mod calc_ptf_chakraborty2011_eq2_tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn representative_case() {
         let result = calc_ptf_chakraborty2011_eq2(50f64, 1.5f64);
-        assert_in_interval(
-            result.water_content_33,
-            0.21941499999999978f64,
-            0.21941500000000022f64,
-        );
-        assert_in_interval(
-            result.water_content_100,
-            0.17576499999999978f64,
-            0.17576500000000023f64,
-        );
-        assert_in_interval(
-            result.water_content_500,
-            0.1410249999999998f64,
-            0.14102500000000023f64,
-        );
-        assert_in_interval(
-            result.water_content_1500,
-            0.11831499999999989f64,
-            0.11831500000000011f64,
-        );
+        assert_close(result.water_content_33, 0.219415f64, 0f64);
+        assert_close(result.water_content_100, 0.175765f64, 0f64);
+        assert_close(result.water_content_500, 0.141025f64, 0f64);
+        assert_close(result.water_content_1500, 0.118315f64, 0f64);
     }
 }
 #[doc = r"Estimate four gravimetric water contents from clay, silt, and bulk density.
@@ -230,35 +209,13 @@ pub fn calc_ptf_chakraborty2011_eq3(
 #[cfg(test)]
 mod calc_ptf_chakraborty2011_eq3_tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn representative_case() {
         let result = calc_ptf_chakraborty2011_eq3(20f64, 30f64, 1.5f64);
-        assert_in_interval(
-            result.water_content_33,
-            0.25775999999999955f64,
-            0.25776000000000043f64,
-        );
-        assert_in_interval(
-            result.water_content_100,
-            0.2010849999999998f64,
-            0.20108500000000024f64,
-        );
-        assert_in_interval(
-            result.water_content_500,
-            0.13917499999999977f64,
-            0.13917500000000022f64,
-        );
-        assert_in_interval(
-            result.water_content_1500,
-            0.11786499999999989f64,
-            0.11786500000000011f64,
-        );
+        assert_close(result.water_content_33, 0.25776f64, 0f64);
+        assert_close(result.water_content_100, 0.201085f64, 0f64);
+        assert_close(result.water_content_500, 0.139175f64, 0f64);
+        assert_close(result.water_content_1500, 0.117865f64, 0f64);
     }
 }
 #[doc = r"Estimate four gravimetric water contents from clay, silt, and sand.
@@ -309,35 +266,13 @@ pub fn calc_ptf_chakraborty2011_eq4(clay: f64, silt: f64, sand: f64) -> Chakrabo
 #[cfg(test)]
 mod calc_ptf_chakraborty2011_eq4_tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn representative_case() {
         let result = calc_ptf_chakraborty2011_eq4(20f64, 30f64, 50f64);
-        assert_in_interval(
-            result.water_content_33,
-            0.24396999999999977f64,
-            0.24397000000000021f64,
-        );
-        assert_in_interval(
-            result.water_content_100,
-            0.19234999999999977f64,
-            0.19235000000000022f64,
-        );
-        assert_in_interval(
-            result.water_content_500,
-            0.13115999999999978f64,
-            0.13116000000000022f64,
-        );
-        assert_in_interval(
-            result.water_content_1500,
-            0.11324999999999989f64,
-            0.11325000000000011f64,
-        );
+        assert_close(result.water_content_33, 0.24397f64, 0f64);
+        assert_close(result.water_content_100, 0.19235f64, 0f64);
+        assert_close(result.water_content_500, 0.13116f64, 0f64);
+        assert_close(result.water_content_1500, 0.11325f64, 0f64);
     }
 }
 #[doc = r"Estimate four gravimetric water contents from clay, silt, sand, and bulk density.
@@ -398,35 +333,13 @@ pub fn calc_ptf_chakraborty2011_eq5(
 #[cfg(test)]
 mod calc_ptf_chakraborty2011_eq5_tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn representative_case() {
         let result = calc_ptf_chakraborty2011_eq5(20f64, 30f64, 50f64, 1.5f64);
-        assert_in_interval(
-            result.water_content_33,
-            0.24978499999999978f64,
-            0.24978500000000023f64,
-        );
-        assert_in_interval(
-            result.water_content_100,
-            0.19165999999999977f64,
-            0.19166000000000022f64,
-        );
-        assert_in_interval(
-            result.water_content_500,
-            0.13106499999999977f64,
-            0.1310650000000002f64,
-        );
-        assert_in_interval(
-            result.water_content_1500,
-            0.11059499999999989f64,
-            0.11059500000000011f64,
-        );
+        assert_close(result.water_content_33, 0.249785f64, 0f64);
+        assert_close(result.water_content_100, 0.19166f64, 0f64);
+        assert_close(result.water_content_500, 0.131065f64, 0f64);
+        assert_close(result.water_content_1500, 0.110595f64, 0f64);
     }
 }
 #[doc = r"Estimate four gravimetric water contents from texture, organic carbon, and bulk density.
@@ -497,34 +410,12 @@ pub fn calc_ptf_chakraborty2011_eq6(
 #[cfg(test)]
 mod calc_ptf_chakraborty2011_eq6_tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn representative_case() {
         let result = calc_ptf_chakraborty2011_eq6(20f64, 30f64, 50f64, 0.5f64, 1.5f64);
-        assert_in_interval(
-            result.water_content_33,
-            0.25206999999999957f64,
-            0.25207000000000046f64,
-        );
-        assert_in_interval(
-            result.water_content_100,
-            0.19694999999999976f64,
-            0.1969500000000002f64,
-        );
-        assert_in_interval(
-            result.water_content_500,
-            0.1336399999999998f64,
-            0.13364000000000023f64,
-        );
-        assert_in_interval(
-            result.water_content_1500,
-            0.11317499999999989f64,
-            0.11317500000000011f64,
-        );
+        assert_close(result.water_content_33, 0.25207f64, 0f64);
+        assert_close(result.water_content_100, 0.19695f64, 0f64);
+        assert_close(result.water_content_500, 0.13364f64, 0f64);
+        assert_close(result.water_content_1500, 0.113175f64, 0f64);
     }
 }

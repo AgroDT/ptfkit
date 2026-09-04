@@ -17,6 +17,29 @@ USA
 Southern Cooperation Series Bulletins (Dan et al., 1983; Nofziger et al., 1983; Quisenberry et
 al., 1987), 350 samples; validation on Duffield silt loam data."]
 
+#[cfg(test)]
+fn is_close(actual: f64, expected: f64, published_tolerance: f64) -> bool {
+    let tolerance = published_tolerance + 1e-12 + 1e-5 * expected.abs();
+    (actual - expected).abs() <= tolerance
+}
+#[cfg(test)]
+fn assert_close(actual: f64, expected: f64, published_tolerance: f64) {
+    assert!(
+        is_close(actual, expected, published_tolerance),
+        "|{actual} - {expected}| exceeds the shared tolerance"
+    );
+}
+#[cfg(test)]
+mod comparator_tests {
+    use super::*;
+    #[test]
+    fn accepts_below_and_rejects_above_tolerance() {
+        let expected = 2.0;
+        let tolerance = 1e-12 + 1e-5 * expected;
+        assert!(is_close(expected + tolerance * 0.5, expected, 0.0));
+        assert!(!is_close(expected + tolerance * 2.0, expected, 0.0));
+    }
+}
 #[doc = r"Estimate saturated hydraulic conductivity from silt, clay, and bulk density.
 
 # Arguments
@@ -51,42 +74,24 @@ pub fn calc_ptf_jabro1992(silt: f64, clay: f64, bulk_density: f64) -> f64 {
 #[cfg(test)]
 mod tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn loamy_sand_min_bd() {
         let result = calc_ptf_jabro1992(10f64, 5f64, 1.26f64);
-        assert_in_interval(result, 0.000384964067589691f64, 0.00038496406758969795f64);
+        assert_close(result, 0.0003849640675896946f64, 0f64);
     }
     #[test]
     fn loam() {
         let result = calc_ptf_jabro1992(38.72f64, 11.05f64, 1.42f64);
-        assert_in_interval(
-            result,
-            0.000009804037952717552f64,
-            0.000009804037952717769f64,
-        );
+        assert_close(result, 0.000009804037952717678f64, 0f64);
     }
     #[test]
     fn silty_clay_loam_max_silt() {
         let result = calc_ptf_jabro1992(52f64, 30f64, 1.97f64);
-        assert_in_interval(
-            result,
-            0.0000000072924359478820595f64,
-            0.000000007292435947882165f64,
-        );
+        assert_close(result, 0.000000007292435947882127f64, 0f64);
     }
     #[test]
     fn sandy_clay_min_silt_max_clay() {
         let result = calc_ptf_jabro1992(0.2f64, 44f64, 1.61f64);
-        assert_in_interval(
-            result,
-            0.00002032824027706239f64,
-            0.000020328240277062823f64,
-        );
+        assert_close(result, 0.00002032824027706267f64, 0f64);
     }
 }

@@ -22,6 +22,7 @@ Each page describes the source, scope, inputs, outputs, status, and limitations 
 | [Jabro (1992), United States.](./jabro1992.md) | USA | 1 |
 | [Li et al. (2007), Fengqiu County, North China Plain, China.](./li2007.md) | Fengqiu County soils in the North China Plain, China | 1 |
 | [Mayr and Jarvis (1999) modified Brooks-Corey water-retention parameter PTFs.](./mayr1999.md) | England and Wales | 1 |
+| [Myeni et al. (2021) point water-retention PTFs for South African soils.](./myeni2021.md) | South Africa | 1 |
 | [Oosterveld and Chang (1980), soil-moisture retention from texture and depth.](./oosterveld1980.md) | Southern Alberta, Canada | 5 |
 | [Pidgeon (1972), available-water regressions for ferrallitic soils in Uganda.](./pidgeon1972.md) | Non-alluvial ferrallitic soils in Uganda, predominantly kaolinitic and possibly illitic | 17 |
 | [Puckett et al. (1985), Alabama Lower Coastal Plain Ultisols.](./puckett1985.md) | Lower Coastal Plain of Alabama, USA | 1 |

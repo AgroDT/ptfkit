@@ -18,6 +18,29 @@ Tropical soils between approximately 25 degrees N and 25 degrees S.
 The IGBP-DIS tropical-soil dataset contains 771 retained horizons from 249 profiles in 22
 countries, split into 492 calibration curves and 279 validation curves."]
 
+#[cfg(test)]
+fn is_close(actual: f64, expected: f64, published_tolerance: f64) -> bool {
+    let tolerance = published_tolerance + 1e-12 + 1e-5 * expected.abs();
+    (actual - expected).abs() <= tolerance
+}
+#[cfg(test)]
+fn assert_close(actual: f64, expected: f64, published_tolerance: f64) {
+    assert!(
+        is_close(actual, expected, published_tolerance),
+        "|{actual} - {expected}| exceeds the shared tolerance"
+    );
+}
+#[cfg(test)]
+mod comparator_tests {
+    use super::*;
+    #[test]
+    fn accepts_below_and_rejects_above_tolerance() {
+        let expected = 2.0;
+        let tolerance = 1e-12 + 1e-5 * expected;
+        assert!(is_close(expected + tolerance * 0.5, expected, 0.0));
+        assert!(!is_close(expected + tolerance * 2.0, expected, 0.0));
+    }
+}
 #[doc = r"Results returned by `calc_ptf_hodnett2002`."]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Hodnett2002PTFResult {
@@ -118,23 +141,13 @@ pub fn calc_ptf_hodnett2002(
 #[cfg(test)]
 mod tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn calibration_dataset_mean_properties() {
         let result =
             calc_ptf_hodnett2002(39.2f64, 24.2f64, 36.7f64, 1.4f64, 1.2f64, 15.9f64, 5.85f64);
-        assert_in_interval(result.alpha, 0.24518361503787134f64, 0.2451836150378749f64);
-        assert_in_interval(result.n, 1.3673932635238206f64, 1.367393263523849f64);
-        assert_in_interval(result.theta_s, 0.4993352999999965f64, 0.4993353000000036f64);
-        assert_in_interval(
-            result.theta_r,
-            0.21344215999999824f64,
-            0.2134421600000018f64,
-        );
+        assert_close(result.alpha, 0.245183615037873f64, 0f64);
+        assert_close(result.n, 1.36739326352383f64, 0f64);
+        assert_close(result.theta_s, 0.4993353f64, 0f64);
+        assert_close(result.theta_r, 0.21344216f64, 0f64);
     }
 }

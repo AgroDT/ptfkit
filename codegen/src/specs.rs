@@ -778,80 +778,101 @@ functions:
         assert!(error.contains("filename stem must be an APA-style slug"));
     }
 
-    fn verification_specification(slug: &str, golden: &str) -> String {
+    fn verification_specification(slug: &str, case: &str) -> String {
         specification(
             slug,
             &format!(
-                "    implementation:\n      variables: [{{name: value, expr: x}}]\n    golden_tests:\n      - id: reference\n        inputs: {{x: 1.0}}\n{golden}        notes: Test provenance.\n"
+                "    implementation:\n      variables: [{{name: value, expr: x}}]\n    verification_cases:\n      - id: reference\n        inputs: {{x: 1.0}}\n{case}"
             ),
             "",
         )
     }
 
     #[test]
-    fn accepts_each_unambiguous_verification_policy() {
-        let policies = [
+    fn accepts_both_verification_case_kinds() {
+        let cases = [
             (
-                "exact",
-                "        expected: {value: 1.0}\n        verification: {kind: exact}\n",
+                "published",
+                "        expected: {value: 1.0}\n        kind: published\n        source_location: Table 1, row 1\n        precision: {value: {decimal_places: 2}}\n        notes: Source lookup.\n",
             ),
             (
                 "calculated",
-                "        verification: {kind: calculated_reference}\n",
-            ),
-            (
-                "decimal",
-                "        expected: {value: 1.0}\n        verification: {kind: published_rounded, precision: {decimal_places: 2}}\n",
-            ),
-            (
-                "significant",
-                "        expected: {value: 1.0}\n        verification: {kind: published_rounded, precision: {significant_digits: 3}}\n",
-            ),
-            (
-                "interval",
-                "        verification: {kind: published_interval, lower: 0.9, upper: 1.1}\n",
-            ),
-            (
-                "uncertainty",
-                "        verification: {kind: published_uncertainty, value: 1.0, absolute_uncertainty: 0.1}\n",
+                "        expected: {value: 1.0}\n        kind: calculated\n        rationale: Interior representative input.\n",
             ),
         ];
-        for (slug, golden) in policies {
+        for (slug, case) in cases {
             let root = fixture_root(slug);
             fs::write(
                 root.join(format!("specs/functions/{slug}.yaml")),
-                verification_specification(slug, golden),
+                verification_specification(slug, case),
             )
             .unwrap();
-            load(&root).unwrap_or_else(|error| panic!("{slug} policy failed: {error}"));
+            load(&root).unwrap_or_else(|error| panic!("{slug} case failed: {error}"));
             fs::remove_dir_all(root).unwrap();
         }
     }
 
     #[test]
-    fn rejects_legacy_tolerances_and_ambiguous_precision() {
-        for (slug, golden) in [
+    fn rejects_invalid_verification_case_provenance() {
+        for (slug, case) in [
             (
-                "legacy_tolerance",
-                "        expected: {value: 1.0}\n        verification: {kind: exact}\n        rtol: 1e-6\n        atol: 1e-9\n",
+                "unknown_kind",
+                "        expected: {value: 1.0}\n        kind: external\n        rationale: Invalid kind.\n",
             ),
             (
-                "ambiguous_precision",
-                "        expected: {value: 1.0}\n        verification:\n          kind: published_rounded\n          precision: {decimal_places: 2, significant_digits: 3}\n",
+                "published_without_location",
+                "        expected: {value: 1.0}\n        kind: published\n",
+            ),
+            (
+                "calculated_without_rationale",
+                "        expected: {value: 1.0}\n        kind: calculated\n",
             ),
         ] {
             let root = fixture_root(slug);
             fs::write(
                 root.join(format!("specs/functions/{slug}.yaml")),
-                verification_specification(slug, golden),
+                verification_specification(slug, case),
             )
             .unwrap();
             let error = load(&root)
-                .expect_err("invalid verification policy must fail")
+                .expect_err("invalid verification case must fail")
                 .to_string();
             assert!(
                 error.contains("Additional properties are not allowed")
+                    || error.contains("required property")
                     || error.contains("not valid under any of the schemas"),
+                "{error}"
+            );
+            fs::remove_dir_all(root).unwrap();
+        }
+    }
+
+    #[test]
+    fn rejects_missing_and_unknown_expected_outputs() {
+        for (slug, expected) in [
+            ("missing_expected", ""),
+            ("unknown_expected", "        expected: {other: 1.0}\n"),
+        ] {
+            let root = fixture_root(slug);
+            fs::write(
+                root.join(format!("specs/functions/{slug}.yaml")),
+                verification_specification(
+                    slug,
+                    &format!(
+                        "{expected}        kind: calculated\n        rationale: Interior representative input.\n"
+                    ),
+                ),
+            )
+            .unwrap();
+            let result = load(&root).and_then(crate::compile::functions);
+            let error = result
+                .expect_err("invalid expected outputs must fail")
+                .to_string();
+            assert!(
+                error.contains("missing expected output")
+                    || error.contains("references unknown output")
+                    || error.contains("required property")
+                    || error.contains("missing field `expected`"),
                 "{error}"
             );
             fs::remove_dir_all(root).unwrap();

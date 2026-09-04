@@ -99,15 +99,25 @@ functions:
           unit: g/cm^3
           domain: value > 0
           description: Normal dry bulk density assuming particle density 2.65 g/cm^3.
-    golden_tests:
+    verification_cases:
       - id: table_3_sand
+        kind: calculated
         inputs:
           sand: 0.88
           clay: 0.05
           organic_matter: 2.5
-        verification:
-          kind: calculated_reference
-        notes: >-
+        expected:
+          theta_1500: 0.05022058
+          theta_33: 0.10282792364858702
+          theta_s: 0.46172240764858724
+          plant_available_water: 0.05260734364858702
+          air_entry_tension: 0.5986789729513293
+          retention_a: 0.00018076452552206025
+          retention_b: 5.325903100453899
+          conductivity_lambda: 0.18776158355467926
+          saturated_conductivity: 108.1478278507403
+          normal_density: 1.4264356197312436
+        rationale: >-
           Calculated directly from Table 1. The source-native rounded Table 3
           values are 0.05, 0.10, 0.46, 0.05, 108.1 mm/h, and 1.43 g/cm^3 for
           theta_1500, theta_33, theta_s, PAW, K_s, and rho_N, respectively.
@@ -215,16 +225,20 @@ functions:
           unit: m^3/m^3
           domain: value >= 0.005
           description: Density-adjusted difference between saturation and 33 kPa.
-    golden_tests:
+    verification_cases:
       - id: table_3_sand_compacted
+        kind: calculated
         inputs:
           normal_density: 1.4264356197312436
           theta_s: 0.46172240764858724
           theta_33: 0.10282792364858702
           density_factor: 1.1
-        verification:
-          kind: calculated_reference
-        notes: Calculated directly from Table 1, Equations 7-10.
+        expected:
+          adjusted_density: 1.569079181704368
+          adjusted_theta_s: 0.407894648413446
+          adjusted_theta_33: 0.09206237180155877
+          adjusted_theta_s_minus_33: 0.3158322766118873
+        rationale: Calculated directly from Table 1, Equations 7-10.
     edge_cases: []
     documentation:
       notes:
@@ -276,15 +290,16 @@ functions:
       unit: kPa
       domain: 33 <= value <= 1500
       description: Matric tension at the supplied water content.
-    golden_tests:
+    verification_cases:
       - id: table_3_sand_midpoint
+        kind: calculated
         inputs:
           theta: 0.07652425182429351
           theta_1500: 0.05022058
           theta_33: 0.10282792364858702
-        verification:
-          kind: calculated_reference
-        notes: Calculated directly from Table 1, Equations 11, 14, and 15.
+        expected:
+          tension: 159.18094591362183
+        rationale: Calculated directly from Table 1, Equations 11, 14, and 15.
     edge_cases: []
     documentation:
       notes: []
@@ -342,16 +357,17 @@ functions:
       unit: kPa
       domain: air_entry_tension <= value <= 33
       description: Matric tension at the supplied water content.
-    golden_tests:
+    verification_cases:
       - id: table_3_sand_theta_0_2
+        kind: calculated
         inputs:
           theta: 0.2
           theta_33: 0.10282792364858702
           theta_s: 0.46172240764858724
           air_entry_tension: 0.5986789729513293
-        verification:
-          kind: calculated_reference
-        notes: Calculated directly from Table 1, Equation 12.
+        expected:
+          tension: 24.227216407352152
+        rationale: Calculated directly from Table 1, Equation 12.
     edge_cases: []
     documentation:
       notes:
@@ -402,16 +418,17 @@ functions:
       unit: mm/h
       domain: value >= 0
       description: Unsaturated hydraulic conductivity at the supplied water content.
-    golden_tests:
+    verification_cases:
       - id: table_3_sand_theta_0_3
+        kind: calculated
         inputs:
           theta: 0.3
           theta_s: 0.46172240764858724
           saturated_conductivity: 108.1478278507403
           conductivity_lambda: 0.18776158355467926
-        verification:
-          kind: calculated_reference
-        notes: Calculated directly from corrected Table 1, Equation 17.
+        expected:
+          conductivity: 0.3003203142764693
+        rationale: Calculated directly from corrected Table 1, Equation 17.
     edge_cases: []
     documentation:
       notes: []
@@ -478,16 +495,20 @@ functions:
           unit: mm/h
           domain: value >= 0
           description: Saturated conductivity after the gravel reduction.
-    golden_tests:
+    verification_cases:
       - id: table_3_sand_twenty_percent_gravel
+        kind: calculated
         inputs:
           gravel_weight_fraction: 0.2
           matric_density: 1.4264356197312436
           plant_available_water: 0.05260734364858702
           saturated_conductivity: 108.1478278507403
-        verification:
-          kind: calculated_reference
-        notes: Calculated directly from Table 1, Equations 19-22.
+        expected:
+          gravel_volume_fraction: 0.11860834455314037
+          bulk_density: 1.5715605653291098
+          bulk_plant_available_water: 0.04636767370708995
+          bulk_saturated_conductivity: 97.54880510583706
+        rationale: Calculated directly from Table 1, Equations 19-22.
     edge_cases: []
     documentation:
       notes:
@@ -549,15 +570,17 @@ functions:
           unit: kPa
           domain: value >= 0
           description: Osmotic potential at the supplied water content.
-    golden_tests:
+    verification_cases:
       - id: saline_partly_saturated_soil
+        kind: calculated
         inputs:
           electrical_conductivity: 4.0
           theta: 0.3
           theta_s: 0.46172240764858724
-        verification:
-          kind: calculated_reference
-        notes: Calculated directly from Table 1, Equations 23 and 24.
+        expected:
+          saturated_osmotic_potential: 144.0
+          osmotic_potential: 221.6267556713219
+        rationale: Calculated directly from Table 1, Equations 23 and 24.
     edge_cases: []
     documentation:
       notes:

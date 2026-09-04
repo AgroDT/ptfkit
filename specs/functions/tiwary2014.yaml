@@ -44,15 +44,16 @@ functions:
     unit: m/s
     domain: null
     description: Saturated hydraulic conductivity converted from mm/h.
-  golden_tests:
+  verification_cases:
   - id: igp_saturated_conductivity_case
+    kind: calculated
     inputs:
       sand: 37.3
       bulk_density: 1.674
       esp: 4.6
-    verification:
-      kind: calculated_reference
-    notes: Calculated directly from equation 11.
+    expected:
+      k_sat: 5.103578e-07
+    rationale: Calculated directly from equation 11.
   edge_cases: []
   documentation:
     notes:
@@ -134,8 +135,9 @@ functions:
       unit: m/s
       domain: null
       description: Saturated hydraulic conductivity converted from mm/h.
-  golden_tests:
+  verification_cases:
   - id: black_soil_compatibility_case
+    kind: calculated
     inputs:
       clay: 54.9
       ph: 7.6
@@ -143,9 +145,12 @@ functions:
       esp: 7.3
       emp: 21.4
       excm: 3.32
-    verification:
-      kind: calculated_reference
-    notes: Calculated directly from equations 7-10 for BSR soils.
+    expected:
+      w_33: 41.1729
+      w_100: 36.8273
+      w_1500: 21.6976
+      k_sat: 5.373367e-06
+    rationale: Calculated directly from equations 7-10 for BSR soils.
   edge_cases: []
   documentation:
     notes:

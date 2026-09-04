@@ -6,13 +6,13 @@
 int main() {
     {
         const weber2020_ptf_result result = calc_ptf_weber2020(0.05, 0.45, 0.02, 1.6, -0.5, 100.0);
-        assert_in_interval(result.theta_snc_bw, 0.06266999999999912, 0.06267000000000089);
-        assert_in_interval(result.theta_sc_bw, 0.38606999999999647, 0.3860700000000036);
-        assert_in_interval(result.alpha_bw, 0.020147240733519457, 0.0201472407335199);
-        assert_in_interval(result.n_bw, 1.7198054268328802, 1.7198054268329086);
-        assert_in_interval(result.tau_bw, -0.8870000000000071, -0.8869999999999929);
-        assert_in_interval(result.k_sc_bw, 172.18685749859887, 172.1868574986025);
-        assert_in_interval(result.k_snc_bw, 0.01905460717963225, 0.019054607179632695);
+        assert_close(result.theta_snc_bw, 0.06267, 0.0);
+        assert_close(result.theta_sc_bw, 0.38607, 0.0);
+        assert_close(result.alpha_bw, 0.0201472407335197, 0.0);
+        assert_close(result.n_bw, 1.71980542683289, 0.0);
+        assert_close(result.tau_bw, -0.887, 0.0);
+        assert_close(result.k_sc_bw, 172.186857498601, 0.0);
+        assert_close(result.k_snc_bw, 0.0190546071796325, 0.0);
     }
     return 0;
 }

@@ -43,7 +43,7 @@ field names.
 Invoke the lookup as an ordered implementation variable. Its `key` names an
 in-scope input of the lookup's enum type. Return a compatible record-valued
 variable directly, or use `variable.field` in later formula expressions.
-Golden-test categorical inputs also use enum member schema names.
+Verification-case categorical inputs also use enum member schema names.
 
 ```yaml
 $defs:
@@ -73,12 +73,12 @@ functions:
             table:
               $ref: "#/$defs/ParametersByTexture"
             key: texture
-    golden_tests:
+    verification_cases:
       - id: coarse_table_row
+        kind: published
         inputs: {texture: coarse}
         expected: {coefficient: 1.25}
-        rtol: 0.0
-        atol: 0.0
+        source_location: "Published parameter table, coarse row"
         notes: Direct published table row.
 ```
 

@@ -106,17 +106,28 @@ functions:
       unit: m/s
       domain: value >= 0
       description: Saturated hydraulic conductivity.
-  golden_tests:
+  verification_cases:
   - id: cahaba_ap
+    kind: calculated
     inputs:
       sand: 70.9
       fine_sand: 36.4
       clay: 11.8
       bulk_density: 1.67
       porosity: 0.38
-    verification:
-      kind: calculated_reference
-    notes: Calculated from Table 4 using the Cahaba Ap inputs in Tables 2 and 3.
+    expected:
+      theta_0: 0.34288
+      theta_1: 0.33926
+      theta_5: 0.3938615
+      theta_10: 0.39330438
+      theta_30: 0.34432936
+      theta_60: 0.31153562
+      theta_100: 0.29292896
+      theta_500: 0.2513588
+      theta_1000: 0.25187788
+      theta_1500: 0.22746346
+      k_sat: 4.2399741e-06
+    rationale: Calculated from Table 4 using the Cahaba Ap inputs in Tables 2 and 3.
   edge_cases: []
   documentation:
     notes:

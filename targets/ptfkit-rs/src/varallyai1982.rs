@@ -17,6 +17,29 @@ Hungary, mainly the Hungarian Plain
 Undisturbed samples from 559 genetic horizons in 160 soil profiles; the meadow-series
 regressions used 68 samples and the chernozem comparison used 108 samples."]
 
+#[cfg(test)]
+fn is_close(actual: f64, expected: f64, published_tolerance: f64) -> bool {
+    let tolerance = published_tolerance + 1e-12 + 1e-5 * expected.abs();
+    (actual - expected).abs() <= tolerance
+}
+#[cfg(test)]
+fn assert_close(actual: f64, expected: f64, published_tolerance: f64) {
+    assert!(
+        is_close(actual, expected, published_tolerance),
+        "|{actual} - {expected}| exceeds the shared tolerance"
+    );
+}
+#[cfg(test)]
+mod comparator_tests {
+    use super::*;
+    #[test]
+    fn accepts_below_and_rejects_above_tolerance() {
+        let expected = 2.0;
+        let tolerance = 1e-12 + 1e-5 * expected;
+        assert!(is_close(expected + tolerance * 0.5, expected, 0.0));
+        assert!(!is_close(expected + tolerance * 2.0, expected, 0.0));
+    }
+}
 #[doc = r"Results returned by `calc_ptf_varallyai1982_meadow`."]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Varallyai1982Parameters {
@@ -82,18 +105,12 @@ pub fn calc_ptf_varallyai1982_meadow(
 #[cfg(test)]
 mod calc_ptf_varallyai1982_meadow_tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn representative_review_case() {
         let result = calc_ptf_varallyai1982_meadow(1.4f64, 0.3f64, 0.25f64);
-        assert_in_interval(result.theta_0, 46.544949999999545f64, 46.544950000000455f64);
-        assert_in_interval(result.m, 0.10028999999999912f64, 0.10029000000000089f64);
-        assert_in_interval(result.pf_star, 3.6244499999999715f64, 3.6244500000000284f64);
+        assert_close(result.theta_0, 46.54495f64, 0f64);
+        assert_close(result.m, 0.10029f64, 0f64);
+        assert_close(result.pf_star, 3.62445f64, 0f64);
     }
 }
 #[doc = r"Estimate equation (9) water-retention parameters for chernozem A horizons.
@@ -146,18 +163,12 @@ pub fn calc_ptf_varallyai1982_chernozem_a(
 #[cfg(test)]
 mod calc_ptf_varallyai1982_chernozem_a_tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn representative_review_case() {
         let result = calc_ptf_varallyai1982_chernozem_a(1.4f64, 0.35f64);
-        assert_in_interval(result.theta_0, 52.004999999999946f64, 52.00500000000006f64);
-        assert_in_interval(result.m, 0.41739999999999955f64, 0.41740000000000044f64);
-        assert_in_interval(result.pf_star, 4.004689999999992f64, 4.004690000000006f64);
+        assert_close(result.theta_0, 52.005f64, 0f64);
+        assert_close(result.m, 0.4174f64, 0f64);
+        assert_close(result.pf_star, 4.00469f64, 0f64);
     }
 }
 #[doc = r"Estimate equation (9) water-retention parameters for chernozem B horizons.
@@ -210,18 +221,12 @@ pub fn calc_ptf_varallyai1982_chernozem_b(
 #[cfg(test)]
 mod calc_ptf_varallyai1982_chernozem_b_tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn representative_review_case() {
         let result = calc_ptf_varallyai1982_chernozem_b(1.4f64, 0.35f64);
-        assert_in_interval(result.theta_0, 47.60034999999955f64, 47.60035000000046f64);
-        assert_in_interval(result.m, 0.40699999999999636f64, 0.40700000000000347f64);
-        assert_in_interval(result.pf_star, 3.929899999999971f64, 3.929900000000028f64);
+        assert_close(result.theta_0, 47.60035f64, 0f64);
+        assert_close(result.m, 0.407f64, 0f64);
+        assert_close(result.pf_star, 3.9299f64, 0f64);
     }
 }
 #[doc = r"Estimate equation (9) water-retention parameters for chernozem C horizons.
@@ -275,17 +280,11 @@ pub fn calc_ptf_varallyai1982_chernozem_c(
 #[cfg(test)]
 mod calc_ptf_varallyai1982_chernozem_c_tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn representative_review_case() {
         let result = calc_ptf_varallyai1982_chernozem_c(1.4f64, 0.35f64);
-        assert_in_interval(result.theta_0, 49.86999999999955f64, 49.87000000000046f64);
-        assert_in_interval(result.m, 0.8401099999999929f64, 0.8401100000000071f64);
-        assert_in_interval(result.pf_star, 3.597719999999971f64, 3.597720000000028f64);
+        assert_close(result.theta_0, 49.87f64, 0f64);
+        assert_close(result.m, 0.84011f64, 0f64);
+        assert_close(result.pf_star, 3.59772f64, 0f64);
     }
 }

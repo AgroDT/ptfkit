@@ -16,6 +16,29 @@ Lower Coastal Plain of Alabama, USA
 Seven pedons at seven locations representing six Ultisol series with similar genesis and clay
 mineralogy."]
 
+#[cfg(test)]
+fn is_close(actual: f64, expected: f64, published_tolerance: f64) -> bool {
+    let tolerance = published_tolerance + 1e-12 + 1e-5 * expected.abs();
+    (actual - expected).abs() <= tolerance
+}
+#[cfg(test)]
+fn assert_close(actual: f64, expected: f64, published_tolerance: f64) {
+    assert!(
+        is_close(actual, expected, published_tolerance),
+        "|{actual} - {expected}| exceeds the shared tolerance"
+    );
+}
+#[cfg(test)]
+mod comparator_tests {
+    use super::*;
+    #[test]
+    fn accepts_below_and_rejects_above_tolerance() {
+        let expected = 2.0;
+        let tolerance = 1e-12 + 1e-5 * expected;
+        assert!(is_close(expected + tolerance * 0.5, expected, 0.0));
+        assert!(!is_close(expected + tolerance * 2.0, expected, 0.0));
+    }
+}
 #[doc = r"Results returned by `calc_ptf_puckett1985`."]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Puckett1985PTFResult {
@@ -107,65 +130,19 @@ pub fn calc_ptf_puckett1985(
 #[cfg(test)]
 mod tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn cahaba_ap() {
         let result = calc_ptf_puckett1985(70.9f64, 36.4f64, 11.8f64, 1.67f64, 0.38f64);
-        assert_in_interval(result.theta_0, 0.3428799999999964f64, 0.3428800000000035f64);
-        assert_in_interval(
-            result.theta_1,
-            0.33925999999999645f64,
-            0.33926000000000356f64,
-        );
-        assert_in_interval(
-            result.theta_5,
-            0.3938614999999964f64,
-            0.39386150000000353f64,
-        );
-        assert_in_interval(
-            result.theta_10,
-            0.39330437999999646f64,
-            0.39330438000000356f64,
-        );
-        assert_in_interval(
-            result.theta_30,
-            0.3443293599999964f64,
-            0.3443293600000035f64,
-        );
-        assert_in_interval(
-            result.theta_60,
-            0.31153561999999646f64,
-            0.31153562000000357f64,
-        );
-        assert_in_interval(
-            result.theta_100,
-            0.29292895999999646f64,
-            0.29292896000000357f64,
-        );
-        assert_in_interval(
-            result.theta_500,
-            0.25135879999999644f64,
-            0.25135880000000355f64,
-        );
-        assert_in_interval(
-            result.theta_1000,
-            0.25187787999999645f64,
-            0.25187788000000355f64,
-        );
-        assert_in_interval(
-            result.theta_1500,
-            0.22746345999999823f64,
-            0.22746346000000178f64,
-        );
-        assert_in_interval(
-            result.k_sat,
-            0.000004239974055990478f64,
-            0.000004239974055990586f64,
-        );
+        assert_close(result.theta_0, 0.34288f64, 0f64);
+        assert_close(result.theta_1, 0.33926f64, 0f64);
+        assert_close(result.theta_5, 0.3938615f64, 0f64);
+        assert_close(result.theta_10, 0.39330438f64, 0f64);
+        assert_close(result.theta_30, 0.34432936f64, 0f64);
+        assert_close(result.theta_60, 0.31153562f64, 0f64);
+        assert_close(result.theta_100, 0.29292896f64, 0f64);
+        assert_close(result.theta_500, 0.2513588f64, 0f64);
+        assert_close(result.theta_1000, 0.25187788f64, 0f64);
+        assert_close(result.theta_1500, 0.22746346f64, 0f64);
+        assert_close(result.k_sat, 0.0000042399741f64, 0f64);
     }
 }

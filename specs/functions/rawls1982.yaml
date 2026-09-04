@@ -37,14 +37,15 @@ functions:
     unit: cm^3/cm^3
     domain: value >= 0
     description: Volumetric soil water content at -1500 kPa.
-  golden_tests:
+  verification_cases:
   - id: loamy_sand
+    kind: calculated
     inputs:
       clay: 5.12
       organic_matter: 0.1
-    verification:
-      kind: calculated_reference
-    notes: Calculated directly from the -15 bar first-level regression in Table 3.
+    expected:
+      theta_1500: 0.05318
+    rationale: Calculated directly from the -15 bar first-level regression in Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -88,15 +89,16 @@ functions:
     unit: cm^3/cm^3
     domain: value >= 0
     description: Volumetric soil water content at -33 kPa.
-  golden_tests:
+  verification_cases:
   - id: loamy_sand_with_estimated_theta_1500
+    kind: calculated
     inputs:
       sand: 85.0
       organic_matter: 0.1
       theta_1500: 0.05318
-    verification:
-      kind: calculated_reference
-    notes: Calculated directly from the -0.33 bar second-level regression in Table
+    expected:
+      theta_33: 0.1179896
+    rationale: Calculated directly from the -0.33 bar second-level regression in Table
       3.
   edge_cases: []
   documentation:
@@ -207,17 +209,29 @@ functions:
       unit: cm^3/cm^3
       domain: null
       description: Input volumetric water content at -1500 kPa.
-  golden_tests:
+  verification_cases:
   - id: loamy_sand
+    kind: calculated
     inputs:
       sand: 85.0
       organic_matter: 0.66
       bulk_density: 1.22
       theta_33: 0.091
       theta_1500: 0.033
-    verification:
-      kind: calculated_reference
-    notes: Calculated from the third-level regressions in Table 3 using the given
+    expected:
+      theta_4: 0.247242
+      theta_7: 0.968738
+      theta_10: 0.145588
+      theta_20: 0.10483
+      theta_33: 0.091
+      theta_60: 0.075428
+      theta_100: 0.063192
+      theta_200: 0.052946
+      theta_400: 0.045826
+      theta_700: 0.041824
+      theta_1000: 0.038932
+      theta_1500: 0.033
+    rationale: Calculated from the third-level regressions in Table 3 using the given
       endpoint water contents.
   edge_cases: []
   documentation:

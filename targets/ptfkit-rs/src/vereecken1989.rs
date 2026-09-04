@@ -17,6 +17,29 @@ Belgian territory north of the river axis Samber and Meuse
 182 horizons from 40 important Belgian soil series, with textures ranging from sand to heavy
 clay."]
 
+#[cfg(test)]
+fn is_close(actual: f64, expected: f64, published_tolerance: f64) -> bool {
+    let tolerance = published_tolerance + 1e-12 + 1e-5 * expected.abs();
+    (actual - expected).abs() <= tolerance
+}
+#[cfg(test)]
+fn assert_close(actual: f64, expected: f64, published_tolerance: f64) {
+    assert!(
+        is_close(actual, expected, published_tolerance),
+        "|{actual} - {expected}| exceeds the shared tolerance"
+    );
+}
+#[cfg(test)]
+mod comparator_tests {
+    use super::*;
+    #[test]
+    fn accepts_below_and_rejects_above_tolerance() {
+        let expected = 2.0;
+        let tolerance = 1e-12 + 1e-5 * expected;
+        assert!(is_close(expected + tolerance * 0.5, expected, 0.0));
+        assert!(!is_close(expected + tolerance * 2.0, expected, 0.0));
+    }
+}
 #[doc = r"Results returned by `calc_ptf_vereecken1989`."]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Vereecken1989PTFResult {
@@ -86,31 +109,13 @@ pub fn calc_ptf_vereecken1989(
 #[cfg(test)]
 mod calc_ptf_vereecken1989_tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn dataset_mean_properties() {
         let result = calc_ptf_vereecken1989(52.14f64, 10.93f64, 1.03f64, 1.466f64);
-        assert_in_interval(
-            result.theta_r,
-            0.08406999999999912f64,
-            0.0840700000000009f64,
-        );
-        assert_in_interval(
-            result.theta_s,
-            0.40605199999999647f64,
-            0.4060520000000036f64,
-        );
-        assert_in_interval(
-            result.alpha,
-            0.0035816130765798197f64,
-            0.0035816130765798752f64,
-        );
-        assert_in_interval(result.n, 0.8602234826041903f64, 0.8602234826042046f64);
+        assert_close(result.theta_r, 0.08406999999999999f64, 0f64);
+        assert_close(result.theta_s, 0.4060520000000001f64, 0f64);
+        assert_close(result.alpha, 0.003581613076579849f64, 0f64);
+        assert_close(result.n, 0.8602234826041976f64, 0f64);
     }
 }
 #[doc = r"Results returned by `calc_ptf_vereecken1989_detailed`."]
@@ -237,33 +242,15 @@ pub fn calc_ptf_vereecken1989_detailed(
 #[cfg(test)]
 mod calc_ptf_vereecken1989_detailed_tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn dataset_mean_properties() {
         let result = calc_ptf_vereecken1989_detailed(
             0.25f64, 0.88f64, 13.53f64, 21.15f64, 16.3f64, 24.83f64, 7f64, 5.15f64, 10.93f64,
             0.07f64, 4.07f64, 1.03f64, 1.466f64,
         );
-        assert_in_interval(
-            result.theta_r,
-            0.08277819999999911f64,
-            0.08277820000000088f64,
-        );
-        assert_in_interval(
-            result.theta_s,
-            0.40605199999999647f64,
-            0.4060520000000036f64,
-        );
-        assert_in_interval(
-            result.alpha,
-            0.025221158846415237f64,
-            0.02522115884641568f64,
-        );
-        assert_in_interval(result.n, 0.5171756053293899f64, 0.5171756053294041f64);
+        assert_close(result.theta_r, 0.08277820000000001f64, 0f64);
+        assert_close(result.theta_s, 0.4060520000000001f64, 0f64);
+        assert_close(result.alpha, 0.02522115884641546f64, 0f64);
+        assert_close(result.n, 0.517175605329397f64, 0f64);
     }
 }

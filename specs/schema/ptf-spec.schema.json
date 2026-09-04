@@ -258,79 +258,57 @@
         }
       ]
     },
-    "goldenTest": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["id", "inputs", "verification", "notes"],
-      "properties": {
-        "id": { "type": "string", "minLength": 1 },
-        "inputs": { "type": "object", "minProperties": 1 },
-        "expected": { "type": "object", "minProperties": 1 },
-        "verification": { "$ref": "#/$defs/verification" },
-        "output_verification": {
-          "type": "object",
-          "minProperties": 1,
-          "additionalProperties": { "$ref": "#/$defs/verification" }
-        },
-        "notes": { "type": "string" }
-      }
-    },
-    "verification": {
+    "publishedPrecision": {
       "oneOf": [
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["kind"],
-          "properties": { "kind": { "const": "exact" } }
-        },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["kind"],
-          "properties": { "kind": { "const": "calculated_reference" } }
-        },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["kind", "precision"],
+          "required": ["decimal_places"],
           "properties": {
-            "kind": { "const": "published_rounded" },
+            "decimal_places": { "type": "integer", "minimum": 0, "maximum": 308 }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["significant_digits"],
+          "properties": {
+            "significant_digits": { "type": "integer", "minimum": 1, "maximum": 17 }
+          }
+        }
+      ]
+    },
+    "verificationCase": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "kind", "inputs", "expected", "source_location"],
+          "properties": {
+            "id": { "type": "string", "minLength": 1 },
+            "kind": { "const": "published" },
+            "inputs": { "type": "object", "minProperties": 1 },
+            "expected": { "type": "object", "minProperties": 1 },
+            "source_location": { "type": "string", "minLength": 1 },
             "precision": {
-              "oneOf": [
-                {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "required": ["decimal_places"],
-                  "properties": { "decimal_places": { "type": "integer", "minimum": 0, "maximum": 308 } }
-                },
-                {
-                  "type": "object",
-                  "additionalProperties": false,
-                  "required": ["significant_digits"],
-                  "properties": { "significant_digits": { "type": "integer", "minimum": 1, "maximum": 17 } }
-                }
-              ]
-            }
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": { "$ref": "#/$defs/publishedPrecision" }
+            },
+            "notes": { "type": "string" }
           }
         },
         {
           "type": "object",
           "additionalProperties": false,
-          "required": ["kind", "lower", "upper"],
+          "required": ["id", "kind", "inputs", "expected", "rationale"],
           "properties": {
-            "kind": { "const": "published_interval" },
-            "lower": { "type": "number" },
-            "upper": { "type": "number" }
-          }
-        },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["kind", "value", "absolute_uncertainty"],
-          "properties": {
-            "kind": { "const": "published_uncertainty" },
-            "value": { "type": "number" },
-            "absolute_uncertainty": { "type": "number", "exclusiveMinimum": 0 }
+            "id": { "type": "string", "minLength": 1 },
+            "kind": { "const": "calculated" },
+            "inputs": { "type": "object", "minProperties": 1 },
+            "expected": { "type": "object", "minProperties": 1 },
+            "rationale": { "type": "string", "minLength": 1 },
+            "notes": { "type": "string" }
           }
         }
       ]
@@ -408,9 +386,9 @@
             { "$ref": "#/$defs/localReference" }
           ]
         },
-        "golden_tests": {
+        "verification_cases": {
           "type": "array",
-          "items": { "$ref": "#/$defs/goldenTest" }
+          "items": { "$ref": "#/$defs/verificationCase" }
         },
         "edge_cases": {
           "type": "array",

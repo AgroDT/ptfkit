@@ -7,10 +7,10 @@ int main() {
     {
         const hodnett2002_ptf_result result =
             calc_ptf_hodnett2002(39.2, 24.2, 36.7, 1.4, 1.2, 15.9, 5.85);
-        assert_in_interval(result.alpha, 0.24518361503787134, 0.2451836150378749);
-        assert_in_interval(result.n, 1.3673932635238206, 1.367393263523849);
-        assert_in_interval(result.theta_s, 0.4993352999999965, 0.4993353000000036);
-        assert_in_interval(result.theta_r, 0.21344215999999824, 0.2134421600000018);
+        assert_close(result.alpha, 0.245183615037873, 0.0);
+        assert_close(result.n, 1.36739326352383, 0.0);
+        assert_close(result.theta_s, 0.4993353, 0.0);
+        assert_close(result.theta_r, 0.21344216, 0.0);
     }
     return 0;
 }

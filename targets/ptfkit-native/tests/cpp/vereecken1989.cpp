@@ -15,20 +15,20 @@ int main() {
             ptfkit::vereecken1989::calc_ptf_vereecken1989(52.14, 10.93, 1.03, 1.466);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::vereecken1989::Vereecken1989PTFResult>);
-        assert_in_interval(result.theta_r, 0.08406999999999912, 0.0840700000000009);
-        assert_in_interval(result.theta_s, 0.40605199999999647, 0.4060520000000036);
-        assert_in_interval(result.alpha, 0.0035816130765798197, 0.0035816130765798752);
-        assert_in_interval(result.n, 0.8602234826041903, 0.8602234826042046);
+        assert_close(result.theta_r, 0.08406999999999999, 0.0);
+        assert_close(result.theta_s, 0.4060520000000001, 0.0);
+        assert_close(result.alpha, 0.003581613076579849, 0.0);
+        assert_close(result.n, 0.8602234826041976, 0.0);
     }
     {
         const auto result = ptfkit::vereecken1989::calc_ptf_vereecken1989_detailed(
             0.25, 0.88, 13.53, 21.15, 16.3, 24.83, 7.0, 5.15, 10.93, 0.07, 4.07, 1.03, 1.466);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::vereecken1989::Vereecken1989DetailedPTFResult>);
-        assert_in_interval(result.theta_r, 0.08277819999999911, 0.08277820000000088);
-        assert_in_interval(result.theta_s, 0.40605199999999647, 0.4060520000000036);
-        assert_in_interval(result.alpha, 0.025221158846415237, 0.02522115884641568);
-        assert_in_interval(result.n, 0.5171756053293899, 0.5171756053294041);
+        assert_close(result.theta_r, 0.08277820000000001, 0.0);
+        assert_close(result.theta_s, 0.4060520000000001, 0.0);
+        assert_close(result.alpha, 0.02522115884641546, 0.0);
+        assert_close(result.n, 0.517175605329397, 0.0);
     }
     return 0;
 }

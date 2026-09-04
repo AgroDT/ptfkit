@@ -91,8 +91,8 @@ Specifications retain more than executable formulas:
 - `scientific_notes` records derivations, source notation, numerical policy,
   and review decisions that apply to the source;
 - documentation notes and warnings communicate function-specific limitations;
-- `golden_tests` preserve representative cases with structured evidence
-  provenance and source precision; numerical acceptance bounds are derived by
+- `verification_cases` preserve representative inputs and fixed expected
+  outputs with `published` or `calculated` provenance; comparison is defined by
   the [verification policy](../contributing/verification.md), never tuned in YAML;
 - `edge_cases` record boundary conditions and the expected behavior.
 

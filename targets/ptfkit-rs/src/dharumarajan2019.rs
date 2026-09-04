@@ -19,6 +19,29 @@ Field capacity and permanent wilting point were modeled from 512 soil samples in
 Karnataka Plateau and 228 samples in the Southern Karnataka Plateau; infiltration was modeled
 from 100 Karnataka soil observations."]
 
+#[cfg(test)]
+fn is_close(actual: f64, expected: f64, published_tolerance: f64) -> bool {
+    let tolerance = published_tolerance + 1e-12 + 1e-5 * expected.abs();
+    (actual - expected).abs() <= tolerance
+}
+#[cfg(test)]
+fn assert_close(actual: f64, expected: f64, published_tolerance: f64) {
+    assert!(
+        is_close(actual, expected, published_tolerance),
+        "|{actual} - {expected}| exceeds the shared tolerance"
+    );
+}
+#[cfg(test)]
+mod comparator_tests {
+    use super::*;
+    #[test]
+    fn accepts_below_and_rejects_above_tolerance() {
+        let expected = 2.0;
+        let tolerance = 1e-12 + 1e-5 * expected;
+        assert!(is_close(expected + tolerance * 0.5, expected, 0.0));
+        assert!(!is_close(expected + tolerance * 2.0, expected, 0.0));
+    }
+}
 #[doc = r"Results returned by `calc_ptf_dharumarajan2019_nkp`."]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Dharumarajan2019WaterRetentionResult {
@@ -78,25 +101,11 @@ pub fn calc_ptf_dharumarajan2019_nkp(
 #[cfg(test)]
 mod calc_ptf_dharumarajan2019_nkp_tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn northern_study_mean_case() {
         let result = calc_ptf_dharumarajan2019_nkp(43.2f64, 39.8f64, 33.6f64);
-        assert_in_interval(
-            result.field_capacity,
-            29.79119999999997f64,
-            29.79120000000003f64,
-        );
-        assert_in_interval(
-            result.permanent_wilting_point,
-            18.927599999999973f64,
-            18.92760000000003f64,
-        );
+        assert_close(result.field_capacity, 29.7912f64, 0f64);
+        assert_close(result.permanent_wilting_point, 18.9276f64, 0f64);
     }
 }
 #[doc = r"Estimate Northern Karnataka field capacity and wilting point from clay.
@@ -142,25 +151,11 @@ pub fn calc_ptf_dharumarajan2019_nkp_clay(clay: f64) -> Dharumarajan2019WaterRet
 #[cfg(test)]
 mod calc_ptf_dharumarajan2019_nkp_clay_tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn northern_study_mean_clay_case() {
         let result = calc_ptf_dharumarajan2019_nkp_clay(43.2f64);
-        assert_in_interval(
-            result.field_capacity,
-            30.283199999999972f64,
-            30.28320000000003f64,
-        );
-        assert_in_interval(
-            result.permanent_wilting_point,
-            19.15699999999997f64,
-            19.15700000000003f64,
-        );
+        assert_close(result.field_capacity, 30.2832f64, 0f64);
+        assert_close(result.permanent_wilting_point, 19.157f64, 0f64);
     }
 }
 #[doc = r"Estimate field capacity and wilting point for Southern Karnataka soils.
@@ -212,25 +207,11 @@ pub fn calc_ptf_dharumarajan2019_skp(
 #[cfg(test)]
 mod calc_ptf_dharumarajan2019_skp_tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn southern_study_mean_case() {
         let result = calc_ptf_dharumarajan2019_skp(31.5f64, 53.5f64, 14.7f64);
-        assert_in_interval(
-            result.field_capacity,
-            21.816899999999972f64,
-            21.81690000000003f64,
-        );
-        assert_in_interval(
-            result.permanent_wilting_point,
-            11.305399999999986f64,
-            11.305400000000015f64,
-        );
+        assert_close(result.field_capacity, 21.8169f64, 0f64);
+        assert_close(result.permanent_wilting_point, 11.3054f64, 0f64);
     }
 }
 #[doc = r"Estimate Southern Karnataka field capacity and wilting point from clay.
@@ -274,25 +255,11 @@ pub fn calc_ptf_dharumarajan2019_skp_clay(clay: f64) -> Dharumarajan2019WaterRet
 #[cfg(test)]
 mod calc_ptf_dharumarajan2019_skp_clay_tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn southern_study_mean_clay_case() {
         let result = calc_ptf_dharumarajan2019_skp_clay(31.5f64);
-        assert_in_interval(
-            result.field_capacity,
-            22.025499999999973f64,
-            22.02550000000003f64,
-        );
-        assert_in_interval(
-            result.permanent_wilting_point,
-            11.502999999999986f64,
-            11.503000000000014f64,
-        );
+        assert_close(result.field_capacity, 22.0255f64, 0f64);
+        assert_close(result.permanent_wilting_point, 11.503f64, 0f64);
     }
 }
 #[doc = r"Estimate infiltration rate for Karnataka soils from texture fractions.
@@ -332,15 +299,9 @@ pub fn calc_ptf_dharumarajan2019_infiltration(sand: f64, silt: f64, clay: f64) -
 #[cfg(test)]
 mod calc_ptf_dharumarajan2019_infiltration_tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn balanced_texture_case() {
         let result = calc_ptf_dharumarajan2019_infiltration(50f64, 20f64, 30f64);
-        assert_in_interval(result, 18.44999999999997f64, 18.450000000000028f64);
+        assert_close(result, 18.45f64, 0f64);
     }
 }

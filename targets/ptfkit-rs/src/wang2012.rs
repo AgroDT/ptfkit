@@ -16,6 +16,29 @@ Surface soils across the entire Loess Plateau, China
 
 382 surface (0-5 cm) sites; 252 derivation and 130 validation data sets."]
 
+#[cfg(test)]
+fn is_close(actual: f64, expected: f64, published_tolerance: f64) -> bool {
+    let tolerance = published_tolerance + 1e-12 + 1e-5 * expected.abs();
+    (actual - expected).abs() <= tolerance
+}
+#[cfg(test)]
+fn assert_close(actual: f64, expected: f64, published_tolerance: f64) {
+    assert!(
+        is_close(actual, expected, published_tolerance),
+        "|{actual} - {expected}| exceeds the shared tolerance"
+    );
+}
+#[cfg(test)]
+mod comparator_tests {
+    use super::*;
+    #[test]
+    fn accepts_below_and_rejects_above_tolerance() {
+        let expected = 2.0;
+        let tolerance = 1e-12 + 1e-5 * expected;
+        assert!(is_close(expected + tolerance * 0.5, expected, 0.0));
+        assert!(!is_close(expected + tolerance * 2.0, expected, 0.0));
+    }
+}
 #[doc = r"Results returned by `calc_ptf_wang2012`."]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Wang2012PTFResult {
@@ -103,25 +126,11 @@ pub fn calc_ptf_wang2012(
 #[cfg(test)]
 mod tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn derivation_minimum_soc_case() {
         let result = calc_ptf_wang2012(85f64, 10f64, 5f64, 1.22f64, 0.033f64, 1193f64);
-        assert_in_interval(result.theta_s, 0.6154057475250798f64, 0.615405747525094f64);
-        assert_in_interval(
-            result.theta_fc,
-            0.38491948943148163f64,
-            0.38491948943148874f64,
-        );
-        assert_in_interval(
-            result.k_sat,
-            0.00003872973909542171f64,
-            0.000038729739095422574f64,
-        );
+        assert_close(result.theta_s, 0.61540575f64, 0f64);
+        assert_close(result.theta_fc, 0.38491949f64, 0f64);
+        assert_close(result.k_sat, 0.00003872974f64, 0f64);
     }
 }

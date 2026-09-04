@@ -24,10 +24,14 @@ input error.
 2. Extract only facts explicitly supported by the paper. Write its standalone
    YAML directly to `specs/functions/<apa_article_key>.yaml`, following
    `references/spec-template.yaml`.
-3. Record missing or ambiguous required scientific information as explicit
+3. Add every source-published input-output example as a `published`
+   `verification_cases` entry. If none exists, select physically meaningful
+   inputs and calculate the expected outputs with simple reference code as
+   described in `references/extraction-quality-gate.md`.
+4. Record missing or ambiguous computational-contract information as explicit
    blockers and set affected functions to `blocked`; otherwise set reviewed,
    complete functions to `ready-for-implementation`.
-4. Run `cargo run --manifest-path codegen/Cargo.toml -- validate` and fix
+5. Run `cargo run --manifest-path codegen/Cargo.toml -- validate` and fix
    validation errors before finishing. When a nontrivial formula expression is
    repeated within one implementation, declare it once as an earlier local
    implementation variable and reference that variable; retain the published
@@ -42,8 +46,12 @@ exact YAML path and explicit blockers.
 ## Hard rules
 
 - Do not set `implemented`, run target generation, or edit generated files.
-- Do not invent formulas, units, metadata, golden values, applicability, or
-  API details. Keep uncertainty explicit in the YAML.
+- Do not invent formulas, units, published examples, applicability, or API
+  details. Calculated verification inputs must satisfy the documented domain
+  and physical constraints; fix independently calculated expected values in
+  YAML and explain the choice in `rationale`.
+- Do not call a calculated case independent, source-native, artifact-native,
+  external validation, or evidence of model accuracy.
 - Do not normalize, alias, abbreviate, or otherwise broaden source-defined
   categorical values. Keep enum member names, canonical textual values, lookup
   rows, and their evidence distinct.

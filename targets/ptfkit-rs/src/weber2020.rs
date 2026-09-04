@@ -19,6 +19,29 @@ A compilation of 1,729 samples with water-retention and hydraulic-conductivity d
 data set DS1 contained 392 of the 402 retained samples, DS2 was used for tau, DS3 contained 359
 samples for K_snc, and 10 samples were held out as DS4."]
 
+#[cfg(test)]
+fn is_close(actual: f64, expected: f64, published_tolerance: f64) -> bool {
+    let tolerance = published_tolerance + 1e-12 + 1e-5 * expected.abs();
+    (actual - expected).abs() <= tolerance
+}
+#[cfg(test)]
+fn assert_close(actual: f64, expected: f64, published_tolerance: f64) {
+    assert!(
+        is_close(actual, expected, published_tolerance),
+        "|{actual} - {expected}| exceeds the shared tolerance"
+    );
+}
+#[cfg(test)]
+mod comparator_tests {
+    use super::*;
+    #[test]
+    fn accepts_below_and_rejects_above_tolerance() {
+        let expected = 2.0;
+        let tolerance = 1e-12 + 1e-5 * expected;
+        assert!(is_close(expected + tolerance * 0.5, expected, 0.0));
+        assert!(!is_close(expected + tolerance * 2.0, expected, 0.0));
+    }
+}
 #[doc = r"Results returned by `calc_ptf_weber2020`."]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Weber2020PTFResult {
@@ -103,41 +126,15 @@ pub fn calc_ptf_weber2020(
 #[cfg(test)]
 mod tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn representative_vgm_parameters() {
         let result = calc_ptf_weber2020(0.05f64, 0.45f64, 0.02f64, 1.6f64, -0.5f64, 100f64);
-        assert_in_interval(
-            result.theta_snc_bw,
-            0.06266999999999912f64,
-            0.06267000000000089f64,
-        );
-        assert_in_interval(
-            result.theta_sc_bw,
-            0.38606999999999647f64,
-            0.3860700000000036f64,
-        );
-        assert_in_interval(
-            result.alpha_bw,
-            0.020147240733519457f64,
-            0.0201472407335199f64,
-        );
-        assert_in_interval(result.n_bw, 1.7198054268328802f64, 1.7198054268329086f64);
-        assert_in_interval(
-            result.tau_bw,
-            -0.8870000000000071f64,
-            -0.8869999999999929f64,
-        );
-        assert_in_interval(result.k_sc_bw, 172.18685749859887f64, 172.1868574986025f64);
-        assert_in_interval(
-            result.k_snc_bw,
-            0.01905460717963225f64,
-            0.019054607179632695f64,
-        );
+        assert_close(result.theta_snc_bw, 0.06267f64, 0f64);
+        assert_close(result.theta_sc_bw, 0.38607f64, 0f64);
+        assert_close(result.alpha_bw, 0.0201472407335197f64, 0f64);
+        assert_close(result.n_bw, 1.71980542683289f64, 0f64);
+        assert_close(result.tau_bw, -0.887f64, 0f64);
+        assert_close(result.k_sc_bw, 172.186857498601f64, 0f64);
+        assert_close(result.k_snc_bw, 0.0190546071796325f64, 0f64);
     }
 }

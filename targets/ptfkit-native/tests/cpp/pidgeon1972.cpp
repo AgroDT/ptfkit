@@ -11,78 +11,78 @@ import ptfkit.pidgeon1972;
 int main() {
     {
         const auto result = ptfkit::pidgeon1972::calc_ptf_pidgeon1972_fc(30.0, 20.0, 2.0);
-        assert_in_interval(result, 21.259999999999973, 21.26000000000003);
+        assert_close(result, 21.26, 0.0);
     }
     {
         const auto result = ptfkit::pidgeon1972::calc_ptf_pidgeon1972_fc_sand(50.0);
-        assert_in_interval(result, 23.65999999999997, 23.66000000000003);
+        assert_close(result, 23.66, 0.0);
     }
     {
         const auto result =
             ptfkit::pidgeon1972::calc_ptf_pidgeon1972_fc_sand_organic_matter(50.0, 2.0);
-        assert_in_interval(result, 23.26999999999997, 23.270000000000028);
+        assert_close(result, 23.27, 0.0);
     }
     {
         const auto result =
             ptfkit::pidgeon1972::calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(50.0, 2.0);
-        assert_in_interval(result, 31.189999999999973, 31.19000000000003);
+        assert_close(result, 31.19, 0.0);
     }
     {
         const auto result = ptfkit::pidgeon1972::calc_ptf_pidgeon1972_pwp(30.0, 20.0, 2.0);
-        assert_in_interval(result, 11.109999999999985, 11.110000000000014);
+        assert_close(result, 11.11, 0.0);
     }
     {
         const auto result = ptfkit::pidgeon1972::calc_ptf_pidgeon1972_pwp_sand(50.0);
-        assert_in_interval(result, 13.909999999999986, 13.910000000000014);
+        assert_close(result, 13.91, 0.0);
     }
     {
         const auto result =
             ptfkit::pidgeon1972::calc_ptf_pidgeon1972_pwp_sand_organic_matter(50.0, 2.0);
-        assert_in_interval(result, 15.279999999999985, 15.280000000000014);
+        assert_close(result, 15.28, 0.0);
     }
     {
         const auto result = ptfkit::pidgeon1972::calc_ptf_pidgeon1972_awc(20.0, 2.0);
-        assert_in_interval(result, 151.47999999999976, 151.48000000000022);
+        assert_close(result, 151.48, 0.0);
     }
     {
         const auto result =
             ptfkit::pidgeon1972::calc_ptf_pidgeon1972_awc_sand_organic_matter(50.0, 2.0);
-        assert_in_interval(result, 109.23999999999988, 109.24000000000011);
+        assert_close(result, 109.24, 0.0);
     }
     {
         const auto result = ptfkit::pidgeon1972::calc_ptf_pidgeon1972_awc_coarse_sand(20.0);
-        assert_in_interval(result, 115.09999999999988, 115.10000000000011);
+        assert_close(result, 115.1, 0.0);
     }
     {
         const auto result = ptfkit::pidgeon1972::calc_ptf_pidgeon1972_awc_fine_sand(20.0);
-        assert_in_interval(result, 119.89999999999989, 119.90000000000012);
+        assert_close(result, 119.9, 0.0);
     }
     {
         const auto result = ptfkit::pidgeon1972::calc_ptf_pidgeon1972_awc_very_fine_sand(10.0);
-        assert_in_interval(result, 112.69999999999989, 112.70000000000012);
+        assert_close(result, 112.7, 0.0);
     }
     {
         const auto result = ptfkit::pidgeon1972::calc_ptf_pidgeon1972_eawc(30.0, 20.0, 2.0);
-        assert_in_interval(result, 16.119999999999973, 16.12000000000003);
+        assert_close(result, 16.12, 0.0);
     }
     {
         const auto result = ptfkit::pidgeon1972::calc_ptf_pidgeon1972_eawc_sand(50.0);
-        assert_in_interval(result, 51.699999999999946, 51.70000000000006);
+        assert_close(result, 51.7, 0.0);
     }
     {
         const auto result =
             ptfkit::pidgeon1972::calc_ptf_pidgeon1972_eawc_sand_organic_matter(50.0, 2.0);
-        assert_in_interval(result, 56.25999999999994, 56.260000000000055);
+        assert_close(result, 56.26, 0.0);
     }
     {
         const auto result =
             ptfkit::pidgeon1972::calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(20.0, 2.0);
-        assert_in_interval(result, 53.71999999999994, 53.720000000000056);
+        assert_close(result, 53.72, 0.0);
     }
     {
         const auto result =
             ptfkit::pidgeon1972::calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(20.0, 2.0);
-        assert_in_interval(result, 59.57999999999994, 59.580000000000055);
+        assert_close(result, 59.58, 0.0);
     }
     return 0;
 }

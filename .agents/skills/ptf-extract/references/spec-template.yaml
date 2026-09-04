@@ -19,7 +19,12 @@ functions:
         k_h: null
     inputs: []
     outputs: []
-    golden_tests: []
+    verification_cases:
+      - id: representative_case
+        kind: calculated
+        inputs: {}
+        expected: {}
+        rationale: Explain why the input is physically meaningful and within the source domain.
     edge_cases: []
     documentation:
       notes: []

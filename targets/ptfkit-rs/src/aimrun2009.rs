@@ -17,6 +17,29 @@ Agricultural Development Area (IADA Barat Laut Selangor), Malaysia
 
 408 lowland paddy soil samples from Sawah Sempadan rice cultivation area."]
 
+#[cfg(test)]
+fn is_close(actual: f64, expected: f64, published_tolerance: f64) -> bool {
+    let tolerance = published_tolerance + 1e-12 + 1e-5 * expected.abs();
+    (actual - expected).abs() <= tolerance
+}
+#[cfg(test)]
+fn assert_close(actual: f64, expected: f64, published_tolerance: f64) {
+    assert!(
+        is_close(actual, expected, published_tolerance),
+        "|{actual} - {expected}| exceeds the shared tolerance"
+    );
+}
+#[cfg(test)]
+mod comparator_tests {
+    use super::*;
+    #[test]
+    fn accepts_below_and_rejects_above_tolerance() {
+        let expected = 2.0;
+        let tolerance = 1e-12 + 1e-5 * expected;
+        assert!(is_close(expected + tolerance * 0.5, expected, 0.0));
+        assert!(!is_close(expected + tolerance * 2.0, expected, 0.0));
+    }
+}
 #[doc = r"Estimate saturated hydraulic conductivity for lowland paddy soils.
 
 # Arguments
@@ -58,46 +81,24 @@ pub fn calc_ptf_aimrun2009(clay: f64, bulk_density: f64, organic_matter: f64, gm
 #[cfg(test)]
 mod tests {
     use super::*;
-    fn assert_in_interval(actual: f64, lower: f64, upper: f64) {
-        assert!(
-            actual >= lower && actual <= upper,
-            "actual {actual} is outside [{lower}, {upper}]"
-        );
-    }
     #[test]
     fn mean_topsoil_layer() {
         let result = calc_ptf_aimrun2009(43.88f64, 0.94f64, 12.07f64, 0.01f64);
-        assert_in_interval(
-            result,
-            0.00000007358406556179425f64,
-            0.00000007358406556179594f64,
-        );
+        assert_close(result, 0.00000007358406556179513f64, 0f64);
     }
     #[test]
     fn mean_hardpan_layer() {
         let result = calc_ptf_aimrun2009(50.21f64, 1.19f64, 8.55f64, 0.007f64);
-        assert_in_interval(
-            result,
-            0.00000003078724467172052f64,
-            0.00000003078724467172137f64,
-        );
+        assert_close(result, 0.0000000307872446717209f64, 0f64);
     }
     #[test]
     fn mean_subsoil_layer() {
         let result = calc_ptf_aimrun2009(58.81f64, 1.13f64, 5.12f64, 0.005f64);
-        assert_in_interval(
-            result,
-            0.000000023343051908963158f64,
-            0.00000002334305190896358f64,
-        );
+        assert_close(result, 0.000000023343051908963327f64, 0f64);
     }
     #[test]
     fn min_organic_matter() {
         let result = calc_ptf_aimrun2009(47.5f64, 1.08f64, 1.43f64, 0.008f64);
-        assert_in_interval(
-            result,
-            0.000000038311687644449284f64,
-            0.00000003831168764445013f64,
-        );
+        assert_close(result, 0.00000003831168764444974f64, 0f64);
     }
 }

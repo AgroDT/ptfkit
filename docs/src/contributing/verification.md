@@ -4,147 +4,99 @@ title: Scientific verification policy
 
 # Scientific verification policy
 
-Golden cases describe the provenance and precision of reference evidence. They
-do not contain author-tuned `rtol` or `atol` values. ptfkit separates source
-uncertainty (what the publication supports) from numerical uncertainty (what a
-legal `f64` implementation may introduce), then compiles both into one closed
-acceptance interval shared by every generated target test.
+Verification cases fix representative inputs and expected outputs in each PTF
+specification. They test generated implementations; they do not replace model
+evaluation against observations.
 
-## Verification kinds
+## Provenance
 
-An exact source value retains its nominal value and requires `f64` equality.
-This is appropriate for integer results and authoritative, exactly stored
-lookup rows:
+Only two provenance kinds are supported:
 
-```yaml
-expected: {factor: 2.0}
-verification:
-  kind: exact
-```
+- `published` means the complete input-output pair appears in the publication,
+  supplementary material, official author software, or another authoritative
+  source. `source_location` records where it can be checked.
+- `calculated` means no complete numerical example was published. A reviewer
+  selected a physically meaningful input and calculated the expected output
+  from the published computational contract. `rationale` explains that choice.
 
-A calculated reference is evaluated from the validated semantic IR by the
-target-independent oracle. It normally has no stored `expected` value:
-
-```yaml
-verification:
-  kind: calculated_reference
-```
-
-A printed, rounded value records its source precision:
+Both kinds require `inputs` and `expected`. Record-valued functions require
+every output field. A calculated case is implementation verification, not
+independent validation of the PTF's scientific accuracy and not evidence of
+parity with an unpublished artifact.
 
 ```yaml
-expected: {water_content: 1.24}
-verification:
-  kind: published_rounded
-  precision:
-    decimal_places: 2
+verification_cases:
+  - id: representative_soil
+    kind: calculated
+    inputs:
+      clay: 30.0
+      silt: 20.0
+      soil_organic_carbon: 1.0
+    expected:
+      field_capacity: 0.213
+      permanent_wilting_point: 0.117
+    rationale: >-
+      Interior physically plausible mineral-soil composition using mass
+      percentages for texture and soil organic carbon.
 ```
 
-Significant-digit precision is an alternative, not an additional field:
+A published lookup row instead records its source:
 
 ```yaml
-expected: {conductivity: 0.00340}
-verification:
-  kind: published_rounded
-  precision:
-    significant_digits: 3
+verification_cases:
+  - id: published_table_case
+    kind: published
+    inputs: {soil_texture: sand}
+    expected: {coefficient: 1.25}
+    source_location: "Table 4, row 2"
+    notes: Values transcribed from the primary source.
 ```
 
-Use an explicit closed interval when that is what the source reports. ptfkit
-does not infer a confidence level or probability distribution:
+The absence of a published example, row-level dataset, supplement, or author
+calculator does not block extraction or implementation when the formula,
+coefficients, units, preprocessing, transforms, branches, applicability, and
+other parts of the computational contract are complete. Missing or ambiguous
+parts of that contract remain blockers. Rights and licensing are a separate
+release gate.
+
+## Numerical comparison
+
+All Rust, Python, C, and C++ generated tests use the same centralized tolerant
+comparison:
+
+```text
+rtol = 1e-5
+atol = 1e-12
+abs(actual - expected) <= atol + rtol * abs(expected)
+```
+
+This checks implementation correctness at roughly five significant digits. It
+does not claim that a PTF has that physical accuracy: RMSE, R², uncertainty,
+and applicability describe model quality, not floating-point agreement.
+
+Published values may declare explicitly reported display precision per output:
 
 ```yaml
-verification:
-  kind: published_interval
-  lower: 1.20
-  upper: 1.30
+precision:
+  water_content: {decimal_places: 2}
 ```
 
-An explicitly reported symmetric absolute uncertainty can also be retained:
+The comparator then adds half of the published rounding quantum to the normal
+implementation tolerance. For significant digits, the quantum is derived from
+the expected value's decimal magnitude. Specifications never contain `rtol` or
+`atol`.
 
-```yaml
-verification:
-  kind: published_uncertainty
-  value: 1.25
-  absolute_uncertainty: 0.05
-```
+## Selecting calculated cases
 
-One case-level policy applies to all output fields by default. A record field
-with different evidence can override it without repeating metadata for every
-other field:
+Prefer a complete published predictor row without an output, then published
+means or medians, then an interior point of the documented domain, and finally
+an expert-selected typical soil. Inputs must use the stated units and scales,
+stay away from boundaries, keep texture components and logarithm arguments
+valid, and respect physical relations such as
+`theta_1500 <= theta_33 <= theta_s`.
 
-```yaml
-verification: {kind: calculated_reference}
-output_verification:
-  reported_field:
-    kind: published_rounded
-    precision: {decimal_places: 1}
-expected: {reported_field: 8.1}
-```
-
-`expected` is required for `exact` and `published_rounded`. Calculated
-references derive it from the IR; intervals and uncertainties carry their own
-source bounds.
-
-## Published rounding intervals
-
-Published values are interpreted as conventional rounding to the nearest
-decimal quantum. Endpoints are included because publications usually do not
-state how exact ties were resolved. For `decimal_places: d`, the source
-interval is the nominal value plus or minus `0.5 * 10^-d`. Thus `1.24` at two
-decimal places represents `[1.235, 1.245]`, and `-2.5` at one decimal place
-represents `[-2.55, -2.45]`.
-
-For a nonzero nominal value and `significant_digits: s`, ptfkit computes
-`e = floor(log10(abs(value)))`; the quantum is `10^(e-s+1)`, and the same half-
-quantum rule applies. Consequently `0.00340` at three significant digits has
-source boundaries `0.003395` and `0.003405`. Significant digits for zero are
-ambiguous and rejected; use decimal places or an explicit interval. Decimal
-construction uses the 256-bit evaluator and rounds each final boundary outward
-by one `f64` value, so decimal and scientific notation behave consistently near
-binary conversion boundaries.
-
-## High-precision oracle and numerical policy
-
-The oracle uses `astro-float` at 256-bit precision with round-to-nearest,
-ties-to-even. It consumes the same validated semantic IR used by code
-generation and covers every currently legal operation: unary plus/minus,
-addition, subtraction, multiplication, division, power, square root,
-exponential, natural and base-10 logarithms, absolute value, minimum, maximum,
-and typed record lookup. A future legal IR operation must be added explicitly;
-there is no fallback to a production `f64` target.
-
-The centralized numerical allowance is an interval around the correctly
-rounded `f64` oracle result: eight adjacent representable values on each side
-for elementary arithmetic and lookup expressions, or sixty-four on each side if
-the function contains power, square root, exponential, or logarithmic
-operations. Source intervals are expanded by the same number of representable
-values at each endpoint. This accommodates operation ordering and normal libm
-variation without introducing scale-dependent hand-tuned constants. Exact
-verification receives no numerical expansion.
-
-## What each verification level proves
-
-Specification validity means the YAML satisfies the JSON Schema. Semantic
-validity means it resolves into a complete target-independent IR. A source-
-based golden case checks independently documented evidence from the
-publication. A calculated reference checks that generated targets execute the
-validated IR consistently.
-
-Because the calculated oracle and production generators consume the same IR,
-it does not independently prove that the publication was transcribed correctly.
-That requires an exact lookup, published rounded value, published interval, or
-published uncertainty. `corpus-report` therefore reports source-based coverage
-separately from IR-derived implementation verification.
-
-## Current corpus migration
-
-The tolerance-field migration classified all 136 retained golden cases from
-their case notes and scientific context. The 11 literal Clapp and Hornberger
-Table 2 lookup rows are `exact`; the other 125 cases are explicitly documented
-equation evaluations and are `calculated_reference`. No case required an
-unresolved review state. The calculated cases no longer retain hand-entered
-nominal outputs, eliminating duplicate values that were sometimes printed with
-fewer digits than the semantic result. The migration found no case that had
-failed the former generated target tests, but those old tolerance-based checks
-were not treated as independent scientific evidence.
+Piecewise functions, decision trees, and other multi-branch models need at
+least one case for every material computational branch. Use published cases
+where they exist and calculated cases for the remaining branches. Expected
+calculated outputs are produced once with simple reference code and retained in
+YAML; generation does not recalculate them.

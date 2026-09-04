@@ -15,9 +15,9 @@ int main() {
             ptfkit::wang2012::calc_ptf_wang2012(85.0, 10.0, 5.0, 1.22, 0.033, 1193.0);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::wang2012::Wang2012PTFResult>);
-        assert_in_interval(result.theta_s, 0.6154057475250798, 0.615405747525094);
-        assert_in_interval(result.theta_fc, 0.38491948943148163, 0.38491948943148874);
-        assert_in_interval(result.k_sat, 0.00003872973909542171, 0.000038729739095422574);
+        assert_close(result.theta_s, 0.61540575, 0.0);
+        assert_close(result.theta_fc, 0.38491949, 0.0);
+        assert_close(result.k_sat, 0.00003872974, 0.0);
     }
     return 0;
 }

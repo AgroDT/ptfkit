@@ -57,6 +57,10 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile
                 .map(|(name, fields)| internal_record_tokens(&name, &fields))
                 .collect::<Vec<_>>();
             let lookup_conversions = lookup_conversion_tokens(&functions);
+            let verification_helpers = functions
+                .iter()
+                .any(|function| !function.verification_cases.is_empty())
+                .then(verification_test_helpers);
             let mut defined_result_classes = BTreeSet::new();
             let definitions = functions
                 .into_iter()
@@ -72,7 +76,7 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile
                 PathBuf::from(format!("{slug}.rs")),
                 render_tokens(
                     module_docs,
-                    quote!(#(#enum_definitions)* #(#internal_record_definitions)* #(#lookup_conversions)* #(#definitions)*),
+                    quote!(#(#enum_definitions)* #(#internal_record_definitions)* #(#lookup_conversions)* #verification_helpers #(#definitions)*),
                 ),
             ))
         })
@@ -694,7 +698,7 @@ fn golden_test_tokens(resolved: &CompiledFunction, unique_test_module: bool) -> 
         false => format_ident!("tests"),
     };
     let tests = resolved
-        .golden_tests
+        .verification_cases
         .iter()
         .map(|case| {
             let name = format_ident!("{}", case.id);
@@ -717,36 +721,61 @@ fn golden_test_tokens(resolved: &CompiledFunction, unique_test_module: bool) -> 
                     }
                 })
                 .collect::<Vec<_>>();
-            let assertions_for =
-                |actual: TokenStream, acceptance: &crate::model::Acceptance| match acceptance {
-                    crate::model::Acceptance::Exact(expected) => {
-                        let expected = Literal::f64_suffixed(*expected);
-                        quote!(assert_eq!(#actual, #expected);)
-                    }
-                    crate::model::Acceptance::Interval { lower, upper } => {
-                        let lower = Literal::f64_suffixed(*lower);
-                        let upper = Literal::f64_suffixed(*upper);
-                        quote!(assert_in_interval(#actual, #lower, #upper);)
-                    }
-                };
+            let assertion_for = |actual: TokenStream, expected: &f64, published_tolerance: &f64| {
+                let expected = Literal::f64_suffixed(*expected);
+                let published_tolerance = Literal::f64_suffixed(*published_tolerance);
+                quote!(assert_close(#actual, #expected, #published_tolerance);)
+            };
             let assertions = match &resolved.core.output {
-                Output::Scalar => assertions_for(quote!(result), &case.acceptance[0]),
+                Output::Scalar => assertion_for(
+                    quote!(result),
+                    &case.expected[0],
+                    &case.published_tolerance[0],
+                ),
                 Output::Struct(fields) => {
-                    let assertions =
-                        fields
-                            .iter()
-                            .zip(&case.acceptance)
-                            .map(|(field, acceptance)| {
-                                let field = format_ident!("{field}");
-                                assertions_for(quote!(result.#field), acceptance)
-                            });
+                    let assertions = fields
+                        .iter()
+                        .zip(&case.expected)
+                        .zip(&case.published_tolerance)
+                        .map(|((field, expected), published_tolerance)| {
+                            let field = format_ident!("{field}");
+                            assertion_for(quote!(result.#field), expected, published_tolerance)
+                        });
                     quote!(#(#assertions)*)
                 }
             };
             quote!(#[test] fn #name() { let result = #function(#(#values),*); #assertions })
         })
         .collect::<Vec<_>>();
-    quote! { #[cfg(test)] mod #module { use super::*; fn assert_in_interval(actual: f64, lower: f64, upper: f64) { assert!(actual >= lower && actual <= upper, "actual {actual} is outside [{lower}, {upper}]"); } #(#tests)* } }
+    quote! { #[cfg(test)] mod #module { use super::*; #(#tests)* } }
+}
+
+fn verification_test_helpers() -> TokenStream {
+    quote! {
+        #[cfg(test)]
+        fn is_close(actual: f64, expected: f64, published_tolerance: f64) -> bool {
+            let tolerance = published_tolerance + 1e-12 + 1e-5 * expected.abs();
+            (actual - expected).abs() <= tolerance
+        }
+
+        #[cfg(test)]
+        fn assert_close(actual: f64, expected: f64, published_tolerance: f64) {
+            assert!(is_close(actual, expected, published_tolerance), "|{actual} - {expected}| exceeds the shared tolerance");
+        }
+
+        #[cfg(test)]
+        mod comparator_tests {
+            use super::*;
+
+            #[test]
+            fn accepts_below_and_rejects_above_tolerance() {
+                let expected = 2.0;
+                let tolerance = 1e-12 + 1e-5 * expected;
+                assert!(is_close(expected + tolerance * 0.5, expected, 0.0));
+                assert!(!is_close(expected + tolerance * 2.0, expected, 0.0));
+            }
+        }
+    }
 }
 
 fn render_tokens(module_docs: TokenStream, tokens: TokenStream) -> String {

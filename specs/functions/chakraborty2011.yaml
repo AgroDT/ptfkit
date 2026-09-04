@@ -95,14 +95,18 @@ functions:
           expr: (0.251 * clay + 0.185 * silt + 2.958) / 100
         - name: water_content_1500
           expr: (0.184 * clay + 0.144 * silt + 3.702) / 100
-    golden_tests:
+    verification_cases:
       - id: representative_case
+        kind: calculated
         inputs:
           clay: 20.0
           silt: 30.0
-        verification:
-          kind: calculated_reference
-        notes: Calculated directly from Table 3 and divided by 100.
+        expected:
+          water_content_33: 0.2488
+          water_content_100: 0.19758
+          water_content_500: 0.13528
+          water_content_1500: 0.11702
+        rationale: Calculated directly from Table 3 and divided by 100.
     edge_cases: []
     documentation:
       notes:
@@ -141,14 +145,18 @@ functions:
           expr: (-0.244 * sand - 0.795 * bulk_density + 27.495) / 100
         - name: water_content_1500
           expr: (-0.187 * sand + 1.241 * bulk_density + 19.320) / 100
-    golden_tests:
+    verification_cases:
       - id: representative_case
+        kind: calculated
         inputs:
           sand: 50.0
           bulk_density: 1.5
-        verification:
-          kind: calculated_reference
-        notes: Calculated directly from Table 3 and divided by 100.
+        expected:
+          water_content_33: 0.219415
+          water_content_100: 0.175765
+          water_content_500: 0.141025
+          water_content_1500: 0.118315
+        rationale: Calculated directly from Table 3 and divided by 100.
     edge_cases: []
     documentation:
       notes:
@@ -188,15 +196,19 @@ functions:
           expr: (0.244 * clay + 0.187 * silt - 3.079 * bulk_density + 8.046) / 100
         - name: water_content_1500
           expr: (0.183 * clay + 0.144 * silt - 0.689 * bulk_density + 4.840) / 100
-    golden_tests:
+    verification_cases:
       - id: representative_case
+        kind: calculated
         inputs:
           clay: 20.0
           silt: 30.0
           bulk_density: 1.5
-        verification:
-          kind: calculated_reference
-        notes: Calculated directly from Table 3 and divided by 100.
+        expected:
+          water_content_33: 0.25776
+          water_content_100: 0.201085
+          water_content_500: 0.139175
+          water_content_1500: 0.117865
+        rationale: Calculated directly from Table 3 and divided by 100.
     edge_cases: []
     documentation:
       notes:
@@ -236,15 +248,19 @@ functions:
           expr: (0.067 * clay - 0.008 * silt - 0.204 * sand + 22.216) / 100
         - name: water_content_1500
           expr: (0.021 * clay - 0.028 * silt - 0.179 * sand + 20.695) / 100
-    golden_tests:
+    verification_cases:
       - id: representative_case
+        kind: calculated
         inputs:
           clay: 20.0
           silt: 30.0
           sand: 50.0
-        verification:
-          kind: calculated_reference
-        notes: Calculated directly from Table 3 and divided by 100.
+        expected:
+          water_content_33: 0.24397
+          water_content_100: 0.19235
+          water_content_500: 0.13116
+          water_content_1500: 0.11325
+        rationale: Calculated directly from Table 3 and divided by 100.
     edge_cases: []
     documentation:
       notes:
@@ -290,16 +306,20 @@ functions:
         - name: water_content_1500
           expr: >-
             (0.014 * clay - 0.041 * silt - 0.192 * sand + 2.093 * bulk_density + 18.470) / 100
-    golden_tests:
+    verification_cases:
       - id: representative_case
+        kind: calculated
         inputs:
           clay: 20.0
           silt: 30.0
           sand: 50.0
           bulk_density: 1.5
-        verification:
-          kind: calculated_reference
-        notes: Calculated directly from Table 3 and divided by 100.
+        expected:
+          water_content_33: 0.249785
+          water_content_100: 0.19166
+          water_content_500: 0.131065
+          water_content_1500: 0.110595
+        rationale: Calculated directly from Table 3 and divided by 100.
     edge_cases: []
     documentation:
       notes:
@@ -347,17 +367,21 @@ functions:
         - name: water_content_1500
           expr: >-
             (0.017 * clay - 0.053 * silt - 0.184 * sand + 2.950 * organic_carbon + 2.327 * bulk_density + 16.802) / 100
-    golden_tests:
+    verification_cases:
       - id: representative_case
+        kind: calculated
         inputs:
           clay: 20.0
           silt: 30.0
           sand: 50.0
           organic_carbon: 0.5
           bulk_density: 1.5
-        verification:
-          kind: calculated_reference
-        notes: Calculated directly from Table 3 and divided by 100.
+        expected:
+          water_content_33: 0.25207
+          water_content_100: 0.19695
+          water_content_500: 0.13364
+          water_content_1500: 0.113175
+        rationale: Calculated directly from Table 3 and divided by 100.
     edge_cases: []
     documentation:
       notes:

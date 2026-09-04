@@ -16,7 +16,6 @@ mod semantic;
 mod specs;
 mod targets;
 mod validate;
-mod verification;
 mod version;
 
 #[derive(Parser)]

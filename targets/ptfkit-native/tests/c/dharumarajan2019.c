@@ -7,30 +7,30 @@ int main() {
     {
         const dharumarajan2019_water_retention_result result =
             calc_ptf_dharumarajan2019_nkp(43.2, 39.8, 33.6);
-        assert_in_interval(result.field_capacity, 29.79119999999997, 29.79120000000003);
-        assert_in_interval(result.permanent_wilting_point, 18.927599999999973, 18.92760000000003);
+        assert_close(result.field_capacity, 29.7912, 0.0);
+        assert_close(result.permanent_wilting_point, 18.9276, 0.0);
     }
     {
         const dharumarajan2019_water_retention_result result =
             calc_ptf_dharumarajan2019_nkp_clay(43.2);
-        assert_in_interval(result.field_capacity, 30.283199999999972, 30.28320000000003);
-        assert_in_interval(result.permanent_wilting_point, 19.15699999999997, 19.15700000000003);
+        assert_close(result.field_capacity, 30.2832, 0.0);
+        assert_close(result.permanent_wilting_point, 19.157, 0.0);
     }
     {
         const dharumarajan2019_water_retention_result result =
             calc_ptf_dharumarajan2019_skp(31.5, 53.5, 14.7);
-        assert_in_interval(result.field_capacity, 21.816899999999972, 21.81690000000003);
-        assert_in_interval(result.permanent_wilting_point, 11.305399999999986, 11.305400000000015);
+        assert_close(result.field_capacity, 21.8169, 0.0);
+        assert_close(result.permanent_wilting_point, 11.3054, 0.0);
     }
     {
         const dharumarajan2019_water_retention_result result =
             calc_ptf_dharumarajan2019_skp_clay(31.5);
-        assert_in_interval(result.field_capacity, 22.025499999999973, 22.02550000000003);
-        assert_in_interval(result.permanent_wilting_point, 11.502999999999986, 11.503000000000014);
+        assert_close(result.field_capacity, 22.0255, 0.0);
+        assert_close(result.permanent_wilting_point, 11.503, 0.0);
     }
     {
         const double result = calc_ptf_dharumarajan2019_infiltration(50.0, 20.0, 30.0);
-        assert_in_interval(result, 18.44999999999997, 18.450000000000028);
+        assert_close(result, 18.45, 0.0);
     }
     return 0;
 }

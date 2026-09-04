@@ -6,24 +6,24 @@
 int main() {
     {
         const li2007_ptf_result result = calc_ptf_li2007(85.0, 10.0, 5.0, 1.2, 0.21);
-        assert_in_interval(result.theta_s, 0.5256803583157428, 0.525680358315757);
-        assert_in_interval(result.a_vg, 0.9491464758307003, 0.9491464758307145);
-        assert_in_interval(result.n_vg, 1.1657804980996864, 1.1657804980997148);
-        assert_in_interval(result.k_sat, 0.000006549110367333487, 0.000006549110367333595);
+        assert_close(result.theta_s, 0.5256803583157499, 0.0);
+        assert_close(result.a_vg, 0.9491464758307142, 0.0);
+        assert_close(result.n_vg, 1.1657804980997006, 0.0);
+        assert_close(result.k_sat, 0.000006549110367333547, 0.0);
     }
     {
         const li2007_ptf_result result = calc_ptf_li2007(50.23, 38.72, 11.05, 1.42, 0.65);
-        assert_in_interval(result.theta_s, 0.4965952612769715, 0.4965952612769786);
-        assert_in_interval(result.a_vg, 0.00951998984195053, 0.009519989841950752);
-        assert_in_interval(result.n_vg, 1.1806286355148912, 1.1806286355149196);
-        assert_in_interval(result.k_sat, 0.00000045117324656201886, 0.00000045117324656202564);
+        assert_close(result.theta_s, 0.49659526127697506, 0.0);
+        assert_close(result.a_vg, 0.009519989841950734, 0.0);
+        assert_close(result.n_vg, 1.1806286355149054, 0.0);
+        assert_close(result.k_sat, 0.00000045117324656202257, 0.0);
     }
     {
         const li2007_ptf_result result = calc_ptf_li2007(12.88, 60.0, 27.12, 1.48, 1.02);
-        assert_in_interval(result.theta_s, 0.4053061510618573, 0.4053061510618644);
-        assert_in_interval(result.a_vg, 0.0018530400762371648, 0.0018530400762371926);
-        assert_in_interval(result.n_vg, 1.208042873979729, 1.2080428739797575);
-        assert_in_interval(result.k_sat, 0.0000015151432632107082, 0.0000015151432632107353);
+        assert_close(result.theta_s, 0.4053061510618609, 0.0);
+        assert_close(result.a_vg, 0.0018530400762371828, 0.0);
+        assert_close(result.n_vg, 1.2080428739797433, 0.0);
+        assert_close(result.k_sat, 0.0000015151432632107234, 0.0);
     }
     return 0;
 }
