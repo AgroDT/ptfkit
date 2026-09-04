@@ -17,6 +17,41 @@ Hungary, mainly the Hungarian Plain
 Undisturbed samples from 559 genetic horizons in 160 soil profiles; the meadow-series
 regressions used 68 samples and the chernozem comparison used 108 samples."]
 
+#[cfg(test)]
+fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
+    absolute
+        .max(relative * expected.abs())
+        .max(0.00000000000001f64)
+}
+#[cfg(test)]
+fn assert_close(
+    actual: f64,
+    expected: f64,
+    absolute: f64,
+    relative: f64,
+    quantity: &str,
+    unit: &str,
+    source: &str,
+) {
+    let difference = (actual - expected).abs();
+    let tolerance = resolved_tolerance(expected, absolute, relative);
+    assert!(
+        difference <= tolerance,
+        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
+    );
+}
+#[cfg(test)]
+mod comparator_tests {
+    use super::*;
+    #[test]
+    fn accepts_below_and_rejects_above_tolerance() {
+        for expected in [0.0, 2.0, -2.0] {
+            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
+            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
+            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
+        }
+    }
+}
 #[doc = r"Results returned by `calc_ptf_varallyai1982_meadow`."]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Varallyai1982Parameters {
@@ -82,27 +117,35 @@ pub fn calc_ptf_varallyai1982_meadow(
 #[cfg(test)]
 mod calc_ptf_varallyai1982_meadow_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn representative_review_case() {
         let result = calc_ptf_varallyai1982_meadow(1.4f64, 0.3f64, 0.25f64);
         assert_close(
             result.theta_0,
             46.54495f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.1f64,
+            0f64,
+            "volumetric_water_content",
+            "vol.%",
+            "registry",
         );
-        assert_close(result.m, 0.10029f64, 0.000000000001f64, 0.000000000001f64);
+        assert_close(
+            result.m,
+            0.10029f64,
+            0.001f64,
+            0f64,
+            "varallyai_m",
+            "dimensionless",
+            "registry",
+        );
         assert_close(
             result.pf_star,
             3.62445f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "varallyai_pf_star",
+            "dimensionless",
+            "registry",
         );
     }
 }
@@ -156,27 +199,35 @@ pub fn calc_ptf_varallyai1982_chernozem_a(
 #[cfg(test)]
 mod calc_ptf_varallyai1982_chernozem_a_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn representative_review_case() {
         let result = calc_ptf_varallyai1982_chernozem_a(1.4f64, 0.35f64);
         assert_close(
             result.theta_0,
             52.005f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.1f64,
+            0f64,
+            "volumetric_water_content",
+            "vol.%",
+            "registry",
         );
-        assert_close(result.m, 0.4174f64, 0.000000000001f64, 0.000000000001f64);
+        assert_close(
+            result.m,
+            0.4174f64,
+            0.001f64,
+            0f64,
+            "varallyai_m",
+            "dimensionless",
+            "registry",
+        );
         assert_close(
             result.pf_star,
             4.00469f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "varallyai_pf_star",
+            "dimensionless",
+            "registry",
         );
     }
 }
@@ -230,27 +281,35 @@ pub fn calc_ptf_varallyai1982_chernozem_b(
 #[cfg(test)]
 mod calc_ptf_varallyai1982_chernozem_b_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn representative_review_case() {
         let result = calc_ptf_varallyai1982_chernozem_b(1.4f64, 0.35f64);
         assert_close(
             result.theta_0,
             47.60035f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.1f64,
+            0f64,
+            "volumetric_water_content",
+            "vol.%",
+            "registry",
         );
-        assert_close(result.m, 0.407f64, 0.000000000001f64, 0.000000000001f64);
+        assert_close(
+            result.m,
+            0.407f64,
+            0.001f64,
+            0f64,
+            "varallyai_m",
+            "dimensionless",
+            "registry",
+        );
         assert_close(
             result.pf_star,
             3.9299f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "varallyai_pf_star",
+            "dimensionless",
+            "registry",
         );
     }
 }
@@ -305,27 +364,35 @@ pub fn calc_ptf_varallyai1982_chernozem_c(
 #[cfg(test)]
 mod calc_ptf_varallyai1982_chernozem_c_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn representative_review_case() {
         let result = calc_ptf_varallyai1982_chernozem_c(1.4f64, 0.35f64);
         assert_close(
             result.theta_0,
             49.87f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.1f64,
+            0f64,
+            "volumetric_water_content",
+            "vol.%",
+            "registry",
         );
-        assert_close(result.m, 0.84011f64, 0.000000000001f64, 0.000000000001f64);
+        assert_close(
+            result.m,
+            0.84011f64,
+            0.001f64,
+            0f64,
+            "varallyai_m",
+            "dimensionless",
+            "registry",
+        );
         assert_close(
             result.pf_star,
             3.59772f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "varallyai_pf_star",
+            "dimensionless",
+            "registry",
         );
     }
 }

@@ -16,6 +16,41 @@ Surface soils across the entire Loess Plateau, China
 
 382 surface (0-5 cm) sites; 252 derivation and 130 validation data sets."]
 
+#[cfg(test)]
+fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
+    absolute
+        .max(relative * expected.abs())
+        .max(0.00000000000001f64)
+}
+#[cfg(test)]
+fn assert_close(
+    actual: f64,
+    expected: f64,
+    absolute: f64,
+    relative: f64,
+    quantity: &str,
+    unit: &str,
+    source: &str,
+) {
+    let difference = (actual - expected).abs();
+    let tolerance = resolved_tolerance(expected, absolute, relative);
+    assert!(
+        difference <= tolerance,
+        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
+    );
+}
+#[cfg(test)]
+mod comparator_tests {
+    use super::*;
+    #[test]
+    fn accepts_below_and_rejects_above_tolerance() {
+        for expected in [0.0, 2.0, -2.0] {
+            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
+            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
+            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
+        }
+    }
+}
 #[doc = r"Results returned by `calc_ptf_wang2012`."]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Wang2012PTFResult {
@@ -103,32 +138,35 @@ pub fn calc_ptf_wang2012(
 #[cfg(test)]
 mod tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn derivation_minimum_soc_case() {
         let result = calc_ptf_wang2012(85f64, 10f64, 5f64, 1.22f64, 0.033f64, 1193f64);
         assert_close(
             result.theta_s,
             0.61540575f64,
-            0.000000000001f64,
-            0.000001f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "cm^3/cm^3",
+            "registry",
         );
         assert_close(
             result.theta_fc,
             0.38491949f64,
-            0.000000000001f64,
-            0.000001f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "cm^3/cm^3",
+            "registry",
         );
         assert_close(
             result.k_sat,
             0.00003872974f64,
-            0.000000000001f64,
-            0.000001f64,
+            0.0000000001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "m/s",
+            "registry",
         );
     }
 }

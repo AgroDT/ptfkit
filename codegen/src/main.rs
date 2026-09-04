@@ -56,6 +56,7 @@ impl Cli {
         match self.command {
             Command::Validate => {
                 let entries = load_validated_specifications(root)?;
+                compile::functions(entries.clone())?;
                 println!(
                     "validated {} PTF specification files containing {} functions",
                     entries.len(),

@@ -171,6 +171,29 @@
         "description": { "type": "string", "minLength": 1 }
       }
     },
+    "outputField": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "quantity", "symbol", "unit", "domain", "description"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "quantity": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "symbol": { "$ref": "#/$defs/stringOrNull" },
+        "unit": { "type": "string", "minLength": 1 },
+        "domain": { "$ref": "#/$defs/stringOrNull" },
+        "description": { "type": "string", "minLength": 1 }
+      }
+    },
+    "verificationToleranceOverride": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["absolute", "source_location"],
+      "properties": {
+        "absolute": { "type": "number", "exclusiveMinimum": 0 },
+        "relative": { "type": "number", "minimum": 0 },
+        "source_location": { "type": "string", "minLength": 1 }
+      }
+    },
     "inputReference": {
       "type": "object",
       "additionalProperties": false,
@@ -228,6 +251,7 @@
           "required": [
             "type",
             "name",
+            "quantity",
             "symbol",
             "unit",
             "domain",
@@ -236,6 +260,7 @@
           "properties": {
             "type": { "const": "scalar" },
             "name": { "type": "string", "minLength": 1 },
+            "quantity": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
             "symbol": { "$ref": "#/$defs/stringOrNull" },
             "unit": { "type": "string", "minLength": 1 },
             "domain": { "$ref": "#/$defs/stringOrNull" },
@@ -252,24 +277,41 @@
             "fields": {
               "type": "array",
               "minItems": 1,
-              "items": { "$ref": "#/$defs/parameter" }
+              "items": { "$ref": "#/$defs/outputField" }
             }
           }
         }
       ]
     },
-    "goldenTest": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["id", "inputs", "expected", "rtol", "atol", "notes"],
-      "properties": {
-        "id": { "type": "string", "minLength": 1 },
-        "inputs": { "type": "object", "minProperties": 1 },
-        "expected": { "type": "object", "minProperties": 1 },
-        "rtol": { "type": "number", "minimum": 0 },
-        "atol": { "type": "number", "minimum": 0 },
-        "notes": { "type": "string" }
-      }
+    "verificationCase": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "kind", "inputs", "expected", "source_location"],
+          "properties": {
+            "id": { "type": "string", "minLength": 1 },
+            "kind": { "const": "published" },
+            "inputs": { "type": "object", "minProperties": 1 },
+            "expected": { "type": "object", "minProperties": 1 },
+            "source_location": { "type": "string", "minLength": 1 },
+            "notes": { "type": "string" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "kind", "inputs", "expected", "rationale"],
+          "properties": {
+            "id": { "type": "string", "minLength": 1 },
+            "kind": { "const": "calculated" },
+            "inputs": { "type": "object", "minProperties": 1 },
+            "expected": { "type": "object", "minProperties": 1 },
+            "rationale": { "type": "string", "minLength": 1 },
+            "notes": { "type": "string" }
+          }
+        }
+      ]
     },
     "edgeCase": {
       "type": "object",
@@ -344,9 +386,14 @@
             { "$ref": "#/$defs/localReference" }
           ]
         },
-        "golden_tests": {
+        "verification_tolerances": {
+          "type": "object",
+          "propertyNames": { "pattern": "^[a-z][a-z0-9_]*$" },
+          "additionalProperties": { "$ref": "#/$defs/verificationToleranceOverride" }
+        },
+        "verification_cases": {
           "type": "array",
-          "items": { "$ref": "#/$defs/goldenTest" }
+          "items": { "$ref": "#/$defs/verificationCase" }
         },
         "edge_cases": {
           "type": "array",

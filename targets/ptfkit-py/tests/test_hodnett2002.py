@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import pytest
 
-from _helpers import prepare_vector_case
+from _helpers import assert_close, prepare_vector_case
 from ptfkit.hodnett2002 import Hodnett2002PTFResult, calc_ptf_hodnett2002
 
 
@@ -21,46 +21,134 @@ CASES_CALC_PTF_HODNETT2002 = [
         {
             'alpha': 0.245183615037873,
             'n': 1.36739326352383,
-            'theta_r': 0.21344216,
             'theta_s': 0.4993353,
+            'theta_r': 0.21344216,
         },
-        1e-12,
-        1e-12,
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_HODNETT2002)
-def test_calc_ptf_hodnett2002_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
-):
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_HODNETT2002)
+def test_calc_ptf_hodnett2002_verification(inputs: dict[str, float], expected: dict[str, float]):
     result = calc_ptf_hodnett2002(**inputs)
 
-    assert result.alpha == pytest.approx(expected['alpha'], rel=rtol, abs=atol)
-    assert result.n == pytest.approx(expected['n'], rel=rtol, abs=atol)
-    assert result.theta_s == pytest.approx(expected['theta_s'], rel=rtol, abs=atol)
-    assert result.theta_r == pytest.approx(expected['theta_r'], rel=rtol, abs=atol)
+    assert_close(
+        result.alpha,
+        expected['alpha'],
+        absolute=1e-5,
+        relative=0.0,
+        quantity='van_genuchten_alpha',
+        unit='kPa^-1',
+        source='registry',
+    )
+    assert_close(
+        result.n,
+        expected['n'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='van_genuchten_n',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.theta_s,
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_r,
+        expected['theta_r'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
+    )
 
 
 def test_calc_ptf_hodnett2002_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_HODNETT2002, Hodnett2002PTFResult
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_HODNETT2002, Hodnett2002PTFResult)
     result = calc_ptf_hodnett2002(**inputs, out=None)
-    assert result.alpha[0] == pytest.approx(expected['alpha'], rel=rtol, abs=atol)
-    assert result.n[0] == pytest.approx(expected['n'], rel=rtol, abs=atol)
-    assert result.theta_s[0] == pytest.approx(expected['theta_s'], rel=rtol, abs=atol)
-    assert result.theta_r[0] == pytest.approx(expected['theta_r'], rel=rtol, abs=atol)
+    assert_close(
+        result.alpha[0],
+        expected['alpha'],
+        absolute=1e-5,
+        relative=0.0,
+        quantity='van_genuchten_alpha',
+        unit='kPa^-1',
+        source='registry',
+    )
+    assert_close(
+        result.n[0],
+        expected['n'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='van_genuchten_n',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.theta_s[0],
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_r[0],
+        expected['theta_r'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
+    )
 
 
 def test_calc_ptf_hodnett2002_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_HODNETT2002, Hodnett2002PTFResult
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_HODNETT2002, Hodnett2002PTFResult)
     result = calc_ptf_hodnett2002(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert result.alpha[0] == pytest.approx(expected['alpha'], rel=rtol, abs=atol)
-    assert result.n[0] == pytest.approx(expected['n'], rel=rtol, abs=atol)
-    assert result.theta_s[0] == pytest.approx(expected['theta_s'], rel=rtol, abs=atol)
-    assert result.theta_r[0] == pytest.approx(expected['theta_r'], rel=rtol, abs=atol)
+    assert_close(
+        result.alpha[0],
+        expected['alpha'],
+        absolute=1e-5,
+        relative=0.0,
+        quantity='van_genuchten_alpha',
+        unit='kPa^-1',
+        source='registry',
+    )
+    assert_close(
+        result.n[0],
+        expected['n'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='van_genuchten_n',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.theta_s[0],
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_r[0],
+        expected['theta_r'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
+    )

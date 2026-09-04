@@ -1,19 +1,21 @@
-use std::{fs, path::Path};
+use std::{fs, path::Path, sync::Arc};
 
-use anyhow::{Result, bail};
+use anyhow::{Context, Result, bail};
 use jsonschema::Draft;
 use serde_json::Value;
 
 use crate::{
     formula,
     model::{
-        Entry, Implementation, ImplementationVariable, Input, RawExpression, RawFunction, RawInput,
-        RawInputType, RawLookup, RawVariable, RawVariableValue, Spec,
+        Entry, Implementation, ImplementationVariable, Input, Quantity, QuantityRegistry,
+        RawExpression, RawFunction, RawInput, RawInputType, RawLookup, RawVariable,
+        RawVariableValue, Spec,
     },
     semantic,
 };
 
 pub(crate) fn load(root: &Path) -> Result<Vec<Entry>> {
+    let quantities = load_quantities(root)?;
     let schema: Value =
         serde_json::from_slice(&fs::read(root.join("specs/schema/ptf-spec.schema.json"))?)?;
     let validator = jsonschema::options()
@@ -113,6 +115,7 @@ pub(crate) fn load(root: &Path) -> Result<Vec<Entry>> {
                 slug,
                 spec,
                 implementations,
+                quantities: Arc::clone(&quantities),
             }),
             Err(error) => errors.push(error),
         }
@@ -121,6 +124,15 @@ pub(crate) fn load(root: &Path) -> Result<Vec<Entry>> {
         bail!("validation failed:\n{}", errors.join("\n"))
     }
     Ok(entries)
+}
+
+fn load_quantities(root: &Path) -> Result<Arc<QuantityRegistry>> {
+    let path = root.join("specs/quantities.yaml");
+    let text = fs::read_to_string(&path)
+        .with_context(|| format!("reading quantity registry {}", path.display()))?;
+    let quantities: Vec<Quantity> = serde_yaml::from_str(&text)
+        .with_context(|| format!("reading quantity registry {}", path.display()))?;
+    Ok(Arc::new(QuantityRegistry { quantities }))
 }
 
 fn source_slug(path: &Path) -> Result<String, String> {
@@ -199,13 +211,13 @@ fn compile(
                         .expect("lookup invocation is resolved");
                     Ok(RawVariable {
                         name: name.clone(),
-                        value: RawVariableValue::Lookup(RawLookup {
+                        value: RawVariableValue::Lookup(Box::new(RawLookup {
                             implementation_path: format!(
                                 "implementation.variables[{index}].lookup"
                             ),
                             key: lookup.key.clone(),
                             definition,
-                        }),
+                        })),
                     })
                 }
             })
@@ -392,12 +404,17 @@ mod tests {
             root.join("specs/schema/ptf-spec.schema.json"),
         )
         .unwrap();
+        fs::copy(
+            Path::new(env!("CARGO_MANIFEST_DIR")).join("../specs/quantities.yaml"),
+            root.join("specs/quantities.yaml"),
+        )
+        .unwrap();
         root
     }
 
     fn specification(slug: &str, implementation: &str, generation: &str) -> String {
         format!(
-            "source:\n  summary: Test source.\n  citation_apa: Test (2026).\n  doi: null\n{generation}functions:\n  - name: calc_ptf_{slug}\n    status: ready-for-implementation\n    public_api: {{name: calc_ptf_{slug}, result_class: null, summary: Test value.}}\n    scope:\n      prediction_target: Test value.\n      models: {{h_theta: null, k_h: null}}\n    inputs:\n      - {{name: x, symbol: x, unit: '1', domain: null, description: Test input.}}\n    outputs: {{type: scalar, name: value, symbol: y, unit: '1', domain: null, description: Test output.}}\n{implementation}"
+            "source:\n  summary: Test source.\n  citation_apa: Test (2026).\n  doi: null\n{generation}functions:\n  - name: calc_ptf_{slug}\n    status: ready-for-implementation\n    public_api: {{name: calc_ptf_{slug}, result_class: null, summary: Test value.}}\n    scope:\n      prediction_target: Test value.\n      models: {{h_theta: null, k_h: null}}\n    inputs:\n      - {{name: x, symbol: x, unit: '1', domain: null, description: Test input.}}\n    outputs: {{type: scalar, name: value, quantity: volumetric_water_content, symbol: y, unit: '1', domain: null, description: Test output.}}\n{implementation}"
         )
     }
 
@@ -444,7 +461,7 @@ $defs:
     type: record
     name: Parameters
     fields:
-      - {name: factor, symbol: f, unit: '1', domain: null, description: Test factor.}
+      - {name: factor, quantity: volumetric_water_content, symbol: f, unit: '1', domain: null, description: Test factor.}
   ParametersByTexture:
     type: lookup
     input: {$ref: '#/$defs/Texture'}
@@ -462,7 +479,7 @@ functions:
     inputs:
       - {$ref: '#/$defs/Texture', name: texture}
       - {name: x, symbol: x, unit: '1', domain: null, description: Test input.}
-    outputs: {type: scalar, name: value, symbol: y, unit: '1', domain: null, description: Test output.}
+    outputs: {type: scalar, name: value, quantity: volumetric_water_content, symbol: y, unit: '1', domain: null, description: Test output.}
     implementation:
       variables:
         - name: parameters
@@ -538,7 +555,7 @@ functions:
         )
         .replace(
             "functions:\n",
-            "$defs:\n  Texture:\n    type: enum\n    description: Texture class.\n    values:\n      - {name: sand, value: sand}\n      - {name: clay, value: clay}\n  Parameters:\n    type: record\n    name: Parameters\n    fields:\n      - {name: factor, symbol: f, unit: '1', domain: null, description: Test factor.}\n  InvalidLookup:\n    type: lookup\n    input: {$ref: '#/$defs/Texture'}\n    output: {$ref: '#/$defs/Parameters'}\n    values:\n      - {key: sand, value: {factor: 2.0}}\nfunctions:\n",
+            "$defs:\n  Texture:\n    type: enum\n    description: Texture class.\n    values:\n      - {name: sand, value: sand}\n      - {name: clay, value: clay}\n  Parameters:\n    type: record\n    name: Parameters\n    fields:\n      - {name: factor, quantity: volumetric_water_content, symbol: f, unit: '1', domain: null, description: Test factor.}\n  InvalidLookup:\n    type: lookup\n    input: {$ref: '#/$defs/Texture'}\n    output: {$ref: '#/$defs/Parameters'}\n    values:\n      - {key: sand, value: {factor: 2.0}}\nfunctions:\n",
         );
         fs::write(
             root.join("specs/functions/unused_invalid_lookup.yaml"),
@@ -568,7 +585,7 @@ $defs:
     type: record
     name: Parameters
     fields:
-      - {name: factor, symbol: f, unit: '1', domain: null, description: Test factor.}
+      - {name: factor, quantity: volumetric_water_content, symbol: f, unit: '1', domain: null, description: Test factor.}
   ParametersByTexture:
     type: lookup
     input: {$ref: '#/$defs/Texture'}
@@ -588,7 +605,7 @@ functions:
       type: record
       name: Parameters
       fields:
-        - {name: other, symbol: o, unit: '1', domain: null, description: Other value.}
+        - {name: other, quantity: volumetric_water_content, symbol: o, unit: '1', domain: null, description: Other value.}
     implementation:
       variables:
         - name: parameters
@@ -642,8 +659,8 @@ functions:
             "",
         )
         .replace(
-            "outputs: {type: scalar, name: value, symbol: y, unit: '1', domain: null, description: Test output.}",
-            "outputs:\n      type: record\n      fields:\n      - {name: first, symbol: y_1, unit: '1', domain: null, description: First output.}\n      - {name: second, symbol: y_2, unit: '1', domain: null, description: Second output.}",
+            "outputs: {type: scalar, name: value, quantity: volumetric_water_content, symbol: y, unit: '1', domain: null, description: Test output.}",
+            "outputs:\n      type: record\n      fields:\n      - {name: first, quantity: volumetric_water_content, symbol: y_1, unit: '1', domain: null, description: First output.}\n      - {name: second, quantity: volumetric_water_content, symbol: y_2, unit: '1', domain: null, description: Second output.}",
         );
         fs::write(
             root.join("specs/functions/unnamed_record.yaml"),
@@ -667,8 +684,8 @@ functions:
             "",
         )
         .replace(
-            "outputs: {type: scalar, name: value, symbol: y, unit: '1', domain: null, description: Test output.}",
-            "outputs:\n      type: record\n      name: result_record\n      fields:\n      - {name: first, symbol: y_1, unit: '1', domain: null, description: First output.}\n      - {name: second, symbol: y_2, unit: '1', domain: null, description: Second output.}",
+            "outputs: {type: scalar, name: value, quantity: volumetric_water_content, symbol: y, unit: '1', domain: null, description: Test output.}",
+            "outputs:\n      type: record\n      name: result_record\n      fields:\n      - {name: first, quantity: volumetric_water_content, symbol: y_1, unit: '1', domain: null, description: First output.}\n      - {name: second, quantity: volumetric_water_content, symbol: y_2, unit: '1', domain: null, description: Second output.}",
         );
         fs::write(
             root.join("specs/functions/non_pascal_case_record.yaml"),
@@ -693,10 +710,10 @@ functions:
         )
         .replace(
             "functions:\n",
-            "$defs:\n  reusable_result:\n    type: record\n    fields:\n    - {name: value, symbol: y, unit: '1', domain: null, description: Test output.}\nfunctions:\n",
+            "$defs:\n  reusable_result:\n    type: record\n    fields:\n    - {name: value, quantity: volumetric_water_content, symbol: y, unit: '1', domain: null, description: Test output.}\nfunctions:\n",
         )
         .replace(
-            "outputs: {type: scalar, name: value, symbol: y, unit: '1', domain: null, description: Test output.}",
+            "outputs: {type: scalar, name: value, quantity: volumetric_water_content, symbol: y, unit: '1', domain: null, description: Test output.}",
             "outputs: {$ref: '#/$defs/reusable_result'}",
         );
         fs::write(
@@ -776,5 +793,394 @@ functions:
         };
 
         assert!(error.contains("filename stem must be an APA-style slug"));
+    }
+
+    fn verification_specification(slug: &str, case: &str) -> String {
+        specification(
+            slug,
+            &format!(
+                "    implementation:\n      variables: [{{name: value, expr: x}}]\n    verification_cases:\n      - id: reference\n        inputs: {{x: 1.0}}\n{case}"
+            ),
+            "",
+        )
+    }
+
+    #[test]
+    fn accepts_both_verification_case_kinds() {
+        let cases = [
+            (
+                "published",
+                "        expected: {value: 1.0}\n        kind: published\n        source_location: Table 1, row 1\n        notes: Source lookup.\n",
+            ),
+            (
+                "calculated",
+                "        expected: {value: 1.0}\n        kind: calculated\n        rationale: Interior representative input.\n",
+            ),
+        ];
+        for (slug, case) in cases {
+            let root = fixture_root(slug);
+            fs::write(
+                root.join(format!("specs/functions/{slug}.yaml")),
+                verification_specification(slug, case),
+            )
+            .unwrap();
+            load(&root).unwrap_or_else(|error| panic!("{slug} case failed: {error}"));
+            fs::remove_dir_all(root).unwrap();
+        }
+    }
+
+    #[test]
+    fn rejects_invalid_verification_case_provenance() {
+        for (slug, case) in [
+            (
+                "unknown_kind",
+                "        expected: {value: 1.0}\n        kind: external\n        rationale: Invalid kind.\n",
+            ),
+            (
+                "published_without_location",
+                "        expected: {value: 1.0}\n        kind: published\n",
+            ),
+            (
+                "calculated_without_rationale",
+                "        expected: {value: 1.0}\n        kind: calculated\n",
+            ),
+        ] {
+            let root = fixture_root(slug);
+            fs::write(
+                root.join(format!("specs/functions/{slug}.yaml")),
+                verification_specification(slug, case),
+            )
+            .unwrap();
+            let error = load(&root)
+                .expect_err("invalid verification case must fail")
+                .to_string();
+            assert!(
+                error.contains("Additional properties are not allowed")
+                    || error.contains("required property")
+                    || error.contains("not valid under any of the schemas"),
+                "{error}"
+            );
+            fs::remove_dir_all(root).unwrap();
+        }
+    }
+
+    #[test]
+    fn rejects_missing_and_unknown_expected_outputs() {
+        for (slug, expected) in [
+            ("missing_expected", ""),
+            ("unknown_expected", "        expected: {other: 1.0}\n"),
+        ] {
+            let root = fixture_root(slug);
+            fs::write(
+                root.join(format!("specs/functions/{slug}.yaml")),
+                verification_specification(
+                    slug,
+                    &format!(
+                        "{expected}        kind: calculated\n        rationale: Interior representative input.\n"
+                    ),
+                ),
+            )
+            .unwrap();
+            let result = load(&root).and_then(crate::compile::functions);
+            let error = result
+                .expect_err("invalid expected outputs must fail")
+                .to_string();
+            assert!(
+                error.contains("missing expected output")
+                    || error.contains("references unknown output")
+                    || error.contains("required property")
+                    || error.contains("missing field `expected`"),
+                "{error}"
+            );
+            fs::remove_dir_all(root).unwrap();
+        }
+    }
+
+    #[test]
+    fn resolves_registry_defaults_and_replacing_source_overrides() {
+        let root = fixture_root("tolerance-resolution");
+        let default_spec = specification(
+            "default_tolerance",
+            "    implementation:\n      variables: [{name: value, expr: x}]\n",
+            "",
+        );
+        fs::write(
+            root.join("specs/functions/default_tolerance.yaml"),
+            default_spec,
+        )
+        .unwrap();
+        let override_spec = specification(
+            "override_tolerance",
+            "    verification_tolerances:\n      value:\n        absolute: 0.005\n        relative: 0.01\n        source_location: Table 5\n    implementation:\n      variables: [{name: value, expr: x}]\n",
+            "",
+        );
+        fs::write(
+            root.join("specs/functions/override_tolerance.yaml"),
+            override_spec,
+        )
+        .unwrap();
+
+        let compiled = crate::compile::functions(
+            crate::load_validated_specifications(&root).expect("fixtures validate"),
+        )
+        .unwrap();
+        let default = &compiled[0].output_tolerances[0];
+        assert_eq!(default.absolute, 0.001);
+        assert_eq!(default.relative, 0.0);
+        assert!(matches!(
+            default.source,
+            crate::model::ToleranceSource::Registry
+        ));
+        let override_ = &compiled[1].output_tolerances[0];
+        assert_eq!(override_.absolute, 0.005);
+        assert_eq!(override_.relative, 0.01);
+        assert!(matches!(
+            &override_.source,
+            crate::model::ToleranceSource::SourceOverride(location) if location == "Table 5"
+        ));
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn rejects_unknown_verification_inputs() {
+        let root = fixture_root("unknown-verification-input");
+        let text = verification_specification(
+            "unknown_verification_input",
+            "        expected: {value: 1.0}\n        kind: calculated\n        rationale: Interior input.\n",
+        )
+        .replace("inputs: {x: 1.0}", "inputs: {x: 1.0, stale: 2.0}");
+        fs::write(
+            root.join("specs/functions/unknown_verification_input.yaml"),
+            text,
+        )
+        .unwrap();
+        let error = crate::load_validated_specifications(&root)
+            .and_then(crate::compile::functions)
+            .expect_err("unknown input must fail")
+            .to_string();
+        assert!(error.contains("unknown input `stale`"), "{error}");
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn rejects_missing_verification_inputs() {
+        let root = fixture_root("missing-verification-input");
+        let text = verification_specification(
+            "missing_verification_input",
+            "        expected: {value: 1.0}\n        kind: calculated\n        rationale: Interior input.\n",
+        )
+        .replace(
+            "      - {name: x, symbol: x, unit: '1', domain: null, description: Test input.}",
+            "      - {name: x, symbol: x, unit: '1', domain: null, description: Test input.}\n      - {name: y, symbol: y, unit: '1', domain: null, description: Missing test input.}",
+        );
+        fs::write(
+            root.join("specs/functions/missing_verification_input.yaml"),
+            text,
+        )
+        .unwrap();
+        let error = crate::load_validated_specifications(&root)
+            .and_then(crate::compile::functions)
+            .expect_err("missing input must fail")
+            .to_string();
+        assert!(error.contains("missing input `y`"), "{error}");
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn keeps_overrides_function_local_for_shared_outputs() {
+        let root = fixture_root("shared-output-overrides");
+        let text = r#"source:
+  summary: Test source.
+  citation_apa: Test (2026).
+  doi: null
+$defs:
+  SharedResult:
+    type: record
+    name: SharedResult
+    fields:
+      - {name: value, quantity: volumetric_water_content, symbol: y, unit: '1', domain: null, description: Test output.}
+      - {name: second, quantity: volumetric_water_content, symbol: z, unit: '1', domain: null, description: Second test output.}
+functions:
+  - name: calc_ptf_shared_default
+    status: ready-for-implementation
+    public_api: {name: calc_ptf_shared_default, result_class: SharedResult, summary: Test value.}
+    scope:
+      prediction_target: Test value.
+      models: {h_theta: null, k_h: null}
+    inputs:
+      - {name: x, symbol: x, unit: '1', domain: null, description: Test input.}
+    outputs: {$ref: '#/$defs/SharedResult'}
+    implementation:
+      variables: [{name: value, expr: x}, {name: second, expr: x}]
+  - name: calc_ptf_shared_override
+    status: ready-for-implementation
+    public_api: {name: calc_ptf_shared_override, result_class: SharedResult, summary: Test value.}
+    scope:
+      prediction_target: Test value.
+      models: {h_theta: null, k_h: null}
+    inputs:
+      - {name: x, symbol: x, unit: '1', domain: null, description: Test input.}
+    outputs: {$ref: '#/$defs/SharedResult'}
+    verification_tolerances:
+      value: {absolute: 0.005, source_location: Table 5}
+    implementation:
+      variables: [{name: value, expr: x}, {name: second, expr: x}]
+"#;
+        fs::write(
+            root.join("specs/functions/shared_output_overrides.yaml"),
+            text,
+        )
+        .unwrap();
+
+        let compiled = crate::load_validated_specifications(&root)
+            .and_then(crate::compile::functions)
+            .expect("shared output definitions must compile");
+        assert_eq!(compiled[0].output_tolerances[0].absolute, 0.001);
+        assert_eq!(compiled[1].output_tolerances[0].absolute, 0.005);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn rejects_missing_unknown_and_unregistered_output_quantities() {
+        for (label, replacement, expected) in [
+            (
+                "missing-quantity",
+                "name: value, symbol: y",
+                "not valid under any of the schemas",
+            ),
+            (
+                "unknown-quantity",
+                "quantity: unknown_quantity",
+                "unknown quantity",
+            ),
+            (
+                "unregistered-unit",
+                "unit: 'unregistered'",
+                "no registered unit",
+            ),
+        ] {
+            let root = fixture_root(label);
+            let mut text = specification(
+                &label.replace('-', "_"),
+                "    implementation:\n      variables: [{name: value, expr: x}]\n",
+                "",
+            );
+            text = match label {
+                "missing-quantity" => text.replace(
+                    "name: value, quantity: volumetric_water_content, symbol: y",
+                    replacement,
+                ),
+                "unknown-quantity" => {
+                    text.replace("quantity: volumetric_water_content", replacement)
+                }
+                _ => text.replacen("unit: '1'", replacement, 2),
+            };
+            fs::write(
+                root.join(format!("specs/functions/{}.yaml", label.replace('-', "_"))),
+                text,
+            )
+            .unwrap();
+            let error = crate::load_validated_specifications(&root)
+                .expect_err("invalid quantity contract must fail")
+                .to_string();
+            assert!(error.contains(expected), "{error}");
+            fs::remove_dir_all(root).unwrap();
+        }
+    }
+
+    #[test]
+    fn rejects_invalid_and_unknown_tolerance_overrides() {
+        for (label, tolerance, expected) in [
+            (
+                "missing-location",
+                "    verification_tolerances: {value: {absolute: 0.1}}\n",
+                "required property",
+            ),
+            (
+                "unknown-output",
+                "    verification_tolerances: {other: {absolute: 0.1, source_location: Table 1}}\n",
+                "unknown output",
+            ),
+            (
+                "zero-absolute",
+                "    verification_tolerances: {value: {absolute: 0.0, source_location: Table 1}}\n",
+                "less than or equal to the minimum",
+            ),
+        ] {
+            let root = fixture_root(label);
+            let text = specification(
+                &label.replace('-', "_"),
+                &format!(
+                    "{tolerance}    implementation:\n      variables: [{{name: value, expr: x}}]\n"
+                ),
+                "",
+            );
+            fs::write(
+                root.join(format!("specs/functions/{}.yaml", label.replace('-', "_"))),
+                text,
+            )
+            .unwrap();
+            let error = crate::load_validated_specifications(&root)
+                .expect_err("invalid override must fail")
+                .to_string();
+            assert!(error.contains(expected), "{error}");
+            fs::remove_dir_all(root).unwrap();
+        }
+    }
+
+    #[test]
+    fn rejects_invalid_registry_tolerances_and_duplicate_identifiers() {
+        for (label, edit, expected) in [
+            (
+                "zero",
+                "zero",
+                "absolute tolerance must be finite and positive",
+            ),
+            (
+                "negative_relative",
+                "negative_relative",
+                "relative tolerance must be finite and non-negative",
+            ),
+            (
+                "duplicate_identifier",
+                "duplicate_identifier",
+                "duplicate quantity identifier",
+            ),
+            ("duplicate_unit", "duplicate_unit", "duplicate entry"),
+        ] {
+            let root = fixture_root(label);
+            write(
+                &root,
+                label,
+                "    implementation:\n      variables: [{name: value, expr: x}]\n",
+                "",
+            );
+            let registry_path = root.join("specs/quantities.yaml");
+            let mut registry = fs::read_to_string(&registry_path).unwrap();
+            match edit {
+                "zero" => {
+                    registry = registry.replacen("absolute: 0.001", "absolute: 0.0", 1);
+                }
+                "negative_relative" => {
+                    registry = registry.replacen("relative: 0.01", "relative: -0.01", 1);
+                }
+                "duplicate_identifier" => registry.push_str(
+                    "\n- id: volumetric_water_content\n  description: Duplicate.\n  units:\n    '1':\n      absolute: 0.1\n      rationale: Duplicate.\n",
+                ),
+                _ => registry = registry.replacen(
+                    "    \"1\":\n      absolute: 0.001",
+                    "    \"1\":\n      absolute: 0.001\n      rationale: First.\n    \"1\":\n      absolute: 0.002",
+                    1,
+                ),
+            }
+            fs::write(registry_path, registry).unwrap();
+            let error = format!(
+                "{:#}",
+                crate::load_validated_specifications(&root)
+                    .expect_err("invalid registry must fail")
+            );
+            assert!(error.contains(expected), "{error}");
+            fs::remove_dir_all(root).unwrap();
+        }
     }
 }

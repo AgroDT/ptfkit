@@ -42,44 +42,52 @@ functions:
     name: Cosby1984UnivariatePTFResult
     fields:
     - name: mean_b
+      quantity: campbell_b
       symbol: b
       unit: dimensionless
       domain: null
       description: Mean slope of the moisture characteristic.
     - name: mean_log_psi_s
+      quantity: log_saturation_potential
       symbol: log_psi_s
       unit: reported log value
       domain: null
       description: Mean log saturation matric potential; the underlying potential is
         expressed in cm H2O.
     - name: mean_log_k_sat
+      quantity: log_saturated_hydraulic_conductivity
       symbol: log_k_sat
       unit: reported log value
       domain: null
       description: Mean log saturated hydraulic conductivity; the underlying conductivity
         is expressed in inches per hour.
     - name: mean_theta_s
+      quantity: volumetric_water_content
       symbol: theta_s
       unit: '% volume/volume'
       domain: null
       description: Mean saturated water content.
     - name: sd_b
+      quantity: campbell_b
       symbol: b
       unit: dimensionless
       domain: null
       description: Standard deviation of b.
     - name: sd_log_k_sat
+      quantity: log_saturated_hydraulic_conductivity
       symbol: log_k_sat
       unit: reported log value
       domain: null
       description: Standard deviation of log saturated hydraulic conductivity.
     - name: sd_theta_s
+      quantity: volumetric_water_content
       symbol: theta_s
       unit: '% volume/volume'
       domain: null
       description: Standard deviation of saturated water content.
-  golden_tests:
+  verification_cases:
   - id: scalar_mid_texture
+    kind: calculated
     inputs:
       sand: 50.0
       silt: 30.0
@@ -92,10 +100,9 @@ functions:
       sd_b: 2.34
       sd_log_k_sat: 0.5553
       sd_theta_s: 6.27
-    rtol: 1.0e-12
-    atol: 1.0e-12
-    notes: Calculated directly from Table 5 formulas for pilot testing.
+    rationale: Calculated directly from Table 5 formulas for pilot testing.
   - id: scalar_sandy_texture
+    kind: calculated
     inputs:
       sand: 80.0
       silt: 15.0
@@ -108,9 +115,7 @@ functions:
       sd_b: 1.59
       sd_log_k_sat: 0.50715
       sd_theta_s: 7.365
-    rtol: 1.0e-12
-    atol: 1.0e-12
-    notes: Calculated directly from Table 5 formulas for pilot testing.
+    rationale: Calculated directly from Table 5 formulas for pilot testing.
   edge_cases:
   - id: nan_input
     inputs:

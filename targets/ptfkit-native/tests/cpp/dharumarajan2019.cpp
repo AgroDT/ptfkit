@@ -6,7 +6,7 @@ import ptfkit;
 import ptfkit.dharumarajan2019;
 #endif
 
-#include "close_enough.h"
+#include "support/close_enough.h"
 #include <type_traits>
 
 int main() {
@@ -16,17 +16,20 @@ int main() {
         static_assert(
             std::is_same_v<std::remove_cv_t<decltype(result)>,
                            ptfkit::dharumarajan2019::Dharumarajan2019WaterRetentionResult>);
-        assert_close_enough(result.field_capacity, 29.7912, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.permanent_wilting_point, 18.9276, 0.000000000001,
-                            0.000000000001);
+        assert_close(result.field_capacity, 29.7912, 0.1, 0.0, "gravimetric_water_content", "%",
+                     "registry");
+        assert_close(result.permanent_wilting_point, 18.9276, 0.1, 0.0, "gravimetric_water_content",
+                     "%", "registry");
     }
     {
         const auto result = ptfkit::dharumarajan2019::calc_ptf_dharumarajan2019_nkp_clay(43.2);
         static_assert(
             std::is_same_v<std::remove_cv_t<decltype(result)>,
                            ptfkit::dharumarajan2019::Dharumarajan2019WaterRetentionResult>);
-        assert_close_enough(result.field_capacity, 30.2832, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.permanent_wilting_point, 19.157, 0.000000000001, 0.000000000001);
+        assert_close(result.field_capacity, 30.2832, 0.1, 0.0, "gravimetric_water_content", "%",
+                     "registry");
+        assert_close(result.permanent_wilting_point, 19.157, 0.1, 0.0, "gravimetric_water_content",
+                     "%", "registry");
     }
     {
         const auto result =
@@ -34,22 +37,25 @@ int main() {
         static_assert(
             std::is_same_v<std::remove_cv_t<decltype(result)>,
                            ptfkit::dharumarajan2019::Dharumarajan2019WaterRetentionResult>);
-        assert_close_enough(result.field_capacity, 21.8169, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.permanent_wilting_point, 11.3054, 0.000000000001,
-                            0.000000000001);
+        assert_close(result.field_capacity, 21.8169, 0.1, 0.0, "gravimetric_water_content", "%",
+                     "registry");
+        assert_close(result.permanent_wilting_point, 11.3054, 0.1, 0.0, "gravimetric_water_content",
+                     "%", "registry");
     }
     {
         const auto result = ptfkit::dharumarajan2019::calc_ptf_dharumarajan2019_skp_clay(31.5);
         static_assert(
             std::is_same_v<std::remove_cv_t<decltype(result)>,
                            ptfkit::dharumarajan2019::Dharumarajan2019WaterRetentionResult>);
-        assert_close_enough(result.field_capacity, 22.0255, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.permanent_wilting_point, 11.503, 0.000000000001, 0.000000000001);
+        assert_close(result.field_capacity, 22.0255, 0.1, 0.0, "gravimetric_water_content", "%",
+                     "registry");
+        assert_close(result.permanent_wilting_point, 11.503, 0.1, 0.0, "gravimetric_water_content",
+                     "%", "registry");
     }
     {
         const auto result =
             ptfkit::dharumarajan2019::calc_ptf_dharumarajan2019_infiltration(50.0, 20.0, 30.0);
-        assert_close_enough(result, 18.45, 0.000000000001, 0.000000000001);
+        assert_close(result, 18.45, 0.0001, 0.01, "infiltration_rate", "mm/h", "registry");
     }
     return 0;
 }

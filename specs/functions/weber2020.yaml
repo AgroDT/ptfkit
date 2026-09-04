@@ -62,42 +62,50 @@ functions:
     name: Weber2020PTFResult
     fields:
     - name: theta_snc_bw
+      quantity: volumetric_water_content
       symbol: theta_snc,BW
       unit: dimensionless
       domain: null
       description: Saturated water content of the Brunswick noncapillary pore space.
     - name: theta_sc_bw
+      quantity: volumetric_water_content
       symbol: theta_sc,BW
       unit: dimensionless
       domain: null
       description: Saturated water content of the Brunswick capillary pore space.
     - name: alpha_bw
+      quantity: van_genuchten_alpha
       symbol: alpha_BW
       unit: cm^-1
       domain: null
       description: Brunswick-VGM inverse pressure-head scale parameter.
     - name: n_bw
+      quantity: brunswick_n
       symbol: n_BW
       unit: dimensionless
       domain: null
       description: Brunswick-VGM pore-size distribution shape parameter.
     - name: tau_bw
+      quantity: brunswick_tau
       symbol: tau_BW
       unit: dimensionless
       domain: null
       description: Brunswick capillary hydraulic-conductivity shape parameter.
     - name: k_sc_bw
+      quantity: saturated_hydraulic_conductivity
       symbol: K_sc,BW
       unit: cm d^-1
       domain: null
       description: Saturated capillary hydraulic conductivity.
     - name: k_snc_bw
+      quantity: saturated_hydraulic_conductivity
       symbol: K_snc,BW
       unit: cm d^-1
       domain: null
       description: Saturated noncapillary hydraulic conductivity.
-  golden_tests:
+  verification_cases:
   - id: representative_vgm_parameters
+    kind: calculated
     inputs:
       theta_r_vgm: 0.05
       theta_s_vgm: 0.45
@@ -113,9 +121,7 @@ functions:
       tau_bw: -0.887
       k_sc_bw: 172.186857498601
       k_snc_bw: 0.0190546071796325
-    rtol: 1.0e-12
-    atol: 1.0e-12
-    notes: Calculated directly from the Table 3 regressions using the confirmed constrained-tau
+    rationale: Calculated directly from the Table 3 regressions using the confirmed constrained-tau
       interpretation.
   edge_cases:
   - id: positive_tau_constraint

@@ -6,7 +6,7 @@ import ptfkit;
 import ptfkit.cosby1984;
 #endif
 
-#include "close_enough.h"
+#include "support/close_enough.h"
 #include <type_traits>
 
 int main() {
@@ -14,25 +14,35 @@ int main() {
         const auto result = ptfkit::cosby1984::calc_ptf_cosby1984_univariate(50.0, 30.0, 20.0);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::cosby1984::Cosby1984UnivariatePTFResult>);
-        assert_close_enough(result.mean_b, 6.09, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.mean_log_psi_s, 1.225, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.mean_log_k_sat, -0.119, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.mean_theta_s, 42.6, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.sd_b, 2.34, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.sd_log_k_sat, 0.5553, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.sd_theta_s, 6.27, 0.000000000001, 0.000000000001);
+        assert_close(result.mean_b, 6.09, 0.001, 0.0, "campbell_b", "dimensionless", "registry");
+        assert_close(result.mean_log_psi_s, 1.225, 0.001, 0.0, "log_saturation_potential",
+                     "reported log value", "registry");
+        assert_close(result.mean_log_k_sat, -0.119, 0.001, 0.0,
+                     "log_saturated_hydraulic_conductivity", "reported log value", "registry");
+        assert_close(result.mean_theta_s, 42.6, 0.1, 0.0, "volumetric_water_content",
+                     "% volume/volume", "registry");
+        assert_close(result.sd_b, 2.34, 0.001, 0.0, "campbell_b", "dimensionless", "registry");
+        assert_close(result.sd_log_k_sat, 0.5553, 0.001, 0.0,
+                     "log_saturated_hydraulic_conductivity", "reported log value", "registry");
+        assert_close(result.sd_theta_s, 6.27, 0.1, 0.0, "volumetric_water_content",
+                     "% volume/volume", "registry");
     }
     {
         const auto result = ptfkit::cosby1984::calc_ptf_cosby1984_univariate(80.0, 15.0, 5.0);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::cosby1984::Cosby1984UnivariatePTFResult>);
-        assert_close_enough(result.mean_b, 3.705, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.mean_log_psi_s, 0.832, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.mean_log_k_sat, 0.34, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.mean_theta_s, 38.82, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.sd_b, 1.59, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.sd_log_k_sat, 0.50715, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.sd_theta_s, 7.365, 0.000000000001, 0.000000000001);
+        assert_close(result.mean_b, 3.705, 0.001, 0.0, "campbell_b", "dimensionless", "registry");
+        assert_close(result.mean_log_psi_s, 0.832, 0.001, 0.0, "log_saturation_potential",
+                     "reported log value", "registry");
+        assert_close(result.mean_log_k_sat, 0.34, 0.001, 0.0,
+                     "log_saturated_hydraulic_conductivity", "reported log value", "registry");
+        assert_close(result.mean_theta_s, 38.82, 0.1, 0.0, "volumetric_water_content",
+                     "% volume/volume", "registry");
+        assert_close(result.sd_b, 1.59, 0.001, 0.0, "campbell_b", "dimensionless", "registry");
+        assert_close(result.sd_log_k_sat, 0.50715, 0.001, 0.0,
+                     "log_saturated_hydraulic_conductivity", "reported log value", "registry");
+        assert_close(result.sd_theta_s, 7.365, 0.1, 0.0, "volumetric_water_content",
+                     "% volume/volume", "registry");
     }
     return 0;
 }

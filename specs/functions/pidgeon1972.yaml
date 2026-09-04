@@ -40,21 +40,21 @@ functions:
   outputs:
     type: scalar
     name: field_capacity
+    quantity: gravimetric_water_content
     symbol: FC
     unit: '% w/w'
     domain: null
     description: Gravimetric field capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       silt: 30.0
       clay: 20.0
       organic_matter: 2.0
     expected:
       field_capacity: 21.26
-    rtol: 1.0e-12
-    atol: 1.0e-12
-    notes: Calculated from Table 3 using the reviewed 1.54 organic-matter coefficient.
+    rationale: Calculated from Table 3 using the reviewed 1.54 organic-matter coefficient.
   edge_cases: []
   documentation:
     notes:
@@ -84,19 +84,19 @@ functions:
   outputs:
     type: scalar
     name: field_capacity
+    quantity: gravimetric_water_content
     symbol: FC
     unit: '% w/w'
     domain: null
     description: Gravimetric field capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       sand: 50.0
     expected:
       field_capacity: 23.66
-    rtol: 1.0e-12
-    atol: 1.0e-12
-    notes: Calculated from Table 3.
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -130,20 +130,20 @@ functions:
   outputs:
     type: scalar
     name: field_capacity
+    quantity: gravimetric_water_content
     symbol: FC
     unit: '% w/w'
     domain: null
     description: Gravimetric field capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       sand: 50.0
       organic_matter: 2.0
     expected:
       field_capacity: 23.27
-    rtol: 1.0e-12
-    atol: 1.0e-12
-    notes: Calculated from Table 3.
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -177,20 +177,20 @@ functions:
   outputs:
     type: scalar
     name: field_capacity
+    quantity: volumetric_water_content
     symbol: FCvol
     unit: '% v/v'
     domain: null
     description: Volumetric field capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       sand: 50.0
       organic_matter: 2.0
     expected:
       field_capacity: 31.19
-    rtol: 1.0e-12
-    atol: 1.0e-12
-    notes: Calculated from Table 3.
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -229,21 +229,21 @@ functions:
   outputs:
     type: scalar
     name: permanent_wilting_point
+    quantity: gravimetric_water_content
     symbol: PWP
     unit: '% w/w'
     domain: null
     description: Permanent wilting point.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       silt: 30.0
       clay: 20.0
       organic_matter: 2.0
     expected:
       permanent_wilting_point: 11.11
-    rtol: 1.0e-12
-    atol: 1.0e-12
-    notes: Calculated from Table 3.
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -272,19 +272,19 @@ functions:
   outputs:
     type: scalar
     name: permanent_wilting_point
+    quantity: gravimetric_water_content
     symbol: PWP
     unit: '% w/w'
     domain: null
     description: Permanent wilting point.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       sand: 50.0
     expected:
       permanent_wilting_point: 13.91
-    rtol: 1.0e-12
-    atol: 1.0e-12
-    notes: Calculated from Table 3.
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -318,20 +318,20 @@ functions:
   outputs:
     type: scalar
     name: permanent_wilting_point
+    quantity: gravimetric_water_content
     symbol: PWP
     unit: '% w/w'
     domain: null
     description: Permanent wilting point.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       sand: 50.0
       organic_matter: 2.0
     expected:
       permanent_wilting_point: 15.28
-    rtol: 1.0e-12
-    atol: 1.0e-12
-    notes: Calculated from Table 3.
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -365,20 +365,20 @@ functions:
   outputs:
     type: scalar
     name: available_water_capacity
+    quantity: available_water_capacity
     symbol: AWC
     unit: mm/m
     domain: null
     description: Available water capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       clay: 20.0
       organic_matter: 2.0
     expected:
       available_water_capacity: 151.48
-    rtol: 1.0e-12
-    atol: 1.0e-12
-    notes: Calculated from Table 3.
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -412,20 +412,20 @@ functions:
   outputs:
     type: scalar
     name: available_water_capacity
+    quantity: available_water_capacity
     symbol: AWC
     unit: mm/m
     domain: null
     description: Available water capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       sand: 50.0
       organic_matter: 2.0
     expected:
       available_water_capacity: 109.24
-    rtol: 1.0e-12
-    atol: 1.0e-12
-    notes: Calculated from Table 3.
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -454,19 +454,19 @@ functions:
   outputs:
     type: scalar
     name: available_water_capacity
+    quantity: available_water_capacity
     symbol: AWC
     unit: mm/m
     domain: null
     description: Available water capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       coarse_sand: 20.0
     expected:
       available_water_capacity: 115.1
-    rtol: 1.0e-12
-    atol: 1.0e-12
-    notes: Calculated from Table 3.
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -495,19 +495,19 @@ functions:
   outputs:
     type: scalar
     name: available_water_capacity
+    quantity: available_water_capacity
     symbol: AWC
     unit: mm/m
     domain: null
     description: Available water capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       fine_sand: 20.0
     expected:
       available_water_capacity: 119.9
-    rtol: 1.0e-12
-    atol: 1.0e-12
-    notes: Calculated from Table 3.
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -536,19 +536,19 @@ functions:
   outputs:
     type: scalar
     name: available_water_capacity
+    quantity: available_water_capacity
     symbol: AWC
     unit: mm/m
     domain: null
     description: Available water capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       very_fine_sand: 10.0
     expected:
       available_water_capacity: 112.7
-    rtol: 1.0e-12
-    atol: 1.0e-12
-    notes: Calculated from Table 3.
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -588,21 +588,21 @@ functions:
   outputs:
     type: scalar
     name: extended_available_water_capacity
+    quantity: available_water_capacity
     symbol: EAWC
     unit: mm/m
     domain: null
     description: Extended available water capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       silt: 30.0
       clay: 20.0
       organic_matter: 2.0
     expected:
       extended_available_water_capacity: 16.12
-    rtol: 1.0e-12
-    atol: 1.0e-12
-    notes: Calculated from Table 3.
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -631,19 +631,19 @@ functions:
   outputs:
     type: scalar
     name: extended_available_water_capacity
+    quantity: available_water_capacity
     symbol: EAWC
     unit: mm/m
     domain: null
     description: Extended available water capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       sand: 50.0
     expected:
       extended_available_water_capacity: 51.7
-    rtol: 1.0e-12
-    atol: 1.0e-12
-    notes: Calculated from Table 3.
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -677,20 +677,20 @@ functions:
   outputs:
     type: scalar
     name: extended_available_water_capacity
+    quantity: available_water_capacity
     symbol: EAWC
     unit: mm/m
     domain: null
     description: Extended available water capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       sand: 50.0
       organic_matter: 2.0
     expected:
       extended_available_water_capacity: 56.26
-    rtol: 1.0e-12
-    atol: 1.0e-12
-    notes: Calculated from Table 3.
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -725,20 +725,20 @@ functions:
   outputs:
     type: scalar
     name: extended_available_water_capacity
+    quantity: available_water_capacity
     symbol: EAWC
     unit: mm/m
     domain: null
     description: Extended available water capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       coarse_sand: 20.0
       organic_matter: 2.0
     expected:
       extended_available_water_capacity: 53.72
-    rtol: 1.0e-12
-    atol: 1.0e-12
-    notes: Calculated from Table 3.
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -773,20 +773,20 @@ functions:
   outputs:
     type: scalar
     name: extended_available_water_capacity
+    quantity: available_water_capacity
     symbol: EAWC
     unit: mm/m
     domain: null
     description: Extended available water capacity.
-  golden_tests:
+  verification_cases:
   - id: regression_case
+    kind: calculated
     inputs:
       fine_sand: 20.0
       organic_matter: 2.0
     expected:
       extended_available_water_capacity: 59.58
-    rtol: 1.0e-12
-    atol: 1.0e-12
-    notes: Calculated from Table 3.
+    rationale: Calculated from Table 3.
   edge_cases: []
   documentation:
     notes: []

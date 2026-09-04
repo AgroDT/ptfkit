@@ -65,9 +65,10 @@ should check both the function status and the API reference for their target.
 
 ## Inputs, quantities, units, and domains
 
-Quantitative inputs and outputs identify a scientific quantity through a name,
-symbol, unit, domain, and description. These values must preserve the source's
-definitions and conversions. A domain records the published calibration or
+Quantitative inputs identify a source variable through a name, symbol, unit,
+domain, and description. Outputs additionally carry a stable `quantity`
+identifier resolved against `specs/quantities.yaml`. These values must preserve
+the source's definitions and conversions. A domain records the published calibration or
 mathematical range; it does not imply that every target performs runtime range
 validation.
 
@@ -83,6 +84,9 @@ are stable public type names, while field order is part of the cross-target
 result contract. Reusable parameter declarations, enum types, and record shapes
 may be declared once in `$defs` and referenced by multiple functions. The
 `$defs` key is the canonical name of a reusable declaration, type, or record.
+Unit matching in the quantity registry is exact and textual. Each accepted
+quantity-unit representation therefore has an explicit reviewed verification
+tolerance; an unregistered quantity or unit blocks validation.
 
 ## Scientific evidence and numerical expectations
 
@@ -91,8 +95,9 @@ Specifications retain more than executable formulas:
 - `scientific_notes` records derivations, source notation, numerical policy,
   and review decisions that apply to the source;
 - documentation notes and warnings communicate function-specific limitations;
-- `golden_tests` preserve representative input and expected-output cases with
-  explicit tolerances and provenance notes;
+- `verification_cases` preserve representative inputs and fixed expected
+  outputs with `published` or `calculated` provenance; comparison is defined by
+  the [verification policy](../contributing/verification.md), never tuned in YAML;
 - `edge_cases` record boundary conditions and the expected behavior.
 
 This information must be supported by the publication or by an explicit,

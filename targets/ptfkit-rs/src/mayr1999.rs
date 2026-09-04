@@ -18,6 +18,41 @@ Soil Survey and Land Research Centre soil physical properties database; regressi
 soil horizons retained from a 306-horizon subset after excluding fits with RMSE greater than
 0.05 m^3/m^3, and validation used 1678 independent soil horizons."]
 
+#[cfg(test)]
+fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
+    absolute
+        .max(relative * expected.abs())
+        .max(0.00000000000001f64)
+}
+#[cfg(test)]
+fn assert_close(
+    actual: f64,
+    expected: f64,
+    absolute: f64,
+    relative: f64,
+    quantity: &str,
+    unit: &str,
+    source: &str,
+) {
+    let difference = (actual - expected).abs();
+    let tolerance = resolved_tolerance(expected, absolute, relative);
+    assert!(
+        difference <= tolerance,
+        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
+    );
+}
+#[cfg(test)]
+mod comparator_tests {
+    use super::*;
+    #[test]
+    fn accepts_below_and_rejects_above_tolerance() {
+        for expected in [0.0, 2.0, -2.0] {
+            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
+            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
+            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
+        }
+    }
+}
 #[doc = r"Results returned by `calc_ptf_mayr1999`."]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Mayr1999PTFResult {
@@ -106,32 +141,35 @@ pub fn calc_ptf_mayr1999(
 #[cfg(test)]
 mod tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn representative_loam() {
         let result = calc_ptf_mayr1999(40f64, 40f64, 20f64, 1.3f64, 2f64);
         assert_close(
             result.a_hc,
             9.19922782578422f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.01f64,
+            0f64,
+            "matric_potential",
+            "cm H2O",
+            "registry",
         );
         assert_close(
             result.b_hc,
             8.52432443785475f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "hutson_cass_b",
+            "dimensionless",
+            "registry",
         );
         assert_close(
             result.theta_s,
             0.48733161333f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "m^3/m^3",
+            "registry",
         );
     }
     #[test]
@@ -140,20 +178,29 @@ mod tests {
         assert_close(
             result.a_hc,
             14.5305137640911f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.01f64,
+            0f64,
+            "matric_potential",
+            "cm H2O",
+            "registry",
         );
         assert_close(
             result.b_hc,
             18.9375141190925f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "hutson_cass_b",
+            "dimensionless",
+            "registry",
         );
         assert_close(
             result.theta_s,
             0.52145684162f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "m^3/m^3",
+            "registry",
         );
     }
     #[test]
@@ -162,20 +209,29 @@ mod tests {
         assert_close(
             result.a_hc,
             2.40216699550362f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.01f64,
+            0f64,
+            "matric_potential",
+            "cm H2O",
+            "registry",
         );
         assert_close(
             result.b_hc,
             3.2690464531591f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "hutson_cass_b",
+            "dimensionless",
+            "registry",
         );
         assert_close(
             result.theta_s,
             0.4209756915f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "m^3/m^3",
+            "registry",
         );
     }
 }

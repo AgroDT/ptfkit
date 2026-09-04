@@ -19,6 +19,41 @@ A compilation of 1,729 samples with water-retention and hydraulic-conductivity d
 data set DS1 contained 392 of the 402 retained samples, DS2 was used for tau, DS3 contained 359
 samples for K_snc, and 10 samples were held out as DS4."]
 
+#[cfg(test)]
+fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
+    absolute
+        .max(relative * expected.abs())
+        .max(0.00000000000001f64)
+}
+#[cfg(test)]
+fn assert_close(
+    actual: f64,
+    expected: f64,
+    absolute: f64,
+    relative: f64,
+    quantity: &str,
+    unit: &str,
+    source: &str,
+) {
+    let difference = (actual - expected).abs();
+    let tolerance = resolved_tolerance(expected, absolute, relative);
+    assert!(
+        difference <= tolerance,
+        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
+    );
+}
+#[cfg(test)]
+mod comparator_tests {
+    use super::*;
+    #[test]
+    fn accepts_below_and_rejects_above_tolerance() {
+        for expected in [0.0, 2.0, -2.0] {
+            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
+            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
+            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
+        }
+    }
+}
 #[doc = r"Results returned by `calc_ptf_weber2020`."]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Weber2020PTFResult {
@@ -103,56 +138,71 @@ pub fn calc_ptf_weber2020(
 #[cfg(test)]
 mod tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn representative_vgm_parameters() {
         let result = calc_ptf_weber2020(0.05f64, 0.45f64, 0.02f64, 1.6f64, -0.5f64, 100f64);
         assert_close(
             result.theta_snc_bw,
             0.06267f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "dimensionless",
+            "registry",
         );
         assert_close(
             result.theta_sc_bw,
             0.38607f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "dimensionless",
+            "registry",
         );
         assert_close(
             result.alpha_bw,
             0.0201472407335197f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.00001f64,
+            0f64,
+            "van_genuchten_alpha",
+            "cm^-1",
+            "registry",
         );
         assert_close(
             result.n_bw,
             1.71980542683289f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "brunswick_n",
+            "dimensionless",
+            "registry",
         );
         assert_close(
             result.tau_bw,
             -0.887f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "brunswick_tau",
+            "dimensionless",
+            "registry",
         );
         assert_close(
             result.k_sc_bw,
             172.186857498601f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "cm d^-1",
+            "registry",
         );
         assert_close(
             result.k_snc_bw,
             0.0190546071796325f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "cm d^-1",
+            "registry",
         );
     }
 }

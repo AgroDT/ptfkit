@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import pytest
 
-from _helpers import prepare_vector_case
+from _helpers import assert_close, prepare_vector_case
 from ptfkit.beniaich2023 import (
     Beniaich2023PTFResult,
     calc_ptf_beniaich2023_mlr1,
@@ -24,64 +24,116 @@ CASES_CALC_PTF_BENIAICH2023_SLR1 = [
     (
         {'clay': 20.0},
         {
-            'water_field_capacity': 0.17577,
             'water_saturation': 0.57427,
+            'water_field_capacity': 0.17577,
             'water_wilting_point': 0.09621,
         },
-        1e-12,
-        1e-12,
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_BENIAICH2023_SLR1)
-def test_calc_ptf_beniaich2023_slr1_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_BENIAICH2023_SLR1)
+def test_calc_ptf_beniaich2023_slr1_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_beniaich2023_slr1(**inputs)
 
-    assert result.water_saturation == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation,
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity,
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point,
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_slr1_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_SLR1, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_slr1(**inputs, out=None)
-    assert result.water_saturation[0] == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation[0],
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity[0] == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity[0],
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point[0] == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point[0],
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_slr1_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_SLR1, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_slr1(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert result.water_saturation[0] == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation[0],
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity[0] == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity[0],
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point[0] == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point[0],
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
@@ -89,64 +141,116 @@ CASES_CALC_PTF_BENIAICH2023_SLR2 = [
     (
         {'silt': 30.0},
         {
-            'water_field_capacity': 0.24878,
             'water_saturation': 0.68478,
+            'water_field_capacity': 0.24878,
             'water_wilting_point': 0.16131,
         },
-        1e-12,
-        1e-12,
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_BENIAICH2023_SLR2)
-def test_calc_ptf_beniaich2023_slr2_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_BENIAICH2023_SLR2)
+def test_calc_ptf_beniaich2023_slr2_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_beniaich2023_slr2(**inputs)
 
-    assert result.water_saturation == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation,
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity,
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point,
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_slr2_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_SLR2, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_slr2(**inputs, out=None)
-    assert result.water_saturation[0] == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation[0],
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity[0] == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity[0],
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point[0] == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point[0],
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_slr2_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_SLR2, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_slr2(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert result.water_saturation[0] == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation[0],
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity[0] == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity[0],
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point[0] == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point[0],
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
@@ -154,64 +258,116 @@ CASES_CALC_PTF_BENIAICH2023_SLR3 = [
     (
         {'sand': 50.0},
         {
-            'water_field_capacity': 0.1848,
             'water_saturation': 0.6007,
+            'water_field_capacity': 0.1848,
             'water_wilting_point': 0.11077,
         },
-        1e-12,
-        1e-12,
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_BENIAICH2023_SLR3)
-def test_calc_ptf_beniaich2023_slr3_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_BENIAICH2023_SLR3)
+def test_calc_ptf_beniaich2023_slr3_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_beniaich2023_slr3(**inputs)
 
-    assert result.water_saturation == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation,
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity,
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point,
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_slr3_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_SLR3, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_slr3(**inputs, out=None)
-    assert result.water_saturation[0] == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation[0],
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity[0] == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity[0],
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point[0] == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point[0],
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_slr3_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_SLR3, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_slr3(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert result.water_saturation[0] == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation[0],
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity[0] == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity[0],
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point[0] == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point[0],
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
@@ -219,64 +375,116 @@ CASES_CALC_PTF_BENIAICH2023_SLR4 = [
     (
         {'clay': 20.0, 'silt': 30.0},
         {
-            'water_field_capacity': 0.30678,
             'water_saturation': 0.74501,
+            'water_field_capacity': 0.30678,
             'water_wilting_point': 0.19915,
         },
-        1e-12,
-        1e-12,
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_BENIAICH2023_SLR4)
-def test_calc_ptf_beniaich2023_slr4_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_BENIAICH2023_SLR4)
+def test_calc_ptf_beniaich2023_slr4_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_beniaich2023_slr4(**inputs)
 
-    assert result.water_saturation == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation,
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity,
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point,
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_slr4_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_SLR4, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_slr4(**inputs, out=None)
-    assert result.water_saturation[0] == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation[0],
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity[0] == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity[0],
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point[0] == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point[0],
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_slr4_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_SLR4, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_slr4(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert result.water_saturation[0] == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation[0],
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity[0] == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity[0],
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point[0] == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point[0],
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
@@ -284,64 +492,116 @@ CASES_CALC_PTF_BENIAICH2023_SLR5 = [
     (
         {'clay': 20.0, 'silt': 40.0},
         {
-            'water_field_capacity': 0.241875,
             'water_saturation': 0.68578,
+            'water_field_capacity': 0.241875,
             'water_wilting_point': 0.16176,
         },
-        1e-12,
-        1e-12,
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_BENIAICH2023_SLR5)
-def test_calc_ptf_beniaich2023_slr5_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_BENIAICH2023_SLR5)
+def test_calc_ptf_beniaich2023_slr5_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_beniaich2023_slr5(**inputs)
 
-    assert result.water_saturation == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation,
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity,
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point,
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_slr5_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_SLR5, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_slr5(**inputs, out=None)
-    assert result.water_saturation[0] == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation[0],
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity[0] == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity[0],
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point[0] == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point[0],
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_slr5_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_SLR5, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_slr5(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert result.water_saturation[0] == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation[0],
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity[0] == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity[0],
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point[0] == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point[0],
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
@@ -349,64 +609,116 @@ CASES_CALC_PTF_BENIAICH2023_SLR6 = [
     (
         {'soil_organic_matter': 2.0},
         {
-            'water_field_capacity': 0.24009,
             'water_saturation': 0.66749,
+            'water_field_capacity': 0.24009,
             'water_wilting_point': 0.15562,
         },
-        1e-12,
-        1e-12,
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_BENIAICH2023_SLR6)
-def test_calc_ptf_beniaich2023_slr6_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_BENIAICH2023_SLR6)
+def test_calc_ptf_beniaich2023_slr6_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_beniaich2023_slr6(**inputs)
 
-    assert result.water_saturation == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation,
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity,
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point,
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_slr6_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_SLR6, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_slr6(**inputs, out=None)
-    assert result.water_saturation[0] == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation[0],
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity[0] == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity[0],
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point[0] == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point[0],
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_slr6_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_SLR6, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_slr6(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert result.water_saturation[0] == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation[0],
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity[0] == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity[0],
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point[0] == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point[0],
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
@@ -414,64 +726,116 @@ CASES_CALC_PTF_BENIAICH2023_MLR1 = [
     (
         {'sand': 50.0, 'silt': 30.0, 'soil_organic_matter': 2.0},
         {
-            'water_field_capacity': 0.17238,
             'water_saturation': 0.56266,
+            'water_field_capacity': 0.17238,
             'water_wilting_point': 0.09366,
         },
-        1e-12,
-        1e-12,
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_BENIAICH2023_MLR1)
-def test_calc_ptf_beniaich2023_mlr1_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_BENIAICH2023_MLR1)
+def test_calc_ptf_beniaich2023_mlr1_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_beniaich2023_mlr1(**inputs)
 
-    assert result.water_saturation == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation,
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity,
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point,
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_mlr1_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_MLR1, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_mlr1(**inputs, out=None)
-    assert result.water_saturation[0] == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation[0],
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity[0] == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity[0],
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point[0] == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point[0],
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_mlr1_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_MLR1, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_mlr1(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert result.water_saturation[0] == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation[0],
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity[0] == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity[0],
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point[0] == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point[0],
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
@@ -479,64 +843,116 @@ CASES_CALC_PTF_BENIAICH2023_MLR2 = [
     (
         {'sand': 50.0, 'soil_organic_matter': 2.0},
         {
-            'water_field_capacity': 0.18025,
             'water_saturation': 0.58954,
+            'water_field_capacity': 0.18025,
             'water_wilting_point': 0.10825,
         },
-        1e-12,
-        1e-12,
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_BENIAICH2023_MLR2)
-def test_calc_ptf_beniaich2023_mlr2_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_BENIAICH2023_MLR2)
+def test_calc_ptf_beniaich2023_mlr2_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_beniaich2023_mlr2(**inputs)
 
-    assert result.water_saturation == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation,
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity,
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point,
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_mlr2_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_MLR2, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_mlr2(**inputs, out=None)
-    assert result.water_saturation[0] == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation[0],
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity[0] == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity[0],
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point[0] == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point[0],
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_mlr2_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_MLR2, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_mlr2(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert result.water_saturation[0] == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation[0],
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity[0] == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity[0],
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point[0] == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point[0],
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
@@ -544,64 +960,116 @@ CASES_CALC_PTF_BENIAICH2023_MLR3 = [
     (
         {'silt': 30.0, 'soil_organic_matter': 2.0},
         {
-            'water_field_capacity': 0.24275,
             'water_saturation': 0.67031,
+            'water_field_capacity': 0.24275,
             'water_wilting_point': 0.15755,
         },
-        1e-12,
-        1e-12,
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_BENIAICH2023_MLR3)
-def test_calc_ptf_beniaich2023_mlr3_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_BENIAICH2023_MLR3)
+def test_calc_ptf_beniaich2023_mlr3_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_beniaich2023_mlr3(**inputs)
 
-    assert result.water_saturation == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation,
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity,
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point,
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_mlr3_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_MLR3, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_mlr3(**inputs, out=None)
-    assert result.water_saturation[0] == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation[0],
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity[0] == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity[0],
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point[0] == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point[0],
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_mlr3_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_MLR3, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_mlr3(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert result.water_saturation[0] == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation[0],
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity[0] == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity[0],
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point[0] == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point[0],
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
@@ -609,64 +1077,116 @@ CASES_CALC_PTF_BENIAICH2023_MLR4 = [
     (
         {'clay': 20.0, 'soil_organic_matter': 2.0},
         {
-            'water_field_capacity': 0.16859,
             'water_saturation': 0.5589,
+            'water_field_capacity': 0.16859,
             'water_wilting_point': 0.09157,
         },
-        1e-12,
-        1e-12,
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_BENIAICH2023_MLR4)
-def test_calc_ptf_beniaich2023_mlr4_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_BENIAICH2023_MLR4)
+def test_calc_ptf_beniaich2023_mlr4_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_beniaich2023_mlr4(**inputs)
 
-    assert result.water_saturation == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation,
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity,
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point,
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_mlr4_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_MLR4, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_mlr4(**inputs, out=None)
-    assert result.water_saturation[0] == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation[0],
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity[0] == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity[0],
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point[0] == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point[0],
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_mlr4_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_MLR4, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_mlr4(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert result.water_saturation[0] == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation[0],
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity[0] == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity[0],
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point[0] == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point[0],
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
@@ -674,62 +1194,114 @@ CASES_CALC_PTF_BENIAICH2023_MLR5 = [
     (
         {'clay': 20.0, 'silt': 30.0, 'soil_organic_matter': 2.0},
         {
-            'water_field_capacity': 0.172,
             'water_saturation': 0.56229,
+            'water_field_capacity': 0.172,
             'water_wilting_point': 0.09379,
         },
-        1e-12,
-        1e-12,
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_BENIAICH2023_MLR5)
-def test_calc_ptf_beniaich2023_mlr5_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_BENIAICH2023_MLR5)
+def test_calc_ptf_beniaich2023_mlr5_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_beniaich2023_mlr5(**inputs)
 
-    assert result.water_saturation == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation,
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity,
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point,
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_mlr5_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_MLR5, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_mlr5(**inputs, out=None)
-    assert result.water_saturation[0] == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation[0],
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity[0] == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity[0],
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point[0] == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point[0],
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
 
 
 def test_calc_ptf_beniaich2023_mlr5_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_BENIAICH2023_MLR5, Beniaich2023PTFResult
     )
     result = calc_ptf_beniaich2023_mlr5(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert result.water_saturation[0] == pytest.approx(
-        expected['water_saturation'], rel=rtol, abs=atol
+    assert_close(
+        result.water_saturation[0],
+        expected['water_saturation'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_field_capacity[0] == pytest.approx(
-        expected['water_field_capacity'], rel=rtol, abs=atol
+    assert_close(
+        result.water_field_capacity[0],
+        expected['water_field_capacity'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )
-    assert result.water_wilting_point[0] == pytest.approx(
-        expected['water_wilting_point'], rel=rtol, abs=atol
+    assert_close(
+        result.water_wilting_point[0],
+        expected['water_wilting_point'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravimetric_water_content',
+        unit='g/g',
+        source='registry',
     )

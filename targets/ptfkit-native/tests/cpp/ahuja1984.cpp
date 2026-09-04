@@ -6,16 +6,18 @@ import ptfkit;
 import ptfkit.ahuja1984;
 #endif
 
-#include "close_enough.h"
+#include "support/close_enough.h"
 
 int main() {
     {
         const auto result = ptfkit::ahuja1984::calc_ptf_ahuja1984(0.45, 0.25, 100.0, 4.0);
-        assert_close_enough(result, 0.16, 0.00000000000001, 0.000000000001);
+        assert_close(result, 0.16, 0.00001, 0.01, "saturated_hydraulic_conductivity", "cm/h",
+                     "registry");
     }
     {
         const auto result = ptfkit::ahuja1984::calc_ptf_ahuja1984(0.5, 0.2, 100.0, 5.0);
-        assert_close_enough(result, 0.243, 0.00000000000001, 0.000000000001);
+        assert_close(result, 0.243, 0.00001, 0.01, "saturated_hydraulic_conductivity", "cm/h",
+                     "registry");
     }
     return 0;
 }

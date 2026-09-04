@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import pytest
 
-from _helpers import prepare_vector_case
+from _helpers import assert_close, prepare_vector_case
 from ptfkit.cosby1984 import Cosby1984UnivariatePTFResult, calc_ptf_cosby1984_univariate
 
 
@@ -12,75 +12,237 @@ CASES_CALC_PTF_COSBY1984_UNIVARIATE = [
         {'clay': 20.0, 'sand': 50.0, 'silt': 30.0},
         {
             'mean_b': 6.09,
-            'mean_log_k_sat': -0.119,
             'mean_log_psi_s': 1.225,
+            'mean_log_k_sat': -0.119,
             'mean_theta_s': 42.6,
             'sd_b': 2.34,
             'sd_log_k_sat': 0.5553,
             'sd_theta_s': 6.27,
         },
-        1e-12,
-        1e-12,
     ),
     (
         {'clay': 5.0, 'sand': 80.0, 'silt': 15.0},
         {
             'mean_b': 3.705,
-            'mean_log_k_sat': 0.34,
             'mean_log_psi_s': 0.832,
+            'mean_log_k_sat': 0.34,
             'mean_theta_s': 38.82,
             'sd_b': 1.59,
             'sd_log_k_sat': 0.50715,
             'sd_theta_s': 7.365,
         },
-        1e-12,
-        1e-12,
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_COSBY1984_UNIVARIATE
-)
-def test_calc_ptf_cosby1984_univariate_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_COSBY1984_UNIVARIATE)
+def test_calc_ptf_cosby1984_univariate_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_cosby1984_univariate(**inputs)
 
-    assert result.mean_b == pytest.approx(expected['mean_b'], rel=rtol, abs=atol)
-    assert result.mean_log_psi_s == pytest.approx(expected['mean_log_psi_s'], rel=rtol, abs=atol)
-    assert result.mean_log_k_sat == pytest.approx(expected['mean_log_k_sat'], rel=rtol, abs=atol)
-    assert result.mean_theta_s == pytest.approx(expected['mean_theta_s'], rel=rtol, abs=atol)
-    assert result.sd_b == pytest.approx(expected['sd_b'], rel=rtol, abs=atol)
-    assert result.sd_log_k_sat == pytest.approx(expected['sd_log_k_sat'], rel=rtol, abs=atol)
-    assert result.sd_theta_s == pytest.approx(expected['sd_theta_s'], rel=rtol, abs=atol)
+    assert_close(
+        result.mean_b,
+        expected['mean_b'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='campbell_b',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.mean_log_psi_s,
+        expected['mean_log_psi_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='log_saturation_potential',
+        unit='reported log value',
+        source='registry',
+    )
+    assert_close(
+        result.mean_log_k_sat,
+        expected['mean_log_k_sat'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='log_saturated_hydraulic_conductivity',
+        unit='reported log value',
+        source='registry',
+    )
+    assert_close(
+        result.mean_theta_s,
+        expected['mean_theta_s'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='% volume/volume',
+        source='registry',
+    )
+    assert_close(
+        result.sd_b,
+        expected['sd_b'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='campbell_b',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.sd_log_k_sat,
+        expected['sd_log_k_sat'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='log_saturated_hydraulic_conductivity',
+        unit='reported log value',
+        source='registry',
+    )
+    assert_close(
+        result.sd_theta_s,
+        expected['sd_theta_s'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='% volume/volume',
+        source='registry',
+    )
 
 
 def test_calc_ptf_cosby1984_univariate_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_COSBY1984_UNIVARIATE, Cosby1984UnivariatePTFResult
     )
     result = calc_ptf_cosby1984_univariate(**inputs, out=None)
-    assert result.mean_b[0] == pytest.approx(expected['mean_b'], rel=rtol, abs=atol)
-    assert result.mean_log_psi_s[0] == pytest.approx(expected['mean_log_psi_s'], rel=rtol, abs=atol)
-    assert result.mean_log_k_sat[0] == pytest.approx(expected['mean_log_k_sat'], rel=rtol, abs=atol)
-    assert result.mean_theta_s[0] == pytest.approx(expected['mean_theta_s'], rel=rtol, abs=atol)
-    assert result.sd_b[0] == pytest.approx(expected['sd_b'], rel=rtol, abs=atol)
-    assert result.sd_log_k_sat[0] == pytest.approx(expected['sd_log_k_sat'], rel=rtol, abs=atol)
-    assert result.sd_theta_s[0] == pytest.approx(expected['sd_theta_s'], rel=rtol, abs=atol)
+    assert_close(
+        result.mean_b[0],
+        expected['mean_b'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='campbell_b',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.mean_log_psi_s[0],
+        expected['mean_log_psi_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='log_saturation_potential',
+        unit='reported log value',
+        source='registry',
+    )
+    assert_close(
+        result.mean_log_k_sat[0],
+        expected['mean_log_k_sat'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='log_saturated_hydraulic_conductivity',
+        unit='reported log value',
+        source='registry',
+    )
+    assert_close(
+        result.mean_theta_s[0],
+        expected['mean_theta_s'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='% volume/volume',
+        source='registry',
+    )
+    assert_close(
+        result.sd_b[0],
+        expected['sd_b'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='campbell_b',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.sd_log_k_sat[0],
+        expected['sd_log_k_sat'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='log_saturated_hydraulic_conductivity',
+        unit='reported log value',
+        source='registry',
+    )
+    assert_close(
+        result.sd_theta_s[0],
+        expected['sd_theta_s'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='% volume/volume',
+        source='registry',
+    )
 
 
 def test_calc_ptf_cosby1984_univariate_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_COSBY1984_UNIVARIATE, Cosby1984UnivariatePTFResult
     )
     result = calc_ptf_cosby1984_univariate(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert result.mean_b[0] == pytest.approx(expected['mean_b'], rel=rtol, abs=atol)
-    assert result.mean_log_psi_s[0] == pytest.approx(expected['mean_log_psi_s'], rel=rtol, abs=atol)
-    assert result.mean_log_k_sat[0] == pytest.approx(expected['mean_log_k_sat'], rel=rtol, abs=atol)
-    assert result.mean_theta_s[0] == pytest.approx(expected['mean_theta_s'], rel=rtol, abs=atol)
-    assert result.sd_b[0] == pytest.approx(expected['sd_b'], rel=rtol, abs=atol)
-    assert result.sd_log_k_sat[0] == pytest.approx(expected['sd_log_k_sat'], rel=rtol, abs=atol)
-    assert result.sd_theta_s[0] == pytest.approx(expected['sd_theta_s'], rel=rtol, abs=atol)
+    assert_close(
+        result.mean_b[0],
+        expected['mean_b'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='campbell_b',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.mean_log_psi_s[0],
+        expected['mean_log_psi_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='log_saturation_potential',
+        unit='reported log value',
+        source='registry',
+    )
+    assert_close(
+        result.mean_log_k_sat[0],
+        expected['mean_log_k_sat'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='log_saturated_hydraulic_conductivity',
+        unit='reported log value',
+        source='registry',
+    )
+    assert_close(
+        result.mean_theta_s[0],
+        expected['mean_theta_s'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='% volume/volume',
+        source='registry',
+    )
+    assert_close(
+        result.sd_b[0],
+        expected['sd_b'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='campbell_b',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.sd_log_k_sat[0],
+        expected['sd_log_k_sat'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='log_saturated_hydraulic_conductivity',
+        unit='reported log value',
+        source='registry',
+    )
+    assert_close(
+        result.sd_theta_s[0],
+        expected['sd_theta_s'],
+        absolute=0.1,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='% volume/volume',
+        source='registry',
+    )

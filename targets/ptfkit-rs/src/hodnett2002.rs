@@ -18,6 +18,41 @@ Tropical soils between approximately 25 degrees N and 25 degrees S.
 The IGBP-DIS tropical-soil dataset contains 771 retained horizons from 249 profiles in 22
 countries, split into 492 calibration curves and 279 validation curves."]
 
+#[cfg(test)]
+fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
+    absolute
+        .max(relative * expected.abs())
+        .max(0.00000000000001f64)
+}
+#[cfg(test)]
+fn assert_close(
+    actual: f64,
+    expected: f64,
+    absolute: f64,
+    relative: f64,
+    quantity: &str,
+    unit: &str,
+    source: &str,
+) {
+    let difference = (actual - expected).abs();
+    let tolerance = resolved_tolerance(expected, absolute, relative);
+    assert!(
+        difference <= tolerance,
+        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
+    );
+}
+#[cfg(test)]
+mod comparator_tests {
+    use super::*;
+    #[test]
+    fn accepts_below_and_rejects_above_tolerance() {
+        for expected in [0.0, 2.0, -2.0] {
+            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
+            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
+            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
+        }
+    }
+}
 #[doc = r"Results returned by `calc_ptf_hodnett2002`."]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Hodnett2002PTFResult {
@@ -118,12 +153,6 @@ pub fn calc_ptf_hodnett2002(
 #[cfg(test)]
 mod tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn calibration_dataset_mean_properties() {
         let result =
@@ -131,26 +160,38 @@ mod tests {
         assert_close(
             result.alpha,
             0.245183615037873f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.00001f64,
+            0f64,
+            "van_genuchten_alpha",
+            "kPa^-1",
+            "registry",
         );
         assert_close(
             result.n,
             1.36739326352383f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "van_genuchten_n",
+            "dimensionless",
+            "registry",
         );
         assert_close(
             result.theta_s,
             0.4993353f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "m^3/m^3",
+            "registry",
         );
         assert_close(
             result.theta_r,
             0.21344216f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "m^3/m^3",
+            "registry",
         );
     }
 }

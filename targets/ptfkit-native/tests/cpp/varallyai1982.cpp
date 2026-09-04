@@ -6,7 +6,7 @@ import ptfkit;
 import ptfkit.varallyai1982;
 #endif
 
-#include "close_enough.h"
+#include "support/close_enough.h"
 #include <type_traits>
 
 int main() {
@@ -14,33 +14,41 @@ int main() {
         const auto result = ptfkit::varallyai1982::calc_ptf_varallyai1982_meadow(1.4, 0.3, 0.25);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::varallyai1982::Varallyai1982Parameters>);
-        assert_close_enough(result.theta_0, 46.54495, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.m, 0.10029, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.pf_star, 3.62445, 0.000000000001, 0.000000000001);
+        assert_close(result.theta_0, 46.54495, 0.1, 0.0, "volumetric_water_content", "vol.%",
+                     "registry");
+        assert_close(result.m, 0.10029, 0.001, 0.0, "varallyai_m", "dimensionless", "registry");
+        assert_close(result.pf_star, 3.62445, 0.001, 0.0, "varallyai_pf_star", "dimensionless",
+                     "registry");
     }
     {
         const auto result = ptfkit::varallyai1982::calc_ptf_varallyai1982_chernozem_a(1.4, 0.35);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::varallyai1982::Varallyai1982Parameters>);
-        assert_close_enough(result.theta_0, 52.005, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.m, 0.4174, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.pf_star, 4.00469, 0.000000000001, 0.000000000001);
+        assert_close(result.theta_0, 52.005, 0.1, 0.0, "volumetric_water_content", "vol.%",
+                     "registry");
+        assert_close(result.m, 0.4174, 0.001, 0.0, "varallyai_m", "dimensionless", "registry");
+        assert_close(result.pf_star, 4.00469, 0.001, 0.0, "varallyai_pf_star", "dimensionless",
+                     "registry");
     }
     {
         const auto result = ptfkit::varallyai1982::calc_ptf_varallyai1982_chernozem_b(1.4, 0.35);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::varallyai1982::Varallyai1982Parameters>);
-        assert_close_enough(result.theta_0, 47.60035, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.m, 0.407, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.pf_star, 3.9299, 0.000000000001, 0.000000000001);
+        assert_close(result.theta_0, 47.60035, 0.1, 0.0, "volumetric_water_content", "vol.%",
+                     "registry");
+        assert_close(result.m, 0.407, 0.001, 0.0, "varallyai_m", "dimensionless", "registry");
+        assert_close(result.pf_star, 3.9299, 0.001, 0.0, "varallyai_pf_star", "dimensionless",
+                     "registry");
     }
     {
         const auto result = ptfkit::varallyai1982::calc_ptf_varallyai1982_chernozem_c(1.4, 0.35);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::varallyai1982::Varallyai1982Parameters>);
-        assert_close_enough(result.theta_0, 49.87, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.m, 0.84011, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.pf_star, 3.59772, 0.000000000001, 0.000000000001);
+        assert_close(result.theta_0, 49.87, 0.1, 0.0, "volumetric_water_content", "vol.%",
+                     "registry");
+        assert_close(result.m, 0.84011, 0.001, 0.0, "varallyai_m", "dimensionless", "registry");
+        assert_close(result.pf_star, 3.59772, 0.001, 0.0, "varallyai_pf_star", "dimensionless",
+                     "registry");
     }
     return 0;
 }

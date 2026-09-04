@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import pytest
 
-from _helpers import prepare_vector_case
+from _helpers import assert_close, prepare_vector_case
 from ptfkit.puckett1985 import Puckett1985PTFResult, calc_ptf_puckett1985
 
 
@@ -11,76 +11,332 @@ CASES_CALC_PTF_PUCKETT1985 = [
     (
         {'bulk_density': 1.67, 'clay': 11.8, 'fine_sand': 36.4, 'porosity': 0.38, 'sand': 70.9},
         {
-            'k_sat': 4.2399741e-6,
             'theta_0': 0.34288,
             'theta_1': 0.33926,
+            'theta_5': 0.3938615,
             'theta_10': 0.39330438,
+            'theta_30': 0.34432936,
+            'theta_60': 0.31153562,
             'theta_100': 0.29292896,
+            'theta_500': 0.2513588,
             'theta_1000': 0.25187788,
             'theta_1500': 0.22746346,
-            'theta_30': 0.34432936,
-            'theta_5': 0.3938615,
-            'theta_500': 0.2513588,
-            'theta_60': 0.31153562,
+            'k_sat': 4.2399741e-6,
         },
-        1e-8,
-        1e-12,
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_PUCKETT1985)
-def test_calc_ptf_puckett1985_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
-):
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_PUCKETT1985)
+def test_calc_ptf_puckett1985_verification(inputs: dict[str, float], expected: dict[str, float]):
     result = calc_ptf_puckett1985(**inputs)
 
-    assert result.theta_0 == pytest.approx(expected['theta_0'], rel=rtol, abs=atol)
-    assert result.theta_1 == pytest.approx(expected['theta_1'], rel=rtol, abs=atol)
-    assert result.theta_5 == pytest.approx(expected['theta_5'], rel=rtol, abs=atol)
-    assert result.theta_10 == pytest.approx(expected['theta_10'], rel=rtol, abs=atol)
-    assert result.theta_30 == pytest.approx(expected['theta_30'], rel=rtol, abs=atol)
-    assert result.theta_60 == pytest.approx(expected['theta_60'], rel=rtol, abs=atol)
-    assert result.theta_100 == pytest.approx(expected['theta_100'], rel=rtol, abs=atol)
-    assert result.theta_500 == pytest.approx(expected['theta_500'], rel=rtol, abs=atol)
-    assert result.theta_1000 == pytest.approx(expected['theta_1000'], rel=rtol, abs=atol)
-    assert result.theta_1500 == pytest.approx(expected['theta_1500'], rel=rtol, abs=atol)
-    assert result.k_sat == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result.theta_0,
+        expected['theta_0'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_1,
+        expected['theta_1'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_5,
+        expected['theta_5'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_10,
+        expected['theta_10'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_30,
+        expected['theta_30'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_60,
+        expected['theta_60'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_100,
+        expected['theta_100'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_500,
+        expected['theta_500'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_1000,
+        expected['theta_1000'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_1500,
+        expected['theta_1500'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.k_sat,
+        expected['k_sat'],
+        absolute=1e-10,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='m/s',
+        source='registry',
+    )
 
 
 def test_calc_ptf_puckett1985_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_PUCKETT1985, Puckett1985PTFResult
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_PUCKETT1985, Puckett1985PTFResult)
     result = calc_ptf_puckett1985(**inputs, out=None)
-    assert result.theta_0[0] == pytest.approx(expected['theta_0'], rel=rtol, abs=atol)
-    assert result.theta_1[0] == pytest.approx(expected['theta_1'], rel=rtol, abs=atol)
-    assert result.theta_5[0] == pytest.approx(expected['theta_5'], rel=rtol, abs=atol)
-    assert result.theta_10[0] == pytest.approx(expected['theta_10'], rel=rtol, abs=atol)
-    assert result.theta_30[0] == pytest.approx(expected['theta_30'], rel=rtol, abs=atol)
-    assert result.theta_60[0] == pytest.approx(expected['theta_60'], rel=rtol, abs=atol)
-    assert result.theta_100[0] == pytest.approx(expected['theta_100'], rel=rtol, abs=atol)
-    assert result.theta_500[0] == pytest.approx(expected['theta_500'], rel=rtol, abs=atol)
-    assert result.theta_1000[0] == pytest.approx(expected['theta_1000'], rel=rtol, abs=atol)
-    assert result.theta_1500[0] == pytest.approx(expected['theta_1500'], rel=rtol, abs=atol)
-    assert result.k_sat[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result.theta_0[0],
+        expected['theta_0'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_1[0],
+        expected['theta_1'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_5[0],
+        expected['theta_5'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_10[0],
+        expected['theta_10'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_30[0],
+        expected['theta_30'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_60[0],
+        expected['theta_60'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_100[0],
+        expected['theta_100'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_500[0],
+        expected['theta_500'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_1000[0],
+        expected['theta_1000'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_1500[0],
+        expected['theta_1500'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.k_sat[0],
+        expected['k_sat'],
+        absolute=1e-10,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='m/s',
+        source='registry',
+    )
 
 
 def test_calc_ptf_puckett1985_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_PUCKETT1985, Puckett1985PTFResult
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_PUCKETT1985, Puckett1985PTFResult)
     result = calc_ptf_puckett1985(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert result.theta_0[0] == pytest.approx(expected['theta_0'], rel=rtol, abs=atol)
-    assert result.theta_1[0] == pytest.approx(expected['theta_1'], rel=rtol, abs=atol)
-    assert result.theta_5[0] == pytest.approx(expected['theta_5'], rel=rtol, abs=atol)
-    assert result.theta_10[0] == pytest.approx(expected['theta_10'], rel=rtol, abs=atol)
-    assert result.theta_30[0] == pytest.approx(expected['theta_30'], rel=rtol, abs=atol)
-    assert result.theta_60[0] == pytest.approx(expected['theta_60'], rel=rtol, abs=atol)
-    assert result.theta_100[0] == pytest.approx(expected['theta_100'], rel=rtol, abs=atol)
-    assert result.theta_500[0] == pytest.approx(expected['theta_500'], rel=rtol, abs=atol)
-    assert result.theta_1000[0] == pytest.approx(expected['theta_1000'], rel=rtol, abs=atol)
-    assert result.theta_1500[0] == pytest.approx(expected['theta_1500'], rel=rtol, abs=atol)
-    assert result.k_sat[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result.theta_0[0],
+        expected['theta_0'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_1[0],
+        expected['theta_1'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_5[0],
+        expected['theta_5'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_10[0],
+        expected['theta_10'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_30[0],
+        expected['theta_30'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_60[0],
+        expected['theta_60'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_100[0],
+        expected['theta_100'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_500[0],
+        expected['theta_500'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_1000[0],
+        expected['theta_1000'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_1500[0],
+        expected['theta_1500'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.k_sat[0],
+        expected['k_sat'],
+        absolute=1e-10,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='m/s',
+        source='registry',
+    )

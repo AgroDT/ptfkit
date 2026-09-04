@@ -18,8 +18,20 @@ functions:
         h_theta: null
         k_h: null
     inputs: []
-    outputs: []
-    golden_tests: []
+    outputs:
+      type: scalar
+      name: target
+      quantity: reviewed_quantity_identifier
+      symbol: null
+      unit: source unit
+      domain: null
+      description: Source-supported output description.
+    verification_cases:
+      - id: representative_case
+        kind: calculated
+        inputs: {}
+        expected: {}
+        rationale: Explain why the input is physically meaningful and within the source domain.
     edge_cases: []
     documentation:
       notes: []

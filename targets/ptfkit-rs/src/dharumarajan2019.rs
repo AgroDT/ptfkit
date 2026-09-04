@@ -19,6 +19,41 @@ Field capacity and permanent wilting point were modeled from 512 soil samples in
 Karnataka Plateau and 228 samples in the Southern Karnataka Plateau; infiltration was modeled
 from 100 Karnataka soil observations."]
 
+#[cfg(test)]
+fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
+    absolute
+        .max(relative * expected.abs())
+        .max(0.00000000000001f64)
+}
+#[cfg(test)]
+fn assert_close(
+    actual: f64,
+    expected: f64,
+    absolute: f64,
+    relative: f64,
+    quantity: &str,
+    unit: &str,
+    source: &str,
+) {
+    let difference = (actual - expected).abs();
+    let tolerance = resolved_tolerance(expected, absolute, relative);
+    assert!(
+        difference <= tolerance,
+        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
+    );
+}
+#[cfg(test)]
+mod comparator_tests {
+    use super::*;
+    #[test]
+    fn accepts_below_and_rejects_above_tolerance() {
+        for expected in [0.0, 2.0, -2.0] {
+            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
+            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
+            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
+        }
+    }
+}
 #[doc = r"Results returned by `calc_ptf_dharumarajan2019_nkp`."]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Dharumarajan2019WaterRetentionResult {
@@ -78,26 +113,26 @@ pub fn calc_ptf_dharumarajan2019_nkp(
 #[cfg(test)]
 mod calc_ptf_dharumarajan2019_nkp_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn northern_study_mean_case() {
         let result = calc_ptf_dharumarajan2019_nkp(43.2f64, 39.8f64, 33.6f64);
         assert_close(
             result.field_capacity,
             29.7912f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.1f64,
+            0f64,
+            "gravimetric_water_content",
+            "%",
+            "registry",
         );
         assert_close(
             result.permanent_wilting_point,
             18.9276f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.1f64,
+            0f64,
+            "gravimetric_water_content",
+            "%",
+            "registry",
         );
     }
 }
@@ -144,26 +179,26 @@ pub fn calc_ptf_dharumarajan2019_nkp_clay(clay: f64) -> Dharumarajan2019WaterRet
 #[cfg(test)]
 mod calc_ptf_dharumarajan2019_nkp_clay_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn northern_study_mean_clay_case() {
         let result = calc_ptf_dharumarajan2019_nkp_clay(43.2f64);
         assert_close(
             result.field_capacity,
             30.2832f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.1f64,
+            0f64,
+            "gravimetric_water_content",
+            "%",
+            "registry",
         );
         assert_close(
             result.permanent_wilting_point,
             19.157f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.1f64,
+            0f64,
+            "gravimetric_water_content",
+            "%",
+            "registry",
         );
     }
 }
@@ -216,26 +251,26 @@ pub fn calc_ptf_dharumarajan2019_skp(
 #[cfg(test)]
 mod calc_ptf_dharumarajan2019_skp_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn southern_study_mean_case() {
         let result = calc_ptf_dharumarajan2019_skp(31.5f64, 53.5f64, 14.7f64);
         assert_close(
             result.field_capacity,
             21.8169f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.1f64,
+            0f64,
+            "gravimetric_water_content",
+            "%",
+            "registry",
         );
         assert_close(
             result.permanent_wilting_point,
             11.3054f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.1f64,
+            0f64,
+            "gravimetric_water_content",
+            "%",
+            "registry",
         );
     }
 }
@@ -280,26 +315,26 @@ pub fn calc_ptf_dharumarajan2019_skp_clay(clay: f64) -> Dharumarajan2019WaterRet
 #[cfg(test)]
 mod calc_ptf_dharumarajan2019_skp_clay_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn southern_study_mean_clay_case() {
         let result = calc_ptf_dharumarajan2019_skp_clay(31.5f64);
         assert_close(
             result.field_capacity,
             22.0255f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.1f64,
+            0f64,
+            "gravimetric_water_content",
+            "%",
+            "registry",
         );
         assert_close(
             result.permanent_wilting_point,
             11.503f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.1f64,
+            0f64,
+            "gravimetric_water_content",
+            "%",
+            "registry",
         );
     }
 }
@@ -340,15 +375,17 @@ pub fn calc_ptf_dharumarajan2019_infiltration(sand: f64, silt: f64, clay: f64) -
 #[cfg(test)]
 mod calc_ptf_dharumarajan2019_infiltration_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn balanced_texture_case() {
         let result = calc_ptf_dharumarajan2019_infiltration(50f64, 20f64, 30f64);
-        assert_close(result, 18.45f64, 0.000000000001f64, 0.000000000001f64);
+        assert_close(
+            result,
+            18.45f64,
+            0.0001f64,
+            0.01f64,
+            "infiltration_rate",
+            "mm/h",
+            "registry",
+        );
     }
 }

@@ -6,7 +6,7 @@ import ptfkit;
 import ptfkit.puckett1985;
 #endif
 
-#include "close_enough.h"
+#include "support/close_enough.h"
 #include <type_traits>
 
 int main() {
@@ -14,17 +14,28 @@ int main() {
         const auto result = ptfkit::puckett1985::calc_ptf_puckett1985(70.9, 36.4, 11.8, 1.67, 0.38);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::puckett1985::Puckett1985PTFResult>);
-        assert_close_enough(result.theta_0, 0.34288, 0.000000000001, 0.00000001);
-        assert_close_enough(result.theta_1, 0.33926, 0.000000000001, 0.00000001);
-        assert_close_enough(result.theta_5, 0.3938615, 0.000000000001, 0.00000001);
-        assert_close_enough(result.theta_10, 0.39330438, 0.000000000001, 0.00000001);
-        assert_close_enough(result.theta_30, 0.34432936, 0.000000000001, 0.00000001);
-        assert_close_enough(result.theta_60, 0.31153562, 0.000000000001, 0.00000001);
-        assert_close_enough(result.theta_100, 0.29292896, 0.000000000001, 0.00000001);
-        assert_close_enough(result.theta_500, 0.2513588, 0.000000000001, 0.00000001);
-        assert_close_enough(result.theta_1000, 0.25187788, 0.000000000001, 0.00000001);
-        assert_close_enough(result.theta_1500, 0.22746346, 0.000000000001, 0.00000001);
-        assert_close_enough(result.k_sat, 0.0000042399741, 0.000000000001, 0.00000001);
+        assert_close(result.theta_0, 0.34288, 0.001, 0.0, "volumetric_water_content", "cm^3/cm^3",
+                     "registry");
+        assert_close(result.theta_1, 0.33926, 0.001, 0.0, "volumetric_water_content", "cm^3/cm^3",
+                     "registry");
+        assert_close(result.theta_5, 0.3938615, 0.001, 0.0, "volumetric_water_content", "cm^3/cm^3",
+                     "registry");
+        assert_close(result.theta_10, 0.39330438, 0.001, 0.0, "volumetric_water_content",
+                     "cm^3/cm^3", "registry");
+        assert_close(result.theta_30, 0.34432936, 0.001, 0.0, "volumetric_water_content",
+                     "cm^3/cm^3", "registry");
+        assert_close(result.theta_60, 0.31153562, 0.001, 0.0, "volumetric_water_content",
+                     "cm^3/cm^3", "registry");
+        assert_close(result.theta_100, 0.29292896, 0.001, 0.0, "volumetric_water_content",
+                     "cm^3/cm^3", "registry");
+        assert_close(result.theta_500, 0.2513588, 0.001, 0.0, "volumetric_water_content",
+                     "cm^3/cm^3", "registry");
+        assert_close(result.theta_1000, 0.25187788, 0.001, 0.0, "volumetric_water_content",
+                     "cm^3/cm^3", "registry");
+        assert_close(result.theta_1500, 0.22746346, 0.001, 0.0, "volumetric_water_content",
+                     "cm^3/cm^3", "registry");
+        assert_close(result.k_sat, 0.0000042399741, 0.0000000001, 0.01,
+                     "saturated_hydraulic_conductivity", "m/s", "registry");
     }
     return 0;
 }

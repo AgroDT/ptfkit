@@ -55,27 +55,32 @@ functions:
     name: Li2007PTFResult
     fields:
     - name: theta_s
+      quantity: volumetric_water_content
       symbol: theta_s
       unit: cm^3/cm^3
       domain: value >= 0
       description: Saturated water content.
     - name: a_vg
+      quantity: van_genuchten_alpha
       symbol: alpha
       unit: cm^-1
       domain: value >= 0
       description: Van Genuchten alpha parameter, inversely related to air-entry suction.
     - name: n_vg
+      quantity: van_genuchten_n
       symbol: n
       unit: dimensionless
       domain: value > 1
       description: Van Genuchten n parameter that characterizes pore-size distribution.
     - name: k_sat
+      quantity: saturated_hydraulic_conductivity
       symbol: Ks
       unit: m/s
       domain: value >= 0
       description: Saturated hydraulic conductivity.
-  golden_tests:
+  verification_cases:
   - id: loamy_sand
+    kind: calculated
     inputs:
       sand: 85.0
       silt: 10.0
@@ -87,10 +92,9 @@ functions:
       a_vg: 0.9491464758307142
       n_vg: 1.1657804980997006
       k_sat: 6.549110367333547e-06
-    rtol: 1.0e-08
-    atol: 1.0e-12
-    notes: Calculated from Table 6 formulas and unit conversion.
+    rationale: Calculated from Table 6 formulas and unit conversion.
   - id: loam
+    kind: calculated
     inputs:
       sand: 50.23
       silt: 38.72
@@ -102,10 +106,9 @@ functions:
       a_vg: 0.009519989841950734
       n_vg: 1.1806286355149054
       k_sat: 4.5117324656202257e-07
-    rtol: 1.0e-08
-    atol: 1.0e-12
-    notes: Calculated from Table 6 formulas and unit conversion.
+    rationale: Calculated from Table 6 formulas and unit conversion.
   - id: silty_clay
+    kind: calculated
     inputs:
       sand: 12.88
       silt: 60.0
@@ -117,9 +120,7 @@ functions:
       a_vg: 0.0018530400762371828
       n_vg: 1.2080428739797433
       k_sat: 1.5151432632107234e-06
-    rtol: 1.0e-08
-    atol: 1.0e-12
-    notes: Calculated from Table 6 formulas and unit conversion.
+    rationale: Calculated from Table 6 formulas and unit conversion.
   edge_cases:
   - id: non_positive_log_input
     inputs:

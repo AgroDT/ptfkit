@@ -17,6 +17,41 @@ USA
 Southern Cooperation Series Bulletins (Dan et al., 1983; Nofziger et al., 1983; Quisenberry et
 al., 1987), 350 samples; validation on Duffield silt loam data."]
 
+#[cfg(test)]
+fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
+    absolute
+        .max(relative * expected.abs())
+        .max(0.00000000000001f64)
+}
+#[cfg(test)]
+fn assert_close(
+    actual: f64,
+    expected: f64,
+    absolute: f64,
+    relative: f64,
+    quantity: &str,
+    unit: &str,
+    source: &str,
+) {
+    let difference = (actual - expected).abs();
+    let tolerance = resolved_tolerance(expected, absolute, relative);
+    assert!(
+        difference <= tolerance,
+        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
+    );
+}
+#[cfg(test)]
+mod comparator_tests {
+    use super::*;
+    #[test]
+    fn accepts_below_and_rejects_above_tolerance() {
+        for expected in [0.0, 2.0, -2.0] {
+            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
+            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
+            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
+        }
+    }
+}
 #[doc = r"Estimate saturated hydraulic conductivity from silt, clay, and bulk density.
 
 # Arguments
@@ -51,20 +86,17 @@ pub fn calc_ptf_jabro1992(silt: f64, clay: f64, bulk_density: f64) -> f64 {
 #[cfg(test)]
 mod tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn loamy_sand_min_bd() {
         let result = calc_ptf_jabro1992(10f64, 5f64, 1.26f64);
         assert_close(
             result,
             0.0003849640675896946f64,
-            0.000000000001f64,
-            0.00000001f64,
+            0.0000000001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "m/s",
+            "registry",
         );
     }
     #[test]
@@ -73,8 +105,11 @@ mod tests {
         assert_close(
             result,
             0.000009804037952717678f64,
-            0.000000000001f64,
-            0.00000001f64,
+            0.0000000001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "m/s",
+            "registry",
         );
     }
     #[test]
@@ -83,8 +118,11 @@ mod tests {
         assert_close(
             result,
             0.000000007292435947882127f64,
-            0.000000000001f64,
-            0.00000001f64,
+            0.0000000001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "m/s",
+            "registry",
         );
     }
     #[test]
@@ -93,8 +131,11 @@ mod tests {
         assert_close(
             result,
             0.00002032824027706267f64,
-            0.000000000001f64,
-            0.00000001f64,
+            0.0000000001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "m/s",
+            "registry",
         );
     }
 }

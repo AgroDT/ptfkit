@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import pytest
 
-from _helpers import prepare_vector_case
+from _helpers import assert_close, prepare_vector_case
 from ptfkit.li2007 import Li2007PTFResult, calc_ptf_li2007
 
 
@@ -11,13 +11,11 @@ CASES_CALC_PTF_LI2007 = [
     (
         {'bulk_density': 1.2, 'clay': 5.0, 'sand': 85.0, 'silt': 10.0, 'soil_organic_matter': 0.21},
         {
-            'a_vg': 0.9491464758307142,
-            'k_sat': 6.549110367333547e-6,
-            'n_vg': 1.1657804980997006,
             'theta_s': 0.5256803583157499,
+            'a_vg': 0.9491464758307142,
+            'n_vg': 1.1657804980997006,
+            'k_sat': 6.549110367333547e-6,
         },
-        1e-8,
-        1e-12,
     ),
     (
         {
@@ -28,13 +26,11 @@ CASES_CALC_PTF_LI2007 = [
             'soil_organic_matter': 0.65,
         },
         {
-            'a_vg': 0.009519989841950734,
-            'k_sat': 4.5117324656202257e-7,
-            'n_vg': 1.1806286355149054,
             'theta_s': 0.49659526127697506,
+            'a_vg': 0.009519989841950734,
+            'n_vg': 1.1806286355149054,
+            'k_sat': 4.5117324656202257e-7,
         },
-        1e-8,
-        1e-12,
     ),
     (
         {
@@ -45,44 +41,136 @@ CASES_CALC_PTF_LI2007 = [
             'soil_organic_matter': 1.02,
         },
         {
-            'a_vg': 0.0018530400762371828,
-            'k_sat': 1.5151432632107234e-6,
-            'n_vg': 1.2080428739797433,
             'theta_s': 0.4053061510618609,
+            'a_vg': 0.0018530400762371828,
+            'n_vg': 1.2080428739797433,
+            'k_sat': 1.5151432632107234e-6,
         },
-        1e-8,
-        1e-12,
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_LI2007)
-def test_calc_ptf_li2007_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
-):
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_LI2007)
+def test_calc_ptf_li2007_verification(inputs: dict[str, float], expected: dict[str, float]):
     result = calc_ptf_li2007(**inputs)
 
-    assert result.theta_s == pytest.approx(expected['theta_s'], rel=rtol, abs=atol)
-    assert result.a_vg == pytest.approx(expected['a_vg'], rel=rtol, abs=atol)
-    assert result.n_vg == pytest.approx(expected['n_vg'], rel=rtol, abs=atol)
-    assert result.k_sat == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result.theta_s,
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.a_vg,
+        expected['a_vg'],
+        absolute=1e-5,
+        relative=0.0,
+        quantity='van_genuchten_alpha',
+        unit='cm^-1',
+        source='registry',
+    )
+    assert_close(
+        result.n_vg,
+        expected['n_vg'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='van_genuchten_n',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.k_sat,
+        expected['k_sat'],
+        absolute=1e-10,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='m/s',
+        source='registry',
+    )
 
 
 def test_calc_ptf_li2007_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_LI2007, Li2007PTFResult)
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_LI2007, Li2007PTFResult)
     result = calc_ptf_li2007(**inputs, out=None)
-    assert result.theta_s[0] == pytest.approx(expected['theta_s'], rel=rtol, abs=atol)
-    assert result.a_vg[0] == pytest.approx(expected['a_vg'], rel=rtol, abs=atol)
-    assert result.n_vg[0] == pytest.approx(expected['n_vg'], rel=rtol, abs=atol)
-    assert result.k_sat[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result.theta_s[0],
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.a_vg[0],
+        expected['a_vg'],
+        absolute=1e-5,
+        relative=0.0,
+        quantity='van_genuchten_alpha',
+        unit='cm^-1',
+        source='registry',
+    )
+    assert_close(
+        result.n_vg[0],
+        expected['n_vg'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='van_genuchten_n',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.k_sat[0],
+        expected['k_sat'],
+        absolute=1e-10,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='m/s',
+        source='registry',
+    )
 
 
 def test_calc_ptf_li2007_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_LI2007, Li2007PTFResult)
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_LI2007, Li2007PTFResult)
     result = calc_ptf_li2007(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert result.theta_s[0] == pytest.approx(expected['theta_s'], rel=rtol, abs=atol)
-    assert result.a_vg[0] == pytest.approx(expected['a_vg'], rel=rtol, abs=atol)
-    assert result.n_vg[0] == pytest.approx(expected['n_vg'], rel=rtol, abs=atol)
-    assert result.k_sat[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result.theta_s[0],
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.a_vg[0],
+        expected['a_vg'],
+        absolute=1e-5,
+        relative=0.0,
+        quantity='van_genuchten_alpha',
+        unit='cm^-1',
+        source='registry',
+    )
+    assert_close(
+        result.n_vg[0],
+        expected['n_vg'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='van_genuchten_n',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.k_sat[0],
+        expected['k_sat'],
+        absolute=1e-10,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='m/s',
+        source='registry',
+    )

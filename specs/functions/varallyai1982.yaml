@@ -35,16 +35,19 @@ $defs:
     name: Varallyai1982Parameters
     fields:
       - name: theta_0
+        quantity: volumetric_water_content
         symbol: theta_0
         unit: vol.%
         domain: null
         description: Upper-asymptote water content parameter of equation (9).
       - name: m
+        quantity: varallyai_m
         symbol: m
         unit: dimensionless
         domain: null
         description: Shape parameter of equation (9).
       - name: pf_star
+        quantity: varallyai_pf_star
         symbol: pF_*
         unit: dimensionless
         domain: null
@@ -70,8 +73,9 @@ functions:
       - $ref: '#/$defs/fineFraction'
     outputs:
       $ref: '#/$defs/Varallyai1982Parameters'
-    golden_tests:
+    verification_cases:
       - id: representative_review_case
+        kind: calculated
         inputs:
           bulk_density: 1.4
           fine_sand_fraction: 0.3
@@ -80,9 +84,7 @@ functions:
           theta_0: 46.54495
           m: 0.10029
           pf_star: 3.62445
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Calculated directly from equation (14) during specification review.
+        rationale: Calculated directly from equation (14) during specification review.
     edge_cases:
       - id: nan_fine_fraction
         inputs:
@@ -124,8 +126,9 @@ functions:
       - $ref: '#/$defs/fineFraction'
     outputs:
       $ref: '#/$defs/Varallyai1982Parameters'
-    golden_tests:
+    verification_cases:
       - id: representative_review_case
+        kind: calculated
         inputs:
           bulk_density: 1.4
           fine_fraction: 0.35
@@ -133,9 +136,7 @@ functions:
           theta_0: 52.005
           m: 0.4174
           pf_star: 4.00469
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Calculated directly from equation (15) during specification review.
+        rationale: Calculated directly from equation (15) during specification review.
     edge_cases:
       - id: nan_bulk_density
         inputs:
@@ -175,8 +176,9 @@ functions:
       - $ref: '#/$defs/fineFraction'
     outputs:
       $ref: '#/$defs/Varallyai1982Parameters'
-    golden_tests:
+    verification_cases:
       - id: representative_review_case
+        kind: calculated
         inputs:
           bulk_density: 1.4
           fine_fraction: 0.35
@@ -184,9 +186,7 @@ functions:
           theta_0: 47.60035
           m: 0.407
           pf_star: 3.9299
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Calculated directly from equation (16) during specification review.
+        rationale: Calculated directly from equation (16) during specification review.
     edge_cases:
       - id: nan_bulk_density
         inputs:
@@ -226,8 +226,9 @@ functions:
       - $ref: '#/$defs/fineFraction'
     outputs:
       $ref: '#/$defs/Varallyai1982Parameters'
-    golden_tests:
+    verification_cases:
       - id: representative_review_case
+        kind: calculated
         inputs:
           bulk_density: 1.4
           fine_fraction: 0.35
@@ -235,9 +236,7 @@ functions:
           theta_0: 49.87
           m: 0.84011
           pf_star: 3.59772
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Calculated directly from equation (17) during specification review.
+        rationale: Calculated directly from equation (17) during specification review.
     edge_cases:
       - id: nan_bulk_density
         inputs:

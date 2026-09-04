@@ -50,57 +50,68 @@ functions:
       name: Saxton2006PTFResult
       fields:
         - name: theta_1500
+          quantity: volumetric_water_content
           symbol: theta_1500
           unit: m^3/m^3
           domain: value > 0
           description: Volumetric water content at 1500 kPa matric tension.
         - name: theta_33
+          quantity: volumetric_water_content
           symbol: theta_33
           unit: m^3/m^3
           domain: value > 0
           description: Volumetric water content at 33 kPa matric tension.
         - name: theta_s
+          quantity: volumetric_water_content
           symbol: theta_s
           unit: m^3/m^3
           domain: value > 0
           description: Saturated volumetric water content at normal density.
         - name: plant_available_water
+          quantity: volumetric_water_content
           symbol: PAW
           unit: m^3/m^3
           domain: value >= 0
           description: Difference between the 33 and 1500 kPa water contents.
         - name: air_entry_tension
+          quantity: matric_potential
           symbol: psi_e
           unit: kPa
           domain: value > 0
           description: Air-entry or bubbling-pressure tension.
         - name: retention_a
+          quantity: retention_coefficient_a
           symbol: A
           unit: kPa
           domain: value > 0
           description: Coefficient A of the dry-range moisture-tension curve.
         - name: retention_b
+          quantity: retention_coefficient_b
           symbol: B
           unit: dimensionless
           domain: value > 0
           description: Exponent B of the dry-range moisture-tension curve.
         - name: conductivity_lambda
+          quantity: conductivity_shape_parameter
           symbol: lambda
           unit: dimensionless
           domain: value > 0
           description: Inverse of retention exponent B.
         - name: saturated_conductivity
+          quantity: saturated_hydraulic_conductivity
           symbol: K_s
           unit: mm/h
           domain: value >= 0
           description: Saturated hydraulic conductivity of the matric soil.
         - name: normal_density
+          quantity: dry_bulk_density
           symbol: rho_N
           unit: g/cm^3
           domain: value > 0
           description: Normal dry bulk density assuming particle density 2.65 g/cm^3.
-    golden_tests:
+    verification_cases:
       - id: table_3_sand
+        kind: calculated
         inputs:
           sand: 0.88
           clay: 0.05
@@ -116,9 +127,7 @@ functions:
           conductivity_lambda: 0.18776158355467926
           saturated_conductivity: 108.1478278507403
           normal_density: 1.4264356197312436
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: >-
+        rationale: >-
           Calculated directly from Table 1. The source-native rounded Table 3
           values are 0.05, 0.10, 0.46, 0.05, 108.1 mm/h, and 1.43 g/cm^3 for
           theta_1500, theta_33, theta_s, PAW, K_s, and rho_N, respectively.
@@ -207,27 +216,32 @@ functions:
       name: Saxton2006DensityResult
       fields:
         - name: adjusted_density
+          quantity: dry_bulk_density
           symbol: rho_DF
           unit: g/cm^3
           domain: value > 0
           description: Density after applying the density factor.
         - name: adjusted_theta_s
+          quantity: volumetric_water_content
           symbol: theta_S-DF
           unit: m^3/m^3
           domain: value > 0
           description: Saturated water content after the density adjustment.
         - name: adjusted_theta_33
+          quantity: volumetric_water_content
           symbol: theta_33-DF
           unit: m^3/m^3
           domain: value > 0
           description: Water content at 33 kPa after the density adjustment.
         - name: adjusted_theta_s_minus_33
+          quantity: volumetric_water_content
           symbol: theta_(S-33)DF
           unit: m^3/m^3
           domain: value >= 0.005
           description: Density-adjusted difference between saturation and 33 kPa.
-    golden_tests:
+    verification_cases:
       - id: table_3_sand_compacted
+        kind: calculated
         inputs:
           normal_density: 1.4264356197312436
           theta_s: 0.46172240764858724
@@ -238,9 +252,7 @@ functions:
           adjusted_theta_s: 0.407894648413446
           adjusted_theta_33: 0.09206237180155877
           adjusted_theta_s_minus_33: 0.3158322766118873
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Calculated directly from Table 1, Equations 7-10.
+        rationale: Calculated directly from Table 1, Equations 7-10.
     edge_cases: []
     documentation:
       notes:
@@ -288,21 +300,21 @@ functions:
     outputs:
       type: scalar
       name: tension
+      quantity: matric_potential
       symbol: psi_theta
       unit: kPa
       domain: 33 <= value <= 1500
       description: Matric tension at the supplied water content.
-    golden_tests:
+    verification_cases:
       - id: table_3_sand_midpoint
+        kind: calculated
         inputs:
           theta: 0.07652425182429351
           theta_1500: 0.05022058
           theta_33: 0.10282792364858702
         expected:
           tension: 159.18094591362183
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Calculated directly from Table 1, Equations 11, 14, and 15.
+        rationale: Calculated directly from Table 1, Equations 11, 14, and 15.
     edge_cases: []
     documentation:
       notes: []
@@ -356,12 +368,14 @@ functions:
     outputs:
       type: scalar
       name: tension
+      quantity: matric_potential
       symbol: psi_theta
       unit: kPa
       domain: air_entry_tension <= value <= 33
       description: Matric tension at the supplied water content.
-    golden_tests:
+    verification_cases:
       - id: table_3_sand_theta_0_2
+        kind: calculated
         inputs:
           theta: 0.2
           theta_33: 0.10282792364858702
@@ -369,9 +383,7 @@ functions:
           air_entry_tension: 0.5986789729513293
         expected:
           tension: 24.227216407352152
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Calculated directly from Table 1, Equation 12.
+        rationale: Calculated directly from Table 1, Equation 12.
     edge_cases: []
     documentation:
       notes:
@@ -418,12 +430,14 @@ functions:
     outputs:
       type: scalar
       name: conductivity
+      quantity: unsaturated_hydraulic_conductivity
       symbol: K_theta
       unit: mm/h
       domain: value >= 0
       description: Unsaturated hydraulic conductivity at the supplied water content.
-    golden_tests:
+    verification_cases:
       - id: table_3_sand_theta_0_3
+        kind: calculated
         inputs:
           theta: 0.3
           theta_s: 0.46172240764858724
@@ -431,9 +445,7 @@ functions:
           conductivity_lambda: 0.18776158355467926
         expected:
           conductivity: 0.3003203142764693
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Calculated directly from corrected Table 1, Equation 17.
+        rationale: Calculated directly from corrected Table 1, Equation 17.
     edge_cases: []
     documentation:
       notes: []
@@ -481,27 +493,32 @@ functions:
       name: Saxton2006GravelResult
       fields:
         - name: gravel_volume_fraction
+          quantity: gravel_volume_fraction
           symbol: R_v
           unit: m^3/m^3
           domain: 0 <= value < 1
           description: Gravel volume fraction of the bulk soil.
         - name: bulk_density
+          quantity: dry_bulk_density
           symbol: rho_B
           unit: g/cm^3
           domain: value > 0
           description: Dry bulk density of matric soil plus gravel.
         - name: bulk_plant_available_water
+          quantity: volumetric_water_content
           symbol: PAW_B
           unit: m^3/m^3
           domain: value >= 0
           description: Plant-available water on a bulk-soil volume basis.
         - name: bulk_saturated_conductivity
+          quantity: saturated_hydraulic_conductivity
           symbol: K_b
           unit: mm/h
           domain: value >= 0
           description: Saturated conductivity after the gravel reduction.
-    golden_tests:
+    verification_cases:
       - id: table_3_sand_twenty_percent_gravel
+        kind: calculated
         inputs:
           gravel_weight_fraction: 0.2
           matric_density: 1.4264356197312436
@@ -512,9 +529,7 @@ functions:
           bulk_density: 1.5715605653291098
           bulk_plant_available_water: 0.04636767370708995
           bulk_saturated_conductivity: 97.54880510583706
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Calculated directly from Table 1, Equations 19-22.
+        rationale: Calculated directly from Table 1, Equations 19-22.
     edge_cases: []
     documentation:
       notes:
@@ -567,17 +582,20 @@ functions:
       name: Saxton2006SalinityResult
       fields:
         - name: saturated_osmotic_potential
+          quantity: osmotic_potential
           symbol: psi_O
           unit: kPa
           domain: value >= 0
           description: Osmotic potential at saturation.
         - name: osmotic_potential
+          quantity: osmotic_potential
           symbol: psi_Otheta
           unit: kPa
           domain: value >= 0
           description: Osmotic potential at the supplied water content.
-    golden_tests:
+    verification_cases:
       - id: saline_partly_saturated_soil
+        kind: calculated
         inputs:
           electrical_conductivity: 4.0
           theta: 0.3
@@ -585,9 +603,7 @@ functions:
         expected:
           saturated_osmotic_potential: 144.0
           osmotic_potential: 221.6267556713219
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Calculated directly from Table 1, Equations 23 and 24.
+        rationale: Calculated directly from Table 1, Equations 23 and 24.
     edge_cases: []
     documentation:
       notes:

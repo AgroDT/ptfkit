@@ -62,19 +62,19 @@ functions:
     outputs:
       type: scalar
       name: field_capacity_tension
+      quantity: matric_potential
       symbol: T_Pr
       unit: kPa
       domain: value > 0
       description: Predicted tension corresponding to cylinder-method field capacity.
-    golden_tests:
+    verification_cases:
       - id: table_1_loamy_sand
+        kind: calculated
         inputs:
           clay: 6.6
         expected:
           field_capacity_tension: 11.8540994164288
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: >-
+        rationale: >-
           Direct evaluation of Equation 1; Table I reports the value rounded to
           11.8 kPa.
     edge_cases:
@@ -111,12 +111,14 @@ functions:
     outputs:
       type: scalar
       name: moisture_content
+      quantity: gravimetric_water_content
       symbol: theta
       unit: '% mass'
       domain: null
       description: Predicted soil-moisture content in percent by weight.
-    golden_tests:
+    verification_cases:
       - id: table_1_loamy_sand_inputs
+        kind: calculated
         inputs:
           clay: 6.6
           sand: 86.3
@@ -124,9 +126,7 @@ functions:
           tension: 11.8
         expected:
           moisture_content: 8.2782468100413
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: >-
+        rationale: >-
           Direct evaluation of the corrected Equation 2 at the Table I loamy-sand
           inputs and its rounded field-capacity tension. Table I instead reports
           the separate Equation 3 field-capacity prediction.
@@ -167,21 +167,21 @@ functions:
     outputs:
       type: scalar
       name: field_capacity_moisture
+      quantity: gravimetric_water_content
       symbol: theta_fc
       unit: '% mass'
       domain: null
       description: Predicted soil-moisture content at field capacity in percent by weight.
-    golden_tests:
+    verification_cases:
       - id: table_1_loamy_sand
+        kind: calculated
         inputs:
           clay: 6.6
           sand: 86.3
           mean_depth: 105
         expected:
           field_capacity_moisture: 8.14707947394088
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: >-
+        rationale: >-
           Direct evaluation of corrected Equation 3; Table I reports the value
           rounded to 8.1%.
     edge_cases:
@@ -221,21 +221,21 @@ functions:
     outputs:
       type: scalar
       name: wilting_point_moisture
+      quantity: gravimetric_water_content
       symbol: theta_1500_kPa
       unit: '% mass'
       domain: null
       description: Predicted soil-moisture content at 1500 kPa in percent by weight.
-    golden_tests:
+    verification_cases:
       - id: table_1_loamy_sand
+        kind: calculated
         inputs:
           clay: 6.6
           sand: 86.3
           mean_depth: 105
         expected:
           wilting_point_moisture: 1.3942
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: >-
+        rationale: >-
           Direct evaluation of Equation 4; Table I reports the value rounded to
           1.4%.
     edge_cases:
@@ -276,23 +276,23 @@ functions:
     outputs:
       type: scalar
       name: available_moisture
+      quantity: gravimetric_water_content
       symbol: null
       unit: '% mass'
       domain: null
       description: >-
         Predicted field-capacity moisture minus predicted wilting-point moisture,
         in percentage points by weight.
-    golden_tests:
+    verification_cases:
       - id: table_1_loamy_sand
+        kind: calculated
         inputs:
           clay: 6.6
           sand: 86.3
           mean_depth: 105
         expected:
           available_moisture: 6.75287947394088
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: >-
+        rationale: >-
           Direct evaluation of Equations 3 and 4 followed by subtraction; Table I
           reports the value rounded to 6.7%.
     edge_cases:

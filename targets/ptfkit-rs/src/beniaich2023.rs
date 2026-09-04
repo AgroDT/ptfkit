@@ -19,6 +19,41 @@ Agricultural topsoils in Doukkala, Gharb-Loukouss, Moulouya, and Tadla, Morocco
 331 disturbed topsoil samples collected at 0-20 cm from 2019 to 2022; random 50% calibration and
 50% validation subsets."]
 
+#[cfg(test)]
+fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
+    absolute
+        .max(relative * expected.abs())
+        .max(0.00000000000001f64)
+}
+#[cfg(test)]
+fn assert_close(
+    actual: f64,
+    expected: f64,
+    absolute: f64,
+    relative: f64,
+    quantity: &str,
+    unit: &str,
+    source: &str,
+) {
+    let difference = (actual - expected).abs();
+    let tolerance = resolved_tolerance(expected, absolute, relative);
+    assert!(
+        difference <= tolerance,
+        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
+    );
+}
+#[cfg(test)]
+mod comparator_tests {
+    use super::*;
+    #[test]
+    fn accepts_below_and_rejects_above_tolerance() {
+        for expected in [0.0, 2.0, -2.0] {
+            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
+            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
+            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
+        }
+    }
+}
 #[doc = r"Results returned by `calc_ptf_beniaich2023_slr1`."]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Beniaich2023PTFResult {
@@ -67,32 +102,35 @@ pub fn calc_ptf_beniaich2023_slr1(clay: f64) -> Beniaich2023PTFResult {
 #[cfg(test)]
 mod calc_ptf_beniaich2023_slr1_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_slr1(20f64);
         assert_close(
             result.water_saturation,
             0.57427f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
         assert_close(
             result.water_field_capacity,
             0.17577f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
         assert_close(
             result.water_wilting_point,
             0.09621f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
     }
 }
@@ -134,32 +172,35 @@ pub fn calc_ptf_beniaich2023_slr2(silt: f64) -> Beniaich2023PTFResult {
 #[cfg(test)]
 mod calc_ptf_beniaich2023_slr2_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_slr2(30f64);
         assert_close(
             result.water_saturation,
             0.68478f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
         assert_close(
             result.water_field_capacity,
             0.24878f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
         assert_close(
             result.water_wilting_point,
             0.16131f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
     }
 }
@@ -201,32 +242,35 @@ pub fn calc_ptf_beniaich2023_slr3(sand: f64) -> Beniaich2023PTFResult {
 #[cfg(test)]
 mod calc_ptf_beniaich2023_slr3_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_slr3(50f64);
         assert_close(
             result.water_saturation,
             0.6007f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
         assert_close(
             result.water_field_capacity,
             0.1848f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
         assert_close(
             result.water_wilting_point,
             0.11077f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
     }
 }
@@ -270,32 +314,35 @@ pub fn calc_ptf_beniaich2023_slr4(clay: f64, silt: f64) -> Beniaich2023PTFResult
 #[cfg(test)]
 mod calc_ptf_beniaich2023_slr4_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_slr4(20f64, 30f64);
         assert_close(
             result.water_saturation,
             0.74501f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
         assert_close(
             result.water_field_capacity,
             0.30678f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
         assert_close(
             result.water_wilting_point,
             0.19915f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
     }
 }
@@ -339,32 +386,35 @@ pub fn calc_ptf_beniaich2023_slr5(clay: f64, silt: f64) -> Beniaich2023PTFResult
 #[cfg(test)]
 mod calc_ptf_beniaich2023_slr5_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_slr5(20f64, 40f64);
         assert_close(
             result.water_saturation,
             0.68578f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
         assert_close(
             result.water_field_capacity,
             0.241875f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
         assert_close(
             result.water_wilting_point,
             0.16176f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
     }
 }
@@ -406,32 +456,35 @@ pub fn calc_ptf_beniaich2023_slr6(soil_organic_matter: f64) -> Beniaich2023PTFRe
 #[cfg(test)]
 mod calc_ptf_beniaich2023_slr6_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_slr6(2f64);
         assert_close(
             result.water_saturation,
             0.66749f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
         assert_close(
             result.water_field_capacity,
             0.24009f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
         assert_close(
             result.water_wilting_point,
             0.15562f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
     }
 }
@@ -482,32 +535,35 @@ pub fn calc_ptf_beniaich2023_mlr1(
 #[cfg(test)]
 mod calc_ptf_beniaich2023_mlr1_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_mlr1(30f64, 50f64, 2f64);
         assert_close(
             result.water_saturation,
             0.56266f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
         assert_close(
             result.water_field_capacity,
             0.17238f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
         assert_close(
             result.water_wilting_point,
             0.09366f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
     }
 }
@@ -553,32 +609,35 @@ pub fn calc_ptf_beniaich2023_mlr2(sand: f64, soil_organic_matter: f64) -> Beniai
 #[cfg(test)]
 mod calc_ptf_beniaich2023_mlr2_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_mlr2(50f64, 2f64);
         assert_close(
             result.water_saturation,
             0.58954f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
         assert_close(
             result.water_field_capacity,
             0.18025f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
         assert_close(
             result.water_wilting_point,
             0.10825f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
     }
 }
@@ -624,32 +683,35 @@ pub fn calc_ptf_beniaich2023_mlr3(silt: f64, soil_organic_matter: f64) -> Beniai
 #[cfg(test)]
 mod calc_ptf_beniaich2023_mlr3_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_mlr3(30f64, 2f64);
         assert_close(
             result.water_saturation,
             0.67031f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
         assert_close(
             result.water_field_capacity,
             0.24275f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
         assert_close(
             result.water_wilting_point,
             0.15755f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
     }
 }
@@ -695,32 +757,35 @@ pub fn calc_ptf_beniaich2023_mlr4(clay: f64, soil_organic_matter: f64) -> Beniai
 #[cfg(test)]
 mod calc_ptf_beniaich2023_mlr4_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_mlr4(20f64, 2f64);
         assert_close(
             result.water_saturation,
             0.5589f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
         assert_close(
             result.water_field_capacity,
             0.16859f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
         assert_close(
             result.water_wilting_point,
             0.09157f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
     }
 }
@@ -771,32 +836,35 @@ pub fn calc_ptf_beniaich2023_mlr5(
 #[cfg(test)]
 mod calc_ptf_beniaich2023_mlr5_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_mlr5(20f64, 30f64, 2f64);
         assert_close(
             result.water_saturation,
             0.56229f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
         assert_close(
             result.water_field_capacity,
             0.172f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
         assert_close(
             result.water_wilting_point,
             0.09379f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.001f64,
+            0f64,
+            "gravimetric_water_content",
+            "g/g",
+            "registry",
         );
     }
 }

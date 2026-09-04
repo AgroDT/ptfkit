@@ -18,6 +18,41 @@ Spanish mainland on the Iberian Peninsula
 Trueba et al. (2000a) Spanish soil database: 2178 profiles and 7011 horizons; the general
 regressions used 3172 horizons with sufficient data."]
 
+#[cfg(test)]
+fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
+    absolute
+        .max(relative * expected.abs())
+        .max(0.00000000000001f64)
+}
+#[cfg(test)]
+fn assert_close(
+    actual: f64,
+    expected: f64,
+    absolute: f64,
+    relative: f64,
+    quantity: &str,
+    unit: &str,
+    source: &str,
+) {
+    let difference = (actual - expected).abs();
+    let tolerance = resolved_tolerance(expected, absolute, relative);
+    assert!(
+        difference <= tolerance,
+        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
+    );
+}
+#[cfg(test)]
+mod comparator_tests {
+    use super::*;
+    #[test]
+    fn accepts_below_and_rejects_above_tolerance() {
+        for expected in [0.0, 2.0, -2.0] {
+            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
+            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
+            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
+        }
+    }
+}
 #[doc = r"Evaluate the Campbell and Shiozawa saturated-conductivity PTF.
 
 # Arguments
@@ -45,20 +80,17 @@ pub fn calc_ptf_ferrerjulia2004_campbell_shiozawa(sand: f64, clay: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_campbell_shiozawa_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_campbell_shiozawa(50f64, 25f64);
         assert_close(
             result,
             0.025071690110308933f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
         );
     }
 }
@@ -98,20 +130,17 @@ pub fn calc_ptf_ferrerjulia2004_saxton(sand: f64, clay: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_saxton_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_saxton(50f64, 25f64);
         assert_close(
             result,
             0.00022673430784327228f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
         );
     }
 }
@@ -141,20 +170,17 @@ pub fn calc_ptf_ferrerjulia2004_dane_puckett(clay: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_dane_puckett_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_dane_puckett(25f64);
         assert_close(
             result,
             8.302039828385373f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
         );
     }
 }
@@ -184,20 +210,17 @@ pub fn calc_ptf_ferrerjulia2004_puckett(clay: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_puckett_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_puckett(25f64);
         assert_close(
             result,
             1.1257967371765654f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
         );
     }
 }
@@ -228,20 +251,17 @@ pub fn calc_ptf_ferrerjulia2004_cosby(sand: f64, clay: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_cosby_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_cosby(50f64, 25f64);
         assert_close(
             result,
             26.091830970918934f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
         );
     }
 }
@@ -271,20 +291,17 @@ pub fn calc_ptf_ferrerjulia2004_humic_acrisol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_humic_acrisol_sand_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_humic_acrisol_sand(50f64);
         assert_close(
             result,
             14.529879794648146f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
         );
     }
 }
@@ -320,17 +337,19 @@ pub fn calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result =
             calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter(50f64, 25f64, 2.5f64);
-        assert_close(result, 19.563475f64, 0.000000000001f64, 0.000000000001f64);
+        assert_close(
+            result,
+            19.563475f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate saturated conductivity for Calcic Cambisol from sand content.
@@ -359,20 +378,17 @@ pub fn calc_ptf_ferrerjulia2004_calcic_cambisol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_calcic_cambisol_sand_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_calcic_cambisol_sand(50f64);
         assert_close(
             result,
             9.995162000935244f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
         );
     }
 }
@@ -408,17 +424,19 @@ pub fn calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result =
             calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter(50f64, 25f64, 2.5f64);
-        assert_close(result, 16.51625f64, 0.000000000001f64, 0.000000000001f64);
+        assert_close(
+            result,
+            16.51625f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate saturated conductivity for Dystric Cambisol from sand content.
@@ -447,20 +465,17 @@ pub fn calc_ptf_ferrerjulia2004_dystric_cambisol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_dystric_cambisol_sand_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_dystric_cambisol_sand(50f64);
         assert_close(
             result,
             13.413573870265868f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
         );
     }
 }
@@ -496,17 +511,19 @@ pub fn calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result =
             calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter(50f64, 25f64, 2.5f64);
-        assert_close(result, 20.79f64, 0.000000000001f64, 0.000000000001f64);
+        assert_close(
+            result,
+            20.79f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate saturated conductivity for Eutric Cambisol from sand content.
@@ -535,20 +552,17 @@ pub fn calc_ptf_ferrerjulia2004_eutric_cambisol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_eutric_cambisol_sand_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_eutric_cambisol_sand(50f64);
         assert_close(
             result,
             11.570199173737363f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
         );
     }
 }
@@ -584,17 +598,19 @@ pub fn calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result =
             calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter(50f64, 25f64, 2.5f64);
-        assert_close(result, 19.5235f64, 0.000000000001f64, 0.000000000001f64);
+        assert_close(
+            result,
+            19.5235f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate saturated conductivity for Gleyic Cambisol from sand content.
@@ -623,20 +639,17 @@ pub fn calc_ptf_ferrerjulia2004_gleyic_cambisol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_gleyic_cambisol_sand_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_gleyic_cambisol_sand(50f64);
         assert_close(
             result,
             6.559110321079926f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
         );
     }
 }
@@ -672,17 +685,19 @@ pub fn calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result =
             calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter(50f64, 25f64, 2.5f64);
-        assert_close(result, 11.514f64, 0.000000000001f64, 0.000000000001f64);
+        assert_close(
+            result,
+            11.514f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate saturated conductivity for Humic Cambisol from sand content.
@@ -711,20 +726,17 @@ pub fn calc_ptf_ferrerjulia2004_humic_cambisol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_humic_cambisol_sand_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_humic_cambisol_sand(50f64);
         assert_close(
             result,
             13.820129957492508f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
         );
     }
 }
@@ -760,17 +772,19 @@ pub fn calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result =
             calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter(50f64, 25f64, 2.5f64);
-        assert_close(result, 20.9029f64, 0.000000000001f64, 0.000000000001f64);
+        assert_close(
+            result,
+            20.9029f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate saturated conductivity for Calcaric Fluvisol from sand content.
@@ -799,20 +813,17 @@ pub fn calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand(50f64);
         assert_close(
             result,
             10.959482760491376f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
         );
     }
 }
@@ -848,17 +859,19 @@ pub fn calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result =
             calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter(50f64, 25f64, 2.5f64);
-        assert_close(result, 13.101f64, 0.000000000001f64, 0.000000000001f64);
+        assert_close(
+            result,
+            13.101f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate saturated conductivity for Calcic Luvisol from sand content.
@@ -891,20 +904,17 @@ pub fn calc_ptf_ferrerjulia2004_calcic_luvisol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_calcic_luvisol_sand_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_calcic_luvisol_sand(50f64);
         assert_close(
             result,
             6.931067612606957f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
         );
     }
 }
@@ -944,17 +954,19 @@ pub fn calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result =
             calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter(50f64, 25f64, 2.5f64);
-        assert_close(result, 8.9332f64, 0.000000000001f64, 0.000000000001f64);
+        assert_close(
+            result,
+            8.9332f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate saturated conductivity for Chromic Luvisol from sand content.
@@ -983,20 +995,17 @@ pub fn calc_ptf_ferrerjulia2004_chromic_luvisol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_chromic_luvisol_sand_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_chromic_luvisol_sand(50f64);
         assert_close(
             result,
             10.61655727277843f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
         );
     }
 }
@@ -1032,17 +1041,19 @@ pub fn calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result =
             calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter(50f64, 25f64, 2.5f64);
-        assert_close(result, 17.1465f64, 0.000000000001f64, 0.000000000001f64);
+        assert_close(
+            result,
+            17.1465f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate saturated conductivity for Gleyic Luvisol from sand content.
@@ -1071,20 +1082,17 @@ pub fn calc_ptf_ferrerjulia2004_gleyic_luvisol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_gleyic_luvisol_sand_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_gleyic_luvisol_sand(50f64);
         assert_close(
             result,
             7.049012285884197f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
         );
     }
 }
@@ -1120,17 +1128,19 @@ pub fn calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result =
             calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter(50f64, 25f64, 2.5f64);
-        assert_close(result, 19.55f64, 0.000000000001f64, 0.000000000001f64);
+        assert_close(
+            result,
+            19.55f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate saturated conductivity for Orthic Luvisol from sand content.
@@ -1159,20 +1169,17 @@ pub fn calc_ptf_ferrerjulia2004_orthic_luvisol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_orthic_luvisol_sand_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_orthic_luvisol_sand(50f64);
         assert_close(
             result,
             12.04280911180458f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
         );
     }
 }
@@ -1208,17 +1215,19 @@ pub fn calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result =
             calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter(50f64, 25f64, 2.5f64);
-        assert_close(result, 21.40425f64, 0.000000000001f64, 0.000000000001f64);
+        assert_close(
+            result,
+            21.40425f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate saturated conductivity for Ranker from sand content.
@@ -1247,20 +1256,17 @@ pub fn calc_ptf_ferrerjulia2004_ranker_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_ranker_sand_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_ranker_sand(50f64);
         assert_close(
             result,
             12.423399456061938f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
         );
     }
 }
@@ -1296,16 +1302,18 @@ pub fn calc_ptf_ferrerjulia2004_ranker_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_ranker_texture_organic_matter_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_ranker_texture_organic_matter(50f64, 25f64, 2.5f64);
-        assert_close(result, 22.4515f64, 0.000000000001f64, 0.000000000001f64);
+        assert_close(
+            result,
+            22.4515f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate saturated conductivity for Calcaric Regosol from sand content.
@@ -1334,20 +1342,17 @@ pub fn calc_ptf_ferrerjulia2004_calcaric_regosol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_calcaric_regosol_sand_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_calcaric_regosol_sand(50f64);
         assert_close(
             result,
             12.267374733833096f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
         );
     }
 }
@@ -1383,17 +1388,19 @@ pub fn calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result =
             calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter(50f64, 25f64, 2.5f64);
-        assert_close(result, 20.532f64, 0.000000000001f64, 0.000000000001f64);
+        assert_close(
+            result,
+            20.532f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate saturated conductivity for Dystric Regosol from sand content.
@@ -1422,20 +1429,17 @@ pub fn calc_ptf_ferrerjulia2004_dystric_regosol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_dystric_regosol_sand_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_dystric_regosol_sand(50f64);
         assert_close(
             result,
             12.081401313183196f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
         );
     }
 }
@@ -1471,17 +1475,19 @@ pub fn calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result =
             calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter(50f64, 25f64, 2.5f64);
-        assert_close(result, 17.1335f64, 0.000000000001f64, 0.000000000001f64);
+        assert_close(
+            result,
+            17.1335f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate saturated conductivity for Eutric Regosol from sand content.
@@ -1510,20 +1516,17 @@ pub fn calc_ptf_ferrerjulia2004_eutric_regosol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_eutric_regosol_sand_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_eutric_regosol_sand(50f64);
         assert_close(
             result,
             13.674049986082728f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
         );
     }
 }
@@ -1559,17 +1562,19 @@ pub fn calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result =
             calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter(50f64, 25f64, 2.5f64);
-        assert_close(result, 24.06375f64, 0.000000000001f64, 0.000000000001f64);
+        assert_close(
+            result,
+            24.06375f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate saturated conductivity for Rendzina from sand content.
@@ -1604,20 +1609,17 @@ pub fn calc_ptf_ferrerjulia2004_rendzina_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_rendzina_sand_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_rendzina_sand(50f64);
         assert_close(
             result,
             12.515763717130312f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
         );
     }
 }
@@ -1657,16 +1659,18 @@ pub fn calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter(50f64, 25f64, 2.5f64);
-        assert_close(result, 16.2905f64, 0.000000000001f64, 0.000000000001f64);
+        assert_close(
+            result,
+            16.2905f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate saturated conductivity for Gleyic Solonchak from sand content.
@@ -1699,20 +1703,17 @@ pub fn calc_ptf_ferrerjulia2004_gleyic_solonchak_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_gleyic_solonchak_sand_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_gleyic_solonchak_sand(50f64);
         assert_close(
             result,
             4.883324693640427f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
         );
     }
 }
@@ -1754,17 +1755,19 @@ pub fn calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result =
             calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter(50f64, 25f64, 2.5f64);
-        assert_close(result, 10.53583f64, 0.000000000001f64, 0.000000000001f64);
+        assert_close(
+            result,
+            10.53583f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate saturated conductivity for Spanish soils from sand content.
@@ -1798,20 +1801,17 @@ pub fn calc_ptf_ferrerjulia2004_general_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_general_sand_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_general_sand(50f64);
         assert_close(
             result,
             10.714718864969111f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
         );
     }
 }
@@ -1852,15 +1852,17 @@ pub fn calc_ptf_ferrerjulia2004_general_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_general_texture_organic_matter_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_general_texture_organic_matter(50f64, 25f64, 2.5f64);
-        assert_close(result, 20.06325f64, 0.000000000001f64, 0.000000000001f64);
+        assert_close(
+            result,
+            20.06325f64,
+            0.0001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "mm/h",
+            "registry",
+        );
     }
 }

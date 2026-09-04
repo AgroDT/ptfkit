@@ -5,7 +5,7 @@ use anyhow::Result;
 use crate::render::markdown::HEADER;
 use crate::{
     documentation::{self as docs},
-    model::{CompiledFunction, EnumDefinition, Output, Parameter},
+    model::{CompiledFunction, EnumDefinition, Output, OutputField},
     output::GeneratedFile,
     render::{Writer, markdown},
     targets::{
@@ -221,7 +221,7 @@ fn render_enum(writer: &mut Writer, module: &str, definition: &EnumDefinition, c
     writer.blank_line();
 }
 
-fn render_structure(writer: &mut Writer, name: &str, fields: &[Parameter]) {
+fn render_structure(writer: &mut Writer, name: &str, fields: &[OutputField]) {
     writer.write(format_args!("## `{name}`\n\n"));
     markdown::code_block(writer, "c", |writer| {
         writer.line("typedef struct {");

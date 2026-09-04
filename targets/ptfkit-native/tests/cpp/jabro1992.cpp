@@ -6,24 +6,28 @@ import ptfkit;
 import ptfkit.jabro1992;
 #endif
 
-#include "close_enough.h"
+#include "support/close_enough.h"
 
 int main() {
     {
         const auto result = ptfkit::jabro1992::calc_ptf_jabro1992(10.0, 5.0, 1.26);
-        assert_close_enough(result, 0.0003849640675896946, 0.000000000001, 0.00000001);
+        assert_close(result, 0.0003849640675896946, 0.0000000001, 0.01,
+                     "saturated_hydraulic_conductivity", "m/s", "registry");
     }
     {
         const auto result = ptfkit::jabro1992::calc_ptf_jabro1992(38.72, 11.05, 1.42);
-        assert_close_enough(result, 0.000009804037952717678, 0.000000000001, 0.00000001);
+        assert_close(result, 0.000009804037952717678, 0.0000000001, 0.01,
+                     "saturated_hydraulic_conductivity", "m/s", "registry");
     }
     {
         const auto result = ptfkit::jabro1992::calc_ptf_jabro1992(52.0, 30.0, 1.97);
-        assert_close_enough(result, 0.000000007292435947882127, 0.000000000001, 0.00000001);
+        assert_close(result, 0.000000007292435947882127, 0.0000000001, 0.01,
+                     "saturated_hydraulic_conductivity", "m/s", "registry");
     }
     {
         const auto result = ptfkit::jabro1992::calc_ptf_jabro1992(0.2, 44.0, 1.61);
-        assert_close_enough(result, 0.00002032824027706267, 0.000000000001, 0.00000001);
+        assert_close(result, 0.00002032824027706267, 0.0000000001, 0.01,
+                     "saturated_hydraulic_conductivity", "m/s", "registry");
     }
     return 0;
 }

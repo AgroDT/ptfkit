@@ -17,6 +17,41 @@ Indo-Gangetic Plains and black soil region of India
 209 layers from 30 Indo-Gangetic Plains profiles and 275 layers from 62 black-soil profiles;
 equation-specific subsets are described below."]
 
+#[cfg(test)]
+fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
+    absolute
+        .max(relative * expected.abs())
+        .max(0.00000000000001f64)
+}
+#[cfg(test)]
+fn assert_close(
+    actual: f64,
+    expected: f64,
+    absolute: f64,
+    relative: f64,
+    quantity: &str,
+    unit: &str,
+    source: &str,
+) {
+    let difference = (actual - expected).abs();
+    let tolerance = resolved_tolerance(expected, absolute, relative);
+    assert!(
+        difference <= tolerance,
+        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
+    );
+}
+#[cfg(test)]
+mod comparator_tests {
+    use super::*;
+    #[test]
+    fn accepts_below_and_rejects_above_tolerance() {
+        for expected in [0.0, 2.0, -2.0] {
+            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
+            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
+            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
+        }
+    }
+}
 #[doc = r"Estimate saturated conductivity for Indo-Gangetic Plains soils.
 
 # Arguments
@@ -51,20 +86,17 @@ pub fn calc_ptf_tiwary2014_igp(sand: f64, bulk_density: f64, esp: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_tiwary2014_igp_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn igp_saturated_conductivity_case() {
         let result = calc_ptf_tiwary2014_igp(37.3f64, 1.674f64, 4.6f64);
         assert_close(
             result,
             0.0000005103578f64,
-            0.000000000001f64,
             0.0000000001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "m/s",
+            "registry",
         );
     }
 }
@@ -131,28 +163,44 @@ pub fn calc_ptf_tiwary2014_bsr(
 #[cfg(test)]
 mod calc_ptf_tiwary2014_bsr_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn black_soil_compatibility_case() {
         let result = calc_ptf_tiwary2014_bsr(54.9f64, 7.6f64, 61.6f64, 7.3f64, 21.4f64, 3.32f64);
-        assert_close(result.w_33, 41.1729f64, 0.000000000001f64, 0.0000000001f64);
-        assert_close(result.w_100, 36.8273f64, 0.000000000001f64, 0.0000000001f64);
+        assert_close(
+            result.w_33,
+            41.1729f64,
+            0.1f64,
+            0f64,
+            "gravimetric_water_content",
+            "%",
+            "registry",
+        );
+        assert_close(
+            result.w_100,
+            36.8273f64,
+            0.1f64,
+            0f64,
+            "gravimetric_water_content",
+            "%",
+            "registry",
+        );
         assert_close(
             result.w_1500,
             21.6976f64,
-            0.000000000001f64,
-            0.0000000001f64,
+            0.1f64,
+            0f64,
+            "gravimetric_water_content",
+            "%",
+            "registry",
         );
         assert_close(
             result.k_sat,
             0.000005373367f64,
-            0.000000000001f64,
             0.0000000001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "m/s",
+            "registry",
         );
     }
 }

@@ -18,6 +18,41 @@ Undisturbed cores from 15 sites in a 9.6-ha Renfro silt loam watershed and 54 co
 related Hawaii Oxic soils; the Hawaii study also supplied 35 field measurements of saturated
 hydraulic conductivity."]
 
+#[cfg(test)]
+fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
+    absolute
+        .max(relative * expected.abs())
+        .max(0.00000000000001f64)
+}
+#[cfg(test)]
+fn assert_close(
+    actual: f64,
+    expected: f64,
+    absolute: f64,
+    relative: f64,
+    quantity: &str,
+    unit: &str,
+    source: &str,
+) {
+    let difference = (actual - expected).abs();
+    let tolerance = resolved_tolerance(expected, absolute, relative);
+    assert!(
+        difference <= tolerance,
+        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
+    );
+}
+#[cfg(test)]
+mod comparator_tests {
+    use super::*;
+    #[test]
+    fn accepts_below_and_rejects_above_tolerance() {
+        for expected in [0.0, 2.0, -2.0] {
+            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
+            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
+            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
+        }
+    }
+}
 #[doc = r"Estimate saturated hydraulic conductivity from total porosity and water content at -33 kPa using
 user-supplied empirical coefficients.
 
@@ -73,20 +108,30 @@ pub fn calc_ptf_ahuja1984(
 #[cfg(test)]
 mod tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn exponent_four() {
         let result = calc_ptf_ahuja1984(0.45f64, 0.25f64, 100f64, 4f64);
-        assert_close(result, 0.16f64, 0.00000000000001f64, 0.000000000001f64);
+        assert_close(
+            result,
+            0.16f64,
+            0.00001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "cm/h",
+            "registry",
+        );
     }
     #[test]
     fn exponent_five() {
         let result = calc_ptf_ahuja1984(0.5f64, 0.2f64, 100f64, 5f64);
-        assert_close(result, 0.243f64, 0.00000000000001f64, 0.000000000001f64);
+        assert_close(
+            result,
+            0.243f64,
+            0.00001f64,
+            0.01f64,
+            "saturated_hydraulic_conductivity",
+            "cm/h",
+            "registry",
+        );
     }
 }

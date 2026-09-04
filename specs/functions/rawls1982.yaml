@@ -33,20 +33,20 @@ functions:
   outputs:
     type: scalar
     name: theta_1500
+    quantity: volumetric_water_content
     symbol: theta_1500
     unit: cm^3/cm^3
     domain: value >= 0
     description: Volumetric soil water content at -1500 kPa.
-  golden_tests:
+  verification_cases:
   - id: loamy_sand
+    kind: calculated
     inputs:
       clay: 5.12
       organic_matter: 0.1
     expected:
       theta_1500: 0.05318
-    rtol: 1.0e-10
-    atol: 1.0e-12
-    notes: Calculated directly from the -15 bar first-level regression in Table 3.
+    rationale: Calculated directly from the -15 bar first-level regression in Table 3.
   edge_cases: []
   documentation:
     notes: []
@@ -86,21 +86,21 @@ functions:
   outputs:
     type: scalar
     name: theta_33
+    quantity: volumetric_water_content
     symbol: theta_33
     unit: cm^3/cm^3
     domain: value >= 0
     description: Volumetric soil water content at -33 kPa.
-  golden_tests:
+  verification_cases:
   - id: loamy_sand_with_estimated_theta_1500
+    kind: calculated
     inputs:
       sand: 85.0
       organic_matter: 0.1
       theta_1500: 0.05318
     expected:
       theta_33: 0.1179896
-    rtol: 1.0e-10
-    atol: 1.0e-12
-    notes: Calculated directly from the -0.33 bar second-level regression in Table
+    rationale: Calculated directly from the -0.33 bar second-level regression in Table
       3.
   edge_cases: []
   documentation:
@@ -152,67 +152,80 @@ functions:
     name: Rawls1982PTFResult
     fields:
     - name: theta_4
+      quantity: volumetric_water_content
       symbol: theta_4
       unit: cm^3/cm^3
       domain: null
       description: Volumetric water content at -4 kPa.
     - name: theta_7
+      quantity: volumetric_water_content
       symbol: theta_7
       unit: cm^3/cm^3
       domain: null
       description: Volumetric water content at -7 kPa.
     - name: theta_10
+      quantity: volumetric_water_content
       symbol: theta_10
       unit: cm^3/cm^3
       domain: null
       description: Volumetric water content at -10 kPa.
     - name: theta_20
+      quantity: volumetric_water_content
       symbol: theta_20
       unit: cm^3/cm^3
       domain: null
       description: Volumetric water content at -20 kPa.
     - name: theta_33
+      quantity: volumetric_water_content
       symbol: theta_33
       unit: cm^3/cm^3
       domain: null
       description: Input volumetric water content at -33 kPa.
     - name: theta_60
+      quantity: volumetric_water_content
       symbol: theta_60
       unit: cm^3/cm^3
       domain: null
       description: Volumetric water content at -60 kPa.
     - name: theta_100
+      quantity: volumetric_water_content
       symbol: theta_100
       unit: cm^3/cm^3
       domain: null
       description: Volumetric water content at -100 kPa.
     - name: theta_200
+      quantity: volumetric_water_content
       symbol: theta_200
       unit: cm^3/cm^3
       domain: null
       description: Volumetric water content at -200 kPa.
     - name: theta_400
+      quantity: volumetric_water_content
       symbol: theta_400
       unit: cm^3/cm^3
       domain: null
       description: Volumetric water content at -400 kPa.
     - name: theta_700
+      quantity: volumetric_water_content
       symbol: theta_700
       unit: cm^3/cm^3
       domain: null
       description: Volumetric water content at -700 kPa.
     - name: theta_1000
+      quantity: volumetric_water_content
       symbol: theta_1000
       unit: cm^3/cm^3
       domain: null
       description: Volumetric water content at -1000 kPa.
     - name: theta_1500
+      quantity: volumetric_water_content
       symbol: theta_1500
       unit: cm^3/cm^3
       domain: null
       description: Input volumetric water content at -1500 kPa.
-  golden_tests:
+  verification_cases:
   - id: loamy_sand
+    kind: calculated
     inputs:
       sand: 85.0
       organic_matter: 0.66
@@ -232,9 +245,7 @@ functions:
       theta_700: 0.041824
       theta_1000: 0.038932
       theta_1500: 0.033
-    rtol: 1.0e-10
-    atol: 1.0e-12
-    notes: Calculated from the third-level regressions in Table 3 using the given
+    rationale: Calculated from the third-level regressions in Table 3 using the given
       endpoint water contents.
   edge_cases: []
   documentation:

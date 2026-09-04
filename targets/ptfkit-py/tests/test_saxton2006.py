@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import pytest
 
-from _helpers import prepare_vector_case
+from _helpers import assert_close, prepare_vector_case
 from ptfkit.saxton2006 import (
     Saxton2006DensityResult,
     Saxton2006GravelResult,
@@ -23,99 +23,307 @@ CASES_CALC_PTF_SAXTON2006 = [
     (
         {'clay': 0.05, 'organic_matter': 2.5, 'sand': 0.88},
         {
-            'air_entry_tension': 0.5986789729513293,
-            'conductivity_lambda': 0.18776158355467926,
-            'normal_density': 1.4264356197312436,
-            'plant_available_water': 0.05260734364858702,
-            'retention_a': 0.00018076452552206025,
-            'retention_b': 5.325903100453899,
-            'saturated_conductivity': 108.1478278507403,
             'theta_1500': 0.05022058,
             'theta_33': 0.10282792364858702,
             'theta_s': 0.46172240764858724,
+            'plant_available_water': 0.05260734364858702,
+            'air_entry_tension': 0.5986789729513293,
+            'retention_a': 0.00018076452552206025,
+            'retention_b': 5.325903100453899,
+            'conductivity_lambda': 0.18776158355467926,
+            'saturated_conductivity': 108.1478278507403,
+            'normal_density': 1.4264356197312436,
         },
-        1e-12,
-        1e-12,
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_SAXTON2006)
-def test_calc_ptf_saxton2006_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
-):
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_SAXTON2006)
+def test_calc_ptf_saxton2006_verification(inputs: dict[str, float], expected: dict[str, float]):
     result = calc_ptf_saxton2006(**inputs)
 
-    assert result.theta_1500 == pytest.approx(expected['theta_1500'], rel=rtol, abs=atol)
-    assert result.theta_33 == pytest.approx(expected['theta_33'], rel=rtol, abs=atol)
-    assert result.theta_s == pytest.approx(expected['theta_s'], rel=rtol, abs=atol)
-    assert result.plant_available_water == pytest.approx(
-        expected['plant_available_water'], rel=rtol, abs=atol
+    assert_close(
+        result.theta_1500,
+        expected['theta_1500'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
     )
-    assert result.air_entry_tension == pytest.approx(
-        expected['air_entry_tension'], rel=rtol, abs=atol
+    assert_close(
+        result.theta_33,
+        expected['theta_33'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
     )
-    assert result.retention_a == pytest.approx(expected['retention_a'], rel=rtol, abs=atol)
-    assert result.retention_b == pytest.approx(expected['retention_b'], rel=rtol, abs=atol)
-    assert result.conductivity_lambda == pytest.approx(
-        expected['conductivity_lambda'], rel=rtol, abs=atol
+    assert_close(
+        result.theta_s,
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
     )
-    assert result.saturated_conductivity == pytest.approx(
-        expected['saturated_conductivity'], rel=rtol, abs=atol
+    assert_close(
+        result.plant_available_water,
+        expected['plant_available_water'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
     )
-    assert result.normal_density == pytest.approx(expected['normal_density'], rel=rtol, abs=atol)
+    assert_close(
+        result.air_entry_tension,
+        expected['air_entry_tension'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='kPa',
+        source='registry',
+    )
+    assert_close(
+        result.retention_a,
+        expected['retention_a'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='retention_coefficient_a',
+        unit='kPa',
+        source='registry',
+    )
+    assert_close(
+        result.retention_b,
+        expected['retention_b'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='retention_coefficient_b',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.conductivity_lambda,
+        expected['conductivity_lambda'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='conductivity_shape_parameter',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.saturated_conductivity,
+        expected['saturated_conductivity'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='mm/h',
+        source='registry',
+    )
+    assert_close(
+        result.normal_density,
+        expected['normal_density'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='dry_bulk_density',
+        unit='g/cm^3',
+        source='registry',
+    )
 
 
 def test_calc_ptf_saxton2006_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_SAXTON2006, Saxton2006PTFResult
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_SAXTON2006, Saxton2006PTFResult)
     result = calc_ptf_saxton2006(**inputs, out=None)
-    assert result.theta_1500[0] == pytest.approx(expected['theta_1500'], rel=rtol, abs=atol)
-    assert result.theta_33[0] == pytest.approx(expected['theta_33'], rel=rtol, abs=atol)
-    assert result.theta_s[0] == pytest.approx(expected['theta_s'], rel=rtol, abs=atol)
-    assert result.plant_available_water[0] == pytest.approx(
-        expected['plant_available_water'], rel=rtol, abs=atol
+    assert_close(
+        result.theta_1500[0],
+        expected['theta_1500'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
     )
-    assert result.air_entry_tension[0] == pytest.approx(
-        expected['air_entry_tension'], rel=rtol, abs=atol
+    assert_close(
+        result.theta_33[0],
+        expected['theta_33'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
     )
-    assert result.retention_a[0] == pytest.approx(expected['retention_a'], rel=rtol, abs=atol)
-    assert result.retention_b[0] == pytest.approx(expected['retention_b'], rel=rtol, abs=atol)
-    assert result.conductivity_lambda[0] == pytest.approx(
-        expected['conductivity_lambda'], rel=rtol, abs=atol
+    assert_close(
+        result.theta_s[0],
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
     )
-    assert result.saturated_conductivity[0] == pytest.approx(
-        expected['saturated_conductivity'], rel=rtol, abs=atol
+    assert_close(
+        result.plant_available_water[0],
+        expected['plant_available_water'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
     )
-    assert result.normal_density[0] == pytest.approx(expected['normal_density'], rel=rtol, abs=atol)
+    assert_close(
+        result.air_entry_tension[0],
+        expected['air_entry_tension'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='kPa',
+        source='registry',
+    )
+    assert_close(
+        result.retention_a[0],
+        expected['retention_a'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='retention_coefficient_a',
+        unit='kPa',
+        source='registry',
+    )
+    assert_close(
+        result.retention_b[0],
+        expected['retention_b'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='retention_coefficient_b',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.conductivity_lambda[0],
+        expected['conductivity_lambda'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='conductivity_shape_parameter',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.saturated_conductivity[0],
+        expected['saturated_conductivity'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='mm/h',
+        source='registry',
+    )
+    assert_close(
+        result.normal_density[0],
+        expected['normal_density'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='dry_bulk_density',
+        unit='g/cm^3',
+        source='registry',
+    )
 
 
 def test_calc_ptf_saxton2006_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_SAXTON2006, Saxton2006PTFResult
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_SAXTON2006, Saxton2006PTFResult)
     result = calc_ptf_saxton2006(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert result.theta_1500[0] == pytest.approx(expected['theta_1500'], rel=rtol, abs=atol)
-    assert result.theta_33[0] == pytest.approx(expected['theta_33'], rel=rtol, abs=atol)
-    assert result.theta_s[0] == pytest.approx(expected['theta_s'], rel=rtol, abs=atol)
-    assert result.plant_available_water[0] == pytest.approx(
-        expected['plant_available_water'], rel=rtol, abs=atol
+    assert_close(
+        result.theta_1500[0],
+        expected['theta_1500'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
     )
-    assert result.air_entry_tension[0] == pytest.approx(
-        expected['air_entry_tension'], rel=rtol, abs=atol
+    assert_close(
+        result.theta_33[0],
+        expected['theta_33'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
     )
-    assert result.retention_a[0] == pytest.approx(expected['retention_a'], rel=rtol, abs=atol)
-    assert result.retention_b[0] == pytest.approx(expected['retention_b'], rel=rtol, abs=atol)
-    assert result.conductivity_lambda[0] == pytest.approx(
-        expected['conductivity_lambda'], rel=rtol, abs=atol
+    assert_close(
+        result.theta_s[0],
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
     )
-    assert result.saturated_conductivity[0] == pytest.approx(
-        expected['saturated_conductivity'], rel=rtol, abs=atol
+    assert_close(
+        result.plant_available_water[0],
+        expected['plant_available_water'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
     )
-    assert result.normal_density[0] == pytest.approx(expected['normal_density'], rel=rtol, abs=atol)
+    assert_close(
+        result.air_entry_tension[0],
+        expected['air_entry_tension'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='kPa',
+        source='registry',
+    )
+    assert_close(
+        result.retention_a[0],
+        expected['retention_a'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='retention_coefficient_a',
+        unit='kPa',
+        source='registry',
+    )
+    assert_close(
+        result.retention_b[0],
+        expected['retention_b'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='retention_coefficient_b',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.conductivity_lambda[0],
+        expected['conductivity_lambda'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='conductivity_shape_parameter',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.saturated_conductivity[0],
+        expected['saturated_conductivity'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='mm/h',
+        source='registry',
+    )
+    assert_close(
+        result.normal_density[0],
+        expected['normal_density'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='dry_bulk_density',
+        unit='g/cm^3',
+        source='registry',
+    )
 
 
 CASES_CALC_DENSITY_ADJUSTMENT_SAXTON2006 = [
@@ -128,75 +336,143 @@ CASES_CALC_DENSITY_ADJUSTMENT_SAXTON2006 = [
         },
         {
             'adjusted_density': 1.569079181704368,
-            'adjusted_theta_33': 0.09206237180155877,
             'adjusted_theta_s': 0.407894648413446,
+            'adjusted_theta_33': 0.09206237180155877,
             'adjusted_theta_s_minus_33': 0.3158322766118873,
         },
-        1e-12,
-        1e-12,
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_DENSITY_ADJUSTMENT_SAXTON2006
-)
-def test_calc_density_adjustment_saxton2006_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_DENSITY_ADJUSTMENT_SAXTON2006)
+def test_calc_density_adjustment_saxton2006_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_density_adjustment_saxton2006(**inputs)
 
-    assert result.adjusted_density == pytest.approx(
-        expected['adjusted_density'], rel=rtol, abs=atol
+    assert_close(
+        result.adjusted_density,
+        expected['adjusted_density'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='dry_bulk_density',
+        unit='g/cm^3',
+        source='registry',
     )
-    assert result.adjusted_theta_s == pytest.approx(
-        expected['adjusted_theta_s'], rel=rtol, abs=atol
+    assert_close(
+        result.adjusted_theta_s,
+        expected['adjusted_theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
     )
-    assert result.adjusted_theta_33 == pytest.approx(
-        expected['adjusted_theta_33'], rel=rtol, abs=atol
+    assert_close(
+        result.adjusted_theta_33,
+        expected['adjusted_theta_33'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
     )
-    assert result.adjusted_theta_s_minus_33 == pytest.approx(
-        expected['adjusted_theta_s_minus_33'], rel=rtol, abs=atol
+    assert_close(
+        result.adjusted_theta_s_minus_33,
+        expected['adjusted_theta_s_minus_33'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
     )
 
 
 def test_calc_density_adjustment_saxton2006_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_DENSITY_ADJUSTMENT_SAXTON2006, Saxton2006DensityResult
     )
     result = calc_density_adjustment_saxton2006(**inputs, out=None)
-    assert result.adjusted_density[0] == pytest.approx(
-        expected['adjusted_density'], rel=rtol, abs=atol
+    assert_close(
+        result.adjusted_density[0],
+        expected['adjusted_density'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='dry_bulk_density',
+        unit='g/cm^3',
+        source='registry',
     )
-    assert result.adjusted_theta_s[0] == pytest.approx(
-        expected['adjusted_theta_s'], rel=rtol, abs=atol
+    assert_close(
+        result.adjusted_theta_s[0],
+        expected['adjusted_theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
     )
-    assert result.adjusted_theta_33[0] == pytest.approx(
-        expected['adjusted_theta_33'], rel=rtol, abs=atol
+    assert_close(
+        result.adjusted_theta_33[0],
+        expected['adjusted_theta_33'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
     )
-    assert result.adjusted_theta_s_minus_33[0] == pytest.approx(
-        expected['adjusted_theta_s_minus_33'], rel=rtol, abs=atol
+    assert_close(
+        result.adjusted_theta_s_minus_33[0],
+        expected['adjusted_theta_s_minus_33'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
     )
 
 
 def test_calc_density_adjustment_saxton2006_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_DENSITY_ADJUSTMENT_SAXTON2006, Saxton2006DensityResult
     )
     result = calc_density_adjustment_saxton2006(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert result.adjusted_density[0] == pytest.approx(
-        expected['adjusted_density'], rel=rtol, abs=atol
+    assert_close(
+        result.adjusted_density[0],
+        expected['adjusted_density'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='dry_bulk_density',
+        unit='g/cm^3',
+        source='registry',
     )
-    assert result.adjusted_theta_s[0] == pytest.approx(
-        expected['adjusted_theta_s'], rel=rtol, abs=atol
+    assert_close(
+        result.adjusted_theta_s[0],
+        expected['adjusted_theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
     )
-    assert result.adjusted_theta_33[0] == pytest.approx(
-        expected['adjusted_theta_33'], rel=rtol, abs=atol
+    assert_close(
+        result.adjusted_theta_33[0],
+        expected['adjusted_theta_33'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
     )
-    assert result.adjusted_theta_s_minus_33[0] == pytest.approx(
-        expected['adjusted_theta_s_minus_33'], rel=rtol, abs=atol
+    assert_close(
+        result.adjusted_theta_s_minus_33[0],
+        expected['adjusted_theta_s_minus_33'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
     )
 
 
@@ -204,32 +480,54 @@ CASES_CALC_TENSION_DRY_SAXTON2006 = [
     (
         {'theta': 0.07652425182429351, 'theta_1500': 0.05022058, 'theta_33': 0.10282792364858702},
         {'tension': 159.18094591362183},
-        1e-12,
-        1e-12,
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_TENSION_DRY_SAXTON2006)
-def test_calc_tension_dry_saxton2006_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_TENSION_DRY_SAXTON2006)
+def test_calc_tension_dry_saxton2006_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_tension_dry_saxton2006(**inputs)
 
-    assert result == pytest.approx(expected['tension'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['tension'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='kPa',
+        source='registry',
+    )
 
 
 def test_calc_tension_dry_saxton2006_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_TENSION_DRY_SAXTON2006)
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_TENSION_DRY_SAXTON2006)
     result = calc_tension_dry_saxton2006(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['tension'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['tension'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='kPa',
+        source='registry',
+    )
 
 
 def test_calc_tension_dry_saxton2006_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_TENSION_DRY_SAXTON2006)
+    inputs, expected, out = prepare_vector_case(CASES_CALC_TENSION_DRY_SAXTON2006)
     result = calc_tension_dry_saxton2006(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['tension'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['tension'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='kPa',
+        source='registry',
+    )
 
 
 CASES_CALC_TENSION_WET_SAXTON2006 = [
@@ -241,32 +539,54 @@ CASES_CALC_TENSION_WET_SAXTON2006 = [
             'theta_s': 0.46172240764858724,
         },
         {'tension': 24.227216407352152},
-        1e-12,
-        1e-12,
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_TENSION_WET_SAXTON2006)
-def test_calc_tension_wet_saxton2006_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_TENSION_WET_SAXTON2006)
+def test_calc_tension_wet_saxton2006_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_tension_wet_saxton2006(**inputs)
 
-    assert result == pytest.approx(expected['tension'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['tension'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='kPa',
+        source='registry',
+    )
 
 
 def test_calc_tension_wet_saxton2006_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_TENSION_WET_SAXTON2006)
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_TENSION_WET_SAXTON2006)
     result = calc_tension_wet_saxton2006(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['tension'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['tension'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='kPa',
+        source='registry',
+    )
 
 
 def test_calc_tension_wet_saxton2006_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_TENSION_WET_SAXTON2006)
+    inputs, expected, out = prepare_vector_case(CASES_CALC_TENSION_WET_SAXTON2006)
     result = calc_tension_wet_saxton2006(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['tension'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['tension'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='kPa',
+        source='registry',
+    )
 
 
 CASES_CALC_CONDUCTIVITY_SAXTON2006 = [
@@ -278,32 +598,54 @@ CASES_CALC_CONDUCTIVITY_SAXTON2006 = [
             'theta_s': 0.46172240764858724,
         },
         {'conductivity': 0.3003203142764693},
-        1e-12,
-        1e-12,
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_CONDUCTIVITY_SAXTON2006)
-def test_calc_conductivity_saxton2006_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_CONDUCTIVITY_SAXTON2006)
+def test_calc_conductivity_saxton2006_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_conductivity_saxton2006(**inputs)
 
-    assert result == pytest.approx(expected['conductivity'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['conductivity'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='unsaturated_hydraulic_conductivity',
+        unit='mm/h',
+        source='registry',
+    )
 
 
 def test_calc_conductivity_saxton2006_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_CONDUCTIVITY_SAXTON2006)
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_CONDUCTIVITY_SAXTON2006)
     result = calc_conductivity_saxton2006(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['conductivity'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['conductivity'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='unsaturated_hydraulic_conductivity',
+        unit='mm/h',
+        source='registry',
+    )
 
 
 def test_calc_conductivity_saxton2006_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_CONDUCTIVITY_SAXTON2006)
+    inputs, expected, out = prepare_vector_case(CASES_CALC_CONDUCTIVITY_SAXTON2006)
     result = calc_conductivity_saxton2006(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['conductivity'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['conductivity'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='unsaturated_hydraulic_conductivity',
+        unit='mm/h',
+        source='registry',
+    )
 
 
 CASES_CALC_GRAVEL_ADJUSTMENT_SAXTON2006 = [
@@ -315,122 +657,228 @@ CASES_CALC_GRAVEL_ADJUSTMENT_SAXTON2006 = [
             'saturated_conductivity': 108.1478278507403,
         },
         {
+            'gravel_volume_fraction': 0.11860834455314037,
             'bulk_density': 1.5715605653291098,
             'bulk_plant_available_water': 0.04636767370708995,
             'bulk_saturated_conductivity': 97.54880510583706,
-            'gravel_volume_fraction': 0.11860834455314037,
         },
-        1e-12,
-        1e-12,
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_GRAVEL_ADJUSTMENT_SAXTON2006
-)
-def test_calc_gravel_adjustment_saxton2006_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_GRAVEL_ADJUSTMENT_SAXTON2006)
+def test_calc_gravel_adjustment_saxton2006_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_gravel_adjustment_saxton2006(**inputs)
 
-    assert result.gravel_volume_fraction == pytest.approx(
-        expected['gravel_volume_fraction'], rel=rtol, abs=atol
+    assert_close(
+        result.gravel_volume_fraction,
+        expected['gravel_volume_fraction'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravel_volume_fraction',
+        unit='m^3/m^3',
+        source='registry',
     )
-    assert result.bulk_density == pytest.approx(expected['bulk_density'], rel=rtol, abs=atol)
-    assert result.bulk_plant_available_water == pytest.approx(
-        expected['bulk_plant_available_water'], rel=rtol, abs=atol
+    assert_close(
+        result.bulk_density,
+        expected['bulk_density'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='dry_bulk_density',
+        unit='g/cm^3',
+        source='registry',
     )
-    assert result.bulk_saturated_conductivity == pytest.approx(
-        expected['bulk_saturated_conductivity'], rel=rtol, abs=atol
+    assert_close(
+        result.bulk_plant_available_water,
+        expected['bulk_plant_available_water'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
+    )
+    assert_close(
+        result.bulk_saturated_conductivity,
+        expected['bulk_saturated_conductivity'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='mm/h',
+        source='registry',
     )
 
 
 def test_calc_gravel_adjustment_saxton2006_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_GRAVEL_ADJUSTMENT_SAXTON2006, Saxton2006GravelResult
     )
     result = calc_gravel_adjustment_saxton2006(**inputs, out=None)
-    assert result.gravel_volume_fraction[0] == pytest.approx(
-        expected['gravel_volume_fraction'], rel=rtol, abs=atol
+    assert_close(
+        result.gravel_volume_fraction[0],
+        expected['gravel_volume_fraction'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravel_volume_fraction',
+        unit='m^3/m^3',
+        source='registry',
     )
-    assert result.bulk_density[0] == pytest.approx(expected['bulk_density'], rel=rtol, abs=atol)
-    assert result.bulk_plant_available_water[0] == pytest.approx(
-        expected['bulk_plant_available_water'], rel=rtol, abs=atol
+    assert_close(
+        result.bulk_density[0],
+        expected['bulk_density'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='dry_bulk_density',
+        unit='g/cm^3',
+        source='registry',
     )
-    assert result.bulk_saturated_conductivity[0] == pytest.approx(
-        expected['bulk_saturated_conductivity'], rel=rtol, abs=atol
+    assert_close(
+        result.bulk_plant_available_water[0],
+        expected['bulk_plant_available_water'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
+    )
+    assert_close(
+        result.bulk_saturated_conductivity[0],
+        expected['bulk_saturated_conductivity'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='mm/h',
+        source='registry',
     )
 
 
 def test_calc_gravel_adjustment_saxton2006_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_GRAVEL_ADJUSTMENT_SAXTON2006, Saxton2006GravelResult
     )
     result = calc_gravel_adjustment_saxton2006(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert result.gravel_volume_fraction[0] == pytest.approx(
-        expected['gravel_volume_fraction'], rel=rtol, abs=atol
+    assert_close(
+        result.gravel_volume_fraction[0],
+        expected['gravel_volume_fraction'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='gravel_volume_fraction',
+        unit='m^3/m^3',
+        source='registry',
     )
-    assert result.bulk_density[0] == pytest.approx(expected['bulk_density'], rel=rtol, abs=atol)
-    assert result.bulk_plant_available_water[0] == pytest.approx(
-        expected['bulk_plant_available_water'], rel=rtol, abs=atol
+    assert_close(
+        result.bulk_density[0],
+        expected['bulk_density'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='dry_bulk_density',
+        unit='g/cm^3',
+        source='registry',
     )
-    assert result.bulk_saturated_conductivity[0] == pytest.approx(
-        expected['bulk_saturated_conductivity'], rel=rtol, abs=atol
+    assert_close(
+        result.bulk_plant_available_water[0],
+        expected['bulk_plant_available_water'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='m^3/m^3',
+        source='registry',
+    )
+    assert_close(
+        result.bulk_saturated_conductivity[0],
+        expected['bulk_saturated_conductivity'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='mm/h',
+        source='registry',
     )
 
 
 CASES_CALC_OSMOTIC_POTENTIAL_SAXTON2006 = [
     (
         {'electrical_conductivity': 4.0, 'theta': 0.3, 'theta_s': 0.46172240764858724},
-        {'osmotic_potential': 221.6267556713219, 'saturated_osmotic_potential': 144.0},
-        1e-12,
-        1e-12,
+        {'saturated_osmotic_potential': 144.0, 'osmotic_potential': 221.6267556713219},
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_OSMOTIC_POTENTIAL_SAXTON2006
-)
-def test_calc_osmotic_potential_saxton2006_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_OSMOTIC_POTENTIAL_SAXTON2006)
+def test_calc_osmotic_potential_saxton2006_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_osmotic_potential_saxton2006(**inputs)
 
-    assert result.saturated_osmotic_potential == pytest.approx(
-        expected['saturated_osmotic_potential'], rel=rtol, abs=atol
+    assert_close(
+        result.saturated_osmotic_potential,
+        expected['saturated_osmotic_potential'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='osmotic_potential',
+        unit='kPa',
+        source='registry',
     )
-    assert result.osmotic_potential == pytest.approx(
-        expected['osmotic_potential'], rel=rtol, abs=atol
+    assert_close(
+        result.osmotic_potential,
+        expected['osmotic_potential'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='osmotic_potential',
+        unit='kPa',
+        source='registry',
     )
 
 
 def test_calc_osmotic_potential_saxton2006_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_OSMOTIC_POTENTIAL_SAXTON2006, Saxton2006SalinityResult
     )
     result = calc_osmotic_potential_saxton2006(**inputs, out=None)
-    assert result.saturated_osmotic_potential[0] == pytest.approx(
-        expected['saturated_osmotic_potential'], rel=rtol, abs=atol
+    assert_close(
+        result.saturated_osmotic_potential[0],
+        expected['saturated_osmotic_potential'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='osmotic_potential',
+        unit='kPa',
+        source='registry',
     )
-    assert result.osmotic_potential[0] == pytest.approx(
-        expected['osmotic_potential'], rel=rtol, abs=atol
+    assert_close(
+        result.osmotic_potential[0],
+        expected['osmotic_potential'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='osmotic_potential',
+        unit='kPa',
+        source='registry',
     )
 
 
 def test_calc_osmotic_potential_saxton2006_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_OSMOTIC_POTENTIAL_SAXTON2006, Saxton2006SalinityResult
     )
     result = calc_osmotic_potential_saxton2006(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert result.saturated_osmotic_potential[0] == pytest.approx(
-        expected['saturated_osmotic_potential'], rel=rtol, abs=atol
+    assert_close(
+        result.saturated_osmotic_potential[0],
+        expected['saturated_osmotic_potential'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='osmotic_potential',
+        unit='kPa',
+        source='registry',
     )
-    assert result.osmotic_potential[0] == pytest.approx(
-        expected['osmotic_potential'], rel=rtol, abs=atol
+    assert_close(
+        result.osmotic_potential[0],
+        expected['osmotic_potential'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='osmotic_potential',
+        unit='kPa',
+        source='registry',
     )

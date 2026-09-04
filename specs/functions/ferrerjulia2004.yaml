@@ -41,6 +41,7 @@ $defs:
   k_sat_mm_h: &k_sat_mm_h
     type: scalar
     name: k_sat
+    quantity: saturated_hydraulic_conductivity
     symbol: K_s
     unit: mm/h
     domain: null
@@ -52,16 +53,15 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity., models: {h_theta: null, k_h: Campbell and Shiozawa (1994)}}
     inputs: [{$ref: '#/$defs/sand_percent'}, {$ref: '#/$defs/clay_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
           clay: 25
         expected:
           k_sat: 0.025071690110308933
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: [Reproduced in Section 4.2 for comparison with the new Spanish-soil PTFs.], warnings: []}
     implementation:
@@ -73,16 +73,15 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity., models: {h_theta: null, k_h: Saxton et al. (1986)}}
     inputs: [{$ref: '#/$defs/sand_percent'}, {$ref: '#/$defs/clay_positive_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
           clay: 25
         expected:
           k_sat: 0.00022673430784327228
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: [Reproduced in Section 4.2 for comparison with the new Spanish-soil PTFs.], warnings: [The denominator contains log10(clay) and the source does not state its valid domain or singularity policy.]}
     implementation:
@@ -95,15 +94,14 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity., models: {h_theta: null, k_h: Dane and Puckett (1994)}}
     inputs: [{$ref: '#/$defs/clay_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           clay: 25
         expected:
           k_sat: 8.302039828385373
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: [Reproduced in Section 4.2 for comparison with the new Spanish-soil PTFs.], warnings: []}
     implementation:
@@ -115,15 +113,14 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity., models: {h_theta: null, k_h: Puckett et al. (1985)}}
     inputs: [{$ref: '#/$defs/clay_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           clay: 25
         expected:
           k_sat: 1.1257967371765654
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: [Reproduced in Section 4.2 for comparison with the new Spanish-soil PTFs.], warnings: []}
     implementation:
@@ -135,16 +132,15 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity., models: {h_theta: null, k_h: Cosby et al. (1984)}}
     inputs: [{$ref: '#/$defs/sand_percent'}, {$ref: '#/$defs/clay_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
           clay: 25
         expected:
           k_sat: 26.091830970918934
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: [Reproduced in Section 4.2 for comparison with the new Spanish-soil PTFs.], warnings: []}
     implementation:
@@ -157,15 +153,14 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Humic Acrisol., models: {h_theta: null, k_h: Exponential one-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
         expected:
           k_sat: 14.529879794648146
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.723.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '1.5162 * exp(0.0452 * sand)'}]}
@@ -175,17 +170,16 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Humic Acrisol., models: {h_theta: null, k_h: Linear three-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}, {$ref: '#/$defs/clay_percent'}, {$ref: '#/$defs/organic_matter_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
           clay: 25
           organic_matter: 2.5
         expected:
           k_sat: 19.563475
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.701.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '16.019 + 0.345 * sand - 0.548 * clay - 0.00221 * organic_matter'}]}
@@ -195,15 +189,14 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Calcic Cambisol., models: {h_theta: null, k_h: Exponential one-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
         expected:
           k_sat: 9.995162000935244
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.521.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '1.043 * exp(0.0452 * sand)'}]}
@@ -213,17 +206,16 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Calcic Cambisol., models: {h_theta: null, k_h: Linear three-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}, {$ref: '#/$defs/clay_percent'}, {$ref: '#/$defs/organic_matter_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
           clay: 25
           organic_matter: 2.5
         expected:
           k_sat: 16.51625
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.468.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '-7.878 + 0.51 * sand - 0.00183 * clay - 0.424 * organic_matter'}]}
@@ -233,15 +225,14 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Dystric Cambisol., models: {h_theta: null, k_h: Exponential one-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
         expected:
           k_sat: 13.413573870265868
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.750.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '1.3182 * exp(0.0464 * sand)'}]}
@@ -251,17 +242,16 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Dystric Cambisol., models: {h_theta: null, k_h: Linear three-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}, {$ref: '#/$defs/clay_percent'}, {$ref: '#/$defs/organic_matter_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
           clay: 25
           organic_matter: 2.5
         expected:
           k_sat: 20.79
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.779.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '-5.125 + 0.631 * sand - 0.165 * clay - 0.604 * organic_matter'}]}
@@ -271,15 +261,14 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Eutric Cambisol., models: {h_theta: null, k_h: Exponential one-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
         expected:
           k_sat: 11.570199173737363
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.734.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '0.9356 * exp(0.0503 * sand)'}]}
@@ -289,17 +278,16 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Eutric Cambisol., models: {h_theta: null, k_h: Linear three-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}, {$ref: '#/$defs/clay_percent'}, {$ref: '#/$defs/organic_matter_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
           clay: 25
           organic_matter: 2.5
         expected:
           k_sat: 19.5235
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.686.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '-0.399 + 0.541 * sand - 0.243 * clay - 0.421 * organic_matter'}]}
@@ -309,15 +297,14 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Gleyic Cambisol., models: {h_theta: null, k_h: Exponential one-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
         expected:
           k_sat: 6.559110321079926
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.807.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '0.2336 * exp(0.0667 * sand)'}]}
@@ -327,17 +314,16 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Gleyic Cambisol., models: {h_theta: null, k_h: Linear three-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}, {$ref: '#/$defs/clay_percent'}, {$ref: '#/$defs/organic_matter_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
           clay: 25
           organic_matter: 2.5
         expected:
           k_sat: 11.514
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.824.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '-12.986 + 0.638 * sand - 0.244 * clay - 0.52 * organic_matter'}]}
@@ -347,15 +333,14 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Humic Cambisol., models: {h_theta: null, k_h: Exponential one-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
         expected:
           k_sat: 13.820129957492508
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.592.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '2.1622 * exp(0.0371 * sand)'}]}
@@ -365,17 +350,16 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Humic Cambisol., models: {h_theta: null, k_h: Linear three-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}, {$ref: '#/$defs/clay_percent'}, {$ref: '#/$defs/organic_matter_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
           clay: 25
           organic_matter: 2.5
         expected:
           k_sat: 20.9029
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.632.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '6.4429 + 0.475 * sand - 0.331 * clay - 0.406 * organic_matter'}]}
@@ -385,15 +369,14 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Calcaric Fluvisol., models: {h_theta: null, k_h: Exponential one-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
         expected:
           k_sat: 10.959482760491376
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.772.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '0.814 * exp(0.052 * sand)'}]}
@@ -403,17 +386,16 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Calcaric Fluvisol., models: {h_theta: null, k_h: Linear three-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}, {$ref: '#/$defs/clay_percent'}, {$ref: '#/$defs/organic_matter_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
           clay: 25
           organic_matter: 2.5
         expected:
           k_sat: 13.101
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.792.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '-15.779 + 0.657 * sand - 0.134 * clay - 0.248 * organic_matter'}]}
@@ -423,15 +405,14 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Calcic Luvisol., models: {h_theta: null, k_h: Exponential one-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
         expected:
           k_sat: 6.931067612606957
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.412.'], warnings: [The paper reports weak fit and suggests missing clay-mineralogy information.]}
     implementation: {variables: [{name: k_sat, expr: '0.671 * exp(0.0467 * sand)'}]}
@@ -441,17 +422,16 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Calcic Luvisol., models: {h_theta: null, k_h: Linear three-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}, {$ref: '#/$defs/clay_percent'}, {$ref: '#/$defs/organic_matter_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
           clay: 25
           organic_matter: 2.5
         expected:
           k_sat: 8.9332
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.473.'], warnings: [The paper reports weak fit and suggests missing clay-mineralogy information.]}
     implementation: {variables: [{name: k_sat, expr: '5.379 + 0.138 * sand - 0.131 * clay - 0.02832 * organic_matter'}]}
@@ -461,15 +441,14 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Chromic Luvisol., models: {h_theta: null, k_h: Exponential one-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
         expected:
           k_sat: 10.61655727277843
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.534.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '0.898 * exp(0.0494 * sand)'}]}
@@ -479,17 +458,16 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Chromic Luvisol., models: {h_theta: null, k_h: Linear three-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}, {$ref: '#/$defs/clay_percent'}, {$ref: '#/$defs/organic_matter_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
           clay: 25
           organic_matter: 2.5
         expected:
           k_sat: 17.1465
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.557.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '-10.171 + 0.576 * sand - 0.0075 * clay - 0.518 * organic_matter'}]}
@@ -499,15 +477,14 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Gleyic Luvisol., models: {h_theta: null, k_h: Exponential one-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
         expected:
           k_sat: 7.049012285884197
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.876.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '0.5395 * exp(0.0514 * sand)'}]}
@@ -517,17 +494,16 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Gleyic Luvisol., models: {h_theta: null, k_h: Linear three-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}, {$ref: '#/$defs/clay_percent'}, {$ref: '#/$defs/organic_matter_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
           clay: 25
           organic_matter: 2.5
         expected:
           k_sat: 19.55
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.917.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '10.28 + 0.449 * sand - 0.507 * clay - 0.202 * organic_matter'}]}
@@ -537,15 +513,14 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Orthic Luvisol., models: {h_theta: null, k_h: Exponential one-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
         expected:
           k_sat: 12.04280911180458
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.676.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '1.3958 * exp(0.0431 * sand)'}]}
@@ -555,17 +530,16 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Orthic Luvisol., models: {h_theta: null, k_h: Linear three-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}, {$ref: '#/$defs/clay_percent'}, {$ref: '#/$defs/organic_matter_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
           clay: 25
           organic_matter: 2.5
         expected:
           k_sat: 21.40425
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.729.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '4.829 + 0.499 * sand - 0.332 * clay - 0.0299 * organic_matter'}]}
@@ -575,15 +549,14 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Ranker., models: {h_theta: null, k_h: Exponential one-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
         expected:
           k_sat: 12.423399456061938
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.726.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '0.9847 * exp(0.0507 * sand)'}]}
@@ -593,17 +566,16 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Ranker., models: {h_theta: null, k_h: Linear three-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}, {$ref: '#/$defs/clay_percent'}, {$ref: '#/$defs/organic_matter_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
           clay: 25
           organic_matter: 2.5
         expected:
           k_sat: 22.4515
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.717.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '-8.621 + 0.682 * sand - 0.0771 * clay - 0.44 * organic_matter'}]}
@@ -613,15 +585,14 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Calcaric Regosol., models: {h_theta: null, k_h: Exponential one-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
         expected:
           k_sat: 12.267374733833096
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.655.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '0.8931 * exp(0.0524 * sand)'}]}
@@ -631,17 +602,16 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Calcaric Regosol., models: {h_theta: null, k_h: Linear three-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}, {$ref: '#/$defs/clay_percent'}, {$ref: '#/$defs/organic_matter_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
           clay: 25
           organic_matter: 2.5
         expected:
           k_sat: 20.532
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.705.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '1.522 + 0.537 * sand - 0.284 * clay - 0.296 * organic_matter'}]}
@@ -651,15 +621,14 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Dystric Regosol., models: {h_theta: null, k_h: Exponential one-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
         expected:
           k_sat: 12.081401313183196
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.834.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '1.096 * exp(0.048 * sand)'}]}
@@ -669,17 +638,16 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Dystric Regosol., models: {h_theta: null, k_h: Linear three-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}, {$ref: '#/$defs/clay_percent'}, {$ref: '#/$defs/organic_matter_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
           clay: 25
           organic_matter: 2.5
         expected:
           k_sat: 17.1335
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.862.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '-0.784 + 0.596 * sand - 0.431 * clay - 0.443 * organic_matter'}]}
@@ -689,15 +657,14 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Eutric Regosol., models: {h_theta: null, k_h: Exponential one-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
         expected:
           k_sat: 13.674049986082728
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.824.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '1.0005 * exp(0.0523 * sand)'}]}
@@ -707,17 +674,16 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Eutric Regosol., models: {h_theta: null, k_h: Linear three-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}, {$ref: '#/$defs/clay_percent'}, {$ref: '#/$defs/organic_matter_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
           clay: 25
           organic_matter: 2.5
         expected:
           k_sat: 24.06375
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.702.'], warnings: []}
     implementation: {variables: [{name: k_sat, expr: '-5.5 + 0.647 * sand - 0.00325 * clay - 1.082 * organic_matter'}]}
@@ -727,15 +693,14 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Rendzina., models: {h_theta: null, k_h: Exponential one-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
         expected:
           k_sat: 12.515763717130312
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; horizon-level R^2 = 0.221; the paper separately reports profile-average R^2 = 0.727 without coefficients.'], warnings: [The horizon-level regression has weak fit and is affected by converted qualitative conductivity values.]}
     implementation: {variables: [{name: k_sat, expr: '2.4645 * exp(0.0325 * sand)'}]}
@@ -745,17 +710,16 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Rendzina., models: {h_theta: null, k_h: Linear three-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}, {$ref: '#/$defs/clay_percent'}, {$ref: '#/$defs/organic_matter_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
           clay: 25
           organic_matter: 2.5
         expected:
           k_sat: 16.2905
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.340.'], warnings: [The regression has weak fit and is affected by converted qualitative conductivity values.]}
     implementation: {variables: [{name: k_sat, expr: '23.288 + 0.175 * sand - 0.602 * clay - 0.279 * organic_matter'}]}
@@ -765,15 +729,14 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Gleyic Solonchak., models: {h_theta: null, k_h: Exponential one-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
         expected:
           k_sat: 4.883324693640427
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3 prints R^2 = 0.399; the prose later states 0.435.'], warnings: [The source gives inconsistent R^2 values for this regression.]}
     implementation: {variables: [{name: k_sat, expr: '0.7602 * exp(0.0372 * sand)'}]}
@@ -783,17 +746,16 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for FAO 1974 Gleyic Solonchak., models: {h_theta: null, k_h: Linear three-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}, {$ref: '#/$defs/clay_percent'}, {$ref: '#/$defs/organic_matter_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
           clay: 25
           organic_matter: 2.5
         expected:
           k_sat: 10.53583
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Table 3; R^2 = 0.682.', 'Human review corrected the anomalous printed intercept from -90917 to -0.90917.'], warnings: [The implementation intentionally differs from the original published Table 3, which prints the intercept as -90917.]}
     implementation: {variables: [{name: k_sat, expr: '-0.90917 + 0.328 * sand - 0.173 * clay - 0.252 * organic_matter'}]}
@@ -804,15 +766,14 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for the combined Spanish-soil dataset., models: {h_theta: null, k_h: Exponential one-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
         expected:
           k_sat: 10.714718864969111
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Section 5.1; 3172 horizons; R^2 = 0.696.'], warnings: [The paper recommends use when data are statistically similar to its Spanish-soil calibration data.]}
     implementation: {variables: [{name: k_sat, expr: '0.920 * exp(0.0491 * sand)'}]}
@@ -822,17 +783,16 @@ functions:
     scope: {prediction_target: Saturated hydraulic conductivity for the combined Spanish-soil dataset., models: {h_theta: null, k_h: Linear three-variable regression}}
     inputs: [{$ref: '#/$defs/sand_percent'}, {$ref: '#/$defs/clay_percent'}, {$ref: '#/$defs/organic_matter_percent'}]
     outputs: *k_sat_mm_h
-    golden_tests:
+    verification_cases:
       - id: reviewer_reference_vector
+        kind: calculated
         inputs:
           sand: 50
           clay: 25
           organic_matter: 2.5
         expected:
           k_sat: 20.06325
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
+        rationale: Synthetic finite-domain verification vector selected during human review and evaluated directly from the documented formula.
     edge_cases: []
     documentation: {notes: ['Section 5.1; 3172 horizons; R^2 = 0.715.'], warnings: [The paper recommends use when data are statistically similar to its Spanish-soil calibration data.]}
     implementation: {variables: [{name: k_sat, expr: '-4.994 + 0.56728 * sand - 0.131 * clay - 0.0127 * organic_matter'}]}
@@ -876,7 +836,7 @@ scientific_notes: |
     NaN and infinities with NumPy-compatible arithmetic. In particular, retain
     negative results from the linear regressions rather than silently replacing
     them with zero.
-  - Use the synthetic finite-domain vectors recorded in `golden_tests` as
+  - Use the synthetic finite-domain vectors recorded in `verification_cases` as
     implementation regression tests. Their expected values are direct formula
     evaluations and are not presented as observations from the article.
   - No separate edge-case vectors are required beyond input-domain validation

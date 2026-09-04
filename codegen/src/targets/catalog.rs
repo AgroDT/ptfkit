@@ -1,6 +1,6 @@
 use crate::{
     documentation::{self as docs, FunctionDocument},
-    model::{Entry, Parameter},
+    model::{Entry, OutputField, Parameter},
     output::GeneratedFile,
     render::{Render, Writer, markdown},
 };
@@ -150,6 +150,21 @@ trait CatalogParameter {
 }
 
 impl CatalogParameter for Parameter {
+    fn name(&self) -> &str {
+        &self.name
+    }
+    fn unit(&self) -> &str {
+        &self.unit
+    }
+    fn domain(&self) -> Option<&str> {
+        self.domain.as_deref()
+    }
+    fn description(&self) -> &str {
+        &self.description
+    }
+}
+
+impl CatalogParameter for OutputField {
     fn name(&self) -> &str {
         &self.name
     }

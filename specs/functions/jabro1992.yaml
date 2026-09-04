@@ -43,51 +43,48 @@ functions:
   outputs:
     type: scalar
     name: k_sat
+    quantity: saturated_hydraulic_conductivity
     symbol: Ks
     unit: m/s
     domain: value >= 0
     description: Saturated hydraulic conductivity.
-  golden_tests:
+  verification_cases:
   - id: loamy_sand_min_bd
+    kind: calculated
     inputs:
       silt: 10.0
       clay: 5.0
       bulk_density: 1.26
     expected:
       k_sat: 0.0003849640675896946
-    rtol: 1.0e-08
-    atol: 1.0e-12
-    notes: Calculated from equation (3) and unit conversion.
+    rationale: Calculated from equation (3) and unit conversion.
   - id: loam
+    kind: calculated
     inputs:
       silt: 38.72
       clay: 11.05
       bulk_density: 1.42
     expected:
       k_sat: 9.804037952717678e-06
-    rtol: 1.0e-08
-    atol: 1.0e-12
-    notes: Calculated from equation (3) and unit conversion.
+    rationale: Calculated from equation (3) and unit conversion.
   - id: silty_clay_loam_max_silt
+    kind: calculated
     inputs:
       silt: 52.0
       clay: 30.0
       bulk_density: 1.97
     expected:
       k_sat: 7.292435947882127e-09
-    rtol: 1.0e-08
-    atol: 1.0e-12
-    notes: Calculated from equation (3) and unit conversion.
+    rationale: Calculated from equation (3) and unit conversion.
   - id: sandy_clay_min_silt_max_clay
+    kind: calculated
     inputs:
       silt: 0.2
       clay: 44.0
       bulk_density: 1.61
     expected:
       k_sat: 2.032824027706267e-05
-    rtol: 1.0e-08
-    atol: 1.0e-12
-    notes: Calculated from equation (3) and unit conversion.
+    rationale: Calculated from equation (3) and unit conversion.
   edge_cases:
   - id: non_positive_silt_or_clay
     inputs:

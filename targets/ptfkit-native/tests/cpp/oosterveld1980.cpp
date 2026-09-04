@@ -6,33 +6,36 @@ import ptfkit;
 import ptfkit.oosterveld1980;
 #endif
 
-#include "close_enough.h"
+#include "support/close_enough.h"
 
 int main() {
     {
         const auto result =
             ptfkit::oosterveld1980::calc_ptf_oosterveld1980_field_capacity_tension(6.6);
-        assert_close_enough(result, 11.8540994164288, 0.000000000001, 0.000000000001);
+        assert_close(result, 11.8540994164288, 0.01, 0.0, "matric_potential", "kPa", "registry");
     }
     {
         const auto result =
             ptfkit::oosterveld1980::calc_ptf_oosterveld1980_retention(6.6, 86.3, 105.0, 11.8);
-        assert_close_enough(result, 8.2782468100413, 0.000000000001, 0.000000000001);
+        assert_close(result, 8.2782468100413, 0.1, 0.0, "gravimetric_water_content", "% mass",
+                     "registry");
     }
     {
         const auto result =
             ptfkit::oosterveld1980::calc_ptf_oosterveld1980_field_capacity(6.6, 86.3, 105.0);
-        assert_close_enough(result, 8.14707947394088, 0.000000000001, 0.000000000001);
+        assert_close(result, 8.14707947394088, 0.1, 0.0, "gravimetric_water_content", "% mass",
+                     "registry");
     }
     {
         const auto result =
             ptfkit::oosterveld1980::calc_ptf_oosterveld1980_wilting_point(6.6, 86.3, 105.0);
-        assert_close_enough(result, 1.3942, 0.000000000001, 0.000000000001);
+        assert_close(result, 1.3942, 0.1, 0.0, "gravimetric_water_content", "% mass", "registry");
     }
     {
         const auto result =
             ptfkit::oosterveld1980::calc_ptf_oosterveld1980_available_water(6.6, 86.3, 105.0);
-        assert_close_enough(result, 6.75287947394088, 0.000000000001, 0.000000000001);
+        assert_close(result, 6.75287947394088, 0.1, 0.0, "gravimetric_water_content", "% mass",
+                     "registry");
     }
     return 0;
 }

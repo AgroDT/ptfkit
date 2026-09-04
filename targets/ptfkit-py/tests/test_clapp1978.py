@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import pytest
 
-from _helpers import prepare_vector_case
+from _helpers import assert_close, prepare_vector_case
 from ptfkit.clapp1978 import Clapp1978Parameters, UsdaTextureClass, calc_ptf_clapp1978
 
 
@@ -12,209 +12,301 @@ CASES_CALC_PTF_CLAPP1978 = [
         {'soil_texture': UsdaTextureClass.SAND},
         {
             'b': 4.05,
-            'saturated_hydraulic_conductivity': 1.056,
-            'saturated_water_content': 0.395,
             'saturation_suction': 3.5,
-            'sorptivity': 1.52,
             'wetting_front_suction': 4.66,
+            'saturated_water_content': 0.395,
+            'saturated_hydraulic_conductivity': 1.056,
+            'sorptivity': 1.52,
         },
-        0.0,
-        0.0,
     ),
     (
         {'soil_texture': UsdaTextureClass.LOAMY_SAND},
         {
             'b': 4.38,
-            'saturated_hydraulic_conductivity': 0.938,
-            'saturated_water_content': 0.41,
             'saturation_suction': 1.78,
-            'sorptivity': 1.04,
             'wetting_front_suction': 2.38,
+            'saturated_water_content': 0.41,
+            'saturated_hydraulic_conductivity': 0.938,
+            'sorptivity': 1.04,
         },
-        0.0,
-        0.0,
     ),
     (
         {'soil_texture': UsdaTextureClass.SANDY_LOAM},
         {
             'b': 4.9,
-            'saturated_hydraulic_conductivity': 0.208,
-            'saturated_water_content': 0.435,
             'saturation_suction': 7.18,
-            'sorptivity': 1.03,
             'wetting_front_suction': 9.52,
+            'saturated_water_content': 0.435,
+            'saturated_hydraulic_conductivity': 0.208,
+            'sorptivity': 1.03,
         },
-        0.0,
-        0.0,
     ),
     (
         {'soil_texture': UsdaTextureClass.SILT_LOAM},
         {
             'b': 5.3,
-            'saturated_hydraulic_conductivity': 0.0432,
-            'saturated_water_content': 0.485,
             'saturation_suction': 56.6,
-            'sorptivity': 1.26,
             'wetting_front_suction': 75.3,
+            'saturated_water_content': 0.485,
+            'saturated_hydraulic_conductivity': 0.0432,
+            'sorptivity': 1.26,
         },
-        0.0,
-        0.0,
     ),
     (
         {'soil_texture': UsdaTextureClass.LOAM},
         {
             'b': 5.39,
-            'saturated_hydraulic_conductivity': 0.0417,
-            'saturated_water_content': 0.451,
             'saturation_suction': 14.6,
-            'sorptivity': 0.693,
             'wetting_front_suction': 20.0,
+            'saturated_water_content': 0.451,
+            'saturated_hydraulic_conductivity': 0.0417,
+            'sorptivity': 0.693,
         },
-        0.0,
-        0.0,
     ),
     (
         {'soil_texture': UsdaTextureClass.SANDY_CLAY_LOAM},
         {
             'b': 7.12,
-            'saturated_hydraulic_conductivity': 0.0378,
-            'saturated_water_content': 0.42,
             'saturation_suction': 8.63,
-            'sorptivity': 0.488,
             'wetting_front_suction': 11.7,
+            'saturated_water_content': 0.42,
+            'saturated_hydraulic_conductivity': 0.0378,
+            'sorptivity': 0.488,
         },
-        0.0,
-        0.0,
     ),
     (
         {'soil_texture': UsdaTextureClass.SILTY_CLAY_LOAM},
         {
             'b': 7.75,
-            'saturated_hydraulic_conductivity': 0.0102,
-            'saturated_water_content': 0.477,
             'saturation_suction': 14.6,
-            'sorptivity': 0.31,
             'wetting_front_suction': 19.7,
+            'saturated_water_content': 0.477,
+            'saturated_hydraulic_conductivity': 0.0102,
+            'sorptivity': 0.31,
         },
-        0.0,
-        0.0,
     ),
     (
         {'soil_texture': UsdaTextureClass.CLAY_LOAM},
         {
             'b': 8.52,
-            'saturated_hydraulic_conductivity': 0.0147,
-            'saturated_water_content': 0.476,
             'saturation_suction': 36.1,
-            'sorptivity': 0.537,
             'wetting_front_suction': 48.1,
+            'saturated_water_content': 0.476,
+            'saturated_hydraulic_conductivity': 0.0147,
+            'sorptivity': 0.537,
         },
-        0.0,
-        0.0,
     ),
     (
         {'soil_texture': UsdaTextureClass.SANDY_CLAY},
         {
             'b': 10.4,
-            'saturated_hydraulic_conductivity': 0.013,
-            'saturated_water_content': 0.426,
             'saturation_suction': 6.16,
-            'sorptivity': 0.223,
             'wetting_front_suction': 8.18,
+            'saturated_water_content': 0.426,
+            'saturated_hydraulic_conductivity': 0.013,
+            'sorptivity': 0.223,
         },
-        0.0,
-        0.0,
     ),
     (
         {'soil_texture': UsdaTextureClass.SILTY_CLAY},
         {
             'b': 10.4,
-            'saturated_hydraulic_conductivity': 0.0062,
-            'saturated_water_content': 0.492,
             'saturation_suction': 17.4,
-            'sorptivity': 0.242,
             'wetting_front_suction': 23.0,
+            'saturated_water_content': 0.492,
+            'saturated_hydraulic_conductivity': 0.0062,
+            'sorptivity': 0.242,
         },
-        0.0,
-        0.0,
     ),
     (
         {'soil_texture': UsdaTextureClass.CLAY},
         {
             'b': 11.4,
-            'saturated_hydraulic_conductivity': 0.0077,
-            'saturated_water_content': 0.482,
             'saturation_suction': 18.6,
-            'sorptivity': 0.268,
             'wetting_front_suction': 24.3,
+            'saturated_water_content': 0.482,
+            'saturated_hydraulic_conductivity': 0.0077,
+            'sorptivity': 0.268,
         },
-        0.0,
-        0.0,
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_CLAPP1978)
-def test_calc_ptf_clapp1978_golden(
-    inputs: dict[str, object], expected: dict[str, float], rtol: float, atol: float
-):
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_CLAPP1978)
+def test_calc_ptf_clapp1978_verification(inputs: dict[str, object], expected: dict[str, float]):
     result = calc_ptf_clapp1978(**inputs)  # ty: ignore[no-matching-overload]
 
-    assert result.b == pytest.approx(expected['b'], rel=rtol, abs=atol)
-    assert result.saturation_suction == pytest.approx(
-        expected['saturation_suction'], rel=rtol, abs=atol
+    assert_close(
+        result.b,
+        expected['b'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='campbell_b',
+        unit='1',
+        source='registry',
     )
-    assert result.wetting_front_suction == pytest.approx(
-        expected['wetting_front_suction'], rel=rtol, abs=atol
+    assert_close(
+        result.saturation_suction,
+        expected['saturation_suction'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='cm',
+        source='registry',
     )
-    assert result.saturated_water_content == pytest.approx(
-        expected['saturated_water_content'], rel=rtol, abs=atol
+    assert_close(
+        result.wetting_front_suction,
+        expected['wetting_front_suction'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='cm',
+        source='registry',
     )
-    assert result.saturated_hydraulic_conductivity == pytest.approx(
-        expected['saturated_hydraulic_conductivity'], rel=rtol, abs=atol
+    assert_close(
+        result.saturated_water_content,
+        expected['saturated_water_content'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='1',
+        source='registry',
     )
-    assert result.sorptivity == pytest.approx(expected['sorptivity'], rel=rtol, abs=atol)
+    assert_close(
+        result.saturated_hydraulic_conductivity,
+        expected['saturated_hydraulic_conductivity'],
+        absolute=1e-5,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='cm/min',
+        source='registry',
+    )
+    assert_close(
+        result.sorptivity,
+        expected['sorptivity'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='sorptivity',
+        unit='cm/min^(1/2)',
+        source='registry',
+    )
 
 
 def test_calc_ptf_clapp1978_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_CLAPP1978, Clapp1978Parameters
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_CLAPP1978, Clapp1978Parameters)
     result = calc_ptf_clapp1978(**inputs, out=None)
-    assert result.b[0] == pytest.approx(expected['b'], rel=rtol, abs=atol)
-    assert result.saturation_suction[0] == pytest.approx(
-        expected['saturation_suction'], rel=rtol, abs=atol
+    assert_close(
+        result.b[0],
+        expected['b'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='campbell_b',
+        unit='1',
+        source='registry',
     )
-    assert result.wetting_front_suction[0] == pytest.approx(
-        expected['wetting_front_suction'], rel=rtol, abs=atol
+    assert_close(
+        result.saturation_suction[0],
+        expected['saturation_suction'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='cm',
+        source='registry',
     )
-    assert result.saturated_water_content[0] == pytest.approx(
-        expected['saturated_water_content'], rel=rtol, abs=atol
+    assert_close(
+        result.wetting_front_suction[0],
+        expected['wetting_front_suction'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='cm',
+        source='registry',
     )
-    assert result.saturated_hydraulic_conductivity[0] == pytest.approx(
-        expected['saturated_hydraulic_conductivity'], rel=rtol, abs=atol
+    assert_close(
+        result.saturated_water_content[0],
+        expected['saturated_water_content'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='1',
+        source='registry',
     )
-    assert result.sorptivity[0] == pytest.approx(expected['sorptivity'], rel=rtol, abs=atol)
+    assert_close(
+        result.saturated_hydraulic_conductivity[0],
+        expected['saturated_hydraulic_conductivity'],
+        absolute=1e-5,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='cm/min',
+        source='registry',
+    )
+    assert_close(
+        result.sorptivity[0],
+        expected['sorptivity'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='sorptivity',
+        unit='cm/min^(1/2)',
+        source='registry',
+    )
 
 
 def test_calc_ptf_clapp1978_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_CLAPP1978, Clapp1978Parameters
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_CLAPP1978, Clapp1978Parameters)
     result = calc_ptf_clapp1978(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert result.b[0] == pytest.approx(expected['b'], rel=rtol, abs=atol)
-    assert result.saturation_suction[0] == pytest.approx(
-        expected['saturation_suction'], rel=rtol, abs=atol
+    assert_close(
+        result.b[0],
+        expected['b'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='campbell_b',
+        unit='1',
+        source='registry',
     )
-    assert result.wetting_front_suction[0] == pytest.approx(
-        expected['wetting_front_suction'], rel=rtol, abs=atol
+    assert_close(
+        result.saturation_suction[0],
+        expected['saturation_suction'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='cm',
+        source='registry',
     )
-    assert result.saturated_water_content[0] == pytest.approx(
-        expected['saturated_water_content'], rel=rtol, abs=atol
+    assert_close(
+        result.wetting_front_suction[0],
+        expected['wetting_front_suction'],
+        absolute=0.01,
+        relative=0.0,
+        quantity='matric_potential',
+        unit='cm',
+        source='registry',
     )
-    assert result.saturated_hydraulic_conductivity[0] == pytest.approx(
-        expected['saturated_hydraulic_conductivity'], rel=rtol, abs=atol
+    assert_close(
+        result.saturated_water_content[0],
+        expected['saturated_water_content'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='1',
+        source='registry',
     )
-    assert result.sorptivity[0] == pytest.approx(expected['sorptivity'], rel=rtol, abs=atol)
+    assert_close(
+        result.saturated_hydraulic_conductivity[0],
+        expected['saturated_hydraulic_conductivity'],
+        absolute=1e-5,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='cm/min',
+        source='registry',
+    )
+    assert_close(
+        result.sorptivity[0],
+        expected['sorptivity'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='sorptivity',
+        unit='cm/min^(1/2)',
+        source='registry',
+    )

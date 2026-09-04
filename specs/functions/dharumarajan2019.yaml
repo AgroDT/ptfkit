@@ -75,11 +75,13 @@ $defs:
     name: Dharumarajan2019WaterRetentionResult
     fields:
       - name: field_capacity
+        quantity: gravimetric_water_content
         symbol: FC
         unit: "%"
         domain: null
         description: Soil water content at -33 kPa matric potential.
       - name: permanent_wilting_point
+        quantity: gravimetric_water_content
         symbol: PWP
         unit: "%"
         domain: null
@@ -105,8 +107,9 @@ functions:
       - $ref: "#/$defs/cecNkp"
     outputs:
       $ref: "#/$defs/Dharumarajan2019WaterRetentionResult"
-    golden_tests:
+    verification_cases:
       - id: northern_study_mean_case
+        kind: calculated
         inputs:
           clay: 43.2
           sand: 39.8
@@ -114,9 +117,7 @@ functions:
         expected:
           field_capacity: 29.7912
           permanent_wilting_point: 18.9276
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Calculated from the Table 3 coefficients at the Table 1 mean inputs.
+        rationale: Calculated from the Table 3 coefficients at the Table 1 mean inputs.
     edge_cases: []
     documentation:
       notes:
@@ -153,16 +154,15 @@ functions:
       - $ref: "#/$defs/clayNkp"
     outputs:
       $ref: "#/$defs/Dharumarajan2019WaterRetentionResult"
-    golden_tests:
+    verification_cases:
       - id: northern_study_mean_clay_case
+        kind: calculated
         inputs:
           clay: 43.2
         expected:
           field_capacity: 30.2832
           permanent_wilting_point: 19.157
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Calculated from the Table 4 coefficients at the Table 1 mean clay content.
+        rationale: Calculated from the Table 4 coefficients at the Table 1 mean clay content.
     edge_cases: []
     documentation:
       notes:
@@ -203,8 +203,9 @@ functions:
       - $ref: "#/$defs/cecSkp"
     outputs:
       $ref: "#/$defs/Dharumarajan2019WaterRetentionResult"
-    golden_tests:
+    verification_cases:
       - id: southern_study_mean_case
+        kind: calculated
         inputs:
           clay: 31.5
           sand: 53.5
@@ -212,9 +213,7 @@ functions:
         expected:
           field_capacity: 21.8169
           permanent_wilting_point: 11.3054
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Calculated from the Table 5 coefficients at the Table 2 mean inputs.
+        rationale: Calculated from the Table 5 coefficients at the Table 2 mean inputs.
     edge_cases: []
     documentation:
       notes:
@@ -248,16 +247,15 @@ functions:
       - $ref: "#/$defs/claySkp"
     outputs:
       $ref: "#/$defs/Dharumarajan2019WaterRetentionResult"
-    golden_tests:
+    verification_cases:
       - id: southern_study_mean_clay_case
+        kind: calculated
         inputs:
           clay: 31.5
         expected:
           field_capacity: 22.0255
           permanent_wilting_point: 11.503
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Calculated from the Table 7 coefficients at the Table 2 mean clay content.
+        rationale: Calculated from the Table 7 coefficients at the Table 2 mean clay content.
     edge_cases: []
     documentation:
       notes:
@@ -294,21 +292,21 @@ functions:
     outputs:
       type: scalar
       name: infiltration_rate
+      quantity: infiltration_rate
       symbol: null
       unit: mm/h
       domain: "Observed study range: 2.3 <= value <= 35"
       description: Soil infiltration rate measured with a double-ring infiltrometer.
-    golden_tests:
+    verification_cases:
       - id: balanced_texture_case
+        kind: calculated
         inputs:
           sand: 50.0
           silt: 20.0
           clay: 30.0
         expected:
           infiltration_rate: 18.45
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: Calculated directly from the reported equation for a texture summing to 100%.
+        rationale: Calculated directly from the reported equation for a texture summing to 100%.
     edge_cases: []
     documentation:
       notes:

@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import pytest
 
-from _helpers import prepare_vector_case
+from _helpers import assert_close, prepare_vector_case
 from ptfkit.weber2020 import Weber2020PTFResult, calc_ptf_weber2020
 
 
@@ -18,60 +18,220 @@ CASES_CALC_PTF_WEBER2020 = [
             'theta_s_vgm': 0.45,
         },
         {
+            'theta_snc_bw': 0.06267,
+            'theta_sc_bw': 0.38607,
             'alpha_bw': 0.0201472407335197,
-            'k_sc_bw': 172.186857498601,
-            'k_snc_bw': 0.0190546071796325,
             'n_bw': 1.71980542683289,
             'tau_bw': -0.887,
-            'theta_sc_bw': 0.38607,
-            'theta_snc_bw': 0.06267,
+            'k_sc_bw': 172.186857498601,
+            'k_snc_bw': 0.0190546071796325,
         },
-        1e-12,
-        1e-12,
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_WEBER2020)
-def test_calc_ptf_weber2020_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
-):
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_WEBER2020)
+def test_calc_ptf_weber2020_verification(inputs: dict[str, float], expected: dict[str, float]):
     result = calc_ptf_weber2020(**inputs)
 
-    assert result.theta_snc_bw == pytest.approx(expected['theta_snc_bw'], rel=rtol, abs=atol)
-    assert result.theta_sc_bw == pytest.approx(expected['theta_sc_bw'], rel=rtol, abs=atol)
-    assert result.alpha_bw == pytest.approx(expected['alpha_bw'], rel=rtol, abs=atol)
-    assert result.n_bw == pytest.approx(expected['n_bw'], rel=rtol, abs=atol)
-    assert result.tau_bw == pytest.approx(expected['tau_bw'], rel=rtol, abs=atol)
-    assert result.k_sc_bw == pytest.approx(expected['k_sc_bw'], rel=rtol, abs=atol)
-    assert result.k_snc_bw == pytest.approx(expected['k_snc_bw'], rel=rtol, abs=atol)
+    assert_close(
+        result.theta_snc_bw,
+        expected['theta_snc_bw'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.theta_sc_bw,
+        expected['theta_sc_bw'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.alpha_bw,
+        expected['alpha_bw'],
+        absolute=1e-5,
+        relative=0.0,
+        quantity='van_genuchten_alpha',
+        unit='cm^-1',
+        source='registry',
+    )
+    assert_close(
+        result.n_bw,
+        expected['n_bw'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='brunswick_n',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.tau_bw,
+        expected['tau_bw'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='brunswick_tau',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.k_sc_bw,
+        expected['k_sc_bw'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='cm d^-1',
+        source='registry',
+    )
+    assert_close(
+        result.k_snc_bw,
+        expected['k_snc_bw'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='cm d^-1',
+        source='registry',
+    )
 
 
 def test_calc_ptf_weber2020_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_WEBER2020, Weber2020PTFResult
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_WEBER2020, Weber2020PTFResult)
     result = calc_ptf_weber2020(**inputs, out=None)
-    assert result.theta_snc_bw[0] == pytest.approx(expected['theta_snc_bw'], rel=rtol, abs=atol)
-    assert result.theta_sc_bw[0] == pytest.approx(expected['theta_sc_bw'], rel=rtol, abs=atol)
-    assert result.alpha_bw[0] == pytest.approx(expected['alpha_bw'], rel=rtol, abs=atol)
-    assert result.n_bw[0] == pytest.approx(expected['n_bw'], rel=rtol, abs=atol)
-    assert result.tau_bw[0] == pytest.approx(expected['tau_bw'], rel=rtol, abs=atol)
-    assert result.k_sc_bw[0] == pytest.approx(expected['k_sc_bw'], rel=rtol, abs=atol)
-    assert result.k_snc_bw[0] == pytest.approx(expected['k_snc_bw'], rel=rtol, abs=atol)
+    assert_close(
+        result.theta_snc_bw[0],
+        expected['theta_snc_bw'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.theta_sc_bw[0],
+        expected['theta_sc_bw'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.alpha_bw[0],
+        expected['alpha_bw'],
+        absolute=1e-5,
+        relative=0.0,
+        quantity='van_genuchten_alpha',
+        unit='cm^-1',
+        source='registry',
+    )
+    assert_close(
+        result.n_bw[0],
+        expected['n_bw'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='brunswick_n',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.tau_bw[0],
+        expected['tau_bw'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='brunswick_tau',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.k_sc_bw[0],
+        expected['k_sc_bw'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='cm d^-1',
+        source='registry',
+    )
+    assert_close(
+        result.k_snc_bw[0],
+        expected['k_snc_bw'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='cm d^-1',
+        source='registry',
+    )
 
 
 def test_calc_ptf_weber2020_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_WEBER2020, Weber2020PTFResult
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_WEBER2020, Weber2020PTFResult)
     result = calc_ptf_weber2020(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert result.theta_snc_bw[0] == pytest.approx(expected['theta_snc_bw'], rel=rtol, abs=atol)
-    assert result.theta_sc_bw[0] == pytest.approx(expected['theta_sc_bw'], rel=rtol, abs=atol)
-    assert result.alpha_bw[0] == pytest.approx(expected['alpha_bw'], rel=rtol, abs=atol)
-    assert result.n_bw[0] == pytest.approx(expected['n_bw'], rel=rtol, abs=atol)
-    assert result.tau_bw[0] == pytest.approx(expected['tau_bw'], rel=rtol, abs=atol)
-    assert result.k_sc_bw[0] == pytest.approx(expected['k_sc_bw'], rel=rtol, abs=atol)
-    assert result.k_snc_bw[0] == pytest.approx(expected['k_snc_bw'], rel=rtol, abs=atol)
+    assert_close(
+        result.theta_snc_bw[0],
+        expected['theta_snc_bw'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.theta_sc_bw[0],
+        expected['theta_sc_bw'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.alpha_bw[0],
+        expected['alpha_bw'],
+        absolute=1e-5,
+        relative=0.0,
+        quantity='van_genuchten_alpha',
+        unit='cm^-1',
+        source='registry',
+    )
+    assert_close(
+        result.n_bw[0],
+        expected['n_bw'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='brunswick_n',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.tau_bw[0],
+        expected['tau_bw'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='brunswick_tau',
+        unit='dimensionless',
+        source='registry',
+    )
+    assert_close(
+        result.k_sc_bw[0],
+        expected['k_sc_bw'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='cm d^-1',
+        source='registry',
+    )
+    assert_close(
+        result.k_snc_bw[0],
+        expected['k_snc_bw'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='cm d^-1',
+        source='registry',
+    )

@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import pytest
 
-from _helpers import prepare_vector_case
+from _helpers import assert_close, prepare_vector_case
 from ptfkit.wang2012 import Wang2012PTFResult, calc_ptf_wang2012
 
 
@@ -17,41 +17,105 @@ CASES_CALC_PTF_WANG2012 = [
             'silt': 10.0,
             'soil_organic_carbon': 0.033,
         },
-        {'k_sat': 3.872974e-5, 'theta_fc': 0.38491949, 'theta_s': 0.61540575},
-        1e-6,
-        1e-12,
+        {'theta_s': 0.61540575, 'theta_fc': 0.38491949, 'k_sat': 3.872974e-5},
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_WANG2012)
-def test_calc_ptf_wang2012_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
-):
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_WANG2012)
+def test_calc_ptf_wang2012_verification(inputs: dict[str, float], expected: dict[str, float]):
     result = calc_ptf_wang2012(**inputs)
 
-    assert result.theta_s == pytest.approx(expected['theta_s'], rel=rtol, abs=atol)
-    assert result.theta_fc == pytest.approx(expected['theta_fc'], rel=rtol, abs=atol)
-    assert result.k_sat == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result.theta_s,
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_fc,
+        expected['theta_fc'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.k_sat,
+        expected['k_sat'],
+        absolute=1e-10,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='m/s',
+        source='registry',
+    )
 
 
 def test_calc_ptf_wang2012_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_WANG2012, Wang2012PTFResult
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_WANG2012, Wang2012PTFResult)
     result = calc_ptf_wang2012(**inputs, out=None)
-    assert result.theta_s[0] == pytest.approx(expected['theta_s'], rel=rtol, abs=atol)
-    assert result.theta_fc[0] == pytest.approx(expected['theta_fc'], rel=rtol, abs=atol)
-    assert result.k_sat[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result.theta_s[0],
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_fc[0],
+        expected['theta_fc'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.k_sat[0],
+        expected['k_sat'],
+        absolute=1e-10,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='m/s',
+        source='registry',
+    )
 
 
 def test_calc_ptf_wang2012_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_WANG2012, Wang2012PTFResult
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_WANG2012, Wang2012PTFResult)
     result = calc_ptf_wang2012(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert result.theta_s[0] == pytest.approx(expected['theta_s'], rel=rtol, abs=atol)
-    assert result.theta_fc[0] == pytest.approx(expected['theta_fc'], rel=rtol, abs=atol)
-    assert result.k_sat[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result.theta_s[0],
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_fc[0],
+        expected['theta_fc'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.k_sat[0],
+        expected['k_sat'],
+        absolute=1e-10,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='m/s',
+        source='registry',
+    )

@@ -6,7 +6,7 @@ import ptfkit;
 import ptfkit.weber2020;
 #endif
 
-#include "close_enough.h"
+#include "support/close_enough.h"
 #include <type_traits>
 
 int main() {
@@ -15,13 +15,20 @@ int main() {
             ptfkit::weber2020::calc_ptf_weber2020(0.05, 0.45, 0.02, 1.6, -0.5, 100.0);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::weber2020::Weber2020PTFResult>);
-        assert_close_enough(result.theta_snc_bw, 0.06267, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.theta_sc_bw, 0.38607, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.alpha_bw, 0.0201472407335197, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.n_bw, 1.71980542683289, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.tau_bw, -0.887, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.k_sc_bw, 172.186857498601, 0.000000000001, 0.000000000001);
-        assert_close_enough(result.k_snc_bw, 0.0190546071796325, 0.000000000001, 0.000000000001);
+        assert_close(result.theta_snc_bw, 0.06267, 0.001, 0.0, "volumetric_water_content",
+                     "dimensionless", "registry");
+        assert_close(result.theta_sc_bw, 0.38607, 0.001, 0.0, "volumetric_water_content",
+                     "dimensionless", "registry");
+        assert_close(result.alpha_bw, 0.0201472407335197, 0.00001, 0.0, "van_genuchten_alpha",
+                     "cm^-1", "registry");
+        assert_close(result.n_bw, 1.71980542683289, 0.001, 0.0, "brunswick_n", "dimensionless",
+                     "registry");
+        assert_close(result.tau_bw, -0.887, 0.001, 0.0, "brunswick_tau", "dimensionless",
+                     "registry");
+        assert_close(result.k_sc_bw, 172.186857498601, 0.0001, 0.01,
+                     "saturated_hydraulic_conductivity", "cm d^-1", "registry");
+        assert_close(result.k_snc_bw, 0.0190546071796325, 0.0001, 0.01,
+                     "saturated_hydraulic_conductivity", "cm d^-1", "registry");
     }
     return 0;
 }

@@ -76,27 +76,32 @@ functions:
       name: Hodnett2002PTFResult
       fields:
         - name: alpha
+          quantity: van_genuchten_alpha
           symbol: alpha
           unit: kPa^-1
           domain: value > 0
           description: Shape parameter of the van Genuchten water-retention model.
         - name: n
+          quantity: van_genuchten_n
           symbol: n
           unit: dimensionless
           domain: value > 0
           description: Shape parameter controlling water-retention curve steepness.
         - name: theta_s
+          quantity: volumetric_water_content
           symbol: theta_s
           unit: m^3/m^3
           domain: null
           description: Saturated volumetric soil water content.
         - name: theta_r
+          quantity: volumetric_water_content
           symbol: theta_r
           unit: m^3/m^3
           domain: null
           description: Residual volumetric soil water content.
-    golden_tests:
+    verification_cases:
       - id: calibration_dataset_mean_properties
+        kind: calculated
         inputs:
           sand: 39.2
           silt: 24.2
@@ -110,9 +115,7 @@ functions:
           n: 1.36739326352383
           theta_s: 0.4993353
           theta_r: 0.21344216
-        rtol: 1.0e-12
-        atol: 1.0e-12
-        notes: >-
+        rationale: >-
           Calculated from the reoptimised Step 3 coefficients in Table 8 using
           the calibration-set means in Table 3 and the table's factor-of-100 note.
     edge_cases: []

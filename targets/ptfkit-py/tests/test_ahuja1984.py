@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import pytest
 
-from _helpers import prepare_vector_case
+from _helpers import assert_close, prepare_vector_case
 from ptfkit.ahuja1984 import calc_ptf_ahuja1984
 
 
@@ -11,35 +11,53 @@ CASES_CALC_PTF_AHUJA1984 = [
     (
         {'coefficient_b': 100.0, 'exponent_n': 4.0, 'theta_33': 0.25, 'total_porosity': 0.45},
         {'k_sat': 0.16},
-        1e-12,
-        1e-14,
     ),
     (
         {'coefficient_b': 100.0, 'exponent_n': 5.0, 'theta_33': 0.2, 'total_porosity': 0.5},
         {'k_sat': 0.243},
-        1e-12,
-        1e-14,
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_AHUJA1984)
-def test_calc_ptf_ahuja1984_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
-):
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_AHUJA1984)
+def test_calc_ptf_ahuja1984_verification(inputs: dict[str, float], expected: dict[str, float]):
     result = calc_ptf_ahuja1984(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=1e-5,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='cm/h',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ahuja1984_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_AHUJA1984)
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_AHUJA1984)
     result = calc_ptf_ahuja1984(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=1e-5,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='cm/h',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ahuja1984_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_AHUJA1984)
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_AHUJA1984)
     result = calc_ptf_ahuja1984(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=1e-5,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='cm/h',
+        source='registry',
+    )

@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import pytest
 
-from _helpers import prepare_vector_case
+from _helpers import assert_close, prepare_vector_case
 from ptfkit.vereecken1989 import (
     Vereecken1989DetailedPTFResult,
     Vereecken1989PTFResult,
@@ -16,51 +16,143 @@ CASES_CALC_PTF_VEREECKEN1989 = [
     (
         {'bulk_density': 1.466, 'carbon': 1.03, 'clay': 10.93, 'sand': 52.14},
         {
-            'alpha': 0.003581613076579849,
-            'n': 0.8602234826041976,
             'theta_r': 0.08406999999999999,
             'theta_s': 0.4060520000000001,
+            'alpha': 0.003581613076579849,
+            'n': 0.8602234826041976,
         },
-        1e-12,
-        1e-12,
     ),
 ]
 
 
-@pytest.mark.parametrize(('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_VEREECKEN1989)
-def test_calc_ptf_vereecken1989_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
-):
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_VEREECKEN1989)
+def test_calc_ptf_vereecken1989_verification(inputs: dict[str, float], expected: dict[str, float]):
     result = calc_ptf_vereecken1989(**inputs)
 
-    assert result.theta_r == pytest.approx(expected['theta_r'], rel=rtol, abs=atol)
-    assert result.theta_s == pytest.approx(expected['theta_s'], rel=rtol, abs=atol)
-    assert result.alpha == pytest.approx(expected['alpha'], rel=rtol, abs=atol)
-    assert result.n == pytest.approx(expected['n'], rel=rtol, abs=atol)
+    assert_close(
+        result.theta_r,
+        expected['theta_r'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_s,
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.alpha,
+        expected['alpha'],
+        absolute=1e-5,
+        relative=0.0,
+        quantity='van_genuchten_alpha',
+        unit='cm^-1',
+        source='registry',
+    )
+    assert_close(
+        result.n,
+        expected['n'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='van_genuchten_n',
+        unit='dimensionless',
+        source='registry',
+    )
 
 
 def test_calc_ptf_vereecken1989_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_VEREECKEN1989, Vereecken1989PTFResult
     )
     result = calc_ptf_vereecken1989(**inputs, out=None)
-    assert result.theta_r[0] == pytest.approx(expected['theta_r'], rel=rtol, abs=atol)
-    assert result.theta_s[0] == pytest.approx(expected['theta_s'], rel=rtol, abs=atol)
-    assert result.alpha[0] == pytest.approx(expected['alpha'], rel=rtol, abs=atol)
-    assert result.n[0] == pytest.approx(expected['n'], rel=rtol, abs=atol)
+    assert_close(
+        result.theta_r[0],
+        expected['theta_r'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_s[0],
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.alpha[0],
+        expected['alpha'],
+        absolute=1e-5,
+        relative=0.0,
+        quantity='van_genuchten_alpha',
+        unit='cm^-1',
+        source='registry',
+    )
+    assert_close(
+        result.n[0],
+        expected['n'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='van_genuchten_n',
+        unit='dimensionless',
+        source='registry',
+    )
 
 
 def test_calc_ptf_vereecken1989_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_VEREECKEN1989, Vereecken1989PTFResult
     )
     result = calc_ptf_vereecken1989(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert result.theta_r[0] == pytest.approx(expected['theta_r'], rel=rtol, abs=atol)
-    assert result.theta_s[0] == pytest.approx(expected['theta_s'], rel=rtol, abs=atol)
-    assert result.alpha[0] == pytest.approx(expected['alpha'], rel=rtol, abs=atol)
-    assert result.n[0] == pytest.approx(expected['n'], rel=rtol, abs=atol)
+    assert_close(
+        result.theta_r[0],
+        expected['theta_r'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_s[0],
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.alpha[0],
+        expected['alpha'],
+        absolute=1e-5,
+        relative=0.0,
+        quantity='van_genuchten_alpha',
+        unit='cm^-1',
+        source='registry',
+    )
+    assert_close(
+        result.n[0],
+        expected['n'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='van_genuchten_n',
+        unit='dimensionless',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_VEREECKEN1989_DETAILED = [
@@ -81,50 +173,142 @@ CASES_CALC_PTF_VEREECKEN1989_DETAILED = [
             'particle_50_20': 24.83,
         },
         {
-            'alpha': 0.02522115884641546,
-            'n': 0.517175605329397,
             'theta_r': 0.08277820000000001,
             'theta_s': 0.4060520000000001,
+            'alpha': 0.02522115884641546,
+            'n': 0.517175605329397,
         },
-        1e-12,
-        1e-12,
     ),
 ]
 
 
-@pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_VEREECKEN1989_DETAILED
-)
-def test_calc_ptf_vereecken1989_detailed_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+@pytest.mark.parametrize(('inputs', 'expected'), CASES_CALC_PTF_VEREECKEN1989_DETAILED)
+def test_calc_ptf_vereecken1989_detailed_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_vereecken1989_detailed(**inputs)
 
-    assert result.theta_r == pytest.approx(expected['theta_r'], rel=rtol, abs=atol)
-    assert result.theta_s == pytest.approx(expected['theta_s'], rel=rtol, abs=atol)
-    assert result.alpha == pytest.approx(expected['alpha'], rel=rtol, abs=atol)
-    assert result.n == pytest.approx(expected['n'], rel=rtol, abs=atol)
+    assert_close(
+        result.theta_r,
+        expected['theta_r'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_s,
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.alpha,
+        expected['alpha'],
+        absolute=1e-5,
+        relative=0.0,
+        quantity='van_genuchten_alpha',
+        unit='cm^-1',
+        source='registry',
+    )
+    assert_close(
+        result.n,
+        expected['n'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='van_genuchten_n',
+        unit='dimensionless',
+        source='registry',
+    )
 
 
 def test_calc_ptf_vereecken1989_detailed_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_VEREECKEN1989_DETAILED, Vereecken1989DetailedPTFResult
     )
     result = calc_ptf_vereecken1989_detailed(**inputs, out=None)
-    assert result.theta_r[0] == pytest.approx(expected['theta_r'], rel=rtol, abs=atol)
-    assert result.theta_s[0] == pytest.approx(expected['theta_s'], rel=rtol, abs=atol)
-    assert result.alpha[0] == pytest.approx(expected['alpha'], rel=rtol, abs=atol)
-    assert result.n[0] == pytest.approx(expected['n'], rel=rtol, abs=atol)
+    assert_close(
+        result.theta_r[0],
+        expected['theta_r'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_s[0],
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.alpha[0],
+        expected['alpha'],
+        absolute=1e-5,
+        relative=0.0,
+        quantity='van_genuchten_alpha',
+        unit='cm^-1',
+        source='registry',
+    )
+    assert_close(
+        result.n[0],
+        expected['n'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='van_genuchten_n',
+        unit='dimensionless',
+        source='registry',
+    )
 
 
 def test_calc_ptf_vereecken1989_detailed_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_VEREECKEN1989_DETAILED, Vereecken1989DetailedPTFResult
     )
     result = calc_ptf_vereecken1989_detailed(**inputs, out=out)
     for actual, expected_out in zip(result, out, strict=True):
         assert actual is expected_out
-    assert result.theta_r[0] == pytest.approx(expected['theta_r'], rel=rtol, abs=atol)
-    assert result.theta_s[0] == pytest.approx(expected['theta_s'], rel=rtol, abs=atol)
-    assert result.alpha[0] == pytest.approx(expected['alpha'], rel=rtol, abs=atol)
-    assert result.n[0] == pytest.approx(expected['n'], rel=rtol, abs=atol)
+    assert_close(
+        result.theta_r[0],
+        expected['theta_r'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.theta_s[0],
+        expected['theta_s'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='volumetric_water_content',
+        unit='cm^3/cm^3',
+        source='registry',
+    )
+    assert_close(
+        result.alpha[0],
+        expected['alpha'],
+        absolute=1e-5,
+        relative=0.0,
+        quantity='van_genuchten_alpha',
+        unit='cm^-1',
+        source='registry',
+    )
+    assert_close(
+        result.n[0],
+        expected['n'],
+        absolute=0.001,
+        relative=0.0,
+        quantity='van_genuchten_n',
+        unit='dimensionless',
+        source='registry',
+    )

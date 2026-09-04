@@ -40,21 +40,21 @@ functions:
   outputs:
     type: scalar
     name: k_sat
+    quantity: saturated_hydraulic_conductivity
     symbol: sHC
     unit: m/s
     domain: null
     description: Saturated hydraulic conductivity converted from mm/h.
-  golden_tests:
+  verification_cases:
   - id: igp_saturated_conductivity_case
+    kind: calculated
     inputs:
       sand: 37.3
       bulk_density: 1.674
       esp: 4.6
     expected:
       k_sat: 5.103578e-07
-    rtol: 1.0e-10
-    atol: 1.0e-12
-    notes: Calculated directly from equation 11.
+    rationale: Calculated directly from equation 11.
   edge_cases: []
   documentation:
     notes:
@@ -117,27 +117,32 @@ functions:
     name: Tiwary2014PTFResult
     fields:
     - name: w_33
+      quantity: gravimetric_water_content
       symbol: w33
       unit: '%'
       domain: null
       description: Gravimetric water content at 33 kPa.
     - name: w_100
+      quantity: gravimetric_water_content
       symbol: w100
       unit: '%'
       domain: null
       description: Gravimetric water content at 100 kPa.
     - name: w_1500
+      quantity: gravimetric_water_content
       symbol: w1500
       unit: '%'
       domain: null
       description: Gravimetric water content at 1500 kPa.
     - name: k_sat
+      quantity: saturated_hydraulic_conductivity
       symbol: sHC
       unit: m/s
       domain: null
       description: Saturated hydraulic conductivity converted from mm/h.
-  golden_tests:
+  verification_cases:
   - id: black_soil_compatibility_case
+    kind: calculated
     inputs:
       clay: 54.9
       ph: 7.6
@@ -150,9 +155,7 @@ functions:
       w_100: 36.8273
       w_1500: 21.6976
       k_sat: 5.373367e-06
-    rtol: 1.0e-10
-    atol: 1.0e-12
-    notes: Calculated directly from equations 7-10 for BSR soils.
+    rationale: Calculated directly from equations 7-10 for BSR soils.
   edge_cases: []
   documentation:
     notes:

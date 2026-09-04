@@ -6,7 +6,7 @@ import ptfkit;
 import ptfkit.wang2012;
 #endif
 
-#include "close_enough.h"
+#include "support/close_enough.h"
 #include <type_traits>
 
 int main() {
@@ -15,9 +15,12 @@ int main() {
             ptfkit::wang2012::calc_ptf_wang2012(85.0, 10.0, 5.0, 1.22, 0.033, 1193.0);
         static_assert(std::is_same_v<std::remove_cv_t<decltype(result)>,
                                      ptfkit::wang2012::Wang2012PTFResult>);
-        assert_close_enough(result.theta_s, 0.61540575, 0.000000000001, 0.000001);
-        assert_close_enough(result.theta_fc, 0.38491949, 0.000000000001, 0.000001);
-        assert_close_enough(result.k_sat, 0.00003872974, 0.000000000001, 0.000001);
+        assert_close(result.theta_s, 0.61540575, 0.001, 0.0, "volumetric_water_content",
+                     "cm^3/cm^3", "registry");
+        assert_close(result.theta_fc, 0.38491949, 0.001, 0.0, "volumetric_water_content",
+                     "cm^3/cm^3", "registry");
+        assert_close(result.k_sat, 0.00003872974, 0.0000000001, 0.01,
+                     "saturated_hydraulic_conductivity", "m/s", "registry");
     }
     return 0;
 }

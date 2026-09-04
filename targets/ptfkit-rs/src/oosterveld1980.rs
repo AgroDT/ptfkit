@@ -16,6 +16,41 @@ Southern Alberta, Canada
 1,137 pressure-plate analyses on 298 soil samples from the Lethbridge Research Station
 laboratory; the field-capacity tension regression used 134 samples."]
 
+#[cfg(test)]
+fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
+    absolute
+        .max(relative * expected.abs())
+        .max(0.00000000000001f64)
+}
+#[cfg(test)]
+fn assert_close(
+    actual: f64,
+    expected: f64,
+    absolute: f64,
+    relative: f64,
+    quantity: &str,
+    unit: &str,
+    source: &str,
+) {
+    let difference = (actual - expected).abs();
+    let tolerance = resolved_tolerance(expected, absolute, relative);
+    assert!(
+        difference <= tolerance,
+        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
+    );
+}
+#[cfg(test)]
+mod comparator_tests {
+    use super::*;
+    #[test]
+    fn accepts_below_and_rejects_above_tolerance() {
+        for expected in [0.0, 2.0, -2.0] {
+            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
+            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
+            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
+        }
+    }
+}
 #[doc = r"Estimate field-capacity tension from clay content.
 
 # Arguments
@@ -45,20 +80,17 @@ pub fn calc_ptf_oosterveld1980_field_capacity_tension(clay: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_oosterveld1980_field_capacity_tension_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn table_1_loamy_sand() {
         let result = calc_ptf_oosterveld1980_field_capacity_tension(6.6f64);
         assert_close(
             result,
             11.8540994164288f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.01f64,
+            0f64,
+            "matric_potential",
+            "kPa",
+            "registry",
         );
     }
 }
@@ -101,20 +133,17 @@ pub fn calc_ptf_oosterveld1980_retention(
 #[cfg(test)]
 mod calc_ptf_oosterveld1980_retention_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn table_1_loamy_sand_inputs() {
         let result = calc_ptf_oosterveld1980_retention(6.6f64, 86.3f64, 105f64, 11.8f64);
         assert_close(
             result,
             8.2782468100413f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.1f64,
+            0f64,
+            "gravimetric_water_content",
+            "% mass",
+            "registry",
         );
     }
 }
@@ -148,20 +177,17 @@ pub fn calc_ptf_oosterveld1980_field_capacity(clay: f64, sand: f64, mean_depth: 
 #[cfg(test)]
 mod calc_ptf_oosterveld1980_field_capacity_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn table_1_loamy_sand() {
         let result = calc_ptf_oosterveld1980_field_capacity(6.6f64, 86.3f64, 105f64);
         assert_close(
             result,
             8.14707947394088f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.1f64,
+            0f64,
+            "gravimetric_water_content",
+            "% mass",
+            "registry",
         );
     }
 }
@@ -195,16 +221,18 @@ pub fn calc_ptf_oosterveld1980_wilting_point(clay: f64, sand: f64, mean_depth: f
 #[cfg(test)]
 mod calc_ptf_oosterveld1980_wilting_point_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn table_1_loamy_sand() {
         let result = calc_ptf_oosterveld1980_wilting_point(6.6f64, 86.3f64, 105f64);
-        assert_close(result, 1.3942f64, 0.000000000001f64, 0.000000000001f64);
+        assert_close(
+            result,
+            1.3942f64,
+            0.1f64,
+            0f64,
+            "gravimetric_water_content",
+            "% mass",
+            "registry",
+        );
     }
 }
 #[doc = r"Estimate available gravimetric soil moisture between field capacity and wilting point.
@@ -243,20 +271,17 @@ pub fn calc_ptf_oosterveld1980_available_water(clay: f64, sand: f64, mean_depth:
 #[cfg(test)]
 mod calc_ptf_oosterveld1980_available_water_tests {
     use super::*;
-    fn assert_close(actual: f64, expected: f64, atol: f64, rtol: f64) {
-        assert!(
-            (actual - expected).abs() <= atol + rtol * expected.abs(),
-            "actual {actual} != expected {expected}"
-        );
-    }
     #[test]
     fn table_1_loamy_sand() {
         let result = calc_ptf_oosterveld1980_available_water(6.6f64, 86.3f64, 105f64);
         assert_close(
             result,
             6.75287947394088f64,
-            0.000000000001f64,
-            0.000000000001f64,
+            0.1f64,
+            0f64,
+            "gravimetric_water_content",
+            "% mass",
+            "registry",
         );
     }
 }
