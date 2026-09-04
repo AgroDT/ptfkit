@@ -22,7 +22,7 @@ authors:
     given-names: Petr
     email: "tpr@esoil.ru"
     orcid: "https://orcid.org/0000-0001-8591-2612"
-version: 0.2.0
+version: 0.3.0
 date-released: "2026-08-20"
 license: MIT
 repository-code: "https://github.com/AgroDT/ptfkit"
