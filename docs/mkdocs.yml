@@ -1,4 +1,5 @@
 site_name: ptfkit
+site_description: Specification-driven collection of published pedotransfer functions for estimating soil hydraulic properties in Python, Rust, C, and C++.
 site_url: https://agrodt.github.io/ptfkit/
 repo_url: https://github.com/AgroDT/ptfkit
 repo_name: AgroDT/ptfkit
