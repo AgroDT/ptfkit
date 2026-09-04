@@ -1,3 +1,18 @@
 @PACKAGE_INIT@
 
 include("${CMAKE_CURRENT_LIST_DIR}/ptfkitTargets.cmake")
+set(ptfkit_c_FOUND TRUE)
+get_target_property(_ptfkit_c_libraries ptfkit::c INTERFACE_LINK_LIBRARIES)
+if(UNIX AND NOT "m" IN_LIST _ptfkit_c_libraries)
+    set_property(TARGET ptfkit::c APPEND PROPERTY INTERFACE_LINK_LIBRARIES m)
+endif()
+unset(_ptfkit_c_libraries)
+
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.28)
+    include("${CMAKE_CURRENT_LIST_DIR}/ptfkitCppModules.cmake" OPTIONAL)
+endif()
+if(TARGET ptfkit::cpp)
+    set(ptfkit_cpp_FOUND TRUE)
+endif()
+
+check_required_components(ptfkit)

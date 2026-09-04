@@ -6,7 +6,7 @@ title: C++ API reference
 
 # C++ API reference
 
-ptfkit's C++ API is organized around C++20 modules.
+ptfkit's C++ API is organized around C++23 modules.
 
 ## Modules
 

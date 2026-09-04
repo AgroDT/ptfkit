@@ -10,7 +10,7 @@ package builds and documentation builds do not depend on running codegen first.
 - `specs/functions/` contains one YAML specification per source publication.
 - `specs/schema/` defines the specification format.
 - `codegen/` contains validation and generation code.
-- `targets/ptfkit-native/` contains the C11 headers and C++20 modules.
+- `targets/ptfkit-native/` contains the C11 headers and C++23 modules.
 - `targets/ptfkit-py/` contains the Python package and its native extension.
 - `targets/ptfkit-rs/` contains the Rust crate.
 - `docs/mkdocs.yml` configures the documentation site.
@@ -27,7 +27,7 @@ the [PTF source specification guide](../ptf-catalog/index.md).
 Install [Mise](https://mise.jdx.dev/getting-started/) and activate it in your
 shell. `mise.toml` is the source of truth for the pinned Rust, uv, CMake,
 Ninja, Clang, Ruff, ty, and prek toolchains; `mise.lock` records their resolved
-downloads and checksums. The native target requires the C11/C++20 compiler
+downloads and checksums. The native target requires the C11/C++23 compiler
 provided by Clang.
 
 From the repository root, trust the repository configuration and install the

@@ -115,7 +115,7 @@ jobs:
           CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
 
   publish-native:
-    name: Publish native source archive
+    name: Publish native CMake package
     needs: check-version
     runs-on: ubuntu-latest
     permissions:
@@ -126,21 +126,21 @@ jobs:
       - uses: actions/checkout@v7
         with:
           ref: ${{ github.event.release.tag_name }}
-      - name: Create native archive
+      - name: Set up development toolchains
+        uses: jdx/mise-action@v4
+      - name: Create native CMake package
         env:
           TAG: ${{ github.event.release.tag_name }}
         run: |
           version="${TAG#v}"
-          archive="ptfkit-native-${version}.tar.gz"
+          package="ptfkit-native-${version}"
+          archive="${package}.tar.gz"
+          staging="${RUNNER_TEMP}/${package}"
+          cmake -S targets/ptfkit-native -B targets/ptfkit-native/build-release \
+            -GNinja -DBUILD_TESTING=OFF -DPTFKIT_BUILD_CPP_MODULES=ON
+          cmake --install targets/ptfkit-native/build-release --prefix "$staging"
           tar --sort=name --mtime="UTC 1970-01-01" --owner=0 --group=0 --numeric-owner \
-            --transform="s,^targets/ptfkit-native,ptfkit-native-${version}," \
-            -czf "$archive" \
-            targets/ptfkit-native/CMakeLists.txt \
-            targets/ptfkit-native/LICENSE \
-            targets/ptfkit-native/README.md \
-            targets/ptfkit-native/cmake \
-            targets/ptfkit-native/cpp \
-            targets/ptfkit-native/include
+            -C "$RUNNER_TEMP" -czf "$archive" "$package"
           sha256sum "$archive" > "$archive.sha256"
           echo "archive=$archive" >> "$GITHUB_ENV"
       - name: Attest native archive provenance

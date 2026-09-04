@@ -56,7 +56,7 @@ for the scientific and structural contract represented by the YAML files.
 | [Python](./targets/ptfkit-py/) | Scalar and NumPy array inputs backed by native ufuncs; distributed on [PyPI](https://pypi.org/project/ptfkit/) | [Python API](https://agrodt.github.io/ptfkit/reference/python/) |
 | [Rust](./targets/ptfkit-rs/) | Scalar functions grouped by source publication; distributed on [crates.io](https://crates.io/crates/ptfkit) | [Rust API](https://docs.rs/ptfkit/) |
 | [C](./targets/ptfkit-native/) | Header-only C11 functions provided as a CMake package and [versioned release archive](https://github.com/AgroDT/ptfkit/releases) | [C API](https://agrodt.github.io/ptfkit/reference/c/) |
-| [C++](./targets/ptfkit-native/) | Optional C++20 modules provided by the native CMake package and [versioned release archive](https://github.com/AgroDT/ptfkit/releases) | [C++ API](https://agrodt.github.io/ptfkit/reference/cpp/) |
+| [C++](./targets/ptfkit-native/) | Optional C++23 modules provided by the native CMake package and [versioned release archive](https://github.com/AgroDT/ptfkit/releases) | [C++ API](https://agrodt.github.io/ptfkit/reference/cpp/) |
 
 Installation and usage instructions are maintained in each target's linked
 README.

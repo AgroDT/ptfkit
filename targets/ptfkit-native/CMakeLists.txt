@@ -15,7 +15,7 @@ target_compile_definitions(ptfkit_c INTERFACE
     PTFKIT_VERSION=\"${PROJECT_VERSION}\"
 )
 if(UNIX)
-    target_link_libraries(ptfkit_c INTERFACE m)
+    target_link_libraries(ptfkit_c INTERFACE $<BUILD_INTERFACE:m>)
 endif()
 target_include_directories(ptfkit_c INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -24,7 +24,7 @@ target_include_directories(ptfkit_c INTERFACE
 
 cmake_dependent_option(
     PTFKIT_BUILD_CPP_MODULES
-    "Build the C++20 module interface target"
+    "Provide the C++23 module interface target"
     ON
     "CMAKE_VERSION VERSION_GREATER_EQUAL 3.28"
     OFF
@@ -33,7 +33,6 @@ cmake_dependent_option(
 if(PTFKIT_BUILD_CPP_MODULES)
     enable_language(CXX)
     add_subdirectory(cpp)
-    set(INSTALL_EXPORT_ARGS CXX_MODULES_DIRECTORY cxx-modules)
 endif()
 
 install(TARGETS ptfkit_c EXPORT ptfkitTargets)
@@ -49,7 +48,6 @@ install(
     EXPORT ptfkitTargets
     NAMESPACE ptfkit::
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ptfkit
-    ${INSTALL_EXPORT_ARGS}
 )
 configure_package_config_file(
     cmake/ptfkitConfig.cmake.in
@@ -60,6 +58,7 @@ write_basic_package_version_file(
     ${CMAKE_CURRENT_BINARY_DIR}/ptfkitConfigVersion.cmake
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY SameMajorVersion
+    ARCH_INDEPENDENT
 )
 install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/ptfkitConfig.cmake

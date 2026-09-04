@@ -51,7 +51,7 @@ fn render_index(
         writer.line("title: C++ API reference");
     });
     writer.write(
-        "# C++ API reference\n\nptfkit's C++ API is organized around C++20 modules.\n\n## Modules\n\n- [`ptfkit`](modules/ptfkit.md) — Re-exports every ptfkit source module.\n",
+        "# C++ API reference\n\nptfkit's C++ API is organized around C++23 modules.\n\n## Modules\n\n- [`ptfkit`](modules/ptfkit.md) — Re-exports every ptfkit source module.\n",
     );
     for (slug, functions) in sources {
         writer.line(format_args!(

@@ -1,0 +1,15 @@
+if(NOT TARGET ptfkit::cpp)
+    add_library(ptfkit::cpp INTERFACE IMPORTED)
+    target_compile_features(ptfkit::cpp INTERFACE cxx_std_23)
+    target_compile_definitions(ptfkit::cpp INTERFACE
+        PTFKIT_VERSION="@PROJECT_VERSION@"
+    )
+    target_compile_options(ptfkit::cpp INTERFACE
+        $<$<CXX_COMPILER_ID:GNU>:-fmodules-ts>
+    )
+    target_sources(ptfkit::cpp INTERFACE
+        FILE_SET CXX_MODULES
+        BASE_DIRS "${PACKAGE_PREFIX_DIR}/@PTFKIT_CPP_MODULE_INSTALL_DIR@"
+        FILES @PTFKIT_CPP_MODULE_PACKAGE_FILES@
+    )
+endif()
