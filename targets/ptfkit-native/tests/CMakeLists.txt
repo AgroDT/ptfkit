@@ -3,7 +3,7 @@ function(ptfkit_add_native_tests case)
         PARSE_ARGV 1 arg
         ""
         ""
-        "SOURCES;LIBRARIES;DEFINITIONS;PROPERTIES"
+        "SOURCES;LIBRARIES;DEFINITIONS;PROPERTIES;COMPILE_FEATURES"
     )
     foreach(source ${arg_SOURCES})
         get_filename_component(name ${source} NAME_WE)
@@ -16,6 +16,9 @@ function(ptfkit_add_native_tests case)
         if(arg_PROPERTIES)
             set_target_properties(${target} PROPERTIES ${arg_PROPERTIES})
         endif()
+        if(arg_COMPILE_FEATURES)
+            target_compile_features(${target} PRIVATE ${arg_COMPILE_FEATURES})
+        endif()
         add_test(NAME ${target} COMMAND ${target})
     endforeach()
 endfunction()
@@ -23,6 +26,13 @@ endfunction()
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(c)
+
+include(CheckLanguage)
+check_language(CXX)
+if(CMAKE_CXX_COMPILER)
+    enable_language(CXX)
+    add_subdirectory(cpp_fallback)
+endif()
 
 if(PTFKIT_BUILD_CPP_MODULES)
     add_subdirectory(cpp)

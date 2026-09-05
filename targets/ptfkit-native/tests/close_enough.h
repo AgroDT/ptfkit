@@ -35,19 +35,4 @@ static inline void _close_enough_impl(const char *file, int line, double actual,
         _close_enough_impl(__FILE__, __LINE__, (actual), (expected), (atol), (rtol));              \
     } while (0)
 
-// #define assert_close_enough(actual, expected, atol, rtol)       \
-//     do {                                                        \
-//         if (!(close_enough(actual, expected, atol, rtol))) {    \
-//             fprintf(                                            \
-//                 stderr,                                         \
-//                 "asserion failed: %s:%d: %s ≈ %\n",             \
-//                 __FILE__,                                       \
-//                 __LINE__,                                       \
-//                 #actual,                                        \
-//                 #expected                                       \
-//             );                                                  \
-//             return 1;                                           \
-//         }                                                       \
-//     } while (0)
-
-#endif
+#endif // PTFKIT_TEST_CLOSE_ENOUGH_H
