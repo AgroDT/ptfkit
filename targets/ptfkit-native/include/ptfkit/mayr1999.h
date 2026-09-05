@@ -84,15 +84,8 @@ static inline mayr1999_ptf_result calc_ptf_mayr1999(double sand, double silt, do
     const double theta_s = 0.2345971971 + 0.0046614221 * sand + 0.0088163314 * silt +
                            0.0064338641 * clay - 0.3028160229 * bulk_density +
                            1.79762e-5 * sand_squared - 3.134631e-5 * silt_squared;
-#ifdef __cplusplus
-    return mayr1999_ptf_result{a_hc, b_hc, theta_s};
-#else
-    return (mayr1999_ptf_result){
-        .a_hc = a_hc,
-        .b_hc = b_hc,
-        .theta_s = theta_s,
-    };
-#endif
+    mayr1999_ptf_result result = {a_hc, b_hc, theta_s};
+    return result;
 }
 
 #endif

@@ -83,16 +83,8 @@ static inline tiwary2014_ptf_result calc_ptf_tiwary2014_bsr(double clay, double 
     const double w_1500 = 0.541 + 0.306 * cation_exchange_capacity + 0.146 * esp + 0.058 * emp;
     const double k_sat_mm_per_hour = 120.637 - 13.094 * ph - 0.102 * clay + 1.151 * excm;
     const double k_sat = k_sat_mm_per_hour / 3600000.0;
-#ifdef __cplusplus
-    return tiwary2014_ptf_result{w_33, w_100, w_1500, k_sat};
-#else
-    return (tiwary2014_ptf_result){
-        .w_33 = w_33,
-        .w_100 = w_100,
-        .w_1500 = w_1500,
-        .k_sat = k_sat,
-    };
-#endif
+    tiwary2014_ptf_result result = {w_33, w_100, w_1500, k_sat};
+    return result;
 }
 
 #endif

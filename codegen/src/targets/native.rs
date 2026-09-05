@@ -363,19 +363,10 @@ impl NativeFunction<'_> {
             }
             Output::Scalar => writer.line(format_args!("return {output_name};")),
             Output::Struct(fields) if matches!(self.dialect, NativeDialect::C) => {
-                writer.line("#ifdef __cplusplus");
-                writer.write(format_args!("return {}{{", self.result));
+                writer.write(format_args!("{} result = {{", self.result));
                 render_values(writer, fields);
                 writer.line("};");
-                writer.line("#else");
-                writer.line(format_args!("return ({}) {{", self.result));
-                writer.indented(|writer| {
-                    for field in fields {
-                        writer.line(format_args!(".{field} = {field},"));
-                    }
-                });
-                writer.line("};");
-                writer.line("#endif");
+                writer.line("return result;");
             }
             Output::Struct(fields) => {
                 writer.write(format_args!("return {}{{", self.result));

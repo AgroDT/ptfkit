@@ -78,16 +78,8 @@ static inline li2007_ptf_result calc_ptf_li2007(double sand, double silt, double
         exp(13.262 - 1.914 * sand_ln - 0.974 * silt_ln - 0.058 * clay -
             1.709 * soil_organic_matter_ln + 2.885 * soil_organic_matter - 8.026 * bulk_density_ln);
     const double k_sat = k_sat_cm_per_day * (1.0 / 8640000.0);
-#ifdef __cplusplus
-    return li2007_ptf_result{theta_s, a_vg, n_vg, k_sat};
-#else
-    return (li2007_ptf_result){
-        .theta_s = theta_s,
-        .a_vg = a_vg,
-        .n_vg = n_vg,
-        .k_sat = k_sat,
-    };
-#endif
+    li2007_ptf_result result = {theta_s, a_vg, n_vg, k_sat};
+    return result;
 }
 
 #endif

@@ -106,24 +106,10 @@ static inline puckett1985_ptf_result calc_ptf_puckett1985(double sand, double fi
     const double theta_1000 = 0.0000197 * fine_sand - 0.000244 * sand + 0.000378 * clay + 0.264;
     const double theta_1500 = 0.0000254 * fine_sand - 0.000239 * sand + 0.000380 * clay + 0.239;
     const double k_sat = 4.36e-5 * exp(-0.1975 * clay);
-#ifdef __cplusplus
-    return puckett1985_ptf_result{theta_0,   theta_1,   theta_5,    theta_10,   theta_30, theta_60,
-                                  theta_100, theta_500, theta_1000, theta_1500, k_sat};
-#else
-    return (puckett1985_ptf_result){
-        .theta_0 = theta_0,
-        .theta_1 = theta_1,
-        .theta_5 = theta_5,
-        .theta_10 = theta_10,
-        .theta_30 = theta_30,
-        .theta_60 = theta_60,
-        .theta_100 = theta_100,
-        .theta_500 = theta_500,
-        .theta_1000 = theta_1000,
-        .theta_1500 = theta_1500,
-        .k_sat = k_sat,
-    };
-#endif
+    puckett1985_ptf_result result = {theta_0,    theta_1,    theta_5,   theta_10,
+                                     theta_30,   theta_60,   theta_100, theta_500,
+                                     theta_1000, theta_1500, k_sat};
+    return result;
 }
 
 #endif

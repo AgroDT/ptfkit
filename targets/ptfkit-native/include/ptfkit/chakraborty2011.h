@@ -62,17 +62,9 @@ static inline chakraborty2011_ptf_result calc_ptf_chakraborty2011_eq1(double cla
     const double water_content_100 = (0.270 * clay + 0.379 * silt + 2.988) / 100.0;
     const double water_content_500 = (0.251 * clay + 0.185 * silt + 2.958) / 100.0;
     const double water_content_1500 = (0.184 * clay + 0.144 * silt + 3.702) / 100.0;
-#ifdef __cplusplus
-    return chakraborty2011_ptf_result{water_content_33, water_content_100, water_content_500,
-                                      water_content_1500};
-#else
-    return (chakraborty2011_ptf_result){
-        .water_content_33 = water_content_33,
-        .water_content_100 = water_content_100,
-        .water_content_500 = water_content_500,
-        .water_content_1500 = water_content_1500,
-    };
-#endif
+    chakraborty2011_ptf_result result = {water_content_33, water_content_100, water_content_500,
+                                         water_content_1500};
+    return result;
 }
 
 /**
@@ -99,17 +91,9 @@ static inline chakraborty2011_ptf_result calc_ptf_chakraborty2011_eq2(double san
     const double water_content_100 = (-0.330 * sand + 2.611 * bulk_density + 30.160) / 100.0;
     const double water_content_500 = (-0.244 * sand - 0.795 * bulk_density + 27.495) / 100.0;
     const double water_content_1500 = (-0.187 * sand + 1.241 * bulk_density + 19.320) / 100.0;
-#ifdef __cplusplus
-    return chakraborty2011_ptf_result{water_content_33, water_content_100, water_content_500,
-                                      water_content_1500};
-#else
-    return (chakraborty2011_ptf_result){
-        .water_content_33 = water_content_33,
-        .water_content_100 = water_content_100,
-        .water_content_500 = water_content_500,
-        .water_content_1500 = water_content_1500,
-    };
-#endif
+    chakraborty2011_ptf_result result = {water_content_33, water_content_100, water_content_500,
+                                         water_content_1500};
+    return result;
 }
 
 /**
@@ -141,17 +125,9 @@ static inline chakraborty2011_ptf_result calc_ptf_chakraborty2011_eq3(double cla
         (0.244 * clay + 0.187 * silt - 3.079 * bulk_density + 8.046) / 100.0;
     const double water_content_1500 =
         (0.183 * clay + 0.144 * silt - 0.689 * bulk_density + 4.840) / 100.0;
-#ifdef __cplusplus
-    return chakraborty2011_ptf_result{water_content_33, water_content_100, water_content_500,
-                                      water_content_1500};
-#else
-    return (chakraborty2011_ptf_result){
-        .water_content_33 = water_content_33,
-        .water_content_100 = water_content_100,
-        .water_content_500 = water_content_500,
-        .water_content_1500 = water_content_1500,
-    };
-#endif
+    chakraborty2011_ptf_result result = {water_content_33, water_content_100, water_content_500,
+                                         water_content_1500};
+    return result;
 }
 
 /**
@@ -179,17 +155,9 @@ static inline chakraborty2011_ptf_result calc_ptf_chakraborty2011_eq4(double cla
     const double water_content_100 = (0.049 * clay + 0.147 * silt - 0.242 * sand + 25.945) / 100.0;
     const double water_content_500 = (0.067 * clay - 0.008 * silt - 0.204 * sand + 22.216) / 100.0;
     const double water_content_1500 = (0.021 * clay - 0.028 * silt - 0.179 * sand + 20.695) / 100.0;
-#ifdef __cplusplus
-    return chakraborty2011_ptf_result{water_content_33, water_content_100, water_content_500,
-                                      water_content_1500};
-#else
-    return (chakraborty2011_ptf_result){
-        .water_content_33 = water_content_33,
-        .water_content_100 = water_content_100,
-        .water_content_500 = water_content_500,
-        .water_content_1500 = water_content_1500,
-    };
-#endif
+    chakraborty2011_ptf_result result = {water_content_33, water_content_100, water_content_500,
+                                         water_content_1500};
+    return result;
 }
 
 /**
@@ -222,17 +190,9 @@ calc_ptf_chakraborty2011_eq5(double clay, double silt, double sand, double bulk_
         (0.067 * clay - 0.008 * silt - 0.203 * sand - 0.135 * bulk_density + 22.359) / 100.0;
     const double water_content_1500 =
         (0.014 * clay - 0.041 * silt - 0.192 * sand + 2.093 * bulk_density + 18.470) / 100.0;
-#ifdef __cplusplus
-    return chakraborty2011_ptf_result{water_content_33, water_content_100, water_content_500,
-                                      water_content_1500};
-#else
-    return (chakraborty2011_ptf_result){
-        .water_content_33 = water_content_33,
-        .water_content_100 = water_content_100,
-        .water_content_500 = water_content_500,
-        .water_content_1500 = water_content_1500,
-    };
-#endif
+    chakraborty2011_ptf_result result = {water_content_33, water_content_100, water_content_500,
+                                         water_content_1500};
+    return result;
 }
 
 /**
@@ -273,17 +233,9 @@ static inline chakraborty2011_ptf_result calc_ptf_chakraborty2011_eq6(double cla
     const double water_content_1500 = (0.017 * clay - 0.053 * silt - 0.184 * sand +
                                        2.950 * organic_carbon + 2.327 * bulk_density + 16.802) /
                                       100.0;
-#ifdef __cplusplus
-    return chakraborty2011_ptf_result{water_content_33, water_content_100, water_content_500,
-                                      water_content_1500};
-#else
-    return (chakraborty2011_ptf_result){
-        .water_content_33 = water_content_33,
-        .water_content_100 = water_content_100,
-        .water_content_500 = water_content_500,
-        .water_content_1500 = water_content_1500,
-    };
-#endif
+    chakraborty2011_ptf_result result = {water_content_33, water_content_100, water_content_500,
+                                         water_content_1500};
+    return result;
 }
 
 #endif

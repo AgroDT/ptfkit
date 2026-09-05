@@ -144,25 +144,10 @@ static inline rawls1982_ptf_result calc_ptf_rawls1982_full_wrc(double sand, doub
         -0.0027 + 0.0024 * organic_matter + 0.16 * theta_33 + 0.86 * theta_1500;
     const double theta_1000 =
         -0.0019 + 0.0022 * organic_matter + 0.11 * theta_33 + 0.89 * theta_1500;
-#ifdef __cplusplus
-    return rawls1982_ptf_result{theta_4,   theta_7,   theta_10,  theta_20,  theta_33,   theta_60,
-                                theta_100, theta_200, theta_400, theta_700, theta_1000, theta_1500};
-#else
-    return (rawls1982_ptf_result){
-        .theta_4 = theta_4,
-        .theta_7 = theta_7,
-        .theta_10 = theta_10,
-        .theta_20 = theta_20,
-        .theta_33 = theta_33,
-        .theta_60 = theta_60,
-        .theta_100 = theta_100,
-        .theta_200 = theta_200,
-        .theta_400 = theta_400,
-        .theta_700 = theta_700,
-        .theta_1000 = theta_1000,
-        .theta_1500 = theta_1500,
-    };
-#endif
+    rawls1982_ptf_result result = {theta_4,   theta_7,   theta_10,   theta_20,
+                                   theta_33,  theta_60,  theta_100,  theta_200,
+                                   theta_400, theta_700, theta_1000, theta_1500};
+    return result;
 }
 
 #endif

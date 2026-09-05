@@ -178,31 +178,17 @@ static inline saxton2006_ptf_result calc_ptf_saxton2006(double sand, double clay
     const double saturated_conductivity =
         1930.0 * pow(theta_s - theta_33, 3.0 - conductivity_lambda);
     const double normal_density = (1.0 - theta_s) * 2.65;
-#ifdef __cplusplus
-    return saxton2006_ptf_result{theta_1500,
-                                 theta_33,
-                                 theta_s,
-                                 plant_available_water,
-                                 air_entry_tension,
-                                 retention_a,
-                                 retention_b,
-                                 conductivity_lambda,
-                                 saturated_conductivity,
-                                 normal_density};
-#else
-    return (saxton2006_ptf_result){
-        .theta_1500 = theta_1500,
-        .theta_33 = theta_33,
-        .theta_s = theta_s,
-        .plant_available_water = plant_available_water,
-        .air_entry_tension = air_entry_tension,
-        .retention_a = retention_a,
-        .retention_b = retention_b,
-        .conductivity_lambda = conductivity_lambda,
-        .saturated_conductivity = saturated_conductivity,
-        .normal_density = normal_density,
-    };
-#endif
+    saxton2006_ptf_result result = {theta_1500,
+                                    theta_33,
+                                    theta_s,
+                                    plant_available_water,
+                                    air_entry_tension,
+                                    retention_a,
+                                    retention_b,
+                                    conductivity_lambda,
+                                    saturated_conductivity,
+                                    normal_density};
+    return result;
 }
 
 /**
@@ -230,17 +216,9 @@ static inline saxton2006_density_result calc_ptf_saxton2006_density(double norma
     const double adjusted_theta_s = 1.0 - adjusted_density / 2.65;
     const double adjusted_theta_33 = theta_33 - 0.2 * (theta_s - adjusted_theta_s);
     const double adjusted_theta_s_minus_33 = fmax(adjusted_theta_s - adjusted_theta_33, 0.005);
-#ifdef __cplusplus
-    return saxton2006_density_result{adjusted_density, adjusted_theta_s, adjusted_theta_33,
-                                     adjusted_theta_s_minus_33};
-#else
-    return (saxton2006_density_result){
-        .adjusted_density = adjusted_density,
-        .adjusted_theta_s = adjusted_theta_s,
-        .adjusted_theta_33 = adjusted_theta_33,
-        .adjusted_theta_s_minus_33 = adjusted_theta_s_minus_33,
-    };
-#endif
+    saxton2006_density_result result = {adjusted_density, adjusted_theta_s, adjusted_theta_33,
+                                        adjusted_theta_s_minus_33};
+    return result;
 }
 
 /**
@@ -334,17 +312,9 @@ static inline saxton2006_gravel_result calc_ptf_saxton2006_gravel(double gravel_
     const double bulk_saturated_conductivity =
         saturated_conductivity * (1.0 - gravel_volume_fraction) /
         (1.0 - gravel_volume_fraction * (1.0 - 3.0 * density_ratio / 2.0));
-#ifdef __cplusplus
-    return saxton2006_gravel_result{gravel_volume_fraction, bulk_density,
-                                    bulk_plant_available_water, bulk_saturated_conductivity};
-#else
-    return (saxton2006_gravel_result){
-        .gravel_volume_fraction = gravel_volume_fraction,
-        .bulk_density = bulk_density,
-        .bulk_plant_available_water = bulk_plant_available_water,
-        .bulk_saturated_conductivity = bulk_saturated_conductivity,
-    };
-#endif
+    saxton2006_gravel_result result = {gravel_volume_fraction, bulk_density,
+                                       bulk_plant_available_water, bulk_saturated_conductivity};
+    return result;
 }
 
 /**
@@ -367,14 +337,8 @@ static inline saxton2006_salinity_result
 calc_ptf_saxton2006_salinity(double electrical_conductivity, double theta, double theta_s) {
     const double saturated_osmotic_potential = 36.0 * electrical_conductivity;
     const double osmotic_potential = theta_s / theta * saturated_osmotic_potential;
-#ifdef __cplusplus
-    return saxton2006_salinity_result{saturated_osmotic_potential, osmotic_potential};
-#else
-    return (saxton2006_salinity_result){
-        .saturated_osmotic_potential = saturated_osmotic_potential,
-        .osmotic_potential = osmotic_potential,
-    };
-#endif
+    saxton2006_salinity_result result = {saturated_osmotic_potential, osmotic_potential};
+    return result;
 }
 
 #endif

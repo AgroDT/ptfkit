@@ -85,15 +85,8 @@ static inline wang2012_ptf_result calc_ptf_wang2012(double sand, double silt, do
     const double theta_s = sswc_percent / 100.0;
     const double theta_fc = fc_percent / 100.0;
     const double k_sat = k_sat_cm_per_day / 8640000.0;
-#ifdef __cplusplus
-    return wang2012_ptf_result{theta_s, theta_fc, k_sat};
-#else
-    return (wang2012_ptf_result){
-        .theta_s = theta_s,
-        .theta_fc = theta_fc,
-        .k_sat = k_sat,
-    };
-#endif
+    wang2012_ptf_result result = {theta_s, theta_fc, k_sat};
+    return result;
 }
 
 #endif
