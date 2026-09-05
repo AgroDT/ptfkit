@@ -488,22 +488,29 @@ fn compile_lookup(
         name: name.clone(),
         fields: fields.iter().map(|field| field.name.clone()).collect(),
     };
-    let cases = lookup
-        .definition
+    let cases = enum_type
         .values
         .iter()
-        .map(|case| RecordLookupCase {
-            member: case.key.clone(),
-            values: fields
+        .map(|member| {
+            let case = lookup
+                .definition
+                .values
                 .iter()
-                .map(|field| {
-                    let value = case.value[&field.name];
-                    Number {
-                        value,
-                        lexeme: format!("{value:?}"),
-                    }
-                })
-                .collect(),
+                .find(|case| case.key == member.name)
+                .expect("validated lookup covers every enum member exactly once");
+            RecordLookupCase {
+                member: member.name.clone(),
+                values: fields
+                    .iter()
+                    .map(|field| {
+                        let value = case.value[&field.name];
+                        Number {
+                            value,
+                            lexeme: format!("{value:?}"),
+                        }
+                    })
+                    .collect(),
+            }
         })
         .collect();
     Ok((
@@ -729,12 +736,12 @@ mod tests {
     use crate::{
         formula::parse,
         model::{
-            RawExpression, RawFunction, RawInput, RawInputType, RawVariable, RawVariableValue,
-            SourceLocation,
+            EnumDefinition, LookupDefinition, Outputs, Parameter, RawExpression, RawFunction,
+            RawInput, RawInputType, RawLookup, RawVariable, RawVariableValue, SourceLocation,
         },
     };
 
-    use super::{BinaryOp, Expr, compile};
+    use super::{BinaryOp, Expr, VariableValue, compile};
 
     fn expression(path: &str, source: &str) -> RawExpression {
         RawExpression {
@@ -796,6 +803,89 @@ mod tests {
             compiled.variables[1].value.as_number().unwrap(),
             Expr::Binary { .. }
         ));
+    }
+
+    #[test]
+    fn lookup_cases_follow_enum_order() {
+        let mut enum_type: EnumDefinition = serde_yaml::from_str(
+            r#"
+            type: enum
+            description: Example enum.
+            values:
+              - name: first
+                value: first
+              - name: second
+                value: second
+            "#,
+        )
+        .unwrap();
+        enum_type.name = "ExampleEnum".into();
+
+        let mut lookup_definition: LookupDefinition = serde_yaml::from_str(
+            r##"
+            type: lookup
+            input:
+              $ref: "#/$defs/ExampleEnum"
+            output:
+              $ref: "#/$defs/ExampleRecord"
+            values:
+              - key: second
+                value:
+                  value: 2.0
+              - key: first
+                value:
+                  value: 1.0
+            "##,
+        )
+        .unwrap();
+        lookup_definition.name = "ExampleLookup".into();
+        lookup_definition.input_type = Some(enum_type.clone());
+        lookup_definition.output_type = Some(Outputs::Record {
+            name: "ExampleRecord".into(),
+            fields: vec![Parameter {
+                name: "value".into(),
+                unit: "1".into(),
+                domain: None,
+                description: "Example value.".into(),
+            }],
+        });
+
+        let raw = RawFunction {
+            specification_path: PathBuf::from("specs/functions/example.md"),
+            name: "example".into(),
+            inputs: vec![RawInput {
+                name: "kind".into(),
+                value_type: RawInputType::Enum(enum_type),
+            }],
+            variables: vec![RawVariable {
+                name: "row".into(),
+                value: RawVariableValue::Lookup(RawLookup {
+                    implementation_path: "implementation.variables[0].lookup".into(),
+                    key: "kind".into(),
+                    definition: lookup_definition,
+                }),
+            }],
+        };
+        let compiled = compile(&raw).unwrap();
+        let VariableValue::RecordLookup(lookup) = &compiled.variables[0].value else {
+            panic!("expected record lookup");
+        };
+        assert_eq!(
+            lookup
+                .cases
+                .iter()
+                .map(|case| case.member.as_str())
+                .collect::<Vec<_>>(),
+            ["first", "second"]
+        );
+        assert_eq!(
+            lookup
+                .cases
+                .iter()
+                .map(|case| case.values[0].value)
+                .collect::<Vec<_>>(),
+            [1.0, 2.0]
+        );
     }
 
     #[test]
