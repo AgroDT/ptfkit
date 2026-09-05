@@ -93,16 +93,8 @@ static inline vereecken1989_ptf_result calc_ptf_vereecken1989(double sand, doubl
     const double alpha = exp(ln_alpha);
     const double ln_n = 0.053 - 0.009 * sand - 0.013 * clay + 0.00015 * sand * sand;
     const double n = exp(ln_n);
-#ifdef __cplusplus
-    return vereecken1989_ptf_result{theta_r, theta_s, alpha, n};
-#else
-    return (vereecken1989_ptf_result){
-        .theta_r = theta_r,
-        .theta_s = theta_s,
-        .alpha = alpha,
-        .n = n,
-    };
-#endif
+    vereecken1989_ptf_result result = {theta_r, theta_s, alpha, n};
+    return result;
 }
 
 /**
@@ -167,16 +159,8 @@ static inline vereecken1989_detailed_ptf_result calc_ptf_vereecken1989_detailed(
         0.007 * particle_50_20 + 0.0300 * particle_20_10 - 0.0380 * particle_10_2 - 0.0042 * clay +
         1.0322 * geometric_mean_particle_size - 0.0019 * geometric_standard_deviation;
     const double n = exp(ln_n);
-#ifdef __cplusplus
-    return vereecken1989_detailed_ptf_result{theta_r, theta_s, alpha, n};
-#else
-    return (vereecken1989_detailed_ptf_result){
-        .theta_r = theta_r,
-        .theta_s = theta_s,
-        .alpha = alpha,
-        .n = n,
-    };
-#endif
+    vereecken1989_detailed_ptf_result result = {theta_r, theta_s, alpha, n};
+    return result;
 }
 
 #endif

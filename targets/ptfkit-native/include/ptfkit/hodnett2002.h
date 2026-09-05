@@ -98,16 +98,8 @@ calc_ptf_hodnett2002(double sand, double silt, double clay, double organic_carbo
     const double theta_r = (22.733 - 0.164 * sand + 0.235 * cation_exchange_capacity - 0.831 * ph +
                             0.0018 * clay_squared + 0.0026 * sand * clay) /
                            100.0;
-#ifdef __cplusplus
-    return hodnett2002_ptf_result{alpha, n, theta_s, theta_r};
-#else
-    return (hodnett2002_ptf_result){
-        .alpha = alpha,
-        .n = n,
-        .theta_s = theta_s,
-        .theta_r = theta_r,
-    };
-#endif
+    hodnett2002_ptf_result result = {alpha, n, theta_s, theta_r};
+    return result;
 }
 
 #endif

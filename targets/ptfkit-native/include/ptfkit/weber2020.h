@@ -96,20 +96,9 @@ static inline weber2020_ptf_result calc_ptf_weber2020(double theta_r_vgm, double
     const double tau_bw = 2.95e-2 + 1.833 * tau_vgm_constrained;
     const double k_sc_bw = pow(10.0, 1.16e-1 + 1.060 * log10(k_s_vgm));
     const double k_snc_bw = pow(10.0, -1.72);
-#ifdef __cplusplus
-    return weber2020_ptf_result{theta_snc_bw, theta_sc_bw, alpha_bw, n_bw,
-                                tau_bw,       k_sc_bw,     k_snc_bw};
-#else
-    return (weber2020_ptf_result){
-        .theta_snc_bw = theta_snc_bw,
-        .theta_sc_bw = theta_sc_bw,
-        .alpha_bw = alpha_bw,
-        .n_bw = n_bw,
-        .tau_bw = tau_bw,
-        .k_sc_bw = k_sc_bw,
-        .k_snc_bw = k_snc_bw,
-    };
-#endif
+    weber2020_ptf_result result = {theta_snc_bw, theta_sc_bw, alpha_bw, n_bw,
+                                   tau_bw,       k_sc_bw,     k_snc_bw};
+    return result;
 }
 
 #endif

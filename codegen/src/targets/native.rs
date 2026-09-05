@@ -85,13 +85,10 @@ fn c_header(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
     if requires_pow4(functions) {
         writer.write("#include <ptfkit/detail/power.h>\n");
     }
-    if requires_record_literal(functions) {
-        writer.write("#include <ptfkit/detail/record.h>\n");
-    }
-    if requires_math(functions) {
+    if requires_math(functions) || requires_lookup(functions) {
         writer.write("#include <math.h>\n");
     }
-    if requires_pow4(functions) || requires_math(functions) {
+    if requires_pow4(functions) || requires_math(functions) || requires_lookup(functions) {
         writer.blank_line();
     }
     let first = functions
@@ -147,16 +144,13 @@ fn c_header(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
 fn cpp_module(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
     let mut writer = Writer::new();
     writer.write(format_args!("{HEADER}\n\n"));
-    if requires_pow4(functions) || requires_math(functions) || requires_cpp_unreachable(functions) {
+    if requires_pow4(functions) || requires_math(functions) {
         writer.write("module;\n");
         if requires_pow4(functions) {
             writer.write("#include <ptfkit/detail/power.h>\n");
         }
         if requires_math(functions) {
             writer.write("#include <cmath>\n");
-        }
-        if requires_cpp_unreachable(functions) {
-            writer.write("#include <utility>\n");
         }
         writer.blank_line();
     }
@@ -363,19 +357,10 @@ impl NativeFunction<'_> {
             }
             Output::Scalar => writer.line(format_args!("return {output_name};")),
             Output::Struct(fields) if matches!(self.dialect, NativeDialect::C) => {
-                writer.line("#ifdef __cplusplus");
-                writer.write(format_args!("return {}{{", self.result));
+                writer.write(format_args!("{} result = {{", self.result));
                 render_values(writer, fields);
                 writer.line("};");
-                writer.line("#else");
-                writer.line(format_args!("return ({}) {{", self.result));
-                writer.indented(|writer| {
-                    for field in fields {
-                        writer.line(format_args!(".{field} = {field},"));
-                    }
-                });
-                writer.line("};");
-                writer.line("#endif");
+                writer.line("return result;");
             }
             Output::Struct(fields) => {
                 writer.write(format_args!("return {}{{", self.result));
@@ -396,7 +381,7 @@ impl NativeFunction<'_> {
         };
         writer.line(format_args!(
             "const {result} {name} = {}({key});",
-            record_lookup_function_name(lookup, self.dialect)
+            record_lookup_function_name(lookup)
         ));
     }
 }
@@ -414,7 +399,7 @@ fn lookup_definitions<'a>(functions: &[&'a CompiledFunction]) -> Vec<&'a RecordL
         .collect()
 }
 
-fn record_lookup_function_name(lookup: &RecordLookup, _dialect: NativeDialect) -> String {
+fn record_lookup_function_name(lookup: &RecordLookup) -> String {
     format!(
         "{}_from_{}",
         c_result_name(&lookup.output.name),
@@ -442,65 +427,56 @@ fn render_record_lookup_helper(
     }
     writer.line(format_args!(
         "{result} {}({enum_name} value) {{",
-        record_lookup_function_name(lookup, dialect)
+        record_lookup_function_name(lookup)
     ));
     writer.indented(|writer| {
-        writer.line("switch (value) {");
+        match dialect {
+            NativeDialect::C => writer.line(format_args!("static const {result} table[] = {{")),
+            NativeDialect::Cpp => {
+                writer.line(format_args!("static constexpr {result} table[] = {{"))
+            }
+        }
         writer.indented(|writer| {
             for case in &lookup.cases {
-                let member = match dialect {
-                    NativeDialect::C => c_enum_member(slug, &lookup.enum_name, &case.member),
-                    NativeDialect::Cpp => format!(
-                        "{}::{}",
-                        lookup.enum_name,
-                        case.member.to_case(Case::Pascal)
-                    ),
-                };
-                writer.line(format_args!("case {member}:"));
-                writer.indented(|writer| {
-                    writer.write("return ");
-                    render_record_literal(writer, &result, &case.values, dialect);
-                    writer.line(";");
-                });
+                writer.write("{");
+                render_lookup_values(writer, &case.values);
+                writer.line("},");
             }
-            writer.line("default:");
-            writer.indented(|writer| match dialect {
-                NativeDialect::C => {
-                    let nan_values = std::iter::repeat_n("NAN", lookup.output.fields.len())
-                        .collect::<Vec<_>>()
-                        .join(", ");
-                    writer.line(format_args!(
-                        "return PTFKIT_RECORD_LITERAL({result}, {nan_values});"
-                    ));
-                }
-                NativeDialect::Cpp => writer.line("std::unreachable();"),
-            });
         });
-        writer.line("}");
+        writer.line("};");
+        match dialect {
+            NativeDialect::C => {
+                writer.line("const unsigned index = (unsigned)value;");
+                writer.line("if (index < sizeof(table) / sizeof(table[0])) {");
+                writer.indented(|writer| {
+                    writer.line("return table[index];");
+                });
+                writer.line("}");
+                writer.write(format_args!("const {result} fallback = {{"));
+                for index in 0..lookup.output.fields.len() {
+                    if index > 0 {
+                        writer.write(", ");
+                    }
+                    writer.write("NAN");
+                }
+                writer.line("};");
+                writer.line("return fallback;");
+            }
+            NativeDialect::Cpp => {
+                writer.line("return table[static_cast<unsigned>(value)];");
+            }
+        }
     });
     writer.line("}");
 }
 
-fn render_record_literal(
-    writer: &mut Writer,
-    result: &str,
-    values: &[crate::semantic::Number],
-    dialect: NativeDialect,
-) {
-    match dialect {
-        NativeDialect::C => writer.write(format_args!("PTFKIT_RECORD_LITERAL({result}, ")),
-        NativeDialect::Cpp => writer.write(format_args!("{result}{{")),
-    }
+fn render_lookup_values(writer: &mut Writer, values: &[crate::semantic::Number]) {
     for (index, value) in values.iter().enumerate() {
         if index > 0 {
             writer.write(", ");
         }
         writer.write(c::float_literal(&value.lexeme));
     }
-    writer.write(match dialect {
-        NativeDialect::C => ")",
-        NativeDialect::Cpp => "}",
-    });
 }
 
 fn render_values(writer: &mut Writer, values: &[String]) {
@@ -756,10 +732,18 @@ fn requires_math(functions: &[&CompiledFunction]) -> bool {
             .ir
             .variables
             .iter()
-            .any(|variable| match &variable.value {
-                VariableValue::Number(expression) => c::requires_math(expression),
-                VariableValue::RecordLookup(_) => true,
-            })
+            .filter_map(|variable| variable.value.as_number())
+            .any(c::requires_math)
+    })
+}
+
+fn requires_lookup(functions: &[&CompiledFunction]) -> bool {
+    functions.iter().any(|function| {
+        function
+            .ir
+            .variables
+            .iter()
+            .any(|variable| matches!(variable.value, VariableValue::RecordLookup(_)))
     })
 }
 
@@ -772,20 +756,6 @@ fn requires_pow4(functions: &[&CompiledFunction]) -> bool {
             .filter_map(|variable| variable.value.as_number())
             .any(c::requires_pow4)
     })
-}
-
-fn requires_record_literal(functions: &[&CompiledFunction]) -> bool {
-    functions.iter().any(|function| {
-        function
-            .ir
-            .variables
-            .iter()
-            .any(|variable| matches!(variable.value, VariableValue::RecordLookup(_)))
-    })
-}
-
-fn requires_cpp_unreachable(functions: &[&CompiledFunction]) -> bool {
-    requires_record_literal(functions)
 }
 
 fn c_test(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {

@@ -69,15 +69,8 @@ static inline varallyai1982_parameters calc_ptf_varallyai1982_meadow(double bulk
                      1.434 * fine_sand_fraction * fine_fraction + 0.156;
     const double pf_star =
         -1.702 * fine_sand_fraction + 1.103 * bulk_density * fine_fraction + 3.749;
-#ifdef __cplusplus
-    return varallyai1982_parameters{theta_0, m, pf_star};
-#else
-    return (varallyai1982_parameters){
-        .theta_0 = theta_0,
-        .m = m,
-        .pf_star = pf_star,
-    };
-#endif
+    varallyai1982_parameters result = {theta_0, m, pf_star};
+    return result;
 }
 
 /**
@@ -108,15 +101,8 @@ static inline varallyai1982_parameters calc_ptf_varallyai1982_chernozem_a(double
     const double theta_0 = -56.40 * bulk_density + 20.50 * fine_fraction + 123.79;
     const double m = 0.336 * bulk_density - 0.053;
     const double pf_star = 4.701 * bulk_density * fine_fraction + 1.513 * bulk_density - 0.417;
-#ifdef __cplusplus
-    return varallyai1982_parameters{theta_0, m, pf_star};
-#else
-    return (varallyai1982_parameters){
-        .theta_0 = theta_0,
-        .m = m,
-        .pf_star = pf_star,
-    };
-#endif
+    varallyai1982_parameters result = {theta_0, m, pf_star};
+    return result;
 }
 
 /**
@@ -147,15 +133,8 @@ static inline varallyai1982_parameters calc_ptf_varallyai1982_chernozem_b(double
     const double theta_0 = -62.20 * bulk_density - 49.14 * (fine_fraction * fine_fraction) + 140.70;
     const double m = 0.635 * bulk_density - 0.482;
     const double pf_star = 4.270 * bulk_density * fine_fraction + 3.509 * bulk_density - 3.075;
-#ifdef __cplusplus
-    return varallyai1982_parameters{theta_0, m, pf_star};
-#else
-    return (varallyai1982_parameters){
-        .theta_0 = theta_0,
-        .m = m,
-        .pf_star = pf_star,
-    };
-#endif
+    varallyai1982_parameters result = {theta_0, m, pf_star};
+    return result;
 }
 
 /**
@@ -186,15 +165,8 @@ static inline varallyai1982_parameters calc_ptf_varallyai1982_chernozem_c(double
     const double m = 0.439 * bulk_density * fine_fraction + 0.625;
     const double pf_star =
         3.268 * bulk_density * fine_fraction + 0.865 * (bulk_density * bulk_density) + 0.301;
-#ifdef __cplusplus
-    return varallyai1982_parameters{theta_0, m, pf_star};
-#else
-    return (varallyai1982_parameters){
-        .theta_0 = theta_0,
-        .m = m,
-        .pf_star = pf_star,
-    };
-#endif
+    varallyai1982_parameters result = {theta_0, m, pf_star};
+    return result;
 }
 
 #endif

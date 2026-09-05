@@ -3,7 +3,6 @@
 #ifndef PTFKIT_CLAPP1978_H
 #define PTFKIT_CLAPP1978_H
 
-#include <ptfkit/detail/record.h>
 #include <math.h>
 
 /**
@@ -100,32 +99,20 @@ typedef struct {
 
 static inline clapp1978_parameters
 clapp1978_parameters_from_usda_texture_class(clapp1978_usda_texture_class value) {
-    switch (value) {
-    case clapp1978_usda_texture_class_sand:
-        return PTFKIT_RECORD_LITERAL(clapp1978_parameters, 4.05, 3.5, 4.66, 0.395, 1.056, 1.52);
-    case clapp1978_usda_texture_class_loamy_sand:
-        return PTFKIT_RECORD_LITERAL(clapp1978_parameters, 4.38, 1.78, 2.38, 0.41, 0.938, 1.04);
-    case clapp1978_usda_texture_class_sandy_loam:
-        return PTFKIT_RECORD_LITERAL(clapp1978_parameters, 4.9, 7.18, 9.52, 0.435, 0.208, 1.03);
-    case clapp1978_usda_texture_class_silt_loam:
-        return PTFKIT_RECORD_LITERAL(clapp1978_parameters, 5.3, 56.6, 75.3, 0.485, 0.0432, 1.26);
-    case clapp1978_usda_texture_class_loam:
-        return PTFKIT_RECORD_LITERAL(clapp1978_parameters, 5.39, 14.6, 20.0, 0.451, 0.0417, 0.693);
-    case clapp1978_usda_texture_class_sandy_clay_loam:
-        return PTFKIT_RECORD_LITERAL(clapp1978_parameters, 7.12, 8.63, 11.7, 0.42, 0.0378, 0.488);
-    case clapp1978_usda_texture_class_silty_clay_loam:
-        return PTFKIT_RECORD_LITERAL(clapp1978_parameters, 7.75, 14.6, 19.7, 0.477, 0.0102, 0.31);
-    case clapp1978_usda_texture_class_clay_loam:
-        return PTFKIT_RECORD_LITERAL(clapp1978_parameters, 8.52, 36.1, 48.1, 0.476, 0.0147, 0.537);
-    case clapp1978_usda_texture_class_sandy_clay:
-        return PTFKIT_RECORD_LITERAL(clapp1978_parameters, 10.4, 6.16, 8.18, 0.426, 0.013, 0.223);
-    case clapp1978_usda_texture_class_silty_clay:
-        return PTFKIT_RECORD_LITERAL(clapp1978_parameters, 10.4, 17.4, 23.0, 0.492, 0.0062, 0.242);
-    case clapp1978_usda_texture_class_clay:
-        return PTFKIT_RECORD_LITERAL(clapp1978_parameters, 11.4, 18.6, 24.3, 0.482, 0.0077, 0.268);
-    default:
-        return PTFKIT_RECORD_LITERAL(clapp1978_parameters, NAN, NAN, NAN, NAN, NAN, NAN);
+    static const clapp1978_parameters table[] = {
+        {4.05, 3.5, 4.66, 0.395, 1.056, 1.52},    {4.38, 1.78, 2.38, 0.41, 0.938, 1.04},
+        {4.9, 7.18, 9.52, 0.435, 0.208, 1.03},    {5.3, 56.6, 75.3, 0.485, 0.0432, 1.26},
+        {5.39, 14.6, 20.0, 0.451, 0.0417, 0.693}, {7.12, 8.63, 11.7, 0.42, 0.0378, 0.488},
+        {7.75, 14.6, 19.7, 0.477, 0.0102, 0.31},  {8.52, 36.1, 48.1, 0.476, 0.0147, 0.537},
+        {10.4, 6.16, 8.18, 0.426, 0.013, 0.223},  {10.4, 17.4, 23.0, 0.492, 0.0062, 0.242},
+        {11.4, 18.6, 24.3, 0.482, 0.0077, 0.268},
+    };
+    const unsigned index = (unsigned)value;
+    if (index < sizeof(table) / sizeof(table[0])) {
+        return table[index];
     }
+    const clapp1978_parameters fallback = {NAN, NAN, NAN, NAN, NAN, NAN};
+    return fallback;
 }
 
 /**
