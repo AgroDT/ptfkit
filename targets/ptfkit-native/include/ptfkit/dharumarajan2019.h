@@ -61,14 +61,8 @@ calc_ptf_dharumarajan2019_nkp(double clay, double sand, double cation_exchange_c
         13.82 + 0.205 * clay - 0.088 * sand + 0.316 * cation_exchange_capacity;
     const double permanent_wilting_point =
         -5.776 + 0.315 * clay + 0.050 * sand + 0.271 * cation_exchange_capacity;
-#ifdef __cplusplus
-    return dharumarajan2019_water_retention_result{field_capacity, permanent_wilting_point};
-#else
-    return (dharumarajan2019_water_retention_result){
-        .field_capacity = field_capacity,
-        .permanent_wilting_point = permanent_wilting_point,
-    };
-#endif
+    dharumarajan2019_water_retention_result result = {field_capacity, permanent_wilting_point};
+    return result;
 }
 
 /**
@@ -94,14 +88,8 @@ static inline dharumarajan2019_water_retention_result
 calc_ptf_dharumarajan2019_nkp_clay(double clay) {
     const double field_capacity = 4.968 + 0.586 * clay;
     const double permanent_wilting_point = -2.443 + 0.500 * clay;
-#ifdef __cplusplus
-    return dharumarajan2019_water_retention_result{field_capacity, permanent_wilting_point};
-#else
-    return (dharumarajan2019_water_retention_result){
-        .field_capacity = field_capacity,
-        .permanent_wilting_point = permanent_wilting_point,
-    };
-#endif
+    dharumarajan2019_water_retention_result result = {field_capacity, permanent_wilting_point};
+    return result;
 }
 
 /**
@@ -130,14 +118,8 @@ calc_ptf_dharumarajan2019_skp(double clay, double sand, double cation_exchange_c
         39.179 - 0.041 * clay - 0.371 * sand + 0.257 * cation_exchange_capacity;
     const double permanent_wilting_point =
         8.227 + 0.168 * clay - 0.101 * sand + 0.217 * cation_exchange_capacity;
-#ifdef __cplusplus
-    return dharumarajan2019_water_retention_result{field_capacity, permanent_wilting_point};
-#else
-    return (dharumarajan2019_water_retention_result){
-        .field_capacity = field_capacity,
-        .permanent_wilting_point = permanent_wilting_point,
-    };
-#endif
+    dharumarajan2019_water_retention_result result = {field_capacity, permanent_wilting_point};
+    return result;
 }
 
 /**
@@ -161,14 +143,8 @@ static inline dharumarajan2019_water_retention_result
 calc_ptf_dharumarajan2019_skp_clay(double clay) {
     const double field_capacity = 3.724 + 0.581 * clay;
     const double permanent_wilting_point = -1.979 + 0.428 * clay;
-#ifdef __cplusplus
-    return dharumarajan2019_water_retention_result{field_capacity, permanent_wilting_point};
-#else
-    return (dharumarajan2019_water_retention_result){
-        .field_capacity = field_capacity,
-        .permanent_wilting_point = permanent_wilting_point,
-    };
-#endif
+    dharumarajan2019_water_retention_result result = {field_capacity, permanent_wilting_point};
+    return result;
 }
 
 /**

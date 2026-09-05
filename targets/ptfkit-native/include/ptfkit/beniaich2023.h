@@ -55,15 +55,8 @@ static inline beniaich2023_ptf_result calc_ptf_beniaich2023_slr1(double clay) {
     const double water_saturation = (46.307 + 0.556 * clay) / 100.0;
     const double water_field_capacity = (10.277 + 0.365 * clay) / 100.0;
     const double water_wilting_point = (3.081 + 0.327 * clay) / 100.0;
-#ifdef __cplusplus
-    return beniaich2023_ptf_result{water_saturation, water_field_capacity, water_wilting_point};
-#else
-    return (beniaich2023_ptf_result){
-        .water_saturation = water_saturation,
-        .water_field_capacity = water_field_capacity,
-        .water_wilting_point = water_wilting_point,
-    };
-#endif
+    beniaich2023_ptf_result result = {water_saturation, water_field_capacity, water_wilting_point};
+    return result;
 }
 
 /**
@@ -85,15 +78,8 @@ static inline beniaich2023_ptf_result calc_ptf_beniaich2023_slr2(double silt) {
     const double water_saturation = (59.508 + 0.299 * silt) / 100.0;
     const double water_field_capacity = (16.178 + 0.290 * silt) / 100.0;
     const double water_wilting_point = (10.521 + 0.187 * silt) / 100.0;
-#ifdef __cplusplus
-    return beniaich2023_ptf_result{water_saturation, water_field_capacity, water_wilting_point};
-#else
-    return (beniaich2023_ptf_result){
-        .water_saturation = water_saturation,
-        .water_field_capacity = water_field_capacity,
-        .water_wilting_point = water_wilting_point,
-    };
-#endif
+    beniaich2023_ptf_result result = {water_saturation, water_field_capacity, water_wilting_point};
+    return result;
 }
 
 /**
@@ -115,15 +101,8 @@ static inline beniaich2023_ptf_result calc_ptf_beniaich2023_slr3(double sand) {
     const double water_saturation = (81.420 - 0.427 * sand) / 100.0;
     const double water_field_capacity = (34.680 - 0.324 * sand) / 100.0;
     const double water_wilting_point = (23.927 - 0.257 * sand) / 100.0;
-#ifdef __cplusplus
-    return beniaich2023_ptf_result{water_saturation, water_field_capacity, water_wilting_point};
-#else
-    return (beniaich2023_ptf_result){
-        .water_saturation = water_saturation,
-        .water_field_capacity = water_field_capacity,
-        .water_wilting_point = water_wilting_point,
-    };
-#endif
+    beniaich2023_ptf_result result = {water_saturation, water_field_capacity, water_wilting_point};
+    return result;
 }
 
 /**
@@ -147,15 +126,8 @@ static inline beniaich2023_ptf_result calc_ptf_beniaich2023_slr4(double clay, do
     const double water_saturation = (89.401 - 0.298 * clay_silt) / 100.0;
     const double water_field_capacity = (45.178 - 0.290 * clay_silt) / 100.0;
     const double water_wilting_point = (29.265 - 0.187 * clay_silt) / 100.0;
-#ifdef __cplusplus
-    return beniaich2023_ptf_result{water_saturation, water_field_capacity, water_wilting_point};
-#else
-    return (beniaich2023_ptf_result){
-        .water_saturation = water_saturation,
-        .water_field_capacity = water_field_capacity,
-        .water_wilting_point = water_wilting_point,
-    };
-#endif
+    beniaich2023_ptf_result result = {water_saturation, water_field_capacity, water_wilting_point};
+    return result;
 }
 
 /**
@@ -179,15 +151,8 @@ static inline beniaich2023_ptf_result calc_ptf_beniaich2023_slr5(double clay, do
     const double water_saturation = (68.851 - 0.546 * clay_silt_ratio) / 100.0;
     const double water_field_capacity = (23.278 + 1.819 * clay_silt_ratio) / 100.0;
     const double water_wilting_point = (16.298 - 0.244 * clay_silt_ratio) / 100.0;
-#ifdef __cplusplus
-    return beniaich2023_ptf_result{water_saturation, water_field_capacity, water_wilting_point};
-#else
-    return (beniaich2023_ptf_result){
-        .water_saturation = water_saturation,
-        .water_field_capacity = water_field_capacity,
-        .water_wilting_point = water_wilting_point,
-    };
-#endif
+    beniaich2023_ptf_result result = {water_saturation, water_field_capacity, water_wilting_point};
+    return result;
 }
 
 /**
@@ -209,15 +174,8 @@ static inline beniaich2023_ptf_result calc_ptf_beniaich2023_slr6(double soil_org
     const double water_saturation = (61.163 + 2.793 * soil_organic_matter) / 100.0;
     const double water_field_capacity = (21.331 + 1.339 * soil_organic_matter) / 100.0;
     const double water_wilting_point = (13.758 + 0.902 * soil_organic_matter) / 100.0;
-#ifdef __cplusplus
-    return beniaich2023_ptf_result{water_saturation, water_field_capacity, water_wilting_point};
-#else
-    return (beniaich2023_ptf_result){
-        .water_saturation = water_saturation,
-        .water_field_capacity = water_field_capacity,
-        .water_wilting_point = water_wilting_point,
-    };
-#endif
+    beniaich2023_ptf_result result = {water_saturation, water_field_capacity, water_wilting_point};
+    return result;
 }
 
 /**
@@ -245,15 +203,8 @@ static inline beniaich2023_ptf_result calc_ptf_beniaich2023_mlr1(double silt, do
         (35.844 - 0.085 * silt - 0.359 * sand + 0.947 * soil_organic_matter) / 100.0;
     const double water_wilting_point =
         (28.734 - 0.148 * silt - 0.324 * sand + 0.636 * soil_organic_matter) / 100.0;
-#ifdef __cplusplus
-    return beniaich2023_ptf_result{water_saturation, water_field_capacity, water_wilting_point};
-#else
-    return (beniaich2023_ptf_result){
-        .water_saturation = water_saturation,
-        .water_field_capacity = water_field_capacity,
-        .water_wilting_point = water_wilting_point,
-    };
-#endif
+    beniaich2023_ptf_result result = {water_saturation, water_field_capacity, water_wilting_point};
+    return result;
 }
 
 /**
@@ -279,15 +230,8 @@ static inline beniaich2023_ptf_result calc_ptf_beniaich2023_mlr2(double sand,
         (32.227 - 0.320 * sand + 0.899 * soil_organic_matter) / 100.0;
     const double water_wilting_point =
         (22.421 - 0.254 * sand + 0.552 * soil_organic_matter) / 100.0;
-#ifdef __cplusplus
-    return beniaich2023_ptf_result{water_saturation, water_field_capacity, water_wilting_point};
-#else
-    return (beniaich2023_ptf_result){
-        .water_saturation = water_saturation,
-        .water_field_capacity = water_field_capacity,
-        .water_wilting_point = water_wilting_point,
-    };
-#endif
+    beniaich2023_ptf_result result = {water_saturation, water_field_capacity, water_wilting_point};
+    return result;
 }
 
 /**
@@ -312,15 +256,8 @@ static inline beniaich2023_ptf_result calc_ptf_beniaich2023_mlr3(double silt,
     const double water_field_capacity =
         (13.847 + 0.281 * silt + 0.999 * soil_organic_matter) / 100.0;
     const double water_wilting_point = (8.929 + 0.182 * silt + 0.683 * soil_organic_matter) / 100.0;
-#ifdef __cplusplus
-    return beniaich2023_ptf_result{water_saturation, water_field_capacity, water_wilting_point};
-#else
-    return (beniaich2023_ptf_result){
-        .water_saturation = water_saturation,
-        .water_field_capacity = water_field_capacity,
-        .water_wilting_point = water_wilting_point,
-    };
-#endif
+    beniaich2023_ptf_result result = {water_saturation, water_field_capacity, water_wilting_point};
+    return result;
 }
 
 /**
@@ -345,15 +282,8 @@ static inline beniaich2023_ptf_result calc_ptf_beniaich2023_mlr4(double clay,
     const double water_field_capacity =
         (7.023 + 0.364 * clay + 1.278 * soil_organic_matter) / 100.0;
     const double water_wilting_point = (0.923 + 0.327 * clay + 0.847 * soil_organic_matter) / 100.0;
-#ifdef __cplusplus
-    return beniaich2023_ptf_result{water_saturation, water_field_capacity, water_wilting_point};
-#else
-    return (beniaich2023_ptf_result){
-        .water_saturation = water_saturation,
-        .water_field_capacity = water_field_capacity,
-        .water_wilting_point = water_wilting_point,
-    };
-#endif
+    beniaich2023_ptf_result result = {water_saturation, water_field_capacity, water_wilting_point};
+    return result;
 }
 
 /**
@@ -381,15 +311,8 @@ static inline beniaich2023_ptf_result calc_ptf_beniaich2023_mlr5(double clay, do
         (-0.094 + 0.359 * clay + 0.274 * silt + 0.947 * soil_organic_matter) / 100.0;
     const double water_wilting_point =
         (-3.623 + 0.324 * clay + 0.175 * silt + 0.636 * soil_organic_matter) / 100.0;
-#ifdef __cplusplus
-    return beniaich2023_ptf_result{water_saturation, water_field_capacity, water_wilting_point};
-#else
-    return (beniaich2023_ptf_result){
-        .water_saturation = water_saturation,
-        .water_field_capacity = water_field_capacity,
-        .water_wilting_point = water_wilting_point,
-    };
-#endif
+    beniaich2023_ptf_result result = {water_saturation, water_field_capacity, water_wilting_point};
+    return result;
 }
 
 #endif

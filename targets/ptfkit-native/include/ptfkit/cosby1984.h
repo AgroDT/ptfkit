@@ -85,20 +85,9 @@ calc_ptf_cosby1984_univariate(double sand, double silt, double clay) {
     const double sd_b = 1.34 + 0.0500 * clay;
     const double sd_log_k_sat = 0.459 + 0.00321 * silt;
     const double sd_theta_s = 7.73 - 0.0730 * clay;
-#ifdef __cplusplus
-    return cosby1984_univariate_ptf_result{mean_b, mean_log_psi_s, mean_log_k_sat, mean_theta_s,
-                                           sd_b,   sd_log_k_sat,   sd_theta_s};
-#else
-    return (cosby1984_univariate_ptf_result){
-        .mean_b = mean_b,
-        .mean_log_psi_s = mean_log_psi_s,
-        .mean_log_k_sat = mean_log_k_sat,
-        .mean_theta_s = mean_theta_s,
-        .sd_b = sd_b,
-        .sd_log_k_sat = sd_log_k_sat,
-        .sd_theta_s = sd_theta_s,
-    };
-#endif
+    cosby1984_univariate_ptf_result result = {mean_b, mean_log_psi_s, mean_log_k_sat, mean_theta_s,
+                                              sd_b,   sd_log_k_sat,   sd_theta_s};
+    return result;
 }
 
 #endif
