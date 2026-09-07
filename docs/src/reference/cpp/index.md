@@ -18,6 +18,7 @@ ptfkit's C++ API is organized around C++23 modules.
 - [`ptfkit.clapp1978`](modules/clapp1978.md) — Clapp and Hornberger (1978) representative soil hydraulic parameters by texture.
 - [`ptfkit.cosby1984`](modules/cosby1984.md) — Cosby et al. (1984), United States.
 - [`ptfkit.dharumarajan2019`](modules/dharumarajan2019.md) — Dharumarajan et al. (2019) hydraulic PTFs for the Karnataka Plateau.
+- [`ptfkit.dijkerman1988`](modules/dijkerman1988.md) — Dijkerman (1988), texture-based gravimetric water retention for Sierra Leone soils.
 - [`ptfkit.ferrerjulia2004`](modules/ferrerjulia2004.md) — Ferrer Julià et al. (2004), saturated-conductivity PTFs for Spanish soils.
 - [`ptfkit.gunarathna2019`](modules/gunarathna2019.md) — Point water-retention regressions for tropical Sri Lankan soils.
 - [`ptfkit.hodnett2002`](modules/hodnett2002.md) — Hodnett & Tomasella (2002), tropical-soil regressions for four van Genuchten parameters.

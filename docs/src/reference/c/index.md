@@ -18,6 +18,7 @@ ptfkit's C API is organized around installed headers.
 - [`<ptfkit/clapp1978.h>`](headers/clapp1978.md) — Clapp and Hornberger (1978) representative soil hydraulic parameters by texture.
 - [`<ptfkit/cosby1984.h>`](headers/cosby1984.md) — Cosby et al. (1984), United States.
 - [`<ptfkit/dharumarajan2019.h>`](headers/dharumarajan2019.md) — Dharumarajan et al. (2019) hydraulic PTFs for the Karnataka Plateau.
+- [`<ptfkit/dijkerman1988.h>`](headers/dijkerman1988.md) — Dijkerman (1988), texture-based gravimetric water retention for Sierra Leone soils.
 - [`<ptfkit/ferrerjulia2004.h>`](headers/ferrerjulia2004.md) — Ferrer Julià et al. (2004), saturated-conductivity PTFs for Spanish soils.
 - [`<ptfkit/gunarathna2019.h>`](headers/gunarathna2019.md) — Point water-retention regressions for tropical Sri Lankan soils.
 - [`<ptfkit/hodnett2002.h>`](headers/hodnett2002.md) — Hodnett & Tomasella (2002), tropical-soil regressions for four van Genuchten parameters.

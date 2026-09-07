@@ -10,6 +10,7 @@
 #include <ptfkit/clapp1978.h>
 #include <ptfkit/cosby1984.h>
 #include <ptfkit/dharumarajan2019.h>
+#include <ptfkit/dijkerman1988.h>
 #include <ptfkit/ferrerjulia2004.h>
 #include <ptfkit/gunarathna2019.h>
 #include <ptfkit/hodnett2002.h>

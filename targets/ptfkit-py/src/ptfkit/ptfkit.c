@@ -13,6 +13,7 @@
 #include "clapp1978.c"
 #include "cosby1984.c"
 #include "dharumarajan2019.c"
+#include "dijkerman1988.c"
 #include "ferrerjulia2004.c"
 #include "gunarathna2019.c"
 #include "hodnett2002.c"
@@ -65,6 +66,10 @@ PyMODINIT_FUNC PyInit__ptfkit(void) {
         return NULL;
     }
     if (ptfkit_register_dharumarajan2019(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_dijkerman1988(module) < 0) {
         Py_DECREF(module);
         return NULL;
     }

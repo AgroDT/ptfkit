@@ -17,6 +17,7 @@ Each page describes the source, scope, inputs, outputs, status, and limitations 
 | [Clapp and Hornberger (1978) representative soil hydraulic parameters by texture.](./clapp1978.md) | United States | 1 |
 | [Cosby et al. (1984), United States.](./cosby1984.md) | United States | 1 |
 | [Dharumarajan et al. (2019) hydraulic PTFs for the Karnataka Plateau.](./dharumarajan2019.md) | Karnataka Plateau, India | 5 |
+| [Dijkerman (1988), texture-based gravimetric water retention for Sierra Leone soils.](./dijkerman1988.md) | Sierra Leone, West Africa | 2 |
 | [Ferrer Julià et al. (2004), saturated-conductivity PTFs for Spanish soils.](./ferrerjulia2004.md) | Spanish mainland on the Iberian Peninsula | 41 |
 | [Point water-retention regressions for tropical Sri Lankan soils.](./gunarathna2019.md) | Tropical Sri Lanka. | 11 |
 | [Hodnett & Tomasella (2002), tropical-soil regressions for four van Genuchten parameters.](./hodnett2002.md) | Tropical soils between approximately 25 degrees N and 25 degrees S. | 1 |

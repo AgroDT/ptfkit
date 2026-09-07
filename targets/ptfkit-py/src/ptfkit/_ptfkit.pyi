@@ -28,6 +28,8 @@ calc_ptf_dharumarajan2019_nkp: ufunc
 calc_ptf_dharumarajan2019_nkp_clay: ufunc
 calc_ptf_dharumarajan2019_skp: ufunc
 calc_ptf_dharumarajan2019_skp_clay: ufunc
+calc_ptf_dijkerman1988: ufunc
+calc_ptf_dijkerman1988_available_water: ufunc
 calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand: ufunc
 calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter: ufunc
 calc_ptf_ferrerjulia2004_calcaric_regosol_sand: ufunc
