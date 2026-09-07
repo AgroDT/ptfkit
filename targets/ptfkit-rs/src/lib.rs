@@ -19,6 +19,7 @@ pub mod varallyai1982;
 pub mod vereecken1989;
 pub mod wang2012;
 pub mod weber2020;
+pub mod zhao2016;
 
 #[cfg(test)]
 mod test_support;

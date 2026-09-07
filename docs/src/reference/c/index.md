@@ -34,5 +34,6 @@ ptfkit's C API is organized around installed headers.
 - [`<ptfkit/vereecken1989.h>`](headers/vereecken1989.md) — Vereecken et al. soil-moisture retention regressions for Belgian soils.
 - [`<ptfkit/wang2012.h>`](headers/wang2012.md) — Wang et al. (2012), surface loess across China's Loess Plateau.
 - [`<ptfkit/weber2020.h>`](headers/weber2020.md) — Weber et al. (2020), compiled international soil hydraulic data.
+- [`<ptfkit/zhao2016.h>`](headers/zhao2016.md) — Saturated hydraulic conductivity PTFs for the Loess Plateau of China.
 
 See the [function index](functions.md) for all public C functions.

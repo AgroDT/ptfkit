@@ -33,3 +33,4 @@ Each page describes the source, scope, inputs, outputs, status, and limitations 
 | [Vereecken et al. soil-moisture retention regressions for Belgian soils.](./vereecken1989.md) | Belgian territory north of the river axis Samber and Meuse | 2 |
 | [Wang et al. (2012), surface loess across China's Loess Plateau.](./wang2012.md) | Surface soils across the entire Loess Plateau, China | 1 |
 | [Weber et al. (2020), compiled international soil hydraulic data.](./weber2020.md) | Portuguese, German, UNSODA, and Vereecken soil data collections | 1 |
+| [Saturated hydraulic conductivity PTFs for the Loess Plateau of China.](./zhao2016.md) | Typical Loess Plateau of China, covering approximately 430,000 square kilometers. | 6 |

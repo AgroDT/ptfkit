@@ -1,0 +1,544 @@
+source:
+  summary: Saturated hydraulic conductivity PTFs for the Loess Plateau of China.
+  citation_apa: >-
+    Zhao, C., Shao, M., Jia, X., Nasir, M., & Zhang, C. (2016).
+    Using pedotransfer functions to estimate soil hydraulic conductivity in
+    the Loess Plateau of China. CATENA, 143, 1-6.
+    https://doi.org/10.1016/j.catena.2016.03.037
+  doi:
+    identifier: 10.1016/j.catena.2016.03.037
+    url: https://doi.org/10.1016/j.catena.2016.03.037
+scope:
+  territory: Typical Loess Plateau of China, covering approximately 430,000 square kilometers.
+  dataset: >-
+    729 samples from 243 sites, sampled in 2012 at depths of 0-10, 10-20,
+    and 20-40 cm. Each of 400 random calibration-validation splits used
+    583 development records and 146 validation records (Section 2.3.1).
+$defs:
+  bulk_density:
+    name: bulk_density
+    symbol: BD
+    unit: g/cm^3
+    domain: 'Observed range in Table 1: 0.97 to 1.79 g/cm^3.'
+    description: >-
+      Soil bulk density measured on undisturbed cores.
+  silt:
+    name: silt
+    symbol: Silt
+    unit: '%'
+    domain: 'Observed range in Table 1: 2.04 to 76.01 percent.'
+    description: >-
+      Silt content measured by laser diffraction using USDA taxonomy
+      (Section 2.2.2).
+  clay:
+    name: clay
+    symbol: Clay
+    unit: '%'
+    domain: 'Observed range in Table 1: 0.010 to 32.67 percent.'
+    description: >-
+      Clay content measured by laser diffraction using USDA taxonomy
+      (Section 2.2.2).
+  conductivity:
+    type: scalar
+    name: ks
+    quantity: saturated_hydraulic_conductivity
+    symbol: Ks
+    unit: millimeter_per_minute
+    reported_unit: mm/min
+    domain: 'Observed range in Table 1: 0.01 to 0.99 mm/min; not an output clamp.'
+    description: >-
+      Saturated hydraulic conductivity, measured by the constant-head method.
+functions:
+  - name: calc_ptf_zhao2016_m2_1
+    status: implemented
+    public_api:
+      name: calc_ptf_zhao2016_m2_1
+      result_class: null
+      summary: Estimate saturated hydraulic conductivity using reconstructed M2-1.
+    scope:
+      prediction_target: Saturated hydraulic conductivity
+      models:
+        h_theta: null
+        k_h: null
+    inputs:
+      - $ref: '#/$defs/bulk_density'
+      - $ref: '#/$defs/silt'
+      - $ref: '#/$defs/clay'
+    outputs:
+      $ref: '#/$defs/conductivity'
+    verification_cases:
+      - id: published_predictor_means
+        kind: calculated
+        inputs:
+          bulk_density: 1.32
+          silt: 63.33
+          clay: 17.41
+        expected:
+          ks: 0.3780
+        rationale: >-
+          Uses Table 1 predictor means, within the observed marginal ranges.
+          Silt and clay leave 19.26 percent sand. All standardized predictors
+          equal 0.5. Expected conductivity was calculated with decimal arithmetic
+          from Table 4 and the reviewed scaling reconstruction.
+      - id: interior_soil
+        kind: calculated
+        inputs:
+          bulk_density: 1.2
+          silt: 60
+          clay: 20
+        expected:
+          ks: 0.5615765333953871
+        rationale: >-
+          Interior soil with 60 percent silt, 20 percent clay and a residual
+          20 percent sand, at bulk density 1.2 g/cm^3. All inputs are within
+          Table 1 ranges and differ from the scaling means. Expected output
+          was fixed from decimal reference calculations of Jia Equation 3,
+          Table 4 and the reviewed inverse response transformation.
+    edge_cases: []
+    documentation:
+      notes:
+        - 'Highest-ranked fitted PTF, ranked by descending R-squared (Section 3.3).'
+        - >-
+          Uses Table 1 means and standard deviations for Jia et al. (2012)
+          Equation 3 on both predictors and response, as a reviewed reconstruction.
+      warnings:
+        - >-
+          The publication does not explicitly confirm Table 1 statistics as
+          the fitted scaling constants or the application of response scaling.
+          This reconstruction has not been verified against author software.
+        - Observed ranges describe the sampled soils; predictions are not clamped.
+    implementation:
+      variables:
+        - name: bd_scaled
+          expr: '(bulk_density - (1.32 - 2 * 0.14)) / (4 * 0.14)'
+        - name: silt_scaled
+          expr: '(silt - (63.33 - 2 * 9.85)) / (4 * 9.85)'
+        - name: clay_scaled
+          expr: '(clay - (17.41 - 2 * 4.69)) / (4 * 4.69)'
+        - name: response_scaled
+          expr: '0.873 - 0.555 * bd_scaled - 0.399 * silt_scaled + 0.224 * clay_scaled'
+        - name: ks
+          expr: '4 * 0.25 * response_scaled + 0.37 - 2 * 0.25'
+  - name: calc_ptf_zhao2016_m2_2
+    status: implemented
+    public_api:
+      name: calc_ptf_zhao2016_m2_2
+      result_class: null
+      summary: Estimate saturated hydraulic conductivity using reconstructed M2-2.
+    scope:
+      prediction_target: Saturated hydraulic conductivity
+      models:
+        h_theta: null
+        k_h: null
+    inputs:
+      - $ref: '#/$defs/bulk_density'
+      - $ref: '#/$defs/silt'
+      - $ref: '#/$defs/clay'
+    outputs:
+      $ref: '#/$defs/conductivity'
+    verification_cases:
+      - id: published_predictor_means
+        kind: calculated
+        inputs:
+          bulk_density: 1.32
+          silt: 63.33
+          clay: 17.41
+        expected:
+          ks: 0.3710
+        rationale: >-
+          Uses Table 1 predictor means, within the observed marginal ranges.
+          Silt and clay leave 19.26 percent sand. All standardized predictors
+          equal 0.5. Expected conductivity was calculated with decimal arithmetic
+          from Table 4 and the reviewed scaling reconstruction.
+      - id: interior_soil
+        kind: calculated
+        inputs:
+          bulk_density: 1.2
+          silt: 60
+          clay: 20
+        expected:
+          ks: 0.5567321826328834
+        rationale: >-
+          Interior soil with 60 percent silt, 20 percent clay and a residual
+          20 percent sand, at bulk density 1.2 g/cm^3. All inputs are within
+          Table 1 ranges and differ from the scaling means. Expected output
+          was fixed from decimal reference calculations of Jia Equation 3,
+          Table 4 and the reviewed inverse response transformation.
+    edge_cases: []
+    documentation:
+      notes:
+        - 'Mean coefficients of the top 25 percent, ranked by descending R-squared (Section 3.3).'
+        - >-
+          Uses Table 1 means and standard deviations for Jia et al. (2012)
+          Equation 3 on both predictors and response, as a reviewed reconstruction.
+      warnings:
+        - >-
+          The publication does not explicitly confirm Table 1 statistics as
+          the fitted scaling constants or the application of response scaling.
+          This reconstruction has not been verified against author software.
+        - Observed ranges describe the sampled soils; predictions are not clamped.
+    implementation:
+      variables:
+        - name: bd_scaled
+          expr: '(bulk_density - (1.32 - 2 * 0.14)) / (4 * 0.14)'
+        - name: silt_scaled
+          expr: '(silt - (63.33 - 2 * 9.85)) / (4 * 9.85)'
+        - name: clay_scaled
+          expr: '(clay - (17.41 - 2 * 4.69)) / (4 * 4.69)'
+        - name: response_scaled
+          expr: '0.868 - 0.557 * bd_scaled - 0.408 * silt_scaled + 0.231 * clay_scaled'
+        - name: ks
+          expr: '4 * 0.25 * response_scaled + 0.37 - 2 * 0.25'
+  - name: calc_ptf_zhao2016_m2_3
+    status: implemented
+    public_api:
+      name: calc_ptf_zhao2016_m2_3
+      result_class: null
+      summary: Estimate saturated hydraulic conductivity using reconstructed M2-3.
+    scope:
+      prediction_target: Saturated hydraulic conductivity
+      models:
+        h_theta: null
+        k_h: null
+    inputs:
+      - $ref: '#/$defs/bulk_density'
+      - $ref: '#/$defs/silt'
+      - $ref: '#/$defs/clay'
+    outputs:
+      $ref: '#/$defs/conductivity'
+    verification_cases:
+      - id: published_predictor_means
+        kind: calculated
+        inputs:
+          bulk_density: 1.32
+          silt: 63.33
+          clay: 17.41
+        expected:
+          ks: 0.3710
+        rationale: >-
+          Uses Table 1 predictor means, within the observed marginal ranges.
+          Silt and clay leave 19.26 percent sand. All standardized predictors
+          equal 0.5. Expected conductivity was calculated with decimal arithmetic
+          from Table 4 and the reviewed scaling reconstruction.
+      - id: interior_soil
+        kind: calculated
+        inputs:
+          bulk_density: 1.2
+          silt: 60
+          clay: 20
+        expected:
+          ks: 0.5595593556871192
+        rationale: >-
+          Interior soil with 60 percent silt, 20 percent clay and a residual
+          20 percent sand, at bulk density 1.2 g/cm^3. All inputs are within
+          Table 1 ranges and differ from the scaling means. Expected output
+          was fixed from decimal reference calculations of Jia Equation 3,
+          Table 4 and the reviewed inverse response transformation.
+    edge_cases: []
+    documentation:
+      notes:
+        - 'Mean coefficients of the top 50 percent, ranked by descending R-squared (Section 3.3).'
+        - >-
+          Uses Table 1 means and standard deviations for Jia et al. (2012)
+          Equation 3 on both predictors and response, as a reviewed reconstruction.
+      warnings:
+        - >-
+          The publication does not explicitly confirm Table 1 statistics as
+          the fitted scaling constants or the application of response scaling.
+          This reconstruction has not been verified against author software.
+        - Observed ranges describe the sampled soils; predictions are not clamped.
+    implementation:
+      variables:
+        - name: bd_scaled
+          expr: '(bulk_density - (1.32 - 2 * 0.14)) / (4 * 0.14)'
+        - name: silt_scaled
+          expr: '(silt - (63.33 - 2 * 9.85)) / (4 * 9.85)'
+        - name: clay_scaled
+          expr: '(clay - (17.41 - 2 * 4.69)) / (4 * 4.69)'
+        - name: response_scaled
+          expr: '0.872 - 0.565 * bd_scaled - 0.413 * silt_scaled + 0.236 * clay_scaled'
+        - name: ks
+          expr: '4 * 0.25 * response_scaled + 0.37 - 2 * 0.25'
+  - name: calc_ptf_zhao2016_m2_4
+    status: implemented
+    public_api:
+      name: calc_ptf_zhao2016_m2_4
+      result_class: null
+      summary: Estimate saturated hydraulic conductivity using reconstructed M2-4.
+    scope:
+      prediction_target: Saturated hydraulic conductivity
+      models:
+        h_theta: null
+        k_h: null
+    inputs:
+      - $ref: '#/$defs/bulk_density'
+      - $ref: '#/$defs/silt'
+      - $ref: '#/$defs/clay'
+    outputs:
+      $ref: '#/$defs/conductivity'
+    verification_cases:
+      - id: published_predictor_means
+        kind: calculated
+        inputs:
+          bulk_density: 1.32
+          silt: 63.33
+          clay: 17.41
+        expected:
+          ks: 0.3710
+        rationale: >-
+          Uses Table 1 predictor means, within the observed marginal ranges.
+          Silt and clay leave 19.26 percent sand. All standardized predictors
+          equal 0.5. Expected conductivity was calculated with decimal arithmetic
+          from Table 4 and the reviewed scaling reconstruction.
+      - id: interior_soil
+        kind: calculated
+        inputs:
+          bulk_density: 1.2
+          silt: 60
+          clay: 20
+        expected:
+          ks: 0.5615354864546015
+        rationale: >-
+          Interior soil with 60 percent silt, 20 percent clay and a residual
+          20 percent sand, at bulk density 1.2 g/cm^3. All inputs are within
+          Table 1 ranges and differ from the scaling means. Expected output
+          was fixed from decimal reference calculations of Jia Equation 3,
+          Table 4 and the reviewed inverse response transformation.
+    edge_cases: []
+    documentation:
+      notes:
+        - 'Mean coefficients of the top 75 percent, ranked by descending R-squared (Section 3.3).'
+        - >-
+          Uses Table 1 means and standard deviations for Jia et al. (2012)
+          Equation 3 on both predictors and response, as a reviewed reconstruction.
+      warnings:
+        - >-
+          The publication does not explicitly confirm Table 1 statistics as
+          the fitted scaling constants or the application of response scaling.
+          This reconstruction has not been verified against author software.
+        - Observed ranges describe the sampled soils; predictions are not clamped.
+    implementation:
+      variables:
+        - name: bd_scaled
+          expr: '(bulk_density - (1.32 - 2 * 0.14)) / (4 * 0.14)'
+        - name: silt_scaled
+          expr: '(silt - (63.33 - 2 * 9.85)) / (4 * 9.85)'
+        - name: clay_scaled
+          expr: '(clay - (17.41 - 2 * 4.69)) / (4 * 4.69)'
+        - name: response_scaled
+          expr: '0.877 - 0.572 * bd_scaled - 0.417 * silt_scaled + 0.237 * clay_scaled'
+        - name: ks
+          expr: '4 * 0.25 * response_scaled + 0.37 - 2 * 0.25'
+  - name: calc_ptf_zhao2016_m2_5
+    status: implemented
+    public_api:
+      name: calc_ptf_zhao2016_m2_5
+      result_class: null
+      summary: Estimate saturated hydraulic conductivity using reconstructed M2-5.
+    scope:
+      prediction_target: Saturated hydraulic conductivity
+      models:
+        h_theta: null
+        k_h: null
+    inputs:
+      - $ref: '#/$defs/bulk_density'
+      - $ref: '#/$defs/silt'
+      - $ref: '#/$defs/clay'
+    outputs:
+      $ref: '#/$defs/conductivity'
+    verification_cases:
+      - id: published_predictor_means
+        kind: calculated
+        inputs:
+          bulk_density: 1.32
+          silt: 63.33
+          clay: 17.41
+        expected:
+          ks: 0.3705
+        rationale: >-
+          Uses Table 1 predictor means, within the observed marginal ranges.
+          Silt and clay leave 19.26 percent sand. All standardized predictors
+          equal 0.5. Expected conductivity was calculated with decimal arithmetic
+          from Table 4 and the reviewed scaling reconstruction.
+      - id: interior_soil
+        kind: calculated
+        inputs:
+          bulk_density: 1.2
+          silt: 60
+          clay: 20
+        expected:
+          ks: 0.5638008258201379
+        rationale: >-
+          Interior soil with 60 percent silt, 20 percent clay and a residual
+          20 percent sand, at bulk density 1.2 g/cm^3. All inputs are within
+          Table 1 ranges and differ from the scaling means. Expected output
+          was fixed from decimal reference calculations of Jia Equation 3,
+          Table 4 and the reviewed inverse response transformation.
+    edge_cases: []
+    documentation:
+      notes:
+        - 'Mean coefficients of all 400 PTFs, ranked by descending R-squared (Section 3.3).'
+        - >-
+          Uses Table 1 means and standard deviations for Jia et al. (2012)
+          Equation 3 on both predictors and response, as a reviewed reconstruction.
+      warnings:
+        - >-
+          The publication does not explicitly confirm Table 1 statistics as
+          the fitted scaling constants or the application of response scaling.
+          This reconstruction has not been verified against author software.
+        - Observed ranges describe the sampled soils; predictions are not clamped.
+    implementation:
+      variables:
+        - name: bd_scaled
+          expr: '(bulk_density - (1.32 - 2 * 0.14)) / (4 * 0.14)'
+        - name: silt_scaled
+          expr: '(silt - (63.33 - 2 * 9.85)) / (4 * 9.85)'
+        - name: clay_scaled
+          expr: '(clay - (17.41 - 2 * 4.69)) / (4 * 4.69)'
+        - name: response_scaled
+          expr: '0.882 - 0.581 * bd_scaled - 0.422 * silt_scaled + 0.240 * clay_scaled'
+        - name: ks
+          expr: '4 * 0.25 * response_scaled + 0.37 - 2 * 0.25'
+  - name: calc_ptf_zhao2016_m2_6
+    status: implemented
+    public_api:
+      name: calc_ptf_zhao2016_m2_6
+      result_class: null
+      summary: Estimate saturated hydraulic conductivity using reconstructed M2-6.
+    scope:
+      prediction_target: Saturated hydraulic conductivity
+      models:
+        h_theta: null
+        k_h: null
+    inputs:
+      - $ref: '#/$defs/bulk_density'
+      - $ref: '#/$defs/silt'
+      - $ref: '#/$defs/clay'
+    outputs:
+      $ref: '#/$defs/conductivity'
+    verification_cases:
+      - id: published_predictor_means
+        kind: calculated
+        inputs:
+          bulk_density: 1.32
+          silt: 63.33
+          clay: 17.41
+        expected:
+          ks: 0.3655
+        rationale: >-
+          Uses Table 1 predictor means, within the observed marginal ranges.
+          Silt and clay leave 19.26 percent sand. All standardized predictors
+          equal 0.5. Expected conductivity was calculated with decimal arithmetic
+          from Table 4 and the reviewed scaling reconstruction.
+      - id: interior_soil
+        kind: calculated
+        inputs:
+          bulk_density: 1.2
+          silt: 60
+          clay: 20
+        expected:
+          ks: 0.5853502159254489
+        rationale: >-
+          Interior soil with 60 percent silt, 20 percent clay and a residual
+          20 percent sand, at bulk density 1.2 g/cm^3. All inputs are within
+          Table 1 ranges and differ from the scaling means. Expected output
+          was fixed from decimal reference calculations of Jia Equation 3,
+          Table 4 and the reviewed inverse response transformation.
+    edge_cases: []
+    documentation:
+      notes:
+        - 'Lowest-ranked fitted PTF, ranked by descending R-squared (Section 3.3).'
+        - >-
+          Uses Table 1 means and standard deviations for Jia et al. (2012)
+          Equation 3 on both predictors and response, as a reviewed reconstruction.
+      warnings:
+        - >-
+          The publication does not explicitly confirm Table 1 statistics as
+          the fitted scaling constants or the application of response scaling.
+          This reconstruction has not been verified against author software.
+        - Observed ranges describe the sampled soils; predictions are not clamped.
+    implementation:
+      variables:
+        - name: bd_scaled
+          expr: '(bulk_density - (1.32 - 2 * 0.14)) / (4 * 0.14)'
+        - name: silt_scaled
+          expr: '(silt - (63.33 - 2 * 9.85)) / (4 * 9.85)'
+        - name: clay_scaled
+          expr: '(clay - (17.41 - 2 * 4.69)) / (4 * 4.69)'
+        - name: response_scaled
+          expr: '0.891 - 0.637 * bd_scaled - 0.470 * silt_scaled + 0.316 * clay_scaled'
+        - name: ks
+          expr: '4 * 0.25 * response_scaled + 0.37 - 2 * 0.25'
+scientific_notes: |
+  ## Supported models
+
+  Section 3.3 and Table 4 publish six coefficient sets for M2, predicting
+  saturated hydraulic conductivity from bulk density, silt and clay. M2 was
+  selected for stability, ease of measuring its predictors and accuracy
+  comparable to M1. The six functions retain the published row order:
+  highest-ranked fit, averages of the top 25%, 50%, 75% and 100% of 400 fits,
+  and lowest-ranked fit, ranked by descending R-squared.
+
+  ## Accepted review interpretation
+
+  On 2026-09-07 the user requested generation in response to the concrete
+  reconstruction proposal. This was treated as acceptance of using Zhao
+  Table 1 statistics with Jia Equation 3 for both predictors and response.
+  This is an explicitly reviewed reconstruction, not a newly discovered
+  author-confirmed preprocessing contract.
+
+  Zhao Section 2.3.1 cites Jia, X., Shao, M., & Wei, X. (2012).
+  State-space prediction of soil respiration time series in temperate,
+  semi-arid grassland in northern China. Soil Research, 50(4), 293-303.
+  https://doi.org/10.1071/SR12068
+  The user-supplied sr12068.pdf, page 295 (PDF page 3), Theory, Equation 3,
+  defines z = [Z - (mu - 2*sigma)] / (4*sigma). Here mu and sigma are the
+  measured variable's mean and standard deviation. Algebraically,
+  Z = 4*sigma*z + mu - 2*sigma. This derivation justifies the inverse used
+  under the accepted interpretation; it does not establish author-code parity.
+
+  Table 1 supplies means and SDs of BD (1.32, 0.14), Silt (63.33, 9.85),
+  Clay (17.41, 4.69), and Ks (0.37, 0.25), in the documented physical units.
+  These published values define this implementation at their stated precision.
+  Section 2.3.1 discusses standardization before random calibration-validation
+  splitting, supporting the accepted whole-dataset interpretation. It does
+  not explicitly identify those statistics as the fitted scaling constants
+  or unambiguously specify whether the response was standardized.
+
+  A consistency check supports, but does not prove, response scaling:
+  at the predictor means all scaled predictors are 0.5, and M2-5 (the average
+  over all 400 fits) gives a fitted response of 0.5005. Inverse scaling gives
+  0.3705 mm/min, close to Table 1's mean Ks of 0.37 mm/min. Without inverse
+  scaling the same fitted response would be 0.5005 mm/min. This comparison
+  is a diagnostic inference; differing training subsets are unavailable.
+
+  ## Verification decision
+
+  No complete published input-output pair is present in the supplied source.
+  Each model has calculated cases at published predictor means and at an
+  interior soil with nonzero deviations from those means. Fixed expected
+  outputs were evaluated using Python decimal arithmetic directly from
+  the reviewed transformation and published coefficients, without codegen.
+  These cases check the computational reconstruction, not predictive accuracy
+  or agreement with unpublished author artifacts. Model RMSE is not an
+  implementation tolerance. Source-bundle instructions requiring published
+  golden cases are superseded by the current verification policy.
+
+  ## Documented limitations and excluded models
+
+  Published marginal ranges describe the dataset, not joint extreme soils
+  or guarantees outside the sampled region. The regressions are not clamped.
+  M1 and M3-M6 in Table 3 lack fitted coefficients. ANN models A1-A6 lack
+  trained weights, biases and a complete preprocessing contract. These
+  alternative models are excluded and do not block the reviewed M2 functions.
+
+  ## Evidence provenance
+
+  Zhao's supplied local Markdown contains the article text, Tables 1 and 4,
+  and prior research notes. Automated image descriptions are not numerical
+  evidence. The publisher confirms CATENA volume 143, pages 1-6:
+  https://www.sciencedirect.com/science/article/pii/S0341816216301242
+  Title, DOI, institutional-repository and coefficient searches on 2026-09-07
+  did not locate an accessible author preprocessing or trained-model artifact.
+  The subsequent local Jia PDF resolved the referenced normalization equation.
+  It concerns a separate respiration dataset; its own statistics are not used.

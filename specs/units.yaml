@@ -34,6 +34,10 @@ centimeter_per_minute:
   preferred_notation: "cm/min"
   aliases: []
 
+millimeter_per_minute:
+  preferred_notation: "mm/min"
+  aliases: []
+
 centimeter_per_day:
   preferred_notation: "cm d^-1"
   aliases: ["cm/day"]

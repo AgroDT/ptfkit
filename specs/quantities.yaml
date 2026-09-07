@@ -44,6 +44,10 @@ saturated_hydraulic_conductivity:
       absolute: 1.0e-5
       relative: 0.01
       rationale: Conductivity spans orders of magnitude; use one percent with a lower resolution.
+    millimeter_per_minute:
+      absolute: 1.0e-4
+      relative: 0.01
+      rationale: Equivalent to the reviewed centimeter-per-minute resolution, with one percent relative tolerance.
     centimeter_per_day:
       absolute: 1.0e-4
       relative: 0.01
