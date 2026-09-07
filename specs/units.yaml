@@ -8,7 +8,7 @@ volume_percent:
 
 mass_fraction:
   preferred_notation: "kg/kg"
-  aliases: ["g/g"]
+  aliases: ["g/g", "g g⁻¹"]
 
 mass_percent:
   preferred_notation: "% w/w"

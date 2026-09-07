@@ -21,6 +21,7 @@ Each page describes the source, scope, inputs, outputs, status, and limitations 
 | [Point water-retention regressions for tropical Sri Lankan soils.](./gunarathna2019.md) | Tropical Sri Lanka. | 11 |
 | [Hodnett & Tomasella (2002), tropical-soil regressions for four van Genuchten parameters.](./hodnett2002.md) | Tropical soils between approximately 25 degrees N and 25 degrees S. | 1 |
 | [Jabro (1992), United States.](./jabro1992.md) | USA | 1 |
+| [Moisture retention and plasticity regressions for two groups of Nigerian soils.](./lal1979.md) | Nigeria | 49 |
 | [Li et al. (2007), Fengqiu County, North China Plain, China.](./li2007.md) | Fengqiu County soils in the North China Plain, China | 1 |
 | [Mayr and Jarvis (1999) modified Brooks-Corey water-retention parameter PTFs.](./mayr1999.md) | England and Wales | 1 |
 | [Oosterveld and Chang (1980), soil-moisture retention from texture and depth.](./oosterveld1980.md) | Southern Alberta, Canada | 5 |

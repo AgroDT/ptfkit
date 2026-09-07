@@ -1,0 +1,721 @@
+source:
+  summary: "Moisture retention and plasticity regressions for two groups of Nigerian soils."
+  citation_apa: "Lal, R. (1979). Physical properties and moisture retention characteristics of some Nigerian soils. Geoderma, 21, 209-223."
+  doi: {"identifier": "10.1016/0016-7061(78)90028-9", "url": "https://doi.org/10.1016/0016-7061(78)90028-9"}
+scope:
+  territory: Nigeria
+  dataset: 119 genetic-horizon samples from 23 profiles in two parent-material groups.
+$defs:
+  clay: {"name": "clay", "symbol": null, "unit": "%", "domain": null, "description": "Clay smaller than 0.002 mm; percentage of the fine earth. Full calibration bounds are not reported."}
+  sand: {"name": "sand", "symbol": null, "unit": "%", "domain": null, "description": "Sand from 0.02 to 2 mm; percentage of the fine earth. Full calibration bounds are not reported."}
+  silt: {"name": "silt", "symbol": null, "unit": "%", "domain": null, "description": "Silt from 0.002 to 0.02 mm; percentage of the fine earth. Full calibration bounds are not reported."}
+  organic_carbon: {"name": "organic_carbon", "symbol": null, "unit": "%", "domain": null, "description": "Organic carbon measured by Walkley and Black wet combustion; percentage of the fine earth. Full calibration bounds are not reported."}
+  water_0bar: {"name": "water_0bar", "symbol": null, "unit": "g/g", "domain": null, "description": "Gravimetric moisture retention at 0 bar suction on disturbed soil."}
+  water_01bar: {"name": "water_01bar", "symbol": null, "unit": "g/g", "domain": null, "description": "Gravimetric moisture retention at 0.1 bar suction on disturbed soil."}
+functions:
+  - name: calc_ptf_lal1979_group_i_water_0bar_from_clay
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_i_water_0bar_from_clay", "result_class": null, "summary": "Estimate gravimetric moisture retention at saturation for Group I."}
+    scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture retention at saturation", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/clay"}]
+    outputs: {"type": "scalar", "name": "water_0bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at saturation expressed per unit dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"clay": 19}, "expected": {"water_0bar": 0.365}, "rationale": "Table II surface horizon mean for Group I; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table IV, Group I, clay predictor, water_0bar response."], "warnings": []}
+    implementation:
+      variables:
+        - name: water_0bar
+          expr: "0.004 * clay + (0.289)"
+  - name: calc_ptf_lal1979_group_i_water_0bar_from_sand
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_i_water_0bar_from_sand", "result_class": null, "summary": "Estimate gravimetric moisture retention at saturation for Group I."}
+    scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture retention at saturation", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/sand"}]
+    outputs: {"type": "scalar", "name": "water_0bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at saturation expressed per unit dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"sand": 66}, "expected": {"water_0bar": 0.381}, "rationale": "Table II surface horizon mean for Group I; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table IV, Group I, sand predictor, water_0bar response."], "warnings": []}
+    implementation:
+      variables:
+        - name: water_0bar
+          expr: "-0.003 * sand + (0.579)"
+  - name: calc_ptf_lal1979_group_ii_water_0bar_from_clay
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_ii_water_0bar_from_clay", "result_class": null, "summary": "Estimate gravimetric moisture retention at saturation for Group II."}
+    scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture retention at saturation", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/clay"}]
+    outputs: {"type": "scalar", "name": "water_0bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at saturation expressed per unit dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"clay": 38}, "expected": {"water_0bar": 0.448}, "rationale": "Table II B2t horizon mean for Group II; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table IV, Group II, clay predictor, water_0bar response."], "warnings": []}
+    implementation:
+      variables:
+        - name: water_0bar
+          expr: "0.004 * clay + (0.296)"
+  - name: calc_ptf_lal1979_group_ii_water_0bar_from_sand
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_ii_water_0bar_from_sand", "result_class": null, "summary": "Estimate gravimetric moisture retention at saturation for Group II."}
+    scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture retention at saturation", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/sand"}]
+    outputs: {"type": "scalar", "name": "water_0bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at saturation expressed per unit dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"sand": 57}, "expected": {"water_0bar": 0.417}, "rationale": "Table II B2t horizon mean for Group II; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table IV, Group II, sand predictor, water_0bar response."], "warnings": []}
+    implementation:
+      variables:
+        - name: water_0bar
+          expr: "-0.004 * sand + (0.645)"
+  - name: calc_ptf_lal1979_group_i_water_01bar_from_clay
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_i_water_01bar_from_clay", "result_class": null, "summary": "Estimate gravimetric moisture retention at 0.1 bar suction for Group I."}
+    scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture retention at 0.1 bar suction", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/clay"}]
+    outputs: {"type": "scalar", "name": "water_01bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at 0.1 bar suction expressed per unit dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"clay": 19}, "expected": {"water_01bar": 0.159}, "rationale": "Table II surface horizon mean for Group I; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table V, Group I, clay predictor, water_01bar response."], "warnings": []}
+    implementation:
+      variables:
+        - name: water_01bar
+          expr: "0.003 * clay + (0.102)"
+  - name: calc_ptf_lal1979_group_i_water_03bar_from_clay
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_i_water_03bar_from_clay", "result_class": null, "summary": "Estimate gravimetric moisture retention at 0.3 bar suction for Group I."}
+    scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture retention at 0.3 bar suction", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/clay"}]
+    outputs: {"type": "scalar", "name": "water_03bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at 0.3 bar suction expressed per unit dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"clay": 19}, "expected": {"water_03bar": 0.141}, "rationale": "Table II surface horizon mean for Group I; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table V, Group I, clay predictor, water_03bar response."], "warnings": []}
+    implementation:
+      variables:
+        - name: water_03bar
+          expr: "0.004 * clay + (0.065)"
+  - name: calc_ptf_lal1979_group_i_water_01bar_from_sand
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_i_water_01bar_from_sand", "result_class": null, "summary": "Estimate gravimetric moisture retention at 0.1 bar suction for Group I."}
+    scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture retention at 0.1 bar suction", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/sand"}]
+    outputs: {"type": "scalar", "name": "water_01bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at 0.1 bar suction expressed per unit dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"sand": 66}, "expected": {"water_01bar": 0.166}, "rationale": "Table II surface horizon mean for Group I; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table V, Group I, sand predictor, water_01bar response."], "warnings": []}
+    implementation:
+      variables:
+        - name: water_01bar
+          expr: "-0.003 * sand + (0.364)"
+  - name: calc_ptf_lal1979_group_i_water_03bar_from_sand
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_i_water_03bar_from_sand", "result_class": null, "summary": "Estimate gravimetric moisture retention at 0.3 bar suction for Group I."}
+    scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture retention at 0.3 bar suction", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/sand"}]
+    outputs: {"type": "scalar", "name": "water_03bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at 0.3 bar suction expressed per unit dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"sand": 66}, "expected": {"water_03bar": 0.136}, "rationale": "Table II surface horizon mean for Group I; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table V, Group I, sand predictor, water_03bar response."], "warnings": []}
+    implementation:
+      variables:
+        - name: water_03bar
+          expr: "-0.003 * sand + (0.334)"
+  - name: calc_ptf_lal1979_group_ii_water_01bar_from_clay
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_ii_water_01bar_from_clay", "result_class": null, "summary": "Estimate gravimetric moisture retention at 0.1 bar suction for Group II."}
+    scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture retention at 0.1 bar suction", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/clay"}]
+    outputs: {"type": "scalar", "name": "water_01bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at 0.1 bar suction expressed per unit dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"clay": 38}, "expected": {"water_01bar": 0.194}, "rationale": "Table II B2t horizon mean for Group II; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table V, Group II, clay predictor, water_01bar response."], "warnings": []}
+    implementation:
+      variables:
+        - name: water_01bar
+          expr: "0.003 * clay + (0.080)"
+  - name: calc_ptf_lal1979_group_ii_water_03bar_from_clay
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_ii_water_03bar_from_clay", "result_class": null, "summary": "Estimate gravimetric moisture retention at 0.3 bar suction for Group II."}
+    scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture retention at 0.3 bar suction", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/clay"}]
+    outputs: {"type": "scalar", "name": "water_03bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at 0.3 bar suction expressed per unit dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"clay": 38}, "expected": {"water_03bar": 0.161}, "rationale": "Table II B2t horizon mean for Group II; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table V, Group II, clay predictor, water_03bar response."], "warnings": []}
+    implementation:
+      variables:
+        - name: water_03bar
+          expr: "0.003 * clay + (0.047)"
+  - name: calc_ptf_lal1979_group_ii_water_01bar_from_sand
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_ii_water_01bar_from_sand", "result_class": null, "summary": "Estimate gravimetric moisture retention at 0.1 bar suction for Group II."}
+    scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture retention at 0.1 bar suction", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/sand"}]
+    outputs: {"type": "scalar", "name": "water_01bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at 0.1 bar suction expressed per unit dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"sand": 57}, "expected": {"water_01bar": 0.2065}, "rationale": "Table II B2t horizon mean for Group II; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table V, Group II, sand predictor, water_01bar response."], "warnings": []}
+    implementation:
+      variables:
+        - name: water_01bar
+          expr: "-0.0035 * sand + (0.406)"
+  - name: calc_ptf_lal1979_group_ii_water_03bar_from_sand
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_ii_water_03bar_from_sand", "result_class": null, "summary": "Estimate gravimetric moisture retention at 0.3 bar suction for Group II."}
+    scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture retention at 0.3 bar suction", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/sand"}]
+    outputs: {"type": "scalar", "name": "water_03bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at 0.3 bar suction expressed per unit dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"sand": 57}, "expected": {"water_03bar": 0.178}, "rationale": "Table II B2t horizon mean for Group II; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table V, Group II, sand predictor, water_03bar response."], "warnings": []}
+    implementation:
+      variables:
+        - name: water_03bar
+          expr: "-0.003 * sand + (0.349)"
+  - name: calc_ptf_lal1979_group_i_water_15bar_from_clay
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_i_water_15bar_from_clay", "result_class": null, "summary": "Estimate gravimetric moisture retention at 15 bar suction for Group I."}
+    scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture retention at 15 bar suction", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/clay"}]
+    outputs: {"type": "scalar", "name": "water_15bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at 15 bar suction expressed per unit dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"clay": 19}, "expected": {"water_15bar": 0.063}, "rationale": "Table II surface horizon mean for Group I; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table VI, Group I, clay predictor, water_15bar response."], "warnings": []}
+    implementation:
+      variables:
+        - name: water_15bar
+          expr: "0.003 * clay + (0.006)"
+  - name: calc_ptf_lal1979_group_i_water_15bar_from_sand
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_i_water_15bar_from_sand", "result_class": null, "summary": "Estimate gravimetric moisture retention at 15 bar suction for Group I."}
+    scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture retention at 15 bar suction", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/sand"}]
+    outputs: {"type": "scalar", "name": "water_15bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at 15 bar suction expressed per unit dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"sand": 66}, "expected": {"water_15bar": 0.049}, "rationale": "Table II surface horizon mean for Group I; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table VI, Group I, sand predictor, water_15bar response."], "warnings": []}
+    implementation:
+      variables:
+        - name: water_15bar
+          expr: "-0.003 * sand + (0.247)"
+  - name: calc_ptf_lal1979_group_i_water_15bar_from_silt
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_i_water_15bar_from_silt", "result_class": null, "summary": "Estimate gravimetric moisture retention at 15 bar suction for Group I."}
+    scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture retention at 15 bar suction", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/silt"}]
+    outputs: {"type": "scalar", "name": "water_15bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at 15 bar suction expressed per unit dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"silt": 15}, "expected": {"water_15bar": 0.128}, "rationale": "Table II surface horizon mean for Group I; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table VI, Group I, silt predictor, water_15bar response."], "warnings": []}
+    implementation:
+      variables:
+        - name: water_15bar
+          expr: "0.005 * silt + (0.053)"
+  - name: calc_ptf_lal1979_group_ii_water_15bar_from_clay
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_ii_water_15bar_from_clay", "result_class": null, "summary": "Estimate gravimetric moisture retention at 15 bar suction for Group II."}
+    scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture retention at 15 bar suction", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/clay"}]
+    outputs: {"type": "scalar", "name": "water_15bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at 15 bar suction expressed per unit dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"clay": 38}, "expected": {"water_15bar": 0.1086}, "rationale": "Table II B2t horizon mean for Group II; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table VI, Group II, clay predictor, water_15bar response."], "warnings": []}
+    implementation:
+      variables:
+        - name: water_15bar
+          expr: "0.0022 * clay + (0.025)"
+  - name: calc_ptf_lal1979_group_ii_water_15bar_from_sand
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_ii_water_15bar_from_sand", "result_class": null, "summary": "Estimate gravimetric moisture retention at 15 bar suction for Group II."}
+    scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture retention at 15 bar suction", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/sand"}]
+    outputs: {"type": "scalar", "name": "water_15bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at 15 bar suction expressed per unit dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"sand": 57}, "expected": {"water_15bar": 0.1472}, "rationale": "Table II B2t horizon mean for Group II; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table VI, Group II, sand predictor, water_15bar response."], "warnings": []}
+    implementation:
+      variables:
+        - name: water_15bar
+          expr: "-0.0024 * sand + (0.284)"
+  - name: calc_ptf_lal1979_group_i_moisture_equivalent_from_clay
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_i_moisture_equivalent_from_clay", "result_class": null, "summary": "Estimate gravimetric moisture equivalent measured at 1000 times gravity for Group I."}
+    scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture equivalent measured at 1000 times gravity", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/clay"}]
+    outputs: {"type": "scalar", "name": "moisture_equivalent", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture equivalent measured at 1000 times gravity expressed per unit dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"clay": 19}, "expected": {"moisture_equivalent": 0.128}, "rationale": "Table II surface horizon mean for Group I; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table VII, Group I, clay predictor, moisture_equivalent response."], "warnings": []}
+    implementation:
+      variables:
+        - name: moisture_equivalent
+          expr: "0.004 * clay + (0.052)"
+  - name: calc_ptf_lal1979_group_i_moisture_equivalent_from_sand
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_i_moisture_equivalent_from_sand", "result_class": null, "summary": "Estimate gravimetric moisture equivalent measured at 1000 times gravity for Group I."}
+    scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture equivalent measured at 1000 times gravity", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/sand"}]
+    outputs: {"type": "scalar", "name": "moisture_equivalent", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture equivalent measured at 1000 times gravity expressed per unit dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"sand": 66}, "expected": {"moisture_equivalent": 0.141}, "rationale": "Table II surface horizon mean for Group I; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table VII, Group I, sand predictor, moisture_equivalent response."], "warnings": []}
+    implementation:
+      variables:
+        - name: moisture_equivalent
+          expr: "-0.003 * sand + (0.339)"
+  - name: calc_ptf_lal1979_group_ii_moisture_equivalent_from_clay
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_ii_moisture_equivalent_from_clay", "result_class": null, "summary": "Estimate gravimetric moisture equivalent measured at 1000 times gravity for Group II."}
+    scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture equivalent measured at 1000 times gravity", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/clay"}]
+    outputs: {"type": "scalar", "name": "moisture_equivalent", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture equivalent measured at 1000 times gravity expressed per unit dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"clay": 38}, "expected": {"moisture_equivalent": 0.152}, "rationale": "Table II B2t horizon mean for Group II; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table VII, Group II, clay predictor, moisture_equivalent response."], "warnings": []}
+    implementation:
+      variables:
+        - name: moisture_equivalent
+          expr: "0.0025 * clay + (0.057)"
+  - name: calc_ptf_lal1979_group_ii_moisture_equivalent_from_sand
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_ii_moisture_equivalent_from_sand", "result_class": null, "summary": "Estimate gravimetric moisture equivalent measured at 1000 times gravity for Group II."}
+    scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture equivalent measured at 1000 times gravity", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/sand"}]
+    outputs: {"type": "scalar", "name": "moisture_equivalent", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture equivalent measured at 1000 times gravity expressed per unit dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"sand": 57}, "expected": {"moisture_equivalent": 0.17}, "rationale": "Table II B2t horizon mean for Group II; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table VII, Group II, sand predictor, moisture_equivalent response."], "warnings": []}
+    implementation:
+      variables:
+        - name: moisture_equivalent
+          expr: "-0.002 * sand + (0.284)"
+  - name: calc_ptf_lal1979_group_ii_moisture_equivalent_from_silt
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_ii_moisture_equivalent_from_silt", "result_class": null, "summary": "Estimate gravimetric moisture equivalent measured at 1000 times gravity for Group II."}
+    scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture equivalent measured at 1000 times gravity", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/silt"}]
+    outputs: {"type": "scalar", "name": "moisture_equivalent", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture equivalent measured at 1000 times gravity expressed per unit dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"silt": 5}, "expected": {"moisture_equivalent": 0.15}, "rationale": "Table II B2t horizon mean for Group II; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table VII, Group II, silt predictor, moisture_equivalent response."], "warnings": []}
+    implementation:
+      variables:
+        - name: moisture_equivalent
+          expr: "-0.005 * silt + (0.175)"
+  - name: calc_ptf_lal1979_group_i_water_01bar_from_water_0bar
+    status: "blocked"
+    public_api: {"name": "calc_ptf_lal1979_group_i_water_01bar_from_water_0bar", "result_class": null, "summary": "Estimate gravimetric moisture retention at 0.1 bar suction for Group I."}
+    scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture retention at 0.1 bar suction", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/water_0bar"}]
+    outputs: {"type": "scalar", "name": "water_01bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at 0.1 bar suction expressed per unit dry soil mass."}
+    verification_cases: []
+    edge_cases: []
+    documentation: {"notes": ["Table VIII, Group I, water_0bar predictor, water_01bar response.", "Printed regression slope m = 1.00; intercept b = 0.20."], "warnings": ["Blocked: the printed dependent/independent labels and coefficients predict increasing water content with increasing suction. Confirm regression direction and intercept sign from authoritative evidence; no reversal or sign correction is assumed."]}
+  - name: calc_ptf_lal1979_group_i_water_03bar_from_water_0bar
+    status: "blocked"
+    public_api: {"name": "calc_ptf_lal1979_group_i_water_03bar_from_water_0bar", "result_class": null, "summary": "Estimate gravimetric moisture retention at 0.3 bar suction for Group I."}
+    scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture retention at 0.3 bar suction", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/water_0bar"}]
+    outputs: {"type": "scalar", "name": "water_03bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at 0.3 bar suction expressed per unit dry soil mass."}
+    verification_cases: []
+    edge_cases: []
+    documentation: {"notes": ["Table VIII, Group I, water_0bar predictor, water_03bar response.", "Printed regression slope m = 1.05; intercept b = 0.22."], "warnings": ["Blocked: the printed dependent/independent labels and coefficients predict increasing water content with increasing suction. Confirm regression direction and intercept sign from authoritative evidence; no reversal or sign correction is assumed."]}
+  - name: calc_ptf_lal1979_group_i_water_15bar_from_water_0bar
+    status: "blocked"
+    public_api: {"name": "calc_ptf_lal1979_group_i_water_15bar_from_water_0bar", "result_class": null, "summary": "Estimate gravimetric moisture retention at 15 bar suction for Group I."}
+    scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture retention at 15 bar suction", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/water_0bar"}]
+    outputs: {"type": "scalar", "name": "water_15bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at 15 bar suction expressed per unit dry soil mass."}
+    verification_cases: []
+    edge_cases: []
+    documentation: {"notes": ["Table VIII, Group I, water_0bar predictor, water_15bar response.", "Printed regression slope m = 1.19; intercept b = 0.28."], "warnings": ["Blocked: the printed dependent/independent labels and coefficients predict increasing water content with increasing suction. Confirm regression direction and intercept sign from authoritative evidence; no reversal or sign correction is assumed."]}
+  - name: calc_ptf_lal1979_group_i_water_03bar_from_water_01bar
+    status: "blocked"
+    public_api: {"name": "calc_ptf_lal1979_group_i_water_03bar_from_water_01bar", "result_class": null, "summary": "Estimate gravimetric moisture retention at 0.3 bar suction for Group I."}
+    scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture retention at 0.3 bar suction", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/water_01bar"}]
+    outputs: {"type": "scalar", "name": "water_03bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at 0.3 bar suction expressed per unit dry soil mass."}
+    verification_cases: []
+    edge_cases: []
+    documentation: {"notes": ["Table VIII, Group I, water_01bar predictor, water_03bar response.", "Printed regression slope m = 1.05; intercept b = 0.10."], "warnings": ["Blocked: the printed dependent/independent labels and coefficients predict increasing water content with increasing suction. Confirm regression direction and intercept sign from authoritative evidence; no reversal or sign correction is assumed."]}
+  - name: calc_ptf_lal1979_group_ii_water_01bar_from_water_0bar
+    status: "blocked"
+    public_api: {"name": "calc_ptf_lal1979_group_ii_water_01bar_from_water_0bar", "result_class": null, "summary": "Estimate gravimetric moisture retention at 0.1 bar suction for Group II."}
+    scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture retention at 0.1 bar suction", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/water_0bar"}]
+    outputs: {"type": "scalar", "name": "water_01bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at 0.1 bar suction expressed per unit dry soil mass."}
+    verification_cases: []
+    edge_cases: []
+    documentation: {"notes": ["Table VIII, Group II, water_0bar predictor, water_01bar response.", "Printed regression slope m = 0.94; intercept b = 0.238."], "warnings": ["Blocked: the printed dependent/independent labels and coefficients predict increasing water content with increasing suction. Confirm regression direction and intercept sign from authoritative evidence; no reversal or sign correction is assumed."]}
+  - name: calc_ptf_lal1979_group_ii_water_03bar_from_water_0bar
+    status: "blocked"
+    public_api: {"name": "calc_ptf_lal1979_group_ii_water_03bar_from_water_0bar", "result_class": null, "summary": "Estimate gravimetric moisture retention at 0.3 bar suction for Group II."}
+    scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture retention at 0.3 bar suction", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/water_0bar"}]
+    outputs: {"type": "scalar", "name": "water_03bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at 0.3 bar suction expressed per unit dry soil mass."}
+    verification_cases: []
+    edge_cases: []
+    documentation: {"notes": ["Table VIII, Group II, water_0bar predictor, water_03bar response.", "Printed regression slope m = 0.91; intercept b = 0.281."], "warnings": ["Blocked: the printed dependent/independent labels and coefficients predict increasing water content with increasing suction. Confirm regression direction and intercept sign from authoritative evidence; no reversal or sign correction is assumed."]}
+  - name: calc_ptf_lal1979_group_ii_water_15bar_from_water_0bar
+    status: "blocked"
+    public_api: {"name": "calc_ptf_lal1979_group_ii_water_15bar_from_water_0bar", "result_class": null, "summary": "Estimate gravimetric moisture retention at 15 bar suction for Group II."}
+    scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture retention at 15 bar suction", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/water_0bar"}]
+    outputs: {"type": "scalar", "name": "water_15bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at 15 bar suction expressed per unit dry soil mass."}
+    verification_cases: []
+    edge_cases: []
+    documentation: {"notes": ["Table VIII, Group II, water_0bar predictor, water_15bar response.", "Printed regression slope m = 1.45; intercept b = 0.277."], "warnings": ["Blocked: the printed dependent/independent labels and coefficients predict increasing water content with increasing suction. Confirm regression direction and intercept sign from authoritative evidence; no reversal or sign correction is assumed."]}
+  - name: calc_ptf_lal1979_group_ii_water_03bar_from_water_01bar
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_ii_water_03bar_from_water_01bar", "result_class": null, "summary": "Estimate gravimetric moisture retention at 0.3 bar suction for Group II."}
+    scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture retention at 0.3 bar suction", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/water_01bar"}]
+    outputs: {"type": "scalar", "name": "water_03bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at 0.3 bar suction expressed per unit dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"water_01bar": 0.17}, "expected": {"water_03bar": 0.1322}, "rationale": "Table III Group II surface-horizon mean at 0.1 bar suction. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table VIII, Group II, water_01bar predictor, water_03bar response."], "warnings": []}
+    implementation:
+      variables:
+        - name: water_03bar
+          expr: "0.86 * water_01bar + (-0.014)"
+  - name: calc_ptf_lal1979_group_ii_water_15bar_from_water_01bar
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_ii_water_15bar_from_water_01bar", "result_class": null, "summary": "Estimate gravimetric moisture retention at 15 bar suction for Group II."}
+    scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture retention at 15 bar suction", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/water_01bar"}]
+    outputs: {"type": "scalar", "name": "water_15bar", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_fraction", "reported_unit": "g g⁻¹", "domain": null, "description": "Gravimetric moisture retention at 15 bar suction expressed per unit dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"water_01bar": 0.17}, "expected": {"water_15bar": 0.0868}, "rationale": "Table III Group II surface-horizon mean at 0.1 bar suction. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table VIII, Group II, water_01bar predictor, water_15bar response."], "warnings": []}
+    implementation:
+      variables:
+        - name: water_15bar
+          expr: "0.54 * water_01bar + (-0.005)"
+  - name: calc_ptf_lal1979_group_i_upper_plastic_limit_from_organic_carbon
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_i_upper_plastic_limit_from_organic_carbon", "result_class": null, "summary": "Estimate upper plastic limit for Group I."}
+    scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Upper plastic limit", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/organic_carbon"}]
+    outputs: {"type": "scalar", "name": "upper_plastic_limit", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_percent", "reported_unit": "%", "domain": null, "description": "Upper plastic limit expressed as percentage of oven-dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"organic_carbon": 1.5}, "expected": {"upper_plastic_limit": 23.63}, "rationale": "Table II surface horizon mean for Group I; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table IX, Group I, organic_carbon predictor, upper_plastic_limit response."], "warnings": []}
+    implementation:
+      variables:
+        - name: upper_plastic_limit
+          expr: "-5.40 * organic_carbon + (31.73)"
+  - name: calc_ptf_lal1979_group_i_lower_plastic_limit_from_organic_carbon
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_i_lower_plastic_limit_from_organic_carbon", "result_class": null, "summary": "Estimate lower plastic limit for Group I."}
+    scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Lower plastic limit", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/organic_carbon"}]
+    outputs: {"type": "scalar", "name": "lower_plastic_limit", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_percent", "reported_unit": "%", "domain": null, "description": "Lower plastic limit expressed as percentage of oven-dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"organic_carbon": 1.5}, "expected": {"lower_plastic_limit": 18.37}, "rationale": "Table II surface horizon mean for Group I; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table IX, Group I, organic_carbon predictor, lower_plastic_limit response."], "warnings": []}
+    implementation:
+      variables:
+        - name: lower_plastic_limit
+          expr: "-4.24 * organic_carbon + (24.73)"
+  - name: calc_ptf_lal1979_group_i_plasticity_index_from_organic_carbon
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_i_plasticity_index_from_organic_carbon", "result_class": null, "summary": "Estimate plasticity index (upper minus lower plastic limit) for Group I."}
+    scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Plasticity index (upper minus lower plastic limit)", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/organic_carbon"}]
+    outputs: {"type": "scalar", "name": "plasticity_index", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_percent", "reported_unit": "%", "domain": null, "description": "Plasticity index (upper minus lower plastic limit) expressed as percentage of oven-dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"organic_carbon": 1.5}, "expected": {"plasticity_index": 5.56}, "rationale": "Table II surface horizon mean for Group I; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table IX, Group I, organic_carbon predictor, plasticity_index response."], "warnings": []}
+    implementation:
+      variables:
+        - name: plasticity_index
+          expr: "-1.24 * organic_carbon + (7.42)"
+  - name: calc_ptf_lal1979_group_i_upper_plastic_limit_from_clay
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_i_upper_plastic_limit_from_clay", "result_class": null, "summary": "Estimate upper plastic limit for Group I."}
+    scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Upper plastic limit", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/clay"}]
+    outputs: {"type": "scalar", "name": "upper_plastic_limit", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_percent", "reported_unit": "%", "domain": null, "description": "Upper plastic limit expressed as percentage of oven-dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"clay": 19}, "expected": {"upper_plastic_limit": 20.22}, "rationale": "Table II surface horizon mean for Group I; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table IX, Group I, clay predictor, upper_plastic_limit response."], "warnings": []}
+    implementation:
+      variables:
+        - name: upper_plastic_limit
+          expr: "0.46 * clay + (11.48)"
+  - name: calc_ptf_lal1979_group_i_lower_plastic_limit_from_clay
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_i_lower_plastic_limit_from_clay", "result_class": null, "summary": "Estimate lower plastic limit for Group I."}
+    scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Lower plastic limit", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/clay"}]
+    outputs: {"type": "scalar", "name": "lower_plastic_limit", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_percent", "reported_unit": "%", "domain": null, "description": "Lower plastic limit expressed as percentage of oven-dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"clay": 19}, "expected": {"lower_plastic_limit": 15.96}, "rationale": "Table II surface horizon mean for Group I; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table IX, Group I, clay predictor, lower_plastic_limit response."], "warnings": []}
+    implementation:
+      variables:
+        - name: lower_plastic_limit
+          expr: "0.34 * clay + (9.50)"
+  - name: calc_ptf_lal1979_group_i_plasticity_index_from_clay
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_i_plasticity_index_from_clay", "result_class": null, "summary": "Estimate plasticity index (upper minus lower plastic limit) for Group I."}
+    scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Plasticity index (upper minus lower plastic limit)", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/clay"}]
+    outputs: {"type": "scalar", "name": "plasticity_index", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_percent", "reported_unit": "%", "domain": null, "description": "Plasticity index (upper minus lower plastic limit) expressed as percentage of oven-dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"clay": 19}, "expected": {"plasticity_index": 4.57}, "rationale": "Table II surface horizon mean for Group I; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table IX, Group I, clay predictor, plasticity_index response."], "warnings": []}
+    implementation:
+      variables:
+        - name: plasticity_index
+          expr: "0.11 * clay + (2.48)"
+  - name: calc_ptf_lal1979_group_i_upper_plastic_limit_from_sand
+    status: "blocked"
+    public_api: {"name": "calc_ptf_lal1979_group_i_upper_plastic_limit_from_sand", "result_class": null, "summary": "Estimate upper plastic limit for Group I."}
+    scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Upper plastic limit", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/sand"}]
+    outputs: {"type": "scalar", "name": "upper_plastic_limit", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_percent", "reported_unit": "%", "domain": null, "description": "Upper plastic limit expressed as percentage of oven-dry soil mass."}
+    verification_cases: []
+    edge_cases: []
+    documentation: {"notes": ["Table IX, Group I, sand predictor, upper_plastic_limit response.", "Printed regression slope m = -0.40; intercept b = -46.20."], "warnings": ["Blocked: printed intercept -46.20 with slope -0.40 produces a negative upper plastic limit for nonnegative sand. Confirm the intercept sign; no correction is assumed."]}
+  - name: calc_ptf_lal1979_group_i_lower_plastic_limit_from_sand
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_i_lower_plastic_limit_from_sand", "result_class": null, "summary": "Estimate lower plastic limit for Group I."}
+    scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Lower plastic limit", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/sand"}]
+    outputs: {"type": "scalar", "name": "lower_plastic_limit", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_percent", "reported_unit": "%", "domain": null, "description": "Lower plastic limit expressed as percentage of oven-dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"sand": 66}, "expected": {"lower_plastic_limit": 15.7}, "rationale": "Table II surface horizon mean for Group I; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table IX, Group I, sand predictor, lower_plastic_limit response."], "warnings": []}
+    implementation:
+      variables:
+        - name: lower_plastic_limit
+          expr: "-0.30 * sand + (35.50)"
+  - name: calc_ptf_lal1979_group_i_plasticity_index_from_sand
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_i_plasticity_index_from_sand", "result_class": null, "summary": "Estimate plasticity index (upper minus lower plastic limit) for Group I."}
+    scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Plasticity index (upper minus lower plastic limit)", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/sand"}]
+    outputs: {"type": "scalar", "name": "plasticity_index", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_percent", "reported_unit": "%", "domain": null, "description": "Plasticity index (upper minus lower plastic limit) expressed as percentage of oven-dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"sand": 66}, "expected": {"plasticity_index": 4.4}, "rationale": "Table II surface horizon mean for Group I; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table IX, Group I, sand predictor, plasticity_index response."], "warnings": []}
+    implementation:
+      variables:
+        - name: plasticity_index
+          expr: "-0.10 * sand + (11.00)"
+  - name: calc_ptf_lal1979_group_ii_upper_plastic_limit_from_organic_carbon
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_ii_upper_plastic_limit_from_organic_carbon", "result_class": null, "summary": "Estimate upper plastic limit for Group II."}
+    scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Upper plastic limit", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/organic_carbon"}]
+    outputs: {"type": "scalar", "name": "upper_plastic_limit", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_percent", "reported_unit": "%", "domain": null, "description": "Upper plastic limit expressed as percentage of oven-dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"organic_carbon": 0.42}, "expected": {"upper_plastic_limit": 30.9358}, "rationale": "Table II B2t horizon mean for Group II; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table IX, Group II, organic_carbon predictor, upper_plastic_limit response."], "warnings": []}
+    implementation:
+      variables:
+        - name: upper_plastic_limit
+          expr: "-3.01 * organic_carbon + (32.20)"
+  - name: calc_ptf_lal1979_group_ii_plasticity_index_from_organic_carbon
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_ii_plasticity_index_from_organic_carbon", "result_class": null, "summary": "Estimate plasticity index (upper minus lower plastic limit) for Group II."}
+    scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Plasticity index (upper minus lower plastic limit)", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/organic_carbon"}]
+    outputs: {"type": "scalar", "name": "plasticity_index", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_percent", "reported_unit": "%", "domain": null, "description": "Plasticity index (upper minus lower plastic limit) expressed as percentage of oven-dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"organic_carbon": 0.42}, "expected": {"plasticity_index": 11.3476}, "rationale": "Table II B2t horizon mean for Group II; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table IX, Group II, organic_carbon predictor, plasticity_index response."], "warnings": []}
+    implementation:
+      variables:
+        - name: plasticity_index
+          expr: "-3.22 * organic_carbon + (12.70)"
+  - name: calc_ptf_lal1979_group_ii_upper_plastic_limit_from_clay
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_ii_upper_plastic_limit_from_clay", "result_class": null, "summary": "Estimate upper plastic limit for Group II."}
+    scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Upper plastic limit", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/clay"}]
+    outputs: {"type": "scalar", "name": "upper_plastic_limit", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_percent", "reported_unit": "%", "domain": null, "description": "Upper plastic limit expressed as percentage of oven-dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"clay": 38}, "expected": {"upper_plastic_limit": 30.67}, "rationale": "Table II B2t horizon mean for Group II; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table IX, Group II, clay predictor, upper_plastic_limit response."], "warnings": []}
+    implementation:
+      variables:
+        - name: upper_plastic_limit
+          expr: "0.16 * clay + (24.59)"
+  - name: calc_ptf_lal1979_group_ii_lower_plastic_limit_from_clay
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_ii_lower_plastic_limit_from_clay", "result_class": null, "summary": "Estimate lower plastic limit for Group II."}
+    scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Lower plastic limit", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/clay"}]
+    outputs: {"type": "scalar", "name": "lower_plastic_limit", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_percent", "reported_unit": "%", "domain": null, "description": "Lower plastic limit expressed as percentage of oven-dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"clay": 38}, "expected": {"lower_plastic_limit": 19.96}, "rationale": "Table II B2t horizon mean for Group II; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table IX, Group II, clay predictor, lower_plastic_limit response."], "warnings": []}
+    implementation:
+      variables:
+        - name: lower_plastic_limit
+          expr: "0.14 * clay + (14.64)"
+  - name: calc_ptf_lal1979_group_ii_upper_plastic_limit_from_sand
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_ii_upper_plastic_limit_from_sand", "result_class": null, "summary": "Estimate upper plastic limit for Group II."}
+    scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Upper plastic limit", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/sand"}]
+    outputs: {"type": "scalar", "name": "upper_plastic_limit", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_percent", "reported_unit": "%", "domain": null, "description": "Upper plastic limit expressed as percentage of oven-dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"sand": 57}, "expected": {"upper_plastic_limit": 30.72}, "rationale": "Table II B2t horizon mean for Group II; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table IX, Group II, sand predictor, upper_plastic_limit response."], "warnings": []}
+    implementation:
+      variables:
+        - name: upper_plastic_limit
+          expr: "-0.17 * sand + (40.41)"
+  - name: calc_ptf_lal1979_group_ii_lower_plastic_limit_from_sand
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_ii_lower_plastic_limit_from_sand", "result_class": null, "summary": "Estimate lower plastic limit for Group II."}
+    scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Lower plastic limit", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/sand"}]
+    outputs: {"type": "scalar", "name": "lower_plastic_limit", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_percent", "reported_unit": "%", "domain": null, "description": "Lower plastic limit expressed as percentage of oven-dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"sand": 57}, "expected": {"lower_plastic_limit": 20.19}, "rationale": "Table II B2t horizon mean for Group II; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table IX, Group II, sand predictor, lower_plastic_limit response."], "warnings": []}
+    implementation:
+      variables:
+        - name: lower_plastic_limit
+          expr: "-0.17 * sand + (29.88)"
+  - name: calc_ptf_lal1979_group_ii_upper_plastic_limit_from_silt
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_ii_upper_plastic_limit_from_silt", "result_class": null, "summary": "Estimate upper plastic limit for Group II."}
+    scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Upper plastic limit", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/silt"}]
+    outputs: {"type": "scalar", "name": "upper_plastic_limit", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_percent", "reported_unit": "%", "domain": null, "description": "Upper plastic limit expressed as percentage of oven-dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"silt": 5}, "expected": {"upper_plastic_limit": 29.99}, "rationale": "Table II B2t horizon mean for Group II; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table IX, Group II, silt predictor, upper_plastic_limit response."], "warnings": []}
+    implementation:
+      variables:
+        - name: upper_plastic_limit
+          expr: "0.35 * silt + (28.24)"
+  - name: calc_ptf_lal1979_group_ii_lower_plastic_limit_from_silt
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_ii_lower_plastic_limit_from_silt", "result_class": null, "summary": "Estimate lower plastic limit for Group II."}
+    scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Lower plastic limit", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/silt"}]
+    outputs: {"type": "scalar", "name": "lower_plastic_limit", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_percent", "reported_unit": "%", "domain": null, "description": "Lower plastic limit expressed as percentage of oven-dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"silt": 5}, "expected": {"lower_plastic_limit": 19.51}, "rationale": "Table II B2t horizon mean for Group II; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table IX, Group II, silt predictor, lower_plastic_limit response."], "warnings": []}
+    implementation:
+      variables:
+        - name: lower_plastic_limit
+          expr: "0.67 * silt + (16.16)"
+  - name: calc_ptf_lal1979_group_ii_plasticity_index_from_silt
+    status: "ready-for-implementation"
+    public_api: {"name": "calc_ptf_lal1979_group_ii_plasticity_index_from_silt", "result_class": null, "summary": "Estimate plasticity index (upper minus lower plastic limit) for Group II."}
+    scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Plasticity index (upper minus lower plastic limit)", "models": {"h_theta": null, "k_h": null}}
+    inputs: [{"$ref": "#/$defs/silt"}]
+    outputs: {"type": "scalar", "name": "plasticity_index", "quantity": "gravimetric_water_content", "symbol": null, "unit": "mass_percent", "reported_unit": "%", "domain": null, "description": "Plasticity index (upper minus lower plastic limit) expressed as percentage of oven-dry soil mass."}
+    verification_cases:
+      - {"id": "published_predictor_mean", "kind": "calculated", "inputs": {"silt": 5}, "expected": {"plasticity_index": 10.48}, "rationale": "Table II B2t horizon mean for Group II; the accompanying sand, silt and clay means sum to 100%. Only the stated predictor is used. Expected value calculated with Python decimal arithmetic from the printed slope and intercept; not an observed prediction or evidence of model accuracy."}
+    edge_cases: []
+    documentation: {"notes": ["Table IX, Group II, silt predictor, plasticity_index response."], "warnings": []}
+    implementation:
+      variables:
+        - name: plasticity_index
+          expr: "-0.32 * silt + (12.08)"
+scientific_notes: |
+  ## Supported models
+
+  Tables IV-VII provide separate univariate regressions for saturation, moisture
+  retention at 0.1, 0.3 and 15 bar suction, and moisture equivalent. Table VIII
+  relates moisture constants. Table IX provides plasticity regressions; entries
+  reported only as n.s. have no coefficients and are not computational models.
+  Groups are represented by separate functions with explicit applicability,
+  not by a new categorical predictor. No continuous retention curve is fitted.
+
+  ## Review decisions
+
+  The supplied bundle includes the article and older research instructions requiring
+  an external numerical oracle. The active extraction policy permits calculated
+  verification cases. No complete published input-to-predicted-output cases occur
+  in the supplied article; Tables II-III are marginal summaries, not such cases.
+  Python decimal arithmetic evaluates m*x+b directly to fix the calculated values.
+  Group I surface texture means (66, 15, 19) and Group II B2t means (57, 5, 38)
+  sum to 100%; inconsistent texture means in the other rows are not combined.
+  These summary predictors are not individual measured soil records.
+
+  Table III reports moisture retention in g g⁻¹, mapped without conversion to
+  gravimetric_water_content/mass_fraction. The user approved this notation alias.
+  Plastic limits are gravimetric moisture percentages (Methods and Table II);
+  plasticity index is their difference and uses the same quantity in mass_percent.
+  The DOI is supplied in the bundle; the citation year and pagination come from
+  the article abstract. Measurement definitions for shrinkage and bulk density,
+  correlation statistics, and qualitative profile trends are not predictive PTFs.
+
+  ## Documented limitations
+
+  The dataset contains 119 genetic-horizon samples from 23 profiles. Samples were
+  air-dried, ground and sieved at 2 mm. Retention used disturbed samples, a hanging
+  water column at low suctions and pressure plates at higher suctions. Clay
+  mineralogy is predominantly kaolinite and sesquioxides. The paper restricts
+  extrapolation to similar soils and notes structural limitations of disturbed
+  samples. Full predictor calibration ranges are not tabulated; Table II ranges
+  cover surface and B2t horizons only and are not imposed as full-domain bounds.
+  Sand uses the published 0.02 mm lower boundary, not the USDA 0.05 mm boundary.
+  No output accuracy override, clipping, or unsupported boundary behavior is added.
+  Independent regressions need not preserve ordering when combined into a curve.
+  Table IX Group I organic-carbon upper-limit r is printed positive despite a
+  negative slope; this statistical discrepancy does not change its coefficients.
+  The supplied image descriptions are not numerical evidence.
+
+  ## Blockers
+
+  Seven Table VIII rows are blocked: all four Group I rows and the three Group II
+  rows using saturation as predictor. Their printed coefficients with the column
+  labels imply wetter soil at greater suction, contrary to Table III. For example,
+  Group I saturation 0.31 would predict 0.51 at 0.1 bar instead of the reported
+  surface mean 0.19. This flags an ambiguity, not a requirement to fit the means.
+  The last two Group II rows have coherent directions and negative intercepts and
+  are retained as printed. Confirm the seven affected regression directions and
+  intercept signs before implementation; coefficients are preserved in their notes.
+
+  Table IX Group I sand-to-upper-plastic-limit is blocked because its printed
+  negative slope and negative intercept imply negative moisture percentages.
+  Authoritative evidence for the intercept sign is required. No silent typographic
+  repair is made. All other complete regressions remain drafts for human review.
