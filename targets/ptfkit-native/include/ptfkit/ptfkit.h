@@ -11,6 +11,7 @@
 #include <ptfkit/cosby1984.h>
 #include <ptfkit/dharumarajan2019.h>
 #include <ptfkit/ferrerjulia2004.h>
+#include <ptfkit/gunarathna2019.h>
 #include <ptfkit/hodnett2002.h>
 #include <ptfkit/jabro1992.h>
 #include <ptfkit/li2007.h>

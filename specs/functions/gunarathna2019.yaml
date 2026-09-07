@@ -1,0 +1,668 @@
+source:
+  summary: Point water-retention regressions for tropical Sri Lankan soils.
+  citation_apa: >-
+    Gunarathna, M. H. J. P., Sakai, K., Nakandakari, T., Momii, K.,
+    Kumari, M. K. N., & Amarasekara, M. G. T. S. (2019).
+    Pedotransfer functions to estimate hydraulic properties of tropical
+    Sri Lankan soils. Soil & Tillage Research, 190, 109-119.
+    https://doi.org/10.1016/j.still.2019.02.009
+  doi:
+    identifier: 10.1016/j.still.2019.02.009
+    url: https://doi.org/10.1016/j.still.2019.02.009
+scope:
+  territory: Tropical Sri Lanka.
+  dataset: >-
+    323 soil horizons retained after removing samples with missing water-content
+    data from the SRI-CANSOL survey of 110 profiles. The survey covers almost
+    all soil series and land uses except the northern part of Sri Lanka.
+    Models were evaluated using tenfold cross-validation.
+$defs:
+  sand:
+    name: sand
+    symbol: SA
+    unit: "%"
+    domain: "Table 1 observed range: 5.2 <= value <= 99.0"
+    description: Sand percentage measured by sieve analysis.
+  silt:
+    name: silt
+    symbol: SI
+    unit: "%"
+    domain: "Table 1 observed range: 0.0 <= value <= 38.6"
+    description: Silt percentage measured by the pipette method.
+  bulk_density:
+    name: bulk_density
+    symbol: BD
+    unit: "g/cm3"
+    domain: "Table 1 observed range: 1.0 <= value <= 2.0"
+    description: Bulk density measured using undisturbed cores.
+  organic_carbon:
+    name: organic_carbon
+    symbol: OC
+    unit: "%"
+    domain: "Table 1 observed range: 0.0 <= value <= 4.5"
+    description: Organic carbon percentage measured by the Walkley-Black method.
+functions:
+  - name: calc_ptf_gunarathna2019_vwc10_set1
+    status: implemented
+    public_api:
+      name: calc_ptf_gunarathna2019_vwc10_set1
+      result_class: null
+      summary: Estimate volumetric water content at -10 kPa using Set 1.
+    scope:
+      prediction_target: Volumetric water content at -10 kPa.
+      models:
+        h_theta: null
+        k_h: null
+    inputs:
+      - $ref: "#/$defs/sand"
+    outputs:
+      type: scalar
+      name: theta_10
+      quantity: volumetric_water_content
+      symbol: VWC10
+      unit: volume_fraction
+      reported_unit: mm/mm
+      domain: null
+      description: Volumetric water content at -10 kPa matric potential.
+    verification_cases:
+      - id: published_predictor_means
+        kind: calculated
+        inputs:
+          sand: 65.1
+        expected:
+          theta_10: 0.23933
+        rationale: >-
+          Calculated from Table 3, VWC10, Set 1, using the required
+          predictor means in Table 1. These are interior marginal means,
+          not an observed individual soil or a published prediction pair.
+          Sand 65.1% and silt 13.1% leave 21.8% clay for texture closure;
+          the separately rounded published clay mean is 21.9%.
+          Reference arithmetic directly substitutes the means into the
+          printed regression, multiplying factors for squared terms.
+          Across the extracted sets these inputs give positive water contents
+          ordered theta_1500 < theta_33 < theta_10.
+    edge_cases: []
+    documentation:
+      notes:
+        - "Equation evidence: Table 3, VWC10, Set 1."
+        - Input ranges describe the study observations, not enforced validity limits.
+      warnings:
+        - Predictions are empirical and are not clipped to physical bounds.
+        - "Section 3.1 reports slight overprediction above 64% sand at this pressure."
+    implementation:
+      variables:
+        - name: theta_10
+          expr: 0.4802 - 0.0037 * sand
+  - name: calc_ptf_gunarathna2019_vwc10_set2
+    status: implemented
+    public_api:
+      name: calc_ptf_gunarathna2019_vwc10_set2
+      result_class: null
+      summary: Estimate volumetric water content at -10 kPa using Set 2.
+    scope:
+      prediction_target: Volumetric water content at -10 kPa.
+      models:
+        h_theta: null
+        k_h: null
+    inputs:
+      - $ref: "#/$defs/sand"
+      - $ref: "#/$defs/silt"
+    outputs:
+      type: scalar
+      name: theta_10
+      quantity: volumetric_water_content
+      symbol: VWC10
+      unit: volume_fraction
+      reported_unit: mm/mm
+      domain: null
+      description: Volumetric water content at -10 kPa matric potential.
+    verification_cases:
+      - id: published_predictor_means
+        kind: calculated
+        inputs:
+          sand: 65.1
+          silt: 13.1
+        expected:
+          theta_10: 0.24066
+        rationale: >-
+          Calculated from Table 3, VWC10, Set 2, using the required
+          predictor means in Table 1. These are interior marginal means,
+          not an observed individual soil or a published prediction pair.
+          Sand 65.1% and silt 13.1% leave 21.8% clay for texture closure;
+          the separately rounded published clay mean is 21.9%.
+          Reference arithmetic directly substitutes the means into the
+          printed regression, multiplying factors for squared terms.
+          Across the extracted sets these inputs give positive water contents
+          ordered theta_1500 < theta_33 < theta_10.
+    edge_cases: []
+    documentation:
+      notes:
+        - "Equation evidence: Table 3, VWC10, Set 2."
+        - Input ranges describe the study observations, not enforced validity limits.
+      warnings:
+        - Predictions are empirical and are not clipped to physical bounds.
+    implementation:
+      variables:
+        - name: theta_10
+          expr: 0.3967 - 0.0029 * sand + 0.0025 * silt
+  - name: calc_ptf_gunarathna2019_vwc10_set3
+    status: implemented
+    public_api:
+      name: calc_ptf_gunarathna2019_vwc10_set3
+      result_class: null
+      summary: Estimate volumetric water content at -10 kPa using Set 3.
+    scope:
+      prediction_target: Volumetric water content at -10 kPa.
+      models:
+        h_theta: null
+        k_h: null
+    inputs:
+      - $ref: "#/$defs/sand"
+      - $ref: "#/$defs/silt"
+      - $ref: "#/$defs/bulk_density"
+    outputs:
+      type: scalar
+      name: theta_10
+      quantity: volumetric_water_content
+      symbol: VWC10
+      unit: volume_fraction
+      reported_unit: mm/mm
+      domain: null
+      description: Volumetric water content at -10 kPa matric potential.
+    verification_cases:
+      - id: published_predictor_means
+        kind: calculated
+        inputs:
+          sand: 65.1
+          silt: 13.1
+          bulk_density: 1.49
+        expected:
+          theta_10: 0.2421
+        rationale: >-
+          Calculated from Table 3, VWC10, Set 3, using the required
+          predictor means in Table 1. These are interior marginal means,
+          not an observed individual soil or a published prediction pair.
+          Sand 65.1% and silt 13.1% leave 21.8% clay for texture closure;
+          the separately rounded published clay mean is 21.9%.
+          Reference arithmetic directly substitutes the means into the
+          printed regression, multiplying factors for squared terms.
+          Across the extracted sets these inputs give positive water contents
+          ordered theta_1500 < theta_33 < theta_10.
+    edge_cases: []
+    documentation:
+      notes:
+        - "Equation evidence: Table 3, VWC10, Set 3."
+        - Input ranges describe the study observations, not enforced validity limits.
+      warnings:
+        - Predictions are empirical and are not clipped to physical bounds.
+    implementation:
+      variables:
+        - name: theta_10
+          expr: 0.4436 - 0.0028 * sand + 0.0024 * silt - 0.034 * bulk_density
+  - name: calc_ptf_gunarathna2019_vwc10_set4
+    status: implemented
+    public_api:
+      name: calc_ptf_gunarathna2019_vwc10_set4
+      result_class: null
+      summary: Estimate volumetric water content at -10 kPa using Set 4.
+    scope:
+      prediction_target: Volumetric water content at -10 kPa.
+      models:
+        h_theta: null
+        k_h: null
+    inputs:
+      - $ref: "#/$defs/sand"
+      - $ref: "#/$defs/silt"
+      - $ref: "#/$defs/organic_carbon"
+    outputs:
+      type: scalar
+      name: theta_10
+      quantity: volumetric_water_content
+      symbol: VWC10
+      unit: volume_fraction
+      reported_unit: mm/mm
+      domain: null
+      description: Volumetric water content at -10 kPa matric potential.
+    verification_cases:
+      - id: published_predictor_means
+        kind: calculated
+        inputs:
+          sand: 65.1
+          silt: 13.1
+          organic_carbon: 0.6
+        expected:
+          theta_10: 0.238312
+        rationale: >-
+          Calculated from Table 3, VWC10, Set 4, using the required
+          predictor means in Table 1. These are interior marginal means,
+          not an observed individual soil or a published prediction pair.
+          Sand 65.1% and silt 13.1% leave 21.8% clay for texture closure;
+          the separately rounded published clay mean is 21.9%.
+          Reference arithmetic directly substitutes the means into the
+          printed regression, multiplying factors for squared terms.
+          Across the extracted sets these inputs give positive water contents
+          ordered theta_1500 < theta_33 < theta_10.
+    edge_cases: []
+    documentation:
+      notes:
+        - "Equation evidence: Table 3, VWC10, Set 4."
+        - Input ranges describe the study observations, not enforced validity limits.
+      warnings:
+        - Predictions are empirical and are not clipped to physical bounds.
+    implementation:
+      variables:
+        - name: theta_10
+          expr: 0.3951 - 0.0029 * sand + 0.0023 * silt + 0.0052 * organic_carbon ^ 2
+  - name: calc_ptf_gunarathna2019_vwc33_set1
+    status: implemented
+    public_api:
+      name: calc_ptf_gunarathna2019_vwc33_set1
+      result_class: null
+      summary: Estimate volumetric water content at -33 kPa using Set 1.
+    scope:
+      prediction_target: Volumetric water content at -33 kPa.
+      models:
+        h_theta: null
+        k_h: null
+    inputs:
+      - $ref: "#/$defs/sand"
+    outputs:
+      type: scalar
+      name: theta_33
+      quantity: volumetric_water_content
+      symbol: VWC33
+      unit: volume_fraction
+      reported_unit: mm/mm
+      domain: null
+      description: Volumetric water content at -33 kPa matric potential.
+    verification_cases:
+      - id: published_predictor_means
+        kind: calculated
+        inputs:
+          sand: 65.1
+        expected:
+          theta_33: 0.20785
+        rationale: >-
+          Calculated from Table 3, VWC33, Set 1, using the required
+          predictor means in Table 1. These are interior marginal means,
+          not an observed individual soil or a published prediction pair.
+          Sand 65.1% and silt 13.1% leave 21.8% clay for texture closure;
+          the separately rounded published clay mean is 21.9%.
+          Reference arithmetic directly substitutes the means into the
+          printed regression, multiplying factors for squared terms.
+          Across the extracted sets these inputs give positive water contents
+          ordered theta_1500 < theta_33 < theta_10.
+    edge_cases: []
+    documentation:
+      notes:
+        - "Equation evidence: Table 3, VWC33, Set 1."
+        - Input ranges describe the study observations, not enforced validity limits.
+      warnings:
+        - Predictions are empirical and are not clipped to physical bounds.
+        - "Section 3.1 reports slight overprediction above 66% sand at this pressure."
+    implementation:
+      variables:
+        - name: theta_33
+          expr: 0.4357 - 0.0035 * sand
+  - name: calc_ptf_gunarathna2019_vwc33_set2
+    status: implemented
+    public_api:
+      name: calc_ptf_gunarathna2019_vwc33_set2
+      result_class: null
+      summary: Estimate volumetric water content at -33 kPa using Set 2.
+    scope:
+      prediction_target: Volumetric water content at -33 kPa.
+      models:
+        h_theta: null
+        k_h: null
+    inputs:
+      - $ref: "#/$defs/sand"
+      - $ref: "#/$defs/silt"
+    outputs:
+      type: scalar
+      name: theta_33
+      quantity: volumetric_water_content
+      symbol: VWC33
+      unit: volume_fraction
+      reported_unit: mm/mm
+      domain: null
+      description: Volumetric water content at -33 kPa matric potential.
+    verification_cases:
+      - id: published_predictor_means
+        kind: calculated
+        inputs:
+          sand: 65.1
+          silt: 13.1
+        expected:
+          theta_33: 0.20751
+        rationale: >-
+          Calculated from Table 3, VWC33, Set 2, using the required
+          predictor means in Table 1. These are interior marginal means,
+          not an observed individual soil or a published prediction pair.
+          Sand 65.1% and silt 13.1% leave 21.8% clay for texture closure;
+          the separately rounded published clay mean is 21.9%.
+          Reference arithmetic directly substitutes the means into the
+          printed regression, multiplying factors for squared terms.
+          Across the extracted sets these inputs give positive water contents
+          ordered theta_1500 < theta_33 < theta_10.
+    edge_cases: []
+    documentation:
+      notes:
+        - "Equation evidence: Table 3, VWC33, Set 2."
+        - Input ranges describe the study observations, not enforced validity limits.
+      warnings:
+        - Predictions are empirical and are not clipped to physical bounds.
+    implementation:
+      variables:
+        - name: theta_33
+          expr: 0.3701 - 0.0029 * sand + 0.0020 * silt
+  - name: calc_ptf_gunarathna2019_vwc33_set3
+    status: implemented
+    public_api:
+      name: calc_ptf_gunarathna2019_vwc33_set3
+      result_class: null
+      summary: Estimate volumetric water content at -33 kPa using Set 3.
+    scope:
+      prediction_target: Volumetric water content at -33 kPa.
+      models:
+        h_theta: null
+        k_h: null
+    inputs:
+      - $ref: "#/$defs/sand"
+      - $ref: "#/$defs/silt"
+      - $ref: "#/$defs/bulk_density"
+    outputs:
+      type: scalar
+      name: theta_33
+      quantity: volumetric_water_content
+      symbol: VWC33
+      unit: volume_fraction
+      reported_unit: mm/mm
+      domain: null
+      description: Volumetric water content at -33 kPa matric potential.
+    verification_cases:
+      - id: published_predictor_means
+        kind: calculated
+        inputs:
+          sand: 65.1
+          silt: 13.1
+          bulk_density: 1.49
+        expected:
+          theta_33: 0.207088
+        rationale: >-
+          Calculated from Table 3, VWC33, Set 3, using the required
+          predictor means in Table 1. These are interior marginal means,
+          not an observed individual soil or a published prediction pair.
+          Sand 65.1% and silt 13.1% leave 21.8% clay for texture closure;
+          the separately rounded published clay mean is 21.9%.
+          Reference arithmetic directly substitutes the means into the
+          printed regression, multiplying factors for squared terms.
+          Across the extracted sets these inputs give positive water contents
+          ordered theta_1500 < theta_33 < theta_10.
+    edge_cases: []
+    documentation:
+      notes:
+        - "Equation evidence: Table 3, VWC33, Set 3."
+        - Input ranges describe the study observations, not enforced validity limits.
+      warnings:
+        - Predictions are empirical and are not clipped to physical bounds.
+    implementation:
+      variables:
+        - name: theta_33
+          expr: 0.4236 - 0.0028 * sand + 0.0018 * silt - 0.0388 * bulk_density
+  - name: calc_ptf_gunarathna2019_vwc33_set4
+    status: implemented
+    public_api:
+      name: calc_ptf_gunarathna2019_vwc33_set4
+      result_class: null
+      summary: Estimate volumetric water content at -33 kPa using Set 4.
+    scope:
+      prediction_target: Volumetric water content at -33 kPa.
+      models:
+        h_theta: null
+        k_h: null
+    inputs:
+      - $ref: "#/$defs/sand"
+      - $ref: "#/$defs/silt"
+      - $ref: "#/$defs/organic_carbon"
+    outputs:
+      type: scalar
+      name: theta_33
+      quantity: volumetric_water_content
+      symbol: VWC33
+      unit: volume_fraction
+      reported_unit: mm/mm
+      domain: null
+      description: Volumetric water content at -33 kPa matric potential.
+    verification_cases:
+      - id: published_predictor_means
+        kind: calculated
+        inputs:
+          sand: 65.1
+          silt: 13.1
+          organic_carbon: 0.6
+        expected:
+          theta_33: 0.205046
+        rationale: >-
+          Calculated from Table 3, VWC33, Set 4, using the required
+          predictor means in Table 1. These are interior marginal means,
+          not an observed individual soil or a published prediction pair.
+          Sand 65.1% and silt 13.1% leave 21.8% clay for texture closure;
+          the separately rounded published clay mean is 21.9%.
+          Reference arithmetic directly substitutes the means into the
+          printed regression, multiplying factors for squared terms.
+          Across the extracted sets these inputs give positive water contents
+          ordered theta_1500 < theta_33 < theta_10.
+    edge_cases: []
+    documentation:
+      notes:
+        - "Equation evidence: Table 3, VWC33, Set 4."
+        - Input ranges describe the study observations, not enforced validity limits.
+      warnings:
+        - Predictions are empirical and are not clipped to physical bounds.
+    implementation:
+      variables:
+        - name: theta_33
+          expr: 0.3686 - 0.0029 * sand + 0.0018 * silt + 0.0046 * organic_carbon ^ 2
+  - name: calc_ptf_gunarathna2019_vwc1500_set1
+    status: implemented
+    public_api:
+      name: calc_ptf_gunarathna2019_vwc1500_set1
+      result_class: null
+      summary: Estimate volumetric water content at -1500 kPa using Set 1.
+    scope:
+      prediction_target: Volumetric water content at -1500 kPa.
+      models:
+        h_theta: null
+        k_h: null
+    inputs:
+      - $ref: "#/$defs/sand"
+    outputs:
+      type: scalar
+      name: theta_1500
+      quantity: volumetric_water_content
+      symbol: VWC1500
+      unit: volume_fraction
+      reported_unit: mm/mm
+      domain: null
+      description: Volumetric water content at -1500 kPa matric potential.
+    verification_cases:
+      - id: published_predictor_means
+        kind: calculated
+        inputs:
+          sand: 65.1
+        expected:
+          theta_1500: 0.1473
+        rationale: >-
+          Calculated from Table 3, VWC1500, Set 1, using the required
+          predictor means in Table 1. These are interior marginal means,
+          not an observed individual soil or a published prediction pair.
+          Sand 65.1% and silt 13.1% leave 21.8% clay for texture closure;
+          the separately rounded published clay mean is 21.9%.
+          Reference arithmetic directly substitutes the means into the
+          printed regression, multiplying factors for squared terms.
+          Across the extracted sets these inputs give positive water contents
+          ordered theta_1500 < theta_33 < theta_10.
+    edge_cases: []
+    documentation:
+      notes:
+        - "Equation evidence: Table 3, VWC1500, Set 1."
+        - Input ranges describe the study observations, not enforced validity limits.
+      warnings:
+        - Predictions are empirical and are not clipped to physical bounds.
+        - "Section 3.1 reports slight overprediction above 66% sand at this pressure."
+    implementation:
+      variables:
+        - name: theta_1500
+          expr: 0.3426 - 0.003 * sand
+  - name: calc_ptf_gunarathna2019_vwc1500_set3
+    status: implemented
+    public_api:
+      name: calc_ptf_gunarathna2019_vwc1500_set3
+      result_class: null
+      summary: Estimate volumetric water content at -1500 kPa using Set 3.
+    scope:
+      prediction_target: Volumetric water content at -1500 kPa.
+      models:
+        h_theta: null
+        k_h: null
+    inputs:
+      - $ref: "#/$defs/sand"
+      - $ref: "#/$defs/bulk_density"
+    outputs:
+      type: scalar
+      name: theta_1500
+      quantity: volumetric_water_content
+      symbol: VWC1500
+      unit: volume_fraction
+      reported_unit: mm/mm
+      domain: null
+      description: Volumetric water content at -1500 kPa matric potential.
+    verification_cases:
+      - id: published_predictor_means
+        kind: calculated
+        inputs:
+          sand: 65.1
+          bulk_density: 1.49
+        expected:
+          theta_1500: 0.14329969
+        rationale: >-
+          Calculated from Table 3, VWC1500, Set 3, using the required
+          predictor means in Table 1. These are interior marginal means,
+          not an observed individual soil or a published prediction pair.
+          Sand 65.1% and silt 13.1% leave 21.8% clay for texture closure;
+          the separately rounded published clay mean is 21.9%.
+          Reference arithmetic directly substitutes the means into the
+          printed regression, multiplying factors for squared terms.
+          Across the extracted sets these inputs give positive water contents
+          ordered theta_1500 < theta_33 < theta_10.
+    edge_cases: []
+    documentation:
+      notes:
+        - "Equation evidence: Table 3, VWC1500, Set 3."
+        - Input ranges describe the study observations, not enforced validity limits.
+      warnings:
+        - Predictions are empirical and are not clipped to physical bounds.
+    implementation:
+      variables:
+        - name: theta_1500
+          expr: 0.6397 - 0.0028 * sand - 0.385 * bulk_density + 0.1169 * bulk_density ^ 2
+  - name: calc_ptf_gunarathna2019_vwc1500_set4
+    status: implemented
+    public_api:
+      name: calc_ptf_gunarathna2019_vwc1500_set4
+      result_class: null
+      summary: Estimate volumetric water content at -1500 kPa using Set 4.
+    scope:
+      prediction_target: Volumetric water content at -1500 kPa.
+      models:
+        h_theta: null
+        k_h: null
+    inputs:
+      - $ref: "#/$defs/sand"
+      - $ref: "#/$defs/organic_carbon"
+    outputs:
+      type: scalar
+      name: theta_1500
+      quantity: volumetric_water_content
+      symbol: VWC1500
+      unit: volume_fraction
+      reported_unit: mm/mm
+      domain: null
+      description: Volumetric water content at -1500 kPa matric potential.
+    verification_cases:
+      - id: published_predictor_means
+        kind: calculated
+        inputs:
+          sand: 65.1
+          organic_carbon: 0.6
+        expected:
+          theta_1500: 0.148472
+        rationale: >-
+          Calculated from Table 3, VWC1500, Set 4, using the required
+          predictor means in Table 1. These are interior marginal means,
+          not an observed individual soil or a published prediction pair.
+          Sand 65.1% and silt 13.1% leave 21.8% clay for texture closure;
+          the separately rounded published clay mean is 21.9%.
+          Reference arithmetic directly substitutes the means into the
+          printed regression, multiplying factors for squared terms.
+          Across the extracted sets these inputs give positive water contents
+          ordered theta_1500 < theta_33 < theta_10.
+    edge_cases: []
+    documentation:
+      notes:
+        - "Equation evidence: Table 3, VWC1500, Set 4."
+        - Input ranges describe the study observations, not enforced validity limits.
+      warnings:
+        - Predictions are empirical and are not clipped to physical bounds.
+    implementation:
+      variables:
+        - name: theta_1500
+          expr: 0.3278 - 0.0028 * sand + 0.0082 * organic_carbon ^ 2
+scientific_notes: |
+  ## Supported models
+
+  Table 3 publishes eleven distinct regression equations, ordered here by
+  pressure and then input set. Section 2 defines pressure-plate measurements
+  at -10, -33, and -1500 kPa. Figure 6 labels volumetric water contents mm/mm.
+  The approved mm/mm alias preserves their numerical volume-fraction scale.
+
+  ## Review decisions
+
+  Only predictors retained in each final Table 3 equation are exposed.
+  Table 2 lists candidate and selected attributes before final regression;
+  it does not require unused clay, bulk-density, or organic-carbon arguments.
+  Table 2 explicitly identifies squared BD and OC attributes, supporting the
+  interpretation of the flattened Table 3 tokens BD2 and OC2 as squares.
+
+  The Set 2 VWC1500 row in Table 3 is empty, and Table 2 retains only sand for
+  that combination. No additional equation is invented for that row.
+  Section 2 excludes Set 5 from subsequent analysis because soil structure
+  was not important. There is no categorical predictor in the retained models.
+
+  Table 3 is the coefficient authority. Automated figure descriptions in the
+  supplied Markdown contain discrepancies (including a VWC33 intercept of
+  0.4358 and a positive VWC1500 sand slope); these are not used to replace
+  the explicit regression table. The prefatory research note also reports
+  a different VWC33 slope in a 2020 follow-up; that is a separate publication.
+
+  The supplied bundle's older strict-golden audit is historical context.
+  The current extraction policy permits calculated cases when no complete
+  published input-prediction pair is supplied. Table 1 output means and
+  approximate points in automated plot descriptions are not verification
+  outputs. Calculated cases check arithmetic, not predictive accuracy.
+  No performance statistic is used as an implementation tolerance.
+
+  ## Documented limitations
+
+  Section 3.1 describes applicability across Sri Lankan climatic zones and
+  broad soil types, while the survey excludes the northern part of the country.
+  The authors recommend using multiple inputs when available to reduce
+  reliance on sand alone. Functional evaluation covers available water and
+  maize irrigation scheduling; it is not an additional fitted PTF.
+
+  ## Metadata
+
+  The supplied text identifies the authors, year, title, journal and DOI.
+  Volume 190 and pages 109-119 were confirmed against the publisher record:
+  https://www.sciencedirect.com/science/article/abs/pii/S0167198718307360

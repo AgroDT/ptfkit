@@ -1,6 +1,6 @@
 volume_fraction:
   preferred_notation: "m^3/m^3"
-  aliases: ["cm^3/cm^3", "cm³/cm³", "m³/m³", "1", "dimensionless"]
+  aliases: ["cm^3/cm^3", "cm³/cm³", "m³/m³", "mm/mm", "1", "dimensionless"]
 
 volume_percent:
   preferred_notation: "% v/v"
