@@ -34,5 +34,6 @@ ptfkit's C++ API is organized around C++23 modules.
 - [`ptfkit.vereecken1989`](modules/vereecken1989.md) — Vereecken et al. soil-moisture retention regressions for Belgian soils.
 - [`ptfkit.wang2012`](modules/wang2012.md) — Wang et al. (2012), surface loess across China's Loess Plateau.
 - [`ptfkit.weber2020`](modules/weber2020.md) — Weber et al. (2020), compiled international soil hydraulic data.
+- [`ptfkit.zhao2016`](modules/zhao2016.md) — Saturated hydraulic conductivity PTFs for the Loess Plateau of China.
 
 See the [function index](functions.md) for all public C++ functions.

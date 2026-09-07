@@ -25,3 +25,4 @@ export import ptfkit.varallyai1982;
 export import ptfkit.vereecken1989;
 export import ptfkit.wang2012;
 export import ptfkit.weber2020;
+export import ptfkit.zhao2016;

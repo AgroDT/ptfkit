@@ -127,3 +127,9 @@ calc_ptf_vereecken1989: ufunc
 calc_ptf_vereecken1989_detailed: ufunc
 calc_ptf_wang2012: ufunc
 calc_ptf_weber2020: ufunc
+calc_ptf_zhao2016_m2_1: ufunc
+calc_ptf_zhao2016_m2_2: ufunc
+calc_ptf_zhao2016_m2_3: ufunc
+calc_ptf_zhao2016_m2_4: ufunc
+calc_ptf_zhao2016_m2_5: ufunc
+calc_ptf_zhao2016_m2_6: ufunc
