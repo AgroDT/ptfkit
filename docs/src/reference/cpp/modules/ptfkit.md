@@ -22,6 +22,7 @@ This umbrella module re-exports every public ptfkit source module. Import an ind
 - [`ptfkit.clapp1978`](clapp1978.md) — Clapp and Hornberger (1978) representative soil hydraulic parameters by texture.
 - [`ptfkit.cosby1984`](cosby1984.md) — Cosby et al. (1984), United States.
 - [`ptfkit.dharumarajan2019`](dharumarajan2019.md) — Dharumarajan et al. (2019) hydraulic PTFs for the Karnataka Plateau.
+- [`ptfkit.dijkerman1988`](dijkerman1988.md) — Dijkerman (1988), texture-based gravimetric water retention for Sierra Leone soils.
 - [`ptfkit.ferrerjulia2004`](ferrerjulia2004.md) — Ferrer Julià et al. (2004), saturated-conductivity PTFs for Spanish soils.
 - [`ptfkit.gunarathna2019`](gunarathna2019.md) — Point water-retention regressions for tropical Sri Lankan soils.
 - [`ptfkit.hodnett2002`](hodnett2002.md) — Hodnett & Tomasella (2002), tropical-soil regressions for four van Genuchten parameters.
