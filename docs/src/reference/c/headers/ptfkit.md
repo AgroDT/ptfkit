@@ -25,6 +25,7 @@ This umbrella header aggregates every public ptfkit source header. Include an in
 - [`<ptfkit/gunarathna2019.h>`](gunarathna2019.md) — Point water-retention regressions for tropical Sri Lankan soils.
 - [`<ptfkit/hodnett2002.h>`](hodnett2002.md) — Hodnett & Tomasella (2002), tropical-soil regressions for four van Genuchten parameters.
 - [`<ptfkit/jabro1992.h>`](jabro1992.md) — Jabro (1992), United States.
+- [`<ptfkit/lal1979.h>`](lal1979.md) — Moisture retention and plasticity regressions for two groups of Nigerian soils.
 - [`<ptfkit/li2007.h>`](li2007.md) — Li et al. (2007), Fengqiu County, North China Plain, China.
 - [`<ptfkit/mayr1999.h>`](mayr1999.md) — Mayr and Jarvis (1999) modified Brooks-Corey water-retention parameter PTFs.
 - [`<ptfkit/oosterveld1980.h>`](oosterveld1980.md) — Oosterveld and Chang (1980), soil-moisture retention from texture and depth.
