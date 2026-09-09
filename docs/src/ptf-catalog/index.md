@@ -132,8 +132,12 @@ can prevent a function from advancing beyond `draft` or `blocked`.
 
 Functions marked `ready-for-implementation` or `implemented` include an
 `implementation` and at least one verification case. Verification-case IDs are
-unique within each function and must be valid Rust identifiers because they
-become generated Rust test names; lowercase `snake_case` is recommended.
+required to be unique within each function and valid as Rust test function
+names; descriptive lowercase `snake_case` is recommended, avoiding Rust keywords.
+Specification validation checks uniqueness, not Rust identifier syntax; invalid
+names may fail during Rust code generation or compilation. See the
+[verification policy](../contributing/verification.md) for details.
+
 Implementations express ordered variables used to reproduce
 the published PTF. A variable can be populated by a formula or by a typed lookup.
 Enums, records, and lookups are independent reusable definitions: a lookup maps

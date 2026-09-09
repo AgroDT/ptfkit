@@ -22,12 +22,15 @@ Only two provenance kinds are supported:
   provenance used to select the calculated case.
 
 Both kinds require `inputs` and `expected`. Record-valued functions require
-every output field. Case IDs must be unique within a function and valid Rust
-identifiers; descriptive lowercase `snake_case` IDs work across all retained
-targets. Specification validation checks per-function uniqueness, while
-generated Rust compilation exposes invalid Rust identifiers. A calculated case
-is implementation verification, not independent validation of the PTF's
-scientific accuracy and not evidence of parity with an unpublished artifact.
+every output field. Case IDs must be unique within each function and valid as
+Rust test function names. Use descriptive lowercase `snake_case` identifiers and
+avoid Rust keywords. Specification validation checks uniqueness but does not
+validate Rust identifier syntax. Invalid names can cause Rust code generation
+or subsequent compilation to fail.
+
+A calculated case is implementation verification, not independent validation
+of the PTF's scientific accuracy and not evidence of parity with an unpublished
+artifact.
 
 ```yaml
 verification_cases:

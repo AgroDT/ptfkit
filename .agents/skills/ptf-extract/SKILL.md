@@ -38,10 +38,11 @@ input error.
    `verification_cases` entry. If none exists, select physically meaningful
    inputs and calculate the expected outputs with simple reference code as
    described in `references/extraction-quality-gate.md`. Give each case an ID
-   that is unique within its function and is a valid Rust identifier, preferably
-   descriptive lowercase `snake_case`; generated Rust uses the ID as a test
-   function name. Specification validation enforces uniqueness but intentionally leaves
-   target-language identifier validation to generated Rust compilation.
+   that is unique within its function and valid as a Rust test function name.
+   Use descriptive lowercase `snake_case` identifiers and avoid Rust keywords.
+   Specification validation checks uniqueness but does not validate Rust
+   identifier syntax. Invalid names can cause Rust code generation or subsequent
+   compilation to fail even after specification validation succeeds.
 5. If the publication explicitly states an applicable output accuracy or
    resolution, optionally propose a function-level `verification_tolerances`
    override keyed by output name and cite its exact `source_location`. Do not
