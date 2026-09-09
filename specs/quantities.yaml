@@ -147,8 +147,14 @@ retention_coefficient_a:
   units:
     kilopascal:
       absolute: 1.0e-9
-      relative: 1.0e-6
-      rationale: Resolves small positive fitted coefficients while allowing insignificant cross-target floating-point variation.
+      relative: 0.01
+      rationale: >-
+        Project-default tolerance of one percent for the multiplicative
+        retention coefficient. At fixed exponent B and water content,
+        a relative change in A produces the same relative change in
+        predicted tension. The absolute tolerance is retained as a
+        provisional numerical floor near zero, not as source-reported
+        accuracy or measurement resolution.
 
 retention_coefficient_b:
   description: Dimensionless exponent of an empirical retention relation.

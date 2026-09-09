@@ -222,7 +222,7 @@ mod calc_ptf_saxton2006_tests {
             result.retention_a,
             0.00018076452552206025f64,
             0.000000001f64,
-            0.000001f64,
+            0.01f64,
             "retention_coefficient_a",
             "kilopascal",
             "registry",

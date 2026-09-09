@@ -24,7 +24,7 @@ int main() {
                      "volumetric_water_content", "volume_fraction", "registry", "table_3_sand");
         assert_close(result.air_entry_tension, 0.5986789729513293, 0.01, 0.0, "matric_potential",
                      "kilopascal", "registry", "table_3_sand");
-        assert_close(result.retention_a, 0.00018076452552206025, 0.000000001, 0.000001,
+        assert_close(result.retention_a, 0.00018076452552206025, 0.000000001, 0.01,
                      "retention_coefficient_a", "kilopascal", "registry", "table_3_sand");
         assert_close(result.retention_b, 5.325903100453899, 0.001, 0.0, "retention_coefficient_b",
                      "dimensionless", "registry", "table_3_sand");
