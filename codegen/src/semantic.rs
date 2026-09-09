@@ -736,7 +736,7 @@ mod tests {
     use crate::{
         formula::parse,
         model::{
-            EnumDefinition, LookupDefinition, Outputs, Parameter, RawExpression, RawFunction,
+            EnumDefinition, LookupDefinition, OutputField, Outputs, RawExpression, RawFunction,
             RawInput, RawInputType, RawLookup, RawVariable, RawVariableValue, SourceLocation,
         },
     };
@@ -842,9 +842,12 @@ mod tests {
         lookup_definition.input_type = Some(enum_type.clone());
         lookup_definition.output_type = Some(Outputs::Record {
             name: "ExampleRecord".into(),
-            fields: vec![Parameter {
+            fields: vec![OutputField {
                 name: "value".into(),
-                unit: "1".into(),
+                quantity: String::new(),
+                symbol: None,
+                unit: "dimensionless".into(),
+                reported_unit: "1".into(),
                 domain: None,
                 description: "Example value.".into(),
             }],
@@ -859,11 +862,11 @@ mod tests {
             }],
             variables: vec![RawVariable {
                 name: "row".into(),
-                value: RawVariableValue::Lookup(RawLookup {
+                value: RawVariableValue::Lookup(Box::new(RawLookup {
                     implementation_path: "implementation.variables[0].lookup".into(),
                     key: "kind".into(),
                     definition: lookup_definition,
-                }),
+                })),
             }],
         };
         let compiled = compile(&raw).unwrap();
