@@ -19,7 +19,7 @@ modifying repository state.
 
 1. Read `specs/schema/ptf-spec.schema.json`, the selected YAML specification,
    implementation diff, generated Rust, C, C++, and native NumPy targets,
-   golden tests, and relevant public wrapper.
+   verification tests, and relevant public wrapper.
 2. Load `references/implementation-review-checklist.md`.
 3. Check schema and semantic IR fidelity, all retained targets, deterministic
    regeneration, status transition evidence, categorical type and lookup
@@ -40,7 +40,7 @@ modifying repository state.
 
 - Treat the YAML specification and semantic implementation as the sole
   numerical source of truth, not guessed article intent.
-- Treat missing golden tests, ambiguous units, and public API breaks as
+- Treat missing verification tests, ambiguous units, and public API breaks as
   blocking unless explicitly approved.
 - Verify that each record `outputs.name` is PascalCase and names generated
   structures and classes.

@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import pytest
 
-from _helpers import prepare_vector_case
+from _helpers import assert_close, prepare_vector_case
 from ptfkit.ferrerjulia2004 import (
     calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand,
     calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter,
@@ -50,1359 +50,2476 @@ from ptfkit.ferrerjulia2004 import (
 
 
 CASES_CALC_PTF_FERRERJULIA2004_CAMPBELL_SHIOZAWA = [
-    ({'clay': 25.0, 'sand': 50.0}, {'k_sat': 0.025071690110308933}, 1e-12, 1e-12),
+    ({'clay': 25.0, 'sand': 50.0}, {'k_sat': 0.025071690110308933}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_CAMPBELL_SHIOZAWA_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_FERRERJULIA2004_CAMPBELL_SHIOZAWA
+    ('inputs', 'expected'),
+    CASES_CALC_PTF_FERRERJULIA2004_CAMPBELL_SHIOZAWA,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_CAMPBELL_SHIOZAWA_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_campbell_shiozawa_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_campbell_shiozawa_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_campbell_shiozawa(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_campbell_shiozawa_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CAMPBELL_SHIOZAWA
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_CAMPBELL_SHIOZAWA)
     result = calc_ptf_ferrerjulia2004_campbell_shiozawa(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_campbell_shiozawa_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CAMPBELL_SHIOZAWA
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_CAMPBELL_SHIOZAWA)
     result = calc_ptf_ferrerjulia2004_campbell_shiozawa(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_SAXTON = [
-    ({'clay': 25.0, 'sand': 50.0}, {'k_sat': 0.00022673430784327228}, 1e-12, 1e-12),
+    ({'clay': 25.0, 'sand': 50.0}, {'k_sat': 0.00022673430784327228}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_SAXTON_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_FERRERJULIA2004_SAXTON
+    ('inputs', 'expected'),
+    CASES_CALC_PTF_FERRERJULIA2004_SAXTON,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_SAXTON_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_saxton_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_saxton_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_saxton(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_saxton_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_SAXTON)
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_SAXTON)
     result = calc_ptf_ferrerjulia2004_saxton(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_saxton_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_SAXTON)
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_SAXTON)
     result = calc_ptf_ferrerjulia2004_saxton(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_DANE_PUCKETT = [
-    ({'clay': 25.0}, {'k_sat': 8.302039828385373}, 1e-12, 1e-12),
+    ({'clay': 25.0}, {'k_sat': 8.302039828385373}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_DANE_PUCKETT_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_FERRERJULIA2004_DANE_PUCKETT
+    ('inputs', 'expected'),
+    CASES_CALC_PTF_FERRERJULIA2004_DANE_PUCKETT,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_DANE_PUCKETT_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_dane_puckett_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_dane_puckett_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_dane_puckett(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_dane_puckett_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_DANE_PUCKETT
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_DANE_PUCKETT)
     result = calc_ptf_ferrerjulia2004_dane_puckett(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_dane_puckett_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_DANE_PUCKETT
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_DANE_PUCKETT)
     result = calc_ptf_ferrerjulia2004_dane_puckett(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_PUCKETT = [
-    ({'clay': 25.0}, {'k_sat': 1.1257967371765654}, 1e-12, 1e-12),
+    ({'clay': 25.0}, {'k_sat': 1.1257967371765654}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_PUCKETT_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_FERRERJULIA2004_PUCKETT
+    ('inputs', 'expected'),
+    CASES_CALC_PTF_FERRERJULIA2004_PUCKETT,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_PUCKETT_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_puckett_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_puckett_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_puckett(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_puckett_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_PUCKETT)
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_PUCKETT)
     result = calc_ptf_ferrerjulia2004_puckett(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_puckett_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_PUCKETT)
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_PUCKETT)
     result = calc_ptf_ferrerjulia2004_puckett(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_COSBY = [
-    ({'clay': 25.0, 'sand': 50.0}, {'k_sat': 26.091830970918934}, 1e-12, 1e-12),
+    ({'clay': 25.0, 'sand': 50.0}, {'k_sat': 26.091830970918934}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_COSBY_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_FERRERJULIA2004_COSBY
+    ('inputs', 'expected'),
+    CASES_CALC_PTF_FERRERJULIA2004_COSBY,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_COSBY_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_cosby_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_cosby_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_cosby(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_cosby_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_COSBY)
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_COSBY)
     result = calc_ptf_ferrerjulia2004_cosby(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_cosby_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_COSBY)
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_COSBY)
     result = calc_ptf_ferrerjulia2004_cosby(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_HUMIC_ACRISOL_SAND = [
-    ({'sand': 50.0}, {'k_sat': 14.529879794648146}, 1e-12, 1e-12),
+    ({'sand': 50.0}, {'k_sat': 14.529879794648146}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_HUMIC_ACRISOL_SAND_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_FERRERJULIA2004_HUMIC_ACRISOL_SAND
+    ('inputs', 'expected'),
+    CASES_CALC_PTF_FERRERJULIA2004_HUMIC_ACRISOL_SAND,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_HUMIC_ACRISOL_SAND_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_humic_acrisol_sand_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_humic_acrisol_sand_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_humic_acrisol_sand(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_humic_acrisol_sand_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_HUMIC_ACRISOL_SAND
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_HUMIC_ACRISOL_SAND)
     result = calc_ptf_ferrerjulia2004_humic_acrisol_sand(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_humic_acrisol_sand_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_HUMIC_ACRISOL_SAND
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_HUMIC_ACRISOL_SAND)
     result = calc_ptf_ferrerjulia2004_humic_acrisol_sand(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_HUMIC_ACRISOL_TEXTURE_ORGANIC_MATTER = [
-    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 19.563475}, 1e-12, 1e-12),
+    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 19.563475}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_HUMIC_ACRISOL_TEXTURE_ORGANIC_MATTER_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'),
+    ('inputs', 'expected'),
     CASES_CALC_PTF_FERRERJULIA2004_HUMIC_ACRISOL_TEXTURE_ORGANIC_MATTER,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_HUMIC_ACRISOL_TEXTURE_ORGANIC_MATTER_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_HUMIC_ACRISOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_HUMIC_ACRISOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_CALCIC_CAMBISOL_SAND = [
-    ({'sand': 50.0}, {'k_sat': 9.995162000935244}, 1e-12, 1e-12),
+    ({'sand': 50.0}, {'k_sat': 9.995162000935244}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_CALCIC_CAMBISOL_SAND_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_FERRERJULIA2004_CALCIC_CAMBISOL_SAND
+    ('inputs', 'expected'),
+    CASES_CALC_PTF_FERRERJULIA2004_CALCIC_CAMBISOL_SAND,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_CALCIC_CAMBISOL_SAND_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_calcic_cambisol_sand_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_calcic_cambisol_sand_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_calcic_cambisol_sand(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_calcic_cambisol_sand_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_CALCIC_CAMBISOL_SAND
     )
     result = calc_ptf_ferrerjulia2004_calcic_cambisol_sand(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_calcic_cambisol_sand_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CALCIC_CAMBISOL_SAND
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_CALCIC_CAMBISOL_SAND)
     result = calc_ptf_ferrerjulia2004_calcic_cambisol_sand(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_CALCIC_CAMBISOL_TEXTURE_ORGANIC_MATTER = [
-    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 16.51625}, 1e-12, 1e-12),
+    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 16.51625}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_CALCIC_CAMBISOL_TEXTURE_ORGANIC_MATTER_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'),
+    ('inputs', 'expected'),
     CASES_CALC_PTF_FERRERJULIA2004_CALCIC_CAMBISOL_TEXTURE_ORGANIC_MATTER,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_CALCIC_CAMBISOL_TEXTURE_ORGANIC_MATTER_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_CALCIC_CAMBISOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_CALCIC_CAMBISOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_CAMBISOL_SAND = [
-    ({'sand': 50.0}, {'k_sat': 13.413573870265868}, 1e-12, 1e-12),
+    ({'sand': 50.0}, {'k_sat': 13.413573870265868}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_CAMBISOL_SAND_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_CAMBISOL_SAND
+    ('inputs', 'expected'),
+    CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_CAMBISOL_SAND,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_CAMBISOL_SAND_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_dystric_cambisol_sand_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_dystric_cambisol_sand_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_dystric_cambisol_sand(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_dystric_cambisol_sand_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_CAMBISOL_SAND
     )
     result = calc_ptf_ferrerjulia2004_dystric_cambisol_sand(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_dystric_cambisol_sand_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_CAMBISOL_SAND
     )
     result = calc_ptf_ferrerjulia2004_dystric_cambisol_sand(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_CAMBISOL_TEXTURE_ORGANIC_MATTER = [
-    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 20.79}, 1e-12, 1e-12),
+    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 20.79}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_CAMBISOL_TEXTURE_ORGANIC_MATTER_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'),
+    ('inputs', 'expected'),
     CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_CAMBISOL_TEXTURE_ORGANIC_MATTER,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_CAMBISOL_TEXTURE_ORGANIC_MATTER_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_CAMBISOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_CAMBISOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_CAMBISOL_SAND = [
-    ({'sand': 50.0}, {'k_sat': 11.570199173737363}, 1e-12, 1e-12),
+    ({'sand': 50.0}, {'k_sat': 11.570199173737363}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_CAMBISOL_SAND_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_CAMBISOL_SAND
+    ('inputs', 'expected'),
+    CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_CAMBISOL_SAND,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_CAMBISOL_SAND_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_eutric_cambisol_sand_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_eutric_cambisol_sand_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_eutric_cambisol_sand(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_eutric_cambisol_sand_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_CAMBISOL_SAND
     )
     result = calc_ptf_ferrerjulia2004_eutric_cambisol_sand(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_eutric_cambisol_sand_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_CAMBISOL_SAND
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_CAMBISOL_SAND)
     result = calc_ptf_ferrerjulia2004_eutric_cambisol_sand(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_CAMBISOL_TEXTURE_ORGANIC_MATTER = [
-    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 19.5235}, 1e-12, 1e-12),
+    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 19.5235}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_CAMBISOL_TEXTURE_ORGANIC_MATTER_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'),
+    ('inputs', 'expected'),
     CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_CAMBISOL_TEXTURE_ORGANIC_MATTER,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_CAMBISOL_TEXTURE_ORGANIC_MATTER_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_CAMBISOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_CAMBISOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_CAMBISOL_SAND = [
-    ({'sand': 50.0}, {'k_sat': 6.559110321079926}, 1e-12, 1e-12),
+    ({'sand': 50.0}, {'k_sat': 6.559110321079926}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_CAMBISOL_SAND_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_CAMBISOL_SAND
+    ('inputs', 'expected'),
+    CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_CAMBISOL_SAND,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_CAMBISOL_SAND_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_gleyic_cambisol_sand_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_gleyic_cambisol_sand_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_gleyic_cambisol_sand(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_gleyic_cambisol_sand_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_CAMBISOL_SAND
     )
     result = calc_ptf_ferrerjulia2004_gleyic_cambisol_sand(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_gleyic_cambisol_sand_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_CAMBISOL_SAND
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_CAMBISOL_SAND)
     result = calc_ptf_ferrerjulia2004_gleyic_cambisol_sand(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_CAMBISOL_TEXTURE_ORGANIC_MATTER = [
-    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 11.514}, 1e-12, 1e-12),
+    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 11.514}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_CAMBISOL_TEXTURE_ORGANIC_MATTER_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'),
+    ('inputs', 'expected'),
     CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_CAMBISOL_TEXTURE_ORGANIC_MATTER,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_CAMBISOL_TEXTURE_ORGANIC_MATTER_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_CAMBISOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_CAMBISOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_HUMIC_CAMBISOL_SAND = [
-    ({'sand': 50.0}, {'k_sat': 13.820129957492508}, 1e-12, 1e-12),
+    ({'sand': 50.0}, {'k_sat': 13.820129957492508}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_HUMIC_CAMBISOL_SAND_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_FERRERJULIA2004_HUMIC_CAMBISOL_SAND
+    ('inputs', 'expected'),
+    CASES_CALC_PTF_FERRERJULIA2004_HUMIC_CAMBISOL_SAND,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_HUMIC_CAMBISOL_SAND_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_humic_cambisol_sand_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_humic_cambisol_sand_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_humic_cambisol_sand(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_humic_cambisol_sand_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_HUMIC_CAMBISOL_SAND
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_HUMIC_CAMBISOL_SAND)
     result = calc_ptf_ferrerjulia2004_humic_cambisol_sand(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_humic_cambisol_sand_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_HUMIC_CAMBISOL_SAND
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_HUMIC_CAMBISOL_SAND)
     result = calc_ptf_ferrerjulia2004_humic_cambisol_sand(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_HUMIC_CAMBISOL_TEXTURE_ORGANIC_MATTER = [
-    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 20.9029}, 1e-12, 1e-12),
+    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 20.9029}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_HUMIC_CAMBISOL_TEXTURE_ORGANIC_MATTER_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'),
+    ('inputs', 'expected'),
     CASES_CALC_PTF_FERRERJULIA2004_HUMIC_CAMBISOL_TEXTURE_ORGANIC_MATTER,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_HUMIC_CAMBISOL_TEXTURE_ORGANIC_MATTER_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_HUMIC_CAMBISOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_HUMIC_CAMBISOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_FLUVISOL_SAND = [
-    ({'sand': 50.0}, {'k_sat': 10.959482760491376}, 1e-12, 1e-12),
+    ({'sand': 50.0}, {'k_sat': 10.959482760491376}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_FLUVISOL_SAND_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_FLUVISOL_SAND
+    ('inputs', 'expected'),
+    CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_FLUVISOL_SAND,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_FLUVISOL_SAND_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_FLUVISOL_SAND
     )
     result = calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_FLUVISOL_SAND
     )
     result = calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_FLUVISOL_TEXTURE_ORGANIC_MATTER = [
-    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 13.101}, 1e-12, 1e-12),
+    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 13.101}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_FLUVISOL_TEXTURE_ORGANIC_MATTER_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'),
+    ('inputs', 'expected'),
     CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_FLUVISOL_TEXTURE_ORGANIC_MATTER,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_FLUVISOL_TEXTURE_ORGANIC_MATTER_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_FLUVISOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_FLUVISOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_CALCIC_LUVISOL_SAND = [
-    ({'sand': 50.0}, {'k_sat': 6.931067612606957}, 1e-12, 1e-12),
+    ({'sand': 50.0}, {'k_sat': 6.931067612606957}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_CALCIC_LUVISOL_SAND_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_FERRERJULIA2004_CALCIC_LUVISOL_SAND
+    ('inputs', 'expected'),
+    CASES_CALC_PTF_FERRERJULIA2004_CALCIC_LUVISOL_SAND,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_CALCIC_LUVISOL_SAND_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_calcic_luvisol_sand_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_calcic_luvisol_sand_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_calcic_luvisol_sand(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_calcic_luvisol_sand_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CALCIC_LUVISOL_SAND
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_CALCIC_LUVISOL_SAND)
     result = calc_ptf_ferrerjulia2004_calcic_luvisol_sand(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_calcic_luvisol_sand_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CALCIC_LUVISOL_SAND
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_CALCIC_LUVISOL_SAND)
     result = calc_ptf_ferrerjulia2004_calcic_luvisol_sand(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_CALCIC_LUVISOL_TEXTURE_ORGANIC_MATTER = [
-    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 8.9332}, 1e-12, 1e-12),
+    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 8.9332}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_CALCIC_LUVISOL_TEXTURE_ORGANIC_MATTER_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'),
+    ('inputs', 'expected'),
     CASES_CALC_PTF_FERRERJULIA2004_CALCIC_LUVISOL_TEXTURE_ORGANIC_MATTER,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_CALCIC_LUVISOL_TEXTURE_ORGANIC_MATTER_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_CALCIC_LUVISOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_CALCIC_LUVISOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_CHROMIC_LUVISOL_SAND = [
-    ({'sand': 50.0}, {'k_sat': 10.61655727277843}, 1e-12, 1e-12),
+    ({'sand': 50.0}, {'k_sat': 10.61655727277843}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_CHROMIC_LUVISOL_SAND_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_FERRERJULIA2004_CHROMIC_LUVISOL_SAND
+    ('inputs', 'expected'),
+    CASES_CALC_PTF_FERRERJULIA2004_CHROMIC_LUVISOL_SAND,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_CHROMIC_LUVISOL_SAND_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_chromic_luvisol_sand_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_chromic_luvisol_sand_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_chromic_luvisol_sand(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_chromic_luvisol_sand_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_CHROMIC_LUVISOL_SAND
     )
     result = calc_ptf_ferrerjulia2004_chromic_luvisol_sand(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_chromic_luvisol_sand_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_CHROMIC_LUVISOL_SAND
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_CHROMIC_LUVISOL_SAND)
     result = calc_ptf_ferrerjulia2004_chromic_luvisol_sand(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_CHROMIC_LUVISOL_TEXTURE_ORGANIC_MATTER = [
-    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 17.1465}, 1e-12, 1e-12),
+    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 17.1465}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_CHROMIC_LUVISOL_TEXTURE_ORGANIC_MATTER_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'),
+    ('inputs', 'expected'),
     CASES_CALC_PTF_FERRERJULIA2004_CHROMIC_LUVISOL_TEXTURE_ORGANIC_MATTER,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_CHROMIC_LUVISOL_TEXTURE_ORGANIC_MATTER_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_CHROMIC_LUVISOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_CHROMIC_LUVISOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_LUVISOL_SAND = [
-    ({'sand': 50.0}, {'k_sat': 7.049012285884197}, 1e-12, 1e-12),
+    ({'sand': 50.0}, {'k_sat': 7.049012285884197}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_LUVISOL_SAND_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_LUVISOL_SAND
+    ('inputs', 'expected'),
+    CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_LUVISOL_SAND,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_LUVISOL_SAND_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_gleyic_luvisol_sand_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_gleyic_luvisol_sand_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_gleyic_luvisol_sand(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_gleyic_luvisol_sand_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_LUVISOL_SAND
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_LUVISOL_SAND)
     result = calc_ptf_ferrerjulia2004_gleyic_luvisol_sand(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_gleyic_luvisol_sand_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_LUVISOL_SAND
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_LUVISOL_SAND)
     result = calc_ptf_ferrerjulia2004_gleyic_luvisol_sand(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_LUVISOL_TEXTURE_ORGANIC_MATTER = [
-    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 19.55}, 1e-12, 1e-12),
+    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 19.55}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_LUVISOL_TEXTURE_ORGANIC_MATTER_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'),
+    ('inputs', 'expected'),
     CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_LUVISOL_TEXTURE_ORGANIC_MATTER,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_LUVISOL_TEXTURE_ORGANIC_MATTER_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_LUVISOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_LUVISOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_ORTHIC_LUVISOL_SAND = [
-    ({'sand': 50.0}, {'k_sat': 12.04280911180458}, 1e-12, 1e-12),
+    ({'sand': 50.0}, {'k_sat': 12.04280911180458}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_ORTHIC_LUVISOL_SAND_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_FERRERJULIA2004_ORTHIC_LUVISOL_SAND
+    ('inputs', 'expected'),
+    CASES_CALC_PTF_FERRERJULIA2004_ORTHIC_LUVISOL_SAND,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_ORTHIC_LUVISOL_SAND_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_orthic_luvisol_sand_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_orthic_luvisol_sand_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_orthic_luvisol_sand(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_orthic_luvisol_sand_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_ORTHIC_LUVISOL_SAND
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_ORTHIC_LUVISOL_SAND)
     result = calc_ptf_ferrerjulia2004_orthic_luvisol_sand(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_orthic_luvisol_sand_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_ORTHIC_LUVISOL_SAND
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_ORTHIC_LUVISOL_SAND)
     result = calc_ptf_ferrerjulia2004_orthic_luvisol_sand(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_ORTHIC_LUVISOL_TEXTURE_ORGANIC_MATTER = [
-    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 21.40425}, 1e-12, 1e-12),
+    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 21.40425}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_ORTHIC_LUVISOL_TEXTURE_ORGANIC_MATTER_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'),
+    ('inputs', 'expected'),
     CASES_CALC_PTF_FERRERJULIA2004_ORTHIC_LUVISOL_TEXTURE_ORGANIC_MATTER,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_ORTHIC_LUVISOL_TEXTURE_ORGANIC_MATTER_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_ORTHIC_LUVISOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_ORTHIC_LUVISOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_RANKER_SAND = [
-    ({'sand': 50.0}, {'k_sat': 12.423399456061938}, 1e-12, 1e-12),
+    ({'sand': 50.0}, {'k_sat': 12.423399456061938}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_RANKER_SAND_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_FERRERJULIA2004_RANKER_SAND
+    ('inputs', 'expected'),
+    CASES_CALC_PTF_FERRERJULIA2004_RANKER_SAND,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_RANKER_SAND_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_ranker_sand_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_ranker_sand_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_ranker_sand(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_ranker_sand_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_RANKER_SAND
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_RANKER_SAND)
     result = calc_ptf_ferrerjulia2004_ranker_sand(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_ranker_sand_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_RANKER_SAND
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_RANKER_SAND)
     result = calc_ptf_ferrerjulia2004_ranker_sand(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_RANKER_TEXTURE_ORGANIC_MATTER = [
-    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 22.4515}, 1e-12, 1e-12),
+    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 22.4515}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_RANKER_TEXTURE_ORGANIC_MATTER_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'),
+    ('inputs', 'expected'),
     CASES_CALC_PTF_FERRERJULIA2004_RANKER_TEXTURE_ORGANIC_MATTER,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_RANKER_TEXTURE_ORGANIC_MATTER_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_ranker_texture_organic_matter_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_ranker_texture_organic_matter_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_ranker_texture_organic_matter(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_ranker_texture_organic_matter_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_RANKER_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_ranker_texture_organic_matter(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_ranker_texture_organic_matter_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_RANKER_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_ranker_texture_organic_matter(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_REGOSOL_SAND = [
-    ({'sand': 50.0}, {'k_sat': 12.267374733833096}, 1e-12, 1e-12),
+    ({'sand': 50.0}, {'k_sat': 12.267374733833096}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_REGOSOL_SAND_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_REGOSOL_SAND
+    ('inputs', 'expected'),
+    CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_REGOSOL_SAND,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_REGOSOL_SAND_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_calcaric_regosol_sand_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_calcaric_regosol_sand_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_calcaric_regosol_sand(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_calcaric_regosol_sand_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_REGOSOL_SAND
     )
     result = calc_ptf_ferrerjulia2004_calcaric_regosol_sand(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_calcaric_regosol_sand_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_REGOSOL_SAND
     )
     result = calc_ptf_ferrerjulia2004_calcaric_regosol_sand(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_REGOSOL_TEXTURE_ORGANIC_MATTER = [
-    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 20.532}, 1e-12, 1e-12),
+    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 20.532}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_REGOSOL_TEXTURE_ORGANIC_MATTER_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'),
+    ('inputs', 'expected'),
     CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_REGOSOL_TEXTURE_ORGANIC_MATTER,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_REGOSOL_TEXTURE_ORGANIC_MATTER_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_REGOSOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_CALCARIC_REGOSOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_REGOSOL_SAND = [
-    ({'sand': 50.0}, {'k_sat': 12.081401313183196}, 1e-12, 1e-12),
+    ({'sand': 50.0}, {'k_sat': 12.081401313183196}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_REGOSOL_SAND_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_REGOSOL_SAND
+    ('inputs', 'expected'),
+    CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_REGOSOL_SAND,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_REGOSOL_SAND_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_dystric_regosol_sand_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_dystric_regosol_sand_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_dystric_regosol_sand(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_dystric_regosol_sand_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_REGOSOL_SAND
     )
     result = calc_ptf_ferrerjulia2004_dystric_regosol_sand(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_dystric_regosol_sand_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_REGOSOL_SAND
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_REGOSOL_SAND)
     result = calc_ptf_ferrerjulia2004_dystric_regosol_sand(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_REGOSOL_TEXTURE_ORGANIC_MATTER = [
-    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 17.1335}, 1e-12, 1e-12),
+    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 17.1335}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_REGOSOL_TEXTURE_ORGANIC_MATTER_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'),
+    ('inputs', 'expected'),
     CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_REGOSOL_TEXTURE_ORGANIC_MATTER,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_REGOSOL_TEXTURE_ORGANIC_MATTER_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_REGOSOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_DYSTRIC_REGOSOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_REGOSOL_SAND = [
-    ({'sand': 50.0}, {'k_sat': 13.674049986082728}, 1e-12, 1e-12),
+    ({'sand': 50.0}, {'k_sat': 13.674049986082728}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_REGOSOL_SAND_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_REGOSOL_SAND
+    ('inputs', 'expected'),
+    CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_REGOSOL_SAND,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_REGOSOL_SAND_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_eutric_regosol_sand_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_eutric_regosol_sand_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_eutric_regosol_sand(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_eutric_regosol_sand_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_REGOSOL_SAND
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_REGOSOL_SAND)
     result = calc_ptf_ferrerjulia2004_eutric_regosol_sand(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_eutric_regosol_sand_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_REGOSOL_SAND
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_REGOSOL_SAND)
     result = calc_ptf_ferrerjulia2004_eutric_regosol_sand(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_REGOSOL_TEXTURE_ORGANIC_MATTER = [
-    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 24.06375}, 1e-12, 1e-12),
+    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 24.06375}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_REGOSOL_TEXTURE_ORGANIC_MATTER_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'),
+    ('inputs', 'expected'),
     CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_REGOSOL_TEXTURE_ORGANIC_MATTER,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_REGOSOL_TEXTURE_ORGANIC_MATTER_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_REGOSOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_EUTRIC_REGOSOL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_RENDZINA_SAND = [
-    ({'sand': 50.0}, {'k_sat': 12.515763717130312}, 1e-12, 1e-12),
+    ({'sand': 50.0}, {'k_sat': 12.515763717130312}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_RENDZINA_SAND_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_FERRERJULIA2004_RENDZINA_SAND
+    ('inputs', 'expected'),
+    CASES_CALC_PTF_FERRERJULIA2004_RENDZINA_SAND,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_RENDZINA_SAND_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_rendzina_sand_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_rendzina_sand_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_rendzina_sand(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_rendzina_sand_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_RENDZINA_SAND
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_RENDZINA_SAND)
     result = calc_ptf_ferrerjulia2004_rendzina_sand(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_rendzina_sand_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_RENDZINA_SAND
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_RENDZINA_SAND)
     result = calc_ptf_ferrerjulia2004_rendzina_sand(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_RENDZINA_TEXTURE_ORGANIC_MATTER = [
-    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 16.2905}, 1e-12, 1e-12),
+    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 16.2905}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_RENDZINA_TEXTURE_ORGANIC_MATTER_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'),
+    ('inputs', 'expected'),
     CASES_CALC_PTF_FERRERJULIA2004_RENDZINA_TEXTURE_ORGANIC_MATTER,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_RENDZINA_TEXTURE_ORGANIC_MATTER_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_RENDZINA_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_RENDZINA_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_SOLONCHAK_SAND = [
-    ({'sand': 50.0}, {'k_sat': 4.883324693640427}, 1e-12, 1e-12),
+    ({'sand': 50.0}, {'k_sat': 4.883324693640427}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_SOLONCHAK_SAND_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_SOLONCHAK_SAND
+    ('inputs', 'expected'),
+    CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_SOLONCHAK_SAND,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_SOLONCHAK_SAND_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_gleyic_solonchak_sand_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_gleyic_solonchak_sand_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_gleyic_solonchak_sand(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_gleyic_solonchak_sand_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_SOLONCHAK_SAND
     )
     result = calc_ptf_ferrerjulia2004_gleyic_solonchak_sand(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_gleyic_solonchak_sand_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_SOLONCHAK_SAND
     )
     result = calc_ptf_ferrerjulia2004_gleyic_solonchak_sand(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_SOLONCHAK_TEXTURE_ORGANIC_MATTER = [
-    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 10.53583}, 1e-12, 1e-12),
+    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 10.53583}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_SOLONCHAK_TEXTURE_ORGANIC_MATTER_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'),
+    ('inputs', 'expected'),
     CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_SOLONCHAK_TEXTURE_ORGANIC_MATTER,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_SOLONCHAK_TEXTURE_ORGANIC_MATTER_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_SOLONCHAK_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_GLEYIC_SOLONCHAK_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_GENERAL_SAND = [
-    ({'sand': 50.0}, {'k_sat': 10.714718864969111}, 1e-12, 1e-12),
+    ({'sand': 50.0}, {'k_sat': 10.714718864969111}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_GENERAL_SAND_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'), CASES_CALC_PTF_FERRERJULIA2004_GENERAL_SAND
+    ('inputs', 'expected'),
+    CASES_CALC_PTF_FERRERJULIA2004_GENERAL_SAND,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_GENERAL_SAND_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_general_sand_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_general_sand_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_general_sand(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_general_sand_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_GENERAL_SAND
-    )
+    inputs, expected, _out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_GENERAL_SAND)
     result = calc_ptf_ferrerjulia2004_general_sand(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_general_sand_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
-        CASES_CALC_PTF_FERRERJULIA2004_GENERAL_SAND
-    )
+    inputs, expected, out = prepare_vector_case(CASES_CALC_PTF_FERRERJULIA2004_GENERAL_SAND)
     result = calc_ptf_ferrerjulia2004_general_sand(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 CASES_CALC_PTF_FERRERJULIA2004_GENERAL_TEXTURE_ORGANIC_MATTER = [
-    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 20.06325}, 1e-12, 1e-12),
+    ({'clay': 25.0, 'organic_matter': 2.5, 'sand': 50.0}, {'k_sat': 20.06325}),
+]
+CASES_CALC_PTF_FERRERJULIA2004_GENERAL_TEXTURE_ORGANIC_MATTER_IDS = [
+    'reviewer_reference_vector',
 ]
 
 
 @pytest.mark.parametrize(
-    ('inputs', 'expected', 'rtol', 'atol'),
+    ('inputs', 'expected'),
     CASES_CALC_PTF_FERRERJULIA2004_GENERAL_TEXTURE_ORGANIC_MATTER,
+    ids=CASES_CALC_PTF_FERRERJULIA2004_GENERAL_TEXTURE_ORGANIC_MATTER_IDS,
 )
-def test_calc_ptf_ferrerjulia2004_general_texture_organic_matter_golden(
-    inputs: dict[str, float], expected: dict[str, float], rtol: float, atol: float
+def test_calc_ptf_ferrerjulia2004_general_texture_organic_matter_verification(
+    inputs: dict[str, float], expected: dict[str, float]
 ):
     result = calc_ptf_ferrerjulia2004_general_texture_organic_matter(**inputs)
 
-    assert result == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result,
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_general_texture_organic_matter_array():
-    inputs, expected, rtol, atol, _out = prepare_vector_case(
+    inputs, expected, _out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_GENERAL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_general_texture_organic_matter(**inputs, out=None)
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )
 
 
 def test_calc_ptf_ferrerjulia2004_general_texture_organic_matter_out():
-    inputs, expected, rtol, atol, out = prepare_vector_case(
+    inputs, expected, out = prepare_vector_case(
         CASES_CALC_PTF_FERRERJULIA2004_GENERAL_TEXTURE_ORGANIC_MATTER
     )
     result = calc_ptf_ferrerjulia2004_general_texture_organic_matter(**inputs, out=out)
     assert result is out
-    assert result[0] == pytest.approx(expected['k_sat'], rel=rtol, abs=atol)
+    assert_close(
+        result[0],
+        expected['k_sat'],
+        absolute=0.0001,
+        relative=0.01,
+        quantity='saturated_hydraulic_conductivity',
+        unit='millimeter_per_hour',
+        source='registry',
+    )

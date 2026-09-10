@@ -1,6 +1,6 @@
 use crate::{
     documentation::{self as docs, FunctionDocument},
-    model::{Entry, Parameter},
+    model::{Entry, OutputField, Parameter},
     output::GeneratedFile,
     render::{Render, Writer, markdown},
 };
@@ -144,7 +144,7 @@ impl Render for FunctionSection<'_> {
 
 trait CatalogParameter {
     fn name(&self) -> &str;
-    fn unit(&self) -> &str;
+    fn unit_notation(&self) -> &str;
     fn domain(&self) -> Option<&str>;
     fn description(&self) -> &str;
 }
@@ -153,8 +153,23 @@ impl CatalogParameter for Parameter {
     fn name(&self) -> &str {
         &self.name
     }
-    fn unit(&self) -> &str {
+    fn unit_notation(&self) -> &str {
         &self.unit
+    }
+    fn domain(&self) -> Option<&str> {
+        self.domain.as_deref()
+    }
+    fn description(&self) -> &str {
+        &self.description
+    }
+}
+
+impl CatalogParameter for OutputField {
+    fn name(&self) -> &str {
+        &self.name
+    }
+    fn unit_notation(&self) -> &str {
+        &self.reported_unit
     }
     fn domain(&self) -> Option<&str> {
         self.domain.as_deref()
@@ -199,7 +214,7 @@ fn render_parameter_table(writer: &mut Writer, title: &str, parameters: &[impl C
         writer.line(format_args!(
             "| `{}` | {} | {} | {} |",
             parameter.name(),
-            escape_table(parameter.unit()),
+            escape_table(parameter.unit_notation()),
             parameter
                 .domain()
                 .map(escape_table)
