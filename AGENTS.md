@@ -13,3 +13,6 @@ completely sure.
 Follow the [development guide](docs/src/contributing/development.md) for
 dependency management, PTF extraction and generation, target implementation,
 validation, documentation, and commit conventions.
+
+When writing, strengthening, or reviewing codegen tests, use the
+[unit-test-quality skill](.agents/skills/unit-test-quality/SKILL.md).

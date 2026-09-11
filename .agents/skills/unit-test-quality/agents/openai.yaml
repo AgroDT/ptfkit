@@ -1,0 +1,4 @@
+interface:
+  display_name: "Unit Test Quality"
+  short_description: "Write and review tests that prove behavioral contracts"
+  default_prompt: "Review or write these unit tests for meaningful behavioral protection."
