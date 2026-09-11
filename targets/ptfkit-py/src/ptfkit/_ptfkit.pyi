@@ -127,6 +127,8 @@ calc_ptf_lal1979_group_ii_water_15bar_from_sand: ufunc
 calc_ptf_lal1979_group_ii_water_15bar_from_water_01bar: ufunc
 calc_ptf_li2007: ufunc
 calc_ptf_mayr1999: ufunc
+calc_ptf_myeni2021_fc: ufunc
+calc_ptf_myeni2021_pwp: ufunc
 calc_ptf_oosterveld1980_available_water: ufunc
 calc_ptf_oosterveld1980_field_capacity: ufunc
 calc_ptf_oosterveld1980_field_capacity_tension: ufunc

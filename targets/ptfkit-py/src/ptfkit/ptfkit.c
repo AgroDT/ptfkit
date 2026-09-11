@@ -21,6 +21,7 @@
 #include "lal1979.c"
 #include "li2007.c"
 #include "mayr1999.c"
+#include "myeni2021.c"
 #include "oosterveld1980.c"
 #include "pidgeon1972.c"
 #include "puckett1985.c"
@@ -98,6 +99,10 @@ PyMODINIT_FUNC PyInit__ptfkit(void) {
         return NULL;
     }
     if (ptfkit_register_mayr1999(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_myeni2021(module) < 0) {
         Py_DECREF(module);
         return NULL;
     }
