@@ -16,136 +16,19 @@ pub(super) fn render(functions: &[CompiledFunction]) -> Vec<GeneratedFile> {
             .push(function);
     }
 
-    let mut files = vec![
-        GeneratedFile::new("tests/_helpers.py".into(), helper_source()),
-        GeneratedFile::new("tests/test_comparator.py".into(), comparator_test_source()),
-    ];
-    files.extend(
-        modules
-            .into_iter()
-            .filter_map(|(slug, functions)| {
-                (functions[0].entry.spec.generation.public_python == PythonGeneration::Generated)
-                    .then(|| {
-                        GeneratedFile::new(
-                            format!("tests/test_{slug}.py").into(),
-                            module_source(&slug, &functions),
-                        )
-                    })
-            })
-            .collect::<Vec<_>>(),
-    );
-    files
-}
-
-fn comparator_test_source() -> String {
-    format!(
-        r#"{WRAPPER_HEADER}
-import pytest
-
-from _helpers import assert_close, resolved_tolerance
-
-
-@pytest.mark.parametrize('expected', [0.0, 2.0, -2.0])
-def test_accepts_below_and_rejects_above_tolerance(expected: float):
-    absolute = 0.001
-    relative = 0.01
-    tolerance = resolved_tolerance(expected, absolute, relative)
-    metadata = {{
-        'absolute': absolute,
-        'relative': relative,
-        'quantity': 'test_quantity',
-        'unit': '1',
-        'source': 'registry',
-    }}
-    assert_close(expected + tolerance * 0.5, expected, **metadata)
-    with pytest.raises(AssertionError):
-        assert_close(expected + tolerance * 2.0, expected, **metadata)
-"#
-    )
-}
-
-fn helper_source() -> String {
-    format!(
-        r#"{WRAPPER_HEADER}
-from __future__ import annotations
-
-from enum import Enum
-from typing import TYPE_CHECKING, NamedTuple, TypeVar, overload
-
-import numpy as np
-
-from ptfkit.enums import EnumArray
-
-
-if TYPE_CHECKING:
-    from collections.abc import Mapping, Sequence
-    from typing import Any
-
-    R = TypeVar('R', bound=NamedTuple)
-    Expected = dict[str, float]
-    VerificationCase = tuple[Mapping[str, Any], Expected]
-    VectorCasePart = tuple[dict[str, Any], Expected]
-    VectorCaseScalar = tuple[*VectorCasePart, np.ndarray]
-    VectorCaseTuple = tuple[*VectorCasePart, R]
-
-
-@overload
-def prepare_vector_case(cases: Sequence[VerificationCase]) -> VectorCaseScalar: ...
-
-
-@overload
-def prepare_vector_case(
-    cases: Sequence[VerificationCase], result_type: type[R]
-) -> VectorCaseTuple: ...
-
-
-def prepare_vector_case(
-    cases: Sequence[VerificationCase],
-    result_cls: type[R] | None = None,
-) -> VectorCaseScalar | VectorCaseTuple:
-    inputs, expected = cases[0]
-    vector_inputs = {{
-        name: (
-            EnumArray._from_members(type(value), [value])  # noqa: SLF001
-            if isinstance(value, Enum)
-            else np.array([value])
-        )
-        for name, value in inputs.items()
-    }}
-    out: np.ndarray | R
-    if result_cls is None:
-        out = np.empty(1, dtype=float)
-    else:
-        field_count = len(result_cls._fields)
-        out = result_cls(*(np.empty(1, dtype=float) for _ in range(field_count)))
-    return vector_inputs, expected, out
-
-
-def assert_close(
-    actual: object,
-    expected: float,
-    *,
-    absolute: float,
-    relative: float,
-    quantity: str,
-    unit: str,
-    source: str,
-) -> None:
-    actual_float = float(actual)  # ty: ignore[invalid-argument-type]
-    tolerance = resolved_tolerance(expected, absolute, relative)
-    difference = abs(actual_float - expected)
-    assert difference <= tolerance, (
-        f'actual={{actual_float}}, expected={{expected}}, difference={{difference}}, '
-        f'tolerance={{tolerance}}, quantity={{quantity!r}}, unit={{unit!r}}, source={{source}}'
-    )
-
-
-def resolved_tolerance(expected: float, absolute: float, relative: float) -> float:
-    scientific_tolerance = max(absolute, relative * abs(expected))
-    return max(scientific_tolerance, {:?})
-"#,
-        crate::compile::FLOATING_POINT_GUARD
-    )
+    modules
+        .into_iter()
+        .filter_map(|(slug, functions)| {
+            (functions[0].entry.spec.generation.public_python == PythonGeneration::Generated).then(
+                || {
+                    GeneratedFile::new(
+                        format!("tests/test_{slug}.py").into(),
+                        module_source(&slug, &functions),
+                    )
+                },
+            )
+        })
+        .collect()
 }
 
 fn module_source(slug: &str, functions: &[&CompiledFunction]) -> String {

@@ -18,41 +18,6 @@ India
 for regression development and 80 independent samples for validation. Analyses were performed
 during 2006-2008."]
 
-#[cfg(test)]
-fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
-    absolute
-        .max(relative * expected.abs())
-        .max(0.00000000000001f64)
-}
-#[cfg(test)]
-fn assert_close(
-    actual: f64,
-    expected: f64,
-    absolute: f64,
-    relative: f64,
-    quantity: &str,
-    unit: &str,
-    source: &str,
-) {
-    let difference = (actual - expected).abs();
-    let tolerance = resolved_tolerance(expected, absolute, relative);
-    assert!(
-        difference <= tolerance,
-        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
-    );
-}
-#[cfg(test)]
-mod comparator_tests {
-    use super::*;
-    #[test]
-    fn accepts_below_and_rejects_above_tolerance() {
-        for expected in [0.0, 2.0, -2.0] {
-            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
-            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
-            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
-        }
-    }
-}
 #[doc = r"Results returned by `calc_ptf_chakraborty2011_eq1`."]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Chakraborty2011PTFResult {
@@ -108,6 +73,7 @@ pub fn calc_ptf_chakraborty2011_eq1(clay: f64, silt: f64) -> Chakraborty2011PTFR
 #[cfg(test)]
 mod calc_ptf_chakraborty2011_eq1_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn representative_case() {
         let result = calc_ptf_chakraborty2011_eq1(20f64, 30f64);
@@ -192,6 +158,7 @@ pub fn calc_ptf_chakraborty2011_eq2(sand: f64, bulk_density: f64) -> Chakraborty
 #[cfg(test)]
 mod calc_ptf_chakraborty2011_eq2_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn representative_case() {
         let result = calc_ptf_chakraborty2011_eq2(50f64, 1.5f64);
@@ -285,6 +252,7 @@ pub fn calc_ptf_chakraborty2011_eq3(
 #[cfg(test)]
 mod calc_ptf_chakraborty2011_eq3_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn representative_case() {
         let result = calc_ptf_chakraborty2011_eq3(20f64, 30f64, 1.5f64);
@@ -374,6 +342,7 @@ pub fn calc_ptf_chakraborty2011_eq4(clay: f64, silt: f64, sand: f64) -> Chakrabo
 #[cfg(test)]
 mod calc_ptf_chakraborty2011_eq4_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn representative_case() {
         let result = calc_ptf_chakraborty2011_eq4(20f64, 30f64, 50f64);
@@ -473,6 +442,7 @@ pub fn calc_ptf_chakraborty2011_eq5(
 #[cfg(test)]
 mod calc_ptf_chakraborty2011_eq5_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn representative_case() {
         let result = calc_ptf_chakraborty2011_eq5(20f64, 30f64, 50f64, 1.5f64);
@@ -582,6 +552,7 @@ pub fn calc_ptf_chakraborty2011_eq6(
 #[cfg(test)]
 mod calc_ptf_chakraborty2011_eq6_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn representative_case() {
         let result = calc_ptf_chakraborty2011_eq6(20f64, 30f64, 50f64, 0.5f64, 1.5f64);

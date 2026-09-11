@@ -57,10 +57,6 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile
                 .map(|(name, fields)| internal_record_tokens(&name, &fields))
                 .collect::<Vec<_>>();
             let lookup_conversions = lookup_conversion_tokens(&functions);
-            let verification_helpers = functions
-                .iter()
-                .any(|function| !function.verification_cases.is_empty())
-                .then(verification_test_helpers);
             let mut defined_result_classes = BTreeSet::new();
             let definitions = functions
                 .into_iter()
@@ -76,7 +72,7 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile
                 PathBuf::from(format!("{slug}.rs")),
                 render_tokens(
                     module_docs,
-                    quote!(#(#enum_definitions)* #(#internal_record_definitions)* #(#lookup_conversions)* #verification_helpers #(#definitions)*),
+                    quote!(#(#enum_definitions)* #(#internal_record_definitions)* #(#lookup_conversions)* #(#definitions)*),
                 ),
             ))
         })
@@ -759,38 +755,7 @@ fn verification_test_tokens(resolved: &CompiledFunction, unique_test_module: boo
             quote!(#[test] fn #name() { let result = #function(#(#values),*); #assertions })
         })
         .collect::<Vec<_>>();
-    quote! { #[cfg(test)] mod #module { use super::*; #(#tests)* } }
-}
-
-fn verification_test_helpers() -> TokenStream {
-    let floating_point_guard = Literal::f64_suffixed(crate::compile::FLOATING_POINT_GUARD);
-    quote! {
-        #[cfg(test)]
-        fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
-            absolute.max(relative * expected.abs()).max(#floating_point_guard)
-        }
-
-        #[cfg(test)]
-        fn assert_close(actual: f64, expected: f64, absolute: f64, relative: f64, quantity: &str, unit: &str, source: &str) {
-            let difference = (actual - expected).abs();
-            let tolerance = resolved_tolerance(expected, absolute, relative);
-            assert!(difference <= tolerance, "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}");
-        }
-
-        #[cfg(test)]
-        mod comparator_tests {
-            use super::*;
-
-            #[test]
-            fn accepts_below_and_rejects_above_tolerance() {
-                for expected in [0.0, 2.0, -2.0] {
-                    let tolerance = resolved_tolerance(expected, 0.001, 0.01);
-                    assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
-                    assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
-                }
-            }
-        }
-    }
+    quote! { #[cfg(test)] mod #module { use super::*; use crate::test_support::assert_close; #(#tests)* } }
 }
 
 fn render_tokens(module_docs: TokenStream, tokens: TokenStream) -> String {

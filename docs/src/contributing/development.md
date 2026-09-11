@@ -113,6 +113,24 @@ is generated from the same validated specification. Put target-independent
 summaries, parameter descriptions, return descriptions, notes, and warnings in
 the YAML rather than adding them to generated files.
 
+### Test infrastructure
+
+Codegen generates PTF verification tests from specification cases. Shared test
+helpers and their comparator tests are maintained by hand in each target:
+
+- Rust: `targets/ptfkit-rs/src/test_support.rs`, included only under `cfg(test)`.
+- Python: `targets/ptfkit-py/tests/_helpers.py` and `tests/test_comparator.py`.
+- C and C++: `targets/ptfkit-native/tests/support/close_enough.h` and
+  `tests/support/comparator.c` (compiled as C11 and C++23).
+
+Native comparator rejection cases use names such as `reject relative` and
+`reject nan`. `tests/support/check_rejection.cmake` requires exit code 1 and an
+assertion diagnostic naming the requested case; unrelated failures do not pass.
+
+These files have no generated-file marker and are not codegen outputs. Edit them
+directly when changing test infrastructure, then run the target verification
+suites. Keep the shared comparison policy consistent across targets.
+
 ### Adding a PTF
 
 The assisted workflow uses the skills in `.agents/skills/`:

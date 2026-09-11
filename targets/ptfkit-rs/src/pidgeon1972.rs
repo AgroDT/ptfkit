@@ -16,41 +16,6 @@ Non-alluvial ferrallitic soils in Uganda, predominantly kaolinitic and possibly 
 Ugandan profile samples; Entebbe alluvial and Nabbongo montmorillonitic soils were excluded from
 the adopted regressions."]
 
-#[cfg(test)]
-fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
-    absolute
-        .max(relative * expected.abs())
-        .max(0.00000000000001f64)
-}
-#[cfg(test)]
-fn assert_close(
-    actual: f64,
-    expected: f64,
-    absolute: f64,
-    relative: f64,
-    quantity: &str,
-    unit: &str,
-    source: &str,
-) {
-    let difference = (actual - expected).abs();
-    let tolerance = resolved_tolerance(expected, absolute, relative);
-    assert!(
-        difference <= tolerance,
-        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
-    );
-}
-#[cfg(test)]
-mod comparator_tests {
-    use super::*;
-    #[test]
-    fn accepts_below_and_rejects_above_tolerance() {
-        for expected in [0.0, 2.0, -2.0] {
-            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
-            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
-            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
-        }
-    }
-}
 #[doc = r"Estimate gravimetric field capacity from silt, clay, and organic matter.
 
 # Arguments
@@ -79,6 +44,7 @@ pub fn calc_ptf_pidgeon1972_fc(silt: f64, clay: f64, organic_matter: f64) -> f64
 #[cfg(test)]
 mod calc_ptf_pidgeon1972_fc_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn regression_case() {
         let result = calc_ptf_pidgeon1972_fc(30f64, 20f64, 2f64);
@@ -118,6 +84,7 @@ pub fn calc_ptf_pidgeon1972_fc_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_pidgeon1972_fc_sand_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn regression_case() {
         let result = calc_ptf_pidgeon1972_fc_sand(50f64);
@@ -158,6 +125,7 @@ pub fn calc_ptf_pidgeon1972_fc_sand_organic_matter(sand: f64, organic_matter: f6
 #[cfg(test)]
 mod calc_ptf_pidgeon1972_fc_sand_organic_matter_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn regression_case() {
         let result = calc_ptf_pidgeon1972_fc_sand_organic_matter(50f64, 2f64);
@@ -198,6 +166,7 @@ pub fn calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(sand: f64, organic_matter
 #[cfg(test)]
 mod calc_ptf_pidgeon1972_fc_vol_sand_organic_matter_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn regression_case() {
         let result = calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(50f64, 2f64);
@@ -239,6 +208,7 @@ pub fn calc_ptf_pidgeon1972_pwp(silt: f64, clay: f64, organic_matter: f64) -> f6
 #[cfg(test)]
 mod calc_ptf_pidgeon1972_pwp_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn regression_case() {
         let result = calc_ptf_pidgeon1972_pwp(30f64, 20f64, 2f64);
@@ -278,6 +248,7 @@ pub fn calc_ptf_pidgeon1972_pwp_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_pidgeon1972_pwp_sand_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn regression_case() {
         let result = calc_ptf_pidgeon1972_pwp_sand(50f64);
@@ -318,6 +289,7 @@ pub fn calc_ptf_pidgeon1972_pwp_sand_organic_matter(sand: f64, organic_matter: f
 #[cfg(test)]
 mod calc_ptf_pidgeon1972_pwp_sand_organic_matter_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn regression_case() {
         let result = calc_ptf_pidgeon1972_pwp_sand_organic_matter(50f64, 2f64);
@@ -358,6 +330,7 @@ pub fn calc_ptf_pidgeon1972_awc(clay: f64, organic_matter: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_pidgeon1972_awc_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn regression_case() {
         let result = calc_ptf_pidgeon1972_awc(20f64, 2f64);
@@ -398,6 +371,7 @@ pub fn calc_ptf_pidgeon1972_awc_sand_organic_matter(sand: f64, organic_matter: f
 #[cfg(test)]
 mod calc_ptf_pidgeon1972_awc_sand_organic_matter_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn regression_case() {
         let result = calc_ptf_pidgeon1972_awc_sand_organic_matter(50f64, 2f64);
@@ -437,6 +411,7 @@ pub fn calc_ptf_pidgeon1972_awc_coarse_sand(coarse_sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_pidgeon1972_awc_coarse_sand_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn regression_case() {
         let result = calc_ptf_pidgeon1972_awc_coarse_sand(20f64);
@@ -476,6 +451,7 @@ pub fn calc_ptf_pidgeon1972_awc_fine_sand(fine_sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_pidgeon1972_awc_fine_sand_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn regression_case() {
         let result = calc_ptf_pidgeon1972_awc_fine_sand(20f64);
@@ -515,6 +491,7 @@ pub fn calc_ptf_pidgeon1972_awc_very_fine_sand(very_fine_sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_pidgeon1972_awc_very_fine_sand_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn regression_case() {
         let result = calc_ptf_pidgeon1972_awc_very_fine_sand(10f64);
@@ -556,6 +533,7 @@ pub fn calc_ptf_pidgeon1972_eawc(silt: f64, clay: f64, organic_matter: f64) -> f
 #[cfg(test)]
 mod calc_ptf_pidgeon1972_eawc_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn regression_case() {
         let result = calc_ptf_pidgeon1972_eawc(30f64, 20f64, 2f64);
@@ -595,6 +573,7 @@ pub fn calc_ptf_pidgeon1972_eawc_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_pidgeon1972_eawc_sand_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn regression_case() {
         let result = calc_ptf_pidgeon1972_eawc_sand(50f64);
@@ -635,6 +614,7 @@ pub fn calc_ptf_pidgeon1972_eawc_sand_organic_matter(sand: f64, organic_matter: 
 #[cfg(test)]
 mod calc_ptf_pidgeon1972_eawc_sand_organic_matter_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn regression_case() {
         let result = calc_ptf_pidgeon1972_eawc_sand_organic_matter(50f64, 2f64);
@@ -678,6 +658,7 @@ pub fn calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(
 #[cfg(test)]
 mod calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn regression_case() {
         let result = calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(20f64, 2f64);
@@ -721,6 +702,7 @@ pub fn calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(
 #[cfg(test)]
 mod calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn regression_case() {
         let result = calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(20f64, 2f64);

@@ -101,7 +101,7 @@ abs(actual - expected) <= max(scientific_tolerance, floating_point_guard)
 ```
 
 `absolute` is mandatory and expressed in the output unit; `relative` is
-optional and dimensionless. The centrally generated floating-point guard only
+optional and dimensionless. The floating-point guard in each target's handwritten test helper only
 absorbs insignificant implementation and math-library variation and is much
 smaller than normal scientific tolerances. Failure messages report actual and
 expected values, their difference, the resolved tolerance, quantity, unit, and

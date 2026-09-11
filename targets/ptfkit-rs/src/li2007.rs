@@ -18,41 +18,6 @@ Fengqiu County soils in the North China Plain, China
 63 soil water retention curves and 36 saturated soil hydraulic conductivity samples from seven
 soil profiles."]
 
-#[cfg(test)]
-fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
-    absolute
-        .max(relative * expected.abs())
-        .max(0.00000000000001f64)
-}
-#[cfg(test)]
-fn assert_close(
-    actual: f64,
-    expected: f64,
-    absolute: f64,
-    relative: f64,
-    quantity: &str,
-    unit: &str,
-    source: &str,
-) {
-    let difference = (actual - expected).abs();
-    let tolerance = resolved_tolerance(expected, absolute, relative);
-    assert!(
-        difference <= tolerance,
-        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
-    );
-}
-#[cfg(test)]
-mod comparator_tests {
-    use super::*;
-    #[test]
-    fn accepts_below_and_rejects_above_tolerance() {
-        for expected in [0.0, 2.0, -2.0] {
-            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
-            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
-            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
-        }
-    }
-}
 #[doc = r"Results returned by `calc_ptf_li2007`."]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Li2007PTFResult {
@@ -137,6 +102,7 @@ pub fn calc_ptf_li2007(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn loamy_sand() {
         let result = calc_ptf_li2007(85f64, 10f64, 5f64, 1.2f64, 0.21f64);

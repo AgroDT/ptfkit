@@ -18,41 +18,6 @@ Spanish mainland on the Iberian Peninsula
 Trueba et al. (2000a) Spanish soil database: 2178 profiles and 7011 horizons; the general
 regressions used 3172 horizons with sufficient data."]
 
-#[cfg(test)]
-fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
-    absolute
-        .max(relative * expected.abs())
-        .max(0.00000000000001f64)
-}
-#[cfg(test)]
-fn assert_close(
-    actual: f64,
-    expected: f64,
-    absolute: f64,
-    relative: f64,
-    quantity: &str,
-    unit: &str,
-    source: &str,
-) {
-    let difference = (actual - expected).abs();
-    let tolerance = resolved_tolerance(expected, absolute, relative);
-    assert!(
-        difference <= tolerance,
-        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
-    );
-}
-#[cfg(test)]
-mod comparator_tests {
-    use super::*;
-    #[test]
-    fn accepts_below_and_rejects_above_tolerance() {
-        for expected in [0.0, 2.0, -2.0] {
-            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
-            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
-            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
-        }
-    }
-}
 #[doc = r"Evaluate the Campbell and Shiozawa saturated-conductivity PTF.
 
 # Arguments
@@ -80,6 +45,7 @@ pub fn calc_ptf_ferrerjulia2004_campbell_shiozawa(sand: f64, clay: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_campbell_shiozawa_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_campbell_shiozawa(50f64, 25f64);
@@ -130,6 +96,7 @@ pub fn calc_ptf_ferrerjulia2004_saxton(sand: f64, clay: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_saxton_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_saxton(50f64, 25f64);
@@ -170,6 +137,7 @@ pub fn calc_ptf_ferrerjulia2004_dane_puckett(clay: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_dane_puckett_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_dane_puckett(25f64);
@@ -210,6 +178,7 @@ pub fn calc_ptf_ferrerjulia2004_puckett(clay: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_puckett_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_puckett(25f64);
@@ -251,6 +220,7 @@ pub fn calc_ptf_ferrerjulia2004_cosby(sand: f64, clay: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_cosby_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_cosby(50f64, 25f64);
@@ -291,6 +261,7 @@ pub fn calc_ptf_ferrerjulia2004_humic_acrisol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_humic_acrisol_sand_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_humic_acrisol_sand(50f64);
@@ -337,6 +308,7 @@ pub fn calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result =
@@ -378,6 +350,7 @@ pub fn calc_ptf_ferrerjulia2004_calcic_cambisol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_calcic_cambisol_sand_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_calcic_cambisol_sand(50f64);
@@ -424,6 +397,7 @@ pub fn calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result =
@@ -465,6 +439,7 @@ pub fn calc_ptf_ferrerjulia2004_dystric_cambisol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_dystric_cambisol_sand_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_dystric_cambisol_sand(50f64);
@@ -511,6 +486,7 @@ pub fn calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result =
@@ -552,6 +528,7 @@ pub fn calc_ptf_ferrerjulia2004_eutric_cambisol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_eutric_cambisol_sand_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_eutric_cambisol_sand(50f64);
@@ -598,6 +575,7 @@ pub fn calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result =
@@ -639,6 +617,7 @@ pub fn calc_ptf_ferrerjulia2004_gleyic_cambisol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_gleyic_cambisol_sand_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_gleyic_cambisol_sand(50f64);
@@ -685,6 +664,7 @@ pub fn calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result =
@@ -726,6 +706,7 @@ pub fn calc_ptf_ferrerjulia2004_humic_cambisol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_humic_cambisol_sand_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_humic_cambisol_sand(50f64);
@@ -772,6 +753,7 @@ pub fn calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result =
@@ -813,6 +795,7 @@ pub fn calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand(50f64);
@@ -859,6 +842,7 @@ pub fn calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result =
@@ -904,6 +888,7 @@ pub fn calc_ptf_ferrerjulia2004_calcic_luvisol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_calcic_luvisol_sand_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_calcic_luvisol_sand(50f64);
@@ -954,6 +939,7 @@ pub fn calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result =
@@ -995,6 +981,7 @@ pub fn calc_ptf_ferrerjulia2004_chromic_luvisol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_chromic_luvisol_sand_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_chromic_luvisol_sand(50f64);
@@ -1041,6 +1028,7 @@ pub fn calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result =
@@ -1082,6 +1070,7 @@ pub fn calc_ptf_ferrerjulia2004_gleyic_luvisol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_gleyic_luvisol_sand_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_gleyic_luvisol_sand(50f64);
@@ -1128,6 +1117,7 @@ pub fn calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result =
@@ -1169,6 +1159,7 @@ pub fn calc_ptf_ferrerjulia2004_orthic_luvisol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_orthic_luvisol_sand_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_orthic_luvisol_sand(50f64);
@@ -1215,6 +1206,7 @@ pub fn calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result =
@@ -1256,6 +1248,7 @@ pub fn calc_ptf_ferrerjulia2004_ranker_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_ranker_sand_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_ranker_sand(50f64);
@@ -1302,6 +1295,7 @@ pub fn calc_ptf_ferrerjulia2004_ranker_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_ranker_texture_organic_matter_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_ranker_texture_organic_matter(50f64, 25f64, 2.5f64);
@@ -1342,6 +1336,7 @@ pub fn calc_ptf_ferrerjulia2004_calcaric_regosol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_calcaric_regosol_sand_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_calcaric_regosol_sand(50f64);
@@ -1388,6 +1383,7 @@ pub fn calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result =
@@ -1429,6 +1425,7 @@ pub fn calc_ptf_ferrerjulia2004_dystric_regosol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_dystric_regosol_sand_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_dystric_regosol_sand(50f64);
@@ -1475,6 +1472,7 @@ pub fn calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result =
@@ -1516,6 +1514,7 @@ pub fn calc_ptf_ferrerjulia2004_eutric_regosol_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_eutric_regosol_sand_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_eutric_regosol_sand(50f64);
@@ -1562,6 +1561,7 @@ pub fn calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result =
@@ -1609,6 +1609,7 @@ pub fn calc_ptf_ferrerjulia2004_rendzina_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_rendzina_sand_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_rendzina_sand(50f64);
@@ -1659,6 +1660,7 @@ pub fn calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter(50f64, 25f64, 2.5f64);
@@ -1703,6 +1705,7 @@ pub fn calc_ptf_ferrerjulia2004_gleyic_solonchak_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_gleyic_solonchak_sand_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_gleyic_solonchak_sand(50f64);
@@ -1755,6 +1758,7 @@ pub fn calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result =
@@ -1801,6 +1805,7 @@ pub fn calc_ptf_ferrerjulia2004_general_sand(sand: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_general_sand_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_general_sand(50f64);
@@ -1852,6 +1857,7 @@ pub fn calc_ptf_ferrerjulia2004_general_texture_organic_matter(
 #[cfg(test)]
 mod calc_ptf_ferrerjulia2004_general_texture_organic_matter_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn reviewer_reference_vector() {
         let result = calc_ptf_ferrerjulia2004_general_texture_organic_matter(50f64, 25f64, 2.5f64);

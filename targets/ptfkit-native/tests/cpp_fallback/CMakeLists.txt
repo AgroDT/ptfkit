@@ -10,3 +10,5 @@ ptfkit_add_native_tests(cpp_fallback
     LIBRARIES ptfkit::c
     COMPILE_FEATURES cxx_std_23
 )
+
+ptfkit_add_comparator_test(CXX cpp_comparator)
