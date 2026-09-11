@@ -5,8 +5,6 @@ use crate::model::{
     Entry, Function, Output, Outputs, ToleranceSource, VerificationInput,
 };
 
-pub(crate) const FLOATING_POINT_GUARD: f64 = 1e-14;
-
 pub(super) fn functions(entries: Vec<Entry>) -> Result<Vec<CompiledFunction>> {
     let mut compiled = Vec::new();
     for entry in entries {

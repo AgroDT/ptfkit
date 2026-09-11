@@ -18,41 +18,6 @@ Tropical soils between approximately 25 degrees N and 25 degrees S.
 The IGBP-DIS tropical-soil dataset contains 771 retained horizons from 249 profiles in 22
 countries, split into 492 calibration curves and 279 validation curves."]
 
-#[cfg(test)]
-fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
-    absolute
-        .max(relative * expected.abs())
-        .max(0.00000000000001f64)
-}
-#[cfg(test)]
-fn assert_close(
-    actual: f64,
-    expected: f64,
-    absolute: f64,
-    relative: f64,
-    quantity: &str,
-    unit: &str,
-    source: &str,
-) {
-    let difference = (actual - expected).abs();
-    let tolerance = resolved_tolerance(expected, absolute, relative);
-    assert!(
-        difference <= tolerance,
-        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
-    );
-}
-#[cfg(test)]
-mod comparator_tests {
-    use super::*;
-    #[test]
-    fn accepts_below_and_rejects_above_tolerance() {
-        for expected in [0.0, 2.0, -2.0] {
-            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
-            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
-            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
-        }
-    }
-}
 #[doc = r"Results returned by `calc_ptf_hodnett2002`."]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Hodnett2002PTFResult {
@@ -153,6 +118,7 @@ pub fn calc_ptf_hodnett2002(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn calibration_dataset_mean_properties() {
         let result =

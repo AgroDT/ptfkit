@@ -15,41 +15,6 @@ Agricultural soils from 32 states of the USA
 
 1,323 soils with about 5,350 horizons; regression equations used 2,541 horizons."]
 
-#[cfg(test)]
-fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
-    absolute
-        .max(relative * expected.abs())
-        .max(0.00000000000001f64)
-}
-#[cfg(test)]
-fn assert_close(
-    actual: f64,
-    expected: f64,
-    absolute: f64,
-    relative: f64,
-    quantity: &str,
-    unit: &str,
-    source: &str,
-) {
-    let difference = (actual - expected).abs();
-    let tolerance = resolved_tolerance(expected, absolute, relative);
-    assert!(
-        difference <= tolerance,
-        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
-    );
-}
-#[cfg(test)]
-mod comparator_tests {
-    use super::*;
-    #[test]
-    fn accepts_below_and_rejects_above_tolerance() {
-        for expected in [0.0, 2.0, -2.0] {
-            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
-            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
-            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
-        }
-    }
-}
 #[doc = r"Estimate volumetric water content at -1500 kPa.
 
 # Arguments
@@ -76,6 +41,7 @@ pub fn calc_ptf_rawls1982_theta_1500(clay: f64, organic_matter: f64) -> f64 {
 #[cfg(test)]
 mod calc_ptf_rawls1982_theta_1500_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn loamy_sand() {
         let result = calc_ptf_rawls1982_theta_1500(5.12f64, 0.1f64);
@@ -117,6 +83,7 @@ pub fn calc_ptf_rawls1982_theta_33(sand: f64, organic_matter: f64, theta_1500: f
 #[cfg(test)]
 mod calc_ptf_rawls1982_theta_33_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn loamy_sand_with_estimated_theta_1500() {
         let result = calc_ptf_rawls1982_theta_33(85f64, 0.1f64, 0.05318f64);
@@ -232,6 +199,7 @@ pub fn calc_ptf_rawls1982_full_wrc(
 #[cfg(test)]
 mod calc_ptf_rawls1982_full_wrc_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn loamy_sand() {
         let result = calc_ptf_rawls1982_full_wrc(85f64, 0.66f64, 1.22f64, 0.091f64, 0.033f64);

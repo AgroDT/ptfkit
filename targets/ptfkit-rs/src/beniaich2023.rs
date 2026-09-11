@@ -19,41 +19,6 @@ Agricultural topsoils in Doukkala, Gharb-Loukouss, Moulouya, and Tadla, Morocco
 331 disturbed topsoil samples collected at 0-20 cm from 2019 to 2022; random 50% calibration and
 50% validation subsets."]
 
-#[cfg(test)]
-fn resolved_tolerance(expected: f64, absolute: f64, relative: f64) -> f64 {
-    absolute
-        .max(relative * expected.abs())
-        .max(0.00000000000001f64)
-}
-#[cfg(test)]
-fn assert_close(
-    actual: f64,
-    expected: f64,
-    absolute: f64,
-    relative: f64,
-    quantity: &str,
-    unit: &str,
-    source: &str,
-) {
-    let difference = (actual - expected).abs();
-    let tolerance = resolved_tolerance(expected, absolute, relative);
-    assert!(
-        difference <= tolerance,
-        "actual={actual}, expected={expected}, difference={difference}, tolerance={tolerance}, quantity={quantity}, unit={unit}, source={source}"
-    );
-}
-#[cfg(test)]
-mod comparator_tests {
-    use super::*;
-    #[test]
-    fn accepts_below_and_rejects_above_tolerance() {
-        for expected in [0.0, 2.0, -2.0] {
-            let tolerance = resolved_tolerance(expected, 0.001, 0.01);
-            assert!((expected + tolerance * 0.5 - expected).abs() <= tolerance);
-            assert!((expected + tolerance * 2.0 - expected).abs() > tolerance);
-        }
-    }
-}
 #[doc = r"Results returned by `calc_ptf_beniaich2023_slr1`."]
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Beniaich2023PTFResult {
@@ -102,6 +67,7 @@ pub fn calc_ptf_beniaich2023_slr1(clay: f64) -> Beniaich2023PTFResult {
 #[cfg(test)]
 mod calc_ptf_beniaich2023_slr1_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_slr1(20f64);
@@ -172,6 +138,7 @@ pub fn calc_ptf_beniaich2023_slr2(silt: f64) -> Beniaich2023PTFResult {
 #[cfg(test)]
 mod calc_ptf_beniaich2023_slr2_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_slr2(30f64);
@@ -242,6 +209,7 @@ pub fn calc_ptf_beniaich2023_slr3(sand: f64) -> Beniaich2023PTFResult {
 #[cfg(test)]
 mod calc_ptf_beniaich2023_slr3_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_slr3(50f64);
@@ -314,6 +282,7 @@ pub fn calc_ptf_beniaich2023_slr4(clay: f64, silt: f64) -> Beniaich2023PTFResult
 #[cfg(test)]
 mod calc_ptf_beniaich2023_slr4_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_slr4(20f64, 30f64);
@@ -386,6 +355,7 @@ pub fn calc_ptf_beniaich2023_slr5(clay: f64, silt: f64) -> Beniaich2023PTFResult
 #[cfg(test)]
 mod calc_ptf_beniaich2023_slr5_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_slr5(20f64, 40f64);
@@ -456,6 +426,7 @@ pub fn calc_ptf_beniaich2023_slr6(soil_organic_matter: f64) -> Beniaich2023PTFRe
 #[cfg(test)]
 mod calc_ptf_beniaich2023_slr6_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_slr6(2f64);
@@ -535,6 +506,7 @@ pub fn calc_ptf_beniaich2023_mlr1(
 #[cfg(test)]
 mod calc_ptf_beniaich2023_mlr1_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_mlr1(30f64, 50f64, 2f64);
@@ -609,6 +581,7 @@ pub fn calc_ptf_beniaich2023_mlr2(sand: f64, soil_organic_matter: f64) -> Beniai
 #[cfg(test)]
 mod calc_ptf_beniaich2023_mlr2_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_mlr2(50f64, 2f64);
@@ -683,6 +656,7 @@ pub fn calc_ptf_beniaich2023_mlr3(silt: f64, soil_organic_matter: f64) -> Beniai
 #[cfg(test)]
 mod calc_ptf_beniaich2023_mlr3_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_mlr3(30f64, 2f64);
@@ -757,6 +731,7 @@ pub fn calc_ptf_beniaich2023_mlr4(clay: f64, soil_organic_matter: f64) -> Beniai
 #[cfg(test)]
 mod calc_ptf_beniaich2023_mlr4_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_mlr4(20f64, 2f64);
@@ -836,6 +811,7 @@ pub fn calc_ptf_beniaich2023_mlr5(
 #[cfg(test)]
 mod calc_ptf_beniaich2023_mlr5_tests {
     use super::*;
+    use crate::test_support::assert_close;
     #[test]
     fn representative_case() {
         let result = calc_ptf_beniaich2023_mlr5(20f64, 30f64, 2f64);

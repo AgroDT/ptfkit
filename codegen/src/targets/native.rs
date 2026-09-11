@@ -26,15 +26,13 @@ pub(super) struct OutputFiles {
     pub(super) cpp_modules: Vec<GeneratedFile>,
     pub(super) c_tests: Vec<GeneratedFile>,
     pub(super) cpp_tests: Vec<GeneratedFile>,
-    pub(super) test_support: Vec<GeneratedFile>,
 }
 
 pub(super) fn render(functions: &[CompiledFunction]) -> Result<OutputFiles> {
     let mut c_headers = Vec::new();
     let mut cpp_modules = Vec::new();
-    let mut c_tests = vec![file("comparator.c", comparator_test(false))];
-    let mut cpp_tests = vec![file("comparator.cpp", comparator_test(true))];
-    let test_support = vec![file("close_enough.h", close_enough_header())];
+    let mut c_tests = Vec::new();
+    let mut cpp_tests = Vec::new();
     let mut umbrella = Writer::new();
     umbrella.write(format_args!(
         "{HEADER}\n\n#ifndef PTFKIT_PTFKIT_H\n#define PTFKIT_PTFKIT_H\n\n"
@@ -66,7 +64,6 @@ pub(super) fn render(functions: &[CompiledFunction]) -> Result<OutputFiles> {
         cpp_modules,
         c_tests,
         cpp_tests,
-        test_support,
     })
 }
 
@@ -893,107 +890,6 @@ fn write_tolerance_arguments(writer: &mut Writer, tolerance: &crate::model::Comp
         ", \"{}\", \"{}\", \"{}\"",
         tolerance.quantity, tolerance.unit, source
     ));
-}
-
-fn close_enough_header() -> String {
-    let guard = c::test_float_literal(crate::compile::FLOATING_POINT_GUARD);
-    format!(
-        r#"{HEADER}
-
-#ifndef PTFKIT_TEST_CLOSE_ENOUGH_H
-#define PTFKIT_TEST_CLOSE_ENOUGH_H
-
-#ifdef __cplusplus
-#include <algorithm>
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <print>
-
-inline double resolved_tolerance(double expected, double absolute, double relative) {{
-    return std::max({{absolute, relative * std::abs(expected), {guard}}});
-}}
-
-inline bool is_close(double actual, double expected, double absolute, double relative) {{
-    return std::abs(actual - expected) <= resolved_tolerance(expected, absolute, relative);
-}}
-
-inline void _close_enough_impl(const char *file, int line, double actual, double expected,
-                               double absolute, double relative, const char *quantity,
-                               const char *unit, const char *source, const char *case_id) {{
-    const double tolerance = resolved_tolerance(expected, absolute, relative);
-    const double difference = std::abs(actual - expected);
-    if (!is_close(actual, expected, absolute, relative)) {{
-        std::println(stderr, "assertion failed: {{}}:{{}}: case={{}}, actual={{}}, expected={{}}, difference={{}}, tolerance={{}}, quantity={{}}, unit={{}}, source={{}}",
-                     file, line, case_id, actual, expected, difference, tolerance, quantity, unit, source);
-        std::exit(EXIT_FAILURE);
-    }}
-}}
-
-#else
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-static inline double resolved_tolerance(double expected, double absolute, double relative) {{
-    return fmax(fmax(absolute, relative * fabs(expected)), {guard});
-}}
-
-static inline int is_close(double actual, double expected, double absolute, double relative) {{
-    return fabs(actual - expected) <= resolved_tolerance(expected, absolute, relative);
-}}
-
-static inline void _close_enough_impl(const char *file, int line, double actual, double expected,
-                                      double absolute, double relative, const char *quantity,
-                                      const char *unit, const char *source, const char *case_id) {{
-    const double tolerance = resolved_tolerance(expected, absolute, relative);
-    const double difference = fabs(actual - expected);
-    if (!is_close(actual, expected, absolute, relative)) {{
-        fprintf(stderr, "assertion failed: %s:%d: case=%s, actual=%.17g, expected=%.17g, difference=%.17g, tolerance=%.17g, quantity=%s, unit=%s, source=%s\n",
-                file, line, case_id, actual, expected, difference, tolerance, quantity, unit, source);
-        exit(EXIT_FAILURE);
-    }}
-}}
-#endif
-
-#define assert_close(actual, expected, absolute, relative, quantity, unit, source, case_id)        \
-    do {{                                                                                           \
-        _close_enough_impl(__FILE__, __LINE__, (actual), (expected), (absolute), (relative),       \
-                           (quantity), (unit), (source), (case_id));                                \
-    }} while (0)
-
-#endif
-"#
-    )
-}
-
-fn comparator_test(cpp: bool) -> String {
-    let main = if cpp { "int main()" } else { "int main(void)" };
-    format!(
-        r#"{HEADER}
-
-#include "support/close_enough.h"
-
-{main} {{
-    const double absolute = 0.001;
-    const double relative = 0.01;
-    const double expected_values[] = {{0.0, 2.0, -2.0}};
-    for (int index = 0; index < 3; ++index) {{
-        const double expected = expected_values[index];
-        const double tolerance = resolved_tolerance(expected, absolute, relative);
-        _close_enough_impl(__FILE__, __LINE__, expected + tolerance * 0.5, expected, absolute,
-                           relative, "test_quantity", "1", "registry", "comparator");
-        if (is_close(expected + tolerance * 2.0, expected, absolute, relative)) {{
-            return EXIT_FAILURE;
-        }}
-    }}
-    if (is_close(NAN, 1.0, absolute, relative)) {{
-        return EXIT_FAILURE;
-    }}
-    return EXIT_SUCCESS;
-}}
-"#
-    )
 }
 
 fn render_literals(
