@@ -131,6 +131,13 @@ These files have no generated-file marker and are not codegen outputs. Edit them
 directly when changing test infrastructure, then run the target verification
 suites. Keep the shared comparison policy consistent across targets.
 
+The handwritten native tests `tests/support/umbrella.c` and
+`tests/support/umbrella.cpp` check function and result-type access through
+`<ptfkit/ptfkit.h>` and `import ptfkit`, respectively. The C test is compiled as
+both C11 and C++23 and checks that all public headers can be included together.
+Generated verification tests use individual source headers or modules without
+repeating the suite through the umbrella.
+
 ### Adding a PTF
 
 The assisted workflow uses the skills in `.agents/skills/`:

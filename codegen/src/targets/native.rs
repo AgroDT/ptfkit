@@ -826,7 +826,9 @@ fn module_test(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
         .iter()
         .any(|function| matches!(function.core.output, Output::Struct(_)));
     let mut writer = Writer::new();
-    writer.write(format_args!("{HEADER}\n\n#ifdef IMPORT_UMBRELLA\nimport ptfkit;\n#else\nimport ptfkit.{slug};\n#endif\n\n#include \"support/close_enough.h\""));
+    writer.write(format_args!(
+        "{HEADER}\n\nimport ptfkit.{slug};\n\n#include \"support/close_enough.h\""
+    ));
     if type_traits {
         writer.write("\n#include <type_traits>\n\n");
     } else {

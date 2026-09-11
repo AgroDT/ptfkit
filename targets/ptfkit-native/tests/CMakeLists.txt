@@ -3,16 +3,13 @@ function(ptfkit_add_native_tests case)
         PARSE_ARGV 1 arg
         ""
         ""
-        "SOURCES;LIBRARIES;DEFINITIONS;PROPERTIES;COMPILE_FEATURES"
+        "SOURCES;LIBRARIES;PROPERTIES;COMPILE_FEATURES"
     )
     foreach(source ${arg_SOURCES})
         get_filename_component(name ${source} NAME_WE)
         set(target ${case}_${name})
         add_executable(${target} ${source})
         target_link_libraries(${target} PRIVATE ${arg_LIBRARIES})
-        if(arg_DEFINITIONS)
-            target_compile_definitions(${target} PRIVATE ${arg_DEFINITIONS})
-        endif()
         if(arg_PROPERTIES)
             set_target_properties(${target} PROPERTIES ${arg_PROPERTIES})
         endif()
