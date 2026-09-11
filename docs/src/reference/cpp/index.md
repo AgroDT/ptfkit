@@ -26,6 +26,7 @@ ptfkit's C++ API is organized around C++23 modules.
 - [`ptfkit.lal1979`](modules/lal1979.md) — Moisture retention and plasticity regressions for two groups of Nigerian soils.
 - [`ptfkit.li2007`](modules/li2007.md) — Li et al. (2007), Fengqiu County, North China Plain, China.
 - [`ptfkit.mayr1999`](modules/mayr1999.md) — Mayr and Jarvis (1999) modified Brooks-Corey water-retention parameter PTFs.
+- [`ptfkit.myeni2021`](modules/myeni2021.md) — Gravimetric field capacity and permanent wilting point for South African soils.
 - [`ptfkit.oosterveld1980`](modules/oosterveld1980.md) — Oosterveld and Chang (1980), soil-moisture retention from texture and depth.
 - [`ptfkit.pidgeon1972`](modules/pidgeon1972.md) — Pidgeon (1972), available-water regressions for ferrallitic soils in Uganda.
 - [`ptfkit.puckett1985`](modules/puckett1985.md) — Puckett et al. (1985), Alabama Lower Coastal Plain Ultisols.
