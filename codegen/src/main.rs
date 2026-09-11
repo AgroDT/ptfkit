@@ -18,6 +18,9 @@ mod targets;
 mod validate;
 mod version;
 
+#[cfg(test)]
+mod test_support;
+
 #[derive(Parser)]
 #[command(about = "Validate ptfkit specifications and generate bindings")]
 pub(crate) struct Cli {

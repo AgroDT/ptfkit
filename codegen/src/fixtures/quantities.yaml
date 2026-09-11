@@ -1,0 +1,10 @@
+volumetric_water_content:
+  description: Test fraction.
+  units:
+    volume_fraction:
+      absolute: 0.001
+      rationale: Test fraction tolerance.
+    volume_percent:
+      absolute: 0.1
+      relative: 0.01
+      rationale: Test percent tolerance.

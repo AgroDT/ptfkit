@@ -1,0 +1,33 @@
+source:
+  summary: Synthetic rendering example.
+  citation_apa: Example (2026).
+  doi: null
+functions:
+  - name: calc_ptf_example_scalar
+    status: implemented
+    public_api: {name: calc_ptf_example_scalar, summary: Scalar example.}
+    scope: {prediction_target: Test fraction., models: {h_theta: null, k_h: null}}
+    inputs:
+      - {name: x, unit: '1', symbol: null, domain: null, description: First input.}
+      - {name: y, unit: '1', symbol: null, domain: null, description: Second input.}
+    outputs: {type: scalar, name: value, quantity: volumetric_water_content, unit: volume_fraction, reported_unit: '1', symbol: null, domain: null, description: Scalar value.}
+    implementation:
+      variables: [{name: value, expr: x + y}]
+    verification_cases:
+      - {id: sum, kind: calculated, inputs: {x: 1.0, y: 2.0}, expected: {value: 3.0}, rationale: Test addition.}
+  - name: calc_ptf_example_record
+    status: implemented
+    public_api: {name: calc_ptf_example_record, summary: Record example.}
+    scope: {prediction_target: Test fractions., models: {h_theta: null, k_h: null}}
+    inputs:
+      - {name: x, unit: '1', symbol: null, domain: null, description: Input value.}
+    outputs:
+      type: record
+      name: ExampleResult
+      fields:
+        - {name: first, quantity: volumetric_water_content, unit: volume_fraction, reported_unit: '1', symbol: null, domain: null, description: First result.}
+        - {name: second, quantity: volumetric_water_content, unit: volume_fraction, reported_unit: '1', symbol: null, domain: null, description: Second result.}
+    implementation:
+      variables: [{name: first, expr: x}, {name: second, expr: x * 2}]
+    verification_cases:
+      - {id: record, kind: calculated, inputs: {x: 1.0}, expected: {first: 1.0, second: 2.0}, rationale: Test record.}
