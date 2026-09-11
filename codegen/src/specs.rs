@@ -393,39 +393,12 @@ fn json_path(path: &impl std::fmt::Display) -> String {
 
 #[cfg(test)]
 mod tests {
-    use std::{
-        fs,
-        path::{Path, PathBuf},
-    };
+    use std::{fs, path::Path};
 
     use super::load;
     use crate::model::PythonGeneration;
 
-    fn fixture_root(label: &str) -> PathBuf {
-        let root = std::env::temp_dir().join(format!(
-            "ptfkit-codegen-specs-{label}-{}-{}",
-            std::process::id(),
-            line!()
-        ));
-        fs::create_dir_all(root.join("specs/functions")).unwrap();
-        fs::create_dir_all(root.join("specs/schema")).unwrap();
-        fs::copy(
-            Path::new(env!("CARGO_MANIFEST_DIR")).join("../specs/schema/ptf-spec.schema.json"),
-            root.join("specs/schema/ptf-spec.schema.json"),
-        )
-        .unwrap();
-        fs::copy(
-            Path::new(env!("CARGO_MANIFEST_DIR")).join("../specs/quantities.yaml"),
-            root.join("specs/quantities.yaml"),
-        )
-        .unwrap();
-        fs::copy(
-            Path::new(env!("CARGO_MANIFEST_DIR")).join("../specs/units.yaml"),
-            root.join("specs/units.yaml"),
-        )
-        .unwrap();
-        root
-    }
+    use crate::test_support::fixture_root;
 
     fn specification(slug: &str, implementation: &str, generation: &str) -> String {
         let verification = if implementation.is_empty()
@@ -689,7 +662,7 @@ functions:
         );
         fs::write(
             root.join("specs/functions/unnamed_record.yaml"),
-            specification,
+            &specification,
         )
         .unwrap();
 
@@ -697,6 +670,15 @@ functions:
             .expect_err("unnamed inline record must fail")
             .to_string();
         assert!(error.contains("functions.0.outputs"), "{error}");
+        fs::write(
+            root.join("specs/functions/unnamed_record.yaml"),
+            specification.replace(
+                "      type: record\n",
+                "      type: record\n      name: TestResult\n",
+            ),
+        )
+        .unwrap();
+        load(&root).expect("correcting only the record name must make the fixture valid");
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -714,7 +696,7 @@ functions:
         );
         fs::write(
             root.join("specs/functions/non_pascal_case_record.yaml"),
-            specification,
+            &specification,
         )
         .unwrap();
 
@@ -722,6 +704,12 @@ functions:
             .expect_err("non-PascalCase record name must fail")
             .to_string();
         assert!(error.contains("functions.0.outputs"), "{error}");
+        fs::write(
+            root.join("specs/functions/non_pascal_case_record.yaml"),
+            specification.replace("name: result_record", "name: TestResult"),
+        )
+        .unwrap();
+        load(&root).expect("correcting only the record name must make the fixture valid");
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -743,7 +731,7 @@ functions:
         );
         fs::write(
             root.join("specs/functions/unnamed_record_definition.yaml"),
-            specification,
+            &specification,
         )
         .unwrap();
 
@@ -751,6 +739,15 @@ functions:
             .expect_err("unnamed record definition must fail")
             .to_string();
         assert!(error.contains("$defs.reusable_result"), "{error}");
+        fs::write(
+            root.join("specs/functions/unnamed_record_definition.yaml"),
+            specification.replace(
+                "    type: record\n",
+                "    type: record\n    name: TestResult\n",
+            ),
+        )
+        .unwrap();
+        load(&root).expect("correcting only the record name must make the fixture valid");
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -962,33 +959,38 @@ functions:
 
     #[test]
     fn rejects_invalid_verification_case_provenance() {
-        for (slug, case) in [
+        for (slug, valid, invalid) in [
             (
                 "unknown_kind",
-                "        expected: {value: 1.0}\n        kind: external\n        rationale: Invalid kind.\n",
+                "kind: calculated\n        rationale: Test input.",
+                "kind: external\n        rationale: Test input.",
             ),
             (
                 "published_without_location",
-                "        expected: {value: 1.0}\n        kind: published\n",
+                "kind: published\n        source_location: Table 1",
+                "kind: published",
             ),
             (
                 "calculated_without_rationale",
-                "        expected: {value: 1.0}\n        kind: calculated\n",
+                "kind: calculated\n        rationale: Test input.",
+                "kind: calculated",
             ),
         ] {
             let root = fixture_root(slug);
-            fs::write(
-                root.join(format!("specs/functions/{slug}.yaml")),
-                verification_specification(slug, case),
-            )
-            .unwrap();
+            let path = root.join(format!("specs/functions/{slug}.yaml"));
+            let text = verification_specification(
+                slug,
+                &format!("        expected: {{value: 1.0}}\n        {valid}\n"),
+            );
+            fs::write(&path, &text).unwrap();
+            load(&root)
+                .expect("provenance control must be valid before removing its required metadata");
+            fs::write(&path, text.replace(valid, invalid)).unwrap();
             let error = load(&root)
-                .expect_err("invalid verification case must fail")
+                .expect_err("invalid provenance must fail")
                 .to_string();
             assert!(
-                error.contains("Additional properties are not allowed")
-                    || error.contains("required property")
-                    || error.contains("not valid under any of the schemas"),
+                error.contains("functions.0.verification_cases.0"),
                 "{error}"
             );
             fs::remove_dir_all(root).unwrap();
@@ -997,33 +999,21 @@ functions:
 
     #[test]
     fn rejects_missing_and_unknown_expected_outputs() {
-        for (slug, expected) in [
-            ("missing_expected", ""),
-            ("unknown_expected", "        expected: {other: 1.0}\n"),
+        for (missing, diagnostic) in [
+            (true, "missing expected output `first`"),
+            (false, "references unknown output `other`"),
         ] {
-            let root = fixture_root(slug);
-            fs::write(
-                root.join(format!("specs/functions/{slug}.yaml")),
-                verification_specification(
-                    slug,
-                    &format!(
-                        "{expected}        kind: calculated\n        rationale: Interior representative input.\n"
-                    ),
-                ),
-            )
-            .unwrap();
-            let result = load(&root).and_then(crate::compile::functions);
-            let error = result
+            let mut entries = crate::test_support::entries();
+            let expected = &mut entries[0].spec.functions[1].verification_cases[0].expected;
+            if missing {
+                expected.remove("first");
+            } else {
+                expected.insert("other".into(), 3.0);
+            }
+            let error = crate::compile::functions(entries)
                 .expect_err("invalid expected outputs must fail")
                 .to_string();
-            assert!(
-                error.contains("missing expected output")
-                    || error.contains("references unknown output")
-                    || error.contains("required property")
-                    || error.contains("missing field `expected`"),
-                "{error}"
-            );
-            fs::remove_dir_all(root).unwrap();
+            assert!(error.contains(diagnostic), "{error}");
         }
     }
 
@@ -1480,7 +1470,7 @@ functions:
         let path = root.join("specs/units.yaml");
         let registry = fs::read_to_string(&path)
             .unwrap()
-            .replace("aliases: []", "aliases: [\"%\"]");
+            .replace("\"cm^3/cm^3\",", "\"%\", \"cm^3/cm^3\",");
         fs::write(path, registry).unwrap();
         assert!(
             crate::load_validated_specifications(&root)

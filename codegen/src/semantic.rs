@@ -774,35 +774,53 @@ mod tests {
     }
 
     #[test]
-    fn compiles_variables() {
-        let raw = function(
-            &["x"],
-            vec![variable("twice", "implementation.variables[0]", "x * 2")],
-        );
-        let compiled = compile(&raw).unwrap();
-        assert!(matches!(
-            compiled.variables[0].value.as_number().unwrap(),
-            Expr::Binary {
-                op: BinaryOp::Multiply,
-                ..
-            }
-        ));
-    }
-
-    #[test]
     fn resolves_ordered_variables_and_reuses_prior_values() {
         let raw = function(
-            &["x"],
+            &["x", "y"],
             vec![
-                variable("first", "implementation.variables[0]", "x + 1"),
-                variable("second", "implementation.variables[1]", "first * first"),
+                variable("first", "implementation.variables[0]", "y + 1"),
+                variable("second", "implementation.variables[1]", "first * x"),
+                variable("third", "implementation.variables[2]", "second - first"),
             ],
         );
         let compiled = compile(&raw).unwrap();
-        assert!(matches!(
-            compiled.variables[1].value.as_number().unwrap(),
-            Expr::Binary { .. }
-        ));
+        use super::{Number, Reference};
+        let expected = [
+            Expr::Binary {
+                op: BinaryOp::Add,
+                left: Box::new(Expr::Reference(Reference::Input(1))),
+                right: Box::new(Expr::Number(Number {
+                    value: 1.0,
+                    lexeme: "1".into(),
+                })),
+            },
+            Expr::Binary {
+                op: BinaryOp::Multiply,
+                left: Box::new(Expr::Reference(Reference::Variable(0))),
+                right: Box::new(Expr::Reference(Reference::Input(0))),
+            },
+            Expr::Binary {
+                op: BinaryOp::Subtract,
+                left: Box::new(Expr::Reference(Reference::Variable(1))),
+                right: Box::new(Expr::Reference(Reference::Variable(0))),
+            },
+        ];
+        assert_eq!(
+            compiled
+                .variables
+                .iter()
+                .map(|variable| variable.name.as_str())
+                .collect::<Vec<_>>(),
+            ["first", "second", "third"]
+        );
+        assert_eq!(
+            compiled
+                .variables
+                .iter()
+                .map(|variable| variable.value.as_number().unwrap())
+                .collect::<Vec<_>>(),
+            expected.iter().collect::<Vec<_>>()
+        );
     }
 
     #[test]

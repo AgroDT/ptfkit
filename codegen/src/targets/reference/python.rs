@@ -76,10 +76,7 @@ mod tests {
     use super::*;
 
     fn rendered_files() -> Vec<GeneratedFile> {
-        let root = Path::new(env!("CARGO_MANIFEST_DIR"))
-            .parent()
-            .expect("codegen directory has a repository parent");
-        let entries = crate::specs::load(root).expect("repository specifications load");
+        let entries = crate::test_support::entries();
         render(&entries)
     }
 
@@ -93,10 +90,7 @@ mod tests {
 
     #[test]
     fn renders_one_page_for_each_source_module() {
-        let root = Path::new(env!("CARGO_MANIFEST_DIR"))
-            .parent()
-            .expect("codegen directory has a repository parent");
-        let entries = crate::specs::load(root).expect("repository specifications load");
+        let entries = crate::test_support::entries();
         let files = render(&entries);
         let index = contents(&files, "index.md");
 
@@ -119,14 +113,15 @@ mod tests {
 
     #[test]
     fn includes_intentional_manual_public_modules() {
-        let root = Path::new(env!("CARGO_MANIFEST_DIR"))
-            .parent()
-            .expect("codegen directory has a repository parent");
-        let mut entries = crate::specs::load(root).expect("repository specifications load");
-        entries[0].spec.generation.public_python = PythonGeneration::Manual;
+        let mut entries = crate::test_support::entries();
+        let manual = entries
+            .iter_mut()
+            .find(|entry| entry.slug == "example2")
+            .unwrap();
+        manual.spec.generation.public_python = PythonGeneration::Manual;
         let files = render(&entries);
 
-        assert!(contents(&files, "ahuja1984.md").contains("::: ptfkit.ahuja1984"));
+        assert!(contents(&files, "example2.md").contains("::: ptfkit.example2"));
     }
 
     #[test]

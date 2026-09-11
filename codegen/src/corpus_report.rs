@@ -645,10 +645,7 @@ fn render_values(output: &mut String, values: &[Frequency]) {
 
 #[cfg(test)]
 mod tests {
-    use std::{
-        path::{Path, PathBuf},
-        sync::Arc,
-    };
+    use std::{path::PathBuf, sync::Arc};
 
     use super::{InputKind, Report};
     use crate::model::{Entry, Spec};
@@ -707,6 +704,7 @@ functions:
     verification_cases:
       - {id: one, kind: published, inputs: {x: 1.0}, expected: {alpha: 1.0, zeta: 2.0}, source_location: 'Table 1, row 1'}
       - {id: two, kind: calculated, inputs: {x: 2.0}, expected: {alpha: 2.0, zeta: 3.0}, rationale: Interior input.}
+      - {id: three, kind: calculated, inputs: {x: 3.0}, expected: {alpha: 3.0, zeta: 4.0}, rationale: Another interior input.}
     edge_cases:
       - {id: edge, inputs: {x: 0.0}, expected_behavior: Finite., notes: Metadata only.}
   - name: calc_ptf_test_blocked
@@ -748,18 +746,26 @@ functions:
         let report = Report::from_entries(&[fixture()]);
 
         assert_eq!(report.functions.total, 4);
-        assert!(
+        assert_eq!(
             report
                 .functions
                 .by_status
                 .iter()
-                .all(|status| status.count == 1)
+                .map(|status| (status.value.as_str(), status.count))
+                .collect::<Vec<_>>(),
+            [
+                ("implemented", 1),
+                ("ready-for-implementation", 1),
+                ("blocked", 1),
+                ("draft", 1)
+            ]
         );
-        assert_eq!(report.verification.all_functions.verification_cases, 2);
+        assert_eq!(report.verification.cases_total, 3);
+        assert_eq!(report.verification.all_functions.verification_cases, 3);
         assert_eq!(report.verification.by_kind["published"], 1);
-        assert_eq!(report.verification.by_kind["calculated"], 1);
+        assert_eq!(report.verification.by_kind["calculated"], 2);
         assert_eq!(report.verification.published_cases, 1);
-        assert_eq!(report.verification.calculated_cases, 1);
+        assert_eq!(report.verification.calculated_cases, 2);
         assert_eq!(report.verification.all_functions.edge_cases, 1);
         assert_eq!(
             report
@@ -767,6 +773,20 @@ functions:
                 .all_functions
                 .functions_with_verification_cases,
             1
+        );
+        assert_eq!(
+            report
+                .verification
+                .all_functions
+                .functions_with_verification_cases_percentage,
+            25.0
+        );
+        assert_eq!(
+            report
+                .verification
+                .ready_for_implementation_functions
+                .verification_cases,
+            0
         );
         assert_eq!(report.verification.implemented_functions.functions, 1);
         assert_eq!(
@@ -818,7 +838,10 @@ functions:
             report.blocked_functions[0].documentation_warnings,
             ["Required coefficients are unavailable."]
         );
-        assert!(report.blocked_functions[0].scientific_notes.is_some());
+        assert_eq!(
+            report.blocked_functions[0].scientific_notes.as_deref(),
+            Some("Blocker evidence from source review.")
+        );
         assert_eq!(
             report
                 .scope
@@ -829,52 +852,41 @@ functions:
     }
 
     #[test]
-    fn serializes_deterministically_to_json() {
-        let report = Report::from_entries(&[fixture()]);
-        let first = serde_json::to_string_pretty(&report).expect("report serializes");
-        let second = serde_json::to_string_pretty(&report).expect("report serializes again");
-        let text = report.to_text();
-
-        assert_eq!(first, second);
-        assert!(first.contains("\"blocked_functions\""));
-        assert!(first.contains("\"implemented_functions\""));
-        assert!(!first.contains("missing_quantity_or_unit_validation_failures"));
-        assert!(text.find("Implemented functions") < text.find("Quantity registry"));
+    fn report_order_is_independent_of_source_order() {
+        let mut earlier = fixture();
+        earlier.slug = "alpha1990".into();
+        let later = fixture();
+        let forward = Report::from_entries(&[earlier.clone(), later.clone()]);
+        let reverse = Report::from_entries(&[later, earlier]);
+        assert_eq!(
+            serde_json::to_value(&forward).unwrap(),
+            serde_json::to_value(&reverse).unwrap()
+        );
+        assert_eq!(forward.to_text(), reverse.to_text());
+        assert_eq!(forward.sources.earliest_publication_year, Some(1990));
+        assert_eq!(forward.sources.latest_publication_year, Some(2020));
     }
 
     #[test]
-    fn repository_corpus_report_is_complete_and_stable() {
-        let root = Path::new(env!("CARGO_MANIFEST_DIR"))
-            .parent()
-            .expect("workspace root exists");
-        let entries = crate::specs::load(root).expect("repository specifications load");
-        assert!(crate::validate::specifications(&entries).is_empty());
-        crate::compile::functions(entries.clone()).expect("repository specifications compile");
-
-        let report = Report::from_entries(&entries);
-        assert_eq!(report.verification.cases_total, 136);
-        assert_eq!(report.verification.by_kind["calculated"], 125);
-        assert_eq!(report.verification.by_kind["published"], 11);
-        assert_eq!(report.sources.specification_files, entries.len());
+    fn serializes_coverage_and_orders_text_sections() {
+        let report = Report::from_entries(&[fixture()]);
+        let json = serde_json::to_value(&report).unwrap();
+        assert_eq!(json["verification"]["cases_total"], 3);
         assert_eq!(
-            report.functions.total,
-            entries
-                .iter()
-                .map(|entry| entry.spec.functions.len())
-                .sum::<usize>()
+            json["verification"]["implemented_functions"]["functions"],
+            1
         );
         assert_eq!(
-            report
-                .functions
-                .by_status
-                .iter()
-                .map(|status| status.count)
-                .sum::<usize>(),
-            report.functions.total
+            json["blocked_functions"][0]["function_name"],
+            "calc_ptf_test_blocked"
         );
-        assert_eq!(
-            serde_json::to_string_pretty(&report).unwrap(),
-            serde_json::to_string_pretty(&Report::from_entries(&entries)).unwrap()
-        );
+        let text = report.to_text();
+        let implemented = text
+            .find("Implemented functions")
+            .expect("implemented coverage section");
+        let registry = text
+            .find("Quantity registry")
+            .expect("quantity registry section");
+        assert!(implemented < registry);
     }
 }

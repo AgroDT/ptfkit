@@ -232,10 +232,26 @@ mod tests {
     use super::*;
 
     #[test]
-    fn entry_source_initializes_the_private_module() {
-        let rendered = render(&[]).unwrap();
-        let entry = &rendered.last().unwrap().contents;
+    fn registers_each_source_once_and_preserves_ufunc_arities() {
+        let rendered = render(&crate::test_support::functions()).unwrap();
+        let entry = &rendered
+            .iter()
+            .find(|file| file.path.ends_with("ptfkit.c"))
+            .unwrap()
+            .contents;
         assert!(entry.contains("PyInit__ptfkit"));
-        assert!(!entry.contains("#include \"ufunc.h\""));
+        for slug in ["example2", "example10"] {
+            assert_eq!(entry.matches(&format!("#include \"{slug}.c\"")).count(), 1);
+            assert_eq!(entry.matches(&format!("if (ptfkit_register_{slug}(module) < 0) {{ Py_DECREF(module); return NULL; }}")).count(), 1);
+            let source = &rendered
+                .iter()
+                .find(|file| file.path.ends_with(format!("{slug}.c")))
+                .unwrap()
+                .contents;
+            for (suffix, nin, nout) in [("scalar", 2, 1), ("record", 1, 2)] {
+                let name = format!("calc_ptf_{slug}_{suffix}");
+                assert_eq!(source.matches(&format!("ptfkit_add_ufunc(module, \"{name}\", {name}_types, {nin}, {nout}, &{name}_spec)")).count(), 1);
+            }
+        }
     }
 }

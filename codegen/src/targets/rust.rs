@@ -801,7 +801,7 @@ fn render_tokens(module_docs: TokenStream, tokens: TokenStream) -> String {
 mod tests {
     use super::*;
     use crate::documentation::Returns;
-    use crate::model::{OutputField, Parameter};
+    use crate::model::OutputField;
     use crate::semantic::{BinaryOp, Expr, MathFunction, Reference};
 
     fn number(value: f64) -> Expr {
@@ -811,55 +811,67 @@ mod tests {
         })
     }
     #[test]
-    fn renders_every_operator_and_function() {
+    fn renders_each_operator_and_math_function_without_substitution() {
         let inputs = vec![format_ident!("x"), format_ident!("y")];
-        let vars = Vec::new();
-        let binary = [
-            BinaryOp::Add,
-            BinaryOp::Subtract,
-            BinaryOp::Multiply,
-            BinaryOp::Divide,
-            BinaryOp::Power,
-        ];
-        for op in binary {
-            assert!(
-                syn::parse2::<syn::Expr>(
-                    expression_tokens(
-                        &Expr::Binary {
-                            op,
-                            left: Box::new(Expr::Reference(Reference::Input(0))),
-                            right: Box::new(number(2.0))
-                        },
-                        &inputs,
-                        &vars
-                    )
+        let input = |index| Expr::Reference(Reference::Input(index));
+        for (op, expected) in [
+            (BinaryOp::Add, "x + y"),
+            (BinaryOp::Subtract, "x - y"),
+            (BinaryOp::Multiply, "x * y"),
+            (BinaryOp::Divide, "x / y"),
+            (BinaryOp::Power, "x . powf (y)"),
+        ] {
+            let expression = Expr::Binary {
+                op,
+                left: Box::new(input(0)),
+                right: Box::new(input(1)),
+            };
+            assert_eq!(
+                expression_tokens(&expression, &inputs, &[])
                     .unwrap()
                     .tokens
-                )
-                .is_ok()
+                    .to_string(),
+                expected
             );
         }
-        for function in [
-            MathFunction::Sqrt,
-            MathFunction::Exp,
-            MathFunction::Ln,
-            MathFunction::Log10,
-            MathFunction::Abs,
-            MathFunction::Min,
-            MathFunction::Max,
+        for (function, expected) in [
+            (MathFunction::Sqrt, "x . sqrt ()"),
+            (MathFunction::Exp, "x . exp ()"),
+            (MathFunction::Ln, "x . ln ()"),
+            (MathFunction::Log10, "x . log10 ()"),
+            (MathFunction::Abs, "x . abs ()"),
+            (MathFunction::Min, "x . min (y)"),
+            (MathFunction::Max, "x . max (y)"),
         ] {
             let args = if matches!(function, MathFunction::Min | MathFunction::Max) {
-                vec![number(1.0), number(2.0)]
+                vec![input(0), input(1)]
             } else {
-                vec![number(1.0)]
+                vec![input(0)]
             };
-            assert!(
-                syn::parse2::<syn::Expr>(
-                    expression_tokens(&Expr::Call { function, args }, &inputs, &vars)
-                        .unwrap()
-                        .tokens
-                )
-                .is_ok()
+            assert_eq!(
+                expression_tokens(&Expr::Call { function, args }, &inputs, &[])
+                    .unwrap()
+                    .tokens
+                    .to_string(),
+                expected
+            );
+        }
+        for (exponent, expected) in [
+            (2.0, "x . powi (2)"),
+            (3.0, "x . powi (3)"),
+            (4.0, "x . powi (4)"),
+        ] {
+            let expression = Expr::Binary {
+                op: BinaryOp::Power,
+                left: Box::new(input(0)),
+                right: Box::new(number(exponent)),
+            };
+            assert_eq!(
+                expression_tokens(&expression, &inputs, &[])
+                    .unwrap()
+                    .tokens
+                    .to_string(),
+                expected
             );
         }
     }
@@ -944,7 +956,6 @@ mod tests {
             .unwrap()
             .tokens;
 
-        assert!(syn::parse2::<syn::Expr>(rendered.clone()).is_ok());
         assert_eq!(rendered.to_string(), "parameters . b");
     }
 
@@ -953,28 +964,30 @@ mod tests {
         let module_docs = inner_doc_tokens(["Source summary.".into(), "# Reference".into()]);
         let function_docs = doc_tokens(["Function summary.".into(), "# Arguments".into()]);
         let generated = quote!(#module_docs #function_docs pub fn calculate() {});
-        assert!(syn::parse_file(&generated.to_string()).is_ok());
-        assert!(generated.to_string().contains("r\"Source summary."));
-        assert!(generated.to_string().contains("r\"Function summary."));
-    }
-
-    #[test]
-    fn record_results_document_fields_only_once() {
-        let parameter = Parameter {
-            name: "theta_s".into(),
-            unit: "cm^3/cm^3".into(),
-            domain: None,
-            description: "Saturated water content.".into(),
+        let file = syn::parse_file(&generated.to_string()).unwrap();
+        assert_eq!(file.attrs.len(), 1);
+        assert!(matches!(file.attrs[0].style, syn::AttrStyle::Inner(_)));
+        let syn::Item::Fn(function) = &file.items[0] else {
+            panic!("expected function");
         };
-
-        assert_eq!(
-            docs::parameter_documentation(&parameter),
-            "theta_s: Saturated water content. (cm^3/cm^3)"
-        );
-        assert_eq!(
-            docs::parameter_details(&parameter),
-            "Saturated water content. (cm^3/cm^3)"
-        );
+        assert_eq!(function.attrs.len(), 1);
+        assert!(matches!(function.attrs[0].style, syn::AttrStyle::Outer));
+        for (attribute, expected) in [
+            (&file.attrs[0], "Source summary.\n# Reference"),
+            (&function.attrs[0], "Function summary.\n# Arguments"),
+        ] {
+            assert!(attribute.path().is_ident("doc"));
+            let syn::Meta::NameValue(meta) = &attribute.meta else {
+                panic!("expected doc value");
+            };
+            let syn::Expr::Lit(value) = &meta.value else {
+                panic!("expected literal");
+            };
+            let syn::Lit::Str(value) = &value.lit else {
+                panic!("expected doc string");
+            };
+            assert_eq!(value.value(), expected);
+        }
     }
 
     #[test]

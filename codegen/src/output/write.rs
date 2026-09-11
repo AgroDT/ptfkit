@@ -308,7 +308,7 @@ fn remove_temporary(staged: &[StagedWrite]) {
 
 #[cfg(test)]
 mod tests {
-    use std::{collections::BTreeMap, fs, path::Path};
+    use std::{collections::BTreeMap, fs};
 
     use super::*;
     use crate::{
@@ -372,7 +372,6 @@ mod tests {
             HEADER,
         ));
         assert!(!is_generated(b"# Handwritten page\n", HEADER));
-        assert!(Path::new("index.md").is_relative());
     }
 
     #[test]

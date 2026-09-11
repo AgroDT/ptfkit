@@ -847,22 +847,11 @@ mod tests {
 
     #[test]
     fn public_python_generation_defaults_to_generated() {
-        let mut spec = Spec {
-            source: Source {
-                summary: "Test (2026), test territory.".into(),
-                citation_apa: "Test (2026).".into(),
-                doi: None,
-            },
-            scope: Scope::default(),
-            generation: Generation::default(),
-            scientific_notes: String::new(),
-            functions: Vec::new(),
-        };
-
+        let spec: Spec = serde_yaml::from_str(
+            "source: {summary: Test source., citation_apa: Test (2026)., doi: null}\nfunctions: []",
+        )
+        .unwrap();
         assert_eq!(spec.generation.public_python, PythonGeneration::Generated);
-
-        spec.generation.public_python = PythonGeneration::Manual;
-        assert_eq!(spec.generation.public_python, PythonGeneration::Manual);
     }
 
     #[test]
