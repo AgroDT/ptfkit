@@ -365,6 +365,47 @@ mod tests {
     }
 
     #[test]
+    fn renders_each_math_function_for_c_and_cpp() {
+        for (function, args, expected_c, expected_cpp) in [
+            (
+                MathFunction::Sqrt,
+                vec![input(0)],
+                "sqrt(x)",
+                "std::sqrt(x)",
+            ),
+            (MathFunction::Exp, vec![input(0)], "exp(x)", "std::exp(x)"),
+            (MathFunction::Ln, vec![input(0)], "log(x)", "std::log(x)"),
+            (
+                MathFunction::Log10,
+                vec![input(0)],
+                "log10(x)",
+                "std::log10(x)",
+            ),
+            (MathFunction::Abs, vec![input(0)], "fabs(x)", "std::abs(x)"),
+            (
+                MathFunction::Min,
+                vec![input(0), input(1)],
+                "fmin(x, y)",
+                "std::fmin(x, y)",
+            ),
+            (
+                MathFunction::Max,
+                vec![input(0), input(1)],
+                "fmax(x, y)",
+                "std::fmax(x, y)",
+            ),
+        ] {
+            let expression = Expr::Call { function, args };
+            for (dialect, expected) in [(Dialect::C, expected_c), (Dialect::Cpp, expected_cpp)] {
+                assert_eq!(
+                    super::expression(&expression, &inputs(), &[], dialect).to_string(),
+                    expected
+                );
+            }
+        }
+    }
+
+    #[test]
     fn renders_power_and_calls_with_dialect_local_math_names() {
         let expression = Expr::Call {
             function: MathFunction::Min,

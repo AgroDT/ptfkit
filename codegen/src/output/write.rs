@@ -340,6 +340,9 @@ mod tests {
             format!("{HEADER}# Preserved\n"),
         )
         .expect("write C page");
+        let handwritten = "# Handwritten Python guide\n\nKeep this content.\n";
+        fs::write(python_reference.join("guide.md"), handwritten)
+            .expect("write handwritten Python page");
 
         let output = Output::new(
             &REFERENCE_PYTHON,
@@ -353,6 +356,11 @@ mod tests {
         assert!(python_reference.join("index.md").is_file());
         assert!(!python_reference.join("obsolete.md").exists());
         assert!(c_reference.join("preserved.md").is_file());
+        assert_eq!(
+            fs::read_to_string(python_reference.join("guide.md"))
+                .expect("handwritten Python page survives cleanup"),
+            handwritten
+        );
 
         fs::remove_dir_all(root).expect("remove temporary test directory");
     }

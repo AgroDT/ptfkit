@@ -1108,7 +1108,7 @@ functions:
     }
 
     #[test]
-    fn keeps_overrides_function_local_for_shared_outputs() {
+    fn keeps_overrides_function_and_field_local_for_shared_outputs() {
         let root = fixture_root("shared-output-overrides");
         let text = r#"source:
   summary: Test source.
@@ -1162,6 +1162,15 @@ functions:
             .expect("shared output definitions must compile");
         assert_eq!(compiled[0].output_tolerances[0].absolute, 0.001);
         assert_eq!(compiled[1].output_tolerances[0].absolute, 0.005);
+        for function in &compiled {
+            let second = &function.output_tolerances[1];
+            assert_eq!(second.absolute, 0.001);
+            assert_eq!(second.relative, 0.0);
+            assert!(matches!(
+                second.source,
+                crate::model::ToleranceSource::Registry
+            ));
+        }
         fs::remove_dir_all(root).unwrap();
     }
 
