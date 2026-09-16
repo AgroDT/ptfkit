@@ -10,7 +10,9 @@ use crate::{
         Scope, Source,
     },
     render::{Render, Writer},
-    semantic::{RecordLookup, Reference, ResultBinding, VariableValue},
+    semantic::{
+        DecisionTree, DecisionTreePredicate, RecordLookup, Reference, ResultBinding, VariableValue,
+    },
 };
 
 use crate::{
@@ -267,7 +269,7 @@ impl<'a> NativeFunction<'a> {
         let output_name = &spec.outputs.fields()[0].name;
         let terminal = matches!(function.core.output, Output::Scalar)
             && function.ir.variables.last().is_some_and(|variable| {
-                variable.name == *output_name && matches!(variable.value, VariableValue::Number(_))
+                variable.name == *output_name && variable.value.is_numeric()
             });
         Ok(Self {
             function,
@@ -333,6 +335,11 @@ impl Render for NativeFunction<'_> {
                     VariableValue::RecordLookup(lookup) => {
                         self.render_record_lookup(writer, &variable.name, lookup);
                     }
+                    VariableValue::DecisionTree(tree) => {
+                        writer.write(format_args!("const double {} = ", variable.name));
+                        writer.write(self.decision_tree_expression(tree));
+                        writer.line(";");
+                    }
                 }
             }
             self.render_return(writer);
@@ -365,21 +372,31 @@ impl NativeFunction<'_> {
             .name;
         match &self.function.core.output {
             Output::Scalar if self.terminal => {
-                writer.write("return ");
-                writer.write(c::expression(
-                    self.function
-                        .ir
-                        .variables
-                        .last()
-                        .expect("terminal variable")
-                        .value
-                        .as_number()
-                        .expect("terminal scalar variable is numeric"),
-                    &self.function.core.inputs,
-                    &self.function.ir.variables,
-                    self.expression_dialect(),
-                ));
-                writer.line(";");
+                match &self
+                    .function
+                    .ir
+                    .variables
+                    .last()
+                    .expect("terminal variable")
+                    .value
+                {
+                    VariableValue::Number(expression) => {
+                        writer.write("return ");
+                        writer.write(c::expression(
+                            expression,
+                            &self.function.core.inputs,
+                            &self.function.ir.variables,
+                            self.expression_dialect(),
+                        ));
+                        writer.line(";");
+                    }
+                    VariableValue::DecisionTree(tree) => {
+                        self.render_decision_tree_return(writer, tree);
+                    }
+                    VariableValue::RecordLookup(_) => {
+                        unreachable!("terminal scalar variable is numeric")
+                    }
+                }
             }
             Output::Scalar => writer.line(format_args!("return {output_name};")),
             Output::Struct(fields) if matches!(self.dialect, NativeDialect::C) => {
@@ -410,6 +427,72 @@ impl NativeFunction<'_> {
             record_lookup_function_name(lookup)
         ));
     }
+
+    fn render_decision_tree_return(&self, writer: &mut Writer, tree: &DecisionTree) {
+        match tree {
+            DecisionTree::Leaf(value) => {
+                writer.line(format_args!("return {};", c::float_literal(&value.lexeme)));
+            }
+            DecisionTree::Split { predicate, yes, no } => {
+                writer.line(format_args!(
+                    "if ({}) {{",
+                    self.decision_tree_condition(predicate)
+                ));
+                writer.indented(|writer| self.render_decision_tree_return(writer, yes));
+                writer.line("} else {");
+                writer.indented(|writer| self.render_decision_tree_return(writer, no));
+                writer.line("}");
+            }
+        }
+    }
+
+    fn decision_tree_expression(&self, tree: &DecisionTree) -> String {
+        match tree {
+            DecisionTree::Leaf(value) => c::float_literal(&value.lexeme),
+            DecisionTree::Split { predicate, yes, no } => format!(
+                "({} ? {} : {})",
+                self.decision_tree_condition(predicate),
+                self.decision_tree_expression(yes),
+                self.decision_tree_expression(no),
+            ),
+        }
+    }
+
+    fn decision_tree_condition(&self, predicate: &DecisionTreePredicate) -> String {
+        match predicate {
+            DecisionTreePredicate::LessThan { input, value } => format!(
+                "{} < {}",
+                self.reference_name(*input),
+                c::float_literal(&value.lexeme),
+            ),
+            DecisionTreePredicate::EnumIn {
+                input,
+                enum_name,
+                members,
+            } => members
+                .iter()
+                .map(|member| {
+                    let member = match self.dialect {
+                        NativeDialect::C => {
+                            c_enum_member(&self.function.entry.slug, enum_name, member)
+                        }
+                        NativeDialect::Cpp => {
+                            format!("{enum_name}::{}", member.to_case(Case::Pascal))
+                        }
+                    };
+                    format!("{} == {member}", self.reference_name(*input))
+                })
+                .collect::<Vec<_>>()
+                .join(" || "),
+        }
+    }
+
+    fn reference_name(&self, reference: Reference) -> &str {
+        match reference {
+            Reference::Input(index) => &self.function.core.inputs[index],
+            Reference::Variable(index) => &self.function.ir.variables[index].name,
+        }
+    }
 }
 
 fn lookup_definitions<'a>(functions: &[&'a CompiledFunction]) -> Vec<&'a RecordLookup> {
@@ -419,7 +502,7 @@ fn lookup_definitions<'a>(functions: &[&'a CompiledFunction]) -> Vec<&'a RecordL
         .flat_map(|function| &function.ir.variables)
         .filter_map(|variable| match &variable.value {
             VariableValue::RecordLookup(lookup) => Some(lookup),
-            VariableValue::Number(_) => None,
+            VariableValue::Number(_) | VariableValue::DecisionTree(_) => None,
         })
         .filter(|lookup| names.insert((lookup.enum_type.clone(), lookup.output.name.clone())))
         .collect()

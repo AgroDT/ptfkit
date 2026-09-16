@@ -1,0 +1,507 @@
+source:
+  summary: Rawls et al. (2003), organic-carbon effects on soil water retention.
+  citation_apa: >-
+    Rawls, W. J., Pachepsky, Y. A., Ritchie, J. C., Sobecki, T. M., &
+    Bloodworth, H. (2003). Effect of soil organic carbon on soil water
+    retention. Geoderma, 116(1-2), 61-76.
+  doi:
+    identifier: 10.1016/S0016-7061(03)00094-6
+    url: https://doi.org/10.1016/S0016-7061(03)00094-6
+scope:
+  territory: United States
+  dataset: >-
+    Approximately 12,000 samples from the USDA National Soil Characterization
+    database; equations were evaluated with NRCS pilot-study data.
+$defs:
+  UsdaTextureClass:
+    type: enum
+    description: USDA soil textural class used by the Figure 2 regression tree.
+    values:
+      - {name: sand, value: "Sand"}
+      - {name: loamy_sand, value: "Loamy sand"}
+      - {name: sandy_loam, value: "Sandy loam"}
+      - {name: loam, value: "Loam"}
+      - {name: silt_loam, value: "Silt loam"}
+      - {name: sandy_clay_loam, value: "Sandy clay loam"}
+      - {name: silt, value: "Silt"}
+      - {name: clay_loam, value: "Clay loam"}
+      - {name: sandy_clay, value: "Sandy clay"}
+      - {name: silty_clay_loam, value: "Silty clay loam"}
+      - {name: silty_clay, value: "Silty clay"}
+      - {name: clay, value: "Clay"}
+functions:
+  - name: calc_ptf_rawls2003_soc_theta33_tree
+    status: implemented
+    public_api:
+      name: calc_ptf_rawls2003_soc_theta33_tree
+      summary: Estimate volumetric water content at -33 kPa with the published regression tree.
+    scope:
+      prediction_target: Volumetric soil water content at -33 kPa.
+      models: {h_theta: Regression-tree point estimate at -33 kPa, k_h: null}
+    inputs:
+      - name: soil_texture
+        description: USDA soil textural class used to traverse Figure 2.
+        $ref: "#/$defs/UsdaTextureClass"
+      - name: soil_organic_carbon
+        symbol: Corg
+        unit: "% mass"
+        domain: null
+        description: Soil organic carbon content by mass.
+    outputs:
+      type: scalar
+      name: theta_33
+      quantity: volumetric_water_content
+      symbol: theta_33
+      unit: volume_fraction
+      reported_unit: "cm³/cm³"
+      domain: null
+      description: Volumetric soil water content at -33 kPa.
+    verification_cases:
+      - id: figure_2_leaf_01_sand
+        kind: published
+        inputs: {soil_texture: sand, soil_organic_carbon: 1.0}
+        expected: {theta_33: 0.108}
+        source_location: "Figure 2, terminal node [1]"
+        notes: Published terminal mean divided by 100; sand below 2.1% Corg.
+      - id: figure_2_leaf_02_loamy_sand
+        kind: published
+        inputs: {soil_texture: loamy_sand, soil_organic_carbon: 1.0}
+        expected: {theta_33: 0.151}
+        source_location: "Figure 2, terminal node [2]"
+        notes: Published terminal mean divided by 100; loamy sand below 2.1% Corg.
+      - id: figure_2_leaf_03_sandy_loam_low_corg
+        kind: published
+        inputs: {soil_texture: sandy_loam, soil_organic_carbon: 1.0}
+        expected: {theta_33: 0.204}
+        source_location: "Figure 2, terminal node [3]"
+        notes: Published terminal mean divided by 100; Corg below 1.1%.
+      - id: figure_2_leaf_04_corg_1_1_boundary
+        kind: published
+        inputs: {soil_texture: sandy_loam, soil_organic_carbon: 1.1}
+        expected: {theta_33: 0.244}
+        source_location: "Figure 2, terminal node [4]"
+        notes: Published terminal mean divided by 100; equality takes the No branch at Corg < 1.1.
+      - id: figure_2_leaf_05_corg_2_1_boundary
+        kind: published
+        inputs: {soil_texture: sand, soil_organic_carbon: 2.1}
+        expected: {theta_33: 0.280}
+        source_location: "Figure 2, terminal node [5]"
+        notes: Published terminal mean divided by 100; equality takes the No branch at Corg < 2.1.
+      - id: figure_2_leaf_06_corg_4_8_boundary
+        kind: published
+        inputs: {soil_texture: loamy_sand, soil_organic_carbon: 4.8}
+        expected: {theta_33: 0.350}
+        source_location: "Figure 2, terminal node [6]"
+        notes: Published terminal mean divided by 100; equality takes the No branch at Corg < 4.8.
+      - id: figure_2_leaf_07_corg_7_7_boundary
+        kind: published
+        inputs: {soil_texture: sand, soil_organic_carbon: 7.7}
+        expected: {theta_33: 0.394}
+        source_location: "Figure 2, terminal node [7]"
+        notes: Published terminal mean divided by 100; equality takes the No branch at Corg < 7.7.
+      - id: figure_2_leaf_08_sandy_loam_high_corg
+        kind: published
+        inputs: {soil_texture: sandy_loam, soil_organic_carbon: 7.7}
+        expected: {theta_33: 0.549}
+        source_location: "Figure 2, terminal node [8]"
+        notes: Published terminal mean divided by 100; sandy-loam high-Corg branch.
+      - id: figure_2_leaf_09_loam_low_corg
+        kind: published
+        inputs: {soil_texture: loam, soil_organic_carbon: 1.0}
+        expected: {theta_33: 0.272}
+        source_location: "Figure 2, terminal node [9]"
+        notes: Published terminal mean divided by 100; Corg below 1.7%.
+      - id: figure_2_leaf_10_corg_1_7_boundary
+        kind: published
+        inputs: {soil_texture: loam, soil_organic_carbon: 1.7}
+        expected: {theta_33: 0.305}
+        source_location: "Figure 2, terminal node [10]"
+        notes: Published terminal mean divided by 100; equality takes the No branch at Corg < 1.7.
+      - id: figure_2_leaf_11_silt_loam_low_corg
+        kind: published
+        inputs: {soil_texture: silt_loam, soil_organic_carbon: 1.0}
+        expected: {theta_33: 0.315}
+        source_location: "Figure 2, terminal node [11]"
+        notes: Published terminal mean divided by 100; Corg below 1.5%.
+      - id: figure_2_leaf_12_corg_1_5_boundary
+        kind: published
+        inputs: {soil_texture: silt_loam, soil_organic_carbon: 1.5}
+        expected: {theta_33: 0.338}
+        source_location: "Figure 2, terminal node [12]"
+        notes: Published terminal mean divided by 100; equality takes the No branch at Corg < 1.5.
+      - id: figure_2_leaf_13_corg_4_2_loam_boundary
+        kind: published
+        inputs: {soil_texture: loam, soil_organic_carbon: 4.2}
+        expected: {theta_33: 0.353}
+        source_location: "Figure 2, terminal node [13]"
+        notes: Published terminal mean divided by 100; equality takes the No branch at Corg < 4.2.
+      - id: figure_2_leaf_14_corg_4_2_silt_boundary
+        kind: published
+        inputs: {soil_texture: silt_loam, soil_organic_carbon: 4.2}
+        expected: {theta_33: 0.393}
+        source_location: "Figure 2, terminal node [14]"
+        notes: Published terminal mean divided by 100; second texture group at the 4.2% boundary.
+      - id: figure_2_leaf_15_corg_8_5_loam_boundary
+        kind: published
+        inputs: {soil_texture: loam, soil_organic_carbon: 8.5}
+        expected: {theta_33: 0.383}
+        source_location: "Figure 2, terminal node [15]"
+        notes: Published terminal mean divided by 100; equality takes the No branch at Corg < 8.5.
+      - id: figure_2_leaf_16_corg_8_5_silt_boundary
+        kind: published
+        inputs: {soil_texture: silt_loam, soil_organic_carbon: 8.5}
+        expected: {theta_33: 0.464}
+        source_location: "Figure 2, terminal node [16]"
+        notes: Published terminal mean divided by 100; second texture group at the 8.5% boundary.
+      - id: figure_2_leaf_17_silty_clay_loam_low_corg
+        kind: published
+        inputs: {soil_texture: silty_clay_loam, soil_organic_carbon: 4.0}
+        expected: {theta_33: 0.361}
+        source_location: "Figure 2, terminal node [17]"
+        notes: Published terminal mean divided by 100; Corg below 4.2%.
+      - id: figure_2_leaf_18_corg_4_2_very_fine_boundary
+        kind: published
+        inputs: {soil_texture: silty_clay_loam, soil_organic_carbon: 4.2}
+        expected: {theta_33: 0.548}
+        source_location: "Figure 2, terminal node [18]"
+        notes: Published terminal mean divided by 100; equality takes the No branch at Corg < 4.2.
+      - id: figure_2_leaf_19_silty_clay
+        kind: published
+        inputs: {soil_texture: silty_clay, soil_organic_carbon: 1.0}
+        expected: {theta_33: 0.397}
+        source_location: "Figure 2, terminal node [19]"
+        notes: Published terminal mean divided by 100; silty clay is not split by Corg.
+      - id: figure_2_leaf_20_clay
+        kind: published
+        inputs: {soil_texture: clay, soil_organic_carbon: 1.0}
+        expected: {theta_33: 0.426}
+        source_location: "Figure 2, terminal node [20]"
+        notes: Published terminal mean divided by 100; clay is not split by Corg.
+    edge_cases: []
+    documentation:
+      notes:
+        - Figure 2 reports terminal means and within-node standard deviations in volume percent; public outputs divide the means by 100.
+        - Every comparison is strict less-than, so equality follows the No branch. The cases cover every leaf and threshold.
+    implementation:
+      variables:
+        - name: theta_33
+          decision_tree:
+            split: {input: soil_texture, operator: in, values: [sand, loamy_sand, sandy_loam]}
+            yes:
+              split: {input: soil_organic_carbon, operator: lt, value: 2.1}
+              yes:
+                split: {input: soil_texture, operator: in, values: [sand]}
+                yes: {leaf: 0.108}
+                no:
+                  split: {input: soil_texture, operator: in, values: [loamy_sand]}
+                  yes: {leaf: 0.151}
+                  no:
+                    split: {input: soil_organic_carbon, operator: lt, value: 1.1}
+                    yes: {leaf: 0.204}
+                    no: {leaf: 0.244}
+              no:
+                split: {input: soil_organic_carbon, operator: lt, value: 4.8}
+                yes: {leaf: 0.280}
+                no:
+                  split: {input: soil_organic_carbon, operator: lt, value: 7.7}
+                  yes: {leaf: 0.350}
+                  no:
+                    split: {input: soil_texture, operator: in, values: [sand, loamy_sand]}
+                    yes: {leaf: 0.394}
+                    no: {leaf: 0.549}
+            no:
+              split: {input: soil_texture, operator: in, values: [loam, silt_loam, sandy_clay_loam, silt, clay_loam, sandy_clay]}
+              yes:
+                split: {input: soil_organic_carbon, operator: lt, value: 4.2}
+                yes:
+                  split: {input: soil_texture, operator: in, values: [loam, sandy_clay_loam, sandy_clay]}
+                  yes:
+                    split: {input: soil_organic_carbon, operator: lt, value: 1.7}
+                    yes: {leaf: 0.272}
+                    no: {leaf: 0.305}
+                  no:
+                    split: {input: soil_organic_carbon, operator: lt, value: 1.5}
+                    yes: {leaf: 0.315}
+                    no: {leaf: 0.338}
+                no:
+                  split: {input: soil_organic_carbon, operator: lt, value: 8.5}
+                  yes:
+                    split: {input: soil_texture, operator: in, values: [loam, clay_loam, sandy_clay]}
+                    yes: {leaf: 0.353}
+                    no: {leaf: 0.393}
+                  no:
+                    split: {input: soil_texture, operator: in, values: [loam, sandy_clay]}
+                    yes: {leaf: 0.383}
+                    no: {leaf: 0.464}
+              no:
+                split: {input: soil_texture, operator: in, values: [silty_clay_loam]}
+                yes:
+                  split: {input: soil_organic_carbon, operator: lt, value: 4.2}
+                  yes: {leaf: 0.361}
+                  no: {leaf: 0.548}
+                no:
+                  split: {input: soil_texture, operator: in, values: [silty_clay]}
+                  yes: {leaf: 0.397}
+                  no: {leaf: 0.426}
+
+  - name: calc_ptf_rawls2003_soc_theta1500_tree
+    status: implemented
+    public_api:
+      name: calc_ptf_rawls2003_soc_theta1500_tree
+      summary: Estimate volumetric water content at -1500 kPa with the published regression tree.
+    scope:
+      prediction_target: Volumetric soil water content at -1500 kPa.
+      models: {h_theta: Regression-tree point estimate at -1500 kPa, k_h: null}
+    inputs:
+      - {name: clay, symbol: clay, unit: "% mass", domain: null, description: Clay content by mass.}
+      - {name: sand, symbol: sand, unit: "% mass", domain: null, description: Sand content by mass.}
+      - {name: soil_organic_carbon, symbol: Corg, unit: "% mass", domain: null, description: Soil organic carbon content by mass.}
+    outputs:
+      type: scalar
+      name: theta_1500
+      quantity: volumetric_water_content
+      symbol: theta_1500
+      unit: volume_fraction
+      reported_unit: "cm³/cm³"
+      domain: null
+      description: Volumetric soil water content at -1500 kPa.
+    verification_cases:
+      - {id: figure_3_leaf_01_low_corg, kind: published, inputs: {clay: 5.0, sand: 70.0, soil_organic_carbon: 1.0}, expected: {theta_1500: 0.061}, source_location: "Figure 3, terminal node [1]", notes: "Published terminal mean divided by 100; Corg below 1.5%."}
+      - {id: figure_3_leaf_02_corg_1_5_boundary, kind: published, inputs: {clay: 5.0, sand: 70.0, soil_organic_carbon: 1.5}, expected: {theta_1500: 0.085}, source_location: "Figure 3, terminal node [2]", notes: "Published terminal mean divided by 100; equality takes the No branch at Corg < 1.5."}
+      - {id: figure_3_leaf_03_sand_80_boundary, kind: published, inputs: {clay: 5.0, sand: 80.0, soil_organic_carbon: 1.0}, expected: {theta_1500: 0.040}, source_location: "Figure 3, terminal node [3]", notes: "Published terminal mean divided by 100; equality takes the No branch at sand < 80."}
+      - {id: figure_3_leaf_04_clay_8_boundary, kind: published, inputs: {clay: 8.0, sand: 20.0, soil_organic_carbon: 2.0}, expected: {theta_1500: 0.082}, source_location: "Figure 3, terminal node [4]", notes: "Published terminal mean divided by 100; equality takes the No branch at clay < 8."}
+      - {id: figure_3_leaf_05_clay_12_boundary, kind: published, inputs: {clay: 12.0, sand: 20.0, soil_organic_carbon: 2.0}, expected: {theta_1500: 0.100}, source_location: "Figure 3, terminal node [5]", notes: "Published terminal mean divided by 100; equality takes the No branch at clay < 12."}
+      - {id: figure_3_leaf_06_corg_2_3_boundary, kind: published, inputs: {clay: 13.0, sand: 20.0, soil_organic_carbon: 2.3}, expected: {theta_1500: 0.110}, source_location: "Figure 3, terminal node [6]", notes: "Published terminal mean divided by 100; equality takes the No branch at Corg < 2.3."}
+      - {id: figure_3_leaf_07_corg_6_5_boundary, kind: published, inputs: {clay: 13.0, sand: 20.0, soil_organic_carbon: 6.5}, expected: {theta_1500: 0.159}, source_location: "Figure 3, terminal node [7]", notes: "Published terminal mean divided by 100; equality takes the No branch at Corg < 6.5."}
+      - {id: figure_3_leaf_08_clay_14_boundary, kind: published, inputs: {clay: 14.0, sand: 20.0, soil_organic_carbon: 5.0}, expected: {theta_1500: 0.116}, source_location: "Figure 3, terminal node [8]", notes: "Published terminal mean divided by 100; equality takes the No branch at clay < 14."}
+      - {id: figure_3_leaf_09_clay_17_boundary, kind: published, inputs: {clay: 17.0, sand: 20.0, soil_organic_carbon: 5.0}, expected: {theta_1500: 0.128}, source_location: "Figure 3, terminal node [9]", notes: "Published terminal mean divided by 100; equality takes the No branch at clay < 17."}
+      - {id: figure_3_leaf_10_corg_5_8_boundary, kind: published, inputs: {clay: 18.0, sand: 20.0, soil_organic_carbon: 5.8}, expected: {theta_1500: 0.167}, source_location: "Figure 3, terminal node [10]", notes: "Published terminal mean divided by 100; equality takes the No branch at Corg < 5.8."}
+      - {id: figure_3_leaf_11_clay_19_boundary, kind: published, inputs: {clay: 19.0, sand: 20.0, soil_organic_carbon: 1.0}, expected: {theta_1500: 0.143}, source_location: "Figure 3, terminal node [11]", notes: "Published terminal mean divided by 100; equality takes the No branch at clay < 19."}
+      - {id: figure_3_leaf_12_clay_23_boundary, kind: published, inputs: {clay: 23.0, sand: 20.0, soil_organic_carbon: 1.0}, expected: {theta_1500: 0.160}, source_location: "Figure 3, terminal node [12]", notes: "Published terminal mean divided by 100; equality takes the No branch at clay < 23."}
+      - {id: figure_3_leaf_13_clay_26_boundary, kind: published, inputs: {clay: 26.0, sand: 20.0, soil_organic_carbon: 1.0}, expected: {theta_1500: 0.173}, source_location: "Figure 3, terminal node [13]", notes: "Published terminal mean divided by 100; equality takes the No branch at clay < 26."}
+      - {id: figure_3_leaf_14_clay_29_boundary, kind: published, inputs: {clay: 29.0, sand: 20.0, soil_organic_carbon: 1.0}, expected: {theta_1500: 0.193}, source_location: "Figure 3, terminal node [14]", notes: "Published terminal mean divided by 100; equality takes the No branch at clay < 29."}
+      - {id: figure_3_leaf_15_clay_33_boundary, kind: published, inputs: {clay: 33.0, sand: 20.0, soil_organic_carbon: 1.0}, expected: {theta_1500: 0.211}, source_location: "Figure 3, terminal node [15]", notes: "Published terminal mean divided by 100; equality takes the No branch at clay < 33."}
+      - {id: figure_3_leaf_16_clay_37_4_boundary, kind: published, inputs: {clay: 37.4, sand: 20.0, soil_organic_carbon: 1.0}, expected: {theta_1500: 0.229}, source_location: "Figure 3, terminal node [16]", notes: "Published terminal mean divided by 100; equality takes the No branch at clay < 37.4."}
+      - {id: figure_3_leaf_17_clay_44_boundary, kind: published, inputs: {clay: 44.0, sand: 20.0, soil_organic_carbon: 1.0}, expected: {theta_1500: 0.253}, source_location: "Figure 3, terminal node [17]", notes: "Published terminal mean divided by 100; equality takes the No branch at clay < 44."}
+      - {id: figure_3_leaf_18_clay_48_boundary, kind: published, inputs: {clay: 48.0, sand: 20.0, soil_organic_carbon: 1.0}, expected: {theta_1500: 0.275}, source_location: "Figure 3, terminal node [18]", notes: "Published terminal mean divided by 100; equality takes the No branch at clay < 48."}
+      - {id: figure_3_leaf_19_clay_54_boundary, kind: published, inputs: {clay: 54.0, sand: 20.0, soil_organic_carbon: 1.0}, expected: {theta_1500: 0.296}, source_location: "Figure 3, terminal node [19]", notes: "Published terminal mean divided by 100; equality takes the No branch at clay < 54."}
+      - {id: figure_3_leaf_20_clay_67_boundary, kind: published, inputs: {clay: 67.0, sand: 20.0, soil_organic_carbon: 1.0}, expected: {theta_1500: 0.323}, source_location: "Figure 3, terminal node [20]", notes: "Published terminal mean divided by 100; equality takes the No branch at clay < 67."}
+    edge_cases: []
+    documentation:
+      notes:
+        - Figure 3 reports terminal means and within-node standard deviations in volume percent; public outputs divide the means by 100.
+        - Every comparison is strict less-than, so equality follows the No branch. The cases cover every leaf and threshold.
+    implementation:
+      variables:
+        - name: theta_1500
+          decision_tree:
+            split: {input: clay, operator: lt, value: 26}
+            yes:
+              split: {input: clay, operator: lt, value: 14}
+              yes:
+                split: {input: soil_organic_carbon, operator: lt, value: 2.3}
+                yes:
+                  split: {input: clay, operator: lt, value: 8}
+                  yes:
+                    split: {input: sand, operator: lt, value: 80}
+                    yes:
+                      split: {input: soil_organic_carbon, operator: lt, value: 1.5}
+                      yes: {leaf: 0.061}
+                      no: {leaf: 0.085}
+                    no: {leaf: 0.040}
+                  no:
+                    split: {input: clay, operator: lt, value: 12}
+                    yes: {leaf: 0.082}
+                    no: {leaf: 0.100}
+                no:
+                  split: {input: soil_organic_carbon, operator: lt, value: 6.5}
+                  yes: {leaf: 0.110}
+                  no: {leaf: 0.159}
+              no:
+                split: {input: clay, operator: lt, value: 19}
+                yes:
+                  split: {input: soil_organic_carbon, operator: lt, value: 5.8}
+                  yes:
+                    split: {input: clay, operator: lt, value: 17}
+                    yes: {leaf: 0.116}
+                    no: {leaf: 0.128}
+                  no: {leaf: 0.167}
+                no:
+                  split: {input: clay, operator: lt, value: 23}
+                  yes: {leaf: 0.143}
+                  no: {leaf: 0.160}
+            no:
+              split: {input: clay, operator: lt, value: 44}
+              yes:
+                split: {input: clay, operator: lt, value: 33}
+                yes:
+                  split: {input: clay, operator: lt, value: 29}
+                  yes: {leaf: 0.173}
+                  no: {leaf: 0.193}
+                no:
+                  split: {input: clay, operator: lt, value: 37.4}
+                  yes: {leaf: 0.211}
+                  no: {leaf: 0.229}
+              no:
+                split: {input: clay, operator: lt, value: 54}
+                yes:
+                  split: {input: clay, operator: lt, value: 48}
+                  yes: {leaf: 0.253}
+                  no: {leaf: 0.275}
+                no:
+                  split: {input: clay, operator: lt, value: 67}
+                  yes: {leaf: 0.296}
+                  no: {leaf: 0.323}
+
+  - name: calc_ptf_rawls2003_soc_theta33_gmdh
+    status: implemented
+    public_api:
+      name: calc_ptf_rawls2003_soc_theta33_gmdh
+      summary: Estimate volumetric water content at -33 kPa with the published GMDH polynomial.
+    scope:
+      prediction_target: Volumetric soil water content at -33 kPa.
+      models: {h_theta: GMDH polynomial point estimate at -33 kPa, k_h: null}
+    inputs:
+      - {name: soil_organic_carbon, symbol: Corg, unit: "% mass", domain: "0.02 < value < 28.44", description: Soil organic carbon content by mass.}
+      - {name: clay, symbol: clay, unit: "% mass", domain: "0.0 < value < 90", description: Clay content by mass.}
+      - {name: sand, symbol: sand, unit: "% mass", domain: "0.7 < value < 95", description: "Sand content by mass; clay plus sand must not exceed 100."}
+    outputs:
+      type: scalar
+      name: theta_33
+      quantity: volumetric_water_content
+      symbol: theta_33
+      unit: volume_fraction
+      reported_unit: "cm³/cm³"
+      domain: null
+      description: Volumetric soil water content at -33 kPa.
+    verification_cases:
+      - id: calculated_diagnostic_probe
+        kind: calculated
+        inputs: {soil_organic_carbon: 1.0, clay: 20.0, sand: 60.0}
+        expected: {theta_33: 0.24651660127906823}
+        source_location: "Section 3.2 equation; evidence-bundle direct evaluation"
+        rationale: >-
+          The input is interior to every source range, clay plus sand is 80%,
+          and direct decimal evaluation confirms the fixed value. This is an
+          implementation probe, not an observation or evidence of accuracy.
+    edge_cases: []
+    documentation:
+      notes:
+        - The polynomial calculates volume percent; the public output divides the result by 100.
+      warnings:
+        - Apply only within the source ranges and with clay plus sand no greater than 100%.
+    implementation:
+      variables:
+        - {name: x, expr: "-0.837531 + 0.430183 * soil_organic_carbon"}
+        - {name: y, expr: "-1.40744 + 0.0661969 * clay"}
+        - {name: z, expr: "-1.51866 + 0.0393284 * sand"}
+        - {name: x_squared, expr: "x ^ 2"}
+        - {name: x_cubed, expr: "x ^ 3"}
+        - {name: y_squared, expr: "y ^ 2"}
+        - {name: y_cubed, expr: "y ^ 3"}
+        - {name: z_squared, expr: "z ^ 2"}
+        - {name: z_cubed, expr: "z ^ 3"}
+        - {name: xy, expr: "x * y"}
+        - name: polynomial
+          expr: "0.0461615 + 0.290955 * x - 0.0496845 * x_squared + 0.00704802 * x_cubed + 0.269101 * y - 0.176528 * xy + 0.0543138 * x_squared * y + 0.1982 * y_squared - 0.060699 * y_cubed - 0.320249 * z - 0.0111693 * x_squared * z + 0.14104 * y * z + 0.0657345 * xy * z - 0.102026 * y_squared * z - 0.04012 * z_squared + 0.160838 * x * z_squared - 0.121392 * y * z_squared - 0.0616676 * z_cubed"
+        - {name: theta_33_volume_percent, expr: "29.7528 + 10.3544 * polynomial"}
+        - {name: theta_33, expr: "theta_33_volume_percent / 100"}
+
+  - name: calc_ptf_rawls2003_soc_theta1500_gmdh
+    status: implemented
+    public_api:
+      name: calc_ptf_rawls2003_soc_theta1500_gmdh
+      summary: Estimate volumetric water content at -1500 kPa with the published GMDH polynomial.
+    scope:
+      prediction_target: Volumetric soil water content at -1500 kPa.
+      models: {h_theta: GMDH polynomial point estimate at -1500 kPa, k_h: null}
+    inputs:
+      - {name: soil_organic_carbon, symbol: Corg, unit: "% mass", domain: "0.02 < value < 28.44", description: Soil organic carbon content by mass.}
+      - {name: clay, symbol: clay, unit: "% mass", domain: "0.0 < value < 90", description: Clay content by mass.}
+      - {name: sand, symbol: sand, unit: "% mass", domain: "0.7 < value < 95", description: "Sand content by mass; clay plus sand must not exceed 100."}
+    outputs:
+      type: scalar
+      name: theta_1500
+      quantity: volumetric_water_content
+      symbol: theta_1500
+      unit: volume_fraction
+      reported_unit: "cm³/cm³"
+      domain: null
+      description: Volumetric soil water content at -1500 kPa.
+    verification_cases:
+      - id: calculated_diagnostic_probe
+        kind: calculated
+        inputs: {soil_organic_carbon: 1.0, clay: 20.0, sand: 60.0}
+        expected: {theta_1500: 0.12978036954714565}
+        source_location: "Section 3.2 equation; evidence-bundle direct evaluation"
+        rationale: >-
+          The input is interior to every source range, clay plus sand is 80%,
+          and direct decimal evaluation confirms the fixed value. This is an
+          implementation probe, not an observation or evidence of accuracy.
+    edge_cases: []
+    documentation:
+      notes:
+        - The polynomial calculates volume percent; the public output divides the result by 100.
+      warnings:
+        - Apply only within the source ranges and with clay plus sand no greater than 100%.
+    implementation:
+      variables:
+        - {name: x, expr: "-0.837531 + 0.430183 * soil_organic_carbon"}
+        - {name: y, expr: "-1.40744 + 0.0661969 * clay"}
+        - {name: z, expr: "-1.51866 + 0.0393284 * sand"}
+        - {name: x_squared, expr: "x ^ 2"}
+        - {name: x_cubed, expr: "x ^ 3"}
+        - {name: y_squared, expr: "y ^ 2"}
+        - {name: y_cubed, expr: "y ^ 3"}
+        - {name: z_squared, expr: "z ^ 2"}
+        - {name: z_cubed, expr: "z ^ 3"}
+        - {name: xy, expr: "x * y"}
+        - name: polynomial
+          expr: "0.06865 + 0.108713 * x - 0.0157225 * x_squared + 0.00102805 * x_cubed + 0.886569 * y - 0.223581 * xy + 0.0126379 * x_squared * y - 0.017059 * y_squared + 0.0135266 * x * y_squared - 0.0334434 * y_cubed - 0.0535182 * z - 0.0354271 * x * z - 0.00261313 * x_squared * z - 0.154563 * y * z - 0.0160219 * xy * z - 0.0400606 * y_squared * z - 0.104875 * z_squared + 0.0159857 * x * z_squared - 0.0671656 * y * z_squared - 0.0260699 * z_cubed"
+        - {name: theta_1500_volume_percent, expr: "14.2568 + 7.36318 * polynomial"}
+        - {name: theta_1500, expr: "theta_1500_volume_percent / 100"}
+
+scientific_notes: |
+  # Rawls et al. (2003)
+
+  ## Supported models
+
+  - Figures 2 and 3 publish separate regression trees for volumetric water
+    contents at -33 and -1500 kPa. Each tree has 20 terminal nodes whose means,
+    within-node standard deviations, and sample counts were transcribed from
+    the supplied source figures.
+  - Section 3.2 publishes separate GMDH polynomials for the same targets. Their
+    source domain is `0.02 < Corg < 28.44`, `0 < clay < 90`,
+    `0.7 < sand < 95`, with `clay + sand <= 100`.
+
+  ## Review decisions
+
+  - Output quantity `volumetric_water_content` and unit `volume_fraction` use
+    normalized API notation `cm³/cm³`. Tree means and GMDH results are divided
+    by 100 from the paper's volume-percent scale.
+  - The published regression trees use structured `decision_tree` variables.
+    Numeric `lt` predicates preserve the printed strict thresholds, while enum
+    `in` predicates preserve the texture-class groups shown in the figures.
+  - All tree comparisons preserve strict `<` operators. Exact threshold
+    equality follows the No branch and is covered by the leaf cases.
+  - Independent-data RMSE values of 5.9 volume percentage points at -33 kPa
+    and 2.6 volume percentage points at -1500 kPa are model-performance
+    metadata, not implementation tolerances.
+
+  ## Verification rationale
+
+  - The 40 tree cases use published terminal regions and means as their
+    oracles. Inputs lie inside those regions or exactly on published thresholds,
+    so changing `<` to `<=`, choosing the wrong texture branch, or returning a
+    neighboring leaf mean changes an asserted result.
+  - The GMDH cases use direct decimal evaluation of the printed equations.
+    They protect predictor normalization, coefficients, and conversion from
+    volume percent to volumetric fraction; they are not observations or
+    evidence of predictive accuracy.
+
+  ## Documented limitations
+
+  - Tree terminal means summarize groups and are not deterministic physical
+    truths; the figures also report within-node standard deviations.
+  - Public preview visibility does not establish redistribution rights. The
+    preview payloads and publisher figures remain outside this specification.

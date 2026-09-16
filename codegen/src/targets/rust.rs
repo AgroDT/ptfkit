@@ -9,8 +9,8 @@ use crate::{
     documentation::{self as docs, FunctionDocument, Returns, SourceDocument},
     model::{CompiledFunction, CompiledInput, EnumDefinition, EnumType, Output},
     semantic::{
-        self, BinaryOp, Expr, MathFunction, Number, RecordLookup, Reference, ResultBinding,
-        UnaryOp, VariableValue,
+        self, BinaryOp, DecisionTree, DecisionTreePredicate, Expr, MathFunction, Number,
+        RecordLookup, Reference, ResultBinding, UnaryOp, VariableValue,
     },
 };
 
@@ -145,15 +145,15 @@ fn module_tokens(
             .as_str()
     });
     let terminal_output = scalar_output.and_then(|output| {
-        ir.variables.last().filter(|variable| {
-            variable.name == output && matches!(variable.value, VariableValue::Number(_))
-        })
+        ir.variables
+            .last()
+            .filter(|variable| variable.name == output && variable.value.is_numeric())
     });
     let terminal_record = match ir.result {
         ResultBinding::RecordVariable(index) if index + 1 == ir.variables.len() => {
             match &ir.variables[index].value {
                 VariableValue::RecordLookup(lookup) => Some(lookup),
-                VariableValue::Number(_) => None,
+                VariableValue::Number(_) | VariableValue::DecisionTree(_) => None,
             }
         }
         ResultBinding::Fields | ResultBinding::RecordVariable(_) => None,
@@ -174,6 +174,10 @@ fn module_tokens(
                 }
                 VariableValue::RecordLookup(lookup) => {
                     let expression = record_lookup_tokens(lookup, &inputs, &ir.variables)?;
+                    Ok(quote!(let #name = #expression;))
+                }
+                VariableValue::DecisionTree(tree) => {
+                    let expression = decision_tree_tokens(tree, &inputs, &ir.variables);
                     Ok(quote!(let #name = #expression;))
                 }
             }
@@ -250,12 +254,17 @@ fn output_tokens(
                 .fields()[0]
                 .name;
             let expression = match terminal_output {
-                Some(variable) => {
-                    let VariableValue::Number(expression) = &variable.value else {
+                Some(variable) => match &variable.value {
+                    VariableValue::Number(expression) => {
+                        expression_tokens(expression, inputs, variables)?.tokens
+                    }
+                    VariableValue::DecisionTree(tree) => {
+                        decision_tree_tokens(tree, inputs, variables)
+                    }
+                    VariableValue::RecordLookup(_) => {
                         unreachable!("scalar terminal output is numeric")
-                    };
-                    expression_tokens(expression, inputs, variables)?.tokens
-                }
+                    }
+                },
                 None => {
                     let name = format_ident!("{name}");
                     quote!(#name)
@@ -327,6 +336,44 @@ fn record_lookup_tokens(
     Ok(quote!(#key.into()))
 }
 
+fn decision_tree_tokens(
+    tree: &DecisionTree,
+    inputs: &[Ident],
+    variables: &[semantic::Variable],
+) -> TokenStream {
+    match tree {
+        DecisionTree::Leaf(value) => {
+            let value = rust_float_literal(value);
+            quote!(#value)
+        }
+        DecisionTree::Split { predicate, yes, no } => {
+            let predicate = match predicate {
+                DecisionTreePredicate::LessThan { input, value } => {
+                    let input = reference_ident(*input, inputs, variables);
+                    let value = rust_float_literal(value);
+                    quote!(#input < #value)
+                }
+                DecisionTreePredicate::EnumIn {
+                    input,
+                    enum_name,
+                    members,
+                } => {
+                    let input = reference_ident(*input, inputs, variables);
+                    let enum_name = format_ident!("{enum_name}");
+                    let patterns = members.iter().map(|member| {
+                        let member = format_ident!("{}", member.to_case(Case::Pascal));
+                        quote!(#enum_name::#member)
+                    });
+                    quote!(matches!(#input, #(#patterns)|*))
+                }
+            };
+            let yes = decision_tree_tokens(yes, inputs, variables);
+            let no = decision_tree_tokens(no, inputs, variables);
+            quote!(if #predicate { #yes } else { #no })
+        }
+    }
+}
+
 fn lookup_conversion_tokens(functions: &[&CompiledFunction]) -> Vec<TokenStream> {
     let mut names = BTreeSet::new();
     functions
@@ -334,7 +381,7 @@ fn lookup_conversion_tokens(functions: &[&CompiledFunction]) -> Vec<TokenStream>
         .flat_map(|function| &function.ir.variables)
         .filter_map(|variable| match &variable.value {
             VariableValue::RecordLookup(lookup) => Some(lookup),
-            VariableValue::Number(_) => None,
+            VariableValue::Number(_) | VariableValue::DecisionTree(_) => None,
         })
         .filter(|lookup| names.insert((lookup.enum_type.clone(), lookup.output.name.clone())))
         .map(|lookup| {

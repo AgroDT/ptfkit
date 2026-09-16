@@ -55,6 +55,66 @@
               }
             }
           }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "decision_tree"],
+          "properties": {
+            "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+            "decision_tree": { "$ref": "#/$defs/decisionTree" }
+          }
+        }
+      ]
+    },
+    "decisionTree": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["leaf"],
+          "properties": {
+            "leaf": { "type": "number" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["split", "yes", "no"],
+          "properties": {
+            "split": { "$ref": "#/$defs/decisionTreeSplit" },
+            "yes": { "$ref": "#/$defs/decisionTree" },
+            "no": { "$ref": "#/$defs/decisionTree" }
+          }
+        }
+      ]
+    },
+    "decisionTreeSplit": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["input", "operator", "value"],
+          "properties": {
+            "input": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+            "operator": { "const": "lt" },
+            "value": { "type": "number" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["input", "operator", "values"],
+          "properties": {
+            "input": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+            "operator": { "const": "in" },
+            "values": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" }
+            }
+          }
         }
       ]
     },

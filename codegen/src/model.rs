@@ -702,6 +702,10 @@ pub(crate) enum ImplementationVariable {
         name: String,
         lookup: Box<LookupInvocation>,
     },
+    DecisionTree {
+        name: String,
+        decision_tree: Box<DecisionTree>,
+    },
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -710,6 +714,62 @@ pub(crate) struct LookupInvocation {
     pub(crate) key: String,
     #[serde(skip)]
     pub(crate) definition: Option<LookupDefinition>,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(untagged)]
+pub(crate) enum DecisionTree {
+    Leaf(DecisionTreeLeaf),
+    Split(DecisionTreeBranch),
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct DecisionTreeLeaf {
+    pub(crate) leaf: serde_json::Number,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct DecisionTreeBranch {
+    pub(crate) split: DecisionTreeSplit,
+    pub(crate) yes: Box<DecisionTree>,
+    pub(crate) no: Box<DecisionTree>,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(untagged)]
+pub(crate) enum DecisionTreeSplit {
+    LessThan(DecisionTreeLessThan),
+    EnumIn(DecisionTreeEnumIn),
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct DecisionTreeLessThan {
+    pub(crate) input: String,
+    pub(crate) operator: LessThanOperator,
+    pub(crate) value: serde_json::Number,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
+pub(crate) enum LessThanOperator {
+    #[serde(rename = "lt")]
+    LessThan,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct DecisionTreeEnumIn {
+    pub(crate) input: String,
+    pub(crate) operator: EnumInOperator,
+    pub(crate) values: Vec<String>,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
+pub(crate) enum EnumInOperator {
+    #[serde(rename = "in")]
+    In,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -878,6 +938,7 @@ pub(crate) struct RawVariable {
 pub(crate) enum RawVariableValue {
     Expression(RawExpression),
     Lookup(Box<RawLookup>),
+    DecisionTree(Box<RawDecisionTree>),
 }
 
 #[derive(Clone, Debug)]
@@ -885,6 +946,12 @@ pub(crate) struct RawLookup {
     pub(crate) implementation_path: String,
     pub(crate) key: String,
     pub(crate) definition: LookupDefinition,
+}
+
+#[derive(Clone, Debug)]
+pub(crate) struct RawDecisionTree {
+    pub(crate) implementation_path: String,
+    pub(crate) tree: DecisionTree,
 }
 
 #[derive(Clone, Debug)]

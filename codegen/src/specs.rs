@@ -13,8 +13,8 @@ use crate::{
     formula,
     model::{
         Entry, EnumType, Implementation, ImplementationVariable, Input, Quantity, QuantityRegistry,
-        RawExpression, RawFunction, RawInput, RawInputType, RawLookup, RawVariable,
-        RawVariableValue, Spec,
+        RawDecisionTree, RawExpression, RawFunction, RawInput, RawInputType, RawLookup,
+        RawVariable, RawVariableValue, Spec,
     },
     semantic,
 };
@@ -400,6 +400,18 @@ fn compile(
                         })),
                     })
                 }
+                ImplementationVariable::DecisionTree {
+                    name,
+                    decision_tree,
+                } => Ok(RawVariable {
+                    name: name.clone(),
+                    value: RawVariableValue::DecisionTree(Box::new(RawDecisionTree {
+                        implementation_path: format!(
+                            "implementation.variables[{index}].decision_tree"
+                        ),
+                        tree: decision_tree.as_ref().clone(),
+                    })),
+                }),
             })
             .collect::<Result<Vec<_>, _>>()?,
     };
@@ -432,15 +444,16 @@ fn expression_locations(
     text: &str,
     spec: &Spec,
 ) -> Result<Vec<crate::model::SourceLocation>, String> {
-    let expressions = spec
-        .functions
-        .iter()
-        .filter_map(|function| function.implementation.as_ref())
-        .flat_map(|implementation| implementation.variables.iter())
-        .filter_map(|variable| match variable {
-            ImplementationVariable::Expression { expr, .. } => Some(expr.as_str()),
-            ImplementationVariable::Lookup { .. } => None,
-        });
+    let expressions =
+        spec.functions
+            .iter()
+            .filter_map(|function| function.implementation.as_ref())
+            .flat_map(|implementation| implementation.variables.iter())
+            .filter_map(|variable| match variable {
+                ImplementationVariable::Expression { expr, .. } => Some(expr.as_str()),
+                ImplementationVariable::Lookup { .. }
+                | ImplementationVariable::DecisionTree { .. } => None,
+            });
     let mut cursor = 0;
     let mut locations = Vec::new();
 
@@ -532,6 +545,7 @@ fn validate_output(
                 .iter()
                 .filter_map(|variable| match variable.value {
                     semantic::VariableValue::Number(_) => Some(variable.name.as_str()),
+                    semantic::VariableValue::DecisionTree(_) => Some(variable.name.as_str()),
                     semantic::VariableValue::RecordLookup(_) => None,
                 }),
         )
@@ -589,6 +603,46 @@ mod tests {
             specification(key, implementation, generation),
         )
         .unwrap();
+    }
+
+    fn decision_tree_specification() -> &'static str {
+        r#"source:
+  summary: Test source.
+  citation_apa: Test (2026).
+  doi: null
+$defs:
+  Category:
+    type: enum
+    description: Test category.
+    values:
+      - {name: coarse, value: Coarse}
+      - {name: fine, value: Fine}
+functions:
+  - name: calc_ptf_decision_tree
+    status: ready-for-implementation
+    public_api: {name: calc_ptf_decision_tree, result_class: null, summary: Test decision tree.}
+    scope:
+      prediction_target: Test value.
+      models: {h_theta: null, k_h: null}
+    inputs:
+      - {$ref: '#/$defs/Category', name: category}
+      - {name: x, symbol: x, unit: '1', domain: null, description: Test input.}
+    outputs: {type: scalar, name: value, quantity: volumetric_water_content, symbol: y, unit: volume_fraction, reported_unit: '1', domain: null, description: Test output.}
+    implementation:
+      variables:
+        - name: value
+          decision_tree:
+            split: {input: category, operator: in, values: [coarse]}
+            yes:
+              split: {input: x, operator: lt, value: 2.0}
+              yes: {leaf: 1.0}
+              no: {leaf: 2.0}
+            no: {leaf: 3.0}
+    verification_cases:
+      - {id: below_boundary, kind: calculated, inputs: {category: coarse, x: 1.0}, expected: {value: 1.0}, rationale: Explicit fixture branch.}
+      - {id: at_boundary, kind: calculated, inputs: {category: coarse, x: 2.0}, expected: {value: 2.0}, rationale: Equality takes the No branch.}
+      - {id: other_category, kind: calculated, inputs: {category: fine, x: 1.0}, expected: {value: 3.0}, rationale: Explicit fixture branch.}
+"#
     }
 
     #[test]
@@ -710,6 +764,166 @@ functions:
             "{extension}"
         );
         fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn compiles_and_renders_strict_decision_tree_branches() {
+        let root = fixture_root("decision-tree");
+        fs::write(
+            root.join("specs/functions/decision_tree.yaml"),
+            decision_tree_specification(),
+        )
+        .unwrap();
+
+        let entries = load(&root).unwrap();
+        assert!(matches!(
+            entries[0].implementations[0].as_ref().unwrap().variables[0].value,
+            crate::semantic::VariableValue::DecisionTree(_)
+        ));
+        let compiled = crate::compile::functions(entries).unwrap();
+        let rust = crate::targets::render_rust_for_test(&compiled).unwrap();
+        let rust = &rust
+            .iter()
+            .find(|file| file.path.ends_with("decision_tree.rs"))
+            .unwrap()
+            .contents;
+        assert!(
+            rust.contains("matches ! (category , Category :: Coarse)"),
+            "{rust}"
+        );
+        assert!(rust.contains("x < 2.0f64"), "{rust}");
+        assert!(rust.contains("fn at_boundary"), "{rust}");
+        assert!(
+            rust.contains("calc_ptf_decision_tree (Category :: Coarse , 2f64)"),
+            "{rust}"
+        );
+
+        let (c_headers, cpp_modules) = crate::targets::render_native_for_test(&compiled).unwrap();
+        let c = &c_headers
+            .iter()
+            .find(|file| file.path.ends_with("decision_tree.h"))
+            .unwrap()
+            .contents;
+        assert!(
+            c.contains("if (category == decision_tree_category_coarse)"),
+            "{c}"
+        );
+        assert!(c.contains("if (x < 2.0)"), "{c}");
+        assert!(c.contains("return 1.0;"), "{c}");
+        assert!(c.contains("return 2.0;"), "{c}");
+        assert!(c.contains("return 3.0;"), "{c}");
+
+        let cpp = &cpp_modules
+            .iter()
+            .find(|file| file.path.ends_with("decision_tree.cppm"))
+            .unwrap()
+            .contents;
+        assert!(cpp.contains("if (category == Category::Coarse)"), "{cpp}");
+        assert!(cpp.contains("if (x < 2.0)"), "{cpp}");
+
+        let extension = crate::targets::render_python_extension_for_test(&compiled).unwrap();
+        let extension = &extension
+            .iter()
+            .find(|file| file.path.ends_with("decision_tree.c"))
+            .unwrap()
+            .contents;
+        assert!(
+            extension.contains("calc_ptf_decision_tree(category, x)"),
+            "{extension}"
+        );
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn renders_a_decision_tree_as_an_intermediate_numeric_variable() {
+        let root = fixture_root("decision-tree-variable");
+        let specification = decision_tree_specification()
+            .replace(
+                "        - name: value\n          decision_tree:",
+                "        - name: branch_value\n          decision_tree:",
+            )
+            .replace(
+                "            no: {leaf: 3.0}\n    verification_cases:",
+                "            no: {leaf: 3.0}\n        - {name: value, expr: branch_value * 10}\n    verification_cases:",
+            )
+            .replace("expected: {value: 1.0}", "expected: {value: 10.0}")
+            .replace("expected: {value: 2.0}", "expected: {value: 20.0}")
+            .replace("expected: {value: 3.0}", "expected: {value: 30.0}");
+        fs::write(
+            root.join("specs/functions/decision_tree_variable.yaml"),
+            specification,
+        )
+        .unwrap();
+
+        let compiled = crate::compile::functions(load(&root).unwrap()).unwrap();
+        let rust = crate::targets::render_rust_for_test(&compiled).unwrap();
+        let rust = &rust
+            .iter()
+            .find(|file| file.path.ends_with("decision_tree_variable.rs"))
+            .unwrap()
+            .contents;
+        assert!(rust.contains("let branch_value = if"), "{rust}");
+        assert!(rust.contains("branch_value * 10.0f64"), "{rust}");
+
+        let (c_headers, cpp_modules) = crate::targets::render_native_for_test(&compiled).unwrap();
+        let c = &c_headers
+            .iter()
+            .find(|file| file.path.ends_with("decision_tree_variable.h"))
+            .unwrap()
+            .contents;
+        assert!(c.contains("const double branch_value ="), "{c}");
+        assert!(c.contains("? 1.0 : 2.0"), "{c}");
+        assert!(c.contains("branch_value * 10.0"), "{c}");
+        let cpp = &cpp_modules
+            .iter()
+            .find(|file| file.path.ends_with("decision_tree_variable.cppm"))
+            .unwrap()
+            .contents;
+        assert!(cpp.contains("const double branch_value ="), "{cpp}");
+        assert!(cpp.contains("branch_value * 10.0"), "{cpp}");
+
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn rejects_decision_tree_predicates_with_wrong_input_types_or_members() {
+        for (label, edit, expected) in [
+            (
+                "numeric-enum",
+                (
+                    "split: {input: category, operator: in, values: [coarse]}",
+                    "split: {input: category, operator: lt, value: 2.0}",
+                ),
+                "must be numeric for operator `lt`",
+            ),
+            (
+                "enum-numeric",
+                (
+                    "split: {input: category, operator: in, values: [coarse]}",
+                    "split: {input: x, operator: in, values: [coarse]}",
+                ),
+                "must be an enum for operator `in`",
+            ),
+            (
+                "unknown-member",
+                ("values: [coarse]", "values: [missing]"),
+                "unknown member `missing` of enum `Category`",
+            ),
+            (
+                "unknown-input",
+                ("input: category", "input: missing"),
+                "unknown decision-tree input `missing`",
+            ),
+        ] {
+            let root = fixture_root(label);
+            let text = decision_tree_specification().replacen(edit.0, edit.1, 1);
+            fs::write(root.join("specs/functions/decision_tree.yaml"), text).unwrap();
+            let error = load(&root)
+                .expect_err("invalid decision tree must fail")
+                .to_string();
+            assert!(error.contains(expected), "{error}");
+            fs::remove_dir_all(root).unwrap();
+        }
     }
 
     #[test]

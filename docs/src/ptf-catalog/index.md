@@ -157,7 +157,12 @@ names may fail during Rust code generation or compilation. See the
 [verification policy](../contributing/verification.md) for details.
 
 Implementations express ordered variables used to reproduce
-the published PTF. A variable can be populated by a formula or by a typed lookup.
+the published PTF. A variable can be populated by a formula, a typed lookup, or
+a structured decision tree. Decision-tree branches use either a strict numeric
+`lt` predicate or an enum-membership `in` predicate and contain explicit `yes`
+and `no` subtrees. A terminal `leaf` is numeric. Equality follows the `no`
+branch of `lt`, so threshold behavior remains identical in every generated
+language.
 Enums, records, and lookups are independent reusable definitions: a lookup maps
 an enum member to a record, and later formulas can access fields of that record.
 Enum definitions give each categorical member a stable schema `name`, its exact
