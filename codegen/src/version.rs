@@ -1,11 +1,21 @@
 use std::{fs, path::Path};
 
-use anyhow::{Context, Result, bail};
+use anyhow::{Context, Result};
 
 const RUST_MANIFEST: &str = "targets/ptfkit-rs/Cargo.toml";
 const PYTHON_VERSION: &str = "targets/ptfkit-py/src/ptfkit/_version.py";
 const NATIVE_VERSION: &str = "targets/ptfkit-native/cmake/ptfkitVersion.cmake";
 const CITATION_FILE: &str = "CITATION.cff";
+
+#[derive(Debug, thiserror::Error)]
+pub(crate) enum VersionError {
+    #[error("invalid version: {version}")]
+    Invalid { version: String },
+    #[error("missing package version in {RUST_MANIFEST}")]
+    MissingPackageVersion,
+    #[error("missing version in {CITATION_FILE}")]
+    MissingCitationVersion,
+}
 
 pub(crate) fn run(root: &Path, version: &str) -> Result<()> {
     validate(version)?;
@@ -26,13 +36,15 @@ pub(crate) fn run(root: &Path, version: &str) -> Result<()> {
     Ok(())
 }
 
-fn validate(version: &str) -> Result<()> {
+fn validate(version: &str) -> Result<(), VersionError> {
     if version.is_empty()
         || !version
             .bytes()
             .all(|byte| byte.is_ascii_alphanumeric() || matches!(byte, b'.' | b'-' | b'+'))
     {
-        bail!("invalid version: {version}")
+        return Err(VersionError::Invalid {
+            version: version.to_owned(),
+        });
     }
     Ok(())
 }
@@ -59,7 +71,7 @@ fn update_rust_manifest(root: &Path, version: &str) -> Result<()> {
     }
 
     if !updated {
-        bail!("missing package version in {RUST_MANIFEST}")
+        return Err(VersionError::MissingPackageVersion.into());
     }
 
     fs::write(path, output).with_context(|| format!("writing {RUST_MANIFEST}"))?;
@@ -75,7 +87,7 @@ fn update_citation_file(root: &Path, version: &str) -> Result<()> {
     Ok(())
 }
 
-fn replace_citation_version(citation: &str, version: &str) -> Result<String> {
+fn replace_citation_version(citation: &str, version: &str) -> Result<String, VersionError> {
     let mut output = String::with_capacity(citation.len());
     let mut updated = false;
 
@@ -90,7 +102,7 @@ fn replace_citation_version(citation: &str, version: &str) -> Result<String> {
     }
 
     if !updated {
-        bail!("missing version in {CITATION_FILE}")
+        return Err(VersionError::MissingCitationVersion);
     }
 
     Ok(output)
@@ -118,6 +130,6 @@ mod tests {
 
         let error = replace_citation_version(citation, "0.3.0").unwrap_err();
 
-        assert_eq!(error.to_string(), "missing version in CITATION.cff");
+        assert!(matches!(error, super::VersionError::MissingCitationVersion));
     }
 }

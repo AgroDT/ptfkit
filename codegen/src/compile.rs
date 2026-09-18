@@ -1,4 +1,7 @@
-use anyhow::{Context, Result};
+mod error;
+pub(crate) use error::CompileError;
+
+type Result<T> = std::result::Result<T, CompileError>;
 
 use crate::model::{
     CompiledFunction, CompiledInput, CompiledTolerance, CompiledVerificationCase, CoreFunction,
@@ -17,7 +20,9 @@ pub(super) fn functions(entries: Vec<Entry>) -> Result<Vec<CompiledFunction>> {
             }
             let ir = entry.implementations[function_index]
                 .clone()
-                .with_context(|| format!("compiling {}", function.name))?;
+                .ok_or_else(|| CompileError::MissingImplementation {
+                    function: function.name.clone(),
+                })?;
             let output = match &function.outputs {
                 Outputs::Scalar { .. } => Output::Scalar,
                 Outputs::Record { fields, .. } => {
@@ -56,10 +61,10 @@ fn verification_cases(function: &Function) -> Result<Vec<CompiledVerificationCas
         .map(|case| {
             for name in case.inputs.keys() {
                 if !function.inputs.iter().any(|input| input.name() == name) {
-                    anyhow::bail!(
-                        "verification case `{}` references unknown input `{name}`",
-                        case.id
-                    );
+                    return Err(CompileError::UnknownInput {
+                        case_id: case.id.clone(),
+                        name: name.clone(),
+                    });
                 }
             }
             let inputs = function
@@ -67,50 +72,60 @@ fn verification_cases(function: &Function) -> Result<Vec<CompiledVerificationCas
                 .iter()
                 .map(|input| {
                     let input_name = input.name();
-                    let value = case.inputs.get(input_name).with_context(|| {
-                        format!(
-                            "verification case `{}` is missing input `{}`",
-                            case.id, input_name
-                        )
-                    })?;
+                    let value =
+                        case.inputs
+                            .get(input_name)
+                            .ok_or_else(|| CompileError::MissingInput {
+                                case_id: case.id.clone(),
+                                name: input_name.to_owned(),
+                            })?;
                     match (input.enum_type(), value) {
-                        (None, VerificationInput::Number(value)) => Ok(CompiledInput::Number(*value)),
+                        (None, VerificationInput::Number(value)) => {
+                            Ok(CompiledInput::Number(*value))
+                        }
                         (Some(enum_type), VerificationInput::Enum(member_name)) => {
                             enum_type
                                 .values
                                 .iter()
                                 .find(|member| member.name == *member_name)
-                                .with_context(|| {
-                                    format!(
-                                        "verification case `{}` input `{}` references unknown member `{member_name}` of enum `{}`",
-                                        case.id, input_name, enum_type.enum_type.name
-                                    )
+                                .ok_or_else(|| CompileError::UnknownEnumMember {
+                                    case_id: case.id.clone(),
+                                    input: input_name.to_owned(),
+                                    member_name: member_name.clone(),
+                                    enum_name: enum_type.enum_type.name.clone(),
                                 })?;
                             Ok(CompiledInput::Enum {
                                 enum_type: enum_type.enum_type.clone(),
                                 member_name: member_name.clone(),
                             })
                         }
-                        (None, VerificationInput::Enum(_)) => anyhow::bail!(
-                            "verification case `{}` input `{}` must be numeric",
-                            case.id,
-                            input_name
-                        ),
-                        (Some(enum_type), VerificationInput::Number(_)) => anyhow::bail!(
-                            "verification case `{}` input `{}` must name a member of enum `{}`",
-                            case.id,
-                            input_name,
-                            enum_type.enum_type.name
-                        ),
+                        (None, VerificationInput::Enum(_)) => {
+                            Err(CompileError::NumericInputRequired {
+                                case_id: case.id.clone(),
+                                input: input_name.to_owned(),
+                            })
+                        }
+                        (Some(enum_type), VerificationInput::Number(_)) => {
+                            Err(CompileError::EnumInputRequired {
+                                case_id: case.id.clone(),
+                                input: input_name.to_owned(),
+                                enum_name: enum_type.enum_type.name.clone(),
+                            })
+                        }
                     }
                 })
                 .collect::<Result<Vec<_>>>()?;
             for name in case.expected.keys() {
-                if !function.outputs.fields().iter().any(|field| field.name == *name) {
-                    anyhow::bail!(
-                        "verification case `{}` references unknown output `{name}`",
-                        case.id
-                    );
+                if !function
+                    .outputs
+                    .fields()
+                    .iter()
+                    .any(|field| field.name == *name)
+                {
+                    return Err(CompileError::UnknownOutput {
+                        case_id: case.id.clone(),
+                        name: name.clone(),
+                    });
                 }
             }
             let expected = function
@@ -118,11 +133,11 @@ fn verification_cases(function: &Function) -> Result<Vec<CompiledVerificationCas
                 .fields()
                 .iter()
                 .map(|field| {
-                    case.expected.get(&field.name).copied().with_context(|| {
-                        format!(
-                            "verification case `{}` is missing expected output `{}`",
-                            case.id, field.name
-                        )
+                    case.expected.get(&field.name).copied().ok_or_else(|| {
+                        CompileError::MissingOutput {
+                            case_id: case.id.clone(),
+                            name: field.name.clone(),
+                        }
                     })
                 })
                 .collect::<Result<Vec<_>>>()?;
@@ -151,16 +166,9 @@ fn validate_discriminating_tolerances(
             let magnitude = expected.abs();
             let resolved = tolerance.absolute.max(tolerance.relative * magnitude);
             if *expected != 0.0 && resolved >= magnitude {
-                anyhow::bail!(
-                    "function `{}` verification case `{}` output `{}` has resolved scientific tolerance {} (absolute {}, relative {}) greater than or equal to the magnitude of non-zero expected value {}",
-                    function.name,
-                    case.id,
-                    field.name,
-                    resolved,
-                    tolerance.absolute,
-                    tolerance.relative,
-                    magnitude,
-                );
+                return Err(CompileError::non_discriminating_tolerance(
+                    function, case, field, tolerance, resolved, magnitude,
+                ));
             }
         }
     }
@@ -186,18 +194,11 @@ fn output_tolerances(entry: &Entry, function: &Function) -> Result<Vec<CompiledT
                 .quantities
                 .quantities
                 .get(&field.quantity)
-                .with_context(|| {
-                    format!(
-                        "function `{}` output `{}` references unknown quantity `{}`",
-                        function.name, field.name, field.quantity
-                    )
-                })?;
-            let tolerance = quantity.units.get(&field.unit).with_context(|| {
-                format!(
-                    "function `{}` output `{}` quantity `{}` has no registered unit `{}`",
-                    function.name, field.name, field.quantity, field.unit
-                )
-            })?;
+                .ok_or_else(|| CompileError::unknown_quantity(function, field))?;
+            let tolerance = quantity
+                .units
+                .get(&field.unit)
+                .ok_or_else(|| CompileError::unregistered_unit(function, field))?;
             Ok(CompiledTolerance {
                 absolute: tolerance.absolute,
                 relative: tolerance.relative.unwrap_or_default(),

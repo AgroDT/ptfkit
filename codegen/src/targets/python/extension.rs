@@ -1,4 +1,4 @@
-use anyhow::Result;
+use crate::targets::Result;
 
 use crate::{
     model::{CompiledFunction, Output},

@@ -1,6 +1,6 @@
 use std::{collections::BTreeSet, path::PathBuf, str::FromStr};
 
-use anyhow::Result;
+use crate::targets::Result;
 use convert_case::{Case, Casing};
 use proc_macro2::{Ident, Literal, TokenStream, TokenTree};
 use quote::{format_ident, quote};
@@ -284,7 +284,7 @@ fn output_tokens(
             let specification = &resolved.entry.spec.functions[resolved.function_index];
             let result = specification
                 .result_class()
-                .ok_or_else(|| anyhow::anyhow!("record output has no result class"))?;
+                .ok_or(crate::targets::GenerationError::MissingResultClass)?;
             let result = format_ident!("{result}");
             let definitions = fields.iter().map(|field| {
                 let field = format_ident!("{field}");

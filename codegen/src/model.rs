@@ -1,3 +1,7 @@
+mod error;
+pub(crate) use error::DefinitionError;
+use error::{TreeError, TreeErrorKind};
+
 use std::{
     collections::BTreeMap,
     path::{Path, PathBuf},
@@ -132,11 +136,9 @@ impl<'de> Deserialize<'de> for Spec {
                     .into_iter()
                     .map(|input| match input {
                         InputReference::Parameter(parameter) => Ok(Input::Parameter(parameter)),
-                        InputReference::Type(reference) => resolve_input_type(
-                            reference,
-                            &raw.definitions,
-                            &function.name,
-                        ),
+                        InputReference::Type(reference) => {
+                            resolve_input_type(reference, &raw.definitions, &function.name)
+                        }
                         InputReference::Reference(reference) => {
                             let name = definition_name(&reference.target)?;
                             match raw.definitions.get(name) {
@@ -146,19 +148,21 @@ impl<'de> Deserialize<'de> for Spec {
                                 Some(Definition::Enum(_))
                                 | Some(Definition::Lookup(_))
                                 | Some(Definition::Tree(_)) => {
-                                    Err(format!(
-                                        "function {} must bind a name when referencing type definition `{name}` as an input",
-                                        function.name
-                                    ))
+                                    Err(DefinitionError::MissingInputBinding {
+                                        function: function.name.clone(),
+                                        name: name.to_owned(),
+                                    })
                                 }
-                                Some(Definition::Output(_)) => Err(format!(
-                                    "function {} references output definition `{name}` as an input",
-                                    function.name
-                                )),
-                                None => Err(format!(
-                                    "function {} references unknown definition `{name}`",
-                                    function.name
-                                )),
+                                Some(Definition::Output(_)) => {
+                                    Err(DefinitionError::OutputAsInput {
+                                        function: function.name.clone(),
+                                        name: name.to_owned(),
+                                    })
+                                }
+                                None => Err(DefinitionError::UnknownDefinition {
+                                    function: function.name.clone(),
+                                    name: name.to_owned(),
+                                }),
                             }
                         }
                     })
@@ -170,19 +174,23 @@ impl<'de> Deserialize<'de> for Spec {
                         match raw.definitions.get(name) {
                             Some(Definition::Enum(_))
                             | Some(Definition::Lookup(_))
-                            | Some(Definition::Tree(_)) => Err(format!(
-                                "function {} references non-output definition `{name}` as an output",
-                                function.name
-                            )),
-                            Some(Definition::Parameter(_)) => Err(format!(
-                                "function {} references parameter definition `{name}` as an output",
-                                function.name
-                            )),
+                            | Some(Definition::Tree(_)) => {
+                                Err(DefinitionError::NonOutputAsOutput {
+                                    function: function.name.clone(),
+                                    name: name.to_owned(),
+                                })
+                            }
+                            Some(Definition::Parameter(_)) => {
+                                Err(DefinitionError::ParameterAsOutput {
+                                    function: function.name.clone(),
+                                    name: name.to_owned(),
+                                })
+                            }
                             Some(Definition::Output(outputs)) => Ok(outputs.clone()),
-                            None => Err(format!(
-                                "function {} references unknown definition `{name}`",
-                                function.name
-                            )),
+                            None => Err(DefinitionError::UnknownDefinition {
+                                function: function.name.clone(),
+                                name: name.to_owned(),
+                            }),
                         }
                     }
                 }?;
@@ -193,30 +201,28 @@ impl<'de> Deserialize<'de> for Spec {
                             match variable {
                                 ImplementationVariable::Lookup { lookup, .. } => {
                                     let name = definition_name(&lookup.table.target)?;
-                                    lookup.definition = Some(
-                                        lookup_definitions.get(name).cloned().ok_or_else(|| {
-                                            format!(
-                                                "function {} references unknown lookup definition `{name}`",
-                                                function.name
-                                            )
-                                        })?,
-                                    );
+                                    lookup.definition =
+                                        Some(lookup_definitions.get(name).cloned().ok_or_else(
+                                            || DefinitionError::UnknownLookup {
+                                                function: function.name.clone(),
+                                                name: name.to_owned(),
+                                            },
+                                        )?);
                                 }
                                 ImplementationVariable::Tree { tree, .. } => {
                                     let name = definition_name(&tree.definition_ref.target)?;
-                                    tree.definition = Some(
-                                        tree_definitions.get(name).cloned().ok_or_else(|| {
-                                            format!(
-                                                "function {} references unknown tree definition `{name}`",
-                                                function.name
-                                            )
-                                        })?,
-                                    );
+                                    tree.definition =
+                                        Some(tree_definitions.get(name).cloned().ok_or_else(
+                                            || DefinitionError::UnknownTree {
+                                                function: function.name.clone(),
+                                                name: name.to_owned(),
+                                            },
+                                        )?);
                                 }
                                 ImplementationVariable::Expression { .. } => {}
                             }
                         }
-                        Ok::<_, String>(implementation)
+                        Ok::<_, DefinitionError>(implementation)
                     })
                     .transpose()?;
                 Ok(Function {
@@ -233,7 +239,7 @@ impl<'de> Deserialize<'de> for Spec {
                     documentation: function.documentation,
                 })
             })
-            .collect::<Result<Vec<_>, String>>()
+            .collect::<Result<Vec<_>, DefinitionError>>()
             .map_err(serde::de::Error::custom)?;
         Ok(Self {
             source: raw.source,
@@ -249,7 +255,7 @@ fn resolve_input_type(
     input: NamedReference,
     definitions: &BTreeMap<String, Definition>,
     function: &str,
-) -> Result<Input, String> {
+) -> Result<Input, DefinitionError> {
     let type_name = definition_name(&input.reference.target)?;
     match definitions.get(type_name) {
         Some(Definition::Enum(definition)) => Ok(Input::Enum {
@@ -260,14 +266,16 @@ fn resolve_input_type(
         Some(Definition::Output(_))
         | Some(Definition::Lookup(_))
         | Some(Definition::Tree(_))
-        | Some(Definition::Parameter(_)) => Err(format!(
-            "function {function} input {} references non-enum definition `{type_name}` as its type",
-            input.name
-        )),
-        None => Err(format!(
-            "function {function} input {} references unknown enum definition `{type_name}`",
-            input.name
-        )),
+        | Some(Definition::Parameter(_)) => Err(DefinitionError::NonEnumInput {
+            function: function.to_owned(),
+            input: input.name,
+            type_name: type_name.to_owned(),
+        }),
+        None => Err(DefinitionError::UnknownInputEnum {
+            function: function.to_owned(),
+            input: input.name,
+            type_name: type_name.to_owned(),
+        }),
     }
 }
 
@@ -281,33 +289,35 @@ fn resolve_lookup_definition(
     name: &str,
     definition: &LookupDefinition,
     definitions: &BTreeMap<String, Definition>,
-) -> Result<LookupDefinition, String> {
+) -> Result<LookupDefinition, DefinitionError> {
     let input_name = definition_name(&definition.input.target)?;
     let input_type = match definitions.get(input_name) {
         Some(Definition::Enum(definition)) => resolved_enum_definition(definition, input_name),
         Some(_) => {
-            return Err(format!(
-                "lookup `{name}` input must reference an enum definition"
-            ));
+            return Err(DefinitionError::InputDefinitionType {
+                name: name.to_owned(),
+            });
         }
         None => {
-            return Err(format!(
-                "lookup `{name}` references unknown input type `{input_name}`"
-            ));
+            return Err(DefinitionError::UnknownInputType {
+                name: name.to_owned(),
+                input_name: input_name.to_owned(),
+            });
         }
     };
     let output_name = definition_name(&definition.output.target)?;
     let output_type = match definitions.get(output_name) {
         Some(Definition::Output(output @ Outputs::Record { .. })) => output.clone(),
         Some(_) => {
-            return Err(format!(
-                "lookup `{name}` output must reference a record definition"
-            ));
+            return Err(DefinitionError::OutputDefinitionType {
+                name: name.to_owned(),
+            });
         }
         None => {
-            return Err(format!(
-                "lookup `{name}` references unknown output type `{output_name}`"
-            ));
+            return Err(DefinitionError::UnknownOutputType {
+                name: name.to_owned(),
+                output_name: output_name.to_owned(),
+            });
         }
     };
     let mut resolved = definition.clone();
@@ -318,7 +328,7 @@ fn resolve_lookup_definition(
     Ok(resolved)
 }
 
-fn validate_lookup_values(lookup: &LookupDefinition) -> Result<(), String> {
+fn validate_lookup_values(lookup: &LookupDefinition) -> Result<(), DefinitionError> {
     let enum_type = lookup
         .input_type
         .as_ref()
@@ -335,16 +345,18 @@ fn validate_lookup_values(lookup: &LookupDefinition) -> Result<(), String> {
     let mut keys = std::collections::BTreeSet::new();
     for (index, row) in lookup.values.iter().enumerate() {
         if !keys.insert(row.key.as_str()) {
-            return Err(format!(
-                "lookup `{}` has duplicate key `{}` at value {index}",
-                lookup.name, row.key
-            ));
+            return Err(DefinitionError::DuplicateLookupKey {
+                name: lookup.name.clone(),
+                key: row.key.clone(),
+                index,
+            });
         }
         if !enum_type.values.iter().any(|member| member.name == row.key) {
-            return Err(format!(
-                "lookup `{}` has unknown enum member `{}` at value {index}",
-                lookup.name, row.key
-            ));
+            return Err(DefinitionError::UnknownLookupMember {
+                name: lookup.name.clone(),
+                key: row.key.clone(),
+                index,
+            });
         }
         let row_names = row
             .value
@@ -352,10 +364,10 @@ fn validate_lookup_values(lookup: &LookupDefinition) -> Result<(), String> {
             .map(String::as_str)
             .collect::<std::collections::BTreeSet<_>>();
         if row_names != output_names {
-            return Err(format!(
-                "lookup `{}` value {index} keys must exactly match output fields",
-                lookup.name
-            ));
+            return Err(DefinitionError::LookupFields {
+                name: lookup.name.clone(),
+                index,
+            });
         }
     }
     let enum_members = enum_type
@@ -364,10 +376,10 @@ fn validate_lookup_values(lookup: &LookupDefinition) -> Result<(), String> {
         .map(|member| member.name.as_str())
         .collect::<std::collections::BTreeSet<_>>();
     if keys != enum_members {
-        return Err(format!(
-            "lookup `{}` values must cover every member of enum `{}` exactly once",
-            lookup.name, enum_type.enum_type.name
-        ));
+        return Err(DefinitionError::LookupCoverage {
+            name: lookup.name.clone(),
+            enum_name: enum_type.enum_type.name.clone(),
+        });
     }
     Ok(())
 }
@@ -376,15 +388,16 @@ fn resolve_tree_definition(
     name: &str,
     definition: &TreeDefinition,
     definitions: &BTreeMap<String, Definition>,
-) -> Result<TreeDefinition, String> {
+) -> Result<TreeDefinition, DefinitionError> {
     let mut resolved = definition.clone();
     resolved.name = name.to_owned();
     let mut input_names = std::collections::BTreeSet::new();
     for input in &mut resolved.inputs {
         if !input_names.insert(input.name().to_owned()) {
-            return Err(format!(
-                "tree `{name}` contains duplicate input `{}`",
-                input.name()
+            return Err(TreeError::definition(
+                name,
+                "inputs",
+                TreeErrorKind::DuplicateInput(input.name().to_owned()),
             ));
         }
         if let TreeInput::Enum(input) = input {
@@ -394,15 +407,20 @@ fn resolve_tree_definition(
                     resolved_enum_definition(definition, type_name)
                 }
                 Some(_) => {
-                    return Err(format!(
-                        "tree `{name}` input `{}` must reference an enum definition",
-                        input.name
+                    return Err(TreeError::definition(
+                        name,
+                        "inputs",
+                        TreeErrorKind::InputNotEnum(input.name.clone()),
                     ));
                 }
                 None => {
-                    return Err(format!(
-                        "tree `{name}` input `{}` references unknown enum definition `{type_name}`",
-                        input.name
+                    return Err(TreeError::definition(
+                        name,
+                        "inputs",
+                        TreeErrorKind::UnknownInputEnum {
+                            input: input.name.clone(),
+                            type_name: type_name.to_owned(),
+                        },
                     ));
                 }
             });
@@ -412,13 +430,17 @@ fn resolve_tree_definition(
     resolved.output_type = Some(match definitions.get(output_name) {
         Some(Definition::Output(output)) => output.clone(),
         Some(_) => {
-            return Err(format!(
-                "tree `{name}` output must reference an output definition"
+            return Err(TreeError::definition(
+                name,
+                "output",
+                TreeErrorKind::OutputNotOutput,
             ));
         }
         None => {
-            return Err(format!(
-                "tree `{name}` references unknown output type `{output_name}`"
+            return Err(TreeError::definition(
+                name,
+                "output",
+                TreeErrorKind::UnknownOutputType(output_name.to_owned()),
             ));
         }
     });
@@ -426,12 +448,12 @@ fn resolve_tree_definition(
     Ok(resolved)
 }
 
-fn validate_tree_definition(definition: &TreeDefinition) -> Result<(), String> {
+fn validate_tree_definition(definition: &TreeDefinition) -> Result<(), DefinitionError> {
     fn validate_node(
         definition: &TreeDefinition,
         node: &DecisionTree,
         path: &str,
-    ) -> Result<(), String> {
+    ) -> Result<(), DefinitionError> {
         match node {
             DecisionTree::Leaf(leaf) => {
                 let output = definition
@@ -442,10 +464,9 @@ fn validate_tree_definition(definition: &TreeDefinition) -> Result<(), String> {
                     (Outputs::Scalar { .. }, DecisionTreeLeafValue::Number(number)) => {
                         validate_tree_number(definition, path, number)
                     }
-                    (Outputs::Scalar { .. }, DecisionTreeLeafValue::Record(_)) => Err(format!(
-                        "tree `{}` {path} must be a numeric leaf",
-                        definition.name
-                    )),
+                    (Outputs::Scalar { .. }, DecisionTreeLeafValue::Record(_)) => Err(
+                        TreeError::definition(&definition.name, path, TreeErrorKind::NumericLeafRequired),
+                    ),
                     (Outputs::Record { fields, .. }, DecisionTreeLeafValue::Record(values)) => {
                         let expected = fields
                             .iter()
@@ -456,9 +477,10 @@ fn validate_tree_definition(definition: &TreeDefinition) -> Result<(), String> {
                             .map(String::as_str)
                             .collect::<std::collections::BTreeSet<_>>();
                         if actual != expected {
-                            return Err(format!(
-                                "tree `{}` {path} keys must exactly match output fields",
-                                definition.name
+                            return Err(TreeError::definition(
+                                &definition.name,
+                                path,
+                                TreeErrorKind::RecordFields,
                             ));
                         }
                         for number in values.values() {
@@ -466,10 +488,9 @@ fn validate_tree_definition(definition: &TreeDefinition) -> Result<(), String> {
                         }
                         Ok(())
                     }
-                    (Outputs::Record { .. }, DecisionTreeLeafValue::Number(_)) => Err(format!(
-                        "tree `{}` {path} must be a record leaf",
-                        definition.name
-                    )),
+                    (Outputs::Record { .. }, DecisionTreeLeafValue::Number(_)) => Err(
+                        TreeError::definition(&definition.name, path, TreeErrorKind::RecordLeafRequired),
+                    ),
                 }
             }
             DecisionTree::Split(branch) => {
@@ -477,9 +498,10 @@ fn validate_tree_definition(definition: &TreeDefinition) -> Result<(), String> {
                     DecisionTreeSplit::LessThan(split) => {
                         let input = tree_input(definition, &split.input, path)?;
                         if !matches!(input, TreeInput::Number { .. }) {
-                            return Err(format!(
-                                "tree `{}` input `{}` must be numeric for operator `lt`",
-                                definition.name, split.input
+                            return Err(TreeError::definition(
+                                &definition.name,
+                                path,
+                                TreeErrorKind::NumericInputRequired(split.input.clone()),
                             ));
                         }
                         validate_tree_number(definition, path, &split.value)?;
@@ -487,9 +509,10 @@ fn validate_tree_definition(definition: &TreeDefinition) -> Result<(), String> {
                     DecisionTreeSplit::EnumIn(split) => {
                         let input = tree_input(definition, &split.input, path)?;
                         let TreeInput::Enum(input) = input else {
-                            return Err(format!(
-                                "tree `{}` input `{}` must be an enum for operator `in`",
-                                definition.name, split.input
+                            return Err(TreeError::definition(
+                                &definition.name,
+                                path,
+                                TreeErrorKind::EnumInputRequired(split.input.clone()),
                             ));
                         };
                         validate_tree_members(definition, input, &split.values, path)?;
@@ -501,9 +524,10 @@ fn validate_tree_definition(definition: &TreeDefinition) -> Result<(), String> {
             DecisionTree::Match(selection) => {
                 let input = tree_input(definition, &selection.match_node.input, path)?;
                 let TreeInput::Enum(input) = input else {
-                    return Err(format!(
-                        "tree `{}` match input `{}` must be an enum",
-                        definition.name, selection.match_node.input
+                    return Err(TreeError::definition(
+                        &definition.name,
+                        path,
+                        TreeErrorKind::MatchInputNotEnum(selection.match_node.input.clone()),
                     ));
                 };
                 let enum_definition = input.definition.as_ref().expect("tree enum is resolved");
@@ -517,9 +541,10 @@ fn validate_tree_definition(definition: &TreeDefinition) -> Result<(), String> {
                     )?;
                     for member in &case.values {
                         if !covered.insert(member.as_str()) {
-                            return Err(format!(
-                                "tree `{}` match cases overlap on enum member `{member}`",
-                                definition.name
+                            return Err(TreeError::definition(
+                                &definition.name,
+                                path,
+                                TreeErrorKind::OverlappingMember(member.clone()),
                             ));
                         }
                     }
@@ -535,9 +560,10 @@ fn validate_tree_definition(definition: &TreeDefinition) -> Result<(), String> {
                     .map(|member| member.name.as_str())
                     .collect::<std::collections::BTreeSet<_>>();
                 if covered != expected {
-                    return Err(format!(
-                        "tree `{}` match cases must cover every member of enum `{}` exactly once",
-                        definition.name, enum_definition.enum_type.name
+                    return Err(TreeError::definition(
+                        &definition.name,
+                        path,
+                        TreeErrorKind::IncompleteMatch(enum_definition.enum_type.name.clone()),
                     ));
                 }
                 Ok(())
@@ -552,15 +578,16 @@ fn tree_input<'a>(
     definition: &'a TreeDefinition,
     name: &str,
     path: &str,
-) -> Result<&'a TreeInput, String> {
+) -> Result<&'a TreeInput, DefinitionError> {
     definition
         .inputs
         .iter()
         .find(|input| input.name() == name)
         .ok_or_else(|| {
-            format!(
-                "tree `{}` {path} references unknown input `{name}`",
-                definition.name
+            TreeError::definition(
+                &definition.name,
+                path,
+                TreeErrorKind::UnknownInput(name.to_owned()),
             )
         })
 }
@@ -570,26 +597,32 @@ fn validate_tree_members(
     input: &TreeEnumInput,
     members: &[String],
     path: &str,
-) -> Result<(), String> {
+) -> Result<(), DefinitionError> {
     if members.is_empty() {
-        return Err(format!(
-            "tree `{}` {path} requires at least one enum member",
-            tree.name
+        return Err(TreeError::definition(
+            &tree.name,
+            path,
+            TreeErrorKind::EmptyMembers,
         ));
     }
     let definition = input.definition.as_ref().expect("tree enum is resolved");
     let mut seen = std::collections::BTreeSet::new();
     for member in members {
         if !seen.insert(member) {
-            return Err(format!(
-                "tree `{}` {path} repeats enum member `{member}`",
-                tree.name
+            return Err(TreeError::definition(
+                &tree.name,
+                path,
+                TreeErrorKind::DuplicateMember(member.clone()),
             ));
         }
         if !definition.values.iter().any(|value| value.name == *member) {
-            return Err(format!(
-                "tree `{}` {path} references unknown member `{member}` of enum `{}`",
-                tree.name, definition.enum_type.name
+            return Err(TreeError::definition(
+                &tree.name,
+                path,
+                TreeErrorKind::UnknownMember {
+                    member: member.clone(),
+                    enum_name: definition.enum_type.name.clone(),
+                },
             ));
         }
     }
@@ -600,26 +633,27 @@ fn validate_tree_number(
     definition: &TreeDefinition,
     path: &str,
     number: &serde_json::Number,
-) -> Result<(), String> {
+) -> Result<(), DefinitionError> {
     if number.as_f64().is_none_or(|value| !value.is_finite()) {
-        return Err(format!(
-            "tree `{}` {path} number `{number}` is not a finite f64",
-            definition.name
+        return Err(TreeError::definition(
+            &definition.name,
+            path,
+            TreeErrorKind::NonFiniteNumber(number.clone()),
         ));
     }
     Ok(())
 }
 
-fn definition_name(reference: &str) -> Result<&str, String> {
+fn definition_name(reference: &str) -> Result<&str, DefinitionError> {
     let Some(name) = reference.strip_prefix("#/$defs/") else {
-        return Err(format!(
-            "reference `{reference}` must start with `#/$defs/`"
-        ));
+        return Err(DefinitionError::ReferencePrefix {
+            reference: reference.to_owned(),
+        });
     };
     if name.is_empty() || name.contains('/') {
-        return Err(format!(
-            "reference `{reference}` must name exactly one local definition"
-        ));
+        return Err(DefinitionError::ReferenceName {
+            reference: reference.to_owned(),
+        });
     }
     Ok(name)
 }
@@ -1196,7 +1230,7 @@ where
             let mut units = BTreeMap::new();
             while let Some((unit, tolerance)) = map.next_entry()? {
                 if units.insert(unit, tolerance).is_some() {
-                    return Err(A::Error::custom("duplicate entry in quantity units"));
+                    return Err(A::Error::custom(DefinitionError::DuplicateQuantityUnit));
                 }
             }
             Ok(units)

@@ -1,6 +1,6 @@
 use std::{collections::BTreeSet, path::PathBuf};
 
-use anyhow::Result;
+use crate::targets::Result;
 use convert_case::{Boundary, Case, Casing};
 
 use crate::{
@@ -130,7 +130,7 @@ fn c_header(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
         if let Output::Struct(fields) = &function.core.output {
             let schema = spec
                 .result_class()
-                .ok_or_else(|| anyhow::anyhow!("record output has no result class"))?;
+                .ok_or(crate::targets::GenerationError::MissingResultClass)?;
             if schemas.insert(schema.to_owned()) {
                 writer.blank_line();
                 render_struct(
@@ -296,11 +296,11 @@ impl<'a> NativeFunction<'a> {
             Output::Scalar => "double".to_owned(),
             Output::Struct(_) if matches!(dialect, NativeDialect::Cpp) => spec
                 .result_class()
-                .ok_or_else(|| anyhow::anyhow!("record output has no result class"))?
+                .ok_or(crate::targets::GenerationError::MissingResultClass)?
                 .to_owned(),
             Output::Struct(_) => c_result_name(
                 spec.result_class()
-                    .ok_or_else(|| anyhow::anyhow!("record output has no result class"))?,
+                    .ok_or(crate::targets::GenerationError::MissingResultClass)?,
             ),
         };
         let output_name = &spec.outputs.fields()[0].name;

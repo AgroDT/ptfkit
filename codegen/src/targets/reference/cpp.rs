@@ -1,6 +1,6 @@
 use std::{collections::BTreeSet, path::PathBuf};
 
-use anyhow::{Result, anyhow};
+use crate::targets::{GenerationError, Result};
 use convert_case::{Case, Casing};
 
 use crate::{
@@ -302,7 +302,7 @@ fn spec(function: &CompiledFunction) -> &crate::model::Function {
 fn result_class(function: &CompiledFunction) -> Result<&str> {
     spec(function)
         .result_class()
-        .ok_or_else(|| anyhow!("record output has no result class"))
+        .ok_or(GenerationError::MissingResultClass)
 }
 
 fn function_anchor(name: &str) -> String {

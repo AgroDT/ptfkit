@@ -1,6 +1,6 @@
 use std::{collections::BTreeSet, path::PathBuf};
 
-use anyhow::Result;
+use crate::targets::Result;
 
 use crate::render::markdown::HEADER;
 use crate::{

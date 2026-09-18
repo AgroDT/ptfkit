@@ -1,3 +1,6 @@
+mod error;
+pub(crate) use error::{DocumentError, ReferenceError, SpecificationError};
+
 use std::{
     collections::{BTreeMap, BTreeSet},
     fs,
@@ -5,11 +8,12 @@ use std::{
     sync::Arc,
 };
 
-use anyhow::{Context, Result, bail};
+use anyhow::{Context, Result};
 use jsonschema::Draft;
 use serde_json::Value;
 
 use crate::{
+    diagnostics::{Diagnostic, ValidationReport},
     formula,
     model::{
         Entry, EnumType, Implementation, ImplementationVariable, Input, Quantity, QuantityRegistry,
@@ -53,7 +57,7 @@ pub(crate) fn load(root: &Path) -> Result<Vec<Entry>> {
         let slug = match source_slug(&path) {
             Ok(slug) => slug,
             Err(error) => {
-                errors.push(error);
+                errors.push(error.into());
                 continue;
             }
         };
@@ -61,46 +65,33 @@ pub(crate) fn load(root: &Path) -> Result<Vec<Entry>> {
         let yaml_value: serde_yaml::Value = match serde_yaml::from_str(&text) {
             Ok(value) => value,
             Err(error) => {
-                errors.push(format!(
-                    "{}:\n  $:\n    malformed YAML: {error}",
-                    path.display()
-                ));
+                errors.push(DocumentError::Yaml(error).at(&path).into());
                 continue;
             }
         };
-        let value = match serde_json::to_value(yaml_value) {
+        let mut value = match serde_json::to_value(yaml_value) {
             Ok(value) => value,
             Err(error) => {
-                errors.push(format!(
-                    "{}:\n  $:\n    YAML cannot be represented as JSON: {error}",
-                    path.display()
-                ));
+                errors.push(DocumentError::Json(error).at(&path).into());
                 continue;
             }
         };
-        let mut value = value;
         let shared = match resolve_external_references(&mut value, &path, &definitions) {
             Ok(shared) => shared,
             Err(error) => {
-                errors.push(format!("{}:\n  $:\n    {error}", path.display()));
+                errors.push(DocumentError::Reference(error).at(&path).into());
                 continue;
             }
         };
-        for error in validator.iter_errors(&value) {
-            errors.push(format!(
-                "{}:\n  {}:\n    {}",
-                path.display(),
-                json_path(error.instance_path()),
-                error
-            ));
-        }
+        errors.extend(
+            validator
+                .iter_errors(&value)
+                .map(|error| SpecificationError::schema(&path, error).into()),
+        );
         let mut spec: Spec = match serde_json::from_value(value) {
             Ok(spec) => spec,
             Err(error) => {
-                errors.push(format!(
-                    "{}:\n  $:\n    metadata cannot be read: {error}",
-                    path.display()
-                ));
+                errors.push(DocumentError::Metadata(error).at(&path).into());
                 continue;
             }
         };
@@ -111,18 +102,13 @@ pub(crate) fn load(root: &Path) -> Result<Vec<Entry>> {
                 "implemented" | "ready-for-implementation"
             ) && function.implementation.is_none()
             {
-                errors.push(format!(
-                    "{} -> function {} -> implementation: required for status `{}`",
-                    path.display(),
-                    function.name,
-                    function.status
-                ));
+                errors.push(SpecificationError::missing_implementation(&path, function).into());
             }
         }
         let expression_locations = match expression_locations(&text, &spec) {
             Ok(locations) => locations,
             Err(error) => {
-                errors.push(format!("{}:\n  $:\n    {error}", path.display()));
+                errors.push(error.at(&path).into());
                 continue;
             }
         };
@@ -149,7 +135,7 @@ pub(crate) fn load(root: &Path) -> Result<Vec<Entry>> {
         }
     }
     if !errors.is_empty() {
-        bail!("validation failed:\n{}", errors.join("\n"))
+        return Err(ValidationReport::specifications(errors).into());
     }
     Ok(entries)
 }
@@ -168,23 +154,18 @@ fn load_definitions(
         if path.extension().is_none_or(|extension| extension != "yaml") {
             continue;
         }
-        source_slug(&path).map_err(anyhow::Error::msg)?;
+        source_slug(&path)?;
         let text = fs::read_to_string(&path)?;
-        let yaml: serde_yaml::Value = serde_yaml::from_str(&text)
-            .with_context(|| format!("{}: malformed YAML", path.display()))?;
-        let value = serde_json::to_value(yaml)?;
+        let yaml: serde_yaml::Value =
+            serde_yaml::from_str(&text).map_err(|error| DocumentError::Yaml(error).at(&path))?;
+        let value =
+            serde_json::to_value(yaml).map_err(|error| DocumentError::Json(error).at(&path))?;
         let errors = validator
             .iter_errors(&value)
-            .map(|error| {
-                format!(
-                    "{}: {}: {error}",
-                    path.display(),
-                    json_path(error.instance_path())
-                )
-            })
+            .map(|error| SpecificationError::schema(&path, error).into())
             .collect::<Vec<_>>();
         if !errors.is_empty() {
-            bail!("invalid shared definitions:\n{}", errors.join("\n"));
+            return Err(ValidationReport::shared_definitions(errors).into());
         }
         definitions.insert(fs::canonicalize(path)?, value);
     }
@@ -195,7 +176,7 @@ fn resolve_external_references(
     value: &mut Value,
     document: &Path,
     documents: &BTreeMap<PathBuf, Value>,
-) -> Result<BTreeMap<String, EnumType>, String> {
+) -> Result<BTreeMap<String, EnumType>, ReferenceError> {
     let mut references = BTreeSet::new();
     collect_external_references(value, &mut references);
     let mut shared = BTreeMap::new();
@@ -205,39 +186,43 @@ fn resolve_external_references(
             .filter(|(file, name)| {
                 !file.is_empty() && !name.is_empty() && !name.contains(['/', '#'])
             })
-            .ok_or_else(|| {
-                format!("unsupported reference `{reference}`: expected `file.yaml#/$defs/Name`")
+            .ok_or_else(|| ReferenceError::InvalidFormat {
+                reference: reference.clone(),
             })?;
         if file.contains(':') || Path::new(file).is_absolute() {
-            return Err(format!(
-                "unsupported reference `{reference}`: only relative local files are supported"
-            ));
+            return Err(ReferenceError::NonLocal {
+                reference: reference.clone(),
+            });
         }
         let target = document
             .parent()
             .unwrap_or_else(|| Path::new("."))
             .join(file);
-        let target = fs::canonicalize(&target).map_err(|error| {
-            format!(
-                "reference `{reference}`: cannot read {}: {error}",
-                target.display()
-            )
+        let target = fs::canonicalize(&target).map_err(|error| ReferenceError::Read {
+            reference: reference.clone(),
+            path: target.clone(),
+            source: error,
         })?;
-        let parsed = documents.get(&target)
-            .ok_or_else(|| format!("unsupported reference `{reference}`: expected a YAML file directly under specs/definitions"))?;
-        let definition = parsed["$defs"].get(name).ok_or_else(|| {
-            format!(
-                "reference `{reference}`: definition `{name}` is missing in {}",
-                target.display()
-            )
-        })?;
+        let parsed = documents
+            .get(&target)
+            .ok_or_else(|| ReferenceError::OutsideDefinitions {
+                reference: reference.clone(),
+            })?;
+        let definition =
+            parsed["$defs"]
+                .get(name)
+                .ok_or_else(|| ReferenceError::MissingDefinition {
+                    reference: reference.clone(),
+                    name: name.to_owned(),
+                    path: target.clone(),
+                })?;
         let defs = value
             .as_object_mut()
-            .ok_or_else(|| "specification root must be an object".to_owned())?
+            .ok_or(ReferenceError::InvalidRoot)?
             .entry("$defs")
             .or_insert_with(|| Value::Object(serde_json::Map::new()))
             .as_object_mut()
-            .ok_or_else(|| "specification `$defs` must be an object".to_owned())?;
+            .ok_or(ReferenceError::InvalidDefinitions)?;
         let mut index = defs.len();
         let alias = loop {
             let alias = format!("SharedDefinition{index}");
@@ -315,12 +300,11 @@ fn load_quantities(root: &Path) -> Result<Arc<QuantityRegistry>> {
     Ok(Arc::new(QuantityRegistry { quantities, units }))
 }
 
-fn source_slug(path: &Path) -> Result<String, String> {
+fn source_slug(path: &Path) -> Result<String, SpecificationError> {
     let Some(stem) = path.file_stem().and_then(|stem| stem.to_str()) else {
-        return Err(format!(
-            "{}:\n  $:\n    specification filename must have a UTF-8 stem",
-            path.display()
-        ));
+        return Err(SpecificationError::NonUtf8Slug {
+            path: path.to_owned(),
+        });
     };
     let valid = stem
         .chars()
@@ -332,10 +316,9 @@ fn source_slug(path: &Path) -> Result<String, String> {
     if !stem.is_empty() && valid {
         Ok(stem.to_owned())
     } else {
-        Err(format!(
-            "{}:\n  $:\n    specification filename stem must be an APA-style slug matching ^[a-z][a-z0-9_]*$",
-            path.display()
-        ))
+        Err(SpecificationError::InvalidSlug {
+            path: path.to_owned(),
+        })
     }
 }
 
@@ -344,7 +327,7 @@ fn compile(
     function: &crate::model::Function,
     implementation: &Implementation,
     expression_locations: &mut impl Iterator<Item = crate::model::SourceLocation>,
-) -> Result<semantic::Function, String> {
+) -> Result<semantic::Function, Diagnostic> {
     let raw = RawFunction {
         specification_path: path.to_owned(),
         name: function.name.clone(),
@@ -366,11 +349,7 @@ fn compile(
             .map(|(index, variable)| match variable {
                 ImplementationVariable::Expression { name, expr } => {
                     let source_location = expression_locations.next().ok_or_else(|| {
-                        format!(
-                            "{} -> function {} -> implementation.variables[{index}].expr: source location is unavailable",
-                            path.display(),
-                            function.name
-                        )
+                        SpecificationError::missing_source_location(path, function, index)
                     })?;
                     expression(
                         path,
@@ -408,9 +387,7 @@ fn compile(
                     Ok(RawVariable {
                         name: name.clone(),
                         value: RawVariableValue::Tree(Box::new(RawTreeInvocation {
-                            implementation_path: format!(
-                                "implementation.variables[{index}].tree"
-                            ),
+                            implementation_path: format!("implementation.variables[{index}].tree"),
                             arguments: tree.arguments.clone(),
                             definition,
                         })),
@@ -419,7 +396,7 @@ fn compile(
             })
             .collect::<Result<Vec<_>, _>>()?,
     };
-    let mut compiled = semantic::compile(&raw).map_err(|error| error.to_string())?;
+    let mut compiled = semantic::compile(&raw)?;
     compiled.result = validate_output(path, function, &compiled)?;
     Ok(compiled)
 }
@@ -430,7 +407,7 @@ fn expression(
     implementation_path: String,
     source: &str,
     source_location: crate::model::SourceLocation,
-) -> Result<RawExpression, String> {
+) -> Result<RawExpression, Diagnostic> {
     let location = format!(
         "{} -> function {function} -> {implementation_path}",
         path.display()
@@ -441,13 +418,13 @@ fn expression(
             source_location,
             expression,
         })
-        .map_err(|error| error.to_string())
+        .map_err(Diagnostic::from)
 }
 
 fn expression_locations(
     text: &str,
     spec: &Spec,
-) -> Result<Vec<crate::model::SourceLocation>, String> {
+) -> Result<Vec<crate::model::SourceLocation>, DocumentError> {
     let expressions = spec
         .functions
         .iter()
@@ -462,9 +439,9 @@ fn expression_locations(
 
     for expression in expressions {
         let Some((offset, next_cursor)) = find_expression(text, cursor, expression) else {
-            return Err(format!(
-                "could not locate formula expression `{expression}` in YAML source"
-            ));
+            return Err(DocumentError::ExpressionNotFound {
+                expression: expression.to_owned(),
+            });
         };
         locations.push(location(text, offset));
         cursor = next_cursor;
@@ -505,18 +482,13 @@ fn validate_output(
     path: &Path,
     function: &crate::model::Function,
     compiled: &semantic::Function,
-) -> Result<semantic::ResultBinding, String> {
+) -> Result<semantic::ResultBinding, SpecificationError> {
     if let crate::model::Outputs::Record { name, fields } = &function.outputs {
         let expected = semantic::RecordType {
             name: name.clone(),
             fields: fields.iter().map(|field| field.name.clone()).collect(),
         };
         if let Some((index, variable)) = compiled.variables.iter().enumerate().next_back() {
-            let value_kind = if matches!(variable.value, semantic::VariableValue::RecordLookup(_)) {
-                "record lookup"
-            } else {
-                "record value"
-            };
             let actual = match &variable.value {
                 semantic::VariableValue::RecordLookup(lookup) => Some(&lookup.output),
                 semantic::VariableValue::Tree(tree) => match &tree.definition.output {
@@ -529,11 +501,11 @@ fn validate_output(
                 return Ok(semantic::ResultBinding::RecordVariable(index));
             }
             if actual.is_some_and(|actual| actual.name == expected.name) {
-                return Err(format!(
-                    "{} -> function {} -> implementation.variables[{index}]: {value_kind} type `{}` does not exactly match the function output record",
-                    path.display(),
-                    function.name,
-                    expected.name
+                return Err(SpecificationError::record_output_mismatch(
+                    path,
+                    function,
+                    index,
+                    &expected.name,
                 ));
             }
         }
@@ -565,27 +537,13 @@ fn validate_output(
         )
         .collect::<std::collections::BTreeSet<_>>();
     let missing = output_names
-        .iter()
+        .into_iter()
         .filter(|name| !output_sources.contains(name.as_str()))
         .collect::<Vec<_>>();
     if missing.is_empty() {
         Ok(semantic::ResultBinding::Fields)
     } else {
-        Err(format!(
-            "{} -> function {} -> implementation.variables: missing final output variables {:?}",
-            path.display(),
-            function.name,
-            missing
-        ))
-    }
-}
-
-fn json_path(path: &impl std::fmt::Display) -> String {
-    let path = path.to_string();
-    if path.is_empty() {
-        "$".into()
-    } else {
-        path.trim_start_matches('/').replace('/', ".")
+        Err(SpecificationError::missing_outputs(path, function, missing))
     }
 }
 
@@ -772,6 +730,75 @@ functions:
     verification_cases:
       - {id: record_result, kind: calculated, inputs: {category: coarse}, expected: {low: 1.0, high: 2.0}, rationale: The complete record leaf is returned.}
 "#
+    }
+
+    #[test]
+    fn preserves_typed_diagnostics_and_report_order() {
+        use crate::{
+            diagnostics::{Diagnostic, ValidationReport},
+            formula::Span,
+            semantic::SemanticErrorKind,
+        };
+
+        let root = fixture_root("typed-diagnostics");
+        // Creation order differs from the loader's filename order.
+        for (slug, expression) in [("c_semantic", "missing"), ("b_parse", "1e999")] {
+            write(
+                &root,
+                slug,
+                &format!(
+                    "    implementation:\n      variables: [{{name: value, expr: '{expression}'}}]\n"
+                ),
+                "",
+            );
+        }
+        fs::write(root.join("specs/functions/a_invalid.yaml"), "[").unwrap();
+
+        let error = crate::load_validated_specifications(&root).unwrap_err();
+        let report = error.downcast_ref::<ValidationReport>().unwrap();
+        let [
+            Diagnostic::Specification(specification),
+            Diagnostic::Parse(parse),
+            Diagnostic::Semantic(semantic),
+        ] = report.diagnostics.as_slice()
+        else {
+            panic!("expected specification, parser, and semantic diagnostics: {report:?}");
+        };
+        let super::SpecificationError::Document {
+            path,
+            kind: super::DocumentError::Yaml(_),
+        } = specification.as_ref()
+        else {
+            panic!("expected malformed YAML diagnostic: {specification:?}");
+        };
+        assert_eq!(path, &root.join("specs/functions/a_invalid.yaml"));
+        let parse_location = format!(
+            "{} -> function calc_ptf_b_parse -> implementation.variables[0].expr",
+            root.join("specs/functions/b_parse.yaml").display()
+        );
+        assert_eq!(parse.location, parse_location);
+        assert_eq!(parse.span, Span { start: 0, end: 5 });
+        assert_eq!(
+            semantic.kind,
+            SemanticErrorKind::UnknownIdentifier {
+                name: "missing".into()
+            }
+        );
+        assert_eq!(semantic.function, "calc_ptf_c_semantic");
+        assert_eq!(
+            semantic.implementation_path,
+            "implementation.variables[0].expr"
+        );
+        assert_eq!(semantic.span, Span { start: 0, end: 7 });
+        assert_eq!(
+            std::error::Error::source(semantic.as_ref())
+                .unwrap()
+                .downcast_ref::<SemanticErrorKind>(),
+            Some(&SemanticErrorKind::UnknownIdentifier {
+                name: "missing".into()
+            })
+        );
+        fs::remove_dir_all(root).unwrap();
     }
 
     #[test]
@@ -1110,7 +1137,7 @@ functions:
             (
                 "unknown-input",
                 ("input: category", "input: missing"),
-                "references unknown input `missing`",
+                "unknown input `missing`",
             ),
         ] {
             let root = fixture_root(label);
@@ -1170,26 +1197,22 @@ functions:
 
     #[test]
     fn reports_unsupported_and_missing_external_references() {
-        for (label, reference, expected) in [
+        for (label, reference) in [
             (
                 "missing-shared-definition",
                 "../definitions/missing.yaml#/$defs/Category",
-                "cannot read",
             ),
             (
                 "missing-shared-member",
                 "../definitions/soil.yaml#/$defs/MissingCategory",
-                "definition `MissingCategory` is missing",
             ),
             (
                 "unsupported-shared-fragment",
                 "../definitions/soil.yaml#/$defs/SharedCategory/values",
-                "expected `file.yaml#/$defs/Name`",
             ),
             (
                 "remote-shared-definition",
                 "https://example.test/soil.yaml#/$defs/Category",
-                "only relative local files are supported",
             ),
         ] {
             let root = fixture_root(label);
@@ -1210,10 +1233,65 @@ functions:
             )
             .unwrap();
             let error = load(&root).expect_err("invalid external reference must fail");
-            let diagnostic = error.to_string();
-            assert!(diagnostic.contains(expected), "{diagnostic}");
-            assert!(diagnostic.contains(reference), "{diagnostic}");
-            assert!(diagnostic.contains("example.yaml"), "{diagnostic}");
+            let report = error
+                .downcast_ref::<crate::diagnostics::ValidationReport>()
+                .unwrap();
+            let [crate::diagnostics::Diagnostic::Specification(error)] =
+                report.diagnostics.as_slice()
+            else {
+                panic!("expected one specification error: {report:?}");
+            };
+            let super::SpecificationError::Document {
+                path,
+                kind: super::DocumentError::Reference(error),
+            } = error.as_ref()
+            else {
+                panic!("expected reference error: {error:?}");
+            };
+            assert_eq!(path, &root.join("specs/functions/example.yaml"));
+            match (label, error) {
+                (
+                    "missing-shared-definition",
+                    super::ReferenceError::Read {
+                        reference: actual,
+                        path,
+                        source,
+                    },
+                ) => {
+                    assert_eq!(actual, reference);
+                    assert_eq!(
+                        path,
+                        &root.join("specs/functions/../definitions/missing.yaml")
+                    );
+                    assert_eq!(source.kind(), std::io::ErrorKind::NotFound);
+                }
+                (
+                    "missing-shared-member",
+                    super::ReferenceError::MissingDefinition {
+                        reference: actual,
+                        name,
+                        path,
+                    },
+                ) => {
+                    assert_eq!(actual, reference);
+                    assert_eq!(name, "MissingCategory");
+                    assert_eq!(
+                        path,
+                        &fs::canonicalize(root.join("specs/definitions/soil.yaml")).unwrap()
+                    );
+                }
+                (
+                    "unsupported-shared-fragment",
+                    super::ReferenceError::InvalidFormat { reference: actual },
+                )
+                | (
+                    "remote-shared-definition",
+                    super::ReferenceError::NonLocal { reference: actual },
+                ) => {
+                    assert_eq!(actual, reference);
+                }
+                _ => panic!("unexpected reference error for {label}: {error:?}"),
+            }
             fs::remove_dir_all(root).unwrap();
         }
     }
@@ -1311,7 +1389,7 @@ functions:
 
         let error = load(&root).unwrap_err().to_string();
         assert!(
-            error.contains("record lookup type `Parameters` does not exactly match"),
+            error.contains("record value type `Parameters` does not exactly match"),
             "{error}"
         );
         fs::remove_dir_all(root).unwrap();
@@ -1593,10 +1671,31 @@ functions:
         );
         fs::write(root.join("specs/functions/duplicate_case_id.yaml"), text).unwrap();
 
-        let error = crate::load_validated_specifications(&root)
-            .expect_err("duplicate case IDs must fail")
-            .to_string();
-        assert!(error.contains("duplicate id `reference`"), "{error}");
+        let error =
+            crate::load_validated_specifications(&root).expect_err("duplicate case IDs must fail");
+        let report = error
+            .downcast_ref::<crate::diagnostics::ValidationReport>()
+            .unwrap();
+        let [crate::diagnostics::Diagnostic::Validation(error)] = report.diagnostics.as_slice()
+        else {
+            panic!("expected one validation error: {report:?}");
+        };
+        let crate::validate::ValidationError::Function {
+            document,
+            path,
+            function,
+            kind: crate::validate::ValidationKind::DuplicateCaseId { id },
+        } = error.as_ref()
+        else {
+            panic!("expected duplicate verification case ID: {error:?}");
+        };
+        assert_eq!(
+            document,
+            &root.join("specs/functions/duplicate_case_id.yaml")
+        );
+        assert_eq!(path, "verification_cases");
+        assert_eq!(function.as_deref(), Some("calc_ptf_duplicate_case_id"));
+        assert_eq!(id, "reference");
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -1614,13 +1713,27 @@ functions:
         )
         .unwrap();
 
-        let error = crate::load_validated_specifications(&root)
-            .and_then(crate::compile::functions)
-            .expect_err("non-discriminating tolerance must fail")
-            .to_string();
-        assert!(
-            error.contains("greater than or equal to the magnitude"),
-            "{error}"
+        let entries = crate::load_validated_specifications(&root).unwrap();
+        let error =
+            crate::compile::functions(entries).expect_err("non-discriminating tolerance must fail");
+        let crate::compile::CompileError::NonDiscriminatingTolerance {
+            function,
+            case_id,
+            output,
+            resolved,
+            absolute,
+            relative,
+            magnitude,
+        } = error
+        else {
+            panic!("unexpected error: {error:?}");
+        };
+        assert_eq!(function, "calc_ptf_nondiscriminating_tolerance");
+        assert_eq!(case_id, "reference");
+        assert_eq!(output, "value");
+        assert_eq!(
+            (resolved, absolute, relative, magnitude),
+            (1.0, 1.0, 0.0, 1.0)
         );
         fs::remove_dir_all(root).unwrap();
     }
@@ -1639,13 +1752,27 @@ functions:
         )
         .unwrap();
 
-        let error = crate::load_validated_specifications(&root)
-            .and_then(crate::compile::functions)
-            .expect_err("non-discriminating relative tolerance must fail")
-            .to_string();
-        assert!(
-            error.contains("greater than or equal to the magnitude"),
-            "{error}"
+        let entries = crate::load_validated_specifications(&root).unwrap();
+        let error = crate::compile::functions(entries)
+            .expect_err("non-discriminating relative tolerance must fail");
+        let crate::compile::CompileError::NonDiscriminatingTolerance {
+            function,
+            case_id,
+            output,
+            resolved,
+            absolute,
+            relative,
+            magnitude,
+        } = error
+        else {
+            panic!("unexpected error: {error:?}");
+        };
+        assert_eq!(function, "calc_ptf_nondiscriminating_relative_tolerance");
+        assert_eq!(case_id, "reference");
+        assert_eq!(output, "value");
+        assert_eq!(
+            (resolved, absolute, relative, magnitude),
+            (1.0, 0.001, 1.0, 1.0)
         );
         fs::remove_dir_all(root).unwrap();
     }
@@ -1768,11 +1895,11 @@ functions:
             text,
         )
         .unwrap();
-        let error = crate::load_validated_specifications(&root)
-            .and_then(crate::compile::functions)
-            .expect_err("unknown input must fail")
-            .to_string();
-        assert!(error.contains("unknown input `stale`"), "{error}");
+        let entries = crate::load_validated_specifications(&root).unwrap();
+        let error = crate::compile::functions(entries).expect_err("unknown input must fail");
+        assert!(
+            matches!(error, crate::compile::CompileError::UnknownInput { case_id, name } if case_id == "reference" && name == "stale")
+        );
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -1792,11 +1919,11 @@ functions:
             text,
         )
         .unwrap();
-        let error = crate::load_validated_specifications(&root)
-            .and_then(crate::compile::functions)
-            .expect_err("missing input must fail")
-            .to_string();
-        assert!(error.contains("missing input `y`"), "{error}");
+        let entries = crate::load_validated_specifications(&root).unwrap();
+        let error = crate::compile::functions(entries).expect_err("missing input must fail");
+        assert!(
+            matches!(error, crate::compile::CompileError::MissingInput { case_id, name } if case_id == "reference" && name == "y")
+        );
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -1850,9 +1977,9 @@ functions:
         )
         .unwrap();
 
-        let compiled = crate::load_validated_specifications(&root)
-            .and_then(crate::compile::functions)
-            .expect("shared output definitions must compile");
+        let entries = crate::load_validated_specifications(&root).unwrap();
+        let compiled =
+            crate::compile::functions(entries).expect("shared output definitions must compile");
         assert_eq!(compiled[0].output_tolerances[0].absolute, 0.001);
         assert_eq!(compiled[1].output_tolerances[0].absolute, 0.005);
         for function in &compiled {

@@ -7,7 +7,9 @@ use std::{
     sync::atomic::{AtomicU64, Ordering},
 };
 
-use anyhow::{Context, Result, bail};
+use anyhow::{Context, Result};
+
+use super::error::{FormatterFailure, GeneratedDrift};
 
 use super::{Formatter, LAYOUTS, Layout, Output};
 
@@ -37,7 +39,7 @@ pub(crate) fn snapshot_generated(root: &Path) -> Result<GeneratedTree> {
 pub(crate) fn assert_unchanged(root: &Path, before: GeneratedTree) -> Result<()> {
     let after = snapshot_generated(root)?;
     if let Some(report) = drift_report(&before.0, &after.0) {
-        bail!("generated output drift after regeneration:\n{report}")
+        return Err(report.into());
     }
     println!("generated output is unchanged");
     Ok(())
@@ -73,43 +75,32 @@ fn collect_generated(
 fn drift_report(
     before: &BTreeMap<PathBuf, Vec<u8>>,
     after: &BTreeMap<PathBuf, Vec<u8>>,
-) -> Option<String> {
+) -> Option<GeneratedDrift> {
     let added = after
         .keys()
         .filter(|path| !before.contains_key(*path))
+        .cloned()
         .collect::<Vec<_>>();
     let removed = before
         .keys()
         .filter(|path| !after.contains_key(*path))
+        .cloned()
         .collect::<Vec<_>>();
     let modified = before
         .iter()
         .filter(|(path, contents)| after.get(*path).is_some_and(|after| after != *contents))
-        .map(|(path, _)| path)
+        .map(|(path, _)| path.clone())
         .collect::<Vec<_>>();
 
     if added.is_empty() && removed.is_empty() && modified.is_empty() {
         return None;
     }
 
-    let mut report = String::new();
-    append_paths(&mut report, "added", &added);
-    append_paths(&mut report, "removed", &removed);
-    append_paths(&mut report, "modified", &modified);
-    Some(report.trim_end().to_owned())
-}
-
-fn append_paths(report: &mut String, label: &str, paths: &[&PathBuf]) {
-    if paths.is_empty() {
-        return;
-    }
-    report.push_str(label);
-    report.push_str(":\n");
-    for path in paths {
-        report.push_str("  ");
-        report.push_str(&path.display().to_string());
-        report.push('\n');
-    }
+    Some(GeneratedDrift {
+        added,
+        removed,
+        modified,
+    })
 }
 
 pub(crate) fn commit(root: &Path, outputs: &[Output]) -> Result<()> {
@@ -331,10 +322,7 @@ fn run(
     if output.status.success() {
         Ok(())
     } else {
-        bail!(
-            "{program} failed:\n{}",
-            String::from_utf8_lossy(&output.stderr).trim()
-        )
+        Err(FormatterFailure::from_output(program, output).into())
     }
 }
 
@@ -431,12 +419,10 @@ mod tests {
             (PathBuf::from("generated/modified"), b"after".to_vec()),
         ]);
 
-        assert_eq!(
-            drift_report(&before, &after),
-            Some(
-                "added:\n  generated/added\nremoved:\n  generated/removed\nmodified:\n  generated/modified"
-                    .to_owned()
-            )
-        );
+        let drift = drift_report(&before, &after).unwrap();
+        assert_eq!(drift.added, [PathBuf::from("generated/added")]);
+        assert_eq!(drift.removed, [PathBuf::from("generated/removed")]);
+        assert_eq!(drift.modified, [PathBuf::from("generated/modified")]);
+        assert!(drift_report(&before, &before).is_none());
     }
 }

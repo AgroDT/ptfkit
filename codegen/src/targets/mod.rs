@@ -8,7 +8,9 @@ mod rust;
 
 use std::{collections::BTreeMap, path::Path};
 
-use anyhow::Result;
+mod error;
+pub(crate) use error::GenerationError;
+type Result<T> = std::result::Result<T, GenerationError>;
 
 use crate::{
     compile,
@@ -60,7 +62,9 @@ fn insert_record_type(
     if let Some(previous) = records.get(name)
         && previous != fields
     {
-        anyhow::bail!("record type `{name}` has conflicting field definitions");
+        return Err(GenerationError::ConflictingRecordFields {
+            name: name.to_owned(),
+        });
     }
     records.insert(name.to_owned(), fields.to_vec());
     Ok(())
@@ -121,7 +125,7 @@ pub(super) fn shared_enum_groups<'a>(
     groups
 }
 
-pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> Result<()> {
+pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> anyhow::Result<()> {
     let catalog = catalog::render(&entries);
     let reference_python = reference::python::render(&entries);
     let compiled = compile::functions(entries)?;
@@ -151,7 +155,7 @@ pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> Result<()> {
 }
 
 /// Regenerate every target and fail when that changes a codegen-owned file.
-pub(crate) fn check_generated(root: &Path, entries: Vec<Entry>) -> Result<()> {
+pub(crate) fn check_generated(root: &Path, entries: Vec<Entry>) -> anyhow::Result<()> {
     let before = output::snapshot_generated(root)?;
     run(root, entries)?;
     output::assert_unchanged(root, before)

@@ -17,7 +17,7 @@ pub(super) struct Output {
     pub(super) tests: Vec<GeneratedFile>,
 }
 
-pub(super) fn render(functions: &[CompiledFunction]) -> anyhow::Result<Output> {
+pub(super) fn render(functions: &[CompiledFunction]) -> crate::targets::Result<Output> {
     Ok(Output {
         extension: extension::render(functions)?,
         wrappers: {

@@ -2,11 +2,12 @@
 
 use std::{path::Path, process::ExitCode};
 
-use anyhow::{Context, Result, bail};
+use anyhow::{Context, Result};
 use clap::{Parser, Subcommand, ValueEnum};
 
 mod compile;
 mod corpus_report;
+mod diagnostics;
 mod documentation;
 mod formula;
 mod model;
@@ -97,7 +98,10 @@ fn load_validated_specifications(root: &Path) -> Result<Vec<model::Entry>> {
     let entries = specs::load(root)?;
     let errors = validate::specifications(&entries);
     if !errors.is_empty() {
-        bail!("validation failed:\n{}", errors.join("\n"))
+        return Err(diagnostics::ValidationReport::specifications(
+            errors.into_iter().map(Into::into).collect(),
+        )
+        .into());
     }
     Ok(entries)
 }

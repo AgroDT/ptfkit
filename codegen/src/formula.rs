@@ -71,6 +71,45 @@ pub(crate) struct ParseError {
     expected: Vec<&'static str>,
 }
 
+impl ParseError {
+    fn from_pest(location: String, source: &str, error: pest::error::Error<Rule>) -> Self {
+        let offset = match error.location {
+            pest::error::InputLocation::Pos(position) => position,
+            pest::error::InputLocation::Span((start, _)) => start,
+        };
+        let expected = match error.variant {
+            ErrorVariant::ParsingError { positives, .. } => positives
+                .iter()
+                .filter_map(expected_token)
+                .collect::<Vec<_>>(),
+            ErrorVariant::CustomError { .. } => Vec::new(),
+        };
+        Self {
+            location,
+            span: Span {
+                start: offset,
+                end: source[offset..]
+                    .chars()
+                    .next()
+                    .map_or(offset, |character| offset + character.len_utf8()),
+            },
+            expected: if expected.is_empty() {
+                vec!["valid expression syntax"]
+            } else {
+                expected
+            },
+        }
+    }
+
+    fn expected_finite_number(location: &str, span: Span) -> Self {
+        Self {
+            location: location.to_owned(),
+            span,
+            expected: vec!["a finite number"],
+        }
+    }
+}
+
 impl fmt::Display for ParseError {
     fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(
@@ -89,42 +128,13 @@ impl std::error::Error for ParseError {}
 pub(crate) fn parse(location: impl Into<String>, source: &str) -> Result<Expr, ParseError> {
     let location = location.into();
     let mut pairs = FormulaParser::parse(Rule::program, source)
-        .map_err(|error| parse_error(location.clone(), source, error))?;
+        .map_err(|error| ParseError::from_pest(location.clone(), source, error))?;
     let program = pairs.next().expect("program parser returns one pair");
     let expression = program
         .into_inner()
         .find(|pair| pair.as_rule() == Rule::expression)
         .expect("program contains an expression");
     build_expression(expression, &location)
-}
-
-fn parse_error(location: String, source: &str, error: pest::error::Error<Rule>) -> ParseError {
-    let offset = match error.location {
-        pest::error::InputLocation::Pos(position) => position,
-        pest::error::InputLocation::Span((start, _)) => start,
-    };
-    let expected = match error.variant {
-        ErrorVariant::ParsingError { positives, .. } => positives
-            .iter()
-            .filter_map(expected_token)
-            .collect::<Vec<_>>(),
-        ErrorVariant::CustomError { .. } => Vec::new(),
-    };
-    ParseError {
-        location,
-        span: Span {
-            start: offset,
-            end: source[offset..]
-                .chars()
-                .next()
-                .map_or(offset, |character| offset + character.len_utf8()),
-        },
-        expected: if expected.is_empty() {
-            vec!["valid expression syntax"]
-        } else {
-            expected
-        },
-    }
 }
 
 fn expected_token(rule: &Rule) -> Option<&'static str> {
@@ -162,17 +172,11 @@ fn build_expression(pair: Pair<'_, Rule>, location: &str) -> Result<Expr, ParseE
         Rule::number => {
             let span = span(&pair);
             let lexeme = pair.as_str().to_owned();
-            let value = lexeme.parse::<f64>().map_err(|_| ParseError {
-                location: location.to_owned(),
-                span,
-                expected: vec!["a finite number"],
-            })?;
+            let value = lexeme
+                .parse::<f64>()
+                .map_err(|_| ParseError::expected_finite_number(location, span))?;
             if !value.is_finite() {
-                return Err(ParseError {
-                    location: location.to_owned(),
-                    span,
-                    expected: vec!["a finite number"],
-                });
+                return Err(ParseError::expected_finite_number(location, span));
             }
             Ok(Expr {
                 kind: ExprKind::Number(Number { value, lexeme }),
