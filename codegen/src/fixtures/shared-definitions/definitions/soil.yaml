@@ -1,0 +1,7 @@
+$defs:
+  SharedCategory:
+    type: enum
+    description: Shared category.
+    values:
+      - {name: first, value: First}
+      - {name: second, value: Second}

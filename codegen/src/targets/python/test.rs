@@ -40,8 +40,10 @@ fn module_source(slug: &str, functions: &[&CompiledFunction]) -> String {
             imports.push(result_class);
         }
         for input in &function.inputs {
-            if let Some(enum_type) = input.enum_type() {
-                imports.push(&enum_type.name);
+            if let Some(enum_type) = input.enum_type()
+                && !enum_type.is_shared()
+            {
+                imports.push(&enum_type.enum_type.name);
             }
         }
     }
@@ -53,7 +55,28 @@ fn module_source(slug: &str, functions: &[&CompiledFunction]) -> String {
     module.line("import pytest");
     module.blank_line();
     module.import("_helpers", "assert_close, prepare_vector_case");
-    module.import(&format!("ptfkit.{slug}"), imports.join(", "));
+    let shared = functions
+        .iter()
+        .flat_map(|resolved| &resolved.entry.spec.functions[resolved.function_index].inputs)
+        .filter_map(|input| {
+            input
+                .enum_type()
+                .and_then(|definition| definition.shared_document())
+        })
+        .collect::<std::collections::BTreeSet<_>>();
+    let source_module = format!("ptfkit.{slug}");
+    if source_module.as_str() < "ptfkit.definitions" {
+        module.import(&source_module, imports.join(", "));
+    }
+    for document in shared {
+        module.import(
+            "ptfkit.definitions",
+            format!("{document} as _definitions_{document}"),
+        );
+    }
+    if source_module.as_str() >= "ptfkit.definitions" {
+        module.import(&source_module, imports.join(", "));
+    }
     module.blank_line();
     module.blank_line();
     for (index, resolved) in functions.iter().enumerate() {
@@ -218,14 +241,13 @@ fn dictionary(values: &BTreeMap<String, VerificationInput>, function: &Function)
             let value = match value {
                 VerificationInput::Number(value) => float(*value),
                 VerificationInput::Enum(member) => {
-                    let enum_name = function
+                    let definition = function
                         .inputs
                         .iter()
                         .find(|input| input.name() == name)
                         .and_then(|input| input.enum_type())
-                        .expect("enum verification input has a resolved enum type")
-                        .name
-                        .as_str();
+                        .expect("enum verification input has a resolved enum type");
+                    let enum_name = super::wrapper::enum_type_name(&definition.enum_type);
                     format!("{enum_name}.{}", member.to_ascii_uppercase())
                 }
             };

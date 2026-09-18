@@ -28,6 +28,7 @@ struct PythonFunction<'a> {
 struct PythonEnumInput {
     input: String,
     enum_name: String,
+    shared_document: Option<String>,
 }
 
 #[derive(Clone)]
@@ -66,6 +67,29 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile
     }
 
     let mut generated = Vec::new();
+    for (document, definitions) in crate::targets::shared_enum_groups(functions) {
+        let mut module = Module::new(WRAPPER_HEADER);
+        module.line(
+            r#"
+
+from __future__ import annotations
+
+from enum import Enum
+from typing import TYPE_CHECKING
+from ptfkit.enums import EnumArray
+
+
+if TYPE_CHECKING:"#,
+        );
+        module.indented(|writer| writer.line("from collections.abc import Iterable"));
+        for definition in definitions {
+            render_enum(&mut module, &python_enum(definition));
+        }
+        generated.push(GeneratedFile::new(
+            PathBuf::from(format!("ptfkit/definitions/{document}.py")),
+            module.into_string(),
+        ));
+    }
     for (module, functions) in modules {
         let mode = functions[0].entry.spec.generation.public_python;
         if mode == PythonGeneration::Manual {
@@ -97,12 +121,14 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile
                 classes.insert(class_name.to_owned(), result_class);
             }
         }
-        let mut enums = BTreeMap::<String, PythonEnum>::new();
+        let mut enums = BTreeMap::<crate::model::EnumType, PythonEnum>::new();
         for resolved in &functions {
             for input in &resolved.entry.spec.functions[resolved.function_index].inputs {
-                if let Some(definition) = input.enum_type() {
+                if let Some(definition) = input.enum_type()
+                    && !definition.is_shared()
+                {
                     enums
-                        .entry(definition.name.clone())
+                        .entry(definition.identity().to_owned())
                         .or_insert_with(|| python_enum(definition));
                 }
             }
@@ -119,6 +145,7 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile
                 functions
                     .iter()
                     .flat_map(|function| function.enum_inputs.iter())
+                    .filter(|input| input.shared_document.is_none())
                     .map(|input| input.enum_name.clone()),
             )
             .collect::<Vec<_>>();
@@ -198,17 +225,35 @@ fn module_source(
     if !enums.is_empty() {
         module.line("from ptfkit.enums import EnumArray");
     }
+    let shared_imports = functions
+        .iter()
+        .flat_map(|function| &function.enum_inputs)
+        .filter_map(|input| input.shared_document.as_deref())
+        .collect::<std::collections::BTreeSet<_>>();
+    for document in &shared_imports {
+        module.line(format!(
+            "from ptfkit.definitions import {document} as _definitions_{document}"
+        ));
+    }
+    if enums.is_empty() && !shared_imports.is_empty() {
+        module.line("from ptfkit.enums import EnumArray");
+    }
     module.line("\n\nif TYPE_CHECKING:");
     module.indented(|writer| {
         if !enums.is_empty() {
             writer.line("from collections.abc import Iterable");
             writer.blank_line();
         }
-        writer.line(if enums.is_empty() {
-            "from numpy import floating"
-        } else {
-            "from numpy import floating, uint32"
-        });
+        writer.line(
+            if functions
+                .iter()
+                .all(|function| function.enum_inputs.is_empty())
+            {
+                "from numpy import floating"
+            } else {
+                "from numpy import floating, uint32"
+            },
+        );
         let has_numeric_inputs = functions
             .iter()
             .any(|function| function.enum_inputs.len() < function.scalar_inputs.len());
@@ -329,7 +374,8 @@ fn view(resolved: &CompiledFunction) -> PythonFunction<'_> {
         .filter_map(|input| {
             input.enum_type().map(|definition| PythonEnumInput {
                 input: input.name().to_owned(),
-                enum_name: definition.name.clone(),
+                enum_name: enum_type_name(&definition.enum_type),
+                shared_document: definition.shared_document().map(str::to_owned),
             })
         })
         .collect::<Vec<_>>();
@@ -390,9 +436,16 @@ fn view(resolved: &CompiledFunction) -> PythonFunction<'_> {
     }
 }
 
+pub(super) fn enum_type_name(enum_type: &crate::model::EnumType) -> String {
+    enum_type.shared_module.as_ref().map_or_else(
+        || enum_type.name.clone(),
+        |module| format!("_definitions_{module}.{}", enum_type.name),
+    )
+}
+
 fn python_enum(definition: &EnumDefinition) -> PythonEnum {
     PythonEnum {
-        name: definition.name.clone(),
+        name: definition.enum_type.name.clone(),
         description: definition.description.clone(),
         members: definition
             .values

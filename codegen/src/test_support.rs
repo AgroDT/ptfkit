@@ -20,6 +20,11 @@ pub(crate) fn fixture_root(label: &str) -> PathBuf {
         root.join("specs/schema/ptf-spec.schema.json"),
     )
     .unwrap();
+    fs::copy(
+        Path::new(env!("CARGO_MANIFEST_DIR")).join("../specs/schema/definitions.schema.json"),
+        root.join("specs/schema/definitions.schema.json"),
+    )
+    .unwrap();
     fs::write(
         root.join("specs/quantities.yaml"),
         include_str!("fixtures/quantities.yaml"),
@@ -46,6 +51,23 @@ pub(crate) fn entries() -> Vec<crate::model::Entry> {
         crate::load_validated_specifications(&root).expect("test specifications validate");
     fs::remove_dir_all(root).unwrap();
     entries
+}
+
+pub(crate) fn copy_shared_definition_fixture(root: &Path) {
+    let fixture = Path::new(env!("CARGO_MANIFEST_DIR")).join("src/fixtures/shared-definitions");
+    fs::create_dir_all(root.join("specs/definitions")).unwrap();
+    fs::copy(
+        fixture.join("definitions/soil.yaml"),
+        root.join("specs/definitions/soil.yaml"),
+    )
+    .unwrap();
+    for source in ["first_source", "second_source"] {
+        fs::copy(
+            fixture.join(format!("functions/{source}.yaml")),
+            root.join(format!("specs/functions/{source}.yaml")),
+        )
+        .unwrap();
+    }
 }
 
 pub(crate) fn functions() -> Vec<crate::model::CompiledFunction> {

@@ -1,4 +1,8 @@
-use std::{collections::BTreeMap, path::PathBuf, sync::Arc};
+use std::{
+    collections::BTreeMap,
+    path::{Path, PathBuf},
+    sync::Arc,
+};
 
 use serde::{
     Deserialize, Deserializer, Serialize,
@@ -35,7 +39,7 @@ struct RawSpec {
 #[serde(untagged)]
 enum Definition {
     Enum(EnumDefinition),
-    Lookup(LookupDefinition),
+    Lookup(Box<LookupDefinition>),
     Output(Outputs),
     Parameter(Parameter),
 }
@@ -217,15 +221,11 @@ fn resolve_input_type(
 ) -> Result<Input, String> {
     let type_name = definition_name(&input.reference.target)?;
     match definitions.get(type_name) {
-        Some(Definition::Enum(definition)) => {
-            let mut definition = definition.clone();
-            definition.name = type_name.to_owned();
-            Ok(Input::Enum {
-                name: input.name,
-                description: input.description,
-                definition,
-            })
-        }
+        Some(Definition::Enum(definition)) => Ok(Input::Enum {
+            name: input.name,
+            description: input.description,
+            definition: resolved_enum_definition(definition, type_name),
+        }),
         Some(Definition::Output(_))
         | Some(Definition::Lookup(_))
         | Some(Definition::Parameter(_)) => Err(format!(
@@ -239,6 +239,12 @@ fn resolve_input_type(
     }
 }
 
+fn resolved_enum_definition(definition: &EnumDefinition, reference_name: &str) -> EnumDefinition {
+    let mut definition = definition.clone();
+    definition.enum_type.name = reference_name.to_owned();
+    definition
+}
+
 fn resolve_lookup_definition(
     name: &str,
     definition: &LookupDefinition,
@@ -246,11 +252,7 @@ fn resolve_lookup_definition(
 ) -> Result<LookupDefinition, String> {
     let input_name = definition_name(&definition.input.target)?;
     let input_type = match definitions.get(input_name) {
-        Some(Definition::Enum(definition)) => {
-            let mut definition = definition.clone();
-            definition.name = input_name.to_owned();
-            definition
-        }
+        Some(Definition::Enum(definition)) => resolved_enum_definition(definition, input_name),
         Some(_) => {
             return Err(format!(
                 "lookup `{name}` input must reference an enum definition"
@@ -332,7 +334,7 @@ fn validate_lookup_values(lookup: &LookupDefinition) -> Result<(), String> {
     if keys != enum_members {
         return Err(format!(
             "lookup `{}` values must cover every member of enum `{}` exactly once",
-            lookup.name, enum_type.name
+            lookup.name, enum_type.enum_type.name
         ));
     }
     Ok(())
@@ -350,6 +352,41 @@ fn definition_name(reference: &str) -> Result<&str, String> {
         ));
     }
     Ok(name)
+}
+
+impl Spec {
+    pub(crate) fn set_definition_origins(
+        &mut self,
+        document: &Path,
+        shared: &BTreeMap<String, EnumType>,
+    ) {
+        let resolve = |definition: &mut EnumDefinition| {
+            if let Some(origin) = shared.get(&definition.enum_type.name) {
+                definition.enum_type = origin.clone();
+            } else {
+                definition.enum_type.document = document.to_owned();
+            }
+        };
+        for function in &mut self.functions {
+            for input in &mut function.inputs {
+                if let Input::Enum { definition, .. } = input {
+                    resolve(definition);
+                }
+            }
+            if let Some(implementation) = &mut function.implementation {
+                for variable in &mut implementation.variables {
+                    if let ImplementationVariable::Lookup { lookup, .. } = variable
+                        && let Some(definition) = lookup
+                            .definition
+                            .as_mut()
+                            .and_then(|lookup| lookup.input_type.as_mut())
+                    {
+                        resolve(definition);
+                    }
+                }
+            }
+        }
+    }
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -536,11 +573,33 @@ impl Input {
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub(crate) struct EnumDefinition {
     #[serde(skip)]
-    pub(crate) name: String,
+    pub(crate) enum_type: EnumType,
     #[serde(rename = "type")]
     kind: EnumKind,
     pub(crate) description: String,
     pub(crate) values: Vec<EnumValue>,
+}
+
+/// The defining document and member identify a type, independently of its consumers.
+#[derive(Clone, Debug, Default, Eq, PartialEq, Ord, PartialOrd)]
+pub(crate) struct EnumType {
+    pub(crate) document: PathBuf,
+    pub(crate) name: String,
+    pub(crate) shared_module: Option<String>,
+}
+
+impl EnumDefinition {
+    pub(crate) fn identity(&self) -> &EnumType {
+        &self.enum_type
+    }
+
+    pub(crate) fn is_shared(&self) -> bool {
+        self.enum_type.shared_module.is_some()
+    }
+
+    pub(crate) fn shared_document(&self) -> Option<&str> {
+        self.enum_type.shared_module.as_deref()
+    }
 }
 
 #[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
@@ -770,7 +829,7 @@ pub(crate) enum ToleranceSource {
 pub(crate) enum CompiledInput {
     Number(f64),
     Enum {
-        enum_name: String,
+        enum_type: EnumType,
         member_name: String,
     },
 }
@@ -904,6 +963,7 @@ functions:
             function.inputs[0]
                 .enum_type()
                 .expect("enum input is resolved")
+                .enum_type
                 .name,
             "TestCategory"
         );
@@ -917,7 +977,10 @@ functions:
             name: "topsoil_texture".into(),
             description: None,
             definition: EnumDefinition {
-                name: "TestCategory".into(),
+                enum_type: EnumType {
+                    name: "TestCategory".into(),
+                    ..Default::default()
+                },
                 kind: EnumKind::Enum,
                 description: "Test category type.".into(),
                 values: Vec::new(),

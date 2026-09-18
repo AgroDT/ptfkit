@@ -10,7 +10,7 @@ use crate::{
     render::{Writer, markdown},
     targets::{
         group_by_source,
-        native::{c_enum_member, c_enum_name, c_result_name},
+        native::{c_enum_member, c_enum_module, c_enum_name, c_result_name},
     },
 };
 
@@ -149,9 +149,14 @@ fn render_header(writer: &mut Writer, slug: &str, functions: &[&CompiledFunction
     for function in functions {
         for input in &spec(function).inputs {
             if let Some(definition) = input.enum_type()
-                && enums.insert(definition.name.clone())
+                && enums.insert(definition.identity().to_owned())
             {
-                render_enum(writer, slug, definition, true);
+                render_enum(
+                    writer,
+                    &c_enum_module(&definition.enum_type, slug),
+                    definition,
+                    true,
+                );
             }
         }
     }
@@ -177,9 +182,9 @@ fn render_header(writer: &mut Writer, slug: &str, functions: &[&CompiledFunction
 
 fn render_enum(writer: &mut Writer, module: &str, definition: &EnumDefinition, c: bool) {
     let name = if c {
-        c_enum_name(module, &definition.name)
+        c_enum_name(module, &definition.enum_type.name)
     } else {
-        definition.name.clone()
+        definition.enum_type.name.clone()
     };
     writer.write(format_args!("## `{name}`\n\n"));
     markdown::code_block(writer, if c { "c" } else { "cpp" }, |writer| {
@@ -187,7 +192,7 @@ fn render_enum(writer: &mut Writer, module: &str, definition: &EnumDefinition, c
         writer.indented(|writer| {
             for member in &definition.values {
                 let member_name = if c {
-                    c_enum_member(module, &definition.name, &member.name)
+                    c_enum_member(module, &definition.enum_type.name, &member.name)
                 } else {
                     member.name.clone()
                 };
@@ -204,7 +209,7 @@ fn render_enum(writer: &mut Writer, module: &str, definition: &EnumDefinition, c
     writer.line("| --- | --- | --- |");
     for member in &definition.values {
         let member_name = if c {
-            c_enum_member(module, &definition.name, &member.name)
+            c_enum_member(module, &definition.enum_type.name, &member.name)
         } else {
             member.name.clone()
         };
@@ -320,7 +325,10 @@ fn signature(function: &CompiledFunction) -> Result<String> {
             .map(|input| match input.enum_type() {
                 Some(definition) => format!(
                     "{} {}",
-                    c_enum_name(&function.entry.slug, &definition.name),
+                    c_enum_name(
+                        &c_enum_module(&definition.enum_type, &function.entry.slug),
+                        &definition.enum_type.name
+                    ),
                     input.name()
                 ),
                 None => format!("double {}", input.name()),

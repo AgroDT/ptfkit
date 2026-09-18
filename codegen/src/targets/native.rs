@@ -6,8 +6,8 @@ use convert_case::{Boundary, Case, Casing};
 use crate::{
     documentation::{self as docs, FunctionDocument, SourceDocument},
     model::{
-        CompiledFunction, CompiledInput, EnumDefinition, Function, Output, OutputField, Scope,
-        Source,
+        CompiledFunction, CompiledInput, EnumDefinition, EnumType, Function, Output, OutputField,
+        Scope, Source,
     },
     render::{Render, Writer},
     semantic::{RecordLookup, Reference, ResultBinding, VariableValue},
@@ -42,6 +42,20 @@ pub(super) fn render(functions: &[CompiledFunction]) -> Result<OutputFiles> {
     root_module.write(format_args!("{HEADER}\n\nexport module ptfkit;\n\n"));
 
     let mut module_paths = vec!["cpp/ptfkit.cppm".to_owned()];
+    let shared = super::shared_enum_groups(functions);
+    for (document, definitions) in &shared {
+        c_headers.push(file(
+            format!("ptfkit/definitions/{document}.h"),
+            shared_c_header(document, definitions),
+        ));
+        umbrella.line(format_args!("#include <ptfkit/definitions/{document}.h>"));
+        cpp_modules.push(file(
+            format!("definitions/{document}.cppm"),
+            shared_cpp_module(document, definitions),
+        ));
+        module_paths.push(format!("cpp/definitions/{document}.cppm"));
+        root_module.line(format_args!("export import ptfkit.definitions.{document};"));
+    }
     for (slug, functions) in group_by_source(functions) {
         umbrella.line(format_args!("#include <ptfkit/{slug}.h>"));
         c_headers.push(file(
@@ -83,6 +97,9 @@ fn c_header(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
     writer.write(format_args!(
         "{HEADER}\n\n#ifndef {guard}\n#define {guard}\n\n"
     ));
+    for document in shared_documents(functions) {
+        writer.write(format_args!("#include <ptfkit/definitions/{document}.h>\n"));
+    }
     if requires_pow4(functions) {
         writer.write("#include <ptfkit/detail/power.h>\n");
     }
@@ -156,6 +173,14 @@ fn cpp_module(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
         writer.blank_line();
     }
     writer.write(format_args!("export module ptfkit.{slug};\n\n"));
+    for document in shared_documents(functions) {
+        writer.write(format_args!(
+            "export import ptfkit.definitions.{document};\n"
+        ));
+    }
+    if !shared_documents(functions).is_empty() {
+        writer.blank_line();
+    }
     let first = functions
         .first()
         .expect("generated source contains at least one function");
@@ -273,12 +298,12 @@ impl Render for NativeFunction<'_> {
             }
             let parameter = &spec.inputs[index];
             match (parameter.enum_type(), self.dialect) {
-                (Some(definition), NativeDialect::C) => {
-                    writer.write(c_enum_name(&self.function.entry.slug, &definition.name));
-                    writer.write(" ");
-                }
-                (Some(definition), NativeDialect::Cpp) => {
-                    writer.write(&definition.name);
+                (Some(definition), dialect) => {
+                    writer.write(enum_type_name(
+                        &definition.enum_type,
+                        &self.function.entry.slug,
+                        dialect,
+                    ));
                     writer.write(" ");
                 }
                 (None, _) => writer.write("double "),
@@ -396,7 +421,7 @@ fn lookup_definitions<'a>(functions: &[&'a CompiledFunction]) -> Vec<&'a RecordL
             VariableValue::RecordLookup(lookup) => Some(lookup),
             VariableValue::Number(_) => None,
         })
-        .filter(|lookup| names.insert((lookup.enum_name.clone(), lookup.output.name.clone())))
+        .filter(|lookup| names.insert((lookup.enum_type.clone(), lookup.output.name.clone())))
         .collect()
 }
 
@@ -404,7 +429,13 @@ fn record_lookup_function_name(lookup: &RecordLookup) -> String {
     format!(
         "{}_from_{}",
         c_result_name(&lookup.output.name),
-        lookup.enum_name.to_case(Case::Snake)
+        lookup.enum_type.shared_module.as_ref().map_or_else(
+            || lookup.enum_type.name.to_case(Case::Snake),
+            |module| format!(
+                "definitions_{module}_{}",
+                lookup.enum_type.name.to_case(Case::Snake)
+            )
+        )
     )
 }
 
@@ -418,10 +449,7 @@ fn render_record_lookup_helper(
         NativeDialect::C => c_result_name(&lookup.output.name),
         NativeDialect::Cpp => lookup.output.name.clone(),
     };
-    let enum_name = match dialect {
-        NativeDialect::C => c_enum_name(slug, &lookup.enum_name),
-        NativeDialect::Cpp => lookup.enum_name.clone(),
-    };
+    let enum_name = enum_type_name(&lookup.enum_type, slug, dialect);
     match dialect {
         NativeDialect::C => writer.write("static inline "),
         NativeDialect::Cpp => writer.write("[[nodiscard]] inline "),
@@ -549,8 +577,70 @@ fn enum_definitions<'a>(functions: &[&'a CompiledFunction]) -> Vec<&'a EnumDefin
                 .iter()
                 .filter_map(|input| input.enum_type())
         })
-        .filter(|definition| names.insert(definition.name.as_str()))
+        .filter(|definition| {
+            !definition.is_shared() && names.insert(definition.identity().to_owned())
+        })
         .collect()
+}
+
+fn shared_documents<'a>(functions: &[&'a CompiledFunction]) -> BTreeSet<&'a str> {
+    super::shared_enum_groups(functions.iter().copied())
+        .into_keys()
+        .collect()
+}
+
+fn shared_c_header(document: &str, definitions: &[&EnumDefinition]) -> String {
+    let mut writer = Writer::new();
+    writer.write(format_args!(
+        "{HEADER}\n\n#ifndef PTFKIT_DEFINITIONS_{document}\n#define PTFKIT_DEFINITIONS_{document}\n\n"
+    ));
+    for definition in definitions {
+        writer.blank_line();
+        render_enum(
+            &mut writer,
+            &format!("definitions_{document}"),
+            definition,
+            NativeDialect::C,
+        );
+    }
+    writer.write("\n\n#endif\n");
+    writer.into_string()
+}
+
+fn shared_cpp_module(document: &str, definitions: &[&EnumDefinition]) -> String {
+    let mut writer = Writer::new();
+    writer.write(format_args!(
+        "{HEADER}\n\nexport module ptfkit.definitions.{document};\n\nexport namespace ptfkit::definitions::{document} {{"
+    ));
+    for definition in definitions {
+        writer.blank_line();
+        render_enum(&mut writer, document, definition, NativeDialect::Cpp);
+    }
+    writer.write(format_args!(
+        "\n\n}}  // namespace ptfkit::definitions::{document}\n"
+    ));
+    writer.into_string()
+}
+
+pub(crate) fn c_enum_module(enum_type: &EnumType, source: &str) -> String {
+    enum_type.shared_module.as_ref().map_or_else(
+        || source.to_owned(),
+        |module| format!("definitions_{module}"),
+    )
+}
+
+fn enum_type_name(enum_type: &EnumType, source: &str, dialect: NativeDialect) -> String {
+    match dialect {
+        NativeDialect::C => c_enum_name(&c_enum_module(enum_type, source), &enum_type.name),
+        NativeDialect::Cpp => cpp_enum_type_name(enum_type),
+    }
+}
+
+pub(crate) fn cpp_enum_type_name(enum_type: &EnumType) -> String {
+    enum_type.shared_module.as_ref().map_or_else(
+        || enum_type.name.clone(),
+        |module| format!("ptfkit::definitions::{module}::{}", enum_type.name),
+    )
 }
 
 pub(crate) fn c_enum_name(module: &str, name: &str) -> String {
@@ -573,7 +663,9 @@ fn render_enum(
 ) {
     match dialect {
         NativeDialect::C => writer.line("typedef enum {"),
-        NativeDialect::Cpp => writer.line(format_args!("enum class {} {{", definition.name)),
+        NativeDialect::Cpp => {
+            writer.line(format_args!("enum class {} {{", definition.enum_type.name))
+        }
     }
     writer.indented(|writer| {
         for member in &definition.values {
@@ -583,7 +675,7 @@ fn render_enum(
             match dialect {
                 NativeDialect::C => writer.line(format_args!(
                     "{},",
-                    c_enum_member(module, &definition.name, &member.name)
+                    c_enum_member(module, &definition.enum_type.name, &member.name)
                 )),
                 NativeDialect::Cpp => {
                     writer.line(format_args!("{},", member.name.to_case(Case::Pascal)))
@@ -594,7 +686,7 @@ fn render_enum(
     match dialect {
         NativeDialect::C => writer.line(format_args!(
             "}} {};",
-            c_enum_name(module, &definition.name)
+            c_enum_name(module, &definition.enum_type.name)
         )),
         NativeDialect::Cpp => writer.line("};"),
     }
@@ -907,22 +999,26 @@ fn render_literals(
         match value {
             CompiledInput::Number(value) => writer.write(c::test_float_literal(*value)),
             CompiledInput::Enum {
-                enum_name,
+                enum_type,
                 member_name,
-                ..
-            } => match dialect {
-                NativeDialect::C => writer.write(c_enum_member(
-                    cpp_slug.expect("C test literals have a source module"),
-                    enum_name,
-                    member_name,
-                )),
-                NativeDialect::Cpp => writer.write(format_args!(
-                    "ptfkit::{}::{}::{}",
-                    cpp_slug.expect("C++ test literals have a source namespace"),
-                    enum_name,
-                    member_name.to_case(Case::Pascal)
-                )),
-            },
+            } => {
+                let slug = cpp_slug.expect("native test literals have a source module");
+                match dialect {
+                    NativeDialect::C => writer.write(c_enum_member(
+                        &c_enum_module(enum_type, slug),
+                        &enum_type.name,
+                        member_name,
+                    )),
+                    NativeDialect::Cpp => {
+                        let name = if enum_type.shared_module.is_some() {
+                            enum_type_name(enum_type, slug, dialect)
+                        } else {
+                            format!("ptfkit::{slug}::{}", enum_type.name)
+                        };
+                        writer.write(format!("{name}::{}", member_name.to_case(Case::Pascal)));
+                    }
+                }
+            }
         }
     }
 }

@@ -223,13 +223,20 @@ fn is_generated(contents: &[u8], header: &str) -> bool {
 
 fn format(root: &Path, staged: &[StagedWrite]) -> Result<()> {
     for layout in LAYOUTS {
-        let paths = staged
+        let files = staged
             .iter()
             .filter(|file| std::ptr::eq(file.layout, layout))
-            .map(|file| file.temporary.clone())
             .collect::<Vec<_>>();
-        if !paths.is_empty() {
-            format_layout(layout.formatter, root, &paths)?;
+        if !files.is_empty() {
+            if std::ptr::eq(layout, &super::RUST) {
+                format_rust_staged(root, &files)?;
+            } else {
+                let paths = files
+                    .iter()
+                    .map(|file| file.temporary.clone())
+                    .collect::<Vec<_>>();
+                format_layout(layout.formatter, root, &paths)?;
+            }
         }
     }
     Ok(())
@@ -247,6 +254,37 @@ fn format_layout(formatter: Formatter, root: &Path, paths: &[PathBuf]) -> Result
 
 pub(super) fn format_rust(paths: &[PathBuf]) -> Result<()> {
     run("rustfmt", &["--edition", "2024"], paths, None)
+}
+
+fn format_rust_staged(root: &Path, files: &[&StagedWrite]) -> Result<()> {
+    let directory = std::env::temp_dir().join(format!(
+        "ptfkit-codegen-rust-format-{}-{}",
+        std::process::id(),
+        TEMPORARY_SEQUENCE.fetch_add(1, Ordering::Relaxed)
+    ));
+    fs::create_dir_all(&directory)?;
+    let result = (|| {
+        let mut paths = Vec::new();
+        for file in files {
+            let relative = file
+                .target
+                .strip_prefix(root)
+                .context("finding staged Rust output path")?;
+            let target = directory.join(relative);
+            if let Some(parent) = target.parent() {
+                fs::create_dir_all(parent)?;
+            }
+            fs::copy(&file.temporary, &target)?;
+            paths.push(target);
+        }
+        format_rust(&paths)?;
+        for (file, path) in files.iter().zip(paths) {
+            fs::copy(path, &file.temporary)?;
+        }
+        Ok::<_, anyhow::Error>(())
+    })();
+    let _ = fs::remove_dir_all(&directory);
+    result
 }
 
 pub(super) fn format_python(root: &Path, paths: &[PathBuf]) -> Result<()> {

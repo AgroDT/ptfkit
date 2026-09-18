@@ -186,7 +186,7 @@ fn render_input_table(writer: &mut Writer, inputs: &[crate::model::Input]) {
     for input in inputs {
         let value_type = input
             .enum_type()
-            .map(|definition| format!("`{}`", definition.name))
+            .map(|definition| format!("`{}`", definition.enum_type.name))
             .unwrap_or_else(|| "`number`".to_owned());
         writer.line(format_args!(
             "| `{}` | {} | {} | {} | {} |",
