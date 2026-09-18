@@ -85,6 +85,24 @@ are stable public type names, while field order is part of the cross-target
 result contract. Reusable parameter declarations, enum types, and record shapes
 may be declared once in `$defs` and referenced by multiple functions. The
 `$defs` key is the canonical name of a reusable declaration, type, or record.
+Enum definitions shared by multiple source specifications live directly under
+`specs/definitions/` and are referenced with a relative file reference such as
+`../definitions/soil.yaml#/$defs/UsdaTextureClass`. References are resolved
+relative to the YAML document that contains them. Only local direct references
+to one `$defs` member are supported; source-local `$defs` remain independent,
+including when a local definition has the same name as a shared definition.
+Shared definitions keep their defining document identity in generated targets,
+so Python functions from separate source modules accept the same enum class and
+the same typed `EnumArray` without conversion. The input binding description
+remains specific to the function and is not taken from the shared type.
+Shared definition filenames use lowercase identifiers (`soil.yaml`, for example).
+Referenced enums are emitted once in `ptfkit.definitions.soil` for Python,
+`ptfkit::definitions::soil` for Rust and C++, and
+`ptfkit/definitions/soil.h` for C (with the `definitions_soil_` symbol prefix).
+Python consumers import the shared class from its defining module; source-local
+enums remain available through their existing source modules. Unreferenced shared
+definitions are validated but do not produce target modules. Remote references,
+nested definition paths, and references through other definitions are unsupported.
 Both registries are top-level maps keyed by stable identifiers. The unit registry
 owns only `preferred_notation` and equivalent `aliases`. The quantity registry
 lists allowed unit identifiers and owns each quantity × unit tolerance.

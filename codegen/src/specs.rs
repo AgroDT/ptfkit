@@ -1,4 +1,9 @@
-use std::{fs, path::Path, sync::Arc};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    fs,
+    path::{Path, PathBuf},
+    sync::Arc,
+};
 
 use anyhow::{Context, Result, bail};
 use jsonschema::Draft;
@@ -7,7 +12,7 @@ use serde_json::Value;
 use crate::{
     formula,
     model::{
-        Entry, Implementation, ImplementationVariable, Input, Quantity, QuantityRegistry,
+        Entry, EnumType, Implementation, ImplementationVariable, Input, Quantity, QuantityRegistry,
         RawExpression, RawFunction, RawInput, RawInputType, RawLookup, RawVariable,
         RawVariableValue, Spec,
     },
@@ -21,6 +26,20 @@ pub(crate) fn load(root: &Path) -> Result<Vec<Entry>> {
     let validator = jsonschema::options()
         .with_draft(Draft::Draft202012)
         .build(&schema)?;
+    let definition_schema: Value = serde_json::from_slice(&fs::read(
+        root.join("specs/schema/definitions.schema.json"),
+    )?)?;
+    let registry = jsonschema::Registry::new()
+        .add(
+            "https://ptfkit.invalid/ptf-spec.schema.json",
+            schema.clone(),
+        )?
+        .prepare()?;
+    let definition_validator = jsonschema::options()
+        .with_base_uri("https://ptfkit.invalid/definitions.schema.json")
+        .with_registry(&registry)
+        .build(&definition_schema)?;
+    let definitions = load_definitions(root, &definition_validator)?;
     let mut paths =
         fs::read_dir(root.join("specs/functions"))?.collect::<std::result::Result<Vec<_>, _>>()?;
     paths.sort_by_key(|entry| entry.path());
@@ -59,6 +78,14 @@ pub(crate) fn load(root: &Path) -> Result<Vec<Entry>> {
                 continue;
             }
         };
+        let mut value = value;
+        let shared = match resolve_external_references(&mut value, &path, &definitions) {
+            Ok(shared) => shared,
+            Err(error) => {
+                errors.push(format!("{}:\n  $:\n    {error}", path.display()));
+                continue;
+            }
+        };
         for error in validator.iter_errors(&value) {
             errors.push(format!(
                 "{}:\n  {}:\n    {}",
@@ -67,7 +94,7 @@ pub(crate) fn load(root: &Path) -> Result<Vec<Entry>> {
                 error
             ));
         }
-        let spec: Spec = match serde_json::from_value(value) {
+        let mut spec: Spec = match serde_json::from_value(value) {
             Ok(spec) => spec,
             Err(error) => {
                 errors.push(format!(
@@ -77,6 +104,7 @@ pub(crate) fn load(root: &Path) -> Result<Vec<Entry>> {
                 continue;
             }
         };
+        spec.set_definition_origins(&path, &shared);
         for function in &spec.functions {
             if matches!(
                 function.status.as_str(),
@@ -124,6 +152,148 @@ pub(crate) fn load(root: &Path) -> Result<Vec<Entry>> {
         bail!("validation failed:\n{}", errors.join("\n"))
     }
     Ok(entries)
+}
+
+fn load_definitions(
+    root: &Path,
+    validator: &jsonschema::Validator,
+) -> Result<BTreeMap<PathBuf, Value>> {
+    let directory = root.join("specs/definitions");
+    let mut definitions = BTreeMap::new();
+    if !directory.exists() {
+        return Ok(definitions);
+    }
+    for entry in fs::read_dir(directory)? {
+        let path = entry?.path();
+        if path.extension().is_none_or(|extension| extension != "yaml") {
+            continue;
+        }
+        source_slug(&path).map_err(anyhow::Error::msg)?;
+        let text = fs::read_to_string(&path)?;
+        let yaml: serde_yaml::Value = serde_yaml::from_str(&text)
+            .with_context(|| format!("{}: malformed YAML", path.display()))?;
+        let value = serde_json::to_value(yaml)?;
+        let errors = validator
+            .iter_errors(&value)
+            .map(|error| {
+                format!(
+                    "{}: {}: {error}",
+                    path.display(),
+                    json_path(error.instance_path())
+                )
+            })
+            .collect::<Vec<_>>();
+        if !errors.is_empty() {
+            bail!("invalid shared definitions:\n{}", errors.join("\n"));
+        }
+        definitions.insert(fs::canonicalize(path)?, value);
+    }
+    Ok(definitions)
+}
+
+fn resolve_external_references(
+    value: &mut Value,
+    document: &Path,
+    documents: &BTreeMap<PathBuf, Value>,
+) -> Result<BTreeMap<String, EnumType>, String> {
+    let mut references = BTreeSet::new();
+    collect_external_references(value, &mut references);
+    let mut shared = BTreeMap::new();
+    for reference in references {
+        let (file, name) = reference
+            .split_once("#/$defs/")
+            .filter(|(file, name)| {
+                !file.is_empty() && !name.is_empty() && !name.contains(['/', '#'])
+            })
+            .ok_or_else(|| {
+                format!("unsupported reference `{reference}`: expected `file.yaml#/$defs/Name`")
+            })?;
+        if file.contains(':') || Path::new(file).is_absolute() {
+            return Err(format!(
+                "unsupported reference `{reference}`: only relative local files are supported"
+            ));
+        }
+        let target = document
+            .parent()
+            .unwrap_or_else(|| Path::new("."))
+            .join(file);
+        let target = fs::canonicalize(&target).map_err(|error| {
+            format!(
+                "reference `{reference}`: cannot read {}: {error}",
+                target.display()
+            )
+        })?;
+        let parsed = documents.get(&target)
+            .ok_or_else(|| format!("unsupported reference `{reference}`: expected a YAML file directly under specs/definitions"))?;
+        let definition = parsed["$defs"].get(name).ok_or_else(|| {
+            format!(
+                "reference `{reference}`: definition `{name}` is missing in {}",
+                target.display()
+            )
+        })?;
+        let defs = value
+            .as_object_mut()
+            .ok_or_else(|| "specification root must be an object".to_owned())?
+            .entry("$defs")
+            .or_insert_with(|| Value::Object(serde_json::Map::new()))
+            .as_object_mut()
+            .ok_or_else(|| "specification `$defs` must be an object".to_owned())?;
+        let mut index = defs.len();
+        let alias = loop {
+            let alias = format!("SharedDefinition{index}");
+            if !defs.contains_key(&alias) {
+                break alias;
+            }
+            index += 1;
+        };
+        defs.insert(alias.clone(), definition.clone());
+        shared.insert(
+            alias.clone(),
+            EnumType {
+                document: target.clone(),
+                name: name.to_owned(),
+                shared_module: Some(source_slug(&target)?),
+            },
+        );
+        replace_reference(value, &reference, &format!("#/$defs/{alias}"));
+    }
+    Ok(shared)
+}
+
+fn collect_external_references(value: &Value, found: &mut BTreeSet<String>) {
+    match value {
+        Value::Object(object) => {
+            if let Some(reference) = object.get("$ref").and_then(Value::as_str)
+                && !reference.starts_with("#/$defs/")
+            {
+                found.insert(reference.to_owned());
+            }
+            for child in object.values() {
+                collect_external_references(child, found);
+            }
+        }
+        Value::Array(array) => array
+            .iter()
+            .for_each(|child| collect_external_references(child, found)),
+        _ => {}
+    }
+}
+
+fn replace_reference(value: &mut Value, old: &str, new: &str) {
+    match value {
+        Value::Object(object) => {
+            if object.get("$ref").and_then(Value::as_str) == Some(old) {
+                object.insert("$ref".to_owned(), Value::String(new.to_owned()));
+            }
+            for child in object.values_mut() {
+                replace_reference(child, old, new);
+            }
+        }
+        Value::Array(array) => array
+            .iter_mut()
+            .for_each(|child| replace_reference(child, old, new)),
+        _ => {}
+    }
 }
 
 fn load_quantities(root: &Path) -> Result<Arc<QuantityRegistry>> {
@@ -562,6 +732,117 @@ functions:
 
         let error = load(&root).unwrap_err().to_string();
         assert!(error.contains("lookup `InvalidLookup` values must cover every member"));
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn resolves_one_shared_enum_for_independent_sources() {
+        let root = fixture_root("shared-definitions");
+        crate::test_support::copy_shared_definition_fixture(&root);
+        let entries = crate::load_validated_specifications(&root)
+            .expect("shared definitions should validate and compile");
+        let first = entries[0].spec.functions[0].inputs[0].enum_type().unwrap();
+        let second = entries[1].spec.functions[0].inputs[0].enum_type().unwrap();
+        assert_eq!(first.identity(), second.identity());
+        assert_eq!(first.enum_type.name, "SharedCategory");
+        assert_eq!(
+            entries[0].spec.functions[0].inputs[0].description(),
+            "Usage-specific input."
+        );
+        let local = entries[0].spec.functions[1].inputs[0].enum_type().unwrap();
+        assert_ne!(first.identity(), local.identity());
+        assert_eq!(first.enum_type.name, local.enum_type.name);
+        assert_eq!(first.description, "Shared category.");
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn reports_unsupported_and_missing_external_references() {
+        for (label, reference, expected) in [
+            (
+                "missing-shared-definition",
+                "../definitions/missing.yaml#/$defs/Category",
+                "cannot read",
+            ),
+            (
+                "missing-shared-member",
+                "../definitions/soil.yaml#/$defs/MissingCategory",
+                "definition `MissingCategory` is missing",
+            ),
+            (
+                "unsupported-shared-fragment",
+                "../definitions/soil.yaml#/$defs/SharedCategory/values",
+                "expected `file.yaml#/$defs/Name`",
+            ),
+            (
+                "remote-shared-definition",
+                "https://example.test/soil.yaml#/$defs/Category",
+                "only relative local files are supported",
+            ),
+        ] {
+            let root = fixture_root(label);
+            crate::test_support::copy_shared_definition_fixture(&root);
+            fs::write(
+                root.join("specs/functions/example.yaml"),
+                format!(
+                    r#"source: {{summary: Example., citation_apa: Test (2026)., doi: null}}
+functions:
+  - name: calc_ptf_example
+    status: blocked
+    public_api: {{name: calc_ptf_example, summary: Result.}}
+    scope: {{prediction_target: Result., models: {{h_theta: null, k_h: null}}}}
+    inputs: [{{name: category, description: Input., $ref: {reference}}}]
+    outputs: {{type: scalar, name: value, quantity: volumetric_water_content, unit: volume_fraction, reported_unit: '1', symbol: null, domain: null, description: Result.}}
+"#
+                ),
+            )
+            .unwrap();
+            let error = load(&root).expect_err("invalid external reference must fail");
+            let diagnostic = error.to_string();
+            assert!(diagnostic.contains(expected), "{diagnostic}");
+            assert!(diagnostic.contains(reference), "{diagnostic}");
+            assert!(diagnostic.contains("example.yaml"), "{diagnostic}");
+            fs::remove_dir_all(root).unwrap();
+        }
+    }
+
+    #[test]
+    fn lookup_requires_definition_identity_not_just_its_name() {
+        let root = fixture_root("shared-lookup-identity");
+        crate::test_support::copy_shared_definition_fixture(&root);
+        let path = root.join("specs/functions/first_source.yaml");
+        let text = fs::read_to_string(&path).unwrap().replace(
+            "input: {$ref: '#/$defs/SharedCategory'}",
+            "input: {$ref: '../definitions/soil.yaml#/$defs/SharedCategory'}",
+        );
+        fs::write(path, text).unwrap();
+        let error = load(&root).expect_err("local input cannot key a shared enum lookup");
+        let diagnostic = error.to_string();
+        assert!(diagnostic.contains("calc_ptf_local"), "{diagnostic}");
+        assert!(diagnostic.contains("must have enum type"), "{diagnostic}");
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn validates_unreferenced_shared_definitions() {
+        let root = fixture_root("unused-shared-schema");
+        fs::create_dir_all(root.join("specs/definitions")).unwrap();
+        let path = root.join("specs/definitions/soil.yaml");
+        fs::write(
+            &path,
+            include_str!("fixtures/shared-definitions/definitions/soil.yaml"),
+        )
+        .unwrap();
+        assert!(load(&root).unwrap().is_empty());
+        fs::write(
+            &path,
+            "$defs: {Broken: {type: enum, description: Broken., values: []}}",
+        )
+        .unwrap();
+        let error = load(&root).expect_err("unused definitions must satisfy the schema");
+        let diagnostic = error.to_string();
+        assert!(diagnostic.contains("soil.yaml"), "{diagnostic}");
+        assert!(diagnostic.contains("values"), "{diagnostic}");
         fs::remove_dir_all(root).unwrap();
     }
 

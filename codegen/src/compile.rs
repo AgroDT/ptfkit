@@ -83,11 +83,11 @@ fn verification_cases(function: &Function) -> Result<Vec<CompiledVerificationCas
                                 .with_context(|| {
                                     format!(
                                         "verification case `{}` input `{}` references unknown member `{member_name}` of enum `{}`",
-                                        case.id, input_name, enum_type.name
+                                        case.id, input_name, enum_type.enum_type.name
                                     )
                                 })?;
                             Ok(CompiledInput::Enum {
-                                enum_name: enum_type.name.clone(),
+                                enum_type: enum_type.enum_type.clone(),
                                 member_name: member_name.clone(),
                             })
                         }
@@ -100,7 +100,7 @@ fn verification_cases(function: &Function) -> Result<Vec<CompiledVerificationCas
                             "verification case `{}` input `{}` must name a member of enum `{}`",
                             case.id,
                             input_name,
-                            enum_type.name
+                            enum_type.enum_type.name
                         ),
                     }
                 })

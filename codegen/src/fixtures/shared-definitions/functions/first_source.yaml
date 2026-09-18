@@ -1,0 +1,64 @@
+source:
+  summary: First source.
+  citation_apa: Test (2026).
+  doi: null
+$defs:
+  FirstResult:
+    type: record
+    name: FirstResult
+    fields: [{name: value, quantity: volumetric_water_content, unit: volume_fraction, reported_unit: '1', symbol: null, domain: null, description: Result.}, {name: other, quantity: volumetric_water_content, unit: volume_fraction, reported_unit: '1', symbol: null, domain: null, description: Other result.}]
+  SharedValues:
+    type: lookup
+    input: {$ref: ../definitions/soil.yaml#/$defs/SharedCategory}
+    output: {$ref: '#/$defs/FirstResult'}
+    values:
+      - {key: first, value: {value: 0.1, other: 0.5}}
+      - {key: second, value: {value: 0.2, other: 0.5}}
+  SharedCategory:
+    type: enum
+    description: Independent local category.
+    values:
+      - {name: second, value: Local second}
+      - {name: first, value: Local first}
+  LocalResult:
+    type: record
+    name: LocalResult
+    fields: [{name: value, quantity: volumetric_water_content, unit: volume_fraction, reported_unit: '1', symbol: null, domain: null, description: Result.}, {name: other, quantity: volumetric_water_content, unit: volume_fraction, reported_unit: '1', symbol: null, domain: null, description: Other result.}]
+  LocalValues:
+    type: lookup
+    input: {$ref: '#/$defs/SharedCategory'}
+    output: {$ref: '#/$defs/LocalResult'}
+    values:
+      - {key: second, value: {value: 0.7, other: 0.5}}
+      - {key: first, value: {value: 0.9, other: 0.5}}
+functions:
+  - name: calc_ptf_first_source
+    status: implemented
+    public_api: {name: calc_ptf_first_source, summary: Calculate the fixture value.}
+    scope: {prediction_target: Result., models: {h_theta: null, k_h: null}}
+    inputs:
+      - name: category
+        description: Usage-specific input.
+        $ref: ../definitions/soil.yaml#/$defs/SharedCategory
+    outputs: {$ref: '#/$defs/FirstResult'}
+    implementation:
+      variables:
+        - {name: parameters, lookup: {table: {$ref: '#/$defs/SharedValues'}, key: category}}
+    verification_cases:
+      - {id: first, kind: calculated, inputs: {category: first}, expected: {value: 0.1, other: 0.5}, rationale: First table row.}
+      - {id: second, kind: calculated, inputs: {category: second}, expected: {value: 0.2, other: 0.5}, rationale: Second table row.}
+  - name: calc_ptf_local
+    status: implemented
+    public_api: {name: calc_ptf_local, summary: Calculate the fixture value.}
+    scope: {prediction_target: Result., models: {h_theta: null, k_h: null}}
+    inputs:
+      - name: category
+        description: Usage-specific input.
+        $ref: '#/$defs/SharedCategory'
+    outputs: {$ref: '#/$defs/LocalResult'}
+    implementation:
+      variables:
+        - {name: parameters, lookup: {table: {$ref: '#/$defs/LocalValues'}, key: category}}
+    verification_cases:
+      - {id: first, kind: calculated, inputs: {category: first}, expected: {value: 0.9, other: 0.5}, rationale: First table row.}
+      - {id: second, kind: calculated, inputs: {category: second}, expected: {value: 0.7, other: 0.5}, rationale: Second table row.}

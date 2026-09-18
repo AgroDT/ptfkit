@@ -38,7 +38,7 @@ pub(crate) struct Variable {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) enum ValueType {
     Number,
-    Enum(String),
+    Enum(crate::model::EnumType),
     Record(RecordType),
 }
 
@@ -66,7 +66,7 @@ impl VariableValue {
 #[derive(Clone, Debug, PartialEq)]
 pub(crate) struct RecordLookup {
     pub(crate) key: Reference,
-    pub(crate) enum_name: String,
+    pub(crate) enum_type: crate::model::EnumType,
     pub(crate) output: RecordType,
     pub(crate) cases: Vec<RecordLookupCase>,
 }
@@ -204,7 +204,7 @@ pub(crate) fn compile(raw: &RawFunction) -> Result<Function, Error> {
     for (index, input) in raw.inputs.iter().enumerate() {
         let value_type = match &input.value_type {
             RawInputType::Number => ValueType::Number,
-            RawInputType::Enum(definition) => ValueType::Enum(definition.name.clone()),
+            RawInputType::Enum(definition) => ValueType::Enum(definition.enum_type.clone()),
         };
         if scope
             .insert(
@@ -283,7 +283,7 @@ pub(crate) fn compile(raw: &RawFunction) -> Result<Function, Error> {
                 name: input.name.clone(),
                 value_type: match &input.value_type {
                     RawInputType::Number => ValueType::Number,
-                    RawInputType::Enum(definition) => ValueType::Enum(definition.name.clone()),
+                    RawInputType::Enum(definition) => ValueType::Enum(definition.enum_type.clone()),
                 },
             })
             .collect(),
@@ -465,14 +465,14 @@ fn compile_lookup(
         .input_type
         .as_ref()
         .expect("lookup input type is resolved");
-    if binding.value_type != ValueType::Enum(enum_type.name.clone()) {
+    if binding.value_type != ValueType::Enum(enum_type.enum_type.clone()) {
         return Err(error(
             raw,
             &lookup.implementation_path,
             Span { start: 0, end: 0 },
             format!(
                 "lookup key `{}` must have enum type `{}`",
-                lookup.key, enum_type.name
+                lookup.key, enum_type.enum_type.name
             ),
         ));
     }
@@ -516,7 +516,7 @@ fn compile_lookup(
     Ok((
         RecordLookup {
             key: binding.reference,
-            enum_name: enum_type.name.clone(),
+            enum_type: enum_type.enum_type.clone(),
             output: record_type.clone(),
             cases,
         },
@@ -837,7 +837,7 @@ mod tests {
             "#,
         )
         .unwrap();
-        enum_type.name = "ExampleEnum".into();
+        enum_type.enum_type.name = "ExampleEnum".into();
 
         let mut lookup_definition: LookupDefinition = serde_yaml::from_str(
             r##"

@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=../schema/definitions.schema.json
+$defs:
+  UsdaTextureClass:
+    type: enum
+    description: USDA soil textural class.
+    values:
+      - name: sand
+        value: Sand
+      - name: loamy_sand
+        value: Loamy sand
+      - name: sandy_loam
+        value: Sandy loam
+      - name: loam
+        value: Loam
+      - name: silt_loam
+        value: Silt loam
+      - name: silt
+        value: Silt
+      - name: sandy_clay_loam
+        value: Sandy clay loam
+      - name: clay_loam
+        value: Clay loam
+      - name: silty_clay_loam
+        value: Silty clay loam
+      - name: sandy_clay
+        value: Sandy clay
+      - name: silty_clay
+        value: Silty clay
+      - name: clay
+        value: Clay

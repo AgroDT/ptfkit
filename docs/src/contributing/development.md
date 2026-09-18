@@ -8,6 +8,8 @@ package builds and documentation builds do not depend on running codegen first.
 ## Repository layout
 
 - `specs/functions/` contains one YAML specification per source publication.
+- `specs/definitions/` contains reusable definitions referenced by source
+  specifications through relative local file references.
 - `specs/schema/` defines the specification format.
 - `codegen/` contains validation and generation code.
 - `targets/ptfkit-native/` contains the C11 headers and C++23 modules.

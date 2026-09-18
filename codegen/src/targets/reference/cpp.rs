@@ -143,7 +143,7 @@ fn render_module(writer: &mut Writer, slug: &str, functions: &[&CompiledFunction
     for function in functions {
         for input in &spec(function).inputs {
             if let Some(definition) = input.enum_type()
-                && enums.insert(definition.name.clone())
+                && enums.insert(definition.identity().to_owned())
             {
                 render_enum(writer, definition);
             }
@@ -166,9 +166,9 @@ fn render_module(writer: &mut Writer, slug: &str, functions: &[&CompiledFunction
 }
 
 fn render_enum(writer: &mut Writer, definition: &EnumDefinition) {
-    writer.write(format_args!("## `{}`\n\n", definition.name));
+    writer.write(format_args!("## `{}`\n\n", definition.enum_type.name));
     markdown::code_block(writer, "cpp", |writer| {
-        writer.line(format_args!("enum class {} {{", definition.name));
+        writer.line(format_args!("enum class {} {{", definition.enum_type.name));
         writer.indented(|writer| {
             for member in &definition.values {
                 writer.line(format_args!("{},", member.name.to_case(Case::Pascal)));
@@ -283,7 +283,11 @@ fn signature(function: &CompiledFunction) -> Result<String> {
         spec.inputs
             .iter()
             .map(|input| match input.enum_type() {
-                Some(definition) => format!("{} {}", definition.name, input.name()),
+                Some(definition) => format!(
+                    "{} {}",
+                    crate::targets::native::cpp_enum_type_name(&definition.enum_type),
+                    input.name()
+                ),
                 None => format!("double {}", input.name()),
             })
             .collect::<Vec<_>>()

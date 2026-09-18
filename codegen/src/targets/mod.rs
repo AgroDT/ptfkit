@@ -90,6 +90,26 @@ pub(super) fn group_by_source(
     sources
 }
 
+pub(super) fn shared_enum_groups<'a>(
+    functions: impl IntoIterator<Item = &'a CompiledFunction>,
+) -> BTreeMap<&'a str, Vec<&'a crate::model::EnumDefinition>> {
+    let mut groups = BTreeMap::<_, Vec<_>>::new();
+    let mut seen = std::collections::BTreeSet::new();
+    for definition in functions.into_iter().flat_map(|function| {
+        function.entry.spec.functions[function.function_index]
+            .inputs
+            .iter()
+            .filter_map(|input| input.enum_type())
+    }) {
+        if let Some(module) = definition.shared_document()
+            && seen.insert(definition.identity())
+        {
+            groups.entry(module).or_default().push(definition);
+        }
+    }
+    groups
+}
+
 pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> Result<()> {
     let catalog = catalog::render(&entries);
     let reference_python = reference::python::render(&entries);
@@ -124,4 +144,77 @@ pub(crate) fn check_generated(root: &Path, entries: Vec<Entry>) -> Result<()> {
     let before = output::snapshot_generated(root)?;
     run(root, entries)?;
     output::assert_unchanged(root, before)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn shared_enum_declarations_and_references_preserve_the_defining_module() {
+        let root = crate::test_support::fixture_root("shared-rendering");
+        crate::test_support::copy_shared_definition_fixture(&root);
+        let entries = crate::load_validated_specifications(&root).unwrap();
+        let functions = compile::functions(entries).unwrap();
+        let native = native::render(&functions).unwrap();
+        for (files, shared_path, first_path, second_path, declaration, reference) in [
+            (
+                rust::render(&functions).unwrap(),
+                "definitions/soil.rs",
+                "first_source.rs",
+                "second_source.rs",
+                "pubenumSharedCategory",
+                "crate::definitions::soil::SharedCategory",
+            ),
+            (
+                native.c_headers,
+                "ptfkit/definitions/soil.h",
+                "ptfkit/first_source.h",
+                "ptfkit/second_source.h",
+                "}definitions_soil_shared_category;",
+                "definitions_soil_shared_categorycategory",
+            ),
+            (
+                native.cpp_modules,
+                "definitions/soil.cppm",
+                "first_source.cppm",
+                "second_source.cppm",
+                "enumclassSharedCategory",
+                "ptfkit::definitions::soil::SharedCategorycategory",
+            ),
+            (
+                python::render(&functions).unwrap().wrappers,
+                "ptfkit/definitions/soil.py",
+                "ptfkit/first_source.py",
+                "ptfkit/second_source.py",
+                "classSharedCategory(Enum):",
+                "_definitions_soil.SharedCategory",
+            ),
+        ] {
+            let text = |path: &str| {
+                let matches = files
+                    .iter()
+                    .filter(|file| file.path == Path::new(path))
+                    .collect::<Vec<_>>();
+                assert_eq!(matches.len(), 1, "expected one generated {path}");
+                matches[0].contents.split_whitespace().collect::<String>()
+            };
+            assert_eq!(
+                text(shared_path).matches(declaration).count(),
+                1,
+                "{shared_path}"
+            );
+            for path in [first_path, second_path] {
+                assert!(
+                    text(path).contains(reference),
+                    "{path} must reference its shared type"
+                );
+            }
+            assert!(
+                !text(second_path).contains(declaration),
+                "{second_path} must not redeclare the shared type"
+            );
+        }
+        std::fs::remove_dir_all(root).unwrap();
+    }
 }

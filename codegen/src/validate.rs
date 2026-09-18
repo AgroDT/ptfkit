@@ -279,7 +279,7 @@ fn validate_enums(entry: &Entry, function: &Function, errors: &mut Vec<String>) 
         let Some(enum_type) = input.enum_type() else {
             continue;
         };
-        if !validated.insert(&enum_type.name) {
+        if !validated.insert(enum_type.identity()) {
             continue;
         }
         let mut names = BTreeSet::new();
@@ -292,7 +292,7 @@ fn validate_enums(entry: &Entry, function: &Function, errors: &mut Vec<String>) 
                     Some(&function.name),
                     &format!(
                         "enum `{}` contains duplicate member name `{}`",
-                        enum_type.name, member.name
+                        enum_type.enum_type.name, member.name
                     ),
                 ));
             }
@@ -303,7 +303,7 @@ fn validate_enums(entry: &Entry, function: &Function, errors: &mut Vec<String>) 
                     Some(&function.name),
                     &format!(
                         "enum `{}` contains duplicate canonical value `{}`",
-                        enum_type.name, member.value
+                        enum_type.enum_type.name, member.value
                     ),
                 ));
             }
@@ -315,7 +315,7 @@ fn validate_enums(entry: &Entry, function: &Function, errors: &mut Vec<String>) 
                 Some(&function.name),
                 &format!(
                     "enum `{}` exceeds the target ordinal capacity",
-                    enum_type.name
+                    enum_type.enum_type.name
                 ),
             ));
         }
