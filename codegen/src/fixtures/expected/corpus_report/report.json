@@ -1,0 +1,193 @@
+{
+  "sources": {
+    "specification_files": 1,
+    "represented_publications": 1,
+    "earliest_publication_year": 2020,
+    "latest_publication_year": 2020,
+    "publication_year_derivation": "final four characters of the APA-style source slug, when they are four ASCII digits",
+    "unresolved_publication_year_count": 0,
+    "unresolved_publication_years": []
+  },
+  "functions": {
+    "total": 4,
+    "by_status": [
+      {
+        "value": "implemented",
+        "count": 1,
+        "percentage": 25.0
+      },
+      {
+        "value": "ready-for-implementation",
+        "count": 1,
+        "percentage": 25.0
+      },
+      {
+        "value": "blocked",
+        "count": 1,
+        "percentage": 25.0
+      },
+      {
+        "value": "draft",
+        "count": 1,
+        "percentage": 25.0
+      }
+    ]
+  },
+  "verification": {
+    "cases_total": 3,
+    "by_kind": {
+      "calculated": 2,
+      "published": 1
+    },
+    "published_cases": 1,
+    "calculated_cases": 2,
+    "functions_without_cases": 3,
+    "all_functions": {
+      "functions": 4,
+      "verification_cases": 3,
+      "functions_with_verification_cases": 1,
+      "functions_with_verification_cases_percentage": 25.0,
+      "edge_cases": 1,
+      "functions_with_edge_cases": 1,
+      "functions_with_edge_cases_percentage": 25.0
+    },
+    "implemented_functions": {
+      "functions": 1,
+      "verification_cases": 3,
+      "functions_with_verification_cases": 1,
+      "functions_with_verification_cases_percentage": 100.0,
+      "edge_cases": 1,
+      "functions_with_edge_cases": 1,
+      "functions_with_edge_cases_percentage": 100.0
+    },
+    "ready_for_implementation_functions": {
+      "functions": 1,
+      "verification_cases": 0,
+      "functions_with_verification_cases": 0,
+      "functions_with_verification_cases_percentage": 0.0,
+      "edge_cases": 0,
+      "functions_with_edge_cases": 0,
+      "functions_with_edge_cases_percentage": 0.0
+    },
+    "edge_case_interpretation": "declared specification metadata; not a claim that the cases are executable or externally validated"
+  },
+  "quantity_registry": {
+    "registered_quantities": 0,
+    "quantity_unit_combinations_in_use": 1,
+    "outputs_using_registry_defaults": 5,
+    "outputs_using_source_specific_overrides": 0,
+    "unused_quantity_unit_entries": []
+  },
+  "inputs": [
+    {
+      "name": "x",
+      "kind": "numeric",
+      "functions": 3,
+      "percentage": 75.0
+    },
+    {
+      "name": "category",
+      "kind": "categorical",
+      "functions": 1,
+      "percentage": 25.0
+    }
+  ],
+  "outputs": {
+    "scalar_functions": 3,
+    "record_functions": 1,
+    "field_names": [
+      {
+        "value": "alpha",
+        "count": 1,
+        "percentage": 25.0
+      },
+      {
+        "value": "beta",
+        "count": 1,
+        "percentage": 25.0
+      },
+      {
+        "value": "delta",
+        "count": 1,
+        "percentage": 25.0
+      },
+      {
+        "value": "gamma",
+        "count": 1,
+        "percentage": 25.0
+      },
+      {
+        "value": "zeta",
+        "count": 1,
+        "percentage": 25.0
+      }
+    ],
+    "structured_property_grouping_available": false
+  },
+  "scope": {
+    "prediction_targets": [
+      {
+        "value": "Target A",
+        "count": 2,
+        "percentage": 50.0
+      },
+      {
+        "value": "Target B",
+        "count": 1,
+        "percentage": 25.0
+      },
+      {
+        "value": "Target C",
+        "count": 1,
+        "percentage": 25.0
+      }
+    ],
+    "models": {
+      "h_theta": [
+        {
+          "value": "Model B",
+          "count": 1,
+          "percentage": 25.0
+        }
+      ],
+      "k_h": [
+        {
+          "value": "Model K",
+          "count": 1,
+          "percentage": 25.0
+        }
+      ]
+    },
+    "calibration_geography": {
+      "source_specifications_with_territory": 1,
+      "functions_with_territory": 1,
+      "territories": [
+        {
+          "territory": "Test function territory.",
+          "source_specifications": 0,
+          "functions": 1
+        },
+        {
+          "territory": "Test source territory.",
+          "source_specifications": 1,
+          "functions": 0
+        }
+      ],
+      "source_specifications_with_dataset": 1
+    }
+  },
+  "blocked_functions": [
+    {
+      "source_identifier": "tester2020",
+      "function_name": "calc_ptf_test_blocked",
+      "documentation_notes": [
+        "Known source limitation."
+      ],
+      "documentation_warnings": [
+        "Required coefficients are unavailable."
+      ],
+      "scientific_notes": "Blocker evidence from source review.",
+      "blocker_classification": null
+    }
+  ]
+}

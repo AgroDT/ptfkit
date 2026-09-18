@@ -1,3 +1,6 @@
+# Expected output fixtures must preserve exact renderer output.
+exclude: '^codegen/src/fixtures/expected/'
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0

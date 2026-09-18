@@ -464,9 +464,13 @@ fn validate_tree_definition(definition: &TreeDefinition) -> Result<(), Definitio
                     (Outputs::Scalar { .. }, DecisionTreeLeafValue::Number(number)) => {
                         validate_tree_number(definition, path, number)
                     }
-                    (Outputs::Scalar { .. }, DecisionTreeLeafValue::Record(_)) => Err(
-                        TreeError::definition(&definition.name, path, TreeErrorKind::NumericLeafRequired),
-                    ),
+                    (Outputs::Scalar { .. }, DecisionTreeLeafValue::Record(_)) => {
+                        Err(TreeError::definition(
+                            &definition.name,
+                            path,
+                            TreeErrorKind::NumericLeafRequired,
+                        ))
+                    }
                     (Outputs::Record { fields, .. }, DecisionTreeLeafValue::Record(values)) => {
                         let expected = fields
                             .iter()
@@ -488,9 +492,13 @@ fn validate_tree_definition(definition: &TreeDefinition) -> Result<(), Definitio
                         }
                         Ok(())
                     }
-                    (Outputs::Record { .. }, DecisionTreeLeafValue::Number(_)) => Err(
-                        TreeError::definition(&definition.name, path, TreeErrorKind::RecordLeafRequired),
-                    ),
+                    (Outputs::Record { .. }, DecisionTreeLeafValue::Number(_)) => {
+                        Err(TreeError::definition(
+                            &definition.name,
+                            path,
+                            TreeErrorKind::RecordLeafRequired,
+                        ))
+                    }
                 }
             }
             DecisionTree::Split(branch) => {

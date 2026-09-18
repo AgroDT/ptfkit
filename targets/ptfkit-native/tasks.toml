@@ -17,6 +17,7 @@ run = 'ctest --test-dir build --output-on-failure'
 
 ["native:format"]
 description = "Check C and C++ source formatting"
+dir = "targets/ptfkit-native"
 run = '''git ls-files --cached --others --exclude-standard -z -- '*.c' '*.h' '*.cc' '*.cpp' '*.cppm' '*.cxx' '*.hpp' | xargs -0 --no-run-if-empty sh -c 'for file do [ ! -f "$file" ] || printf "%s\0" "$file"; done' sh | xargs -0 --no-run-if-empty clang-format --style=file --dry-run --Werror'''
 run_windows = "& { $files = git ls-files --cached --others --exclude-standard -- '*.c' '*.h' '*.cc' '*.cpp' '*.cppm' '*.cxx' '*.hpp' | Where-Object { Test-Path -LiteralPath $_ -PathType Leaf }; if ($files) { clang-format --style=file --dry-run --Werror $files } }"
 
