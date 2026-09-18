@@ -208,6 +208,23 @@ Each component `verify` runs all of its format, lint, type-checking, and test
 checks. `mise run test` runs only the target test suites together. Python tests
 build the local native extension before exercising the public API.
 
+### Codegen errors
+
+Represent codegen-owned failures with typed errors derived using `thiserror`.
+Keep error variants and message formatting with the owning module, and preserve
+their data when passing errors between layers. `diagnostics::ValidationReport`
+collects independent diagnostics; its entries are not a chain of causes.
+Reserve `anyhow` for command orchestration and infrastructure context. Custom
+Serde deserialization converts domain errors through `serde::de::Error::custom`
+at that API boundary. Error tests should assert variants, fields, locations,
+and accumulation behavior rather than message wording or formatting.
+
+Use methods on error types to assemble context and prepare owned error data.
+Simple enum variants can be constructed directly. When chaining a context
+method onto a variant with named fields, provide a thin constructor, such as
+`ValidationKind::duplicate_case(id).in_function(document, function, path)`,
+instead of calling the method directly after a struct-style enum literal.
+
 ## Documentation
 
 Build or serve the site through the locked MkDocs environment:

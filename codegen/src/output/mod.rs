@@ -1,5 +1,6 @@
 //! Generated-artifact layout, formatting, and atomic filesystem commit.
 
+pub(crate) mod error;
 mod write;
 
 use std::path::PathBuf;

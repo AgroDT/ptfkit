@@ -1,6 +1,6 @@
 use std::{collections::BTreeMap, path::PathBuf};
 
-use anyhow::{Result, bail};
+use crate::targets::{GenerationError, Result};
 
 use crate::{
     documentation::{self as docs, FunctionDocument},
@@ -117,7 +117,9 @@ if TYPE_CHECKING:"#,
                     && (previous.field_definitions != result_class.field_definitions
                         || previous.docstring != result_class.docstring)
                 {
-                    bail!("Python result class `{class_name}` is reused with conflicting fields")
+                    return Err(GenerationError::ConflictingPythonClass {
+                        name: class_name.to_owned(),
+                    });
                 }
                 classes.insert(class_name.to_owned(), result_class);
             }

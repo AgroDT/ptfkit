@@ -224,14 +224,117 @@ impl MathFunction {
     }
 }
 
-#[derive(Clone, Debug, Eq, PartialEq)]
+#[derive(Clone, Debug, Eq, PartialEq, thiserror::Error)]
+pub(crate) enum SemanticErrorKind {
+    #[error("duplicate name `{name}`")]
+    DuplicateName { name: String },
+    #[error("unknown identifier `{name}`")]
+    UnknownIdentifier { name: String },
+    #[error("identifier `{name}` is not numeric")]
+    NonNumericIdentifier { name: String },
+    #[error("variable `{name}` cannot reference itself")]
+    SelfReference { name: String },
+    #[error("variable `{name}` cannot reference a later variable")]
+    ForwardReference { name: String },
+    #[error("record `{record}` has no field `{field}`")]
+    UnknownRecordField { record: String, field: String },
+    #[error("`{name}` is not a record")]
+    NotARecord { name: String },
+    #[error("unsupported function `{name}`")]
+    UnsupportedFunction { name: String },
+    #[error("function `{name}` expects {expected} argument(s), found {actual}")]
+    WrongArity {
+        name: String,
+        expected: usize,
+        actual: usize,
+    },
+    #[error("unknown lookup key `{key}`")]
+    UnknownLookupKey { key: String },
+    #[error("lookup key `{key}` must have enum type `{expected}`")]
+    LookupKeyType { key: String, expected: String },
+    #[error(
+        "tree `{tree}` argument names do not match its inputs; missing {missing:?}, unknown {unknown:?}"
+    )]
+    TreeArguments {
+        tree: String,
+        missing: Vec<String>,
+        unknown: Vec<String>,
+    },
+    #[error("tree argument `{name}` cannot reference itself")]
+    TreeSelfReference { name: String },
+    #[error("tree argument `{name}` cannot reference a later variable")]
+    TreeForwardReference { name: String },
+    #[error("tree argument references unknown value `{name}`")]
+    UnknownTreeArgument { name: String },
+    #[error("tree argument `{name}` has type {actual}, but input `{input}` requires {expected}")]
+    TreeArgumentType {
+        name: String,
+        actual: String,
+        input: String,
+        expected: String,
+    },
+    #[error("expression is repeated at {path}:{line}:{start}..{end}; it must be extracted into an earlier implementation variable",
+        path = .specification_path.display(), line = .location.line,
+        start = .location.column + .span.start, end = .location.column + .span.end)]
+    RepeatedExpression {
+        specification_path: std::path::PathBuf,
+        location: SourceLocation,
+        span: Span,
+    },
+}
+
+#[derive(Clone, Debug, Eq, PartialEq, thiserror::Error)]
 pub(crate) struct Error {
     pub(crate) specification_path: String,
     pub(crate) function: String,
     pub(crate) implementation_path: String,
     pub(crate) span: Span,
     source_location: Option<Box<SourceLocation>>,
-    message: String,
+    #[source]
+    pub(crate) kind: SemanticErrorKind,
+}
+
+impl Error {
+    fn in_function(
+        raw: &RawFunction,
+        implementation_path: &str,
+        span: Span,
+        kind: SemanticErrorKind,
+    ) -> Box<Self> {
+        Box::new(Self {
+            specification_path: raw.specification_path.display().to_string(),
+            function: raw.name.clone(),
+            implementation_path: implementation_path.to_owned(),
+            span,
+            source_location: None,
+            kind,
+        })
+    }
+
+    fn at_source(
+        raw: &RawFunction,
+        source_location: SourceLocation,
+        span: Span,
+        kind: SemanticErrorKind,
+    ) -> Box<Self> {
+        Box::new(Self {
+            specification_path: raw.specification_path.display().to_string(),
+            function: raw.name.clone(),
+            implementation_path: String::new(),
+            span,
+            source_location: Some(Box::new(source_location)),
+            kind,
+        })
+    }
+
+    fn in_expression(
+        raw: &RawFunction,
+        expression: &RawExpression,
+        span: Span,
+        kind: SemanticErrorKind,
+    ) -> Box<Self> {
+        Self::in_function(raw, &expression.implementation_path, span, kind)
+    }
 }
 
 impl fmt::Display for Error {
@@ -244,7 +347,7 @@ impl fmt::Display for Error {
                 source_location.line,
                 source_location.column + self.span.start,
                 source_location.column + self.span.end,
-                self.message,
+                self.kind,
             );
         }
         write!(
@@ -255,14 +358,12 @@ impl fmt::Display for Error {
             self.implementation_path,
             self.span.start,
             self.span.end,
-            self.message,
+            self.kind,
         )
     }
 }
 
-impl std::error::Error for Error {}
-
-pub(crate) fn compile(raw: &RawFunction) -> Result<Function, Error> {
+pub(crate) fn compile(raw: &RawFunction) -> Result<Function, Box<Error>> {
     let mut scope = BTreeMap::new();
     for (index, input) in raw.inputs.iter().enumerate() {
         let value_type = match &input.value_type {
@@ -279,11 +380,13 @@ pub(crate) fn compile(raw: &RawFunction) -> Result<Function, Error> {
             )
             .is_some()
         {
-            return Err(error(
+            return Err(Error::in_function(
                 raw,
                 "inputs",
                 Span { start: 0, end: 0 },
-                format!("duplicate name `{}`", input.name),
+                SemanticErrorKind::DuplicateName {
+                    name: input.name.clone(),
+                },
             ));
         }
     }
@@ -299,11 +402,13 @@ pub(crate) fn compile(raw: &RawFunction) -> Result<Function, Error> {
     let mut variables = Vec::with_capacity(raw.variables.len());
     for (index, variable) in raw.variables.iter().enumerate() {
         if scope.contains_key(&variable.name) {
-            return Err(error(
+            return Err(Error::in_function(
                 raw,
                 "variables",
                 Span { start: 0, end: 0 },
-                format!("duplicate name `{}`", variable.name),
+                SemanticErrorKind::DuplicateName {
+                    name: variable.name.clone(),
+                },
             ));
         }
         let (value, value_type) = match &variable.value {
@@ -390,7 +495,7 @@ struct Occurrence {
     span: Span,
 }
 
-fn validate_repeated_expressions(raw: &RawFunction) -> Result<(), Error> {
+fn validate_repeated_expressions(raw: &RawFunction) -> Result<(), Box<Error>> {
     let mut occurrences = HashMap::new();
     for variable in &raw.variables {
         let RawVariableValue::Expression(expression) = &variable.value else {
@@ -401,17 +506,15 @@ fn validate_repeated_expressions(raw: &RawFunction) -> Result<(), Error> {
             expression.source_location,
             &mut occurrences,
         ) {
-            return Err(source_error(
+            return Err(Error::at_source(
                 raw,
                 first.source_location,
                 first.span,
-                format!(
-                    "expression is repeated at {}:{}:{}..{}; it must be extracted into an earlier implementation variable",
-                    raw.specification_path.display(),
-                    later.source_location.line,
-                    later.source_location.column + later.span.start,
-                    later.source_location.column + later.span.end,
-                ),
+                SemanticErrorKind::RepeatedExpression {
+                    specification_path: raw.specification_path.clone(),
+                    location: later.source_location,
+                    span: later.span,
+                },
             ));
         }
     }
@@ -519,13 +622,15 @@ fn compile_lookup(
     raw: &RawFunction,
     lookup: &RawLookup,
     scope: &BTreeMap<String, Binding>,
-) -> Result<(RecordLookup, RecordType), Error> {
+) -> Result<(RecordLookup, RecordType), Box<Error>> {
     let binding = scope.get(&lookup.key).ok_or_else(|| {
-        error(
+        Error::in_function(
             raw,
             &lookup.implementation_path,
             Span { start: 0, end: 0 },
-            format!("unknown lookup key `{}`", lookup.key),
+            SemanticErrorKind::UnknownLookupKey {
+                key: lookup.key.clone(),
+            },
         )
     })?;
     let enum_type = lookup
@@ -534,14 +639,14 @@ fn compile_lookup(
         .as_ref()
         .expect("lookup input type is resolved");
     if binding.value_type != ValueType::Enum(enum_type.enum_type.clone()) {
-        return Err(error(
+        return Err(Error::in_function(
             raw,
             &lookup.implementation_path,
             Span { start: 0, end: 0 },
-            format!(
-                "lookup key `{}` must have enum type `{}`",
-                lookup.key, enum_type.enum_type.name
-            ),
+            SemanticErrorKind::LookupKeyType {
+                key: lookup.key.clone(),
+                expected: enum_type.enum_type.name.clone(),
+            },
         ));
     }
     let output = lookup
@@ -598,7 +703,7 @@ fn compile_tree_call(
     scope: &BTreeMap<String, Binding>,
     variable_names: &BTreeMap<&str, usize>,
     variable_index: usize,
-) -> Result<(TreeCall, ValueType), Error> {
+) -> Result<(TreeCall, ValueType), Box<Error>> {
     let definition = compile_tree_definition(&call.definition);
     let expected = definition
         .inputs
@@ -611,49 +716,58 @@ fn compile_tree_call(
         .map(String::as_str)
         .collect::<std::collections::BTreeSet<_>>();
     if expected != actual {
-        let missing = expected.difference(&actual).copied().collect::<Vec<_>>();
-        let unknown = actual.difference(&expected).copied().collect::<Vec<_>>();
-        return Err(error(
+        let missing = expected
+            .difference(&actual)
+            .map(|name| (*name).to_owned())
+            .collect();
+        let unknown = actual
+            .difference(&expected)
+            .map(|name| (*name).to_owned())
+            .collect();
+        return Err(Error::in_function(
             raw,
             &call.implementation_path,
             Span { start: 0, end: 0 },
-            format!(
-                "tree `{}` argument names do not match its inputs; missing {missing:?}, unknown {unknown:?}",
-                definition.name
-            ),
+            SemanticErrorKind::TreeArguments {
+                tree: definition.name.clone(),
+                missing,
+                unknown,
+            },
         ));
     }
     let mut arguments = Vec::with_capacity(definition.inputs.len());
     for formal in &definition.inputs {
         let actual = &call.arguments[&formal.name];
         let Some(binding) = scope.get(actual) else {
-            let message = match variable_names.get(actual.as_str()) {
-                Some(index) if *index == variable_index => {
-                    format!("tree argument `{actual}` cannot reference itself")
-                }
-                Some(index) if *index > variable_index => {
-                    format!("tree argument `{actual}` cannot reference a later variable")
-                }
-                _ => format!("tree argument references unknown value `{actual}`"),
+            let kind = match variable_names.get(actual.as_str()) {
+                Some(index) if *index == variable_index => SemanticErrorKind::TreeSelfReference {
+                    name: actual.clone(),
+                },
+                Some(index) if *index > variable_index => SemanticErrorKind::TreeForwardReference {
+                    name: actual.clone(),
+                },
+                _ => SemanticErrorKind::UnknownTreeArgument {
+                    name: actual.clone(),
+                },
             };
-            return Err(error(
+            return Err(Error::in_function(
                 raw,
                 &call.implementation_path,
                 Span { start: 0, end: 0 },
-                message,
+                kind,
             ));
         };
         if binding.value_type != formal.value_type {
-            return Err(error(
+            return Err(Error::in_function(
                 raw,
                 &call.implementation_path,
                 Span { start: 0, end: 0 },
-                format!(
-                    "tree argument `{actual}` has type {}, but input `{}` requires {}",
-                    value_type_name(&binding.value_type),
-                    formal.name,
-                    value_type_name(&formal.value_type)
-                ),
+                SemanticErrorKind::TreeArgumentType {
+                    name: actual.clone(),
+                    actual: value_type_name(&binding.value_type),
+                    input: formal.name.clone(),
+                    expected: value_type_name(&formal.value_type),
+                },
             ));
         }
         arguments.push(binding.reference);
@@ -816,7 +930,7 @@ fn compile_expression(
     scope: &BTreeMap<String, Binding>,
     variable_names: &BTreeMap<&str, usize>,
     variable_index: usize,
-) -> Result<Expr, Error> {
+) -> Result<Expr, Box<Error>> {
     compile_expr(
         raw,
         expression,
@@ -834,7 +948,7 @@ fn compile_expr(
     scope: &BTreeMap<String, Binding>,
     variable_names: &BTreeMap<&str, usize>,
     variable_index: usize,
-) -> Result<Expr, Error> {
+) -> Result<Expr, Box<Error>> {
     match &expression.kind {
         formula::ExprKind::Number(number) => Ok(Expr::Number(Number {
             value: number.value,
@@ -844,23 +958,23 @@ fn compile_expr(
             Some(binding) if binding.value_type == ValueType::Number => {
                 Ok(Expr::Reference(binding.reference))
             }
-            Some(_) => Err(expression_error(
+            Some(_) => Err(Error::in_expression(
                 raw,
                 source,
                 expression.span,
-                format!("identifier `{name}` is not numeric"),
+                SemanticErrorKind::NonNumericIdentifier { name: name.clone() },
             )),
             None => {
-                let message = match variable_names.get(name.as_str()) {
+                let kind = match variable_names.get(name.as_str()) {
                     Some(index) if *index == variable_index => {
-                        format!("variable `{name}` cannot reference itself")
+                        SemanticErrorKind::SelfReference { name: name.clone() }
                     }
                     Some(index) if *index > variable_index => {
-                        format!("variable `{name}` cannot reference a later variable")
+                        SemanticErrorKind::ForwardReference { name: name.clone() }
                     }
-                    _ => format!("unknown identifier `{name}`"),
+                    _ => SemanticErrorKind::UnknownIdentifier { name: name.clone() },
                 };
-                Err(expression_error(raw, source, expression.span, message))
+                Err(Error::in_expression(raw, source, expression.span, kind))
             }
         },
         formula::ExprKind::Field { base, field } => match scope.get(base) {
@@ -874,23 +988,26 @@ fn compile_expr(
             Some(Binding {
                 value_type: ValueType::Record(record),
                 ..
-            }) => Err(expression_error(
+            }) => Err(Error::in_expression(
                 raw,
                 source,
                 expression.span,
-                format!("record `{}` has no field `{field}`", record.name),
+                SemanticErrorKind::UnknownRecordField {
+                    record: record.name.clone(),
+                    field: field.clone(),
+                },
             )),
-            Some(_) => Err(expression_error(
+            Some(_) => Err(Error::in_expression(
                 raw,
                 source,
                 expression.span,
-                format!("`{base}` is not a record"),
+                SemanticErrorKind::NotARecord { name: base.clone() },
             )),
-            None => Err(expression_error(
+            None => Err(Error::in_expression(
                 raw,
                 source,
                 expression.span,
-                format!("unknown identifier `{base}`"),
+                SemanticErrorKind::UnknownIdentifier { name: base.clone() },
             )),
         },
         formula::ExprKind::Unary { op, operand } => Ok(Expr::Unary {
@@ -934,23 +1051,23 @@ fn compile_expr(
         }),
         formula::ExprKind::Call { name, args } => {
             let function = MathFunction::parse(name).ok_or_else(|| {
-                expression_error(
+                Error::in_expression(
                     raw,
                     source,
                     expression.span,
-                    format!("unsupported function `{name}`"),
+                    SemanticErrorKind::UnsupportedFunction { name: name.clone() },
                 )
             })?;
             if args.len() != function.arity() {
-                return Err(expression_error(
+                return Err(Error::in_expression(
                     raw,
                     source,
                     expression.span,
-                    format!(
-                        "function `{name}` expects {} argument(s), found {}",
-                        function.arity(),
-                        args.len()
-                    ),
+                    SemanticErrorKind::WrongArity {
+                        name: name.clone(),
+                        expected: function.arity(),
+                        actual: args.len(),
+                    },
                 ));
             }
             Ok(Expr::Call {
@@ -974,47 +1091,6 @@ fn compile_expr(
     }
 }
 
-fn error(
-    raw: &RawFunction,
-    implementation_path: &str,
-    span: Span,
-    message: impl Into<String>,
-) -> Error {
-    Error {
-        specification_path: raw.specification_path.display().to_string(),
-        function: raw.name.clone(),
-        implementation_path: implementation_path.to_owned(),
-        span,
-        source_location: None,
-        message: message.into(),
-    }
-}
-
-fn source_error(
-    raw: &RawFunction,
-    source_location: SourceLocation,
-    span: Span,
-    message: impl Into<String>,
-) -> Error {
-    Error {
-        specification_path: raw.specification_path.display().to_string(),
-        function: raw.name.clone(),
-        implementation_path: String::new(),
-        span,
-        source_location: Some(Box::new(source_location)),
-        message: message.into(),
-    }
-}
-
-fn expression_error(
-    raw: &RawFunction,
-    expression: &RawExpression,
-    span: Span,
-    message: impl Into<String>,
-) -> Error {
-    error(raw, &expression.implementation_path, span, message)
-}
-
 #[cfg(test)]
 mod tests {
     use std::path::PathBuf;
@@ -1027,7 +1103,7 @@ mod tests {
         },
     };
 
-    use super::{BinaryOp, Expr, VariableValue, compile};
+    use super::{BinaryOp, Expr, SemanticErrorKind, VariableValue, compile};
 
     fn expression(path: &str, source: &str) -> RawExpression {
         RawExpression {
@@ -1197,21 +1273,92 @@ mod tests {
 
     #[test]
     fn rejects_unknown_forward_and_self_references_with_expression_paths() {
-        for (source, expected) in [
-            ("missing", "unknown identifier `missing`"),
-            ("later", "cannot reference a later variable"),
-            ("current", "cannot reference itself"),
+        for (source, kind) in [
+            (
+                "missing",
+                SemanticErrorKind::UnknownIdentifier {
+                    name: "missing".into(),
+                },
+            ),
+            (
+                "later",
+                SemanticErrorKind::ForwardReference {
+                    name: "later".into(),
+                },
+            ),
+            (
+                "current",
+                SemanticErrorKind::SelfReference {
+                    name: "current".into(),
+                },
+            ),
         ] {
             let variables = vec![
                 variable("current", "implementation.variables[0]", source),
                 variable("later", "implementation.variables[1]", "1"),
             ];
             let error = compile(&function(&[], variables)).unwrap_err();
-            assert!(error.to_string().contains(expected), "{error}");
-            assert!(error.to_string().contains(
-                "specs/functions/example.md -> function example -> implementation.variables[0]:0.."
-            ));
+            assert_eq!(error.kind, kind);
+            assert_eq!(error.specification_path, "specs/functions/example.md");
+            assert_eq!(error.function, "example");
+            assert_eq!(error.implementation_path, "implementation.variables[0]");
+            assert_eq!(
+                error.span,
+                crate::formula::Span {
+                    start: 0,
+                    end: source.len()
+                }
+            );
         }
+    }
+
+    #[test]
+    fn repeated_expression_retains_both_source_locations() {
+        use crate::formula::Span;
+
+        let mut first = expression("implementation.variables[0].expr", "sqrt(x)");
+        first.source_location = SourceLocation {
+            line: 10,
+            column: 4,
+        };
+        let mut later = expression("implementation.variables[1].expr", "1 + sqrt(x)");
+        later.source_location = SourceLocation {
+            line: 20,
+            column: 6,
+        };
+        let raw = function(
+            &["x"],
+            vec![
+                RawVariable {
+                    name: "first".into(),
+                    value: RawVariableValue::Expression(first),
+                },
+                RawVariable {
+                    name: "later".into(),
+                    value: RawVariableValue::Expression(later),
+                },
+            ],
+        );
+        let error = compile(&raw).unwrap_err();
+        assert_eq!(
+            error.source_location.as_deref(),
+            Some(&SourceLocation {
+                line: 10,
+                column: 4
+            })
+        );
+        assert_eq!(error.span, Span { start: 0, end: 7 });
+        assert_eq!(
+            error.kind,
+            SemanticErrorKind::RepeatedExpression {
+                specification_path: PathBuf::from("specs/functions/example.md"),
+                location: SourceLocation {
+                    line: 20,
+                    column: 6
+                },
+                span: Span { start: 4, end: 11 },
+            }
+        );
     }
 
     #[test]
