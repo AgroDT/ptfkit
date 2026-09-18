@@ -1,0 +1,89 @@
+ptfkit corpus report
+
+Sources
+-------
+Specifications: 1
+Represented publications: 1
+Publication years: 2020-2020
+
+Functions
+---------
+Total: 4
+Implemented: 1 (25.0%)
+Ready for implementation: 1 (25.0%)
+Blocked: 1 (25.0%)
+Draft: 1 (25.0%)
+
+Verification
+------------
+Total verification cases: 3
+Published cases: 1
+Calculated cases: 2
+Functions without verification cases: 3
+Cases by provenance:
+  calculated: 2
+  published: 1
+All functions:
+  Verification cases: 3
+  Functions with verification cases: 1 (25.0%)
+  Edge cases: 1
+  Functions with edge cases: 1 (25.0%)
+Implemented functions:
+  Verification cases: 3
+  Functions with verification cases: 1 (100.0%)
+  Edge cases: 1
+  Functions with edge cases: 1 (100.0%)
+Ready-for-implementation functions:
+  Verification cases: 0
+  Functions with verification cases: 0 (0.0%)
+  Edge cases: 0
+  Functions with edge cases: 0 (0.0%)
+
+Quantity registry
+-----------------
+Registered quantities: 0
+Quantity-unit combinations in use: 1
+Outputs using registry defaults: 5
+Outputs using source-specific overrides: 0
+Unused quantity-unit entries:
+
+Inputs
+------
+x (numeric): 3 (75.0%)
+category (categorical): 1 (25.0%)
+
+Outputs
+-------
+Scalar functions: 3
+Record functions: 1
+Output fields:
+  alpha: 1
+  beta: 1
+  delta: 1
+  gamma: 1
+  zeta: 1
+
+Scope
+-----
+Prediction targets:
+  Target A: 2
+  Target B: 1
+  Target C: 1
+h(theta) models:
+  Model B: 1
+K(h) models:
+  Model K: 1
+Sources with territory: 1
+Functions with territory: 1
+Sources with dataset descriptions: 1
+  Test function territory.: 0 sources, 1 functions
+  Test source territory.: 1 sources, 0 functions
+
+Blocked functions
+-----------------
+tester2020 / calc_ptf_test_blocked
+  Warning: Required coefficients are unavailable.
+  Note: Known source limitation.
+  Source scientific notes:
+    Blocker evidence from source review.
+Blocker classification: unavailable from the current schema.

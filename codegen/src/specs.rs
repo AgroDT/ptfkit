@@ -888,36 +888,38 @@ functions:
             .find(|file| file.path.ends_with("record_lookup_expression.rs"))
             .unwrap()
             .contents;
-        assert!(rust.contains("struct Parameters"), "{rust}");
-        assert!(rust.contains("parameters . factor"), "{rust}");
+        snapbox::assert_data_eq!(
+            rust,
+            snapbox::file!["fixtures/expected/record_lookup/source.rs"]
+        );
         let (c_headers, cpp_modules) = crate::targets::render_native_for_test(&compiled).unwrap();
         let c = &c_headers
             .iter()
             .find(|file| file.path.ends_with("record_lookup_expression.h"))
             .unwrap()
             .contents;
-        assert!(c.contains("} parameters;"), "{c}");
-        assert!(c.contains("parameters.factor"), "{c}");
+        snapbox::assert_data_eq!(
+            c,
+            snapbox::file!["fixtures/expected/record_lookup/source.h"]
+        );
         let cpp = &cpp_modules
             .iter()
             .find(|file| file.path.ends_with("record_lookup_expression.cppm"))
             .unwrap()
             .contents;
-        assert!(cpp.contains("struct Parameters"), "{cpp}");
-        assert!(cpp.contains("parameters.factor"), "{cpp}");
+        snapbox::assert_data_eq!(
+            format!("{}\n", cpp.trim_end_matches('\n')),
+            snapbox::file!["fixtures/expected/record_lookup/source.cppm"]
+        );
         let extension = crate::targets::render_python_extension_for_test(&compiled).unwrap();
         let extension = &extension
             .iter()
             .find(|file| file.path.ends_with("record_lookup_expression.c"))
             .unwrap()
             .contents;
-        assert!(
-            extension.contains("const npy_uint32 texture = in_texture[index];"),
-            "{extension}"
-        );
-        assert!(
-            extension.contains("calc_ptf_record_lookup_expression(texture, x)"),
-            "{extension}"
+        snapbox::assert_data_eq!(
+            extension,
+            snapbox::file!["fixtures/expected/record_lookup/extension.c"]
         );
         fs::remove_dir_all(root).unwrap();
     }
@@ -953,6 +955,7 @@ functions:
             rust.contains("calc_ptf_tree_branch (Category :: Coarse , 2f64)"),
             "{rust}"
         );
+        snapbox::assert_data_eq!(rust, snapbox::file!["fixtures/expected/tree/branch.rs"]);
 
         let (c_headers, cpp_modules) = crate::targets::render_native_for_test(&compiled).unwrap();
         let c = &c_headers
@@ -968,6 +971,7 @@ functions:
         assert!(c.contains("return 1.0;"), "{c}");
         assert!(c.contains("return 2.0;"), "{c}");
         assert!(c.contains("return 3.0;"), "{c}");
+        snapbox::assert_data_eq!(c, snapbox::file!["fixtures/expected/tree/branch.h"]);
 
         let cpp = &cpp_modules
             .iter()
@@ -976,6 +980,7 @@ functions:
             .contents;
         assert!(cpp.contains("if (category == Category::Coarse)"), "{cpp}");
         assert!(cpp.contains("if (predictor < 2.0)"), "{cpp}");
+        snapbox::assert_data_eq!(cpp, snapbox::file!["fixtures/expected/tree/branch.cppm"]);
 
         let extension = crate::targets::render_python_extension_for_test(&compiled).unwrap();
         let extension = &extension
@@ -987,6 +992,7 @@ functions:
             extension.contains("calc_ptf_tree_branch(category, x)"),
             "{extension}"
         );
+        snapbox::assert_data_eq!(extension, snapbox::file!["fixtures/expected/tree/branch.c"]);
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -1020,6 +1026,7 @@ functions:
             .contents;
         assert!(rust.contains("let branch_value = scalar_tree"), "{rust}");
         assert!(rust.contains("branch_value * 10.0f64"), "{rust}");
+        snapbox::assert_data_eq!(rust, snapbox::file!["fixtures/expected/tree/variable.rs"]);
 
         let (c_headers, cpp_modules) = crate::targets::render_native_for_test(&compiled).unwrap();
         let c = &c_headers
@@ -1031,6 +1038,7 @@ functions:
         assert!(c.contains("tree_variable_scalar_tree"), "{c}");
         assert!(!c.contains(" ? "), "{c}");
         assert!(c.contains("branch_value * 10.0"), "{c}");
+        snapbox::assert_data_eq!(c, snapbox::file!["fixtures/expected/tree/variable.h"]);
         let cpp = &cpp_modules
             .iter()
             .find(|file| file.path.ends_with("tree_variable.cppm"))
@@ -1038,6 +1046,7 @@ functions:
             .contents;
         assert!(cpp.contains("const double branch_value ="), "{cpp}");
         assert!(cpp.contains("branch_value * 10.0"), "{cpp}");
+        snapbox::assert_data_eq!(cpp, snapbox::file!["fixtures/expected/tree/variable.cppm"]);
 
         fs::remove_dir_all(root).unwrap();
     }
@@ -1102,9 +1111,19 @@ functions:
             let root = fixture_root(label);
             let specification = named_tree_specification().replacen(edit.0, edit.1, 1);
             fs::write(root.join("specs/functions/named_tree.yaml"), specification).unwrap();
-            let error = load(&root)
-                .expect_err("invalid named tree must fail")
-                .to_string();
+            let failure = load(&root).expect_err("invalid named tree must fail");
+            if label == "tree-missing-argument" {
+                let report = failure
+                    .downcast_ref::<crate::diagnostics::ValidationReport>()
+                    .unwrap();
+                assert!(report.diagnostics.iter().any(|diagnostic| matches!(
+                    diagnostic,
+                    crate::diagnostics::Diagnostic::Semantic(error)
+                        if matches!(&error.kind, crate::semantic::SemanticErrorKind::TreeArguments { tree, missing, unknown }
+                            if tree == "ScalarTree" && missing == &["predictor"] && unknown.is_empty())
+                )));
+            }
+            let error = failure.to_string();
             assert!(error.contains(expected), "{error}");
             fs::remove_dir_all(root).unwrap();
         }

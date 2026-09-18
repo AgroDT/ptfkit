@@ -140,6 +140,55 @@ both C11 and C++23 and checks that all public headers can be included together.
 Generated verification tests use individual source headers or modules without
 repeating the suite through the umbrella.
 
+### Codegen rendering expectations
+
+Use `snapbox::assert_data_eq!` for rendered output in codegen tests. Keep short
+blocks (roughly eight lines or fewer) inline with `snapbox::str!`, using explicit
+`\n` escapes; store longer outputs under `codegen/src/fixtures/expected/` and use
+`snapbox::file!`. Apply this guideline to each expectation rather than grouping
+short outputs into files just because other tests in the module use files.
+External paths are relative to the Rust source file containing the assertion.
+
+`snapbox::str!` removes one leading and one trailing newline from multiline
+values, including literals with `\n` escapes. For example, use
+`snapbox::str!["first\nsecond\n\n"]` to expect `first\nsecond\n`.
+
+Use `.raw()` only when default filters would weaken the intended assertion, such
+as a test of literal Markdown backslash escapes. Otherwise keep the default
+comparison. Wildcards such as `[..]` and a standalone `...` are meaningful in
+expected text; use them only for intentionally variable content. Text comparisons
+normalize line endings even with `.raw()`, but preserve trailing spaces and the
+presence of a final newline.
+
+Expected files are reviewed test fixtures, even when their contents include a
+generated-file header. They are not outputs of `mise run generate`. Use small,
+controlled inputs rather than snapshots of the live publication corpus. Keep
+short scalar/expression assertions and structural checks explicit.
+
+After an intentional output change, update only the relevant tests, for example:
+
+```sh
+mise run codegen:test-update \
+  declares_every_native_ufunc_in_sorted_order
+```
+
+The task sets `SNAPSHOTS=overwrite`. Pass multiple test name filters separated by
+spaces to update matching tests in one run, or omit arguments to update all
+codegen snapshots:
+
+```sh
+mise run codegen:test-update \
+  serializes_coverage_and_orders_text_sections writes_display_values_and_blank_lines
+mise run codegen:test-update
+```
+
+Review every changed expectation against the intended contract. Updates overwrite
+inline expectations and external files directly. Keep `SNAPSHOTS` unset in
+normal runs and CI, then run `mise run codegen:verify` without it. Do not trim
+rendered output to make expectations match: whitespace and final newlines are
+part of these comparisons. `mise run generate-check` remains the separate check
+for repository-wide generated-output drift.
+
 ### Adding a PTF
 
 The assisted workflow uses the skills in `.agents/skills/`:

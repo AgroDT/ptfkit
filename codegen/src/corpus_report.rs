@@ -880,13 +880,13 @@ functions:
             json["blocked_functions"][0]["function_name"],
             "calc_ptf_test_blocked"
         );
-        let text = report.to_text();
-        let implemented = text
-            .find("Implemented functions")
-            .expect("implemented coverage section");
-        let registry = text
-            .find("Quantity registry")
-            .expect("quantity registry section");
-        assert!(implemented < registry);
+        snapbox::assert_data_eq!(
+            serde_json::to_string_pretty(&report).unwrap(),
+            snapbox::file!["fixtures/expected/corpus_report/report.json"],
+        );
+        snapbox::assert_data_eq!(
+            report.to_text(),
+            snapbox::file!["fixtures/expected/corpus_report/report.txt"],
+        );
     }
 }

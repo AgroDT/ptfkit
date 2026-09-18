@@ -826,11 +826,10 @@ mod tests {
         let mut module = Module::new("");
         render_module_docstring(&mut module, &source, &scope);
         let docstring = module.into_string();
-        assert_eq!(
-            docstring.lines().next(),
-            Some("r\"\"\"Test et al. (2026), short territory.")
+        snapbox::assert_data_eq!(
+            &docstring,
+            snapbox::file!["../../fixtures/expected/python/module_docstring.py"]
         );
-        assert!(docstring.contains("[DOI: 10.1234/test](https://example.test/doi/10.1234/test)"));
     }
 
     #[test]
@@ -849,7 +848,9 @@ mod tests {
         render_enum(&mut module, &definition);
         let rendered = module.into_string();
 
-        assert!(rendered.contains("\"\"\"Test category type."));
-        assert!(rendered.contains("Attributes:\n        FIRST: First test category."));
+        snapbox::assert_data_eq!(
+            &rendered,
+            snapbox::file!["../../fixtures/expected/python/category_enum.py"]
+        );
     }
 }

@@ -113,7 +113,7 @@ mod tests {
         writer.blank_line();
         writer.line("next");
 
-        assert_eq!(writer.into_string(), "value: 42\n\nnext\n");
+        snapbox::assert_data_eq!(writer.into_string(), snapbox::str!["value: 42\n\nnext\n\n"]);
     }
 
     #[test]
@@ -122,6 +122,6 @@ mod tests {
         Paragraph("first").render(&mut writer);
         Paragraph("second").render(&mut writer);
 
-        assert_eq!(writer.into_string(), "first\nsecond\n");
+        snapbox::assert_data_eq!(&writer.into_string(), snapbox::str!["first\nsecond\n\n"]);
     }
 }

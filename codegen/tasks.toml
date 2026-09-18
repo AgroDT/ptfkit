@@ -13,6 +13,13 @@ description = "Run code generator tests"
 dir = "codegen"
 run = "cargo test"
 
+["codegen:test-update"]
+description = "Update code generator snapshots for all or selected tests"
+dir = "codegen"
+env = { SNAPSHOTS = "overwrite" }
+usage = 'arg "[tests]" var=#true help="Test name filters; omit to update all snapshots"'
+run = "cargo test --{% for test in usage.tests %} {{ test | quote }}{% endfor %}"
+
 ["codegen:verify"]
 description = "Run all code generator quality checks"
 depends = ["codegen:format", "codegen:lint", "codegen:test"]

@@ -18,4 +18,5 @@ serde_yaml = "0.9"
 thiserror = "2.0.20"
 
 [dev-dependencies]
+snapbox = "1.2.2"
 syn = { version = "3.0", features = ["full", "parsing"] }

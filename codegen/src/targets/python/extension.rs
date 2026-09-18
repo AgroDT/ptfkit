@@ -239,7 +239,10 @@ mod tests {
             .find(|file| file.path.ends_with("ptfkit.c"))
             .unwrap()
             .contents;
-        assert!(entry.contains("PyInit__ptfkit"));
+        snapbox::assert_data_eq!(
+            entry,
+            snapbox::file!["../../fixtures/expected/python/extension/ptfkit.c"]
+        );
         for slug in ["example2", "example10"] {
             assert_eq!(entry.matches(&format!("#include \"{slug}.c\"")).count(), 1);
             assert_eq!(entry.matches(&format!("if (ptfkit_register_{slug}(module) < 0) {{ Py_DECREF(module); return NULL; }}")).count(), 1);
@@ -248,6 +251,12 @@ mod tests {
                 .find(|file| file.path.ends_with(format!("{slug}.c")))
                 .unwrap()
                 .contents;
+            if slug == "example2" {
+                snapbox::assert_data_eq!(
+                    source,
+                    snapbox::file!["../../fixtures/expected/python/extension/example2.c"]
+                );
+            }
             for (suffix, nin, nout) in [("scalar", 2, 1), ("record", 1, 2)] {
                 let name = format!("calc_ptf_{slug}_{suffix}");
                 assert_eq!(source.matches(&format!("ptfkit_add_ufunc(module, \"{name}\", {name}_types, {nin}, {nout}, &{name}_spec)")).count(), 1);

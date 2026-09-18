@@ -118,9 +118,9 @@ mod tests {
 
         let updated = replace_citation_version(citation, "0.3.0").unwrap();
 
-        assert_eq!(
-            updated,
-            "cff-version: 1.2.0\ntitle: ptfkit\nversion: 0.3.0\n"
+        snapbox::assert_data_eq!(
+            &updated,
+            snapbox::str!["cff-version: 1.2.0\ntitle: ptfkit\nversion: 0.3.0\n\n"]
         );
     }
 
