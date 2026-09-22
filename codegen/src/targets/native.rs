@@ -11,7 +11,8 @@ use crate::{
     },
     render::{Render, Writer},
     semantic::{
-        DecisionTree, DecisionTreePredicate, RecordLookup, Reference, ResultBinding, VariableValue,
+        DecisionTree, DecisionTreeLeaf, DecisionTreePredicate, RecordLookup, Reference,
+        ResultBinding, TreeCall, TreeDefinition, ValueType, VariableValue,
     },
 };
 
@@ -105,10 +106,14 @@ fn c_header(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
     if requires_pow4(functions) {
         writer.write("#include <ptfkit/detail/power.h>\n");
     }
-    if requires_math(functions) || requires_lookup(functions) {
+    if requires_math(functions) || requires_lookup(functions) || requires_tree(functions) {
         writer.write("#include <math.h>\n");
     }
-    if requires_pow4(functions) || requires_math(functions) || requires_lookup(functions) {
+    if requires_pow4(functions)
+        || requires_math(functions)
+        || requires_lookup(functions)
+        || requires_tree(functions)
+    {
         writer.blank_line();
     }
     let first = functions
@@ -153,6 +158,10 @@ fn c_header(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
         writer.blank_line();
         render_record_lookup_helper(&mut writer, slug, lookup, NativeDialect::C);
     }
+    for tree in tree_definitions(functions) {
+        writer.blank_line();
+        render_tree_helper(&mut writer, slug, tree, NativeDialect::C);
+    }
     for function in functions {
         writer.blank_line();
         NativeFunction::c(function)?.render(&mut writer);
@@ -164,12 +173,12 @@ fn c_header(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
 fn cpp_module(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
     let mut writer = Writer::new();
     writer.write(format_args!("{HEADER}\n\n"));
-    if requires_pow4(functions) || requires_math(functions) {
+    if requires_pow4(functions) || requires_math(functions) || requires_tree(functions) {
         writer.write("module;\n");
         if requires_pow4(functions) {
             writer.write("#include <ptfkit/detail/power.h>\n");
         }
-        if requires_math(functions) {
+        if requires_math(functions) || requires_tree(functions) {
             writer.write("#include <cmath>\n");
         }
         writer.blank_line();
@@ -193,6 +202,9 @@ fn cpp_module(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
         .map(|function| NativeFunction::cpp(function))
         .collect::<Result<Vec<_>>>()?;
     let record_types = record_types(functions)?;
+    let lookup_definitions = lookup_definitions(functions);
+    let tree_definitions = tree_definitions(functions);
+    let has_tree_definitions = !tree_definitions.is_empty();
     writer.line(format_args!("export namespace ptfkit::{slug} {{"));
     writer.indented(|writer| {
         for definition in enum_definitions(functions) {
@@ -218,10 +230,35 @@ fn cpp_module(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
                 render_internal_struct(writer, fields, name, NativeDialect::Cpp);
             }
         }
-        for lookup in lookup_definitions(functions) {
+        if !has_tree_definitions {
+            for lookup in &lookup_definitions {
+                writer.blank_line();
+                render_record_lookup_helper(writer, slug, lookup, NativeDialect::Cpp);
+            }
+            for function in &native_functions {
+                writer.blank_line();
+                function.render(writer);
+            }
+        }
+    });
+    writer.write(format_args!("\n\n}}  // namespace ptfkit::{slug}\n\n"));
+    if !has_tree_definitions {
+        return Ok(writer.into_string());
+    }
+    writer.line(format_args!("namespace ptfkit::{slug} {{"));
+    writer.indented(|writer| {
+        for lookup in &lookup_definitions {
             writer.blank_line();
             render_record_lookup_helper(writer, slug, lookup, NativeDialect::Cpp);
         }
+        for tree in &tree_definitions {
+            writer.blank_line();
+            render_tree_helper(writer, slug, tree, NativeDialect::Cpp);
+        }
+    });
+    writer.write(format_args!("\n\n}}  // namespace ptfkit::{slug}\n\n"));
+    writer.line(format_args!("export namespace ptfkit::{slug} {{"));
+    writer.indented(|writer| {
         for function in &native_functions {
             writer.blank_line();
             function.render(writer);
@@ -269,7 +306,7 @@ impl<'a> NativeFunction<'a> {
         let output_name = &spec.outputs.fields()[0].name;
         let terminal = matches!(function.core.output, Output::Scalar)
             && function.ir.variables.last().is_some_and(|variable| {
-                variable.name == *output_name && variable.value.is_numeric()
+                variable.name == *output_name && variable.value.is_number()
             });
         Ok(Self {
             function,
@@ -322,7 +359,7 @@ impl Render for NativeFunction<'_> {
                 .take(self.function.ir.variables.len() - usize::from(self.terminal))
             {
                 match &variable.value {
-                    VariableValue::Number(expression) => {
+                    VariableValue::Expression(expression) => {
                         writer.write(format_args!("const double {} = ", variable.name));
                         writer.write(c::expression(
                             expression,
@@ -334,6 +371,9 @@ impl Render for NativeFunction<'_> {
                     }
                     VariableValue::RecordLookup(lookup) => {
                         self.render_record_lookup(writer, &variable.name, lookup);
+                    }
+                    VariableValue::Tree(tree) => {
+                        self.render_tree_call(writer, &variable.name, tree);
                     }
                     VariableValue::DecisionTree(tree) => {
                         writer.write(format_args!("const double {} = ", variable.name));
@@ -380,7 +420,7 @@ impl NativeFunction<'_> {
                     .expect("terminal variable")
                     .value
                 {
-                    VariableValue::Number(expression) => {
+                    VariableValue::Expression(expression) => {
                         writer.write("return ");
                         writer.write(c::expression(
                             expression,
@@ -392,6 +432,9 @@ impl NativeFunction<'_> {
                     }
                     VariableValue::DecisionTree(tree) => {
                         self.render_decision_tree_return(writer, tree);
+                    }
+                    VariableValue::Tree(tree) => {
+                        writer.line(format_args!("return {};", self.tree_call_expression(tree)));
                     }
                     VariableValue::RecordLookup(_) => {
                         unreachable!("terminal scalar variable is numeric")
@@ -428,10 +471,34 @@ impl NativeFunction<'_> {
         ));
     }
 
+    fn render_tree_call(&self, writer: &mut Writer, name: &str, tree: &TreeCall) {
+        let value_type = native_value_type(&tree.definition.output, self.dialect);
+        writer.line(format_args!(
+            "const {value_type} {name} = {};",
+            self.tree_call_expression(tree)
+        ));
+    }
+
+    fn tree_call_expression(&self, tree: &TreeCall) -> String {
+        let arguments = tree
+            .arguments
+            .iter()
+            .map(|argument| self.reference_name(*argument))
+            .collect::<Vec<_>>()
+            .join(", ");
+        format!(
+            "{}({arguments})",
+            tree_function_name(&self.function.entry.slug, &tree.definition)
+        )
+    }
+
     fn render_decision_tree_return(&self, writer: &mut Writer, tree: &DecisionTree) {
         match tree {
-            DecisionTree::Leaf(value) => {
+            DecisionTree::Leaf(DecisionTreeLeaf::Number(value)) => {
                 writer.line(format_args!("return {};", c::float_literal(&value.lexeme)));
+            }
+            DecisionTree::Leaf(DecisionTreeLeaf::Record(_)) => {
+                unreachable!("legacy decision trees are scalar")
             }
             DecisionTree::Split { predicate, yes, no } => {
                 writer.line(format_args!(
@@ -443,18 +510,23 @@ impl NativeFunction<'_> {
                 writer.indented(|writer| self.render_decision_tree_return(writer, no));
                 writer.line("}");
             }
+            DecisionTree::Match { .. } => unreachable!("legacy decision trees cannot use match"),
         }
     }
 
     fn decision_tree_expression(&self, tree: &DecisionTree) -> String {
         match tree {
-            DecisionTree::Leaf(value) => c::float_literal(&value.lexeme),
+            DecisionTree::Leaf(DecisionTreeLeaf::Number(value)) => c::float_literal(&value.lexeme),
+            DecisionTree::Leaf(DecisionTreeLeaf::Record(_)) => {
+                unreachable!("legacy decision trees are scalar")
+            }
             DecisionTree::Split { predicate, yes, no } => format!(
                 "({} ? {} : {})",
                 self.decision_tree_condition(predicate),
                 self.decision_tree_expression(yes),
                 self.decision_tree_expression(no),
             ),
+            DecisionTree::Match { .. } => unreachable!("legacy decision trees cannot use match"),
         }
     }
 
@@ -467,17 +539,23 @@ impl NativeFunction<'_> {
             ),
             DecisionTreePredicate::EnumIn {
                 input,
-                enum_name,
+                enum_type,
                 members,
             } => members
                 .iter()
                 .map(|member| {
                     let member = match self.dialect {
-                        NativeDialect::C => {
-                            c_enum_member(&self.function.entry.slug, enum_name, member)
-                        }
+                        NativeDialect::C => c_enum_member(
+                            &c_enum_module(enum_type, &self.function.entry.slug),
+                            &enum_type.name,
+                            member,
+                        ),
                         NativeDialect::Cpp => {
-                            format!("{enum_name}::{}", member.to_case(Case::Pascal))
+                            format!(
+                                "{}::{}",
+                                cpp_enum_type_name(enum_type),
+                                member.to_case(Case::Pascal)
+                            )
                         }
                     };
                     format!("{} == {member}", self.reference_name(*input))
@@ -502,10 +580,224 @@ fn lookup_definitions<'a>(functions: &[&'a CompiledFunction]) -> Vec<&'a RecordL
         .flat_map(|function| &function.ir.variables)
         .filter_map(|variable| match &variable.value {
             VariableValue::RecordLookup(lookup) => Some(lookup),
-            VariableValue::Number(_) | VariableValue::DecisionTree(_) => None,
+            VariableValue::Expression(_)
+            | VariableValue::Tree(_)
+            | VariableValue::DecisionTree(_) => None,
         })
         .filter(|lookup| names.insert((lookup.enum_type.clone(), lookup.output.name.clone())))
         .collect()
+}
+
+fn tree_definitions<'a>(functions: &[&'a CompiledFunction]) -> Vec<&'a TreeDefinition> {
+    let mut names = BTreeSet::new();
+    functions
+        .iter()
+        .flat_map(|function| &function.ir.variables)
+        .filter_map(|variable| match &variable.value {
+            VariableValue::Tree(tree) => Some(&tree.definition),
+            VariableValue::Expression(_)
+            | VariableValue::RecordLookup(_)
+            | VariableValue::DecisionTree(_) => None,
+        })
+        .filter(|definition| names.insert(definition.name.as_str()))
+        .collect()
+}
+
+fn tree_function_name(slug: &str, definition: &TreeDefinition) -> String {
+    format!("{slug}_{}", definition.name.to_case(Case::Snake))
+}
+
+fn native_value_type(value_type: &ValueType, dialect: NativeDialect) -> String {
+    match value_type {
+        ValueType::Number => "double".to_owned(),
+        ValueType::Record(record) => match dialect {
+            NativeDialect::C => c_result_name(&record.name),
+            NativeDialect::Cpp => record.name.clone(),
+        },
+        ValueType::Enum(_) => unreachable!("tree outputs cannot be enums"),
+    }
+}
+
+fn render_tree_helper(
+    writer: &mut Writer,
+    slug: &str,
+    definition: &TreeDefinition,
+    dialect: NativeDialect,
+) {
+    let result = native_value_type(&definition.output, dialect);
+    match dialect {
+        NativeDialect::C => writer.write("static inline "),
+        NativeDialect::Cpp => writer.write("[[nodiscard]] inline "),
+    }
+    writer.write(format_args!(
+        "{result} {}(",
+        tree_function_name(slug, definition)
+    ));
+    for (index, input) in definition.inputs.iter().enumerate() {
+        if index > 0 {
+            writer.write(", ");
+        }
+        match &input.value_type {
+            ValueType::Number => writer.write("double "),
+            ValueType::Enum(enum_type) => {
+                writer.write(enum_type_name(enum_type, slug, dialect));
+                writer.write(" ");
+            }
+            ValueType::Record(_) => unreachable!("tree inputs cannot be records"),
+        }
+        writer.write(&input.name);
+    }
+    writer.line(") {");
+    let renderer = NativeTreeRenderer {
+        slug,
+        dialect,
+        definition,
+    };
+    writer.indented(|writer| renderer.render_node(writer, &definition.root));
+    writer.line("}");
+}
+
+struct NativeTreeRenderer<'a> {
+    slug: &'a str,
+    dialect: NativeDialect,
+    definition: &'a TreeDefinition,
+}
+
+impl NativeTreeRenderer<'_> {
+    fn render_node(&self, writer: &mut Writer, tree: &DecisionTree) {
+        match tree {
+            DecisionTree::Leaf(DecisionTreeLeaf::Number(value)) => {
+                writer.line(format_args!("return {};", c::float_literal(&value.lexeme)));
+            }
+            DecisionTree::Leaf(DecisionTreeLeaf::Record(values)) => {
+                let result = native_value_type(&self.definition.output, self.dialect);
+                match self.dialect {
+                    NativeDialect::C => {
+                        writer.write(format_args!("const {result} result = {{"));
+                        render_lookup_values(writer, values);
+                        writer.line("};");
+                        writer.line("return result;");
+                    }
+                    NativeDialect::Cpp => {
+                        writer.write(format_args!("return {result}{{"));
+                        render_lookup_values(writer, values);
+                        writer.line("};");
+                    }
+                }
+            }
+            DecisionTree::Split { predicate, yes, no } => {
+                writer.line(format_args!("if ({}) {{", self.condition(predicate)));
+                writer.indented(|writer| self.render_node(writer, yes));
+                writer.line("} else {");
+                writer.indented(|writer| self.render_node(writer, no));
+                writer.line("}");
+            }
+            DecisionTree::Match {
+                input,
+                enum_type,
+                cases,
+            } => {
+                writer.line(format_args!("switch ({}) {{", self.reference_name(*input)));
+                writer.indented(|writer| {
+                    for case in cases {
+                        for member in &case.members {
+                            let member = match self.dialect {
+                                NativeDialect::C => c_enum_member(
+                                    &c_enum_module(enum_type, self.slug),
+                                    &enum_type.name,
+                                    member,
+                                ),
+                                NativeDialect::Cpp => format!(
+                                    "{}::{}",
+                                    cpp_enum_type_name(enum_type),
+                                    member.to_case(Case::Pascal)
+                                ),
+                            };
+                            writer.line(format_args!("case {member}:"));
+                        }
+                        writer.indented(|writer| self.render_node(writer, &case.then));
+                    }
+                });
+                writer.line("}");
+                self.render_invalid_fallback(writer);
+            }
+        }
+    }
+
+    fn condition(&self, predicate: &DecisionTreePredicate) -> String {
+        match predicate {
+            DecisionTreePredicate::LessThan { input, value } => format!(
+                "{} < {}",
+                self.reference_name(*input),
+                c::float_literal(&value.lexeme)
+            ),
+            DecisionTreePredicate::EnumIn {
+                input,
+                enum_type,
+                members,
+            } => members
+                .iter()
+                .map(|member| {
+                    let member = match self.dialect {
+                        NativeDialect::C => c_enum_member(
+                            &c_enum_module(enum_type, self.slug),
+                            &enum_type.name,
+                            member,
+                        ),
+                        NativeDialect::Cpp => {
+                            format!(
+                                "{}::{}",
+                                cpp_enum_type_name(enum_type),
+                                member.to_case(Case::Pascal)
+                            )
+                        }
+                    };
+                    format!("{} == {member}", self.reference_name(*input))
+                })
+                .collect::<Vec<_>>()
+                .join(" || "),
+        }
+    }
+
+    fn reference_name(&self, reference: Reference) -> &str {
+        match reference {
+            Reference::Input(index) => &self.definition.inputs[index].name,
+            Reference::Variable(_) => unreachable!("tree definitions have only formal inputs"),
+        }
+    }
+
+    fn render_invalid_fallback(&self, writer: &mut Writer) {
+        match &self.definition.output {
+            ValueType::Number => writer.line("return NAN;"),
+            ValueType::Record(record) => {
+                let result = native_value_type(&self.definition.output, self.dialect);
+                match self.dialect {
+                    NativeDialect::C => {
+                        writer.write(format_args!("const {result} fallback = {{"));
+                        for index in 0..record.fields.len() {
+                            if index > 0 {
+                                writer.write(", ");
+                            }
+                            writer.write("NAN");
+                        }
+                        writer.line("};");
+                        writer.line("return fallback;");
+                    }
+                    NativeDialect::Cpp => {
+                        writer.write(format_args!("return {result}{{"));
+                        for index in 0..record.fields.len() {
+                            if index > 0 {
+                                writer.write(", ");
+                            }
+                            writer.write("NAN");
+                        }
+                        writer.line("};");
+                    }
+                }
+            }
+            ValueType::Enum(_) => unreachable!("tree outputs cannot be enums"),
+        }
+    }
 }
 
 fn record_lookup_function_name(lookup: &RecordLookup) -> String {
@@ -908,7 +1200,7 @@ fn requires_math(functions: &[&CompiledFunction]) -> bool {
             .ir
             .variables
             .iter()
-            .filter_map(|variable| variable.value.as_number())
+            .filter_map(|variable| variable.value.as_expression())
             .any(c::requires_math)
     })
 }
@@ -923,13 +1215,23 @@ fn requires_lookup(functions: &[&CompiledFunction]) -> bool {
     })
 }
 
+fn requires_tree(functions: &[&CompiledFunction]) -> bool {
+    functions.iter().any(|function| {
+        function
+            .ir
+            .variables
+            .iter()
+            .any(|variable| matches!(variable.value, VariableValue::Tree(_)))
+    })
+}
+
 fn requires_pow4(functions: &[&CompiledFunction]) -> bool {
     functions.iter().any(|function| {
         function
             .ir
             .variables
             .iter()
-            .filter_map(|variable| variable.value.as_number())
+            .filter_map(|variable| variable.value.as_expression())
             .any(c::requires_pow4)
     })
 }

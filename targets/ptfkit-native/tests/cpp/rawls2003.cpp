@@ -126,6 +126,102 @@ int main() {
                      "registry", "figure_2_leaf_20_clay");
     }
     {
+        const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
+            ptfkit::rawls2003::UsdaTextureClass::ClayLoam, 1.0);
+        assert_close(result, 0.315, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
+                     "registry", "figure_2_clay_loam_low");
+    }
+    {
+        const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
+            ptfkit::rawls2003::UsdaTextureClass::ClayLoam, 2.0);
+        assert_close(result, 0.338, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
+                     "registry", "figure_2_clay_loam_mid_low");
+    }
+    {
+        const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
+            ptfkit::rawls2003::UsdaTextureClass::ClayLoam, 5.0);
+        assert_close(result, 0.353, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
+                     "registry", "figure_2_clay_loam_mid_high");
+    }
+    {
+        const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
+            ptfkit::rawls2003::UsdaTextureClass::ClayLoam, 9.0);
+        assert_close(result, 0.464, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
+                     "registry", "figure_2_clay_loam_high");
+    }
+    {
+        const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
+            ptfkit::rawls2003::UsdaTextureClass::SandyClay, 1.0);
+        assert_close(result, 0.272, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
+                     "registry", "figure_2_sandy_clay_low");
+    }
+    {
+        const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
+            ptfkit::rawls2003::UsdaTextureClass::SandyClay, 2.0);
+        assert_close(result, 0.305, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
+                     "registry", "figure_2_sandy_clay_mid_low");
+    }
+    {
+        const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
+            ptfkit::rawls2003::UsdaTextureClass::SandyClay, 5.0);
+        assert_close(result, 0.353, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
+                     "registry", "figure_2_sandy_clay_mid_high");
+    }
+    {
+        const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
+            ptfkit::rawls2003::UsdaTextureClass::SandyClay, 9.0);
+        assert_close(result, 0.383, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
+                     "registry", "figure_2_sandy_clay_high");
+    }
+    {
+        const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
+            ptfkit::rawls2003::UsdaTextureClass::SandyClayLoam, 1.0);
+        assert_close(result, 0.272, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
+                     "registry", "figure_2_sandy_clay_loam_low");
+    }
+    {
+        const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
+            ptfkit::rawls2003::UsdaTextureClass::SandyClayLoam, 2.0);
+        assert_close(result, 0.305, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
+                     "registry", "figure_2_sandy_clay_loam_mid_low");
+    }
+    {
+        const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
+            ptfkit::rawls2003::UsdaTextureClass::SandyClayLoam, 5.0);
+        assert_close(result, 0.393, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
+                     "registry", "figure_2_sandy_clay_loam_mid_high");
+    }
+    {
+        const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
+            ptfkit::rawls2003::UsdaTextureClass::SandyClayLoam, 9.0);
+        assert_close(result, 0.464, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
+                     "registry", "figure_2_sandy_clay_loam_high");
+    }
+    {
+        const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
+            ptfkit::rawls2003::UsdaTextureClass::Silt, 1.0);
+        assert_close(result, 0.315, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
+                     "registry", "figure_2_silt_low");
+    }
+    {
+        const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
+            ptfkit::rawls2003::UsdaTextureClass::Silt, 2.0);
+        assert_close(result, 0.338, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
+                     "registry", "figure_2_silt_mid_low");
+    }
+    {
+        const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
+            ptfkit::rawls2003::UsdaTextureClass::Silt, 5.0);
+        assert_close(result, 0.393, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
+                     "registry", "figure_2_silt_mid_high");
+    }
+    {
+        const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
+            ptfkit::rawls2003::UsdaTextureClass::Silt, 9.0);
+        assert_close(result, 0.464, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
+                     "registry", "figure_2_silt_high");
+    }
+    {
         const auto result =
             ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta1500_tree(5.0, 70.0, 1.0);
         assert_close(result, 0.061, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
@@ -252,9 +348,32 @@ int main() {
     }
     {
         const auto result =
+            ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_gmdh(10.0, 20.0, 60.0);
+        assert_close(result, 0.3652565811155751, 0.001, 0.0, "volumetric_water_content",
+                     "volume_fraction", "registry", "calculated_high_carbon_probe");
+    }
+    {
+        const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_gmdh(5.0, 35.0, 40.0);
+        assert_close(result, 0.3580247775824793, 0.001, 0.0, "volumetric_water_content",
+                     "volume_fraction", "registry", "calculated_varied_predictors_probe");
+    }
+    {
+        const auto result =
             ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta1500_gmdh(1.0, 20.0, 60.0);
         assert_close(result, 0.12978036954714564, 0.001, 0.0, "volumetric_water_content",
                      "volume_fraction", "registry", "calculated_diagnostic_probe");
+    }
+    {
+        const auto result =
+            ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta1500_gmdh(10.0, 20.0, 60.0);
+        assert_close(result, 0.1477870187688732, 0.001, 0.0, "volumetric_water_content",
+                     "volume_fraction", "registry", "calculated_high_carbon_probe");
+    }
+    {
+        const auto result =
+            ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta1500_gmdh(15.0, 60.0, 20.0);
+        assert_close(result, 0.22146307675008264, 0.001, 0.0, "volumetric_water_content",
+                     "volume_fraction", "registry", "calculated_varied_predictors_probe");
     }
     return 0;
 }

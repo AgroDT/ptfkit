@@ -156,15 +156,28 @@ Specification validation checks uniqueness, not Rust identifier syntax; invalid
 names may fail during Rust code generation or compilation. See the
 [verification policy](../contributing/verification.md) for details.
 
-Implementations express ordered variables used to reproduce
-the published PTF. A variable can be populated by a formula, a typed lookup, or
-a structured decision tree. Decision-tree branches use either a strict numeric
-`lt` predicate or an enum-membership `in` predicate and contain explicit `yes`
-and `no` subtrees. A terminal `leaf` is numeric. Equality follows the `no`
-branch of `lt`, so threshold behavior remains identical in every generated
-language.
-Enums, records, and lookups are independent reusable definitions: a lookup maps
-an enum member to a record, and later formulas can access fields of that record.
+Implementations express ordered variables used to reproduce the published PTF.
+A variable can be populated by a formula, a typed lookup, or a call to a named
+tree definition. A tree declares typed formal inputs and one scalar or record
+output. Calls bind every formal input to a function input or an earlier
+variable, so one definition can be reused without depending on caller names.
+Tree branches use either a strict numeric `lt` predicate or an enum-membership
+`in` predicate and contain explicit `yes` and `no` subtrees. An exhaustive
+`match` selects nonempty, nonoverlapping groups of enum members, with an
+ordinary tree below each group. Numeric leaves are constants; record leaves
+contain exactly the fields of the declared output record. Equality follows the
+`no` branch of `lt`. IEEE NaN also makes `lt` false, so it follows the `no`
+branch rather than propagating automatically.
+
+An exhaustive `match` covers every declared enum member. Rust callers cannot
+construct another member through the safe API. If C or C++ code nevertheless
+passes an out-of-range enum representation, a generated tree helper returns
+NaN for a scalar output or a record whose fields are all NaN.
+
+Enums, records, lookups, and trees are independent reusable definitions. A
+lookup maps an enum member directly to a record and retains its indexing
+contract; it is not lowered into a tree. Later formulas can access fields of a
+record returned by either abstraction.
 Enum definitions give each categorical member a stable schema `name`, its exact
 canonical textual `value`, and optional documentation-only `description`.
 Lookup rows reference the member `name`; they do not define public numeric codes

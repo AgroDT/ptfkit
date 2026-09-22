@@ -93,6 +93,10 @@ Volumetric soil water content at -33 kPa. (cm³/cm³)
 
     Every comparison is strict less-than, so equality follows the No branch. The cases cover every leaf and threshold.
 
+!!! note
+
+    A NaN organic-carbon input makes every less-than comparison false and follows the corresponding No branches; it is not propagated automatically.
+
 ### `calc_ptf_rawls2003_soc_theta1500_tree` {#function-calc_ptf_rawls2003_soc_theta1500_tree}
 
 Estimate volumetric water content at -1500 kPa with the published regression tree.
@@ -121,6 +125,10 @@ Volumetric soil water content at -1500 kPa. (cm³/cm³)
 !!! note
 
     Every comparison is strict less-than, so equality follows the No branch. The cases cover every leaf and threshold.
+
+!!! note
+
+    NaN numeric inputs make less-than comparisons false and follow the corresponding No branches; they are not propagated automatically.
 
 ### `calc_ptf_rawls2003_soc_theta33_gmdh` {#function-calc_ptf_rawls2003_soc_theta33_gmdh}
 

@@ -489,7 +489,7 @@ mod tests {
         };
         let variables = [Variable {
             name: "parameters".into(),
-            value: crate::semantic::VariableValue::Number(Expr::Number(Number {
+            value: crate::semantic::VariableValue::Expression(Expr::Number(Number {
                 value: 0.0,
                 lexeme: "0.0".into(),
             })),

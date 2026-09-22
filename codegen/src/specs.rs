@@ -14,7 +14,7 @@ use crate::{
     model::{
         Entry, EnumType, Implementation, ImplementationVariable, Input, Quantity, QuantityRegistry,
         RawDecisionTree, RawExpression, RawFunction, RawInput, RawInputType, RawLookup,
-        RawVariable, RawVariableValue, Spec,
+        RawTreeInvocation, RawVariable, RawVariableValue, Spec,
     },
     semantic,
 };
@@ -400,6 +400,22 @@ fn compile(
                         })),
                     })
                 }
+                ImplementationVariable::Tree { name, tree } => {
+                    let definition = tree
+                        .definition
+                        .clone()
+                        .expect("tree invocation is resolved");
+                    Ok(RawVariable {
+                        name: name.clone(),
+                        value: RawVariableValue::Tree(Box::new(RawTreeInvocation {
+                            implementation_path: format!(
+                                "implementation.variables[{index}].tree"
+                            ),
+                            arguments: tree.arguments.clone(),
+                            definition,
+                        })),
+                    })
+                }
                 ImplementationVariable::DecisionTree {
                     name,
                     decision_tree,
@@ -444,16 +460,17 @@ fn expression_locations(
     text: &str,
     spec: &Spec,
 ) -> Result<Vec<crate::model::SourceLocation>, String> {
-    let expressions =
-        spec.functions
-            .iter()
-            .filter_map(|function| function.implementation.as_ref())
-            .flat_map(|implementation| implementation.variables.iter())
-            .filter_map(|variable| match variable {
-                ImplementationVariable::Expression { expr, .. } => Some(expr.as_str()),
-                ImplementationVariable::Lookup { .. }
-                | ImplementationVariable::DecisionTree { .. } => None,
-            });
+    let expressions = spec
+        .functions
+        .iter()
+        .filter_map(|function| function.implementation.as_ref())
+        .flat_map(|implementation| implementation.variables.iter())
+        .filter_map(|variable| match variable {
+            ImplementationVariable::Expression { expr, .. } => Some(expr.as_str()),
+            ImplementationVariable::Lookup { .. }
+            | ImplementationVariable::Tree { .. }
+            | ImplementationVariable::DecisionTree { .. } => None,
+        });
     let mut cursor = 0;
     let mut locations = Vec::new();
 
@@ -508,23 +525,30 @@ fn validate_output(
             name: name.clone(),
             fields: fields.iter().map(|field| field.name.clone()).collect(),
         };
-        if let Some((
-            index,
-            semantic::Variable {
-                value: semantic::VariableValue::RecordLookup(lookup),
-                ..
-            },
-        )) = compiled.variables.iter().enumerate().next_back()
-        {
-            if lookup.output == expected {
+        if let Some((index, variable)) = compiled.variables.iter().enumerate().next_back() {
+            let value_kind = if matches!(variable.value, semantic::VariableValue::RecordLookup(_)) {
+                "record lookup"
+            } else {
+                "record value"
+            };
+            let actual = match &variable.value {
+                semantic::VariableValue::RecordLookup(lookup) => Some(&lookup.output),
+                semantic::VariableValue::Tree(tree) => match &tree.definition.output {
+                    semantic::ValueType::Record(record) => Some(record),
+                    semantic::ValueType::Number | semantic::ValueType::Enum(_) => None,
+                },
+                semantic::VariableValue::Expression(_)
+                | semantic::VariableValue::DecisionTree(_) => None,
+            };
+            if actual == Some(&expected) {
                 return Ok(semantic::ResultBinding::RecordVariable(index));
             }
-            if lookup.output.name == expected.name {
+            if actual.is_some_and(|actual| actual.name == expected.name) {
                 return Err(format!(
-                    "{} -> function {} -> implementation.variables[{index}]: record lookup type `{}` does not exactly match the function output record",
+                    "{} -> function {} -> implementation.variables[{index}]: {value_kind} type `{}` does not exactly match the function output record",
                     path.display(),
                     function.name,
-                    lookup.output.name
+                    expected.name
                 ));
             }
         }
@@ -544,8 +568,14 @@ fn validate_output(
                 .variables
                 .iter()
                 .filter_map(|variable| match variable.value {
-                    semantic::VariableValue::Number(_) => Some(variable.name.as_str()),
+                    semantic::VariableValue::Expression(_) => Some(variable.name.as_str()),
                     semantic::VariableValue::DecisionTree(_) => Some(variable.name.as_str()),
+                    semantic::VariableValue::Tree(ref tree)
+                        if tree.definition.output == semantic::ValueType::Number =>
+                    {
+                        Some(variable.name.as_str())
+                    }
+                    semantic::VariableValue::Tree(_) => None,
                     semantic::VariableValue::RecordLookup(_) => None,
                 }),
         )
@@ -645,6 +675,113 @@ functions:
 "#
     }
 
+    fn named_tree_specification() -> &'static str {
+        r#"source:
+  summary: Named tree test source.
+  citation_apa: Test (2026).
+  doi: null
+$defs:
+  Category:
+    type: enum
+    description: Test category.
+    values:
+      - {name: coarse, value: Coarse}
+      - {name: fine, value: Fine}
+  ScalarValue:
+    {type: scalar, name: value, quantity: volumetric_water_content, symbol: y, unit: volume_fraction, reported_unit: '1', domain: null, description: Test output.}
+  Pair:
+    type: record
+    name: Pair
+    fields:
+      - {name: low, quantity: volumetric_water_content, symbol: lo, unit: volume_fraction, reported_unit: '1', domain: null, description: Low value.}
+      - {name: high, quantity: volumetric_water_content, symbol: hi, unit: volume_fraction, reported_unit: '1', domain: null, description: High value.}
+  ScalarTree:
+    type: tree
+    inputs:
+      - {name: category, $ref: '#/$defs/Category'}
+      - {name: predictor, type: number}
+    output: {$ref: '#/$defs/ScalarValue'}
+    root:
+      match:
+        input: category
+        cases:
+          - values: [coarse]
+            then:
+              split: {input: predictor, operator: lt, value: 2.0}
+              yes: {leaf: 1.0}
+              no: {leaf: 2.0}
+          - values: [fine]
+            then: {leaf: 3.0}
+  RecordTree:
+    type: tree
+    inputs:
+      - {name: category, $ref: '#/$defs/Category'}
+    output: {$ref: '#/$defs/Pair'}
+    root:
+      match:
+        input: category
+        cases:
+          - {values: [coarse], then: {leaf: {low: 1.0, high: 2.0}}}
+          - {values: [fine], then: {leaf: {low: 3.0, high: 5.0}}}
+functions:
+  - name: calc_ptf_tree_scaled
+    status: ready-for-implementation
+    public_api: {name: calc_ptf_tree_scaled, result_class: null, summary: Scale a tree result.}
+    scope: {prediction_target: Test value., models: {h_theta: null, k_h: null}}
+    inputs:
+      - {name: category, $ref: '#/$defs/Category'}
+      - {name: x, symbol: x, unit: '1', domain: null, description: First input.}
+      - {name: y, symbol: y, unit: '1', domain: null, description: Second input.}
+    outputs: {$ref: '#/$defs/ScalarValue'}
+    implementation:
+      variables:
+        - {name: selected, tree: {definition: {$ref: '#/$defs/ScalarTree'}, arguments: {category: category, predictor: x}}}
+        - {name: value, expr: 'selected * 10'}
+    verification_cases:
+      - {id: strict_boundary, kind: calculated, inputs: {category: coarse, x: 2.0, y: 9.0}, expected: {value: 20.0}, rationale: Equality takes the no branch before scaling.}
+      - {id: enum_group, kind: calculated, inputs: {category: fine, x: 1.0, y: 9.0}, expected: {value: 30.0}, rationale: Fine selects its explicit match arm.}
+  - name: calc_ptf_tree_rebound
+    status: ready-for-implementation
+    public_api: {name: calc_ptf_tree_rebound, result_class: null, summary: Rebind a shared tree.}
+    scope: {prediction_target: Test value., models: {h_theta: null, k_h: null}}
+    inputs:
+      - {name: category, $ref: '#/$defs/Category'}
+      - {name: x, symbol: x, unit: '1', domain: null, description: First input.}
+      - {name: y, symbol: y, unit: '1', domain: null, description: Second input.}
+    outputs: {$ref: '#/$defs/ScalarValue'}
+    implementation:
+      variables:
+        - {name: value, tree: {definition: {$ref: '#/$defs/ScalarTree'}, arguments: {category: category, predictor: y}}}
+    verification_cases:
+      - {id: rebound_argument, kind: calculated, inputs: {category: coarse, x: 9.0, y: 1.0}, expected: {value: 1.0}, rationale: The formal predictor is bound to y rather than x.}
+  - name: calc_ptf_tree_fields
+    status: ready-for-implementation
+    public_api: {name: calc_ptf_tree_fields, result_class: null, summary: Use record tree fields.}
+    scope: {prediction_target: Test value., models: {h_theta: null, k_h: null}}
+    inputs:
+      - {name: category, $ref: '#/$defs/Category'}
+    outputs: {$ref: '#/$defs/ScalarValue'}
+    implementation:
+      variables:
+        - {name: pair, tree: {definition: {$ref: '#/$defs/RecordTree'}, arguments: {category: category}}}
+        - {name: value, expr: 'pair.low + pair.high'}
+    verification_cases:
+      - {id: record_fields, kind: calculated, inputs: {category: fine}, expected: {value: 8.0}, rationale: Both fields from the fine record leaf contribute.}
+  - name: calc_ptf_tree_record
+    status: ready-for-implementation
+    public_api: {name: calc_ptf_tree_record, result_class: Pair, summary: Return a tree record.}
+    scope: {prediction_target: Test pair., models: {h_theta: null, k_h: null}}
+    inputs:
+      - {name: category, $ref: '#/$defs/Category'}
+    outputs: {$ref: '#/$defs/Pair'}
+    implementation:
+      variables:
+        - {name: result, tree: {definition: {$ref: '#/$defs/RecordTree'}, arguments: {category: category}}}
+    verification_cases:
+      - {id: record_result, kind: calculated, inputs: {category: coarse}, expected: {low: 1.0, high: 2.0}, rationale: The complete record leaf is returned.}
+"#
+    }
+
     #[test]
     fn rejects_a_code_generating_function_without_implementation() {
         let root = fixture_root("mixed");
@@ -723,7 +860,7 @@ functions:
         ));
         assert!(matches!(
             implementation.variables[1].value,
-            crate::semantic::VariableValue::Number(_)
+            crate::semantic::VariableValue::Expression(_)
         ));
         let compiled = crate::compile::functions(entries).unwrap();
         let rust = crate::targets::render_rust_for_test(&compiled).unwrap();
@@ -883,6 +1020,126 @@ functions:
         assert!(cpp.contains("branch_value * 10.0"), "{cpp}");
 
         fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn executes_named_scalar_and_record_trees_across_abstraction_boundaries() {
+        let root = fixture_root("named-tree-behavior");
+        fs::write(
+            root.join("specs/functions/named_tree.yaml"),
+            named_tree_specification(),
+        )
+        .unwrap();
+
+        let compiled = crate::compile::functions(load(&root).unwrap()).unwrap();
+        let rust = crate::targets::render_rust_for_test(&compiled).unwrap();
+        let rust = &rust
+            .iter()
+            .find(|file| file.path.ends_with("named_tree.rs"))
+            .unwrap()
+            .contents;
+        assert_eq!(rust.matches("fn scalar_tree").count(), 1, "{rust}");
+        assert_eq!(rust.matches("fn record_tree").count(), 1, "{rust}");
+
+        let source = format!(
+            "{rust}\n#[cfg(test)] mod test_support {{\n    pub fn assert_close(actual: f64, expected: f64, absolute: f64, relative: f64, _: &str, _: &str, _: &str) {{\n        assert!((actual - expected).abs() <= absolute.max(relative * expected.abs()), \"actual={{actual}}, expected={{expected}}\");\n    }}\n}}\n"
+        );
+        let source_path = root.join("named_tree_generated.rs");
+        let executable = root.join(if cfg!(windows) {
+            "named_tree_generated.exe"
+        } else {
+            "named_tree_generated"
+        });
+        fs::write(&source_path, source).unwrap();
+        let rustc = std::process::Command::new("rustc")
+            .args(["--edition", "2024", "--test"])
+            .arg(&source_path)
+            .arg("-o")
+            .arg(&executable)
+            .output()
+            .unwrap();
+        assert!(
+            rustc.status.success(),
+            "generated Rust did not compile:\n{}",
+            String::from_utf8_lossy(&rustc.stderr)
+        );
+        let tests = std::process::Command::new(&executable).output().unwrap();
+        assert!(
+            tests.status.success(),
+            "generated verification tests failed:\n{}\n{}",
+            String::from_utf8_lossy(&tests.stdout),
+            String::from_utf8_lossy(&tests.stderr)
+        );
+
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn rejects_invalid_named_tree_arguments_leaves_and_match_groups() {
+        for (label, edit, expected) in [
+            (
+                "tree-missing-argument",
+                (
+                    "arguments: {category: category, predictor: x}",
+                    "arguments: {category: category}",
+                ),
+                "missing [\"predictor\"]",
+            ),
+            (
+                "tree-unknown-argument",
+                (
+                    "arguments: {category: category, predictor: x}",
+                    "arguments: {category: category, predictor: x, other: y}",
+                ),
+                "unknown [\"other\"]",
+            ),
+            (
+                "tree-wrong-argument-type",
+                (
+                    "arguments: {category: category, predictor: x}",
+                    "arguments: {category: x, predictor: x}",
+                ),
+                "input `category` requires enum `Category`",
+            ),
+            (
+                "tree-later-argument",
+                (
+                    "arguments: {category: category, predictor: x}",
+                    "arguments: {category: category, predictor: value}",
+                ),
+                "cannot reference a later variable",
+            ),
+            (
+                "tree-record-leaf-shape",
+                ("{leaf: {low: 1.0, high: 2.0}}", "{leaf: {low: 1.0}}"),
+                "keys must exactly match output fields",
+            ),
+            (
+                "tree-overlapping-match",
+                (
+                    "- values: [fine]\n            then: {leaf: 3.0}",
+                    "- values: [coarse, fine]\n            then: {leaf: 3.0}",
+                ),
+                "match cases overlap on enum member `coarse`",
+            ),
+            (
+                "tree-incomplete-match",
+                (
+                    "          - values: [fine]\n            then: {leaf: 3.0}\n  RecordTree:",
+                    "  RecordTree:",
+                ),
+                "match cases must cover every member",
+            ),
+        ] {
+            let root = fixture_root(label);
+            let specification = named_tree_specification().replacen(edit.0, edit.1, 1);
+            fs::write(root.join("specs/functions/named_tree.yaml"), specification).unwrap();
+            let error = load(&root)
+                .expect_err("invalid named tree must fail")
+                .to_string();
+            assert!(error.contains(expected), "{error}");
+            fs::remove_dir_all(root).unwrap();
+        }
     }
 
     #[test]

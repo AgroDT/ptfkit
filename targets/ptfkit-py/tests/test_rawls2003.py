@@ -55,6 +55,46 @@ CASES_CALC_PTF_RAWLS2003_SOC_THETA33_TREE = [
         {'theta_33': 0.397},
     ),
     ({'soil_organic_carbon': 1.0, 'soil_texture': UsdaTextureClass.CLAY}, {'theta_33': 0.426}),
+    ({'soil_organic_carbon': 1.0, 'soil_texture': UsdaTextureClass.CLAY_LOAM}, {'theta_33': 0.315}),
+    ({'soil_organic_carbon': 2.0, 'soil_texture': UsdaTextureClass.CLAY_LOAM}, {'theta_33': 0.338}),
+    ({'soil_organic_carbon': 5.0, 'soil_texture': UsdaTextureClass.CLAY_LOAM}, {'theta_33': 0.353}),
+    ({'soil_organic_carbon': 9.0, 'soil_texture': UsdaTextureClass.CLAY_LOAM}, {'theta_33': 0.464}),
+    (
+        {'soil_organic_carbon': 1.0, 'soil_texture': UsdaTextureClass.SANDY_CLAY},
+        {'theta_33': 0.272},
+    ),
+    (
+        {'soil_organic_carbon': 2.0, 'soil_texture': UsdaTextureClass.SANDY_CLAY},
+        {'theta_33': 0.305},
+    ),
+    (
+        {'soil_organic_carbon': 5.0, 'soil_texture': UsdaTextureClass.SANDY_CLAY},
+        {'theta_33': 0.353},
+    ),
+    (
+        {'soil_organic_carbon': 9.0, 'soil_texture': UsdaTextureClass.SANDY_CLAY},
+        {'theta_33': 0.383},
+    ),
+    (
+        {'soil_organic_carbon': 1.0, 'soil_texture': UsdaTextureClass.SANDY_CLAY_LOAM},
+        {'theta_33': 0.272},
+    ),
+    (
+        {'soil_organic_carbon': 2.0, 'soil_texture': UsdaTextureClass.SANDY_CLAY_LOAM},
+        {'theta_33': 0.305},
+    ),
+    (
+        {'soil_organic_carbon': 5.0, 'soil_texture': UsdaTextureClass.SANDY_CLAY_LOAM},
+        {'theta_33': 0.393},
+    ),
+    (
+        {'soil_organic_carbon': 9.0, 'soil_texture': UsdaTextureClass.SANDY_CLAY_LOAM},
+        {'theta_33': 0.464},
+    ),
+    ({'soil_organic_carbon': 1.0, 'soil_texture': UsdaTextureClass.SILT}, {'theta_33': 0.315}),
+    ({'soil_organic_carbon': 2.0, 'soil_texture': UsdaTextureClass.SILT}, {'theta_33': 0.338}),
+    ({'soil_organic_carbon': 5.0, 'soil_texture': UsdaTextureClass.SILT}, {'theta_33': 0.393}),
+    ({'soil_organic_carbon': 9.0, 'soil_texture': UsdaTextureClass.SILT}, {'theta_33': 0.464}),
 ]
 CASES_CALC_PTF_RAWLS2003_SOC_THETA33_TREE_IDS = [
     'figure_2_leaf_01_sand',
@@ -77,6 +117,22 @@ CASES_CALC_PTF_RAWLS2003_SOC_THETA33_TREE_IDS = [
     'figure_2_leaf_18_corg_4_2_very_fine_boundary',
     'figure_2_leaf_19_silty_clay',
     'figure_2_leaf_20_clay',
+    'figure_2_clay_loam_low',
+    'figure_2_clay_loam_mid_low',
+    'figure_2_clay_loam_mid_high',
+    'figure_2_clay_loam_high',
+    'figure_2_sandy_clay_low',
+    'figure_2_sandy_clay_mid_low',
+    'figure_2_sandy_clay_mid_high',
+    'figure_2_sandy_clay_high',
+    'figure_2_sandy_clay_loam_low',
+    'figure_2_sandy_clay_loam_mid_low',
+    'figure_2_sandy_clay_loam_mid_high',
+    'figure_2_sandy_clay_loam_high',
+    'figure_2_silt_low',
+    'figure_2_silt_mid_low',
+    'figure_2_silt_mid_high',
+    'figure_2_silt_high',
 ]
 
 
@@ -228,9 +284,13 @@ def test_calc_ptf_rawls2003_soc_theta1500_tree_out():
 
 CASES_CALC_PTF_RAWLS2003_SOC_THETA33_GMDH = [
     ({'clay': 20.0, 'sand': 60.0, 'soil_organic_carbon': 1.0}, {'theta_33': 0.24651660127906824}),
+    ({'clay': 20.0, 'sand': 60.0, 'soil_organic_carbon': 10.0}, {'theta_33': 0.3652565811155751}),
+    ({'clay': 35.0, 'sand': 40.0, 'soil_organic_carbon': 5.0}, {'theta_33': 0.3580247775824793}),
 ]
 CASES_CALC_PTF_RAWLS2003_SOC_THETA33_GMDH_IDS = [
     'calculated_diagnostic_probe',
+    'calculated_high_carbon_probe',
+    'calculated_varied_predictors_probe',
 ]
 
 
@@ -286,9 +346,16 @@ def test_calc_ptf_rawls2003_soc_theta33_gmdh_out():
 
 CASES_CALC_PTF_RAWLS2003_SOC_THETA1500_GMDH = [
     ({'clay': 20.0, 'sand': 60.0, 'soil_organic_carbon': 1.0}, {'theta_1500': 0.12978036954714564}),
+    ({'clay': 20.0, 'sand': 60.0, 'soil_organic_carbon': 10.0}, {'theta_1500': 0.1477870187688732}),
+    (
+        {'clay': 60.0, 'sand': 20.0, 'soil_organic_carbon': 15.0},
+        {'theta_1500': 0.22146307675008264},
+    ),
 ]
 CASES_CALC_PTF_RAWLS2003_SOC_THETA1500_GMDH_IDS = [
     'calculated_diagnostic_probe',
+    'calculated_high_carbon_probe',
+    'calculated_varied_predictors_probe',
 ]
 
 

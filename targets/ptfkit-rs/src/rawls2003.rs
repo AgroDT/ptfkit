@@ -32,6 +32,147 @@ pub enum UsdaTextureClass {
     SiltyClay,
     Clay,
 }
+#[inline]
+fn theta_33_tree(texture: UsdaTextureClass, carbon: f64) -> f64 {
+    match texture {
+        UsdaTextureClass::Sand => {
+            if carbon < 2.1f64 {
+                0.108f64
+            } else if carbon < 4.8f64 {
+                0.28f64
+            } else if carbon < 7.7f64 {
+                0.35f64
+            } else {
+                0.394f64
+            }
+        }
+        UsdaTextureClass::LoamySand => {
+            if carbon < 2.1f64 {
+                0.151f64
+            } else if carbon < 4.8f64 {
+                0.28f64
+            } else if carbon < 7.7f64 {
+                0.35f64
+            } else {
+                0.394f64
+            }
+        }
+        UsdaTextureClass::SandyLoam => {
+            if carbon < 1.1f64 {
+                0.204f64
+            } else if carbon < 2.1f64 {
+                0.244f64
+            } else if carbon < 4.8f64 {
+                0.28f64
+            } else if carbon < 7.7f64 {
+                0.35f64
+            } else {
+                0.549f64
+            }
+        }
+        UsdaTextureClass::Loam | UsdaTextureClass::SandyClay => {
+            if carbon < 1.7f64 {
+                0.272f64
+            } else if carbon < 4.2f64 {
+                0.305f64
+            } else if carbon < 8.5f64 {
+                0.353f64
+            } else {
+                0.383f64
+            }
+        }
+        UsdaTextureClass::SandyClayLoam => {
+            if carbon < 1.7f64 {
+                0.272f64
+            } else if carbon < 4.2f64 {
+                0.305f64
+            } else if carbon < 8.5f64 {
+                0.393f64
+            } else {
+                0.464f64
+            }
+        }
+        UsdaTextureClass::SiltLoam | UsdaTextureClass::Silt => {
+            if carbon < 1.5f64 {
+                0.315f64
+            } else if carbon < 4.2f64 {
+                0.338f64
+            } else if carbon < 8.5f64 {
+                0.393f64
+            } else {
+                0.464f64
+            }
+        }
+        UsdaTextureClass::ClayLoam => {
+            if carbon < 1.5f64 {
+                0.315f64
+            } else if carbon < 4.2f64 {
+                0.338f64
+            } else if carbon < 8.5f64 {
+                0.353f64
+            } else {
+                0.464f64
+            }
+        }
+        UsdaTextureClass::SiltyClayLoam => {
+            if carbon < 4.2f64 {
+                0.361f64
+            } else {
+                0.548f64
+            }
+        }
+        UsdaTextureClass::SiltyClay => 0.397f64,
+        UsdaTextureClass::Clay => 0.426f64,
+    }
+}
+#[inline]
+fn theta_1500_tree(clay: f64, sand: f64, carbon: f64) -> f64 {
+    if clay < 26.0f64 {
+        if clay < 14.0f64 {
+            if carbon < 2.3f64 {
+                if clay < 8.0f64 {
+                    if sand < 80.0f64 {
+                        if carbon < 1.5f64 { 0.061f64 } else { 0.085f64 }
+                    } else {
+                        0.04f64
+                    }
+                } else if clay < 12.0f64 {
+                    0.082f64
+                } else {
+                    0.1f64
+                }
+            } else if carbon < 6.5f64 {
+                0.11f64
+            } else {
+                0.159f64
+            }
+        } else if clay < 19.0f64 {
+            if carbon < 5.8f64 {
+                if clay < 17.0f64 { 0.116f64 } else { 0.128f64 }
+            } else {
+                0.167f64
+            }
+        } else if clay < 23.0f64 {
+            0.143f64
+        } else {
+            0.16f64
+        }
+    } else if clay < 44.0f64 {
+        if clay < 33.0f64 {
+            if clay < 29.0f64 { 0.173f64 } else { 0.193f64 }
+        } else if clay < 37.4f64 {
+            0.211f64
+        } else {
+            0.229f64
+        }
+    } else if clay < 54.0f64 {
+        if clay < 48.0f64 { 0.253f64 } else { 0.275f64 }
+    } else if clay < 67.0f64 {
+        0.296f64
+    } else {
+        0.323f64
+    }
+}
 #[doc = r"Estimate volumetric water content at -33 kPa with the published regression tree.
 
 # Arguments
@@ -53,117 +194,16 @@ Prediction target: Volumetric soil water content at -33 kPa.
 Figure 2 reports terminal means and within-node standard deviations in volume percent; public
 outputs divide the means by 100.
 Every comparison is strict less-than, so equality follows the No branch. The cases cover every
-leaf and threshold."]
+leaf and threshold.
+A NaN organic-carbon input makes every less-than comparison false and follows the corresponding
+No branches; it is not propagated automatically."]
 #[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_rawls2003_soc_theta33_tree(
     soil_texture: UsdaTextureClass,
     soil_organic_carbon: f64,
 ) -> f64 {
-    if matches!(
-        soil_texture,
-        UsdaTextureClass::Sand | UsdaTextureClass::LoamySand | UsdaTextureClass::SandyLoam
-    ) {
-        if soil_organic_carbon < 2.1f64 {
-            if matches!(soil_texture, UsdaTextureClass::Sand) {
-                0.108f64
-            } else {
-                if matches!(soil_texture, UsdaTextureClass::LoamySand) {
-                    0.151f64
-                } else {
-                    if soil_organic_carbon < 1.1f64 {
-                        0.204f64
-                    } else {
-                        0.244f64
-                    }
-                }
-            }
-        } else {
-            if soil_organic_carbon < 4.8f64 {
-                0.28f64
-            } else {
-                if soil_organic_carbon < 7.7f64 {
-                    0.35f64
-                } else {
-                    if matches!(
-                        soil_texture,
-                        UsdaTextureClass::Sand | UsdaTextureClass::LoamySand
-                    ) {
-                        0.394f64
-                    } else {
-                        0.549f64
-                    }
-                }
-            }
-        }
-    } else {
-        if matches!(
-            soil_texture,
-            UsdaTextureClass::Loam
-                | UsdaTextureClass::SiltLoam
-                | UsdaTextureClass::SandyClayLoam
-                | UsdaTextureClass::Silt
-                | UsdaTextureClass::ClayLoam
-                | UsdaTextureClass::SandyClay
-        ) {
-            if soil_organic_carbon < 4.2f64 {
-                if matches!(
-                    soil_texture,
-                    UsdaTextureClass::Loam
-                        | UsdaTextureClass::SandyClayLoam
-                        | UsdaTextureClass::SandyClay
-                ) {
-                    if soil_organic_carbon < 1.7f64 {
-                        0.272f64
-                    } else {
-                        0.305f64
-                    }
-                } else {
-                    if soil_organic_carbon < 1.5f64 {
-                        0.315f64
-                    } else {
-                        0.338f64
-                    }
-                }
-            } else {
-                if soil_organic_carbon < 8.5f64 {
-                    if matches!(
-                        soil_texture,
-                        UsdaTextureClass::Loam
-                            | UsdaTextureClass::ClayLoam
-                            | UsdaTextureClass::SandyClay
-                    ) {
-                        0.353f64
-                    } else {
-                        0.393f64
-                    }
-                } else {
-                    if matches!(
-                        soil_texture,
-                        UsdaTextureClass::Loam | UsdaTextureClass::SandyClay
-                    ) {
-                        0.383f64
-                    } else {
-                        0.464f64
-                    }
-                }
-            }
-        } else {
-            if matches!(soil_texture, UsdaTextureClass::SiltyClayLoam) {
-                if soil_organic_carbon < 4.2f64 {
-                    0.361f64
-                } else {
-                    0.548f64
-                }
-            } else {
-                if matches!(soil_texture, UsdaTextureClass::SiltyClay) {
-                    0.397f64
-                } else {
-                    0.426f64
-                }
-            }
-        }
-    }
+    theta_33_tree(soil_texture, soil_organic_carbon)
 }
 #[cfg(test)]
 mod calc_ptf_rawls2003_soc_theta33_tree_tests {
@@ -429,6 +469,214 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
             "registry",
         );
     }
+    #[test]
+    fn figure_2_clay_loam_low() {
+        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::ClayLoam, 1f64);
+        assert_close(
+            result,
+            0.315f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "volume_fraction",
+            "registry",
+        );
+    }
+    #[test]
+    fn figure_2_clay_loam_mid_low() {
+        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::ClayLoam, 2f64);
+        assert_close(
+            result,
+            0.338f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "volume_fraction",
+            "registry",
+        );
+    }
+    #[test]
+    fn figure_2_clay_loam_mid_high() {
+        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::ClayLoam, 5f64);
+        assert_close(
+            result,
+            0.353f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "volume_fraction",
+            "registry",
+        );
+    }
+    #[test]
+    fn figure_2_clay_loam_high() {
+        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::ClayLoam, 9f64);
+        assert_close(
+            result,
+            0.464f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "volume_fraction",
+            "registry",
+        );
+    }
+    #[test]
+    fn figure_2_sandy_clay_low() {
+        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SandyClay, 1f64);
+        assert_close(
+            result,
+            0.272f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "volume_fraction",
+            "registry",
+        );
+    }
+    #[test]
+    fn figure_2_sandy_clay_mid_low() {
+        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SandyClay, 2f64);
+        assert_close(
+            result,
+            0.305f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "volume_fraction",
+            "registry",
+        );
+    }
+    #[test]
+    fn figure_2_sandy_clay_mid_high() {
+        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SandyClay, 5f64);
+        assert_close(
+            result,
+            0.353f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "volume_fraction",
+            "registry",
+        );
+    }
+    #[test]
+    fn figure_2_sandy_clay_high() {
+        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SandyClay, 9f64);
+        assert_close(
+            result,
+            0.383f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "volume_fraction",
+            "registry",
+        );
+    }
+    #[test]
+    fn figure_2_sandy_clay_loam_low() {
+        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SandyClayLoam, 1f64);
+        assert_close(
+            result,
+            0.272f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "volume_fraction",
+            "registry",
+        );
+    }
+    #[test]
+    fn figure_2_sandy_clay_loam_mid_low() {
+        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SandyClayLoam, 2f64);
+        assert_close(
+            result,
+            0.305f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "volume_fraction",
+            "registry",
+        );
+    }
+    #[test]
+    fn figure_2_sandy_clay_loam_mid_high() {
+        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SandyClayLoam, 5f64);
+        assert_close(
+            result,
+            0.393f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "volume_fraction",
+            "registry",
+        );
+    }
+    #[test]
+    fn figure_2_sandy_clay_loam_high() {
+        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SandyClayLoam, 9f64);
+        assert_close(
+            result,
+            0.464f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "volume_fraction",
+            "registry",
+        );
+    }
+    #[test]
+    fn figure_2_silt_low() {
+        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::Silt, 1f64);
+        assert_close(
+            result,
+            0.315f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "volume_fraction",
+            "registry",
+        );
+    }
+    #[test]
+    fn figure_2_silt_mid_low() {
+        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::Silt, 2f64);
+        assert_close(
+            result,
+            0.338f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "volume_fraction",
+            "registry",
+        );
+    }
+    #[test]
+    fn figure_2_silt_mid_high() {
+        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::Silt, 5f64);
+        assert_close(
+            result,
+            0.393f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "volume_fraction",
+            "registry",
+        );
+    }
+    #[test]
+    fn figure_2_silt_high() {
+        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::Silt, 9f64);
+        assert_close(
+            result,
+            0.464f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "volume_fraction",
+            "registry",
+        );
+    }
 }
 #[doc = r"Estimate volumetric water content at -1500 kPa with the published regression tree.
 
@@ -452,7 +700,9 @@ Prediction target: Volumetric soil water content at -1500 kPa.
 Figure 3 reports terminal means and within-node standard deviations in volume percent; public
 outputs divide the means by 100.
 Every comparison is strict less-than, so equality follows the No branch. The cases cover every
-leaf and threshold."]
+leaf and threshold.
+NaN numeric inputs make less-than comparisons false and follow the corresponding No branches;
+they are not propagated automatically."]
 #[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_rawls2003_soc_theta1500_tree(
@@ -460,55 +710,7 @@ pub fn calc_ptf_rawls2003_soc_theta1500_tree(
     sand: f64,
     soil_organic_carbon: f64,
 ) -> f64 {
-    if clay < 26.0f64 {
-        if clay < 14.0f64 {
-            if soil_organic_carbon < 2.3f64 {
-                if clay < 8.0f64 {
-                    if sand < 80.0f64 {
-                        if soil_organic_carbon < 1.5f64 {
-                            0.061f64
-                        } else {
-                            0.085f64
-                        }
-                    } else {
-                        0.04f64
-                    }
-                } else {
-                    if clay < 12.0f64 { 0.082f64 } else { 0.1f64 }
-                }
-            } else {
-                if soil_organic_carbon < 6.5f64 {
-                    0.11f64
-                } else {
-                    0.159f64
-                }
-            }
-        } else {
-            if clay < 19.0f64 {
-                if soil_organic_carbon < 5.8f64 {
-                    if clay < 17.0f64 { 0.116f64 } else { 0.128f64 }
-                } else {
-                    0.167f64
-                }
-            } else {
-                if clay < 23.0f64 { 0.143f64 } else { 0.16f64 }
-            }
-        }
-    } else {
-        if clay < 44.0f64 {
-            if clay < 33.0f64 {
-                if clay < 29.0f64 { 0.173f64 } else { 0.193f64 }
-            } else {
-                if clay < 37.4f64 { 0.211f64 } else { 0.229f64 }
-            }
-        } else {
-            if clay < 54.0f64 {
-                if clay < 48.0f64 { 0.253f64 } else { 0.275f64 }
-            } else {
-                if clay < 67.0f64 { 0.296f64 } else { 0.323f64 }
-            }
-        }
-    }
+    theta_1500_tree(clay, sand, soil_organic_carbon)
 }
 #[cfg(test)]
 mod calc_ptf_rawls2003_soc_theta1500_tree_tests {
@@ -848,6 +1050,32 @@ mod calc_ptf_rawls2003_soc_theta33_gmdh_tests {
             "registry",
         );
     }
+    #[test]
+    fn calculated_high_carbon_probe() {
+        let result = calc_ptf_rawls2003_soc_theta33_gmdh(10f64, 20f64, 60f64);
+        assert_close(
+            result,
+            0.3652565811155751f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "volume_fraction",
+            "registry",
+        );
+    }
+    #[test]
+    fn calculated_varied_predictors_probe() {
+        let result = calc_ptf_rawls2003_soc_theta33_gmdh(5f64, 35f64, 40f64);
+        assert_close(
+            result,
+            0.3580247775824793f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "volume_fraction",
+            "registry",
+        );
+    }
 }
 #[doc = r"Estimate volumetric water content at -1500 kPa with the published GMDH polynomial.
 
@@ -921,6 +1149,32 @@ mod calc_ptf_rawls2003_soc_theta1500_gmdh_tests {
         assert_close(
             result,
             0.12978036954714564f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "volume_fraction",
+            "registry",
+        );
+    }
+    #[test]
+    fn calculated_high_carbon_probe() {
+        let result = calc_ptf_rawls2003_soc_theta1500_gmdh(10f64, 20f64, 60f64);
+        assert_close(
+            result,
+            0.1477870187688732f64,
+            0.001f64,
+            0f64,
+            "volumetric_water_content",
+            "volume_fraction",
+            "registry",
+        );
+    }
+    #[test]
+    fn calculated_varied_predictors_probe() {
+        let result = calc_ptf_rawls2003_soc_theta1500_gmdh(15f64, 60f64, 20f64);
+        assert_close(
+            result,
+            0.22146307675008264f64,
             0.001f64,
             0f64,
             "volumetric_water_content",

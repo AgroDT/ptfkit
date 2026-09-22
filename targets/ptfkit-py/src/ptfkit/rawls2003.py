@@ -124,6 +124,8 @@ def calc_ptf_rawls2003_soc_theta33_tree(
             public outputs divide the means by 100.
         Every comparison is strict less-than, so equality follows the No branch. The cases cover
             every leaf and threshold.
+        A NaN organic-carbon input makes every less-than comparison false and follows the
+            corresponding No branches; it is not propagated automatically.
 
     """
     return _call(
@@ -177,6 +179,8 @@ def calc_ptf_rawls2003_soc_theta1500_tree(
             public outputs divide the means by 100.
         Every comparison is strict less-than, so equality follows the No branch. The cases cover
             every leaf and threshold.
+        NaN numeric inputs make less-than comparisons false and follow the corresponding No
+            branches; they are not propagated automatically.
 
     """
     return _call(

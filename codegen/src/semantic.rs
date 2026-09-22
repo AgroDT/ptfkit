@@ -6,9 +6,10 @@ use std::{
 use crate::{
     formula::{self, Span},
     model::{
-        DecisionTree as RawDecisionTreeNode, DecisionTreeSplit as RawDecisionTreeSplit,
-        RawDecisionTree, RawExpression, RawFunction, RawInputType, RawLookup, RawVariableValue,
-        SourceLocation,
+        DecisionTree as RawDecisionTreeNode, DecisionTreeLeafValue,
+        DecisionTreeSplit as RawDecisionTreeSplit, Outputs, RawDecisionTree, RawExpression,
+        RawFunction, RawInputType, RawLookup, RawTreeInvocation, RawVariableValue, SourceLocation,
+        TreeDefinition as RawTreeDefinition, TreeInput as RawTreeInput,
     },
 };
 
@@ -52,32 +53,51 @@ pub(crate) struct RecordType {
 
 #[derive(Clone, Debug, PartialEq)]
 pub(crate) enum VariableValue {
-    Number(Expr),
+    Expression(Expr),
     RecordLookup(RecordLookup),
+    Tree(TreeCall),
     DecisionTree(DecisionTree),
 }
 
 impl VariableValue {
-    pub(crate) fn as_number(&self) -> Option<&Expr> {
+    pub(crate) fn as_expression(&self) -> Option<&Expr> {
         match self {
-            Self::Number(expression) => Some(expression),
-            Self::RecordLookup(_) | Self::DecisionTree(_) => None,
+            Self::Expression(expression) => Some(expression),
+            Self::RecordLookup(_) | Self::Tree(_) | Self::DecisionTree(_) => None,
         }
     }
 
-    pub(crate) fn is_numeric(&self) -> bool {
-        matches!(self, Self::Number(_) | Self::DecisionTree(_))
+    pub(crate) fn is_number(&self) -> bool {
+        matches!(self, Self::Expression(_) | Self::DecisionTree(_))
+            || matches!(self, Self::Tree(tree) if tree.definition.output == ValueType::Number)
     }
 }
 
 #[derive(Clone, Debug, PartialEq)]
 pub(crate) enum DecisionTree {
-    Leaf(Number),
+    Leaf(DecisionTreeLeaf),
     Split {
         predicate: DecisionTreePredicate,
         yes: Box<Self>,
         no: Box<Self>,
     },
+    Match {
+        input: Reference,
+        enum_type: crate::model::EnumType,
+        cases: Vec<DecisionTreeMatchCase>,
+    },
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub(crate) enum DecisionTreeLeaf {
+    Number(Number),
+    Record(Vec<Number>),
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub(crate) struct DecisionTreeMatchCase {
+    pub(crate) members: Vec<String>,
+    pub(crate) then: DecisionTree,
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -88,7 +108,7 @@ pub(crate) enum DecisionTreePredicate {
     },
     EnumIn {
         input: Reference,
-        enum_name: String,
+        enum_type: crate::model::EnumType,
         members: Vec<String>,
     },
 }
@@ -105,6 +125,20 @@ pub(crate) struct RecordLookup {
 pub(crate) struct RecordLookupCase {
     pub(crate) member: String,
     pub(crate) values: Vec<Number>,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub(crate) struct TreeCall {
+    pub(crate) definition: TreeDefinition,
+    pub(crate) arguments: Vec<Reference>,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub(crate) struct TreeDefinition {
+    pub(crate) name: String,
+    pub(crate) inputs: Vec<Input>,
+    pub(crate) output: ValueType,
+    pub(crate) root: DecisionTree,
 }
 
 #[derive(Clone, Debug, PartialEq)]
@@ -275,7 +309,7 @@ pub(crate) fn compile(raw: &RawFunction) -> Result<Function, Error> {
         }
         let (value, value_type) = match &variable.value {
             RawVariableValue::Expression(expression) => (
-                VariableValue::Number(compile_expression(
+                VariableValue::Expression(compile_expression(
                     raw,
                     expression,
                     &scope,
@@ -290,6 +324,11 @@ pub(crate) fn compile(raw: &RawFunction) -> Result<Function, Error> {
                     VariableValue::RecordLookup(lookup),
                     ValueType::Record(record_type),
                 )
+            }
+            RawVariableValue::Tree(tree) => {
+                let (tree, value_type) =
+                    compile_tree_call(raw, tree, &scope, &variable_names, index)?;
+                (VariableValue::Tree(tree), value_type)
             }
             RawVariableValue::DecisionTree(tree) => (
                 VariableValue::DecisionTree(compile_decision_tree(raw, tree)?),
@@ -568,9 +607,17 @@ fn compile_decision_tree_node(
     path: &str,
 ) -> Result<DecisionTree, Error> {
     match tree {
-        RawDecisionTreeNode::Leaf(leaf) => Ok(DecisionTree::Leaf(decision_tree_number(
-            raw, path, &leaf.leaf,
-        )?)),
+        RawDecisionTreeNode::Leaf(leaf) => match &leaf.leaf {
+            DecisionTreeLeafValue::Number(number) => Ok(DecisionTree::Leaf(
+                DecisionTreeLeaf::Number(decision_tree_number(raw, path, number)?),
+            )),
+            DecisionTreeLeafValue::Record(_) => Err(error(
+                raw,
+                path,
+                Span { start: 0, end: 0 },
+                "record leaves require a named tree definition",
+            )),
+        },
         RawDecisionTreeNode::Split(branch) => {
             let predicate_path = format!("{path}.split");
             let predicate = match &branch.split {
@@ -637,7 +684,7 @@ fn compile_decision_tree_node(
                     }
                     DecisionTreePredicate::EnumIn {
                         input: Reference::Input(index),
-                        enum_name: definition.enum_type.name.clone(),
+                        enum_type: definition.enum_type.clone(),
                         members: split.values.clone(),
                     }
                 }
@@ -655,6 +702,230 @@ fn compile_decision_tree_node(
                     &format!("{path}.no"),
                 )?),
             })
+        }
+        RawDecisionTreeNode::Match(_) => Err(error(
+            raw,
+            path,
+            Span { start: 0, end: 0 },
+            "match nodes require a named tree definition",
+        )),
+    }
+}
+
+fn compile_tree_call(
+    raw: &RawFunction,
+    call: &RawTreeInvocation,
+    scope: &BTreeMap<String, Binding>,
+    variable_names: &BTreeMap<&str, usize>,
+    variable_index: usize,
+) -> Result<(TreeCall, ValueType), Error> {
+    let definition = compile_tree_definition(&call.definition);
+    let expected = definition
+        .inputs
+        .iter()
+        .map(|input| input.name.as_str())
+        .collect::<std::collections::BTreeSet<_>>();
+    let actual = call
+        .arguments
+        .keys()
+        .map(String::as_str)
+        .collect::<std::collections::BTreeSet<_>>();
+    if expected != actual {
+        let missing = expected.difference(&actual).copied().collect::<Vec<_>>();
+        let unknown = actual.difference(&expected).copied().collect::<Vec<_>>();
+        return Err(error(
+            raw,
+            &call.implementation_path,
+            Span { start: 0, end: 0 },
+            format!(
+                "tree `{}` argument names do not match its inputs; missing {missing:?}, unknown {unknown:?}",
+                definition.name
+            ),
+        ));
+    }
+    let mut arguments = Vec::with_capacity(definition.inputs.len());
+    for formal in &definition.inputs {
+        let actual = &call.arguments[&formal.name];
+        let Some(binding) = scope.get(actual) else {
+            let message = match variable_names.get(actual.as_str()) {
+                Some(index) if *index == variable_index => {
+                    format!("tree argument `{actual}` cannot reference itself")
+                }
+                Some(index) if *index > variable_index => {
+                    format!("tree argument `{actual}` cannot reference a later variable")
+                }
+                _ => format!("tree argument references unknown value `{actual}`"),
+            };
+            return Err(error(
+                raw,
+                &call.implementation_path,
+                Span { start: 0, end: 0 },
+                message,
+            ));
+        };
+        if binding.value_type != formal.value_type {
+            return Err(error(
+                raw,
+                &call.implementation_path,
+                Span { start: 0, end: 0 },
+                format!(
+                    "tree argument `{actual}` has type {}, but input `{}` requires {}",
+                    value_type_name(&binding.value_type),
+                    formal.name,
+                    value_type_name(&formal.value_type)
+                ),
+            ));
+        }
+        arguments.push(binding.reference);
+    }
+    let output = definition.output.clone();
+    Ok((
+        TreeCall {
+            definition,
+            arguments,
+        },
+        output,
+    ))
+}
+
+fn value_type_name(value_type: &ValueType) -> String {
+    match value_type {
+        ValueType::Number => "number".to_owned(),
+        ValueType::Enum(enum_type) => format!("enum `{}`", enum_type.name),
+        ValueType::Record(record) => format!("record `{}`", record.name),
+    }
+}
+
+fn compile_tree_definition(raw: &RawTreeDefinition) -> TreeDefinition {
+    let inputs = raw
+        .inputs
+        .iter()
+        .map(|input| Input {
+            name: input.name().to_owned(),
+            value_type: match input {
+                RawTreeInput::Number { .. } => ValueType::Number,
+                RawTreeInput::Enum(input) => ValueType::Enum(
+                    input
+                        .definition
+                        .as_ref()
+                        .expect("tree enum input is resolved")
+                        .enum_type
+                        .clone(),
+                ),
+            },
+        })
+        .collect::<Vec<_>>();
+    let output = match raw.output_type.as_ref().expect("tree output is resolved") {
+        Outputs::Scalar { .. } => ValueType::Number,
+        Outputs::Record { name, fields } => ValueType::Record(RecordType {
+            name: name.clone(),
+            fields: fields.iter().map(|field| field.name.clone()).collect(),
+        }),
+    };
+    TreeDefinition {
+        name: raw.name.clone(),
+        root: compile_named_tree_node(raw, &raw.root),
+        inputs,
+        output,
+    }
+}
+
+fn compile_named_tree_node(
+    definition: &RawTreeDefinition,
+    node: &RawDecisionTreeNode,
+) -> DecisionTree {
+    let input = |name: &str| {
+        Reference::Input(
+            definition
+                .inputs
+                .iter()
+                .position(|input| input.name() == name)
+                .expect("tree inputs are validated"),
+        )
+    };
+    let number = |number: &serde_json::Number| Number {
+        value: number.as_f64().expect("tree numbers are validated"),
+        lexeme: number.to_string(),
+    };
+    match node {
+        RawDecisionTreeNode::Leaf(leaf) => DecisionTree::Leaf(match &leaf.leaf {
+            DecisionTreeLeafValue::Number(value) => DecisionTreeLeaf::Number(number(value)),
+            DecisionTreeLeafValue::Record(values) => {
+                let Outputs::Record { fields, .. } = definition
+                    .output_type
+                    .as_ref()
+                    .expect("tree output is resolved")
+                else {
+                    unreachable!("tree leaf shape is validated")
+                };
+                DecisionTreeLeaf::Record(
+                    fields
+                        .iter()
+                        .map(|field| number(&values[&field.name]))
+                        .collect(),
+                )
+            }
+        }),
+        RawDecisionTreeNode::Split(branch) => {
+            let predicate = match &branch.split {
+                RawDecisionTreeSplit::LessThan(split) => DecisionTreePredicate::LessThan {
+                    input: input(&split.input),
+                    value: number(&split.value),
+                },
+                RawDecisionTreeSplit::EnumIn(split) => {
+                    let RawTreeInput::Enum(formal) = definition
+                        .inputs
+                        .iter()
+                        .find(|formal| formal.name() == split.input)
+                        .expect("tree input is validated")
+                    else {
+                        unreachable!("tree predicate type is validated")
+                    };
+                    DecisionTreePredicate::EnumIn {
+                        input: input(&split.input),
+                        enum_type: formal
+                            .definition
+                            .as_ref()
+                            .expect("tree enum is resolved")
+                            .enum_type
+                            .clone(),
+                        members: split.values.clone(),
+                    }
+                }
+            };
+            DecisionTree::Split {
+                predicate,
+                yes: Box::new(compile_named_tree_node(definition, &branch.yes)),
+                no: Box::new(compile_named_tree_node(definition, &branch.no)),
+            }
+        }
+        RawDecisionTreeNode::Match(selection) => {
+            let formal = definition
+                .inputs
+                .iter()
+                .find(|formal| formal.name() == selection.match_node.input)
+                .expect("tree match input is validated");
+            let RawTreeInput::Enum(formal) = formal else {
+                unreachable!("tree match input type is validated")
+            };
+            DecisionTree::Match {
+                input: input(&selection.match_node.input),
+                enum_type: formal
+                    .definition
+                    .as_ref()
+                    .expect("tree enum is resolved")
+                    .enum_type
+                    .clone(),
+                cases: selection
+                    .match_node
+                    .cases
+                    .iter()
+                    .map(|case| DecisionTreeMatchCase {
+                        members: case.values.clone(),
+                        then: compile_named_tree_node(definition, &case.then),
+                    })
+                    .collect(),
+            }
         }
     }
 }
@@ -991,7 +1262,7 @@ mod tests {
             compiled
                 .variables
                 .iter()
-                .map(|variable| variable.value.as_number().unwrap())
+                .map(|variable| variable.value.as_expression().unwrap())
                 .collect::<Vec<_>>(),
             expected.iter().collect::<Vec<_>>()
         );

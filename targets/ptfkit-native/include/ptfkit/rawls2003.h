@@ -3,6 +3,8 @@
 #ifndef PTFKIT_RAWLS2003_H
 #define PTFKIT_RAWLS2003_H
 
+#include <math.h>
+
 /**
  * @brief Rawls et al. (2003), organic-carbon effects on soil water retention.
  *
@@ -34,135 +36,133 @@ typedef enum {
     rawls2003_usda_texture_class_clay,
 } rawls2003_usda_texture_class;
 
-/**
- * @brief Estimate volumetric water content at -33 kPa with the published regression tree.
- * @param soil_texture USDA soil textural class used to traverse Figure 2.
- * @param soil_organic_carbon Soil organic carbon content by mass. (% mass)
- * @return Volumetric soil water content at -33 kPa. (cm³/cm³)
- *
- * @details Prediction target:
- * Volumetric soil water content at -33 kPa.
- * @note Figure 2 reports terminal means and within-node standard deviations in volume percent;
- * public outputs divide the means by 100.
- * @note Every comparison is strict less-than, so equality follows the No branch. The cases
- * cover every leaf and threshold.
- */
-static inline double calc_ptf_rawls2003_soc_theta33_tree(rawls2003_usda_texture_class soil_texture,
-                                                         double soil_organic_carbon) {
-    if (soil_texture == rawls2003_usda_texture_class_sand ||
-        soil_texture == rawls2003_usda_texture_class_loamy_sand ||
-        soil_texture == rawls2003_usda_texture_class_sandy_loam) {
-        if (soil_organic_carbon < 2.1) {
-            if (soil_texture == rawls2003_usda_texture_class_sand) {
-                return 0.108;
-            } else {
-                if (soil_texture == rawls2003_usda_texture_class_loamy_sand) {
-                    return 0.151;
-                } else {
-                    if (soil_organic_carbon < 1.1) {
-                        return 0.204;
-                    } else {
-                        return 0.244;
-                    }
-                }
-            }
+static inline double rawls2003_theta_33_tree(rawls2003_usda_texture_class texture, double carbon) {
+    switch (texture) {
+    case rawls2003_usda_texture_class_sand:
+        if (carbon < 2.1) {
+            return 0.108;
         } else {
-            if (soil_organic_carbon < 4.8) {
+            if (carbon < 4.8) {
                 return 0.28;
             } else {
-                if (soil_organic_carbon < 7.7) {
+                if (carbon < 7.7) {
                     return 0.35;
                 } else {
-                    if (soil_texture == rawls2003_usda_texture_class_sand ||
-                        soil_texture == rawls2003_usda_texture_class_loamy_sand) {
-                        return 0.394;
+                    return 0.394;
+                }
+            }
+        }
+    case rawls2003_usda_texture_class_loamy_sand:
+        if (carbon < 2.1) {
+            return 0.151;
+        } else {
+            if (carbon < 4.8) {
+                return 0.28;
+            } else {
+                if (carbon < 7.7) {
+                    return 0.35;
+                } else {
+                    return 0.394;
+                }
+            }
+        }
+    case rawls2003_usda_texture_class_sandy_loam:
+        if (carbon < 1.1) {
+            return 0.204;
+        } else {
+            if (carbon < 2.1) {
+                return 0.244;
+            } else {
+                if (carbon < 4.8) {
+                    return 0.28;
+                } else {
+                    if (carbon < 7.7) {
+                        return 0.35;
                     } else {
                         return 0.549;
                     }
                 }
             }
         }
-    } else {
-        if (soil_texture == rawls2003_usda_texture_class_loam ||
-            soil_texture == rawls2003_usda_texture_class_silt_loam ||
-            soil_texture == rawls2003_usda_texture_class_sandy_clay_loam ||
-            soil_texture == rawls2003_usda_texture_class_silt ||
-            soil_texture == rawls2003_usda_texture_class_clay_loam ||
-            soil_texture == rawls2003_usda_texture_class_sandy_clay) {
-            if (soil_organic_carbon < 4.2) {
-                if (soil_texture == rawls2003_usda_texture_class_loam ||
-                    soil_texture == rawls2003_usda_texture_class_sandy_clay_loam ||
-                    soil_texture == rawls2003_usda_texture_class_sandy_clay) {
-                    if (soil_organic_carbon < 1.7) {
-                        return 0.272;
-                    } else {
-                        return 0.305;
-                    }
-                } else {
-                    if (soil_organic_carbon < 1.5) {
-                        return 0.315;
-                    } else {
-                        return 0.338;
-                    }
-                }
-            } else {
-                if (soil_organic_carbon < 8.5) {
-                    if (soil_texture == rawls2003_usda_texture_class_loam ||
-                        soil_texture == rawls2003_usda_texture_class_clay_loam ||
-                        soil_texture == rawls2003_usda_texture_class_sandy_clay) {
-                        return 0.353;
-                    } else {
-                        return 0.393;
-                    }
-                } else {
-                    if (soil_texture == rawls2003_usda_texture_class_loam ||
-                        soil_texture == rawls2003_usda_texture_class_sandy_clay) {
-                        return 0.383;
-                    } else {
-                        return 0.464;
-                    }
-                }
-            }
+    case rawls2003_usda_texture_class_loam:
+    case rawls2003_usda_texture_class_sandy_clay:
+        if (carbon < 1.7) {
+            return 0.272;
         } else {
-            if (soil_texture == rawls2003_usda_texture_class_silty_clay_loam) {
-                if (soil_organic_carbon < 4.2) {
-                    return 0.361;
-                } else {
-                    return 0.548;
-                }
+            if (carbon < 4.2) {
+                return 0.305;
             } else {
-                if (soil_texture == rawls2003_usda_texture_class_silty_clay) {
-                    return 0.397;
+                if (carbon < 8.5) {
+                    return 0.353;
                 } else {
-                    return 0.426;
+                    return 0.383;
                 }
             }
         }
+    case rawls2003_usda_texture_class_sandy_clay_loam:
+        if (carbon < 1.7) {
+            return 0.272;
+        } else {
+            if (carbon < 4.2) {
+                return 0.305;
+            } else {
+                if (carbon < 8.5) {
+                    return 0.393;
+                } else {
+                    return 0.464;
+                }
+            }
+        }
+    case rawls2003_usda_texture_class_silt_loam:
+    case rawls2003_usda_texture_class_silt:
+        if (carbon < 1.5) {
+            return 0.315;
+        } else {
+            if (carbon < 4.2) {
+                return 0.338;
+            } else {
+                if (carbon < 8.5) {
+                    return 0.393;
+                } else {
+                    return 0.464;
+                }
+            }
+        }
+    case rawls2003_usda_texture_class_clay_loam:
+        if (carbon < 1.5) {
+            return 0.315;
+        } else {
+            if (carbon < 4.2) {
+                return 0.338;
+            } else {
+                if (carbon < 8.5) {
+                    return 0.353;
+                } else {
+                    return 0.464;
+                }
+            }
+        }
+    case rawls2003_usda_texture_class_silty_clay_loam:
+        if (carbon < 4.2) {
+            return 0.361;
+        } else {
+            return 0.548;
+        }
+    case rawls2003_usda_texture_class_silty_clay:
+        return 0.397;
+    case rawls2003_usda_texture_class_clay:
+        return 0.426;
     }
+    return NAN;
 }
 
-/**
- * @brief Estimate volumetric water content at -1500 kPa with the published regression tree.
- * @param clay Clay content by mass. (% mass)
- * @param sand Sand content by mass. (% mass)
- * @param soil_organic_carbon Soil organic carbon content by mass. (% mass)
- * @return Volumetric soil water content at -1500 kPa. (cm³/cm³)
- *
- * @details Prediction target:
- * Volumetric soil water content at -1500 kPa.
- * @note Figure 3 reports terminal means and within-node standard deviations in volume percent;
- * public outputs divide the means by 100.
- * @note Every comparison is strict less-than, so equality follows the No branch. The cases
- * cover every leaf and threshold.
- */
-static inline double calc_ptf_rawls2003_soc_theta1500_tree(double clay, double sand,
-                                                           double soil_organic_carbon) {
+static inline double rawls2003_theta_1500_tree(double clay, double sand, double carbon) {
     if (clay < 26.0) {
         if (clay < 14.0) {
-            if (soil_organic_carbon < 2.3) {
+            if (carbon < 2.3) {
                 if (clay < 8.0) {
                     if (sand < 80.0) {
-                        if (soil_organic_carbon < 1.5) {
+                        if (carbon < 1.5) {
                             return 0.061;
                         } else {
                             return 0.085;
@@ -178,7 +178,7 @@ static inline double calc_ptf_rawls2003_soc_theta1500_tree(double clay, double s
                     }
                 }
             } else {
-                if (soil_organic_carbon < 6.5) {
+                if (carbon < 6.5) {
                     return 0.11;
                 } else {
                     return 0.159;
@@ -186,7 +186,7 @@ static inline double calc_ptf_rawls2003_soc_theta1500_tree(double clay, double s
             }
         } else {
             if (clay < 19.0) {
-                if (soil_organic_carbon < 5.8) {
+                if (carbon < 5.8) {
                     if (clay < 17.0) {
                         return 0.116;
                     } else {
@@ -234,6 +234,47 @@ static inline double calc_ptf_rawls2003_soc_theta1500_tree(double clay, double s
             }
         }
     }
+}
+
+/**
+ * @brief Estimate volumetric water content at -33 kPa with the published regression tree.
+ * @param soil_texture USDA soil textural class used to traverse Figure 2.
+ * @param soil_organic_carbon Soil organic carbon content by mass. (% mass)
+ * @return Volumetric soil water content at -33 kPa. (cm³/cm³)
+ *
+ * @details Prediction target:
+ * Volumetric soil water content at -33 kPa.
+ * @note Figure 2 reports terminal means and within-node standard deviations in volume percent;
+ * public outputs divide the means by 100.
+ * @note Every comparison is strict less-than, so equality follows the No branch. The cases
+ * cover every leaf and threshold.
+ * @note A NaN organic-carbon input makes every less-than comparison false and follows the
+ * corresponding No branches; it is not propagated automatically.
+ */
+static inline double calc_ptf_rawls2003_soc_theta33_tree(rawls2003_usda_texture_class soil_texture,
+                                                         double soil_organic_carbon) {
+    return rawls2003_theta_33_tree(soil_texture, soil_organic_carbon);
+}
+
+/**
+ * @brief Estimate volumetric water content at -1500 kPa with the published regression tree.
+ * @param clay Clay content by mass. (% mass)
+ * @param sand Sand content by mass. (% mass)
+ * @param soil_organic_carbon Soil organic carbon content by mass. (% mass)
+ * @return Volumetric soil water content at -1500 kPa. (cm³/cm³)
+ *
+ * @details Prediction target:
+ * Volumetric soil water content at -1500 kPa.
+ * @note Figure 3 reports terminal means and within-node standard deviations in volume percent;
+ * public outputs divide the means by 100.
+ * @note Every comparison is strict less-than, so equality follows the No branch. The cases
+ * cover every leaf and threshold.
+ * @note NaN numeric inputs make less-than comparisons false and follow the corresponding No
+ * branches; they are not propagated automatically.
+ */
+static inline double calc_ptf_rawls2003_soc_theta1500_tree(double clay, double sand,
+                                                           double soil_organic_carbon) {
+    return rawls2003_theta_1500_tree(clay, sand, soil_organic_carbon);
 }
 
 /**

@@ -40,6 +40,7 @@ struct RawSpec {
 enum Definition {
     Enum(EnumDefinition),
     Lookup(Box<LookupDefinition>),
+    Tree(Box<TreeDefinition>),
     Output(Outputs),
     Parameter(Parameter),
 }
@@ -110,6 +111,18 @@ impl<'de> Deserialize<'de> for Spec {
             })
             .collect::<Result<BTreeMap<_, _>, _>>()
             .map_err(serde::de::Error::custom)?;
+        let tree_definitions = raw
+            .definitions
+            .iter()
+            .filter_map(|(name, definition)| match definition {
+                Definition::Tree(definition) => Some(
+                    resolve_tree_definition(name, definition, &raw.definitions)
+                        .map(|definition| (name.clone(), definition)),
+                ),
+                _ => None,
+            })
+            .collect::<Result<BTreeMap<_, _>, _>>()
+            .map_err(serde::de::Error::custom)?;
         let functions = raw
             .functions
             .into_iter()
@@ -130,7 +143,9 @@ impl<'de> Deserialize<'de> for Spec {
                                 Some(Definition::Parameter(parameter)) => {
                                     Ok(Input::Parameter(parameter.clone()))
                                 }
-                                Some(Definition::Enum(_)) | Some(Definition::Lookup(_)) => {
+                                Some(Definition::Enum(_))
+                                | Some(Definition::Lookup(_))
+                                | Some(Definition::Tree(_)) => {
                                     Err(format!(
                                         "function {} must bind a name when referencing type definition `{name}` as an input",
                                         function.name
@@ -153,7 +168,9 @@ impl<'de> Deserialize<'de> for Spec {
                     OutputReference::Reference(reference) => {
                         let name = definition_name(&reference.target)?;
                         match raw.definitions.get(name) {
-                            Some(Definition::Enum(_)) | Some(Definition::Lookup(_)) => Err(format!(
+                            Some(Definition::Enum(_))
+                            | Some(Definition::Lookup(_))
+                            | Some(Definition::Tree(_)) => Err(format!(
                                 "function {} references non-output definition `{name}` as an output",
                                 function.name
                             )),
@@ -173,16 +190,31 @@ impl<'de> Deserialize<'de> for Spec {
                     .implementation
                     .map(|mut implementation| {
                         for variable in &mut implementation.variables {
-                            if let ImplementationVariable::Lookup { lookup, .. } = variable {
-                                let name = definition_name(&lookup.table.target)?;
-                                lookup.definition = Some(
-                                    lookup_definitions.get(name).cloned().ok_or_else(|| {
-                                        format!(
-                                            "function {} references unknown lookup definition `{name}`",
-                                            function.name
-                                        )
-                                    })?,
-                                );
+                            match variable {
+                                ImplementationVariable::Lookup { lookup, .. } => {
+                                    let name = definition_name(&lookup.table.target)?;
+                                    lookup.definition = Some(
+                                        lookup_definitions.get(name).cloned().ok_or_else(|| {
+                                            format!(
+                                                "function {} references unknown lookup definition `{name}`",
+                                                function.name
+                                            )
+                                        })?,
+                                    );
+                                }
+                                ImplementationVariable::Tree { tree, .. } => {
+                                    let name = definition_name(&tree.definition_ref.target)?;
+                                    tree.definition = Some(
+                                        tree_definitions.get(name).cloned().ok_or_else(|| {
+                                            format!(
+                                                "function {} references unknown tree definition `{name}`",
+                                                function.name
+                                            )
+                                        })?,
+                                    );
+                                }
+                                ImplementationVariable::Expression { .. }
+                                | ImplementationVariable::DecisionTree { .. } => {}
                             }
                         }
                         Ok::<_, String>(implementation)
@@ -228,6 +260,7 @@ fn resolve_input_type(
         }),
         Some(Definition::Output(_))
         | Some(Definition::Lookup(_))
+        | Some(Definition::Tree(_))
         | Some(Definition::Parameter(_)) => Err(format!(
             "function {function} input {} references non-enum definition `{type_name}` as its type",
             input.name
@@ -340,6 +373,244 @@ fn validate_lookup_values(lookup: &LookupDefinition) -> Result<(), String> {
     Ok(())
 }
 
+fn resolve_tree_definition(
+    name: &str,
+    definition: &TreeDefinition,
+    definitions: &BTreeMap<String, Definition>,
+) -> Result<TreeDefinition, String> {
+    let mut resolved = definition.clone();
+    resolved.name = name.to_owned();
+    let mut input_names = std::collections::BTreeSet::new();
+    for input in &mut resolved.inputs {
+        if !input_names.insert(input.name().to_owned()) {
+            return Err(format!(
+                "tree `{name}` contains duplicate input `{}`",
+                input.name()
+            ));
+        }
+        if let TreeInput::Enum(input) = input {
+            let type_name = definition_name(&input.reference.target)?;
+            input.definition = Some(match definitions.get(type_name) {
+                Some(Definition::Enum(definition)) => {
+                    resolved_enum_definition(definition, type_name)
+                }
+                Some(_) => {
+                    return Err(format!(
+                        "tree `{name}` input `{}` must reference an enum definition",
+                        input.name
+                    ));
+                }
+                None => {
+                    return Err(format!(
+                        "tree `{name}` input `{}` references unknown enum definition `{type_name}`",
+                        input.name
+                    ));
+                }
+            });
+        }
+    }
+    let output_name = definition_name(&resolved.output.target)?;
+    resolved.output_type = Some(match definitions.get(output_name) {
+        Some(Definition::Output(output)) => output.clone(),
+        Some(_) => {
+            return Err(format!(
+                "tree `{name}` output must reference an output definition"
+            ));
+        }
+        None => {
+            return Err(format!(
+                "tree `{name}` references unknown output type `{output_name}`"
+            ));
+        }
+    });
+    validate_tree_definition(&resolved)?;
+    Ok(resolved)
+}
+
+fn validate_tree_definition(definition: &TreeDefinition) -> Result<(), String> {
+    fn validate_node(
+        definition: &TreeDefinition,
+        node: &DecisionTree,
+        path: &str,
+    ) -> Result<(), String> {
+        match node {
+            DecisionTree::Leaf(leaf) => {
+                let output = definition
+                    .output_type
+                    .as_ref()
+                    .expect("tree output is resolved");
+                match (output, &leaf.leaf) {
+                    (Outputs::Scalar { .. }, DecisionTreeLeafValue::Number(number)) => {
+                        validate_tree_number(definition, path, number)
+                    }
+                    (Outputs::Scalar { .. }, DecisionTreeLeafValue::Record(_)) => Err(format!(
+                        "tree `{}` {path} must be a numeric leaf",
+                        definition.name
+                    )),
+                    (Outputs::Record { fields, .. }, DecisionTreeLeafValue::Record(values)) => {
+                        let expected = fields
+                            .iter()
+                            .map(|field| field.name.as_str())
+                            .collect::<std::collections::BTreeSet<_>>();
+                        let actual = values
+                            .keys()
+                            .map(String::as_str)
+                            .collect::<std::collections::BTreeSet<_>>();
+                        if actual != expected {
+                            return Err(format!(
+                                "tree `{}` {path} keys must exactly match output fields",
+                                definition.name
+                            ));
+                        }
+                        for number in values.values() {
+                            validate_tree_number(definition, path, number)?;
+                        }
+                        Ok(())
+                    }
+                    (Outputs::Record { .. }, DecisionTreeLeafValue::Number(_)) => Err(format!(
+                        "tree `{}` {path} must be a record leaf",
+                        definition.name
+                    )),
+                }
+            }
+            DecisionTree::Split(branch) => {
+                match &branch.split {
+                    DecisionTreeSplit::LessThan(split) => {
+                        let input = tree_input(definition, &split.input, path)?;
+                        if !matches!(input, TreeInput::Number { .. }) {
+                            return Err(format!(
+                                "tree `{}` input `{}` must be numeric for operator `lt`",
+                                definition.name, split.input
+                            ));
+                        }
+                        validate_tree_number(definition, path, &split.value)?;
+                    }
+                    DecisionTreeSplit::EnumIn(split) => {
+                        let input = tree_input(definition, &split.input, path)?;
+                        let TreeInput::Enum(input) = input else {
+                            return Err(format!(
+                                "tree `{}` input `{}` must be an enum for operator `in`",
+                                definition.name, split.input
+                            ));
+                        };
+                        validate_tree_members(definition, input, &split.values, path)?;
+                    }
+                }
+                validate_node(definition, &branch.yes, &format!("{path}.yes"))?;
+                validate_node(definition, &branch.no, &format!("{path}.no"))
+            }
+            DecisionTree::Match(selection) => {
+                let input = tree_input(definition, &selection.match_node.input, path)?;
+                let TreeInput::Enum(input) = input else {
+                    return Err(format!(
+                        "tree `{}` match input `{}` must be an enum",
+                        definition.name, selection.match_node.input
+                    ));
+                };
+                let enum_definition = input.definition.as_ref().expect("tree enum is resolved");
+                let mut covered = std::collections::BTreeSet::new();
+                for (index, case) in selection.match_node.cases.iter().enumerate() {
+                    validate_tree_members(
+                        definition,
+                        input,
+                        &case.values,
+                        &format!("{path}.match.cases[{index}]"),
+                    )?;
+                    for member in &case.values {
+                        if !covered.insert(member.as_str()) {
+                            return Err(format!(
+                                "tree `{}` match cases overlap on enum member `{member}`",
+                                definition.name
+                            ));
+                        }
+                    }
+                    validate_node(
+                        definition,
+                        &case.then,
+                        &format!("{path}.match.cases[{index}].then"),
+                    )?;
+                }
+                let expected = enum_definition
+                    .values
+                    .iter()
+                    .map(|member| member.name.as_str())
+                    .collect::<std::collections::BTreeSet<_>>();
+                if covered != expected {
+                    return Err(format!(
+                        "tree `{}` match cases must cover every member of enum `{}` exactly once",
+                        definition.name, enum_definition.enum_type.name
+                    ));
+                }
+                Ok(())
+            }
+        }
+    }
+
+    validate_node(definition, &definition.root, "root")
+}
+
+fn tree_input<'a>(
+    definition: &'a TreeDefinition,
+    name: &str,
+    path: &str,
+) -> Result<&'a TreeInput, String> {
+    definition
+        .inputs
+        .iter()
+        .find(|input| input.name() == name)
+        .ok_or_else(|| {
+            format!(
+                "tree `{}` {path} references unknown input `{name}`",
+                definition.name
+            )
+        })
+}
+
+fn validate_tree_members(
+    tree: &TreeDefinition,
+    input: &TreeEnumInput,
+    members: &[String],
+    path: &str,
+) -> Result<(), String> {
+    if members.is_empty() {
+        return Err(format!(
+            "tree `{}` {path} requires at least one enum member",
+            tree.name
+        ));
+    }
+    let definition = input.definition.as_ref().expect("tree enum is resolved");
+    let mut seen = std::collections::BTreeSet::new();
+    for member in members {
+        if !seen.insert(member) {
+            return Err(format!(
+                "tree `{}` {path} repeats enum member `{member}`",
+                tree.name
+            ));
+        }
+        if !definition.values.iter().any(|value| value.name == *member) {
+            return Err(format!(
+                "tree `{}` {path} references unknown member `{member}` of enum `{}`",
+                tree.name, definition.enum_type.name
+            ));
+        }
+    }
+    Ok(())
+}
+
+fn validate_tree_number(
+    definition: &TreeDefinition,
+    path: &str,
+    number: &serde_json::Number,
+) -> Result<(), String> {
+    if number.as_f64().is_none_or(|value| !value.is_finite()) {
+        return Err(format!(
+            "tree `{}` {path} number `{number}` is not a finite f64",
+            definition.name
+        ));
+    }
+    Ok(())
+}
+
 fn definition_name(reference: &str) -> Result<&str, String> {
     let Some(name) = reference.strip_prefix("#/$defs/") else {
         return Err(format!(
@@ -375,13 +646,29 @@ impl Spec {
             }
             if let Some(implementation) = &mut function.implementation {
                 for variable in &mut implementation.variables {
-                    if let ImplementationVariable::Lookup { lookup, .. } = variable
-                        && let Some(definition) = lookup
-                            .definition
-                            .as_mut()
-                            .and_then(|lookup| lookup.input_type.as_mut())
-                    {
-                        resolve(definition);
+                    match variable {
+                        ImplementationVariable::Lookup { lookup, .. } => {
+                            if let Some(definition) = lookup
+                                .definition
+                                .as_mut()
+                                .and_then(|lookup| lookup.input_type.as_mut())
+                            {
+                                resolve(definition);
+                            }
+                        }
+                        ImplementationVariable::Tree { tree, .. } => {
+                            if let Some(definition) = tree.definition.as_mut() {
+                                for input in &mut definition.inputs {
+                                    if let TreeInput::Enum(input) = input
+                                        && let Some(definition) = input.definition.as_mut()
+                                    {
+                                        resolve(definition);
+                                    }
+                                }
+                            }
+                        }
+                        ImplementationVariable::Expression { .. }
+                        | ImplementationVariable::DecisionTree { .. } => {}
                     }
                 }
             }
@@ -643,6 +930,60 @@ pub(crate) struct LookupValue {
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
+pub(crate) struct TreeDefinition {
+    #[serde(skip)]
+    pub(crate) name: String,
+    #[serde(rename = "type")]
+    kind: TreeKind,
+    pub(crate) inputs: Vec<TreeInput>,
+    pub(crate) output: Reference,
+    pub(crate) root: DecisionTree,
+    #[serde(skip)]
+    pub(crate) output_type: Option<Outputs>,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
+enum TreeKind {
+    Tree,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(untagged)]
+pub(crate) enum TreeInput {
+    Number {
+        name: String,
+        #[serde(rename = "type")]
+        kind: TreeNumberKind,
+    },
+    Enum(TreeEnumInput),
+}
+
+impl TreeInput {
+    pub(crate) fn name(&self) -> &str {
+        match self {
+            Self::Number { name, .. } => name,
+            Self::Enum(input) => &input.name,
+        }
+    }
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
+pub(crate) enum TreeNumberKind {
+    Number,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub(crate) struct TreeEnumInput {
+    pub(crate) name: String,
+    #[serde(flatten)]
+    pub(crate) reference: Reference,
+    #[serde(skip)]
+    pub(crate) definition: Option<EnumDefinition>,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(tag = "type", rename_all = "lowercase")]
 pub(crate) enum Outputs {
     Scalar {
@@ -702,10 +1043,23 @@ pub(crate) enum ImplementationVariable {
         name: String,
         lookup: Box<LookupInvocation>,
     },
+    Tree {
+        name: String,
+        tree: Box<TreeInvocation>,
+    },
     DecisionTree {
         name: String,
         decision_tree: Box<DecisionTree>,
     },
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub(crate) struct TreeInvocation {
+    #[serde(rename = "definition")]
+    pub(crate) definition_ref: Reference,
+    pub(crate) arguments: BTreeMap<String, String>,
+    #[serde(skip)]
+    pub(crate) definition: Option<TreeDefinition>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -721,12 +1075,20 @@ pub(crate) struct LookupInvocation {
 pub(crate) enum DecisionTree {
     Leaf(DecisionTreeLeaf),
     Split(DecisionTreeBranch),
+    Match(DecisionTreeMatch),
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct DecisionTreeLeaf {
-    pub(crate) leaf: serde_json::Number,
+    pub(crate) leaf: DecisionTreeLeafValue,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(untagged)]
+pub(crate) enum DecisionTreeLeafValue {
+    Number(serde_json::Number),
+    Record(BTreeMap<String, serde_json::Number>),
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -735,6 +1097,27 @@ pub(crate) struct DecisionTreeBranch {
     pub(crate) split: DecisionTreeSplit,
     pub(crate) yes: Box<DecisionTree>,
     pub(crate) no: Box<DecisionTree>,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct DecisionTreeMatch {
+    #[serde(rename = "match")]
+    pub(crate) match_node: DecisionTreeMatchNode,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct DecisionTreeMatchNode {
+    pub(crate) input: String,
+    pub(crate) cases: Vec<DecisionTreeMatchCase>,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct DecisionTreeMatchCase {
+    pub(crate) values: Vec<String>,
+    pub(crate) then: Box<DecisionTree>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -938,7 +1321,15 @@ pub(crate) struct RawVariable {
 pub(crate) enum RawVariableValue {
     Expression(RawExpression),
     Lookup(Box<RawLookup>),
+    Tree(Box<RawTreeInvocation>),
     DecisionTree(Box<RawDecisionTree>),
+}
+
+#[derive(Clone, Debug)]
+pub(crate) struct RawTreeInvocation {
+    pub(crate) implementation_path: String,
+    pub(crate) arguments: BTreeMap<String, String>,
+    pub(crate) definition: TreeDefinition,
 }
 
 #[derive(Clone, Debug)]

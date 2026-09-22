@@ -9,8 +9,9 @@ use crate::{
     documentation::{self as docs, FunctionDocument, Returns, SourceDocument},
     model::{CompiledFunction, CompiledInput, EnumDefinition, EnumType, Output},
     semantic::{
-        self, BinaryOp, DecisionTree, DecisionTreePredicate, Expr, MathFunction, Number,
-        RecordLookup, Reference, ResultBinding, UnaryOp, VariableValue,
+        self, BinaryOp, DecisionTree, DecisionTreeLeaf, DecisionTreePredicate, Expr, MathFunction,
+        Number, RecordLookup, Reference, ResultBinding, TreeCall, TreeDefinition, UnaryOp,
+        ValueType, VariableValue,
     },
 };
 
@@ -78,6 +79,10 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile
                 .map(|(name, fields)| internal_record_tokens(&name, &fields))
                 .collect::<Vec<_>>();
             let lookup_conversions = lookup_conversion_tokens(&functions);
+            let tree_definitions = tree_definitions(&functions)
+                .into_iter()
+                .map(tree_definition_tokens)
+                .collect::<Vec<_>>();
             let mut defined_result_classes = BTreeSet::new();
             let definitions = functions
                 .into_iter()
@@ -93,7 +98,7 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile
                 PathBuf::from(format!("{slug}.rs")),
                 render_tokens(
                     module_docs,
-                    quote!(#(#enum_definitions)* #(#internal_record_definitions)* #(#lookup_conversions)* #(#definitions)*),
+                    quote!(#(#enum_definitions)* #(#internal_record_definitions)* #(#lookup_conversions)* #(#tree_definitions)* #(#definitions)*),
                 ),
             ))
         })
@@ -147,13 +152,15 @@ fn module_tokens(
     let terminal_output = scalar_output.and_then(|output| {
         ir.variables
             .last()
-            .filter(|variable| variable.name == output && variable.value.is_numeric())
+            .filter(|variable| variable.name == output && variable.value.is_number())
     });
     let terminal_record = match ir.result {
         ResultBinding::RecordVariable(index) if index + 1 == ir.variables.len() => {
             match &ir.variables[index].value {
                 VariableValue::RecordLookup(lookup) => Some(lookup),
-                VariableValue::Number(_) | VariableValue::DecisionTree(_) => None,
+                VariableValue::Expression(_)
+                | VariableValue::Tree(_)
+                | VariableValue::DecisionTree(_) => None,
             }
         }
         ResultBinding::Fields | ResultBinding::RecordVariable(_) => None,
@@ -168,7 +175,7 @@ fn module_tokens(
         .map(|variable| {
             let name = format_ident!("{}", variable.name);
             match &variable.value {
-                VariableValue::Number(expression) => {
+                VariableValue::Expression(expression) => {
                     let expression = expression_tokens(expression, &inputs, &ir.variables)?.tokens;
                     Ok(quote!(let #name = #expression;))
                 }
@@ -176,8 +183,13 @@ fn module_tokens(
                     let expression = record_lookup_tokens(lookup, &inputs, &ir.variables)?;
                     Ok(quote!(let #name = #expression;))
                 }
+                VariableValue::Tree(tree) => {
+                    let expression = tree_call_tokens(tree, &inputs, &ir.variables);
+                    Ok(quote!(let #name = #expression;))
+                }
                 VariableValue::DecisionTree(tree) => {
-                    let expression = decision_tree_tokens(tree, &inputs, &ir.variables);
+                    let expression =
+                        decision_tree_tokens(tree, &inputs, &ir.variables, &ValueType::Number);
                     Ok(quote!(let #name = #expression;))
                 }
             }
@@ -255,12 +267,13 @@ fn output_tokens(
                 .name;
             let expression = match terminal_output {
                 Some(variable) => match &variable.value {
-                    VariableValue::Number(expression) => {
+                    VariableValue::Expression(expression) => {
                         expression_tokens(expression, inputs, variables)?.tokens
                     }
                     VariableValue::DecisionTree(tree) => {
-                        decision_tree_tokens(tree, inputs, variables)
+                        decision_tree_tokens(tree, inputs, variables, &ValueType::Number)
                     }
+                    VariableValue::Tree(tree) => tree_call_tokens(tree, inputs, variables),
                     VariableValue::RecordLookup(_) => {
                         unreachable!("scalar terminal output is numeric")
                     }
@@ -340,11 +353,21 @@ fn decision_tree_tokens(
     tree: &DecisionTree,
     inputs: &[Ident],
     variables: &[semantic::Variable],
+    output: &ValueType,
 ) -> TokenStream {
     match tree {
-        DecisionTree::Leaf(value) => {
+        DecisionTree::Leaf(DecisionTreeLeaf::Number(value)) => {
             let value = rust_float_literal(value);
             quote!(#value)
+        }
+        DecisionTree::Leaf(DecisionTreeLeaf::Record(values)) => {
+            let ValueType::Record(record) = output else {
+                unreachable!("record tree leaf has a record output")
+            };
+            let name = format_ident!("{}", record.name);
+            let fields = record.fields.iter().map(|field| format_ident!("{field}"));
+            let values = values.iter().map(rust_float_literal);
+            quote!(#name { #(#fields: #values),* })
         }
         DecisionTree::Split { predicate, yes, no } => {
             let predicate = match predicate {
@@ -355,11 +378,11 @@ fn decision_tree_tokens(
                 }
                 DecisionTreePredicate::EnumIn {
                     input,
-                    enum_name,
+                    enum_type,
                     members,
                 } => {
                     let input = reference_ident(*input, inputs, variables);
-                    let enum_name = format_ident!("{enum_name}");
+                    let enum_name = enum_type_tokens(enum_type);
                     let patterns = members.iter().map(|member| {
                         let member = format_ident!("{}", member.to_case(Case::Pascal));
                         quote!(#enum_name::#member)
@@ -367,11 +390,88 @@ fn decision_tree_tokens(
                     quote!(matches!(#input, #(#patterns)|*))
                 }
             };
-            let yes = decision_tree_tokens(yes, inputs, variables);
-            let no = decision_tree_tokens(no, inputs, variables);
-            quote!(if #predicate { #yes } else { #no })
+            let yes = decision_tree_tokens(yes, inputs, variables, output);
+            let no_is_split = matches!(no.as_ref(), DecisionTree::Split { .. });
+            let no = decision_tree_tokens(no, inputs, variables, output);
+            if no_is_split {
+                quote!(if #predicate { #yes } else #no)
+            } else {
+                quote!(if #predicate { #yes } else { #no })
+            }
+        }
+        DecisionTree::Match {
+            input,
+            enum_type,
+            cases,
+        } => {
+            let input = reference_ident(*input, inputs, variables);
+            let enum_name = enum_type_tokens(enum_type);
+            let arms = cases.iter().map(|case| {
+                let patterns = case.members.iter().map(|member| {
+                    let member = format_ident!("{}", member.to_case(Case::Pascal));
+                    quote!(#enum_name::#member)
+                });
+                let then = decision_tree_tokens(&case.then, inputs, variables, output);
+                quote!(#(#patterns)|* => #then)
+            });
+            quote!(match #input { #(#arms),* })
         }
     }
+}
+
+fn tree_call_tokens(
+    tree: &TreeCall,
+    inputs: &[Ident],
+    variables: &[semantic::Variable],
+) -> TokenStream {
+    let name = format_ident!("{}", tree.definition.name.to_case(Case::Snake));
+    let arguments = tree
+        .arguments
+        .iter()
+        .map(|reference| reference_ident(*reference, inputs, variables));
+    quote!(#name(#(#arguments),*))
+}
+
+fn tree_definitions<'a>(functions: &[&'a CompiledFunction]) -> Vec<&'a TreeDefinition> {
+    let mut names = BTreeSet::new();
+    functions
+        .iter()
+        .flat_map(|function| &function.ir.variables)
+        .filter_map(|variable| match &variable.value {
+            VariableValue::Tree(tree) => Some(&tree.definition),
+            VariableValue::Expression(_)
+            | VariableValue::RecordLookup(_)
+            | VariableValue::DecisionTree(_) => None,
+        })
+        .filter(|definition| names.insert(definition.name.as_str()))
+        .collect()
+}
+
+fn tree_definition_tokens(definition: &TreeDefinition) -> TokenStream {
+    let name = format_ident!("{}", definition.name.to_case(Case::Snake));
+    let inputs = definition
+        .inputs
+        .iter()
+        .map(|input| format_ident!("{}", input.name))
+        .collect::<Vec<_>>();
+    let input_types = definition
+        .inputs
+        .iter()
+        .map(|input| match &input.value_type {
+            ValueType::Number => quote!(f64),
+            ValueType::Enum(enum_type) => enum_type_tokens(enum_type),
+            ValueType::Record(_) => unreachable!("tree inputs cannot be records"),
+        });
+    let output = match &definition.output {
+        ValueType::Number => quote!(f64),
+        ValueType::Record(record) => {
+            let name = format_ident!("{}", record.name);
+            quote!(#name)
+        }
+        ValueType::Enum(_) => unreachable!("tree outputs cannot be enums"),
+    };
+    let body = decision_tree_tokens(&definition.root, &inputs, &[], &definition.output);
+    quote!(#[inline] fn #name(#(#inputs: #input_types),*) -> #output { #body })
 }
 
 fn lookup_conversion_tokens(functions: &[&CompiledFunction]) -> Vec<TokenStream> {
@@ -381,7 +481,9 @@ fn lookup_conversion_tokens(functions: &[&CompiledFunction]) -> Vec<TokenStream>
         .flat_map(|function| &function.ir.variables)
         .filter_map(|variable| match &variable.value {
             VariableValue::RecordLookup(lookup) => Some(lookup),
-            VariableValue::Number(_) | VariableValue::DecisionTree(_) => None,
+            VariableValue::Expression(_)
+            | VariableValue::Tree(_)
+            | VariableValue::DecisionTree(_) => None,
         })
         .filter(|lookup| names.insert((lookup.enum_type.clone(), lookup.output.name.clone())))
         .map(|lookup| {
@@ -992,7 +1094,7 @@ mod tests {
         };
         let variables = [semantic::Variable {
             name: "parameters".into(),
-            value: VariableValue::Number(Expr::Number(Number {
+            value: VariableValue::Expression(Expr::Number(Number {
                 value: 0.0,
                 lexeme: "0.0".into(),
             })),
