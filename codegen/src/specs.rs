@@ -13,8 +13,8 @@ use crate::{
     formula,
     model::{
         Entry, EnumType, Implementation, ImplementationVariable, Input, Quantity, QuantityRegistry,
-        RawDecisionTree, RawExpression, RawFunction, RawInput, RawInputType, RawLookup,
-        RawTreeInvocation, RawVariable, RawVariableValue, Spec,
+        RawExpression, RawFunction, RawInput, RawInputType, RawLookup, RawTreeInvocation,
+        RawVariable, RawVariableValue, Spec,
     },
     semantic,
 };
@@ -416,18 +416,6 @@ fn compile(
                         })),
                     })
                 }
-                ImplementationVariable::DecisionTree {
-                    name,
-                    decision_tree,
-                } => Ok(RawVariable {
-                    name: name.clone(),
-                    value: RawVariableValue::DecisionTree(Box::new(RawDecisionTree {
-                        implementation_path: format!(
-                            "implementation.variables[{index}].decision_tree"
-                        ),
-                        tree: decision_tree.as_ref().clone(),
-                    })),
-                }),
             })
             .collect::<Result<Vec<_>, _>>()?,
     };
@@ -467,9 +455,7 @@ fn expression_locations(
         .flat_map(|implementation| implementation.variables.iter())
         .filter_map(|variable| match variable {
             ImplementationVariable::Expression { expr, .. } => Some(expr.as_str()),
-            ImplementationVariable::Lookup { .. }
-            | ImplementationVariable::Tree { .. }
-            | ImplementationVariable::DecisionTree { .. } => None,
+            ImplementationVariable::Lookup { .. } | ImplementationVariable::Tree { .. } => None,
         });
     let mut cursor = 0;
     let mut locations = Vec::new();
@@ -537,8 +523,7 @@ fn validate_output(
                     semantic::ValueType::Record(record) => Some(record),
                     semantic::ValueType::Number | semantic::ValueType::Enum(_) => None,
                 },
-                semantic::VariableValue::Expression(_)
-                | semantic::VariableValue::DecisionTree(_) => None,
+                semantic::VariableValue::Expression(_) => None,
             };
             if actual == Some(&expected) {
                 return Ok(semantic::ResultBinding::RecordVariable(index));
@@ -569,7 +554,6 @@ fn validate_output(
                 .iter()
                 .filter_map(|variable| match variable.value {
                     semantic::VariableValue::Expression(_) => Some(variable.name.as_str()),
-                    semantic::VariableValue::DecisionTree(_) => Some(variable.name.as_str()),
                     semantic::VariableValue::Tree(ref tree)
                         if tree.definition.output == semantic::ValueType::Number =>
                     {
@@ -635,7 +619,7 @@ mod tests {
         .unwrap();
     }
 
-    fn decision_tree_specification() -> &'static str {
+    fn scalar_tree_specification() -> &'static str {
         r#"source:
   summary: Test source.
   citation_apa: Test (2026).
@@ -647,27 +631,35 @@ $defs:
     values:
       - {name: coarse, value: Coarse}
       - {name: fine, value: Fine}
+  ScalarValue:
+    {type: scalar, name: value, quantity: volumetric_water_content, symbol: y, unit: volume_fraction, reported_unit: '1', domain: null, description: Test output.}
+  ScalarTree:
+    type: tree
+    inputs:
+      - {name: category, $ref: '#/$defs/Category'}
+      - {name: predictor, type: number}
+    output: {$ref: '#/$defs/ScalarValue'}
+    root:
+      split: {input: category, operator: in, values: [coarse]}
+      yes:
+        split: {input: predictor, operator: lt, value: 2.0}
+        yes: {leaf: 1.0}
+        no: {leaf: 2.0}
+      no: {leaf: 3.0}
 functions:
-  - name: calc_ptf_decision_tree
+  - name: calc_ptf_tree_branch
     status: ready-for-implementation
-    public_api: {name: calc_ptf_decision_tree, result_class: null, summary: Test decision tree.}
+    public_api: {name: calc_ptf_tree_branch, result_class: null, summary: Test named tree.}
     scope:
       prediction_target: Test value.
       models: {h_theta: null, k_h: null}
     inputs:
       - {$ref: '#/$defs/Category', name: category}
       - {name: x, symbol: x, unit: '1', domain: null, description: Test input.}
-    outputs: {type: scalar, name: value, quantity: volumetric_water_content, symbol: y, unit: volume_fraction, reported_unit: '1', domain: null, description: Test output.}
+    outputs: {$ref: '#/$defs/ScalarValue'}
     implementation:
       variables:
-        - name: value
-          decision_tree:
-            split: {input: category, operator: in, values: [coarse]}
-            yes:
-              split: {input: x, operator: lt, value: 2.0}
-              yes: {leaf: 1.0}
-              no: {leaf: 2.0}
-            no: {leaf: 3.0}
+        - {name: value, tree: {definition: {$ref: '#/$defs/ScalarTree'}, arguments: {category: category, predictor: x}}}
     verification_cases:
       - {id: below_boundary, kind: calculated, inputs: {category: coarse, x: 1.0}, expected: {value: 1.0}, rationale: Explicit fixture branch.}
       - {id: at_boundary, kind: calculated, inputs: {category: coarse, x: 2.0}, expected: {value: 2.0}, rationale: Equality takes the No branch.}
@@ -904,90 +896,111 @@ functions:
     }
 
     #[test]
-    fn compiles_and_renders_strict_decision_tree_branches() {
-        let root = fixture_root("decision-tree");
+    fn compiles_and_renders_strict_named_tree_branches() {
+        let root = fixture_root("tree-branch");
         fs::write(
-            root.join("specs/functions/decision_tree.yaml"),
-            decision_tree_specification(),
+            root.join("specs/functions/tree_branch.yaml"),
+            scalar_tree_specification(),
         )
         .unwrap();
 
         let entries = load(&root).unwrap();
         assert!(matches!(
             entries[0].implementations[0].as_ref().unwrap().variables[0].value,
-            crate::semantic::VariableValue::DecisionTree(_)
+            crate::semantic::VariableValue::Tree(_)
         ));
         let compiled = crate::compile::functions(entries).unwrap();
         let rust = crate::targets::render_rust_for_test(&compiled).unwrap();
         let rust = &rust
             .iter()
-            .find(|file| file.path.ends_with("decision_tree.rs"))
+            .find(|file| file.path.ends_with("tree_branch.rs"))
             .unwrap()
             .contents;
         assert!(
             rust.contains("matches ! (category , Category :: Coarse)"),
             "{rust}"
         );
-        assert!(rust.contains("x < 2.0f64"), "{rust}");
+        assert!(rust.contains("predictor < 2.0f64"), "{rust}");
         assert!(rust.contains("fn at_boundary"), "{rust}");
         assert!(
-            rust.contains("calc_ptf_decision_tree (Category :: Coarse , 2f64)"),
+            rust.contains("calc_ptf_tree_branch (Category :: Coarse , 2f64)"),
             "{rust}"
         );
 
         let (c_headers, cpp_modules) = crate::targets::render_native_for_test(&compiled).unwrap();
         let c = &c_headers
             .iter()
-            .find(|file| file.path.ends_with("decision_tree.h"))
+            .find(|file| file.path.ends_with("tree_branch.h"))
             .unwrap()
             .contents;
         assert!(
-            c.contains("if (category == decision_tree_category_coarse)"),
+            c.contains("if (category == tree_branch_category_coarse)"),
             "{c}"
         );
-        assert!(c.contains("if (x < 2.0)"), "{c}");
+        assert!(c.contains("if (predictor < 2.0)"), "{c}");
         assert!(c.contains("return 1.0;"), "{c}");
         assert!(c.contains("return 2.0;"), "{c}");
         assert!(c.contains("return 3.0;"), "{c}");
 
         let cpp = &cpp_modules
             .iter()
-            .find(|file| file.path.ends_with("decision_tree.cppm"))
+            .find(|file| file.path.ends_with("tree_branch.cppm"))
             .unwrap()
             .contents;
         assert!(cpp.contains("if (category == Category::Coarse)"), "{cpp}");
-        assert!(cpp.contains("if (x < 2.0)"), "{cpp}");
+        assert!(cpp.contains("if (predictor < 2.0)"), "{cpp}");
 
         let extension = crate::targets::render_python_extension_for_test(&compiled).unwrap();
         let extension = &extension
             .iter()
-            .find(|file| file.path.ends_with("decision_tree.c"))
+            .find(|file| file.path.ends_with("tree_branch.c"))
             .unwrap()
             .contents;
         assert!(
-            extension.contains("calc_ptf_decision_tree(category, x)"),
+            extension.contains("calc_ptf_tree_branch(category, x)"),
             "{extension}"
         );
         fs::remove_dir_all(root).unwrap();
     }
 
     #[test]
-    fn renders_a_decision_tree_as_an_intermediate_numeric_variable() {
-        let root = fixture_root("decision-tree-variable");
-        let specification = decision_tree_specification()
+    fn rejects_legacy_inline_decision_tree_variables() {
+        let root = fixture_root("inline-tree-variable");
+        write(
+            &root,
+            "inline_tree_variable",
+            "    implementation:\n      variables:\n        - {name: value, decision_tree: {leaf: 1.0}}\n",
+            "",
+        );
+
+        let error = load(&root)
+            .expect_err("inline decision_tree syntax must not be accepted")
+            .to_string();
+        assert!(error.contains("decision_tree"), "{error}");
+        assert!(
+            error.contains("not valid under any of the schemas"),
+            "{error}"
+        );
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn renders_a_named_tree_call_as_an_intermediate_numeric_variable() {
+        let root = fixture_root("tree-variable");
+        let specification = scalar_tree_specification()
             .replace(
-                "        - name: value\n          decision_tree:",
-                "        - name: branch_value\n          decision_tree:",
+                "        - {name: value, tree:",
+                "        - {name: branch_value, tree:",
             )
             .replace(
-                "            no: {leaf: 3.0}\n    verification_cases:",
-                "            no: {leaf: 3.0}\n        - {name: value, expr: branch_value * 10}\n    verification_cases:",
+                "arguments: {category: category, predictor: x}}}\n    verification_cases:",
+                "arguments: {category: category, predictor: x}}}\n        - {name: value, expr: branch_value * 10}\n    verification_cases:",
             )
             .replace("expected: {value: 1.0}", "expected: {value: 10.0}")
             .replace("expected: {value: 2.0}", "expected: {value: 20.0}")
             .replace("expected: {value: 3.0}", "expected: {value: 30.0}");
         fs::write(
-            root.join("specs/functions/decision_tree_variable.yaml"),
+            root.join("specs/functions/tree_variable.yaml"),
             specification,
         )
         .unwrap();
@@ -996,24 +1009,25 @@ functions:
         let rust = crate::targets::render_rust_for_test(&compiled).unwrap();
         let rust = &rust
             .iter()
-            .find(|file| file.path.ends_with("decision_tree_variable.rs"))
+            .find(|file| file.path.ends_with("tree_variable.rs"))
             .unwrap()
             .contents;
-        assert!(rust.contains("let branch_value = if"), "{rust}");
+        assert!(rust.contains("let branch_value = scalar_tree"), "{rust}");
         assert!(rust.contains("branch_value * 10.0f64"), "{rust}");
 
         let (c_headers, cpp_modules) = crate::targets::render_native_for_test(&compiled).unwrap();
         let c = &c_headers
             .iter()
-            .find(|file| file.path.ends_with("decision_tree_variable.h"))
+            .find(|file| file.path.ends_with("tree_variable.h"))
             .unwrap()
             .contents;
         assert!(c.contains("const double branch_value ="), "{c}");
-        assert!(c.contains("? 1.0 : 2.0"), "{c}");
+        assert!(c.contains("tree_variable_scalar_tree"), "{c}");
+        assert!(!c.contains(" ? "), "{c}");
         assert!(c.contains("branch_value * 10.0"), "{c}");
         let cpp = &cpp_modules
             .iter()
-            .find(|file| file.path.ends_with("decision_tree_variable.cppm"))
+            .find(|file| file.path.ends_with("tree_variable.cppm"))
             .unwrap()
             .contents;
         assert!(cpp.contains("const double branch_value ="), "{cpp}");
@@ -1069,6 +1083,149 @@ functions:
             "generated verification tests failed:\n{}\n{}",
             String::from_utf8_lossy(&tests.stdout),
             String::from_utf8_lossy(&tests.stderr)
+        );
+
+        let (c_headers, cpp_modules) = crate::targets::render_native_for_test(&compiled).unwrap();
+        let header = &c_headers
+            .iter()
+            .find(|file| file.path.ends_with("named_tree.h"))
+            .unwrap()
+            .contents;
+        assert!(
+            header.contains("case named_tree_category_coarse:\n            {"),
+            "{header}"
+        );
+        assert!(
+            header.contains("case named_tree_category_fine:\n            {"),
+            "{header}"
+        );
+        let header_path = root.join("named_tree.h");
+        fs::write(&header_path, header).unwrap();
+        let native_source = r#"#include "named_tree.h"
+
+int main(void) {
+    if (calc_ptf_tree_scaled(named_tree_category_coarse, 2.0, 9.0) != 20.0) {
+        return 1;
+    }
+    if (calc_ptf_tree_scaled(named_tree_category_fine, 1.0, 9.0) != 30.0) {
+        return 2;
+    }
+    if (calc_ptf_tree_rebound(named_tree_category_coarse, 9.0, 1.0) != 1.0) {
+        return 3;
+    }
+    if (calc_ptf_tree_fields(named_tree_category_fine) != 8.0) {
+        return 4;
+    }
+    const pair result = calc_ptf_tree_record(named_tree_category_coarse);
+    if (result.low != 1.0 || result.high != 2.0) {
+        return 5;
+    }
+    return 0;
+}
+"#;
+        fs::write(root.join("named_tree_header.c"), native_source).unwrap();
+        fs::write(root.join("named_tree_header.cpp"), native_source).unwrap();
+
+        let module = &cpp_modules
+            .iter()
+            .find(|file| file.path.ends_with("named_tree.cppm"))
+            .unwrap()
+            .contents;
+        fs::write(root.join("named_tree.cppm"), module).unwrap();
+        fs::write(
+            root.join("named_tree_module.cpp"),
+            r#"import ptfkit.named_tree;
+
+int main() {
+    using namespace ptfkit::named_tree;
+    if (calc_ptf_tree_scaled(Category::Coarse, 2.0, 9.0) != 20.0) {
+        return 1;
+    }
+    if (calc_ptf_tree_scaled(Category::Fine, 1.0, 9.0) != 30.0) {
+        return 2;
+    }
+    if (calc_ptf_tree_rebound(Category::Coarse, 9.0, 1.0) != 1.0) {
+        return 3;
+    }
+    if (calc_ptf_tree_fields(Category::Fine) != 8.0) {
+        return 4;
+    }
+    const Pair result = calc_ptf_tree_record(Category::Coarse);
+    if (result.low != 1.0 || result.high != 2.0) {
+        return 5;
+    }
+    return 0;
+}
+"#,
+        )
+        .unwrap();
+        fs::write(
+            root.join("CMakeLists.txt"),
+            r#"cmake_minimum_required(VERSION 3.28)
+project(ptfkit_tree_fixture LANGUAGES C CXX)
+enable_testing()
+
+add_executable(named_tree_c11 named_tree_header.c)
+set_target_properties(named_tree_c11 PROPERTIES
+    C_STANDARD 11 C_STANDARD_REQUIRED ON C_EXTENSIONS OFF
+)
+add_test(NAME named_tree_c11 COMMAND named_tree_c11)
+
+add_executable(named_tree_header_cpp23 named_tree_header.cpp)
+set_target_properties(named_tree_header_cpp23 PROPERTIES
+    CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF
+)
+add_test(NAME named_tree_header_cpp23 COMMAND named_tree_header_cpp23)
+
+add_executable(named_tree_module_cpp23 named_tree_module.cpp)
+target_sources(named_tree_module_cpp23 PRIVATE
+    FILE_SET CXX_MODULES FILES named_tree.cppm
+)
+set_target_properties(named_tree_module_cpp23 PROPERTIES
+    CXX_STANDARD 23 CXX_STANDARD_REQUIRED ON CXX_EXTENSIONS OFF
+    CXX_SCAN_FOR_MODULES ON
+)
+add_test(NAME named_tree_module_cpp23 COMMAND named_tree_module_cpp23)
+"#,
+        )
+        .unwrap();
+        let build = root.join("native-build");
+        let configure = std::process::Command::new("cmake")
+            .arg("-S")
+            .arg(&root)
+            .arg("-B")
+            .arg(&build)
+            .output()
+            .unwrap();
+        assert!(
+            configure.status.success(),
+            "native tree fixture configuration failed:\n{}\n{}",
+            String::from_utf8_lossy(&configure.stdout),
+            String::from_utf8_lossy(&configure.stderr)
+        );
+        let build_output = std::process::Command::new("cmake")
+            .arg("--build")
+            .arg(&build)
+            .args(["--config", "Release"])
+            .output()
+            .unwrap();
+        assert!(
+            build_output.status.success(),
+            "generated native tree fixtures did not compile:\n{}\n{}",
+            String::from_utf8_lossy(&build_output.stdout),
+            String::from_utf8_lossy(&build_output.stderr)
+        );
+        let native_tests = std::process::Command::new("ctest")
+            .arg("--test-dir")
+            .arg(&build)
+            .args(["-C", "Release", "--output-on-failure"])
+            .output()
+            .unwrap();
+        assert!(
+            native_tests.status.success(),
+            "generated native tree fixtures failed:\n{}\n{}",
+            String::from_utf8_lossy(&native_tests.stdout),
+            String::from_utf8_lossy(&native_tests.stderr)
         );
 
         fs::remove_dir_all(root).unwrap();
@@ -1143,7 +1300,7 @@ functions:
     }
 
     #[test]
-    fn rejects_decision_tree_predicates_with_wrong_input_types_or_members() {
+    fn rejects_named_tree_predicates_with_wrong_input_types_or_members() {
         for (label, edit, expected) in [
             (
                 "numeric-enum",
@@ -1157,7 +1314,7 @@ functions:
                 "enum-numeric",
                 (
                     "split: {input: category, operator: in, values: [coarse]}",
-                    "split: {input: x, operator: in, values: [coarse]}",
+                    "split: {input: predictor, operator: in, values: [coarse]}",
                 ),
                 "must be an enum for operator `in`",
             ),
@@ -1169,12 +1326,12 @@ functions:
             (
                 "unknown-input",
                 ("input: category", "input: missing"),
-                "unknown decision-tree input `missing`",
+                "references unknown input `missing`",
             ),
         ] {
             let root = fixture_root(label);
-            let text = decision_tree_specification().replacen(edit.0, edit.1, 1);
-            fs::write(root.join("specs/functions/decision_tree.yaml"), text).unwrap();
+            let text = scalar_tree_specification().replacen(edit.0, edit.1, 1);
+            fs::write(root.join("specs/functions/tree_branch.yaml"), text).unwrap();
             let error = load(&root)
                 .expect_err("invalid decision tree must fail")
                 .to_string();

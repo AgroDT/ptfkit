@@ -158,9 +158,7 @@ fn module_tokens(
         ResultBinding::RecordVariable(index) if index + 1 == ir.variables.len() => {
             match &ir.variables[index].value {
                 VariableValue::RecordLookup(lookup) => Some(lookup),
-                VariableValue::Expression(_)
-                | VariableValue::Tree(_)
-                | VariableValue::DecisionTree(_) => None,
+                VariableValue::Expression(_) | VariableValue::Tree(_) => None,
             }
         }
         ResultBinding::Fields | ResultBinding::RecordVariable(_) => None,
@@ -185,11 +183,6 @@ fn module_tokens(
                 }
                 VariableValue::Tree(tree) => {
                     let expression = tree_call_tokens(tree, &inputs, &ir.variables);
-                    Ok(quote!(let #name = #expression;))
-                }
-                VariableValue::DecisionTree(tree) => {
-                    let expression =
-                        decision_tree_tokens(tree, &inputs, &ir.variables, &ValueType::Number);
                     Ok(quote!(let #name = #expression;))
                 }
             }
@@ -270,9 +263,6 @@ fn output_tokens(
                     VariableValue::Expression(expression) => {
                         expression_tokens(expression, inputs, variables)?.tokens
                     }
-                    VariableValue::DecisionTree(tree) => {
-                        decision_tree_tokens(tree, inputs, variables, &ValueType::Number)
-                    }
                     VariableValue::Tree(tree) => tree_call_tokens(tree, inputs, variables),
                     VariableValue::RecordLookup(_) => {
                         unreachable!("scalar terminal output is numeric")
@@ -349,7 +339,7 @@ fn record_lookup_tokens(
     Ok(quote!(#key.into()))
 }
 
-fn decision_tree_tokens(
+fn tree_node_tokens(
     tree: &DecisionTree,
     inputs: &[Ident],
     variables: &[semantic::Variable],
@@ -390,9 +380,9 @@ fn decision_tree_tokens(
                     quote!(matches!(#input, #(#patterns)|*))
                 }
             };
-            let yes = decision_tree_tokens(yes, inputs, variables, output);
+            let yes = tree_node_tokens(yes, inputs, variables, output);
             let no_is_split = matches!(no.as_ref(), DecisionTree::Split { .. });
-            let no = decision_tree_tokens(no, inputs, variables, output);
+            let no = tree_node_tokens(no, inputs, variables, output);
             if no_is_split {
                 quote!(if #predicate { #yes } else #no)
             } else {
@@ -411,7 +401,7 @@ fn decision_tree_tokens(
                     let member = format_ident!("{}", member.to_case(Case::Pascal));
                     quote!(#enum_name::#member)
                 });
-                let then = decision_tree_tokens(&case.then, inputs, variables, output);
+                let then = tree_node_tokens(&case.then, inputs, variables, output);
                 quote!(#(#patterns)|* => #then)
             });
             quote!(match #input { #(#arms),* })
@@ -439,9 +429,7 @@ fn tree_definitions<'a>(functions: &[&'a CompiledFunction]) -> Vec<&'a TreeDefin
         .flat_map(|function| &function.ir.variables)
         .filter_map(|variable| match &variable.value {
             VariableValue::Tree(tree) => Some(&tree.definition),
-            VariableValue::Expression(_)
-            | VariableValue::RecordLookup(_)
-            | VariableValue::DecisionTree(_) => None,
+            VariableValue::Expression(_) | VariableValue::RecordLookup(_) => None,
         })
         .filter(|definition| names.insert(definition.name.as_str()))
         .collect()
@@ -470,7 +458,7 @@ fn tree_definition_tokens(definition: &TreeDefinition) -> TokenStream {
         }
         ValueType::Enum(_) => unreachable!("tree outputs cannot be enums"),
     };
-    let body = decision_tree_tokens(&definition.root, &inputs, &[], &definition.output);
+    let body = tree_node_tokens(&definition.root, &inputs, &[], &definition.output);
     quote!(#[inline] fn #name(#(#inputs: #input_types),*) -> #output { #body })
 }
 
@@ -481,9 +469,7 @@ fn lookup_conversion_tokens(functions: &[&CompiledFunction]) -> Vec<TokenStream>
         .flat_map(|function| &function.ir.variables)
         .filter_map(|variable| match &variable.value {
             VariableValue::RecordLookup(lookup) => Some(lookup),
-            VariableValue::Expression(_)
-            | VariableValue::Tree(_)
-            | VariableValue::DecisionTree(_) => None,
+            VariableValue::Expression(_) | VariableValue::Tree(_) => None,
         })
         .filter(|lookup| names.insert((lookup.enum_type.clone(), lookup.output.name.clone())))
         .map(|lookup| {

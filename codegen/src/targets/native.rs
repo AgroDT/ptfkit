@@ -375,11 +375,6 @@ impl Render for NativeFunction<'_> {
                     VariableValue::Tree(tree) => {
                         self.render_tree_call(writer, &variable.name, tree);
                     }
-                    VariableValue::DecisionTree(tree) => {
-                        writer.write(format_args!("const double {} = ", variable.name));
-                        writer.write(self.decision_tree_expression(tree));
-                        writer.line(";");
-                    }
                 }
             }
             self.render_return(writer);
@@ -429,9 +424,6 @@ impl NativeFunction<'_> {
                             self.expression_dialect(),
                         ));
                         writer.line(";");
-                    }
-                    VariableValue::DecisionTree(tree) => {
-                        self.render_decision_tree_return(writer, tree);
                     }
                     VariableValue::Tree(tree) => {
                         writer.line(format_args!("return {};", self.tree_call_expression(tree)));
@@ -492,79 +484,6 @@ impl NativeFunction<'_> {
         )
     }
 
-    fn render_decision_tree_return(&self, writer: &mut Writer, tree: &DecisionTree) {
-        match tree {
-            DecisionTree::Leaf(DecisionTreeLeaf::Number(value)) => {
-                writer.line(format_args!("return {};", c::float_literal(&value.lexeme)));
-            }
-            DecisionTree::Leaf(DecisionTreeLeaf::Record(_)) => {
-                unreachable!("legacy decision trees are scalar")
-            }
-            DecisionTree::Split { predicate, yes, no } => {
-                writer.line(format_args!(
-                    "if ({}) {{",
-                    self.decision_tree_condition(predicate)
-                ));
-                writer.indented(|writer| self.render_decision_tree_return(writer, yes));
-                writer.line("} else {");
-                writer.indented(|writer| self.render_decision_tree_return(writer, no));
-                writer.line("}");
-            }
-            DecisionTree::Match { .. } => unreachable!("legacy decision trees cannot use match"),
-        }
-    }
-
-    fn decision_tree_expression(&self, tree: &DecisionTree) -> String {
-        match tree {
-            DecisionTree::Leaf(DecisionTreeLeaf::Number(value)) => c::float_literal(&value.lexeme),
-            DecisionTree::Leaf(DecisionTreeLeaf::Record(_)) => {
-                unreachable!("legacy decision trees are scalar")
-            }
-            DecisionTree::Split { predicate, yes, no } => format!(
-                "({} ? {} : {})",
-                self.decision_tree_condition(predicate),
-                self.decision_tree_expression(yes),
-                self.decision_tree_expression(no),
-            ),
-            DecisionTree::Match { .. } => unreachable!("legacy decision trees cannot use match"),
-        }
-    }
-
-    fn decision_tree_condition(&self, predicate: &DecisionTreePredicate) -> String {
-        match predicate {
-            DecisionTreePredicate::LessThan { input, value } => format!(
-                "{} < {}",
-                self.reference_name(*input),
-                c::float_literal(&value.lexeme),
-            ),
-            DecisionTreePredicate::EnumIn {
-                input,
-                enum_type,
-                members,
-            } => members
-                .iter()
-                .map(|member| {
-                    let member = match self.dialect {
-                        NativeDialect::C => c_enum_member(
-                            &c_enum_module(enum_type, &self.function.entry.slug),
-                            &enum_type.name,
-                            member,
-                        ),
-                        NativeDialect::Cpp => {
-                            format!(
-                                "{}::{}",
-                                cpp_enum_type_name(enum_type),
-                                member.to_case(Case::Pascal)
-                            )
-                        }
-                    };
-                    format!("{} == {member}", self.reference_name(*input))
-                })
-                .collect::<Vec<_>>()
-                .join(" || "),
-        }
-    }
-
     fn reference_name(&self, reference: Reference) -> &str {
         match reference {
             Reference::Input(index) => &self.function.core.inputs[index],
@@ -580,9 +499,7 @@ fn lookup_definitions<'a>(functions: &[&'a CompiledFunction]) -> Vec<&'a RecordL
         .flat_map(|function| &function.ir.variables)
         .filter_map(|variable| match &variable.value {
             VariableValue::RecordLookup(lookup) => Some(lookup),
-            VariableValue::Expression(_)
-            | VariableValue::Tree(_)
-            | VariableValue::DecisionTree(_) => None,
+            VariableValue::Expression(_) | VariableValue::Tree(_) => None,
         })
         .filter(|lookup| names.insert((lookup.enum_type.clone(), lookup.output.name.clone())))
         .collect()
@@ -595,9 +512,7 @@ fn tree_definitions<'a>(functions: &[&'a CompiledFunction]) -> Vec<&'a TreeDefin
         .flat_map(|function| &function.ir.variables)
         .filter_map(|variable| match &variable.value {
             VariableValue::Tree(tree) => Some(&tree.definition),
-            VariableValue::Expression(_)
-            | VariableValue::RecordLookup(_)
-            | VariableValue::DecisionTree(_) => None,
+            VariableValue::Expression(_) | VariableValue::RecordLookup(_) => None,
         })
         .filter(|definition| names.insert(definition.name.as_str()))
         .collect()
@@ -715,7 +630,11 @@ impl NativeTreeRenderer<'_> {
                             };
                             writer.line(format_args!("case {member}:"));
                         }
-                        writer.indented(|writer| self.render_node(writer, &case.then));
+                        writer.indented(|writer| {
+                            writer.line("{");
+                            writer.indented(|writer| self.render_node(writer, &case.then));
+                            writer.line("}");
+                        });
                     }
                 });
                 writer.line("}");

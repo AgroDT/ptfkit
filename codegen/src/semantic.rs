@@ -7,8 +7,8 @@ use crate::{
     formula::{self, Span},
     model::{
         DecisionTree as RawDecisionTreeNode, DecisionTreeLeafValue,
-        DecisionTreeSplit as RawDecisionTreeSplit, Outputs, RawDecisionTree, RawExpression,
-        RawFunction, RawInputType, RawLookup, RawTreeInvocation, RawVariableValue, SourceLocation,
+        DecisionTreeSplit as RawDecisionTreeSplit, Outputs, RawExpression, RawFunction,
+        RawInputType, RawLookup, RawTreeInvocation, RawVariableValue, SourceLocation,
         TreeDefinition as RawTreeDefinition, TreeInput as RawTreeInput,
     },
 };
@@ -56,19 +56,18 @@ pub(crate) enum VariableValue {
     Expression(Expr),
     RecordLookup(RecordLookup),
     Tree(TreeCall),
-    DecisionTree(DecisionTree),
 }
 
 impl VariableValue {
     pub(crate) fn as_expression(&self) -> Option<&Expr> {
         match self {
             Self::Expression(expression) => Some(expression),
-            Self::RecordLookup(_) | Self::Tree(_) | Self::DecisionTree(_) => None,
+            Self::RecordLookup(_) | Self::Tree(_) => None,
         }
     }
 
     pub(crate) fn is_number(&self) -> bool {
-        matches!(self, Self::Expression(_) | Self::DecisionTree(_))
+        matches!(self, Self::Expression(_))
             || matches!(self, Self::Tree(tree) if tree.definition.output == ValueType::Number)
     }
 }
@@ -330,10 +329,6 @@ pub(crate) fn compile(raw: &RawFunction) -> Result<Function, Error> {
                     compile_tree_call(raw, tree, &scope, &variable_names, index)?;
                 (VariableValue::Tree(tree), value_type)
             }
-            RawVariableValue::DecisionTree(tree) => (
-                VariableValue::DecisionTree(compile_decision_tree(raw, tree)?),
-                ValueType::Number,
-            ),
         };
         scope.insert(
             variable.name.clone(),
@@ -597,121 +592,6 @@ fn compile_lookup(
     ))
 }
 
-fn compile_decision_tree(raw: &RawFunction, tree: &RawDecisionTree) -> Result<DecisionTree, Error> {
-    compile_decision_tree_node(raw, &tree.tree, &tree.implementation_path)
-}
-
-fn compile_decision_tree_node(
-    raw: &RawFunction,
-    tree: &RawDecisionTreeNode,
-    path: &str,
-) -> Result<DecisionTree, Error> {
-    match tree {
-        RawDecisionTreeNode::Leaf(leaf) => match &leaf.leaf {
-            DecisionTreeLeafValue::Number(number) => Ok(DecisionTree::Leaf(
-                DecisionTreeLeaf::Number(decision_tree_number(raw, path, number)?),
-            )),
-            DecisionTreeLeafValue::Record(_) => Err(error(
-                raw,
-                path,
-                Span { start: 0, end: 0 },
-                "record leaves require a named tree definition",
-            )),
-        },
-        RawDecisionTreeNode::Split(branch) => {
-            let predicate_path = format!("{path}.split");
-            let predicate = match &branch.split {
-                RawDecisionTreeSplit::LessThan(split) => {
-                    let (index, input) = decision_tree_input(raw, &predicate_path, &split.input)?;
-                    if !matches!(input.value_type, RawInputType::Number) {
-                        return Err(error(
-                            raw,
-                            &predicate_path,
-                            Span { start: 0, end: 0 },
-                            format!(
-                                "decision-tree input `{}` must be numeric for operator `lt`",
-                                split.input
-                            ),
-                        ));
-                    }
-                    DecisionTreePredicate::LessThan {
-                        input: Reference::Input(index),
-                        value: decision_tree_number(raw, &predicate_path, &split.value)?,
-                    }
-                }
-                RawDecisionTreeSplit::EnumIn(split) => {
-                    let (index, input) = decision_tree_input(raw, &predicate_path, &split.input)?;
-                    let RawInputType::Enum(definition) = &input.value_type else {
-                        return Err(error(
-                            raw,
-                            &predicate_path,
-                            Span { start: 0, end: 0 },
-                            format!(
-                                "decision-tree input `{}` must be an enum for operator `in`",
-                                split.input
-                            ),
-                        ));
-                    };
-                    let mut members = std::collections::BTreeSet::new();
-                    for member in &split.values {
-                        if !members.insert(member.as_str()) {
-                            return Err(error(
-                                raw,
-                                &predicate_path,
-                                Span { start: 0, end: 0 },
-                                format!("duplicate enum member `{member}`"),
-                            ));
-                        }
-                        if !definition.values.iter().any(|value| value.name == *member) {
-                            return Err(error(
-                                raw,
-                                &predicate_path,
-                                Span { start: 0, end: 0 },
-                                format!(
-                                    "unknown member `{member}` of enum `{}`",
-                                    definition.enum_type.name
-                                ),
-                            ));
-                        }
-                    }
-                    if members.is_empty() {
-                        return Err(error(
-                            raw,
-                            &predicate_path,
-                            Span { start: 0, end: 0 },
-                            "operator `in` requires at least one enum member",
-                        ));
-                    }
-                    DecisionTreePredicate::EnumIn {
-                        input: Reference::Input(index),
-                        enum_type: definition.enum_type.clone(),
-                        members: split.values.clone(),
-                    }
-                }
-            };
-            Ok(DecisionTree::Split {
-                predicate,
-                yes: Box::new(compile_decision_tree_node(
-                    raw,
-                    &branch.yes,
-                    &format!("{path}.yes"),
-                )?),
-                no: Box::new(compile_decision_tree_node(
-                    raw,
-                    &branch.no,
-                    &format!("{path}.no"),
-                )?),
-            })
-        }
-        RawDecisionTreeNode::Match(_) => Err(error(
-            raw,
-            path,
-            Span { start: 0, end: 0 },
-            "match nodes require a named tree definition",
-        )),
-    }
-}
-
 fn compile_tree_call(
     raw: &RawFunction,
     call: &RawTreeInvocation,
@@ -928,45 +808,6 @@ fn compile_named_tree_node(
             }
         }
     }
-}
-
-fn decision_tree_input<'a>(
-    raw: &'a RawFunction,
-    path: &str,
-    name: &str,
-) -> Result<(usize, &'a crate::model::RawInput), Error> {
-    raw.inputs
-        .iter()
-        .enumerate()
-        .find(|(_, input)| input.name == name)
-        .ok_or_else(|| {
-            error(
-                raw,
-                path,
-                Span { start: 0, end: 0 },
-                format!("unknown decision-tree input `{name}`"),
-            )
-        })
-}
-
-fn decision_tree_number(
-    raw: &RawFunction,
-    path: &str,
-    number: &serde_json::Number,
-) -> Result<Number, Error> {
-    let lexeme = number.to_string();
-    let value = number
-        .as_f64()
-        .filter(|value| value.is_finite())
-        .ok_or_else(|| {
-            error(
-                raw,
-                path,
-                Span { start: 0, end: 0 },
-                format!("decision-tree number `{lexeme}` is not a finite f64"),
-            )
-        })?;
-    Ok(Number { value, lexeme })
 }
 
 fn compile_expression(

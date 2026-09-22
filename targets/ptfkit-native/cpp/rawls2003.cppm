@@ -44,7 +44,7 @@ namespace ptfkit::rawls2003 {
 
 [[nodiscard]] inline double rawls2003_theta_33_tree(UsdaTextureClass texture, double carbon) {
     switch (texture) {
-    case UsdaTextureClass::Sand:
+    case UsdaTextureClass::Sand: {
         if (carbon < 2.1) {
             return 0.108;
         } else {
@@ -58,7 +58,8 @@ namespace ptfkit::rawls2003 {
                 }
             }
         }
-    case UsdaTextureClass::LoamySand:
+    }
+    case UsdaTextureClass::LoamySand: {
         if (carbon < 2.1) {
             return 0.151;
         } else {
@@ -72,7 +73,8 @@ namespace ptfkit::rawls2003 {
                 }
             }
         }
-    case UsdaTextureClass::SandyLoam:
+    }
+    case UsdaTextureClass::SandyLoam: {
         if (carbon < 1.1) {
             return 0.204;
         } else {
@@ -90,8 +92,9 @@ namespace ptfkit::rawls2003 {
                 }
             }
         }
+    }
     case UsdaTextureClass::Loam:
-    case UsdaTextureClass::SandyClay:
+    case UsdaTextureClass::SandyClay: {
         if (carbon < 1.7) {
             return 0.272;
         } else {
@@ -105,7 +108,8 @@ namespace ptfkit::rawls2003 {
                 }
             }
         }
-    case UsdaTextureClass::SandyClayLoam:
+    }
+    case UsdaTextureClass::SandyClayLoam: {
         if (carbon < 1.7) {
             return 0.272;
         } else {
@@ -119,8 +123,9 @@ namespace ptfkit::rawls2003 {
                 }
             }
         }
+    }
     case UsdaTextureClass::SiltLoam:
-    case UsdaTextureClass::Silt:
+    case UsdaTextureClass::Silt: {
         if (carbon < 1.5) {
             return 0.315;
         } else {
@@ -134,7 +139,8 @@ namespace ptfkit::rawls2003 {
                 }
             }
         }
-    case UsdaTextureClass::ClayLoam:
+    }
+    case UsdaTextureClass::ClayLoam: {
         if (carbon < 1.5) {
             return 0.315;
         } else {
@@ -148,16 +154,20 @@ namespace ptfkit::rawls2003 {
                 }
             }
         }
-    case UsdaTextureClass::SiltyClayLoam:
+    }
+    case UsdaTextureClass::SiltyClayLoam: {
         if (carbon < 4.2) {
             return 0.361;
         } else {
             return 0.548;
         }
-    case UsdaTextureClass::SiltyClay:
+    }
+    case UsdaTextureClass::SiltyClay: {
         return 0.397;
-    case UsdaTextureClass::Clay:
+    }
+    case UsdaTextureClass::Clay: {
         return 0.426;
+    }
     }
     return NAN;
 }

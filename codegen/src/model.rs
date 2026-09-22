@@ -213,8 +213,7 @@ impl<'de> Deserialize<'de> for Spec {
                                         })?,
                                     );
                                 }
-                                ImplementationVariable::Expression { .. }
-                                | ImplementationVariable::DecisionTree { .. } => {}
+                                ImplementationVariable::Expression { .. } => {}
                             }
                         }
                         Ok::<_, String>(implementation)
@@ -667,8 +666,7 @@ impl Spec {
                                 }
                             }
                         }
-                        ImplementationVariable::Expression { .. }
-                        | ImplementationVariable::DecisionTree { .. } => {}
+                        ImplementationVariable::Expression { .. } => {}
                     }
                 }
             }
@@ -1047,10 +1045,6 @@ pub(crate) enum ImplementationVariable {
         name: String,
         tree: Box<TreeInvocation>,
     },
-    DecisionTree {
-        name: String,
-        decision_tree: Box<DecisionTree>,
-    },
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -1322,7 +1316,6 @@ pub(crate) enum RawVariableValue {
     Expression(RawExpression),
     Lookup(Box<RawLookup>),
     Tree(Box<RawTreeInvocation>),
-    DecisionTree(Box<RawDecisionTree>),
 }
 
 #[derive(Clone, Debug)]
@@ -1337,12 +1330,6 @@ pub(crate) struct RawLookup {
     pub(crate) implementation_path: String,
     pub(crate) key: String,
     pub(crate) definition: LookupDefinition,
-}
-
-#[derive(Clone, Debug)]
-pub(crate) struct RawDecisionTree {
-    pub(crate) implementation_path: String,
-    pub(crate) tree: DecisionTree,
 }
 
 #[derive(Clone, Debug)]

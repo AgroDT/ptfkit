@@ -79,15 +79,6 @@
               }
             }
           }
-        },
-        {
-          "type": "object",
-          "additionalProperties": false,
-          "required": ["name", "decision_tree"],
-          "properties": {
-            "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
-            "decision_tree": { "$ref": "#/$defs/decisionTree" }
-          }
         }
       ]
     },

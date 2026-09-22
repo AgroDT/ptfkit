@@ -38,7 +38,7 @@ typedef enum {
 
 static inline double rawls2003_theta_33_tree(rawls2003_usda_texture_class texture, double carbon) {
     switch (texture) {
-    case rawls2003_usda_texture_class_sand:
+    case rawls2003_usda_texture_class_sand: {
         if (carbon < 2.1) {
             return 0.108;
         } else {
@@ -52,7 +52,8 @@ static inline double rawls2003_theta_33_tree(rawls2003_usda_texture_class textur
                 }
             }
         }
-    case rawls2003_usda_texture_class_loamy_sand:
+    }
+    case rawls2003_usda_texture_class_loamy_sand: {
         if (carbon < 2.1) {
             return 0.151;
         } else {
@@ -66,7 +67,8 @@ static inline double rawls2003_theta_33_tree(rawls2003_usda_texture_class textur
                 }
             }
         }
-    case rawls2003_usda_texture_class_sandy_loam:
+    }
+    case rawls2003_usda_texture_class_sandy_loam: {
         if (carbon < 1.1) {
             return 0.204;
         } else {
@@ -84,8 +86,9 @@ static inline double rawls2003_theta_33_tree(rawls2003_usda_texture_class textur
                 }
             }
         }
+    }
     case rawls2003_usda_texture_class_loam:
-    case rawls2003_usda_texture_class_sandy_clay:
+    case rawls2003_usda_texture_class_sandy_clay: {
         if (carbon < 1.7) {
             return 0.272;
         } else {
@@ -99,7 +102,8 @@ static inline double rawls2003_theta_33_tree(rawls2003_usda_texture_class textur
                 }
             }
         }
-    case rawls2003_usda_texture_class_sandy_clay_loam:
+    }
+    case rawls2003_usda_texture_class_sandy_clay_loam: {
         if (carbon < 1.7) {
             return 0.272;
         } else {
@@ -113,8 +117,9 @@ static inline double rawls2003_theta_33_tree(rawls2003_usda_texture_class textur
                 }
             }
         }
+    }
     case rawls2003_usda_texture_class_silt_loam:
-    case rawls2003_usda_texture_class_silt:
+    case rawls2003_usda_texture_class_silt: {
         if (carbon < 1.5) {
             return 0.315;
         } else {
@@ -128,7 +133,8 @@ static inline double rawls2003_theta_33_tree(rawls2003_usda_texture_class textur
                 }
             }
         }
-    case rawls2003_usda_texture_class_clay_loam:
+    }
+    case rawls2003_usda_texture_class_clay_loam: {
         if (carbon < 1.5) {
             return 0.315;
         } else {
@@ -142,16 +148,20 @@ static inline double rawls2003_theta_33_tree(rawls2003_usda_texture_class textur
                 }
             }
         }
-    case rawls2003_usda_texture_class_silty_clay_loam:
+    }
+    case rawls2003_usda_texture_class_silty_clay_loam: {
         if (carbon < 4.2) {
             return 0.361;
         } else {
             return 0.548;
         }
-    case rawls2003_usda_texture_class_silty_clay:
+    }
+    case rawls2003_usda_texture_class_silty_clay: {
         return 0.397;
-    case rawls2003_usda_texture_class_clay:
+    }
+    case rawls2003_usda_texture_class_clay: {
         return 0.426;
+    }
     }
     return NAN;
 }
