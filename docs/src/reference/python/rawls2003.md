@@ -5,4 +5,6 @@ title: Python module ptfkit.rawls2003
 nav-title: ptfkit.rawls2003
 ---
 
+Shared types: [`ptfkit.soil.UsdaTextureClass`](soil.md#ptfkit.soil.UsdaTextureClass).
+
 ::: ptfkit.rawls2003

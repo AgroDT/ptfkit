@@ -57,7 +57,10 @@ struct PythonResultClass {
     docstring: PythonDocstring,
 }
 
-pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile>> {
+pub(crate) fn render_with_definitions(
+    functions: &[CompiledFunction],
+    documents: &[crate::specs::DefinitionDocument],
+) -> Result<Vec<GeneratedFile>> {
     let mut modules: BTreeMap<String, Vec<&CompiledFunction>> = BTreeMap::new();
     for function in functions {
         modules
@@ -69,6 +72,11 @@ pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile
     let mut generated = Vec::new();
     for (document, definitions) in crate::targets::shared_enum_groups(functions) {
         let mut module = Module::new(WRAPPER_HEADER);
+        if let Some(entry) = documents.iter().find(|entry| entry.module == document) {
+            module.blank_line();
+            let description = serde_json::to_string(&entry.description).expect("string serializes");
+            module.line(format!("\"\"{description}\"\""));
+        }
         module.line(
             r#"
 

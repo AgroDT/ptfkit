@@ -31,7 +31,15 @@ pub(super) struct OutputFiles {
     pub(super) cpp_tests: Vec<GeneratedFile>,
 }
 
+#[cfg(test)]
 pub(super) fn render(functions: &[CompiledFunction]) -> Result<OutputFiles> {
+    render_with_definitions(functions, &[])
+}
+
+pub(super) fn render_with_definitions(
+    functions: &[CompiledFunction],
+    documents: &[crate::specs::DefinitionDocument],
+) -> Result<OutputFiles> {
     let mut c_headers = Vec::new();
     let mut cpp_modules = Vec::new();
     let mut c_tests = Vec::new();
@@ -47,14 +55,18 @@ pub(super) fn render(functions: &[CompiledFunction]) -> Result<OutputFiles> {
     let mut module_paths = vec!["cpp/ptfkit.cppm".to_owned()];
     let shared = super::shared_enum_groups(functions);
     for (document, definitions) in &shared {
+        let description = documents
+            .iter()
+            .find(|entry| entry.module == *document)
+            .map(|entry| entry.description.as_str());
         c_headers.push(file(
             format!("ptfkit/{document}.h"),
-            shared_c_header(document, definitions),
+            shared_c_header(document, definitions, description),
         ));
         umbrella.line(format_args!("#include <ptfkit/{document}.h>"));
         cpp_modules.push(file(
             format!("{document}.cppm"),
-            shared_cpp_module(document, definitions),
+            shared_cpp_module(document, definitions, description),
         ));
         module_paths.push(format!("cpp/{document}.cppm"));
         root_module.line(format_args!("export import ptfkit.{document};"));
@@ -881,10 +893,20 @@ fn shared_documents<'a>(functions: &[&'a CompiledFunction]) -> BTreeSet<&'a str>
         .collect()
 }
 
-fn shared_c_header(document: &str, definitions: &[&EnumDefinition]) -> String {
+fn shared_c_header(
+    document: &str,
+    definitions: &[&EnumDefinition],
+    description: Option<&str>,
+) -> String {
     let mut writer = Writer::new();
+    writer.write(HEADER);
+    if let Some(description) = description {
+        for line in description.lines() {
+            writer.line(format_args!("/// {line}"));
+        }
+    }
     writer.write(format_args!(
-        "{HEADER}\n\n#ifndef PTFKIT_{document}\n#define PTFKIT_{document}\n\n"
+        "\n\n#ifndef PTFKIT_{document}\n#define PTFKIT_{document}\n\n"
     ));
     for definition in definitions {
         writer.blank_line();
@@ -899,10 +921,20 @@ fn shared_c_header(document: &str, definitions: &[&EnumDefinition]) -> String {
     writer.into_string()
 }
 
-fn shared_cpp_module(document: &str, definitions: &[&EnumDefinition]) -> String {
+fn shared_cpp_module(
+    document: &str,
+    definitions: &[&EnumDefinition],
+    description: Option<&str>,
+) -> String {
     let mut writer = Writer::new();
+    writer.write(HEADER);
+    if let Some(description) = description {
+        for line in description.lines() {
+            writer.line(format_args!("/// {line}"));
+        }
+    }
     writer.write(format_args!(
-        "{HEADER}\n\nexport module ptfkit.{document};\n\nexport namespace ptfkit::{document} {{"
+        "\n\nexport module ptfkit.{document};\n\nexport namespace ptfkit::{document} {{"
     ));
     for definition in definitions {
         writer.blank_line();

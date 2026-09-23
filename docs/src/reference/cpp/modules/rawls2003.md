@@ -29,39 +29,9 @@ Rawls, W. J., Pachepsky, Y. A., Ritchie, J. C., Sobecki, T. M., & Bloodworth, H.
 
 [PTF catalog page](../../../ptf-catalog/sources/rawls2003.md)
 
-## `UsdaTextureClass`
+## Shared types
 
-```cpp
-enum class UsdaTextureClass {
-    Sand,
-    LoamySand,
-    SandyLoam,
-    Loam,
-    SiltLoam,
-    Silt,
-    SandyClayLoam,
-    ClayLoam,
-    SiltyClayLoam,
-    SandyClay,
-    SiltyClay,
-    Clay,
-};
-```
-
-| Member | Canonical value | Description |
-| --- | --- | --- |
-| `Sand` | `Sand` |  |
-| `LoamySand` | `Loamy sand` |  |
-| `SandyLoam` | `Sandy loam` |  |
-| `Loam` | `Loam` |  |
-| `SiltLoam` | `Silt loam` |  |
-| `Silt` | `Silt` |  |
-| `SandyClayLoam` | `Sandy clay loam` |  |
-| `ClayLoam` | `Clay loam` |  |
-| `SiltyClayLoam` | `Silty clay loam` |  |
-| `SandyClay` | `Sandy clay` |  |
-| `SiltyClay` | `Silty clay` |  |
-| `Clay` | `Clay` |  |
+- [`ptfkit::soil::UsdaTextureClass`](soil.md#usdatextureclass)
 
 ## Functions
 

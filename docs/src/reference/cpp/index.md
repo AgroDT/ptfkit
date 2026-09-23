@@ -8,9 +8,16 @@ title: C++ API reference
 
 ptfkit's C++ API is organized around C++23 modules.
 
-## Modules
+## Umbrella module
 
-- [`ptfkit`](modules/ptfkit.md) — Re-exports every ptfkit source module.
+- [`ptfkit`](modules/ptfkit.md) — Re-exports all public ptfkit modules.
+
+## Shared domain modules
+
+- [`ptfkit.soil`](modules/soil.md)
+
+## Source modules
+
 - [`ptfkit.ahuja1984`](modules/ahuja1984.md) — Ahuja et al. (1984), effective-porosity relations for saturated conductivity.
 - [`ptfkit.aimrun2009`](modules/aimrun2009.md) — Aimrun & Amin (2009), Tanjung Karang Rice Irrigation Project, Malaysia.
 - [`ptfkit.beniaich2023`](modules/beniaich2023.md) — Beniaich et al. (2023), soil-water PTFs for four Moroccan regions.

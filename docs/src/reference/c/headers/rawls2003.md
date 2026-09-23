@@ -26,39 +26,9 @@ Rawls, W. J., Pachepsky, Y. A., Ritchie, J. C., Sobecki, T. M., & Bloodworth, H.
 
 [PTF catalog page](../../../ptf-catalog/sources/rawls2003.md)
 
-## `ptfkit_soil_usda_texture_class`
+## Shared types
 
-```c
-typedef enum {
-    ptfkit_soil_usda_texture_class_sand,
-    ptfkit_soil_usda_texture_class_loamy_sand,
-    ptfkit_soil_usda_texture_class_sandy_loam,
-    ptfkit_soil_usda_texture_class_loam,
-    ptfkit_soil_usda_texture_class_silt_loam,
-    ptfkit_soil_usda_texture_class_silt,
-    ptfkit_soil_usda_texture_class_sandy_clay_loam,
-    ptfkit_soil_usda_texture_class_clay_loam,
-    ptfkit_soil_usda_texture_class_silty_clay_loam,
-    ptfkit_soil_usda_texture_class_sandy_clay,
-    ptfkit_soil_usda_texture_class_silty_clay,
-    ptfkit_soil_usda_texture_class_clay,
-} ptfkit_soil_usda_texture_class;
-```
-
-| Member | Canonical value | Description |
-| --- | --- | --- |
-| `ptfkit_soil_usda_texture_class_sand` | `Sand` |  |
-| `ptfkit_soil_usda_texture_class_loamy_sand` | `Loamy sand` |  |
-| `ptfkit_soil_usda_texture_class_sandy_loam` | `Sandy loam` |  |
-| `ptfkit_soil_usda_texture_class_loam` | `Loam` |  |
-| `ptfkit_soil_usda_texture_class_silt_loam` | `Silt loam` |  |
-| `ptfkit_soil_usda_texture_class_silt` | `Silt` |  |
-| `ptfkit_soil_usda_texture_class_sandy_clay_loam` | `Sandy clay loam` |  |
-| `ptfkit_soil_usda_texture_class_clay_loam` | `Clay loam` |  |
-| `ptfkit_soil_usda_texture_class_silty_clay_loam` | `Silty clay loam` |  |
-| `ptfkit_soil_usda_texture_class_sandy_clay` | `Sandy clay` |  |
-| `ptfkit_soil_usda_texture_class_silty_clay` | `Silty clay` |  |
-| `ptfkit_soil_usda_texture_class_clay` | `Clay` |  |
+- [`ptfkit_soil_usda_texture_class`](soil.md#ptfkit_soil_usda_texture_class)
 
 ## Functions
 

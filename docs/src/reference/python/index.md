@@ -6,9 +6,13 @@ title: Python API reference
 
 # Python API reference
 
-ptfkit's Python API is organized around public source modules.
+ptfkit's Python API is organized around public modules.
 
-## Modules
+## Shared domain modules
+
+- [`ptfkit.soil`](soil.md)
+
+## Source modules
 
 - [`ptfkit.ahuja1984`](ahuja1984.md) — Ahuja et al. (1984), effective-porosity relations for saturated conductivity.
 - [`ptfkit.aimrun2009`](aimrun2009.md) — Aimrun & Amin (2009), Tanjung Karang Rice Irrigation Project, Malaysia.

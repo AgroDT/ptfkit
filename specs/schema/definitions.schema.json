@@ -4,9 +4,11 @@
   "type": "object",
   "additionalProperties": false,
   "required": [
+    "description",
     "$defs"
   ],
   "properties": {
+    "description": { "type": "string", "minLength": 1 },
     "$defs": {
       "type": "object",
       "propertyNames": {

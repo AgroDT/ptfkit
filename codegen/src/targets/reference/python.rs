@@ -1,21 +1,58 @@
+use std::collections::{BTreeMap, BTreeSet};
+
 use crate::{
-    model::Entry,
+    model::{CompiledFunction, Entry, EnumDefinition},
     output::GeneratedFile,
     render::{Render, Writer, markdown},
-    targets::python::natural_sort_key,
+    targets::{python::natural_sort_key, shared_enum_groups},
 };
 
-pub(crate) fn render(entries: &[Entry]) -> Vec<GeneratedFile> {
+pub(crate) fn render(entries: &[Entry], functions: &[CompiledFunction]) -> Vec<GeneratedFile> {
     let mut entries = entries.iter().collect::<Vec<_>>();
     entries.sort_by_key(|entry| natural_sort_key(&entry.slug));
+    let shared = shared_enum_groups(functions);
+    let mut source_shared = BTreeMap::<&str, BTreeSet<(&str, &str)>>::new();
+    for function in functions {
+        for definition in function.entry.spec.functions[function.function_index]
+            .inputs
+            .iter()
+            .filter_map(|input| input.enum_type())
+        {
+            if let Some(module) = definition.shared_document() {
+                source_shared
+                    .entry(&function.entry.slug)
+                    .or_default()
+                    .insert((module, &definition.enum_type.name));
+            }
+        }
+    }
 
     let mut files = vec![markdown::markdown_file("index.md", |writer| {
-        IndexPage { entries: &entries }.render(writer);
+        IndexPage {
+            entries: &entries,
+            shared: &shared,
+        }
+        .render(writer);
     })];
+    for module in shared.keys() {
+        files.push(markdown::markdown_file(format!("{module}.md"), |writer| {
+            markdown::generated_frontmatter(writer, |writer| {
+                writer.line(format_args!("title: Python module ptfkit.{module}"));
+                writer.line(format_args!("nav-title: ptfkit.{module}"));
+            });
+            writer.line(format_args!("::: ptfkit.{module}"));
+        }));
+    }
     for entry in entries {
         files.push(markdown::markdown_file(
             format!("{}.md", entry.slug),
-            |writer| ModulePage { entry }.render(writer),
+            |writer| {
+                ModulePage {
+                    entry,
+                    shared: source_shared.get(entry.slug.as_str()),
+                }
+                .render(writer)
+            },
         ));
     }
     files
@@ -23,6 +60,7 @@ pub(crate) fn render(entries: &[Entry]) -> Vec<GeneratedFile> {
 
 struct IndexPage<'a> {
     entries: &'a [&'a Entry],
+    shared: &'a BTreeMap<&'a str, Vec<&'a EnumDefinition>>,
 }
 
 impl Render for IndexPage<'_> {
@@ -31,8 +69,16 @@ impl Render for IndexPage<'_> {
             writer.line("title: Python API reference");
         });
         writer.write(
-            "# Python API reference\n\nptfkit's Python API is organized around public source modules.\n\n## Modules\n\n",
+            "# Python API reference\n\nptfkit's Python API is organized around public modules.\n\n",
         );
+        if !self.shared.is_empty() {
+            writer.write("## Shared domain modules\n\n");
+            for module in self.shared.keys() {
+                writer.line(format_args!("- [`ptfkit.{module}`]({module}.md)"));
+            }
+            writer.blank_line();
+        }
+        writer.write("## Source modules\n\n");
         for entry in self.entries {
             ModuleReference { entry }.render(writer);
         }
@@ -41,6 +87,7 @@ impl Render for IndexPage<'_> {
 
 struct ModulePage<'a> {
     entry: &'a Entry,
+    shared: Option<&'a BTreeSet<(&'a str, &'a str)>>,
 }
 
 impl Render for ModulePage<'_> {
@@ -51,6 +98,18 @@ impl Render for ModulePage<'_> {
             writer.line(format_args!("title: Python module {module}"));
             writer.line(format_args!("nav-title: {module}"));
         });
+        if let Some(shared) = self.shared {
+            writer.write("Shared types: ");
+            for (index, (module, name)) in shared.iter().enumerate() {
+                if index > 0 {
+                    writer.write(", ");
+                }
+                writer.write(format_args!(
+                    "[`ptfkit.{module}.{name}`]({module}.md#ptfkit.{module}.{name})"
+                ));
+            }
+            writer.write(".\n\n");
+        }
         writer.line(format_args!("::: {module}"));
     }
 }
@@ -77,7 +136,10 @@ mod tests {
 
     fn rendered_files() -> Vec<GeneratedFile> {
         let entries = crate::test_support::entries();
-        render(&entries)
+        render(
+            &entries,
+            &crate::compile::functions(entries.clone()).unwrap(),
+        )
     }
 
     fn contents<'a>(files: &'a [GeneratedFile], path: &str) -> &'a str {
@@ -89,9 +151,30 @@ mod tests {
     }
 
     #[test]
+    fn shared_module_has_its_own_page_and_consumer_links() {
+        let root = crate::test_support::fixture_root("python-shared-reference");
+        crate::test_support::copy_shared_definition_fixture(&root);
+        let entries = crate::load_validated_specifications(&root).unwrap();
+        let functions = crate::compile::functions(entries.clone()).unwrap();
+        let files = render(&entries, &functions);
+        assert!(contents(&files, "soil.md").contains("::: ptfkit.soil"));
+        assert!(contents(&files, "index.md").contains("[`ptfkit.soil`](soil.md)"));
+        for source in ["first_source", "second_source"] {
+            assert!(
+                contents(&files, &format!("{source}.md"))
+                    .contains("[`ptfkit.soil.SharedCategory`](soil.md#ptfkit.soil.SharedCategory)")
+            );
+        }
+        std::fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
     fn renders_one_page_for_each_source_module() {
         let entries = crate::test_support::entries();
-        let files = render(&entries);
+        let files = render(
+            &entries,
+            &crate::compile::functions(entries.clone()).unwrap(),
+        );
         let index = contents(&files, "index.md");
 
         assert_eq!(files.len(), entries.len() + 1);
@@ -121,7 +204,10 @@ mod tests {
             .find(|entry| entry.slug == "example2")
             .unwrap();
         manual.spec.generation.public_python = PythonGeneration::Manual;
-        let files = render(&entries);
+        let files = render(
+            &entries,
+            &crate::compile::functions(entries.clone()).unwrap(),
+        );
 
         assert!(contents(&files, "example2.md").contains("::: ptfkit.example2"));
     }

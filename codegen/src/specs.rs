@@ -16,14 +16,30 @@ use crate::{
     diagnostics::{Diagnostic, ValidationReport},
     formula,
     model::{
-        Entry, EnumType, Implementation, ImplementationVariable, Input, Quantity, QuantityRegistry,
-        RawExpression, RawFunction, RawInput, RawInputType, RawLookup, RawTreeInvocation,
-        RawVariable, RawVariableValue, Spec,
+        Entry, EnumDefinition, EnumType, Implementation, ImplementationVariable, Input, Quantity,
+        QuantityRegistry, RawExpression, RawFunction, RawInput, RawInputType, RawLookup,
+        RawTreeInvocation, RawVariable, RawVariableValue, Spec,
     },
     semantic,
 };
 
+pub(crate) struct DefinitionDocument {
+    pub(crate) module: String,
+    pub(crate) description: String,
+    pub(crate) definitions: Vec<EnumDefinition>,
+}
+
+pub(crate) struct LoadedSpecifications {
+    pub(crate) entries: Vec<Entry>,
+    pub(crate) definitions: Vec<DefinitionDocument>,
+}
+
+#[cfg(test)]
 pub(crate) fn load(root: &Path) -> Result<Vec<Entry>> {
+    Ok(load_all(root)?.entries)
+}
+
+pub(crate) fn load_all(root: &Path) -> Result<LoadedSpecifications> {
     let quantities = load_quantities(root)?;
     let schema: Value =
         serde_json::from_slice(&fs::read(root.join("specs/schema/ptf-spec.schema.json"))?)?;
@@ -151,7 +167,38 @@ pub(crate) fn load(root: &Path) -> Result<Vec<Entry>> {
     if !errors.is_empty() {
         return Err(ValidationReport::specifications(errors).into());
     }
-    Ok(entries)
+    let definition_documents = definitions
+        .into_iter()
+        .map(|(path, value)| {
+            let module = source_slug(&path).expect("validated definition filename");
+            let description = value["description"]
+                .as_str()
+                .expect("validated description")
+                .to_owned();
+            let members = value["$defs"].as_object().expect("validated definitions");
+            let definitions = members
+                .iter()
+                .map(|(name, value)| {
+                    let mut definition: EnumDefinition = serde_json::from_value(value.clone())?;
+                    definition.enum_type = EnumType {
+                        document: path.clone(),
+                        name: name.clone(),
+                        shared_module: Some(module.clone()),
+                    };
+                    Ok(definition)
+                })
+                .collect::<Result<Vec<_>>>()?;
+            Ok(DefinitionDocument {
+                module,
+                description,
+                definitions,
+            })
+        })
+        .collect::<Result<Vec<_>>>()?;
+    Ok(LoadedSpecifications {
+        entries,
+        definitions: definition_documents,
+    })
 }
 
 fn load_definitions(
@@ -1232,6 +1279,26 @@ functions:
             assert_eq!(actual_path, &path);
             fs::remove_dir_all(root).unwrap();
         }
+    }
+
+    #[test]
+    fn shared_document_requires_a_general_description() {
+        let root = fixture_root("shared-description-required");
+        crate::test_support::copy_shared_definition_fixture(&root);
+        let path = root.join("specs/definitions/soil.yaml");
+        let yaml = fs::read_to_string(&path).unwrap();
+        fs::write(
+            &path,
+            yaml.replace(
+                "description: Shared soil categories for test sources.\n",
+                "",
+            ),
+        )
+        .unwrap();
+        let error = load(&root).unwrap_err();
+        assert!(error.to_string().contains("invalid shared definitions"));
+        assert!(error.to_string().contains("description"));
+        fs::remove_dir_all(root).unwrap();
     }
 
     #[test]

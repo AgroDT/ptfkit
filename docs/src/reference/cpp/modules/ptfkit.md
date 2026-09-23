@@ -11,10 +11,11 @@ nav-title: ptfkit
 import ptfkit;
 ```
 
-This umbrella module re-exports every public ptfkit source module. Import an individual module when only one source is needed.
+This umbrella module re-exports every public ptfkit module. Import an individual module when only one module is needed.
 
 ## Re-exported modules
 
+- [`ptfkit.soil`](soil.md)
 - [`ptfkit.ahuja1984`](ahuja1984.md) — Ahuja et al. (1984), effective-porosity relations for saturated conductivity.
 - [`ptfkit.aimrun2009`](aimrun2009.md) — Aimrun & Amin (2009), Tanjung Karang Rice Irrigation Project, Malaysia.
 - [`ptfkit.beniaich2023`](beniaich2023.md) — Beniaich et al. (2023), soil-water PTFs for four Moroccan regions.

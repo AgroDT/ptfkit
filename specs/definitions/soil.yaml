@@ -1,4 +1,5 @@
 # yaml-language-server: $schema=../schema/definitions.schema.json
+description: Shared soil classifications used by pedotransfer functions.
 $defs:
   UsdaTextureClass:
     type: enum

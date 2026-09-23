@@ -295,12 +295,16 @@ changed.
 The MkDocs configuration is `docs/mkdocs.yml`; it renders `docs/src/` into
 `docs/dist/`. Handwritten pages are maintained under `docs/src/`. The PTF
 catalog and API reference pages are generated from reviewed specifications and
-the compiled semantic model. C reference Markdown is generated under
+the compiled semantic model. The catalog has separate `sources/` and
+`definitions/` pages; the latter include every validated shared-definition
+YAML, even when no function uses it. C reference Markdown is generated under
 `docs/src/reference/c/`; C++ reference Markdown is generated under
 `docs/src/reference/cpp/`; Python module pages are generated under
 `docs/src/reference/python/` and render public docstrings through
-`mkdocstrings`. Rust API documentation is published by
-[docs.rs](https://docs.rs/ptfkit/).
+`mkdocstrings`. Used shared definitions receive domain-module reference pages;
+source pages link to shared types and keep source-local types. Rust API
+documentation includes definition and member descriptions from YAML and is
+published by [docs.rs](https://docs.rs/ptfkit/).
 
 ## Change scope and commits
 
