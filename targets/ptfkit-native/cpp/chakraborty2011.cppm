@@ -19,9 +19,9 @@ export module ptfkit.chakraborty2011;
  * performed during 2006-2008.
  */
 
-export namespace ptfkit::chakraborty2011 {
+namespace ptfkit::chakraborty2011 {
 
-struct Chakraborty2011PTFResult {
+export struct Chakraborty2011PTFResult {
     /**
      * @brief Gravimetric water content at -33 kPa matric potential. (g/g)
      */
@@ -58,7 +58,7 @@ struct Chakraborty2011PTFResult {
  * four respective potentials.
  * @warning Use outside the source Indian-soil dataset requires independent validation.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq1(double clay, double silt) {
     const double water_content_33 = (0.297 * clay + 0.478 * silt + 4.600) / 100.0;
     const double water_content_100 = (0.270 * clay + 0.379 * silt + 2.988) / 100.0;
@@ -86,7 +86,7 @@ inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq1(double clay, double
  * four respective potentials.
  * @warning Use outside the source Indian-soil dataset requires independent validation.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq2(double sand, double bulk_density) {
     const double water_content_33 = (-0.377 * sand - 0.215 * bulk_density + 41.114) / 100.0;
     const double water_content_100 = (-0.330 * sand + 2.611 * bulk_density + 30.160) / 100.0;
@@ -115,7 +115,7 @@ inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq2(double sand, double
  * four respective potentials.
  * @warning Use outside the source Indian-soil dataset requires independent validation.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq3(double clay, double silt,
                                                              double bulk_density) {
     const double water_content_33 =
@@ -149,7 +149,7 @@ inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq3(double clay, double
  * four respective potentials.
  * @warning Use outside the source Indian-soil dataset requires independent validation.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq4(double clay, double silt,
                                                              double sand) {
     const double water_content_33 = (0.078 * clay + 0.248 * silt - 0.241 * sand + 27.447) / 100.0;
@@ -180,7 +180,7 @@ inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq4(double clay, double
  * four respective potentials.
  * @warning Use outside the source Indian-soil dataset requires independent validation.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq5(double clay, double silt, double sand,
                                                              double bulk_density) {
     const double water_content_33 =
@@ -217,7 +217,7 @@ inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq5(double clay, double
  * four respective potentials.
  * @warning Use outside the source Indian-soil dataset requires independent validation.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Chakraborty2011PTFResult calc_ptf_chakraborty2011_eq6(double clay, double silt, double sand,
                                                              double organic_carbon,
                                                              double bulk_density) {

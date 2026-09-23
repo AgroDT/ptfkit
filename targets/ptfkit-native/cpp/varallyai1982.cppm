@@ -18,9 +18,9 @@ export module ptfkit.varallyai1982;
  * regressions used 68 samples and the chernozem comparison used 108 samples.
  */
 
-export namespace ptfkit::varallyai1982 {
+namespace ptfkit::varallyai1982 {
 
-struct Varallyai1982Parameters {
+export struct Varallyai1982Parameters {
     /**
      * @brief Upper-asymptote water content parameter of equation (9). (vol.%)
      */
@@ -61,7 +61,7 @@ struct Varallyai1982Parameters {
  * @warning The source does not report exact calibration ranges; avoid extrapolation beyond
  * comparable Hungarian meadow-series soils.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Varallyai1982Parameters calc_ptf_varallyai1982_meadow(double bulk_density,
                                                              double fine_sand_fraction,
                                                              double fine_fraction) {
@@ -97,7 +97,7 @@ inline Varallyai1982Parameters calc_ptf_varallyai1982_meadow(double bulk_density
  * @warning The source does not report exact calibration ranges; avoid extrapolation beyond
  * comparable Hungarian chernozem A horizons.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Varallyai1982Parameters calc_ptf_varallyai1982_chernozem_a(double bulk_density,
                                                                   double fine_fraction) {
     const double theta_0 = -56.40 * bulk_density + 20.50 * fine_fraction + 123.79;
@@ -129,7 +129,7 @@ inline Varallyai1982Parameters calc_ptf_varallyai1982_chernozem_a(double bulk_de
  * @warning The source does not report exact calibration ranges; avoid extrapolation beyond
  * comparable Hungarian chernozem B horizons.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Varallyai1982Parameters calc_ptf_varallyai1982_chernozem_b(double bulk_density,
                                                                   double fine_fraction) {
     const double theta_0 = -62.20 * bulk_density - 49.14 * (fine_fraction * fine_fraction) + 140.70;
@@ -160,7 +160,7 @@ inline Varallyai1982Parameters calc_ptf_varallyai1982_chernozem_b(double bulk_de
  * @warning The source does not report exact calibration ranges; avoid extrapolation beyond
  * comparable Hungarian chernozem C horizons.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Varallyai1982Parameters calc_ptf_varallyai1982_chernozem_c(double bulk_density,
                                                                   double fine_fraction) {
     const double theta_0 = -46.80 * bulk_density + 115.39;

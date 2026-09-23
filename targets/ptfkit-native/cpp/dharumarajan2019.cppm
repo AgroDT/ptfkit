@@ -21,9 +21,9 @@ export module ptfkit.dharumarajan2019;
  * was modeled from 100 Karnataka soil observations.
  */
 
-export namespace ptfkit::dharumarajan2019 {
+namespace ptfkit::dharumarajan2019 {
 
-struct Dharumarajan2019WaterRetentionResult {
+export struct Dharumarajan2019WaterRetentionResult {
     /**
      * @brief Soil water content at -33 kPa matric potential. (%)
      */
@@ -56,7 +56,7 @@ struct Dharumarajan2019WaterRetentionResult {
  * @warning The source gives inconsistent profile counts and district lists for the Northern
  * dataset; see the scientific notes.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Dharumarajan2019WaterRetentionResult
 calc_ptf_dharumarajan2019_nkp(double clay, double sand, double cation_exchange_capacity) {
     const double field_capacity =
@@ -85,7 +85,7 @@ calc_ptf_dharumarajan2019_nkp(double clay, double sand, double cation_exchange_c
  * @warning The source gives inconsistent profile counts and district lists for the Northern
  * dataset; see the scientific notes.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Dharumarajan2019WaterRetentionResult calc_ptf_dharumarajan2019_nkp_clay(double clay) {
     const double field_capacity = 4.968 + 0.586 * clay;
     const double permanent_wilting_point = -2.443 + 0.500 * clay;
@@ -112,7 +112,7 @@ inline Dharumarajan2019WaterRetentionResult calc_ptf_dharumarajan2019_nkp_clay(d
  * @warning The paper does not state whether its water-content percentages are gravimetric or
  * volumetric.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Dharumarajan2019WaterRetentionResult
 calc_ptf_dharumarajan2019_skp(double clay, double sand, double cation_exchange_capacity) {
     const double field_capacity =
@@ -139,7 +139,7 @@ calc_ptf_dharumarajan2019_skp(double clay, double sand, double cation_exchange_c
  * @warning The paper does not state whether its water-content percentages are gravimetric or
  * volumetric.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Dharumarajan2019WaterRetentionResult calc_ptf_dharumarajan2019_skp_clay(double clay) {
     const double field_capacity = 3.724 + 0.581 * clay;
     const double permanent_wilting_point = -1.979 + 0.428 * clay;
@@ -162,7 +162,7 @@ inline Dharumarajan2019WaterRetentionResult calc_ptf_dharumarajan2019_skp_clay(d
  * @note The reported model R-squared is 41%, and the reported RMSE is 6.71%.
  * @warning Predictor calibration ranges are not reported for the 100-observation dataset.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_dharumarajan2019_infiltration(double sand, double silt, double clay) {
     return 177.55 - 1.47 * sand - 1.80 * clay - 1.58 * silt;
 }

@@ -23,9 +23,9 @@ export module ptfkit.hodnett2002;
  * countries, split into 492 calibration curves and 279 validation curves.
  */
 
-export namespace ptfkit::hodnett2002 {
+namespace ptfkit::hodnett2002 {
 
-struct Hodnett2002PTFResult {
+export struct Hodnett2002PTFResult {
     /**
      * @brief Shape parameter of the van Genuchten water-retention model. (kPa^-1)
      */
@@ -81,7 +81,7 @@ struct Hodnett2002PTFResult {
  * @warning The PTF did not reproduce very low alpha values well because high-alpha soils
  * dominated the calibration data; mineralogy and structure were not directly represented.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Hodnett2002PTFResult calc_ptf_hodnett2002(double sand, double silt, double clay,
                                                  double organic_carbon, double bulk_density,
                                                  double cation_exchange_capacity, double ph) {

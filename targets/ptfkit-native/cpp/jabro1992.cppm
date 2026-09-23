@@ -21,7 +21,7 @@ export module ptfkit.jabro1992;
  * et al., 1987), 350 samples; validation on Duffield silt loam data.
  */
 
-export namespace ptfkit::jabro1992 {
+namespace ptfkit::jabro1992 {
 
 /**
  * @brief Estimate saturated hydraulic conductivity from silt, clay, and bulk density.
@@ -35,7 +35,7 @@ export namespace ptfkit::jabro1992 {
  * @note Sand is not an input to the model.
  * @warning The formula uses base-10 logarithms of silt and clay.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_jabro1992(double silt, double clay, double bulk_density) {
     const double log10_k_sat_cm_per_hour =
         9.56 - 0.81 * std::log10(silt) - 1.09 * std::log10(clay) - 4.64 * bulk_density;

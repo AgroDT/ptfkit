@@ -17,9 +17,9 @@ export module ptfkit.cosby1984;
  * 1448 soil samples from Holtan et al. (1968) and Rawls et al. (1976).
  */
 
-export namespace ptfkit::cosby1984 {
+namespace ptfkit::cosby1984 {
 
-struct Cosby1984UnivariatePTFResult {
+export struct Cosby1984UnivariatePTFResult {
     /**
      * @brief Mean slope of the moisture characteristic. (dimensionless)
      */
@@ -77,7 +77,7 @@ struct Cosby1984UnivariatePTFResult {
  * @note Public API names are provisional for pilot testing.
  * @warning Log-transformed output units use the pilot contract `reported log value`.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Cosby1984UnivariatePTFResult calc_ptf_cosby1984_univariate(double sand, double silt,
                                                                   double clay) {
     const double mean_b = 2.91 + 0.159 * clay;

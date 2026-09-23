@@ -22,7 +22,7 @@ export module ptfkit.ferrerjulia2004;
  * regressions used 3172 horizons with sufficient data.
  */
 
-export namespace ptfkit::ferrerjulia2004 {
+namespace ptfkit::ferrerjulia2004 {
 
 /**
  * @brief Evaluate the Campbell and Shiozawa saturated-conductivity PTF.
@@ -34,7 +34,7 @@ export namespace ptfkit::ferrerjulia2004 {
  * Saturated hydraulic conductivity.
  * @note Reproduced in Section 4.2 for comparison with the new Spanish-soil PTFs.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_campbell_shiozawa(double sand, double clay) {
     return 54.0 * std::exp(-0.07 * sand - 0.167 * clay);
 }
@@ -51,7 +51,7 @@ inline double calc_ptf_ferrerjulia2004_campbell_shiozawa(double sand, double cla
  * @warning The denominator contains log10(clay) and the source does not state its valid domain
  * or singularity policy.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_saxton(double sand, double clay) {
     return 10.0 * std::exp(1.01 - 0.0755 * sand +
                            (-3.895 + 0.03671 * sand - 0.1103 * clay + 0.00087546 * (clay * clay)) /
@@ -67,7 +67,7 @@ inline double calc_ptf_ferrerjulia2004_saxton(double sand, double clay) {
  * Saturated hydraulic conductivity.
  * @note Reproduced in Section 4.2 for comparison with the new Spanish-soil PTFs.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_dane_puckett(double clay) {
     return 303.84 * std::exp(-0.144 * clay);
 }
@@ -81,7 +81,7 @@ inline double calc_ptf_ferrerjulia2004_dane_puckett(double clay) {
  * Saturated hydraulic conductivity.
  * @note Reproduced in Section 4.2 for comparison with the new Spanish-soil PTFs.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_puckett(double clay) {
     return 156.96 * std::exp(-0.1975 * clay);
 }
@@ -96,7 +96,7 @@ inline double calc_ptf_ferrerjulia2004_puckett(double clay) {
  * Saturated hydraulic conductivity.
  * @note Reproduced in Section 4.2 for comparison with the new Spanish-soil PTFs.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_cosby(double sand, double clay) {
     return 25.4 + std::pow(10.0, -0.6 + 0.012 * sand - 0.0064 * clay);
 }
@@ -110,7 +110,7 @@ inline double calc_ptf_ferrerjulia2004_cosby(double sand, double clay) {
  * Saturated hydraulic conductivity for FAO 1974 Humic Acrisol.
  * @note Table 3; R^2 = 0.723.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_humic_acrisol_sand(double sand) {
     return 1.5162 * std::exp(0.0452 * sand);
 }
@@ -126,7 +126,7 @@ inline double calc_ptf_ferrerjulia2004_humic_acrisol_sand(double sand) {
  * Saturated hydraulic conductivity for FAO 1974 Humic Acrisol.
  * @note Table 3; R^2 = 0.701.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter(double sand,
                                                                             double clay,
                                                                             double organic_matter) {
@@ -142,7 +142,7 @@ inline double calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter(doub
  * Saturated hydraulic conductivity for FAO 1974 Calcic Cambisol.
  * @note Table 3; R^2 = 0.521.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_calcic_cambisol_sand(double sand) {
     return 1.043 * std::exp(0.0452 * sand);
 }
@@ -158,7 +158,7 @@ inline double calc_ptf_ferrerjulia2004_calcic_cambisol_sand(double sand) {
  * Saturated hydraulic conductivity for FAO 1974 Calcic Cambisol.
  * @note Table 3; R^2 = 0.468.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double
 calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter(double sand, double clay,
                                                                 double organic_matter) {
@@ -174,7 +174,7 @@ calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter(double sand, dou
  * Saturated hydraulic conductivity for FAO 1974 Dystric Cambisol.
  * @note Table 3; R^2 = 0.750.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_dystric_cambisol_sand(double sand) {
     return 1.3182 * std::exp(0.0464 * sand);
 }
@@ -190,7 +190,7 @@ inline double calc_ptf_ferrerjulia2004_dystric_cambisol_sand(double sand) {
  * Saturated hydraulic conductivity for FAO 1974 Dystric Cambisol.
  * @note Table 3; R^2 = 0.779.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double
 calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter(double sand, double clay,
                                                                  double organic_matter) {
@@ -206,7 +206,7 @@ calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter(double sand, do
  * Saturated hydraulic conductivity for FAO 1974 Eutric Cambisol.
  * @note Table 3; R^2 = 0.734.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_eutric_cambisol_sand(double sand) {
     return 0.9356 * std::exp(0.0503 * sand);
 }
@@ -222,7 +222,7 @@ inline double calc_ptf_ferrerjulia2004_eutric_cambisol_sand(double sand) {
  * Saturated hydraulic conductivity for FAO 1974 Eutric Cambisol.
  * @note Table 3; R^2 = 0.686.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double
 calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter(double sand, double clay,
                                                                 double organic_matter) {
@@ -238,7 +238,7 @@ calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter(double sand, dou
  * Saturated hydraulic conductivity for FAO 1974 Gleyic Cambisol.
  * @note Table 3; R^2 = 0.807.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_gleyic_cambisol_sand(double sand) {
     return 0.2336 * std::exp(0.0667 * sand);
 }
@@ -254,7 +254,7 @@ inline double calc_ptf_ferrerjulia2004_gleyic_cambisol_sand(double sand) {
  * Saturated hydraulic conductivity for FAO 1974 Gleyic Cambisol.
  * @note Table 3; R^2 = 0.824.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double
 calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter(double sand, double clay,
                                                                 double organic_matter) {
@@ -270,7 +270,7 @@ calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter(double sand, dou
  * Saturated hydraulic conductivity for FAO 1974 Humic Cambisol.
  * @note Table 3; R^2 = 0.592.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_humic_cambisol_sand(double sand) {
     return 2.1622 * std::exp(0.0371 * sand);
 }
@@ -286,7 +286,7 @@ inline double calc_ptf_ferrerjulia2004_humic_cambisol_sand(double sand) {
  * Saturated hydraulic conductivity for FAO 1974 Humic Cambisol.
  * @note Table 3; R^2 = 0.632.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double
 calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter(double sand, double clay,
                                                                double organic_matter) {
@@ -302,7 +302,7 @@ calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter(double sand, doub
  * Saturated hydraulic conductivity for FAO 1974 Calcaric Fluvisol.
  * @note Table 3; R^2 = 0.772.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand(double sand) {
     return 0.814 * std::exp(0.052 * sand);
 }
@@ -319,7 +319,7 @@ inline double calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand(double sand) {
  * Saturated hydraulic conductivity for FAO 1974 Calcaric Fluvisol.
  * @note Table 3; R^2 = 0.792.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double
 calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter(double sand, double clay,
                                                                   double organic_matter) {
@@ -336,7 +336,7 @@ calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter(double sand, d
  * @note Table 3; R^2 = 0.412.
  * @warning The paper reports weak fit and suggests missing clay-mineralogy information.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_calcic_luvisol_sand(double sand) {
     return 0.671 * std::exp(0.0467 * sand);
 }
@@ -353,7 +353,7 @@ inline double calc_ptf_ferrerjulia2004_calcic_luvisol_sand(double sand) {
  * @note Table 3; R^2 = 0.473.
  * @warning The paper reports weak fit and suggests missing clay-mineralogy information.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double
 calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter(double sand, double clay,
                                                                double organic_matter) {
@@ -369,7 +369,7 @@ calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter(double sand, doub
  * Saturated hydraulic conductivity for FAO 1974 Chromic Luvisol.
  * @note Table 3; R^2 = 0.534.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_chromic_luvisol_sand(double sand) {
     return 0.898 * std::exp(0.0494 * sand);
 }
@@ -385,7 +385,7 @@ inline double calc_ptf_ferrerjulia2004_chromic_luvisol_sand(double sand) {
  * Saturated hydraulic conductivity for FAO 1974 Chromic Luvisol.
  * @note Table 3; R^2 = 0.557.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double
 calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter(double sand, double clay,
                                                                 double organic_matter) {
@@ -401,7 +401,7 @@ calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter(double sand, dou
  * Saturated hydraulic conductivity for FAO 1974 Gleyic Luvisol.
  * @note Table 3; R^2 = 0.876.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_gleyic_luvisol_sand(double sand) {
     return 0.5395 * std::exp(0.0514 * sand);
 }
@@ -417,7 +417,7 @@ inline double calc_ptf_ferrerjulia2004_gleyic_luvisol_sand(double sand) {
  * Saturated hydraulic conductivity for FAO 1974 Gleyic Luvisol.
  * @note Table 3; R^2 = 0.917.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double
 calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter(double sand, double clay,
                                                                double organic_matter) {
@@ -433,7 +433,7 @@ calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter(double sand, doub
  * Saturated hydraulic conductivity for FAO 1974 Orthic Luvisol.
  * @note Table 3; R^2 = 0.676.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_orthic_luvisol_sand(double sand) {
     return 1.3958 * std::exp(0.0431 * sand);
 }
@@ -449,7 +449,7 @@ inline double calc_ptf_ferrerjulia2004_orthic_luvisol_sand(double sand) {
  * Saturated hydraulic conductivity for FAO 1974 Orthic Luvisol.
  * @note Table 3; R^2 = 0.729.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double
 calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter(double sand, double clay,
                                                                double organic_matter) {
@@ -465,7 +465,7 @@ calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter(double sand, doub
  * Saturated hydraulic conductivity for FAO 1974 Ranker.
  * @note Table 3; R^2 = 0.726.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_ranker_sand(double sand) {
     return 0.9847 * std::exp(0.0507 * sand);
 }
@@ -481,7 +481,7 @@ inline double calc_ptf_ferrerjulia2004_ranker_sand(double sand) {
  * Saturated hydraulic conductivity for FAO 1974 Ranker.
  * @note Table 3; R^2 = 0.717.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_ranker_texture_organic_matter(double sand, double clay,
                                                                      double organic_matter) {
     return -8.621 + 0.682 * sand - 0.0771 * clay - 0.44 * organic_matter;
@@ -496,7 +496,7 @@ inline double calc_ptf_ferrerjulia2004_ranker_texture_organic_matter(double sand
  * Saturated hydraulic conductivity for FAO 1974 Calcaric Regosol.
  * @note Table 3; R^2 = 0.655.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_calcaric_regosol_sand(double sand) {
     return 0.8931 * std::exp(0.0524 * sand);
 }
@@ -512,7 +512,7 @@ inline double calc_ptf_ferrerjulia2004_calcaric_regosol_sand(double sand) {
  * Saturated hydraulic conductivity for FAO 1974 Calcaric Regosol.
  * @note Table 3; R^2 = 0.705.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double
 calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter(double sand, double clay,
                                                                  double organic_matter) {
@@ -528,7 +528,7 @@ calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter(double sand, do
  * Saturated hydraulic conductivity for FAO 1974 Dystric Regosol.
  * @note Table 3; R^2 = 0.834.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_dystric_regosol_sand(double sand) {
     return 1.096 * std::exp(0.048 * sand);
 }
@@ -544,7 +544,7 @@ inline double calc_ptf_ferrerjulia2004_dystric_regosol_sand(double sand) {
  * Saturated hydraulic conductivity for FAO 1974 Dystric Regosol.
  * @note Table 3; R^2 = 0.862.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double
 calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter(double sand, double clay,
                                                                 double organic_matter) {
@@ -560,7 +560,7 @@ calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter(double sand, dou
  * Saturated hydraulic conductivity for FAO 1974 Eutric Regosol.
  * @note Table 3; R^2 = 0.824.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_eutric_regosol_sand(double sand) {
     return 1.0005 * std::exp(0.0523 * sand);
 }
@@ -576,7 +576,7 @@ inline double calc_ptf_ferrerjulia2004_eutric_regosol_sand(double sand) {
  * Saturated hydraulic conductivity for FAO 1974 Eutric Regosol.
  * @note Table 3; R^2 = 0.702.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double
 calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter(double sand, double clay,
                                                                double organic_matter) {
@@ -595,7 +595,7 @@ calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter(double sand, doub
  * @warning The horizon-level regression has weak fit and is affected by converted qualitative
  * conductivity values.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_rendzina_sand(double sand) {
     return 2.4645 * std::exp(0.0325 * sand);
 }
@@ -613,7 +613,7 @@ inline double calc_ptf_ferrerjulia2004_rendzina_sand(double sand) {
  * @warning The regression has weak fit and is affected by converted qualitative conductivity
  * values.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter(double sand, double clay,
                                                                        double organic_matter) {
     return 23.288 + 0.175 * sand - 0.602 * clay - 0.279 * organic_matter;
@@ -629,7 +629,7 @@ inline double calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter(double sa
  * @note Table 3 prints R^2 = 0.399; the prose later states 0.435.
  * @warning The source gives inconsistent R^2 values for this regression.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_gleyic_solonchak_sand(double sand) {
     return 0.7602 * std::exp(0.0372 * sand);
 }
@@ -648,7 +648,7 @@ inline double calc_ptf_ferrerjulia2004_gleyic_solonchak_sand(double sand) {
  * @warning The implementation intentionally differs from the original published Table 3
  * @warning which prints the intercept as -90917.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double
 calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter(double sand, double clay,
                                                                  double organic_matter) {
@@ -666,7 +666,7 @@ calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter(double sand, do
  * @warning The paper recommends use when data are statistically similar to its Spanish-soil
  * calibration data.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_general_sand(double sand) {
     return 0.920 * std::exp(0.0491 * sand);
 }
@@ -684,7 +684,7 @@ inline double calc_ptf_ferrerjulia2004_general_sand(double sand) {
  * @warning The paper recommends use when data are statistically similar to its Spanish-soil
  * calibration data.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ferrerjulia2004_general_texture_organic_matter(double sand, double clay,
                                                                       double organic_matter) {
     return -4.994 + 0.56728 * sand - 0.131 * clay - 0.0127 * organic_matter;

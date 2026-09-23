@@ -20,9 +20,9 @@ export module ptfkit.puckett1985;
  * clay mineralogy.
  */
 
-export namespace ptfkit::puckett1985 {
+namespace ptfkit::puckett1985 {
 
-struct Puckett1985PTFResult {
+export struct Puckett1985PTFResult {
     /**
      * @brief Volumetric water content at 0 kPa. (cm^3/cm^3)
      */
@@ -94,7 +94,7 @@ struct Puckett1985PTFResult {
  * @note The regressions were developed for soils with similar genesis and clay mineralogy.
  * @warning Use outside Lower Coastal Plain Ultisols requires independent validation.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Puckett1985PTFResult calc_ptf_puckett1985(double sand, double fine_sand, double clay,
                                                  double bulk_density, double porosity) {
     const double theta_0 = 0.264 * bulk_density + 1.60 * porosity - 0.706;

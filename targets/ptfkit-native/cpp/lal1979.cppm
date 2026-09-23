@@ -17,7 +17,7 @@ export module ptfkit.lal1979;
  * 119 genetic-horizon samples from 23 profiles in two parent-material groups.
  */
 
-export namespace ptfkit::lal1979 {
+namespace ptfkit::lal1979 {
 
 /**
  * @brief Estimate gravimetric moisture retention at saturation for Group I.
@@ -34,7 +34,7 @@ export namespace ptfkit::lal1979 {
  * Gravimetric moisture retention at saturation
  * @note Table IV, Group I, clay predictor, water_0bar response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_i_water_0bar_from_clay(double clay) {
     return 0.004 * clay + 0.289;
 }
@@ -54,7 +54,7 @@ inline double calc_ptf_lal1979_group_i_water_0bar_from_clay(double clay) {
  * Gravimetric moisture retention at saturation
  * @note Table IV, Group I, sand predictor, water_0bar response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_i_water_0bar_from_sand(double sand) {
     return -0.003 * sand + 0.579;
 }
@@ -74,7 +74,7 @@ inline double calc_ptf_lal1979_group_i_water_0bar_from_sand(double sand) {
  * Gravimetric moisture retention at saturation
  * @note Table IV, Group II, clay predictor, water_0bar response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_ii_water_0bar_from_clay(double clay) {
     return 0.004 * clay + 0.296;
 }
@@ -94,7 +94,7 @@ inline double calc_ptf_lal1979_group_ii_water_0bar_from_clay(double clay) {
  * Gravimetric moisture retention at saturation
  * @note Table IV, Group II, sand predictor, water_0bar response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_ii_water_0bar_from_sand(double sand) {
     return -0.004 * sand + 0.645;
 }
@@ -114,7 +114,7 @@ inline double calc_ptf_lal1979_group_ii_water_0bar_from_sand(double sand) {
  * Gravimetric moisture retention at 0.1 bar suction
  * @note Table V, Group I, clay predictor, water_01bar response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_i_water_01bar_from_clay(double clay) {
     return 0.003 * clay + 0.102;
 }
@@ -134,7 +134,7 @@ inline double calc_ptf_lal1979_group_i_water_01bar_from_clay(double clay) {
  * Gravimetric moisture retention at 0.3 bar suction
  * @note Table V, Group I, clay predictor, water_03bar response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_i_water_03bar_from_clay(double clay) {
     return 0.004 * clay + 0.065;
 }
@@ -154,7 +154,7 @@ inline double calc_ptf_lal1979_group_i_water_03bar_from_clay(double clay) {
  * Gravimetric moisture retention at 0.1 bar suction
  * @note Table V, Group I, sand predictor, water_01bar response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_i_water_01bar_from_sand(double sand) {
     return -0.003 * sand + 0.364;
 }
@@ -174,7 +174,7 @@ inline double calc_ptf_lal1979_group_i_water_01bar_from_sand(double sand) {
  * Gravimetric moisture retention at 0.3 bar suction
  * @note Table V, Group I, sand predictor, water_03bar response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_i_water_03bar_from_sand(double sand) {
     return -0.003 * sand + 0.334;
 }
@@ -194,7 +194,7 @@ inline double calc_ptf_lal1979_group_i_water_03bar_from_sand(double sand) {
  * Gravimetric moisture retention at 0.1 bar suction
  * @note Table V, Group II, clay predictor, water_01bar response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_ii_water_01bar_from_clay(double clay) {
     return 0.003 * clay + 0.080;
 }
@@ -214,7 +214,7 @@ inline double calc_ptf_lal1979_group_ii_water_01bar_from_clay(double clay) {
  * Gravimetric moisture retention at 0.3 bar suction
  * @note Table V, Group II, clay predictor, water_03bar response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_ii_water_03bar_from_clay(double clay) {
     return 0.003 * clay + 0.047;
 }
@@ -234,7 +234,7 @@ inline double calc_ptf_lal1979_group_ii_water_03bar_from_clay(double clay) {
  * Gravimetric moisture retention at 0.1 bar suction
  * @note Table V, Group II, sand predictor, water_01bar response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_ii_water_01bar_from_sand(double sand) {
     return -0.0035 * sand + 0.406;
 }
@@ -254,7 +254,7 @@ inline double calc_ptf_lal1979_group_ii_water_01bar_from_sand(double sand) {
  * Gravimetric moisture retention at 0.3 bar suction
  * @note Table V, Group II, sand predictor, water_03bar response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_ii_water_03bar_from_sand(double sand) {
     return -0.003 * sand + 0.349;
 }
@@ -274,7 +274,7 @@ inline double calc_ptf_lal1979_group_ii_water_03bar_from_sand(double sand) {
  * Gravimetric moisture retention at 15 bar suction
  * @note Table VI, Group I, clay predictor, water_15bar response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_i_water_15bar_from_clay(double clay) {
     return 0.003 * clay + 0.006;
 }
@@ -294,7 +294,7 @@ inline double calc_ptf_lal1979_group_i_water_15bar_from_clay(double clay) {
  * Gravimetric moisture retention at 15 bar suction
  * @note Table VI, Group I, sand predictor, water_15bar response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_i_water_15bar_from_sand(double sand) {
     return -0.003 * sand + 0.247;
 }
@@ -314,7 +314,7 @@ inline double calc_ptf_lal1979_group_i_water_15bar_from_sand(double sand) {
  * Gravimetric moisture retention at 15 bar suction
  * @note Table VI, Group I, silt predictor, water_15bar response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_i_water_15bar_from_silt(double silt) {
     return 0.005 * silt + 0.053;
 }
@@ -334,7 +334,7 @@ inline double calc_ptf_lal1979_group_i_water_15bar_from_silt(double silt) {
  * Gravimetric moisture retention at 15 bar suction
  * @note Table VI, Group II, clay predictor, water_15bar response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_ii_water_15bar_from_clay(double clay) {
     return 0.0022 * clay + 0.025;
 }
@@ -354,7 +354,7 @@ inline double calc_ptf_lal1979_group_ii_water_15bar_from_clay(double clay) {
  * Gravimetric moisture retention at 15 bar suction
  * @note Table VI, Group II, sand predictor, water_15bar response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_ii_water_15bar_from_sand(double sand) {
     return -0.0024 * sand + 0.284;
 }
@@ -374,7 +374,7 @@ inline double calc_ptf_lal1979_group_ii_water_15bar_from_sand(double sand) {
  * Gravimetric moisture equivalent measured at 1000 times gravity
  * @note Table VII, Group I, clay predictor, moisture_equivalent response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_i_moisture_equivalent_from_clay(double clay) {
     return 0.004 * clay + 0.052;
 }
@@ -394,7 +394,7 @@ inline double calc_ptf_lal1979_group_i_moisture_equivalent_from_clay(double clay
  * Gravimetric moisture equivalent measured at 1000 times gravity
  * @note Table VII, Group I, sand predictor, moisture_equivalent response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_i_moisture_equivalent_from_sand(double sand) {
     return -0.003 * sand + 0.339;
 }
@@ -414,7 +414,7 @@ inline double calc_ptf_lal1979_group_i_moisture_equivalent_from_sand(double sand
  * Gravimetric moisture equivalent measured at 1000 times gravity
  * @note Table VII, Group II, clay predictor, moisture_equivalent response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_ii_moisture_equivalent_from_clay(double clay) {
     return 0.0025 * clay + 0.057;
 }
@@ -434,7 +434,7 @@ inline double calc_ptf_lal1979_group_ii_moisture_equivalent_from_clay(double cla
  * Gravimetric moisture equivalent measured at 1000 times gravity
  * @note Table VII, Group II, sand predictor, moisture_equivalent response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_ii_moisture_equivalent_from_sand(double sand) {
     return -0.002 * sand + 0.284;
 }
@@ -454,7 +454,7 @@ inline double calc_ptf_lal1979_group_ii_moisture_equivalent_from_sand(double san
  * Gravimetric moisture equivalent measured at 1000 times gravity
  * @note Table VII, Group II, silt predictor, moisture_equivalent response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_ii_moisture_equivalent_from_silt(double silt) {
     return -0.005 * silt + 0.175;
 }
@@ -474,7 +474,7 @@ inline double calc_ptf_lal1979_group_ii_moisture_equivalent_from_silt(double sil
  * Gravimetric moisture retention at 0.3 bar suction
  * @note Table VIII, Group II, water_01bar predictor, water_03bar response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_ii_water_03bar_from_water_01bar(double water_01bar) {
     return 0.86 * water_01bar + -0.014;
 }
@@ -494,7 +494,7 @@ inline double calc_ptf_lal1979_group_ii_water_03bar_from_water_01bar(double wate
  * Gravimetric moisture retention at 15 bar suction
  * @note Table VIII, Group II, water_01bar predictor, water_15bar response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_ii_water_15bar_from_water_01bar(double water_01bar) {
     return 0.54 * water_01bar + -0.005;
 }
@@ -513,7 +513,7 @@ inline double calc_ptf_lal1979_group_ii_water_15bar_from_water_01bar(double wate
  * Upper plastic limit
  * @note Table IX, Group I, organic_carbon predictor, upper_plastic_limit response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double
 calc_ptf_lal1979_group_i_upper_plastic_limit_from_organic_carbon(double organic_carbon) {
     return -5.40 * organic_carbon + 31.73;
@@ -533,7 +533,7 @@ calc_ptf_lal1979_group_i_upper_plastic_limit_from_organic_carbon(double organic_
  * Lower plastic limit
  * @note Table IX, Group I, organic_carbon predictor, lower_plastic_limit response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double
 calc_ptf_lal1979_group_i_lower_plastic_limit_from_organic_carbon(double organic_carbon) {
     return -4.24 * organic_carbon + 24.73;
@@ -554,7 +554,7 @@ calc_ptf_lal1979_group_i_lower_plastic_limit_from_organic_carbon(double organic_
  * Plasticity index (upper minus lower plastic limit)
  * @note Table IX, Group I, organic_carbon predictor, plasticity_index response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_i_plasticity_index_from_organic_carbon(double organic_carbon) {
     return -1.24 * organic_carbon + 7.42;
 }
@@ -573,7 +573,7 @@ inline double calc_ptf_lal1979_group_i_plasticity_index_from_organic_carbon(doub
  * Upper plastic limit
  * @note Table IX, Group I, clay predictor, upper_plastic_limit response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_i_upper_plastic_limit_from_clay(double clay) {
     return 0.46 * clay + 11.48;
 }
@@ -592,7 +592,7 @@ inline double calc_ptf_lal1979_group_i_upper_plastic_limit_from_clay(double clay
  * Lower plastic limit
  * @note Table IX, Group I, clay predictor, lower_plastic_limit response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_i_lower_plastic_limit_from_clay(double clay) {
     return 0.34 * clay + 9.50;
 }
@@ -612,7 +612,7 @@ inline double calc_ptf_lal1979_group_i_lower_plastic_limit_from_clay(double clay
  * Plasticity index (upper minus lower plastic limit)
  * @note Table IX, Group I, clay predictor, plasticity_index response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_i_plasticity_index_from_clay(double clay) {
     return 0.11 * clay + 2.48;
 }
@@ -631,7 +631,7 @@ inline double calc_ptf_lal1979_group_i_plasticity_index_from_clay(double clay) {
  * Lower plastic limit
  * @note Table IX, Group I, sand predictor, lower_plastic_limit response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_i_lower_plastic_limit_from_sand(double sand) {
     return -0.30 * sand + 35.50;
 }
@@ -651,7 +651,7 @@ inline double calc_ptf_lal1979_group_i_lower_plastic_limit_from_sand(double sand
  * Plasticity index (upper minus lower plastic limit)
  * @note Table IX, Group I, sand predictor, plasticity_index response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_i_plasticity_index_from_sand(double sand) {
     return -0.10 * sand + 11.00;
 }
@@ -670,7 +670,7 @@ inline double calc_ptf_lal1979_group_i_plasticity_index_from_sand(double sand) {
  * Upper plastic limit
  * @note Table IX, Group II, organic_carbon predictor, upper_plastic_limit response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double
 calc_ptf_lal1979_group_ii_upper_plastic_limit_from_organic_carbon(double organic_carbon) {
     return -3.01 * organic_carbon + 32.20;
@@ -691,7 +691,7 @@ calc_ptf_lal1979_group_ii_upper_plastic_limit_from_organic_carbon(double organic
  * Plasticity index (upper minus lower plastic limit)
  * @note Table IX, Group II, organic_carbon predictor, plasticity_index response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double
 calc_ptf_lal1979_group_ii_plasticity_index_from_organic_carbon(double organic_carbon) {
     return -3.22 * organic_carbon + 12.70;
@@ -711,7 +711,7 @@ calc_ptf_lal1979_group_ii_plasticity_index_from_organic_carbon(double organic_ca
  * Upper plastic limit
  * @note Table IX, Group II, clay predictor, upper_plastic_limit response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_ii_upper_plastic_limit_from_clay(double clay) {
     return 0.16 * clay + 24.59;
 }
@@ -730,7 +730,7 @@ inline double calc_ptf_lal1979_group_ii_upper_plastic_limit_from_clay(double cla
  * Lower plastic limit
  * @note Table IX, Group II, clay predictor, lower_plastic_limit response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_ii_lower_plastic_limit_from_clay(double clay) {
     return 0.14 * clay + 14.64;
 }
@@ -749,7 +749,7 @@ inline double calc_ptf_lal1979_group_ii_lower_plastic_limit_from_clay(double cla
  * Upper plastic limit
  * @note Table IX, Group II, sand predictor, upper_plastic_limit response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_ii_upper_plastic_limit_from_sand(double sand) {
     return -0.17 * sand + 40.41;
 }
@@ -768,7 +768,7 @@ inline double calc_ptf_lal1979_group_ii_upper_plastic_limit_from_sand(double san
  * Lower plastic limit
  * @note Table IX, Group II, sand predictor, lower_plastic_limit response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_ii_lower_plastic_limit_from_sand(double sand) {
     return -0.17 * sand + 29.88;
 }
@@ -787,7 +787,7 @@ inline double calc_ptf_lal1979_group_ii_lower_plastic_limit_from_sand(double san
  * Upper plastic limit
  * @note Table IX, Group II, silt predictor, upper_plastic_limit response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_ii_upper_plastic_limit_from_silt(double silt) {
     return 0.35 * silt + 28.24;
 }
@@ -806,7 +806,7 @@ inline double calc_ptf_lal1979_group_ii_upper_plastic_limit_from_silt(double sil
  * Lower plastic limit
  * @note Table IX, Group II, silt predictor, lower_plastic_limit response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_ii_lower_plastic_limit_from_silt(double silt) {
     return 0.67 * silt + 16.16;
 }
@@ -826,7 +826,7 @@ inline double calc_ptf_lal1979_group_ii_lower_plastic_limit_from_silt(double sil
  * Plasticity index (upper minus lower plastic limit)
  * @note Table IX, Group II, silt predictor, plasticity_index response.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_lal1979_group_ii_plasticity_index_from_silt(double silt) {
     return -0.32 * silt + 12.08;
 }

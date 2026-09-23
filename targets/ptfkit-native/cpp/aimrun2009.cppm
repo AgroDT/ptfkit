@@ -21,7 +21,7 @@ export module ptfkit.aimrun2009;
  * 408 lowland paddy soil samples from Sawah Sempadan rice cultivation area.
  */
 
-export namespace ptfkit::aimrun2009 {
+namespace ptfkit::aimrun2009 {
 
 /**
  * @brief Estimate saturated hydraulic conductivity for lowland paddy soils.
@@ -38,7 +38,7 @@ export namespace ptfkit::aimrun2009 {
  * @note Applicability: Clayey rice soils with compacted subsoil.
  * @warning The formula uses natural logarithms of all inputs.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_aimrun2009(double clay, double bulk_density, double organic_matter,
                                   double gmd) {
     const double ln_k_sat_m_per_day =

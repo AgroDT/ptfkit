@@ -20,7 +20,7 @@ export module ptfkit.oosterveld1980;
  * laboratory; the field-capacity tension regression used 134 samples.
  */
 
-export namespace ptfkit::oosterveld1980 {
+namespace ptfkit::oosterveld1980 {
 
 /**
  * @brief Estimate field-capacity tension from clay content.
@@ -33,7 +33,7 @@ export namespace ptfkit::oosterveld1980 {
  * cylinder method.
  * @note Equation 1 reports r = 0.67 and n = 134.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_oosterveld1980_field_capacity_tension(double clay) {
     return 5.356 * std::pow(clay, 0.421);
 }
@@ -51,7 +51,7 @@ inline double calc_ptf_oosterveld1980_field_capacity_tension(double clay) {
  * @note Equation 2 reports r = 0.96 and n = 1,137.
  * @warning The paper reports slight inaccuracy at very high clay content and high tension.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_oosterveld1980_retention(double clay, double sand, double mean_depth,
                                                 double tension) {
     return (35.367 + 0.644 * clay - 0.251 * sand - 0.045 * mean_depth) * std::pow(tension, -0.190);
@@ -70,7 +70,7 @@ inline double calc_ptf_oosterveld1980_retention(double clay, double sand, double
  * @note Equation 3 is obtained by substituting the Equation 1 field-capacity tension into
  * Equation 2.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_oosterveld1980_field_capacity(double clay, double sand, double mean_depth) {
     return (25.713 + 0.469 * clay - 0.184 * sand - 0.0329 * mean_depth) * std::pow(clay, -0.080);
 }
@@ -87,7 +87,7 @@ inline double calc_ptf_oosterveld1980_field_capacity(double clay, double sand, d
  * @note Equation 4 reports r = 0.96 and n = 298.
  * @note The paper takes moisture content at 1500 kPa as the wilting point.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_oosterveld1980_wilting_point(double clay, double sand, double mean_depth) {
     return 4.035 + 0.299 * clay - 0.034 * sand - 0.016 * mean_depth;
 }
@@ -107,7 +107,7 @@ inline double calc_ptf_oosterveld1980_wilting_point(double clay, double sand, do
  * wilting point.
  * @note The paper defines available soil water by subtracting Equation 4 from Equation 3.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_oosterveld1980_available_water(double clay, double sand, double mean_depth) {
     const double field_capacity_moisture =
         (25.713 + 0.469 * clay - 0.184 * sand - 0.0329 * mean_depth) * std::pow(clay, -0.080);

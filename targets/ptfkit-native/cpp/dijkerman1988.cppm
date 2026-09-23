@@ -18,9 +18,9 @@ export module ptfkit.dijkerman1988;
  * carbon greater than 4% were excluded from the regressions.
  */
 
-export namespace ptfkit::dijkerman1988 {
+namespace ptfkit::dijkerman1988 {
 
-struct Dijkerman1988WaterContent {
+export struct Dijkerman1988WaterContent {
     /**
      * @brief Gravimetric moisture content at 15 bar, in weight percentage. (%)
      */
@@ -54,7 +54,7 @@ struct Dijkerman1988WaterContent {
  * @warning The observed marginal calibration ranges do not establish validity for every joint
  * texture combination.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Dijkerman1988WaterContent calc_ptf_dijkerman1988(double clay, double sand) {
     const double water_content_15_bar = 0.74 + 0.39 * clay;
     const double water_content_one_third_bar = 36.97 - 0.35 * sand;
@@ -78,7 +78,7 @@ inline Dijkerman1988WaterContent calc_ptf_dijkerman1988(double clay, double sand
  * @warning Available moisture estimated using one-third bar may be somewhat low according to
  * the paper.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_dijkerman1988_available_water(double clay, double silt) {
     return 1.23 - 0.04 * clay + 0.35 * silt;
 }

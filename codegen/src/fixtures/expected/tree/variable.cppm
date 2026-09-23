@@ -13,17 +13,12 @@ export module ptfkit.tree_variable;
  * Test (2026).
  */
 
-export namespace ptfkit::tree_variable {
+namespace ptfkit::tree_variable {
 
-    enum class Category {
+    export enum class Category {
         Coarse,
         Fine,
     };
-
-
-}  // namespace ptfkit::tree_variable
-
-namespace ptfkit::tree_variable {
 
     [[nodiscard]] inline double tree_variable_scalar_tree(Category category, double predictor) {
         if (category == Category::Coarse) {
@@ -37,11 +32,6 @@ namespace ptfkit::tree_variable {
         }
     }
 
-
-}  // namespace ptfkit::tree_variable
-
-export namespace ptfkit::tree_variable {
-
     /**
      * @brief Test named tree.
      * @param category
@@ -51,7 +41,7 @@ export namespace ptfkit::tree_variable {
      * @details Prediction target:
      * Test value.
      */
-    [[nodiscard]]
+    export [[nodiscard]]
     inline double calc_ptf_tree_branch(Category category, double x) {
         const double branch_value = tree_variable_scalar_tree(category, x);
         return branch_value * 10.0;

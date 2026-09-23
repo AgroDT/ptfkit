@@ -17,7 +17,7 @@ export module ptfkit.pidgeon1972;
  * from the adopted regressions.
  */
 
-export namespace ptfkit::pidgeon1972 {
+namespace ptfkit::pidgeon1972 {
 
 /**
  * @brief Estimate gravimetric field capacity from silt, clay, and organic matter.
@@ -30,7 +30,7 @@ export namespace ptfkit::pidgeon1972 {
  * Gravimetric field capacity
  * @note The reviewed organic-matter coefficient is 1.54.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_pidgeon1972_fc(double silt, double clay, double organic_matter) {
     return 7.38 + 0.16 * silt + 0.30 * clay + 1.54 * organic_matter;
 }
@@ -43,7 +43,7 @@ inline double calc_ptf_pidgeon1972_fc(double silt, double clay, double organic_m
  * @details Prediction target:
  * Gravimetric field capacity
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_pidgeon1972_fc_sand(double sand) {
     return 36.16 - 0.25 * sand;
 }
@@ -57,7 +57,7 @@ inline double calc_ptf_pidgeon1972_fc_sand(double sand) {
  * @details Prediction target:
  * Gravimetric field capacity
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_pidgeon1972_fc_sand_organic_matter(double sand, double organic_matter) {
     return 34.27 - 0.27 * sand + 1.25 * organic_matter;
 }
@@ -71,7 +71,7 @@ inline double calc_ptf_pidgeon1972_fc_sand_organic_matter(double sand, double or
  * @details Prediction target:
  * Volumetric field capacity
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(double sand, double organic_matter) {
     return 38.15 - 0.17 * sand + 0.77 * organic_matter;
 }
@@ -86,7 +86,7 @@ inline double calc_ptf_pidgeon1972_fc_vol_sand_organic_matter(double sand, doubl
  * @details Prediction target:
  * Gravimetric permanent wilting point
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_pidgeon1972_pwp(double silt, double clay, double organic_matter) {
     return -4.19 + 0.19 * silt + 0.39 * clay + 0.90 * organic_matter;
 }
@@ -99,7 +99,7 @@ inline double calc_ptf_pidgeon1972_pwp(double silt, double clay, double organic_
  * @details Prediction target:
  * Gravimetric permanent wilting point
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_pidgeon1972_pwp_sand(double sand) {
     return 28.41 - 0.29 * sand;
 }
@@ -113,7 +113,7 @@ inline double calc_ptf_pidgeon1972_pwp_sand(double sand) {
  * @details Prediction target:
  * Gravimetric permanent wilting point
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_pidgeon1972_pwp_sand_organic_matter(double sand, double organic_matter) {
     return 32.90 - 0.37 * sand + 0.44 * organic_matter;
 }
@@ -127,7 +127,7 @@ inline double calc_ptf_pidgeon1972_pwp_sand_organic_matter(double sand, double o
  * @details Prediction target:
  * Available water capacity
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_pidgeon1972_awc(double clay, double organic_matter) {
     return 169.3 - 1.50 * clay + 6.09 * organic_matter;
 }
@@ -141,7 +141,7 @@ inline double calc_ptf_pidgeon1972_awc(double clay, double organic_matter) {
  * @details Prediction target:
  * Available water capacity
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_pidgeon1972_awc_sand_organic_matter(double sand, double organic_matter) {
     return 1.0 + 1.84 * sand + 8.12 * organic_matter;
 }
@@ -154,7 +154,7 @@ inline double calc_ptf_pidgeon1972_awc_sand_organic_matter(double sand, double o
  * @details Prediction target:
  * Available water capacity
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_pidgeon1972_awc_coarse_sand(double coarse_sand) {
     return 68.5 + 2.33 * coarse_sand;
 }
@@ -167,7 +167,7 @@ inline double calc_ptf_pidgeon1972_awc_coarse_sand(double coarse_sand) {
  * @details Prediction target:
  * Available water capacity
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_pidgeon1972_awc_fine_sand(double fine_sand) {
     return 66.7 + 2.66 * fine_sand;
 }
@@ -180,7 +180,7 @@ inline double calc_ptf_pidgeon1972_awc_fine_sand(double fine_sand) {
  * @details Prediction target:
  * Available water capacity
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_pidgeon1972_awc_very_fine_sand(double very_fine_sand) {
     return 66.9 + 4.58 * very_fine_sand;
 }
@@ -195,7 +195,7 @@ inline double calc_ptf_pidgeon1972_awc_very_fine_sand(double very_fine_sand) {
  * @details Prediction target:
  * Extended available water capacity
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_pidgeon1972_eawc(double silt, double clay, double organic_matter) {
     return 121.1 - 3.03 * silt - 1.38 * clay + 6.76 * organic_matter;
 }
@@ -208,7 +208,7 @@ inline double calc_ptf_pidgeon1972_eawc(double silt, double clay, double organic
  * @details Prediction target:
  * Extended available water capacity
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_pidgeon1972_eawc_sand(double sand) {
     return -25.8 + 1.55 * sand;
 }
@@ -222,7 +222,7 @@ inline double calc_ptf_pidgeon1972_eawc_sand(double sand) {
  * @details Prediction target:
  * Extended available water capacity
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_pidgeon1972_eawc_sand_organic_matter(double sand, double organic_matter) {
     return -10.8 + 1.15 * sand + 4.78 * organic_matter;
 }
@@ -236,7 +236,7 @@ inline double calc_ptf_pidgeon1972_eawc_sand_organic_matter(double sand, double 
  * @details Prediction target:
  * Extended available water capacity
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(double coarse_sand,
                                                                    double organic_matter) {
     return -7.4 + 2.37 * coarse_sand + 6.86 * organic_matter;
@@ -251,7 +251,7 @@ inline double calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter(double coarse
  * @details Prediction target:
  * Extended available water capacity
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter(double fine_sand,
                                                                  double organic_matter) {
     return -18.0 + 3.11 * fine_sand + 7.69 * organic_matter;

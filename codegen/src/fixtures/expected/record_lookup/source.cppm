@@ -10,9 +10,9 @@ export module ptfkit.record_lookup_expression;
  * Test (2026).
  */
 
-export namespace ptfkit::record_lookup_expression {
+namespace ptfkit::record_lookup_expression {
 
-    enum class Texture {
+    export enum class Texture {
         Sand,
         Clay,
     };
@@ -38,7 +38,7 @@ export namespace ptfkit::record_lookup_expression {
      * @details Prediction target:
      * Test value.
      */
-    [[nodiscard]]
+    export [[nodiscard]]
     inline double calc_ptf_record_lookup_expression(Texture texture, double x) {
         const Parameters parameters = parameters_from_texture(texture);
         return parameters.factor * x;

@@ -22,7 +22,7 @@ export module ptfkit.myeni2021;
  * granulometric range (Sections 2.1-2.2; Tables 2-3).
  */
 
-export namespace ptfkit::myeni2021 {
+namespace ptfkit::myeni2021 {
 
 /**
  * @brief Estimate gravimetric field capacity from clay, silt and soil organic carbon.
@@ -39,7 +39,7 @@ export namespace ptfkit::myeni2021 {
  * conditions.
  * @warning Disturbed samples were used; soil structure is not explicitly represented.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_myeni2021_fc(double clay, double silt, double soc) {
     return 0.014 + 0.005 * clay + 0.009 * soc + 0.002 * silt;
 }
@@ -61,7 +61,7 @@ inline double calc_ptf_myeni2021_fc(double clay, double silt, double soc) {
  * conditions.
  * @warning Disturbed samples were used; soil structure is not explicitly represented.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_myeni2021_pwp(double clay, double silt, double soc) {
     return 0.003 * clay + 0.001 * silt + 0.007 * soc;
 }

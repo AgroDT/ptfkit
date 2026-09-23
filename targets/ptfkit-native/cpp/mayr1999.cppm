@@ -22,9 +22,9 @@ export module ptfkit.mayr1999;
  * 0.05 m^3/m^3, and validation used 1678 independent soil horizons.
  */
 
-export namespace ptfkit::mayr1999 {
+namespace ptfkit::mayr1999 {
 
-struct Mayr1999PTFResult {
+export struct Mayr1999PTFResult {
     /**
      * @brief Hutson-Cass fitting parameter with pressure-head dimensions. (cm H2O)
      */
@@ -68,7 +68,7 @@ struct Mayr1999PTFResult {
  * @warning Treat application outside the calibration particle-size distribution with great
  * care; the paper provides that distribution only graphically.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Mayr1999PTFResult calc_ptf_mayr1999(double sand, double silt, double clay,
                                            double bulk_density, double organic_carbon) {
     const double silt_squared = silt * silt;
