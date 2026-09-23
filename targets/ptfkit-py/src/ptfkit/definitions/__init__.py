@@ -1,1 +1,0 @@
-"""Shared generated definition modules."""

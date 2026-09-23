@@ -24,6 +24,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, overload
 
+from ptfkit import soil as _soil
 from ptfkit._dispatch import call as _call
 from ptfkit._ptfkit import (
     calc_ptf_rawls2003_soc_theta33_tree as _calc_ptf_rawls2003_soc_theta33_tree,
@@ -31,7 +32,6 @@ from ptfkit._ptfkit import (
     calc_ptf_rawls2003_soc_theta33_gmdh as _calc_ptf_rawls2003_soc_theta33_gmdh,
     calc_ptf_rawls2003_soc_theta1500_gmdh as _calc_ptf_rawls2003_soc_theta1500_gmdh,
 )
-from ptfkit.definitions import soil as _definitions_soil
 from ptfkit.enums import EnumArray
 
 
@@ -41,12 +41,12 @@ if TYPE_CHECKING:
 
 
 def _encode_calc_ptf_rawls2003_soc_theta33_tree_soil_texture(
-    value: _definitions_soil.UsdaTextureClass | EnumArray[_definitions_soil.UsdaTextureClass],
+    value: _soil.UsdaTextureClass | EnumArray[_soil.UsdaTextureClass],
 ) -> uint32 | NDArray[uint32]:
-    if isinstance(value, _definitions_soil.UsdaTextureClass):
-        return EnumArray._encode_member(_definitions_soil.UsdaTextureClass, value)  # noqa: SLF001
+    if isinstance(value, _soil.UsdaTextureClass):
+        return EnumArray._encode_member(_soil.UsdaTextureClass, value)  # noqa: SLF001
     if isinstance(value, EnumArray):
-        return value._codes_for(_definitions_soil.UsdaTextureClass)  # noqa: SLF001
+        return value._codes_for(_soil.UsdaTextureClass)  # noqa: SLF001
     message = 'expected UsdaTextureClass or EnumArray[UsdaTextureClass]'
     raise TypeError(message)
 
@@ -61,14 +61,14 @@ __all__ = [
 
 @overload
 def calc_ptf_rawls2003_soc_theta33_tree(
-    *, soil_texture: _definitions_soil.UsdaTextureClass, soil_organic_carbon: float
+    *, soil_texture: _soil.UsdaTextureClass, soil_organic_carbon: float
 ) -> floating: ...
 
 
 @overload
 def calc_ptf_rawls2003_soc_theta33_tree(
     *,
-    soil_texture: EnumArray[_definitions_soil.UsdaTextureClass],
+    soil_texture: EnumArray[_soil.UsdaTextureClass],
     soil_organic_carbon: ArrayLike,
     out: NDArray[floating] | None = None,
 ) -> NDArray[floating]: ...
@@ -76,8 +76,7 @@ def calc_ptf_rawls2003_soc_theta33_tree(
 
 def calc_ptf_rawls2003_soc_theta33_tree(
     *,
-    soil_texture: _definitions_soil.UsdaTextureClass
-    | EnumArray[_definitions_soil.UsdaTextureClass],
+    soil_texture: _soil.UsdaTextureClass | EnumArray[_soil.UsdaTextureClass],
     soil_organic_carbon: float | ArrayLike,
     out: NDArray[floating] | None = None,
 ) -> floating | NDArray[floating]:

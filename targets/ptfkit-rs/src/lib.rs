@@ -2,7 +2,7 @@
 
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 
-pub mod definitions;
+pub mod soil;
 
 pub mod aimrun2009;
 pub mod beniaich2023;

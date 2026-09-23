@@ -87,7 +87,7 @@ if TYPE_CHECKING:"#,
             render_enum(&mut module, &python_enum(definition));
         }
         generated.push(GeneratedFile::new(
-            PathBuf::from(format!("ptfkit/definitions/{document}.py")),
+            PathBuf::from(format!("ptfkit/{document}.py")),
             module.into_string(),
         ));
     }
@@ -212,6 +212,14 @@ fn module_source(
         module.write("from enum import Enum\n");
     }
     module.write(format_args!("from typing import {typing_imports}\n\n"));
+    let shared_imports = functions
+        .iter()
+        .flat_map(|function| &function.enum_inputs)
+        .filter_map(|input| input.shared_document.as_deref())
+        .collect::<std::collections::BTreeSet<_>>();
+    for document in &shared_imports {
+        module.line(format!("from ptfkit import {document} as _{document}"));
+    }
     module.line("from ptfkit._dispatch import call as _call");
     module.block(
         "from ptfkit._ptfkit import (",
@@ -225,20 +233,7 @@ fn module_source(
         },
         ")",
     );
-    if !enums.is_empty() {
-        module.line("from ptfkit.enums import EnumArray");
-    }
-    let shared_imports = functions
-        .iter()
-        .flat_map(|function| &function.enum_inputs)
-        .filter_map(|input| input.shared_document.as_deref())
-        .collect::<std::collections::BTreeSet<_>>();
-    for document in &shared_imports {
-        module.line(format!(
-            "from ptfkit.definitions import {document} as _definitions_{document}"
-        ));
-    }
-    if enums.is_empty() && !shared_imports.is_empty() {
+    if !enums.is_empty() || !shared_imports.is_empty() {
         module.line("from ptfkit.enums import EnumArray");
     }
     module.line("\n\nif TYPE_CHECKING:");
@@ -442,7 +437,7 @@ fn view(resolved: &CompiledFunction) -> PythonFunction<'_> {
 pub(super) fn enum_type_name(enum_type: &crate::model::EnumType) -> String {
     enum_type.shared_module.as_ref().map_or_else(
         || enum_type.name.clone(),
-        |module| format!("_definitions_{module}.{}", enum_type.name),
+        |module| format!("_{module}.{}", enum_type.name),
     )
 }
 

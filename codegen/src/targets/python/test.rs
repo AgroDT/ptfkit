@@ -64,19 +64,10 @@ fn module_source(slug: &str, functions: &[&CompiledFunction]) -> String {
                 .and_then(|definition| definition.shared_document())
         })
         .collect::<std::collections::BTreeSet<_>>();
-    let source_module = format!("ptfkit.{slug}");
-    if source_module.as_str() < "ptfkit.definitions" {
-        module.import(&source_module, imports.join(", "));
-    }
     for document in shared {
-        module.import(
-            "ptfkit.definitions",
-            format!("{document} as _definitions_{document}"),
-        );
+        module.import("ptfkit", format!("{document} as _{document}"));
     }
-    if source_module.as_str() >= "ptfkit.definitions" {
-        module.import(&source_module, imports.join(", "));
-    }
+    module.import(&format!("ptfkit.{slug}"), imports.join(", "));
     module.blank_line();
     module.blank_line();
     for (index, resolved) in functions.iter().enumerate() {

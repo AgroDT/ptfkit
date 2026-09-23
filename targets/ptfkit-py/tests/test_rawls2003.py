@@ -4,7 +4,7 @@ from __future__ import annotations
 import pytest
 
 from _helpers import assert_close, prepare_vector_case
-from ptfkit.definitions import soil as _definitions_soil
+from ptfkit import soil as _soil
 from ptfkit.rawls2003 import (
     calc_ptf_rawls2003_soc_theta33_gmdh,
     calc_ptf_rawls2003_soc_theta33_tree,
@@ -15,165 +15,144 @@ from ptfkit.rawls2003 import (
 
 CASES_CALC_PTF_RAWLS2003_SOC_THETA33_TREE = [
     (
-        {'soil_organic_carbon': 1.0, 'soil_texture': _definitions_soil.UsdaTextureClass.SAND},
+        {'soil_organic_carbon': 1.0, 'soil_texture': _soil.UsdaTextureClass.SAND},
         {'theta_33': 0.108},
     ),
     (
-        {'soil_organic_carbon': 1.0, 'soil_texture': _definitions_soil.UsdaTextureClass.LOAMY_SAND},
+        {'soil_organic_carbon': 1.0, 'soil_texture': _soil.UsdaTextureClass.LOAMY_SAND},
         {'theta_33': 0.151},
     ),
     (
-        {'soil_organic_carbon': 1.0, 'soil_texture': _definitions_soil.UsdaTextureClass.SANDY_LOAM},
+        {'soil_organic_carbon': 1.0, 'soil_texture': _soil.UsdaTextureClass.SANDY_LOAM},
         {'theta_33': 0.204},
     ),
     (
-        {'soil_organic_carbon': 1.1, 'soil_texture': _definitions_soil.UsdaTextureClass.SANDY_LOAM},
+        {'soil_organic_carbon': 1.1, 'soil_texture': _soil.UsdaTextureClass.SANDY_LOAM},
         {'theta_33': 0.244},
     ),
+    ({'soil_organic_carbon': 2.1, 'soil_texture': _soil.UsdaTextureClass.SAND}, {'theta_33': 0.28}),
     (
-        {'soil_organic_carbon': 2.1, 'soil_texture': _definitions_soil.UsdaTextureClass.SAND},
-        {'theta_33': 0.28},
-    ),
-    (
-        {'soil_organic_carbon': 4.8, 'soil_texture': _definitions_soil.UsdaTextureClass.LOAMY_SAND},
+        {'soil_organic_carbon': 4.8, 'soil_texture': _soil.UsdaTextureClass.LOAMY_SAND},
         {'theta_33': 0.35},
     ),
     (
-        {'soil_organic_carbon': 7.7, 'soil_texture': _definitions_soil.UsdaTextureClass.SAND},
+        {'soil_organic_carbon': 7.7, 'soil_texture': _soil.UsdaTextureClass.SAND},
         {'theta_33': 0.394},
     ),
     (
-        {'soil_organic_carbon': 7.7, 'soil_texture': _definitions_soil.UsdaTextureClass.SANDY_LOAM},
+        {'soil_organic_carbon': 7.7, 'soil_texture': _soil.UsdaTextureClass.SANDY_LOAM},
         {'theta_33': 0.549},
     ),
     (
-        {'soil_organic_carbon': 1.0, 'soil_texture': _definitions_soil.UsdaTextureClass.LOAM},
+        {'soil_organic_carbon': 1.0, 'soil_texture': _soil.UsdaTextureClass.LOAM},
         {'theta_33': 0.272},
     ),
     (
-        {'soil_organic_carbon': 1.7, 'soil_texture': _definitions_soil.UsdaTextureClass.LOAM},
+        {'soil_organic_carbon': 1.7, 'soil_texture': _soil.UsdaTextureClass.LOAM},
         {'theta_33': 0.305},
     ),
     (
-        {'soil_organic_carbon': 1.0, 'soil_texture': _definitions_soil.UsdaTextureClass.SILT_LOAM},
+        {'soil_organic_carbon': 1.0, 'soil_texture': _soil.UsdaTextureClass.SILT_LOAM},
         {'theta_33': 0.315},
     ),
     (
-        {'soil_organic_carbon': 1.5, 'soil_texture': _definitions_soil.UsdaTextureClass.SILT_LOAM},
+        {'soil_organic_carbon': 1.5, 'soil_texture': _soil.UsdaTextureClass.SILT_LOAM},
         {'theta_33': 0.338},
     ),
     (
-        {'soil_organic_carbon': 4.2, 'soil_texture': _definitions_soil.UsdaTextureClass.LOAM},
+        {'soil_organic_carbon': 4.2, 'soil_texture': _soil.UsdaTextureClass.LOAM},
         {'theta_33': 0.353},
     ),
     (
-        {'soil_organic_carbon': 4.2, 'soil_texture': _definitions_soil.UsdaTextureClass.SILT_LOAM},
+        {'soil_organic_carbon': 4.2, 'soil_texture': _soil.UsdaTextureClass.SILT_LOAM},
         {'theta_33': 0.393},
     ),
     (
-        {'soil_organic_carbon': 8.5, 'soil_texture': _definitions_soil.UsdaTextureClass.LOAM},
+        {'soil_organic_carbon': 8.5, 'soil_texture': _soil.UsdaTextureClass.LOAM},
         {'theta_33': 0.383},
     ),
     (
-        {'soil_organic_carbon': 8.5, 'soil_texture': _definitions_soil.UsdaTextureClass.SILT_LOAM},
+        {'soil_organic_carbon': 8.5, 'soil_texture': _soil.UsdaTextureClass.SILT_LOAM},
         {'theta_33': 0.464},
     ),
     (
-        {
-            'soil_organic_carbon': 4.0,
-            'soil_texture': _definitions_soil.UsdaTextureClass.SILTY_CLAY_LOAM,
-        },
+        {'soil_organic_carbon': 4.0, 'soil_texture': _soil.UsdaTextureClass.SILTY_CLAY_LOAM},
         {'theta_33': 0.361},
     ),
     (
-        {
-            'soil_organic_carbon': 4.2,
-            'soil_texture': _definitions_soil.UsdaTextureClass.SILTY_CLAY_LOAM,
-        },
+        {'soil_organic_carbon': 4.2, 'soil_texture': _soil.UsdaTextureClass.SILTY_CLAY_LOAM},
         {'theta_33': 0.548},
     ),
     (
-        {'soil_organic_carbon': 1.0, 'soil_texture': _definitions_soil.UsdaTextureClass.SILTY_CLAY},
+        {'soil_organic_carbon': 1.0, 'soil_texture': _soil.UsdaTextureClass.SILTY_CLAY},
         {'theta_33': 0.397},
     ),
     (
-        {'soil_organic_carbon': 1.0, 'soil_texture': _definitions_soil.UsdaTextureClass.CLAY},
+        {'soil_organic_carbon': 1.0, 'soil_texture': _soil.UsdaTextureClass.CLAY},
         {'theta_33': 0.426},
     ),
     (
-        {'soil_organic_carbon': 1.0, 'soil_texture': _definitions_soil.UsdaTextureClass.CLAY_LOAM},
+        {'soil_organic_carbon': 1.0, 'soil_texture': _soil.UsdaTextureClass.CLAY_LOAM},
         {'theta_33': 0.315},
     ),
     (
-        {'soil_organic_carbon': 2.0, 'soil_texture': _definitions_soil.UsdaTextureClass.CLAY_LOAM},
+        {'soil_organic_carbon': 2.0, 'soil_texture': _soil.UsdaTextureClass.CLAY_LOAM},
         {'theta_33': 0.338},
     ),
     (
-        {'soil_organic_carbon': 5.0, 'soil_texture': _definitions_soil.UsdaTextureClass.CLAY_LOAM},
+        {'soil_organic_carbon': 5.0, 'soil_texture': _soil.UsdaTextureClass.CLAY_LOAM},
         {'theta_33': 0.353},
     ),
     (
-        {'soil_organic_carbon': 9.0, 'soil_texture': _definitions_soil.UsdaTextureClass.CLAY_LOAM},
+        {'soil_organic_carbon': 9.0, 'soil_texture': _soil.UsdaTextureClass.CLAY_LOAM},
         {'theta_33': 0.464},
     ),
     (
-        {'soil_organic_carbon': 1.0, 'soil_texture': _definitions_soil.UsdaTextureClass.SANDY_CLAY},
+        {'soil_organic_carbon': 1.0, 'soil_texture': _soil.UsdaTextureClass.SANDY_CLAY},
         {'theta_33': 0.272},
     ),
     (
-        {'soil_organic_carbon': 2.0, 'soil_texture': _definitions_soil.UsdaTextureClass.SANDY_CLAY},
+        {'soil_organic_carbon': 2.0, 'soil_texture': _soil.UsdaTextureClass.SANDY_CLAY},
         {'theta_33': 0.305},
     ),
     (
-        {'soil_organic_carbon': 5.0, 'soil_texture': _definitions_soil.UsdaTextureClass.SANDY_CLAY},
+        {'soil_organic_carbon': 5.0, 'soil_texture': _soil.UsdaTextureClass.SANDY_CLAY},
         {'theta_33': 0.353},
     ),
     (
-        {'soil_organic_carbon': 9.0, 'soil_texture': _definitions_soil.UsdaTextureClass.SANDY_CLAY},
+        {'soil_organic_carbon': 9.0, 'soil_texture': _soil.UsdaTextureClass.SANDY_CLAY},
         {'theta_33': 0.383},
     ),
     (
-        {
-            'soil_organic_carbon': 1.0,
-            'soil_texture': _definitions_soil.UsdaTextureClass.SANDY_CLAY_LOAM,
-        },
+        {'soil_organic_carbon': 1.0, 'soil_texture': _soil.UsdaTextureClass.SANDY_CLAY_LOAM},
         {'theta_33': 0.272},
     ),
     (
-        {
-            'soil_organic_carbon': 2.0,
-            'soil_texture': _definitions_soil.UsdaTextureClass.SANDY_CLAY_LOAM,
-        },
+        {'soil_organic_carbon': 2.0, 'soil_texture': _soil.UsdaTextureClass.SANDY_CLAY_LOAM},
         {'theta_33': 0.305},
     ),
     (
-        {
-            'soil_organic_carbon': 5.0,
-            'soil_texture': _definitions_soil.UsdaTextureClass.SANDY_CLAY_LOAM,
-        },
+        {'soil_organic_carbon': 5.0, 'soil_texture': _soil.UsdaTextureClass.SANDY_CLAY_LOAM},
         {'theta_33': 0.393},
     ),
     (
-        {
-            'soil_organic_carbon': 9.0,
-            'soil_texture': _definitions_soil.UsdaTextureClass.SANDY_CLAY_LOAM,
-        },
+        {'soil_organic_carbon': 9.0, 'soil_texture': _soil.UsdaTextureClass.SANDY_CLAY_LOAM},
         {'theta_33': 0.464},
     ),
     (
-        {'soil_organic_carbon': 1.0, 'soil_texture': _definitions_soil.UsdaTextureClass.SILT},
+        {'soil_organic_carbon': 1.0, 'soil_texture': _soil.UsdaTextureClass.SILT},
         {'theta_33': 0.315},
     ),
     (
-        {'soil_organic_carbon': 2.0, 'soil_texture': _definitions_soil.UsdaTextureClass.SILT},
+        {'soil_organic_carbon': 2.0, 'soil_texture': _soil.UsdaTextureClass.SILT},
         {'theta_33': 0.338},
     ),
     (
-        {'soil_organic_carbon': 5.0, 'soil_texture': _definitions_soil.UsdaTextureClass.SILT},
+        {'soil_organic_carbon': 5.0, 'soil_texture': _soil.UsdaTextureClass.SILT},
         {'theta_33': 0.393},
     ),
     (
-        {'soil_organic_carbon': 9.0, 'soil_texture': _definitions_soil.UsdaTextureClass.SILT},
+        {'soil_organic_carbon': 9.0, 'soil_texture': _soil.UsdaTextureClass.SILT},
         {'theta_33': 0.464},
     ),
 ]

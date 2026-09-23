@@ -5,7 +5,7 @@ module;
 
 export module ptfkit.rawls2003;
 
-export import ptfkit.definitions.soil;
+export import ptfkit.soil;
 
 /**
  * @brief Rawls et al. (2003), organic-carbon effects on soil water retention.
@@ -27,10 +27,10 @@ export namespace ptfkit::rawls2003 {} // namespace ptfkit::rawls2003
 
 namespace ptfkit::rawls2003 {
 
-[[nodiscard]] inline double
-rawls2003_theta_33_tree(ptfkit::definitions::soil::UsdaTextureClass texture, double carbon) {
+[[nodiscard]] inline double rawls2003_theta_33_tree(ptfkit::soil::UsdaTextureClass texture,
+                                                    double carbon) {
     switch (texture) {
-    case ptfkit::definitions::soil::UsdaTextureClass::Sand: {
+    case ptfkit::soil::UsdaTextureClass::Sand: {
         if (carbon < 2.1) {
             return 0.108;
         } else {
@@ -45,7 +45,7 @@ rawls2003_theta_33_tree(ptfkit::definitions::soil::UsdaTextureClass texture, dou
             }
         }
     }
-    case ptfkit::definitions::soil::UsdaTextureClass::LoamySand: {
+    case ptfkit::soil::UsdaTextureClass::LoamySand: {
         if (carbon < 2.1) {
             return 0.151;
         } else {
@@ -60,7 +60,7 @@ rawls2003_theta_33_tree(ptfkit::definitions::soil::UsdaTextureClass texture, dou
             }
         }
     }
-    case ptfkit::definitions::soil::UsdaTextureClass::SandyLoam: {
+    case ptfkit::soil::UsdaTextureClass::SandyLoam: {
         if (carbon < 1.1) {
             return 0.204;
         } else {
@@ -79,8 +79,8 @@ rawls2003_theta_33_tree(ptfkit::definitions::soil::UsdaTextureClass texture, dou
             }
         }
     }
-    case ptfkit::definitions::soil::UsdaTextureClass::Loam:
-    case ptfkit::definitions::soil::UsdaTextureClass::SandyClay: {
+    case ptfkit::soil::UsdaTextureClass::Loam:
+    case ptfkit::soil::UsdaTextureClass::SandyClay: {
         if (carbon < 1.7) {
             return 0.272;
         } else {
@@ -95,7 +95,7 @@ rawls2003_theta_33_tree(ptfkit::definitions::soil::UsdaTextureClass texture, dou
             }
         }
     }
-    case ptfkit::definitions::soil::UsdaTextureClass::SandyClayLoam: {
+    case ptfkit::soil::UsdaTextureClass::SandyClayLoam: {
         if (carbon < 1.7) {
             return 0.272;
         } else {
@@ -110,8 +110,8 @@ rawls2003_theta_33_tree(ptfkit::definitions::soil::UsdaTextureClass texture, dou
             }
         }
     }
-    case ptfkit::definitions::soil::UsdaTextureClass::SiltLoam:
-    case ptfkit::definitions::soil::UsdaTextureClass::Silt: {
+    case ptfkit::soil::UsdaTextureClass::SiltLoam:
+    case ptfkit::soil::UsdaTextureClass::Silt: {
         if (carbon < 1.5) {
             return 0.315;
         } else {
@@ -126,7 +126,7 @@ rawls2003_theta_33_tree(ptfkit::definitions::soil::UsdaTextureClass texture, dou
             }
         }
     }
-    case ptfkit::definitions::soil::UsdaTextureClass::ClayLoam: {
+    case ptfkit::soil::UsdaTextureClass::ClayLoam: {
         if (carbon < 1.5) {
             return 0.315;
         } else {
@@ -141,17 +141,17 @@ rawls2003_theta_33_tree(ptfkit::definitions::soil::UsdaTextureClass texture, dou
             }
         }
     }
-    case ptfkit::definitions::soil::UsdaTextureClass::SiltyClayLoam: {
+    case ptfkit::soil::UsdaTextureClass::SiltyClayLoam: {
         if (carbon < 4.2) {
             return 0.361;
         } else {
             return 0.548;
         }
     }
-    case ptfkit::definitions::soil::UsdaTextureClass::SiltyClay: {
+    case ptfkit::soil::UsdaTextureClass::SiltyClay: {
         return 0.397;
     }
-    case ptfkit::definitions::soil::UsdaTextureClass::Clay: {
+    case ptfkit::soil::UsdaTextureClass::Clay: {
         return 0.426;
     }
     }
@@ -258,9 +258,8 @@ export namespace ptfkit::rawls2003 {
  * corresponding No branches; it is not propagated automatically.
  */
 [[nodiscard]]
-inline double
-calc_ptf_rawls2003_soc_theta33_tree(ptfkit::definitions::soil::UsdaTextureClass soil_texture,
-                                    double soil_organic_carbon) {
+inline double calc_ptf_rawls2003_soc_theta33_tree(ptfkit::soil::UsdaTextureClass soil_texture,
+                                                  double soil_organic_carbon) {
     return rawls2003_theta_33_tree(soil_texture, soil_organic_carbon);
 }
 

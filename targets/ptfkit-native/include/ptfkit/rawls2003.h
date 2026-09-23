@@ -3,7 +3,7 @@
 #ifndef PTFKIT_RAWLS2003_H
 #define PTFKIT_RAWLS2003_H
 
-#include <ptfkit/definitions/soil.h>
+#include <ptfkit/soil.h>
 #include <math.h>
 
 /**
@@ -22,10 +22,10 @@
  * equations were evaluated with NRCS pilot-study data.
  */
 
-static inline double rawls2003_theta_33_tree(definitions_soil_usda_texture_class texture,
+static inline double rawls2003_theta_33_tree(ptfkit_soil_usda_texture_class texture,
                                              double carbon) {
     switch (texture) {
-    case definitions_soil_usda_texture_class_sand: {
+    case ptfkit_soil_usda_texture_class_sand: {
         if (carbon < 2.1) {
             return 0.108;
         } else {
@@ -40,7 +40,7 @@ static inline double rawls2003_theta_33_tree(definitions_soil_usda_texture_class
             }
         }
     }
-    case definitions_soil_usda_texture_class_loamy_sand: {
+    case ptfkit_soil_usda_texture_class_loamy_sand: {
         if (carbon < 2.1) {
             return 0.151;
         } else {
@@ -55,7 +55,7 @@ static inline double rawls2003_theta_33_tree(definitions_soil_usda_texture_class
             }
         }
     }
-    case definitions_soil_usda_texture_class_sandy_loam: {
+    case ptfkit_soil_usda_texture_class_sandy_loam: {
         if (carbon < 1.1) {
             return 0.204;
         } else {
@@ -74,8 +74,8 @@ static inline double rawls2003_theta_33_tree(definitions_soil_usda_texture_class
             }
         }
     }
-    case definitions_soil_usda_texture_class_loam:
-    case definitions_soil_usda_texture_class_sandy_clay: {
+    case ptfkit_soil_usda_texture_class_loam:
+    case ptfkit_soil_usda_texture_class_sandy_clay: {
         if (carbon < 1.7) {
             return 0.272;
         } else {
@@ -90,7 +90,7 @@ static inline double rawls2003_theta_33_tree(definitions_soil_usda_texture_class
             }
         }
     }
-    case definitions_soil_usda_texture_class_sandy_clay_loam: {
+    case ptfkit_soil_usda_texture_class_sandy_clay_loam: {
         if (carbon < 1.7) {
             return 0.272;
         } else {
@@ -105,8 +105,8 @@ static inline double rawls2003_theta_33_tree(definitions_soil_usda_texture_class
             }
         }
     }
-    case definitions_soil_usda_texture_class_silt_loam:
-    case definitions_soil_usda_texture_class_silt: {
+    case ptfkit_soil_usda_texture_class_silt_loam:
+    case ptfkit_soil_usda_texture_class_silt: {
         if (carbon < 1.5) {
             return 0.315;
         } else {
@@ -121,7 +121,7 @@ static inline double rawls2003_theta_33_tree(definitions_soil_usda_texture_class
             }
         }
     }
-    case definitions_soil_usda_texture_class_clay_loam: {
+    case ptfkit_soil_usda_texture_class_clay_loam: {
         if (carbon < 1.5) {
             return 0.315;
         } else {
@@ -136,17 +136,17 @@ static inline double rawls2003_theta_33_tree(definitions_soil_usda_texture_class
             }
         }
     }
-    case definitions_soil_usda_texture_class_silty_clay_loam: {
+    case ptfkit_soil_usda_texture_class_silty_clay_loam: {
         if (carbon < 4.2) {
             return 0.361;
         } else {
             return 0.548;
         }
     }
-    case definitions_soil_usda_texture_class_silty_clay: {
+    case ptfkit_soil_usda_texture_class_silty_clay: {
         return 0.397;
     }
-    case definitions_soil_usda_texture_class_clay: {
+    case ptfkit_soil_usda_texture_class_clay: {
         return 0.426;
     }
     }
@@ -249,7 +249,7 @@ static inline double rawls2003_theta_1500_tree(double clay, double sand, double 
  * corresponding No branches; it is not propagated automatically.
  */
 static inline double
-calc_ptf_rawls2003_soc_theta33_tree(definitions_soil_usda_texture_class soil_texture,
+calc_ptf_rawls2003_soc_theta33_tree(ptfkit_soil_usda_texture_class soil_texture,
                                     double soil_organic_carbon) {
     return rawls2003_theta_33_tree(soil_texture, soil_organic_carbon);
 }
