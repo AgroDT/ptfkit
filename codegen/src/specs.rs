@@ -1173,10 +1173,17 @@ add_test(NAME named_tree_module_cpp23 COMMAND named_tree_module_cpp23)
             .arg("--version")
             .output()
             .is_ok_and(|output| output.status.success());
+        let clangxx_available = std::process::Command::new("clang++")
+            .arg("--version")
+            .output()
+            .is_ok_and(|output| output.status.success());
         let mut configure_command = std::process::Command::new("cmake");
         configure_command.arg("-S").arg(&root).arg("-B").arg(&build);
         if ninja_available {
             configure_command.args(["-G", "Ninja"]);
+            if clangxx_available {
+                configure_command.arg("-DCMAKE_CXX_COMPILER=clang++");
+            }
         }
         let configure = configure_command.output().unwrap();
         assert!(
