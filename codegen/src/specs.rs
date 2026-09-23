@@ -61,6 +61,20 @@ pub(crate) fn load(root: &Path) -> Result<Vec<Entry>> {
                 continue;
             }
         };
+        if let Some(definition) = definitions
+            .keys()
+            .find(|definition| definition.file_stem() == path.file_stem())
+        {
+            errors.push(
+                SpecificationError::ModuleCollision {
+                    module: slug,
+                    definition: definition.clone(),
+                    path,
+                }
+                .into(),
+            );
+            continue;
+        }
         let text = fs::read_to_string(&path)?;
         let yaml_value: serde_yaml::Value = match serde_yaml::from_str(&text) {
             Ok(value) => value,
@@ -154,7 +168,13 @@ fn load_definitions(
         if path.extension().is_none_or(|extension| extension != "yaml") {
             continue;
         }
-        source_slug(&path)?;
+        let module = source_slug(&path)?;
+        if matches!(
+            module.as_str(),
+            "enums" | "lib" | "mod" | "ptfkit" | "test_support"
+        ) {
+            return Err(SpecificationError::ReservedModule { module, path }.into());
+        }
         let text = fs::read_to_string(&path)?;
         let yaml: serde_yaml::Value =
             serde_yaml::from_str(&text).map_err(|error| DocumentError::Yaml(error).at(&path))?;
@@ -1190,6 +1210,60 @@ functions:
 
         let error = load(&root).unwrap_err().to_string();
         assert!(error.contains("lookup `InvalidLookup` values must cover every member"));
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn rejects_shared_modules_that_shadow_target_infrastructure() {
+        for module in ["enums", "lib", "mod", "ptfkit", "test_support"] {
+            let root = fixture_root(&format!("reserved-shared-module-{module}"));
+            crate::test_support::copy_shared_definition_fixture(&root);
+            let path = root.join(format!("specs/definitions/{module}.yaml"));
+            fs::rename(root.join("specs/definitions/soil.yaml"), &path).unwrap();
+            let error = load(&root).unwrap_err();
+            let super::SpecificationError::ReservedModule {
+                module: actual,
+                path: actual_path,
+            } = error.downcast_ref::<super::SpecificationError>().unwrap()
+            else {
+                panic!("expected a reserved module error: {error:?}");
+            };
+            assert_eq!(actual, module);
+            assert_eq!(actual_path, &path);
+            fs::remove_dir_all(root).unwrap();
+        }
+    }
+
+    #[test]
+    fn rejects_shared_and_source_module_collisions() {
+        use crate::{
+            diagnostics::{Diagnostic, ValidationReport},
+            specs::SpecificationError,
+        };
+
+        let root = fixture_root("shared-module-collision");
+        crate::test_support::copy_shared_definition_fixture(&root);
+        let path = root.join("specs/functions/soil.yaml");
+        fs::rename(root.join("specs/functions/first_source.yaml"), &path).unwrap();
+        let error = crate::load_validated_specifications(&root).unwrap_err();
+        let report = error.downcast_ref::<ValidationReport>().unwrap();
+        let [Diagnostic::Specification(error)] = report.diagnostics.as_slice() else {
+            panic!("expected one module collision: {report:?}");
+        };
+        let SpecificationError::ModuleCollision {
+            module,
+            definition,
+            path: actual,
+        } = error.as_ref()
+        else {
+            panic!("expected a module collision: {error:?}");
+        };
+        assert_eq!(module, "soil");
+        assert_eq!(
+            definition,
+            &fs::canonicalize(root.join("specs/definitions/soil.yaml")).unwrap()
+        );
+        assert_eq!(actual, &path);
         fs::remove_dir_all(root).unwrap();
     }
 

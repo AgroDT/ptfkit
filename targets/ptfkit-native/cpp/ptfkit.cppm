@@ -2,7 +2,7 @@
 
 export module ptfkit;
 
-export import ptfkit.definitions.soil;
+export import ptfkit.soil;
 export import ptfkit.ahuja1984;
 export import ptfkit.aimrun2009;
 export import ptfkit.beniaich2023;

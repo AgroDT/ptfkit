@@ -175,35 +175,35 @@ mod tests {
         for (files, shared_path, first_path, second_path, declaration, reference) in [
             (
                 rust::render(&functions).unwrap(),
-                "definitions/soil.rs",
+                "soil.rs",
                 "first_source.rs",
                 "second_source.rs",
                 "pubenumSharedCategory",
-                "crate::definitions::soil::SharedCategory",
+                "crate::soil::SharedCategory",
             ),
             (
                 native.c_headers,
-                "ptfkit/definitions/soil.h",
+                "ptfkit/soil.h",
                 "ptfkit/first_source.h",
                 "ptfkit/second_source.h",
-                "}definitions_soil_shared_category;",
-                "definitions_soil_shared_categorycategory",
+                "}ptfkit_soil_shared_category;",
+                "ptfkit_soil_shared_categorycategory",
             ),
             (
                 native.cpp_modules,
-                "definitions/soil.cppm",
+                "soil.cppm",
                 "first_source.cppm",
                 "second_source.cppm",
                 "enumclassSharedCategory",
-                "ptfkit::definitions::soil::SharedCategorycategory",
+                "ptfkit::soil::SharedCategorycategory",
             ),
             (
                 python::render(&functions).unwrap().wrappers,
-                "ptfkit/definitions/soil.py",
+                "ptfkit/soil.py",
                 "ptfkit/first_source.py",
                 "ptfkit/second_source.py",
                 "classSharedCategory(Enum):",
-                "_definitions_soil.SharedCategory",
+                "_soil.SharedCategory",
             ),
         ] {
             let text = |path: &str| {
@@ -239,7 +239,7 @@ mod tests {
                 .contents
         };
         assert!(
-            generated("ptfkit/definitions/soil.py")
+            generated("ptfkit/soil.py")
                 .contains("from typing import TYPE_CHECKING\n\nfrom ptfkit.enums import EnumArray")
         );
         assert!(

@@ -7,217 +7,217 @@ import ptfkit.rawls2003;
 int main() {
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::Sand, 1.0);
+            ptfkit::soil::UsdaTextureClass::Sand, 1.0);
         assert_close(result, 0.108, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_leaf_01_sand");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::LoamySand, 1.0);
+            ptfkit::soil::UsdaTextureClass::LoamySand, 1.0);
         assert_close(result, 0.151, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_leaf_02_loamy_sand");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::SandyLoam, 1.0);
+            ptfkit::soil::UsdaTextureClass::SandyLoam, 1.0);
         assert_close(result, 0.204, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_leaf_03_sandy_loam_low_corg");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::SandyLoam, 1.1);
+            ptfkit::soil::UsdaTextureClass::SandyLoam, 1.1);
         assert_close(result, 0.244, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_leaf_04_corg_1_1_boundary");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::Sand, 2.1);
+            ptfkit::soil::UsdaTextureClass::Sand, 2.1);
         assert_close(result, 0.28, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_leaf_05_corg_2_1_boundary");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::LoamySand, 4.8);
+            ptfkit::soil::UsdaTextureClass::LoamySand, 4.8);
         assert_close(result, 0.35, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_leaf_06_corg_4_8_boundary");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::Sand, 7.7);
+            ptfkit::soil::UsdaTextureClass::Sand, 7.7);
         assert_close(result, 0.394, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_leaf_07_corg_7_7_boundary");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::SandyLoam, 7.7);
+            ptfkit::soil::UsdaTextureClass::SandyLoam, 7.7);
         assert_close(result, 0.549, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_leaf_08_sandy_loam_high_corg");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::Loam, 1.0);
+            ptfkit::soil::UsdaTextureClass::Loam, 1.0);
         assert_close(result, 0.272, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_leaf_09_loam_low_corg");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::Loam, 1.7);
+            ptfkit::soil::UsdaTextureClass::Loam, 1.7);
         assert_close(result, 0.305, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_leaf_10_corg_1_7_boundary");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::SiltLoam, 1.0);
+            ptfkit::soil::UsdaTextureClass::SiltLoam, 1.0);
         assert_close(result, 0.315, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_leaf_11_silt_loam_low_corg");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::SiltLoam, 1.5);
+            ptfkit::soil::UsdaTextureClass::SiltLoam, 1.5);
         assert_close(result, 0.338, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_leaf_12_corg_1_5_boundary");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::Loam, 4.2);
+            ptfkit::soil::UsdaTextureClass::Loam, 4.2);
         assert_close(result, 0.353, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_leaf_13_corg_4_2_loam_boundary");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::SiltLoam, 4.2);
+            ptfkit::soil::UsdaTextureClass::SiltLoam, 4.2);
         assert_close(result, 0.393, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_leaf_14_corg_4_2_silt_boundary");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::Loam, 8.5);
+            ptfkit::soil::UsdaTextureClass::Loam, 8.5);
         assert_close(result, 0.383, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_leaf_15_corg_8_5_loam_boundary");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::SiltLoam, 8.5);
+            ptfkit::soil::UsdaTextureClass::SiltLoam, 8.5);
         assert_close(result, 0.464, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_leaf_16_corg_8_5_silt_boundary");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::SiltyClayLoam, 4.0);
+            ptfkit::soil::UsdaTextureClass::SiltyClayLoam, 4.0);
         assert_close(result, 0.361, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_leaf_17_silty_clay_loam_low_corg");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::SiltyClayLoam, 4.2);
+            ptfkit::soil::UsdaTextureClass::SiltyClayLoam, 4.2);
         assert_close(result, 0.548, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_leaf_18_corg_4_2_very_fine_boundary");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::SiltyClay, 1.0);
+            ptfkit::soil::UsdaTextureClass::SiltyClay, 1.0);
         assert_close(result, 0.397, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_leaf_19_silty_clay");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::Clay, 1.0);
+            ptfkit::soil::UsdaTextureClass::Clay, 1.0);
         assert_close(result, 0.426, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_leaf_20_clay");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::ClayLoam, 1.0);
+            ptfkit::soil::UsdaTextureClass::ClayLoam, 1.0);
         assert_close(result, 0.315, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_clay_loam_low");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::ClayLoam, 2.0);
+            ptfkit::soil::UsdaTextureClass::ClayLoam, 2.0);
         assert_close(result, 0.338, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_clay_loam_mid_low");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::ClayLoam, 5.0);
+            ptfkit::soil::UsdaTextureClass::ClayLoam, 5.0);
         assert_close(result, 0.353, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_clay_loam_mid_high");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::ClayLoam, 9.0);
+            ptfkit::soil::UsdaTextureClass::ClayLoam, 9.0);
         assert_close(result, 0.464, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_clay_loam_high");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::SandyClay, 1.0);
+            ptfkit::soil::UsdaTextureClass::SandyClay, 1.0);
         assert_close(result, 0.272, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_sandy_clay_low");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::SandyClay, 2.0);
+            ptfkit::soil::UsdaTextureClass::SandyClay, 2.0);
         assert_close(result, 0.305, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_sandy_clay_mid_low");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::SandyClay, 5.0);
+            ptfkit::soil::UsdaTextureClass::SandyClay, 5.0);
         assert_close(result, 0.353, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_sandy_clay_mid_high");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::SandyClay, 9.0);
+            ptfkit::soil::UsdaTextureClass::SandyClay, 9.0);
         assert_close(result, 0.383, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_sandy_clay_high");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::SandyClayLoam, 1.0);
+            ptfkit::soil::UsdaTextureClass::SandyClayLoam, 1.0);
         assert_close(result, 0.272, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_sandy_clay_loam_low");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::SandyClayLoam, 2.0);
+            ptfkit::soil::UsdaTextureClass::SandyClayLoam, 2.0);
         assert_close(result, 0.305, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_sandy_clay_loam_mid_low");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::SandyClayLoam, 5.0);
+            ptfkit::soil::UsdaTextureClass::SandyClayLoam, 5.0);
         assert_close(result, 0.393, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_sandy_clay_loam_mid_high");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::SandyClayLoam, 9.0);
+            ptfkit::soil::UsdaTextureClass::SandyClayLoam, 9.0);
         assert_close(result, 0.464, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_sandy_clay_loam_high");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::Silt, 1.0);
+            ptfkit::soil::UsdaTextureClass::Silt, 1.0);
         assert_close(result, 0.315, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_silt_low");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::Silt, 2.0);
+            ptfkit::soil::UsdaTextureClass::Silt, 2.0);
         assert_close(result, 0.338, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_silt_mid_low");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::Silt, 5.0);
+            ptfkit::soil::UsdaTextureClass::Silt, 5.0);
         assert_close(result, 0.393, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_silt_mid_high");
     }
     {
         const auto result = ptfkit::rawls2003::calc_ptf_rawls2003_soc_theta33_tree(
-            ptfkit::definitions::soil::UsdaTextureClass::Silt, 9.0);
+            ptfkit::soil::UsdaTextureClass::Silt, 9.0);
         assert_close(result, 0.464, 0.001, 0.0, "volumetric_water_content", "volume_fraction",
                      "registry", "figure_2_silt_high");
     }

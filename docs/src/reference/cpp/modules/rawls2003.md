@@ -71,7 +71,7 @@ Estimate volumetric water content at -33 kPa with the published regression tree.
 
 ```cpp
 [[nodiscard]]
-inline double calc_ptf_rawls2003_soc_theta33_tree(ptfkit::definitions::soil::UsdaTextureClass soil_texture, double soil_organic_carbon)
+inline double calc_ptf_rawls2003_soc_theta33_tree(ptfkit::soil::UsdaTextureClass soil_texture, double soil_organic_carbon)
 ```
 
 #### Parameters

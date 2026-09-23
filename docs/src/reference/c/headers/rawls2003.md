@@ -26,39 +26,39 @@ Rawls, W. J., Pachepsky, Y. A., Ritchie, J. C., Sobecki, T. M., & Bloodworth, H.
 
 [PTF catalog page](../../../ptf-catalog/sources/rawls2003.md)
 
-## `definitions_soil_usda_texture_class`
+## `ptfkit_soil_usda_texture_class`
 
 ```c
 typedef enum {
-    definitions_soil_usda_texture_class_sand,
-    definitions_soil_usda_texture_class_loamy_sand,
-    definitions_soil_usda_texture_class_sandy_loam,
-    definitions_soil_usda_texture_class_loam,
-    definitions_soil_usda_texture_class_silt_loam,
-    definitions_soil_usda_texture_class_silt,
-    definitions_soil_usda_texture_class_sandy_clay_loam,
-    definitions_soil_usda_texture_class_clay_loam,
-    definitions_soil_usda_texture_class_silty_clay_loam,
-    definitions_soil_usda_texture_class_sandy_clay,
-    definitions_soil_usda_texture_class_silty_clay,
-    definitions_soil_usda_texture_class_clay,
-} definitions_soil_usda_texture_class;
+    ptfkit_soil_usda_texture_class_sand,
+    ptfkit_soil_usda_texture_class_loamy_sand,
+    ptfkit_soil_usda_texture_class_sandy_loam,
+    ptfkit_soil_usda_texture_class_loam,
+    ptfkit_soil_usda_texture_class_silt_loam,
+    ptfkit_soil_usda_texture_class_silt,
+    ptfkit_soil_usda_texture_class_sandy_clay_loam,
+    ptfkit_soil_usda_texture_class_clay_loam,
+    ptfkit_soil_usda_texture_class_silty_clay_loam,
+    ptfkit_soil_usda_texture_class_sandy_clay,
+    ptfkit_soil_usda_texture_class_silty_clay,
+    ptfkit_soil_usda_texture_class_clay,
+} ptfkit_soil_usda_texture_class;
 ```
 
 | Member | Canonical value | Description |
 | --- | --- | --- |
-| `definitions_soil_usda_texture_class_sand` | `Sand` |  |
-| `definitions_soil_usda_texture_class_loamy_sand` | `Loamy sand` |  |
-| `definitions_soil_usda_texture_class_sandy_loam` | `Sandy loam` |  |
-| `definitions_soil_usda_texture_class_loam` | `Loam` |  |
-| `definitions_soil_usda_texture_class_silt_loam` | `Silt loam` |  |
-| `definitions_soil_usda_texture_class_silt` | `Silt` |  |
-| `definitions_soil_usda_texture_class_sandy_clay_loam` | `Sandy clay loam` |  |
-| `definitions_soil_usda_texture_class_clay_loam` | `Clay loam` |  |
-| `definitions_soil_usda_texture_class_silty_clay_loam` | `Silty clay loam` |  |
-| `definitions_soil_usda_texture_class_sandy_clay` | `Sandy clay` |  |
-| `definitions_soil_usda_texture_class_silty_clay` | `Silty clay` |  |
-| `definitions_soil_usda_texture_class_clay` | `Clay` |  |
+| `ptfkit_soil_usda_texture_class_sand` | `Sand` |  |
+| `ptfkit_soil_usda_texture_class_loamy_sand` | `Loamy sand` |  |
+| `ptfkit_soil_usda_texture_class_sandy_loam` | `Sandy loam` |  |
+| `ptfkit_soil_usda_texture_class_loam` | `Loam` |  |
+| `ptfkit_soil_usda_texture_class_silt_loam` | `Silt loam` |  |
+| `ptfkit_soil_usda_texture_class_silt` | `Silt` |  |
+| `ptfkit_soil_usda_texture_class_sandy_clay_loam` | `Sandy clay loam` |  |
+| `ptfkit_soil_usda_texture_class_clay_loam` | `Clay loam` |  |
+| `ptfkit_soil_usda_texture_class_silty_clay_loam` | `Silty clay loam` |  |
+| `ptfkit_soil_usda_texture_class_sandy_clay` | `Sandy clay` |  |
+| `ptfkit_soil_usda_texture_class_silty_clay` | `Silty clay` |  |
+| `ptfkit_soil_usda_texture_class_clay` | `Clay` |  |
 
 ## Functions
 
@@ -67,7 +67,7 @@ typedef enum {
 Estimate volumetric water content at -33 kPa with the published regression tree.
 
 ```c
-static inline double calc_ptf_rawls2003_soc_theta33_tree(definitions_soil_usda_texture_class soil_texture, double soil_organic_carbon);
+static inline double calc_ptf_rawls2003_soc_theta33_tree(ptfkit_soil_usda_texture_class soil_texture, double soil_organic_carbon);
 ```
 
 #### Parameters

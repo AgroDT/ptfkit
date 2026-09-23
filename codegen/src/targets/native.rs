@@ -48,16 +48,16 @@ pub(super) fn render(functions: &[CompiledFunction]) -> Result<OutputFiles> {
     let shared = super::shared_enum_groups(functions);
     for (document, definitions) in &shared {
         c_headers.push(file(
-            format!("ptfkit/definitions/{document}.h"),
+            format!("ptfkit/{document}.h"),
             shared_c_header(document, definitions),
         ));
-        umbrella.line(format_args!("#include <ptfkit/definitions/{document}.h>"));
+        umbrella.line(format_args!("#include <ptfkit/{document}.h>"));
         cpp_modules.push(file(
-            format!("definitions/{document}.cppm"),
+            format!("{document}.cppm"),
             shared_cpp_module(document, definitions),
         ));
-        module_paths.push(format!("cpp/definitions/{document}.cppm"));
-        root_module.line(format_args!("export import ptfkit.definitions.{document};"));
+        module_paths.push(format!("cpp/{document}.cppm"));
+        root_module.line(format_args!("export import ptfkit.{document};"));
     }
     for (slug, functions) in group_by_source(functions) {
         umbrella.line(format_args!("#include <ptfkit/{slug}.h>"));
@@ -101,7 +101,7 @@ fn c_header(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
         "{HEADER}\n\n#ifndef {guard}\n#define {guard}\n\n"
     ));
     for document in shared_documents(functions) {
-        writer.write(format_args!("#include <ptfkit/definitions/{document}.h>\n"));
+        writer.write(format_args!("#include <ptfkit/{document}.h>\n"));
     }
     if requires_pow4(functions) {
         writer.write("#include <ptfkit/detail/power.h>\n");
@@ -185,9 +185,7 @@ fn cpp_module(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
     }
     writer.write(format_args!("export module ptfkit.{slug};\n\n"));
     for document in shared_documents(functions) {
-        writer.write(format_args!(
-            "export import ptfkit.definitions.{document};\n"
-        ));
+        writer.write(format_args!("export import ptfkit.{document};\n"));
     }
     if !shared_documents(functions).is_empty() {
         writer.blank_line();
@@ -726,7 +724,7 @@ fn record_lookup_function_name(lookup: &RecordLookup) -> String {
         lookup.enum_type.shared_module.as_ref().map_or_else(
             || lookup.enum_type.name.to_case(Case::Snake),
             |module| format!(
-                "definitions_{module}_{}",
+                "ptfkit_{module}_{}",
                 lookup.enum_type.name.to_case(Case::Snake)
             )
         )
@@ -886,13 +884,13 @@ fn shared_documents<'a>(functions: &[&'a CompiledFunction]) -> BTreeSet<&'a str>
 fn shared_c_header(document: &str, definitions: &[&EnumDefinition]) -> String {
     let mut writer = Writer::new();
     writer.write(format_args!(
-        "{HEADER}\n\n#ifndef PTFKIT_DEFINITIONS_{document}\n#define PTFKIT_DEFINITIONS_{document}\n\n"
+        "{HEADER}\n\n#ifndef PTFKIT_{document}\n#define PTFKIT_{document}\n\n"
     ));
     for definition in definitions {
         writer.blank_line();
         render_enum(
             &mut writer,
-            &format!("definitions_{document}"),
+            &format!("ptfkit_{document}"),
             definition,
             NativeDialect::C,
         );
@@ -904,23 +902,21 @@ fn shared_c_header(document: &str, definitions: &[&EnumDefinition]) -> String {
 fn shared_cpp_module(document: &str, definitions: &[&EnumDefinition]) -> String {
     let mut writer = Writer::new();
     writer.write(format_args!(
-        "{HEADER}\n\nexport module ptfkit.definitions.{document};\n\nexport namespace ptfkit::definitions::{document} {{"
+        "{HEADER}\n\nexport module ptfkit.{document};\n\nexport namespace ptfkit::{document} {{"
     ));
     for definition in definitions {
         writer.blank_line();
         render_enum(&mut writer, document, definition, NativeDialect::Cpp);
     }
-    writer.write(format_args!(
-        "\n\n}}  // namespace ptfkit::definitions::{document}\n"
-    ));
+    writer.write(format_args!("\n\n}}  // namespace ptfkit::{document}\n"));
     writer.into_string()
 }
 
 pub(crate) fn c_enum_module(enum_type: &EnumType, source: &str) -> String {
-    enum_type.shared_module.as_ref().map_or_else(
-        || source.to_owned(),
-        |module| format!("definitions_{module}"),
-    )
+    enum_type
+        .shared_module
+        .as_ref()
+        .map_or_else(|| source.to_owned(), |module| format!("ptfkit_{module}"))
 }
 
 fn enum_type_name(enum_type: &EnumType, source: &str, dialect: NativeDialect) -> String {
@@ -933,7 +929,7 @@ fn enum_type_name(enum_type: &EnumType, source: &str, dialect: NativeDialect) ->
 pub(crate) fn cpp_enum_type_name(enum_type: &EnumType) -> String {
     enum_type.shared_module.as_ref().map_or_else(
         || enum_type.name.clone(),
-        |module| format!("ptfkit::definitions::{module}::{}", enum_type.name),
+        |module| format!("ptfkit::{module}::{}", enum_type.name),
     )
 }
 

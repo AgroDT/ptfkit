@@ -96,9 +96,12 @@ so Python functions from separate source modules accept the same enum class and
 the same typed `EnumArray` without conversion. The input binding description
 remains specific to the function and is not taken from the shared type.
 Shared definition filenames use lowercase identifiers (`soil.yaml`, for example).
-Referenced enums are emitted once in `ptfkit.definitions.soil` for Python,
-`ptfkit::definitions::soil` for Rust and C++, and
-`ptfkit/definitions/soil.h` for C (with the `definitions_soil_` symbol prefix).
+Referenced enums are emitted once in `ptfkit.soil` for Python,
+`ptfkit::soil` for Rust and C++, and
+`ptfkit/soil.h` for C (with the `ptfkit_soil_` symbol prefix).
+Shared document stems must not collide with source publication module names or
+reserved target modules (`enums`, `lib`, `mod`, `ptfkit`, `test_support`).
+The `definitions` directory belongs to the specification layout, not the public API.
 Python consumers import the shared class from its defining module; source-local
 enums remain available through their existing source modules. Unreferenced shared
 definitions are validated but do not produce target modules. Remote references,
