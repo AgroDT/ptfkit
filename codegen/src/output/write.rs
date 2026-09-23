@@ -244,7 +244,13 @@ fn format_layout(formatter: Formatter, root: &Path, paths: &[PathBuf]) -> Result
 }
 
 pub(super) fn format_rust(paths: &[PathBuf]) -> Result<()> {
-    run("rustfmt", &["--edition", "2024"], paths, None)
+    // Every generated file is supplied explicitly; do not traverse handwritten modules.
+    run(
+        "rustfmt",
+        &["--edition", "2024", "--config", "skip_children=true"],
+        paths,
+        None,
+    )
 }
 
 fn format_rust_staged(root: &Path, files: &[&StagedWrite]) -> Result<()> {
