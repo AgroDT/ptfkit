@@ -72,12 +72,12 @@ impl Cli {
                 Ok(())
             }
             Command::Generate => {
-                let entries = load_validated_specifications(root)?;
-                targets::run(root, entries)
+                let loaded = load_validated_all(root)?;
+                targets::run(root, loaded)
             }
             Command::CheckGenerated => {
-                let entries = load_validated_specifications(root)?;
-                targets::check_generated(root, entries)
+                let loaded = load_validated_all(root)?;
+                targets::check_generated(root, loaded)
             }
             Command::CorpusReport { format } => {
                 let entries = load_validated_specifications(root)?;
@@ -95,15 +95,19 @@ impl Cli {
 }
 
 fn load_validated_specifications(root: &Path) -> Result<Vec<model::Entry>> {
-    let entries = specs::load(root)?;
-    let errors = validate::specifications(&entries);
+    Ok(load_validated_all(root)?.entries)
+}
+
+fn load_validated_all(root: &Path) -> Result<specs::LoadedSpecifications> {
+    let loaded = specs::load_all(root)?;
+    let errors = validate::specifications(&loaded.entries);
     if !errors.is_empty() {
         return Err(diagnostics::ValidationReport::specifications(
             errors.into_iter().map(Into::into).collect(),
         )
         .into());
     }
-    Ok(entries)
+    Ok(loaded)
 }
 
 fn main() -> ExitCode {

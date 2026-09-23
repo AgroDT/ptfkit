@@ -1,3 +1,4 @@
+description: Shared soil categories for test sources.
 $defs:
   SharedCategory:
     type: enum

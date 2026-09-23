@@ -4,6 +4,16 @@ title: PTF Catalog
 
 ## PTF source specifications
 
+Browse the [Sources](sources/index.md) and [Definitions](definitions/index.md)
+sections for the validated YAML documents. Shared definition documents record
+reusable types independently of any single publication.
+
+Each shared definition YAML has a required top-level `description`. It describes
+the document as a whole and appears on its catalog page and in the generated
+module and header documentation. The
+[`definitions.schema.json`](https://github.com/AgroDT/ptfkit/blob/main/specs/schema/definitions.schema.json)
+defines the shared-document format.
+
 The PTF catalog is formed from source specifications in YAML format. Each file
 describes a single scientific publication and the pedotransfer functions
 extracted from it by ptfkit. The specification serves both as a trackable

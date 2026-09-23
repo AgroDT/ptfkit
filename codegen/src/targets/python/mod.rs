@@ -5,6 +5,7 @@ mod test;
 mod wrapper;
 
 use crate::model::CompiledFunction;
+use crate::specs::DefinitionDocument;
 
 use crate::output::GeneratedFile;
 
@@ -17,11 +18,19 @@ pub(super) struct Output {
     pub(super) tests: Vec<GeneratedFile>,
 }
 
+#[cfg(test)]
 pub(super) fn render(functions: &[CompiledFunction]) -> crate::targets::Result<Output> {
+    render_with_definitions(functions, &[])
+}
+
+pub(super) fn render_with_definitions(
+    functions: &[CompiledFunction],
+    documents: &[DefinitionDocument],
+) -> crate::targets::Result<Output> {
     Ok(Output {
         extension: extension::render(functions)?,
         wrappers: {
-            let mut wrappers = wrapper::render(functions)?;
+            let mut wrappers = wrapper::render_with_definitions(functions, documents)?;
             wrappers.push(GeneratedFile::new(
                 "ptfkit/_ptfkit.pyi".into(),
                 stub::render(functions),

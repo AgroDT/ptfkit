@@ -11,18 +11,37 @@ use crate::{
     targets::{
         group_by_source,
         native::{c_enum_member, c_enum_module, c_enum_name, c_result_name},
+        shared_enum_groups,
     },
 };
 
 pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile>> {
     let sources = group_by_source(functions);
+    let shared = shared_enum_groups(functions);
     let mut files = vec![markdown::markdown_file("index.md", |writer| {
-        render_index(writer, &sources);
+        render_index(writer, &sources, &shared);
     })];
     files.push(header_file("headers/ptfkit.md", "ptfkit", |writer| {
-        render_umbrella(writer, &sources);
+        render_umbrella(writer, &sources, &shared);
         Ok(())
     })?);
+    for (module, definitions) in &shared {
+        files.push(header_file(
+            format!("headers/{module}.md"),
+            module,
+            |writer| {
+                writer.write(HEADER);
+                writer.write(format_args!("# `<ptfkit/{module}.h>`\n\n"));
+                markdown::code_block(writer, "c", |writer| {
+                    writer.line(format_args!("#include <ptfkit/{module}.h>"));
+                });
+                for definition in definitions {
+                    render_enum(writer, &format!("ptfkit_{module}"), definition, true);
+                }
+                Ok(())
+            },
+        )?);
+    }
 
     let mut index_entries = Vec::new();
     for (slug, functions) in sources {
@@ -59,13 +78,22 @@ fn header_file(
 fn render_index(
     writer: &mut Writer,
     sources: &std::collections::BTreeMap<&str, Vec<&CompiledFunction>>,
+    shared: &std::collections::BTreeMap<&str, Vec<&EnumDefinition>>,
 ) {
     markdown::generated_frontmatter(writer, |writer| {
         writer.line("title: C API reference");
     });
-    writer.write(
-        "# C API reference\n\nptfkit's C API is organized around installed headers.\n\n## Headers\n\n- [`<ptfkit/ptfkit.h>`](headers/ptfkit.md) — Aggregates every ptfkit source header.\n",
-    );
+    writer.write("# C API reference\n\nptfkit's C API is organized around installed headers.\n\n## Umbrella header\n\n- [`<ptfkit/ptfkit.h>`](headers/ptfkit.md) — Aggregates all public ptfkit headers.\n\n");
+    if !shared.is_empty() {
+        writer.write("## Shared domain headers\n\n");
+        for module in shared.keys() {
+            writer.line(format_args!(
+                "- [`<ptfkit/{module}.h>`](headers/{module}.md)"
+            ));
+        }
+        writer.blank_line();
+    }
+    writer.write("## Source headers\n\n");
     for (slug, functions) in sources {
         let summary = docs::for_source(
             &functions[0].entry.spec.source,
@@ -84,6 +112,7 @@ fn render_index(
 fn render_umbrella(
     writer: &mut Writer,
     sources: &std::collections::BTreeMap<&str, Vec<&CompiledFunction>>,
+    shared: &std::collections::BTreeMap<&str, Vec<&EnumDefinition>>,
 ) {
     writer.write(HEADER);
     writer.write("# `<ptfkit/ptfkit.h>`\n\n");
@@ -91,8 +120,11 @@ fn render_umbrella(
         writer.line("#include <ptfkit/ptfkit.h>");
     });
     writer.write(
-        "This umbrella header aggregates every public ptfkit source header. Include an individual header when only one source is needed.\n\n## Included headers\n\n",
+        "This umbrella header aggregates every public ptfkit header. Include an individual header when only one module is needed.\n\n## Included headers\n\n",
     );
+    for module in shared.keys() {
+        writer.line(format_args!("- [`<ptfkit/{module}.h>`]({module}.md)"));
+    }
     for (slug, functions) in sources {
         writer.line(format_args!(
             "- [`<ptfkit/{slug}.h>`]({slug}.md) — {}",
@@ -145,10 +177,32 @@ fn render_header(writer: &mut Writer, slug: &str, functions: &[&CompiledFunction
         "[PTF catalog page](../../../ptf-catalog/sources/{slug}.md)\n\n"
     ));
 
+    let shared = functions
+        .iter()
+        .flat_map(|function| &spec(function).inputs)
+        .filter_map(|input| {
+            let definition = input.enum_type()?;
+            Some((
+                definition.shared_document()?,
+                definition.enum_type.name.as_str(),
+            ))
+        })
+        .collect::<BTreeSet<_>>();
+    if !shared.is_empty() {
+        writer.write("## Shared types\n\n");
+        for (module, name) in shared {
+            let type_name = c_enum_name(&format!("ptfkit_{module}"), name);
+            writer.line(format_args!("- [`{type_name}`]({module}.md#{type_name})"));
+        }
+        writer.blank_line();
+    }
+
     let mut enums = BTreeSet::new();
     for function in functions {
         for input in &spec(function).inputs {
-            if let Some(definition) = input.enum_type()
+            if let Some(definition) = input
+                .enum_type()
+                .filter(|definition| !definition.is_shared())
                 && enums.insert(definition.identity().to_owned())
             {
                 render_enum(
@@ -187,6 +241,7 @@ fn render_enum(writer: &mut Writer, module: &str, definition: &EnumDefinition, c
         definition.enum_type.name.clone()
     };
     writer.write(format_args!("## `{name}`\n\n"));
+    writer.write(format_args!("{}\n\n", escape_text(&definition.description)));
     markdown::code_block(writer, if c { "c" } else { "cpp" }, |writer| {
         writer.line(if c { "typedef enum {" } else { "enum class {" });
         writer.indented(|writer| {
@@ -387,6 +442,32 @@ mod tests {
             .find(|file| file.path == Path::new(path))
             .unwrap_or_else(|| panic!("missing generated file {path}"))
             .contents
+    }
+
+    #[test]
+    fn shared_enum_is_documented_at_its_header_and_linked_from_consumers() {
+        let root = crate::test_support::fixture_root("c-shared-reference");
+        crate::test_support::copy_shared_definition_fixture(&root);
+        let entries = crate::load_validated_specifications(&root).unwrap();
+        let functions = crate::compile::functions(entries).unwrap();
+        let files = render(&functions).unwrap();
+        let shared = contents(&files, "headers/soil.md");
+        assert!(shared.contains("## `ptfkit_soil_shared_category`"));
+        assert!(shared.contains("Shared category."));
+        let index = contents(&files, "index.md");
+        assert!(index.contains("headers/soil.md"));
+        assert!(index.find("## Umbrella header") < index.find("## Shared domain headers"));
+        assert!(index.find("## Shared domain headers") < index.find("## Source headers"));
+        for source in ["first_source", "second_source"] {
+            let page = contents(&files, &format!("headers/{source}.md"));
+            assert!(
+                page.contains(
+                    "[`ptfkit_soil_shared_category`](soil.md#ptfkit_soil_shared_category)"
+                )
+            );
+            assert!(!page.contains("## `ptfkit_soil_shared_category`"));
+        }
+        std::fs::remove_dir_all(root).unwrap();
     }
 
     #[test]

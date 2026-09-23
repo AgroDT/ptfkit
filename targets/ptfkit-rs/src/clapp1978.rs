@@ -17,6 +17,7 @@ Desorption data reported by Holtan et al. (1968) for soils collected at 34 Unite
 localities; 1,446 soils remained from an initial set of more than 1,800 after the exclusions
 described by the paper."]
 
+#[doc = r"USDA soil textural class used to select a row of Table 2."]
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub enum UsdaTextureClass {
     #[doc = r"USDA sand soil textural class."]

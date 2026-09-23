@@ -10,10 +10,11 @@ title: "ptfkit.h"
 #include <ptfkit/ptfkit.h>
 ```
 
-This umbrella header aggregates every public ptfkit source header. Include an individual header when only one source is needed.
+This umbrella header aggregates every public ptfkit header. Include an individual header when only one module is needed.
 
 ## Included headers
 
+- [`<ptfkit/soil.h>`](soil.md)
 - [`<ptfkit/ahuja1984.h>`](ahuja1984.md) — Ahuja et al. (1984), effective-porosity relations for saturated conductivity.
 - [`<ptfkit/aimrun2009.h>`](aimrun2009.md) — Aimrun & Amin (2009), Tanjung Karang Rice Irrigation Project, Malaysia.
 - [`<ptfkit/beniaich2023.h>`](beniaich2023.md) — Beniaich et al. (2023), soil-water PTFs for four Moroccan regions.

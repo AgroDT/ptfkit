@@ -6,9 +6,9 @@ title: Python API reference
 
 # Python API reference
 
-ptfkit's Python API is organized around public source modules.
+ptfkit's Python API is organized around public modules.
 
-## Modules
+## Source modules
 
 - [`ptfkit.example2`](example2.md) — Synthetic rendering example2.
 - [`ptfkit.example10`](example10.md) — Synthetic rendering example10.

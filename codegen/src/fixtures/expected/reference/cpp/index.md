@@ -8,9 +8,12 @@ title: C++ API reference
 
 ptfkit's C++ API is organized around C++23 modules.
 
-## Modules
+## Umbrella module
 
-- [`ptfkit`](modules/ptfkit.md) — Re-exports every ptfkit source module.
+- [`ptfkit`](modules/ptfkit.md) — Re-exports all public ptfkit modules.
+
+## Source modules
+
 - [`ptfkit.example10`](modules/example10.md) — Synthetic rendering example10.
 - [`ptfkit.example2`](modules/example2.md) — Synthetic rendering example2.
 

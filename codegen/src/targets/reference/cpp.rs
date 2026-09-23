@@ -8,17 +8,40 @@ use crate::{
     model::{CompiledFunction, EnumDefinition, Output, OutputField},
     output::GeneratedFile,
     render::{Writer, markdown},
-    targets::group_by_source,
+    targets::{group_by_source, shared_enum_groups},
 };
 
 pub(crate) fn render(functions: &[CompiledFunction]) -> Result<Vec<GeneratedFile>> {
     let sources = group_by_source(functions);
+    let shared = shared_enum_groups(functions);
     let mut files = vec![markdown::markdown_file("index.md", |writer| {
-        render_index(writer, &sources);
+        render_index(writer, &sources, &shared);
     })];
     files.push(markdown::markdown_file("modules/ptfkit.md", |writer| {
-        render_umbrella(writer, &sources);
+        render_umbrella(writer, &sources, &shared);
     }));
+
+    for (module, definitions) in &shared {
+        files.push(markdown::markdown_file(
+            format!("modules/{module}.md"),
+            |writer| {
+                markdown::generated_frontmatter(writer, |writer| {
+                    writer.line(format_args!("title: C++ module ptfkit.{module}"));
+                    writer.line(format_args!("nav-title: ptfkit.{module}"));
+                });
+                writer.write(format_args!("# `ptfkit.{module}`\n\n"));
+                markdown::code_block(writer, "cpp", |writer| {
+                    writer.line(format_args!("import ptfkit.{module};"));
+                });
+                writer.write(format_args!(
+                    "**Exported namespace:** `ptfkit::{module}`\n\n"
+                ));
+                for definition in definitions {
+                    render_enum(writer, definition);
+                }
+            },
+        ));
+    }
 
     let mut index_entries = Vec::new();
     for (slug, functions) in sources {
@@ -46,13 +69,20 @@ fn module_file(slug: &str, functions: &[&CompiledFunction]) -> Result<GeneratedF
 fn render_index(
     writer: &mut Writer,
     sources: &std::collections::BTreeMap<&str, Vec<&CompiledFunction>>,
+    shared: &std::collections::BTreeMap<&str, Vec<&EnumDefinition>>,
 ) {
     markdown::generated_frontmatter(writer, |writer| {
         writer.line("title: C++ API reference");
     });
-    writer.write(
-        "# C++ API reference\n\nptfkit's C++ API is organized around C++23 modules.\n\n## Modules\n\n- [`ptfkit`](modules/ptfkit.md) — Re-exports every ptfkit source module.\n",
-    );
+    writer.write("# C++ API reference\n\nptfkit's C++ API is organized around C++23 modules.\n\n## Umbrella module\n\n- [`ptfkit`](modules/ptfkit.md) — Re-exports all public ptfkit modules.\n\n");
+    if !shared.is_empty() {
+        writer.write("## Shared domain modules\n\n");
+        for module in shared.keys() {
+            writer.line(format_args!("- [`ptfkit.{module}`](modules/{module}.md)"));
+        }
+        writer.blank_line();
+    }
+    writer.write("## Source modules\n\n");
     for (slug, functions) in sources {
         writer.line(format_args!(
             "- [`ptfkit.{slug}`](modules/{slug}.md) — {}",
@@ -72,6 +102,7 @@ fn render_index(
 fn render_umbrella(
     writer: &mut Writer,
     sources: &std::collections::BTreeMap<&str, Vec<&CompiledFunction>>,
+    shared: &std::collections::BTreeMap<&str, Vec<&EnumDefinition>>,
 ) {
     markdown::generated_frontmatter(writer, |writer| {
         writer.line("title: C++ module ptfkit");
@@ -82,8 +113,11 @@ fn render_umbrella(
         writer.line("import ptfkit;");
     });
     writer.write(
-        "This umbrella module re-exports every public ptfkit source module. Import an individual module when only one source is needed.\n\n## Re-exported modules\n\n",
+        "This umbrella module re-exports every public ptfkit module. Import an individual module when only one module is needed.\n\n## Re-exported modules\n\n",
     );
+    for module in shared.keys() {
+        writer.line(format_args!("- [`ptfkit.{module}`]({module}.md)"));
+    }
     for (slug, functions) in sources {
         writer.line(format_args!(
             "- [`ptfkit.{slug}`]({slug}.md) — {}",
@@ -139,10 +173,34 @@ fn render_module(writer: &mut Writer, slug: &str, functions: &[&CompiledFunction
         "[PTF catalog page](../../../ptf-catalog/sources/{slug}.md)\n\n"
     ));
 
+    let shared = functions
+        .iter()
+        .flat_map(|function| &spec(function).inputs)
+        .filter_map(|input| {
+            let definition = input.enum_type()?;
+            Some((
+                definition.shared_document()?,
+                definition.enum_type.name.as_str(),
+            ))
+        })
+        .collect::<BTreeSet<_>>();
+    if !shared.is_empty() {
+        writer.write("## Shared types\n\n");
+        for (module, name) in shared {
+            writer.line(format_args!(
+                "- [`ptfkit::{module}::{name}`]({module}.md#{})",
+                name.to_ascii_lowercase()
+            ));
+        }
+        writer.blank_line();
+    }
+
     let mut enums = BTreeSet::new();
     for function in functions {
         for input in &spec(function).inputs {
-            if let Some(definition) = input.enum_type()
+            if let Some(definition) = input
+                .enum_type()
+                .filter(|definition| !definition.is_shared())
                 && enums.insert(definition.identity().to_owned())
             {
                 render_enum(writer, definition);
@@ -167,6 +225,7 @@ fn render_module(writer: &mut Writer, slug: &str, functions: &[&CompiledFunction
 
 fn render_enum(writer: &mut Writer, definition: &EnumDefinition) {
     writer.write(format_args!("## `{}`\n\n", definition.enum_type.name));
+    writer.write(format_args!("{}\n\n", escape_text(&definition.description)));
     markdown::code_block(writer, "cpp", |writer| {
         writer.line(format_args!("enum class {} {{", definition.enum_type.name));
         writer.indented(|writer| {
@@ -348,6 +407,31 @@ mod tests {
             .find(|file| file.path == Path::new(path))
             .unwrap_or_else(|| panic!("missing generated file {path}"))
             .contents
+    }
+
+    #[test]
+    fn shared_enum_is_documented_at_its_module_and_linked_from_consumers() {
+        let root = crate::test_support::fixture_root("cpp-shared-reference");
+        crate::test_support::copy_shared_definition_fixture(&root);
+        let entries = crate::load_validated_specifications(&root).unwrap();
+        let functions = crate::compile::functions(entries).unwrap();
+        let files = render(&functions).unwrap();
+        let shared = contents(&files, "modules/soil.md");
+        assert!(shared.contains("## `SharedCategory`"));
+        assert!(shared.contains("Shared category."));
+        let index = contents(&files, "index.md");
+        assert!(index.contains("modules/soil.md"));
+        assert!(index.find("## Umbrella module") < index.find("## Shared domain modules"));
+        assert!(index.find("## Shared domain modules") < index.find("## Source modules"));
+        for source in ["first_source", "second_source"] {
+            let page = contents(&files, &format!("modules/{source}.md"));
+            assert!(page.contains("[`ptfkit::soil::SharedCategory`](soil.md#sharedcategory)"));
+            assert_eq!(
+                page.contains("## `SharedCategory`"),
+                source == "first_source"
+            );
+        }
+        std::fs::remove_dir_all(root).unwrap();
     }
 
     #[test]

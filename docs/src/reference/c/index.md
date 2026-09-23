@@ -8,9 +8,16 @@ title: C API reference
 
 ptfkit's C API is organized around installed headers.
 
-## Headers
+## Umbrella header
 
-- [`<ptfkit/ptfkit.h>`](headers/ptfkit.md) — Aggregates every ptfkit source header.
+- [`<ptfkit/ptfkit.h>`](headers/ptfkit.md) — Aggregates all public ptfkit headers.
+
+## Shared domain headers
+
+- [`<ptfkit/soil.h>`](headers/soil.md)
+
+## Source headers
+
 - [`<ptfkit/ahuja1984.h>`](headers/ahuja1984.md) — Ahuja et al. (1984), effective-porosity relations for saturated conductivity.
 - [`<ptfkit/aimrun2009.h>`](headers/aimrun2009.md) — Aimrun & Amin (2009), Tanjung Karang Rice Irrigation Project, Malaysia.
 - [`<ptfkit/beniaich2023.h>`](headers/beniaich2023.md) — Beniaich et al. (2023), soil-water PTFs for four Moroccan regions.

@@ -26,6 +26,8 @@ Clapp, R. B., & Hornberger, G. M. (1978). Empirical equations for some soil hydr
 
 ## `clapp1978_usda_texture_class`
 
+USDA soil textural class used to select a row of Table 2.
+
 ```c
 typedef enum {
     clapp1978_usda_texture_class_sand,

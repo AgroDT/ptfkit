@@ -8,9 +8,12 @@ title: C API reference
 
 ptfkit's C API is organized around installed headers.
 
-## Headers
+## Umbrella header
 
-- [`<ptfkit/ptfkit.h>`](headers/ptfkit.md) — Aggregates every ptfkit source header.
+- [`<ptfkit/ptfkit.h>`](headers/ptfkit.md) — Aggregates all public ptfkit headers.
+
+## Source headers
+
 - [`<ptfkit/example10.h>`](headers/example10.md) — Synthetic rendering example10.
 - [`<ptfkit/example2.h>`](headers/example2.md) — Synthetic rendering example2.
 

@@ -14,9 +14,10 @@ type Result<T> = std::result::Result<T, GenerationError>;
 
 use crate::{
     compile,
-    model::{CompiledFunction, Entry, Output as FunctionOutput},
+    model::{CompiledFunction, Output as FunctionOutput},
     output::{self, Output},
     semantic::VariableValue,
+    specs::LoadedSpecifications,
 };
 
 pub(super) fn record_types(
@@ -125,20 +126,25 @@ pub(super) fn shared_enum_groups<'a>(
     groups
 }
 
-pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> anyhow::Result<()> {
-    let catalog = catalog::render(&entries);
-    let reference_python = reference::python::render(&entries);
-    let compiled = compile::functions(entries)?;
+pub(crate) fn run(root: &Path, loaded: LoadedSpecifications) -> anyhow::Result<()> {
+    let LoadedSpecifications {
+        entries,
+        definitions,
+    } = loaded;
+    let catalog = catalog::render(&entries, &definitions);
+    let compiled = compile::functions(entries.clone())?;
+    let reference_python = reference::python::render(&entries, &compiled);
     let reference_c = reference::c::render(&compiled)?;
     let reference_cpp = reference::cpp::render(&compiled)?;
-    let rust = rust::render(&compiled)?;
-    let python = python::render(&compiled)?;
-    let native = native::render(&compiled)?;
+    let rust = rust::render_with_definitions(&compiled, &definitions)?;
+    let python = python::render_with_definitions(&compiled, &definitions)?;
+    let native = native::render_with_definitions(&compiled, &definitions)?;
 
     output::commit(
         root,
         &[
-            Output::new(&output::CATALOG, catalog),
+            Output::new(&output::CATALOG, catalog.sources),
+            Output::new(&output::CATALOG_DEFINITIONS, catalog.definitions),
             Output::new(&output::REFERENCE_C, reference_c),
             Output::new(&output::REFERENCE_CPP, reference_cpp),
             Output::new(&output::REFERENCE_PYTHON, reference_python),
@@ -155,15 +161,112 @@ pub(crate) fn run(root: &Path, entries: Vec<Entry>) -> anyhow::Result<()> {
 }
 
 /// Regenerate every target and fail when that changes a codegen-owned file.
-pub(crate) fn check_generated(root: &Path, entries: Vec<Entry>) -> anyhow::Result<()> {
+pub(crate) fn check_generated(root: &Path, loaded: LoadedSpecifications) -> anyhow::Result<()> {
     let before = output::snapshot_generated(root)?;
-    run(root, entries)?;
+    run(root, loaded)?;
     output::assert_unchanged(root, before)
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn shared_document_description_reaches_catalog_and_generated_modules() {
+        let root = crate::test_support::fixture_root("shared-document-description");
+        crate::test_support::copy_shared_definition_fixture(&root);
+        let loaded = crate::specs::load_all(&root).unwrap();
+        let catalog = catalog::render(&loaded.entries, &loaded.definitions);
+        let page = catalog
+            .definitions
+            .iter()
+            .find(|file| file.path == Path::new("soil.md"))
+            .unwrap();
+        assert!(
+            page.contents
+                .contains("Shared soil categories for test sources.")
+        );
+        assert!(page.contents.contains("### `SharedCategory`"));
+
+        let functions = compile::functions(loaded.entries).unwrap();
+        let rust = rust::render_with_definitions(&functions, &loaded.definitions).unwrap();
+        let python = python::render_with_definitions(&functions, &loaded.definitions).unwrap();
+        let native = native::render_with_definitions(&functions, &loaded.definitions).unwrap();
+        let expected = "Shared soil categories for test sources.";
+        assert!(
+            rust.iter()
+                .find(|file| file.path == Path::new("soil.rs"))
+                .unwrap()
+                .contents
+                .contains(expected)
+        );
+        assert!(
+            python
+                .wrappers
+                .iter()
+                .find(|file| file.path == Path::new("ptfkit/soil.py"))
+                .unwrap()
+                .contents
+                .contains(&format!("\"\"\"{expected}\"\"\""))
+        );
+        assert!(
+            native
+                .c_headers
+                .iter()
+                .find(|file| file.path == Path::new("ptfkit/soil.h"))
+                .unwrap()
+                .contents
+                .contains(expected)
+        );
+        assert!(
+            native
+                .cpp_modules
+                .iter()
+                .find(|file| file.path == Path::new("soil.cppm"))
+                .unwrap()
+                .contents
+                .contains(expected)
+        );
+        std::fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn unreferenced_definition_document_still_has_a_catalog_page() {
+        let root = crate::test_support::fixture_root("unused-definition-catalog");
+        crate::test_support::copy_shared_definition_fixture(&root);
+        let soil = std::fs::read_to_string(root.join("specs/definitions/soil.yaml")).unwrap();
+        std::fs::write(
+            root.join("specs/definitions/unused.yaml"),
+            soil.replace(
+                "Shared soil categories for test sources.",
+                "Unused example categories.",
+            ),
+        )
+        .unwrap();
+        let loaded = crate::specs::load_all(&root).unwrap();
+        let catalog = catalog::render(&loaded.entries, &loaded.definitions);
+        let page = catalog
+            .definitions
+            .iter()
+            .find(|file| file.path == Path::new("unused.md"))
+            .unwrap();
+        assert!(page.contents.contains("Unused example categories."));
+        assert!(
+            catalog
+                .definitions
+                .iter()
+                .any(|file| file.path == Path::new("index.md")
+                    && file.contents.contains("unused.md"))
+        );
+        let functions = compile::functions(loaded.entries).unwrap();
+        assert!(
+            !rust::render_with_definitions(&functions, &loaded.definitions)
+                .unwrap()
+                .iter()
+                .any(|file| file.path == Path::new("unused.rs"))
+        );
+        std::fs::remove_dir_all(root).unwrap();
+    }
 
     #[test]
     fn shared_enum_declarations_and_references_preserve_the_defining_module() {

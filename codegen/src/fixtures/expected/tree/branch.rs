@@ -6,7 +6,7 @@
 
 Test (2026)."]
 
-# [derive (Clone , Copy , Debug , Eq , PartialEq)] pub enum Category { Coarse , Fine } # [inline] fn scalar_tree (category : Category , predictor : f64) -> f64 { if matches ! (category , Category :: Coarse) { if predictor < 2.0f64 { 1.0f64 } else { 2.0f64 } } else { 3.0f64 } } # [doc = r"Test named tree.
+# [doc = r"Test category."] # [derive (Clone , Copy , Debug , Eq , PartialEq)] pub enum Category { Coarse , Fine } # [inline] fn scalar_tree (category : Category , predictor : f64) -> f64 { if matches ! (category , Category :: Coarse) { if predictor < 2.0f64 { 1.0f64 } else { 2.0f64 } } else { 3.0f64 } } # [doc = r"Test named tree.
 
 # Arguments
 

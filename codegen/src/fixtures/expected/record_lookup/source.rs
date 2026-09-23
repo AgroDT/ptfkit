@@ -6,7 +6,7 @@
 
 Test (2026)."]
 
-# [derive (Clone , Copy , Debug , Eq , PartialEq)] pub enum Texture { Sand , Clay } # [derive (Clone , Copy , Debug , PartialEq)] struct Parameters { factor : f64 } impl From < Texture > for Parameters { fn from (value : Texture) -> Self { match value { Texture :: Sand => Self { factor : 2.0f64 } , Texture :: Clay => Self { factor : 3.0f64 } } } } # [doc = r"Test value.
+# [doc = r"Texture class."] # [derive (Clone , Copy , Debug , Eq , PartialEq)] pub enum Texture { Sand , Clay } # [derive (Clone , Copy , Debug , PartialEq)] struct Parameters { factor : f64 } impl From < Texture > for Parameters { fn from (value : Texture) -> Self { match value { Texture :: Sand => Self { factor : 2.0f64 } , Texture :: Clay => Self { factor : 3.0f64 } } } } # [doc = r"Test value.
 
 # Arguments
 

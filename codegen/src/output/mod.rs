@@ -47,6 +47,13 @@ layout!(
     Formatter::None
 );
 layout!(
+    CATALOG_DEFINITIONS,
+    "docs/src/ptf-catalog/definitions",
+    "docs/src/ptf-catalog/definitions",
+    MARKDOWN_HEADER,
+    Formatter::None
+);
+layout!(
     REFERENCE_C,
     "docs/src/reference/c",
     "docs/src/reference/c",
@@ -124,8 +131,9 @@ layout!(
     Formatter::Cpp
 );
 
-pub(crate) const LAYOUTS: [&Layout; 12] = [
+pub(crate) const LAYOUTS: [&Layout; 13] = [
     &CATALOG,
+    &CATALOG_DEFINITIONS,
     &REFERENCE_C,
     &REFERENCE_CPP,
     &REFERENCE_PYTHON,

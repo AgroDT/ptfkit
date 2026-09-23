@@ -3,9 +3,15 @@ use crate::{
     model::{Entry, OutputField, Parameter},
     output::GeneratedFile,
     render::{Render, Writer, markdown},
+    specs::DefinitionDocument,
 };
 
-pub(super) fn render(entries: &[Entry]) -> Vec<GeneratedFile> {
+pub(super) struct Output {
+    pub(super) sources: Vec<GeneratedFile>,
+    pub(super) definitions: Vec<GeneratedFile>,
+}
+
+pub(super) fn render(entries: &[Entry], definitions: &[DefinitionDocument]) -> Output {
     let mut files = vec![markdown::markdown_file("index.md", |writer| {
         IndexPage { entries }.render(writer);
     })];
@@ -17,7 +23,38 @@ pub(super) fn render(entries: &[Entry]) -> Vec<GeneratedFile> {
             },
         ));
     }
-    files
+    let mut definition_files = vec![markdown::markdown_file("index.md", |writer| {
+        markdown::generated_frontmatter(writer, |writer| writer.line("title: Shared definitions"));
+        writer.write(
+            "# Shared definitions\n\nEach page describes one shared definition YAML document.\n\n",
+        );
+        for document in definitions {
+            writer.line(format_args!(
+                "- [`{}`]({}.md) — {}",
+                document.module, document.module, document.description
+            ));
+        }
+    })];
+    for document in definitions {
+        definition_files.push(markdown::markdown_file(format!("{}.md", document.module), |writer| {
+            markdown::generated_frontmatter(writer, |writer| {
+                writer.line(format_args!("title: Shared definitions {}", document.module));
+                writer.line(format_args!("nav-title: {}", document.module));
+            });
+            writer.write(format_args!("# `{}`\n\n{}\n\n**Specification:** [`specs/definitions/{}.yaml`](https://github.com/AgroDT/ptfkit/blob/main/specs/definitions/{}.yaml)\n\n## Definitions\n\n", document.module, document.description, document.module, document.module));
+            for definition in &document.definitions {
+                writer.write(format_args!("### `{}`\n\n{}\n\n| Member | Canonical value | Description |\n| --- | --- | --- |\n", definition.enum_type.name, definition.description));
+                for member in &definition.values {
+                    writer.line(format_args!("| `{}` | `{}` | {} |", member.name, escape_table(&member.value), member.description.as_deref().map(escape_table).unwrap_or_default()));
+                }
+                writer.blank_line();
+            }
+        }));
+    }
+    Output {
+        sources: files,
+        definitions: definition_files,
+    }
 }
 
 struct IndexPage<'a> {
