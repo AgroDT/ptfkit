@@ -1,0 +1,606 @@
+source:
+  summary: Rawls et al. (2003), organic-carbon effects on soil water retention.
+  citation_apa: >-
+    Rawls, W. J., Pachepsky, Y. A., Ritchie, J. C., Sobecki, T. M., &
+    Bloodworth, H. (2003). Effect of soil organic carbon on soil water
+    retention. Geoderma, 116(1-2), 61-76.
+  doi:
+    identifier: 10.1016/S0016-7061(03)00094-6
+    url: https://doi.org/10.1016/S0016-7061(03)00094-6
+scope:
+  territory: United States
+  dataset: >-
+    Approximately 12,000 samples from the USDA National Soil Characterization
+    database; equations were evaluated with NRCS pilot-study data.
+$defs:
+  Theta33:
+    type: scalar
+    name: theta_33
+    quantity: volumetric_water_content
+    symbol: theta_33
+    unit: volume_fraction
+    reported_unit: "cm³/cm³"
+    domain: null
+    description: Volumetric soil water content at -33 kPa.
+  Theta1500:
+    type: scalar
+    name: theta_1500
+    quantity: volumetric_water_content
+    symbol: theta_1500
+    unit: volume_fraction
+    reported_unit: "cm³/cm³"
+    domain: null
+    description: Volumetric soil water content at -1500 kPa.
+  Theta33Tree:
+    type: tree
+    inputs:
+      - {name: texture, $ref: ../definitions/soil.yaml#/$defs/UsdaTextureClass}
+      - {name: carbon, type: number}
+    output: {$ref: "#/$defs/Theta33"}
+    root:
+      match:
+        input: texture
+        cases:
+          - values: [sand]
+            then:
+              split: {input: carbon, operator: lt, value: 2.1}
+              yes: {leaf: 0.108}
+              no:
+                split: {input: carbon, operator: lt, value: 4.8}
+                yes: {leaf: 0.280}
+                no:
+                  split: {input: carbon, operator: lt, value: 7.7}
+                  yes: {leaf: 0.350}
+                  no: {leaf: 0.394}
+          - values: [loamy_sand]
+            then:
+              split: {input: carbon, operator: lt, value: 2.1}
+              yes: {leaf: 0.151}
+              no:
+                split: {input: carbon, operator: lt, value: 4.8}
+                yes: {leaf: 0.280}
+                no:
+                  split: {input: carbon, operator: lt, value: 7.7}
+                  yes: {leaf: 0.350}
+                  no: {leaf: 0.394}
+          - values: [sandy_loam]
+            then:
+              split: {input: carbon, operator: lt, value: 1.1}
+              yes: {leaf: 0.204}
+              no:
+                split: {input: carbon, operator: lt, value: 2.1}
+                yes: {leaf: 0.244}
+                no:
+                  split: {input: carbon, operator: lt, value: 4.8}
+                  yes: {leaf: 0.280}
+                  no:
+                    split: {input: carbon, operator: lt, value: 7.7}
+                    yes: {leaf: 0.350}
+                    no: {leaf: 0.549}
+          - values: [loam, sandy_clay]
+            then:
+              split: {input: carbon, operator: lt, value: 1.7}
+              yes: {leaf: 0.272}
+              no:
+                split: {input: carbon, operator: lt, value: 4.2}
+                yes: {leaf: 0.305}
+                no:
+                  split: {input: carbon, operator: lt, value: 8.5}
+                  yes: {leaf: 0.353}
+                  no: {leaf: 0.383}
+          - values: [sandy_clay_loam]
+            then:
+              split: {input: carbon, operator: lt, value: 1.7}
+              yes: {leaf: 0.272}
+              no:
+                split: {input: carbon, operator: lt, value: 4.2}
+                yes: {leaf: 0.305}
+                no:
+                  split: {input: carbon, operator: lt, value: 8.5}
+                  yes: {leaf: 0.393}
+                  no: {leaf: 0.464}
+          - values: [silt_loam, silt]
+            then:
+              split: {input: carbon, operator: lt, value: 1.5}
+              yes: {leaf: 0.315}
+              no:
+                split: {input: carbon, operator: lt, value: 4.2}
+                yes: {leaf: 0.338}
+                no:
+                  split: {input: carbon, operator: lt, value: 8.5}
+                  yes: {leaf: 0.393}
+                  no: {leaf: 0.464}
+          - values: [clay_loam]
+            then:
+              split: {input: carbon, operator: lt, value: 1.5}
+              yes: {leaf: 0.315}
+              no:
+                split: {input: carbon, operator: lt, value: 4.2}
+                yes: {leaf: 0.338}
+                no:
+                  split: {input: carbon, operator: lt, value: 8.5}
+                  yes: {leaf: 0.353}
+                  no: {leaf: 0.464}
+          - values: [silty_clay_loam]
+            then:
+              split: {input: carbon, operator: lt, value: 4.2}
+              yes: {leaf: 0.361}
+              no: {leaf: 0.548}
+          - values: [silty_clay]
+            then: {leaf: 0.397}
+          - values: [clay]
+            then: {leaf: 0.426}
+  Theta1500Tree:
+    type: tree
+    inputs:
+      - {name: clay, type: number}
+      - {name: sand, type: number}
+      - {name: carbon, type: number}
+    output: {$ref: "#/$defs/Theta1500"}
+    root:
+      split: {input: clay, operator: lt, value: 26}
+      yes:
+        split: {input: clay, operator: lt, value: 14}
+        yes:
+          split: {input: carbon, operator: lt, value: 2.3}
+          yes:
+            split: {input: clay, operator: lt, value: 8}
+            yes:
+              split: {input: sand, operator: lt, value: 80}
+              yes:
+                split: {input: carbon, operator: lt, value: 1.5}
+                yes: {leaf: 0.061}
+                no: {leaf: 0.085}
+              no: {leaf: 0.040}
+            no:
+              split: {input: clay, operator: lt, value: 12}
+              yes: {leaf: 0.082}
+              no: {leaf: 0.100}
+          no:
+            split: {input: carbon, operator: lt, value: 6.5}
+            yes: {leaf: 0.110}
+            no: {leaf: 0.159}
+        no:
+          split: {input: clay, operator: lt, value: 19}
+          yes:
+            split: {input: carbon, operator: lt, value: 5.8}
+            yes:
+              split: {input: clay, operator: lt, value: 17}
+              yes: {leaf: 0.116}
+              no: {leaf: 0.128}
+            no: {leaf: 0.167}
+          no:
+            split: {input: clay, operator: lt, value: 23}
+            yes: {leaf: 0.143}
+            no: {leaf: 0.160}
+      no:
+        split: {input: clay, operator: lt, value: 44}
+        yes:
+          split: {input: clay, operator: lt, value: 33}
+          yes:
+            split: {input: clay, operator: lt, value: 29}
+            yes: {leaf: 0.173}
+            no: {leaf: 0.193}
+          no:
+            split: {input: clay, operator: lt, value: 37.4}
+            yes: {leaf: 0.211}
+            no: {leaf: 0.229}
+        no:
+          split: {input: clay, operator: lt, value: 54}
+          yes:
+            split: {input: clay, operator: lt, value: 48}
+            yes: {leaf: 0.253}
+            no: {leaf: 0.275}
+          no:
+            split: {input: clay, operator: lt, value: 67}
+            yes: {leaf: 0.296}
+            no: {leaf: 0.323}
+functions:
+  - name: calc_ptf_rawls2003_soc_theta33_tree
+    status: implemented
+    public_api:
+      name: calc_ptf_rawls2003_soc_theta33_tree
+      summary: Estimate volumetric water content at -33 kPa with the published regression tree.
+    scope:
+      prediction_target: Volumetric soil water content at -33 kPa.
+      models: {h_theta: Regression-tree point estimate at -33 kPa, k_h: null}
+    inputs:
+      - name: soil_texture
+        description: USDA soil textural class used to traverse Figure 2.
+        $ref: ../definitions/soil.yaml#/$defs/UsdaTextureClass
+      - name: soil_organic_carbon
+        symbol: Corg
+        unit: "% mass"
+        domain: null
+        description: Soil organic carbon content by mass.
+    outputs: {$ref: "#/$defs/Theta33"}
+    verification_cases:
+      - id: figure_2_leaf_01_sand
+        kind: calculated
+        inputs: {soil_texture: sand, soil_organic_carbon: 1.0}
+        expected: {theta_33: 0.108}
+        source_location: "Figure 2, terminal node [1]"
+        rationale: Selected inside published terminal region [1]; expected value is the published terminal mean divided by 100.
+      - id: figure_2_leaf_02_loamy_sand
+        kind: calculated
+        inputs: {soil_texture: loamy_sand, soil_organic_carbon: 1.0}
+        expected: {theta_33: 0.151}
+        source_location: "Figure 2, terminal node [2]"
+        rationale: Selected inside published terminal region [2]; expected value is the published terminal mean divided by 100.
+      - id: figure_2_leaf_03_sandy_loam_low_corg
+        kind: calculated
+        inputs: {soil_texture: sandy_loam, soil_organic_carbon: 1.0}
+        expected: {theta_33: 0.204}
+        source_location: "Figure 2, terminal node [3]"
+        rationale: Selected inside published terminal region [3]; expected value is the published terminal mean divided by 100.
+      - id: figure_2_leaf_04_corg_1_1_boundary
+        kind: calculated
+        inputs: {soil_texture: sandy_loam, soil_organic_carbon: 1.1}
+        expected: {theta_33: 0.244}
+        source_location: "Figure 2, terminal node [4]"
+        rationale: Selected at the published 1.1% threshold; strict less-than takes region [4], whose published mean is divided by 100.
+      - id: figure_2_leaf_05_corg_2_1_boundary
+        kind: calculated
+        inputs: {soil_texture: sand, soil_organic_carbon: 2.1}
+        expected: {theta_33: 0.280}
+        source_location: "Figure 2, terminal node [5]"
+        rationale: Selected at the published 2.1% threshold; strict less-than takes region [5], whose published mean is divided by 100.
+      - id: figure_2_leaf_06_corg_4_8_boundary
+        kind: calculated
+        inputs: {soil_texture: loamy_sand, soil_organic_carbon: 4.8}
+        expected: {theta_33: 0.350}
+        source_location: "Figure 2, terminal node [6]"
+        rationale: Selected at the published 4.8% threshold; strict less-than takes region [6], whose published mean is divided by 100.
+      - id: figure_2_leaf_07_corg_7_7_boundary
+        kind: calculated
+        inputs: {soil_texture: sand, soil_organic_carbon: 7.7}
+        expected: {theta_33: 0.394}
+        source_location: "Figure 2, terminal node [7]"
+        rationale: Selected at the published 7.7% threshold; strict less-than takes region [7], whose published mean is divided by 100.
+      - id: figure_2_leaf_08_sandy_loam_high_corg
+        kind: calculated
+        inputs: {soil_texture: sandy_loam, soil_organic_carbon: 7.7}
+        expected: {theta_33: 0.549}
+        source_location: "Figure 2, terminal node [8]"
+        rationale: Selected inside published terminal region [8]; expected value is the published terminal mean divided by 100.
+      - id: figure_2_leaf_09_loam_low_corg
+        kind: calculated
+        inputs: {soil_texture: loam, soil_organic_carbon: 1.0}
+        expected: {theta_33: 0.272}
+        source_location: "Figure 2, terminal node [9]"
+        rationale: Selected inside published terminal region [9]; expected value is the published terminal mean divided by 100.
+      - id: figure_2_leaf_10_corg_1_7_boundary
+        kind: calculated
+        inputs: {soil_texture: loam, soil_organic_carbon: 1.7}
+        expected: {theta_33: 0.305}
+        source_location: "Figure 2, terminal node [10]"
+        rationale: Selected at the published 1.7% threshold; strict less-than takes region [10], whose published mean is divided by 100.
+      - id: figure_2_leaf_11_silt_loam_low_corg
+        kind: calculated
+        inputs: {soil_texture: silt_loam, soil_organic_carbon: 1.0}
+        expected: {theta_33: 0.315}
+        source_location: "Figure 2, terminal node [11]"
+        rationale: Selected inside published terminal region [11]; expected value is the published terminal mean divided by 100.
+      - id: figure_2_leaf_12_corg_1_5_boundary
+        kind: calculated
+        inputs: {soil_texture: silt_loam, soil_organic_carbon: 1.5}
+        expected: {theta_33: 0.338}
+        source_location: "Figure 2, terminal node [12]"
+        rationale: Selected at the published 1.5% threshold; strict less-than takes region [12], whose published mean is divided by 100.
+      - id: figure_2_leaf_13_corg_4_2_loam_boundary
+        kind: calculated
+        inputs: {soil_texture: loam, soil_organic_carbon: 4.2}
+        expected: {theta_33: 0.353}
+        source_location: "Figure 2, terminal node [13]"
+        rationale: Selected at the published 4.2% threshold; strict less-than takes region [13], whose published mean is divided by 100.
+      - id: figure_2_leaf_14_corg_4_2_silt_boundary
+        kind: calculated
+        inputs: {soil_texture: silt_loam, soil_organic_carbon: 4.2}
+        expected: {theta_33: 0.393}
+        source_location: "Figure 2, terminal node [14]"
+        rationale: Selected at the published 4.2% threshold in the silt group; expected value is region [14]'s published mean divided by 100.
+      - id: figure_2_leaf_15_corg_8_5_loam_boundary
+        kind: calculated
+        inputs: {soil_texture: loam, soil_organic_carbon: 8.5}
+        expected: {theta_33: 0.383}
+        source_location: "Figure 2, terminal node [15]"
+        rationale: Selected at the published 8.5% threshold; strict less-than takes region [15], whose published mean is divided by 100.
+      - id: figure_2_leaf_16_corg_8_5_silt_boundary
+        kind: calculated
+        inputs: {soil_texture: silt_loam, soil_organic_carbon: 8.5}
+        expected: {theta_33: 0.464}
+        source_location: "Figure 2, terminal node [16]"
+        rationale: Selected at the published 8.5% threshold in the silt group; expected value is region [16]'s published mean divided by 100.
+      - id: figure_2_leaf_17_silty_clay_loam_low_corg
+        kind: calculated
+        inputs: {soil_texture: silty_clay_loam, soil_organic_carbon: 4.0}
+        expected: {theta_33: 0.361}
+        source_location: "Figure 2, terminal node [17]"
+        rationale: Selected inside published terminal region [17]; expected value is the published terminal mean divided by 100.
+      - id: figure_2_leaf_18_corg_4_2_very_fine_boundary
+        kind: calculated
+        inputs: {soil_texture: silty_clay_loam, soil_organic_carbon: 4.2}
+        expected: {theta_33: 0.548}
+        source_location: "Figure 2, terminal node [18]"
+        rationale: Selected at the published 4.2% threshold; strict less-than takes region [18], whose published mean is divided by 100.
+      - id: figure_2_leaf_19_silty_clay
+        kind: calculated
+        inputs: {soil_texture: silty_clay, soil_organic_carbon: 1.0}
+        expected: {theta_33: 0.397}
+        source_location: "Figure 2, terminal node [19]"
+        rationale: Selected for silty clay in published terminal region [19]; expected value is the published terminal mean divided by 100.
+      - id: figure_2_leaf_20_clay
+        kind: calculated
+        inputs: {soil_texture: clay, soil_organic_carbon: 1.0}
+        expected: {theta_33: 0.426}
+        source_location: "Figure 2, terminal node [20]"
+        rationale: Selected for clay in published terminal region [20]; expected value is the published terminal mean divided by 100.
+      - {id: figure_2_clay_loam_low, kind: calculated, inputs: {soil_texture: clay_loam, soil_organic_carbon: 1.0}, expected: {theta_33: 0.315}, source_location: "Figure 2, terminal node [11]", rationale: "Selected below the 1.5% threshold to verify clay-loam membership; expected value is the published mean divided by 100."}
+      - {id: figure_2_clay_loam_mid_low, kind: calculated, inputs: {soil_texture: clay_loam, soil_organic_carbon: 2.0}, expected: {theta_33: 0.338}, source_location: "Figure 2, terminal node [12]", rationale: "Selected between the 1.5% and 4.2% thresholds to verify clay-loam membership; expected value is the published mean divided by 100."}
+      - {id: figure_2_clay_loam_mid_high, kind: calculated, inputs: {soil_texture: clay_loam, soil_organic_carbon: 5.0}, expected: {theta_33: 0.353}, source_location: "Figure 2, terminal node [13]", rationale: "Selected between the 4.2% and 8.5% thresholds to verify clay-loam membership; expected value is the published mean divided by 100."}
+      - {id: figure_2_clay_loam_high, kind: calculated, inputs: {soil_texture: clay_loam, soil_organic_carbon: 9.0}, expected: {theta_33: 0.464}, source_location: "Figure 2, terminal node [16]", rationale: "Selected above the 8.5% threshold to verify clay-loam membership; expected value is the published mean divided by 100."}
+      - {id: figure_2_sandy_clay_low, kind: calculated, inputs: {soil_texture: sandy_clay, soil_organic_carbon: 1.0}, expected: {theta_33: 0.272}, source_location: "Figure 2, terminal node [9]", rationale: "Selected below the 1.7% threshold to verify sandy-clay membership; expected value is the published mean divided by 100."}
+      - {id: figure_2_sandy_clay_mid_low, kind: calculated, inputs: {soil_texture: sandy_clay, soil_organic_carbon: 2.0}, expected: {theta_33: 0.305}, source_location: "Figure 2, terminal node [10]", rationale: "Selected between the 1.7% and 4.2% thresholds to verify sandy-clay membership; expected value is the published mean divided by 100."}
+      - {id: figure_2_sandy_clay_mid_high, kind: calculated, inputs: {soil_texture: sandy_clay, soil_organic_carbon: 5.0}, expected: {theta_33: 0.353}, source_location: "Figure 2, terminal node [13]", rationale: "Selected between the 4.2% and 8.5% thresholds to verify sandy-clay membership; expected value is the published mean divided by 100."}
+      - {id: figure_2_sandy_clay_high, kind: calculated, inputs: {soil_texture: sandy_clay, soil_organic_carbon: 9.0}, expected: {theta_33: 0.383}, source_location: "Figure 2, terminal node [15]", rationale: "Selected above the 8.5% threshold to verify sandy-clay membership; expected value is the published mean divided by 100."}
+      - {id: figure_2_sandy_clay_loam_low, kind: calculated, inputs: {soil_texture: sandy_clay_loam, soil_organic_carbon: 1.0}, expected: {theta_33: 0.272}, source_location: "Figure 2, terminal node [9]", rationale: "Selected below the 1.7% threshold to verify sandy-clay-loam membership; expected value is the published mean divided by 100."}
+      - {id: figure_2_sandy_clay_loam_mid_low, kind: calculated, inputs: {soil_texture: sandy_clay_loam, soil_organic_carbon: 2.0}, expected: {theta_33: 0.305}, source_location: "Figure 2, terminal node [10]", rationale: "Selected between the 1.7% and 4.2% thresholds to verify sandy-clay-loam membership; expected value is the published mean divided by 100."}
+      - {id: figure_2_sandy_clay_loam_mid_high, kind: calculated, inputs: {soil_texture: sandy_clay_loam, soil_organic_carbon: 5.0}, expected: {theta_33: 0.393}, source_location: "Figure 2, terminal node [14]", rationale: "Selected between the 4.2% and 8.5% thresholds to verify sandy-clay-loam membership; expected value is the published mean divided by 100."}
+      - {id: figure_2_sandy_clay_loam_high, kind: calculated, inputs: {soil_texture: sandy_clay_loam, soil_organic_carbon: 9.0}, expected: {theta_33: 0.464}, source_location: "Figure 2, terminal node [16]", rationale: "Selected above the 8.5% threshold to verify sandy-clay-loam membership; expected value is the published mean divided by 100."}
+      - {id: figure_2_silt_low, kind: calculated, inputs: {soil_texture: silt, soil_organic_carbon: 1.0}, expected: {theta_33: 0.315}, source_location: "Figure 2, terminal node [11]", rationale: "Selected below the 1.5% threshold to verify silt membership; expected value is the published mean divided by 100."}
+      - {id: figure_2_silt_mid_low, kind: calculated, inputs: {soil_texture: silt, soil_organic_carbon: 2.0}, expected: {theta_33: 0.338}, source_location: "Figure 2, terminal node [12]", rationale: "Selected between the 1.5% and 4.2% thresholds to verify silt membership; expected value is the published mean divided by 100."}
+      - {id: figure_2_silt_mid_high, kind: calculated, inputs: {soil_texture: silt, soil_organic_carbon: 5.0}, expected: {theta_33: 0.393}, source_location: "Figure 2, terminal node [14]", rationale: "Selected between the 4.2% and 8.5% thresholds to verify silt membership; expected value is the published mean divided by 100."}
+      - {id: figure_2_silt_high, kind: calculated, inputs: {soil_texture: silt, soil_organic_carbon: 9.0}, expected: {theta_33: 0.464}, source_location: "Figure 2, terminal node [16]", rationale: "Selected above the 8.5% threshold to verify silt membership; expected value is the published mean divided by 100."}
+    edge_cases: []
+    documentation:
+      notes:
+        - Figure 2 reports terminal means and within-node standard deviations in volume percent; public outputs divide the means by 100.
+        - Every comparison is strict less-than, so equality follows the No branch. The cases cover every leaf and threshold.
+        - A NaN organic-carbon input makes every less-than comparison false and follows the corresponding No branches; it is not propagated automatically.
+    implementation:
+      variables:
+        - name: theta_33
+          tree:
+            definition: {$ref: "#/$defs/Theta33Tree"}
+            arguments: {texture: soil_texture, carbon: soil_organic_carbon}
+
+  - name: calc_ptf_rawls2003_soc_theta1500_tree
+    status: implemented
+    public_api:
+      name: calc_ptf_rawls2003_soc_theta1500_tree
+      summary: Estimate volumetric water content at -1500 kPa with the published regression tree.
+    scope:
+      prediction_target: Volumetric soil water content at -1500 kPa.
+      models: {h_theta: Regression-tree point estimate at -1500 kPa, k_h: null}
+    inputs:
+      - {name: clay, symbol: clay, unit: "% mass", domain: null, description: Clay content by mass.}
+      - {name: sand, symbol: sand, unit: "% mass", domain: null, description: Sand content by mass.}
+      - {name: soil_organic_carbon, symbol: Corg, unit: "% mass", domain: null, description: Soil organic carbon content by mass.}
+    outputs: {$ref: "#/$defs/Theta1500"}
+    verification_cases:
+      - {id: figure_3_leaf_01_low_corg, kind: calculated, inputs: {clay: 5.0, sand: 70.0, soil_organic_carbon: 1.0}, expected: {theta_1500: 0.061}, source_location: "Figure 3, terminal node [1]", rationale: "Selected inside published terminal region [1]; expected value is the published mean divided by 100."}
+      - {id: figure_3_leaf_02_corg_1_5_boundary, kind: calculated, inputs: {clay: 5.0, sand: 70.0, soil_organic_carbon: 1.5}, expected: {theta_1500: 0.085}, source_location: "Figure 3, terminal node [2]", rationale: "Selected at the published 1.5% threshold; strict less-than takes region [2], whose mean is divided by 100."}
+      - {id: figure_3_leaf_03_sand_80_boundary, kind: calculated, inputs: {clay: 5.0, sand: 80.0, soil_organic_carbon: 1.0}, expected: {theta_1500: 0.040}, source_location: "Figure 3, terminal node [3]", rationale: "Selected at the published sand threshold; strict less-than takes region [3], whose mean is divided by 100."}
+      - {id: figure_3_leaf_04_clay_8_boundary, kind: calculated, inputs: {clay: 8.0, sand: 20.0, soil_organic_carbon: 2.0}, expected: {theta_1500: 0.082}, source_location: "Figure 3, terminal node [4]", rationale: "Selected at the published clay threshold; strict less-than takes region [4], whose mean is divided by 100."}
+      - {id: figure_3_leaf_05_clay_12_boundary, kind: calculated, inputs: {clay: 12.0, sand: 20.0, soil_organic_carbon: 2.0}, expected: {theta_1500: 0.100}, source_location: "Figure 3, terminal node [5]", rationale: "Selected at the published clay threshold; strict less-than takes region [5], whose mean is divided by 100."}
+      - {id: figure_3_leaf_06_corg_2_3_boundary, kind: calculated, inputs: {clay: 13.0, sand: 20.0, soil_organic_carbon: 2.3}, expected: {theta_1500: 0.110}, source_location: "Figure 3, terminal node [6]", rationale: "Selected at the published carbon threshold; strict less-than takes region [6], whose mean is divided by 100."}
+      - {id: figure_3_leaf_07_corg_6_5_boundary, kind: calculated, inputs: {clay: 13.0, sand: 20.0, soil_organic_carbon: 6.5}, expected: {theta_1500: 0.159}, source_location: "Figure 3, terminal node [7]", rationale: "Selected at the published carbon threshold; strict less-than takes region [7], whose mean is divided by 100."}
+      - {id: figure_3_leaf_08_clay_14_boundary, kind: calculated, inputs: {clay: 14.0, sand: 20.0, soil_organic_carbon: 5.0}, expected: {theta_1500: 0.116}, source_location: "Figure 3, terminal node [8]", rationale: "Selected at the published clay threshold; strict less-than takes region [8], whose mean is divided by 100."}
+      - {id: figure_3_leaf_09_clay_17_boundary, kind: calculated, inputs: {clay: 17.0, sand: 20.0, soil_organic_carbon: 5.0}, expected: {theta_1500: 0.128}, source_location: "Figure 3, terminal node [9]", rationale: "Selected at the published clay threshold; strict less-than takes region [9], whose mean is divided by 100."}
+      - {id: figure_3_leaf_10_corg_5_8_boundary, kind: calculated, inputs: {clay: 18.0, sand: 20.0, soil_organic_carbon: 5.8}, expected: {theta_1500: 0.167}, source_location: "Figure 3, terminal node [10]", rationale: "Selected at the published carbon threshold; strict less-than takes region [10], whose mean is divided by 100."}
+      - {id: figure_3_leaf_11_clay_19_boundary, kind: calculated, inputs: {clay: 19.0, sand: 20.0, soil_organic_carbon: 1.0}, expected: {theta_1500: 0.143}, source_location: "Figure 3, terminal node [11]", rationale: "Selected at the published clay threshold; strict less-than takes region [11], whose mean is divided by 100."}
+      - {id: figure_3_leaf_12_clay_23_boundary, kind: calculated, inputs: {clay: 23.0, sand: 20.0, soil_organic_carbon: 1.0}, expected: {theta_1500: 0.160}, source_location: "Figure 3, terminal node [12]", rationale: "Selected at the published clay threshold; strict less-than takes region [12], whose mean is divided by 100."}
+      - {id: figure_3_leaf_13_clay_26_boundary, kind: calculated, inputs: {clay: 26.0, sand: 20.0, soil_organic_carbon: 1.0}, expected: {theta_1500: 0.173}, source_location: "Figure 3, terminal node [13]", rationale: "Selected at the published clay threshold; strict less-than takes region [13], whose mean is divided by 100."}
+      - {id: figure_3_leaf_14_clay_29_boundary, kind: calculated, inputs: {clay: 29.0, sand: 20.0, soil_organic_carbon: 1.0}, expected: {theta_1500: 0.193}, source_location: "Figure 3, terminal node [14]", rationale: "Selected at the published clay threshold; strict less-than takes region [14], whose mean is divided by 100."}
+      - {id: figure_3_leaf_15_clay_33_boundary, kind: calculated, inputs: {clay: 33.0, sand: 20.0, soil_organic_carbon: 1.0}, expected: {theta_1500: 0.211}, source_location: "Figure 3, terminal node [15]", rationale: "Selected at the published clay threshold; strict less-than takes region [15], whose mean is divided by 100."}
+      - {id: figure_3_leaf_16_clay_37_4_boundary, kind: calculated, inputs: {clay: 37.4, sand: 20.0, soil_organic_carbon: 1.0}, expected: {theta_1500: 0.229}, source_location: "Figure 3, terminal node [16]", rationale: "Selected at the published clay threshold; strict less-than takes region [16], whose mean is divided by 100."}
+      - {id: figure_3_leaf_17_clay_44_boundary, kind: calculated, inputs: {clay: 44.0, sand: 20.0, soil_organic_carbon: 1.0}, expected: {theta_1500: 0.253}, source_location: "Figure 3, terminal node [17]", rationale: "Selected at the published clay threshold; strict less-than takes region [17], whose mean is divided by 100."}
+      - {id: figure_3_leaf_18_clay_48_boundary, kind: calculated, inputs: {clay: 48.0, sand: 20.0, soil_organic_carbon: 1.0}, expected: {theta_1500: 0.275}, source_location: "Figure 3, terminal node [18]", rationale: "Selected at the published clay threshold; strict less-than takes region [18], whose mean is divided by 100."}
+      - {id: figure_3_leaf_19_clay_54_boundary, kind: calculated, inputs: {clay: 54.0, sand: 20.0, soil_organic_carbon: 1.0}, expected: {theta_1500: 0.296}, source_location: "Figure 3, terminal node [19]", rationale: "Selected at the published clay threshold; strict less-than takes region [19], whose mean is divided by 100."}
+      - {id: figure_3_leaf_20_clay_67_boundary, kind: calculated, inputs: {clay: 67.0, sand: 20.0, soil_organic_carbon: 1.0}, expected: {theta_1500: 0.323}, source_location: "Figure 3, terminal node [20]", rationale: "Selected at the published clay threshold; strict less-than takes region [20], whose mean is divided by 100."}
+    edge_cases: []
+    documentation:
+      notes:
+        - Figure 3 reports terminal means and within-node standard deviations in volume percent; public outputs divide the means by 100.
+        - Every comparison is strict less-than, so equality follows the No branch. The cases cover every leaf and threshold.
+        - NaN numeric inputs make less-than comparisons false and follow the corresponding No branches; they are not propagated automatically.
+    implementation:
+      variables:
+        - name: theta_1500
+          tree:
+            definition: {$ref: "#/$defs/Theta1500Tree"}
+            arguments: {clay: clay, sand: sand, carbon: soil_organic_carbon}
+
+  - name: calc_ptf_rawls2003_soc_theta33_gmdh
+    status: implemented
+    public_api:
+      name: calc_ptf_rawls2003_soc_theta33_gmdh
+      summary: Estimate volumetric water content at -33 kPa with the published GMDH polynomial.
+    scope:
+      prediction_target: Volumetric soil water content at -33 kPa.
+      models: {h_theta: GMDH polynomial point estimate at -33 kPa, k_h: null}
+    inputs:
+      - {name: soil_organic_carbon, symbol: Corg, unit: "% mass", domain: "0.02 < value < 28.44", description: Soil organic carbon content by mass.}
+      - {name: clay, symbol: clay, unit: "% mass", domain: "0.0 < value < 90", description: Clay content by mass.}
+      - {name: sand, symbol: sand, unit: "% mass", domain: "0.7 < value < 95", description: "Sand content by mass; clay plus sand must not exceed 100."}
+    outputs:
+      type: scalar
+      name: theta_33
+      quantity: volumetric_water_content
+      symbol: theta_33
+      unit: volume_fraction
+      reported_unit: "cm³/cm³"
+      domain: null
+      description: Volumetric soil water content at -33 kPa.
+    verification_cases:
+      - id: calculated_diagnostic_probe
+        kind: calculated
+        inputs: {soil_organic_carbon: 1.0, clay: 20.0, sand: 60.0}
+        expected: {theta_33: 0.24651660127906823}
+        source_location: "Section 3.2 equation; evidence-bundle direct evaluation"
+        rationale: >-
+          The input is interior to every source range, clay plus sand is 80%,
+          and direct decimal evaluation confirms the fixed value. This is an
+          implementation probe, not an observation or evidence of accuracy.
+      - id: calculated_high_carbon_probe
+        kind: calculated
+        inputs: {soil_organic_carbon: 10.0, clay: 20.0, sand: 60.0}
+        expected: {theta_33: 0.36525658111557506}
+        source_location: "Section 3.2 equation; independent decimal evaluation"
+        rationale: >-
+          Direct 40-digit decimal evaluation of the printed equation at a
+          valid high-carbon input; omitting the x-cubed term changes this
+          result by about 0.03034, well above the comparison tolerance.
+      - id: calculated_varied_predictors_probe
+        kind: calculated
+        inputs: {soil_organic_carbon: 5.0, clay: 35.0, sand: 40.0}
+        expected: {theta_33: 0.35802477758247933}
+        source_location: "Section 3.2 equation; independent decimal evaluation"
+        rationale: >-
+          Direct 40-digit decimal evaluation with all three normalized
+          predictors differing from the original probe and clay plus sand at
+          75%; this distinguishes mixed-term and predictor-binding defects.
+    edge_cases: []
+    documentation:
+      notes:
+        - The polynomial calculates volume percent; the public output divides the result by 100.
+      warnings:
+        - Apply only within the source ranges and with clay plus sand no greater than 100%.
+    implementation:
+      variables:
+        - {name: x, expr: "-0.837531 + 0.430183 * soil_organic_carbon"}
+        - {name: y, expr: "-1.40744 + 0.0661969 * clay"}
+        - {name: z, expr: "-1.51866 + 0.0393284 * sand"}
+        - {name: x_squared, expr: "x ^ 2"}
+        - {name: x_cubed, expr: "x ^ 3"}
+        - {name: y_squared, expr: "y ^ 2"}
+        - {name: y_cubed, expr: "y ^ 3"}
+        - {name: z_squared, expr: "z ^ 2"}
+        - {name: z_cubed, expr: "z ^ 3"}
+        - {name: xy, expr: "x * y"}
+        - name: polynomial
+          expr: "0.0461615 + 0.290955 * x - 0.0496845 * x_squared + 0.00704802 * x_cubed + 0.269101 * y - 0.176528 * xy + 0.0543138 * x_squared * y + 0.1982 * y_squared - 0.060699 * y_cubed - 0.320249 * z - 0.0111693 * x_squared * z + 0.14104 * y * z + 0.0657345 * xy * z - 0.102026 * y_squared * z - 0.04012 * z_squared + 0.160838 * x * z_squared - 0.121392 * y * z_squared - 0.0616676 * z_cubed"
+        - {name: theta_33_volume_percent, expr: "29.7528 + 10.3544 * polynomial"}
+        - {name: theta_33, expr: "theta_33_volume_percent / 100"}
+
+  - name: calc_ptf_rawls2003_soc_theta1500_gmdh
+    status: implemented
+    public_api:
+      name: calc_ptf_rawls2003_soc_theta1500_gmdh
+      summary: Estimate volumetric water content at -1500 kPa with the published GMDH polynomial.
+    scope:
+      prediction_target: Volumetric soil water content at -1500 kPa.
+      models: {h_theta: GMDH polynomial point estimate at -1500 kPa, k_h: null}
+    inputs:
+      - {name: soil_organic_carbon, symbol: Corg, unit: "% mass", domain: "0.02 < value < 28.44", description: Soil organic carbon content by mass.}
+      - {name: clay, symbol: clay, unit: "% mass", domain: "0.0 < value < 90", description: Clay content by mass.}
+      - {name: sand, symbol: sand, unit: "% mass", domain: "0.7 < value < 95", description: "Sand content by mass; clay plus sand must not exceed 100."}
+    outputs:
+      type: scalar
+      name: theta_1500
+      quantity: volumetric_water_content
+      symbol: theta_1500
+      unit: volume_fraction
+      reported_unit: "cm³/cm³"
+      domain: null
+      description: Volumetric soil water content at -1500 kPa.
+    verification_cases:
+      - id: calculated_diagnostic_probe
+        kind: calculated
+        inputs: {soil_organic_carbon: 1.0, clay: 20.0, sand: 60.0}
+        expected: {theta_1500: 0.12978036954714565}
+        source_location: "Section 3.2 equation; evidence-bundle direct evaluation"
+        rationale: >-
+          The input is interior to every source range, clay plus sand is 80%,
+          and direct decimal evaluation confirms the fixed value. This is an
+          implementation probe, not an observation or evidence of accuracy.
+      - id: calculated_high_carbon_probe
+        kind: calculated
+        inputs: {soil_organic_carbon: 10.0, clay: 20.0, sand: 60.0}
+        expected: {theta_1500: 0.14778701876887322}
+        source_location: "Section 3.2 equation; independent decimal evaluation"
+        rationale: >-
+          Direct 40-digit decimal evaluation of the printed equation at a
+          valid high-carbon input, increasing the contribution of the
+          high-order carbon terms relative to the original probe.
+      - id: calculated_varied_predictors_probe
+        kind: calculated
+        inputs: {soil_organic_carbon: 15.0, clay: 60.0, sand: 20.0}
+        expected: {theta_1500: 0.22146307675008263}
+        source_location: "Section 3.2 equation; independent decimal evaluation"
+        rationale: >-
+          Direct 40-digit decimal evaluation with substantially varied
+          predictors and clay plus sand at 80%; this distinguishes mixed-term
+          and predictor-binding defects.
+    edge_cases: []
+    documentation:
+      notes:
+        - The polynomial calculates volume percent; the public output divides the result by 100.
+      warnings:
+        - Apply only within the source ranges and with clay plus sand no greater than 100%.
+    implementation:
+      variables:
+        - {name: x, expr: "-0.837531 + 0.430183 * soil_organic_carbon"}
+        - {name: y, expr: "-1.40744 + 0.0661969 * clay"}
+        - {name: z, expr: "-1.51866 + 0.0393284 * sand"}
+        - {name: x_squared, expr: "x ^ 2"}
+        - {name: x_cubed, expr: "x ^ 3"}
+        - {name: y_squared, expr: "y ^ 2"}
+        - {name: y_cubed, expr: "y ^ 3"}
+        - {name: z_squared, expr: "z ^ 2"}
+        - {name: z_cubed, expr: "z ^ 3"}
+        - {name: xy, expr: "x * y"}
+        - name: polynomial
+          expr: "0.06865 + 0.108713 * x - 0.0157225 * x_squared + 0.00102805 * x_cubed + 0.886569 * y - 0.223581 * xy + 0.0126379 * x_squared * y - 0.017059 * y_squared + 0.0135266 * x * y_squared - 0.0334434 * y_cubed - 0.0535182 * z - 0.0354271 * x * z - 0.00261313 * x_squared * z - 0.154563 * y * z - 0.0160219 * xy * z - 0.0400606 * y_squared * z - 0.104875 * z_squared + 0.0159857 * x * z_squared - 0.0671656 * y * z_squared - 0.0260699 * z_cubed"
+        - {name: theta_1500_volume_percent, expr: "14.2568 + 7.36318 * polynomial"}
+        - {name: theta_1500, expr: "theta_1500_volume_percent / 100"}
+
+scientific_notes: |
+  # Rawls et al. (2003)
+
+  ## Supported models
+
+  - Figures 2 and 3 publish separate regression trees for volumetric water
+    contents at -33 and -1500 kPa. Each tree has 20 terminal nodes whose means,
+    within-node standard deviations, and sample counts were transcribed from
+    the supplied source figures.
+  - Section 3.2 publishes separate GMDH polynomials for the same targets. Their
+    source domain is `0.02 < Corg < 28.44`, `0 < clay < 90`,
+    `0.7 < sand < 95`, with `clay + sand <= 100`.
+
+  ## Review decisions
+
+  - Output quantity `volumetric_water_content` and unit `volume_fraction` use
+    normalized API notation `cm³/cm³`. Tree means and GMDH results are divided
+    by 100 from the paper's volume-percent scale.
+  - The published regression trees use reusable named tree definitions. The
+    -33 kPa tree selects the texture class with an exhaustive `match` before
+    evaluating strict numeric `lt` thresholds; the -1500 kPa tree uses strict
+    numeric splits.
+  - All tree comparisons preserve strict `<` operators. Exact threshold
+    equality follows the No branch and is covered by the leaf cases.
+    IEEE NaN numeric inputs also make `<` false and therefore follow the No
+    branch; tree leaves do not implicitly propagate missing numeric values.
+  - Independent-data RMSE values of 5.9 volume percentage points at -33 kPa
+    and 2.6 volume percentage points at -1500 kPa are model-performance
+    metadata, not implementation tolerances.
+
+  ## Verification rationale
+
+  - The tree cases are calculated verification points whose expected values
+    come from published terminal regions and means. Inputs lie inside those
+    regions or exactly on published thresholds, so changing `<` to `<=`,
+    choosing the wrong texture branch, or returning a neighboring leaf mean
+    changes an asserted result. Additional points cover every texture-class
+    membership across its relevant carbon ranges.
+  - The GMDH cases use direct decimal evaluation of the printed equations.
+    They protect predictor normalization, coefficients, and conversion from
+    volume percent to volumetric fraction; they are not observations or
+    evidence of predictive accuracy.
+
+  ## Documented limitations
+
+  - Tree terminal means summarize groups and are not deterministic physical
+    truths; the figures also report within-node standard deviations.
+  - Public preview visibility does not establish redistribution rights. The
+    preview payloads and publisher figures remain outside this specification.

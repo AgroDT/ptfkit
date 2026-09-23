@@ -55,6 +55,123 @@
               }
             }
           }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "tree"],
+          "properties": {
+            "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+            "tree": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["definition", "arguments"],
+              "properties": {
+                "definition": { "$ref": "#/$defs/localReference" },
+                "arguments": {
+                  "type": "object",
+                  "propertyNames": { "pattern": "^[a-z][a-z0-9_]*$" },
+                  "additionalProperties": {
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9_]*$"
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "decisionTree": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["leaf"],
+          "properties": {
+            "leaf": {
+              "oneOf": [
+                { "type": "number" },
+                {
+                  "type": "object",
+                  "minProperties": 1,
+                  "additionalProperties": { "type": "number" }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["split", "yes", "no"],
+          "properties": {
+            "split": { "$ref": "#/$defs/decisionTreeSplit" },
+            "yes": { "$ref": "#/$defs/decisionTree" },
+            "no": { "$ref": "#/$defs/decisionTree" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["match"],
+          "properties": {
+            "match": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["input", "cases"],
+              "properties": {
+                "input": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+                "cases": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["values", "then"],
+                    "properties": {
+                      "values": {
+                        "type": "array",
+                        "minItems": 1,
+                        "uniqueItems": true,
+                        "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" }
+                      },
+                      "then": { "$ref": "#/$defs/decisionTree" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "decisionTreeSplit": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["input", "operator", "value"],
+          "properties": {
+            "input": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+            "operator": { "const": "lt" },
+            "value": { "type": "number" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["input", "operator", "values"],
+          "properties": {
+            "input": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+            "operator": { "const": "in" },
+            "values": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" }
+            }
+          }
         }
       ]
     },
@@ -97,6 +214,46 @@
           "additionalProperties": { "type": "number" }
         }
       }
+    },
+    "treeDefinition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "inputs", "output", "root"],
+      "properties": {
+        "type": { "const": "tree" },
+        "inputs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/treeInput" }
+        },
+        "output": { "$ref": "#/$defs/localReference" },
+        "root": { "$ref": "#/$defs/decisionTree" }
+      }
+    },
+    "treeInput": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "type"],
+          "properties": {
+            "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+            "type": { "const": "number" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "$ref"],
+          "properties": {
+            "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+            "$ref": {
+              "type": "string",
+              "pattern": "^#/\\$defs/[A-Za-z][A-Za-z0-9_]*$"
+            }
+          }
+        }
+      ]
     },
     "stringOrNull": { "type": ["string", "null"] },
     "localReference": {
@@ -239,6 +396,7 @@
         "oneOf": [
           { "$ref": "#/$defs/enumDefinition" },
           { "$ref": "#/$defs/lookupDefinition" },
+          { "$ref": "#/$defs/treeDefinition" },
           { "$ref": "#/$defs/outputs" },
           { "$ref": "#/$defs/parameter" }
         ]

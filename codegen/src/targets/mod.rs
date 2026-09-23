@@ -37,6 +37,17 @@ pub(super) fn record_types(
         }) {
             insert_record_type(&mut records, &lookup.output.name, &lookup.output.fields)?;
         }
+        for tree in function.ir.variables.iter().filter_map(|variable| {
+            if let VariableValue::Tree(tree) = &variable.value {
+                Some(tree)
+            } else {
+                None
+            }
+        }) {
+            if let crate::semantic::ValueType::Record(record) = &tree.definition.output {
+                insert_record_type(&mut records, &record.name, &record.fields)?;
+            }
+        }
     }
     Ok(records)
 }
@@ -215,6 +226,22 @@ mod tests {
                 "{second_path} must not redeclare the shared type"
             );
         }
+        let python = python::render(&functions).unwrap().wrappers;
+        let generated = |path: &str| {
+            &python
+                .iter()
+                .find(|file| file.path == Path::new(path))
+                .unwrap()
+                .contents
+        };
+        assert!(
+            generated("ptfkit/definitions/soil.py")
+                .contains("from typing import TYPE_CHECKING\n\nfrom ptfkit.enums import EnumArray")
+        );
+        assert!(
+            generated("ptfkit/first_source.py")
+                .contains("message = 'expected SharedCategory or EnumArray[SharedCategory]'")
+        );
         std::fs::remove_dir_all(root).unwrap();
     }
 }
