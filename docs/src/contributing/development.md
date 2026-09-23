@@ -104,6 +104,12 @@ The specification filename stem is the APA-style source slug. Codegen uses it
 for Rust, Python, and C++ modules, C headers, tests, and documentation. Generated
 function names follow `calc_ptf_<first-author><year>[_<extra>]` where applicable.
 
+The Rust crate root, `targets/ptfkit-rs/src/lib.rs`, is generated together with
+the source and shared-definition modules. It declares every generated module
+automatically; no manual registration is needed when adding specifications.
+Crate documentation, `VERSION`, and the test-only `test_support` declaration are
+maintained in the Rust generator.
+
 Each source has one public Python module, `ptfkit.<apa_article_key>`. Codegen
 creates it by default. Set `generation.public_python: manual` only when the
 public wrapper must be maintained manually; the wrapper must still delegate to
