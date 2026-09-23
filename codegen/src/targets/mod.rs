@@ -226,6 +226,22 @@ mod tests {
                 "{second_path} must not redeclare the shared type"
             );
         }
+        let python = python::render(&functions).unwrap().wrappers;
+        let generated = |path: &str| {
+            &python
+                .iter()
+                .find(|file| file.path == Path::new(path))
+                .unwrap()
+                .contents
+        };
+        assert!(
+            generated("ptfkit/definitions/soil.py")
+                .contains("from typing import TYPE_CHECKING\n\nfrom ptfkit.enums import EnumArray")
+        );
+        assert!(
+            generated("ptfkit/first_source.py")
+                .contains("message = 'expected SharedCategory or EnumArray[SharedCategory]'")
+        );
         std::fs::remove_dir_all(root).unwrap();
     }
 }

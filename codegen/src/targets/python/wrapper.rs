@@ -76,6 +76,7 @@ from __future__ import annotations
 
 from enum import Enum
 from typing import TYPE_CHECKING
+
 from ptfkit.enums import EnumArray
 
 
@@ -523,9 +524,12 @@ fn render_enum_encoder(module: &mut Module, function_name: &str, enum_input: &Py
                 enum_input.enum_name
             ));
         });
+        let public_name = enum_input
+            .enum_name
+            .rsplit_once('.')
+            .map_or(enum_input.enum_name.as_str(), |(_, name)| name);
         writer.line(format_args!(
-            "message = 'expected {} or EnumArray[{}]'",
-            enum_input.enum_name, enum_input.enum_name
+            "message = 'expected {public_name} or EnumArray[{public_name}]'"
         ));
         writer.line("raise TypeError(message)");
     });

@@ -17,25 +17,10 @@ United States
 Approximately 12,000 samples from the USDA National Soil Characterization database; equations
 were evaluated with NRCS pilot-study data."]
 
-#[derive(Clone, Copy, Debug, Eq, PartialEq)]
-pub enum UsdaTextureClass {
-    Sand,
-    LoamySand,
-    SandyLoam,
-    Loam,
-    SiltLoam,
-    SandyClayLoam,
-    Silt,
-    ClayLoam,
-    SandyClay,
-    SiltyClayLoam,
-    SiltyClay,
-    Clay,
-}
 #[inline]
-fn theta_33_tree(texture: UsdaTextureClass, carbon: f64) -> f64 {
+fn theta_33_tree(texture: crate::definitions::soil::UsdaTextureClass, carbon: f64) -> f64 {
     match texture {
-        UsdaTextureClass::Sand => {
+        crate::definitions::soil::UsdaTextureClass::Sand => {
             if carbon < 2.1f64 {
                 0.108f64
             } else if carbon < 4.8f64 {
@@ -46,7 +31,7 @@ fn theta_33_tree(texture: UsdaTextureClass, carbon: f64) -> f64 {
                 0.394f64
             }
         }
-        UsdaTextureClass::LoamySand => {
+        crate::definitions::soil::UsdaTextureClass::LoamySand => {
             if carbon < 2.1f64 {
                 0.151f64
             } else if carbon < 4.8f64 {
@@ -57,7 +42,7 @@ fn theta_33_tree(texture: UsdaTextureClass, carbon: f64) -> f64 {
                 0.394f64
             }
         }
-        UsdaTextureClass::SandyLoam => {
+        crate::definitions::soil::UsdaTextureClass::SandyLoam => {
             if carbon < 1.1f64 {
                 0.204f64
             } else if carbon < 2.1f64 {
@@ -70,7 +55,8 @@ fn theta_33_tree(texture: UsdaTextureClass, carbon: f64) -> f64 {
                 0.549f64
             }
         }
-        UsdaTextureClass::Loam | UsdaTextureClass::SandyClay => {
+        crate::definitions::soil::UsdaTextureClass::Loam
+        | crate::definitions::soil::UsdaTextureClass::SandyClay => {
             if carbon < 1.7f64 {
                 0.272f64
             } else if carbon < 4.2f64 {
@@ -81,7 +67,7 @@ fn theta_33_tree(texture: UsdaTextureClass, carbon: f64) -> f64 {
                 0.383f64
             }
         }
-        UsdaTextureClass::SandyClayLoam => {
+        crate::definitions::soil::UsdaTextureClass::SandyClayLoam => {
             if carbon < 1.7f64 {
                 0.272f64
             } else if carbon < 4.2f64 {
@@ -92,7 +78,8 @@ fn theta_33_tree(texture: UsdaTextureClass, carbon: f64) -> f64 {
                 0.464f64
             }
         }
-        UsdaTextureClass::SiltLoam | UsdaTextureClass::Silt => {
+        crate::definitions::soil::UsdaTextureClass::SiltLoam
+        | crate::definitions::soil::UsdaTextureClass::Silt => {
             if carbon < 1.5f64 {
                 0.315f64
             } else if carbon < 4.2f64 {
@@ -103,7 +90,7 @@ fn theta_33_tree(texture: UsdaTextureClass, carbon: f64) -> f64 {
                 0.464f64
             }
         }
-        UsdaTextureClass::ClayLoam => {
+        crate::definitions::soil::UsdaTextureClass::ClayLoam => {
             if carbon < 1.5f64 {
                 0.315f64
             } else if carbon < 4.2f64 {
@@ -114,15 +101,15 @@ fn theta_33_tree(texture: UsdaTextureClass, carbon: f64) -> f64 {
                 0.464f64
             }
         }
-        UsdaTextureClass::SiltyClayLoam => {
+        crate::definitions::soil::UsdaTextureClass::SiltyClayLoam => {
             if carbon < 4.2f64 {
                 0.361f64
             } else {
                 0.548f64
             }
         }
-        UsdaTextureClass::SiltyClay => 0.397f64,
-        UsdaTextureClass::Clay => 0.426f64,
+        crate::definitions::soil::UsdaTextureClass::SiltyClay => 0.397f64,
+        crate::definitions::soil::UsdaTextureClass::Clay => 0.426f64,
     }
 }
 #[inline]
@@ -200,7 +187,7 @@ No branches; it is not propagated automatically."]
 #[cfg_attr(feature = "inline", inline)]
 #[must_use]
 pub fn calc_ptf_rawls2003_soc_theta33_tree(
-    soil_texture: UsdaTextureClass,
+    soil_texture: crate::definitions::soil::UsdaTextureClass,
     soil_organic_carbon: f64,
 ) -> f64 {
     theta_33_tree(soil_texture, soil_organic_carbon)
@@ -211,7 +198,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     use crate::test_support::assert_close;
     #[test]
     fn figure_2_leaf_01_sand() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::Sand, 1f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::Sand,
+            1f64,
+        );
         assert_close(
             result,
             0.108f64,
@@ -224,7 +214,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_leaf_02_loamy_sand() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::LoamySand, 1f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::LoamySand,
+            1f64,
+        );
         assert_close(
             result,
             0.151f64,
@@ -237,7 +230,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_leaf_03_sandy_loam_low_corg() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SandyLoam, 1f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::SandyLoam,
+            1f64,
+        );
         assert_close(
             result,
             0.204f64,
@@ -250,7 +246,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_leaf_04_corg_1_1_boundary() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SandyLoam, 1.1f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::SandyLoam,
+            1.1f64,
+        );
         assert_close(
             result,
             0.244f64,
@@ -263,7 +262,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_leaf_05_corg_2_1_boundary() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::Sand, 2.1f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::Sand,
+            2.1f64,
+        );
         assert_close(
             result,
             0.28f64,
@@ -276,7 +278,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_leaf_06_corg_4_8_boundary() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::LoamySand, 4.8f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::LoamySand,
+            4.8f64,
+        );
         assert_close(
             result,
             0.35f64,
@@ -289,7 +294,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_leaf_07_corg_7_7_boundary() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::Sand, 7.7f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::Sand,
+            7.7f64,
+        );
         assert_close(
             result,
             0.394f64,
@@ -302,7 +310,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_leaf_08_sandy_loam_high_corg() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SandyLoam, 7.7f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::SandyLoam,
+            7.7f64,
+        );
         assert_close(
             result,
             0.549f64,
@@ -315,7 +326,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_leaf_09_loam_low_corg() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::Loam, 1f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::Loam,
+            1f64,
+        );
         assert_close(
             result,
             0.272f64,
@@ -328,7 +342,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_leaf_10_corg_1_7_boundary() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::Loam, 1.7f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::Loam,
+            1.7f64,
+        );
         assert_close(
             result,
             0.305f64,
@@ -341,7 +358,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_leaf_11_silt_loam_low_corg() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SiltLoam, 1f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::SiltLoam,
+            1f64,
+        );
         assert_close(
             result,
             0.315f64,
@@ -354,7 +374,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_leaf_12_corg_1_5_boundary() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SiltLoam, 1.5f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::SiltLoam,
+            1.5f64,
+        );
         assert_close(
             result,
             0.338f64,
@@ -367,7 +390,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_leaf_13_corg_4_2_loam_boundary() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::Loam, 4.2f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::Loam,
+            4.2f64,
+        );
         assert_close(
             result,
             0.353f64,
@@ -380,7 +406,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_leaf_14_corg_4_2_silt_boundary() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SiltLoam, 4.2f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::SiltLoam,
+            4.2f64,
+        );
         assert_close(
             result,
             0.393f64,
@@ -393,7 +422,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_leaf_15_corg_8_5_loam_boundary() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::Loam, 8.5f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::Loam,
+            8.5f64,
+        );
         assert_close(
             result,
             0.383f64,
@@ -406,7 +438,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_leaf_16_corg_8_5_silt_boundary() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SiltLoam, 8.5f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::SiltLoam,
+            8.5f64,
+        );
         assert_close(
             result,
             0.464f64,
@@ -419,7 +454,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_leaf_17_silty_clay_loam_low_corg() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SiltyClayLoam, 4f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::SiltyClayLoam,
+            4f64,
+        );
         assert_close(
             result,
             0.361f64,
@@ -432,7 +470,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_leaf_18_corg_4_2_very_fine_boundary() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SiltyClayLoam, 4.2f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::SiltyClayLoam,
+            4.2f64,
+        );
         assert_close(
             result,
             0.548f64,
@@ -445,7 +486,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_leaf_19_silty_clay() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SiltyClay, 1f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::SiltyClay,
+            1f64,
+        );
         assert_close(
             result,
             0.397f64,
@@ -458,7 +502,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_leaf_20_clay() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::Clay, 1f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::Clay,
+            1f64,
+        );
         assert_close(
             result,
             0.426f64,
@@ -471,7 +518,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_clay_loam_low() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::ClayLoam, 1f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::ClayLoam,
+            1f64,
+        );
         assert_close(
             result,
             0.315f64,
@@ -484,7 +534,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_clay_loam_mid_low() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::ClayLoam, 2f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::ClayLoam,
+            2f64,
+        );
         assert_close(
             result,
             0.338f64,
@@ -497,7 +550,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_clay_loam_mid_high() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::ClayLoam, 5f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::ClayLoam,
+            5f64,
+        );
         assert_close(
             result,
             0.353f64,
@@ -510,7 +566,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_clay_loam_high() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::ClayLoam, 9f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::ClayLoam,
+            9f64,
+        );
         assert_close(
             result,
             0.464f64,
@@ -523,7 +582,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_sandy_clay_low() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SandyClay, 1f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::SandyClay,
+            1f64,
+        );
         assert_close(
             result,
             0.272f64,
@@ -536,7 +598,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_sandy_clay_mid_low() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SandyClay, 2f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::SandyClay,
+            2f64,
+        );
         assert_close(
             result,
             0.305f64,
@@ -549,7 +614,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_sandy_clay_mid_high() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SandyClay, 5f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::SandyClay,
+            5f64,
+        );
         assert_close(
             result,
             0.353f64,
@@ -562,7 +630,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_sandy_clay_high() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SandyClay, 9f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::SandyClay,
+            9f64,
+        );
         assert_close(
             result,
             0.383f64,
@@ -575,7 +646,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_sandy_clay_loam_low() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SandyClayLoam, 1f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::SandyClayLoam,
+            1f64,
+        );
         assert_close(
             result,
             0.272f64,
@@ -588,7 +662,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_sandy_clay_loam_mid_low() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SandyClayLoam, 2f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::SandyClayLoam,
+            2f64,
+        );
         assert_close(
             result,
             0.305f64,
@@ -601,7 +678,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_sandy_clay_loam_mid_high() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SandyClayLoam, 5f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::SandyClayLoam,
+            5f64,
+        );
         assert_close(
             result,
             0.393f64,
@@ -614,7 +694,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_sandy_clay_loam_high() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::SandyClayLoam, 9f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::SandyClayLoam,
+            9f64,
+        );
         assert_close(
             result,
             0.464f64,
@@ -627,7 +710,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_silt_low() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::Silt, 1f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::Silt,
+            1f64,
+        );
         assert_close(
             result,
             0.315f64,
@@ -640,7 +726,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_silt_mid_low() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::Silt, 2f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::Silt,
+            2f64,
+        );
         assert_close(
             result,
             0.338f64,
@@ -653,7 +742,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_silt_mid_high() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::Silt, 5f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::Silt,
+            5f64,
+        );
         assert_close(
             result,
             0.393f64,
@@ -666,7 +758,10 @@ mod calc_ptf_rawls2003_soc_theta33_tree_tests {
     }
     #[test]
     fn figure_2_silt_high() {
-        let result = calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass::Silt, 9f64);
+        let result = calc_ptf_rawls2003_soc_theta33_tree(
+            crate::definitions::soil::UsdaTextureClass::Silt,
+            9f64,
+        );
         assert_close(
             result,
             0.464f64,

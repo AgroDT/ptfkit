@@ -13,22 +13,6 @@ scope:
     Approximately 12,000 samples from the USDA National Soil Characterization
     database; equations were evaluated with NRCS pilot-study data.
 $defs:
-  UsdaTextureClass:
-    type: enum
-    description: USDA soil textural class used by the Figure 2 regression tree.
-    values:
-      - {name: sand, value: "Sand"}
-      - {name: loamy_sand, value: "Loamy sand"}
-      - {name: sandy_loam, value: "Sandy loam"}
-      - {name: loam, value: "Loam"}
-      - {name: silt_loam, value: "Silt loam"}
-      - {name: sandy_clay_loam, value: "Sandy clay loam"}
-      - {name: silt, value: "Silt"}
-      - {name: clay_loam, value: "Clay loam"}
-      - {name: sandy_clay, value: "Sandy clay"}
-      - {name: silty_clay_loam, value: "Silty clay loam"}
-      - {name: silty_clay, value: "Silty clay"}
-      - {name: clay, value: "Clay"}
   Theta33:
     type: scalar
     name: theta_33
@@ -50,7 +34,7 @@ $defs:
   Theta33Tree:
     type: tree
     inputs:
-      - {name: texture, $ref: "#/$defs/UsdaTextureClass"}
+      - {name: texture, $ref: ../definitions/soil.yaml#/$defs/UsdaTextureClass}
       - {name: carbon, type: number}
     output: {$ref: "#/$defs/Theta33"}
     root:
@@ -223,7 +207,7 @@ functions:
     inputs:
       - name: soil_texture
         description: USDA soil textural class used to traverse Figure 2.
-        $ref: "#/$defs/UsdaTextureClass"
+        $ref: ../definitions/soil.yaml#/$defs/UsdaTextureClass
       - name: soil_organic_carbon
         symbol: Corg
         unit: "% mass"

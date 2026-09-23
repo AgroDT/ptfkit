@@ -22,7 +22,6 @@ Dataset
 
 from __future__ import annotations
 
-from enum import Enum
 from typing import TYPE_CHECKING, overload
 
 from ptfkit._dispatch import call as _call
@@ -32,51 +31,27 @@ from ptfkit._ptfkit import (
     calc_ptf_rawls2003_soc_theta33_gmdh as _calc_ptf_rawls2003_soc_theta33_gmdh,
     calc_ptf_rawls2003_soc_theta1500_gmdh as _calc_ptf_rawls2003_soc_theta1500_gmdh,
 )
+from ptfkit.definitions import soil as _definitions_soil
 from ptfkit.enums import EnumArray
 
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable
-
     from numpy import floating, uint32
     from numpy.typing import ArrayLike, NDArray
 
 
-class UsdaTextureClass(Enum):
-    """USDA soil textural class used by the Figure 2 regression tree."""
-
-    SAND = 'Sand'
-    LOAMY_SAND = 'Loamy sand'
-    SANDY_LOAM = 'Sandy loam'
-    LOAM = 'Loam'
-    SILT_LOAM = 'Silt loam'
-    SANDY_CLAY_LOAM = 'Sandy clay loam'
-    SILT = 'Silt'
-    CLAY_LOAM = 'Clay loam'
-    SANDY_CLAY = 'Sandy clay'
-    SILTY_CLAY_LOAM = 'Silty clay loam'
-    SILTY_CLAY = 'Silty clay'
-    CLAY = 'Clay'
-
-    @classmethod
-    def array(cls, values: Iterable[UsdaTextureClass]) -> EnumArray[UsdaTextureClass]:
-        """Encode members once as a reusable typed enum array."""
-        return EnumArray._from_members(cls, values)  # noqa: SLF001
-
-
 def _encode_calc_ptf_rawls2003_soc_theta33_tree_soil_texture(
-    value: UsdaTextureClass | EnumArray[UsdaTextureClass],
+    value: _definitions_soil.UsdaTextureClass | EnumArray[_definitions_soil.UsdaTextureClass],
 ) -> uint32 | NDArray[uint32]:
-    if isinstance(value, UsdaTextureClass):
-        return EnumArray._encode_member(UsdaTextureClass, value)  # noqa: SLF001
+    if isinstance(value, _definitions_soil.UsdaTextureClass):
+        return EnumArray._encode_member(_definitions_soil.UsdaTextureClass, value)  # noqa: SLF001
     if isinstance(value, EnumArray):
-        return value._codes_for(UsdaTextureClass)  # noqa: SLF001
+        return value._codes_for(_definitions_soil.UsdaTextureClass)  # noqa: SLF001
     message = 'expected UsdaTextureClass or EnumArray[UsdaTextureClass]'
     raise TypeError(message)
 
 
 __all__ = [
-    'UsdaTextureClass',
     'calc_ptf_rawls2003_soc_theta33_gmdh',
     'calc_ptf_rawls2003_soc_theta33_tree',
     'calc_ptf_rawls2003_soc_theta1500_gmdh',
@@ -86,14 +61,14 @@ __all__ = [
 
 @overload
 def calc_ptf_rawls2003_soc_theta33_tree(
-    *, soil_texture: UsdaTextureClass, soil_organic_carbon: float
+    *, soil_texture: _definitions_soil.UsdaTextureClass, soil_organic_carbon: float
 ) -> floating: ...
 
 
 @overload
 def calc_ptf_rawls2003_soc_theta33_tree(
     *,
-    soil_texture: EnumArray[UsdaTextureClass],
+    soil_texture: EnumArray[_definitions_soil.UsdaTextureClass],
     soil_organic_carbon: ArrayLike,
     out: NDArray[floating] | None = None,
 ) -> NDArray[floating]: ...
@@ -101,7 +76,8 @@ def calc_ptf_rawls2003_soc_theta33_tree(
 
 def calc_ptf_rawls2003_soc_theta33_tree(
     *,
-    soil_texture: UsdaTextureClass | EnumArray[UsdaTextureClass],
+    soil_texture: _definitions_soil.UsdaTextureClass
+    | EnumArray[_definitions_soil.UsdaTextureClass],
     soil_organic_carbon: float | ArrayLike,
     out: NDArray[floating] | None = None,
 ) -> floating | NDArray[floating]:

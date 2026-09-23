@@ -5,6 +5,8 @@ module;
 
 export module ptfkit.rawls2003;
 
+export import ptfkit.definitions.soil;
+
 /**
  * @brief Rawls et al. (2003), organic-carbon effects on soil water retention.
  *
@@ -21,30 +23,14 @@ export module ptfkit.rawls2003;
  * equations were evaluated with NRCS pilot-study data.
  */
 
-export namespace ptfkit::rawls2003 {
-
-enum class UsdaTextureClass {
-    Sand,
-    LoamySand,
-    SandyLoam,
-    Loam,
-    SiltLoam,
-    SandyClayLoam,
-    Silt,
-    ClayLoam,
-    SandyClay,
-    SiltyClayLoam,
-    SiltyClay,
-    Clay,
-};
-
-} // namespace ptfkit::rawls2003
+export namespace ptfkit::rawls2003 {} // namespace ptfkit::rawls2003
 
 namespace ptfkit::rawls2003 {
 
-[[nodiscard]] inline double rawls2003_theta_33_tree(UsdaTextureClass texture, double carbon) {
+[[nodiscard]] inline double
+rawls2003_theta_33_tree(ptfkit::definitions::soil::UsdaTextureClass texture, double carbon) {
     switch (texture) {
-    case UsdaTextureClass::Sand: {
+    case ptfkit::definitions::soil::UsdaTextureClass::Sand: {
         if (carbon < 2.1) {
             return 0.108;
         } else {
@@ -59,7 +45,7 @@ namespace ptfkit::rawls2003 {
             }
         }
     }
-    case UsdaTextureClass::LoamySand: {
+    case ptfkit::definitions::soil::UsdaTextureClass::LoamySand: {
         if (carbon < 2.1) {
             return 0.151;
         } else {
@@ -74,7 +60,7 @@ namespace ptfkit::rawls2003 {
             }
         }
     }
-    case UsdaTextureClass::SandyLoam: {
+    case ptfkit::definitions::soil::UsdaTextureClass::SandyLoam: {
         if (carbon < 1.1) {
             return 0.204;
         } else {
@@ -93,8 +79,8 @@ namespace ptfkit::rawls2003 {
             }
         }
     }
-    case UsdaTextureClass::Loam:
-    case UsdaTextureClass::SandyClay: {
+    case ptfkit::definitions::soil::UsdaTextureClass::Loam:
+    case ptfkit::definitions::soil::UsdaTextureClass::SandyClay: {
         if (carbon < 1.7) {
             return 0.272;
         } else {
@@ -109,7 +95,7 @@ namespace ptfkit::rawls2003 {
             }
         }
     }
-    case UsdaTextureClass::SandyClayLoam: {
+    case ptfkit::definitions::soil::UsdaTextureClass::SandyClayLoam: {
         if (carbon < 1.7) {
             return 0.272;
         } else {
@@ -124,8 +110,8 @@ namespace ptfkit::rawls2003 {
             }
         }
     }
-    case UsdaTextureClass::SiltLoam:
-    case UsdaTextureClass::Silt: {
+    case ptfkit::definitions::soil::UsdaTextureClass::SiltLoam:
+    case ptfkit::definitions::soil::UsdaTextureClass::Silt: {
         if (carbon < 1.5) {
             return 0.315;
         } else {
@@ -140,7 +126,7 @@ namespace ptfkit::rawls2003 {
             }
         }
     }
-    case UsdaTextureClass::ClayLoam: {
+    case ptfkit::definitions::soil::UsdaTextureClass::ClayLoam: {
         if (carbon < 1.5) {
             return 0.315;
         } else {
@@ -155,17 +141,17 @@ namespace ptfkit::rawls2003 {
             }
         }
     }
-    case UsdaTextureClass::SiltyClayLoam: {
+    case ptfkit::definitions::soil::UsdaTextureClass::SiltyClayLoam: {
         if (carbon < 4.2) {
             return 0.361;
         } else {
             return 0.548;
         }
     }
-    case UsdaTextureClass::SiltyClay: {
+    case ptfkit::definitions::soil::UsdaTextureClass::SiltyClay: {
         return 0.397;
     }
-    case UsdaTextureClass::Clay: {
+    case ptfkit::definitions::soil::UsdaTextureClass::Clay: {
         return 0.426;
     }
     }
@@ -272,8 +258,9 @@ export namespace ptfkit::rawls2003 {
  * corresponding No branches; it is not propagated automatically.
  */
 [[nodiscard]]
-inline double calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass soil_texture,
-                                                  double soil_organic_carbon) {
+inline double
+calc_ptf_rawls2003_soc_theta33_tree(ptfkit::definitions::soil::UsdaTextureClass soil_texture,
+                                    double soil_organic_carbon) {
     return rawls2003_theta_33_tree(soil_texture, soil_organic_carbon);
 }
 

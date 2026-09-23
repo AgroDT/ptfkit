@@ -964,27 +964,6 @@ functions:
     }
 
     #[test]
-    fn rejects_legacy_inline_decision_tree_variables() {
-        let root = fixture_root("inline-tree-variable");
-        write(
-            &root,
-            "inline_tree_variable",
-            "    implementation:\n      variables:\n        - {name: value, decision_tree: {leaf: 1.0}}\n",
-            "",
-        );
-
-        let error = load(&root)
-            .expect_err("inline decision_tree syntax must not be accepted")
-            .to_string();
-        assert!(error.contains("decision_tree"), "{error}");
-        assert!(
-            error.contains("not valid under any of the schemas"),
-            "{error}"
-        );
-        fs::remove_dir_all(root).unwrap();
-    }
-
-    #[test]
     fn renders_a_named_tree_call_as_an_intermediate_numeric_variable() {
         let root = fixture_root("tree-variable");
         let specification = scalar_tree_specification()
@@ -1190,13 +1169,16 @@ add_test(NAME named_tree_module_cpp23 COMMAND named_tree_module_cpp23)
         )
         .unwrap();
         let build = root.join("native-build");
-        let configure = std::process::Command::new("cmake")
-            .arg("-S")
-            .arg(&root)
-            .arg("-B")
-            .arg(&build)
+        let ninja_available = std::process::Command::new("ninja")
+            .arg("--version")
             .output()
-            .unwrap();
+            .is_ok_and(|output| output.status.success());
+        let mut configure_command = std::process::Command::new("cmake");
+        configure_command.arg("-S").arg(&root).arg("-B").arg(&build);
+        if ninja_available {
+            configure_command.args(["-G", "Ninja"]);
+        }
+        let configure = configure_command.output().unwrap();
         assert!(
             configure.status.success(),
             "native tree fixture configuration failed:\n{}\n{}",

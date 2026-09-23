@@ -38,11 +38,11 @@ enum class UsdaTextureClass {
     SandyLoam,
     Loam,
     SiltLoam,
-    SandyClayLoam,
     Silt,
+    SandyClayLoam,
     ClayLoam,
-    SandyClay,
     SiltyClayLoam,
+    SandyClay,
     SiltyClay,
     Clay,
 };
@@ -55,11 +55,11 @@ enum class UsdaTextureClass {
 | `SandyLoam` | `Sandy loam` |  |
 | `Loam` | `Loam` |  |
 | `SiltLoam` | `Silt loam` |  |
-| `SandyClayLoam` | `Sandy clay loam` |  |
 | `Silt` | `Silt` |  |
+| `SandyClayLoam` | `Sandy clay loam` |  |
 | `ClayLoam` | `Clay loam` |  |
-| `SandyClay` | `Sandy clay` |  |
 | `SiltyClayLoam` | `Silty clay loam` |  |
+| `SandyClay` | `Sandy clay` |  |
 | `SiltyClay` | `Silty clay` |  |
 | `Clay` | `Clay` |  |
 
@@ -71,7 +71,7 @@ Estimate volumetric water content at -33 kPa with the published regression tree.
 
 ```cpp
 [[nodiscard]]
-inline double calc_ptf_rawls2003_soc_theta33_tree(UsdaTextureClass soil_texture, double soil_organic_carbon)
+inline double calc_ptf_rawls2003_soc_theta33_tree(ptfkit::definitions::soil::UsdaTextureClass soil_texture, double soil_organic_carbon)
 ```
 
 #### Parameters

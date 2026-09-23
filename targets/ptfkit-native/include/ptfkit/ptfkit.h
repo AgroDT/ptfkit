@@ -3,6 +3,7 @@
 #ifndef PTFKIT_PTFKIT_H
 #define PTFKIT_PTFKIT_H
 
+#include <ptfkit/definitions/soil.h>
 #include <ptfkit/ahuja1984.h>
 #include <ptfkit/aimrun2009.h>
 #include <ptfkit/beniaich2023.h>
