@@ -18,9 +18,9 @@ export module ptfkit.tiwary2014;
  * equation-specific subsets are described below.
  */
 
-export namespace ptfkit::tiwary2014 {
+namespace ptfkit::tiwary2014 {
 
-struct Tiwary2014PTFResult {
+export struct Tiwary2014PTFResult {
     /**
      * @brief Gravimetric water content at 33 kPa. (%)
      */
@@ -52,7 +52,7 @@ struct Tiwary2014PTFResult {
  * @warning The legacy API's three water-retention outputs are intentionally excluded because
  * the source defines them only for BSR soils.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_tiwary2014_igp(double sand, double bulk_density, double esp) {
     const double k_sat_mm_per_hour = 4.079 + 0.047 * sand - 0.054 * esp - 2.238 * bulk_density;
     return k_sat_mm_per_hour / 3600000.0;
@@ -77,7 +77,7 @@ inline double calc_ptf_tiwary2014_igp(double sand, double bulk_density, double e
  * @note Water-retention equations used 75 layers from 14 profiles; equation 10 used 200 layers
  * from 46 profiles.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Tiwary2014PTFResult calc_ptf_tiwary2014_bsr(double clay, double ph,
                                                    double cation_exchange_capacity, double esp,
                                                    double emp, double excm) {

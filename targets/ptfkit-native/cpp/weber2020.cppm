@@ -23,9 +23,9 @@ export module ptfkit.weber2020;
  * contained 359 samples for K_snc, and 10 samples were held out as DS4.
  */
 
-export namespace ptfkit::weber2020 {
+namespace ptfkit::weber2020 {
 
-struct Weber2020PTFResult {
+export struct Weber2020PTFResult {
     /**
      * @brief Saturated water content of the Brunswick noncapillary pore space. (dimensionless)
      */
@@ -86,7 +86,7 @@ struct Weber2020PTFResult {
  * @warning The DS2 inequality is treated as a source typographical error; the tau regression
  * is interpreted as being based on nonpositive tau_vgm values.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Weber2020PTFResult calc_ptf_weber2020(double theta_r_vgm, double theta_s_vgm,
                                              double alpha_vgm, double n_vgm, double tau_vgm,
                                              double k_s_vgm) {

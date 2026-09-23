@@ -22,9 +22,9 @@ export module ptfkit.vereecken1989;
  * clay.
  */
 
-export namespace ptfkit::vereecken1989 {
+namespace ptfkit::vereecken1989 {
 
-struct Vereecken1989PTFResult {
+export struct Vereecken1989PTFResult {
     /**
      * @brief Residual volumetric soil water content. (cm^3/cm^3)
      */
@@ -43,7 +43,7 @@ struct Vereecken1989PTFResult {
     double n;
 };
 
-struct Vereecken1989DetailedPTFResult {
+export struct Vereecken1989DetailedPTFResult {
     /**
      * @brief Residual volumetric soil water content. (cm^3/cm^3)
      */
@@ -86,7 +86,7 @@ struct Vereecken1989DetailedPTFResult {
  * @warning The bulk-density maximum is reviewed as 1.730 g/cm^3 because the supplied
  * transcription's 1.230 value is inconsistent with the reported mean.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Vereecken1989PTFResult calc_ptf_vereecken1989(double sand, double clay, double carbon,
                                                      double bulk_density) {
     const double theta_r = 0.015 + 0.005 * clay + 0.014 * carbon;
@@ -136,7 +136,7 @@ inline Vereecken1989PTFResult calc_ptf_vereecken1989(double sand, double clay, d
  * @warning The bulk-density maximum is reviewed as 1.730 g/cm^3 because the supplied
  * transcription's 1.230 value is inconsistent with the reported mean.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Vereecken1989DetailedPTFResult calc_ptf_vereecken1989_detailed(
     double particle_2000_1000, double particle_1000_500, double particle_500_200,
     double particle_200_100, double particle_100_50, double particle_50_20, double particle_20_10,

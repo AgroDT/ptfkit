@@ -214,11 +214,12 @@ fn cpp_module(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
     let record_types = record_types(functions)?;
     let lookup_definitions = lookup_definitions(functions);
     let tree_definitions = tree_definitions(functions);
-    let has_tree_definitions = !tree_definitions.is_empty();
-    writer.line(format_args!("export namespace ptfkit::{slug} {{"));
+    let enum_definitions = enum_definitions(functions);
+    writer.line(format_args!("namespace ptfkit::{slug} {{"));
     writer.indented(|writer| {
-        for definition in enum_definitions(functions) {
+        for definition in &enum_definitions {
             writer.blank_line();
+            writer.write("export ");
             render_enum(writer, slug, definition, NativeDialect::Cpp);
         }
         let mut schemas = BTreeSet::new();
@@ -230,6 +231,7 @@ fn cpp_module(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
                     .expect("record output has a result class");
                 if schemas.insert(result.to_owned()) {
                     writer.blank_line();
+                    writer.write("export ");
                     render_struct(writer, fields, spec, result, NativeDialect::Cpp);
                 }
             }
@@ -240,23 +242,6 @@ fn cpp_module(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
                 render_internal_struct(writer, fields, name, NativeDialect::Cpp);
             }
         }
-        if !has_tree_definitions {
-            for lookup in &lookup_definitions {
-                writer.blank_line();
-                render_record_lookup_helper(writer, slug, lookup, NativeDialect::Cpp);
-            }
-            for function in &native_functions {
-                writer.blank_line();
-                function.render(writer);
-            }
-        }
-    });
-    writer.write(format_args!("\n\n}}  // namespace ptfkit::{slug}\n\n"));
-    if !has_tree_definitions {
-        return Ok(writer.into_string());
-    }
-    writer.line(format_args!("namespace ptfkit::{slug} {{"));
-    writer.indented(|writer| {
         for lookup in &lookup_definitions {
             writer.blank_line();
             render_record_lookup_helper(writer, slug, lookup, NativeDialect::Cpp);
@@ -265,10 +250,6 @@ fn cpp_module(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
             writer.blank_line();
             render_tree_helper(writer, slug, tree, NativeDialect::Cpp);
         }
-    });
-    writer.write(format_args!("\n\n}}  // namespace ptfkit::{slug}\n\n"));
-    writer.line(format_args!("export namespace ptfkit::{slug} {{"));
-    writer.indented(|writer| {
         for function in &native_functions {
             writer.blank_line();
             function.render(writer);
@@ -332,6 +313,7 @@ impl Render for NativeFunction<'_> {
         let spec = &self.function.entry.spec.functions[self.function.function_index];
         function_comment(spec).render(writer);
         if matches!(self.dialect, NativeDialect::Cpp) {
+            writer.write("export ");
             writer.line("[[nodiscard]]");
             writer.write("inline ");
         } else {
@@ -934,10 +916,11 @@ fn shared_cpp_module(
         }
     }
     writer.write(format_args!(
-        "\n\nexport module ptfkit.{document};\n\nexport namespace ptfkit::{document} {{"
+        "\n\nexport module ptfkit.{document};\n\nnamespace ptfkit::{document} {{"
     ));
     for definition in definitions {
         writer.blank_line();
+        writer.write("export ");
         render_enum(&mut writer, document, definition, NativeDialect::Cpp);
     }
     writer.write(format_args!("\n\n}}  // namespace ptfkit::{document}\n"));

@@ -23,8 +23,6 @@ export import ptfkit.soil;
  * equations were evaluated with NRCS pilot-study data.
  */
 
-export namespace ptfkit::rawls2003 {} // namespace ptfkit::rawls2003
-
 namespace ptfkit::rawls2003 {
 
 [[nodiscard]] inline double rawls2003_theta_33_tree(ptfkit::soil::UsdaTextureClass texture,
@@ -238,10 +236,6 @@ namespace ptfkit::rawls2003 {
     }
 }
 
-} // namespace ptfkit::rawls2003
-
-export namespace ptfkit::rawls2003 {
-
 /**
  * @brief Estimate volumetric water content at -33 kPa with the published regression tree.
  * @param soil_texture USDA soil textural class used to traverse Figure 2.
@@ -257,7 +251,7 @@ export namespace ptfkit::rawls2003 {
  * @note A NaN organic-carbon input makes every less-than comparison false and follows the
  * corresponding No branches; it is not propagated automatically.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_rawls2003_soc_theta33_tree(ptfkit::soil::UsdaTextureClass soil_texture,
                                                   double soil_organic_carbon) {
     return rawls2003_theta_33_tree(soil_texture, soil_organic_carbon);
@@ -279,7 +273,7 @@ inline double calc_ptf_rawls2003_soc_theta33_tree(ptfkit::soil::UsdaTextureClass
  * @note NaN numeric inputs make less-than comparisons false and follow the corresponding No
  * branches; they are not propagated automatically.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_rawls2003_soc_theta1500_tree(double clay, double sand,
                                                     double soil_organic_carbon) {
     return rawls2003_theta_1500_tree(clay, sand, soil_organic_carbon);
@@ -297,7 +291,7 @@ inline double calc_ptf_rawls2003_soc_theta1500_tree(double clay, double sand,
  * @note The polynomial calculates volume percent; the public output divides the result by 100.
  * @warning Apply only within the source ranges and with clay plus sand no greater than 100%.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_rawls2003_soc_theta33_gmdh(double soil_organic_carbon, double clay,
                                                   double sand) {
     const double x = -0.837531 + 0.430183 * soil_organic_carbon;
@@ -332,7 +326,7 @@ inline double calc_ptf_rawls2003_soc_theta33_gmdh(double soil_organic_carbon, do
  * @note The polynomial calculates volume percent; the public output divides the result by 100.
  * @warning Apply only within the source ranges and with clay plus sand no greater than 100%.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_rawls2003_soc_theta1500_gmdh(double soil_organic_carbon, double clay,
                                                     double sand) {
     const double x = -0.837531 + 0.430183 * soil_organic_carbon;

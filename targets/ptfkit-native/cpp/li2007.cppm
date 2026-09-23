@@ -22,9 +22,9 @@ export module ptfkit.li2007;
  * seven soil profiles.
  */
 
-export namespace ptfkit::li2007 {
+namespace ptfkit::li2007 {
 
-struct Li2007PTFResult {
+export struct Li2007PTFResult {
     /**
      * @brief Saturated water content. (cm^3/cm^3)
      */
@@ -62,7 +62,7 @@ struct Li2007PTFResult {
  * Van Genuchten saturated water content, alpha, n, and saturated hydraulic conductivity.
  * @warning The formulas use natural logarithms of selected inputs.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Li2007PTFResult calc_ptf_li2007(double sand, double silt, double clay, double bulk_density,
                                        double soil_organic_matter) {
     const double sand_ln = std::log(sand);

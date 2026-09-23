@@ -20,7 +20,7 @@ export module ptfkit.zhao2016;
  * records (Section 2.3.1).
  */
 
-export namespace ptfkit::zhao2016 {
+namespace ptfkit::zhao2016 {
 
 /**
  * @brief Estimate saturated hydraulic conductivity using reconstructed M2-1.
@@ -41,7 +41,7 @@ export namespace ptfkit::zhao2016 {
  * verified against author software.
  * @warning Observed ranges describe the sampled soils; predictions are not clamped.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_zhao2016_m2_1(double bulk_density, double silt, double clay) {
     const double bd_scaled = (bulk_density - (1.32 - 2.0 * 0.14)) / (4.0 * 0.14);
     const double silt_scaled = (silt - (63.33 - 2.0 * 9.85)) / (4.0 * 9.85);
@@ -70,7 +70,7 @@ inline double calc_ptf_zhao2016_m2_1(double bulk_density, double silt, double cl
  * verified against author software.
  * @warning Observed ranges describe the sampled soils; predictions are not clamped.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_zhao2016_m2_2(double bulk_density, double silt, double clay) {
     const double bd_scaled = (bulk_density - (1.32 - 2.0 * 0.14)) / (4.0 * 0.14);
     const double silt_scaled = (silt - (63.33 - 2.0 * 9.85)) / (4.0 * 9.85);
@@ -99,7 +99,7 @@ inline double calc_ptf_zhao2016_m2_2(double bulk_density, double silt, double cl
  * verified against author software.
  * @warning Observed ranges describe the sampled soils; predictions are not clamped.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_zhao2016_m2_3(double bulk_density, double silt, double clay) {
     const double bd_scaled = (bulk_density - (1.32 - 2.0 * 0.14)) / (4.0 * 0.14);
     const double silt_scaled = (silt - (63.33 - 2.0 * 9.85)) / (4.0 * 9.85);
@@ -128,7 +128,7 @@ inline double calc_ptf_zhao2016_m2_3(double bulk_density, double silt, double cl
  * verified against author software.
  * @warning Observed ranges describe the sampled soils; predictions are not clamped.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_zhao2016_m2_4(double bulk_density, double silt, double clay) {
     const double bd_scaled = (bulk_density - (1.32 - 2.0 * 0.14)) / (4.0 * 0.14);
     const double silt_scaled = (silt - (63.33 - 2.0 * 9.85)) / (4.0 * 9.85);
@@ -157,7 +157,7 @@ inline double calc_ptf_zhao2016_m2_4(double bulk_density, double silt, double cl
  * verified against author software.
  * @warning Observed ranges describe the sampled soils; predictions are not clamped.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_zhao2016_m2_5(double bulk_density, double silt, double clay) {
     const double bd_scaled = (bulk_density - (1.32 - 2.0 * 0.14)) / (4.0 * 0.14);
     const double silt_scaled = (silt - (63.33 - 2.0 * 9.85)) / (4.0 * 9.85);
@@ -186,7 +186,7 @@ inline double calc_ptf_zhao2016_m2_5(double bulk_density, double silt, double cl
  * verified against author software.
  * @warning Observed ranges describe the sampled soils; predictions are not clamped.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_zhao2016_m2_6(double bulk_density, double silt, double clay) {
     const double bd_scaled = (bulk_density - (1.32 - 2.0 * 0.14)) / (4.0 * 0.14);
     const double silt_scaled = (silt - (63.33 - 2.0 * 9.85)) / (4.0 * 9.85);

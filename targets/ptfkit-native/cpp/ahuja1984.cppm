@@ -22,7 +22,7 @@ export module ptfkit.ahuja1984;
  * saturated hydraulic conductivity.
  */
 
-export namespace ptfkit::ahuja1984 {
+namespace ptfkit::ahuja1984 {
 
 /**
  * @brief Estimate saturated hydraulic conductivity from total porosity and water content at
@@ -52,7 +52,7 @@ export namespace ptfkit::ahuja1984 {
  * not select one as a unique transferable value.
  * @warning total_porosity must be greater than or equal to theta_33.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_ahuja1984(double total_porosity, double theta_33, double coefficient_b,
                                  double exponent_n) {
     const double effective_porosity = total_porosity - theta_33;

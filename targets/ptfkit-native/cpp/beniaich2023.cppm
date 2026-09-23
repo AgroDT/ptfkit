@@ -20,9 +20,9 @@ export module ptfkit.beniaich2023;
  * and 50% validation subsets.
  */
 
-export namespace ptfkit::beniaich2023 {
+namespace ptfkit::beniaich2023 {
 
-struct Beniaich2023PTFResult {
+export struct Beniaich2023PTFResult {
     /**
      * @brief Gravimetric water content at saturation. (g/g)
      */
@@ -52,7 +52,7 @@ struct Beniaich2023PTFResult {
  * @warning Developed from Moroccan agricultural topsoils and not independently validated
  * outside the source territory.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Beniaich2023PTFResult calc_ptf_beniaich2023_slr1(double clay) {
     const double water_saturation = (46.307 + 0.556 * clay) / 100.0;
     const double water_field_capacity = (10.277 + 0.365 * clay) / 100.0;
@@ -75,7 +75,7 @@ inline Beniaich2023PTFResult calc_ptf_beniaich2023_slr1(double clay) {
  * @warning Developed from Moroccan agricultural topsoils and not independently validated
  * outside the source territory.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Beniaich2023PTFResult calc_ptf_beniaich2023_slr2(double silt) {
     const double water_saturation = (59.508 + 0.299 * silt) / 100.0;
     const double water_field_capacity = (16.178 + 0.290 * silt) / 100.0;
@@ -98,7 +98,7 @@ inline Beniaich2023PTFResult calc_ptf_beniaich2023_slr2(double silt) {
  * @warning Developed from Moroccan agricultural topsoils and not independently validated
  * outside the source territory.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Beniaich2023PTFResult calc_ptf_beniaich2023_slr3(double sand) {
     const double water_saturation = (81.420 - 0.427 * sand) / 100.0;
     const double water_field_capacity = (34.680 - 0.324 * sand) / 100.0;
@@ -122,7 +122,7 @@ inline Beniaich2023PTFResult calc_ptf_beniaich2023_slr3(double sand) {
  * @warning Developed from Moroccan agricultural topsoils and not independently validated
  * outside the source territory.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Beniaich2023PTFResult calc_ptf_beniaich2023_slr4(double clay, double silt) {
     const double clay_silt = clay + silt;
     const double water_saturation = (89.401 - 0.298 * clay_silt) / 100.0;
@@ -147,7 +147,7 @@ inline Beniaich2023PTFResult calc_ptf_beniaich2023_slr4(double clay, double silt
  * @warning Developed from Moroccan agricultural topsoils and not independently validated
  * outside the source territory.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Beniaich2023PTFResult calc_ptf_beniaich2023_slr5(double clay, double silt) {
     const double clay_silt_ratio = clay / silt;
     const double water_saturation = (68.851 - 0.546 * clay_silt_ratio) / 100.0;
@@ -171,7 +171,7 @@ inline Beniaich2023PTFResult calc_ptf_beniaich2023_slr5(double clay, double silt
  * @warning Developed from Moroccan agricultural topsoils and not independently validated
  * outside the source territory.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Beniaich2023PTFResult calc_ptf_beniaich2023_slr6(double soil_organic_matter) {
     const double water_saturation = (61.163 + 2.793 * soil_organic_matter) / 100.0;
     const double water_field_capacity = (21.331 + 1.339 * soil_organic_matter) / 100.0;
@@ -196,7 +196,7 @@ inline Beniaich2023PTFResult calc_ptf_beniaich2023_slr6(double soil_organic_matt
  * @warning Developed from Moroccan agricultural topsoils and not independently validated
  * outside the source territory.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Beniaich2023PTFResult calc_ptf_beniaich2023_mlr1(double silt, double sand,
                                                         double soil_organic_matter) {
     const double water_saturation =
@@ -224,7 +224,7 @@ inline Beniaich2023PTFResult calc_ptf_beniaich2023_mlr1(double silt, double sand
  * @warning Developed from Moroccan agricultural topsoils and not independently validated
  * outside the source territory.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Beniaich2023PTFResult calc_ptf_beniaich2023_mlr2(double sand, double soil_organic_matter) {
     const double water_saturation = (75.366 - 0.417 * sand + 2.219 * soil_organic_matter) / 100.0;
     const double water_field_capacity =
@@ -250,7 +250,7 @@ inline Beniaich2023PTFResult calc_ptf_beniaich2023_mlr2(double sand, double soil
  * @warning Developed from Moroccan agricultural topsoils and not independently validated
  * outside the source territory.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Beniaich2023PTFResult calc_ptf_beniaich2023_mlr3(double silt, double soil_organic_matter) {
     const double water_saturation = (53.777 + 0.278 * silt + 2.457 * soil_organic_matter) / 100.0;
     const double water_field_capacity =
@@ -275,7 +275,7 @@ inline Beniaich2023PTFResult calc_ptf_beniaich2023_mlr3(double silt, double soil
  * @warning Developed from Moroccan agricultural topsoils and not independently validated
  * outside the source territory.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Beniaich2023PTFResult calc_ptf_beniaich2023_mlr4(double clay, double soil_organic_matter) {
     const double water_saturation = (39.432 + 0.553 * clay + 2.699 * soil_organic_matter) / 100.0;
     const double water_field_capacity =
@@ -301,7 +301,7 @@ inline Beniaich2023PTFResult calc_ptf_beniaich2023_mlr4(double clay, double soil
  * @warning Developed from Moroccan agricultural topsoils and not independently validated
  * outside the source territory.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Beniaich2023PTFResult calc_ptf_beniaich2023_mlr5(double clay, double silt,
                                                         double soil_organic_matter) {
     const double water_saturation =

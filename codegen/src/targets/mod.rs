@@ -297,7 +297,7 @@ mod tests {
                 "soil.cppm",
                 "first_source.cppm",
                 "second_source.cppm",
-                "enumclassSharedCategory",
+                "exportenumclassSharedCategory",
                 "ptfkit::soil::SharedCategorycategory",
             ),
             (

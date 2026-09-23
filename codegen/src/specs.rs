@@ -974,6 +974,17 @@ functions:
             .find(|file| file.path.ends_with("record_lookup_expression.cppm"))
             .unwrap()
             .contents;
+        assert!(cpp.contains("namespace ptfkit::record_lookup_expression {"));
+        assert!(!cpp.contains("export namespace ptfkit::record_lookup_expression"));
+        assert!(cpp.contains("export enum class Texture"));
+        assert!(cpp.contains("struct Parameters"));
+        assert!(!cpp.contains("export struct Parameters"));
+        assert!(!cpp.contains("export [[nodiscard]] inline Parameters parameters_from_texture"));
+        assert!(
+            cpp.contains(
+                "export [[nodiscard]]\n    inline double calc_ptf_record_lookup_expression"
+            )
+        );
         snapbox::assert_data_eq!(
             format!("{}\n", cpp.trim_end_matches('\n')),
             snapbox::file!["fixtures/expected/record_lookup/source.cppm"]
@@ -1047,6 +1058,7 @@ functions:
             .contents;
         assert!(cpp.contains("if (category == Category::Coarse)"), "{cpp}");
         assert!(cpp.contains("if (predictor < 2.0)"), "{cpp}");
+        assert_eq!(cpp.matches("namespace ptfkit::tree_branch {").count(), 1);
         snapbox::assert_data_eq!(cpp, snapbox::file!["fixtures/expected/tree/branch.cppm"]);
 
         let extension = crate::targets::render_python_extension_for_test(&compiled).unwrap();

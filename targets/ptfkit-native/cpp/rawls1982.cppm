@@ -16,9 +16,9 @@ export module ptfkit.rawls1982;
  * 1,323 soils with about 5,350 horizons; regression equations used 2,541 horizons.
  */
 
-export namespace ptfkit::rawls1982 {
+namespace ptfkit::rawls1982 {
 
-struct Rawls1982PTFResult {
+export struct Rawls1982PTFResult {
     /**
      * @brief Volumetric water content at -4 kPa. (cm^3/cm^3)
      */
@@ -78,7 +78,7 @@ struct Rawls1982PTFResult {
  * @details Prediction target:
  * Volumetric soil water content at -1500 kPa.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_rawls1982_theta_1500(double clay, double organic_matter) {
     return 0.0260 + 0.0050 * clay + 0.0158 * organic_matter;
 }
@@ -93,7 +93,7 @@ inline double calc_ptf_rawls1982_theta_1500(double clay, double organic_matter) 
  * @details Prediction target:
  * Volumetric soil water content at -33 kPa.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_rawls1982_theta_33(double sand, double organic_matter, double theta_1500) {
     return 0.2391 - 0.0019 * sand + 0.0210 * organic_matter + 0.72 * theta_1500;
 }
@@ -125,7 +125,7 @@ inline double calc_ptf_rawls1982_theta_33(double sand, double organic_matter, do
  * theta_1500 for the intermediate points.
  * @warning The source value 0.8888 is retained literally for the theta_7 intercept.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Rawls1982PTFResult calc_ptf_rawls1982_full_wrc(double sand, double organic_matter,
                                                       double bulk_density, double theta_33,
                                                       double theta_1500) {

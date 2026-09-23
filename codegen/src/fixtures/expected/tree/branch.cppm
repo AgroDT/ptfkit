@@ -13,17 +13,12 @@ export module ptfkit.tree_branch;
  * Test (2026).
  */
 
-export namespace ptfkit::tree_branch {
+namespace ptfkit::tree_branch {
 
-    enum class Category {
+    export enum class Category {
         Coarse,
         Fine,
     };
-
-
-}  // namespace ptfkit::tree_branch
-
-namespace ptfkit::tree_branch {
 
     [[nodiscard]] inline double tree_branch_scalar_tree(Category category, double predictor) {
         if (category == Category::Coarse) {
@@ -37,11 +32,6 @@ namespace ptfkit::tree_branch {
         }
     }
 
-
-}  // namespace ptfkit::tree_branch
-
-export namespace ptfkit::tree_branch {
-
     /**
      * @brief Test named tree.
      * @param category
@@ -51,7 +41,7 @@ export namespace ptfkit::tree_branch {
      * @details Prediction target:
      * Test value.
      */
-    [[nodiscard]]
+    export [[nodiscard]]
     inline double calc_ptf_tree_branch(Category category, double x) {
         return tree_branch_scalar_tree(category, x);
     }

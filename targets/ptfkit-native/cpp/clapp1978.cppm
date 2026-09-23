@@ -18,9 +18,9 @@ export module ptfkit.clapp1978;
  * described by the paper.
  */
 
-export namespace ptfkit::clapp1978 {
+namespace ptfkit::clapp1978 {
 
-enum class UsdaTextureClass {
+export enum class UsdaTextureClass {
     /**
      * @brief USDA sand soil textural class.
      */
@@ -67,7 +67,7 @@ enum class UsdaTextureClass {
     Clay,
 };
 
-struct Clapp1978Parameters {
+export struct Clapp1978Parameters {
     /**
      * @brief Mean exponent of the moisture-characteristic power curve. (1)
      */
@@ -137,7 +137,7 @@ clapp1978_parameters_from_usda_texture_class(UsdaTextureClass value) {
  * @warning Sorptivity values must be treated cautiously because the conductivity averages may
  * not represent the same average soils as the other parameters.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Clapp1978Parameters calc_ptf_clapp1978(UsdaTextureClass soil_texture) {
     const Clapp1978Parameters parameters =
         clapp1978_parameters_from_usda_texture_class(soil_texture);

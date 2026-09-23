@@ -20,9 +20,9 @@ export module ptfkit.wang2012;
  * 382 surface (0-5 cm) sites; 252 derivation and 130 validation data sets.
  */
 
-export namespace ptfkit::wang2012 {
+namespace ptfkit::wang2012 {
 
-struct Wang2012PTFResult {
+export struct Wang2012PTFResult {
     /**
      * @brief Saturated volumetric water content normalized from the regression's volume-percent
      * scale. (cm^3/cm^3)
@@ -65,7 +65,7 @@ struct Wang2012PTFResult {
  * @warning This normalization intentionally changes the legacy water-content outputs by a
  * factor of 100.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Wang2012PTFResult calc_ptf_wang2012(double sand, double silt, double clay,
                                            double bulk_density, double soil_organic_carbon,
                                            double altitude) {

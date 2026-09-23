@@ -3,9 +3,9 @@
 
 export module ptfkit.soil;
 
-export namespace ptfkit::soil {
+namespace ptfkit::soil {
 
-enum class UsdaTextureClass {
+export enum class UsdaTextureClass {
     Sand,
     LoamySand,
     SandyLoam,

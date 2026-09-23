@@ -21,7 +21,7 @@ export module ptfkit.gunarathna2019;
  * except the northern part of Sri Lanka. Models were evaluated using tenfold cross-validation.
  */
 
-export namespace ptfkit::gunarathna2019 {
+namespace ptfkit::gunarathna2019 {
 
 /**
  * @brief Estimate volumetric water content at -10 kPa using Set 1.
@@ -35,7 +35,7 @@ export namespace ptfkit::gunarathna2019 {
  * @warning Predictions are empirical and are not clipped to physical bounds.
  * @warning Section 3.1 reports slight overprediction above 64% sand at this pressure.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_gunarathna2019_vwc10_set1(double sand) {
     return 0.4802 - 0.0037 * sand;
 }
@@ -52,7 +52,7 @@ inline double calc_ptf_gunarathna2019_vwc10_set1(double sand) {
  * @note Input ranges describe the study observations, not enforced validity limits.
  * @warning Predictions are empirical and are not clipped to physical bounds.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_gunarathna2019_vwc10_set2(double sand, double silt) {
     return 0.3967 - 0.0029 * sand + 0.0025 * silt;
 }
@@ -70,7 +70,7 @@ inline double calc_ptf_gunarathna2019_vwc10_set2(double sand, double silt) {
  * @note Input ranges describe the study observations, not enforced validity limits.
  * @warning Predictions are empirical and are not clipped to physical bounds.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_gunarathna2019_vwc10_set3(double sand, double silt, double bulk_density) {
     return 0.4436 - 0.0028 * sand + 0.0024 * silt - 0.034 * bulk_density;
 }
@@ -88,7 +88,7 @@ inline double calc_ptf_gunarathna2019_vwc10_set3(double sand, double silt, doubl
  * @note Input ranges describe the study observations, not enforced validity limits.
  * @warning Predictions are empirical and are not clipped to physical bounds.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_gunarathna2019_vwc10_set4(double sand, double silt, double organic_carbon) {
     return 0.3951 - 0.0029 * sand + 0.0023 * silt + 0.0052 * (organic_carbon * organic_carbon);
 }
@@ -105,7 +105,7 @@ inline double calc_ptf_gunarathna2019_vwc10_set4(double sand, double silt, doubl
  * @warning Predictions are empirical and are not clipped to physical bounds.
  * @warning Section 3.1 reports slight overprediction above 66% sand at this pressure.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_gunarathna2019_vwc33_set1(double sand) {
     return 0.4357 - 0.0035 * sand;
 }
@@ -122,7 +122,7 @@ inline double calc_ptf_gunarathna2019_vwc33_set1(double sand) {
  * @note Input ranges describe the study observations, not enforced validity limits.
  * @warning Predictions are empirical and are not clipped to physical bounds.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_gunarathna2019_vwc33_set2(double sand, double silt) {
     return 0.3701 - 0.0029 * sand + 0.0020 * silt;
 }
@@ -140,7 +140,7 @@ inline double calc_ptf_gunarathna2019_vwc33_set2(double sand, double silt) {
  * @note Input ranges describe the study observations, not enforced validity limits.
  * @warning Predictions are empirical and are not clipped to physical bounds.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_gunarathna2019_vwc33_set3(double sand, double silt, double bulk_density) {
     return 0.4236 - 0.0028 * sand + 0.0018 * silt - 0.0388 * bulk_density;
 }
@@ -158,7 +158,7 @@ inline double calc_ptf_gunarathna2019_vwc33_set3(double sand, double silt, doubl
  * @note Input ranges describe the study observations, not enforced validity limits.
  * @warning Predictions are empirical and are not clipped to physical bounds.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_gunarathna2019_vwc33_set4(double sand, double silt, double organic_carbon) {
     return 0.3686 - 0.0029 * sand + 0.0018 * silt + 0.0046 * (organic_carbon * organic_carbon);
 }
@@ -175,7 +175,7 @@ inline double calc_ptf_gunarathna2019_vwc33_set4(double sand, double silt, doubl
  * @warning Predictions are empirical and are not clipped to physical bounds.
  * @warning Section 3.1 reports slight overprediction above 66% sand at this pressure.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_gunarathna2019_vwc1500_set1(double sand) {
     return 0.3426 - 0.003 * sand;
 }
@@ -192,7 +192,7 @@ inline double calc_ptf_gunarathna2019_vwc1500_set1(double sand) {
  * @note Input ranges describe the study observations, not enforced validity limits.
  * @warning Predictions are empirical and are not clipped to physical bounds.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_gunarathna2019_vwc1500_set3(double sand, double bulk_density) {
     return 0.6397 - 0.0028 * sand - 0.385 * bulk_density + 0.1169 * (bulk_density * bulk_density);
 }
@@ -209,7 +209,7 @@ inline double calc_ptf_gunarathna2019_vwc1500_set3(double sand, double bulk_dens
  * @note Input ranges describe the study observations, not enforced validity limits.
  * @warning Predictions are empirical and are not clipped to physical bounds.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_gunarathna2019_vwc1500_set4(double sand, double organic_carbon) {
     return 0.3278 - 0.0028 * sand + 0.0082 * (organic_carbon * organic_carbon);
 }

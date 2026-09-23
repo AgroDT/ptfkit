@@ -22,9 +22,9 @@ export module ptfkit.saxton2006;
  * Characterization database after exclusions from 2,149 samples.
  */
 
-export namespace ptfkit::saxton2006 {
+namespace ptfkit::saxton2006 {
 
-struct Saxton2006PTFResult {
+export struct Saxton2006PTFResult {
     /**
      * @brief Volumetric water content at 1500 kPa matric tension. (m^3/m^3)
      */
@@ -67,7 +67,7 @@ struct Saxton2006PTFResult {
     double normal_density;
 };
 
-struct Saxton2006DensityResult {
+export struct Saxton2006DensityResult {
     /**
      * @brief Density after applying the density factor. (g/cm^3)
      */
@@ -86,7 +86,7 @@ struct Saxton2006DensityResult {
     double adjusted_theta_s_minus_33;
 };
 
-struct Saxton2006GravelResult {
+export struct Saxton2006GravelResult {
     /**
      * @brief Gravel volume fraction of the bulk soil. (m^3/m^3)
      */
@@ -105,7 +105,7 @@ struct Saxton2006GravelResult {
     double bulk_saturated_conductivity;
 };
 
-struct Saxton2006SalinityResult {
+export struct Saxton2006SalinityResult {
     /**
      * @brief Osmotic potential at saturation. (kPa)
      */
@@ -145,7 +145,7 @@ struct Saxton2006SalinityResult {
  * @warning These statistical-average estimates should be calibrated to local measurements when
  * available.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Saxton2006PTFResult calc_ptf_saxton2006(double sand, double clay, double organic_matter) {
     const double clay_organic_matter_term = 0.027 * clay * organic_matter;
     const double theta_1500_preliminary =
@@ -210,7 +210,7 @@ inline Saxton2006PTFResult calc_ptf_saxton2006(double sand, double clay, double 
  * @note The source limits the saturation-minus-33 kPa difference to at least 0.005 m^3/m^3.
  * @warning The source recommends density factors only from 0.9 to 1.3.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Saxton2006DensityResult calc_ptf_saxton2006_density(double normal_density, double theta_s,
                                                            double theta_33, double density_factor) {
     const double adjusted_density = normal_density * density_factor;
@@ -232,7 +232,7 @@ inline Saxton2006DensityResult calc_ptf_saxton2006_density(double normal_density
  * Matric tension for water content between theta_1500 and theta_33.
  * @warning Use only for the 1500 to 33 kPa segment defined by the source.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_saxton2006_tension_dry(double theta, double theta_1500, double theta_33) {
     const double ln_33 = std::log(33.0);
     const double ln_theta_33 = std::log(theta_33);
@@ -254,7 +254,7 @@ inline double calc_ptf_saxton2006_tension_dry(double theta, double theta_1500, d
  * @note At tensions below air entry, Equation 13 fixes water content at theta_s.
  * @warning Use only for the 33 kPa to air-entry segment defined by the source.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_saxton2006_tension_wet(double theta, double theta_33, double theta_s,
                                               double air_entry_tension) {
     return 33.0 - (theta - theta_33) * (33.0 - air_entry_tension) / (theta_s - theta_33);
@@ -272,7 +272,7 @@ inline double calc_ptf_saxton2006_tension_wet(double theta, double theta_33, dou
  * Unsaturated hydraulic conductivity of the matric soil.
  * @warning The equation does not include residual water content.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline double calc_ptf_saxton2006_conductivity(double theta, double theta_s,
                                                double saturated_conductivity,
                                                double conductivity_lambda) {
@@ -300,7 +300,7 @@ inline double calc_ptf_saxton2006_conductivity(double theta, double theta_s,
  * @warning The conductivity correction does not represent extra macropores sometimes found in
  * gravelly soils.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Saxton2006GravelResult
 calc_ptf_saxton2006_gravel(double gravel_weight_fraction, double matric_density,
                            double plant_available_water, double saturated_conductivity) {
@@ -334,7 +334,7 @@ calc_ptf_saxton2006_gravel(double gravel_weight_fraction, double matric_density,
  * @warning Precipitation, bonding, ionic nutrition, and toxicity can modify actual salinity
  * effects.
  */
-[[nodiscard]]
+export [[nodiscard]]
 inline Saxton2006SalinityResult calc_ptf_saxton2006_salinity(double electrical_conductivity,
                                                              double theta, double theta_s) {
     const double saturated_osmotic_potential = 36.0 * electrical_conductivity;
