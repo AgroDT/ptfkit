@@ -60,6 +60,10 @@ unsaturated_hydraulic_conductivity:
       absolute: 1.0e-4
       relative: 0.01
       rationale: Conductivity spans orders of magnitude; use one percent with a lower resolution.
+    centimeter_per_day:
+      absolute: 1.0e-4
+      relative: 0.01
+      rationale: Conductivity spans a broad range; use one percent with a lower resolution.
 
 infiltration_rate:
   description: Soil infiltration rate.

@@ -1,13 +1,15 @@
 ["native:configure"]
 description = "Configure the native build with tests enabled"
 dir = "targets/ptfkit-native"
-run = 'cmake -S . -B build -GNinja -DBUILD_TESTING=ON'
+run = 'cmake -S . -B build -GNinja -DBUILD_TESTING=ON -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++'
+run_windows = '''powershell -NoProfile -Command "& { $vswhere = Join-Path ([Environment]::GetFolderPath('ProgramFilesX86')) 'Microsoft Visual Studio\Installer\vswhere.exe'; if (-not (Test-Path -LiteralPath $vswhere -PathType Leaf)) { throw 'Visual Studio locator not found' }; $installation = & $vswhere -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath; if (-not $installation) { throw 'Visual Studio C++ build tools not found' }; $vsdev = Join-Path $installation 'Common7\Tools\VsDevCmd.bat'; $clang = '{{ tools.clang.path }}/Library/bin/clang-cl.exe'; $scan_deps = '{{ tools.clang_tools.path }}/Library/bin/clang-scan-deps.exe'; $command = 'call \"' + $vsdev + '\" -arch=x64 >nul && cmake -S . -B build -GNinja -DBUILD_TESTING=ON \"-DCMAKE_C_COMPILER=' + $clang + '\" \"-DCMAKE_CXX_COMPILER=' + $clang + '\" \"-DCMAKE_CXX_COMPILER_CLANG_SCAN_DEPS=' + $scan_deps + '\"'; cmd /d /s /c $command; exit $LASTEXITCODE }"'''
 
 ["native:build"]
 description = "Build the native target"
 depends = ["native:configure"]
 dir = "targets/ptfkit-native"
 run = 'cmake --build build'
+run_windows = '''powershell -NoProfile -Command "& { $vswhere = Join-Path ([Environment]::GetFolderPath('ProgramFilesX86')) 'Microsoft Visual Studio\Installer\vswhere.exe'; if (-not (Test-Path -LiteralPath $vswhere -PathType Leaf)) { throw 'Visual Studio locator not found' }; $installation = & $vswhere -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath; if (-not $installation) { throw 'Visual Studio C++ build tools not found' }; $vsdev = Join-Path $installation 'Common7\Tools\VsDevCmd.bat'; $command = 'call \"' + $vsdev + '\" -arch=x64 >nul && cmake --build build'; cmd /d /s /c $command; exit $LASTEXITCODE }"'''
 
 ["native:test"]
 description = "Build and run native CTest tests"
@@ -19,7 +21,7 @@ run = 'ctest --test-dir build --output-on-failure'
 description = "Check C and C++ source formatting"
 dir = "targets/ptfkit-native"
 run = '''git ls-files --cached --others --exclude-standard -z -- '*.c' '*.h' '*.cc' '*.cpp' '*.cppm' '*.cxx' '*.hpp' | xargs -0 --no-run-if-empty sh -c 'for file do [ ! -f "$file" ] || printf "%s\0" "$file"; done' sh | xargs -0 --no-run-if-empty clang-format --style=file --dry-run --Werror'''
-run_windows = "& { $files = git ls-files --cached --others --exclude-standard -- '*.c' '*.h' '*.cc' '*.cpp' '*.cppm' '*.cxx' '*.hpp' | Where-Object { Test-Path -LiteralPath $_ -PathType Leaf }; if ($files) { clang-format --style=file --dry-run --Werror $files } }"
+run_windows = '''powershell -NoProfile -Command "& { $files = git ls-files --cached --others --exclude-standard -- '*.c' '*.h' '*.cc' '*.cpp' '*.cppm' '*.cxx' '*.hpp' | Where-Object { Test-Path -LiteralPath $_ -PathType Leaf }; if ($files) { clang-format --style=file --dry-run --Werror $files } }"'''
 
 ["native:verify"]
 description = "Run all native target quality checks"

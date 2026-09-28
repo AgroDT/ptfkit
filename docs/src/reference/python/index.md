@@ -41,4 +41,5 @@ ptfkit's Python API is organized around public modules.
 - [`ptfkit.vereecken1989`](vereecken1989.md) — Vereecken et al. soil-moisture retention regressions for Belgian soils.
 - [`ptfkit.wang2012`](wang2012.md) — Wang et al. (2012), surface loess across China's Loess Plateau.
 - [`ptfkit.weber2020`](weber2020.md) — Weber et al. (2020), compiled international soil hydraulic data.
+- [`ptfkit.wosten2001`](wosten2001.md) — Wösten et al. (2001), Staring Series hydraulic parameters for Dutch soils.
 - [`ptfkit.zhao2016`](zhao2016.md) — Saturated hydraulic conductivity PTFs for the Loess Plateau of China.

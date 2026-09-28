@@ -176,6 +176,11 @@ calc_ptf_vereecken1989: ufunc
 calc_ptf_vereecken1989_detailed: ufunc
 calc_ptf_wang2012: ufunc
 calc_ptf_weber2020: ufunc
+calc_ptf_wosten2001_class_parameters: ufunc
+calc_ptf_wosten2001_hydraulic: ufunc
+calc_ptf_wosten2001_loam_clay_table5: ufunc
+calc_ptf_wosten2001_sand_subsoil_table5: ufunc
+calc_ptf_wosten2001_sand_topsoil_table5: ufunc
 calc_ptf_zhao2016_m2_1: ufunc
 calc_ptf_zhao2016_m2_2: ufunc
 calc_ptf_zhao2016_m2_3: ufunc
