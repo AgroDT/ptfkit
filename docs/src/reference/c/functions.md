@@ -10,6 +10,8 @@ title: C function index
 | --- | --- | --- |
 | [`calc_ptf_ahuja1984`](headers/ahuja1984.md#function-calc_ptf_ahuja1984) | Estimate saturated hydraulic conductivity from total porosity and water content at -33 kPa using user-supplied empirical coefficients. | [`<ptfkit/ahuja1984.h>`](headers/ahuja1984.md) |
 | [`calc_ptf_aimrun2009`](headers/aimrun2009.md#function-calc_ptf_aimrun2009) | Estimate saturated hydraulic conductivity for lowland paddy soils. | [`<ptfkit/aimrun2009.h>`](headers/aimrun2009.md) |
+| [`calc_ptf_bai2022`](headers/bai2022.md#function-calc_ptf_bai2022) | Estimate selected van Genuchten parameters and saturated hydraulic conductivity for Loess Plateau soils. | [`<ptfkit/bai2022.h>`](headers/bai2022.md) |
+| [`calc_ptf_bai2022_bulk_density`](headers/bai2022.md#function-calc_ptf_bai2022_bulk_density) | Estimate dry bulk density with Bai et al. Equation 7. | [`<ptfkit/bai2022.h>`](headers/bai2022.md) |
 | [`calc_ptf_beniaich2023_mlr1`](headers/beniaich2023.md#function-calc_ptf_beniaich2023_mlr1) | Estimate three gravimetric water contents from silt, sand, and organic matter. | [`<ptfkit/beniaich2023.h>`](headers/beniaich2023.md) |
 | [`calc_ptf_beniaich2023_mlr2`](headers/beniaich2023.md#function-calc_ptf_beniaich2023_mlr2) | Estimate three gravimetric water contents from sand and organic matter. | [`<ptfkit/beniaich2023.h>`](headers/beniaich2023.md) |
 | [`calc_ptf_beniaich2023_mlr3`](headers/beniaich2023.md#function-calc_ptf_beniaich2023_mlr3) | Estimate three gravimetric water contents from silt and organic matter. | [`<ptfkit/beniaich2023.h>`](headers/beniaich2023.md) |

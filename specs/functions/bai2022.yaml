@@ -1,0 +1,363 @@
+source:
+  summary: >-
+    Bai et al. (2022), Loess Plateau PTFs for van Genuchten parameters and conductivity.
+  citation_apa: >-
+    Bai, X., Shao, M. A., Jia, X., & Zhao, C. (2022). Prediction of the van
+    Genuchten model soil hydraulic parameters for the 5-m soil profile in
+    China's Loess Plateau. Catena, 210, 105889.
+  doi:
+    identifier: 10.1016/j.catena.2021.105889
+    url: https://doi.org/10.1016/j.catena.2021.105889
+scope:
+  territory: >-
+    A representative 370,000-square-kilometre loess area in China's Loess
+    Plateau Region, spanning Shanxi, Henan, Shaanxi, Gansu, Ningxia, and Inner
+    Mongolia.
+  dataset: >-
+    Dataset I used 84 samples from 7 profiles at 0-8 m for PTF development;
+    Dataset II used 255 samples from 85 profiles at 0-0.4 m for validation;
+    Dataset III used 2,673 samples from 243 profiles in 11 layers at 0-5 m for
+    soil hydraulic parameter estimation.
+$defs:
+  sand:
+    name: sand
+    symbol: sand
+    unit: '%'
+    domain: 'Observed marginal range in Table 3: 0.24 to 99.70 percent.'
+    description: Sand content determined by laser diffraction using USDA taxonomy.
+  silt:
+    name: silt
+    symbol: silt
+    unit: '%'
+    domain: 'Observed marginal range in Table 3: 0.30 to 80.23 percent.'
+    description: Silt content determined by laser diffraction using USDA taxonomy.
+  clay:
+    name: clay
+    symbol: clay
+    unit: '%'
+    domain: >-
+      Observed marginal range in Table 3: 0.01 to 43.64 percent; positive values
+      are required by logarithmic and reciprocal terms in the selected equations.
+    description: Clay content determined by laser diffraction using USDA taxonomy.
+  slope:
+    name: slope
+    symbol: slope
+    unit: '1'
+    domain: 0 <= value <= 1
+    description: >-
+      Cosine of the measured slope gradient; the source maps 0 degrees to 1 and
+      90 degrees to 0.
+  slope_nonzero:
+    name: slope
+    symbol: slope
+    unit: '1'
+    domain: 0 < value <= 1
+    description: >-
+      Cosine of the measured slope gradient; the source maps 0 degrees to 1 and
+      90 degrees to 0. The selected theta_r and Ks equations require a nonzero
+      value because they contain logarithmic and reciprocal slope terms.
+  depth:
+    name: depth
+    symbol: depth
+    unit: cm
+    domain: >-
+      0 < value <= 800; Table 4 covers the 0-800 cm profile. For an interval-
+      labelled layer, ptfkit uses the arithmetic midpoint of its bounds.
+    description: >-
+      Continuous point depth in centimetres used by the selected depth-dependent
+      equations.
+  precipitation:
+    name: precipitation
+    symbol: precipitation
+    unit: mm/year
+    domain: 'Study-area annual precipitation range: 150 to 800 mm/year.'
+    description: Mean annual precipitation.
+  altitude:
+    name: altitude
+    symbol: altitude
+    unit: m
+    domain: >-
+      value > 0; the selected equations contain logarithmic and reciprocal
+      altitude terms, and the source does not report a sampled marginal range.
+    description: Altitude determined using a handheld portable GPS.
+  BulkDensity:
+    type: scalar
+    name: bulk_density
+    quantity: dry_bulk_density
+    symbol: BD
+    unit: gram_per_cubic_centimeter
+    reported_unit: g/cm^3
+    domain: 'Observed marginal range in Table 3: 0.89 to 1.80 g/cm^3; not an output clamp.'
+    description: Dry bulk density predicted by Equation 7.
+  Bai2022PTFResult:
+    type: record
+    name: Bai2022PTFResult
+    fields:
+      - name: alpha
+        quantity: van_genuchten_alpha
+        symbol: alpha
+        unit: inverse_centimeter
+        reported_unit: cm^-1
+        domain: 'Observed range in Table 2: 0.01 to 0.40 cm^-1; not an output clamp.'
+        description: Inverse pressure-scale parameter of the van Genuchten model.
+      - name: n
+        quantity: van_genuchten_n
+        symbol: n
+        unit: dimensionless
+        reported_unit: '1'
+        domain: 'Observed range in Table 2: 1.18 to 1.93; not an output clamp.'
+        description: Pore-size distribution parameter of the van Genuchten model.
+      - name: theta_r
+        quantity: volumetric_water_content
+        symbol: theta_r
+        unit: volume_fraction
+        reported_unit: cm^3/cm^3
+        domain: >-
+          Observed range in Table 2: 0.05 to 0.15 cm^3/cm^3; not an output clamp.
+        description: Residual volumetric soil water content.
+      - name: theta_s
+        quantity: volumetric_water_content
+        symbol: theta_s
+        unit: volume_fraction
+        reported_unit: cm^3/cm^3
+        domain: >-
+          Observed range in Table 2: 0.40 to 0.79 cm^3/cm^3; not an output clamp.
+        description: Saturated volumetric soil water content.
+      - name: k_sat
+        quantity: saturated_hydraulic_conductivity
+        symbol: Ks
+        unit: centimeter_per_minute
+        reported_unit: cm/min
+        domain: >-
+          Observed range in Table 2: 0.001 to 0.10 cm/min; not an output clamp.
+        description: Saturated hydraulic conductivity.
+functions:
+  - name: calc_ptf_bai2022_bulk_density
+    status: implemented
+    public_api:
+      name: calc_ptf_bai2022_bulk_density
+      result_class: null
+      summary: Estimate dry bulk density with Bai et al. Equation 7.
+    scope:
+      prediction_target: Dry bulk density.
+      models:
+        h_theta: null
+        k_h: null
+    inputs:
+      - $ref: '#/$defs/sand'
+      - $ref: '#/$defs/slope'
+      - $ref: '#/$defs/clay'
+    outputs:
+      $ref: '#/$defs/BulkDensity'
+    verification_cases:
+      - id: mean_texture_interior_slope
+        kind: calculated
+        inputs:
+          sand: 18.13
+          slope: 0.9
+          clay: 17.20
+        expected:
+          bulk_density: 1.13782
+        rationale: >-
+          Calculated from Equation 7 using the Table 3 mean sand and clay
+          contents and an interior slope-cosine value. The resulting bulk
+          density lies within the observed Table 3 range.
+    edge_cases: []
+    documentation:
+      notes:
+        - >-
+          The slope argument is the source-defined cosine-transformed slope
+          gradient, not an angle in degrees.
+      warnings:
+        - >-
+          The observed marginal ranges describe the sampled soils and are not
+          runtime clamps or evidence of applicability outside the study area.
+    implementation:
+      variables:
+        - name: bulk_density
+          expr: -0.281 + 0.004 * sand + 1.343 * slope + 0.008 * clay
+
+  - name: calc_ptf_bai2022
+    status: implemented
+    public_api:
+      name: calc_ptf_bai2022
+      result_class: Bai2022PTFResult
+      summary: >-
+        Estimate selected van Genuchten parameters and saturated hydraulic
+        conductivity for Loess Plateau soils.
+    scope:
+      prediction_target: >-
+        Residual and saturated volumetric water content, van Genuchten alpha
+        and n, and saturated hydraulic conductivity.
+      models:
+        h_theta: van Genuchten model with m = 1 - 1 / n
+        k_h: Saturated hydraulic conductivity
+    inputs:
+      - $ref: '#/$defs/sand'
+      - $ref: '#/$defs/silt'
+      - $ref: '#/$defs/clay'
+      - $ref: '#/$defs/depth'
+      - $ref: '#/$defs/precipitation'
+      - $ref: '#/$defs/slope_nonzero'
+      - $ref: '#/$defs/altitude'
+    outputs:
+      $ref: '#/$defs/Bai2022PTFResult'
+    verification_cases:
+      - id: mean_texture_positive_transforms
+        kind: calculated
+        inputs:
+          sand: 18.13
+          silt: 64.67
+          clay: 17.20
+          depth: 100.0
+          precipitation: 500.0
+          slope: 0.9
+          altitude: 1000.0
+        expected:
+          alpha: 0.011921759728631647
+          n: 1.7433930000000002
+          theta_r: 0.09204291885824034
+          theta_s: 0.4984116325806734
+          k_sat: 0.02655529995752791
+        rationale: >-
+          Calculated from the selected Table 4 equations while staging Equation
+          7 for bulk density. Table 3 mean texture fractions sum to 100 percent;
+          the remaining inputs are positive interior values that keep every
+          logarithm and reciprocal defined. All expected outputs and the staged
+          bulk density lie within the observed marginal ranges in Tables 2 and 3.
+    edge_cases:
+      - id: zero_depth
+        inputs:
+          depth: 0.0
+        expected_behavior: >-
+          Evaluate without clamping under IEEE 754 semantics; the selected Ks
+          equation contains reciprocal depth and therefore produces a non-finite
+          result.
+        notes: >-
+          Zero is outside the reviewed public input domain. Interval-labelled
+          layers use their positive arithmetic midpoint.
+      - id: zero_slope
+        inputs:
+          slope: 0.0
+        expected_behavior: >-
+          Evaluate without clamping under IEEE 754 semantics and propagate the
+          non-finite results from logarithmic and reciprocal slope terms.
+        notes: >-
+          Zero is outside the reviewed public input domain even though the
+          source's slope-cosine transform maps 90 degrees to zero.
+    documentation:
+      notes:
+        - >-
+          Table 4 selects the with-depth variants for alpha, n, theta_s, and Ks,
+          and the without-depth variant for theta_r.
+        - >-
+          EXP is the natural exponential. The equations use natural logarithms
+          where Table 4 prints ln.
+        - >-
+          This draft stages bulk density from Equation 7 before evaluating the
+          theta_s and Ks equations, following the article's statement that bulk
+          density was predicted and then used to estimate the hydraulic parameters.
+        - >-
+          Depth is exposed as a continuous point coordinate in centimetres. When
+          applying the PTF to a source-style interval-labelled layer, ptfkit uses
+          the arithmetic midpoint of the interval.
+      warnings:
+        - >-
+          Midpoint encoding for interval-labelled layers is a reviewed ptfkit
+          convention because the source does not publish its fitted layer-depth
+          coordinate. It is not claimed as author-software parity.
+        - >-
+          Inputs are not clamped. Values outside the documented domain, including
+          zero or invalid logarithm and reciprocal arguments, follow ordinary
+          IEEE 754 and NumPy-compatible floating-point behavior.
+        - >-
+          This empirical regional model is calibrated for deep loess profiles in
+          China's Loess Plateau and has no demonstrated global applicability.
+    implementation:
+      variables:
+        - name: bulk_density
+          expr: -0.281 + 0.004 * sand + 1.343 * slope + 0.008 * clay
+        - name: inverse_clay
+          expr: 1.0 / clay
+        - name: inverse_slope
+          expr: 1.0 / slope
+        - name: precipitation_squared
+          expr: precipitation ^ 2
+        - name: alpha
+          expr: exp(-12.675 - 0.002 * depth + 0.007 * precipitation + 0.001 * altitude + 4.887 * slope - 0.007 * silt)
+        - name: n
+          expr: 1.028 + 0.022 * sand + 0.021 * silt - 0.610 * slope - 0.001 * precipitation + 7.463e-5 * depth
+        - name: theta_s
+          expr: exp(-2.287 - 0.380 * inverse_clay - 0.677 * bulk_density ^ 2 + 0.100 * ln(altitude) + 1.589 * bulk_density - 9.540e-5 * depth)
+        - name: theta_r
+          expr: -0.310 + 0.022 * ln(clay) + 1.386 * ln(slope) - 0.158 * ln(precipitation) + 91.188 / altitude - 35.231 / precipitation + 1.302 * inverse_slope
+        - name: k_sat
+          expr: 0.018 + 0.310 / depth + 0.125 * inverse_clay + 0.104 / bulk_density - 0.135 * inverse_slope + 2.781e-5 * altitude + 1.159e-7 * precipitation_squared
+scientific_notes: |
+  ## Supported models
+
+  Table 4 publishes five regressions with depth and five without depth. The
+  article selects the with-depth variants for alpha, n, theta_s, and Ks, and the
+  without-depth variant for theta_r. Equation 7 predicts bulk density from sand,
+  the cosine-transformed slope gradient, and clay. The article states that bulk
+  density was predicted and then used to estimate the hydraulic parameters.
+
+  The source defines EXP as the natural exponential and explicitly identifies
+  the printed ln transforms as natural logarithms. Slope is converted to the
+  cosine of slope gradient, ranging from 1 at 0 degrees to 0 at 90 degrees.
+  Aspect is converted to negative cosine, but it is not used by any selected
+  final equation.
+
+  ## Review decisions
+
+  The main function groups the five source-selected hydraulic outputs and stages
+  Equation 7 internally. This follows the article's stated regional-estimation
+  workflow and makes predicted bulk density the fixed public contract. Equation 7
+  is also exposed separately because it is a complete source-published PTF with
+  its own prediction target and validation statistics.
+
+  Following the user's request on 2026-09-28 to choose workable conventions for
+  the remaining gaps, ptfkit exposes depth as a continuous point coordinate in
+  centimetres and maps an interval-labelled layer to the arithmetic midpoint of
+  its bounds. The midpoint rule is project-owned application policy, not a claim
+  about the unpublished coordinate used during model fitting.
+
+  The same review adopts direct floating-point formula evaluation with no runtime
+  clamp. Positive input domains keep the retained verification path away from
+  logarithm and reciprocal singularities; out-of-domain values follow ordinary
+  IEEE 754 and NumPy-compatible behavior. Texture fractions are documented in
+  percent but are not renormalized by the function.
+
+  The selected equations spell out `precipitation` and `altitude` and do not use
+  the undefined `sspect`, `pre`/`Pre`, or `Al` tokens found in unselected Table 4
+  alternatives. Those printed ambiguities therefore do not enter the retained
+  implementation path.
+
+  No complete predictor-output row is published. The calculated verification
+  case uses the Table 3 mean texture composition and positive interior values for
+  the remaining inputs. It checks the retained computational transcription and
+  is not source-native validation or evidence of model accuracy. Table 5 R-squared
+  and RMSE statistics are not used as implementation tolerances.
+
+  ## Documented limitations
+
+  The equations are empirical regional regressions for representative Chinese
+  Loess Plateau soils and deep loess profiles. Table 2 and Table 3 ranges are
+  marginal summaries, not a Cartesian joint domain, output clamps, or evidence
+  of applicability outside the calibration setting.
+
+  The official supplementary material provides dataset inventories,
+  semivariogram summaries, and spatial maps. It does not provide row-level PTF
+  inputs and predictions, an executable model, or the missing depth-coordinate
+  convention.
+
+  ## Blockers
+
+  None after the explicit project-level review decisions above. The absent
+  author depth encoding and boundary policy remain documented limitations and
+  prevent claims of author-software parity, but no longer leave the ptfkit
+  computational contract undefined.
+
+  Redistribution and packaging permission for the article, supplementary file,
+  and derived page images remains a separate release question. It does not alter
+  the scientific status of either extracted function.

@@ -20,6 +20,7 @@ ptfkit's C++ API is organized around C++23 modules.
 
 - [`ptfkit.ahuja1984`](modules/ahuja1984.md) — Ahuja et al. (1984), effective-porosity relations for saturated conductivity.
 - [`ptfkit.aimrun2009`](modules/aimrun2009.md) — Aimrun & Amin (2009), Tanjung Karang Rice Irrigation Project, Malaysia.
+- [`ptfkit.bai2022`](modules/bai2022.md) — Bai et al. (2022), Loess Plateau PTFs for van Genuchten parameters and conductivity.
 - [`ptfkit.beniaich2023`](modules/beniaich2023.md) — Beniaich et al. (2023), soil-water PTFs for four Moroccan regions.
 - [`ptfkit.chakraborty2011`](modules/chakraborty2011.md) — Chakraborty et al. (2011), point water-retention PTFs for Indian soils.
 - [`ptfkit.clapp1978`](modules/clapp1978.md) — Clapp and Hornberger (1978) representative soil hydraulic parameters by texture.

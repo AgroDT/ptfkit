@@ -12,6 +12,7 @@ Each page describes the source, scope, inputs, outputs, status, and limitations 
 | --- | --- | ---: |
 | [Ahuja et al. (1984), effective-porosity relations for saturated conductivity.](./ahuja1984.md) | Chickasha, Oklahoma, and the Wahiawa Plateau, Oahu, Hawaii, USA | 1 |
 | [Aimrun & Amin (2009), Tanjung Karang Rice Irrigation Project, Malaysia.](./aimrun2009.md) | Tanjung Karang Rice Irrigation Project, located on a flat coastal plain in the Integrated Agricultural Development Area (IADA Barat Laut Selangor), Malaysia | 1 |
+| [Bai et al. (2022), Loess Plateau PTFs for van Genuchten parameters and conductivity.](./bai2022.md) | A representative 370,000-square-kilometre loess area in China's Loess Plateau Region, spanning Shanxi, Henan, Shaanxi, Gansu, Ningxia, and Inner Mongolia. | 2 |
 | [Beniaich et al. (2023), soil-water PTFs for four Moroccan regions.](./beniaich2023.md) | Agricultural topsoils in Doukkala, Gharb-Loukouss, Moulouya, and Tadla, Morocco | 14 |
 | [Chakraborty et al. (2011), point water-retention PTFs for Indian soils.](./chakraborty2011.md) | India | 6 |
 | [Clapp and Hornberger (1978) representative soil hydraulic parameters by texture.](./clapp1978.md) | United States | 1 |

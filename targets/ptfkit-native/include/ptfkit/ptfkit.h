@@ -6,6 +6,7 @@
 #include <ptfkit/soil.h>
 #include <ptfkit/ahuja1984.h>
 #include <ptfkit/aimrun2009.h>
+#include <ptfkit/bai2022.h>
 #include <ptfkit/beniaich2023.h>
 #include <ptfkit/chakraborty2011.h>
 #include <ptfkit/clapp1978.h>
