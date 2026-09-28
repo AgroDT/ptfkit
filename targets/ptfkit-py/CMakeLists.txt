@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.26)
 project(ptfkit LANGUAGES C)
 
 if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.30)
-    set(Python_FIND_ABI "ANY" "ANY" "ANY" "ANY")
+    set(Python_FIND_ABI "OFF" "OFF" "OFF" "ANY")
 endif()
 
 find_package(Python REQUIRED COMPONENTS Interpreter Development.Module NumPy)
