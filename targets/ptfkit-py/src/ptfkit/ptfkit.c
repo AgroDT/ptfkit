@@ -8,6 +8,7 @@
 
 #include "ahuja1984.c"
 #include "aimrun2009.c"
+#include "bai2022.c"
 #include "beniaich2023.c"
 #include "chakraborty2011.c"
 #include "clapp1978.c"
@@ -48,6 +49,10 @@ PyMODINIT_FUNC PyInit__ptfkit(void) {
         return NULL;
     }
     if (ptfkit_register_aimrun2009(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_bai2022(module) < 0) {
         Py_DECREF(module);
         return NULL;
     }

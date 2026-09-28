@@ -4,6 +4,8 @@ from numpy import ufunc
 
 calc_ptf_ahuja1984: ufunc
 calc_ptf_aimrun2009: ufunc
+calc_ptf_bai2022: ufunc
+calc_ptf_bai2022_bulk_density: ufunc
 calc_ptf_beniaich2023_mlr1: ufunc
 calc_ptf_beniaich2023_mlr2: ufunc
 calc_ptf_beniaich2023_mlr3: ufunc

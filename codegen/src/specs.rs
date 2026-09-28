@@ -841,7 +841,7 @@ functions:
         assert_eq!(path, &root.join("specs/functions/a_invalid.yaml"));
         let parse_location = format!(
             "{} -> function calc_ptf_b_parse -> implementation.variables[0].expr",
-            root.join("specs/functions/b_parse.yaml").display()
+            root.join("specs/functions").join("b_parse.yaml").display()
         );
         assert_eq!(parse.location, parse_location);
         assert_eq!(parse.span, Span { start: 0, end: 5 });
