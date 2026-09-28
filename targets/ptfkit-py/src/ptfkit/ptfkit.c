@@ -33,6 +33,7 @@
 #include "vereecken1989.c"
 #include "wang2012.c"
 #include "weber2020.c"
+#include "wosten2001.c"
 #include "zhao2016.c"
 
 static struct PyModuleDef module_def = {PyModuleDef_HEAD_INIT, "_ptfkit", NULL, -1, NULL};
@@ -148,6 +149,10 @@ PyMODINIT_FUNC PyInit__ptfkit(void) {
         return NULL;
     }
     if (ptfkit_register_weber2020(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_wosten2001(module) < 0) {
         Py_DECREF(module);
         return NULL;
     }

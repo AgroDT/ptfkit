@@ -470,7 +470,15 @@ fn render_enum(module: &mut Module, definition: &PythonEnum) {
     module.blank_line();
     module.line(format_args!("class {}(Enum):", definition.name));
     module.indented(|writer| {
-        writer.line(format_args!("\"\"\"{}", definition.description));
+        if definition.description.len() <= LINE_WIDTH - 7 {
+            writer.line(format_args!("\"\"\"{}", definition.description));
+        } else {
+            writer.line("\"\"\"Enumerated source categories.");
+            writer.blank_line();
+            for line in wrap_doc_line(&definition.description, LINE_WIDTH - 4, LINE_WIDTH - 4) {
+                writer.line(line);
+            }
+        }
         if definition
             .members
             .iter()
@@ -480,7 +488,13 @@ fn render_enum(module: &mut Module, definition: &PythonEnum) {
             writer.line("Attributes:");
             for member in &definition.members {
                 if let Some(description) = &member.description {
-                    writer.line(format_args!("    {}: {description}", member.name));
+                    let prefix = format!("    {}: ", member.name);
+                    let description =
+                        wrap_doc_line(description, LINE_WIDTH - 4 - prefix.len(), LINE_WIDTH - 12);
+                    writer.line(format_args!("{prefix}{}", description[0]));
+                    for line in description.iter().skip(1) {
+                        writer.line(format_args!("        {line}"));
+                    }
                 }
             }
         }
@@ -854,6 +868,32 @@ mod tests {
         snapbox::assert_data_eq!(
             &rendered,
             snapbox::file!["../../fixtures/expected/python/category_enum.py"]
+        );
+    }
+
+    #[test]
+    fn wraps_enum_docstrings_to_the_python_line_limit() {
+        let definition = PythonEnum {
+            name: "TestCategory".into(),
+            description: "A source-defined category with an intentionally long description that must wrap before the generated Python line exceeds the configured limit.".into(),
+            members: vec![PythonEnumMember {
+                name: "A_LONG_MEMBER_NAME".into(),
+                value: "first".into(),
+                description: Some("An intentionally long member description that must wrap without losing any of its source-defined words or punctuation.".into()),
+            }],
+        };
+
+        let mut module = Module::new("");
+        render_enum(&mut module, &definition);
+        let rendered = module.into_string();
+
+        assert!(
+            rendered.lines().all(|line| line.chars().count() <= 100),
+            "generated enum contains a line longer than 100 characters:\n{rendered}"
+        );
+        assert_eq!(
+            rendered.split_whitespace().collect::<Vec<_>>().join(" "),
+            "class TestCategory(Enum): \"\"\"Enumerated source categories. A source-defined category with an intentionally long description that must wrap before the generated Python line exceeds the configured limit. Attributes: A_LONG_MEMBER_NAME: An intentionally long member description that must wrap without losing any of its source-defined words or punctuation. \"\"\" A_LONG_MEMBER_NAME = \"first\" @classmethod def array(cls, values: Iterable[TestCategory]) -> EnumArray[TestCategory]: \"\"\"Encode members once as a reusable typed enum array.\"\"\" return EnumArray._from_members(cls, values) # noqa: SLF001"
         );
     }
 }

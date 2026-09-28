@@ -1,0 +1,660 @@
+source:
+  summary: Wösten et al. (2001), Staring Series hydraulic parameters for Dutch soils.
+  citation_apa: >-
+    Wösten, J. H. M., Veerman, G. J., de Groot, W. J. M., & Stolte, J. (2001).
+    Waterretentie- en doorlatendheidskarakteristieken van boven- en ondergronden
+    in Nederland: de Staringreeks; vernieuwde uitgave 2001. Alterra-rapport 153.
+    Wageningen: Alterra.
+  doi: null
+scope:
+  territory: Netherlands
+  dataset: >-
+    832 measured soil-horizon hydraulic characteristics used to define 18 topsoil
+    and 18 subsoil classes and to fit continuous regressions for mineral soils.
+$defs:
+  Wosten2001SoilClass:
+    type: enum
+    description: >-
+      One of the 36 source-defined Staring Series identifiers: B1-B18 for
+      topsoils and O1-O18 for subsoils.
+    values:
+      - {name: b1, value: B1, description: "Topsoil: low-silt fine sand; 0-10% particles below 50 µm, 0-15% organic matter, M50 105-210 µm."}
+      - {name: b2, value: B2, description: "Topsoil: weakly silty fine sand; 10-18% particles below 50 µm, 0-15% organic matter, M50 105-210 µm."}
+      - {name: b3, value: B3, description: "Topsoil: strongly silty fine sand; 18-33% particles below 50 µm, 0-15% organic matter, M50 105-210 µm."}
+      - {name: b4, value: B4, description: "Topsoil: very strongly silty fine sand; 33-50% particles below 50 µm, 0-15% organic matter, M50 105-210 µm."}
+      - {name: b5, value: B5, description: "Topsoil: coarse sand; 0-15% organic matter and M50 210-2000 µm."}
+      - {name: b6, value: B6, description: "Topsoil: glacial till; 0-50% particles below 50 µm, 0-15% organic matter, M50 50-2000 µm."}
+      - {name: b7, value: B7, description: "Topsoil: very light loam; 8-12% clay and 0-15% organic matter."}
+      - {name: b8, value: B8, description: "Topsoil: moderately light loam; 12-18% clay and 0-15% organic matter."}
+      - {name: b9, value: B9, description: "Topsoil: heavy loam; 18-25% clay and 0-15% organic matter."}
+      - {name: b10, value: B10, description: "Topsoil: light clay; 25-35% clay and 0-15% organic matter."}
+      - {name: b11, value: B11, description: "Topsoil: moderately heavy clay; 35-50% clay and 0-15% organic matter."}
+      - {name: b12, value: B12, description: "Topsoil: very heavy clay; 50-100% clay and 0-15% organic matter."}
+      - {name: b13, value: B13, description: "Topsoil: sandy silt loam; 50-85% particles below 50 µm and 0-15% organic matter."}
+      - {name: b14, value: B14, description: "Topsoil: silty loam; 85-100% particles below 50 µm and 0-15% organic matter."}
+      - {name: b15, value: B15, description: "Topsoil: peaty sand; 0-8% clay and 15-25% organic matter."}
+      - {name: b16, value: B16, description: "Topsoil: sandy peat and peat; 0-8% clay and 25-100% organic matter."}
+      - {name: b17, value: B17, description: "Topsoil: peaty clay; 8-100% clay and 16-45% organic matter."}
+      - {name: b18, value: B18, description: "Topsoil: clayey peat; 8-100% clay and 25-70% organic matter."}
+      - {name: o1, value: O1, description: "Subsoil: low-silt fine sand; 0-10% particles below 50 µm, 0-3% organic matter, M50 105-210 µm."}
+      - {name: o2, value: O2, description: "Subsoil: weakly silty fine sand; 10-18% particles below 50 µm, 0-3% organic matter, M50 105-210 µm."}
+      - {name: o3, value: O3, description: "Subsoil: strongly silty fine sand; 18-33% particles below 50 µm, 0-3% organic matter, M50 105-210 µm."}
+      - {name: o4, value: O4, description: "Subsoil: very strongly silty fine sand; 33-50% particles below 50 µm, 0-3% organic matter, M50 105-210 µm."}
+      - {name: o5, value: O5, description: "Subsoil: coarse sand; 0-3% organic matter and M50 210-2000 µm."}
+      - {name: o6, value: O6, description: "Subsoil: glacial till; 0-50% particles below 50 µm, 0-3% organic matter, M50 50-2000 µm."}
+      - {name: o7, value: O7, description: "Subsoil: brook loam; 33-50% particles below 50 µm, 0-3% organic matter, M50 50-150 µm."}
+      - {name: o8, value: O8, description: "Subsoil: very light loam; 8-12% clay and 0-3% organic matter."}
+      - {name: o9, value: O9, description: "Subsoil: moderately light loam; 12-18% clay and 0-3% organic matter."}
+      - {name: o10, value: O10, description: "Subsoil: heavy loam; 18-25% clay and 0-3% organic matter."}
+      - {name: o11, value: O11, description: "Subsoil: light clay; 25-35% clay and 0-3% organic matter."}
+      - {name: o12, value: O12, description: "Subsoil: moderately heavy clay; 35-50% clay and 0-3% organic matter."}
+      - {name: o13, value: O13, description: "Subsoil: very heavy clay; 50-100% clay and 0-3% organic matter."}
+      - {name: o14, value: O14, description: "Subsoil: sandy silt loam; 50-85% particles below 50 µm and 0-3% organic matter."}
+      - {name: o15, value: O15, description: "Subsoil: silty loam; 85-100% particles below 50 µm and 0-3% organic matter."}
+      - {name: o16, value: O16, description: "Subsoil: oligotrophic peat with 35-100% organic matter."}
+      - {name: o17, value: O17, description: "Subsoil: mesotrophic or eutrophic peat with 35-100% organic matter."}
+      - {name: o18, value: O18, description: "Subsoil: organic interlayer with 15-35% organic matter."}
+  Wosten2001ClassParameters:
+    type: record
+    name: Wosten2001ClassParameters
+    fields:
+      - name: theta_r
+        quantity: volumetric_water_content
+        symbol: theta_r
+        unit: volume_fraction
+        reported_unit: cm³/cm³
+        domain: 0 <= value <= 1
+        description: Residual volumetric water content.
+      - name: theta_s
+        quantity: volumetric_water_content
+        symbol: theta_s
+        unit: volume_fraction
+        reported_unit: cm³/cm³
+        domain: 0 < value <= 1
+        description: Saturated volumetric water content.
+      - name: saturated_conductivity
+        quantity: saturated_hydraulic_conductivity
+        symbol: K_s
+        unit: centimeter_per_day
+        reported_unit: cm/day
+        domain: value >= 0
+        description: Saturated hydraulic conductivity.
+      - name: alpha
+        quantity: van_genuchten_alpha
+        symbol: alpha
+        unit: inverse_centimeter
+        reported_unit: 1/cm
+        domain: value > 0
+        description: Inverse pressure-head scale of the van Genuchten model.
+      - name: conductivity_shape_parameter
+        quantity: conductivity_shape_parameter
+        symbol: l
+        unit: dimensionless
+        reported_unit: dimensionless
+        domain: null
+        description: Mualem hydraulic-conductivity shape parameter.
+      - name: n
+        quantity: van_genuchten_n
+        symbol: n
+        unit: dimensionless
+        reported_unit: dimensionless
+        domain: value > 1
+        description: van Genuchten pore-size distribution parameter.
+  Wosten2001ClassParametersBySoilClass:
+    type: lookup
+    input:
+      $ref: "#/$defs/Wosten2001SoilClass"
+    output:
+      $ref: "#/$defs/Wosten2001ClassParameters"
+    values:
+      - {key: b1, value: {theta_r: 0.02, theta_s: 0.43, saturated_conductivity: 23.41, alpha: 0.0234, conductivity_shape_parameter: 0.000, n: 1.801}}
+      - {key: b2, value: {theta_r: 0.02, theta_s: 0.42, saturated_conductivity: 12.52, alpha: 0.0276, conductivity_shape_parameter: -1.060, n: 1.491}}
+      - {key: b3, value: {theta_r: 0.02, theta_s: 0.46, saturated_conductivity: 15.42, alpha: 0.0144, conductivity_shape_parameter: -0.215, n: 1.534}}
+      - {key: b4, value: {theta_r: 0.02, theta_s: 0.46, saturated_conductivity: 29.22, alpha: 0.0156, conductivity_shape_parameter: 0.000, n: 1.406}}
+      - {key: b5, value: {theta_r: 0.01, theta_s: 0.36, saturated_conductivity: 52.91, alpha: 0.0452, conductivity_shape_parameter: -0.359, n: 1.933}}
+      - {key: b6, value: {theta_r: 0.01, theta_s: 0.38, saturated_conductivity: 100.69, alpha: 0.0222, conductivity_shape_parameter: -1.747, n: 1.238}}
+      - {key: b7, value: {theta_r: 0.00, theta_s: 0.40, saturated_conductivity: 14.07, alpha: 0.0194, conductivity_shape_parameter: -0.802, n: 1.250}}
+      - {key: b8, value: {theta_r: 0.01, theta_s: 0.43, saturated_conductivity: 2.36, alpha: 0.0099, conductivity_shape_parameter: -2.244, n: 1.288}}
+      - {key: b9, value: {theta_r: 0.00, theta_s: 0.43, saturated_conductivity: 1.54, alpha: 0.0065, conductivity_shape_parameter: -2.161, n: 1.325}}
+      - {key: b10, value: {theta_r: 0.01, theta_s: 0.43, saturated_conductivity: 0.70, alpha: 0.0064, conductivity_shape_parameter: -3.884, n: 1.210}}
+      - {key: b11, value: {theta_r: 0.01, theta_s: 0.59, saturated_conductivity: 4.53, alpha: 0.0195, conductivity_shape_parameter: -5.901, n: 1.109}}
+      - {key: b12, value: {theta_r: 0.01, theta_s: 0.54, saturated_conductivity: 5.37, alpha: 0.0239, conductivity_shape_parameter: -5.681, n: 1.094}}
+      - {key: b13, value: {theta_r: 0.01, theta_s: 0.42, saturated_conductivity: 12.98, alpha: 0.0084, conductivity_shape_parameter: -1.497, n: 1.441}}
+      - {key: b14, value: {theta_r: 0.01, theta_s: 0.42, saturated_conductivity: 0.80, alpha: 0.0051, conductivity_shape_parameter: 0.000, n: 1.305}}
+      - {key: b15, value: {theta_r: 0.01, theta_s: 0.53, saturated_conductivity: 81.28, alpha: 0.0242, conductivity_shape_parameter: -1.476, n: 1.280}}
+      - {key: b16, value: {theta_r: 0.01, theta_s: 0.80, saturated_conductivity: 6.79, alpha: 0.0176, conductivity_shape_parameter: -2.259, n: 1.293}}
+      - {key: b17, value: {theta_r: 0.00, theta_s: 0.72, saturated_conductivity: 4.46, alpha: 0.0180, conductivity_shape_parameter: -0.350, n: 1.140}}
+      - {key: b18, value: {theta_r: 0.00, theta_s: 0.77, saturated_conductivity: 6.67, alpha: 0.0197, conductivity_shape_parameter: -1.845, n: 1.154}}
+      - {key: o1, value: {theta_r: 0.01, theta_s: 0.36, saturated_conductivity: 15.22, alpha: 0.0224, conductivity_shape_parameter: 0.000, n: 2.286}}
+      - {key: o2, value: {theta_r: 0.02, theta_s: 0.38, saturated_conductivity: 12.68, alpha: 0.0213, conductivity_shape_parameter: 0.168, n: 1.951}}
+      - {key: o3, value: {theta_r: 0.01, theta_s: 0.34, saturated_conductivity: 10.87, alpha: 0.0170, conductivity_shape_parameter: 0.000, n: 1.717}}
+      - {key: o4, value: {theta_r: 0.01, theta_s: 0.35, saturated_conductivity: 9.86, alpha: 0.0155, conductivity_shape_parameter: 0.000, n: 1.525}}
+      - {key: o5, value: {theta_r: 0.01, theta_s: 0.32, saturated_conductivity: 25.00, alpha: 0.0521, conductivity_shape_parameter: 0.000, n: 2.374}}
+      - {key: o6, value: {theta_r: 0.01, theta_s: 0.33, saturated_conductivity: 33.92, alpha: 0.0162, conductivity_shape_parameter: -1.330, n: 1.311}}
+      - {key: o7, value: {theta_r: 0.01, theta_s: 0.51, saturated_conductivity: 39.10, alpha: 0.0123, conductivity_shape_parameter: -2.023, n: 1.152}}
+      - {key: o8, value: {theta_r: 0.00, theta_s: 0.47, saturated_conductivity: 9.08, alpha: 0.0136, conductivity_shape_parameter: -0.803, n: 1.342}}
+      - {key: o9, value: {theta_r: 0.00, theta_s: 0.46, saturated_conductivity: 2.23, alpha: 0.0094, conductivity_shape_parameter: -1.382, n: 1.400}}
+      - {key: o10, value: {theta_r: 0.01, theta_s: 0.48, saturated_conductivity: 2.12, alpha: 0.0097, conductivity_shape_parameter: -1.879, n: 1.257}}
+      - {key: o11, value: {theta_r: 0.00, theta_s: 0.42, saturated_conductivity: 13.79, alpha: 0.0191, conductivity_shape_parameter: -1.384, n: 1.152}}
+      - {key: o12, value: {theta_r: 0.01, theta_s: 0.56, saturated_conductivity: 1.02, alpha: 0.0095, conductivity_shape_parameter: -4.295, n: 1.158}}
+      - {key: o13, value: {theta_r: 0.01, theta_s: 0.57, saturated_conductivity: 4.37, alpha: 0.0194, conductivity_shape_parameter: -5.955, n: 1.089}}
+      - {key: o14, value: {theta_r: 0.01, theta_s: 0.38, saturated_conductivity: 1.51, alpha: 0.0030, conductivity_shape_parameter: -0.292, n: 1.728}}
+      - {key: o15, value: {theta_r: 0.01, theta_s: 0.41, saturated_conductivity: 3.70, alpha: 0.0071, conductivity_shape_parameter: 0.912, n: 1.298}}
+      - {key: o16, value: {theta_r: 0.00, theta_s: 0.89, saturated_conductivity: 1.07, alpha: 0.0103, conductivity_shape_parameter: -1.411, n: 1.376}}
+      - {key: o17, value: {theta_r: 0.01, theta_s: 0.86, saturated_conductivity: 2.93, alpha: 0.0123, conductivity_shape_parameter: -1.592, n: 1.276}}
+      - {key: o18, value: {theta_r: 0.01, theta_s: 0.57, saturated_conductivity: 34.45, alpha: 0.0138, conductivity_shape_parameter: -1.204, n: 1.323}}
+  Wosten2001Table5Parameters:
+    type: record
+    name: Wosten2001Table5Parameters
+    fields:
+      - name: bulk_density
+        quantity: dry_bulk_density
+        symbol: D
+        unit: gram_per_cubic_centimeter
+        reported_unit: g/cm³
+        domain: value > 0
+        description: Dry bulk density predicted through the printed reciprocal-density regression.
+      - name: theta_s
+        quantity: volumetric_water_content
+        symbol: theta_s
+        unit: volume_fraction
+        reported_unit: cm³/cm³
+        domain: null
+        description: Saturated volumetric water content predicted by the continuous regression.
+      - name: saturated_conductivity
+        quantity: saturated_hydraulic_conductivity
+        symbol: K_s
+        unit: centimeter_per_day
+        reported_unit: cm/day
+        domain: value > 0
+        description: Back-transformed saturated hydraulic conductivity.
+      - name: alpha
+        quantity: van_genuchten_alpha
+        symbol: alpha
+        unit: inverse_centimeter
+        reported_unit: 1/cm
+        domain: value > 0
+        description: Back-transformed van Genuchten inverse pressure-head scale.
+      - name: conductivity_shape_parameter
+        quantity: conductivity_shape_parameter
+        symbol: l
+        unit: dimensionless
+        reported_unit: dimensionless
+        domain: null
+        description: Back-transformed Mualem hydraulic-conductivity shape parameter.
+      - name: n
+        quantity: van_genuchten_n
+        symbol: n
+        unit: dimensionless
+        reported_unit: dimensionless
+        domain: value > 1
+        description: Back-transformed van Genuchten pore-size distribution parameter.
+functions:
+  - name: calc_ptf_wosten2001_class_parameters
+    status: implemented
+    public_api:
+      name: calc_ptf_wosten2001_class_parameters
+      result_class: Wosten2001ClassParameters
+      summary: Return the six published hydraulic parameters for a Staring Series class.
+    scope:
+      prediction_target: >-
+        Residual and saturated water content, saturated hydraulic conductivity,
+        and alpha, l, and n for a source-defined Staring Series class.
+      models:
+        h_theta: van Genuchten model with m = 1 - 1 / n
+        k_h: Mualem-van Genuchten hydraulic-conductivity model
+    inputs:
+      - name: soil_class
+        description: Source class identifier used to select a Table 3 row.
+        $ref: "#/$defs/Wosten2001SoilClass"
+    outputs:
+      $ref: "#/$defs/Wosten2001ClassParameters"
+    verification_cases:
+      - {id: table_3_b1, kind: published, inputs: {soil_class: b1}, expected: {theta_r: 0.02, theta_s: 0.43, saturated_conductivity: 23.41, alpha: 0.0234, conductivity_shape_parameter: 0.000, n: 1.801}, source_location: "Table 3, B1 row"}
+      - {id: table_3_b2, kind: published, inputs: {soil_class: b2}, expected: {theta_r: 0.02, theta_s: 0.42, saturated_conductivity: 12.52, alpha: 0.0276, conductivity_shape_parameter: -1.060, n: 1.491}, source_location: "Table 3, B2 row"}
+      - {id: table_3_b3, kind: published, inputs: {soil_class: b3}, expected: {theta_r: 0.02, theta_s: 0.46, saturated_conductivity: 15.42, alpha: 0.0144, conductivity_shape_parameter: -0.215, n: 1.534}, source_location: "Table 3, B3 row"}
+      - {id: table_3_b4, kind: published, inputs: {soil_class: b4}, expected: {theta_r: 0.02, theta_s: 0.46, saturated_conductivity: 29.22, alpha: 0.0156, conductivity_shape_parameter: 0.000, n: 1.406}, source_location: "Table 3, B4 row"}
+      - {id: table_3_b5, kind: published, inputs: {soil_class: b5}, expected: {theta_r: 0.01, theta_s: 0.36, saturated_conductivity: 52.91, alpha: 0.0452, conductivity_shape_parameter: -0.359, n: 1.933}, source_location: "Table 3, B5 row"}
+      - {id: table_3_b6, kind: published, inputs: {soil_class: b6}, expected: {theta_r: 0.01, theta_s: 0.38, saturated_conductivity: 100.69, alpha: 0.0222, conductivity_shape_parameter: -1.747, n: 1.238}, source_location: "Table 3, B6 row"}
+      - {id: table_3_b7, kind: published, inputs: {soil_class: b7}, expected: {theta_r: 0.00, theta_s: 0.40, saturated_conductivity: 14.07, alpha: 0.0194, conductivity_shape_parameter: -0.802, n: 1.250}, source_location: "Table 3, B7 row"}
+      - {id: table_3_b8, kind: published, inputs: {soil_class: b8}, expected: {theta_r: 0.01, theta_s: 0.43, saturated_conductivity: 2.36, alpha: 0.0099, conductivity_shape_parameter: -2.244, n: 1.288}, source_location: "Table 3, B8 row"}
+      - {id: table_3_b9, kind: published, inputs: {soil_class: b9}, expected: {theta_r: 0.00, theta_s: 0.43, saturated_conductivity: 1.54, alpha: 0.0065, conductivity_shape_parameter: -2.161, n: 1.325}, source_location: "Table 3, B9 row"}
+      - {id: table_3_b10, kind: published, inputs: {soil_class: b10}, expected: {theta_r: 0.01, theta_s: 0.43, saturated_conductivity: 0.70, alpha: 0.0064, conductivity_shape_parameter: -3.884, n: 1.210}, source_location: "Table 3, B10 row"}
+      - {id: table_3_b11, kind: published, inputs: {soil_class: b11}, expected: {theta_r: 0.01, theta_s: 0.59, saturated_conductivity: 4.53, alpha: 0.0195, conductivity_shape_parameter: -5.901, n: 1.109}, source_location: "Table 3, B11 row"}
+      - {id: table_3_b12, kind: published, inputs: {soil_class: b12}, expected: {theta_r: 0.01, theta_s: 0.54, saturated_conductivity: 5.37, alpha: 0.0239, conductivity_shape_parameter: -5.681, n: 1.094}, source_location: "Table 3, B12 row"}
+      - {id: table_3_b13, kind: published, inputs: {soil_class: b13}, expected: {theta_r: 0.01, theta_s: 0.42, saturated_conductivity: 12.98, alpha: 0.0084, conductivity_shape_parameter: -1.497, n: 1.441}, source_location: "Table 3, B13 row"}
+      - {id: table_3_b14, kind: published, inputs: {soil_class: b14}, expected: {theta_r: 0.01, theta_s: 0.42, saturated_conductivity: 0.80, alpha: 0.0051, conductivity_shape_parameter: 0.000, n: 1.305}, source_location: "Table 3, B14 row"}
+      - {id: table_3_b15, kind: published, inputs: {soil_class: b15}, expected: {theta_r: 0.01, theta_s: 0.53, saturated_conductivity: 81.28, alpha: 0.0242, conductivity_shape_parameter: -1.476, n: 1.280}, source_location: "Table 3, B15 row"}
+      - {id: table_3_b16, kind: published, inputs: {soil_class: b16}, expected: {theta_r: 0.01, theta_s: 0.80, saturated_conductivity: 6.79, alpha: 0.0176, conductivity_shape_parameter: -2.259, n: 1.293}, source_location: "Table 3, B16 row"}
+      - {id: table_3_b17, kind: published, inputs: {soil_class: b17}, expected: {theta_r: 0.00, theta_s: 0.72, saturated_conductivity: 4.46, alpha: 0.0180, conductivity_shape_parameter: -0.350, n: 1.140}, source_location: "Table 3, B17 row"}
+      - {id: table_3_b18, kind: published, inputs: {soil_class: b18}, expected: {theta_r: 0.00, theta_s: 0.77, saturated_conductivity: 6.67, alpha: 0.0197, conductivity_shape_parameter: -1.845, n: 1.154}, source_location: "Table 3, B18 row"}
+      - {id: table_3_o1, kind: published, inputs: {soil_class: o1}, expected: {theta_r: 0.01, theta_s: 0.36, saturated_conductivity: 15.22, alpha: 0.0224, conductivity_shape_parameter: 0.000, n: 2.286}, source_location: "Table 3, O1 row"}
+      - {id: table_3_o2, kind: published, inputs: {soil_class: o2}, expected: {theta_r: 0.02, theta_s: 0.38, saturated_conductivity: 12.68, alpha: 0.0213, conductivity_shape_parameter: 0.168, n: 1.951}, source_location: "Table 3, O2 row"}
+      - {id: table_3_o3, kind: published, inputs: {soil_class: o3}, expected: {theta_r: 0.01, theta_s: 0.34, saturated_conductivity: 10.87, alpha: 0.0170, conductivity_shape_parameter: 0.000, n: 1.717}, source_location: "Table 3, O3 row"}
+      - {id: table_3_o4, kind: published, inputs: {soil_class: o4}, expected: {theta_r: 0.01, theta_s: 0.35, saturated_conductivity: 9.86, alpha: 0.0155, conductivity_shape_parameter: 0.000, n: 1.525}, source_location: "Table 3, O4 row"}
+      - {id: table_3_o5, kind: published, inputs: {soil_class: o5}, expected: {theta_r: 0.01, theta_s: 0.32, saturated_conductivity: 25.00, alpha: 0.0521, conductivity_shape_parameter: 0.000, n: 2.374}, source_location: "Table 3, O5 row"}
+      - {id: table_3_o6, kind: published, inputs: {soil_class: o6}, expected: {theta_r: 0.01, theta_s: 0.33, saturated_conductivity: 33.92, alpha: 0.0162, conductivity_shape_parameter: -1.330, n: 1.311}, source_location: "Table 3, O6 row"}
+      - {id: table_3_o7, kind: published, inputs: {soil_class: o7}, expected: {theta_r: 0.01, theta_s: 0.51, saturated_conductivity: 39.10, alpha: 0.0123, conductivity_shape_parameter: -2.023, n: 1.152}, source_location: "Table 3, O7 row"}
+      - {id: table_3_o8, kind: published, inputs: {soil_class: o8}, expected: {theta_r: 0.00, theta_s: 0.47, saturated_conductivity: 9.08, alpha: 0.0136, conductivity_shape_parameter: -0.803, n: 1.342}, source_location: "Table 3, O8 row"}
+      - {id: table_3_o9, kind: published, inputs: {soil_class: o9}, expected: {theta_r: 0.00, theta_s: 0.46, saturated_conductivity: 2.23, alpha: 0.0094, conductivity_shape_parameter: -1.382, n: 1.400}, source_location: "Table 3, O9 row"}
+      - {id: table_3_o10, kind: published, inputs: {soil_class: o10}, expected: {theta_r: 0.01, theta_s: 0.48, saturated_conductivity: 2.12, alpha: 0.0097, conductivity_shape_parameter: -1.879, n: 1.257}, source_location: "Table 3, O10 row"}
+      - {id: table_3_o11, kind: published, inputs: {soil_class: o11}, expected: {theta_r: 0.00, theta_s: 0.42, saturated_conductivity: 13.79, alpha: 0.0191, conductivity_shape_parameter: -1.384, n: 1.152}, source_location: "Table 3, O11 row"}
+      - {id: table_3_o12, kind: published, inputs: {soil_class: o12}, expected: {theta_r: 0.01, theta_s: 0.56, saturated_conductivity: 1.02, alpha: 0.0095, conductivity_shape_parameter: -4.295, n: 1.158}, source_location: "Table 3, O12 row"}
+      - {id: table_3_o13, kind: published, inputs: {soil_class: o13}, expected: {theta_r: 0.01, theta_s: 0.57, saturated_conductivity: 4.37, alpha: 0.0194, conductivity_shape_parameter: -5.955, n: 1.089}, source_location: "Table 3, O13 row"}
+      - {id: table_3_o14, kind: published, inputs: {soil_class: o14}, expected: {theta_r: 0.01, theta_s: 0.38, saturated_conductivity: 1.51, alpha: 0.0030, conductivity_shape_parameter: -0.292, n: 1.728}, source_location: "Table 3, O14 row"}
+      - {id: table_3_o15, kind: published, inputs: {soil_class: o15}, expected: {theta_r: 0.01, theta_s: 0.41, saturated_conductivity: 3.70, alpha: 0.0071, conductivity_shape_parameter: 0.912, n: 1.298}, source_location: "Table 3, O15 row"}
+      - {id: table_3_o16, kind: published, inputs: {soil_class: o16}, expected: {theta_r: 0.00, theta_s: 0.89, saturated_conductivity: 1.07, alpha: 0.0103, conductivity_shape_parameter: -1.411, n: 1.376}, source_location: "Table 3, O16 row"}
+      - {id: table_3_o17, kind: published, inputs: {soil_class: o17}, expected: {theta_r: 0.01, theta_s: 0.86, saturated_conductivity: 2.93, alpha: 0.0123, conductivity_shape_parameter: -1.592, n: 1.276}, source_location: "Table 3, O17 row"}
+      - {id: table_3_o18, kind: published, inputs: {soil_class: o18}, expected: {theta_r: 0.01, theta_s: 0.57, saturated_conductivity: 34.45, alpha: 0.0138, conductivity_shape_parameter: -1.204, n: 1.323}, source_location: "Table 3, O18 row"}
+    edge_cases: []
+    documentation:
+      notes:
+        - Class identifiers select published rows; this function does not classify soil from texture ranges.
+      warnings:
+        - The source cautions that class means may not apply outside the measured ranges within each class.
+    implementation:
+      variables:
+        - name: parameters
+          lookup:
+            table:
+              $ref: "#/$defs/Wosten2001ClassParametersBySoilClass"
+            key: soil_class
+
+  - name: calc_ptf_wosten2001_hydraulic
+    status: implemented
+    public_api:
+      name: calc_ptf_wosten2001_hydraulic
+      result_class: Wosten2001HydraulicResult
+      summary: Evaluate water content and conductivity from Staring Series parameters.
+    scope:
+      prediction_target: >-
+        Volumetric water content and unsaturated hydraulic conductivity at a
+        nonnegative pressure-head magnitude.
+      models:
+        h_theta: van Genuchten model with m = 1 - 1 / n
+        k_h: Mualem-van Genuchten hydraulic-conductivity model
+    inputs:
+      - {name: theta_r, symbol: theta_r, unit: cm³/cm³, domain: "0 <= value < theta_s", description: Residual volumetric water content.}
+      - {name: theta_s, symbol: theta_s, unit: cm³/cm³, domain: "theta_r < value <= 1", description: Saturated volumetric water content.}
+      - {name: saturated_conductivity, symbol: K_s, unit: cm/day, domain: "value >= 0", description: Saturated hydraulic conductivity.}
+      - {name: alpha, symbol: alpha, unit: 1/cm, domain: "value > 0", description: van Genuchten inverse pressure-head scale.}
+      - {name: conductivity_shape_parameter, symbol: l, unit: dimensionless, domain: null, description: Mualem hydraulic-conductivity shape parameter.}
+      - {name: n, symbol: n, unit: dimensionless, domain: "value > 1", description: van Genuchten pore-size distribution parameter.}
+      - name: pressure_head_magnitude
+        symbol: "|h|"
+        unit: cm
+        domain: value >= 0
+        description: >-
+          Nonnegative magnitude of pressure head; callers must convert any
+          signed-negative convention explicitly before calling.
+    outputs:
+      type: record
+      name: Wosten2001HydraulicResult
+      fields:
+        - name: water_content
+          quantity: volumetric_water_content
+          symbol: theta
+          unit: volume_fraction
+          reported_unit: cm³/cm³
+          domain: theta_r <= value <= theta_s
+          description: Volumetric water content at the supplied pressure-head magnitude.
+        - name: conductivity
+          quantity: unsaturated_hydraulic_conductivity
+          symbol: K
+          unit: centimeter_per_day
+          reported_unit: cm/day
+          domain: value >= 0
+          description: Hydraulic conductivity at the supplied pressure-head magnitude.
+    verification_tolerances:
+      conductivity:
+        absolute: 0.005
+        relative: 0.01
+        source_location: "Table 4, conductivity values reported to displayed precision"
+    verification_cases:
+      - id: table_4_b1_topsoil_mineral_h100
+        kind: published
+        inputs: {theta_r: 0.02, theta_s: 0.43, saturated_conductivity: 23.41, alpha: 0.0234, conductivity_shape_parameter: 0.000, n: 1.801, pressure_head_magnitude: 100}
+        expected: {water_content: 0.210, conductivity: 0.16}
+        source_location: "Tables 3 and 4, B1 at h = 100 cm"
+        notes: Published rounded values for a mineral topsoil class.
+      - id: table_4_o1_subsoil_mineral_h100
+        kind: published
+        inputs: {theta_r: 0.01, theta_s: 0.36, saturated_conductivity: 15.22, alpha: 0.0224, conductivity_shape_parameter: 0.000, n: 2.286, pressure_head_magnitude: 100}
+        expected: {water_content: 0.124, conductivity: 0.096}
+        source_location: "Tables 3 and 4, O1 at h = 100 cm"
+        notes: Published rounded values for a mineral subsoil class.
+      - id: table_4_b16_topsoil_organic_h100
+        kind: published
+        inputs: {theta_r: 0.01, theta_s: 0.80, saturated_conductivity: 6.79, alpha: 0.0176, conductivity_shape_parameter: -2.259, n: 1.293, pressure_head_magnitude: 100}
+        expected: {water_content: 0.622, conductivity: 0.088}
+        source_location: "Tables 3 and 4, B16 at h = 100 cm"
+        notes: Published rounded values for an organic topsoil class.
+      - id: table_4_o18_subsoil_organic_h100
+        kind: published
+        inputs: {theta_r: 0.01, theta_s: 0.57, saturated_conductivity: 34.45, alpha: 0.0138, conductivity_shape_parameter: -1.204, n: 1.323, pressure_head_magnitude: 100}
+        expected: {water_content: 0.456, conductivity: 0.60}
+        source_location: "Tables 3 and 4, O18 at h = 100 cm"
+        notes: Published rounded values for an organic subsoil class.
+      - id: b3_h100_full_precision
+        kind: calculated
+        inputs: {theta_r: 0.02, theta_s: 0.46, saturated_conductivity: 15.42, alpha: 0.0144, conductivity_shape_parameter: -0.215, n: 1.534, pressure_head_magnitude: 100}
+        expected: {water_content: 0.3294148460516339, conductivity: 0.3526692308873073}
+        source_location: "Table 3, B3 row; Table 4, B3 at h = 100 cm"
+        rationale: >-
+          Independently calculated at an interior tabulated pressure head from
+          the published B3 parameters; Table 4 prints 0.329 and 3.5E-1.
+    edge_cases:
+      - id: saturation_limit
+        inputs: {theta_r: 0.02, theta_s: 0.46, saturated_conductivity: 15.42, alpha: 0.0144, conductivity_shape_parameter: -0.215, n: 1.534, pressure_head_magnitude: 0}
+        expected_behavior: Returns theta_s and saturated_conductivity.
+        notes: Direct limit of the published equations at zero pressure-head magnitude.
+    documentation:
+      notes:
+        - Pressure head is accepted as a nonnegative magnitude to make the sign convention explicit.
+      warnings:
+        - Parameters must belong to one internally consistent van Genuchten-Mualem parameter set.
+    implementation:
+      variables:
+        - name: m
+          expr: 1 - 1 / n
+        - name: pressure_term
+          expr: (alpha * pressure_head_magnitude) ^ n
+        - name: effective_saturation
+          expr: (1 + pressure_term) ^ (-m)
+        - name: water_content
+          expr: theta_r + (theta_s - theta_r) * effective_saturation
+        - name: conductivity
+          expr: saturated_conductivity * effective_saturation ^ conductivity_shape_parameter * (1 - (1 - effective_saturation ^ (1 / m)) ^ m) ^ 2
+
+  - name: calc_ptf_wosten2001_sand_topsoil_table5
+    status: implemented
+    public_api:
+      name: calc_ptf_wosten2001_sand_topsoil_table5
+      result_class: Wosten2001Table5Parameters
+      summary: Evaluate the printed Table 5 regressions for mineral sandy topsoils.
+    scope:
+      prediction_target: >-
+        Bulk density, saturated water content, saturated conductivity, and the
+        alpha, l, and n parameters from the printed sandy-topsoil regressions.
+      models:
+        h_theta: Table 5 parameter regressions for the van Genuchten model
+        k_h: Table 5 parameter regressions for the Mualem-van Genuchten model
+    inputs:
+      - {name: silt, symbol: LEEM, unit: "%", domain: "value > 0", description: Mass percentage of particles smaller than 50 micrometers.}
+      - {name: organic_matter, symbol: HUMUS, unit: "%", domain: "value > 0", description: Soil organic-matter mass percentage.}
+      - {name: median_sand_size, symbol: M50, unit: µm, domain: "value > 0", description: Median particle size of the sand fraction.}
+    outputs:
+      $ref: "#/$defs/Wosten2001Table5Parameters"
+    verification_cases:
+      - id: figure_1_predictors_as_topsoil
+        kind: calculated
+        inputs: {silt: 24.0, organic_matter: 2.0, median_sand_size: 160.0}
+        expected: {bulk_density: 1.469860509980007, theta_s: 0.4611829739101765, saturated_conductivity: 44.64230473213631, alpha: 0.017492180519232788, conductivity_shape_parameter: 1.999999478489978, n: 1.5261145383023824}
+        source_location: "Table 5 sandy-soil equations; Figure 1 predictor values"
+        rationale: >-
+          Uses the complete positive predictor row printed in Figure 1 with the
+          source topsoil indicator set to 1 and calculates every output directly
+          from the rounded Table 5 coefficients.
+    edge_cases: []
+    documentation:
+      notes:
+        - This function fixes the source-defined BOVENGROND indicator to 1.
+        - Positive inputs are required by the reciprocal and natural-log terms.
+      warnings:
+        - The reciprocal-density expression must be positive before inversion.
+        - >-
+          These are the printed rounded Table 5 equations; they do not claim
+          numerical parity with the unavailable Staringreeks 1.0 program.
+        - The report does not publish the legacy program's applicability-warning thresholds.
+    implementation:
+      variables:
+        - {name: topsoil_indicator, expr: "1"}
+        - {name: silt_squared, expr: "silt ^ 2"}
+        - {name: organic_matter_squared, expr: "organic_matter ^ 2"}
+        - {name: median_sand_size_squared, expr: "median_sand_size ^ 2"}
+        - {name: reciprocal_silt, expr: "1 / silt"}
+        - {name: reciprocal_organic_matter, expr: "1 / organic_matter"}
+        - {name: reciprocal_median_sand_size, expr: "1 / median_sand_size"}
+        - {name: ln_silt, expr: "ln(silt)"}
+        - {name: ln_organic_matter, expr: "ln(organic_matter)"}
+        - {name: ln_median_sand_size, expr: "ln(median_sand_size)"}
+        - name: reciprocal_density
+          expr: -7.58 + 0.01791 * organic_matter + 0.0326 * topsoil_indicator - 0.00338 * median_sand_size + 0.00003937 * silt_squared + 157.7 * reciprocal_median_sand_size + 1.522 * ln_median_sand_size
+        - {name: bulk_density, expr: "1 / reciprocal_density"}
+        - {name: bulk_density_squared, expr: "bulk_density ^ 2"}
+        - name: theta_s
+          expr: -35.7 - 0.1843 * bulk_density - 0.03576 * median_sand_size + 0.0000261 * median_sand_size_squared - 0.0564 * reciprocal_silt + 0.008 * reciprocal_organic_matter + 496.0 * reciprocal_median_sand_size + 0.02244 * ln_organic_matter + 7.56 * ln_median_sand_size
+        - name: log_saturated_conductivity
+          expr: 45.8 - 14.34 * bulk_density + 0.001481 * silt_squared - 27.5 * reciprocal_density - 0.891 * ln_silt - 0.34 * ln_organic_matter
+        - {name: saturated_conductivity, expr: "exp(log_saturated_conductivity)"}
+        - name: log_alpha
+          expr: 13.66 - 5.91 * bulk_density - 0.172 * topsoil_indicator + 0.003248 * median_sand_size - 11.89 * reciprocal_density - 2.121 * reciprocal_silt - 0.3742 * ln_silt
+        - {name: alpha, expr: "exp(log_alpha)"}
+        - name: transformed_l
+          expr: -76.4 - 0.097 * silt + 59.6 * bulk_density + 0.0332 * median_sand_size - 13.45 * bulk_density_squared + 0.001127 * silt_squared + 0.00431 * organic_matter_squared - 0.0000399 * median_sand_size_squared + 40.8 * reciprocal_density + 2.364 * reciprocal_silt + 1.014 * ln_silt
+        - {name: exp_transformed_l, expr: "exp(transformed_l)"}
+        - {name: conductivity_shape_parameter, expr: "2 * (exp_transformed_l - 1) / (exp_transformed_l + 1)"}
+        - name: log_n_minus_one
+          expr: -1.057 + 0.1003 * organic_matter + 1.119 * bulk_density + 0.000764 * silt_squared - 0.1397 * reciprocal_organic_matter - 57.2 * reciprocal_median_sand_size - 0.557 * ln_organic_matter - 0.02997 * bulk_density * silt
+        - {name: n, expr: "1 + exp(log_n_minus_one)"}
+
+  - name: calc_ptf_wosten2001_sand_subsoil_table5
+    status: implemented
+    public_api:
+      name: calc_ptf_wosten2001_sand_subsoil_table5
+      result_class: Wosten2001Table5Parameters
+      summary: Evaluate the printed Table 5 regressions for mineral sandy subsoils.
+    scope:
+      prediction_target: >-
+        Bulk density, saturated water content, saturated conductivity, and the
+        alpha, l, and n parameters from the printed sandy-subsoil regressions.
+      models:
+        h_theta: Table 5 parameter regressions for the van Genuchten model
+        k_h: Table 5 parameter regressions for the Mualem-van Genuchten model
+    inputs:
+      - {name: silt, symbol: LEEM, unit: "%", domain: "value > 0", description: Mass percentage of particles smaller than 50 micrometers.}
+      - {name: organic_matter, symbol: HUMUS, unit: "%", domain: "value > 0", description: Soil organic-matter mass percentage.}
+      - {name: median_sand_size, symbol: M50, unit: µm, domain: "value > 0", description: Median particle size of the sand fraction.}
+    outputs:
+      $ref: "#/$defs/Wosten2001Table5Parameters"
+    verification_cases:
+      - id: figure_1_subsoil_predictors
+        kind: calculated
+        inputs: {silt: 24.0, organic_matter: 2.0, median_sand_size: 160.0}
+        expected: {bulk_density: 1.5438372586842584, theta_s: 0.447549059123979, saturated_conductivity: 37.877428084848056, alpha: 0.019769994693243722, conductivity_shape_parameter: 1.9999995187508137, n: 1.541904034937096}
+        source_location: "Table 5 sandy-soil equations; Figure 1 predictor values"
+        rationale: >-
+          Uses the complete positive subsoil predictor row printed in Figure 1
+          and calculates every output directly from the rounded Table 5 coefficients.
+    edge_cases: []
+    documentation:
+      notes:
+        - This function fixes the source-defined BOVENGROND indicator to 0.
+        - Positive inputs are required by the reciprocal and natural-log terms.
+      warnings:
+        - The reciprocal-density expression must be positive before inversion.
+        - >-
+          These are the printed rounded Table 5 equations; they do not claim
+          numerical parity with the unavailable Staringreeks 1.0 program.
+        - The report does not publish the legacy program's applicability-warning thresholds.
+    implementation:
+      variables:
+        - {name: topsoil_indicator, expr: "0"}
+        - {name: silt_squared, expr: "silt ^ 2"}
+        - {name: organic_matter_squared, expr: "organic_matter ^ 2"}
+        - {name: median_sand_size_squared, expr: "median_sand_size ^ 2"}
+        - {name: reciprocal_silt, expr: "1 / silt"}
+        - {name: reciprocal_organic_matter, expr: "1 / organic_matter"}
+        - {name: reciprocal_median_sand_size, expr: "1 / median_sand_size"}
+        - {name: ln_silt, expr: "ln(silt)"}
+        - {name: ln_organic_matter, expr: "ln(organic_matter)"}
+        - {name: ln_median_sand_size, expr: "ln(median_sand_size)"}
+        - name: reciprocal_density
+          expr: -7.58 + 0.01791 * organic_matter + 0.0326 * topsoil_indicator - 0.00338 * median_sand_size + 0.00003937 * silt_squared + 157.7 * reciprocal_median_sand_size + 1.522 * ln_median_sand_size
+        - {name: bulk_density, expr: "1 / reciprocal_density"}
+        - {name: bulk_density_squared, expr: "bulk_density ^ 2"}
+        - name: theta_s
+          expr: -35.7 - 0.1843 * bulk_density - 0.03576 * median_sand_size + 0.0000261 * median_sand_size_squared - 0.0564 * reciprocal_silt + 0.008 * reciprocal_organic_matter + 496.0 * reciprocal_median_sand_size + 0.02244 * ln_organic_matter + 7.56 * ln_median_sand_size
+        - name: log_saturated_conductivity
+          expr: 45.8 - 14.34 * bulk_density + 0.001481 * silt_squared - 27.5 * reciprocal_density - 0.891 * ln_silt - 0.34 * ln_organic_matter
+        - {name: saturated_conductivity, expr: "exp(log_saturated_conductivity)"}
+        - name: log_alpha
+          expr: 13.66 - 5.91 * bulk_density - 0.172 * topsoil_indicator + 0.003248 * median_sand_size - 11.89 * reciprocal_density - 2.121 * reciprocal_silt - 0.3742 * ln_silt
+        - {name: alpha, expr: "exp(log_alpha)"}
+        - name: transformed_l
+          expr: -76.4 - 0.097 * silt + 59.6 * bulk_density + 0.0332 * median_sand_size - 13.45 * bulk_density_squared + 0.001127 * silt_squared + 0.00431 * organic_matter_squared - 0.0000399 * median_sand_size_squared + 40.8 * reciprocal_density + 2.364 * reciprocal_silt + 1.014 * ln_silt
+        - {name: exp_transformed_l, expr: "exp(transformed_l)"}
+        - {name: conductivity_shape_parameter, expr: "2 * (exp_transformed_l - 1) / (exp_transformed_l + 1)"}
+        - name: log_n_minus_one
+          expr: -1.057 + 0.1003 * organic_matter + 1.119 * bulk_density + 0.000764 * silt_squared - 0.1397 * reciprocal_organic_matter - 57.2 * reciprocal_median_sand_size - 0.557 * ln_organic_matter - 0.02997 * bulk_density * silt
+        - {name: n, expr: "1 + exp(log_n_minus_one)"}
+
+  - name: calc_ptf_wosten2001_loam_clay_table5
+    status: implemented
+    public_api:
+      name: calc_ptf_wosten2001_loam_clay_table5
+      result_class: Wosten2001Table5Parameters
+      summary: Evaluate the printed Table 5 regressions for mineral loam and clay soils.
+    scope:
+      prediction_target: >-
+        Bulk density, saturated water content, saturated conductivity, and the
+        alpha, l, and n parameters from the printed loam-and-clay regressions.
+      models:
+        h_theta: Table 5 parameter regressions for the van Genuchten model
+        k_h: Table 5 parameter regressions for the Mualem-van Genuchten model
+    inputs:
+      - {name: clay, symbol: LUTUM, unit: "%", domain: "value > 0", description: Mass percentage of particles smaller than 2 micrometers.}
+      - {name: organic_matter, symbol: HUMUS, unit: "%", domain: "value > 0", description: Soil organic-matter mass percentage.}
+    outputs:
+      $ref: "#/$defs/Wosten2001Table5Parameters"
+    verification_cases:
+      - id: interior_mineral_loam
+        kind: calculated
+        inputs: {clay: 20.0, organic_matter: 2.0}
+        expected: {bulk_density: 1.4198586200084602, theta_s: 0.44529807370986707, saturated_conductivity: 55.79484942214282, alpha: 0.06962286410058446, conductivity_shape_parameter: -3.252787330870209, n: 1.1501521612949224}
+        source_location: "Table 5 loam-and-clay equations"
+        rationale: >-
+          Uses positive interior mineral-soil inputs that satisfy every printed
+          reciprocal and logarithmic precondition and calculates all outputs from
+          the rounded Table 5 coefficients.
+    edge_cases: []
+    documentation:
+      notes:
+        - Positive clay and organic-matter inputs are required by reciprocal and natural-log terms.
+      warnings:
+        - The reciprocal-density expression must be positive before inversion.
+        - >-
+          These are the printed rounded Table 5 equations; they do not claim
+          numerical parity with the unavailable Staringreeks 1.0 program.
+        - The report does not publish the legacy program's applicability-warning thresholds.
+    implementation:
+      variables:
+        - {name: organic_matter_squared, expr: "organic_matter ^ 2"}
+        - {name: reciprocal_organic_matter, expr: "1 / organic_matter"}
+        - {name: ln_clay, expr: "ln(clay)"}
+        - {name: ln_organic_matter, expr: "ln(organic_matter)"}
+        - name: reciprocal_density
+          expr: 0.6117 + 0.003601 * clay + 0.002172 * organic_matter_squared + 0.01715 * ln_organic_matter
+        - {name: bulk_density, expr: "1 / reciprocal_density"}
+        - {name: bulk_density_squared, expr: "bulk_density ^ 2"}
+        - {name: density_organic_matter, expr: "bulk_density * organic_matter"}
+        - {name: density_clay, expr: "bulk_density * clay"}
+        - {name: clay_organic_matter, expr: "clay * organic_matter"}
+        - name: theta_s
+          expr: 0.6311 + 0.003383 * clay - 0.09699 * bulk_density_squared - 0.00204 * density_clay
+        - name: log_saturated_conductivity
+          expr: -42.6 + 8.71 * organic_matter + 61.9 * bulk_density - 20.79 * bulk_density_squared - 0.2107 * organic_matter_squared - 0.01622 * clay_organic_matter - 5.382 * density_organic_matter
+        - {name: saturated_conductivity, expr: "exp(log_saturated_conductivity)"}
+        - name: log_alpha
+          expr: -19.13 + 0.812 * organic_matter + 23.4 * bulk_density - 8.16 * bulk_density_squared + 0.423 * reciprocal_organic_matter + 2.388 * ln_organic_matter - 1.338 * density_organic_matter
+        - {name: alpha, expr: "exp(log_alpha)"}
+        - {name: transformed_l, expr: "0.102 + 0.0222 * clay - 0.043 * density_clay"}
+        - {name: exp_transformed_l, expr: "exp(transformed_l)"}
+        - {name: conductivity_shape_parameter, expr: "10 * (exp_transformed_l - 1) / (exp_transformed_l + 1)"}
+        - name: log_n_minus_one
+          expr: -0.235 + 0.972 * reciprocal_density - 0.7743 * ln_clay - 0.3154 * ln_organic_matter + 0.0678 * density_organic_matter
+        - {name: n, expr: "1 + exp(log_n_minus_one)"}
+scientific_notes: |
+  ## Supported models
+
+  - Table 3 publishes optimized `theta_r`, `theta_s`, `K_s`, `alpha`, `l`, and
+    `n` values for 18 topsoil classes (`B1`-`B18`) and 18 subsoil classes
+    (`O1`-`O18`). The class identifier is an explicit input; the texture and
+    organic-matter ranges in Tables 1 and 2 are metadata, not an automatic
+    classification rule.
+  - The retention model uses `m = 1 - 1/n` and
+    `Se = (1 + (alpha * |h|)^n)^(-m)`. Water content is
+    `theta_r + (theta_s - theta_r) * Se`; conductivity is
+    `K_s * Se^l * (1 - (1 - Se^(1/m))^m)^2`.
+  - The continuous regressions are restricted to mineral soils and are printed
+    separately for sandy soils and for loam/clay soils.
+
+  ## Continuous-regression evidence
+
+  These printed formulas define the normative Table 5 computational contracts.
+  All logarithms are natural logarithms, and superscripts `-1` and `2` denote
+  reciprocals and squares, respectively. Sandy topsoil and subsoil are separate
+  public functions so the source indicator is fixed explicitly to 1 or 0.
+
+  For sandy soils, Table 5 prints:
+
+  - `theta_s = -35.7 - 0.1843*D - 0.03576*M50 + 0.0000261*M50^2 - 0.0564/LEEM + 0.008/HUMUS + 496.0/M50 + 0.02244*ln(HUMUS) + 7.56*ln(M50)`.
+  - `K_s* = 45.8 - 14.34*D + 0.001481*LEEM^2 - 27.5/D - 0.891*ln(LEEM) - 0.34*ln(HUMUS)`.
+  - `alpha* = 13.66 - 5.91*D - 0.172*BOVENGROND + 0.003248*M50 - 11.89/D - 2.121/LEEM - 0.3742*ln(LEEM)`.
+  - `l* = -76.4 - 0.097*LEEM + 59.6*D + 0.0332*M50 - 13.45*D^2 + 0.001127*LEEM^2 + 0.00431*HUMUS^2 - 0.0000399*M50^2 + 40.8/D + 2.364/LEEM + 1.014*ln(LEEM)`.
+  - `n* = -1.057 + 0.1003*HUMUS + 1.119*D + 0.000764*LEEM^2 - 0.1397/HUMUS - 57.2/M50 - 0.557*ln(HUMUS) - 0.02997*D*LEEM`.
+  - `1/D = -7.58 + 0.01791*HUMUS + 0.0326*BOVENGROND - 0.00338*M50 + 0.00003937*LEEM^2 + 157.7/M50 + 1.522*ln(M50)`.
+
+  For loam and clay soils, Table 5 prints:
+
+  - `theta_s = 0.6311 + 0.003383*LUTUM - 0.09699*D^2 - 0.00204*D*LUTUM`.
+  - `K_s* = -42.6 + 8.71*HUMUS + 61.9*D - 20.79*D^2 - 0.2107*HUMUS^2 - 0.01622*LUTUM*HUMUS - 5.382*D*HUMUS`.
+  - `alpha* = -19.13 + 0.812*HUMUS + 23.4*D - 8.16*D^2 + 0.423/HUMUS + 2.388*ln(HUMUS) - 1.338*D*HUMUS`.
+  - `l* = 0.102 + 0.0222*LUTUM - 0.043*D*LUTUM`.
+  - `n* = -0.235 + 0.972/D - 0.7743*ln(LUTUM) - 0.3154*ln(HUMUS) + 0.0678*D*HUMUS`.
+  - `1/D = 0.6117 + 0.003601*LUTUM + 0.002172*HUMUS^2 + 0.01715*ln(HUMUS)`.
+
+  The printed transforms are `K_s* = ln(K_s)`, `alpha* = ln(alpha)`, and
+  `n* = ln(n - 1)`. The inverse transforms are `K_s = exp(K_s*)`,
+  `alpha = exp(alpha*)`, and `n = 1 + exp(n*)`. For sandy soils,
+  `l = 2 * (exp(l*) - 1) / (exp(l*) + 1)`; for loam/clay soils,
+  `l = 10 * (exp(l*) - 1) / (exp(l*) + 1)`.
+
+  ## Review decisions
+
+  - The evaluator accepts a nonnegative pressure-head magnitude because the report
+    tabulates positive magnitudes while discussing negative pressure heads in prose.
+  - Source class IDs are preserved exactly as public enum values. Lookup rows and
+    verification inputs use their lower-snake-case schema member names.
+  - Table 4 supplies rounded source-native checks. The B3 case at 100 cm is also
+    independently evaluated at full precision to protect the computational formula.
+  - The Table 5 result deliberately excludes `theta_r`: no `theta_r` equation is
+    printed. The `0.010` shown in Figure 2 belongs to the distinct legacy-program
+    display and is not inferred to be a general Table 5 rule.
+  - The printed Table 5 equations are treated as their own versioned contract.
+    They make no claim of numerical parity with the unavailable legacy program.
+
+  ## Documented limitations
+
+  - The sampling locations are concentrated where research projects occurred and
+    are not regularly distributed across the Netherlands.
+  - The report states that measured class ranges can be narrower than the defining
+    class ranges, so class means may not be valid for samples outside measured ranges.
+  - The analytical equations underestimate saturated conductivity for loam and clay
+    classes where macropores and cracks are important.
+  - Redistribution of the report or extracted table payloads remains subject to a
+    separate rights review; this release consideration does not change the
+    scientific extraction statuses.
+
+  ## Legacy-program discrepancy
+
+  - For the Figure 1 input, the original program display in Figure 2 reports
+    `D=1.539`, `theta_s=0.458`, `K_s=39.78`, `alpha=0.0196`, `n=1.536`, and
+    `l=2.000`. Direct evaluation of the rounded Table 5 coefficients instead gives
+    approximately `D=1.54384`, `theta_s=0.44755`, `K_s=37.87743`,
+    `alpha=0.019770`, `n=1.54190`, and `l=1.9999995`.
+  - The inspected OBIC 4.3.0 implementation reproduces the rounded Table 5 path,
+    not the original program display. The unavailable Staringreeks 1.0 artifact or
+    another authoritative full-precision source would still be required for a
+    separate legacy-program-parity implementation; it is not required to evaluate
+    the explicitly named Table 5 contracts.

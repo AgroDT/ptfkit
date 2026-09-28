@@ -44,7 +44,7 @@ centimeter_per_day:
 
 gram_per_cubic_centimeter:
   preferred_notation: "g/cm^3"
-  aliases: []
+  aliases: ["g/cm³"]
 
 kilopascal:
   preferred_notation: "kPa"
@@ -56,7 +56,7 @@ centimeter_water_head:
 
 inverse_centimeter:
   preferred_notation: "cm^-1"
-  aliases: []
+  aliases: ["1/cm"]
 
 inverse_kilopascal:
   preferred_notation: "kPa^-1"
