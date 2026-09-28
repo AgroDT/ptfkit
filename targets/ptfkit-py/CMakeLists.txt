@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.26)
 
 project(ptfkit LANGUAGES C)
 
+if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.30)
+    set(Python_FIND_ABI "ANY" "ANY" "ANY" "ANY")
+endif()
+
 find_package(Python REQUIRED COMPONENTS Interpreter Development.Module NumPy)
 
 set(PTFKIT_NATIVE_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/vendor/ptfkit-native/include")
