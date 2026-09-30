@@ -1,6 +1,6 @@
 volume_fraction:
   preferred_notation: "m^3/m^3"
-  aliases: ["cm^3/cm^3", "cm³/cm³", "m³/m³", "m3/m3", "mm/mm", "1", "dimensionless"]
+  aliases: ["cm^3/cm^3", "cm³/cm³", "m³/m³", "m3/m3", "mm/mm", "1", "dimensionless", "fractions"]
 
 volume_percent:
   preferred_notation: "% v/v"
@@ -28,7 +28,7 @@ centimeter_per_hour:
 
 millimeter_per_hour:
   preferred_notation: "mm/h"
-  aliases: ["mm h^-1"]
+  aliases: ["mm h^-1", "mm/hr"]
 
 centimeter_per_minute:
   preferred_notation: "cm/min"
