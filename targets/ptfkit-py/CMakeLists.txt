@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 4.4.2)
 
 project(ptfkit LANGUAGES C)
 
-if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.30 AND DEFINED Python_EXECUTABLE)
+if(DEFINED Python_EXECUTABLE)
     execute_process(
         COMMAND "${Python_EXECUTABLE}" -c
                 "import sysconfig; print(int(bool(sysconfig.get_config_var('Py_GIL_DISABLED'))))"
