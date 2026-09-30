@@ -22,6 +22,7 @@
 #include <ptfkit/mayr1999.h>
 #include <ptfkit/myeni2021.h>
 #include <ptfkit/oosterveld1980.h>
+#include <ptfkit/ottoni2019.h>
 #include <ptfkit/pidgeon1972.h>
 #include <ptfkit/puckett1985.h>
 #include <ptfkit/rawls1982.h>

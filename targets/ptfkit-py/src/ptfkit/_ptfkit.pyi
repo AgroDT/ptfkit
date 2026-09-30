@@ -136,6 +136,9 @@ calc_ptf_oosterveld1980_field_capacity: ufunc
 calc_ptf_oosterveld1980_field_capacity_tension: ufunc
 calc_ptf_oosterveld1980_retention: ufunc
 calc_ptf_oosterveld1980_wilting_point: ufunc
+calc_ptf_ottoni2019_wm330: ufunc
+calc_ptf_ottoni2019_wmssc: ufunc
+calc_ptf_ottoni2019_wmsscbd: ufunc
 calc_ptf_pidgeon1972_awc: ufunc
 calc_ptf_pidgeon1972_awc_coarse_sand: ufunc
 calc_ptf_pidgeon1972_awc_fine_sand: ufunc
