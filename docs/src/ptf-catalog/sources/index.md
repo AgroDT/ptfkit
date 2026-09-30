@@ -28,6 +28,7 @@ Each page describes the source, scope, inputs, outputs, status, and limitations 
 | [Mayr and Jarvis (1999) modified Brooks-Corey water-retention parameter PTFs.](./mayr1999.md) | England and Wales | 1 |
 | [Gravimetric field capacity and permanent wilting point for South African soils.](./myeni2021.md) | South Africa. | 2 |
 | [Oosterveld and Chang (1980), soil-moisture retention from texture and depth.](./oosterveld1980.md) | Southern Alberta, Canada | 5 |
+| [Saturated-conductivity PTFs for temperate and tropical soils.](./ottoni2019.md) | Brazil and Europe. | 4 |
 | [Pidgeon (1972), available-water regressions for ferrallitic soils in Uganda.](./pidgeon1972.md) | Non-alluvial ferrallitic soils in Uganda, predominantly kaolinitic and possibly illitic | 17 |
 | [Puckett et al. (1985), Alabama Lower Coastal Plain Ultisols.](./puckett1985.md) | Lower Coastal Plain of Alabama, USA | 1 |
 | [Rawls et al. (1982), water-retention regressions for soils across the USA.](./rawls1982.md) | Agricultural soils from 32 states of the USA | 3 |

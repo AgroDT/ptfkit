@@ -1,0 +1,305 @@
+source:
+  summary: Saturated-conductivity PTFs for temperate and tropical soils.
+  citation_apa: >-
+    Ottoni, M. V., Ottoni Filho, T. B., Lopes-Assad, M. L. R. C., & Rotunno
+    Filho, O. C. (2019). Pedotransfer functions for saturated hydraulic
+    conductivity using a database with temperate and tropical climate soils.
+    Journal of Hydrology, 575, 1345-1358.
+  doi:
+    identifier: 10.1016/j.jhydrol.2019.05.050
+    url: https://doi.org/10.1016/j.jhydrol.2019.05.050
+scope:
+  territory: Brazil and Europe.
+  dataset: >-
+    Balanced 824-sample study set selected from 412 Brazilian HYBRAS samples
+    and 1077 European HYPRES samples: 425 calibration samples (215 Brazilian
+    and 210 European) and 399 validation samples (197 Brazilian and 202
+    European).
+$defs:
+  EffectivePorosity:
+    name: effective_porosity
+    symbol: EP
+    unit: cm^3/cm^3
+    domain: >-
+      Calibration range 0.012-0.458; validation range 0.016-0.405.
+    description: >-
+      Effective porosity, defined as total porosity minus volumetric water
+      content at 330 cm suction.
+  Silt:
+    name: silt
+    symbol: silt
+    unit: "%"
+    domain: >-
+      Calibration range 0.0-81.7%; validation range 0.0-78.9%.
+    description: Silt content by mass using the source's common USDA/FAO limits.
+  Clay:
+    name: clay
+    symbol: clay
+    unit: "%"
+    domain: >-
+      Calibration range 0.0-96.0%; validation range 0.0-93.0%.
+    description: Clay content by mass using the source's common USDA/FAO limits.
+  BulkDensity:
+    name: bulk_density
+    symbol: BD
+    unit: g/cm^3
+    domain: >-
+      Calibration range 0.52-1.97 g/cm^3; validation range 0.55-1.88 g/cm^3.
+    description: Soil bulk density.
+functions:
+  - name: calc_ptf_ottoni2019_wm330
+    status: implemented
+    public_api:
+      name: calc_ptf_ottoni2019_wm330
+      result_class: null
+      summary: Estimate saturated hydraulic conductivity from effective porosity.
+    scope:
+      prediction_target: >-
+        Saturated hydraulic conductivity from measured effective porosity.
+      models:
+        h_theta: null
+        k_h: Saturated hydraulic conductivity
+    inputs:
+      - $ref: '#/$defs/EffectivePorosity'
+    outputs:
+      type: scalar
+      name: k_sat
+      quantity: saturated_hydraulic_conductivity
+      symbol: Ks
+      unit: centimeter_per_day
+      reported_unit: cm/day
+      domain: value >= 0
+      description: Saturated hydraulic conductivity.
+    verification_cases:
+      - id: representative_effective_porosity
+        kind: calculated
+        inputs: {effective_porosity: 0.2}
+        expected: {k_sat: 83.98248196067098}
+        source_location: Final WM330 equation and Tables 1-2 marginal ranges.
+        rationale: >-
+          Effective porosity 0.2 is an interior value in both published sample
+          ranges. The fixed output was independently calculated from the final
+          WM330 equation; it is a formula check, not a published prediction or
+          evidence of model accuracy.
+    documentation:
+      notes:
+        - >-
+          Effective porosity is total porosity minus water content at 330 cm
+          suction. Callers supply that preprocessed predictor directly.
+      warnings:
+        - >-
+          When total porosity was unavailable, the study used saturated water
+          content; when theta_330 was unavailable, it selected the closest
+          measurement between 300 and 350 cm suction. This API does not perform
+          those data-dependent substitutions.
+    implementation:
+      variables:
+        - name: k_sat
+          expr: 1931 * effective_porosity ^ 1.948
+
+  - name: calc_ptf_ottoni2019_wmssc
+    status: implemented
+    public_api:
+      name: calc_ptf_ottoni2019_wmssc
+      result_class: null
+      summary: Estimate saturated hydraulic conductivity from silt and clay.
+    scope:
+      prediction_target: >-
+        Saturated hydraulic conductivity from silt and clay contents.
+      models:
+        h_theta: null
+        k_h: Saturated hydraulic conductivity
+    inputs:
+      - $ref: '#/$defs/Silt'
+      - $ref: '#/$defs/Clay'
+    outputs:
+      type: scalar
+      name: k_sat
+      quantity: saturated_hydraulic_conductivity
+      symbol: Ks
+      unit: centimeter_per_day
+      reported_unit: cm/day
+      domain: value > 0
+      description: Saturated hydraulic conductivity.
+    verification_cases:
+      - id: representative_loam_texture
+        kind: calculated
+        inputs: {silt: 30.0, clay: 20.0}
+        expected: {k_sat: 42.874591973376624}
+        source_location: Final WMssc equation and Tables 1-2 marginal ranges.
+        rationale: >-
+          Silt 30% and clay 20% leave 50% sand, giving a physically meaningful
+          interior texture within both published marginal ranges. The fixed
+          output was independently calculated from the final WMssc equation;
+          it is a formula check, not a published prediction or evidence of
+          model accuracy.
+    documentation:
+      notes:
+        - The printed linear equation predicts the base-10 logarithm of Ks.
+      warnings:
+        - >-
+          Published predictor ranges are marginal sample summaries, not
+          clipping bounds or a Cartesian applicability domain.
+    implementation:
+      variables:
+        - name: log10_k_sat
+          expr: 2.039 - 0.00874 * silt - 0.00723 * clay
+        - name: k_sat
+          expr: 10 ^ log10_k_sat
+
+  - name: calc_ptf_ottoni2019_wmsscbd
+    status: implemented
+    public_api:
+      name: calc_ptf_ottoni2019_wmsscbd
+      result_class: null
+      summary: >-
+        Estimate saturated hydraulic conductivity from silt, clay and bulk
+        density.
+    scope:
+      prediction_target: >-
+        Saturated hydraulic conductivity from silt, clay and bulk density.
+      models:
+        h_theta: null
+        k_h: Saturated hydraulic conductivity
+    inputs:
+      - $ref: '#/$defs/Silt'
+      - $ref: '#/$defs/Clay'
+      - $ref: '#/$defs/BulkDensity'
+    outputs:
+      type: scalar
+      name: k_sat
+      quantity: saturated_hydraulic_conductivity
+      symbol: Ks
+      unit: centimeter_per_day
+      reported_unit: cm/day
+      domain: value > 0
+      description: Saturated hydraulic conductivity.
+    verification_cases:
+      - id: representative_loam_texture
+        kind: calculated
+        inputs: {silt: 30.0, clay: 20.0, bulk_density: 1.3}
+        expected: {k_sat: 75.7007182299966}
+        source_location: Final WMsscbd equation and Tables 1-2 marginal ranges.
+        rationale: >-
+          Silt 30%, clay 20% and bulk density 1.3 g/cm^3 describe a physically
+          meaningful interior soil within both published marginal ranges. The
+          fixed output was independently calculated from the final WMsscbd
+          equation; it is a formula check, not a published prediction or
+          evidence of model accuracy.
+    documentation:
+      notes:
+        - The printed linear equation predicts the base-10 logarithm of Ks.
+      warnings:
+        - >-
+          Published predictor ranges are marginal sample summaries, not
+          clipping bounds or a Cartesian applicability domain.
+    implementation:
+      variables:
+        - name: log10_k_sat
+          expr: 3.998 - 0.0101 * silt - 0.0152 * clay - 1.163 * bulk_density
+        - name: k_sat
+          expr: 10 ^ log10_k_sat
+
+  - name: calc_ptf_ottoni2019_wmf330
+    status: blocked
+    public_api:
+      name: calc_ptf_ottoni2019_wmf330
+      result_class: null
+      summary: >-
+        Estimate saturated hydraulic conductivity from silt, clay and bulk
+        density through estimated effective porosity.
+    scope:
+      prediction_target: >-
+        Saturated hydraulic conductivity from estimated effective porosity.
+      models:
+        h_theta: null
+        k_h: Saturated hydraulic conductivity
+    inputs:
+      - $ref: '#/$defs/Silt'
+      - $ref: '#/$defs/Clay'
+      - $ref: '#/$defs/BulkDensity'
+    outputs:
+      type: scalar
+      name: k_sat
+      quantity: saturated_hydraulic_conductivity
+      symbol: Ks
+      unit: centimeter_per_day
+      reported_unit: cm/day
+      domain: value >= 0 when estimated effective porosity is non-negative
+      description: Saturated hydraulic conductivity.
+    verification_cases:
+      - id: representative_positive_effective_porosity
+        kind: calculated
+        inputs: {silt: 30.0, clay: 20.0, bulk_density: 1.3}
+        expected: {k_sat: 68.3184327444986}
+        source_location: Final WMF330 equations and Tables 1-2 marginal ranges.
+        rationale: >-
+          The inputs describe a physically meaningful interior soil and yield
+          estimated effective porosity 0.2069. The fixed output was independently
+          calculated from the final WMF330 equations; it is a formula check, not
+          a published prediction or evidence of model accuracy.
+    documentation:
+      notes:
+        - >-
+          The final-article coefficient is 1266; the supplied evidence identifies
+          51.1 as a conflicting earlier secondary-source value.
+      warnings:
+        - >-
+          Blocked pending a source-supported joint applicability domain or a
+          defined policy for zero or negative estimated effective porosity.
+        - >-
+          Published predictor ranges are marginal sample summaries. Some
+          combinations within their Cartesian product make estimated effective
+          porosity negative, for which the fractional power is not real-valued.
+    implementation:
+      variables:
+        - name: estimated_effective_porosity
+          expr: 0.582 - 0.00216 * silt - 0.00232 * clay - 0.203 * bulk_density
+        - name: k_sat
+          expr: 1266 * estimated_effective_porosity ^ 1.853
+scientific_notes: |
+  ## Supported models
+
+  The supplied source card records four final-article models: WM330, WMssc,
+  WMsscbd and WMF330. All predict saturated hydraulic conductivity in cm/day.
+  WMssc and WMsscbd use base-10 logarithms. WM330 consumes effective porosity
+  directly; WMF330 first estimates it from silt, clay and bulk density.
+
+  ## Preprocessing evidence
+
+  The source defines effective porosity as total porosity minus theta_330.
+  When total porosity was unavailable, saturated water content was used. When
+  theta_330 was unavailable, the closest measurement between 300 and 350 cm
+  suction was selected. The abstract refers to 300 cm while the methods and
+  model notation use theta_330. WM330 therefore accepts already-preprocessed
+  effective porosity rather than attempting these source-dataset selections.
+
+  ## Review decisions
+
+  Table 3 resolves the WMF330 coefficient as 1266 rather than the conflicting
+  earlier secondary-source value 51.1. Calculated verification cases are used
+  because neither the article nor official supplementary file SM1 supplies a
+  complete predictor row with a model-predicted Ks. Aggregate errors, observed
+  textural-class means and marginal ranges are not treated as prediction cases
+  or implementation tolerances.
+
+  The supplied card's earlier extraction disposition required source-owned
+  numerical goldens and redistribution approval. Current ptfkit extraction
+  policy permits independently calculated checks when the computational
+  contract is complete, and treats rights as a separate release gate. Those
+  historical requirements do not block WM330, WMssc or WMsscbd.
+
+  ## Documented limitations
+
+  The calibration and validation ranges are marginal summaries, not observed
+  joint rows, clipping bounds or a Cartesian executable domain. The functions
+  do not claim applicability for arbitrary combinations of marginal extrema.
+  The article's publisher content is all-rights-reserved and is retained only
+  as evidence; this specification does not redistribute that content.
+
+  ## Blockers
+
+  WMF330 remains blocked because marginally in-range predictor combinations can
+  make its estimated effective porosity negative. The source supplies neither
+  a joint applicability domain nor behavior at a non-positive fractional-power
+  base. No such boundary or out-of-domain policy is inferred here.

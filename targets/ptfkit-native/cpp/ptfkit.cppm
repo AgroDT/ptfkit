@@ -21,6 +21,7 @@ export import ptfkit.li2007;
 export import ptfkit.mayr1999;
 export import ptfkit.myeni2021;
 export import ptfkit.oosterveld1980;
+export import ptfkit.ottoni2019;
 export import ptfkit.pidgeon1972;
 export import ptfkit.puckett1985;
 export import ptfkit.rawls1982;

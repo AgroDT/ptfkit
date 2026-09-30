@@ -32,6 +32,7 @@ ptfkit's Python API is organized around public modules.
 - [`ptfkit.mayr1999`](mayr1999.md) — Mayr and Jarvis (1999) modified Brooks-Corey water-retention parameter PTFs.
 - [`ptfkit.myeni2021`](myeni2021.md) — Gravimetric field capacity and permanent wilting point for South African soils.
 - [`ptfkit.oosterveld1980`](oosterveld1980.md) — Oosterveld and Chang (1980), soil-moisture retention from texture and depth.
+- [`ptfkit.ottoni2019`](ottoni2019.md) — Saturated-conductivity PTFs for temperate and tropical soils.
 - [`ptfkit.pidgeon1972`](pidgeon1972.md) — Pidgeon (1972), available-water regressions for ferrallitic soils in Uganda.
 - [`ptfkit.puckett1985`](puckett1985.md) — Puckett et al. (1985), Alabama Lower Coastal Plain Ultisols.
 - [`ptfkit.rawls1982`](rawls1982.md) — Rawls et al. (1982), water-retention regressions for soils across the USA.

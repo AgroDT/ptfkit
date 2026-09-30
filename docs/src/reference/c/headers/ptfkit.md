@@ -33,6 +33,7 @@ This umbrella header aggregates every public ptfkit header. Include an individua
 - [`<ptfkit/mayr1999.h>`](mayr1999.md) — Mayr and Jarvis (1999) modified Brooks-Corey water-retention parameter PTFs.
 - [`<ptfkit/myeni2021.h>`](myeni2021.md) — Gravimetric field capacity and permanent wilting point for South African soils.
 - [`<ptfkit/oosterveld1980.h>`](oosterveld1980.md) — Oosterveld and Chang (1980), soil-moisture retention from texture and depth.
+- [`<ptfkit/ottoni2019.h>`](ottoni2019.md) — Saturated-conductivity PTFs for temperate and tropical soils.
 - [`<ptfkit/pidgeon1972.h>`](pidgeon1972.md) — Pidgeon (1972), available-water regressions for ferrallitic soils in Uganda.
 - [`<ptfkit/puckett1985.h>`](puckett1985.md) — Puckett et al. (1985), Alabama Lower Coastal Plain Ultisols.
 - [`<ptfkit/rawls1982.h>`](rawls1982.md) — Rawls et al. (1982), water-retention regressions for soils across the USA.
