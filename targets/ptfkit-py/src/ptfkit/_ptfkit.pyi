@@ -84,6 +84,13 @@ calc_ptf_gunarathna2019_vwc33_set3: ufunc
 calc_ptf_gunarathna2019_vwc33_set4: ufunc
 calc_ptf_hodnett2002: ufunc
 calc_ptf_jabro1992: ufunc
+calc_ptf_kalumba2021_mlr_ksat: ufunc
+calc_ptf_kalumba2021_mlr_pf00: ufunc
+calc_ptf_kalumba2021_mlr_pf10: ufunc
+calc_ptf_kalumba2021_mlr_pf20: ufunc
+calc_ptf_kalumba2021_mlr_pf28: ufunc
+calc_ptf_kalumba2021_mlr_pf34: ufunc
+calc_ptf_kalumba2021_mlr_pf42: ufunc
 calc_ptf_lal1979_group_i_lower_plastic_limit_from_clay: ufunc
 calc_ptf_lal1979_group_i_lower_plastic_limit_from_organic_carbon: ufunc
 calc_ptf_lal1979_group_i_lower_plastic_limit_from_sand: ufunc

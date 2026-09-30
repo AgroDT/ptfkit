@@ -15,6 +15,7 @@ export import ptfkit.ferrerjulia2004;
 export import ptfkit.gunarathna2019;
 export import ptfkit.hodnett2002;
 export import ptfkit.jabro1992;
+export import ptfkit.kalumba2021;
 export import ptfkit.lal1979;
 export import ptfkit.li2007;
 export import ptfkit.mayr1999;

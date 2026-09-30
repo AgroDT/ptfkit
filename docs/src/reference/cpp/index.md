@@ -30,6 +30,7 @@ ptfkit's C++ API is organized around C++23 modules.
 - [`ptfkit.gunarathna2019`](modules/gunarathna2019.md) — Point water-retention regressions for tropical Sri Lankan soils.
 - [`ptfkit.hodnett2002`](modules/hodnett2002.md) — Hodnett & Tomasella (2002), tropical-soil regressions for four van Genuchten parameters.
 - [`ptfkit.jabro1992`](modules/jabro1992.md) — Jabro (1992), United States.
+- [`ptfkit.kalumba2021`](modules/kalumba2021.md) — Kalumba et al. (2021) PTFs for Zambezi River Basin soil hydraulic properties.
 - [`ptfkit.lal1979`](modules/lal1979.md) — Moisture retention and plasticity regressions for two groups of Nigerian soils.
 - [`ptfkit.li2007`](modules/li2007.md) — Li et al. (2007), Fengqiu County, North China Plain, China.
 - [`ptfkit.mayr1999`](modules/mayr1999.md) — Mayr and Jarvis (1999) modified Brooks-Corey water-retention parameter PTFs.

@@ -1,0 +1,1162 @@
+source:
+  summary: "Kalumba et al. (2021) PTFs for Zambezi River Basin soil hydraulic properties."
+  citation_apa: "Kalumba, M., Bamps, B., Nyambe, I., Dondeyne, S., & Van Orshoven, J. (2021). Development and functional evaluation of pedotransfer functions for soil hydraulic properties for the Zambezi River Basin. European Journal of Soil Science, 72(4), 1559-1574."
+  doi:
+    identifier: 10.1111/ejss.13077
+    url: https://doi.org/10.1111/ejss.13077
+scope:
+  territory: "Zambezi River Basin, with field measurements from the Upper Mulungushi sub-basin."
+  dataset: "631 soil samples: 329 Africa Soil Profiles observations and 302 Upper Mulungushi observations; target-specific sample availability is documented below."
+$defs:
+  depth:
+    name: depth
+    symbol: Dep
+    unit: "cm"
+    domain: "6 <= value <= 217"
+    description: "Depth of the upper and lower boundary of the sampled horizon or layer."
+  elevation:
+    name: elevation
+    symbol: ELE
+    unit: "m"
+    domain: "81 <= value <= 1924"
+    description: "Topographic elevation of the soil profile site."
+  sand:
+    name: sand
+    symbol: SAND
+    unit: "fraction"
+    domain: "0.032 <= value <= 0.973"
+    description: "Sand fraction used as a PTF input."
+  clay:
+    name: clay
+    symbol: CLAY
+    unit: "fraction"
+    domain: "0.015 <= value <= 0.843"
+    description: "Clay fraction used as a PTF input."
+  silt:
+    name: silt
+    symbol: SILT
+    unit: "fraction"
+    domain: "0.047 <= value <= 0.786"
+    description: "Silt fraction used as a PTF input."
+  stoniness:
+    name: stoniness
+    symbol: STON
+    unit: "fraction"
+    domain: "0 <= value <= 0.85"
+    description: "Stoniness fraction under the reviewed Table 4 scale interpretation."
+  organic_matter:
+    name: organic_matter
+    symbol: OM
+    unit: "%"
+    domain: "0.039 <= value <= 6.854"
+    description: "Soil organic matter content in percentage points."
+  nitrogen:
+    name: nitrogen
+    symbol: N
+    unit: "%"
+    domain: "0 <= value <= 0.366"
+    description: "Soil nitrogen content in percentage points."
+  electrical_conductivity:
+    name: electrical_conductivity
+    symbol: EC
+    unit: "dS/m"
+    domain: "0.001 <= value <= 0.090"
+    description: "Soil electrical conductivity."
+  ph:
+    name: ph
+    symbol: pH
+    unit: "1"
+    domain: "4.98 <= value <= 8.50"
+    description: "Soil pH measured in a 1:5 soil-to-water suspension."
+  bulk_density:
+    name: bulk_density
+    symbol: BD
+    unit: "g/cm^3"
+    domain: "0.83 <= value <= 2.04"
+    description: "Soil bulk density."
+  WaterContentPF00:
+    type: scalar
+    name: water_content_pf00
+    quantity: volumetric_water_content
+    symbol: "pF0.0"
+    unit: volume_fraction
+    reported_unit: fractions
+    domain: "0 <= value <= 1"
+    description: "Volumetric water content at pF 0.0."
+  WaterContentPF10:
+    type: scalar
+    name: water_content_pf10
+    quantity: volumetric_water_content
+    symbol: "pF1.0"
+    unit: volume_fraction
+    reported_unit: fractions
+    domain: "0 <= value <= 1"
+    description: "Volumetric water content at pF 1.0."
+  WaterContentPF20:
+    type: scalar
+    name: water_content_pf20
+    quantity: volumetric_water_content
+    symbol: "pF2.0"
+    unit: volume_fraction
+    reported_unit: fractions
+    domain: "0 <= value <= 1"
+    description: "Volumetric water content at pF 2.0."
+  WaterContentPF28:
+    type: scalar
+    name: water_content_pf28
+    quantity: volumetric_water_content
+    symbol: "pF2.8"
+    unit: volume_fraction
+    reported_unit: fractions
+    domain: "0 <= value <= 1"
+    description: "Volumetric water content at pF 2.8."
+  WaterContentPF34:
+    type: scalar
+    name: water_content_pf34
+    quantity: volumetric_water_content
+    symbol: "pF3.4"
+    unit: volume_fraction
+    reported_unit: fractions
+    domain: "0 <= value <= 1"
+    description: "Volumetric water content at pF 3.4."
+  WaterContentPF42:
+    type: scalar
+    name: water_content_pf42
+    quantity: volumetric_water_content
+    symbol: "pF4.2"
+    unit: volume_fraction
+    reported_unit: fractions
+    domain: "0 <= value <= 1"
+    description: "Volumetric water content at pF 4.2."
+  SaturatedHydraulicConductivity:
+    type: scalar
+    name: saturated_hydraulic_conductivity
+    quantity: saturated_hydraulic_conductivity
+    symbol: Ksat
+    unit: millimeter_per_hour
+    reported_unit: mm/hr
+    domain: "value >= 0"
+    description: "Saturated hydraulic conductivity."
+functions:
+- name: calc_ptf_kalumba2021_mlr_pf00
+  status: implemented
+  public_api:
+    name: calc_ptf_kalumba2021_mlr_pf00
+    result_class: null
+    summary: "Estimate volumetric water content at pf 0.0 with the Kalumba et al. MLR PTF."
+  scope:
+    prediction_target: "Volumetric water content at pF 0.0."
+    models:
+      h_theta: "Multiple linear regression point estimate at pF 0.0."
+      k_h: null
+  inputs:
+  - $ref: "#/$defs/elevation"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/stoniness"
+  - $ref: "#/$defs/nitrogen"
+  - $ref: "#/$defs/electrical_conductivity"
+  - $ref: "#/$defs/ph"
+  - $ref: "#/$defs/bulk_density"
+  outputs:
+    $ref: "#/$defs/WaterContentPF00"
+  implementation:
+    variables:
+    - name: water_content_pf00
+      expr: "1.090 - 1.17e-4 * elevation - 0.073 * sand - 0.052 * silt - 0.024 * stoniness + 0.181 * nitrogen - 0.360 * electrical_conductivity - 0.003 * ph - 0.319 * bulk_density"
+  verification_cases:
+  - id: table1_mean_pf00
+    kind: calculated
+    inputs:
+      elevation: 1179.0
+      sand: 0.508
+      silt: 0.219
+      stoniness: 0.062
+      nitrogen: 0.040
+      electrical_conductivity: 0.016
+      ph: 5.97
+      bulk_density: 1.53
+    expected:
+      water_content_pf00: 0.397597
+    source_location: "Table 1 means and Table 4 coefficients."
+    rationale: "Calculated from the published marginal means. The texture means convert to fractions and sum to 1.0; the case is an implementation check, not a source-native row or evidence of model accuracy."
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 4 publishes the complete MLR equation; the target dataset is 302 Upper Mulungushi observations."
+    warnings:
+    - "Developed for Zambezi River Basin soils; the Table 1 ranges are marginal and do not define a joint Cartesian applicability domain."
+- name: calc_ptf_kalumba2021_mlr_pf10
+  status: implemented
+  public_api:
+    name: calc_ptf_kalumba2021_mlr_pf10
+    result_class: null
+    summary: "Estimate volumetric water content at pf 1.0 with the Kalumba et al. MLR PTF."
+  scope:
+    prediction_target: "Volumetric water content at pF 1.0."
+    models:
+      h_theta: "Multiple linear regression point estimate at pF 1.0."
+      k_h: null
+  inputs:
+  - $ref: "#/$defs/elevation"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/stoniness"
+  - $ref: "#/$defs/nitrogen"
+  - $ref: "#/$defs/electrical_conductivity"
+  - $ref: "#/$defs/ph"
+  - $ref: "#/$defs/bulk_density"
+  outputs:
+    $ref: "#/$defs/WaterContentPF10"
+  implementation:
+    variables:
+    - name: water_content_pf10
+      expr: "0.948 - 4.83e-5 * elevation - 0.101 * sand - 0.098 * silt - 0.034 * stoniness + 0.350 * nitrogen - 0.340 * electrical_conductivity - 0.005 * ph - 0.273 * bulk_density"
+  verification_cases:
+  - id: table1_mean_pf10
+    kind: calculated
+    inputs:
+      elevation: 1179.0
+      sand: 0.508
+      silt: 0.219
+      stoniness: 0.062
+      nitrogen: 0.040
+      electrical_conductivity: 0.016
+      ph: 5.97
+      bulk_density: 1.53
+    expected:
+      water_content_pf10: 0.3771963
+    source_location: "Table 1 means and Table 4 coefficients."
+    rationale: "Calculated from the published marginal means. The texture means convert to fractions and sum to 1.0; the case is an implementation check, not a source-native row or evidence of model accuracy."
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 4 publishes the complete MLR equation; the target dataset is 302 Upper Mulungushi observations."
+    warnings:
+    - "Developed for Zambezi River Basin soils; the Table 1 ranges are marginal and do not define a joint Cartesian applicability domain."
+- name: calc_ptf_kalumba2021_mlr_pf20
+  status: implemented
+  public_api:
+    name: calc_ptf_kalumba2021_mlr_pf20
+    result_class: null
+    summary: "Estimate volumetric water content at pf 2.0 with the Kalumba et al. MLR PTF."
+  scope:
+    prediction_target: "Volumetric water content at pF 2.0."
+    models:
+      h_theta: "Multiple linear regression point estimate at pF 2.0."
+      k_h: null
+  inputs:
+  - $ref: "#/$defs/depth"
+  - $ref: "#/$defs/elevation"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/clay"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/stoniness"
+  - $ref: "#/$defs/nitrogen"
+  - $ref: "#/$defs/electrical_conductivity"
+  - $ref: "#/$defs/ph"
+  - $ref: "#/$defs/bulk_density"
+  outputs:
+    $ref: "#/$defs/WaterContentPF20"
+  implementation:
+    variables:
+    - name: water_content_pf20
+      expr: "2.276 + 3.06e-4 * depth - 2.21e-4 * elevation - 1.781 * sand - 1.487 * clay - 1.712 * silt - 0.022 * stoniness + 0.900 * nitrogen + 0.317 * electrical_conductivity - 0.010 * ph - 0.056 * bulk_density"
+  verification_cases:
+  - id: table1_mean_pf20
+    kind: calculated
+    inputs:
+      depth: 75.0
+      elevation: 1179.0
+      sand: 0.508
+      clay: 0.273
+      silt: 0.219
+      stoniness: 0.062
+      nitrogen: 0.040
+      electrical_conductivity: 0.016
+      ph: 5.97
+      bulk_density: 1.53
+    expected:
+      water_content_pf20: 0.247092
+    source_location: "Table 1 means and Table 4 coefficients."
+    rationale: "Calculated from the published marginal means. The texture means convert to fractions and sum to 1.0; the case is an implementation check, not a source-native row or evidence of model accuracy."
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 4 publishes the complete MLR equation; the target dataset is 631 combined observations."
+    warnings:
+    - "Developed for Zambezi River Basin soils; the Table 1 ranges are marginal and do not define a joint Cartesian applicability domain."
+- name: calc_ptf_kalumba2021_mlr_pf28
+  status: implemented
+  public_api:
+    name: calc_ptf_kalumba2021_mlr_pf28
+    result_class: null
+    summary: "Estimate volumetric water content at pf 2.8 with the Kalumba et al. MLR PTF."
+  scope:
+    prediction_target: "Volumetric water content at pF 2.8."
+    models:
+      h_theta: "Multiple linear regression point estimate at pF 2.8."
+      k_h: null
+  inputs:
+  - $ref: "#/$defs/depth"
+  - $ref: "#/$defs/elevation"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/clay"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/stoniness"
+  - $ref: "#/$defs/organic_matter"
+  - $ref: "#/$defs/nitrogen"
+  - $ref: "#/$defs/electrical_conductivity"
+  - $ref: "#/$defs/bulk_density"
+  outputs:
+    $ref: "#/$defs/WaterContentPF28"
+  implementation:
+    variables:
+    - name: water_content_pf28
+      expr: "2.610 + 4.17e-4 * depth - 2.43e-4 * elevation - 2.401 * sand - 2.026 * clay - 2.320 * silt - 0.022 * stoniness + 0.014 * organic_matter + 0.887 * nitrogen + 0.595 * electrical_conductivity + 0.029 * bulk_density"
+  verification_cases:
+  - id: table1_mean_pf28
+    kind: calculated
+    inputs:
+      depth: 75.0
+      elevation: 1179.0
+      sand: 0.508
+      clay: 0.273
+      silt: 0.219
+      stoniness: 0.062
+      organic_matter: 0.337
+      nitrogen: 0.040
+      electrical_conductivity: 0.016
+      bulk_density: 1.53
+    expected:
+      water_content_pf28: 0.166616
+    source_location: "Table 1 means and Table 4 coefficients."
+    rationale: "Calculated from the published marginal means. The texture means convert to fractions and sum to 1.0; the case is an implementation check, not a source-native row or evidence of model accuracy."
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 4 publishes the complete MLR equation; the target dataset is 302 Upper Mulungushi observations."
+    warnings:
+    - "Developed for Zambezi River Basin soils; the Table 1 ranges are marginal and do not define a joint Cartesian applicability domain."
+- name: calc_ptf_kalumba2021_mlr_pf34
+  status: implemented
+  public_api:
+    name: calc_ptf_kalumba2021_mlr_pf34
+    result_class: null
+    summary: "Estimate volumetric water content at pf 3.4 with the Kalumba et al. MLR PTF."
+  scope:
+    prediction_target: "Volumetric water content at pF 3.4."
+    models:
+      h_theta: "Multiple linear regression point estimate at pF 3.4."
+      k_h: null
+  inputs:
+  - $ref: "#/$defs/depth"
+  - $ref: "#/$defs/elevation"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/clay"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/stoniness"
+  - $ref: "#/$defs/organic_matter"
+  - $ref: "#/$defs/nitrogen"
+  - $ref: "#/$defs/electrical_conductivity"
+  - $ref: "#/$defs/bulk_density"
+  outputs:
+    $ref: "#/$defs/WaterContentPF34"
+  implementation:
+    variables:
+    - name: water_content_pf34
+      expr: "2.522 + 5.31e-4 * depth - 2.30e-4 * elevation - 2.347 * sand - 1.957 * clay - 2.282 * silt - 0.023 * stoniness + 0.016 * organic_matter + 0.787 * nitrogen + 0.703 * electrical_conductivity + 0.027 * bulk_density"
+  verification_cases:
+  - id: table1_mean_pf34
+    kind: calculated
+    inputs:
+      depth: 75.0
+      elevation: 1179.0
+      sand: 0.508
+      clay: 0.273
+      silt: 0.219
+      stoniness: 0.062
+      organic_matter: 0.337
+      nitrogen: 0.040
+      electrical_conductivity: 0.016
+      bulk_density: 1.53
+    expected:
+      water_content_pf34: 0.152364
+    source_location: "Table 1 means and Table 4 coefficients."
+    rationale: "Calculated from the published marginal means. The texture means convert to fractions and sum to 1.0; the case is an implementation check, not a source-native row or evidence of model accuracy."
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 4 publishes the complete MLR equation; the target dataset is 302 Upper Mulungushi observations."
+    warnings:
+    - "Developed for Zambezi River Basin soils; the Table 1 ranges are marginal and do not define a joint Cartesian applicability domain."
+- name: calc_ptf_kalumba2021_mlr_pf42
+  status: implemented
+  public_api:
+    name: calc_ptf_kalumba2021_mlr_pf42
+    result_class: null
+    summary: "Estimate volumetric water content at pf 4.2 with the Kalumba et al. MLR PTF."
+  scope:
+    prediction_target: "Volumetric water content at pF 4.2."
+    models:
+      h_theta: "Multiple linear regression point estimate at pF 4.2."
+      k_h: null
+  inputs:
+  - $ref: "#/$defs/depth"
+  - $ref: "#/$defs/elevation"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/clay"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/stoniness"
+  - $ref: "#/$defs/organic_matter"
+  - $ref: "#/$defs/nitrogen"
+  - $ref: "#/$defs/electrical_conductivity"
+  outputs:
+    $ref: "#/$defs/WaterContentPF42"
+  implementation:
+    variables:
+    - name: water_content_pf42
+      expr: "1.972 + 3.81e-4 * depth - 1.79e-4 * elevation - 1.811 * sand - 1.430 * clay - 1.761 * silt - 0.023 * stoniness + 0.015 * organic_matter + 0.623 * nitrogen + 0.754 * electrical_conductivity"
+  verification_cases:
+  - id: table1_mean_pf42
+    kind: calculated
+    inputs:
+      depth: 75.0
+      elevation: 1179.0
+      sand: 0.508
+      clay: 0.273
+      silt: 0.219
+      stoniness: 0.062
+      organic_matter: 0.337
+      nitrogen: 0.040
+      electrical_conductivity: 0.016
+    expected:
+      water_content_pf42: 0.13411
+    source_location: "Table 1 means and Table 4 coefficients."
+    rationale: "Calculated from the published marginal means. The texture means convert to fractions and sum to 1.0; the case is an implementation check, not a source-native row or evidence of model accuracy."
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 4 publishes the complete MLR equation; the target dataset is 631 combined observations."
+    warnings:
+    - "Developed for Zambezi River Basin soils; the Table 1 ranges are marginal and do not define a joint Cartesian applicability domain."
+- name: calc_ptf_kalumba2021_mlr_ksat
+  status: implemented
+  public_api:
+    name: calc_ptf_kalumba2021_mlr_ksat
+    result_class: null
+    summary: "Estimate saturated hydraulic conductivity with the Kalumba et al. MLR PTF."
+  scope:
+    prediction_target: "Saturated hydraulic conductivity."
+    models:
+      h_theta: null
+      k_h: "Multiple linear regression point estimate."
+  inputs:
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/stoniness"
+  - $ref: "#/$defs/nitrogen"
+  - $ref: "#/$defs/bulk_density"
+  outputs:
+    $ref: "#/$defs/SaturatedHydraulicConductivity"
+  implementation:
+    variables:
+    - name: saturated_hydraulic_conductivity
+      expr: "3.86e2 + 1.70e2 * sand + 4.83e2 * stoniness - 4.26e2 * nitrogen - 2.37e2 * bulk_density"
+  verification_cases:
+  - id: table1_mean_ksat
+    kind: calculated
+    inputs:
+      sand: 0.508
+      stoniness: 0.062
+      nitrogen: 0.040
+      bulk_density: 1.53
+    expected:
+      saturated_hydraulic_conductivity: 122.656
+    source_location: "Table 1 means and Table 4 coefficients."
+    rationale: "Calculated from the published marginal means. The texture means convert to fractions and sum to 1.0; the case is an implementation check, not a source-native row or evidence of model accuracy."
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 4 publishes the complete MLR equation; the target dataset is 302 Upper Mulungushi observations."
+    warnings:
+    - "Developed for Zambezi River Basin soils; the Table 1 ranges are marginal and do not define a joint Cartesian applicability domain."
+- name: calc_ptf_kalumba2021_ann_pf00
+  status: blocked
+  public_api:
+    name: calc_ptf_kalumba2021_ann_pf00
+    result_class: null
+    summary: "Estimate volumetric water content at pf 0.0 with the fitted artificial neural network PTF."
+  scope:
+    prediction_target: "Volumetric water content at pF 0.0."
+    models:
+      h_theta: "Artificial neural network point estimate at pF 0.0."
+      k_h: null
+  inputs:
+  - $ref: "#/$defs/bulk_density"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/nitrogen"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/ph"
+  - $ref: "#/$defs/elevation"
+  - $ref: "#/$defs/electrical_conductivity"
+  - $ref: "#/$defs/stoniness"
+  outputs:
+    $ref: "#/$defs/WaterContentPF00"
+  verification_cases: []
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 3 reports the selected potential predictors in decreasing rank order."
+    warnings:
+    - "Blocked: fitted topology, weights, biases, normalization constants, package and version, exact split, and target transform are not published."
+- name: calc_ptf_kalumba2021_ann_pf10
+  status: blocked
+  public_api:
+    name: calc_ptf_kalumba2021_ann_pf10
+    result_class: null
+    summary: "Estimate volumetric water content at pf 1.0 with the fitted artificial neural network PTF."
+  scope:
+    prediction_target: "Volumetric water content at pF 1.0."
+    models:
+      h_theta: "Artificial neural network point estimate at pF 1.0."
+      k_h: null
+  inputs:
+  - $ref: "#/$defs/bulk_density"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/nitrogen"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/ph"
+  - $ref: "#/$defs/elevation"
+  - $ref: "#/$defs/electrical_conductivity"
+  - $ref: "#/$defs/stoniness"
+  outputs:
+    $ref: "#/$defs/WaterContentPF10"
+  verification_cases: []
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 3 reports the selected potential predictors in decreasing rank order."
+    warnings:
+    - "Blocked: fitted topology, weights, biases, normalization constants, package and version, exact split, and target transform are not published."
+- name: calc_ptf_kalumba2021_ann_pf20
+  status: blocked
+  public_api:
+    name: calc_ptf_kalumba2021_ann_pf20
+    result_class: null
+    summary: "Estimate volumetric water content at pf 2.0 with the fitted artificial neural network PTF."
+  scope:
+    prediction_target: "Volumetric water content at pF 2.0."
+    models:
+      h_theta: "Artificial neural network point estimate at pF 2.0."
+      k_h: null
+  inputs:
+  - $ref: "#/$defs/clay"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/nitrogen"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/bulk_density"
+  - $ref: "#/$defs/elevation"
+  - $ref: "#/$defs/electrical_conductivity"
+  - $ref: "#/$defs/ph"
+  - $ref: "#/$defs/stoniness"
+  - $ref: "#/$defs/depth"
+  outputs:
+    $ref: "#/$defs/WaterContentPF20"
+  verification_cases: []
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 3 reports the selected potential predictors in decreasing rank order."
+    warnings:
+    - "Blocked: fitted topology, weights, biases, normalization constants, package and version, exact split, and target transform are not published."
+- name: calc_ptf_kalumba2021_ann_pf28
+  status: blocked
+  public_api:
+    name: calc_ptf_kalumba2021_ann_pf28
+    result_class: null
+    summary: "Estimate volumetric water content at pf 2.8 with the fitted artificial neural network PTF."
+  scope:
+    prediction_target: "Volumetric water content at pF 2.8."
+    models:
+      h_theta: "Artificial neural network point estimate at pF 2.8."
+      k_h: null
+  inputs:
+  - $ref: "#/$defs/clay"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/nitrogen"
+  - $ref: "#/$defs/organic_matter"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/electrical_conductivity"
+  - $ref: "#/$defs/bulk_density"
+  - $ref: "#/$defs/elevation"
+  - $ref: "#/$defs/depth"
+  - $ref: "#/$defs/stoniness"
+  outputs:
+    $ref: "#/$defs/WaterContentPF28"
+  verification_cases: []
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 3 reports the selected potential predictors in decreasing rank order."
+    warnings:
+    - "Blocked: fitted topology, weights, biases, normalization constants, package and version, exact split, and target transform are not published."
+- name: calc_ptf_kalumba2021_ann_pf34
+  status: blocked
+  public_api:
+    name: calc_ptf_kalumba2021_ann_pf34
+    result_class: null
+    summary: "Estimate volumetric water content at pf 3.4 with the fitted artificial neural network PTF."
+  scope:
+    prediction_target: "Volumetric water content at pF 3.4."
+    models:
+      h_theta: "Artificial neural network point estimate at pF 3.4."
+      k_h: null
+  inputs:
+  - $ref: "#/$defs/clay"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/nitrogen"
+  - $ref: "#/$defs/organic_matter"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/electrical_conductivity"
+  - $ref: "#/$defs/bulk_density"
+  - $ref: "#/$defs/elevation"
+  - $ref: "#/$defs/depth"
+  - $ref: "#/$defs/stoniness"
+  outputs:
+    $ref: "#/$defs/WaterContentPF34"
+  verification_cases: []
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 3 reports the selected potential predictors in decreasing rank order."
+    warnings:
+    - "Blocked: fitted topology, weights, biases, normalization constants, package and version, exact split, and target transform are not published."
+- name: calc_ptf_kalumba2021_ann_pf42
+  status: blocked
+  public_api:
+    name: calc_ptf_kalumba2021_ann_pf42
+    result_class: null
+    summary: "Estimate volumetric water content at pf 4.2 with the fitted artificial neural network PTF."
+  scope:
+    prediction_target: "Volumetric water content at pF 4.2."
+    models:
+      h_theta: "Artificial neural network point estimate at pF 4.2."
+      k_h: null
+  inputs:
+  - $ref: "#/$defs/clay"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/nitrogen"
+  - $ref: "#/$defs/organic_matter"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/electrical_conductivity"
+  - $ref: "#/$defs/elevation"
+  - $ref: "#/$defs/stoniness"
+  - $ref: "#/$defs/depth"
+  outputs:
+    $ref: "#/$defs/WaterContentPF42"
+  verification_cases: []
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 3 reports the selected potential predictors in decreasing rank order."
+    warnings:
+    - "Blocked: fitted topology, weights, biases, normalization constants, package and version, exact split, and target transform are not published."
+- name: calc_ptf_kalumba2021_ann_ksat
+  status: blocked
+  public_api:
+    name: calc_ptf_kalumba2021_ann_ksat
+    result_class: null
+    summary: "Estimate saturated hydraulic conductivity with the fitted artificial neural network PTF."
+  scope:
+    prediction_target: "Saturated hydraulic conductivity."
+    models:
+      h_theta: null
+      k_h: "Artificial neural network point estimate."
+  inputs:
+  - $ref: "#/$defs/stoniness"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/bulk_density"
+  - $ref: "#/$defs/nitrogen"
+  outputs:
+    $ref: "#/$defs/SaturatedHydraulicConductivity"
+  verification_cases: []
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 3 reports the selected potential predictors in decreasing rank order."
+    warnings:
+    - "Blocked: fitted topology, weights, biases, normalization constants, package and version, exact split, and target transform are not published."
+- name: calc_ptf_kalumba2021_random_forest_pf00
+  status: blocked
+  public_api:
+    name: calc_ptf_kalumba2021_random_forest_pf00
+    result_class: null
+    summary: "Estimate volumetric water content at pf 0.0 with the fitted random forest PTF."
+  scope:
+    prediction_target: "Volumetric water content at pF 0.0."
+    models:
+      h_theta: "Random forest point estimate at pF 0.0."
+      k_h: null
+  inputs:
+  - $ref: "#/$defs/bulk_density"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/nitrogen"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/ph"
+  - $ref: "#/$defs/elevation"
+  - $ref: "#/$defs/electrical_conductivity"
+  - $ref: "#/$defs/stoniness"
+  outputs:
+    $ref: "#/$defs/WaterContentPF00"
+  verification_cases: []
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 3 reports the selected potential predictors in decreasing rank order."
+    warnings:
+    - "Blocked: fitted trees, normalization constants, package and version, random seed and exact split, and target transform are not published."
+- name: calc_ptf_kalumba2021_random_forest_pf10
+  status: blocked
+  public_api:
+    name: calc_ptf_kalumba2021_random_forest_pf10
+    result_class: null
+    summary: "Estimate volumetric water content at pf 1.0 with the fitted random forest PTF."
+  scope:
+    prediction_target: "Volumetric water content at pF 1.0."
+    models:
+      h_theta: "Random forest point estimate at pF 1.0."
+      k_h: null
+  inputs:
+  - $ref: "#/$defs/bulk_density"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/nitrogen"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/ph"
+  - $ref: "#/$defs/elevation"
+  - $ref: "#/$defs/electrical_conductivity"
+  - $ref: "#/$defs/stoniness"
+  outputs:
+    $ref: "#/$defs/WaterContentPF10"
+  verification_cases: []
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 3 reports the selected potential predictors in decreasing rank order."
+    warnings:
+    - "Blocked: fitted trees, normalization constants, package and version, random seed and exact split, and target transform are not published."
+- name: calc_ptf_kalumba2021_random_forest_pf20
+  status: blocked
+  public_api:
+    name: calc_ptf_kalumba2021_random_forest_pf20
+    result_class: null
+    summary: "Estimate volumetric water content at pf 2.0 with the fitted random forest PTF."
+  scope:
+    prediction_target: "Volumetric water content at pF 2.0."
+    models:
+      h_theta: "Random forest point estimate at pF 2.0."
+      k_h: null
+  inputs:
+  - $ref: "#/$defs/clay"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/nitrogen"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/bulk_density"
+  - $ref: "#/$defs/elevation"
+  - $ref: "#/$defs/electrical_conductivity"
+  - $ref: "#/$defs/ph"
+  - $ref: "#/$defs/stoniness"
+  - $ref: "#/$defs/depth"
+  outputs:
+    $ref: "#/$defs/WaterContentPF20"
+  verification_cases: []
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 3 reports the selected potential predictors in decreasing rank order."
+    warnings:
+    - "Blocked: fitted trees, normalization constants, package and version, random seed and exact split, and target transform are not published."
+- name: calc_ptf_kalumba2021_random_forest_pf28
+  status: blocked
+  public_api:
+    name: calc_ptf_kalumba2021_random_forest_pf28
+    result_class: null
+    summary: "Estimate volumetric water content at pf 2.8 with the fitted random forest PTF."
+  scope:
+    prediction_target: "Volumetric water content at pF 2.8."
+    models:
+      h_theta: "Random forest point estimate at pF 2.8."
+      k_h: null
+  inputs:
+  - $ref: "#/$defs/clay"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/nitrogen"
+  - $ref: "#/$defs/organic_matter"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/electrical_conductivity"
+  - $ref: "#/$defs/bulk_density"
+  - $ref: "#/$defs/elevation"
+  - $ref: "#/$defs/depth"
+  - $ref: "#/$defs/stoniness"
+  outputs:
+    $ref: "#/$defs/WaterContentPF28"
+  verification_cases: []
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 3 reports the selected potential predictors in decreasing rank order."
+    warnings:
+    - "Blocked: fitted trees, normalization constants, package and version, random seed and exact split, and target transform are not published."
+- name: calc_ptf_kalumba2021_random_forest_pf34
+  status: blocked
+  public_api:
+    name: calc_ptf_kalumba2021_random_forest_pf34
+    result_class: null
+    summary: "Estimate volumetric water content at pf 3.4 with the fitted random forest PTF."
+  scope:
+    prediction_target: "Volumetric water content at pF 3.4."
+    models:
+      h_theta: "Random forest point estimate at pF 3.4."
+      k_h: null
+  inputs:
+  - $ref: "#/$defs/clay"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/nitrogen"
+  - $ref: "#/$defs/organic_matter"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/electrical_conductivity"
+  - $ref: "#/$defs/bulk_density"
+  - $ref: "#/$defs/elevation"
+  - $ref: "#/$defs/depth"
+  - $ref: "#/$defs/stoniness"
+  outputs:
+    $ref: "#/$defs/WaterContentPF34"
+  verification_cases: []
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 3 reports the selected potential predictors in decreasing rank order."
+    warnings:
+    - "Blocked: fitted trees, normalization constants, package and version, random seed and exact split, and target transform are not published."
+- name: calc_ptf_kalumba2021_random_forest_pf42
+  status: blocked
+  public_api:
+    name: calc_ptf_kalumba2021_random_forest_pf42
+    result_class: null
+    summary: "Estimate volumetric water content at pf 4.2 with the fitted random forest PTF."
+  scope:
+    prediction_target: "Volumetric water content at pF 4.2."
+    models:
+      h_theta: "Random forest point estimate at pF 4.2."
+      k_h: null
+  inputs:
+  - $ref: "#/$defs/clay"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/nitrogen"
+  - $ref: "#/$defs/organic_matter"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/electrical_conductivity"
+  - $ref: "#/$defs/elevation"
+  - $ref: "#/$defs/stoniness"
+  - $ref: "#/$defs/depth"
+  outputs:
+    $ref: "#/$defs/WaterContentPF42"
+  verification_cases: []
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 3 reports the selected potential predictors in decreasing rank order."
+    warnings:
+    - "Blocked: fitted trees, normalization constants, package and version, random seed and exact split, and target transform are not published."
+- name: calc_ptf_kalumba2021_random_forest_ksat
+  status: blocked
+  public_api:
+    name: calc_ptf_kalumba2021_random_forest_ksat
+    result_class: null
+    summary: "Estimate saturated hydraulic conductivity with the fitted random forest PTF."
+  scope:
+    prediction_target: "Saturated hydraulic conductivity."
+    models:
+      h_theta: null
+      k_h: "Random forest point estimate."
+  inputs:
+  - $ref: "#/$defs/stoniness"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/bulk_density"
+  - $ref: "#/$defs/nitrogen"
+  outputs:
+    $ref: "#/$defs/SaturatedHydraulicConductivity"
+  verification_cases: []
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 3 reports the selected potential predictors in decreasing rank order."
+    warnings:
+    - "Blocked: fitted trees, normalization constants, package and version, random seed and exact split, and target transform are not published."
+- name: calc_ptf_kalumba2021_svm_pf00
+  status: blocked
+  public_api:
+    name: calc_ptf_kalumba2021_svm_pf00
+    result_class: null
+    summary: "Estimate volumetric water content at pf 0.0 with the fitted support vector machine PTF."
+  scope:
+    prediction_target: "Volumetric water content at pF 0.0."
+    models:
+      h_theta: "Support vector machine point estimate at pF 0.0."
+      k_h: null
+  inputs:
+  - $ref: "#/$defs/bulk_density"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/nitrogen"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/ph"
+  - $ref: "#/$defs/elevation"
+  - $ref: "#/$defs/electrical_conductivity"
+  - $ref: "#/$defs/stoniness"
+  outputs:
+    $ref: "#/$defs/WaterContentPF00"
+  verification_cases: []
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 3 reports the selected potential predictors in decreasing rank order."
+    warnings:
+    - "Blocked: kernel configuration, support vectors, coefficients, normalization constants, package and version, exact split, and target transform are not published."
+- name: calc_ptf_kalumba2021_svm_pf10
+  status: blocked
+  public_api:
+    name: calc_ptf_kalumba2021_svm_pf10
+    result_class: null
+    summary: "Estimate volumetric water content at pf 1.0 with the fitted support vector machine PTF."
+  scope:
+    prediction_target: "Volumetric water content at pF 1.0."
+    models:
+      h_theta: "Support vector machine point estimate at pF 1.0."
+      k_h: null
+  inputs:
+  - $ref: "#/$defs/bulk_density"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/nitrogen"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/ph"
+  - $ref: "#/$defs/elevation"
+  - $ref: "#/$defs/electrical_conductivity"
+  - $ref: "#/$defs/stoniness"
+  outputs:
+    $ref: "#/$defs/WaterContentPF10"
+  verification_cases: []
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 3 reports the selected potential predictors in decreasing rank order."
+    warnings:
+    - "Blocked: kernel configuration, support vectors, coefficients, normalization constants, package and version, exact split, and target transform are not published."
+- name: calc_ptf_kalumba2021_svm_pf20
+  status: blocked
+  public_api:
+    name: calc_ptf_kalumba2021_svm_pf20
+    result_class: null
+    summary: "Estimate volumetric water content at pf 2.0 with the fitted support vector machine PTF."
+  scope:
+    prediction_target: "Volumetric water content at pF 2.0."
+    models:
+      h_theta: "Support vector machine point estimate at pF 2.0."
+      k_h: null
+  inputs:
+  - $ref: "#/$defs/clay"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/nitrogen"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/bulk_density"
+  - $ref: "#/$defs/elevation"
+  - $ref: "#/$defs/electrical_conductivity"
+  - $ref: "#/$defs/ph"
+  - $ref: "#/$defs/stoniness"
+  - $ref: "#/$defs/depth"
+  outputs:
+    $ref: "#/$defs/WaterContentPF20"
+  verification_cases: []
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 3 reports the selected potential predictors in decreasing rank order."
+    warnings:
+    - "Blocked: kernel configuration, support vectors, coefficients, normalization constants, package and version, exact split, and target transform are not published."
+- name: calc_ptf_kalumba2021_svm_pf28
+  status: blocked
+  public_api:
+    name: calc_ptf_kalumba2021_svm_pf28
+    result_class: null
+    summary: "Estimate volumetric water content at pf 2.8 with the fitted support vector machine PTF."
+  scope:
+    prediction_target: "Volumetric water content at pF 2.8."
+    models:
+      h_theta: "Support vector machine point estimate at pF 2.8."
+      k_h: null
+  inputs:
+  - $ref: "#/$defs/clay"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/nitrogen"
+  - $ref: "#/$defs/organic_matter"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/electrical_conductivity"
+  - $ref: "#/$defs/bulk_density"
+  - $ref: "#/$defs/elevation"
+  - $ref: "#/$defs/depth"
+  - $ref: "#/$defs/stoniness"
+  outputs:
+    $ref: "#/$defs/WaterContentPF28"
+  verification_cases: []
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 3 reports the selected potential predictors in decreasing rank order."
+    warnings:
+    - "Blocked: kernel configuration, support vectors, coefficients, normalization constants, package and version, exact split, and target transform are not published."
+- name: calc_ptf_kalumba2021_svm_pf34
+  status: blocked
+  public_api:
+    name: calc_ptf_kalumba2021_svm_pf34
+    result_class: null
+    summary: "Estimate volumetric water content at pf 3.4 with the fitted support vector machine PTF."
+  scope:
+    prediction_target: "Volumetric water content at pF 3.4."
+    models:
+      h_theta: "Support vector machine point estimate at pF 3.4."
+      k_h: null
+  inputs:
+  - $ref: "#/$defs/clay"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/nitrogen"
+  - $ref: "#/$defs/organic_matter"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/electrical_conductivity"
+  - $ref: "#/$defs/bulk_density"
+  - $ref: "#/$defs/elevation"
+  - $ref: "#/$defs/depth"
+  - $ref: "#/$defs/stoniness"
+  outputs:
+    $ref: "#/$defs/WaterContentPF34"
+  verification_cases: []
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 3 reports the selected potential predictors in decreasing rank order."
+    warnings:
+    - "Blocked: kernel configuration, support vectors, coefficients, normalization constants, package and version, exact split, and target transform are not published."
+- name: calc_ptf_kalumba2021_svm_pf42
+  status: blocked
+  public_api:
+    name: calc_ptf_kalumba2021_svm_pf42
+    result_class: null
+    summary: "Estimate volumetric water content at pf 4.2 with the fitted support vector machine PTF."
+  scope:
+    prediction_target: "Volumetric water content at pF 4.2."
+    models:
+      h_theta: "Support vector machine point estimate at pF 4.2."
+      k_h: null
+  inputs:
+  - $ref: "#/$defs/clay"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/nitrogen"
+  - $ref: "#/$defs/organic_matter"
+  - $ref: "#/$defs/silt"
+  - $ref: "#/$defs/electrical_conductivity"
+  - $ref: "#/$defs/elevation"
+  - $ref: "#/$defs/stoniness"
+  - $ref: "#/$defs/depth"
+  outputs:
+    $ref: "#/$defs/WaterContentPF42"
+  verification_cases: []
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 3 reports the selected potential predictors in decreasing rank order."
+    warnings:
+    - "Blocked: kernel configuration, support vectors, coefficients, normalization constants, package and version, exact split, and target transform are not published."
+- name: calc_ptf_kalumba2021_svm_ksat
+  status: blocked
+  public_api:
+    name: calc_ptf_kalumba2021_svm_ksat
+    result_class: null
+    summary: "Estimate saturated hydraulic conductivity with the fitted support vector machine PTF."
+  scope:
+    prediction_target: "Saturated hydraulic conductivity."
+    models:
+      h_theta: null
+      k_h: "Support vector machine point estimate."
+  inputs:
+  - $ref: "#/$defs/stoniness"
+  - $ref: "#/$defs/sand"
+  - $ref: "#/$defs/bulk_density"
+  - $ref: "#/$defs/nitrogen"
+  outputs:
+    $ref: "#/$defs/SaturatedHydraulicConductivity"
+  verification_cases: []
+  edge_cases: []
+  documentation:
+    notes:
+    - "Table 3 reports the selected potential predictors in decreasing rank order."
+    warnings:
+    - "Blocked: kernel configuration, support vectors, coefficients, normalization constants, package and version, exact split, and target transform are not published."
+scientific_notes: |
+  ## Supported models
+
+  The paper develops seven multiple-linear-regression PTFs and seven fitted
+  models for each of ANN, random forest, and SVM. Table 4 publishes complete
+  MLR coefficients. Table 3 publishes target-specific predictor rankings for
+  the MLR and machine-learning families.
+
+  The pF 0.0, pF 1.0, pF 2.8, pF 3.4, and Ksat targets use 302 Upper
+  Mulungushi observations. The pF 2.0 and pF 4.2 targets are reported against
+  the combined 631-observation dataset.
+
+  ## Review decisions
+
+  The citation year is 2021 because that is the issue year, although the
+  publisher records online publication and copyright in 2020.
+
+  The paper calls water-content PTF outputs "fractions or percentages" while
+  Table 1 labels observations as Vol %. The reviewed computational contract
+  uses fractions: the Table 4 equations evaluate on the 0.x scale, and Figure
+  4 reports water-content RMSE values of about 0.02 to 0.06. The literal
+  source term `fractions` is retained as an equivalent notation for
+  `volume_fraction` after explicit user review.
+
+  Sand, clay, and silt are explicitly fractions at PTF input. STON is also
+  interpreted as a fraction after explicit review: using the Table 1 mean as
+  percentage points in the Ksat equation gives 3087.31 mm/hr, above the
+  published 509.40 mm/hr maximum, whereas 0.062 gives a physically plausible
+  122.656 mm/hr. OM and N retain the percentage-point scales stated in
+  Section 2.2 and Table 1.
+
+  The calculated verification inputs use the published Table 1 means. The
+  mean texture fractions are 0.508 sand, 0.273 clay, and 0.219 silt and sum
+  exactly to 1.0. Their expected values are fixed evaluations of Table 4, not
+  source-native rows, independent validation, or evidence of predictive
+  accuracy.
+
+  The literal Ksat notation `mm/hr` is retained as a reviewed alias of
+  `millimeter_per_hour`; no numerical conversion is applied.
+
+  ## Documented limitations
+
+  Table 1 publishes marginal ranges, not complete joint predictor rows. The
+  ranges therefore document the source data but do not define a Cartesian
+  applicability region. The paper supplies no out-of-domain behavior.
+
+  No complete published predictor-to-prediction example is available. This is
+  not a blocker for the computationally complete MLR equations because the
+  verification cases are calculated directly from the published contract.
+
+  ## Blockers
+
+  The ANN, random-forest, and SVM functions remain blocked. The paper states
+  that explanatory and response variables were normalized and that default
+  meta-parameters and a random 70/30 split were used, but it does not publish
+  the exact normalization, package identities and versions, split membership
+  or seed, target transforms, or fitted weights, trees, support vectors, and
+  coefficients. Re-training would produce different fitted models.
+
+  Supporting data are available only from the corresponding author upon
+  reasonable request. Rights and redistribution remain a separate release
+  gate and do not change the scientific extraction status.
