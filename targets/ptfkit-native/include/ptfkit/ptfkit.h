@@ -31,6 +31,7 @@
 #include <ptfkit/vereecken1989.h>
 #include <ptfkit/wang2012.h>
 #include <ptfkit/weber2020.h>
+#include <ptfkit/weynants2009.h>
 #include <ptfkit/zhao2016.h>
 
 #endif

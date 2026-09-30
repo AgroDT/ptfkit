@@ -182,6 +182,7 @@ title: C function index
 | [`calc_ptf_vereecken1989_detailed`](headers/vereecken1989.md#function-calc_ptf_vereecken1989_detailed) | Estimate van Genuchten parameters from nine particle-size fractions and particle-size distribution descriptors. | [`<ptfkit/vereecken1989.h>`](headers/vereecken1989.md) |
 | [`calc_ptf_wang2012`](headers/wang2012.md#function-calc_ptf_wang2012) | Estimate saturated water content, field capacity, and saturated conductivity. | [`<ptfkit/wang2012.h>`](headers/wang2012.md) |
 | [`calc_ptf_weber2020`](headers/weber2020.md#function-calc_ptf_weber2020) | Convert VGM parameters to Brunswick-VGM parameters. | [`<ptfkit/weber2020.h>`](headers/weber2020.md) |
+| [`calc_ptf_weynants2009`](headers/weynants2009.md#function-calc_ptf_weynants2009) | Estimate six van Genuchten-Mualem hydraulic parameters from texture, bulk density, and organic carbon. | [`<ptfkit/weynants2009.h>`](headers/weynants2009.md) |
 | [`calc_ptf_zhao2016_m2_1`](headers/zhao2016.md#function-calc_ptf_zhao2016_m2_1) | Estimate saturated hydraulic conductivity using reconstructed M2-1. | [`<ptfkit/zhao2016.h>`](headers/zhao2016.md) |
 | [`calc_ptf_zhao2016_m2_2`](headers/zhao2016.md#function-calc_ptf_zhao2016_m2_2) | Estimate saturated hydraulic conductivity using reconstructed M2-2. | [`<ptfkit/zhao2016.h>`](headers/zhao2016.md) |
 | [`calc_ptf_zhao2016_m2_3`](headers/zhao2016.md#function-calc_ptf_zhao2016_m2_3) | Estimate saturated hydraulic conductivity using reconstructed M2-3. | [`<ptfkit/zhao2016.h>`](headers/zhao2016.md) |

@@ -1,0 +1,265 @@
+source:
+  summary: Corrected Weynants et al. hydraulic-parameter pedotransfer function.
+  citation_apa: >-
+    Weynants, M., Vereecken, H., & Javaux, M. (2009). Revisiting Vereecken
+    pedotransfer functions: Introducing a closed-form hydraulic model. Vadose
+    Zone Journal, 8(1), 86-95.
+  doi:
+    identifier: 10.2136/vzj2008.0062
+    url: https://doi.org/10.2136/vzj2008.0062
+functions:
+  - name: calc_ptf_weynants2009
+    status: implemented
+    public_api:
+      name: calc_ptf_weynants2009
+      result_class: Weynants2009PTFResult
+      summary: >-
+        Estimate six van Genuchten-Mualem hydraulic parameters from texture,
+        bulk density, and organic carbon.
+    scope:
+      prediction_target: >-
+        Residual and saturated volumetric water content, van Genuchten alpha and
+        n, matrix matching-point conductivity, and the Mualem pore-connectivity
+        parameter.
+      models:
+        h_theta: van Genuchten retention model with m = 1 - 1/n
+        k_h: >-
+          Mualem conductivity model with matrix matching-point K0 and
+          pore-connectivity parameter tau
+    inputs:
+      - name: clay
+        symbol: CLAY
+        unit: '%'
+        domain: 0 <= value <= 100
+        description: >-
+          Particles smaller than 2 micrometres as a mass percentage of fine
+          earth.
+      - name: sand
+        symbol: SAND
+        unit: '%'
+        domain: 0 <= value <= 100
+        description: >-
+          Particles from 0.05 to 2 millimetres as a mass percentage of fine
+          earth.
+      - name: bulk_density
+        symbol: BD
+        unit: g/cm^3
+        domain: null
+        description: >-
+          Dry bulk density; values in g/cm^3 are numerically equal to values in
+          Mg/m^3.
+      - name: organic_carbon
+        symbol: OC
+        unit: '%'
+        domain: 0 <= value <= 100
+        description: >-
+          Organic carbon as a percentage by mass, following the mandatory 2017
+          erratum.
+    outputs:
+      type: record
+      name: Weynants2009PTFResult
+      fields:
+        - name: theta_r
+          quantity: volumetric_water_content
+          symbol: theta_r
+          unit: volume_fraction
+          reported_unit: m3/m3
+          domain: value = 0
+          description: Residual volumetric soil water content fixed at zero.
+        - name: theta_s
+          quantity: volumetric_water_content
+          symbol: theta_s
+          unit: volume_fraction
+          reported_unit: m3/m3
+          domain: null
+          description: Saturated volumetric soil water content.
+        - name: alpha
+          quantity: van_genuchten_alpha
+          symbol: alpha
+          unit: inverse_centimeter
+          reported_unit: cm^-1
+          domain: value > 0
+          description: Inverse pressure-scale parameter of the van Genuchten model.
+        - name: n
+          quantity: van_genuchten_n
+          symbol: n
+          unit: dimensionless
+          reported_unit: dimensionless
+          domain: value > 1
+          description: Pore-size distribution parameter of the van Genuchten model.
+        - name: k0
+          quantity: saturated_hydraulic_conductivity
+          symbol: K0
+          unit: centimeter_per_day
+          reported_unit: cm/day
+          domain: value > 0
+          description: >-
+            Matrix matching-point hydraulic conductivity at zero pressure head.
+        - name: tau
+          quantity: conductivity_shape_parameter
+          symbol: lambda
+          unit: dimensionless
+          reported_unit: dimensionless
+          domain: null
+          description: Mualem pore-connectivity and tortuosity parameter.
+    verification_cases:
+      - id: documented_software_example
+        kind: published
+        inputs:
+          clay: 0.4
+          sand: 0.4
+          bulk_density: 1.6
+          organic_carbon: 0.5
+        expected:
+          theta_r: 0
+          theta_s: 0.37510324355999997
+          alpha: 0.012928448646402616
+          n: 1.3337333705101033
+          k0: 2.4832320757840964
+          tau: -1.9142081927400001
+        source_location: >-
+          Documented example for spsh 1.1.0 function ptf.cW, independently
+          reproduced from the pinned source routine.
+      - id: texture_boundary_probe
+        kind: calculated
+        inputs:
+          clay: 0
+          sand: 100
+          bulk_density: 1.4
+          organic_carbon: 0
+        expected:
+          theta_r: 0
+          theta_s: 0.40720914046000001
+          alpha: 0.053788122229093446
+          n: 1.5683070876994081
+          k0: 65.550992709190439
+          tau: -1.1933718963
+        rationale: >-
+          Exercises documented software endpoints for clay, sand, and organic
+          carbon while preserving clay plus sand equal to 100 percent.
+      - id: retained_audit_probe
+        kind: calculated
+        inputs:
+          clay: 20
+          sand: 60
+          bulk_density: 1.4
+          organic_carbon: 1
+        expected:
+          theta_r: 0
+          theta_s: 0.43282436646
+          alpha: 0.023128261899904089
+          n: 1.2074232069081889
+          k0: 16.321357404948603
+          tau: -4.0964287542999998
+        rationale: >-
+          Retains the supplied interior audit probe with a physically valid
+          texture and organic-carbon value inside the corrected training ranges.
+      - id: organic_carbon_unit_regression
+        kind: calculated
+        inputs:
+          clay: 20
+          sand: 60
+          bulk_density: 1.4
+          organic_carbon: 10
+        expected:
+          theta_r: 0
+          theta_s: 0.43282436646
+          alpha: 0.0094678596921950482
+          n: 1.2074232069081889
+          k0: 3.9887309808464453
+          tau: -4.0964287542999998
+        rationale: >-
+          Changes organic carbon from 1 to 10 without conversion so a regression
+          to the superseded g/kg interpretation changes alpha and K0 visibly.
+    edge_cases: []
+    documentation:
+      notes:
+        - >-
+          K0 is the matrix matching-point conductivity at zero pressure head,
+          not measured macropore-influenced saturated conductivity.
+        - >-
+          The software evaluates the equations without input guards, texture-sum
+          checks, output clamps, or out-of-domain errors.
+      warnings:
+        - >-
+          Supply organic carbon in percent by mass, not in the g/kg unit printed
+          in the original 2009 table.
+        - >-
+          The corrected training ranges are sand 5.60-97.80%, clay 0-54.50%,
+          bulk density 0.89-1.77 g/cm^3, and organic carbon 0.01-6.60%; these are
+          marginal ranges rather than a joint applicability hull.
+        - >-
+          The fitted conductivity model is unsuitable for prediction at pressure
+          heads greater than -6 cm because observations with absolute pressure
+          head below 6 cm were excluded.
+    implementation:
+      variables:
+        - name: theta_r
+          expr: '0'
+        - name: theta_s
+          expr: >-
+            0.6355365504 + 0.0012807613 * clay - 0.1630910071 * bulk_density
+        - name: alpha
+          expr: >-
+            exp(-4.3003420026 - 0.0096851210 * clay + 0.0137763939 * sand - 0.0992391618 * organic_carbon)
+        - name: n
+          expr: >-
+            1 + exp(-1.0846069190 - 0.0235654376 * clay - 0.0085043044 * sand + 0.0001369944 * sand ^ 2)
+        - name: k0
+          expr: >-
+            exp(1.9581584626 + 0.0308449531 * sand - 0.6141610130 * bulk_density - 0.1565557100 * organic_carbon)
+        - name: tau
+          expr: >-
+            -1.8641969563 - 0.1317363417 * clay + 0.0067082506 * sand
+scientific_notes: |
+  # Weynants et al. (2009), corrected in 2017
+
+  ## Supported models
+
+  The function predicts the six parameters of the closed-form hydraulic model.
+  The retention relation uses `m = 1 - 1/n`. The conductivity relation uses the
+  matrix matching-point `K0` at zero pressure head and the Mualem
+  pore-connectivity or tortuosity parameter printed as lambda in the article and
+  named `tau` by the official software.
+
+  ## Review decisions
+
+  The correction is Weihermuller, L., Herbst, M., Javaux, M., and Weynants, M.
+  (2017), "Erratum to 'Revisiting Vereecken Pedotransfer Functions: Introducing
+  a Closed-Form Hydraulic Model'," Vadose Zone Journal, 16(1), 1-2,
+  DOI 10.2136/vzj2008.0062er. It changes organic carbon from the original
+  table's g/kg presentation to percent by mass. The erratum's isolated `g cm^-1`
+  bulk-density label is treated as a typographical error because its unit
+  definition, following correction, and figure caption specify `g cm^-3`.
+
+  The implementation preserves the full numeric lexemes from the official
+  `spsh` 1.1.0 `ptf.cW` routine rather than the rounded article coefficients.
+  The routine's documented example supplies the published verification case;
+  the remaining cases preserve independently recomputed probes from the supplied
+  evidence record.
+
+  ## Documented limitations
+
+  The official software documents independent 0-100% input intervals for clay,
+  sand, and organic carbon, and no numeric bulk-density interval. These software
+  intervals are distinct from the corrected marginal ranges of the training
+  data and do not define a joint texture hull. The routine applies no runtime
+  validation.
+
+  Conductivity measurements with absolute pressure head below 6 cm were excluded
+  during fitting. Consequently, the conductivity model is not suitable at
+  pressure heads greater than -6 cm. K0 represents matrix conductivity and not
+  macropore-influenced measured saturated conductivity.
+
+  ## Release governance
+
+  Scientific extraction readiness does not resolve the supplied evidence
+  record's composition-specific rights review or authorize generated release
+  artifacts. This draft also lies outside the previously frozen 166-function
+  audited inventory and therefore requires the normal human review before
+  generation.
+
+  ## Blockers
+
+  None for the computational contract. Rights and inventory approval remain
+  separate release gates.
