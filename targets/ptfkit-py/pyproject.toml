@@ -69,6 +69,7 @@ testpaths = ["tests"]
 
 [tool.scikit-build]
 minimum-version = "build-system.requires"
+cmake.version = ">=4.4.2"
 wheel.exclude = ["*.c", "*.h"]
 
 [tool.scikit-build.sdist.force-include]

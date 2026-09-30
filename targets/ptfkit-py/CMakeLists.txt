@@ -1,6 +1,19 @@
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 4.4.2)
 
 project(ptfkit LANGUAGES C)
+
+if(DEFINED Python_EXECUTABLE)
+    execute_process(
+        COMMAND "${Python_EXECUTABLE}" -c
+                "import sysconfig; print(int(bool(sysconfig.get_config_var('Py_GIL_DISABLED'))))"
+        OUTPUT_VARIABLE PTFKIT_PYTHON_GIL_DISABLED
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        COMMAND_ERROR_IS_FATAL ANY
+    )
+    if(PTFKIT_PYTHON_GIL_DISABLED STREQUAL "1")
+        set(Python_FIND_ABI "OFF" "OFF" "OFF" "ON")
+    endif()
+endif()
 
 find_package(Python REQUIRED COMPONENTS Interpreter Development.Module NumPy)
 
