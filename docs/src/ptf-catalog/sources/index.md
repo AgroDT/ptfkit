@@ -35,6 +35,7 @@ Each page describes the source, scope, inputs, outputs, status, and limitations 
 | [Puckett et al. (1985), Alabama Lower Coastal Plain Ultisols.](./puckett1985.md) | Lower Coastal Plain of Alabama, USA | 1 |
 | [Rawls et al. (1982), water-retention regressions for soils across the USA.](./rawls1982.md) | Agricultural soils from 32 states of the USA | 3 |
 | [Rawls et al. (2003), organic-carbon effects on soil water retention.](./rawls2003.md) | United States | 4 |
+| [Saxton et al. retention relationships parameterized by USDA CalcPTF.](./saxton1986.md) | United States | 1 |
 | [Saxton and Rawls (2006), soil water characteristics from texture and organic matter.](./saxton2006.md) | United States | 7 |
 | [Tiwary et al. (2014), hydraulic PTFs for two major soil regions of India.](./tiwary2014.md) | Indo-Gangetic Plains and black soil region of India | 2 |
 | [Varallyai et al. (1982), water-retention parameter regressions for Hungarian soils.](./varallyai1982.md) | Hungary, mainly the Hungarian Plain | 4 |

@@ -107,6 +107,13 @@ van_genuchten_alpha:
       absolute: 1.0e-5
       rationale: Project-default meaningful resolution for an inverse-pressure parameter.
 
+brooks_corey_alpha:
+  description: Inverse pressure-scale parameter of a Brooks-Corey retention model.
+  units:
+    inverse_centimeter:
+      absolute: 1.0e-5
+      rationale: Project-default meaningful resolution for an inverse-length parameter.
+
 van_genuchten_n:
   description: Dimensionless van Genuchten pore-size distribution parameter.
   units:

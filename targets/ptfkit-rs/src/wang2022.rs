@@ -8,7 +8,7 @@ Wang, Y., Zhou, J., Ma, R., Zhu, G., & Zhang, Y. (2022). Development of a New Pe
 Function Addressing Limitations in Soil Hydraulic Models and Observations. Water Resources
 Research, 58, e2021WR031406.
 DOI: 10.1029/2021WR031406 (https://doi.org/10.1029/2021WR031406)"]
-#![allow(clippy::approx_constant)]
+
 #[inline]
 fn wang2022_alpha_h2(sand: f64, silt: f64, clay: f64) -> f64 {
     const ROOTS: &[usize] = &[

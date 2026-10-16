@@ -103,8 +103,6 @@ pub(crate) fn render_with_definitions(
                 .into_iter()
                 .map(forest_definition_tokens)
                 .collect::<Vec<_>>();
-            let forest_lint = (!forest_definitions.is_empty())
-                .then(|| quote!(#![allow(clippy::approx_constant)]));
             let mut defined_result_classes = BTreeSet::new();
             let definitions = functions
                 .into_iter()
@@ -120,7 +118,7 @@ pub(crate) fn render_with_definitions(
                 PathBuf::from(format!("{slug}.rs")),
                 render_tokens(
                     module_docs,
-                    quote!(#forest_lint #(#enum_definitions)* #(#internal_record_definitions)* #(#lookup_conversions)* #(#tree_definitions)* #(#forest_definitions)* #(#definitions)*),
+                    quote!(#(#enum_definitions)* #(#internal_record_definitions)* #(#lookup_conversions)* #(#tree_definitions)* #(#forest_definitions)* #(#definitions)*),
                 ),
             ))
         })
