@@ -1,0 +1,256 @@
+source:
+  summary: Gupta and Larson (1979), 12 point-retention regressions for United States soils.
+  citation_apa: >-
+    Gupta, S. C., & Larson, W. E. (1979). Estimating soil water retention
+    characteristics from particle size distribution, organic matter percent,
+    and bulk density. Water Resources Research, 15(6), 1633-1635.
+  doi:
+    identifier: 10.1029/WR015i006p01633
+    url: https://doi.org/10.1029/WR015i006p01633
+scope:
+  territory: Eastern and central United States; external comparison used Missouri soils.
+  dataset: >-
+    Regression data from artificially packed cores of 43 soil materials,
+    including 13 agricultural soils; predictions were compared with 61
+    Missouri soils.
+functions:
+- name: calc_ptf_gupta1979
+  status: implemented
+  public_api:
+    name: calc_ptf_gupta1979
+    result_class: Gupta1979WaterContents
+    summary: Estimate volumetric water contents at 12 matric potentials.
+  scope:
+    prediction_target: >-
+      Volumetric water content at matric potentials from -0.04 to -15 bar.
+    models:
+      h_theta: Twelve point-specific multiple linear regressions
+      k_h: null
+  inputs:
+  - name: sand
+    symbol: sand
+    unit: '%'
+    domain: 5 <= value <= 98
+    description: Sand content by mass for particles from 2.0 to 0.05 mm.
+  - name: silt
+    symbol: silt
+    unit: '%'
+    domain: 1 <= value <= 72
+    description: Silt content by mass for particles from 0.05 to 0.002 mm.
+  - name: clay
+    symbol: clay
+    unit: '%'
+    domain: 0 <= value <= 65
+    description: Clay content by mass for particles smaller than 0.002 mm.
+  - name: organic_matter
+    symbol: organic matter
+    unit: '%'
+    domain: 0 <= value <= 23
+    description: Soil organic matter content by mass.
+  - name: bulk_density
+    symbol: rho_b
+    unit: g/cm^3
+    domain: 0.74 <= value <= 1.74
+    description: Dry bulk density of the packed soil core.
+  outputs:
+    type: record
+    name: Gupta1979WaterContents
+    fields:
+    - name: theta_40_cm
+      quantity: volumetric_water_content
+      symbol: theta_0_04_bar
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: Volumetric water content at -0.04 bar matric potential.
+    - name: theta_70_cm
+      quantity: volumetric_water_content
+      symbol: theta_0_07_bar
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: Volumetric water content at -0.07 bar matric potential.
+    - name: theta_100_cm
+      quantity: volumetric_water_content
+      symbol: theta_0_10_bar
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: Volumetric water content at -0.10 bar matric potential.
+    - name: theta_200_cm
+      quantity: volumetric_water_content
+      symbol: theta_0_20_bar
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: Volumetric water content at -0.20 bar matric potential.
+    - name: theta_330_cm
+      quantity: volumetric_water_content
+      symbol: theta_0_33_bar
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: Volumetric water content at -0.33 bar matric potential.
+    - name: theta_600_cm
+      quantity: volumetric_water_content
+      symbol: theta_0_60_bar
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: Volumetric water content at -0.60 bar matric potential.
+    - name: theta_1000_cm
+      quantity: volumetric_water_content
+      symbol: theta_1_0_bar
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: Volumetric water content at -1.0 bar matric potential.
+    - name: theta_2000_cm
+      quantity: volumetric_water_content
+      symbol: theta_2_0_bar
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: Volumetric water content at -2.0 bar matric potential.
+    - name: theta_4000_cm
+      quantity: volumetric_water_content
+      symbol: theta_4_0_bar
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: Volumetric water content at -4.0 bar matric potential.
+    - name: theta_7000_cm
+      quantity: volumetric_water_content
+      symbol: theta_7_0_bar
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: Volumetric water content at -7.0 bar matric potential.
+    - name: theta_10000_cm
+      quantity: volumetric_water_content
+      symbol: theta_10_0_bar
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: Volumetric water content at -10.0 bar matric potential.
+    - name: theta_15000_cm
+      quantity: volumetric_water_content
+      symbol: theta_15_0_bar
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: Volumetric water content at -15.0 bar matric potential.
+  verification_cases:
+  - id: calcptf_predictors_point_regressions
+    kind: calculated
+    inputs:
+      sand: 58.6
+      silt: 30.3
+      clay: 11.1
+      organic_matter: 3.7928
+      bulk_density: 1.42
+    expected:
+      theta_40_cm: 0.4033312024
+      theta_70_cm: 0.3540531584
+      theta_100_cm: 0.3258745448
+      theta_200_cm: 0.2793909176
+      theta_330_cm: 0.2525202024
+      theta_600_cm: 0.2263572248
+      theta_1000_cm: 0.2079666064
+      theta_2000_cm: 0.1872239376
+      theta_4000_cm: 0.16339464
+      theta_7000_cm: 0.157275044
+      theta_10000_cm: 0.1497972984
+      theta_15000_cm: 0.1415263584
+    source_location: >-
+      Predictor values are from the USDA-ARS CalcPTF v3 shipped example;
+      organic matter is its documented conversion of 2.2% organic carbon by
+      the factor 1.724. Expected values were calculated from article Table 1.
+    rationale: >-
+      The shipped predictor set is a physically valid soil within every
+      article-reported calibration range, and its sand, silt, and clay contents
+      sum to 100%. Expected values were independently calculated with decimal
+      arithmetic from the 12 published point regressions; this is not evidence
+      of model accuracy.
+  edge_cases: []
+  documentation:
+    notes:
+    - Sand, silt, and clay percentages must sum to 100.
+    - >-
+      Output field names use the pressure-head labels adopted by USDA-ARS
+      CalcPTF for the article's corresponding bar-valued matric potentials.
+    warnings:
+    - >-
+      Avoid extrapolation beyond the source ranges for sand, silt, clay,
+      organic matter, and bulk density.
+  implementation:
+    variables:
+    - name: theta_40_cm
+      expr: >-
+        (7.053 * sand + 10.242 * silt + 10.070 * clay + 6.333 * organic_matter) / 1000 - 32.120 * bulk_density / 100
+    - name: theta_70_cm
+      expr: >-
+        (5.678 * sand + 9.228 * silt + 9.135 * clay + 6.103 * organic_matter) / 1000 - 26.960 * bulk_density / 100
+    - name: theta_100_cm
+      expr: >-
+        (5.018 * sand + 8.548 * silt + 8.833 * clay + 4.966 * organic_matter) / 1000 - 24.230 * bulk_density / 100
+    - name: theta_200_cm
+      expr: >-
+        (3.890 * sand + 7.066 * silt + 8.408 * clay + 2.817 * organic_matter) / 1000 - 18.780 * bulk_density / 100
+    - name: theta_330_cm
+      expr: >-
+        (3.075 * sand + 5.886 * silt + 8.039 * clay + 2.208 * organic_matter) / 1000 - 14.340 * bulk_density / 100
+    - name: theta_600_cm
+      expr: >-
+        (2.181 * sand + 4.557 * silt + 7.557 * clay + 2.191 * organic_matter) / 1000 - 9.276 * bulk_density / 100
+    - name: theta_1000_cm
+      expr: >-
+        (1.563 * sand + 3.620 * silt + 7.154 * clay + 2.388 * organic_matter) / 1000 - 5.759 * bulk_density / 100
+    - name: theta_2000_cm
+      expr: >-
+        (0.932 * sand + 2.643 * silt + 6.636 * clay + 2.717 * organic_matter) / 1000 - 2.214 * bulk_density / 100
+    - name: theta_4000_cm
+      expr: >-
+        (0.483 * sand + 1.943 * silt + 6.128 * clay + 2.925 * organic_matter) / 1000 - 0.204 * bulk_density / 100
+    - name: theta_7000_cm
+      expr: >-
+        (0.214 * sand + 1.538 * silt + 5.908 * clay + 2.855 * organic_matter) / 1000 + 1.530 * bulk_density / 100
+    - name: theta_10000_cm
+      expr: >-
+        (0.076 * sand + 1.334 * silt + 5.802 * clay + 2.653 * organic_matter) / 1000 + 2.145 * bulk_density / 100
+    - name: theta_15000_cm
+      expr: >-
+        (-0.059 * sand + 1.142 * silt + 5.766 * clay + 2.228 * organic_matter) / 1000 + 2.671 * bulk_density / 100
+scientific_notes: |
+  ## Supported models
+
+  Equation (1) and Table 1 define 12 multiple linear regressions for volumetric
+  water content at matric potentials from -0.04 to -15 bar. Each regression
+  uses sand, silt, clay, and organic matter percentages plus bulk density. The
+  texture fractions use 2.0-0.05 mm sand, 0.05-0.002 mm silt, and less than
+  0.002 mm clay, and their percentages sum to 100.
+
+  ## Review decisions
+
+  The filename's 1973 year is incorrect. The article states that it was
+  published in 1979, and the supplied research note identifies the canonical
+  Water Resources Research citation and DOI.
+
+  Table 1 prints the `a`, `b`, `c`, and `d` columns scaled by 10^3 and the `e`
+  column scaled by 10^2. The implementation retains the printed coefficient
+  lexemes and applies the corresponding divisors. Its calculated case agrees
+  at the first and last pressure points with the pinned USDA-ARS CalcPTF v3
+  `GuLar` point-regression implementation. The pinned `CalcPTF_ExeSource.zip`
+  SHA-256 is
+  `0a2a27bdaab264c8e8d221430fa62da0d4f2b36aa41d51d162328bbd1eea2949`.
+
+  The public function returns only the article's 12 point regressions. CalcPTF's
+  subsequent iterative van Genuchten fitting is a separate computation and is
+  not attributed to this article's formula.
+
+  ## Documented limitations
+
+  The calibration materials ranged from 5-98% sand, 1-72% silt, 0-65% clay,
+  0-23% organic matter, and 0.74-1.74 g/cm^3 bulk density. The article compared
+  predictions with measurements from 61 Missouri soils and discusses a
+  constant bias associated with differences in experimental procedures.

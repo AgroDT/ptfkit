@@ -15,6 +15,7 @@
 #include <ptfkit/dijkerman1988.h>
 #include <ptfkit/ferrerjulia2004.h>
 #include <ptfkit/gunarathna2019.h>
+#include <ptfkit/gupta1979.h>
 #include <ptfkit/hodnett2002.h>
 #include <ptfkit/jabro1992.h>
 #include <ptfkit/kalumba2021.h>
