@@ -21,6 +21,7 @@ Each page describes the source, scope, inputs, outputs, status, and limitations 
 | [Dijkerman (1988), texture-based gravimetric water retention for Sierra Leone soils.](./dijkerman1988.md) | Sierra Leone, West Africa | 2 |
 | [Ferrer Julià et al. (2004), saturated-conductivity PTFs for Spanish soils.](./ferrerjulia2004.md) | Spanish mainland on the Iberian Peninsula | 41 |
 | [Point water-retention regressions for tropical Sri Lankan soils.](./gunarathna2019.md) | Tropical Sri Lanka. | 11 |
+| [Gupta and Larson (1979), 12 point-retention regressions for United States soils.](./gupta1979.md) | Eastern and central United States; external comparison used Missouri soils. | 1 |
 | [Hodnett & Tomasella (2002), tropical-soil regressions for four van Genuchten parameters.](./hodnett2002.md) | Tropical soils between approximately 25 degrees N and 25 degrees S. | 1 |
 | [Jabro (1992), United States.](./jabro1992.md) | USA | 1 |
 | [Kalumba et al. (2021) PTFs for Zambezi River Basin soil hydraulic properties.](./kalumba2021.md) | Zambezi River Basin, with field measurements from the Upper Mulungushi sub-basin. | 28 |

@@ -29,6 +29,7 @@ ptfkit's C API is organized around installed headers.
 - [`<ptfkit/dijkerman1988.h>`](headers/dijkerman1988.md) — Dijkerman (1988), texture-based gravimetric water retention for Sierra Leone soils.
 - [`<ptfkit/ferrerjulia2004.h>`](headers/ferrerjulia2004.md) — Ferrer Julià et al. (2004), saturated-conductivity PTFs for Spanish soils.
 - [`<ptfkit/gunarathna2019.h>`](headers/gunarathna2019.md) — Point water-retention regressions for tropical Sri Lankan soils.
+- [`<ptfkit/gupta1979.h>`](headers/gupta1979.md) — Gupta and Larson (1979), 12 point-retention regressions for United States soils.
 - [`<ptfkit/hodnett2002.h>`](headers/hodnett2002.md) — Hodnett & Tomasella (2002), tropical-soil regressions for four van Genuchten parameters.
 - [`<ptfkit/jabro1992.h>`](headers/jabro1992.md) — Jabro (1992), United States.
 - [`<ptfkit/kalumba2021.h>`](headers/kalumba2021.md) — Kalumba et al. (2021) PTFs for Zambezi River Basin soil hydraulic properties.

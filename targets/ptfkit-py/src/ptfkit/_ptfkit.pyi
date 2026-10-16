@@ -84,6 +84,7 @@ calc_ptf_gunarathna2019_vwc33_set1: ufunc
 calc_ptf_gunarathna2019_vwc33_set2: ufunc
 calc_ptf_gunarathna2019_vwc33_set3: ufunc
 calc_ptf_gunarathna2019_vwc33_set4: ufunc
+calc_ptf_gupta1979: ufunc
 calc_ptf_hodnett2002: ufunc
 calc_ptf_jabro1992: ufunc
 calc_ptf_kalumba2021_mlr_ksat: ufunc

@@ -17,6 +17,7 @@
 #include "dijkerman1988.c"
 #include "ferrerjulia2004.c"
 #include "gunarathna2019.c"
+#include "gupta1979.c"
 #include "hodnett2002.c"
 #include "jabro1992.c"
 #include "kalumba2021.c"
@@ -90,6 +91,10 @@ PyMODINIT_FUNC PyInit__ptfkit(void) {
         return NULL;
     }
     if (ptfkit_register_gunarathna2019(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_gupta1979(module) < 0) {
         Py_DECREF(module);
         return NULL;
     }
