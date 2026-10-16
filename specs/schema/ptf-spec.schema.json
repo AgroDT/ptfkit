@@ -79,8 +79,37 @@
               }
             }
           }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["name", "forest"],
+          "properties": {
+            "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+            "forest": { "$ref": "#/$defs/randomForestInvocation" }
+          }
         }
       ]
+    },
+    "randomForestInvocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["payload", "arguments"],
+      "properties": {
+        "payload": {
+          "type": "string",
+          "pattern": "^\\.\\./payloads/[A-Za-z0-9._/-]+\\.json$"
+        },
+        "arguments": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": { "pattern": "^[a-z][a-z0-9_]*$" },
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          }
+        }
+      }
     },
     "decisionTree": {
       "oneOf": [

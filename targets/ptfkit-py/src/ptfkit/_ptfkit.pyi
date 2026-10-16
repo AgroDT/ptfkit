@@ -187,6 +187,8 @@ calc_ptf_varallyai1982_meadow: ufunc
 calc_ptf_vereecken1989: ufunc
 calc_ptf_vereecken1989_detailed: ufunc
 calc_ptf_wang2012: ufunc
+calc_ptf_wang2022_h2: ufunc
+calc_ptf_wang2022_h3: ufunc
 calc_ptf_weber2020: ufunc
 calc_ptf_weynants2009: ufunc
 calc_ptf_wosten2001_class_parameters: ufunc

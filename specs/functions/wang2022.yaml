@@ -1,0 +1,381 @@
+source:
+  summary: Wang et al. (2022), random-forest PTFs for soil hydraulic-model parameters.
+  citation_apa: >-
+    Wang, Y., Zhou, J., Ma, R., Zhu, G., & Zhang, Y. (2022). Development of a
+    New Pedotransfer Function Addressing Limitations in Soil Hydraulic Models
+    and Observations. Water Resources Research, 58, e2021WR031406.
+  doi:
+    identifier: 10.1029/2021WR031406
+    url: https://doi.org/10.1029/2021WR031406
+scope:
+  territory: null
+  dataset: null
+$defs:
+  sand:
+    name: sand
+    symbol: sand
+    unit: '%'
+    domain: >-
+      0 <= value <= 100; sand, silt, and clay must sum to 100 under the
+      proposed public percent contract.
+    description: Sand content by mass.
+  silt:
+    name: silt
+    symbol: silt
+    unit: '%'
+    domain: >-
+      0 <= value <= 100; sand, silt, and clay must sum to 100 under the
+      proposed public percent contract.
+    description: Silt content by mass.
+  clay:
+    name: clay
+    symbol: clay
+    unit: '%'
+    domain: >-
+      0 <= value <= 100; sand, silt, and clay must sum to 100 under the
+      proposed public percent contract.
+    description: Clay content by mass.
+  bulk_density:
+    name: bulk_density
+    symbol: BD
+    unit: g/cm^3
+    domain: null
+    description: Dry bulk density used by the H3 random-forest models.
+  Wang2022PTFResult:
+    type: record
+    name: Wang2022PTFResult
+    fields:
+      - name: alpha
+        quantity: van_genuchten_alpha
+        symbol: alpha
+        unit: inverse_centimeter
+        reported_unit: cm⁻¹
+        domain: null
+        description: van Genuchten inverse pressure-scale parameter.
+      - name: n
+        quantity: van_genuchten_n
+        symbol: n
+        unit: dimensionless
+        reported_unit: dimensionless
+        domain: null
+        description: van Genuchten pore-size distribution parameter.
+      - name: m
+        quantity: van_genuchten_m
+        symbol: m
+        unit: dimensionless
+        reported_unit: dimensionless
+        domain: null
+        description: van Genuchten retention-curve shape parameter.
+      - name: theta_s
+        quantity: volumetric_water_content
+        symbol: theta_s
+        unit: volume_fraction
+        reported_unit: cm³ cm⁻³
+        domain: null
+        description: Saturated volumetric soil water content.
+      - name: k_sat
+        quantity: saturated_hydraulic_conductivity
+        symbol: Ks
+        unit: centimeter_per_day
+        reported_unit: cm day⁻¹
+        domain: null
+        description: Saturated hydraulic conductivity.
+      - name: sl
+        quantity: soil_hydraulic_slope_parameter
+        symbol: SL
+        unit: dimensionless
+        reported_unit: dimensionless
+        domain: null
+        description: Source-defined soil hydraulic slope parameter.
+functions:
+  - name: calc_ptf_wang2022_h2
+    status: implemented
+    public_api:
+      name: calc_ptf_wang2022_h2
+      result_class: Wang2022PTFResult
+      summary: >-
+        Estimate six soil hydraulic-model parameters from sand, silt, and clay
+        with the published H2 random forests.
+    scope:
+      prediction_target: >-
+        van Genuchten alpha, n, and m, saturated volumetric water content,
+        saturated hydraulic conductivity, and the source-defined slope
+        parameter SL.
+      models:
+        h_theta: >-
+          H2 random-forest estimates of van Genuchten alpha, n, and m,
+          saturated water content, and slope parameter SL
+        k_h: H2 random-forest estimate of saturated hydraulic conductivity
+    inputs:
+      - $ref: '#/$defs/sand'
+      - $ref: '#/$defs/silt'
+      - $ref: '#/$defs/clay'
+    outputs:
+      $ref: '#/$defs/Wang2022PTFResult'
+    implementation:
+      variables:
+        - {name: sand_fraction, expr: sand / 100}
+        - {name: silt_fraction, expr: silt / 100}
+        - {name: clay_fraction, expr: clay / 100}
+        - name: alpha_log10
+          forest:
+            payload: ../payloads/wang2022/alpha_h2.json
+            arguments: {sand: sand_fraction, silt: silt_fraction, clay: clay_fraction}
+        - {name: alpha, expr: 10 ^ alpha_log10}
+        - name: n_log10
+          forest:
+            payload: ../payloads/wang2022/n_h2.json
+            arguments: {sand: sand_fraction, silt: silt_fraction, clay: clay_fraction}
+        - {name: n, expr: 10 ^ n_log10}
+        - name: m_log10
+          forest:
+            payload: ../payloads/wang2022/m_h2.json
+            arguments: {sand: sand_fraction, silt: silt_fraction, clay: clay_fraction}
+        - {name: m, expr: 10 ^ m_log10}
+        - name: theta_s
+          forest:
+            payload: ../payloads/wang2022/theta_s_h2.json
+            arguments: {sand: sand_fraction, silt: silt_fraction, clay: clay_fraction}
+        - name: k_sat_log10
+          forest:
+            payload: ../payloads/wang2022/k_sat_h2.json
+            arguments: {sand: sand_fraction, silt: silt_fraction, clay: clay_fraction}
+        - {name: k_sat, expr: 10 ^ k_sat_log10}
+        - name: sl
+          forest:
+            payload: ../payloads/wang2022/sl_h2.json
+            arguments: {sand: sand_fraction, silt: silt_fraction, clay: clay_fraction}
+    verification_cases:
+      - id: official_workbook_row_1
+        kind: published
+        inputs:
+          sand: 91.5
+          silt: 4.5
+          clay: 4.0
+        expected:
+          alpha: 0.04672305218475889
+          n: 2.9739608834375892
+          m: 0.84428460592148913
+          theta_s: 0.35271984260044448
+          k_sat: 130.13546772434788
+          sl: 99.953875367172699
+        source_location: >-
+          Official H2 example workbook row 1 and direct execution of the twelve
+          original serialized estimators in the documented compatible Python
+          environment; workbook texture fractions 0.915, 0.045, and 0.040 are
+          expressed here as percentage inputs under the proposed public contract.
+        notes: >-
+          Full-precision predictions come from the official artifact probe, not
+          the workbook's five-decimal display values.
+    edge_cases: []
+    documentation:
+      notes:
+        - >-
+          The proposed public contract accepts texture in percent and divides
+          each value by 100 before passing predictors to the serialized models.
+        - >-
+          The serialized models predict log10(alpha), log10(n), log10(m), and
+          log10(Ks); official code applies 10 raised to each prediction. Theta_s
+          and SL are emitted directly.
+        - >-
+          Predictor order is sand, silt, clay and must be preserved exactly.
+      warnings:
+        - >-
+          The supplied source describes texture as article percentages but the
+          executable workbook and code use fractions summing to one. This API
+          makes that boundary explicit by accepting percent and dividing by 100.
+
+  - name: calc_ptf_wang2022_h3
+    status: implemented
+    public_api:
+      name: calc_ptf_wang2022_h3
+      result_class: Wang2022PTFResult
+      summary: >-
+        Estimate six soil hydraulic-model parameters from texture and bulk
+        density with the published H3 random forests.
+    scope:
+      prediction_target: >-
+        van Genuchten alpha, n, and m, saturated volumetric water content,
+        saturated hydraulic conductivity, and the source-defined slope
+        parameter SL.
+      models:
+        h_theta: >-
+          H3 random-forest estimates of van Genuchten alpha, n, and m,
+          saturated water content, and slope parameter SL
+        k_h: H3 random-forest estimate of saturated hydraulic conductivity
+    inputs:
+      - $ref: '#/$defs/sand'
+      - $ref: '#/$defs/silt'
+      - $ref: '#/$defs/clay'
+      - $ref: '#/$defs/bulk_density'
+    outputs:
+      $ref: '#/$defs/Wang2022PTFResult'
+    implementation:
+      variables:
+        - {name: sand_fraction, expr: sand / 100}
+        - {name: silt_fraction, expr: silt / 100}
+        - {name: clay_fraction, expr: clay / 100}
+        - name: alpha_log10
+          forest:
+            payload: ../payloads/wang2022/alpha_h3.json
+            arguments: {sand: sand_fraction, silt: silt_fraction, clay: clay_fraction, bulk_density: bulk_density}
+        - {name: alpha, expr: 10 ^ alpha_log10}
+        - name: n_log10
+          forest:
+            payload: ../payloads/wang2022/n_h3.json
+            arguments: {sand: sand_fraction, silt: silt_fraction, clay: clay_fraction, bulk_density: bulk_density}
+        - {name: n, expr: 10 ^ n_log10}
+        - name: m_log10
+          forest:
+            payload: ../payloads/wang2022/m_h3.json
+            arguments: {sand: sand_fraction, silt: silt_fraction, clay: clay_fraction, bulk_density: bulk_density}
+        - {name: m, expr: 10 ^ m_log10}
+        - name: theta_s
+          forest:
+            payload: ../payloads/wang2022/theta_s_h3.json
+            arguments: {sand: sand_fraction, silt: silt_fraction, clay: clay_fraction, bulk_density: bulk_density}
+        - name: k_sat_log10
+          forest:
+            payload: ../payloads/wang2022/k_sat_h3.json
+            arguments: {sand: sand_fraction, silt: silt_fraction, clay: clay_fraction, bulk_density: bulk_density}
+        - {name: k_sat, expr: 10 ^ k_sat_log10}
+        - name: sl
+          forest:
+            payload: ../payloads/wang2022/sl_h3.json
+            arguments: {sand: sand_fraction, silt: silt_fraction, clay: clay_fraction, bulk_density: bulk_density}
+    verification_cases:
+      - id: typical_sandy_soil_with_bulk_density
+        kind: calculated
+        inputs:
+          sand: 91.5
+          silt: 4.5
+          clay: 4.0
+          bulk_density: 1.5
+        expected:
+          alpha: 0.045579274786619876
+          n: 3.324218274405845
+          m: 0.8469166621126708
+          theta_s: 0.3667741442688739
+          k_sat: 133.97812239745727
+          sl: 107.33272261055596
+        source_location: >-
+          Frozen H3 estimators executed in the documented Python 3.9,
+          scikit-learn 0.24.2 environment.
+        rationale: >-
+          The official H2 workbook row 1 supplies a physically valid texture
+          composition. A dry bulk density of 1.5 g/cm^3 is an expert-selected
+          positive, physically typical value because the source does not publish
+          a complete H3 predictor row or a fitted-domain range. The fixed outputs
+          check computational transcription and are not evidence of model accuracy.
+    edge_cases: []
+    documentation:
+      notes:
+        - >-
+          The serialized models predict log10(alpha), log10(n), log10(m), and
+          log10(Ks); official code applies 10 raised to each prediction. Theta_s
+          and SL are emitted directly.
+        - >-
+          Predictor order is sand, silt, clay, bulk density and must be
+          preserved exactly.
+      warnings:
+        - >-
+          The supplied source describes texture as article percentages but the
+          executable workbook and code use fractions summing to one. This API
+          makes that boundary explicit by accepting percent and dividing by 100.
+
+scientific_notes: |
+  ## Supported models
+
+  The official HydroShare bundle contains twelve serialized scikit-learn 0.24.2
+  random-forest estimators: one estimator for each of six outputs in the H2 and
+  H3 families. H2 uses predictors in the order sand, silt, clay. H3 adds bulk
+  density as the fourth predictor. No model was retrained, refitted, converted,
+  or substituted in the documented artifact probe.
+
+  For alpha, n, m, and Ks, each fitted estimator predicts a base-10 logarithm
+  and official code applies `10 ** prediction`. Theta_s and SL are returned
+  directly. The H2 full-precision verification case records direct execution in
+  a Python 3.9 environment with NumPy 1.23.5, scikit-learn 0.24.2, joblib 1.2.0,
+  pandas 1.5.3, and openpyxl 3.1.5.
+
+  ## Artifact evidence
+
+  - HydroShare BagIt resource SHA-256:
+    `7bed6d37d39a6817b67aff8c4de3407c05e92f2bed6385dd846cfd60c403e34c`.
+  - Python/R trained-model bundle SHA-256:
+    `dd545861eab88b20028f6825f2ad75e7c3495b286635b4a836d9ecf98cf12199`.
+  - MATLAB bundle SHA-256:
+    `62586ec7d1c1cb2d5e2b5dbeea4ac770f5a1aaa79427b76bb4372932a83810f7`.
+  - Extension/calculation code SHA-256:
+    `7bf0e7e9515e51711c49f5026e57e4703bc66df4a0f50de0c89bb932e715b96d`.
+  - Official data workbook SHA-256:
+    `0c43898e24dee7c345164d222491d2c24a3fa744bbb1f250f1f5d5f9cad3b80f`.
+  - H2 estimator SHA-256 values: alpha
+    `ea406570e65ab87643d2529af6476811e65d6ef2535671f0858266cff9962f33`,
+    n `22b5c7a5b3e3a1b09a540afe52d57adb2ac7311b59241a918a67310ef99051f1`,
+    m `7b11a7e347d6f41fdcfe2eb4de02403f2d521d28469380e41cfebba7c6f8798b`,
+    theta_s
+    `e9f047d23af61155c5c9bf04059c9c1c7ef777f750cf4b90a8bf9796d2e45249`,
+    Ks `d96096e6835b47e6a5c79aaadffb0e7a56da5ea3edd6d7fb1eb2df24b71cf04d`,
+    and SL
+    `e67cf2c48287e48e5b7cae70154911e4d10ade0050815d1cd9ad81f70bddec35`.
+  - H3 estimator SHA-256 values: alpha
+    `dd52d11ea2a0c1b69b317cf278f4fa42c408800d6c9152374f6ee9d17bb9d171`,
+    n `c64501f88df3fa9758dc2708b8bbedca199c804a2346d2e4e37cdc34ffa29a99`,
+    m `d29dfaaf511f273395a918902f8e6b8f59af0274fa69e01698974ef95c33540b`,
+    theta_s
+    `7f90d5feca7cdd1e68962531ac302c18028868cd52526372cdcebe3a35c9b577`,
+    Ks `316c4378285fca358d2ab2d4841f42e622ab64937f1b1e664654983844143d0b`,
+    and SL
+    `e913d8d0b836fd761c5e66f22f0d4adce52b19d4f9b5c93e1f01beea2c6462f4`.
+
+  Direct SHA-256 calculation matched `manifest.csv` for the BagIt archive, four
+  archived artifacts, and all twelve serialized estimators. These verified
+  values supersede the four conflicting inner-artifact hashes recorded in the
+  transient extraction notes.
+
+  The resource identifier is `2e1d064c765744db9d4b7855671e641d` and its DOI
+  is `10.4211/hs.2e1d064c765744db9d4b7855671e641d`. The supplied source reports
+  that the landing page identifies the resource as CC BY 4.0. It also records
+  that two BagIt manifest values with `-6` and `-8` suffixes are multipart S3
+  ETags rather than ordinary MD5 digests; the documented local integrity check
+  therefore uses SHA-256.
+
+  ## Review decisions
+
+  The six fitted target estimators in each family are grouped into one
+  record-returning public function. The public texture inputs are percentages
+  and are divided by 100 at the artifact boundary, matching the author readme's
+  `Sand*100%`, `Silt*100%`, and `Clay*100%` description and the fraction-valued
+  executable workbook. The original workbook row remains identified in the H2
+  verification-case provenance.
+
+  Each serialized estimator was imported without retraining into the reviewed
+  `ptfkit-random-forest` JSON representation. The payload preserves feature
+  order, tree order, every child index, feature index, threshold, and node value.
+  Runtime evaluation follows scikit-learn's inclusive `<=` left branch and
+  arithmetic mean across trees. Each payload records the SHA-256 of its source
+  estimator.
+
+  The author readme identifies bulk density as `BD*g/cm^3` and supplies the full
+  APA citation retained above. Because no complete H3 row is published, the H3
+  verification case combines the official first texture row with an
+  expert-selected positive bulk density of 1.5 g/cm^3 and fixes outputs obtained
+  by executing the frozen estimators in their original compatible environment.
+
+  The HydroShare landing page records an author correction: residual-water-
+  content evaluation uses pressure head `hr = -1.0e4 cm`, not `-1.0e3 cm`.
+  This correction is retained as source context; the supplied material does not
+  identify it as an input or output of either retained random-forest function.
+
+  ## Documented limitations
+
+  Current scikit-learn 1.8.0 cannot directly deserialize the scikit-learn 0.24.2
+  tree-node dtype. That incompatibility is not evidence that the published
+  models are invalid. The generated numeric payloads are derived from the
+  HydroShare resource identified as CC BY 4.0; the original pickle/joblib files
+  are not included in ptfkit release artifacts.
+
+  ## Blockers
+
+  None. Both functions are ready for implementation review and target generation.

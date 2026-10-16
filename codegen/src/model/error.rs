@@ -62,6 +62,90 @@ pub(crate) enum DefinitionError {
     DuplicateQuantityUnit,
     #[error(transparent)]
     Tree(#[from] TreeError),
+    #[error(transparent)]
+    RandomForest(#[from] RandomForestError),
+}
+
+#[derive(Debug, thiserror::Error)]
+#[error("random forest `{name}` {kind}")]
+pub(crate) struct RandomForestError {
+    pub(crate) name: String,
+    pub(crate) kind: RandomForestErrorKind,
+}
+
+impl RandomForestError {
+    pub(crate) fn definition(name: &str, kind: RandomForestErrorKind) -> DefinitionError {
+        DefinitionError::RandomForest(Self {
+            name: name.to_owned(),
+            kind,
+        })
+    }
+}
+
+#[derive(Debug, thiserror::Error)]
+pub(crate) enum RandomForestErrorKind {
+    #[error("uses unsupported format version {0}; expected 1")]
+    FormatVersion(u32),
+    #[error("name must match ^[a-z][a-z0-9_]*$")]
+    InvalidName,
+    #[error("source_sha256 must contain exactly 64 lowercase hexadecimal digits")]
+    InvalidSourceSha256,
+    #[error("must declare at least one feature")]
+    EmptyFeatures,
+    #[error("feature `{0}` must match ^[a-z][a-z0-9_]*$")]
+    InvalidFeature(String),
+    #[error("repeats feature `{0}`")]
+    DuplicateFeature(String),
+    #[error("must contain at least one tree")]
+    EmptyForest,
+    #[error("tree {tree} must contain at least one node")]
+    EmptyTree { tree: usize },
+    #[error(
+        "tree {tree} node arrays must all have length {expected}; `{field}` has length {actual}"
+    )]
+    ArrayLength {
+        tree: usize,
+        field: &'static str,
+        expected: usize,
+        actual: usize,
+    },
+    #[error("tree {tree} node {node} has mismatched leaf child indices {left} and {right}")]
+    LeafChildren {
+        tree: usize,
+        node: usize,
+        left: i32,
+        right: i32,
+    },
+    #[error("tree {tree} node {node} leaf feature must be -2, found {feature}")]
+    LeafFeature {
+        tree: usize,
+        node: usize,
+        feature: i32,
+    },
+    #[error("tree {tree} node {node} child index {child} is outside 0..{nodes}")]
+    ChildIndex {
+        tree: usize,
+        node: usize,
+        child: i32,
+        nodes: usize,
+    },
+    #[error(
+        "tree {tree} node {node} uses feature index {feature}, but only {features} features exist"
+    )]
+    FeatureIndex {
+        tree: usize,
+        node: usize,
+        feature: i32,
+        features: usize,
+    },
+    #[error("tree {tree} node {node} has a non-finite `{field}` value")]
+    NonFiniteNumber {
+        tree: usize,
+        node: usize,
+        field: &'static str,
+    },
+    #[error("tree {tree} node {node} is not reachable exactly once from root node 0")]
+    Topology { tree: usize, node: usize },
 }
 
 #[derive(Debug, thiserror::Error)]

@@ -7,9 +7,10 @@ use crate::{
     formula::{self, Span},
     model::{
         DecisionTree as RawDecisionTreeNode, DecisionTreeLeafValue,
-        DecisionTreeSplit as RawDecisionTreeSplit, Outputs, RawExpression, RawFunction,
-        RawInputType, RawLookup, RawTreeInvocation, RawVariableValue, SourceLocation,
-        TreeDefinition as RawTreeDefinition, TreeInput as RawTreeInput,
+        DecisionTreeSplit as RawDecisionTreeSplit, Outputs,
+        RandomForestDefinition as RawRandomForestDefinition, RawExpression, RawFunction,
+        RawInputType, RawLookup, RawRandomForestInvocation, RawTreeInvocation, RawVariableValue,
+        SourceLocation, TreeDefinition as RawTreeDefinition, TreeInput as RawTreeInput,
     },
 };
 
@@ -56,19 +57,84 @@ pub(crate) enum VariableValue {
     Expression(Expr),
     RecordLookup(RecordLookup),
     Tree(TreeCall),
+    Forest(RandomForestCall),
 }
 
 impl VariableValue {
     pub(crate) fn as_expression(&self) -> Option<&Expr> {
         match self {
             Self::Expression(expression) => Some(expression),
-            Self::RecordLookup(_) | Self::Tree(_) => None,
+            Self::RecordLookup(_) | Self::Tree(_) | Self::Forest(_) => None,
         }
     }
 
     pub(crate) fn is_number(&self) -> bool {
         matches!(self, Self::Expression(_))
             || matches!(self, Self::Tree(tree) if tree.definition.output == ValueType::Number)
+            || matches!(self, Self::Forest(_))
+    }
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub(crate) struct RandomForestCall {
+    pub(crate) definition: RandomForestDefinition,
+    pub(crate) arguments: Vec<Reference>,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub(crate) struct RandomForestDefinition {
+    pub(crate) name: String,
+    pub(crate) features: Vec<String>,
+    pub(crate) trees: Vec<RandomForestTree>,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub(crate) struct RandomForestTree {
+    pub(crate) children_left: Vec<i32>,
+    pub(crate) children_right: Vec<i32>,
+    pub(crate) features: Vec<i32>,
+    pub(crate) thresholds: Vec<Number>,
+    pub(crate) values: Vec<Number>,
+}
+
+pub(crate) struct FlattenedRandomForest {
+    pub(crate) roots: Vec<usize>,
+    pub(crate) children_left: Vec<usize>,
+    pub(crate) children_right: Vec<usize>,
+    pub(crate) features: Vec<i32>,
+    pub(crate) thresholds: Vec<Number>,
+    pub(crate) values: Vec<Number>,
+}
+
+impl RandomForestDefinition {
+    pub(crate) fn flattened(&self) -> FlattenedRandomForest {
+        let node_count = self.trees.iter().map(|tree| tree.features.len()).sum();
+        let mut flattened = FlattenedRandomForest {
+            roots: Vec::with_capacity(self.trees.len()),
+            children_left: Vec::with_capacity(node_count),
+            children_right: Vec::with_capacity(node_count),
+            features: Vec::with_capacity(node_count),
+            thresholds: Vec::with_capacity(node_count),
+            values: Vec::with_capacity(node_count),
+        };
+        for tree in &self.trees {
+            let offset = flattened.features.len();
+            flattened.roots.push(offset);
+            flattened.children_left.extend(
+                tree.children_left
+                    .iter()
+                    .map(|child| usize::try_from(*child).map_or(0, |child| offset + child)),
+            );
+            flattened.children_right.extend(
+                tree.children_right
+                    .iter()
+                    .map(|child| usize::try_from(*child).map_or(0, |child| offset + child)),
+            );
+            flattened.features.extend(&tree.features);
+            flattened.thresholds.extend(tree.thresholds.iter().cloned());
+            flattened.values.extend(tree.values.iter().cloned());
+        }
+        flattened
     }
 }
 
@@ -273,6 +339,22 @@ pub(crate) enum SemanticErrorKind {
         input: String,
         expected: String,
     },
+    #[error(
+        "random forest `{forest}` argument names do not match its features; missing {missing:?}, unknown {unknown:?}"
+    )]
+    ForestArguments {
+        forest: String,
+        missing: Vec<String>,
+        unknown: Vec<String>,
+    },
+    #[error("random forest argument `{name}` cannot reference itself")]
+    ForestSelfReference { name: String },
+    #[error("random forest argument `{name}` cannot reference a later variable")]
+    ForestForwardReference { name: String },
+    #[error("random forest argument references unknown value `{name}`")]
+    UnknownForestArgument { name: String },
+    #[error("random forest argument `{name}` must be numeric")]
+    ForestArgumentType { name: String },
     #[error("expression is repeated at {path}:{line}:{start}..{end}; it must be extracted into an earlier implementation variable",
         path = .specification_path.display(), line = .location.line,
         start = .location.column + .span.start, end = .location.column + .span.end)]
@@ -434,6 +516,16 @@ pub(crate) fn compile(raw: &RawFunction) -> Result<Function, Box<Error>> {
                     compile_tree_call(raw, tree, &scope, &variable_names, index)?;
                 (VariableValue::Tree(tree), value_type)
             }
+            RawVariableValue::Forest(forest) => (
+                VariableValue::Forest(compile_random_forest_call(
+                    raw,
+                    forest,
+                    &scope,
+                    &variable_names,
+                    index,
+                )?),
+                ValueType::Number,
+            ),
         };
         scope.insert(
             variable.name.clone(),
@@ -780,6 +872,110 @@ fn compile_tree_call(
         },
         output,
     ))
+}
+
+fn compile_random_forest_call(
+    raw: &RawFunction,
+    call: &RawRandomForestInvocation,
+    scope: &BTreeMap<String, Binding>,
+    variable_names: &BTreeMap<&str, usize>,
+    variable_index: usize,
+) -> Result<RandomForestCall, Box<Error>> {
+    let expected = call
+        .definition
+        .features
+        .iter()
+        .map(String::as_str)
+        .collect::<std::collections::BTreeSet<_>>();
+    let actual = call
+        .arguments
+        .keys()
+        .map(String::as_str)
+        .collect::<std::collections::BTreeSet<_>>();
+    if expected != actual {
+        let missing = expected
+            .difference(&actual)
+            .map(|name| (*name).to_owned())
+            .collect();
+        let unknown = actual
+            .difference(&expected)
+            .map(|name| (*name).to_owned())
+            .collect();
+        return Err(Error::in_function(
+            raw,
+            &call.implementation_path,
+            Span { start: 0, end: 0 },
+            SemanticErrorKind::ForestArguments {
+                forest: call.definition.name.clone(),
+                missing,
+                unknown,
+            },
+        ));
+    }
+    let mut arguments = Vec::with_capacity(call.definition.features.len());
+    for feature in &call.definition.features {
+        let actual = &call.arguments[feature];
+        let Some(binding) = scope.get(actual) else {
+            let kind = match variable_names.get(actual.as_str()) {
+                Some(index) if *index == variable_index => SemanticErrorKind::ForestSelfReference {
+                    name: actual.clone(),
+                },
+                Some(index) if *index > variable_index => {
+                    SemanticErrorKind::ForestForwardReference {
+                        name: actual.clone(),
+                    }
+                }
+                _ => SemanticErrorKind::UnknownForestArgument {
+                    name: actual.clone(),
+                },
+            };
+            return Err(Error::in_function(
+                raw,
+                &call.implementation_path,
+                Span { start: 0, end: 0 },
+                kind,
+            ));
+        };
+        if binding.value_type != ValueType::Number {
+            return Err(Error::in_function(
+                raw,
+                &call.implementation_path,
+                Span { start: 0, end: 0 },
+                SemanticErrorKind::ForestArgumentType {
+                    name: actual.clone(),
+                },
+            ));
+        }
+        arguments.push(binding.reference);
+    }
+    Ok(RandomForestCall {
+        definition: compile_random_forest_definition(&call.definition),
+        arguments,
+    })
+}
+
+fn compile_random_forest_definition(raw: &RawRandomForestDefinition) -> RandomForestDefinition {
+    let number = |number: &serde_json::Number| Number {
+        value: number
+            .as_f64()
+            .expect("random forest numbers are validated"),
+        lexeme: number.to_string(),
+    };
+    RandomForestDefinition {
+        name: raw.name.clone(),
+        features: raw.features.clone(),
+        trees: raw
+            .trees
+            .iter()
+            .map(|tree| RandomForestTree {
+                children_left: tree.children_left.clone(),
+                children_right: tree.children_right.clone(),
+                features: tree.features.clone(),
+                thresholds: tree.thresholds.iter().map(number).collect(),
+                values: tree.values.iter().map(number).collect(),
+            })
+            .collect(),
+    }
 }
 
 fn value_type_name(value_type: &ValueType) -> String {

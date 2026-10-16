@@ -14,6 +14,7 @@ pub(crate) fn fixture_root(label: &str) -> PathBuf {
         NEXT_ROOT.fetch_add(1, std::sync::atomic::Ordering::Relaxed)
     ));
     fs::create_dir_all(root.join("specs/functions")).unwrap();
+    fs::create_dir_all(root.join("specs/payloads")).unwrap();
     fs::create_dir_all(root.join("specs/schema")).unwrap();
     fs::copy(
         Path::new(env!("CARGO_MANIFEST_DIR")).join("../specs/schema/ptf-spec.schema.json"),

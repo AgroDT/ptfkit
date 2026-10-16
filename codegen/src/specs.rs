@@ -18,8 +18,9 @@ use crate::{
     formula,
     model::{
         Entry, EnumDefinition, EnumType, Implementation, ImplementationVariable, Input, Quantity,
-        QuantityRegistry, RawExpression, RawFunction, RawInput, RawInputType, RawLookup,
-        RawTreeInvocation, RawVariable, RawVariableValue, Spec,
+        QuantityRegistry, RandomForestDefinition, RawExpression, RawFunction, RawInput,
+        RawInputType, RawLookup, RawRandomForestInvocation, RawTreeInvocation, RawVariable,
+        RawVariableValue, Spec,
     },
     semantic,
 };
@@ -132,6 +133,10 @@ pub(crate) fn load_all(root: &Path) -> Result<LoadedSpecifications> {
             }
         };
         spec.set_definition_origins(&path, &shared);
+        if let Err(error) = resolve_random_forest_payloads(&path, &mut spec) {
+            errors.push(error.at(&path).into());
+            continue;
+        }
         for function in &spec.functions {
             if matches!(
                 function.status.as_str(),
@@ -250,6 +255,70 @@ fn load_definitions(
         definitions.insert(fs::canonicalize(path)?, value);
     }
     Ok(definitions)
+}
+
+fn resolve_random_forest_payloads(
+    specification_path: &Path,
+    spec: &mut Spec,
+) -> Result<(), DocumentError> {
+    let specification_directory = specification_path
+        .parent()
+        .expect("specification path has a parent");
+    let payload_root = specification_directory
+        .parent()
+        .expect("specifications directory has a parent")
+        .join("payloads");
+    for function in &mut spec.functions {
+        let Some(implementation) = &mut function.implementation else {
+            continue;
+        };
+        for variable in &mut implementation.variables {
+            let ImplementationVariable::Forest { forest, .. } = variable else {
+                continue;
+            };
+            let reference = forest.payload.clone();
+            let path = specification_directory.join(&reference);
+            let canonical_path =
+                fs::canonicalize(&path).map_err(|source| DocumentError::RandomForestRead {
+                    reference: reference.clone(),
+                    path: path.clone(),
+                    source,
+                })?;
+            let canonical_root = fs::canonicalize(&payload_root).map_err(|source| {
+                DocumentError::RandomForestRead {
+                    reference: reference.clone(),
+                    path: payload_root.clone(),
+                    source,
+                }
+            })?;
+            if !canonical_path.starts_with(&canonical_root) {
+                return Err(DocumentError::RandomForestOutsidePayloads { reference });
+            }
+            let bytes =
+                fs::read(&canonical_path).map_err(|source| DocumentError::RandomForestRead {
+                    reference: forest.payload.clone(),
+                    path: canonical_path.clone(),
+                    source,
+                })?;
+            let definition: RandomForestDefinition =
+                serde_json::from_slice(&bytes).map_err(|source| {
+                    DocumentError::RandomForestJson {
+                        reference: forest.payload.clone(),
+                        path: canonical_path.clone(),
+                        source,
+                    }
+                })?;
+            crate::model::validate_random_forest_definition(&definition).map_err(|source| {
+                DocumentError::RandomForestDefinition {
+                    reference: forest.payload.clone(),
+                    path: canonical_path,
+                    source: Box::new(source),
+                }
+            })?;
+            forest.definition = Some(definition);
+        }
+    }
+    Ok(())
 }
 
 fn resolve_external_references(
@@ -473,6 +542,22 @@ fn compile(
                         })),
                     })
                 }
+                ImplementationVariable::Forest { name, forest } => {
+                    let definition = forest
+                        .definition
+                        .clone()
+                        .expect("random forest payload is resolved");
+                    Ok(RawVariable {
+                        name: name.clone(),
+                        value: RawVariableValue::Forest(Box::new(RawRandomForestInvocation {
+                            implementation_path: format!(
+                                "implementation.variables[{index}].forest"
+                            ),
+                            arguments: forest.arguments.clone(),
+                            definition,
+                        })),
+                    })
+                }
             })
             .collect::<Result<Vec<_>, _>>()?,
     };
@@ -512,7 +597,9 @@ fn expression_locations(
         .flat_map(|implementation| implementation.variables.iter())
         .filter_map(|variable| match variable {
             ImplementationVariable::Expression { expr, .. } => Some(expr.as_str()),
-            ImplementationVariable::Lookup { .. } | ImplementationVariable::Tree { .. } => None,
+            ImplementationVariable::Lookup { .. }
+            | ImplementationVariable::Tree { .. }
+            | ImplementationVariable::Forest { .. } => None,
         });
     let mut cursor = 0;
     let mut locations = Vec::new();
@@ -575,7 +662,7 @@ fn validate_output(
                     semantic::ValueType::Record(record) => Some(record),
                     semantic::ValueType::Number | semantic::ValueType::Enum(_) => None,
                 },
-                semantic::VariableValue::Expression(_) => None,
+                semantic::VariableValue::Expression(_) | semantic::VariableValue::Forest(_) => None,
             };
             if actual == Some(&expected) {
                 return Ok(semantic::ResultBinding::RecordVariable(index));
@@ -611,6 +698,7 @@ fn validate_output(
                     {
                         Some(variable.name.as_str())
                     }
+                    semantic::VariableValue::Forest(_) => Some(variable.name.as_str()),
                     semantic::VariableValue::Tree(_) => None,
                     semantic::VariableValue::RecordLookup(_) => None,
                 }),
@@ -1085,6 +1173,120 @@ functions:
             "{extension}"
         );
         snapbox::assert_data_eq!(extension, snapbox::file!["fixtures/expected/tree/branch.c"]);
+        fs::remove_dir_all(root).unwrap();
+    }
+
+    #[test]
+    fn compiles_and_renders_random_forest_with_ordered_features_and_inclusive_splits() {
+        let root = fixture_root("random-forest");
+        fs::write(
+            root.join("specs/payloads/test_forest.json"),
+            r#"{
+  "format_version": 1,
+  "name": "test_forest",
+  "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+  "features": ["x", "y"],
+  "aggregation": "mean",
+  "trees": [
+    {
+      "children_left": [1, -1, -1],
+      "children_right": [2, -1, -1],
+      "features": [0, -2, -2],
+      "thresholds": [1.5, -2.0, -2.0],
+      "values": [999.0, 2.0, 8.0]
+    },
+    {
+      "children_left": [1, -1, -1],
+      "children_right": [2, -1, -1],
+      "features": [1, -2, -2],
+      "thresholds": [0.0, -2.0, -2.0],
+      "values": [999.0, 4.0, 10.0]
+    }
+  ]
+}"#,
+        )
+        .unwrap();
+        fs::write(
+            root.join("specs/functions/random_forest.yaml"),
+            r#"source:
+  summary: Test random forest.
+  citation_apa: Test (2026).
+  doi: null
+functions:
+  - name: calc_ptf_random_forest
+    status: ready-for-implementation
+    public_api:
+      name: calc_ptf_random_forest
+      result_class: null
+      summary: Evaluate a test random forest.
+    scope:
+      prediction_target: Test value.
+      models: {h_theta: null, k_h: null}
+    inputs:
+      - {name: x, symbol: x, unit: '1', domain: null, description: First predictor.}
+      - {name: y, symbol: y, unit: '1', domain: null, description: Second predictor.}
+    outputs:
+      type: scalar
+      name: value
+      quantity: volumetric_water_content
+      symbol: value
+      unit: volume_fraction
+      reported_unit: '1'
+      domain: null
+      description: Test output.
+    implementation:
+      variables:
+        - name: value
+          forest:
+            payload: ../payloads/test_forest.json
+            arguments: {x: x, y: y}
+    verification_cases:
+      - id: inclusive_boundary_and_feature_order
+        kind: calculated
+        inputs: {x: 1.5, y: 2.0}
+        expected: {value: 6.0}
+        rationale: >-
+          The first tree takes its inclusive left branch and the second tree
+          takes its right branch; the expected value is their arithmetic mean.
+"#,
+        )
+        .unwrap();
+
+        let entries = load(&root).unwrap();
+        assert!(matches!(
+            entries[0].implementations[0].as_ref().unwrap().variables[0].value,
+            crate::semantic::VariableValue::Forest(_)
+        ));
+        let compiled = crate::compile::functions(entries).unwrap();
+        let rust = crate::targets::render_rust_for_test(&compiled).unwrap();
+        let rust = &rust
+            .iter()
+            .find(|file| file.path.ends_with("random_forest.rs"))
+            .unwrap()
+            .contents;
+        snapbox::assert_data_eq!(
+            rust,
+            snapbox::file!["fixtures/expected/random_forest/source.rs"]
+        );
+        let (c_headers, cpp_modules) = crate::targets::render_native_for_test(&compiled).unwrap();
+        let c = &c_headers
+            .iter()
+            .find(|file| file.path.ends_with("random_forest.h"))
+            .unwrap()
+            .contents;
+        snapbox::assert_data_eq!(
+            c,
+            snapbox::file!["fixtures/expected/random_forest/source.h"]
+        );
+        let cpp = &cpp_modules
+            .iter()
+            .find(|file| file.path.ends_with("random_forest.cppm"))
+            .unwrap()
+            .contents;
+        snapbox::assert_data_eq!(
+            cpp,
+            snapbox::file!["fixtures/expected/random_forest/source.cppm"]
+        );
         fs::remove_dir_all(root).unwrap();
     }
 

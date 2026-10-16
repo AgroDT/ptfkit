@@ -37,6 +37,7 @@ pub mod tiwary2014;
 pub mod varallyai1982;
 pub mod vereecken1989;
 pub mod wang2012;
+pub mod wang2022;
 pub mod weber2020;
 pub mod weynants2009;
 pub mod wosten2001;

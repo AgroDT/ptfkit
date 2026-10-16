@@ -33,6 +33,7 @@
 #include <ptfkit/varallyai1982.h>
 #include <ptfkit/vereecken1989.h>
 #include <ptfkit/wang2012.h>
+#include <ptfkit/wang2022.h>
 #include <ptfkit/weber2020.h>
 #include <ptfkit/weynants2009.h>
 #include <ptfkit/wosten2001.h>

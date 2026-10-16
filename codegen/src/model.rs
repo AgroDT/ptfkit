@@ -1,6 +1,6 @@
 mod error;
 pub(crate) use error::DefinitionError;
-use error::{TreeError, TreeErrorKind};
+use error::{RandomForestError, RandomForestErrorKind, TreeError, TreeErrorKind};
 
 use std::{
     collections::BTreeMap,
@@ -219,7 +219,8 @@ impl<'de> Deserialize<'de> for Spec {
                                             },
                                         )?);
                                 }
-                                ImplementationVariable::Expression { .. } => {}
+                                ImplementationVariable::Expression { .. }
+                                | ImplementationVariable::Forest { .. } => {}
                             }
                         }
                         Ok::<_, DefinitionError>(implementation)
@@ -708,7 +709,8 @@ impl Spec {
                                 }
                             }
                         }
-                        ImplementationVariable::Expression { .. } => {}
+                        ImplementationVariable::Expression { .. }
+                        | ImplementationVariable::Forest { .. } => {}
                     }
                 }
             }
@@ -1087,6 +1089,211 @@ pub(crate) enum ImplementationVariable {
         name: String,
         tree: Box<TreeInvocation>,
     },
+    Forest {
+        name: String,
+        forest: Box<RandomForestInvocation>,
+    },
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub(crate) struct RandomForestInvocation {
+    pub(crate) payload: String,
+    pub(crate) arguments: BTreeMap<String, String>,
+    #[serde(skip)]
+    pub(crate) definition: Option<RandomForestDefinition>,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct RandomForestDefinition {
+    pub(crate) format_version: u32,
+    pub(crate) name: String,
+    pub(crate) source_sha256: String,
+    pub(crate) features: Vec<String>,
+    pub(crate) aggregation: RandomForestAggregation,
+    pub(crate) trees: Vec<RandomForestTree>,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[serde(rename_all = "lowercase")]
+pub(crate) enum RandomForestAggregation {
+    Mean,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct RandomForestTree {
+    pub(crate) children_left: Vec<i32>,
+    pub(crate) children_right: Vec<i32>,
+    pub(crate) features: Vec<i32>,
+    pub(crate) thresholds: Vec<serde_json::Number>,
+    pub(crate) values: Vec<serde_json::Number>,
+}
+
+pub(crate) fn validate_random_forest_definition(
+    definition: &RandomForestDefinition,
+) -> Result<(), DefinitionError> {
+    let error = |kind| RandomForestError::definition(&definition.name, kind);
+    if definition.format_version != 1 {
+        return Err(error(RandomForestErrorKind::FormatVersion(
+            definition.format_version,
+        )));
+    }
+    if !valid_lower_snake_identifier(&definition.name) {
+        return Err(error(RandomForestErrorKind::InvalidName));
+    }
+    if definition.source_sha256.len() != 64
+        || !definition
+            .source_sha256
+            .chars()
+            .all(|character| character.is_ascii_hexdigit() && !character.is_ascii_uppercase())
+    {
+        return Err(error(RandomForestErrorKind::InvalidSourceSha256));
+    }
+    if definition.features.is_empty() {
+        return Err(error(RandomForestErrorKind::EmptyFeatures));
+    }
+    let mut features = std::collections::BTreeSet::new();
+    for feature in &definition.features {
+        if !valid_lower_snake_identifier(feature) {
+            return Err(error(RandomForestErrorKind::InvalidFeature(
+                feature.clone(),
+            )));
+        }
+        if !features.insert(feature) {
+            return Err(error(RandomForestErrorKind::DuplicateFeature(
+                feature.clone(),
+            )));
+        }
+    }
+    if definition.trees.is_empty() {
+        return Err(error(RandomForestErrorKind::EmptyForest));
+    }
+    for (tree_index, tree) in definition.trees.iter().enumerate() {
+        validate_random_forest_tree(definition, tree_index, tree)?;
+    }
+    Ok(())
+}
+
+fn valid_lower_snake_identifier(value: &str) -> bool {
+    !value.is_empty()
+        && value.chars().enumerate().all(|(index, character)| {
+            character.is_ascii_lowercase()
+                || (index > 0 && (character.is_ascii_digit() || character == '_'))
+        })
+}
+
+fn validate_random_forest_tree(
+    definition: &RandomForestDefinition,
+    tree_index: usize,
+    tree: &RandomForestTree,
+) -> Result<(), DefinitionError> {
+    let node_count = tree.children_left.len();
+    let error = |kind| RandomForestError::definition(&definition.name, kind);
+    if node_count == 0 {
+        return Err(error(RandomForestErrorKind::EmptyTree { tree: tree_index }));
+    }
+    for (field, actual) in [
+        ("children_right", tree.children_right.len()),
+        ("features", tree.features.len()),
+        ("thresholds", tree.thresholds.len()),
+        ("values", tree.values.len()),
+    ] {
+        if actual != node_count {
+            return Err(error(RandomForestErrorKind::ArrayLength {
+                tree: tree_index,
+                field,
+                expected: node_count,
+                actual,
+            }));
+        }
+    }
+
+    let mut incoming = vec![0_u8; node_count];
+    for node in 0..node_count {
+        for (field, number) in [
+            ("threshold", &tree.thresholds[node]),
+            ("value", &tree.values[node]),
+        ] {
+            if number.as_f64().is_none_or(|value| !value.is_finite()) {
+                return Err(error(RandomForestErrorKind::NonFiniteNumber {
+                    tree: tree_index,
+                    node,
+                    field,
+                }));
+            }
+        }
+        let left = tree.children_left[node];
+        let right = tree.children_right[node];
+        match (left, right) {
+            (-1, -1) => {
+                if tree.features[node] != -2 {
+                    return Err(error(RandomForestErrorKind::LeafFeature {
+                        tree: tree_index,
+                        node,
+                        feature: tree.features[node],
+                    }));
+                }
+            }
+            (-1, _) | (_, -1) => {
+                return Err(error(RandomForestErrorKind::LeafChildren {
+                    tree: tree_index,
+                    node,
+                    left,
+                    right,
+                }));
+            }
+            _ => {
+                let feature = tree.features[node];
+                if feature < 0 || feature as usize >= definition.features.len() {
+                    return Err(error(RandomForestErrorKind::FeatureIndex {
+                        tree: tree_index,
+                        node,
+                        feature,
+                        features: definition.features.len(),
+                    }));
+                }
+                for child in [left, right] {
+                    if child < 0 || child as usize >= node_count {
+                        return Err(error(RandomForestErrorKind::ChildIndex {
+                            tree: tree_index,
+                            node,
+                            child,
+                            nodes: node_count,
+                        }));
+                    }
+                    incoming[child as usize] = incoming[child as usize].saturating_add(1);
+                }
+            }
+        }
+    }
+
+    let mut visited = vec![false; node_count];
+    let mut stack = vec![0_usize];
+    while let Some(node) = stack.pop() {
+        if visited[node] {
+            return Err(error(RandomForestErrorKind::Topology {
+                tree: tree_index,
+                node,
+            }));
+        }
+        visited[node] = true;
+        let left = tree.children_left[node];
+        if left >= 0 {
+            stack.push(tree.children_right[node] as usize);
+            stack.push(left as usize);
+        }
+    }
+    for node in 0..node_count {
+        let expected_incoming = usize::from(node != 0) as u8;
+        if !visited[node] || incoming[node] != expected_incoming {
+            return Err(error(RandomForestErrorKind::Topology {
+                tree: tree_index,
+                node,
+            }));
+        }
+    }
+    Ok(())
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -1358,6 +1565,14 @@ pub(crate) enum RawVariableValue {
     Expression(RawExpression),
     Lookup(Box<RawLookup>),
     Tree(Box<RawTreeInvocation>),
+    Forest(Box<RawRandomForestInvocation>),
+}
+
+#[derive(Clone, Debug)]
+pub(crate) struct RawRandomForestInvocation {
+    pub(crate) implementation_path: String,
+    pub(crate) arguments: BTreeMap<String, String>,
+    pub(crate) definition: RandomForestDefinition,
 }
 
 #[derive(Clone, Debug)]
@@ -1390,6 +1605,68 @@ pub(crate) struct SourceLocation {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn random_forest_payload(tree: &str) -> RandomForestDefinition {
+        serde_json::from_str(&format!(
+            r#"{{
+              "format_version": 1,
+              "name": "test_forest",
+              "source_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+              "features": ["x"],
+              "aggregation": "mean",
+              "trees": [{tree}]
+            }}"#
+        ))
+        .unwrap()
+    }
+
+    #[test]
+    fn rejects_random_forest_arrays_that_cannot_encode_one_rooted_tree() {
+        use crate::model::error::RandomForestErrorKind;
+
+        let mismatched = random_forest_payload(
+            r#"{
+              "children_left": [1, -1, -1],
+              "children_right": [2, -1],
+              "features": [0, -2, -2],
+              "thresholds": [1.0, -2.0, -2.0],
+              "values": [0.0, 2.0, 8.0]
+            }"#,
+        );
+        let DefinitionError::RandomForest(error) =
+            validate_random_forest_definition(&mismatched).unwrap_err()
+        else {
+            panic!("expected random forest error");
+        };
+        assert!(matches!(
+            error.kind,
+            RandomForestErrorKind::ArrayLength {
+                tree: 0,
+                field: "children_right",
+                expected: 3,
+                actual: 2,
+            }
+        ));
+
+        let shared_child = random_forest_payload(
+            r#"{
+              "children_left": [1, -1, 1],
+              "children_right": [2, -1, 1],
+              "features": [0, -2, 0],
+              "thresholds": [1.0, -2.0, 2.0],
+              "values": [0.0, 2.0, 8.0]
+            }"#,
+        );
+        let DefinitionError::RandomForest(error) =
+            validate_random_forest_definition(&shared_child).unwrap_err()
+        else {
+            panic!("expected random forest error");
+        };
+        assert!(matches!(
+            error.kind,
+            RandomForestErrorKind::Topology { tree: 0, node: 1 }
+        ));
+    }
 
     #[test]
     fn public_python_generation_defaults_to_generated() {

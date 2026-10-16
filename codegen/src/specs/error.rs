@@ -75,6 +75,29 @@ pub(crate) enum DocumentError {
     Reference(#[from] ReferenceError),
     #[error("could not locate formula expression `{expression}` in YAML source")]
     ExpressionNotFound { expression: String },
+    #[error("random forest payload `{reference}` cannot be read from {path}: {source}", path = .path.display())]
+    RandomForestRead {
+        reference: String,
+        path: PathBuf,
+        #[source]
+        source: std::io::Error,
+    },
+    #[error("random forest payload `{reference}` in {path} is malformed JSON: {source}", path = .path.display())]
+    RandomForestJson {
+        reference: String,
+        path: PathBuf,
+        #[source]
+        source: serde_json::Error,
+    },
+    #[error("random forest payload `{reference}` in {path} is invalid: {source}", path = .path.display())]
+    RandomForestDefinition {
+        reference: String,
+        path: PathBuf,
+        #[source]
+        source: Box<crate::model::DefinitionError>,
+    },
+    #[error("random forest payload `{reference}` must resolve inside specs/payloads")]
+    RandomForestOutsidePayloads { reference: String },
 }
 
 #[derive(Debug, thiserror::Error)]
