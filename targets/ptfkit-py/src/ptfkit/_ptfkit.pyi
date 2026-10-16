@@ -172,6 +172,7 @@ calc_ptf_rawls2003_soc_theta1500_gmdh: ufunc
 calc_ptf_rawls2003_soc_theta1500_tree: ufunc
 calc_ptf_rawls2003_soc_theta33_gmdh: ufunc
 calc_ptf_rawls2003_soc_theta33_tree: ufunc
+calc_ptf_saxton1986_calcptf_parameters: ufunc
 calc_ptf_saxton2006: ufunc
 calc_ptf_saxton2006_conductivity: ufunc
 calc_ptf_saxton2006_density: ufunc

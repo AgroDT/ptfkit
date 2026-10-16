@@ -6,7 +6,7 @@
 
 Test (2026)."]
 
-# ! [allow (clippy :: approx_constant)] # [inline] fn test_forest (x : f64 , y : f64) -> f64 { const ROOTS : & [usize] = & [0 , 3] ; const CHILDREN_LEFT : & [usize] = & [1 , 0 , 0 , 4 , 0 , 0] ; const CHILDREN_RIGHT : & [usize] = & [2 , 0 , 0 , 5 , 0 , 0] ; const FEATURES : & [i32] = & [0 , - 2 , - 2 , 1 , - 2 , - 2] ; const THRESHOLDS : & [f64] = & [1.5f64 , - 2.0f64 , - 2.0f64 , 0.0f64 , - 2.0f64 , - 2.0f64] ; const VALUES : & [f64] = & [999.0f64 , 2.0f64 , 8.0f64 , 999.0f64 , 4.0f64 , 10.0f64] ; let inputs = [x , y] ; let mut sum = 0.0 ; for & root in ROOTS { let mut node = root ; while FEATURES [node] >= 0 { node = if inputs [FEATURES [node] as usize] <= THRESHOLDS [node] { CHILDREN_LEFT [node] } else { CHILDREN_RIGHT [node] } ; } sum += VALUES [node] ; } sum / ROOTS . len () as f64 } # [doc = r"Evaluate a test random forest.
+# [inline] fn test_forest (x : f64 , y : f64) -> f64 { const ROOTS : & [usize] = & [0 , 3] ; const CHILDREN_LEFT : & [usize] = & [1 , 0 , 0 , 4 , 0 , 0] ; const CHILDREN_RIGHT : & [usize] = & [2 , 0 , 0 , 5 , 0 , 0] ; const FEATURES : & [i32] = & [0 , - 2 , - 2 , 1 , - 2 , - 2] ; const THRESHOLDS : & [f64] = & [1.5f64 , - 2.0f64 , - 2.0f64 , 0.0f64 , - 2.0f64 , - 2.0f64] ; const VALUES : & [f64] = & [999.0f64 , 2.0f64 , 8.0f64 , 999.0f64 , 4.0f64 , 10.0f64] ; let inputs = [x , y] ; let mut sum = 0.0 ; for & root in ROOTS { let mut node = root ; while FEATURES [node] >= 0 { node = if inputs [FEATURES [node] as usize] <= THRESHOLDS [node] { CHILDREN_LEFT [node] } else { CHILDREN_RIGHT [node] } ; } sum += VALUES [node] ; } sum / ROOTS . len () as f64 } # [doc = r"Evaluate a test random forest.
 
 # Arguments
 
