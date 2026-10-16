@@ -114,6 +114,13 @@ van_genuchten_n:
       absolute: 0.001
       rationale: Project-default meaningful resolution for a fitted shape parameter.
 
+van_genuchten_m:
+  description: Dimensionless van Genuchten retention-curve shape parameter.
+  units:
+    dimensionless:
+      absolute: 0.001
+      rationale: Project-default meaningful resolution for a fitted shape parameter.
+
 campbell_b:
   description: Campbell moisture-characteristic exponent.
   units:
@@ -173,6 +180,13 @@ retention_coefficient_b:
 
 conductivity_shape_parameter:
   description: Dimensionless hydraulic-conductivity shape parameter.
+  units:
+    dimensionless:
+      absolute: 0.001
+      rationale: Project-default meaningful resolution for a fitted shape parameter.
+
+soil_hydraulic_slope_parameter:
+  description: Dimensionless slope parameter of a soil hydraulic model.
   units:
     dimensionless:
       absolute: 0.001

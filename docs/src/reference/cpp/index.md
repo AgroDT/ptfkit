@@ -47,6 +47,7 @@ ptfkit's C++ API is organized around C++23 modules.
 - [`ptfkit.varallyai1982`](modules/varallyai1982.md) — Varallyai et al. (1982), water-retention parameter regressions for Hungarian soils.
 - [`ptfkit.vereecken1989`](modules/vereecken1989.md) — Vereecken et al. soil-moisture retention regressions for Belgian soils.
 - [`ptfkit.wang2012`](modules/wang2012.md) — Wang et al. (2012), surface loess across China's Loess Plateau.
+- [`ptfkit.wang2022`](modules/wang2022.md) — Wang et al. (2022), random-forest PTFs for soil hydraulic-model parameters.
 - [`ptfkit.weber2020`](modules/weber2020.md) — Weber et al. (2020), compiled international soil hydraulic data.
 - [`ptfkit.weynants2009`](modules/weynants2009.md) — Corrected Weynants et al. hydraulic-parameter pedotransfer function.
 - [`ptfkit.wosten2001`](modules/wosten2001.md) — Wösten et al. (2001), Staring Series hydraulic parameters for Dutch soils.

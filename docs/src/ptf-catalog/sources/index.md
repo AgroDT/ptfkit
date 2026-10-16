@@ -39,6 +39,7 @@ Each page describes the source, scope, inputs, outputs, status, and limitations 
 | [Varallyai et al. (1982), water-retention parameter regressions for Hungarian soils.](./varallyai1982.md) | Hungary, mainly the Hungarian Plain | 4 |
 | [Vereecken et al. soil-moisture retention regressions for Belgian soils.](./vereecken1989.md) | Belgian territory north of the river axis Samber and Meuse | 2 |
 | [Wang et al. (2012), surface loess across China's Loess Plateau.](./wang2012.md) | Surface soils across the entire Loess Plateau, China | 1 |
+| [Wang et al. (2022), random-forest PTFs for soil hydraulic-model parameters.](./wang2022.md) | — | 2 |
 | [Weber et al. (2020), compiled international soil hydraulic data.](./weber2020.md) | Portuguese, German, UNSODA, and Vereecken soil data collections | 1 |
 | [Corrected Weynants et al. hydraulic-parameter pedotransfer function.](./weynants2009.md) | — | 1 |
 | [Wösten et al. (2001), Staring Series hydraulic parameters for Dutch soils.](./wosten2001.md) | Netherlands | 5 |

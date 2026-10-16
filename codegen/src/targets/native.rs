@@ -11,8 +11,9 @@ use crate::{
     },
     render::{Render, Writer},
     semantic::{
-        DecisionTree, DecisionTreeLeaf, DecisionTreePredicate, RecordLookup, Reference,
-        ResultBinding, TreeCall, TreeDefinition, ValueType, VariableValue,
+        DecisionTree, DecisionTreeLeaf, DecisionTreePredicate, RandomForestCall,
+        RandomForestDefinition, RecordLookup, Reference, ResultBinding, TreeCall, TreeDefinition,
+        ValueType, VariableValue,
     },
 };
 
@@ -174,6 +175,10 @@ fn c_header(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
         writer.blank_line();
         render_tree_helper(&mut writer, slug, tree, NativeDialect::C);
     }
+    for forest in forest_definitions(functions) {
+        writer.blank_line();
+        render_forest_helper(&mut writer, slug, forest, NativeDialect::C);
+    }
     for function in functions {
         writer.blank_line();
         NativeFunction::c(function)?.render(&mut writer);
@@ -214,6 +219,7 @@ fn cpp_module(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
     let record_types = record_types(functions)?;
     let lookup_definitions = lookup_definitions(functions);
     let tree_definitions = tree_definitions(functions);
+    let forest_definitions = forest_definitions(functions);
     let enum_definitions = enum_definitions(functions);
     writer.line(format_args!("namespace ptfkit::{slug} {{"));
     writer.indented(|writer| {
@@ -249,6 +255,10 @@ fn cpp_module(slug: &str, functions: &[&CompiledFunction]) -> Result<String> {
         for tree in &tree_definitions {
             writer.blank_line();
             render_tree_helper(writer, slug, tree, NativeDialect::Cpp);
+        }
+        for forest in &forest_definitions {
+            writer.blank_line();
+            render_forest_helper(writer, slug, forest, NativeDialect::Cpp);
         }
         for function in &native_functions {
             writer.blank_line();
@@ -367,6 +377,9 @@ impl Render for NativeFunction<'_> {
                     VariableValue::Tree(tree) => {
                         self.render_tree_call(writer, &variable.name, tree);
                     }
+                    VariableValue::Forest(forest) => {
+                        self.render_forest_call(writer, &variable.name, forest);
+                    }
                 }
             }
             self.render_return(writer);
@@ -420,6 +433,12 @@ impl NativeFunction<'_> {
                     VariableValue::Tree(tree) => {
                         writer.line(format_args!("return {};", self.tree_call_expression(tree)));
                     }
+                    VariableValue::Forest(forest) => {
+                        writer.line(format_args!(
+                            "return {};",
+                            self.forest_call_expression(forest)
+                        ));
+                    }
                     VariableValue::RecordLookup(_) => {
                         unreachable!("terminal scalar variable is numeric")
                     }
@@ -463,6 +482,13 @@ impl NativeFunction<'_> {
         ));
     }
 
+    fn render_forest_call(&self, writer: &mut Writer, name: &str, forest: &RandomForestCall) {
+        writer.line(format_args!(
+            "const double {name} = {};",
+            self.forest_call_expression(forest)
+        ));
+    }
+
     fn tree_call_expression(&self, tree: &TreeCall) -> String {
         let arguments = tree
             .arguments
@@ -473,6 +499,19 @@ impl NativeFunction<'_> {
         format!(
             "{}({arguments})",
             tree_function_name(&self.function.entry.slug, &tree.definition)
+        )
+    }
+
+    fn forest_call_expression(&self, forest: &RandomForestCall) -> String {
+        let arguments = forest
+            .arguments
+            .iter()
+            .map(|argument| self.reference_name(*argument))
+            .collect::<Vec<_>>()
+            .join(", ");
+        format!(
+            "{}({arguments})",
+            forest_function_name(&self.function.entry.slug, &forest.definition)
         )
     }
 
@@ -491,7 +530,9 @@ fn lookup_definitions<'a>(functions: &[&'a CompiledFunction]) -> Vec<&'a RecordL
         .flat_map(|function| &function.ir.variables)
         .filter_map(|variable| match &variable.value {
             VariableValue::RecordLookup(lookup) => Some(lookup),
-            VariableValue::Expression(_) | VariableValue::Tree(_) => None,
+            VariableValue::Expression(_) | VariableValue::Tree(_) | VariableValue::Forest(_) => {
+                None
+            }
         })
         .filter(|lookup| names.insert((lookup.enum_type.clone(), lookup.output.name.clone())))
         .collect()
@@ -504,7 +545,24 @@ fn tree_definitions<'a>(functions: &[&'a CompiledFunction]) -> Vec<&'a TreeDefin
         .flat_map(|function| &function.ir.variables)
         .filter_map(|variable| match &variable.value {
             VariableValue::Tree(tree) => Some(&tree.definition),
-            VariableValue::Expression(_) | VariableValue::RecordLookup(_) => None,
+            VariableValue::Expression(_)
+            | VariableValue::RecordLookup(_)
+            | VariableValue::Forest(_) => None,
+        })
+        .filter(|definition| names.insert(definition.name.as_str()))
+        .collect()
+}
+
+fn forest_definitions<'a>(functions: &[&'a CompiledFunction]) -> Vec<&'a RandomForestDefinition> {
+    let mut names = BTreeSet::new();
+    functions
+        .iter()
+        .flat_map(|function| &function.ir.variables)
+        .filter_map(|variable| match &variable.value {
+            VariableValue::Forest(forest) => Some(&forest.definition),
+            VariableValue::Expression(_)
+            | VariableValue::RecordLookup(_)
+            | VariableValue::Tree(_) => None,
         })
         .filter(|definition| names.insert(definition.name.as_str()))
         .collect()
@@ -512,6 +570,115 @@ fn tree_definitions<'a>(functions: &[&'a CompiledFunction]) -> Vec<&'a TreeDefin
 
 fn tree_function_name(slug: &str, definition: &TreeDefinition) -> String {
     format!("{slug}_{}", definition.name.to_case(Case::Snake))
+}
+
+fn forest_function_name(slug: &str, definition: &RandomForestDefinition) -> String {
+    format!("{slug}_{}", definition.name)
+}
+
+fn render_forest_helper(
+    writer: &mut Writer,
+    slug: &str,
+    definition: &RandomForestDefinition,
+    dialect: NativeDialect,
+) {
+    match dialect {
+        NativeDialect::C => writer.write("static inline "),
+        NativeDialect::Cpp => writer.write("[[nodiscard]] inline "),
+    }
+    writer.write(format_args!(
+        "double {}(",
+        forest_function_name(slug, definition)
+    ));
+    for (index, feature) in definition.features.iter().enumerate() {
+        if index > 0 {
+            writer.write(", ");
+        }
+        writer.write(format_args!("double {feature}"));
+    }
+    writer.line(") {");
+    writer.indented(|writer| {
+        let flattened = definition.flattened();
+        let qualifier = match dialect {
+            NativeDialect::C => "static const",
+            NativeDialect::Cpp => "static constexpr",
+        };
+        render_integer_array(writer, qualifier, "unsigned", "roots", &flattened.roots);
+        render_integer_array(
+            writer,
+            qualifier,
+            "unsigned",
+            "children_left",
+            &flattened.children_left,
+        );
+        render_integer_array(
+            writer,
+            qualifier,
+            "unsigned",
+            "children_right",
+            &flattened.children_right,
+        );
+        writer.write(format_args!("{qualifier} int features[] = {{"));
+        for (index, value) in flattened.features.iter().enumerate() {
+            if index > 0 {
+                writer.write(", ");
+            }
+            writer.write(value.to_string());
+        }
+        writer.line("};");
+        render_number_array(writer, qualifier, "thresholds", &flattened.thresholds);
+        render_number_array(writer, qualifier, "values", &flattened.values);
+        writer.write("const double inputs[] = {");
+        for (index, feature) in definition.features.iter().enumerate() {
+            if index > 0 {
+                writer.write(", ");
+            }
+            writer.write(feature);
+        }
+        writer.line("};");
+        writer.line("double sum = 0.0;");
+        writer.line("for (unsigned tree = 0; tree < sizeof(roots) / sizeof(roots[0]); ++tree) {");
+        writer.indented(|writer| {
+            writer.line("unsigned node = roots[tree];");
+            writer.line("while (features[node] >= 0) {");
+            writer.indented(|writer| {
+                writer.line("node = inputs[(unsigned)features[node]] <= thresholds[node] ? children_left[node] : children_right[node];");
+            });
+            writer.line("}");
+            writer.line("sum += values[node];");
+        });
+        writer.line("}");
+        writer.line("return sum / (double)(sizeof(roots) / sizeof(roots[0]));");
+    });
+    writer.line("}");
+}
+
+fn render_integer_array(
+    writer: &mut Writer,
+    qualifier: &str,
+    value_type: &str,
+    name: &str,
+    values: &[usize],
+) {
+    writer.write(format_args!("{qualifier} {value_type} {name}[] = {{"));
+    for (index, value) in values.iter().enumerate() {
+        if index > 0 {
+            writer.write(", ");
+        }
+        writer.write(value.to_string());
+    }
+    writer.line("};");
+}
+
+fn render_number_array(
+    writer: &mut Writer,
+    qualifier: &str,
+    name: &str,
+    values: &[crate::semantic::Number],
+) {
+    writer.write(format_args!("{qualifier} double {name}[] = {{"));
+    render_lookup_values(writer, values);
+    writer.line("};");
 }
 
 fn native_value_type(value_type: &ValueType, dialect: NativeDialect) -> String {

@@ -10,8 +10,8 @@ use crate::{
     model::{CompiledFunction, CompiledInput, EnumDefinition, EnumType, Output},
     semantic::{
         self, BinaryOp, DecisionTree, DecisionTreeLeaf, DecisionTreePredicate, Expr, MathFunction,
-        Number, RecordLookup, Reference, ResultBinding, TreeCall, TreeDefinition, UnaryOp,
-        ValueType, VariableValue,
+        Number, RandomForestCall, RandomForestDefinition, RecordLookup, Reference, ResultBinding,
+        TreeCall, TreeDefinition, UnaryOp, ValueType, VariableValue,
     },
 };
 
@@ -99,6 +99,12 @@ pub(crate) fn render_with_definitions(
                 .into_iter()
                 .map(tree_definition_tokens)
                 .collect::<Vec<_>>();
+            let forest_definitions = forest_definitions(&functions)
+                .into_iter()
+                .map(forest_definition_tokens)
+                .collect::<Vec<_>>();
+            let forest_lint = (!forest_definitions.is_empty())
+                .then(|| quote!(#![allow(clippy::approx_constant)]));
             let mut defined_result_classes = BTreeSet::new();
             let definitions = functions
                 .into_iter()
@@ -114,7 +120,7 @@ pub(crate) fn render_with_definitions(
                 PathBuf::from(format!("{slug}.rs")),
                 render_tokens(
                     module_docs,
-                    quote!(#(#enum_definitions)* #(#internal_record_definitions)* #(#lookup_conversions)* #(#tree_definitions)* #(#definitions)*),
+                    quote!(#forest_lint #(#enum_definitions)* #(#internal_record_definitions)* #(#lookup_conversions)* #(#tree_definitions)* #(#forest_definitions)* #(#definitions)*),
                 ),
             ))
         })
@@ -194,7 +200,9 @@ fn module_tokens(
         ResultBinding::RecordVariable(index) if index + 1 == ir.variables.len() => {
             match &ir.variables[index].value {
                 VariableValue::RecordLookup(lookup) => Some(lookup),
-                VariableValue::Expression(_) | VariableValue::Tree(_) => None,
+                VariableValue::Expression(_)
+                | VariableValue::Tree(_)
+                | VariableValue::Forest(_) => None,
             }
         }
         ResultBinding::Fields | ResultBinding::RecordVariable(_) => None,
@@ -219,6 +227,10 @@ fn module_tokens(
                 }
                 VariableValue::Tree(tree) => {
                     let expression = tree_call_tokens(tree, &inputs, &ir.variables);
+                    Ok(quote!(let #name = #expression;))
+                }
+                VariableValue::Forest(forest) => {
+                    let expression = forest_call_tokens(forest, &inputs, &ir.variables);
                     Ok(quote!(let #name = #expression;))
                 }
             }
@@ -301,6 +313,7 @@ fn output_tokens(
                         expression_tokens(expression, inputs, variables)?.tokens
                     }
                     VariableValue::Tree(tree) => tree_call_tokens(tree, inputs, variables),
+                    VariableValue::Forest(forest) => forest_call_tokens(forest, inputs, variables),
                     VariableValue::RecordLookup(_) => {
                         unreachable!("scalar terminal output is numeric")
                     }
@@ -466,7 +479,9 @@ fn tree_definitions<'a>(functions: &[&'a CompiledFunction]) -> Vec<&'a TreeDefin
         .flat_map(|function| &function.ir.variables)
         .filter_map(|variable| match &variable.value {
             VariableValue::Tree(tree) => Some(&tree.definition),
-            VariableValue::Expression(_) | VariableValue::RecordLookup(_) => None,
+            VariableValue::Expression(_)
+            | VariableValue::RecordLookup(_)
+            | VariableValue::Forest(_) => None,
         })
         .filter(|definition| names.insert(definition.name.as_str()))
         .collect()
@@ -499,6 +514,87 @@ fn tree_definition_tokens(definition: &TreeDefinition) -> TokenStream {
     quote!(#[inline] fn #name(#(#inputs: #input_types),*) -> #output { #body })
 }
 
+fn forest_call_tokens(
+    forest: &RandomForestCall,
+    inputs: &[Ident],
+    variables: &[semantic::Variable],
+) -> TokenStream {
+    let name = format_ident!("{}", forest.definition.name);
+    let arguments = forest
+        .arguments
+        .iter()
+        .map(|reference| reference_ident(*reference, inputs, variables));
+    quote!(#name(#(#arguments),*))
+}
+
+fn forest_definitions<'a>(functions: &[&'a CompiledFunction]) -> Vec<&'a RandomForestDefinition> {
+    let mut names = BTreeSet::new();
+    functions
+        .iter()
+        .flat_map(|function| &function.ir.variables)
+        .filter_map(|variable| match &variable.value {
+            VariableValue::Forest(forest) => Some(&forest.definition),
+            VariableValue::Expression(_)
+            | VariableValue::RecordLookup(_)
+            | VariableValue::Tree(_) => None,
+        })
+        .filter(|definition| names.insert(definition.name.as_str()))
+        .collect()
+}
+
+fn forest_definition_tokens(definition: &RandomForestDefinition) -> TokenStream {
+    let name = format_ident!("{}", definition.name);
+    let features = definition
+        .features
+        .iter()
+        .map(|feature| format_ident!("{feature}"))
+        .collect::<Vec<_>>();
+    let flattened = definition.flattened();
+    let roots = flattened
+        .roots
+        .iter()
+        .map(|value| Literal::usize_unsuffixed(*value));
+    let children_left = flattened
+        .children_left
+        .iter()
+        .map(|value| Literal::usize_unsuffixed(*value));
+    let children_right = flattened
+        .children_right
+        .iter()
+        .map(|value| Literal::usize_unsuffixed(*value));
+    let node_features = flattened
+        .features
+        .iter()
+        .map(|value| Literal::i32_unsuffixed(*value));
+    let thresholds = flattened.thresholds.iter().map(rust_float_literal);
+    let values = flattened.values.iter().map(rust_float_literal);
+    quote! {
+        #[inline]
+        fn #name(#(#features: f64),*) -> f64 {
+            const ROOTS: &[usize] = &[#(#roots),*];
+            const CHILDREN_LEFT: &[usize] = &[#(#children_left),*];
+            const CHILDREN_RIGHT: &[usize] = &[#(#children_right),*];
+            const FEATURES: &[i32] = &[#(#node_features),*];
+            const THRESHOLDS: &[f64] = &[#(#thresholds),*];
+            const VALUES: &[f64] = &[#(#values),*];
+            let inputs = [#(#features),*];
+            let mut sum = 0.0;
+            for &root in ROOTS {
+                let mut node = root;
+                while FEATURES[node] >= 0 {
+                    node = if inputs[FEATURES[node] as usize] <= THRESHOLDS[node] {
+                        CHILDREN_LEFT[node]
+                    } else {
+                        CHILDREN_RIGHT[node]
+                    };
+                }
+                sum += VALUES[node];
+            }
+            sum / ROOTS.len() as f64
+        }
+    }
+}
+
 fn lookup_conversion_tokens(functions: &[&CompiledFunction]) -> Vec<TokenStream> {
     let mut names = BTreeSet::new();
     functions
@@ -506,7 +602,9 @@ fn lookup_conversion_tokens(functions: &[&CompiledFunction]) -> Vec<TokenStream>
         .flat_map(|function| &function.ir.variables)
         .filter_map(|variable| match &variable.value {
             VariableValue::RecordLookup(lookup) => Some(lookup),
-            VariableValue::Expression(_) | VariableValue::Tree(_) => None,
+            VariableValue::Expression(_) | VariableValue::Tree(_) | VariableValue::Forest(_) => {
+                None
+            }
         })
         .filter(|lookup| names.insert((lookup.enum_type.clone(), lookup.output.name.clone())))
         .map(|lookup| {

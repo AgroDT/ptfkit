@@ -35,6 +35,7 @@
 #include "varallyai1982.c"
 #include "vereecken1989.c"
 #include "wang2012.c"
+#include "wang2022.c"
 #include "weber2020.c"
 #include "weynants2009.c"
 #include "wosten2001.c"
@@ -161,6 +162,10 @@ PyMODINIT_FUNC PyInit__ptfkit(void) {
         return NULL;
     }
     if (ptfkit_register_wang2012(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_wang2022(module) < 0) {
         Py_DECREF(module);
         return NULL;
     }
