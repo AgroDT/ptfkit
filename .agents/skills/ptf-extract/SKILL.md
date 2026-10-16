@@ -33,7 +33,12 @@ input error.
    user accepts or edits it; never silently invent a registry entry.
 3. Extract only facts explicitly supported by the paper. Write its standalone
    YAML directly to `specs/functions/<apa_article_key>.yaml`, following
-   `references/spec-template.yaml`.
+   `references/spec-template.yaml`. Check every source-derived identifier that
+   will become an input, output, record field, or local implementation variable
+   against the reserved keywords of every generated target language. If an
+   identifier collides, do not rename it silently:
+   record an explicit blocker, propose a portable replacement, and require the
+   user to approve or edit that replacement before using it in the specification.
 4. Add every source-published input-output example as a `published`
    `verification_cases` entry. If none exists, select physically meaningful
    inputs and calculate the expected outputs with simple reference code as
@@ -75,6 +80,10 @@ exact YAML path and explicit blockers.
 - Do not normalize, alias, abbreviate, or otherwise broaden source-defined
   categorical values. Keep enum member names, canonical textual values, lookup
   rows, and their evidence distinct.
+- Never use a reserved keyword from any generated target language as an input,
+  output, record-field, or local-variable name. A collision requires explicit
+  user approval of the replacement name; extraction remains blocked until that
+  approval is received.
 - Give every `type: record` output a PascalCase `name`, whether it is inline or
   declared in `$defs`. It names generated structures and classes; `$defs` keys
   only resolve local `$ref` targets.
