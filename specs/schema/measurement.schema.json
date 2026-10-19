@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ptfkit.invalid/measurement.schema.json",
+  "title": "ptfkit measurement descriptor",
+  "description": "Version 1 machine-readable semantics for a measured, required, or predicted soil property.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["quantity", "unit", "reported_unit", "basis", "status", "role"],
+  "properties": {
+    "quantity": { "$ref": "#/$defs/identifier" },
+    "unit": { "$ref": "#/$defs/identifier" },
+    "reported_unit": { "type": "string", "minLength": 1 },
+    "basis": { "$ref": "#/$defs/basis" },
+    "particle_size": {
+      "oneOf": [
+        { "$ref": "#/$defs/particleSizeInterval" },
+        { "type": "null" }
+      ]
+    },
+    "conditions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/condition" },
+      "default": []
+    },
+    "status": {
+      "enum": ["required", "observed", "converted", "derived", "estimated", "imputed"]
+    },
+    "method": {
+      "oneOf": [
+        { "$ref": "#/$defs/identifier" },
+        { "type": "null" }
+      ]
+    },
+    "role": {
+      "enum": ["predictor", "prediction", "observation", "model_parameter", "uncertainty"]
+    },
+    "computational_domain": {
+      "oneOf": [
+        { "$ref": "#/$defs/numericInterval" },
+        { "type": "null" }
+      ]
+    },
+    "reported_applicability": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/applicabilityConstraint" },
+      "default": []
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "basis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["material", "denominator"],
+      "properties": {
+        "material": { "$ref": "#/$defs/identifier" },
+        "denominator": { "$ref": "#/$defs/identifier" }
+      }
+    },
+    "bound": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "inclusive"],
+      "properties": {
+        "value": { "type": "number" },
+        "inclusive": { "type": "boolean" }
+      }
+    },
+    "particleSizeInterval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["unit", "lower", "upper"],
+      "anyOf": [
+        { "properties": { "lower": { "$ref": "#/$defs/bound" } } },
+        { "properties": { "upper": { "$ref": "#/$defs/bound" } } }
+      ],
+      "properties": {
+        "unit": { "$ref": "#/$defs/identifier" },
+        "lower": {
+          "oneOf": [
+            { "$ref": "#/$defs/bound" },
+            { "type": "null" }
+          ]
+        },
+        "upper": {
+          "oneOf": [
+            { "$ref": "#/$defs/bound" },
+            { "type": "null" }
+          ]
+        }
+      }
+    },
+    "condition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["quantity", "value", "unit", "convention"],
+      "properties": {
+        "quantity": { "$ref": "#/$defs/identifier" },
+        "value": { "type": "number" },
+        "unit": { "$ref": "#/$defs/identifier" },
+        "convention": { "enum": ["signed", "magnitude"] }
+      }
+    },
+    "numericInterval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lower", "upper"],
+      "anyOf": [
+        { "properties": { "lower": { "$ref": "#/$defs/bound" } } },
+        { "properties": { "upper": { "$ref": "#/$defs/bound" } } }
+      ],
+      "properties": {
+        "lower": {
+          "oneOf": [
+            { "$ref": "#/$defs/bound" },
+            { "type": "null" }
+          ]
+        },
+        "upper": {
+          "oneOf": [
+            { "$ref": "#/$defs/bound" },
+            { "type": "null" }
+          ]
+        }
+      }
+    },
+    "applicabilityConstraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["property", "operator", "value", "source"],
+      "properties": {
+        "property": { "$ref": "#/$defs/identifier" },
+        "operator": {
+          "enum": ["equal", "not_equal", "less_than", "less_than_or_equal", "greater_than", "greater_than_or_equal", "in"]
+        },
+        "value": {
+          "oneOf": [
+            { "type": ["number", "string", "boolean"] },
+            {
+              "type": "array",
+              "minItems": 1,
+              "items": { "type": ["number", "string", "boolean"] }
+            }
+          ]
+        },
+        "unit": {
+          "oneOf": [
+            { "$ref": "#/$defs/identifier" },
+            { "type": "null" }
+          ]
+        },
+        "source": { "type": "string", "minLength": 1 }
+      }
+    },
+    "compatibility": {
+      "enum": ["exact", "unit_converted", "exactly_derived", "estimated", "incompatible"]
+    }
+  }
+}
