@@ -57,6 +57,20 @@ $defs:
         symbol: b
         unit: dimensionless
         reported_unit: "1"
+        measurement:
+          quantity: campbell_b
+          unit: dimensionless
+          reported_unit: "1"
+          basis: {material: mineral_soil, denominator: not_applicable}
+          particle_size: null
+          conditions: []
+          status: derived
+          method: null
+          role: model_parameter
+          computational_domain:
+            lower: {value: 0, inclusive: false}
+            upper: null
+          reported_applicability: []
         domain: value > 0
         description: Mean exponent of the moisture-characteristic power curve.
       - name: saturation_suction
@@ -64,6 +78,20 @@ $defs:
         symbol: psi_s(log)
         unit: centimeter_water_head
         reported_unit: cm
+        measurement:
+          quantity: matric_potential
+          unit: centimeter_water_head
+          reported_unit: cm
+          basis: {material: mineral_soil, denominator: not_applicable}
+          particle_size: null
+          conditions: []
+          status: derived
+          method: null
+          role: model_parameter
+          computational_domain:
+            lower: {value: 0, inclusive: false}
+            upper: null
+          reported_applicability: []
         domain: value > 0
         description: >-
           Representative saturation suction, calculated as the antilog of the
@@ -73,6 +101,20 @@ $defs:
         symbol: psi_f
         unit: centimeter_water_head
         reported_unit: cm
+        measurement:
+          quantity: matric_potential
+          unit: centimeter_water_head
+          reported_unit: cm
+          basis: {material: mineral_soil, denominator: not_applicable}
+          particle_size: null
+          conditions: []
+          status: derived
+          method: null
+          role: model_parameter
+          computational_domain:
+            lower: {value: 0, inclusive: false}
+            upper: null
+          reported_applicability: []
         domain: value > 0
         description: Representative Green-Ampt wetting-front suction.
       - name: saturated_water_content
@@ -80,6 +122,21 @@ $defs:
         symbol: theta_s
         unit: volume_fraction
         reported_unit: "1"
+        measurement:
+          quantity: volumetric_water_content
+          unit: volume_fraction
+          reported_unit: "1"
+          basis: {material: mineral_soil, denominator: bulk_volume}
+          particle_size: null
+          conditions:
+            - {quantity: matric_potential, value: 0, unit: centimeter_water_head, convention: magnitude}
+          status: derived
+          method: null
+          role: model_parameter
+          computational_domain:
+            lower: {value: 0, inclusive: false}
+            upper: {value: 1, inclusive: false}
+          reported_applicability: []
         domain: 0 < value < 1
         description: Mean saturated volumetric water content, taken as total porosity.
       - name: saturated_hydraulic_conductivity
@@ -87,6 +144,20 @@ $defs:
         symbol: K_s
         unit: centimeter_per_minute
         reported_unit: cm/min
+        measurement:
+          quantity: saturated_hydraulic_conductivity
+          unit: centimeter_per_minute
+          reported_unit: cm/min
+          basis: {material: mineral_soil, denominator: not_applicable}
+          particle_size: null
+          conditions: []
+          status: derived
+          method: null
+          role: model_parameter
+          computational_domain:
+            lower: {value: 0, inclusive: false}
+            upper: null
+          reported_applicability: []
         domain: value > 0
         description: Mean saturated hydraulic conductivity reported by Li et al. (1976).
       - name: sorptivity
@@ -94,6 +165,20 @@ $defs:
         symbol: S
         unit: centimeter_per_square_root_minute
         reported_unit: cm/min^(1/2)
+        measurement:
+          quantity: sorptivity
+          unit: centimeter_per_square_root_minute
+          reported_unit: cm/min^(1/2)
+          basis: {material: mineral_soil, denominator: not_applicable}
+          particle_size: null
+          conditions: []
+          status: derived
+          method: null
+          role: model_parameter
+          computational_domain:
+            lower: {value: 0, inclusive: false}
+            upper: null
+          reported_applicability: []
         domain: value > 0
         description: >-
           Representative sorptivity for the paper's single initial moisture

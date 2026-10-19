@@ -823,10 +823,110 @@ pub(crate) struct Models {
     pub(crate) k_h: Option<String>,
 }
 
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct MeasurementDescriptor {
+    pub(crate) quantity: String,
+    pub(crate) unit: String,
+    pub(crate) reported_unit: String,
+    pub(crate) basis: MeasurementBasis,
+    #[serde(default)]
+    pub(crate) particle_size: Option<ParticleSizeInterval>,
+    #[serde(default)]
+    pub(crate) conditions: Vec<MeasurementCondition>,
+    pub(crate) status: MeasurementStatus,
+    #[serde(default)]
+    pub(crate) method: Option<String>,
+    pub(crate) role: MeasurementRole,
+    #[serde(default)]
+    pub(crate) computational_domain: Option<NumericInterval>,
+    #[serde(default)]
+    pub(crate) reported_applicability: Vec<ApplicabilityConstraint>,
+}
+
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct MeasurementBasis {
+    pub(crate) material: String,
+    pub(crate) denominator: String,
+}
+
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct ParticleSizeInterval {
+    pub(crate) unit: String,
+    pub(crate) lower: Option<MeasurementBound>,
+    pub(crate) upper: Option<MeasurementBound>,
+}
+
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct NumericInterval {
+    pub(crate) lower: Option<MeasurementBound>,
+    pub(crate) upper: Option<MeasurementBound>,
+}
+
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct MeasurementBound {
+    pub(crate) value: f64,
+    pub(crate) inclusive: bool,
+}
+
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct MeasurementCondition {
+    pub(crate) quantity: String,
+    pub(crate) value: f64,
+    pub(crate) unit: String,
+    pub(crate) convention: ConditionConvention,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub(crate) enum ConditionConvention {
+    Signed,
+    Magnitude,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub(crate) enum MeasurementStatus {
+    Required,
+    Observed,
+    Converted,
+    Derived,
+    Estimated,
+    Imputed,
+}
+
+#[derive(Clone, Copy, Debug, Deserialize, PartialEq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub(crate) enum MeasurementRole {
+    Predictor,
+    Prediction,
+    Observation,
+    ModelParameter,
+    Uncertainty,
+}
+
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct ApplicabilityConstraint {
+    pub(crate) property: String,
+    pub(crate) operator: String,
+    pub(crate) value: serde_json::Value,
+    #[serde(default)]
+    pub(crate) unit: Option<String>,
+    pub(crate) source: String,
+}
+
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub(crate) struct Parameter {
     pub(crate) name: String,
     pub(crate) unit: String,
+    #[serde(default)]
+    pub(crate) measurement: Option<Box<MeasurementDescriptor>>,
     #[allow(dead_code)]
     pub(crate) domain: Option<String>,
     pub(crate) description: String,
@@ -843,6 +943,8 @@ pub(crate) struct OutputField {
     /// Literal source notation; normalization never changes numerical values.
     #[serde(default)]
     pub(crate) reported_unit: String,
+    #[serde(default)]
+    pub(crate) measurement: Option<Box<MeasurementDescriptor>>,
     #[allow(dead_code)]
     pub(crate) domain: Option<String>,
     pub(crate) description: String,
@@ -1248,12 +1350,23 @@ where
     deserializer.deserialize_map(UniqueUnitsVisitor)
 }
 
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct Unit {
     pub(crate) preferred_notation: String,
     #[serde(default)]
     pub(crate) aliases: Vec<String>,
+    #[serde(default)]
+    pub(crate) conversion: Option<UnitConversion>,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct UnitConversion {
+    pub(crate) dimension: String,
+    pub(crate) scale_to_si: f64,
+    #[serde(default)]
+    pub(crate) offset_to_si: f64,
 }
 
 #[derive(Clone, Debug, Default)]

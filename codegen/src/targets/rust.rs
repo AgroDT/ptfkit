@@ -1234,6 +1234,7 @@ mod tests {
                     quantity: "volumetric_water_content".into(),
                     symbol: None,
                     unit: "volume_fraction".into(),
+                    measurement: None,
                     domain: None,
                     description: "Saturated water content.".into(),
                 }],

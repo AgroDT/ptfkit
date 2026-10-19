@@ -76,6 +76,8 @@ lock entry.
 The [PTF source specification guide](../ptf-catalog/index.md) explains the
 scientific information represented by each YAML file. The JSON Schema and
 `mise run validate` define the complete structural and semantic contract.
+Machine-readable physical semantics and the staged migration from legacy
+fields are defined by the [measurement contract](measurement-contract.md).
 Verification-case provenance and the shared cross-target comparison policy are
 documented in the [scientific verification policy](verification.md). Calculated
 expected values are fixed in YAML and are not regenerated from semantic IR.

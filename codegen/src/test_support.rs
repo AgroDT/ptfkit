@@ -25,6 +25,11 @@ pub(crate) fn fixture_root(label: &str) -> PathBuf {
         root.join("specs/schema/definitions.schema.json"),
     )
     .unwrap();
+    fs::copy(
+        Path::new(env!("CARGO_MANIFEST_DIR")).join("../specs/schema/measurement.schema.json"),
+        root.join("specs/schema/measurement.schema.json"),
+    )
+    .unwrap();
     fs::write(
         root.join("specs/quantities.yaml"),
         include_str!("fixtures/quantities.yaml"),
