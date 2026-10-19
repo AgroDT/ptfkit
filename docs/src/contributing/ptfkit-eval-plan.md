@@ -2,10 +2,10 @@
 
 ## Status
 
-In progress. The measurement-contract vertical slice, Phase 1 public manifest,
-and the initial `ptfkit-eval` scaffold are implemented. The next task is a
-manifest-aware evaluation-plan loader that validates function, output, model
-adapter, quantity, unit, and interval references before dataset ingestion.
+In progress. The measurement contract, public manifest, initial `ptfkit-eval`
+scaffold, range-gated router, and manifest-aware evaluation-plan loader are
+implemented. The next task is the first reviewed model adapter and curve
+execution layer, followed by dataset ingestion.
 
 This document defines the staged work needed to add a separate `ptfkit-eval`
 Python distribution to this repository. The package will evaluate implemented
@@ -188,8 +188,10 @@ descriptors.
 ## Phase 2: create the ptfkit-eval distribution
 
 Status: in progress. The pure-Python distribution, versioned evaluation-plan
-schema, and deterministic range-gated router are scaffolded. Manifest-reference
-validation and the remaining package modules are still pending.
+schema, deterministic range-gated router, and manifest-aware loader are
+implemented. The loader validates functions, outputs, adapters, physical
+quantities, units, bases, parameters, intervals, and overlap routing before
+execution. The remaining package modules are still pending.
 
 Add `targets/ptfkit-eval/` with:
 
@@ -198,9 +200,9 @@ targets/ptfkit-eval/
   pyproject.toml
   uv.lock
   tasks.toml
-  schemas/
-    evaluation-plan.schema.json
   src/ptfkit_eval/
+    schemas/
+      evaluation-plan.schema.json
     catalog.py
     composites.py
     contracts.py
