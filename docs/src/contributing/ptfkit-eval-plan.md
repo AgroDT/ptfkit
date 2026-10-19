@@ -2,7 +2,8 @@
 
 ## Status
 
-Proposed.
+In progress. The measurement-contract vertical slice is implemented; public
+manifest generation is the next task.
 
 This document defines the staged work needed to add a separate `ptfkit-eval`
 Python distribution to this repository. The package will evaluate implemented
@@ -148,6 +149,9 @@ The first work item is complete when:
 - focused schema and codegen tests pass;
 - the remaining corpus migration is enumerated before bulk edits begin.
 
+Implementation details and the migration inventory are recorded in the
+[measurement contract](measurement-contract.md).
+
 ## Phase 1: generate a public function manifest
 
 Extend codegen to produce a deterministic, versioned manifest for the Python
@@ -164,6 +168,11 @@ distribution. Each implemented function entry should include:
 - output roles;
 - warnings needed by the evaluator;
 - manifest schema version.
+
+During corpus migration, the manifest must include only fully described
+implemented functions and enumerate every omitted implemented function in its
+coverage metadata. The evaluator must never treat an omitted function as
+evaluated or inapplicable.
 
 The manifest should be packaged in the `ptfkit` wheel and exposed through a
 small public read-only API. Codegen tests should verify deterministic output,

@@ -8,6 +8,8 @@ pub(crate) enum ValidationError {
     InvalidUnitIdentifier { id: String },
     #[error("specs/units.yaml: unit `{id}` has an empty or duplicate notation")]
     InvalidUnitNotation { id: String },
+    #[error("specs/units.yaml: unit `{id}` has an invalid conversion to SI")]
+    InvalidUnitConversion { id: String },
     #[error("specs/quantities.yaml: quantity identifier `{id}` must match ^[a-z][a-z0-9_]*$")]
     InvalidQuantityIdentifier { id: String },
     #[error("specs/quantities.yaml:\n  {id}:\n    description must not be empty")]
@@ -104,6 +106,8 @@ pub(crate) enum ValidationKind {
     DuplicateEnumValue { enum_name: String, member: String },
     #[error("enum `{enum_name}` exceeds the target ordinal capacity")]
     EnumCapacity { enum_name: String },
+    #[error("measurement `{name}` {detail}")]
+    InvalidMeasurement { name: String, detail: String },
 }
 
 impl ValidationKind {
@@ -191,6 +195,13 @@ impl ValidationKind {
     pub(crate) fn enum_capacity(enum_name: impl Into<String>) -> Self {
         Self::EnumCapacity {
             enum_name: enum_name.into(),
+        }
+    }
+
+    pub(crate) fn invalid_measurement(name: impl Into<String>, detail: impl Into<String>) -> Self {
+        Self::InvalidMeasurement {
+            name: name.into(),
+            detail: detail.into(),
         }
     }
 }

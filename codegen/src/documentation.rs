@@ -178,6 +178,7 @@ mod tests {
             quantity: "volumetric_water_content".into(),
             symbol: None,
             unit: "volume_fraction".into(),
+            measurement: None,
             domain: None,
             description: format!("{name} description."),
         }
@@ -187,6 +188,7 @@ mod tests {
         Input::Parameter(Parameter {
             name: name.into(),
             unit: "cm^3/cm^3".into(),
+            measurement: None,
             domain: None,
             description: format!("{name} description."),
         })
