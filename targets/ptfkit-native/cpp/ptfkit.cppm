@@ -32,6 +32,7 @@ export import ptfkit.rawls2003;
 export import ptfkit.saxton1986;
 export import ptfkit.saxton2006;
 export import ptfkit.tiwary2014;
+export import ptfkit.tomasella1998;
 export import ptfkit.varallyai1982;
 export import ptfkit.vereecken1989;
 export import ptfkit.wang2012;

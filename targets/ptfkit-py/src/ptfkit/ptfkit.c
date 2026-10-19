@@ -35,6 +35,7 @@
 #include "saxton1986.c"
 #include "saxton2006.c"
 #include "tiwary2014.c"
+#include "tomasella1998.c"
 #include "varallyai1982.c"
 #include "vereecken1989.c"
 #include "wang2012.c"
@@ -165,6 +166,10 @@ PyMODINIT_FUNC PyInit__ptfkit(void) {
         return NULL;
     }
     if (ptfkit_register_tiwary2014(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_tomasella1998(module) < 0) {
         Py_DECREF(module);
         return NULL;
     }
