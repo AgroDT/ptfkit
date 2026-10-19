@@ -1,0 +1,38 @@
+["eval:sync"]
+description = "Synchronize the locked ptfkit-eval development environment"
+dir = "targets/ptfkit-eval"
+run = "uv sync --frozen --all-groups"
+
+["eval:lock"]
+description = "Verify that the ptfkit-eval lockfile is current"
+dir = "targets/ptfkit-eval"
+run = "uv lock --check"
+
+["eval:test"]
+description = "Run the ptfkit-eval test suite"
+dir = "targets/ptfkit-eval"
+run = "uv run --no-sync pytest"
+
+["eval:lint"]
+description = "Run Ruff lint checks for ptfkit-eval"
+dir = "targets/ptfkit-eval"
+run = "ruff check"
+
+["eval:format"]
+description = "Check ptfkit-eval formatting"
+dir = "targets/ptfkit-eval"
+run = "ruff format --check"
+
+["eval:typecheck"]
+description = "Run ty for ptfkit-eval"
+dir = "targets/ptfkit-eval"
+run = "ty check"
+
+["eval:verify"]
+description = "Run all ptfkit-eval quality checks"
+depends = ["eval:lint", "eval:format", "eval:typecheck", "eval:test"]
+
+["eval:clean"]
+description = "Remove ptfkit-eval build artifacts and its development environment"
+dir = "targets/ptfkit-eval"
+run = "cmake -E rm -rf .venv build dist src/ptfkit_eval.egg-info"

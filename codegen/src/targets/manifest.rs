@@ -282,6 +282,12 @@ mod tests {
 
         let entries = crate::load_validated_specifications(&root).unwrap();
         let files = render(&entries, "9.8.7").unwrap();
+        let mut reversed = entries.clone();
+        for entry in &mut reversed {
+            entry.spec.functions.reverse();
+        }
+        let reversed_files = render(&reversed, "9.8.7").unwrap();
+        assert_eq!(files[0].contents, reversed_files[0].contents);
         let manifest: serde_json::Value = serde_json::from_str(&files[0].contents).unwrap();
         assert_eq!(manifest["coverage"]["implemented_functions"], 2);
         assert_eq!(manifest["coverage"]["manifest_functions"], 1);
