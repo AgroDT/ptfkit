@@ -144,7 +144,6 @@
         "extrapolation": {"const": "reject"},
         "transitions": {
           "type": "array",
-          "minItems": 1,
           "items": {
             "oneOf": [
               {"$ref": "#/$defs/hardSwitch"},
