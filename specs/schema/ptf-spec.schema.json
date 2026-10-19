@@ -353,6 +353,7 @@
         "name": { "type": "string", "minLength": 1 },
         "symbol": { "$ref": "#/$defs/stringOrNull" },
         "unit": { "type": "string", "minLength": 1 },
+        "measurement": { "$ref": "https://ptfkit.invalid/measurement.schema.json" },
         "domain": { "$ref": "#/$defs/stringOrNull" },
         "description": { "type": "string", "minLength": 1 }
       }
@@ -367,6 +368,7 @@
         "reported_unit": { "type": "string", "minLength": 1 },
         "symbol": { "$ref": "#/$defs/stringOrNull" },
         "unit": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "measurement": { "$ref": "https://ptfkit.invalid/measurement.schema.json" },
         "domain": { "$ref": "#/$defs/stringOrNull" },
         "description": { "type": "string", "minLength": 1 }
       }
@@ -453,6 +455,7 @@
             "reported_unit": { "type": "string", "minLength": 1 },
             "symbol": { "$ref": "#/$defs/stringOrNull" },
             "unit": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+            "measurement": { "$ref": "https://ptfkit.invalid/measurement.schema.json" },
             "domain": { "$ref": "#/$defs/stringOrNull" },
             "description": { "type": "string", "minLength": 1 }
           }

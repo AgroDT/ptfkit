@@ -43,15 +43,29 @@ pub(crate) fn load(root: &Path) -> Result<Vec<Entry>> {
 
 pub(crate) fn load_all(root: &Path) -> Result<LoadedSpecifications> {
     let quantities = load_quantities(root)?;
+    let measurement_schema: Value = serde_json::from_slice(&fs::read(
+        root.join("specs/schema/measurement.schema.json"),
+    )?)?;
     let schema: Value =
         serde_json::from_slice(&fs::read(root.join("specs/schema/ptf-spec.schema.json"))?)?;
+    let measurement_registry = jsonschema::Registry::new()
+        .add(
+            "https://ptfkit.invalid/measurement.schema.json",
+            measurement_schema.clone(),
+        )?
+        .prepare()?;
     let validator = jsonschema::options()
         .with_draft(Draft::Draft202012)
+        .with_registry(&measurement_registry)
         .build(&schema)?;
     let definition_schema: Value = serde_json::from_slice(&fs::read(
         root.join("specs/schema/definitions.schema.json"),
     )?)?;
     let registry = jsonschema::Registry::new()
+        .add(
+            "https://ptfkit.invalid/measurement.schema.json",
+            measurement_schema,
+        )?
         .add(
             "https://ptfkit.invalid/ptf-spec.schema.json",
             schema.clone(),
@@ -2611,6 +2625,11 @@ functions:
                 "tolerance: {preferred_notation: x, absolute: 0.1}\n",
                 "unknown field",
             ),
+            (
+                "invalid_conversion",
+                "invalid_conversion: {preferred_notation: x, conversion: {dimension: test, scale_to_si: 0}}\n",
+                "invalid conversion to SI",
+            ),
         ] {
             let root = fixture_root(label);
             write(
@@ -2715,5 +2734,99 @@ functions:
             );
             fs::remove_dir_all(root).unwrap();
         }
+    }
+
+    #[test]
+    fn validates_measurement_descriptors_against_the_function_contract() {
+        let descriptor = "measurement: {quantity: volumetric_water_content, unit: volume_fraction, reported_unit: '1', basis: {material: fine_earth, denominator: bulk_volume}, particle_size: null, conditions: [], status: estimated, method: null, role: prediction, computational_domain: {lower: {value: 0, inclusive: true}, upper: {value: 1, inclusive: true}}, reported_applicability: []}, domain";
+        for (label, edit, expected) in [
+            ("valid", "", ""),
+            (
+                "quantity-mismatch",
+                "quantity: unknown_quantity",
+                "does not match the legacy output quantity and unit fields",
+            ),
+            (
+                "reversed-domain",
+                "lower: {value: 2, inclusive: true}",
+                "interval lower bound must precede its upper bound",
+            ),
+        ] {
+            let root = fixture_root(label);
+            let mut text = specification(
+                &label.replace('-', "_"),
+                "    implementation:\n      variables: [{name: value, expr: x}]\n",
+                "",
+            )
+            .replace(
+                "domain: null, description: Test output.",
+                &format!("{descriptor}: null, description: Test output."),
+            );
+            if label == "quantity-mismatch" {
+                text = text.replacen(
+                    "measurement: {quantity: volumetric_water_content",
+                    "measurement: {quantity: unknown_quantity",
+                    1,
+                );
+            } else if label == "reversed-domain" {
+                text = text.replacen("lower: {value: 0, inclusive: true}", edit, 1);
+            }
+            fs::write(
+                root.join(format!("specs/functions/{}.yaml", label.replace('-', "_"))),
+                text,
+            )
+            .unwrap();
+
+            let result = crate::load_validated_specifications(&root);
+            if label == "valid" {
+                result.expect("consistent measurement descriptor must validate");
+            } else {
+                let error = result
+                    .expect_err("inconsistent measurement descriptor must fail")
+                    .to_string();
+                assert!(error.contains(expected), "{error}");
+            }
+            fs::remove_dir_all(root).unwrap();
+        }
+    }
+
+    #[test]
+    fn validates_the_versioned_manifest_vertical_slice() {
+        let measurement: serde_json::Value =
+            serde_json::from_str(include_str!("../../specs/schema/measurement.schema.json"))
+                .unwrap();
+        let manifest_schema: serde_json::Value =
+            serde_json::from_str(include_str!("../../specs/schema/ptf-manifest.schema.json"))
+                .unwrap();
+        let registry = jsonschema::Registry::new()
+            .add(
+                "https://ptfkit.invalid/measurement.schema.json",
+                measurement,
+            )
+            .unwrap()
+            .prepare()
+            .unwrap();
+        let validator = jsonschema::options()
+            .with_draft(jsonschema::Draft::Draft202012)
+            .with_registry(&registry)
+            .build(&manifest_schema)
+            .unwrap();
+        let example: serde_json::Value =
+            serde_json::from_str(include_str!("fixtures/measurement_manifest.json")).unwrap();
+        assert!(validator.is_valid(&example));
+
+        let mut ambiguous_percent = example;
+        ambiguous_percent["functions"][0]["inputs"][0]["measurement"]
+            .as_object_mut()
+            .unwrap()
+            .remove("basis");
+        let errors = validator
+            .iter_errors(&ambiguous_percent)
+            .map(|error| error.to_string())
+            .collect::<Vec<_>>();
+        assert!(
+            errors.iter().any(|error| error.contains("basis")),
+            "{errors:?}"
+        );
     }
 }

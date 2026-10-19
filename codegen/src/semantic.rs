@@ -1424,6 +1424,7 @@ mod tests {
                 symbol: None,
                 unit: "dimensionless".into(),
                 reported_unit: "1".into(),
+                measurement: None,
                 domain: None,
                 description: "Example value.".into(),
             }],

@@ -23,6 +23,16 @@ gravimetric_water_content:
         Project-default meaningful resolution for water volume per unit dry-soil
         mass, matching source values reported to three decimal places.
 
+particle_mass_fraction:
+  description: Mass fraction of soil particles within an explicitly defined particle-size interval.
+  units:
+    mass_fraction:
+      absolute: 0.001
+      rationale: Project-default meaningful resolution for a particle mass fraction.
+    mass_percent:
+      absolute: 0.1
+      rationale: Project-default meaningful resolution in particle mass percentage points.
+
 available_water_capacity:
   description: Available water expressed as an equivalent depth per soil depth.
   units:
