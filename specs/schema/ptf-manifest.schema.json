@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ptfkit.invalid/ptf-manifest.schema.json",
+  "title": "ptfkit function manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "ptfkit_version", "coverage", "units", "quantities", "functions"],
+  "properties": {
+    "_generated": { "const": "ptfkit-codegen; DO NOT EDIT." },
+    "schema_version": { "const": 1 },
+    "ptfkit_version": { "type": "string", "minLength": 1 },
+    "coverage": { "$ref": "#/$defs/coverage" },
+    "units": {
+      "type": "object",
+      "propertyNames": { "$ref": "https://ptfkit.invalid/measurement.schema.json#/$defs/identifier" },
+      "additionalProperties": { "$ref": "#/$defs/unit" }
+    },
+    "quantities": {
+      "type": "object",
+      "propertyNames": { "$ref": "https://ptfkit.invalid/measurement.schema.json#/$defs/identifier" },
+      "additionalProperties": { "$ref": "#/$defs/quantity" }
+    },
+    "functions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/function" }
+    }
+  },
+  "$defs": {
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["implemented_functions", "manifest_functions", "omitted_functions"],
+      "properties": {
+        "implemented_functions": { "type": "integer", "minimum": 0 },
+        "manifest_functions": { "type": "integer", "minimum": 0 },
+        "omitted_functions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "reason"],
+            "properties": {
+              "id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+              "reason": { "const": "incomplete_measurement_contract" }
+            }
+          }
+        }
+      }
+    },
+    "conversion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dimension", "scale_to_si", "offset_to_si"],
+      "properties": {
+        "dimension": { "$ref": "https://ptfkit.invalid/measurement.schema.json#/$defs/identifier" },
+        "scale_to_si": { "type": "number", "exclusiveMinimum": 0 },
+        "offset_to_si": { "type": "number" }
+      }
+    },
+    "unit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["preferred_notation", "aliases", "conversion"],
+      "properties": {
+        "preferred_notation": { "type": "string", "minLength": 1 },
+        "aliases": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "conversion": {
+          "oneOf": [
+            { "$ref": "#/$defs/conversion" },
+            { "type": "null" }
+          ]
+        }
+      }
+    },
+    "quantity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["description", "units"],
+      "properties": {
+        "description": { "type": "string", "minLength": 1 },
+        "units": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "$ref": "https://ptfkit.invalid/measurement.schema.json#/$defs/identifier" }
+        }
+      }
+    },
+    "binding": {
+      "oneOf": [
+        { "$ref": "#/$defs/numericBinding" },
+        { "$ref": "#/$defs/categoricalBinding" }
+      ]
+    },
+    "numericBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "name", "measurement"],
+      "properties": {
+        "kind": { "const": "numeric" },
+        "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "measurement": { "$ref": "https://ptfkit.invalid/measurement.schema.json" }
+      }
+    },
+    "categoricalBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "name", "enum"],
+      "properties": {
+        "kind": { "const": "categorical" },
+        "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "enum": { "$ref": "#/$defs/enum" }
+      }
+    },
+    "enum": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "description", "values"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*\\.[A-Z][A-Za-z0-9_]*$" },
+        "description": { "type": "string", "minLength": 1 },
+        "values": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "value", "description"],
+            "properties": {
+              "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+              "value": { "type": "string", "minLength": 1 },
+              "description": { "type": ["string", "null"] }
+            }
+          }
+        }
+      }
+    },
+    "models": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["h_theta", "k_h"],
+      "properties": {
+        "h_theta": { "type": ["string", "null"] },
+        "k_h": { "type": ["string", "null"] }
+      }
+    },
+    "function": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "source", "module", "callable", "status", "models", "warnings", "inputs", "outputs"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "source": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "module": { "type": "string", "pattern": "^[a-z][a-z0-9_.]*$" },
+        "callable": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "status": { "type": "string", "minLength": 1 },
+        "models": { "$ref": "#/$defs/models" },
+        "warnings": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "inputs": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/binding" }
+        },
+        "outputs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/binding" }
+        }
+      }
+    }
+  }
+}

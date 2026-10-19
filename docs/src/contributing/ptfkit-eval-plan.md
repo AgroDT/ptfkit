@@ -26,6 +26,8 @@ every prediction:
 - Is the sample inside the computational and reported applicability domains?
 - Which raw workbook cells support the inputs and target observation?
 - Why was a function-sample pair included or excluded?
+- Was a curve predicted by one function or by a registered composite, and which
+  member produced or contributed to every pressure point?
 
 The first release should prioritize scientifically defensible comparisons over
 the number of functions evaluated.
@@ -88,7 +90,7 @@ The responsibilities must remain separated:
 | `specs/` and codegen | Authoritative function, quantity, unit, model, and applicability contracts |
 | `ptfkit` | Generated numerical implementations and a generated machine-readable function manifest |
 | `ptfkit-eval` | Dataset normalization, compatibility decisions, execution, metrics, and reporting |
-| Evaluation configuration | Versioned mappings for a specific dataset and a reproducible evaluation plan |
+| Evaluation configuration | Versioned mappings, single-function candidates, composite-curve definitions, and a reproducible evaluation plan |
 | Raw and derived data | External or separately managed artifacts with checksums and provenance |
 
 `ptfkit-eval` must consume a public generated manifest from `ptfkit`. It must
@@ -179,6 +181,7 @@ targets/ptfkit-eval/
   tasks.toml
   src/ptfkit_eval/
     catalog.py
+    composites.py
     contracts.py
     eligibility.py
     execution.py
@@ -315,6 +318,78 @@ observed pressures. Do not assume that fitted parameters from different model
 variants or fitting procedures are directly comparable. Add explicit model
 adapters for each supported equation and parameter convention.
 
+### Composite water-retention curves
+
+The evaluator must support a registered curve candidate whose members predict
+different, explicit ranges of the matric-potential axis. This is a range-gated
+composite (or mixture of experts), not a modification of the published PTFs and
+not an implicit choice of the best function after seeing the test targets.
+
+The `ptfkit` manifest remains the catalog of atomic functions, outputs, model
+identifiers, units, and domains. A versioned evaluation plan owns the composite
+definition. At minimum that definition must contain:
+
+- a stable composite identifier and curve target;
+- a canonical axis quantity, unit, sign convention, and optional transform;
+- ordered members that reference a manifest function, output or model adapter,
+  and an explicit closed or open pressure interval;
+- a routing rule for overlaps, gaps, and points on interval boundaries;
+- a transition policy: an exact hard switch or a declared blending function
+  over an explicit overlap interval;
+- rules for member failure and extrapolation, with extrapolation disabled by
+  default;
+- provenance for fixed boundaries, learned boundaries, and learned weights.
+
+For example, the eventual evaluation-plan schema should be able to represent a
+candidate equivalent to:
+
+```yaml
+id: example_piecewise_retention
+kind: range_gated_curve
+axis:
+  quantity: matric_potential
+  unit: kilopascal
+  convention: magnitude
+  transform: log10
+members:
+  - id: wet_range
+    function: calc_ptf_example_wet
+    adapter: example_wet_h_theta
+    interval: {lower: {value: 0.1, inclusive: true}, upper: {value: 33, inclusive: true}}
+  - id: dry_range
+    function: calc_ptf_example_dry
+    adapter: example_dry_h_theta
+    interval: {lower: {value: 10, inclusive: true}, upper: {value: 1500, inclusive: true}}
+routing:
+  overlap: blend
+  blend_interval: {lower: {value: 10, inclusive: true}, upper: {value: 33, inclusive: true}}
+  gap: reject
+  extrapolation: reject
+```
+
+The identifiers above are illustrative, not claims that those functions exist.
+The schema must reject unordered or ambiguous intervals, undeclared gaps,
+multiple active members without a blending rule, incompatible output
+quantities, and references absent from the installed manifest.
+
+Eligibility is evaluated at both sample and pressure-point level. Each point
+must record the active member or members, their normalized inputs, predictions,
+weights, and any exclusion reason. The composite result must retain this trace
+rather than only storing the blended value.
+
+Continuity and physical plausibility are evaluation outputs. Reports must show
+jumps at seams, monotonicity violations with increasing suction magnitude,
+water contents outside declared physical bounds, and the contribution of each
+member to error. The evaluator must not silently smooth, clamp, or monotonize a
+curve; any such post-processing is a separately registered candidate.
+
+Fixed, literature-based ranges may be used directly. If range boundaries,
+member selection, or blend weights are learned from this dataset, that process
+is calibration and must use source- or profile-grouped training folds nested
+inside the external validation split. Test observations must never choose the
+member, boundary, or weight. Single functions and the composite must be
+reported separately on both maximal and common cohorts.
+
 ### Hydraulic conductivity
 
 Evaluate saturated conductivity in both its physical and base-10 logarithmic
@@ -413,6 +488,11 @@ Tests should cover:
 - explicit identifier aliases and rejection of fuzzy joins;
 - hand-calculated metric examples;
 - per-sample curve weighting;
+- range-gated routing at boundaries, explicit gap rejection, and deterministic
+  overlap blending;
+- composite provenance and protection against selecting members from test
+  targets;
+- seam continuity and whole-curve monotonicity diagnostics;
 - clustered resampling determinism with a fixed seed;
 - one end-to-end synthetic evaluation run;
 - dataset-profile counts when the real workbook is available in an explicit
@@ -426,6 +506,7 @@ The first `ptfkit-eval` release is ready only when:
 
 - no input is bound by name alone;
 - every conversion is quantity-aware and recorded;
+- every composite prediction is traceable to its active members and weights;
 - ambiguous records are excluded with reason codes;
 - raw workbook duplication does not inflate sample counts;
 - result tables report coverage and cohort composition;
