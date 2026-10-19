@@ -1,0 +1,1196 @@
+{
+  "_generated": "ptfkit-codegen; DO NOT EDIT.",
+  "coverage": {
+    "implemented_functions": 146,
+    "manifest_functions": 1,
+    "omitted_functions": [
+      {
+        "id": "calc_ptf_ahuja1984",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_aimrun2009",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_bai2022",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_bai2022_bulk_density",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_beniaich2023_mlr1",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_beniaich2023_mlr2",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_beniaich2023_mlr3",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_beniaich2023_mlr4",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_beniaich2023_mlr5",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_beniaich2023_slr1",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_beniaich2023_slr2",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_beniaich2023_slr3",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_beniaich2023_slr4",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_beniaich2023_slr5",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_beniaich2023_slr6",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_chakraborty2011_eq1",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_chakraborty2011_eq2",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_chakraborty2011_eq3",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_chakraborty2011_eq4",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_chakraborty2011_eq5",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_chakraborty2011_eq6",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_cosby1984_univariate",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_dharumarajan2019_infiltration",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_dharumarajan2019_nkp",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_dharumarajan2019_nkp_clay",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_dharumarajan2019_skp",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_dharumarajan2019_skp_clay",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_calcaric_regosol_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_calcic_cambisol_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_calcic_luvisol_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_campbell_shiozawa",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_chromic_luvisol_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_cosby",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_dane_puckett",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_dystric_cambisol_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_dystric_regosol_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_eutric_cambisol_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_eutric_regosol_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_general_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_general_texture_organic_matter",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_gleyic_cambisol_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_gleyic_luvisol_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_gleyic_solonchak_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_humic_acrisol_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_humic_cambisol_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_orthic_luvisol_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_puckett",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_ranker_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_ranker_texture_organic_matter",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_rendzina_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ferrerjulia2004_saxton",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_gunarathna2019_vwc10_set1",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_gunarathna2019_vwc10_set2",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_gunarathna2019_vwc10_set3",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_gunarathna2019_vwc10_set4",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_gunarathna2019_vwc1500_set1",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_gunarathna2019_vwc1500_set3",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_gunarathna2019_vwc1500_set4",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_gunarathna2019_vwc33_set1",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_gunarathna2019_vwc33_set2",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_gunarathna2019_vwc33_set3",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_gunarathna2019_vwc33_set4",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_hodnett2002",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_li2007",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_mayr1999",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_myeni2021_fc",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_myeni2021_pwp",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_oosterveld1980_available_water",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_oosterveld1980_field_capacity",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_oosterveld1980_field_capacity_tension",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_oosterveld1980_retention",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_oosterveld1980_wilting_point",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ottoni2019_wm330",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ottoni2019_wmssc",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_ottoni2019_wmsscbd",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_pidgeon1972_awc",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_pidgeon1972_awc_coarse_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_pidgeon1972_awc_fine_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_pidgeon1972_awc_sand_organic_matter",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_pidgeon1972_awc_very_fine_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_pidgeon1972_eawc",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_pidgeon1972_eawc_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_pidgeon1972_eawc_sand_organic_matter",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_pidgeon1972_fc",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_pidgeon1972_fc_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_pidgeon1972_fc_sand_organic_matter",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_pidgeon1972_fc_vol_sand_organic_matter",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_pidgeon1972_pwp",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_pidgeon1972_pwp_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_pidgeon1972_pwp_sand_organic_matter",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_puckett1985",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_rawls1982_full_wrc",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_rawls1982_theta_1500",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_rawls1982_theta_33",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_rawls2003_soc_theta1500_gmdh",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_rawls2003_soc_theta1500_tree",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_rawls2003_soc_theta33_gmdh",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_rawls2003_soc_theta33_tree",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_saxton2006",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_saxton2006_conductivity",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_saxton2006_density",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_saxton2006_gravel",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_saxton2006_salinity",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_saxton2006_tension_dry",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_saxton2006_tension_wet",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_tiwary2014_bsr",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_tiwary2014_igp",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_varallyai1982_chernozem_a",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_varallyai1982_chernozem_b",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_varallyai1982_chernozem_c",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_varallyai1982_meadow",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_vereecken1989",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_vereecken1989_detailed",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_wang2012",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_weber2020",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_wosten2001_class_parameters",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_wosten2001_hydraulic",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_wosten2001_loam_clay_table5",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_wosten2001_sand_subsoil_table5",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_wosten2001_sand_topsoil_table5",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_zhao2016_m2_1",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_zhao2016_m2_2",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_zhao2016_m2_3",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_zhao2016_m2_4",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_zhao2016_m2_5",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_zhao2016_m2_6",
+        "reason": "incomplete_measurement_contract"
+      }
+    ]
+  },
+  "functions": [
+    {
+      "callable": "calc_ptf_clapp1978",
+      "id": "calc_ptf_clapp1978",
+      "inputs": [
+        {
+          "enum": {
+            "description": "USDA soil textural class used to select a row of Table 2.",
+            "id": "clapp1978.UsdaTextureClass",
+            "values": [
+              {
+                "description": "USDA sand soil textural class.",
+                "name": "sand",
+                "value": "sand"
+              },
+              {
+                "description": "USDA loamy sand soil textural class.",
+                "name": "loamy_sand",
+                "value": "loamy sand"
+              },
+              {
+                "description": "USDA sandy loam soil textural class.",
+                "name": "sandy_loam",
+                "value": "sandy loam"
+              },
+              {
+                "description": "USDA silt loam soil textural class.",
+                "name": "silt_loam",
+                "value": "silt loam"
+              },
+              {
+                "description": "USDA loam soil textural class.",
+                "name": "loam",
+                "value": "loam"
+              },
+              {
+                "description": "USDA sandy clay loam soil textural class.",
+                "name": "sandy_clay_loam",
+                "value": "sandy clay loam"
+              },
+              {
+                "description": "USDA silty clay loam soil textural class.",
+                "name": "silty_clay_loam",
+                "value": "silty clay loam"
+              },
+              {
+                "description": "USDA clay loam soil textural class.",
+                "name": "clay_loam",
+                "value": "clay loam"
+              },
+              {
+                "description": "USDA sandy clay soil textural class.",
+                "name": "sandy_clay",
+                "value": "sandy clay"
+              },
+              {
+                "description": "USDA silty clay soil textural class.",
+                "name": "silty_clay",
+                "value": "silty clay"
+              },
+              {
+                "description": "USDA clay soil textural class.",
+                "name": "clay",
+                "value": "clay"
+              }
+            ]
+          },
+          "kind": "categorical",
+          "name": "soil_texture"
+        }
+      ],
+      "models": {
+        "h_theta": "Power-curve moisture characteristic with a parabolic gradual-air-entry section near saturation",
+        "k_h": "Campbell relative-conductivity power relation"
+      },
+      "module": "ptfkit.clapp1978",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "not_applicable",
+              "material": "mineral_soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": false,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "campbell_b",
+            "reported_applicability": [],
+            "reported_unit": "1",
+            "role": "model_parameter",
+            "status": "derived",
+            "unit": "dimensionless"
+          },
+          "name": "b"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "not_applicable",
+              "material": "mineral_soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": false,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "matric_potential",
+            "reported_applicability": [],
+            "reported_unit": "cm",
+            "role": "model_parameter",
+            "status": "derived",
+            "unit": "centimeter_water_head"
+          },
+          "name": "saturation_suction"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "not_applicable",
+              "material": "mineral_soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": false,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "matric_potential",
+            "reported_applicability": [],
+            "reported_unit": "cm",
+            "role": "model_parameter",
+            "status": "derived",
+            "unit": "centimeter_water_head"
+          },
+          "name": "wetting_front_suction"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": false,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": false,
+                "value": 1.0
+              }
+            },
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "centimeter_water_head",
+                "value": 0.0
+              }
+            ],
+            "method": null,
+            "particle_size": null,
+            "quantity": "volumetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "1",
+            "role": "model_parameter",
+            "status": "derived",
+            "unit": "volume_fraction"
+          },
+          "name": "saturated_water_content"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "not_applicable",
+              "material": "mineral_soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": false,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "saturated_hydraulic_conductivity",
+            "reported_applicability": [],
+            "reported_unit": "cm/min",
+            "role": "model_parameter",
+            "status": "derived",
+            "unit": "centimeter_per_minute"
+          },
+          "name": "saturated_hydraulic_conductivity"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "not_applicable",
+              "material": "mineral_soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": false,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "sorptivity",
+            "reported_applicability": [],
+            "reported_unit": "cm/min^(1/2)",
+            "role": "model_parameter",
+            "status": "derived",
+            "unit": "centimeter_per_square_root_minute"
+          },
+          "name": "sorptivity"
+        }
+      ],
+      "source": "clapp1978",
+      "status": "implemented",
+      "warnings": [
+        "The paper states that these unverified average values should not be used blindly because saturation suction varies substantially within texture classes.",
+        "Sorptivity values must be treated cautiously because the conductivity averages may not represent the same average soils as the other parameters."
+      ]
+    }
+  ],
+  "ptfkit_version": "0.4.0",
+  "quantities": {
+    "available_water_capacity": {
+      "description": "Available water expressed as an equivalent depth per soil depth.",
+      "units": [
+        "millimeter_per_meter"
+      ]
+    },
+    "brunswick_n": {
+      "description": "Brunswick-VGM pore-size distribution shape parameter.",
+      "units": [
+        "dimensionless"
+      ]
+    },
+    "brunswick_tau": {
+      "description": "Brunswick hydraulic-conductivity shape parameter.",
+      "units": [
+        "dimensionless"
+      ]
+    },
+    "campbell_b": {
+      "description": "Campbell moisture-characteristic exponent.",
+      "units": [
+        "dimensionless"
+      ]
+    },
+    "conductivity_shape_parameter": {
+      "description": "Dimensionless hydraulic-conductivity shape parameter.",
+      "units": [
+        "dimensionless"
+      ]
+    },
+    "dry_bulk_density": {
+      "description": "Dry bulk density, including density adjusted for gravel or compaction.",
+      "units": [
+        "gram_per_cubic_centimeter"
+      ]
+    },
+    "gravel_volume_fraction": {
+      "description": "Volumetric fraction of gravel in bulk soil.",
+      "units": [
+        "volume_fraction"
+      ]
+    },
+    "gravimetric_water_content": {
+      "description": "Gravimetric soil water content or a difference between such contents.",
+      "units": [
+        "mass_fraction",
+        "mass_percent"
+      ]
+    },
+    "hutson_cass_b": {
+      "description": "Dimensionless Hutson-Cass retention-curve shape parameter.",
+      "units": [
+        "dimensionless"
+      ]
+    },
+    "infiltration_rate": {
+      "description": "Soil infiltration rate.",
+      "units": [
+        "millimeter_per_hour"
+      ]
+    },
+    "log_saturated_hydraulic_conductivity": {
+      "description": "Reported logarithm of saturated hydraulic conductivity.",
+      "units": [
+        "reported_log_value"
+      ]
+    },
+    "log_saturation_potential": {
+      "description": "Reported logarithm of saturation matric potential.",
+      "units": [
+        "reported_log_value"
+      ]
+    },
+    "matric_potential": {
+      "description": "Soil matric potential, tension, suction, or pressure head.",
+      "units": [
+        "centimeter_water_head",
+        "kilopascal"
+      ]
+    },
+    "osmotic_potential": {
+      "description": "Soil-water osmotic potential.",
+      "units": [
+        "kilopascal"
+      ]
+    },
+    "particle_mass_fraction": {
+      "description": "Mass fraction of soil particles within an explicitly defined particle-size interval.",
+      "units": [
+        "mass_fraction",
+        "mass_percent"
+      ]
+    },
+    "retention_coefficient_a": {
+      "description": "Pressure-dimensional coefficient of an empirical retention relation.",
+      "units": [
+        "kilopascal"
+      ]
+    },
+    "retention_coefficient_b": {
+      "description": "Dimensionless exponent of an empirical retention relation.",
+      "units": [
+        "dimensionless"
+      ]
+    },
+    "saturated_hydraulic_conductivity": {
+      "description": "Saturated hydraulic conductivity, including pore-domain components.",
+      "units": [
+        "centimeter_per_day",
+        "centimeter_per_hour",
+        "centimeter_per_minute",
+        "meter_per_second",
+        "millimeter_per_hour",
+        "millimeter_per_minute"
+      ]
+    },
+    "sorptivity": {
+      "description": "Soil-water sorptivity.",
+      "units": [
+        "centimeter_per_square_root_minute"
+      ]
+    },
+    "unsaturated_hydraulic_conductivity": {
+      "description": "Hydraulic conductivity below saturation.",
+      "units": [
+        "centimeter_per_day",
+        "millimeter_per_hour"
+      ]
+    },
+    "van_genuchten_alpha": {
+      "description": "Inverse pressure-scale parameter of a van Genuchten retention model.",
+      "units": [
+        "inverse_centimeter",
+        "inverse_kilopascal"
+      ]
+    },
+    "van_genuchten_n": {
+      "description": "Dimensionless van Genuchten pore-size distribution parameter.",
+      "units": [
+        "dimensionless"
+      ]
+    },
+    "varallyai_m": {
+      "description": "Shape parameter of the Varallyay retention equation.",
+      "units": [
+        "dimensionless"
+      ]
+    },
+    "varallyai_pf_star": {
+      "description": "Logarithmic suction-scale parameter of the Varallyay retention equation.",
+      "units": [
+        "dimensionless"
+      ]
+    },
+    "volumetric_water_content": {
+      "description": "Volumetric soil water content or an equivalent volumetric fraction.",
+      "units": [
+        "volume_fraction",
+        "volume_percent"
+      ]
+    }
+  },
+  "schema_version": 1,
+  "units": {
+    "centimeter_per_day": {
+      "aliases": [
+        "cm/day"
+      ],
+      "conversion": {
+        "dimension": "length_per_time",
+        "offset_to_si": 0.0,
+        "scale_to_si": 1.1574074074074074e-7
+      },
+      "preferred_notation": "cm d^-1"
+    },
+    "centimeter_per_hour": {
+      "aliases": [],
+      "conversion": {
+        "dimension": "length_per_time",
+        "offset_to_si": 0.0,
+        "scale_to_si": 2.7777777777777775e-6
+      },
+      "preferred_notation": "cm/h"
+    },
+    "centimeter_per_minute": {
+      "aliases": [],
+      "conversion": {
+        "dimension": "length_per_time",
+        "offset_to_si": 0.0,
+        "scale_to_si": 0.00016666666666666666
+      },
+      "preferred_notation": "cm/min"
+    },
+    "centimeter_per_square_root_minute": {
+      "aliases": [],
+      "conversion": null,
+      "preferred_notation": "cm/min^(1/2)"
+    },
+    "centimeter_water_head": {
+      "aliases": [
+        "cm"
+      ],
+      "conversion": {
+        "dimension": "pressure",
+        "offset_to_si": 0.0,
+        "scale_to_si": 98.0665
+      },
+      "preferred_notation": "cm H2O"
+    },
+    "dimensionless": {
+      "aliases": [
+        "1"
+      ],
+      "conversion": null,
+      "preferred_notation": "dimensionless"
+    },
+    "gram_per_cubic_centimeter": {
+      "aliases": [
+        "g/cm³"
+      ],
+      "conversion": {
+        "dimension": "mass_per_volume",
+        "offset_to_si": 0.0,
+        "scale_to_si": 1000.0
+      },
+      "preferred_notation": "g/cm^3"
+    },
+    "inverse_centimeter": {
+      "aliases": [
+        "1/cm"
+      ],
+      "conversion": null,
+      "preferred_notation": "cm^-1"
+    },
+    "inverse_kilopascal": {
+      "aliases": [],
+      "conversion": null,
+      "preferred_notation": "kPa^-1"
+    },
+    "kilopascal": {
+      "aliases": [],
+      "conversion": {
+        "dimension": "pressure",
+        "offset_to_si": 0.0,
+        "scale_to_si": 1000.0
+      },
+      "preferred_notation": "kPa"
+    },
+    "mass_fraction": {
+      "aliases": [
+        "g/g",
+        "g g⁻¹",
+        "kg kg⁻¹"
+      ],
+      "conversion": {
+        "dimension": "mass_ratio",
+        "offset_to_si": 0.0,
+        "scale_to_si": 1.0
+      },
+      "preferred_notation": "kg/kg"
+    },
+    "mass_percent": {
+      "aliases": [
+        "%",
+        "% mass"
+      ],
+      "conversion": {
+        "dimension": "mass_ratio",
+        "offset_to_si": 0.0,
+        "scale_to_si": 0.01
+      },
+      "preferred_notation": "% w/w"
+    },
+    "meter_per_second": {
+      "aliases": [],
+      "conversion": {
+        "dimension": "length_per_time",
+        "offset_to_si": 0.0,
+        "scale_to_si": 1.0
+      },
+      "preferred_notation": "m/s"
+    },
+    "micrometer": {
+      "aliases": [
+        "um"
+      ],
+      "conversion": {
+        "dimension": "length",
+        "offset_to_si": 0.0,
+        "scale_to_si": 1e-6
+      },
+      "preferred_notation": "µm"
+    },
+    "millimeter_per_hour": {
+      "aliases": [
+        "mm h^-1"
+      ],
+      "conversion": {
+        "dimension": "length_per_time",
+        "offset_to_si": 0.0,
+        "scale_to_si": 2.7777777777777776e-7
+      },
+      "preferred_notation": "mm/h"
+    },
+    "millimeter_per_meter": {
+      "aliases": [],
+      "conversion": null,
+      "preferred_notation": "mm/m"
+    },
+    "millimeter_per_minute": {
+      "aliases": [],
+      "conversion": {
+        "dimension": "length_per_time",
+        "offset_to_si": 0.0,
+        "scale_to_si": 0.000016666666666666667
+      },
+      "preferred_notation": "mm/min"
+    },
+    "reported_log_value": {
+      "aliases": [],
+      "conversion": null,
+      "preferred_notation": "reported log value"
+    },
+    "volume_fraction": {
+      "aliases": [
+        "cm^3/cm^3",
+        "cm³/cm³",
+        "m³/m³",
+        "mm/mm",
+        "1",
+        "dimensionless"
+      ],
+      "conversion": {
+        "dimension": "volume_ratio",
+        "offset_to_si": 0.0,
+        "scale_to_si": 1.0
+      },
+      "preferred_notation": "m^3/m^3"
+    },
+    "volume_percent": {
+      "aliases": [
+        "vol.%",
+        "% volume/volume",
+        "%"
+      ],
+      "conversion": {
+        "dimension": "volume_ratio",
+        "offset_to_si": 0.0,
+        "scale_to_si": 0.01
+      },
+      "preferred_notation": "% v/v"
+    }
+  }
+}
