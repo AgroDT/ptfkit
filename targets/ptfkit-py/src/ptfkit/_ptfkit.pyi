@@ -17,6 +17,10 @@ calc_ptf_beniaich2023_slr3: ufunc
 calc_ptf_beniaich2023_slr4: ufunc
 calc_ptf_beniaich2023_slr5: ufunc
 calc_ptf_beniaich2023_slr6: ufunc
+calc_ptf_bruand1994_bulk_volume_available_water: ufunc
+calc_ptf_bruand1994_bulk_volume_water_retention: ufunc
+calc_ptf_bruand1994_clay_available_water: ufunc
+calc_ptf_bruand1994_clay_water_retention: ufunc
 calc_ptf_chakraborty2011_eq1: ufunc
 calc_ptf_chakraborty2011_eq2: ufunc
 calc_ptf_chakraborty2011_eq3: ufunc

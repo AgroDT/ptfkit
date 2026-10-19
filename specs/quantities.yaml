@@ -17,10 +17,20 @@ gravimetric_water_content:
     mass_percent:
       absolute: 0.1
       rationale: Project-default meaningful resolution in mass percentage points.
+    cubic_centimeter_per_gram:
+      absolute: 0.001
+      rationale: >-
+        Project-default meaningful resolution for water volume per unit dry-soil
+        mass, matching source values reported to three decimal places.
 
 available_water_capacity:
   description: Available water expressed as an equivalent depth per soil depth.
   units:
+    volume_fraction:
+      absolute: 0.001
+      rationale: >-
+        Project-default meaningful resolution when available water capacity is
+        reported as a volumetric fraction.
     millimeter_per_meter:
       absolute: 0.1
       rationale: Project-default meaningful resolution for water-storage depth.
