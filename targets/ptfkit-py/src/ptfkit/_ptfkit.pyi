@@ -186,6 +186,7 @@ calc_ptf_saxton2006_tension_dry: ufunc
 calc_ptf_saxton2006_tension_wet: ufunc
 calc_ptf_tiwary2014_bsr: ufunc
 calc_ptf_tiwary2014_igp: ufunc
+calc_ptf_tomasella1998: ufunc
 calc_ptf_varallyai1982_chernozem_a: ufunc
 calc_ptf_varallyai1982_chernozem_b: ufunc
 calc_ptf_varallyai1982_chernozem_c: ufunc

@@ -39,6 +39,7 @@ Each page describes the source, scope, inputs, outputs, status, and limitations 
 | [Saxton et al. retention relationships parameterized by USDA CalcPTF.](./saxton1986.md) | United States | 1 |
 | [Saxton and Rawls (2006), soil water characteristics from texture and organic matter.](./saxton2006.md) | United States | 7 |
 | [Tiwary et al. (2014), hydraulic PTFs for two major soil regions of India.](./tiwary2014.md) | Indo-Gangetic Plains and black soil region of India | 2 |
+| [Tomasella and Hodnett (1998), point-retention regressions for Amazonian soils.](./tomasella1998.md) | Brazilian Amazonia | 1 |
 | [Varallyai et al. (1982), water-retention parameter regressions for Hungarian soils.](./varallyai1982.md) | Hungary, mainly the Hungarian Plain | 4 |
 | [Vereecken et al. soil-moisture retention regressions for Belgian soils.](./vereecken1989.md) | Belgian territory north of the river axis Samber and Meuse | 2 |
 | [Wang et al. (2012), surface loess across China's Loess Plateau.](./wang2012.md) | Surface soils across the entire Loess Plateau, China | 1 |

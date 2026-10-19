@@ -33,6 +33,7 @@
 #include <ptfkit/saxton1986.h>
 #include <ptfkit/saxton2006.h>
 #include <ptfkit/tiwary2014.h>
+#include <ptfkit/tomasella1998.h>
 #include <ptfkit/varallyai1982.h>
 #include <ptfkit/vereecken1989.h>
 #include <ptfkit/wang2012.h>

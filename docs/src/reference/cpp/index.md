@@ -47,6 +47,7 @@ ptfkit's C++ API is organized around C++23 modules.
 - [`ptfkit.saxton1986`](modules/saxton1986.md) — Saxton et al. retention relationships parameterized by USDA CalcPTF.
 - [`ptfkit.saxton2006`](modules/saxton2006.md) — Saxton and Rawls (2006), soil water characteristics from texture and organic matter.
 - [`ptfkit.tiwary2014`](modules/tiwary2014.md) — Tiwary et al. (2014), hydraulic PTFs for two major soil regions of India.
+- [`ptfkit.tomasella1998`](modules/tomasella1998.md) — Tomasella and Hodnett (1998), point-retention regressions for Amazonian soils.
 - [`ptfkit.varallyai1982`](modules/varallyai1982.md) — Varallyai et al. (1982), water-retention parameter regressions for Hungarian soils.
 - [`ptfkit.vereecken1989`](modules/vereecken1989.md) — Vereecken et al. soil-moisture retention regressions for Belgian soils.
 - [`ptfkit.wang2012`](modules/wang2012.md) — Wang et al. (2012), surface loess across China's Loess Plateau.

@@ -1,0 +1,212 @@
+source:
+  summary: Tomasella and Hodnett (1998), point-retention regressions for Amazonian soils.
+  citation_apa: >-
+    Tomasella, J., & Hodnett, M. G. (1998). Estimating soil water retention
+    characteristics from limited data in Brazilian Amazonia. Soil Science,
+    163(3), 190-202.
+  doi:
+    identifier: 10.1097/00010694-199803000-00003
+    url: https://doi.org/10.1097/00010694-199803000-00003
+scope:
+  territory: Brazilian Amazonia
+  dataset: >-
+    Pooled literature data for 614 soil horizons from 10 Amazonian sites;
+    the number of observations available differed among regressions.
+functions:
+  - name: calc_ptf_tomasella1998
+    status: implemented
+    public_api:
+      name: calc_ptf_tomasella1998
+      result_class: Tomasella1998WaterContents
+      summary: Estimate porosity and water contents at eight matric potentials.
+    scope:
+      prediction_target: >-
+        Porosity and volumetric water content at matric potentials from -1 to
+        -1500 kPa.
+      models:
+        h_theta: Eight point-specific multiple linear regressions
+        k_h: null
+    inputs:
+      - name: organic_carbon
+        symbol: OC
+        unit: '%'
+        domain: null
+        description: Soil organic carbon content by mass.
+      - name: silt
+        symbol: Si
+        unit: '%'
+        domain: 0.9 <= value <= 71
+        description: >-
+          Silt content by mass for particles from 0.05 to 0.002 mm.
+      - name: clay
+        symbol: Cl
+        unit: '%'
+        domain: 3 <= value <= 96
+        description: Clay content by mass for particles smaller than 0.002 mm.
+    outputs:
+      type: record
+      name: Tomasella1998WaterContents
+      fields:
+        - name: porosity
+          quantity: volumetric_water_content
+          symbol: phi
+          unit: volume_percent
+          reported_unit: '%'
+          domain: null
+          description: Total soil porosity expressed as a volume percentage.
+        - name: theta_1
+          quantity: volumetric_water_content
+          symbol: theta_1
+          unit: volume_percent
+          reported_unit: '%'
+          domain: null
+          description: Volumetric water content at -1 kPa matric potential.
+        - name: theta_3
+          quantity: volumetric_water_content
+          symbol: theta_3
+          unit: volume_percent
+          reported_unit: '%'
+          domain: null
+          description: Volumetric water content at -3 kPa matric potential.
+        - name: theta_6
+          quantity: volumetric_water_content
+          symbol: theta_6
+          unit: volume_percent
+          reported_unit: '%'
+          domain: null
+          description: Volumetric water content at -6 kPa matric potential.
+        - name: theta_10
+          quantity: volumetric_water_content
+          symbol: theta_10
+          unit: volume_percent
+          reported_unit: '%'
+          domain: null
+          description: Volumetric water content at -10 kPa matric potential.
+        - name: theta_33
+          quantity: volumetric_water_content
+          symbol: theta_33
+          unit: volume_percent
+          reported_unit: '%'
+          domain: null
+          description: Volumetric water content at -33 kPa matric potential.
+        - name: theta_100
+          quantity: volumetric_water_content
+          symbol: theta_100
+          unit: volume_percent
+          reported_unit: '%'
+          domain: null
+          description: Volumetric water content at -100 kPa matric potential.
+        - name: theta_500
+          quantity: volumetric_water_content
+          symbol: theta_500
+          unit: volume_percent
+          reported_unit: '%'
+          domain: null
+          description: Volumetric water content at -500 kPa matric potential.
+        - name: theta_1500
+          quantity: volumetric_water_content
+          symbol: theta_1500
+          unit: volume_percent
+          reported_unit: '%'
+          domain: null
+          description: Volumetric water content at -1500 kPa matric potential.
+    verification_cases:
+      - id: calcptf_predictors_point_regressions
+        kind: calculated
+        inputs:
+          organic_carbon: 2.2
+          silt: 30.3
+          clay: 11.1
+        expected:
+          porosity: 53.6593
+          theta_1: 42.7285
+          theta_3: 38.1288
+          theta_6: 33.1158
+          theta_10: 29.8220
+          theta_33: 21.4382
+          theta_100: 18.2748
+          theta_500: 13.3915
+          theta_1500: 9.8506
+        source_location: >-
+          Predictor values are from the USDA-ARS CalcPTF version 3 shipped
+          example; expected values were independently calculated from article
+          Table 2.
+        rationale: >-
+          The shipped predictor set is a physically valid texture within the
+          common article-reported ranges, and its sand, silt, and clay contents
+          sum to 100%. Expected values were calculated directly from the nine
+          published point regressions; this is not evidence of model accuracy.
+    edge_cases: []
+    documentation:
+      notes:
+        - Sand is omitted because its percentage is a linear combination of silt and clay.
+        - Silt and clay percentages must sum to no more than 100.
+        - >-
+          The structured input ranges are the intersection of the source's
+          Table 3 ranges for the nine returned regressions. The paper does not
+          report an organic-carbon calibration range.
+      warnings:
+        - >-
+          The porosity regression has the lowest reported correlation and the
+          paper identifies bulk density as an important omitted predictor.
+        - >-
+          The regressions are less reliable near saturation and the calibration
+          data did not include plinthitic soils.
+    implementation:
+      variables:
+        - name: porosity
+          expr: 37.937 + 2.240 * organic_carbon + 0.298 * silt + 0.159 * clay
+        - name: theta_1
+          expr: 23.839 + 0.530 * silt + 0.255 * clay
+        - name: theta_3
+          expr: 18.495 + 0.552 * silt + 0.262 * clay
+        - name: theta_6
+          expr: 12.333 + 0.576 * silt + 0.300 * clay
+        - name: theta_10
+          expr: 9.806 + 0.543 * silt + 0.321 * clay
+        - name: theta_33
+          expr: 4.046 + 0.426 * silt + 0.404 * clay
+        - name: theta_100
+          expr: 3.198 + 0.369 * silt + 0.351 * clay
+        - name: theta_500
+          expr: 1.567 + 0.258 * silt + 0.361 * clay
+        - name: theta_1500
+          expr: 0.910 + 0.150 * silt + 0.396 * clay
+scientific_notes: |
+  ## Supported models
+
+  Equation (1) and Table 2 define linear regressions for porosity and volumetric
+  water content at -1, -3, -6, -10, -33, -100, -500, and -1500 kPa. The water
+  contents depend on silt and clay percentages; the porosity regression also
+  uses organic carbon percentage.
+
+  The article also derives Brooks-Corey parameters through a separate staged
+  procedure. Those equations are not part of this point-regression API.
+
+  ## Review decisions
+
+  The API preserves the nine Table 2 point regressions selected by the supplied
+  research resolution. It does not expose the bulk-density regression because
+  bulk density is not one of the retained porosity and water-retention outputs.
+
+  Table 2 reports volumetric outputs as percentages. The implementation retains
+  the published coefficient lexemes and therefore returns volume percentage
+  points without a numerical unit conversion.
+
+  The calculated verification case uses the complete predictor row supplied by
+  the official USDA-ARS CalcPTF example. Its fixed expected values were computed
+  independently from the article's Table 2 coefficients. The CalcPTF archive
+  identified in the supplied research note has SHA-256
+  `0a2a27bdaab264c8e8d221430fa62da0d4f2b36aa41d51d162328bbd1eea2949`.
+
+  ## Documented limitations
+
+  The paper reports that including bulk density would improve the regressions,
+  especially through its effect on porosity, but bulk density was unavailable
+  in the soil-survey data targeted by the PTF. Predictions near saturation are
+  less reliable. The derivation data covered a wide range of Amazonian soil
+  textures but did not include plinthitic soils.
+
+  ## Blockers
+
+  None for the retained point-regression API.
