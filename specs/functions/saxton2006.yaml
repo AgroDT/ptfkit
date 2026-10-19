@@ -38,6 +38,23 @@ functions:
       - name: clay
         symbol: C
         unit: g/g
+        measurement:
+          quantity: particle_mass_fraction
+          unit: mass_fraction
+          reported_unit: g/g
+          basis: {material: fine_earth, denominator: dry_mass}
+          particle_size:
+            unit: micrometer
+            lower: null
+            upper: {value: 2, inclusive: false}
+          conditions: []
+          status: required
+          method: null
+          role: predictor
+          computational_domain:
+            lower: {value: 0, inclusive: true}
+            upper: {value: 0.60, inclusive: true}
+          reported_applicability: []
         domain: 0 <= value <= 0.60
         description: Clay mass fraction of the fine-earth soil.
       - name: organic_matter
@@ -61,6 +78,21 @@ functions:
           symbol: theta_33
           unit: volume_fraction
           reported_unit: m^3/m^3
+          measurement:
+            quantity: volumetric_water_content
+            unit: volume_fraction
+            reported_unit: m^3/m^3
+            basis: {material: fine_earth, denominator: bulk_volume}
+            particle_size: null
+            conditions:
+              - {quantity: matric_potential, value: 33, unit: kilopascal, convention: magnitude}
+            status: estimated
+            method: null
+            role: prediction
+            computational_domain:
+              lower: {value: 0, inclusive: false}
+              upper: null
+            reported_applicability: []
           domain: value > 0
           description: Volumetric water content at 33 kPa matric tension.
         - name: theta_s
@@ -110,6 +142,20 @@ functions:
           symbol: K_s
           unit: millimeter_per_hour
           reported_unit: mm/h
+          measurement:
+            quantity: saturated_hydraulic_conductivity
+            unit: millimeter_per_hour
+            reported_unit: mm/h
+            basis: {material: fine_earth, denominator: not_applicable}
+            particle_size: null
+            conditions: []
+            status: estimated
+            method: null
+            role: prediction
+            computational_domain:
+              lower: {value: 0, inclusive: true}
+              upper: null
+            reported_applicability: []
           domain: value >= 0
           description: Saturated hydraulic conductivity of the matric soil.
         - name: normal_density

@@ -10,6 +10,8 @@ mod corpus_report;
 mod diagnostics;
 mod documentation;
 mod formula;
+#[cfg(test)]
+mod measurement;
 mod model;
 mod neural;
 mod output;
@@ -55,6 +57,8 @@ enum Command {
     },
     Validate,
     Generate,
+    /// Generate only the packaged function manifest.
+    GenerateManifest,
     CheckGenerated,
     /// Summarize the validated specification corpus.
     CorpusReport {
@@ -101,6 +105,10 @@ impl Cli {
             Command::Generate => {
                 let loaded = load_validated_all(root)?;
                 targets::run(root, loaded)
+            }
+            Command::GenerateManifest => {
+                let entries = load_validated_specifications(root)?;
+                targets::generate_manifest(root, &entries)
             }
             Command::CheckGenerated => {
                 let loaded = load_validated_all(root)?;

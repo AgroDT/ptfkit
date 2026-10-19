@@ -6,7 +6,10 @@ use std::{
     path::PathBuf,
 };
 
-use crate::model::{Entry, Function, OutputField, QuantityRegistry};
+use crate::model::{
+    Entry, Function, Input, MeasurementBound, MeasurementDescriptor, MeasurementRole,
+    MeasurementStatus, OutputField, QuantityRegistry,
+};
 
 pub(crate) fn specifications(entries: &[Entry]) -> Vec<ValidationError> {
     let mut errors = Vec::new();
@@ -43,6 +46,7 @@ pub(crate) fn specifications(entries: &[Entry]) -> Vec<ValidationError> {
                 &mut errors,
             );
             validate_output_quantities(entry, function, &mut errors);
+            validate_measurements(entry, function, &mut errors);
             validate_tolerance_overrides(entry, function, &mut errors);
             match (
                 function.outputs.fields().len(),
@@ -70,6 +74,300 @@ pub(crate) fn specifications(entries: &[Entry]) -> Vec<ValidationError> {
     errors
 }
 
+fn validate_measurements(entry: &Entry, function: &Function, errors: &mut Vec<ValidationError>) {
+    for input in &function.inputs {
+        let Input::Parameter(parameter) = input else {
+            continue;
+        };
+        let Some(measurement) = &parameter.measurement else {
+            continue;
+        };
+        if parameter.unit != measurement.reported_unit {
+            invalid_measurement(
+                entry,
+                function,
+                &parameter.name,
+                format!(
+                    "reported_unit `{}` does not match legacy unit `{}`",
+                    measurement.reported_unit, parameter.unit
+                ),
+                errors,
+            );
+        }
+        if measurement.role != MeasurementRole::Predictor
+            || measurement.status != MeasurementStatus::Required
+        {
+            invalid_measurement(
+                entry,
+                function,
+                &parameter.name,
+                "must use role `predictor` and status `required`",
+                errors,
+            );
+        }
+        validate_measurement(entry, function, &parameter.name, measurement, errors);
+    }
+
+    for field in function.outputs.fields() {
+        let Some(measurement) = &field.measurement else {
+            continue;
+        };
+        if field.quantity != measurement.quantity
+            || field.unit != measurement.unit
+            || field.reported_unit != measurement.reported_unit
+        {
+            invalid_measurement(
+                entry,
+                function,
+                &field.name,
+                "does not match the legacy output quantity and unit fields",
+                errors,
+            );
+        }
+        if !matches!(
+            measurement.role,
+            MeasurementRole::Prediction
+                | MeasurementRole::ModelParameter
+                | MeasurementRole::Uncertainty
+        ) || !matches!(
+            measurement.status,
+            MeasurementStatus::Estimated | MeasurementStatus::Derived
+        ) {
+            invalid_measurement(
+                entry,
+                function,
+                &field.name,
+                "has an invalid output role or status",
+                errors,
+            );
+        }
+        validate_measurement(entry, function, &field.name, measurement, errors);
+    }
+}
+
+fn validate_measurement(
+    entry: &Entry,
+    function: &Function,
+    name: &str,
+    measurement: &MeasurementDescriptor,
+    errors: &mut Vec<ValidationError>,
+) {
+    validate_quantity_unit(
+        entry,
+        function,
+        name,
+        &measurement.quantity,
+        &measurement.unit,
+        Some(&measurement.reported_unit),
+        errors,
+    );
+    if let Some(interval) = &measurement.particle_size {
+        match entry.quantities.units.get(&interval.unit) {
+            None => invalid_measurement(
+                entry,
+                function,
+                name,
+                format!(
+                    "particle-size interval references unknown unit `{}`",
+                    interval.unit
+                ),
+                errors,
+            ),
+            Some(unit)
+                if unit
+                    .conversion
+                    .as_ref()
+                    .is_none_or(|conversion| conversion.dimension != "length") =>
+            {
+                invalid_measurement(
+                    entry,
+                    function,
+                    name,
+                    format!(
+                        "particle-size interval unit `{}` must have length conversion metadata",
+                        interval.unit
+                    ),
+                    errors,
+                );
+            }
+            Some(_) => {}
+        }
+        validate_interval_bounds(
+            entry,
+            function,
+            name,
+            &interval.lower,
+            &interval.upper,
+            errors,
+        );
+    }
+    if let Some(interval) = &measurement.computational_domain {
+        validate_interval_bounds(
+            entry,
+            function,
+            name,
+            &interval.lower,
+            &interval.upper,
+            errors,
+        );
+    }
+    let mut conditions = BTreeSet::new();
+    for condition in &measurement.conditions {
+        if !conditions.insert(&condition.quantity) {
+            invalid_measurement(
+                entry,
+                function,
+                name,
+                format!("contains duplicate condition `{}`", condition.quantity),
+                errors,
+            );
+        }
+        if !condition.value.is_finite() {
+            invalid_measurement(
+                entry,
+                function,
+                name,
+                format!("condition `{}` must be finite", condition.quantity),
+                errors,
+            );
+        }
+        validate_quantity_unit(
+            entry,
+            function,
+            name,
+            &condition.quantity,
+            &condition.unit,
+            None,
+            errors,
+        );
+    }
+    for constraint in &measurement.reported_applicability {
+        if let Some(unit) = &constraint.unit
+            && !entry.quantities.units.contains_key(unit)
+        {
+            invalid_measurement(
+                entry,
+                function,
+                name,
+                format!("applicability constraint references unknown unit `{unit}`"),
+                errors,
+            );
+        }
+    }
+}
+
+fn validate_quantity_unit(
+    entry: &Entry,
+    function: &Function,
+    name: &str,
+    quantity_id: &str,
+    unit_id: &str,
+    reported_unit: Option<&str>,
+    errors: &mut Vec<ValidationError>,
+) {
+    let Some(quantity) = entry.quantities.quantities.get(quantity_id) else {
+        invalid_measurement(
+            entry,
+            function,
+            name,
+            format!("references unknown quantity `{quantity_id}`"),
+            errors,
+        );
+        return;
+    };
+    let Some(unit) = entry.quantities.units.get(unit_id) else {
+        invalid_measurement(
+            entry,
+            function,
+            name,
+            format!("references unknown unit `{unit_id}`"),
+            errors,
+        );
+        return;
+    };
+    if !quantity.units.contains_key(unit_id) {
+        invalid_measurement(
+            entry,
+            function,
+            name,
+            format!("quantity `{quantity_id}` has no registered unit `{unit_id}`"),
+            errors,
+        );
+    }
+    if let Some(reported) = reported_unit
+        && reported != unit.preferred_notation
+        && !unit.aliases.iter().any(|alias| alias == reported)
+    {
+        invalid_measurement(
+            entry,
+            function,
+            name,
+            format!(
+                "reported_unit `{reported}` is not an equivalent notation for unit `{unit_id}`"
+            ),
+            errors,
+        );
+    }
+}
+
+fn validate_interval_bounds(
+    entry: &Entry,
+    function: &Function,
+    name: &str,
+    lower: &Option<MeasurementBound>,
+    upper: &Option<MeasurementBound>,
+    errors: &mut Vec<ValidationError>,
+) {
+    if lower.is_none() && upper.is_none() {
+        invalid_measurement(
+            entry,
+            function,
+            name,
+            "interval requires at least one bound",
+            errors,
+        );
+    }
+    for bound in [lower, upper].into_iter().flatten() {
+        if !bound.value.is_finite() {
+            invalid_measurement(
+                entry,
+                function,
+                name,
+                "interval bounds must be finite",
+                errors,
+            );
+        }
+    }
+    if let (Some(lower), Some(upper)) = (lower, upper)
+        && (lower.value > upper.value
+            || (lower.value == upper.value && (!lower.inclusive || !upper.inclusive)))
+    {
+        invalid_measurement(
+            entry,
+            function,
+            name,
+            "interval lower bound must precede its upper bound",
+            errors,
+        );
+    }
+}
+
+fn invalid_measurement(
+    entry: &Entry,
+    function: &Function,
+    name: &str,
+    detail: impl Into<String>,
+    errors: &mut Vec<ValidationError>,
+) {
+    errors.push(
+        ValidationKind::invalid_measurement(name, detail).in_function(
+            &entry.path,
+            &function.name,
+            "measurement",
+        ),
+    );
+}
+
 fn valid_identifier(id: &str) -> bool {
     !id.is_empty()
         && id.chars().enumerate().all(|(index, c)| {
@@ -87,6 +385,14 @@ fn validate_quantity_registry(registry: &QuantityRegistry, errors: &mut Vec<Vali
             if notation.trim().is_empty() || !notations.insert(notation) {
                 errors.push(ValidationError::InvalidUnitNotation { id: id.clone() });
             }
+        }
+        if let Some(conversion) = &unit.conversion
+            && (!valid_identifier(&conversion.dimension)
+                || !conversion.scale_to_si.is_finite()
+                || conversion.scale_to_si <= 0.0
+                || !conversion.offset_to_si.is_finite())
+        {
+            errors.push(ValidationError::InvalidUnitConversion { id: id.clone() });
         }
     }
     for (id, quantity) in &registry.quantities {
