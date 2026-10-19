@@ -117,6 +117,16 @@ creates it by default. Set `generation.public_python: manual` only when the
 public wrapper must be maintained manually; the wrapper must still delegate to
 the generated native ufuncs rather than duplicate formulas.
 
+Codegen also writes the versioned Python function manifest to
+`targets/ptfkit-py/src/ptfkit/_manifest.json`. The normal generation pipeline
+updates it together with the language targets; `mise run codegen:manifest`
+provides a focused command when only the manifest is needed. Consumers should
+use `ptfkit.get_manifest()` instead of reading the generated file directly.
+The returned mappings and sequences are recursively read-only. During metadata
+migration, only implemented functions with complete input and output measurement
+descriptors appear in `functions`; `coverage.omitted_functions` accounts for
+every other implemented function.
+
 Codegen compiles each `implementation` into a shared semantic model and renders
 the Rust, C, C++, and native NumPy implementations independently. Documentation
 is generated from the same validated specification. Put target-independent

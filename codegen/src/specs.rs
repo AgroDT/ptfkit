@@ -2801,7 +2801,7 @@ functions:
         let registry = jsonschema::Registry::new()
             .add(
                 "https://ptfkit.invalid/measurement.schema.json",
-                measurement,
+                measurement.clone(),
             )
             .unwrap()
             .prepare()
@@ -2813,6 +2813,15 @@ functions:
             .unwrap();
         let example: serde_json::Value =
             serde_json::from_str(include_str!("fixtures/measurement_manifest.json")).unwrap();
+        let measurement_validator = jsonschema::options()
+            .with_draft(jsonschema::Draft::Draft202012)
+            .build(&measurement)
+            .unwrap();
+        let measurement_errors = measurement_validator
+            .iter_errors(&example["functions"][0]["inputs"][0]["measurement"])
+            .map(|error| error.to_string())
+            .collect::<Vec<_>>();
+        assert!(measurement_errors.is_empty(), "{measurement_errors:#?}");
         assert!(validator.is_valid(&example));
 
         let mut ambiguous_percent = example;
@@ -2820,8 +2829,9 @@ functions:
             .as_object_mut()
             .unwrap()
             .remove("basis");
-        let errors = validator
-            .iter_errors(&ambiguous_percent)
+        assert!(!validator.is_valid(&ambiguous_percent));
+        let errors = measurement_validator
+            .iter_errors(&ambiguous_percent["functions"][0]["inputs"][0]["measurement"])
             .map(|error| error.to_string())
             .collect::<Vec<_>>();
         assert!(
