@@ -1,12 +1,9 @@
 import json
-from pathlib import Path
+from importlib.resources import files
 from typing import Protocol
 
 import pytest
 from jsonschema import Draft202012Validator
-
-
-SCHEMA_PATH = Path(__file__).parents[1] / 'schemas' / 'evaluation-plan.schema.json'
 
 
 class Validator(Protocol):
@@ -75,7 +72,8 @@ def _candidate() -> dict[str, object]:
 
 @pytest.fixture
 def validator() -> Validator:
-    schema = json.loads(SCHEMA_PATH.read_text(encoding='utf-8'))
+    resource = files('ptfkit_eval').joinpath('schemas/evaluation-plan.schema.json')
+    schema = json.loads(resource.read_text(encoding='utf-8'))
     Draft202012Validator.check_schema(schema)
     return Draft202012Validator(schema)
 
@@ -119,7 +117,7 @@ def test_accepts_an_atomic_function_curve_as_a_peer_candidate(validator: Validat
     validator.validate(plan)
 
 
-def test_requires_an_explicit_overlap_transition(validator: Validator):
+def test_leaves_overlap_completeness_to_manifest_aware_validation(validator: Validator):
     candidate = _candidate()
     routing = candidate['routing']
     assert isinstance(routing, dict)
@@ -130,7 +128,7 @@ def test_requires_an_explicit_overlap_transition(validator: Validator):
         'candidates': [candidate],
     }
 
-    assert not validator.is_valid(plan)
+    validator.validate(plan)
 
 
 def test_learned_routing_requires_a_training_protocol(validator: Validator):
