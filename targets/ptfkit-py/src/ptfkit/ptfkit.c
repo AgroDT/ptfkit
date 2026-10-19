@@ -10,6 +10,7 @@
 #include "aimrun2009.c"
 #include "bai2022.c"
 #include "beniaich2023.c"
+#include "bruand1994.c"
 #include "chakraborty2011.c"
 #include "clapp1978.c"
 #include "cosby1984.c"
@@ -64,6 +65,10 @@ PyMODINIT_FUNC PyInit__ptfkit(void) {
         return NULL;
     }
     if (ptfkit_register_beniaich2023(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_bruand1994(module) < 0) {
         Py_DECREF(module);
         return NULL;
     }

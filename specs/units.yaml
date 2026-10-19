@@ -14,6 +14,10 @@ mass_percent:
   preferred_notation: "% w/w"
   aliases: ["%", "% mass"]
 
+cubic_centimeter_per_gram:
+  preferred_notation: "cm^3/g"
+  aliases: ["cm³/g"]
+
 millimeter_per_meter:
   preferred_notation: "mm/m"
   aliases: []

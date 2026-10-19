@@ -1,0 +1,328 @@
+source:
+  summary: Bruand et al. water-retention relationships for clayey soils with similar clay fabrics.
+  citation_apa: >-
+    Bruand, A., Baize, D., & Hardy, M. (1994). Prediction of water retention
+    properties of clayey soils: Validity of relationships using a single soil
+    characteristic. Soil Use and Management, 10(3), 99-103.
+  doi:
+    identifier: 10.1111/j.1475-2743.1994.tb00467.x
+    url: https://doi.org/10.1111/j.1475-2743.1994.tb00467.x
+scope:
+  territory: South-eastern Paris Basin, France
+  dataset: >-
+    Validation measurements from 20 non-calcareous clayey Bt horizons of terres
+    d'Aubues developed in a loamy clay formation derived from Jurassic limestone.
+functions:
+  - name: calc_ptf_bruand1994_clay_water_retention
+    status: implemented
+    public_api:
+      name: calc_ptf_bruand1994_clay_water_retention
+      result_class: Bruand1994ClayWaterContents
+      summary: Estimate mass-specific water retention at -30 and -1500 kPa from clay content.
+    scope:
+      prediction_target: >-
+        Mass-specific water content at -30 and -1500 kPa matric potential.
+      models:
+        h_theta: Two point-specific linear regressions
+        k_h: null
+    inputs:
+      - name: clay_content
+        symbol: '% clay'
+        unit: '%'
+        domain: 50.2 <= value <= 73.0
+        description: >-
+          Clay content by dry mass for particles smaller than 2 micrometres; the
+          domain is the range in the 20-horizon validation dataset.
+    outputs:
+      type: record
+      name: Bruand1994ClayWaterContents
+      fields:
+        - name: water_content_30_kpa
+          quantity: gravimetric_water_content
+          symbol: theta_m^c(0.3)
+          unit: cubic_centimeter_per_gram
+          reported_unit: cm^3/g
+          domain: value >= 0
+          description: Calculated water volume per dry-soil mass at -30 kPa matric potential.
+        - name: water_content_1500_kpa
+          quantity: gravimetric_water_content
+          symbol: theta_m^c(15)
+          unit: cubic_centimeter_per_gram
+          reported_unit: cm^3/g
+          domain: value >= 0
+          description: Calculated water volume per dry-soil mass at -1500 kPa matric potential.
+    verification_cases:
+      - id: table_1_oxfordian_horizon_1
+        kind: calculated
+        inputs: {clay_content: 62.1}
+        expected: {water_content_30_kpa: 0.2914, water_content_1500_kpa: 0.235907}
+        source_location: >-
+          Table 1, Oxfordian horizon 1 clay content; expected values calculated
+          from equations 4 and 5.
+        rationale: >-
+          The published 62.1% clay predictor is an interior observation from the
+          validation dataset. Decimal arithmetic applied independently to the
+          published regressions gives 0.043 + 0.400e-2 * 62.1 = 0.2914 and
+          0.008 + 0.367e-2 * 62.1 = 0.235907. These are calculated expectations,
+          not measured Table 1 outputs or evidence of model accuracy.
+    edge_cases: []
+    documentation:
+      notes:
+        - These are two point predictions, not a continuous water-retention curve.
+        - >-
+          Apply the equations only to clayey horizons with clay fabric similar to
+          the source soils, as required by the article.
+      warnings:
+        - >-
+          The structured clay-content domain records the validation dataset range,
+          not a general physical limit or permission to ignore clay fabric.
+    implementation:
+      variables:
+        - name: water_content_30_kpa
+          expr: 0.043 + 0.400e-2 * clay_content
+        - name: water_content_1500_kpa
+          expr: 0.008 + 0.367e-2 * clay_content
+
+  - name: calc_ptf_bruand1994_bulk_volume_water_retention
+    status: implemented
+    public_api:
+      name: calc_ptf_bruand1994_bulk_volume_water_retention
+      result_class: Bruand1994BulkVolumeWaterContents
+      summary: Estimate mass-specific water retention at -30 and -1500 kPa from bulk volume.
+    scope:
+      prediction_target: >-
+        Mass-specific water content at -30 and -1500 kPa matric potential.
+      models:
+        h_theta: Two point-specific linear regressions
+        k_h: null
+    inputs:
+      - name: bulk_volume
+        symbol: V_b^m
+        unit: cm^3/g
+        domain: 0.657 <= value <= 0.765
+        description: >-
+          Field bulk volume of moist clods per dry-soil mass; the domain spans
+          the values listed in Table 1.
+    outputs:
+      type: record
+      name: Bruand1994BulkVolumeWaterContents
+      fields:
+        - name: water_content_30_kpa
+          quantity: gravimetric_water_content
+          symbol: theta_m^c(0.3)
+          unit: cubic_centimeter_per_gram
+          reported_unit: cm^3/g
+          domain: value >= 0
+          description: Calculated water volume per dry-soil mass at -30 kPa matric potential.
+        - name: water_content_1500_kpa
+          quantity: gravimetric_water_content
+          symbol: theta_m^c(15)
+          unit: cubic_centimeter_per_gram
+          reported_unit: cm^3/g
+          domain: value >= 0
+          description: Calculated water volume per dry-soil mass at -1500 kPa matric potential.
+    verification_cases:
+      - id: table_1_oxfordian_horizon_1
+        kind: calculated
+        inputs: {bulk_volume: 0.695}
+        expected: {water_content_30_kpa: 0.261315, water_content_1500_kpa: 0.208595}
+        source_location: >-
+          Table 1, Oxfordian horizon 1 bulk volume; expected values calculated
+          from equations 8 and 9.
+        rationale: >-
+          The published 0.695 cm^3/g bulk volume is an interior observation from
+          the validation dataset. Decimal arithmetic applied independently to the
+          published regressions gives -0.376 + 0.917 * 0.695 = 0.261315 and
+          -0.362 + 0.821 * 0.695 = 0.208595. These are calculated expectations,
+          not measured Table 1 outputs or evidence of model accuracy.
+    edge_cases: []
+    documentation:
+      notes:
+        - These are two point predictions, not a continuous water-retention curve.
+        - >-
+          Apply the equations only to clayey horizons with clay fabric similar to
+          the source soils, as required by the article.
+      warnings:
+        - >-
+          The article prose gives 0.679 cm^3/g as the minimum measured bulk
+          volume, but Table 1 includes 0.657 cm^3/g for horizon 15. The structured
+          domain preserves the complete tabulated range.
+    implementation:
+      variables:
+        - name: water_content_30_kpa
+          expr: -0.376 + 0.917 * bulk_volume
+        - name: water_content_1500_kpa
+          expr: -0.362 + 0.821 * bulk_volume
+
+  - name: calc_ptf_bruand1994_clay_available_water
+    status: implemented
+    public_api:
+      name: calc_ptf_bruand1994_clay_available_water
+      result_class: null
+      summary: Estimate volumetric available water capacity from clay content.
+    scope:
+      prediction_target: >-
+        Volumetric available water capacity between -30 and -1500 kPa matric potential.
+      models:
+        h_theta: Difference between point-specific retention estimates
+        k_h: null
+    inputs:
+      - name: clay_content
+        symbol: '% clay'
+        unit: '%'
+        domain: 50.2 <= value <= 73.0
+        description: >-
+          Clay content by dry mass for particles smaller than 2 micrometres; the
+          domain is the range in the 20-horizon validation dataset.
+    outputs:
+      type: scalar
+      name: available_water_capacity
+      quantity: available_water_capacity
+      symbol: AWC^c
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: value >= 0
+      description: >-
+        Difference between calculated volumetric water contents at -30 and
+        -1500 kPa matric potential.
+    verification_cases:
+      - id: table_1_oxfordian_horizon_1
+        kind: calculated
+        inputs: {clay_content: 62.1}
+        expected: {available_water_capacity: 0.07641232610560552}
+        source_location: >-
+          Table 1, Oxfordian horizon 1 clay content; expected value calculated
+          from equation 16.
+        rationale: >-
+          The published 62.1% clay predictor is an interior observation from the
+          validation dataset. Independent decimal evaluation of equation 16 gives
+          0.07641232610560552. This is a calculated expectation, not the measured
+          Table 1 difference or evidence of model accuracy.
+    edge_cases: []
+    documentation:
+      notes:
+        - >-
+          Equation 16 combines the clay-based mass-specific retention equations
+          with the clay-to-bulk-volume regression in equation 12.
+        - >-
+          Apply the equation only to clayey horizons with clay fabric similar to
+          the source soils, as required by the article.
+      warnings:
+        - >-
+          The structured clay-content domain records the validation dataset range,
+          not a general physical limit or permission to ignore clay fabric.
+    implementation:
+      variables:
+        - name: available_water_capacity
+          expr: (0.035 + 0.033e-2 * clay_content) / (0.471 + 0.411e-2 * clay_content)
+
+  - name: calc_ptf_bruand1994_bulk_volume_available_water
+    status: implemented
+    public_api:
+      name: calc_ptf_bruand1994_bulk_volume_available_water
+      result_class: null
+      summary: Estimate volumetric available water capacity from bulk volume.
+    scope:
+      prediction_target: >-
+        Volumetric available water capacity between -30 and -1500 kPa matric potential.
+      models:
+        h_theta: Difference between point-specific retention estimates
+        k_h: null
+    inputs:
+      - name: bulk_volume
+        symbol: V_b^m
+        unit: cm^3/g
+        domain: 0.657 <= value <= 0.765
+        description: >-
+          Field bulk volume of moist clods per dry-soil mass; the domain spans
+          the values listed in Table 1.
+    outputs:
+      type: scalar
+      name: available_water_capacity
+      quantity: available_water_capacity
+      symbol: AWC^c
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: value >= 0
+      description: >-
+        Difference between calculated volumetric water contents at -30 and
+        -1500 kPa matric potential.
+    verification_cases:
+      - id: table_1_oxfordian_horizon_1
+        kind: calculated
+        inputs: {bulk_volume: 0.695}
+        expected: {available_water_capacity: 0.07585611510791367}
+        source_location: >-
+          Table 1, Oxfordian horizon 1 bulk volume; expected value calculated
+          from equation 19.
+        rationale: >-
+          The published 0.695 cm^3/g bulk volume is an interior observation from
+          the validation dataset. Independent decimal evaluation of equation 19
+          gives 0.07585611510791367. This is a calculated expectation, not the
+          measured Table 1 difference or evidence of model accuracy.
+    edge_cases: []
+    documentation:
+      notes:
+        - >-
+          Equation 19 is the difference between the volumetric forms of equations
+          8 and 9.
+        - >-
+          Apply the equation only to clayey horizons with clay fabric similar to
+          the source soils, as required by the article.
+      warnings:
+        - >-
+          The article prose gives 0.679 cm^3/g as the minimum measured bulk
+          volume, but Table 1 includes 0.657 cm^3/g for horizon 15. The structured
+          domain preserves the complete tabulated range.
+    implementation:
+      variables:
+        - name: available_water_capacity
+          expr: -0.014 / bulk_volume + 0.096
+
+scientific_notes: |
+  ## Supported models
+
+  Equations 4 and 5 estimate mass-specific water contents at -30 and -1500 kPa
+  from clay percentage. Equations 8 and 9 estimate the same quantities from
+  measured field bulk volume. Equations 16 and 19 estimate volumetric available
+  water capacity from clay percentage and bulk volume, respectively.
+
+  The article evaluates regressions previously obtained by Bruand (1990). The
+  clay-based retention regressions have a standard error of 0.013 cm^3/g. The
+  bulk-volume regressions have standard errors of 0.018 and 0.017 cm^3/g at
+  -30 and -1500 kPa. Both available-water-capacity equations have a standard
+  error of 0.011 cm^3/cm^3. These are model-performance statistics, not
+  implementation tolerances.
+
+  ## Review decisions
+
+  The paper reports mass-specific retained water as cm^3/g. This is represented
+  by the reviewed `cubic_centimeter_per_gram` unit instead of treating it as an
+  exact alias of g/g through an unstated water-density convention.
+
+  Table 1 supplies published predictor observations and measured responses, but
+  not outputs calculated by the retained equations. Verification therefore uses
+  calculated expectations based on the first Table 1 predictor row and labels
+  them as calculated rather than published.
+
+  The supplied source bundle's audit note gives a USDA CalcPTF example with
+  11.1% clay and outputs 0.169 and 0.094. Direct evaluation of article equations
+  4 and 5 gives 0.087400 and 0.048737, and 11.1% clay is outside the article's
+  50.2-73.0% validation range. The secondary example is therefore not used as a
+  verification case for these article equations.
+
+  ## Documented limitations
+
+  The article states that the regressions can be used for other soils only when
+  their clay fabrics are similar. It characterizes this similarity through pore
+  volume associated with clay particles, but does not define an executable
+  acceptance threshold. Users must establish applicability independently.
+
+  Equation 2 assumes that crack and biopore volume is negligible compared with
+  pore volume inside the clay fabric. The source soils are non-calcareous clayey
+  Bt horizons developed through similar soil-forming processes from one parent
+  material type.
+
+  ## Blockers
+
+  None for the retained equations. Human review is required before generation.

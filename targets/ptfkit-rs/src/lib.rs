@@ -12,6 +12,7 @@ pub mod ahuja1984;
 pub mod aimrun2009;
 pub mod bai2022;
 pub mod beniaich2023;
+pub mod bruand1994;
 pub mod chakraborty2011;
 pub mod clapp1978;
 pub mod cosby1984;
