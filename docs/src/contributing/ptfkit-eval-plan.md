@@ -2,8 +2,10 @@
 
 ## Status
 
-In progress. The measurement-contract vertical slice is implemented; public
-manifest generation is the next task.
+In progress. The measurement-contract vertical slice, Phase 1 public manifest,
+and the initial `ptfkit-eval` scaffold are implemented. The next task is a
+manifest-aware evaluation-plan loader that validates function, output, model
+adapter, quantity, unit, and interval references before dataset ingestion.
 
 This document defines the staged work needed to add a separate `ptfkit-eval`
 Python distribution to this repository. The package will evaluate implemented
@@ -154,6 +156,10 @@ Implementation details and the migration inventory are recorded in the
 
 ## Phase 1: generate a public function manifest
 
+Status: implemented. The initial manifest exposes one fully described function
+and explicitly records every implemented function still awaiting measurement
+metadata; corpus migration remains incremental.
+
 Extend codegen to produce a deterministic, versioned manifest for the Python
 distribution. Each implemented function entry should include:
 
@@ -181,6 +187,10 @@ descriptors.
 
 ## Phase 2: create the ptfkit-eval distribution
 
+Status: in progress. The pure-Python distribution, versioned evaluation-plan
+schema, and deterministic range-gated router are scaffolded. Manifest-reference
+validation and the remaining package modules are still pending.
+
 Add `targets/ptfkit-eval/` with:
 
 ```text
@@ -188,6 +198,8 @@ targets/ptfkit-eval/
   pyproject.toml
   uv.lock
   tasks.toml
+  schemas/
+    evaluation-plan.schema.json
   src/ptfkit_eval/
     catalog.py
     composites.py
@@ -349,8 +361,7 @@ definition. At minimum that definition must contain:
   default;
 - provenance for fixed boundaries, learned boundaries, and learned weights.
 
-For example, the eventual evaluation-plan schema should be able to represent a
-candidate equivalent to:
+The versioned evaluation-plan schema represents a candidate equivalent to:
 
 ```yaml
 id: example_piecewise_retention
@@ -360,26 +371,36 @@ axis:
   unit: kilopascal
   convention: magnitude
   transform: log10
+target:
+  quantity: volumetric_water_content
+  unit: volume_fraction
+  material_basis: fine_earth
+  denominator_basis: bulk_volume
 members:
   - id: wet_range
     function: calc_ptf_example_wet
-    adapter: example_wet_h_theta
+    prediction: {kind: model_adapter, id: example_wet_h_theta}
     interval: {lower: {value: 0.1, inclusive: true}, upper: {value: 33, inclusive: true}}
   - id: dry_range
     function: calc_ptf_example_dry
-    adapter: example_dry_h_theta
+    prediction: {kind: model_adapter, id: example_dry_h_theta}
     interval: {lower: {value: 10, inclusive: true}, upper: {value: 1500, inclusive: true}}
 routing:
-  overlap: blend
-  blend_interval: {lower: {value: 10, inclusive: true}, upper: {value: 33, inclusive: true}}
   gap: reject
   extrapolation: reject
+  transitions:
+    - kind: blend
+      left_member: wet_range
+      right_member: dry_range
+      interval: {lower: {value: 10, inclusive: true}, upper: {value: 33, inclusive: true}}
+      weighting: smoothstep
+provenance: {kind: fixed, source: Pre-registered evaluation plan.}
 ```
 
 The identifiers above are illustrative, not claims that those functions exist.
-The schema must reject unordered or ambiguous intervals, undeclared gaps,
-multiple active members without a blending rule, incompatible output
-quantities, and references absent from the installed manifest.
+Schema and semantic validation must reject unordered or ambiguous intervals,
+undeclared gaps, multiple active members without a blending rule, incompatible
+output quantities, and references absent from the installed manifest.
 
 Eligibility is evaluated at both sample and pressure-point level. Each point
 must record the active member or members, their normalized inputs, predictions,
