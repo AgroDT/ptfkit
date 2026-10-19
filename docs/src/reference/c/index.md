@@ -54,6 +54,7 @@ ptfkit's C API is organized around installed headers.
 - [`<ptfkit/wang2022.h>`](headers/wang2022.md) — Wang et al. (2022), random-forest PTFs for soil hydraulic-model parameters.
 - [`<ptfkit/weber2020.h>`](headers/weber2020.md) — Weber et al. (2020), compiled international soil hydraulic data.
 - [`<ptfkit/weynants2009.h>`](headers/weynants2009.md) — Corrected Weynants et al. hydraulic-parameter pedotransfer function.
+- [`<ptfkit/williams1992.h>`](headers/williams1992.md) — Williams et al. (1992) Campbell water-retention regressions and parameter table.
 - [`<ptfkit/wosten2001.h>`](headers/wosten2001.md) — Wösten et al. (2001), Staring Series hydraulic parameters for Dutch soils.
 - [`<ptfkit/zhao2016.h>`](headers/zhao2016.md) — Saturated hydraulic conductivity PTFs for the Loess Plateau of China.
 

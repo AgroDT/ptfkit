@@ -1,0 +1,533 @@
+source:
+  summary: Williams et al. (1992) Campbell water-retention regressions and parameter table.
+  citation_apa: >-
+    Williams, J., Ross, P. J., & Bristow, K. L. (1992). Prediction of the
+    Campbell water retention function from texture, structure, and organic
+    matter. In M. Th. van Genuchten, F. J. Leij, & L. J. Lund (Eds.),
+    Proceedings of the International Workshop on Indirect Methods for
+    Estimating the Hydraulic Properties of Unsaturated Soils (pp. 427-441).
+    University of California, Riverside.
+  doi: null
+scope:
+  territory: Australia, England and Wales, and the United States
+  dataset: >-
+    Regressions were developed from the Prebble and Forrest Australian data
+    sets, their combination, or the Hall England-and-Wales data set, and were
+    evaluated where compatible against independent Australian, UK, and US data.
+$defs:
+  TextureClass:
+    type: enum
+    description: One of the six source-defined Northcote field-texture groups.
+    values:
+      - {name: class_1, value: "1", description: Northcote field-texture group 1.}
+      - {name: class_2, value: "2", description: Northcote field-texture group 2.}
+      - {name: class_3, value: "3", description: Northcote field-texture group 3.}
+      - {name: class_4, value: "4", description: Northcote field-texture group 4.}
+      - {name: class_5, value: "5", description: Northcote field-texture group 5.}
+      - {name: class_6, value: "6", description: Northcote field-texture group 6.}
+  SoilStructure:
+    type: enum
+    description: Source-defined two-level indicator for absence or presence of pedality.
+    values:
+      - {name: massive, value: "1", description: "Massive soil, assigned STR = 1."}
+      - {name: structured, value: "2", description: "Structured soil, assigned STR = 2."}
+  texture_code:
+    type: scalar
+    name: texture_code
+    quantity: field_texture_class_code
+    symbol: TEX
+    unit: dimensionless
+    reported_unit: "1"
+    domain: integer values from 1 through 6
+    description: Numeric code assigned to the source-defined field-texture group.
+  structure_code:
+    type: scalar
+    name: structure_code
+    quantity: soil_structure_class_code
+    symbol: STR
+    unit: dimensionless
+    reported_unit: "1"
+    domain: value is 1 or 2
+    description: Numeric code assigned to the source-defined structure category.
+  texture_code_mapping:
+    type: tree
+    inputs:
+      - {name: texture, $ref: "#/$defs/TextureClass"}
+    output:
+      $ref: "#/$defs/texture_code"
+    root:
+      match:
+        input: texture
+        cases:
+          - {values: [class_1], then: {leaf: 1}}
+          - {values: [class_2], then: {leaf: 2}}
+          - {values: [class_3], then: {leaf: 3}}
+          - {values: [class_4], then: {leaf: 4}}
+          - {values: [class_5], then: {leaf: 5}}
+          - {values: [class_6], then: {leaf: 6}}
+  structure_code_mapping:
+    type: tree
+    inputs:
+      - {name: structure, $ref: "#/$defs/SoilStructure"}
+    output:
+      $ref: "#/$defs/structure_code"
+    root:
+      match:
+        input: structure
+        cases:
+          - {values: [massive], then: {leaf: 1}}
+          - {values: [structured], then: {leaf: 2}}
+  predicted_water_content:
+    type: scalar
+    name: water_content
+    quantity: volumetric_water_content
+    symbol: theta
+    unit: volume_percent
+    reported_unit: "%"
+    domain: value > 0
+    description: Predicted volumetric water content at the supplied water-potential magnitude.
+  Williams1992Table5Parameters:
+    type: record
+    name: Williams1992Table5Parameters
+    fields:
+      - name: b
+        quantity: campbell_b
+        symbol: b
+        unit: dimensionless
+        reported_unit: dimensionless
+        domain: value > 0
+        description: Campbell moisture-characteristic exponent predicted with Function 7.
+      - name: air_entry_head
+        quantity: matric_potential
+        symbol: h_e
+        unit: centimeter_water_head
+        reported_unit: cm
+        domain: value > 0
+        description: Campbell nominal air-entry pressure-head magnitude predicted with Function 7.
+  Table5SoilGroup:
+    type: enum
+    description: One published Table 5 combination of structure and field-texture group.
+    values:
+      - {name: massive_class_1, value: "Massive soils, texture class 1"}
+      - {name: massive_class_2, value: "Massive soils, texture class 2"}
+      - {name: massive_class_3, value: "Massive soils, texture class 3"}
+      - {name: massive_class_4, value: "Massive soils, texture class 4"}
+      - {name: massive_class_5, value: "Massive soils, texture class 5"}
+      - {name: massive_class_6, value: "Massive soils, texture class 6"}
+      - {name: structured_class_1, value: "Structured soils, texture class 1"}
+      - {name: structured_class_2, value: "Structured soils, texture class 2"}
+      - {name: structured_class_3, value: "Structured soils, texture class 3"}
+      - {name: structured_class_4, value: "Structured soils, texture class 4"}
+      - {name: structured_class_5, value: "Structured soils, texture class 5"}
+      - {name: structured_class_6, value: "Structured soils, texture class 6"}
+  table5_parameters_by_soil_group:
+    type: lookup
+    input:
+      $ref: "#/$defs/Table5SoilGroup"
+    output:
+      $ref: "#/$defs/Williams1992Table5Parameters"
+    values:
+      - {key: massive_class_1, value: {b: 4.1, air_entry_head: 4.5}}
+      - {key: massive_class_2, value: {b: 5.2, air_entry_head: 4.2}}
+      - {key: massive_class_3, value: {b: 6.3, air_entry_head: 4.6}}
+      - {key: massive_class_4, value: {b: 7.3, air_entry_head: 5.6}}
+      - {key: massive_class_5, value: {b: 8.4, air_entry_head: 7.6}}
+      - {key: massive_class_6, value: {b: 9.5, air_entry_head: 11.7}}
+      - {key: structured_class_1, value: {b: 5.0, air_entry_head: 5.3}}
+      - {key: structured_class_2, value: {b: 6.8, air_entry_head: 5.1}}
+      - {key: structured_class_3, value: {b: 8.7, air_entry_head: 6.0}}
+      - {key: structured_class_4, value: {b: 10.9, air_entry_head: 8.7}}
+      - {key: structured_class_5, value: {b: 13.4, air_entry_head: 15.8}}
+      - {key: structured_class_6, value: {b: 16.6, air_entry_head: 39.8}}
+functions:
+  - name: calc_ptf_williams1992_function_1
+    status: implemented
+    public_api:
+      name: calc_ptf_williams1992_function_1
+      result_class: null
+      summary: Predict volumetric water content with Williams et al. Function 1.
+    scope:
+      prediction_target: Volumetric water content at a specified water-potential magnitude.
+      models: {h_theta: Campbell power-function retention model, k_h: null}
+    inputs:
+      - {name: clay, symbol: C, unit: "%", domain: "0 < value <= 100", description: "Clay below 0.002 mm, as a mass percentage."}
+      - {name: fine_sand, symbol: FS, unit: "%", domain: "0 <= value <= 100", description: "Fine sand from 0.02 to 0.20 mm, as a mass percentage."}
+      - {name: coarse_sand, symbol: CS, unit: "%", domain: "0 < value <= 100", description: "Coarse sand from 0.20 to 2.0 mm, as a mass percentage."}
+      - {name: organic_matter, symbol: OM, unit: "%", domain: "value > 0", description: Organic-matter mass percentage.}
+      - {name: water_potential, symbol: h, unit: bar, domain: "value > 0", description: Water-potential magnitude.}
+    outputs:
+      $ref: "#/$defs/predicted_water_content"
+    verification_cases:
+      - id: interior_texture_at_point_33_bar
+        kind: calculated
+        inputs: {clay: 20.0, fine_sand: 30.0, coarse_sand: 20.0, organic_matter: 2.0, water_potential: 0.33}
+        expected: {water_content: 28.2755655845185}
+        source_location: "Table 3, Function 1; Equation 8"
+        rationale: Uses positive interior percentages from a physically valid texture and a measured-range suction.
+    edge_cases: []
+    documentation:
+      notes: [Natural logarithms are used.]
+      warnings: [The source does not publish exact multivariate calibration boundaries.]
+    implementation:
+      variables:
+        - {name: fine_sand_squared, expr: "fine_sand ^ 2"}
+        - {name: ln_clay, expr: "ln(clay)"}
+        - name: coefficient_a
+          expr: 2.57 + 0.238 * ln_clay - 0.000192 * fine_sand_squared - 0.0137 * coarse_sand + 0.112 * ln(coarse_sand) - 0.0926 * ln(organic_matter) + 0.0412 * organic_matter
+        - name: coefficient_b
+          expr: -0.403 + 0.0871 * ln_clay + 0.0014 * coarse_sand - 0.00077 * fine_sand
+        - {name: water_content, expr: "exp(coefficient_a + coefficient_b * ln(water_potential))"}
+
+  - name: calc_ptf_williams1992_function_2
+    status: implemented
+    public_api:
+      name: calc_ptf_williams1992_function_2
+      result_class: null
+      summary: Predict volumetric water content with Williams et al. Function 2.
+    scope:
+      prediction_target: Volumetric water content at a specified water-potential magnitude.
+      models: {h_theta: Campbell power-function retention model, k_h: null}
+    inputs:
+      - {name: clay, symbol: C, unit: "%", domain: "0 < value <= 100", description: "Clay below 0.002 mm, as a mass percentage."}
+      - name: structure
+        description: Structure category supplying STR in the Function 2 regression.
+        $ref: "#/$defs/SoilStructure"
+      - {name: fine_sand, symbol: FS, unit: "%", domain: "0 <= value <= 100", description: "Fine sand from 0.02 to 0.20 mm, as a mass percentage."}
+      - {name: bulk_density, symbol: BD, unit: g/cm^3, domain: "value > 0", description: Soil bulk density.}
+      - {name: water_potential, symbol: h, unit: bar, domain: "value > 0", description: Water-potential magnitude.}
+    outputs: {$ref: "#/$defs/predicted_water_content"}
+    verification_cases:
+      - id: massive_interior_texture_at_point_33_bar
+        kind: calculated
+        inputs: {clay: 20.0, structure: massive, fine_sand: 30.0, bulk_density: 1.4, water_potential: 0.33}
+        expected: {water_content: 20.9768341600005}
+        source_location: "Table 3, Function 2; Equation 8"
+        rationale: Uses a source-defined structure level, typical positive bulk density, and an interior texture at measured-range suction.
+    edge_cases: []
+    documentation:
+      notes: [Natural logarithms are used.]
+      warnings: [The source does not publish exact multivariate calibration boundaries.]
+    implementation:
+      variables:
+        - name: structure_code
+          tree: {definition: {$ref: "#/$defs/structure_code_mapping"}, arguments: {structure: structure}}
+        - {name: fine_sand_squared, expr: "fine_sand ^ 2"}
+        - {name: ln_clay, expr: "ln(clay)"}
+        - {name: coefficient_a, expr: "1.839 + 0.257 * ln_clay + 0.381 * structure_code - 0.0001 * fine_sand_squared"}
+        - {name: coefficient_b, expr: "-0.303 + 0.093 * ln(bulk_density) + 0.0565 * ln_clay - 0.00003 * fine_sand_squared"}
+        - {name: water_content, expr: "exp(coefficient_a + coefficient_b * ln(water_potential))"}
+
+  - name: calc_ptf_williams1992_function_3
+    status: implemented
+    public_api:
+      name: calc_ptf_williams1992_function_3
+      result_class: null
+      summary: Predict volumetric water content with Williams et al. Function 3.
+    scope:
+      prediction_target: Volumetric water content at a specified water-potential magnitude.
+      models: {h_theta: Campbell power-function retention model, k_h: null}
+    inputs:
+      - name: texture_class
+        description: Northcote field-texture group supplying TEX in the Function 3 regression.
+        $ref: "#/$defs/TextureClass"
+      - name: structure
+        description: Structure category supplying STR in the Function 3 regression.
+        $ref: "#/$defs/SoilStructure"
+      - {name: bulk_density, symbol: BD, unit: g/cm^3, domain: "value > 0", description: Soil bulk density.}
+      - {name: water_potential, symbol: h, unit: bar, domain: "value > 0", description: Water-potential magnitude.}
+    outputs: {$ref: "#/$defs/predicted_water_content"}
+    verification_cases:
+      - id: massive_class_3_at_point_33_bar
+        kind: calculated
+        inputs: {texture_class: class_3, structure: massive, bulk_density: 1.4, water_potential: 0.33}
+        expected: {water_content: 20.7537841359773}
+        source_location: "Table 3, Function 3; Equation 8"
+        rationale: Uses source-defined interior texture and structure classes with typical bulk density at measured-range suction.
+    edge_cases: []
+    documentation:
+      notes: [Natural logarithms are used.]
+      warnings: [The source does not publish exact multivariate calibration boundaries.]
+    implementation:
+      variables:
+        - name: texture_code
+          tree: {definition: {$ref: "#/$defs/texture_code_mapping"}, arguments: {texture: texture_class}}
+        - name: structure_code
+          tree: {definition: {$ref: "#/$defs/structure_code_mapping"}, arguments: {structure: structure}}
+        - {name: ln_texture_code, expr: "ln(texture_code)"}
+        - {name: coefficient_a, expr: "2.2 + 0.541 * ln_texture_code + 0.355 * structure_code - 0.19 * bulk_density"}
+        - {name: coefficient_b, expr: "-0.268 + 0.1213 * ln_texture_code"}
+        - {name: water_content, expr: "exp(coefficient_a + coefficient_b * ln(water_potential))"}
+
+  - name: calc_ptf_williams1992_function_4
+    status: implemented
+    public_api:
+      name: calc_ptf_williams1992_function_4
+      result_class: null
+      summary: Predict volumetric water content with Williams et al. Function 4.
+    scope:
+      prediction_target: Volumetric water content at a specified water-potential magnitude.
+      models: {h_theta: Campbell power-function retention model, k_h: null}
+    inputs:
+      - {name: clay, symbol: C, unit: "%", domain: "0 < value <= 100", description: "Clay below 0.002 mm, as a mass percentage."}
+      - {name: fine_sand, symbol: FS, unit: "%", domain: "0 <= value <= 100", description: "Fine sand from 0.02 to 0.20 mm, as a mass percentage."}
+      - {name: silt, symbol: SI, unit: "%", domain: "0 < value <= 100", description: "Silt from 0.002 to 0.02 mm, as a mass percentage."}
+      - name: texture_class
+        description: Northcote field-texture group supplying TEX in the Function 4 regression.
+        $ref: "#/$defs/TextureClass"
+      - {name: water_potential, symbol: h, unit: bar, domain: "value > 0", description: Water-potential magnitude.}
+    outputs: {$ref: "#/$defs/predicted_water_content"}
+    verification_cases:
+      - id: class_3_interior_texture_at_point_33_bar
+        kind: calculated
+        inputs: {clay: 20.0, fine_sand: 30.0, silt: 30.0, texture_class: class_3, water_potential: 0.33}
+        expected: {water_content: 29.9978842554146}
+        source_location: "Table 3, Function 4; Equation 8"
+        rationale: Uses a positive interior particle-size composition and source-defined interior texture class at measured-range suction.
+    edge_cases: []
+    documentation:
+      notes: [Natural logarithms are used.]
+      warnings: [The source does not publish exact multivariate calibration boundaries.]
+    implementation:
+      variables:
+        - name: texture_code
+          tree: {definition: {$ref: "#/$defs/texture_code_mapping"}, arguments: {texture: texture_class}}
+        - {name: fine_sand_squared, expr: "fine_sand ^ 2"}
+        - {name: ln_texture_code, expr: "ln(texture_code)"}
+        - {name: coefficient_a, expr: "1.996 + 0.136 * ln(clay) - 0.00007 * fine_sand_squared + 0.145 * ln(silt) + 0.382 * ln_texture_code"}
+        - {name: coefficient_b, expr: "-0.192 + 0.0946 * ln_texture_code - 0.00151 * fine_sand"}
+        - {name: water_content, expr: "exp(coefficient_a + coefficient_b * ln(water_potential))"}
+
+  - name: calc_ptf_williams1992_function_5
+    status: implemented
+    public_api:
+      name: calc_ptf_williams1992_function_5
+      result_class: null
+      summary: Predict volumetric water content with Williams et al. Function 5.
+    scope:
+      prediction_target: Volumetric water content at a specified water-potential magnitude.
+      models: {h_theta: Campbell power-function retention model, k_h: null}
+    inputs:
+      - name: texture_class
+        description: Northcote field-texture group supplying TEX in the Function 5 regression.
+        $ref: "#/$defs/TextureClass"
+      - {name: bulk_density, symbol: BD, unit: g/cm^3, domain: "value > 0", description: Soil bulk density.}
+      - {name: silt, symbol: SI, unit: "%", domain: "0 < value <= 100", description: "Silt from 0.002 to 0.02 mm, as a mass percentage."}
+      - {name: clay, symbol: C, unit: "%", domain: "0 <= value <= 100", description: "Clay below 0.002 mm, as a mass percentage."}
+      - {name: fine_sand, symbol: FS, unit: "%", domain: "0 <= value <= 100", description: "Fine sand from 0.02 to 0.20 mm, as a mass percentage."}
+      - {name: water_potential, symbol: h, unit: bar, domain: "value > 0", description: Water-potential magnitude.}
+    outputs: {$ref: "#/$defs/predicted_water_content"}
+    verification_cases:
+      - id: class_3_interior_texture_at_point_33_bar
+        kind: calculated
+        inputs: {texture_class: class_3, bulk_density: 1.4, silt: 30.0, clay: 20.0, fine_sand: 30.0, water_potential: 0.33}
+        expected: {water_content: 27.8098108084288}
+        source_location: "Table 3, Function 5; Equation 8"
+        rationale: Uses a positive interior particle-size composition, typical bulk density, and an interior texture class at measured-range suction.
+    edge_cases: []
+    documentation:
+      notes: [Natural logarithms are used.]
+      warnings: [The source does not publish exact multivariate calibration boundaries.]
+    implementation:
+      variables:
+        - name: texture_code
+          tree: {definition: {$ref: "#/$defs/texture_code_mapping"}, arguments: {texture: texture_class}}
+        - {name: ln_texture_code, expr: "ln(texture_code)"}
+        - {name: coefficient_a, expr: "2.436 + 0.936 * ln_texture_code - 0.401 * bulk_density + 0.1713 * ln(silt) + 0.01594 * clay - 0.247 * texture_code + 0.00406 * fine_sand"}
+        - {name: coefficient_b, expr: "-0.2177 + 0.083 * ln_texture_code"}
+        - {name: water_content, expr: "exp(coefficient_a + coefficient_b * ln(water_potential))"}
+
+  - name: calc_ptf_williams1992_function_6
+    status: implemented
+    public_api:
+      name: calc_ptf_williams1992_function_6
+      result_class: null
+      summary: Predict volumetric water content with Williams et al. Function 6.
+    scope:
+      prediction_target: Volumetric water content at a specified water-potential magnitude.
+      models: {h_theta: Campbell power-function retention model, k_h: null}
+    inputs:
+      - {name: clay, symbol: C, unit: "%", domain: "0 < value <= 100", description: "Clay below 0.002 mm, as a mass percentage."}
+      - {name: fine_sand, symbol: FS, unit: "%", domain: "0 <= value <= 100", description: "Fine sand from 0.02 to 0.20 mm, as a mass percentage."}
+      - name: texture_class
+        description: Northcote field-texture group supplying TEX in the Function 6 regression.
+        $ref: "#/$defs/TextureClass"
+      - {name: organic_matter, symbol: OM, unit: "%", domain: "value > 0", description: Organic-matter mass percentage.}
+      - {name: silt, symbol: SI, unit: "%", domain: "0 <= value <= 100", description: "Silt from 0.002 to 0.02 mm, as a mass percentage."}
+      - {name: water_potential, symbol: h, unit: bar, domain: "value > 0", description: Water-potential magnitude.}
+    outputs: {$ref: "#/$defs/predicted_water_content"}
+    verification_cases:
+      - id: class_3_interior_texture_at_point_33_bar
+        kind: calculated
+        inputs: {clay: 20.0, fine_sand: 30.0, texture_class: class_3, organic_matter: 2.0, silt: 30.0, water_potential: 0.33}
+        expected: {water_content: 20.1550007697425}
+        source_location: "Table 3, Function 6; Equation 8"
+        rationale: Uses a positive interior particle-size composition and moderate organic matter at measured-range suction.
+    edge_cases: []
+    documentation:
+      notes: [The printed ln(C^2) term is evaluated literally as the natural logarithm of clay squared.]
+      warnings:
+        - The source reports collapse for high-clay British Fen soils with organic matter exceeding 30 percent.
+        - The source does not publish exact multivariate calibration boundaries.
+    implementation:
+      variables:
+        - name: texture_code
+          tree: {definition: {$ref: "#/$defs/texture_code_mapping"}, arguments: {texture: texture_class}}
+        - {name: clay_squared, expr: "clay ^ 2"}
+        - {name: organic_matter_squared, expr: "organic_matter ^ 2"}
+        - {name: coefficient_a, expr: "2.124 + 0.1257 * ln(clay_squared) - 0.00551 * fine_sand + 0.0848 * texture_code + 0.00238 * organic_matter_squared - 0.00398 * silt"}
+        - {name: coefficient_b, expr: "-0.292 - 0.00128 * fine_sand - 0.0189 * ln(organic_matter) + 0.0282 * ln(texture_code) + 0.0627 * ln(clay) - 0.00002 * clay_squared"}
+        - {name: water_content, expr: "exp(coefficient_a + coefficient_b * ln(water_potential))"}
+
+  - name: calc_ptf_williams1992_function_7
+    status: implemented
+    public_api:
+      name: calc_ptf_williams1992_function_7
+      result_class: null
+      summary: Predict volumetric water content with Williams et al. Function 7.
+    scope:
+      prediction_target: Volumetric water content at a specified water-potential magnitude.
+      models: {h_theta: Campbell power-function retention model, k_h: null}
+    inputs:
+      - name: texture_class
+        description: Northcote field-texture group supplying TEX in the Function 7 regression.
+        $ref: "#/$defs/TextureClass"
+      - name: structure
+        description: Structure category supplying STR in the Function 7 regression.
+        $ref: "#/$defs/SoilStructure"
+      - {name: bulk_density, symbol: BD, unit: g/cm^3, domain: "value > 0", description: Soil bulk density.}
+      - {name: water_potential, symbol: h, unit: bar, domain: "value > 0", description: Water-potential magnitude.}
+    outputs: {$ref: "#/$defs/predicted_water_content"}
+    verification_cases:
+      - id: massive_class_3_at_point_33_bar
+        kind: calculated
+        inputs: {texture_class: class_3, structure: massive, bulk_density: 1.4, water_potential: 0.33}
+        expected: {water_content: 22.095370643213}
+        source_location: "Table 3, Function 7; Equation 8; Table 5 predictor combination"
+        rationale: Uses the massive class-3 and 1.4 g/cm^3 predictor combination explicitly evaluated in Table 5, at measured-range suction.
+    edge_cases: []
+    documentation:
+      notes: [Natural logarithms are used.]
+      warnings: [The source does not publish exact multivariate calibration boundaries.]
+    implementation:
+      variables:
+        - name: texture_code
+          tree: {definition: {$ref: "#/$defs/texture_code_mapping"}, arguments: {texture: texture_class}}
+        - name: structure_code
+          tree: {definition: {$ref: "#/$defs/structure_code_mapping"}, arguments: {structure: structure}}
+        - {name: ln_texture_code, expr: "ln(texture_code)"}
+        - {name: ln_bulk_density, expr: "ln(bulk_density)"}
+        - {name: coefficient_a, expr: "2.116 + 0.323 * ln_texture_code + 0.27 * structure_code - 0.485 * ln_bulk_density + 0.124 * bulk_density + 0.056 * texture_code"}
+        - {name: coefficient_b, expr: "-0.295 + 0.0442 * structure_code + 0.132 * ln_bulk_density + 0.0787 * ln_texture_code - 0.0278 * bulk_density"}
+        - {name: water_content, expr: "exp(coefficient_a + coefficient_b * ln(water_potential))"}
+
+  - name: calc_ptf_williams1992_function_8
+    status: implemented
+    public_api:
+      name: calc_ptf_williams1992_function_8
+      result_class: null
+      summary: Predict volumetric water content with Williams et al. Function 8.
+    scope:
+      prediction_target: Volumetric water content at a specified water-potential magnitude.
+      models: {h_theta: Campbell power-function retention model, k_h: null}
+    inputs:
+      - {name: clay, symbol: C, unit: "%", domain: "0 < value <= 100", description: "Clay below 0.002 mm, as a mass percentage."}
+      - {name: fine_sand, symbol: FS, unit: "%", domain: "0 <= value <= 100", description: "Fine sand from 0.02 to 0.20 mm, as a mass percentage."}
+      - {name: silt, symbol: SI, unit: "%", domain: "0 < value <= 100", description: "Silt from 0.002 to 0.02 mm, as a mass percentage."}
+      - name: texture_class
+        description: Northcote field-texture group supplying TEX in the Function 8 regression.
+        $ref: "#/$defs/TextureClass"
+      - {name: water_potential, symbol: h, unit: bar, domain: "value > 0", description: Water-potential magnitude.}
+    outputs: {$ref: "#/$defs/predicted_water_content"}
+    verification_cases:
+      - id: class_3_interior_texture_at_point_33_bar
+        kind: calculated
+        inputs: {clay: 20.0, fine_sand: 30.0, silt: 30.0, texture_class: class_3, water_potential: 0.33}
+        expected: {water_content: 26.867913402677}
+        source_location: "Table 3, Function 8; Equation 8"
+        rationale: Uses a positive interior particle-size composition and source-defined interior texture class at measured-range suction.
+    edge_cases: []
+    documentation:
+      notes: [Natural logarithms are used.]
+      warnings: [The source does not publish exact multivariate calibration boundaries.]
+    implementation:
+      variables:
+        - name: texture_code
+          tree: {definition: {$ref: "#/$defs/texture_code_mapping"}, arguments: {texture: texture_class}}
+        - {name: fine_sand_squared, expr: "fine_sand ^ 2"}
+        - {name: ln_texture_code, expr: "ln(texture_code)"}
+        - {name: coefficient_a, expr: "2.00 + 0.271 * ln(clay) - 0.000076 * fine_sand_squared + 0.0492 * ln(silt) + 0.216 * ln_texture_code"}
+        - {name: coefficient_b, expr: "-0.181 + 0.0786 * ln_texture_code - 0.00114 * fine_sand"}
+        - {name: water_content, expr: "exp(coefficient_a + coefficient_b * ln(water_potential))"}
+
+  - name: calc_ptf_williams1992_table5
+    status: implemented
+    public_api:
+      name: calc_ptf_williams1992_table5
+      result_class: Williams1992Table5Parameters
+      summary: Return the published Function 7 Campbell parameters for a Table 5 soil group.
+    scope:
+      prediction_target: Campbell exponent and nominal air-entry head at 1.4 g/cm^3 bulk density.
+      models: {h_theta: Campbell power-function retention model, k_h: null}
+    inputs:
+      - name: soil_group
+        description: Published structure and field-texture combination used to select a Table 5 row.
+        $ref: "#/$defs/Table5SoilGroup"
+    outputs:
+      $ref: "#/$defs/Williams1992Table5Parameters"
+    verification_cases:
+      - {id: table_5_massive_class_1, kind: published, inputs: {soil_group: massive_class_1}, expected: {b: 4.1, air_entry_head: 4.5}, source_location: "Table 5"}
+      - {id: table_5_massive_class_2, kind: published, inputs: {soil_group: massive_class_2}, expected: {b: 5.2, air_entry_head: 4.2}, source_location: "Table 5"}
+      - {id: table_5_massive_class_3, kind: published, inputs: {soil_group: massive_class_3}, expected: {b: 6.3, air_entry_head: 4.6}, source_location: "Table 5"}
+      - {id: table_5_massive_class_4, kind: published, inputs: {soil_group: massive_class_4}, expected: {b: 7.3, air_entry_head: 5.6}, source_location: "Table 5"}
+      - {id: table_5_massive_class_5, kind: published, inputs: {soil_group: massive_class_5}, expected: {b: 8.4, air_entry_head: 7.6}, source_location: "Table 5"}
+      - {id: table_5_massive_class_6, kind: published, inputs: {soil_group: massive_class_6}, expected: {b: 9.5, air_entry_head: 11.7}, source_location: "Table 5"}
+      - {id: table_5_structured_class_1, kind: published, inputs: {soil_group: structured_class_1}, expected: {b: 5.0, air_entry_head: 5.3}, source_location: "Table 5"}
+      - {id: table_5_structured_class_2, kind: published, inputs: {soil_group: structured_class_2}, expected: {b: 6.8, air_entry_head: 5.1}, source_location: "Table 5"}
+      - {id: table_5_structured_class_3, kind: published, inputs: {soil_group: structured_class_3}, expected: {b: 8.7, air_entry_head: 6.0}, source_location: "Table 5"}
+      - {id: table_5_structured_class_4, kind: published, inputs: {soil_group: structured_class_4}, expected: {b: 10.9, air_entry_head: 8.7}, source_location: "Table 5"}
+      - {id: table_5_structured_class_5, kind: published, inputs: {soil_group: structured_class_5}, expected: {b: 13.4, air_entry_head: 15.8}, source_location: "Table 5"}
+      - {id: table_5_structured_class_6, kind: published, inputs: {soil_group: structured_class_6}, expected: {b: 16.6, air_entry_head: 39.8}, source_location: "Table 5"}
+    edge_cases: []
+    documentation:
+      notes: [All rows use the source-fixed bulk density of 1.4 g/cm^3.]
+      warnings: [The tabulated values are rounded predictions from Function 7.]
+    implementation:
+      variables:
+        - name: parameters
+          lookup:
+            table: {$ref: "#/$defs/table5_parameters_by_soil_group"}
+            key: soil_group
+
+scientific_notes: |
+  ## Supported models
+
+  - Equation 8 is `ln(theta) = A + B ln(h)`. Table 3 supplies eight
+    regressions for `A` and `B`; the public functions evaluate the complete
+    relation and return volumetric water content in percent for a positive
+    water-potential magnitude in bar.
+  - Table 5 publishes Campbell `b` and `h_e` values calculated with Function 7
+    for six Northcote field-texture groups, both source structure levels, and a
+    fixed bulk density of 1.4 g/cm^3.
+
+  ## Review decisions
+
+  - The International System fractions in Table 3 Note 3 are preserved:
+    `C < 0.002 mm`, `SI 0.002-0.02 mm`, `FS 0.02-0.20 mm`, and
+    `CS 0.20-2.0 mm`. The source does not state inclusivity at shared endpoints.
+  - Function 6 literally prints `ln(C^2)`; the implementation therefore takes
+    the natural logarithm after squaring clay, rather than squaring `ln(C)`.
+  - Texture and structure are categorical public inputs. Source numeric codes
+    are recovered internally through complete categorical decision trees.
+  - Table 5 is represented as a separate categorical lookup because its
+    published rows are a directly usable PTF distinct from evaluating Table 3.
+
+  ## Documented limitations
+
+  - The source warns that regression predictions fail outside their development
+    domain but does not publish exact joint multivariate calibration bounds.
+  - Function 6 fails for the high-clay, high-organic-matter British Fen soils;
+    the paper reports organic matter exceeding 30 percent in those soils.
+  - Predicted water contents showed little bias on several independent data
+    sets, but precision was often inadequate for quantitative site-specific
+    water-flow analysis. The authors recommend the approximations for broader
+    planning and exploratory use.
