@@ -40,6 +40,7 @@
 #include <ptfkit/wang2022.h>
 #include <ptfkit/weber2020.h>
 #include <ptfkit/weynants2009.h>
+#include <ptfkit/williams1992.h>
 #include <ptfkit/wosten2001.h>
 #include <ptfkit/zhao2016.h>
 

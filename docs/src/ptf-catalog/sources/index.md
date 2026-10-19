@@ -46,5 +46,6 @@ Each page describes the source, scope, inputs, outputs, status, and limitations 
 | [Wang et al. (2022), random-forest PTFs for soil hydraulic-model parameters.](./wang2022.md) | — | 2 |
 | [Weber et al. (2020), compiled international soil hydraulic data.](./weber2020.md) | Portuguese, German, UNSODA, and Vereecken soil data collections | 1 |
 | [Corrected Weynants et al. hydraulic-parameter pedotransfer function.](./weynants2009.md) | — | 1 |
+| [Williams et al. (1992) Campbell water-retention regressions and parameter table.](./williams1992.md) | Australia, England and Wales, and the United States | 9 |
 | [Wösten et al. (2001), Staring Series hydraulic parameters for Dutch soils.](./wosten2001.md) | Netherlands | 5 |
 | [Saturated hydraulic conductivity PTFs for the Loess Plateau of China.](./zhao2016.md) | Typical Loess Plateau of China, covering approximately 430,000 square kilometers. | 6 |

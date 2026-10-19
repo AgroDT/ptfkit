@@ -198,6 +198,15 @@ calc_ptf_wang2022_h2: ufunc
 calc_ptf_wang2022_h3: ufunc
 calc_ptf_weber2020: ufunc
 calc_ptf_weynants2009: ufunc
+calc_ptf_williams1992_function_1: ufunc
+calc_ptf_williams1992_function_2: ufunc
+calc_ptf_williams1992_function_3: ufunc
+calc_ptf_williams1992_function_4: ufunc
+calc_ptf_williams1992_function_5: ufunc
+calc_ptf_williams1992_function_6: ufunc
+calc_ptf_williams1992_function_7: ufunc
+calc_ptf_williams1992_function_8: ufunc
+calc_ptf_williams1992_table5: ufunc
 calc_ptf_wosten2001_class_parameters: ufunc
 calc_ptf_wosten2001_hydraulic: ufunc
 calc_ptf_wosten2001_loam_clay_table5: ufunc

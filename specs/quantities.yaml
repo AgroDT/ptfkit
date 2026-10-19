@@ -243,3 +243,21 @@ brunswick_tau:
     dimensionless:
       absolute: 0.001
       rationale: Project-default meaningful resolution for a fitted shape parameter.
+
+field_texture_class_code:
+  description: Numeric code assigned to a source-defined field-texture class.
+  units:
+    dimensionless:
+      absolute: 0.001
+      rationale: >-
+        Project-default numerical resolution for preserving exact integer
+        field-texture class codes used within published equations.
+
+soil_structure_class_code:
+  description: Numeric code assigned to a source-defined soil-structure class.
+  units:
+    dimensionless:
+      absolute: 0.001
+      rationale: >-
+        Project-default numerical resolution for preserving exact integer
+        soil-structure class codes used within published equations.

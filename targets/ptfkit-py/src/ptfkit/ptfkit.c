@@ -42,6 +42,7 @@
 #include "wang2022.c"
 #include "weber2020.c"
 #include "weynants2009.c"
+#include "williams1992.c"
 #include "wosten2001.c"
 #include "zhao2016.c"
 
@@ -194,6 +195,10 @@ PyMODINIT_FUNC PyInit__ptfkit(void) {
         return NULL;
     }
     if (ptfkit_register_weynants2009(module) < 0) {
+        Py_DECREF(module);
+        return NULL;
+    }
+    if (ptfkit_register_williams1992(module) < 0) {
         Py_DECREF(module);
         return NULL;
     }
