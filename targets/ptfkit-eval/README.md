@@ -143,6 +143,13 @@ conversions. Source-local measurement overrides are restricted to declared
 sample-row ranges and retain their header evidence in lineage. The summary
 separately reports full-contract and particle-size-boundary compatibility.
 
+Source review may narrow a blocked rule without making it executable. For
+example, the Sapozhnikov et al. (1988) workbook block is now known to contain
+gravimetric water content and its case-only long-to-master source alias is
+confirmed by 12 bijectively matching curves. The rule remains blocked because
+the water scale and pressure convention are not yet supported by source-level
+evidence. Partial review never promotes a rule to `confirmed`.
+
 ```python
 from ptfkit_eval import (
     audit_predictor_workbook,
@@ -156,9 +163,12 @@ write_predictor_audit_summary(result, 'predictor-audit.json')
 ```
 
 The summary contains counts and reason codes only. The current workbook audit
-covers 206 declared retention sample rows and both functions in the public
+covers 206 declared retention sample rows and all five functions in the public
 manifest. `calc_ptf_clapp1978` remains blocked by the unresolved USDA texture
-crosswalk. `calc_ptf_vereecken1989` has 34 rows with all four raw inputs, but
+crosswalk. Each of the three sand-only Gunarathna et al. (2019) functions has
+51 populated raw candidates, but the workbook does not establish the required
+2-millimetre upper boundary, dry-mass fine-earth basis, or sieve method.
+`calc_ptf_vereecken1989` has 34 rows with all four raw inputs, but
 their clay values are below 1 micrometre rather than the required below 2
 micrometres. A source-local header identifies the correct below-2-micrometre
 boundary for 12 Panina 2015 rows, but those rows do not contain all four raw

@@ -42,9 +42,11 @@ exclusions, block-specific transforms, and explicit null observations. The
 first manifest-aware predictor audit is now implemented: it derives 206
 candidate sample rows exclusively from reviewed retention blocks, records
 cell-level input lineage in memory, and produces a count-only artifact. The
-public manifest now exposes `calc_ptf_clapp1978` and
-`calc_ptf_vereecken1989`. The Vereecken function has a registered reduced van
-Genuchten adapter and four explicit predictor bindings. Thirty-four candidate
+public manifest now exposes five contracts: `calc_ptf_clapp1978`,
+`calc_ptf_vereecken1989`, and the three sand-only Set 1 functions from
+Gunarathna et al. (2019) for 10, 33, and 1,500 kPa. The Vereecken function has
+a registered reduced van Genuchten adapter and four explicit predictor
+bindings. Thirty-four candidate
 rows contain all four raw inputs, but none is eligible yet: the workbook's
 particle-size intervals, carbon method, and bulk-density unit and method do not
 yet satisfy the function contract. A source-local header now establishes a
@@ -53,7 +55,11 @@ has all four raw Vereecken inputs and their fraction unit and mass basis remain
 unresolved. The 34 complete-input rows retain below-1-micrometre clay. The
 headed `ГС-PSD` schemes provide no 1-to-2-micrometre bin, so exact summation
 cannot repair that mismatch. The audit preserves these distinctions instead of
-treating similarly named columns as compatible.
+treating similarly named columns as compatible. Each Gunarathna function has
+51 rows with a populated raw sand value, but none is eligible: source review
+established that the PTF requires the 50-to-2,000-micrometre dry-mass fraction
+of fine earth measured by sieve analysis, while the workbook proves only a
+greater-than-50-micrometre lower boundary.
 
 This document defines the staged work needed to add a separate `ptfkit-eval`
 Python distribution to this repository. The package will evaluate implemented
@@ -72,7 +78,7 @@ delivery packages remain before the acceptance criterion is met:
 | Package | Scope | Relative size | Status |
 | --- | --- | --- | --- |
 | 1. Source rules and normalization | Resolve source-level units and bases; emit canonical samples, measurements, particle bins, retention observations, and exclusions | Large | Retention contract and normalizer implemented; predictor lineage started; source review and particle tables pending |
-| 2. Quality control and eligibility | Validate physical consistency and build the complete function-sample-target matrix | Large | Manifest-aware predictor eligibility implemented for the first two public function contracts |
+| 2. Quality control and eligibility | Validate physical consistency and build the complete function-sample-target matrix | Large | Manifest-aware predictor eligibility implemented for the first five public function contracts |
 | 3. Approximation families | Register and implement van Genuchten, Brooks-Corey, and remaining required fit/adaptation variants | Extra large | Clapp-Hornberger and Vereecken reduced van Genuchten adapters implemented |
 | 4. Evaluation matrix | Execute every eligible atomic PTF and fixed composite with full traces | Medium | Core curve executor exists |
 | 5. Metrics and uncertainty | Per-sample aggregation, clustered intervals, prediction intervals, parameter uncertainty, and domains | Large | Not started |
@@ -102,21 +108,51 @@ control header proves that 12 rows use a below-2-micrometre clay fraction, but
 none has all four raw Vereecken inputs. The 34 complete-input rows use a
 below-1-micrometre fraction, and the headed `ГС-PSD` blocks contain no
 1-to-2-micrometre interval, so they cannot be converted exactly. The next step
-is source-level review of particle-fraction units and bases, organic-carbon
-methods, and bulk-density units and methods, followed by migration of another
-non-Clapp PTF whose reviewed input boundaries match the recoverable workbook
-measurements. No value-magnitude heuristic may promote a binding.
+is source-level review of the seven workbook sources that supply the 51 sand
+values, beginning with the 34 rows that also contain bulk density. That review
+must establish the 2-millimetre sand upper boundary, fine-earth dry-mass basis,
+sieve method, water-content basis, density method, and pressure convention
+before gravimetric observations can be converted to volumetric targets. No
+value-magnitude heuristic may promote a binding.
 
-The first migration candidate is the sand-only Set 1 family from Gunarathna et
-al. (2019): its three functions predict volumetric water content at 10, 33, and
-1,500 kPa and avoid the unresolved below-2-micrometre clay input. The master
-sand column is populated for 51 retention candidates. Before these functions
-can enter the public manifest and eligibility matrix, source review must prove
-that their sieve-defined sand interval is exactly the workbook interval,
-including the 2-millimetre upper boundary and fine-earth dry-mass basis. The
-matching workbook observations must also be confirmed as volumetric water
-content at the same suction magnitudes. A shared `sand` label alone is not
-sufficient evidence.
+The first additional migration is complete for the sand-only Set 1 family from
+Gunarathna et al. (2019). Its three functions predict pressure-plate volumetric
+water content at 10, 33, and 1,500 kPa and avoid the unresolved
+below-2-micrometre clay input. Primary-source review established a
+50-to-2,000-micrometre sieve fraction, dry-mass fine-earth basis, and the
+published input domain. The functions now appear in the public manifest and
+eligibility matrix. The master sand column is populated for 51 retention
+candidates, but it states only particles above 50 micrometres; a workbook-wide
+header scan found no source-local statement of the 2-millimetre upper boundary,
+basis, or method. The 51 rows belong to seven workbook sources, and 34 also
+contain a bulk-density value. Their retention observations are gravimetric or
+unresolved rather than directly compatible volumetric targets. Dataset-source
+review and explicit output eligibility therefore remain required before any
+Gunarathna prediction may be scored.
+
+Review of the first of those seven sources, Sapozhnikov et al. (1988), has now
+resolved two independent claims without relying on value magnitudes. The 12
+long-sheet sample groups map bijectively by sample number to 12 complete
+nine-point master-sheet curves, so the case-only source alias is confirmed.
+The block control cell `Данные!W7` and legend cell `Данные!W1` establish that
+the water quantity is gravimetric. The source remains blocked because those
+cells do not distinguish percent from fraction, the physical interpretation of the first
+`0.01`/`-1` pF position is unresolved, and the workbook does not document the
+sand upper boundary and method or the bulk-density unit and method. The next
+source-review step is therefore to obtain the primary publication or another
+source-level methods record for those claims; if it cannot be recovered, move
+to the next source while retaining Sapozhnikov 1988 as an explicit partial
+review rather than inferring the missing semantics.
+
+The 51 sand-bearing candidates are now explicitly attributed to six
+observation blocks plus the parameter-only Kokareva 2007 block: 12
+Sapozhnikov, 6 Khaydapova, 6 Shein 2011, 5 Makarychev-1, 7 Makarychev-2, 10
+Chestnova, and 5 Kokareva rows. Thirty-four of these rows also contain bulk
+density. If the Sapozhnikov publication remains unavailable, Kokareva 2007 is
+the next high-value review because all five rows contain sand and density and
+their stored van Genuchten parameter sets can also advance the approximation-
+family validation work. Those parameters remain unusable until their equation,
+axis, units, and fitting convention are confirmed from source-level evidence.
 
 ## Objective
 

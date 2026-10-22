@@ -2,7 +2,7 @@
   "_generated": "ptfkit-codegen; DO NOT EDIT.",
   "coverage": {
     "implemented_functions": 146,
-    "manifest_functions": 2,
+    "manifest_functions": 5,
     "omitted_functions": [
       {
         "id": "calc_ptf_ahuja1984",
@@ -277,10 +277,6 @@
         "reason": "incomplete_measurement_contract"
       },
       {
-        "id": "calc_ptf_gunarathna2019_vwc10_set1",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
         "id": "calc_ptf_gunarathna2019_vwc10_set2",
         "reason": "incomplete_measurement_contract"
       },
@@ -293,19 +289,11 @@
         "reason": "incomplete_measurement_contract"
       },
       {
-        "id": "calc_ptf_gunarathna2019_vwc1500_set1",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
         "id": "calc_ptf_gunarathna2019_vwc1500_set3",
         "reason": "incomplete_measurement_contract"
       },
       {
         "id": "calc_ptf_gunarathna2019_vwc1500_set4",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
-        "id": "calc_ptf_gunarathna2019_vwc33_set1",
         "reason": "incomplete_measurement_contract"
       },
       {
@@ -831,6 +819,288 @@
       "warnings": [
         "The paper states that these unverified average values should not be used blindly because saturation suction varies substantially within texture classes.",
         "Sorptivity values must be treated cautiously because the conductivity averages may not represent the same average soils as the other parameters."
+      ]
+    },
+    {
+      "callable": "calc_ptf_gunarathna2019_vwc10_set1",
+      "id": "calc_ptf_gunarathna2019_vwc10_set1",
+      "inputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 5.2
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 99.0
+              }
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "sand"
+        }
+      ],
+      "models": {
+        "h_theta": null,
+        "k_h": null
+      },
+      "module": "ptfkit.gunarathna2019",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 1.0
+              }
+            },
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 10.0
+              }
+            ],
+            "method": "pressure_plate",
+            "particle_size": null,
+            "quantity": "volumetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "mm/mm",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "volume_fraction"
+          },
+          "name": "theta_10"
+        }
+      ],
+      "source": "gunarathna2019",
+      "status": "implemented",
+      "warnings": [
+        "Predictions are empirical and are not clipped to physical bounds.",
+        "Section 3.1 reports slight overprediction above 64% sand at this pressure."
+      ]
+    },
+    {
+      "callable": "calc_ptf_gunarathna2019_vwc1500_set1",
+      "id": "calc_ptf_gunarathna2019_vwc1500_set1",
+      "inputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 5.2
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 99.0
+              }
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "sand"
+        }
+      ],
+      "models": {
+        "h_theta": null,
+        "k_h": null
+      },
+      "module": "ptfkit.gunarathna2019",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 1.0
+              }
+            },
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 1500.0
+              }
+            ],
+            "method": "pressure_plate",
+            "particle_size": null,
+            "quantity": "volumetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "mm/mm",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "volume_fraction"
+          },
+          "name": "theta_1500"
+        }
+      ],
+      "source": "gunarathna2019",
+      "status": "implemented",
+      "warnings": [
+        "Predictions are empirical and are not clipped to physical bounds.",
+        "Section 3.1 reports slight overprediction above 66% sand at this pressure."
+      ]
+    },
+    {
+      "callable": "calc_ptf_gunarathna2019_vwc33_set1",
+      "id": "calc_ptf_gunarathna2019_vwc33_set1",
+      "inputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 5.2
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 99.0
+              }
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "sand"
+        }
+      ],
+      "models": {
+        "h_theta": null,
+        "k_h": null
+      },
+      "module": "ptfkit.gunarathna2019",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 1.0
+              }
+            },
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 33.0
+              }
+            ],
+            "method": "pressure_plate",
+            "particle_size": null,
+            "quantity": "volumetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "mm/mm",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "volume_fraction"
+          },
+          "name": "theta_33"
+        }
+      ],
+      "source": "gunarathna2019",
+      "status": "implemented",
+      "warnings": [
+        "Predictions are empirical and are not clipped to physical bounds.",
+        "Section 3.1 reports slight overprediction above 66% sand at this pressure."
       ]
     },
     {

@@ -207,12 +207,12 @@ def audit_predictor_workbook(
                 input_values, audit = _audit_binding(
                     workbook,
                     function_samples,
-                    function_id,
-                    input_name,
-                    kind,
-                    input_contract,
-                    binding,
-                    column_contracts,
+                    function=function_id,
+                    input_name=input_name,
+                    kind=kind,
+                    input_contract=input_contract,
+                    binding=binding,
+                    column_contracts=column_contracts,
                 )
                 values.extend(input_values)
                 binding_audits.append(audit)
@@ -281,6 +281,7 @@ def write_predictor_audit_summary(result: PredictorAuditResult, destination: str
 def _audit_binding(
     workbook: Workbook,
     samples: Sequence[_Sample],
+    *,
     function: str,
     input_name: str,
     kind: str,
@@ -290,19 +291,28 @@ def _audit_binding(
 ) -> tuple[list[CanonicalPredictorValue], PredictorBindingAudit]:
     if binding is None:
         records = [
-            _value(sample, function, input_name, None, None, 'missing_input_binding', (), ())
+            _value(
+                sample,
+                function=function,
+                input_name=input_name,
+                raw=None,
+                normalized=None,
+                status='missing_input_binding',
+                blockers=(),
+                source_cells=(),
+            )
             for sample in samples
         ]
         return records, _binding_audit(
-            function,
-            input_name,
-            kind,
-            None,
-            records,
-            len(samples),
-            (),
-            0,
-            None,
+            function=function,
+            input_name=input_name,
+            kind=kind,
+            binding=None,
+            records=records,
+            sample_count=len(samples),
+            blockers=(),
+            measurement_compatible_count=0,
+            particle_size_compatible_count=None,
         )
 
     sheet = workbook[binding.worksheet]
@@ -323,13 +333,13 @@ def _audit_binding(
             records.append(
                 _value(
                     sample,
-                    function,
-                    input_name,
-                    raw,
-                    None,
-                    'missing_input',
-                    (),
-                    source_cells,
+                    function=function,
+                    input_name=input_name,
+                    raw=raw,
+                    normalized=None,
+                    status='missing_input',
+                    blockers=(),
+                    source_cells=source_cells,
                 )
             )
             continue
@@ -340,13 +350,13 @@ def _audit_binding(
             records.append(
                 _value(
                     sample,
-                    function,
-                    input_name,
-                    raw,
-                    None,
-                    'binding_blocked',
-                    binding.blockers,
-                    source_cells,
+                    function=function,
+                    input_name=input_name,
+                    raw=raw,
+                    normalized=None,
+                    status='binding_blocked',
+                    blockers=binding.blockers,
+                    source_cells=source_cells,
                 )
             )
             continue
@@ -354,13 +364,13 @@ def _audit_binding(
             records.append(
                 _value(
                     sample,
-                    function,
-                    input_name,
-                    raw,
-                    None,
-                    'measurement_contract_mismatch',
-                    (),
-                    source_cells,
+                    function=function,
+                    input_name=input_name,
+                    raw=raw,
+                    normalized=None,
+                    status='measurement_contract_mismatch',
+                    blockers=(),
+                    source_cells=source_cells,
                 )
             )
             continue
@@ -368,29 +378,30 @@ def _audit_binding(
         records.append(
             _value(
                 sample,
-                function,
-                input_name,
-                raw,
-                normalized,
-                status,
-                (),
-                source_cells,
+                function=function,
+                input_name=input_name,
+                raw=raw,
+                normalized=normalized,
+                status=status,
+                blockers=(),
+                source_cells=source_cells,
             )
         )
     return records, _binding_audit(
-        function,
-        input_name,
-        kind,
-        binding,
-        records,
-        len(samples),
-        binding.blockers,
-        measurement_compatible_count,
-        particle_size_compatible_count,
+        function=function,
+        input_name=input_name,
+        kind=kind,
+        binding=binding,
+        records=records,
+        sample_count=len(samples),
+        blockers=binding.blockers,
+        measurement_compatible_count=measurement_compatible_count,
+        particle_size_compatible_count=particle_size_compatible_count,
     )
 
 
 def _binding_audit(
+    *,
     function: str,
     input_name: str,
     kind: str,
@@ -424,6 +435,7 @@ def _binding_audit(
 
 def _value(
     sample: _Sample,
+    *,
     function: str,
     input_name: str,
     raw: object,

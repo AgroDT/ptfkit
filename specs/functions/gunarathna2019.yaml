@@ -21,8 +21,27 @@ $defs:
     name: sand
     symbol: SA
     unit: "%"
+    measurement:
+      quantity: particle_mass_fraction
+      unit: mass_percent
+      reported_unit: "%"
+      basis: {material: fine_earth, denominator: dry_mass}
+      particle_size:
+        unit: micrometer
+        lower: {value: 50, inclusive: true}
+        upper: {value: 2000, inclusive: false}
+      conditions: []
+      status: required
+      method: sieve_analysis
+      role: predictor
+      computational_domain:
+        lower: {value: 5.2, inclusive: true}
+        upper: {value: 99.0, inclusive: true}
+      reported_applicability: []
     domain: "Table 1 observed range: 5.2 <= value <= 99.0"
-    description: Sand percentage measured by sieve analysis.
+    description: >-
+      Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth,
+      measured by sieve analysis after dispersion and organic-matter removal.
   silt:
     name: silt
     symbol: SI
@@ -62,6 +81,21 @@ functions:
       symbol: VWC10
       unit: volume_fraction
       reported_unit: mm/mm
+      measurement:
+        quantity: volumetric_water_content
+        unit: volume_fraction
+        reported_unit: mm/mm
+        basis: {material: fine_earth, denominator: bulk_volume}
+        particle_size: null
+        conditions:
+          - {quantity: matric_potential, value: 10, unit: kilopascal, convention: magnitude}
+        status: estimated
+        method: pressure_plate
+        role: prediction
+        computational_domain:
+          lower: {value: 0, inclusive: true}
+          upper: {value: 1, inclusive: true}
+        reported_applicability: []
       domain: null
       description: Volumetric water content at -10 kPa matric potential.
     verification_cases:
@@ -273,6 +307,21 @@ functions:
       symbol: VWC33
       unit: volume_fraction
       reported_unit: mm/mm
+      measurement:
+        quantity: volumetric_water_content
+        unit: volume_fraction
+        reported_unit: mm/mm
+        basis: {material: fine_earth, denominator: bulk_volume}
+        particle_size: null
+        conditions:
+          - {quantity: matric_potential, value: 33, unit: kilopascal, convention: magnitude}
+        status: estimated
+        method: pressure_plate
+        role: prediction
+        computational_domain:
+          lower: {value: 0, inclusive: true}
+          upper: {value: 1, inclusive: true}
+        reported_applicability: []
       domain: null
       description: Volumetric water content at -33 kPa matric potential.
     verification_cases:
@@ -484,6 +533,21 @@ functions:
       symbol: VWC1500
       unit: volume_fraction
       reported_unit: mm/mm
+      measurement:
+        quantity: volumetric_water_content
+        unit: volume_fraction
+        reported_unit: mm/mm
+        basis: {material: fine_earth, denominator: bulk_volume}
+        particle_size: null
+        conditions:
+          - {quantity: matric_potential, value: 1500, unit: kilopascal, convention: magnitude}
+        status: estimated
+        method: pressure_plate
+        role: prediction
+        computational_domain:
+          lower: {value: 0, inclusive: true}
+          upper: {value: 1, inclusive: true}
+        reported_applicability: []
       domain: null
       description: Volumetric water content at -1500 kPa matric potential.
     verification_cases:
@@ -626,6 +690,11 @@ scientific_notes: |
   pressure and then input set. Section 2 defines pressure-plate measurements
   at -10, -33, and -1500 kPa. Figure 6 labels volumetric water contents mm/mm.
   The approved mm/mm alias preserves their numerical volume-fraction scale.
+  Section 3.1 identifies 2 mm and 0.05 mm sieves, hydrogen peroxide, Calgon
+  solution, and an electric mixer as the equipment needed to measure the sand
+  percentage used by the regressions. The sand contract therefore represents
+  the dry-mass fraction retained between the 0.05 and 2 mm sieves after
+  dispersion and organic-matter removal.
 
   ## Review decisions
 
