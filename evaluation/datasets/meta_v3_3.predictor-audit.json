@@ -27,6 +27,60 @@
       "column": "P",
       "compatible_count": 0,
       "excluded_count": 206,
+      "function": "calc_ptf_gunarathna2019_vwc10_set1",
+      "input": "sand",
+      "kind": "numeric",
+      "measurement_compatible_count": 0,
+      "missing_count": 155,
+      "particle_size_compatible_count": 0,
+      "populated_count": 51,
+      "worksheet": "Данные"
+    },
+    {
+      "binding_status": "blocked",
+      "blockers": [
+        "particle_size_schemes"
+      ],
+      "candidate_sample_count": 206,
+      "column": "P",
+      "compatible_count": 0,
+      "excluded_count": 206,
+      "function": "calc_ptf_gunarathna2019_vwc1500_set1",
+      "input": "sand",
+      "kind": "numeric",
+      "measurement_compatible_count": 0,
+      "missing_count": 155,
+      "particle_size_compatible_count": 0,
+      "populated_count": 51,
+      "worksheet": "Данные"
+    },
+    {
+      "binding_status": "blocked",
+      "blockers": [
+        "particle_size_schemes"
+      ],
+      "candidate_sample_count": 206,
+      "column": "P",
+      "compatible_count": 0,
+      "excluded_count": 206,
+      "function": "calc_ptf_gunarathna2019_vwc33_set1",
+      "input": "sand",
+      "kind": "numeric",
+      "measurement_compatible_count": 0,
+      "missing_count": 155,
+      "particle_size_compatible_count": 0,
+      "populated_count": 51,
+      "worksheet": "Данные"
+    },
+    {
+      "binding_status": "blocked",
+      "blockers": [
+        "particle_size_schemes"
+      ],
+      "candidate_sample_count": 206,
+      "column": "P",
+      "compatible_count": 0,
+      "excluded_count": 206,
       "function": "calc_ptf_vereecken1989",
       "input": "sand",
       "kind": "numeric",
@@ -98,7 +152,7 @@
       "label": "density_units"
     },
     {
-      "count": 289,
+      "count": 754,
       "label": "missing_input"
     },
     {
@@ -106,7 +160,7 @@
       "label": "organic_property_provenance"
     },
     {
-      "count": 85,
+      "count": 238,
       "label": "particle_size_schemes"
     },
     {
@@ -125,6 +179,30 @@
     },
     {
       "candidate_sample_count": 206,
+      "complete_input_sample_count": 51,
+      "eligible_sample_count": 0,
+      "excluded_sample_count": 206,
+      "function": "calc_ptf_gunarathna2019_vwc10_set1",
+      "input_count": 1
+    },
+    {
+      "candidate_sample_count": 206,
+      "complete_input_sample_count": 51,
+      "eligible_sample_count": 0,
+      "excluded_sample_count": 206,
+      "function": "calc_ptf_gunarathna2019_vwc1500_set1",
+      "input_count": 1
+    },
+    {
+      "candidate_sample_count": 206,
+      "complete_input_sample_count": 51,
+      "eligible_sample_count": 0,
+      "excluded_sample_count": 206,
+      "function": "calc_ptf_gunarathna2019_vwc33_set1",
+      "input_count": 1
+    },
+    {
+      "candidate_sample_count": 206,
       "complete_input_sample_count": 34,
       "eligible_sample_count": 0,
       "excluded_sample_count": 206,
@@ -133,7 +211,7 @@
     }
   ],
   "manifest_schema_version": 1,
-  "public_function_count": 2,
+  "public_function_count": 5,
   "schema_version": 2,
   "sha256": "1322bf65b1ca0130085015209858a443d1ee82a7e2ae69232321cd8ede361e68",
   "source_filename": "meta_v3.3.xlsx"

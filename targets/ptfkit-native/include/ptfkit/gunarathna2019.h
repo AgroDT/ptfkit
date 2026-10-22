@@ -24,7 +24,8 @@
 
 /**
  * @brief Estimate volumetric water content at -10 kPa using Set 1.
- * @param sand Sand percentage measured by sieve analysis. (%)
+ * @param sand Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by
+ * sieve analysis after dispersion and organic-matter removal. (%)
  * @return Volumetric water content at -10 kPa matric potential. (mm/mm)
  *
  * @details Prediction target:
@@ -40,7 +41,8 @@ static inline double calc_ptf_gunarathna2019_vwc10_set1(double sand) {
 
 /**
  * @brief Estimate volumetric water content at -10 kPa using Set 2.
- * @param sand Sand percentage measured by sieve analysis. (%)
+ * @param sand Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by
+ * sieve analysis after dispersion and organic-matter removal. (%)
  * @param silt Silt percentage measured by the pipette method. (%)
  * @return Volumetric water content at -10 kPa matric potential. (mm/mm)
  *
@@ -56,7 +58,8 @@ static inline double calc_ptf_gunarathna2019_vwc10_set2(double sand, double silt
 
 /**
  * @brief Estimate volumetric water content at -10 kPa using Set 3.
- * @param sand Sand percentage measured by sieve analysis. (%)
+ * @param sand Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by
+ * sieve analysis after dispersion and organic-matter removal. (%)
  * @param silt Silt percentage measured by the pipette method. (%)
  * @param bulk_density Bulk density measured using undisturbed cores. (g/cm3)
  * @return Volumetric water content at -10 kPa matric potential. (mm/mm)
@@ -74,7 +77,8 @@ static inline double calc_ptf_gunarathna2019_vwc10_set3(double sand, double silt
 
 /**
  * @brief Estimate volumetric water content at -10 kPa using Set 4.
- * @param sand Sand percentage measured by sieve analysis. (%)
+ * @param sand Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by
+ * sieve analysis after dispersion and organic-matter removal. (%)
  * @param silt Silt percentage measured by the pipette method. (%)
  * @param organic_carbon Organic carbon percentage measured by the Walkley-Black method. (%)
  * @return Volumetric water content at -10 kPa matric potential. (mm/mm)
@@ -92,7 +96,8 @@ static inline double calc_ptf_gunarathna2019_vwc10_set4(double sand, double silt
 
 /**
  * @brief Estimate volumetric water content at -33 kPa using Set 1.
- * @param sand Sand percentage measured by sieve analysis. (%)
+ * @param sand Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by
+ * sieve analysis after dispersion and organic-matter removal. (%)
  * @return Volumetric water content at -33 kPa matric potential. (mm/mm)
  *
  * @details Prediction target:
@@ -108,7 +113,8 @@ static inline double calc_ptf_gunarathna2019_vwc33_set1(double sand) {
 
 /**
  * @brief Estimate volumetric water content at -33 kPa using Set 2.
- * @param sand Sand percentage measured by sieve analysis. (%)
+ * @param sand Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by
+ * sieve analysis after dispersion and organic-matter removal. (%)
  * @param silt Silt percentage measured by the pipette method. (%)
  * @return Volumetric water content at -33 kPa matric potential. (mm/mm)
  *
@@ -124,7 +130,8 @@ static inline double calc_ptf_gunarathna2019_vwc33_set2(double sand, double silt
 
 /**
  * @brief Estimate volumetric water content at -33 kPa using Set 3.
- * @param sand Sand percentage measured by sieve analysis. (%)
+ * @param sand Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by
+ * sieve analysis after dispersion and organic-matter removal. (%)
  * @param silt Silt percentage measured by the pipette method. (%)
  * @param bulk_density Bulk density measured using undisturbed cores. (g/cm3)
  * @return Volumetric water content at -33 kPa matric potential. (mm/mm)
@@ -142,7 +149,8 @@ static inline double calc_ptf_gunarathna2019_vwc33_set3(double sand, double silt
 
 /**
  * @brief Estimate volumetric water content at -33 kPa using Set 4.
- * @param sand Sand percentage measured by sieve analysis. (%)
+ * @param sand Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by
+ * sieve analysis after dispersion and organic-matter removal. (%)
  * @param silt Silt percentage measured by the pipette method. (%)
  * @param organic_carbon Organic carbon percentage measured by the Walkley-Black method. (%)
  * @return Volumetric water content at -33 kPa matric potential. (mm/mm)
@@ -160,7 +168,8 @@ static inline double calc_ptf_gunarathna2019_vwc33_set4(double sand, double silt
 
 /**
  * @brief Estimate volumetric water content at -1500 kPa using Set 1.
- * @param sand Sand percentage measured by sieve analysis. (%)
+ * @param sand Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by
+ * sieve analysis after dispersion and organic-matter removal. (%)
  * @return Volumetric water content at -1500 kPa matric potential. (mm/mm)
  *
  * @details Prediction target:
@@ -176,7 +185,8 @@ static inline double calc_ptf_gunarathna2019_vwc1500_set1(double sand) {
 
 /**
  * @brief Estimate volumetric water content at -1500 kPa using Set 3.
- * @param sand Sand percentage measured by sieve analysis. (%)
+ * @param sand Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by
+ * sieve analysis after dispersion and organic-matter removal. (%)
  * @param bulk_density Bulk density measured using undisturbed cores. (g/cm3)
  * @return Volumetric water content at -1500 kPa matric potential. (mm/mm)
  *
@@ -192,7 +202,8 @@ static inline double calc_ptf_gunarathna2019_vwc1500_set3(double sand, double bu
 
 /**
  * @brief Estimate volumetric water content at -1500 kPa using Set 4.
- * @param sand Sand percentage measured by sieve analysis. (%)
+ * @param sand Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by
+ * sieve analysis after dispersion and organic-matter removal. (%)
  * @param organic_carbon Organic carbon percentage measured by the Walkley-Black method. (%)
  * @return Volumetric water content at -1500 kPa matric potential. (mm/mm)
  *
