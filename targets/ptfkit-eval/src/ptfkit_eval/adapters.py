@@ -72,11 +72,40 @@ def evaluate_clapp1978_h_theta(parameters: ParameterValues, suction: float) -> f
     return saturated_water_content * wetness
 
 
+def evaluate_vereecken1989_h_theta(parameters: ParameterValues, suction: float) -> float:
+    """Evaluate the Vereecken reduced van Genuchten curve for suction in cm."""
+    theta_r = _parameter(parameters, 'theta_r')
+    theta_s = _parameter(parameters, 'theta_s')
+    alpha = _positive_parameter(parameters, 'alpha')
+    n = _positive_parameter(parameters, 'n')
+    if not 0.0 <= theta_r < theta_s <= 1.0:
+        message = 'Vereecken water contents must satisfy 0 <= theta_r < theta_s <= 1.'
+        raise ModelEvaluationError(message)
+    if not math.isfinite(suction) or suction < 0.0:
+        message = 'Vereecken suction must be a finite nonnegative magnitude.'
+        raise ModelEvaluationError(message)
+
+    try:
+        scaled_power = (alpha * suction) ** n
+    except OverflowError:
+        return theta_r
+    if not math.isfinite(scaled_power):
+        return theta_r
+    return theta_r + (theta_s - theta_r) / (1.0 + scaled_power)
+
+
 @cache
 def builtin_model_adapters() -> Mapping[str, ModelAdapter]:
     """Return the immutable registry of executable adapters shipped with ptfkit-eval."""
-    spec = model_adapter_specs()['clapp1978_h_theta']
-    return MappingProxyType({spec.id: ModelAdapter(spec, evaluate_clapp1978_h_theta)})
+    specs = model_adapter_specs()
+    clapp = specs['clapp1978_h_theta']
+    vereecken = specs['vereecken1989_h_theta']
+    return MappingProxyType(
+        {
+            clapp.id: ModelAdapter(clapp, evaluate_clapp1978_h_theta),
+            vereecken.id: ModelAdapter(vereecken, evaluate_vereecken1989_h_theta),
+        }
+    )
 
 
 def model_adapter_specs() -> Mapping[str, ModelAdapterSpec]:

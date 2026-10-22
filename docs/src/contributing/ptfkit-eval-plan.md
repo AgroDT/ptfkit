@@ -39,8 +39,21 @@ five exact point multisets retain broken cached identities. The audit also
 covers all 92 fitted van Genuchten parameter pairs, including the parameter-only
 Kokareva source, categorical axes, numeric missing markers, coordinate-level
 exclusions, block-specific transforms, and explicit null observations. The
-immediate next task is source-evidence review of physical encodings, followed by
-canonical predictor and particle-size tables.
+first manifest-aware predictor audit is now implemented: it derives 206
+candidate sample rows exclusively from reviewed retention blocks, records
+cell-level input lineage in memory, and produces a count-only artifact. The
+public manifest now exposes `calc_ptf_clapp1978` and
+`calc_ptf_vereecken1989`. The Vereecken function has a registered reduced van
+Genuchten adapter and four explicit predictor bindings. Thirty-four candidate
+rows contain all four raw inputs, but none is eligible yet: the workbook's
+particle-size intervals, carbon method, and bulk-density unit and method do not
+yet satisfy the function contract. A source-local header now establishes a
+below-2-micrometre clay boundary for 12 Panina 2015 rows, but none of those rows
+has all four raw Vereecken inputs and their fraction unit and mass basis remain
+unresolved. The 34 complete-input rows retain below-1-micrometre clay. The
+headed `ГС-PSD` schemes provide no 1-to-2-micrometre bin, so exact summation
+cannot repair that mismatch. The audit preserves these distinctions instead of
+treating similarly named columns as compatible.
 
 This document defines the staged work needed to add a separate `ptfkit-eval`
 Python distribution to this repository. The package will evaluate implemented
@@ -58,9 +71,9 @@ delivery packages remain before the acceptance criterion is met:
 
 | Package | Scope | Relative size | Status |
 | --- | --- | --- | --- |
-| 1. Source rules and normalization | Resolve source-level units and bases; emit canonical samples, measurements, particle bins, retention observations, and exclusions | Large | Retention contract and normalizer implemented; source review and other canonical tables pending |
-| 2. Quality control and eligibility | Validate physical consistency and build the complete function-sample-target matrix | Large | Not started |
-| 3. Approximation families | Register and implement van Genuchten, Brooks-Corey, and remaining required fit/adaptation variants | Extra large | Only the first Clapp-Hornberger adapter exists |
+| 1. Source rules and normalization | Resolve source-level units and bases; emit canonical samples, measurements, particle bins, retention observations, and exclusions | Large | Retention contract and normalizer implemented; predictor lineage started; source review and particle tables pending |
+| 2. Quality control and eligibility | Validate physical consistency and build the complete function-sample-target matrix | Large | Manifest-aware predictor eligibility implemented for the first two public function contracts |
+| 3. Approximation families | Register and implement van Genuchten, Brooks-Corey, and remaining required fit/adaptation variants | Extra large | Clapp-Hornberger and Vereecken reduced van Genuchten adapters implemented |
 | 4. Evaluation matrix | Execute every eligible atomic PTF and fixed composite with full traces | Medium | Core curve executor exists |
 | 5. Metrics and uncertainty | Per-sample aggregation, clustered intervals, prediction intervals, parameter uncertainty, and domains | Large | Not started |
 | 6. Nested selection | Deterministic grouped folds, atomic and ensemble selection, learned routing, and leakage protection | Extra large | Fixed range routing exists |
@@ -83,9 +96,27 @@ explicit nulls at the same sample and axis. Khaydapova 2001, Sadovnikova 2011,
 Shein 2012, Badenko 2013, and Panina 2015 have exact global multisets but broken
 cached identity groups. Shvarov has 14 long observations without master-sheet
 counterparts. All 92 long-form fitted van Genuchten parameter pairs are covered
-across Kokareva, Shein, and Panina. The next step is to resolve source rules
-without value-magnitude heuristics, then normalize reliable sample, predictor,
-and particle-size fields needed by the ptfkit functions.
+across Kokareva, Shein, and Panina. Exact particle-boundary composition and
+source-local measurement overrides are now implemented. The Panina 2015
+control header proves that 12 rows use a below-2-micrometre clay fraction, but
+none has all four raw Vereecken inputs. The 34 complete-input rows use a
+below-1-micrometre fraction, and the headed `ГС-PSD` blocks contain no
+1-to-2-micrometre interval, so they cannot be converted exactly. The next step
+is source-level review of particle-fraction units and bases, organic-carbon
+methods, and bulk-density units and methods, followed by migration of another
+non-Clapp PTF whose reviewed input boundaries match the recoverable workbook
+measurements. No value-magnitude heuristic may promote a binding.
+
+The first migration candidate is the sand-only Set 1 family from Gunarathna et
+al. (2019): its three functions predict volumetric water content at 10, 33, and
+1,500 kPa and avoid the unresolved below-2-micrometre clay input. The master
+sand column is populated for 51 retention candidates. Before these functions
+can enter the public manifest and eligibility matrix, source review must prove
+that their sieve-defined sand interval is exactly the workbook interval,
+including the 2-millimetre upper boundary and fine-earth dry-mass basis. The
+matching workbook observations must also be confirmed as volumetric water
+content at the same suction magnitudes. A shared `sand` label alone is not
+sufficient evidence.
 
 ## Objective
 

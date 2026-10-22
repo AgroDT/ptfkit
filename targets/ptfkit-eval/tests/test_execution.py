@@ -34,6 +34,10 @@ def _clapp_prediction() -> dict[str, object]:
     return {'kind': 'model_adapter', 'id': 'clapp1978_h_theta'}
 
 
+def _vereecken_prediction() -> dict[str, object]:
+    return {'kind': 'model_adapter', 'id': 'vereecken1989_h_theta'}
+
+
 def _direct_manifest() -> dict[str, object]:
     basis = {'material': 'mineral_soil', 'denominator': 'bulk_volume'}
     return {
@@ -131,6 +135,38 @@ def test_executes_clapp1978_from_categorical_input_through_unit_conversions():
 
     assert [point.value for point in evaluated.points] == pytest.approx([39.5, 19.75])
     assert evaluated.points[1].contributions[0].function == 'calc_ptf_clapp1978'
+
+
+def test_executes_vereecken1989_parameters_as_a_reduced_van_genuchten_curve():
+    plan = load_evaluation_plan(
+        {
+            'schema_version': 1,
+            'ptfkit_manifest_schema_version': 1,
+            'candidates': [
+                {
+                    'id': 'vereecken_mean_soil',
+                    'kind': 'function_curve',
+                    'axis': _axis(),
+                    'target': _target(),
+                    'function': 'calc_ptf_vereecken1989',
+                    'prediction': _vereecken_prediction(),
+                }
+            ],
+        }
+    )
+    candidate = plan.candidates[0]
+    assert isinstance(candidate, FunctionCurveCandidate)
+
+    evaluated = evaluate_candidate(
+        candidate,
+        [0.0, 9.80665],
+        {'sand': 52.14, 'clay': 10.93, 'carbon': 1.03, 'bulk_density': 1.466},
+    )
+
+    assert [point.value for point in evaluated.points] == pytest.approx(
+        [0.4060520000000001, 0.311870949865206]
+    )
+    assert evaluated.points[1].contributions[0].function == 'calc_ptf_vereecken1989'
 
 
 def test_executes_a_direct_curve_output_with_a_resolved_axis_input(
