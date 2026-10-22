@@ -11,6 +11,7 @@ license = "MIT"
 requires-python = ">=3.11"
 dependencies = [
     "jsonschema>=4.26,<5",
+    "openpyxl>=3.1,<4",
     "ptfkit>=0.4,<0.5",
     "pyyaml>=6.0,<7",
 ]

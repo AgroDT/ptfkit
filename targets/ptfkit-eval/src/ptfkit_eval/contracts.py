@@ -121,11 +121,49 @@ class ModelAdapterSpec:
             raise ValueError(message)
 
 
+@cache
+def default_model_adapter_specs() -> Mapping[str, ModelAdapterSpec]:
+    """Return contracts for the model adapters shipped with ptfkit-eval."""
+    spec = ModelAdapterSpec(
+        id='clapp1978_h_theta',
+        model_kind='h_theta',
+        axis_quantity='matric_potential',
+        axis_unit='centimeter_water_head',
+        axis_convention='magnitude',
+        target_quantity='volumetric_water_content',
+        target_unit='volume_fraction',
+        target_material_basis='mineral_soil',
+        target_denominator_basis='bulk_volume',
+        parameters=(
+            ModelParameterSpec(
+                'b', 'campbell_b', 'dimensionless', 'mineral_soil', 'not_applicable'
+            ),
+            ModelParameterSpec(
+                'saturation_suction',
+                'matric_potential',
+                'centimeter_water_head',
+                'mineral_soil',
+                'not_applicable',
+            ),
+            ModelParameterSpec(
+                'saturated_water_content',
+                'volumetric_water_content',
+                'volume_fraction',
+                'mineral_soil',
+                'bulk_volume',
+            ),
+        ),
+    )
+    return MappingProxyType({spec.id: spec})
+
+
 @dataclass(frozen=True)
 class OutputPrediction:
     """Direct curve output selected from a manifest function."""
 
     output: str
+    axis_input: str
+    axis_unit: str
 
 
 @dataclass(frozen=True)
@@ -260,7 +298,10 @@ def _adapter_registry(
     model_adapters: Mapping[str, ModelAdapterSpec] | None,
     diagnostics: list[PlanDiagnostic],
 ) -> Mapping[str, ModelAdapterSpec]:
-    adapters = {} if model_adapters is None else dict(model_adapters)
+    if model_adapters is None:
+        adapters = dict(default_model_adapter_specs())
+    else:
+        adapters = dict(model_adapters)
     for adapter_id, adapter in adapters.items():
         if adapter_id == adapter.id:
             continue
@@ -406,7 +447,7 @@ def _resolve_composite(
     )
 
 
-def _resolve_curve(
+def _resolve_curve(  # noqa: PLR0911
     function_id: str,
     prediction: Mapping[str, object],
     context: _CandidateContext,
@@ -445,7 +486,8 @@ def _resolve_curve(
             'prediction',
             resolution,
         )
-        if not _has_axis_input(function, context.axis, index):
+        axis_inputs = _axis_inputs(function, context.axis, index)
+        if not axis_inputs:
             diagnostics.append(
                 PlanDiagnostic(
                     f'{path}.axis',
@@ -453,7 +495,26 @@ def _resolve_curve(
                     f'Function {function_id!r} has no compatible numeric input for the curve axis.',
                 )
             )
-        return AtomicCurve(function_id, OutputPrediction(output_name))
+            return None
+        if len(axis_inputs) > 1:
+            diagnostics.append(
+                PlanDiagnostic(
+                    f'{path}.axis',
+                    'curve.axis_input_ambiguous',
+                    f'Function {function_id!r} has multiple compatible numeric axis inputs.',
+                )
+            )
+            return None
+        axis_input = axis_inputs[0]
+        measurement = _mapping(axis_input['measurement'])
+        return AtomicCurve(
+            function_id,
+            OutputPrediction(
+                output_name,
+                _string(axis_input['name']),
+                _string(measurement['unit']),
+            ),
+        )
 
     adapter_id = _string(prediction['id'])
     adapter = resolution.adapters.get(adapter_id)
@@ -604,11 +665,12 @@ def _compare_targets(
         )
 
 
-def _has_axis_input(
+def _axis_inputs(
     function: Mapping[str, object],
     axis: AxisSpec,
     index: _ManifestIndex,
-) -> bool:
+) -> tuple[Mapping[str, object], ...]:
+    matches: list[Mapping[str, object]] = []
     for value in _sequence(function['inputs']):
         binding = _mapping(value)
         if binding['kind'] != 'numeric':
@@ -617,8 +679,8 @@ def _has_axis_input(
         if measurement['quantity'] == axis.quantity and _units_compatible(
             _string(measurement['unit']), axis.unit, index
         ):
-            return True
-    return False
+            matches.append(binding)
+    return tuple(matches)
 
 
 def _validate_quantity_unit(
