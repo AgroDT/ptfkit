@@ -103,3 +103,60 @@ from ptfkit_eval import profile_retention_workbook, write_retention_profile
 profile = profile_retention_workbook('meta_v3.3.xlsx')
 write_retention_profile(profile, 'meta_v3_3.retention-profile.json')
 ```
+
+`normalize_retention_workbook()` then applies only `confirmed`
+source-and-encoding rules. It converts water content and pressure to the
+declared canonical units, preserves source cells, separates workbook-supplied
+van Genuchten parameters, and emits an explicit exclusion for every observation
+that is blocked or invalid. It verifies the workbook checksum and reconciles all
+row-role counts with the bound retention profile. Cached sample identifiers are
+also recomputed from the source and sample-number cells; disagreements remain
+explicit exclusions. Confirmed source aliases and sample crosswalks can repair
+identities only when the mapping carries reviewed evidence; proposed joins are
+ignored.
+
+```python
+from ptfkit_eval import (
+    load_dataset_mapping,
+    normalize_retention_workbook,
+    write_retention_normalization_summary,
+)
+
+mapping = load_dataset_mapping('../../evaluation/datasets/meta_v3_3.yaml')
+result = normalize_retention_workbook('meta_v3.3.xlsx', mapping)
+write_retention_normalization_summary(result, 'normalization-summary.json')
+```
+
+The summary writer deliberately records only row counts, exclusion reasons,
+and blocker counts. It does not copy measurements from a workbook whose
+redistribution status is unresolved.
+
+`audit_retention_reconstruction_workbook()` validates declared wide retention
+blocks against the long sheet without treating global value equality as sample
+identity. It compares observation and fitted-parameter multisets, matches only
+complete identifier groups to master curves, verifies confirmed crosswalks, and
+reports proposed transforms separately. A rule is `normalization_ready` only
+when values, complete-curve identity, reviewed transforms, and all confirmed
+crosswalks agree. Numeric and categorical axes are retained distinctly.
+Parameter-only sources declare their own sample-row ranges, and individual
+wide blocks may declare source-evidenced scale or axis overrides. Proposed axis
+overrides keep a rule out of normalization even when reconstruction is exact.
+Sparse wide blocks
+may also declare numeric missing-value markers. Sparse wide blocks and explicit
+long-table nulls must declare their exact expected counts; an explicit null is
+matched by sample and axis, so any drift fails the audit instead of silently
+changing coverage. Populated wide cells absent from the long sheet are tracked
+separately as explicit coordinate-level exclusions and never relabelled as
+missing values.
+
+```python
+from ptfkit_eval import (
+    audit_retention_reconstruction_workbook,
+    load_dataset_mapping,
+    write_retention_reconstruction_audit,
+)
+
+mapping = load_dataset_mapping('../../evaluation/datasets/meta_v3_3.yaml')
+audit = audit_retention_reconstruction_workbook('meta_v3.3.xlsx', mapping)
+write_retention_reconstruction_audit(audit, 'reconstruction-audit.json')
+```

@@ -1,0 +1,53 @@
+{
+  "blocker_counts": [
+    {
+      "count": 10,
+      "label": "mpa_label_meaning"
+    },
+    {
+      "count": 1525,
+      "label": "pressure_convention_by_source"
+    },
+    {
+      "count": 30,
+      "label": "pressure_over_salts_meaning"
+    },
+    {
+      "count": 60,
+      "label": "pressure_pgk_meaning"
+    },
+    {
+      "count": 48,
+      "label": "retention_reconstruction"
+    },
+    {
+      "count": 507,
+      "label": "unknown_water_basis"
+    },
+    {
+      "count": 1118,
+      "label": "water_scale_by_source"
+    }
+  ],
+  "excluded_observation_count": 1625,
+  "exclusion_reasons": [
+    {
+      "count": 48,
+      "label": "sample_identity_mismatch"
+    },
+    {
+      "count": 1577,
+      "label": "source_rule_blocked"
+    }
+  ],
+  "fitted_parameter_count": 92,
+  "input_observation_count": 1755,
+  "missing_source_exclusion_count": 0,
+  "normalized_observation_count": 130,
+  "schema_version": 1,
+  "sha256": "1322bf65b1ca0130085015209858a443d1ee82a7e2ae69232321cd8ede361e68",
+  "sheet_name": "ОГХ",
+  "source_filename": "meta_v3.3.xlsx",
+  "total_data_rows": 1847,
+  "unclassified_exclusion_count": 0
+}

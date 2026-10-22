@@ -10,16 +10,37 @@ source-to-canonical mapping, its JSON Schema, and its inventory-aware loader are
 also implemented. A deterministic source-level retention profiler is bound to
 the same workbook checksum and records the evidence needed to resolve each
 water-content and pressure encoding without inferring units from value ranges.
+The mapping now contains an exact source-rule contract for all 27 profiled
+retention sources. A rule-gated canonical retention normalizer accounts for
+every source row, preserves cell lineage, separates fitted van Genuchten
+parameters, and applies only fully confirmed physical conversions.
 
 The read-only workbook inspection records sheet names, dimensions, repeated or
 multiline header blocks, merged cells, formulas, missing-value markers, and
 candidate sample identifiers in `evaluation/datasets/meta_v3_3.inventory.json`.
 The reviewed facts, proposed source aliases, quarantines, and unresolved
 scientific questions are encoded in `evaluation/datasets/meta_v3_3.yaml`. The
-mapping remains `draft_blocked`: the immediate next task is source-level review
-of the 27 profiled source labels, starting with water-content scale and basis
-and pressure representations, followed by the first normalization slice for
-retention observations.
+mapping remains `draft_blocked`. The first real normalization run accounts for
+all 1,847 populated `ОГХ` rows. The first evidence-reviewed source now yields
+130 canonical observations for ten Chestnova samples; 1,577 observations retain
+blocked-rule exclusions, 48 expose stale cached sample identifiers, and 92
+fitted van Genuchten parameter rows enter a separate table. Full-curve matching
+against the `Данные` wide blocks also exposed a second failure mode: internally
+consistent long-sheet identifiers can still name the wrong master sample. The
+normalizer therefore applies only confirmed sample crosswalks, never positional
+or case-folded joins. The wide-to-long check is now a reusable, checksum-bound
+audit with declarative source blocks. It independently reports point-multiset,
+complete-curve identity, fitted-parameter, transform-review, and confirmed-
+crosswalk status. All 27 profiled sources and all 1,755 long-form observations
+are now structurally audited. Of these, 1,741 observations have exact master-
+sheet counterparts; the 14 additional Shvarov observations are preserved as an
+explicit mismatch. Twenty-one rules are structurally reconstructable, while
+five exact point multisets retain broken cached identities. The audit also
+covers all 92 fitted van Genuchten parameter pairs, including the parameter-only
+Kokareva source, categorical axes, numeric missing markers, coordinate-level
+exclusions, block-specific transforms, and explicit null observations. The
+immediate next task is source-evidence review of physical encodings, followed by
+canonical predictor and particle-size tables.
 
 This document defines the staged work needed to add a separate `ptfkit-eval`
 Python distribution to this repository. The package will evaluate implemented
@@ -29,6 +50,42 @@ comparison.
 
 The initial dataset is `meta_v3.3.xlsx`. It is an input to the work, not the
 runtime data model of the package.
+
+## Remaining roadmap
+
+The reusable foundation and dataset-discovery layer are implemented. Seven
+delivery packages remain before the acceptance criterion is met:
+
+| Package | Scope | Relative size | Status |
+| --- | --- | --- | --- |
+| 1. Source rules and normalization | Resolve source-level units and bases; emit canonical samples, measurements, particle bins, retention observations, and exclusions | Large | Retention contract and normalizer implemented; source review and other canonical tables pending |
+| 2. Quality control and eligibility | Validate physical consistency and build the complete function-sample-target matrix | Large | Not started |
+| 3. Approximation families | Register and implement van Genuchten, Brooks-Corey, and remaining required fit/adaptation variants | Extra large | Only the first Clapp-Hornberger adapter exists |
+| 4. Evaluation matrix | Execute every eligible atomic PTF and fixed composite with full traces | Medium | Core curve executor exists |
+| 5. Metrics and uncertainty | Per-sample aggregation, clustered intervals, prediction intervals, parameter uncertainty, and domains | Large | Not started |
+| 6. Nested selection | Deterministic grouped folds, atomic and ensemble selection, learned routing, and leakage protection | Extra large | Fixed range routing exists |
+| 7. Reporting and pilot | Reproducible artifacts, CLI, human report, and the complete Russian-dataset pilot | Large | Not started |
+
+The first retention slice of package 1 is implemented. Each of the 1,755
+observation rows now produces either a canonical pressure-water-content record
+with cell lineage or an explicit exclusion, and the 92 fitted VGN rows are kept
+in a separate parameter table. The current checksum-bound result is 130
+normalized and 1,625 explicitly excluded: 1,577 by unresolved source rules and
+48 by cached sample identifiers that disagree with the source and sample-number
+cells. The normalized slice is the 2017 Chestnova source, whose ten 13-point
+curves were matched exactly to master rows before its percent-to-fraction and
+pF-to-kPa conversions were enabled. The reusable reconstruction audit now
+accounts for all 1,755 observations from all 26 observation sources plus the
+parameter-only Kokareva source. Twenty-one rules preserve complete one-to-one
+records. The Gumatov 1991 and Sidorova rules explicitly account for 19 and five
+empty wide cells omitted from the long table; Bolotov and Manucharova match
+explicit nulls at the same sample and axis. Khaydapova 2001, Sadovnikova 2011,
+Shein 2012, Badenko 2013, and Panina 2015 have exact global multisets but broken
+cached identity groups. Shvarov has 14 long observations without master-sheet
+counterparts. All 92 long-form fitted van Genuchten parameter pairs are covered
+across Kokareva, Shein, and Panina. The next step is to resolve source rules
+without value-magnitude heuristics, then normalize reliable sample, predictor,
+and particle-size fields needed by the ptfkit functions.
 
 ## Objective
 
@@ -45,6 +102,45 @@ every prediction:
 - Why was a function-sample pair included or excluded?
 - Was a curve predicted by one function or by a registered composite, and which
   member produced or contributed to every pressure point?
+
+## Acceptance criterion
+
+The module is accepted only when the complete workflow below is reproducible
+for every implemented ptfkit function and every target dataset that contains a
+scientifically compatible measured output:
+
+1. Every value that can be extracted reliably is normalized with physical
+   meaning, units, basis, raw-cell provenance, and quality state. Ambiguous
+   values remain visible as exclusions rather than being guessed or discarded.
+2. Every implemented function appears in a function-sample-target eligibility
+   matrix. A function that cannot be evaluated must have a machine-readable
+   reason; complete coverage does not mean forcing incompatible comparisons.
+3. Every eligible atomic function and every registered ensemble is executed on
+   maximal and common cohorts. Parameter-producing functions are evaluated
+   through a versioned adapter for their exact approximation family and
+   parameter convention.
+4. For each dataset, target, protocol, and predeclared cohort, the report names
+   the selected atomic function and selected ensemble, or reports
+   `insufficient_evidence`. Selection must use nested grouped validation and
+   must never inspect the outer test targets.
+5. Every selected and non-selected candidate retains its coverage, exclusions,
+   metrics, uncertainty, applicability domain, validated axis range, and full
+   prediction provenance. A winner without those diagnostics is not an
+   acceptable result.
+6. Every supported approximation family, including van Genuchten and
+   Brooks-Corey variants present in the ptfkit corpus, has an explicit equation
+   and parameterization identifier, parameter constraints, fitting criteria,
+   identifiability checks, extrapolation policy, and uncertainty protocol.
+7. Identical workbook bytes, mapping, ptfkit manifest, evaluation plan, and
+   random seed reproduce identical normalized artifacts, folds, candidates,
+   predictions, selections, and reports.
+
+A dataset for selection purposes is a source publication or another
+predeclared independent group, optionally subdivided into scientifically
+defined strata. An individual measured curve is not an independent dataset on
+which a winner may be chosen after observing that curve. A sample-level selector
+is allowed only when it uses predictors available at prediction time and is
+trained entirely outside the held-out group.
 
 The first release should prioritize scientifically defensible comparisons over
 the number of functions evaluated.
@@ -276,11 +372,28 @@ by evaluation and reporting stages.
 ## Phase 4: implement the meta_v3.3 adapter
 
 Status: in progress. The checksum-bound structural inventory, reusable XLSX
-inspection API, draft mapping, mapping schema, and inventory-aware loader are
-implemented. The source-level `ОГХ` evidence profile is also implemented: it
-classifies all 1,847 populated rows as 1,755 observations or 92 fitted VGN
-parameter rows, with no unclassified or missing-source rows. Human resolution
-of the declared blockers and normalized canonical tables are pending.
+inspection API, draft mapping, mapping schema, inventory-aware loader, exact
+source-rule coverage checks, and rule-gated retention normalizer are
+implemented. The `ОГХ` pipeline classifies and accounts for all 1,847 populated
+rows as 1,755 observations or 92 fitted VGN parameter rows, with no unclassified
+or missing-source rows. One observation rule is confirmed: it emits 130
+canonical Chestnova observations after an explicit ten-sample crosswalk derived
+from exact 13-point curve matches between `ОГХ` and `Данные`. The remaining run
+emits 1,577 blocked-rule exclusions and 48 cached sample-identifier mismatches.
+It emits no guessed canonical values. A reusable reconstruction audit now
+compares declared wide blocks with long observations and fitted parameters as
+multisets, then separately tests whether complete raw identifier groups map
+bijectively to master samples and whether confirmed crosswalks agree. It now
+covers all 27 profiled sources and accounts for all 1,755 observations.
+Twenty-one rules are structurally reconstructable, but only Chestnova is
+normalization-ready because the others retain physical-semantic, alias, or
+crosswalk blockers. Shvarov has 14 long-only observations; Khaydapova,
+Sadovnikova, Shein 2012, Badenko, and Panina have exact point multisets but
+unresolved complete-record identity. All 92 long-form fitted parameter pairs
+are covered, and only Kokareva's five parameter sets preserve a complete
+bijection.
+Human resolution of the declared blockers and the remaining canonical sample,
+predictor, and particle-size tables are pending.
 
 Create a versioned dataset mapping under:
 
@@ -363,6 +476,38 @@ When a PTF returns retention parameters, evaluate its predicted curve at the
 observed pressures. Do not assume that fitted parameters from different model
 variants or fitting procedures are directly comparable. Add explicit model
 adapters for each supported equation and parameter convention.
+
+### Approximation-family registry and fitting
+
+Create a versioned approximation-family registry for van Genuchten,
+Brooks-Corey, Campbell/Clapp-Hornberger, and every other hydraulic model needed
+by an eligible ptfkit output. Each registry entry must declare:
+
+- a stable family and variant identifier, equation, axis convention, and target
+  measurement descriptor;
+- parameter names, quantities, units, bounds, fixed relationships, and initial
+  value policy;
+- the minimum observation count and pressure span required for fitting;
+- the objective function, observation weights, optimizer, convergence
+  criteria, restart policy, and deterministic seed behavior;
+- physical rejection checks, parameter identifiability checks, and whether a
+  non-unique or boundary solution is reportable;
+- interpolation and extrapolation policy and the validated pressure interval;
+- the parameter-uncertainty and curve-uncertainty calculation method.
+
+Fitting an approximation to a measured curve is a separate operation from
+evaluating a PTF that predicts parameters of that approximation. Reports must
+distinguish at least:
+
+- approximation error of a fitted family against measured points;
+- parameter error when compatible reference parameters exist;
+- prediction error of the PTF-derived curve at measured pressures; and
+- uncertainty introduced by fitting the reference curve itself.
+
+Raw parameter values must not be ranked across different families or
+parameterizations. A family fit that fails convergence, identifiability,
+physical constraints, or minimum-data requirements remains an explicit failed
+fit and must not silently fall back to another family.
 
 ### Composite water-retention curves
 
@@ -467,7 +612,13 @@ For each target and protocol, report:
 - mean absolute error;
 - root mean squared error;
 - median absolute error;
-- confidence intervals;
+- a configurable confidence level, with 95% as the default;
+- clustered confidence intervals for every reported aggregate metric;
+- prediction intervals as a function of the independent variable when the
+  available data support them;
+- parameter intervals and identifiability diagnostics for fitted approximation
+  families;
+- the empirical applicability domain and validated pressure range.
 - results inside and outside reported applicability metadata.
 
 Conductivity reports should also include log-scale errors, geometric bias, and
@@ -478,6 +629,18 @@ samples with dense pressure grids do not dominate. Uncertainty intervals should
 use clustered resampling by profile or, when profile identifiers are
 unavailable, by source.
 
+Keep the following concepts separate in schemas and reports:
+
+- a confidence interval for a population-level error metric;
+- a prediction interval for a future measured value or curve point;
+- an uncertainty interval for a fitted approximation parameter;
+- a reported or empirical applicability domain; and
+- an axis interval supported by observations rather than extrapolation.
+
+None of these intervals may be substituted for another. In particular, a
+narrow bootstrap interval for RMSE does not expand the physical applicability
+domain of a PTF.
+
 Every comparison should provide both:
 
 - a maximal cohort using every eligible sample for each function; and
@@ -485,7 +648,49 @@ Every comparison should provide both:
 
 A single ranking across different targets, protocols, or cohorts is prohibited.
 
-## Phase 8: make runs reproducible and reportable
+## Phase 8: select atomic functions and ensembles without leakage
+
+Selection is an evaluated protocol, not a post-hoc sort of test errors. Every
+selection plan must declare:
+
+- the independent grouping unit, normally source publication and, where
+  justified, region or profile;
+- deterministic outer grouped holdouts used only for final assessment;
+- deterministic inner grouped folds used for candidate, boundary, and weight
+  selection;
+- the eligible candidate set, including atomic functions, fixed composites,
+  and learnable composites;
+- one primary loss, tie-breaking rules, minimum coverage, minimum group count,
+  and failure policy;
+- whether selection is global for a dataset, stratified by declared soil
+  properties, or performed by a predictor-only gating model;
+- all tunable pressure boundaries, blend weights, and hyperparameters;
+- the random seed and complete training provenance.
+
+The initial curve-selection protocol should use a per-sample loss integrated or
+aggregated over the declared log-pressure domain so that a dense curve does not
+outvote other samples. Pointwise metrics remain diagnostics. The exact primary
+loss and pressure weighting must be registered before the outer test fold is
+evaluated.
+
+For each outer fold, the inner process selects and locks:
+
+- the best eligible atomic candidate;
+- the best eligible registered ensemble;
+- any learned range boundaries or blend weights; and
+- any predictor-only gating rule.
+
+The locked candidates are then evaluated once on the outer fold. Reports must
+show inner-selection stability, outer-fold performance, coverage, candidate
+failure counts, and whether different folds selected different candidates.
+Final recommendations must aggregate outer-fold evidence and may report
+`insufficient_evidence` instead of forcing a winner.
+
+Using the measured target of a held-out sample to choose its member, pressure
+boundary, blend weight, approximation family, or post-processing rule is test
+leakage and must be rejected by validation.
+
+## Phase 9: make runs reproducible and reportable
 
 Add commands equivalent to:
 
@@ -510,24 +715,32 @@ Each run should write:
 Every prediction must be traceable to its raw cells, input bindings, conversions,
 function contract, and output observation.
 
-## Phase 9: perform the first Russian-dataset pilot
+## Phase 10: perform the first Russian-dataset pilot
 
 The pilot should start with water-retention observations because they have the
 largest target coverage. It should include only functions whose particle-size
 definitions, organic-property definitions, water-content bases, and pressure
 conditions are exactly compatible or exactly derivable.
 
-The pilot should produce three outputs:
+The pilot should produce five outputs:
 
 1. A quality-control and normalization report for `meta_v3.3.xlsx`.
 2. A complete function-sample eligibility matrix, including exclusion reasons.
-3. A limited external-validation report on the scientifically compatible
-   subset.
+3. A fit and identifiability report for every registered approximation family
+   on every curve with sufficient measured support.
+4. A limited external-validation report on the scientifically compatible
+   subset, including metric, prediction, and parameter uncertainty where
+   supported.
+5. A nested grouped selection report naming the best supported atomic function
+   and ensemble for each dataset-target-protocol combination, or
+   `insufficient_evidence`.
 
 Saturated-conductivity evaluation should follow only after texture predictors
 and conductivity units can be joined for the same samples. Any local
-recalibration or selection of a preferred PTF should be a later, separately
-registered experiment with source- or region-grouped holdout data.
+recalibration, learned ensemble boundary, blend weight, or selection of a
+preferred PTF is part of a separately registered nested source- or
+region-grouped protocol. Its locked outer-fold result must remain distinct from
+the uncalibrated external-validation result.
 
 ## Test strategy
 
@@ -542,6 +755,8 @@ Tests should cover:
 - Excel control rows, formula cells, and cached values;
 - explicit identifier aliases and rejection of fuzzy joins;
 - hand-calculated metric examples;
+- hand-calculated synthetic fits for every approximation family and rejection
+  cases for non-identifiable and physically invalid fits;
 - per-sample curve weighting;
 - range-gated routing at boundaries, explicit gap rejection, and deterministic
   overlap blending;
@@ -549,6 +764,11 @@ Tests should cover:
   targets;
 - seam continuity and whole-curve monotonicity diagnostics;
 - clustered resampling determinism with a fixed seed;
+- deterministic nested grouped folds and explicit rejection of target leakage;
+- selection based only on inner-fold evidence, including a case where the
+  outer-test winner differs from the selected candidate;
+- metric confidence intervals, prediction intervals, and fitted-parameter
+  intervals with independent synthetic oracles;
 - one end-to-end synthetic evaluation run;
 - dataset-profile counts when the real workbook is available in an explicit
   integration-test environment.
@@ -565,8 +785,18 @@ The first `ptfkit-eval` release is ready only when:
 - ambiguous records are excluded with reason codes;
 - raw workbook duplication does not inflate sample counts;
 - result tables report coverage and cohort composition;
+- every implemented function has an eligibility result for each relevant
+  dataset-target protocol;
+- every supported approximation variant has an executable, tested adapter and
+  fitting contract;
+- every reported winner was selected inside nested grouped validation and then
+  evaluated on untouched outer groups;
+- every dataset-target protocol reports both the selected atomic function and
+  selected ensemble, or `insufficient_evidence`;
+- metric confidence intervals, prediction intervals, parameter uncertainty,
+  applicability domains, and validated pressure ranges are distinguished;
 - repeated runs from identical inputs produce identical normalized artifacts
-  and predictions;
+  folds, predictions, selections, and reports;
 - package verification is integrated with Mise and CI;
 - the pilot report clearly distinguishes external validation from calibration
   and from claims of national representativeness.

@@ -41,6 +41,30 @@ values above one, pressure signs, fitted VGN parameter names, missing values,
 and unclassified rows. It deliberately makes no unit, scale, or physical-basis
 inference from those numeric patterns.
 
+The mapping also contains one `retention_source_rules` entry for every profiled
+source label and one observation rule for every exact water-pressure encoding
+pair. A rule can be applied only when its status is `confirmed`, all physical
+semantics are explicit, and its blocker list is empty. The first confirmed rule
+covers the 2017 Chestnova source. Its ten sample identities are backed by exact
+ordered 13-point curve matches to the master sheet, and its water scale is
+supported by an exact factor-of-100 relationship plus the source documentation.
+The remaining rules stay blocked; numeric magnitude is never used to infer
+percent versus fraction.
+
+`meta_v3_3.reconstruction-audit.json` is the count-only result of applying the
+declarative wide-block rules to the exact workbook bytes. The audit treats value
+integrity and sample identity as separate claims. Its 27 rules account for all
+1,755 long-form observations: 1,741 have exact master-sheet counterparts, and
+14 Shvarov observations have no master counterpart. Twenty-one rules are
+structurally reconstructable. Five more retain exact global point multisets but
+broken cached identity groups: Khaydapova, Sadovnikova, Shein 2012, Badenko,
+and Panina. The audit handles numeric and categorical axes, explicit long-table
+nulls, numeric missing markers, coordinate-level exclusions, block-specific
+scales and axes, and parameter-only sources. All 92 stored fitted-parameter
+pairs are covered across Kokareva, Shein, and Panina. Only Chestnova currently
+combines structural reconstruction, reviewed physical transforms, and confirmed
+crosswalks, so it is the sole normalization-ready rule.
+
 Validate both artifacts together through the public API:
 
 ```python
@@ -61,3 +85,49 @@ write_retention_profile(
     'evaluation/datasets/meta_v3_3.retention-profile.json',
 )
 ```
+
+Run the rule-gated normalizer and regenerate the non-sensitive accounting
+summary without writing measurement values to the repository:
+
+```python
+from ptfkit_eval import (
+    load_dataset_mapping,
+    normalize_retention_workbook,
+    write_retention_normalization_summary,
+)
+
+mapping = load_dataset_mapping('evaluation/datasets/meta_v3_3.yaml')
+result = normalize_retention_workbook('/path/to/meta_v3.3.xlsx', mapping)
+write_retention_normalization_summary(
+    result,
+    'evaluation/datasets/meta_v3_3.normalization-summary.json',
+)
+```
+
+Regenerate the wide-to-long reconstruction evidence through the same bound
+mapping:
+
+```python
+from ptfkit_eval import (
+    audit_retention_reconstruction_workbook,
+    load_dataset_mapping,
+    write_retention_reconstruction_audit,
+)
+
+mapping = load_dataset_mapping('evaluation/datasets/meta_v3_3.yaml')
+audit = audit_retention_reconstruction_workbook('/path/to/meta_v3.3.xlsx', mapping)
+write_retention_reconstruction_audit(
+    audit,
+    'evaluation/datasets/meta_v3_3.reconstruction-audit.json',
+)
+```
+
+For the reviewed workbook bytes, the summary accounts for all 1,847 populated
+rows: 130 observations are normalized, 1,577 currently have blocked-rule
+exclusions, 48 have stale cached sample identifiers that disagree with the
+source and sample-number cells, and 92 fitted van Genuchten parameters are held
+in a separate in-memory table. Confirmed source aliases and sample crosswalks
+are applied to canonical identities; proposed joins remain inactive. No row is
+silently discarded. The summary contains counts only; the workbook and copied
+measurement values remain outside version control while redistribution rights
+are unresolved.
