@@ -3,9 +3,23 @@
 ## Status
 
 In progress. The measurement contract, public manifest, initial `ptfkit-eval`
-scaffold, range-gated router, and manifest-aware evaluation-plan loader are
-implemented. The next task is the first reviewed model adapter and curve
-execution layer, followed by dataset ingestion.
+scaffold, range-gated router, manifest-aware evaluation-plan loader, first
+reviewed model adapter, curve execution layer, and reproducible structural
+inventory of `meta_v3.3.xlsx` are implemented. A checksum-bound draft
+source-to-canonical mapping, its JSON Schema, and its inventory-aware loader are
+also implemented. A deterministic source-level retention profiler is bound to
+the same workbook checksum and records the evidence needed to resolve each
+water-content and pressure encoding without inferring units from value ranges.
+
+The read-only workbook inspection records sheet names, dimensions, repeated or
+multiline header blocks, merged cells, formulas, missing-value markers, and
+candidate sample identifiers in `evaluation/datasets/meta_v3_3.inventory.json`.
+The reviewed facts, proposed source aliases, quarantines, and unresolved
+scientific questions are encoded in `evaluation/datasets/meta_v3_3.yaml`. The
+mapping remains `draft_blocked`: the immediate next task is source-level review
+of the 27 profiled source labels, starting with water-content scale and basis
+and pressure representations, followed by the first normalization slice for
+retention observations.
 
 This document defines the staged work needed to add a separate `ptfkit-eval`
 Python distribution to this repository. The package will evaluate implemented
@@ -188,10 +202,12 @@ descriptors.
 ## Phase 2: create the ptfkit-eval distribution
 
 Status: in progress. The pure-Python distribution, versioned evaluation-plan
-schema, deterministic range-gated router, and manifest-aware loader are
-implemented. The loader validates functions, outputs, adapters, physical
+schema, deterministic range-gated router, manifest-aware loader, executable
+`clapp1978_h_theta` adapter, scalar unit conversion, and traced curve executor
+are implemented. The loader validates functions, outputs, adapters, physical
 quantities, units, bases, parameters, intervals, and overlap routing before
-execution. The remaining package modules are still pending.
+execution. Dataset normalization, eligibility, metrics, and reporting remain
+pending.
 
 Add `targets/ptfkit-eval/` with:
 
@@ -258,6 +274,13 @@ Excel workbook remains immutable source evidence and should not be read directly
 by evaluation and reporting stages.
 
 ## Phase 4: implement the meta_v3.3 adapter
+
+Status: in progress. The checksum-bound structural inventory, reusable XLSX
+inspection API, draft mapping, mapping schema, and inventory-aware loader are
+implemented. The source-level `ОГХ` evidence profile is also implemented: it
+classifies all 1,847 populated rows as 1,755 observations or 92 fitted VGN
+parameter rows, with no unclassified or missing-source rows. Human resolution
+of the declared blockers and normalized canonical tables are pending.
 
 Create a versioned dataset mapping under:
 

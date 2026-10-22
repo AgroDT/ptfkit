@@ -1,0 +1,665 @@
+schema_version: 1
+
+dataset:
+  id: meta_v3_3
+  title: Russian soil-property workbook meta_v3.3
+  status: draft_blocked
+
+source:
+  filename: meta_v3.3.xlsx
+  sha256: 1322bf65b1ca0130085015209858a443d1ee82a7e2ae69232321cd8ede361e68
+  size_bytes: 301143
+  inventory: meta_v3_3.inventory.json
+  retention_profile: meta_v3_3.retention-profile.json
+  redistribution_status: Unresolved; do not commit or redistribute the source workbook.
+
+identity:
+  sample_id:
+    kind: composite
+    components: [source, sample_number]
+    separator: _
+    formula: source + "_" + Excel display value of sample_number
+  join_policy: exact_after_reviewed_aliases
+  source_aliases:
+    - worksheet: ОГХ
+      raw: 1988_сапожников
+      canonical: 1988_Сапожников
+      status: proposed
+      evidence: The source labels differ only by Unicode case and share sample numbers.
+    - worksheet: ОГХ
+      raw: 2001_хайдапова
+      canonical: 2001_Хайдапова
+      status: proposed
+      evidence: The source labels differ only by Unicode case and share sample numbers.
+    - worksheet: ОГХ
+      raw: 2007_пестонова
+      canonical: 2007_Пестонова
+      status: proposed
+      evidence: The source labels differ only by Unicode case and share sample numbers.
+    - worksheet: ОГХ
+      raw: 2009_Чудинова
+      canonical: 2009_чудинова
+      status: proposed
+      evidence: The source labels differ only by Unicode case and share sample numbers.
+    - worksheet: ОГХ
+      raw: 2011_Садовникова
+      canonical: 2011_садовникова
+      status: proposed
+      evidence: The source labels differ only by Unicode case and share sample numbers.
+    - worksheet: ОГХ
+      raw: 2012_Шеин
+      canonical: 2012_шеин
+      status: proposed
+      evidence: The source labels differ only by Unicode case and share sample numbers.
+    - worksheet: ОГХ
+      raw: 2014_Болотов
+      canonical: 2014_болотов
+      status: proposed
+      evidence: The source labels differ only by Unicode case and share sample numbers.
+    - worksheet: ОГХ
+      raw: 2014_Макарычев-1
+      canonical: 2014_макарычев-1
+      status: proposed
+      evidence: The source labels differ only by Unicode case and share sample numbers.
+    - worksheet: ОГХ
+      raw: 2014_Макарычев-2
+      canonical: 2014_макарычев-2
+      status: proposed
+      evidence: The source labels differ only by Unicode case and share sample numbers.
+    - worksheet: ОГХ
+      raw: 2014_Макарычев-3
+      canonical: 2014_макарычев-3
+      status: proposed
+      evidence: The source labels differ only by Unicode case and share sample numbers.
+    - worksheet: ОГХ
+      raw: 2016_сидорова
+      canonical: 2016_Сидорова
+      status: proposed
+      evidence: The source labels differ only by Unicode case and share sample numbers.
+    - worksheet: ОГХ
+      raw: 2017_Честнова
+      canonical: 2017_честнова
+      status: proposed
+      evidence: The source labels differ only by Unicode case and share sample numbers.
+    - worksheet: ОГХ
+      raw: 2018_Макарычев
+      canonical: 2018_макарычев
+      status: proposed
+      evidence: The source labels differ only by Unicode case and share sample numbers.
+    - worksheet: ОГХ
+      raw: 2018_моисеев
+      canonical: 2018_Моисеев
+      status: proposed
+      evidence: The source labels differ only by Unicode case and share sample numbers.
+  sample_crosswalks: []
+
+worksheets:
+  - id: samples_master
+    name: Данные
+    dimension: A1:CW715
+    kind: grouped_wide_samples
+    status: blocked
+    header_rows: [[1]]
+    data_rows: {first: 2, last: 715}
+    row_roles:
+      - id: source_control
+        status: confirmed
+        when: {column: B, operator: equals, value: 0.1}
+        notes: Carries source-specific retention-axis and particle-size labels; it is not a soil sample.
+      - id: sample_observation
+        status: proposed
+        when: otherwise
+        notes: Duplicate composite identifiers must be resolved before this role is active.
+    columns:
+      - column: A
+        source_header: sample_id
+        role: sample_id
+        status: derived
+        notes: Formula concatenates columns C and B with an underscore.
+      - column: B
+        source_header: sample_number
+        role: sample_number
+        status: confirmed
+      - column: C
+        source_header: Источник
+        role: source
+        status: confirmed
+      - column: D
+        source_header: Метод определения ОГХ
+        role: retention_method
+        status: context_only
+      - column: E
+        source_header: Почва
+        role: soil_description
+        status: context_only
+      - column: F
+        source_header: Место
+        role: location
+        status: context_only
+      - column: G
+        source_header: Коорд
+        role: coordinates
+        status: blocked
+        notes: Publication and personal-data policy is unresolved.
+      - column: H
+        source_header: Угодья
+        role: land_use
+        status: context_only
+      - column: I
+        source_header: Гор
+        role: horizon
+        status: context_only
+      - column: J
+        source_header: Глубина
+        role: depth_interval
+        status: blocked
+        notes: A parser and canonical depth unit have not been reviewed.
+      - column: K
+        source_header: Формат образцов
+        role: sample_format
+        status: context_only
+      - column: L
+        source_header: Текстура
+        role: texture_class
+        status: blocked
+        notes: The classification system and category crosswalk are unresolved.
+      - column: M
+        source_header: Физ.глина (< 10 мкм)
+        role: physical_clay
+        status: blocked
+        measurement:
+          quantity: particle_mass_fraction
+          unit: null
+          material_basis: null
+          denominator_basis: null
+          particle_size:
+            unit: micrometer
+            lower: 0
+            upper: 10
+            lower_inclusive: true
+            upper_inclusive: false
+      - column: N
+        source_header: Ил (< 1 мкм)
+        role: clay_fraction
+        status: blocked
+        measurement:
+          quantity: particle_mass_fraction
+          unit: null
+          material_basis: null
+          denominator_basis: null
+          particle_size:
+            unit: micrometer
+            lower: 0
+            upper: 1
+            lower_inclusive: true
+            upper_inclusive: false
+      - column: O
+        source_header: Пыль (1-50  мкм)
+        role: silt_fraction
+        status: blocked
+        measurement:
+          quantity: particle_mass_fraction
+          unit: null
+          material_basis: null
+          denominator_basis: null
+        notes: Interval boundary inclusion and denominator basis are not stated.
+      - column: P
+        source_header: Песок (> 50 мкм)
+        role: sand_fraction
+        status: blocked
+        measurement:
+          quantity: particle_mass_fraction
+          unit: null
+          material_basis: null
+          denominator_basis: null
+          particle_size:
+            unit: micrometer
+            lower: 50
+            upper: null
+            lower_inclusive: false
+            upper_inclusive: false
+      - column: Q
+        source_header: Плотность почвы
+        role: dry_bulk_density
+        status: blocked
+        measurement:
+          quantity: dry_bulk_density
+          unit: null
+      - column: R
+        source_header: С орг (%)
+        role: organic_carbon
+        status: blocked
+        measurement:
+          quantity: organic_carbon_content
+          unit: mass_percent
+          material_basis: null
+          denominator_basis: dry_soil_mass
+      - column: S
+        source_header: Cодержание гумуса ( %)
+        role: humus_content
+        status: blocked
+        measurement:
+          quantity: humus_content
+          unit: mass_percent
+          material_basis: null
+          denominator_basis: dry_soil_mass
+      - column: T
+        source_header: pH
+        role: ph
+        status: blocked
+        measurement:
+          quantity: ph
+          unit: dimensionless
+        notes: Extraction solution and soil-to-solution ratio are not encoded.
+      - column: U
+        source_header: Пористость (%)
+        role: porosity
+        status: proposed
+        measurement:
+          quantity: porosity
+          unit: volume_percent
+      - column: V
+        source_header: Плотность  тв.фазы
+        role: particle_density
+        status: blocked
+        measurement:
+          quantity: particle_density
+          unit: null
+      - column: W
+        source_header: Единицы обозначения влажности
+        role: water_content_encoding
+        status: blocked
+      - column: X
+        source_header: Давление
+        role: dynamic_source_axis_start
+        status: blocked
+    notes:
+      - Columns X:CW are source-specific wide sections whose labels are carried by source-control rows.
+      - The long-form ОГХ worksheet is a validation view, not yet the sole source of truth.
+
+  - id: retention_long
+    name: ОГХ
+    dimension: A1:Y1848
+    kind: long_retention_and_parameters
+    status: blocked
+    header_rows: [[1]]
+    data_rows: {first: 2, last: 1848}
+    row_roles:
+      - id: fitted_vgn_parameter
+        status: confirmed
+        when: {column: D, operator: equals, value: VGN}
+        notes: Columns F and G contain parameter name and value, not an observed curve point.
+      - id: retention_observation
+        status: blocked
+        when: {column: D, operator: in, values: [W, Q, "?"]}
+        notes: Water basis, scale, and pressure representation require source-specific review.
+      - id: unclassified
+        status: blocked
+        when: otherwise
+    columns:
+      - column: A
+        source_header: null
+        role: sample_id
+        status: derived
+      - column: B
+        source_header: source
+        role: source
+        status: confirmed
+      - column: C
+        source_header: sample_number
+        role: sample_number
+        status: derived
+        notes: 1224 cells are formulas; both expression and cached result must be retained.
+      - column: D
+        source_header: Формат данных влажности почвы
+        role: water_or_model_encoding
+        status: blocked
+      - column: E
+        source_header: Формат данных давления влаги
+        role: pressure_encoding
+        status: blocked
+      - column: F
+        source_header: Переменная/Давление влаги
+        role: axis_or_parameter
+        status: blocked
+      - column: G
+        source_header: Значение/Содержание влаги
+        role: observed_or_parameter_value
+        status: blocked
+    notes:
+      - Observed rows and fitted VGN parameter rows share the same columns.
+      - The populated area extends to column Y although only A:G have row-1 headers.
+
+  - id: particle_size_blocks
+    name: ГС-PSD
+    dimension: A1:O68
+    kind: repeated_particle_size_blocks
+    status: blocked
+    header_rows: [[1], [14], [25], [32], [39, 40], [46]]
+    data_rows: {first: 2, last: 68}
+    row_roles:
+      - id: particle_size_observation
+        status: blocked
+        when: otherwise
+        notes: Each header block defines a different interval scheme; rows 59:68 have no detected header.
+    columns:
+      - column: A
+        source_header: null
+        role: sample_id
+        status: derived
+      - column: B
+        source_header: null
+        role: source
+        status: proposed
+      - column: C
+        source_header: null
+        role: sample_number
+        status: proposed
+      - column: D
+        source_header: null
+        role: dynamic_particle_fraction_start
+        status: blocked
+      - column: O
+        source_header: null
+        role: dynamic_particle_fraction_end
+        status: blocked
+
+  - id: dissertation_view
+    name: дп
+    dimension: A1:AQ90
+    kind: duplicate_source_view
+    status: blocked
+    header_rows: [[1]]
+    data_rows: {first: 2, last: 90}
+    row_roles:
+      - id: source_control
+        status: confirmed
+        when: {column: B, operator: equals, value: 0.1}
+      - id: sample_observation
+        status: blocked
+        when: otherwise
+    columns:
+      - {column: A, source_header: sample_id, role: sample_id, status: derived}
+      - {column: B, source_header: sample_number, role: sample_number, status: proposed}
+      - {column: C, source_header: Источник, role: source, status: proposed}
+    notes:
+      - Relationship to Данные must be established cell by cell before this view is imported.
+
+  - id: ch_view
+    name: ч
+    dimension: A1:BH178
+    kind: duplicate_source_view
+    status: blocked
+    header_rows: [[1]]
+    data_rows: {first: 2, last: 178}
+    row_roles:
+      - id: source_control
+        status: confirmed
+        when: {column: B, operator: equals, value: 0.1}
+      - id: sample_observation
+        status: blocked
+        when: otherwise
+    columns:
+      - {column: A, source_header: sample_id, role: sample_id, status: derived}
+      - {column: B, source_header: sample_number, role: sample_number, status: proposed}
+      - {column: C, source_header: Источник, role: source, status: proposed}
+    notes:
+      - Relationship to Данные must be established cell by cell before this view is imported.
+
+  - id: sl_view
+    name: сл
+    dimension: A1:AR46
+    kind: duplicate_source_view
+    status: blocked
+    header_rows: [[1]]
+    data_rows: {first: 2, last: 46}
+    row_roles:
+      - id: source_control
+        status: confirmed
+        when: {column: B, operator: equals, value: 0.1}
+      - id: sample_observation
+        status: blocked
+        when: otherwise
+    columns:
+      - {column: A, source_header: sample_id, role: sample_id, status: derived}
+      - {column: B, source_header: sample_number, role: sample_number, status: proposed}
+      - {column: C, source_header: Источник, role: source, status: proposed}
+    notes:
+      - Relationship to Данные must be established cell by cell before this view is imported.
+
+  - id: theses
+    name: диссертации
+    dimension: A1:CW183
+    kind: grouped_wide_samples
+    status: blocked
+    header_rows: [[1]]
+    data_rows: {first: 2, last: 183}
+    row_roles:
+      - id: source_control
+        status: confirmed
+        when: {column: B, operator: equals, value: 0.1}
+      - id: sample_observation
+        status: blocked
+        when: otherwise
+    columns:
+      - {column: A, source_header: sample_id, role: sample_id, status: derived}
+      - {column: B, source_header: sample_number, role: sample_number, status: proposed}
+      - {column: C, source_header: Источник, role: source, status: proposed}
+      - {column: D, source_header: Название, role: source_title, status: context_only}
+      - {column: I, source_header: коорд, role: coordinates, status: blocked}
+      - column: T
+        source_header: Плотность почвы
+        role: dry_bulk_density
+        status: blocked
+        measurement: {quantity: dry_bulk_density, unit: null}
+      - column: U
+        source_header: С орг (%)
+        role: organic_carbon
+        status: blocked
+        measurement:
+          quantity: organic_carbon_content
+          unit: mass_percent
+          denominator_basis: dry_soil_mass
+      - column: V
+        source_header: Cодержание гумуса ( %)
+        role: humus_content
+        status: blocked
+        measurement:
+          quantity: humus_content
+          unit: mass_percent
+          denominator_basis: dry_soil_mass
+      - {column: AH, source_header: null, role: water_content_encoding, status: blocked}
+      - {column: AI, source_header: Давление, role: dynamic_source_axis_start, status: blocked}
+    notes:
+      - This sheet has additional thesis metadata and a shifted physical-property layout.
+      - Columns AI:CW contain source-specific wide sections.
+
+  - id: thesis_links
+    name: диссертации_ссылки
+    dimension: A1:C31
+    kind: source_bibliography
+    status: context_only
+    header_rows: [[1]]
+    data_rows: {first: 2, last: 31}
+    row_roles:
+      - id: bibliography_entry
+        status: context_only
+        when: otherwise
+    columns:
+      - {column: A, source_header: Год, role: publication_year, status: context_only}
+      - {column: B, source_header: Фамилия, role: author, status: context_only}
+      - {column: C, source_header: Список, role: source_reference, status: context_only}
+
+encodings:
+  - id: water_w
+    worksheet: ОГХ
+    selector: {column: D, value: W}
+    status: blocked
+    interpretation: Gravimetric water content; the workbook label permits either percent or fraction.
+    measurement:
+      quantity: gravimetric_water_content
+      unit: null
+      denominator_basis: dry_soil_mass
+    blockers: [water_scale_by_source]
+  - id: water_q
+    worksheet: ОГХ
+    selector: {column: D, value: Q}
+    status: blocked
+    interpretation: Volumetric water content; the workbook label permits either percent or fraction.
+    measurement:
+      quantity: volumetric_water_content
+      unit: null
+      denominator_basis: bulk_volume
+    blockers: [water_scale_by_source]
+  - id: water_unknown
+    worksheet: ОГХ
+    selector: {column: D, value: "?"}
+    status: blocked
+    interpretation: Water-content quantity, denominator basis, and scale are unknown.
+    blockers: [unknown_water_basis]
+  - id: fitted_vgn
+    worksheet: ОГХ
+    selector: {column: D, value: VGN}
+    status: confirmed
+    interpretation: Fitted VGN parameters Qr, Qs, n, and a; never an observed retention point.
+  - id: pressure_pf
+    worksheet: ОГХ
+    selector: {column: E, value: pF}
+    status: proposed
+    interpretation: Base-10 logarithm of matric-potential head magnitude in centimeters of water.
+    measurement: {quantity: matric_potential, unit: kilopascal}
+    conversion: centimeter_water_head = 10 ** value; then use the ptfkit unit registry.
+    blockers: [pressure_convention_by_source]
+  - id: pressure_kpa
+    worksheet: ОГХ
+    selector: {column: E, value: kPa}
+    status: blocked
+    interpretation: Pressure values labelled kPa; sign convention is not stated.
+    measurement: {quantity: matric_potential, unit: kilopascal}
+    blockers: [pressure_convention_by_source]
+  - id: pressure_mpa_label
+    worksheet: ОГХ
+    selector: {column: E, value: mPa}
+    status: blocked
+    interpretation: The exact case-sensitive label is mPa; its intended unit is unresolved.
+    blockers: [mpa_label_meaning]
+  - id: pressure_pgk
+    worksheet: ОГХ
+    selector: {column: E, value: ПГК}
+    status: blocked
+    interpretation: The abbreviation is not mapped to a physical pressure quantity or unit.
+    blockers: [pressure_pgk_meaning]
+  - id: pressure_over_salts
+    worksheet: ОГХ
+    selector: {column: E, value: давление над солями}
+    status: blocked
+    interpretation: Salt-equilibrium condition is not yet mapped to matric or osmotic potential.
+    blockers: [pressure_over_salts_meaning]
+
+formula_policy:
+  read_formulas: true
+  read_cached_values: true
+  recalculate: false
+  derived_columns:
+    - {worksheet: Данные, column: A, purpose: Composite sample identifier, validation: Recompute from C and B and require exact equality with the cached value.}
+    - {worksheet: ОГХ, column: A, purpose: Composite sample identifier, validation: Recompute from B and C and require exact equality with the cached value.}
+    - {worksheet: ОГХ, column: C, purpose: Repeated sample number, validation: Retain expression and cached value and verify against its referenced source row.}
+    - {worksheet: ГС-PSD, column: A, purpose: Composite sample identifier, validation: Recompute from B and C and require exact equality with the cached value.}
+    - {worksheet: дп, column: A, purpose: Composite sample identifier, validation: Recompute from C and B and require exact equality with the cached value.}
+    - {worksheet: ч, column: A, purpose: Composite sample identifier, validation: Recompute from C and B and require exact equality with the cached value.}
+    - {worksheet: сл, column: A, purpose: Composite sample identifier, validation: Recompute from C and B and require exact equality with the cached value.}
+    - {worksheet: диссертации, column: A, purpose: Composite sample identifier, validation: Recompute from C and B and require exact equality with the cached value.}
+
+reviewed_corrections: []
+
+quarantines:
+  - id: control_rows
+    scope: Данные, дп, ч, сл, and диссертации rows with sample_number = 0.1
+    reason: These rows carry source-specific column labels and are not soil samples.
+    release_requires: Never release as samples; consume only through an implemented control-row parser.
+  - id: unknown_water_rows
+    scope: ОГХ rows where D = ? (637 rows in the reviewed workbook bytes)
+    reason: Water-content quantity, denominator basis, and scale are unknown.
+    release_requires: Source-level documentation of quantity and unit.
+  - id: fitted_parameter_rows
+    scope: ОГХ rows where D = VGN (92 rows)
+    reason: These are fitted model parameters rather than measured water-retention observations.
+    release_requires: Import into a separate fitted-parameters table, never the observation table.
+  - id: ambiguous_pressure_rows
+    scope: ОГХ rows labelled mPa, ПГК, or давление над солями
+    reason: Pressure quantity, unit, or experimental interpretation is unresolved.
+    release_requires: Source-level review and an explicit conversion rule.
+  - id: unheaded_psd_rows
+    scope: ГС-PSD rows 59:68
+    reason: The structural inventory found no preceding header block for these rows.
+    release_requires: Establish their interval scheme and relationship to the preceding blocks.
+  - id: proposed_identity_aliases
+    scope: All sample joins requiring a proposed source alias
+    reason: Case-only similarity is evidence, not proof of sample identity.
+    release_requires: Human review of each source alias and duplicate-key resolution.
+
+blockers:
+  - id: source_alias_review
+    scope: identity.source_aliases
+    question: Do the 14 case-only source-label pairs denote the same publications and sample-number namespaces?
+    evidence: Case folding increases the Данные-to-ОГХ sample-id overlap from 80 to 171, adding 91 sample identifiers.
+  - id: duplicate_master_sample_ids
+    scope: Данные sample rows
+    question: Which repeated rows are duplicate views, repeated measurements, or distinct samples sharing a weak identifier?
+    evidence: Excluding 49 control rows leaves 665 rows but only 507 distinct cached sample_id values (158 excess occurrences).
+  - id: water_scale_by_source
+    scope: ОГХ D in [W, Q]
+    question: For every source, are water values fractions or percentages?
+    evidence: W ranges from 0.008 to 82.98 and Q from 0.0420339 to 78.2, so the code alone does not determine scale.
+  - id: unknown_water_basis
+    scope: ОГХ D = ?
+    question: Are these 637 values gravimetric or volumetric, and are they fractions or percentages?
+    evidence: The workbook explicitly stores a question mark instead of a water-content encoding.
+  - id: pressure_convention_by_source
+    scope: ОГХ E in [pF, kPa]
+    question: Does every source report positive suction magnitude, and are pF values consistently log10(cm water head)?
+    evidence: Labels provide representation but do not encode sign convention or source-specific methodological exceptions.
+  - id: mpa_label_meaning
+    scope: ОГХ E = mPa (10 rows, source 1992_Гуматов)
+    question: Does mPa mean MPa, millipascal, or a source-specific notation?
+    evidence: Unit symbols are case-sensitive and mPa is not equivalent to MPa.
+  - id: pressure_pgk_meaning
+    scope: ОГХ E = ПГК (60 rows)
+    question: What physical condition, quantity, and unit does ПГК denote?
+    evidence: The abbreviation appears for two sources without a unit definition in the workbook.
+  - id: pressure_over_salts_meaning
+    scope: ОГХ E = давление над солями (30 rows)
+    question: How should salt-equilibrium observations be represented without conflating matric and osmotic potential?
+    evidence: The label describes a method or condition rather than a registered ptfkit pressure unit.
+  - id: density_units
+    scope: Данные Q and V; диссертации T and corresponding duplicate views
+    question: What units, dry-mass convention, and sample-volume basis apply to bulk and particle density?
+    evidence: The headers name density quantities but contain no units or basis.
+  - id: organic_property_provenance
+    scope: Organic carbon and humus columns
+    question: Which values are measured, which are converted, and what source-specific conversion factors were used?
+    evidence: Both organic carbon and humus are present, including formula-derived cells, without transformation provenance.
+  - id: particle_size_schemes
+    scope: Данные M:P, ГС-PSD blocks, and wide dynamic sections
+    question: What mass basis, analytical method, unit scale, and boundary convention applies to every interval scheme?
+    evidence: ГС-PSD contains six detected header layouts, aggregate columns, and an unheaded final block.
+  - id: duplicate_views
+    scope: Данные, дп, ч, сл, and диссертации
+    question: Which cells are authoritative when duplicate source views disagree?
+    evidence: The workbook contains overlapping wide tables with similar identifiers but shifted layouts and independent formulas.
+  - id: non_identity_formulas
+    scope: Formula cells outside identifier and ОГХ sample-number columns
+    question: What transformations produced the 19 remaining formula cells, and are they predictors, targets, or corrections?
+    evidence: The inventory records 4235 cached formulas; 4216 are in known identifier or repeated-number columns.
+  - id: saturated_conductivity_units
+    scope: Wide source-specific sections
+    question: Where is saturated hydraulic conductivity stored, and what unit and logarithm convention applies per source?
+    evidence: No stable row-1 column mapping identifies conductivity across the grouped wide layout.
+  - id: retention_reconstruction
+    scope: Данные wide retention sections and ОГХ
+    question: Does code reconstruction from source-control rows reproduce every long-form observation and fitted parameter exactly?
+    evidence: ОГХ has 1847 populated data rows and formula-derived identifiers, while Данные uses inherited wide headers.
+  - id: coordinate_publication_policy
+    scope: Coordinate columns and source workbook distribution
+    question: May coordinates and the workbook itself be redistributed or included in evaluation artifacts?
+    evidence: Rights, attribution, and coordinate-publication policy have not been recorded.
