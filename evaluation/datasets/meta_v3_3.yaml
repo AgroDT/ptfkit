@@ -1248,6 +1248,63 @@ retention_reconstruction_rules:
     blockers: [source_alias_review, water_scale_by_source, pressure_convention_by_source]
     evidence: All 25 available observations and all four sparse curves match bijectively after multiplying wide values by 100; three empty wide cells are explicitly omitted.
 
+predictor_bindings:
+  - function: calc_ptf_clapp1978
+    input: soil_texture
+    worksheet: Данные
+    column: L
+    status: blocked
+    blockers: [texture_classification]
+    evidence: The column contains a source texture label, but the classification system and a reviewed crosswalk to the USDA classes required by Clapp et al. (1978) are not documented.
+  - function: calc_ptf_vereecken1989
+    input: sand
+    worksheet: Данные
+    column: P
+    status: blocked
+    blockers: [particle_size_schemes]
+    evidence: The master column represents particles above 50 micrometres, but its upper bound, dry-mass basis, and source-specific analytical method are not documented.
+  - function: calc_ptf_vereecken1989
+    input: clay
+    worksheet: Данные
+    column: N
+    status: blocked
+    blockers: [particle_size_schemes]
+    measurement_overrides:
+      - sample_rows:
+          - {first: 211, last: 216}
+          - {first: 218, last: 223}
+        measurement:
+          quantity: particle_mass_fraction
+          unit: null
+          material_basis: null
+          denominator_basis: null
+          particle_size:
+            unit: micrometer
+            lower: null
+            upper: 2
+            lower_inclusive: false
+            upper_inclusive: false
+          method: null
+          conditions: []
+        source_headers:
+          - {worksheet: Данные, column: N, row: 210, value: '< 2 um'}
+        evidence: The Panina 2015 source-control row explicitly relabels column N as particles below 2 micrometres for these twelve sample rows.
+    evidence: The row-1 master header represents particles below 1 micrometre and is not interchangeable with the below-2-micrometre fraction required by Vereecken et al. (1989); the Panina 2015 rows have an explicit source-local override, but their unit and mass basis remain unresolved.
+  - function: calc_ptf_vereecken1989
+    input: carbon
+    worksheet: Данные
+    column: R
+    status: blocked
+    blockers: [organic_property_provenance]
+    evidence: The column is labelled organic carbon, but the source-specific analytical method and whether formula-derived values are equivalent to Walkley-Black carbon remain unresolved.
+  - function: calc_ptf_vereecken1989
+    input: bulk_density
+    worksheet: Данные
+    column: Q
+    status: blocked
+    blockers: [density_units]
+    evidence: The column is labelled soil density, but its unit and compatibility with the 105-degree, 24-hour, 100-cubic-centimetre core method required by Vereecken et al. (1989) are unresolved.
+
 formula_policy:
   read_formulas: true
   read_cached_values: true
@@ -1334,7 +1391,7 @@ blockers:
   - id: particle_size_schemes
     scope: Данные M:P, ГС-PSD blocks, and wide dynamic sections
     question: What mass basis, analytical method, unit scale, and boundary convention applies to every interval scheme?
-    evidence: ГС-PSD contains six detected header layouts, aggregate columns, and an unheaded final block.
+    evidence: ГС-PSD contains six detected header layouts, aggregate columns, and an unheaded final block. Its headed schemes terminate at below 1 micrometre and contain no 1-to-2-micrometre interval, while Данные!N210 directly identifies a below-2-micrometre fraction for the twelve Panina 2015 sample rows.
   - id: duplicate_views
     scope: Данные, дп, ч, сл, and диссертации
     question: Which cells are authoritative when duplicate source views disagree?
@@ -1359,3 +1416,7 @@ blockers:
     scope: Coordinate columns and source workbook distribution
     question: May coordinates and the workbook itself be redistributed or included in evaluation artifacts?
     evidence: Rights, attribution, and coordinate-publication policy have not been recorded.
+  - id: texture_classification
+    scope: Данные L and categorical texture inputs
+    question: Which classification system produced each texture label, and what reviewed crosswalk maps it to the USDA classes required by ptfkit functions?
+    evidence: The workbook header identifies texture but does not name a classification system; category names must not be treated as USDA classes by spelling alone.

@@ -780,6 +780,7 @@ def _semantic_diagnostics(mapping: Mapping[str, object]) -> list[DatasetMappingD
         'encoding id',
     )
     diagnostics.extend(_reference_diagnostics(mapping))
+    diagnostics.extend(_predictor_binding_diagnostics(mapping))
     dataset = _mapping(mapping['dataset'])
     status = _string(dataset['status'])
     if status == 'draft_blocked' and not blockers:
@@ -798,6 +799,151 @@ def _semantic_diagnostics(mapping: Mapping[str, object]) -> list[DatasetMappingD
                 'An active mapping cannot retain blockers.',
             )
         )
+    return diagnostics
+
+
+def _predictor_binding_diagnostics(
+    mapping: Mapping[str, object],
+) -> list[DatasetMappingDiagnostic]:
+    diagnostics: list[DatasetMappingDiagnostic] = []
+    bindings = _sequence(mapping.get('predictor_bindings', []))
+    _duplicates(
+        diagnostics,
+        (
+            f'{_string(_mapping(value)["function"])}\0{_string(_mapping(value)["input"])}'
+            for value in bindings
+        ),
+        '$.predictor_bindings',
+        'mapping.duplicate_predictor_binding',
+        'predictor binding',
+    )
+    worksheets = {
+        _string(worksheet['name']): {
+            _string(_mapping(column)['column']) for column in _sequence(worksheet['columns'])
+        }
+        for value in _sequence(mapping['worksheets'])
+        for worksheet in [_mapping(value)]
+    }
+    blocker_ids = {_string(_mapping(value)['id']) for value in _sequence(mapping['blockers'])}
+    for index, value in enumerate(bindings):
+        binding = _mapping(value)
+        path = f'$.predictor_bindings[{index}]'
+        worksheet = _string(binding['worksheet'])
+        column = _string(binding['column'])
+        if worksheet not in worksheets:
+            diagnostics.append(
+                DatasetMappingDiagnostic(
+                    f'{path}.worksheet',
+                    'mapping.unknown_worksheet',
+                    f'Reference names unknown worksheet {worksheet!r}.',
+                )
+            )
+        elif column not in worksheets[worksheet]:
+            diagnostics.append(
+                DatasetMappingDiagnostic(
+                    f'{path}.column',
+                    'mapping.unknown_column',
+                    f'Worksheet {worksheet!r} has no mapped column {column!r}.',
+                )
+            )
+        blockers = tuple(_string(item) for item in _sequence(binding['blockers']))
+        diagnostics.extend(
+            DatasetMappingDiagnostic(
+                f'{path}.blockers',
+                'mapping.unknown_blocker',
+                f'Predictor binding references unknown blocker {blocker!r}.',
+            )
+            for blocker in blockers
+            if blocker not in blocker_ids
+        )
+        status = _string(binding['status'])
+        if status == 'confirmed' and blockers:
+            diagnostics.append(
+                DatasetMappingDiagnostic(
+                    f'{path}.blockers',
+                    'mapping.confirmed_predictor_binding_has_blockers',
+                    'A confirmed predictor binding cannot retain blockers.',
+                )
+            )
+        if status != 'confirmed' and not blockers:
+            diagnostics.append(
+                DatasetMappingDiagnostic(
+                    f'{path}.blockers',
+                    'mapping.unconfirmed_predictor_binding_without_blockers',
+                    'An unconfirmed predictor binding must name at least one blocker.',
+                )
+            )
+        category_map = _sequence(binding.get('category_map', []))
+        _duplicates(
+            diagnostics,
+            (_string(_mapping(item)['raw']) for item in category_map),
+            f'{path}.category_map',
+            'mapping.duplicate_raw_category',
+            'raw predictor category',
+        )
+        if status == 'confirmed' and any(
+            _mapping(item)['status'] != 'confirmed' for item in category_map
+        ):
+            diagnostics.append(
+                DatasetMappingDiagnostic(
+                    f'{path}.category_map',
+                    'mapping.confirmed_predictor_binding_has_proposals',
+                    'A confirmed predictor binding cannot use proposed category mappings.',
+                )
+            )
+        diagnostics.extend(_measurement_override_diagnostics(binding, path))
+    return diagnostics
+
+
+def _measurement_override_diagnostics(
+    binding: Mapping[str, object], path: str
+) -> list[DatasetMappingDiagnostic]:
+    diagnostics: list[DatasetMappingDiagnostic] = []
+    override_rows: set[int] = set()
+    binding_worksheet = _string(binding['worksheet'])
+    binding_column = _string(binding['column'])
+    for override_index, override_value in enumerate(
+        _sequence(binding.get('measurement_overrides', []))
+    ):
+        override = _mapping(override_value)
+        override_path = f'{path}.measurement_overrides[{override_index}].sample_rows'
+        for range_value in _sequence(override['sample_rows']):
+            row_range = _mapping(range_value)
+            first = _integer(row_range['first'])
+            last = _integer(row_range['last'])
+            if first > last:
+                diagnostics.append(
+                    DatasetMappingDiagnostic(
+                        override_path,
+                        'mapping.invalid_row_range',
+                        'Measurement-override row range starts after it ends.',
+                    )
+                )
+                continue
+            rows = set(range(first, last + 1))
+            if rows & override_rows:
+                diagnostics.append(
+                    DatasetMappingDiagnostic(
+                        override_path,
+                        'mapping.overlapping_measurement_override',
+                        'Measurement overrides for one binding cannot overlap.',
+                    )
+                )
+            override_rows.update(rows)
+        for header_index, header_value in enumerate(_sequence(override['source_headers'])):
+            header = _mapping(header_value)
+            if (
+                _string(header['worksheet']) != binding_worksheet
+                or _string(header['column']) != binding_column
+            ):
+                diagnostics.append(
+                    DatasetMappingDiagnostic(
+                        f'{path}.measurement_overrides[{override_index}]'
+                        f'.source_headers[{header_index}]',
+                        'mapping.measurement_override_header_mismatch',
+                        'A measurement override header must use its binding worksheet and column.',
+                    )
+                )
     return diagnostics
 
 
