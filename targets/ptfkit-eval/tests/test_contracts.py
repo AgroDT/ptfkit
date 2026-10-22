@@ -229,7 +229,9 @@ def test_resolves_a_direct_curve_with_dimensionally_convertible_units():
     candidate = plan.candidates[0]
     assert isinstance(candidate, FunctionCurveCandidate)
     assert candidate.curve.function == 'calc_ptf_direct'
-    assert candidate.curve.prediction == OutputPrediction('theta')
+    assert candidate.curve.prediction == OutputPrediction(
+        'theta', 'pressure', 'centimeter_water_head'
+    )
 
 
 def test_loads_a_yaml_plan_before_manifest_resolution(tmp_path: Path):
