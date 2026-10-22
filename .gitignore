@@ -4,3 +4,6 @@
 # Test coverage
 .coverage*
 coverage.xml
+
+# Local pytest base directories
+.pytest-tmp-*/

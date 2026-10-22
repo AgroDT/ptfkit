@@ -13,6 +13,7 @@ from typing import TypeAlias, TypeGuard, cast
 
 import yaml
 from jsonschema import Draft202012Validator
+from openpyxl.utils import column_index_from_string
 
 
 JsonScalar: TypeAlias = bool | int | float | str | None
@@ -328,6 +329,8 @@ def _retention_profile_diagnostics(
 ) -> list[DatasetMappingDiagnostic]:
     diagnostics = _retention_profile_contract_diagnostics(mapping, profile)
     diagnostics.extend(_retention_profile_count_diagnostics(profile))
+    diagnostics.extend(_retention_source_rule_diagnostics(mapping, profile))
+    diagnostics.extend(_retention_reconstruction_rule_diagnostics(mapping, profile))
     return diagnostics
 
 
@@ -463,6 +466,286 @@ def _hashable_label(value: object) -> str:
     return f'{type(value).__name__}:{value!r}'
 
 
+def _retention_source_rule_diagnostics(
+    mapping: Mapping[str, object], profile: Mapping[str, object]
+) -> list[DatasetMappingDiagnostic]:
+    diagnostics: list[DatasetMappingDiagnostic] = []
+    source_profiles = {
+        _string(source['source']): source
+        for value in _sequence(profile['sources'])
+        for source in [_mapping(value)]
+    }
+    source_rules = _sequence(mapping['retention_source_rules'])
+    rule_labels = [_string(_mapping(value)['source']) for value in source_rules]
+    _duplicates(
+        diagnostics,
+        rule_labels,
+        '$.retention_source_rules',
+        'mapping.duplicate_retention_source_rule',
+        'retention source rule',
+    )
+
+    profile_labels = set(source_profiles)
+    mapping_labels = set(rule_labels)
+    diagnostics.extend(
+        DatasetMappingDiagnostic(
+            '$.retention_source_rules',
+            'mapping.missing_retention_source_rule',
+            f'Retention profile source {label!r} has no source rule.',
+        )
+        for label in sorted(profile_labels - mapping_labels)
+    )
+    diagnostics.extend(
+        DatasetMappingDiagnostic(
+            '$.retention_source_rules',
+            'mapping.unknown_retention_source_rule',
+            f'Retention source rule {label!r} is absent from the profile.',
+        )
+        for label in sorted(mapping_labels - profile_labels)
+    )
+
+    blocker_ids = {_string(_mapping(value)['id']) for value in _sequence(mapping['blockers'])}
+    for source_index, value in enumerate(source_rules):
+        source_rule = _mapping(value)
+        source_label = _string(source_rule['source'])
+        observations = _sequence(source_rule['observations'])
+        pairs: list[tuple[str, str | None]] = []
+        for rule_index, rule_value in enumerate(observations):
+            rule = _mapping(rule_value)
+            path = f'$.retention_source_rules[{source_index}].observations[{rule_index}]'
+            pair = (
+                _string(rule['water_encoding']),
+                cast('str | None', rule['pressure_encoding']),
+            )
+            pairs.append(pair)
+            blockers = tuple(_string(item) for item in _sequence(rule['blockers']))
+            diagnostics.extend(
+                DatasetMappingDiagnostic(
+                    f'{path}.blockers',
+                    'mapping.unknown_blocker',
+                    f'Retention rule references unknown blocker {blocker!r}.',
+                )
+                for blocker in blockers
+                if blocker not in blocker_ids
+            )
+            diagnostics.extend(_retention_rule_status_diagnostics(rule, path, blockers))
+
+        repeated_pairs = sorted(
+            {pair for pair in pairs if pairs.count(pair) > 1},
+            key=lambda pair: (pair[0], pair[1] or ''),
+        )
+        diagnostics.extend(
+            DatasetMappingDiagnostic(
+                f'$.retention_source_rules[{source_index}].observations',
+                'mapping.duplicate_retention_encoding_rule',
+                f'Duplicate retention encoding rule {pair!r}.',
+            )
+            for pair in repeated_pairs
+        )
+        source_profile = source_profiles.get(source_label)
+        if source_profile is None:
+            continue
+        expected_pairs = {
+            (
+                _string(encoding['water_encoding']),
+                cast('str | None', encoding['pressure_encoding']),
+            )
+            for item in _sequence(source_profile['encodings'])
+            for encoding in [_mapping(item)]
+        }
+        actual_pairs = set(pairs)
+        if actual_pairs != expected_pairs:
+            diagnostics.append(
+                DatasetMappingDiagnostic(
+                    f'$.retention_source_rules[{source_index}].observations',
+                    'mapping.retention_encoding_mismatch',
+                    'Source-rule encodings do not exactly match the retention profile.',
+                )
+            )
+    return diagnostics
+
+
+def _retention_rule_status_diagnostics(
+    rule: Mapping[str, object], path: str, blockers: Sequence[str]
+) -> list[DatasetMappingDiagnostic]:
+    status = _string(rule['status'])
+    required_semantics = (
+        'water_quantity',
+        'water_unit',
+        'canonical_water_unit',
+        'pressure_representation',
+        'pressure_convention',
+        'canonical_pressure_unit',
+    )
+    diagnostics: list[DatasetMappingDiagnostic] = []
+    if status == 'confirmed':
+        if blockers:
+            diagnostics.append(
+                DatasetMappingDiagnostic(
+                    f'{path}.blockers',
+                    'mapping.confirmed_retention_rule_has_blockers',
+                    'A confirmed retention rule cannot retain blockers.',
+                )
+            )
+        missing = [field for field in required_semantics if rule[field] is None]
+        if missing:
+            diagnostics.append(
+                DatasetMappingDiagnostic(
+                    path,
+                    'mapping.incomplete_confirmed_retention_rule',
+                    f'Confirmed retention rule has null semantics: {", ".join(missing)}.',
+                )
+            )
+    elif not blockers:
+        diagnostics.append(
+            DatasetMappingDiagnostic(
+                f'{path}.blockers',
+                'mapping.blocked_retention_rule_without_blockers',
+                'A blocked retention rule must name at least one blocker.',
+            )
+        )
+    return diagnostics
+
+
+def _retention_reconstruction_rule_diagnostics(  # noqa: C901
+    mapping: Mapping[str, object], profile: Mapping[str, object]
+) -> list[DatasetMappingDiagnostic]:
+    diagnostics: list[DatasetMappingDiagnostic] = []
+    rules = _sequence(mapping['retention_reconstruction_rules'])
+    _duplicates(
+        diagnostics,
+        (_string(_mapping(value)['id']) for value in rules),
+        '$.retention_reconstruction_rules',
+        'mapping.duplicate_retention_reconstruction_rule',
+        'retention reconstruction rule',
+    )
+    _duplicates(
+        diagnostics,
+        (_string(_mapping(value)['long_source']) for value in rules),
+        '$.retention_reconstruction_rules',
+        'mapping.duplicate_retention_reconstruction_source',
+        'retention reconstruction source',
+    )
+    worksheet_names = {
+        _string(_mapping(value)['name']) for value in _sequence(mapping['worksheets'])
+    }
+    profile_sources = {
+        _string(_mapping(value)['source']) for value in _sequence(profile['sources'])
+    }
+    blocker_ids = {_string(_mapping(value)['id']) for value in _sequence(mapping['blockers'])}
+
+    for rule_index, value in enumerate(rules):
+        rule = _mapping(value)
+        path = f'$.retention_reconstruction_rules[{rule_index}]'
+        for field in ('master_worksheet', 'long_worksheet'):
+            worksheet = _string(rule[field])
+            if worksheet not in worksheet_names:
+                diagnostics.append(
+                    DatasetMappingDiagnostic(
+                        f'{path}.{field}',
+                        'mapping.unknown_worksheet',
+                        f'Reference names unknown worksheet {worksheet!r}.',
+                    )
+                )
+        long_source = _string(rule['long_source'])
+        if long_source not in profile_sources:
+            diagnostics.append(
+                DatasetMappingDiagnostic(
+                    f'{path}.long_source',
+                    'mapping.unknown_retention_source',
+                    f'Reconstruction source {long_source!r} is absent from the profile.',
+                )
+            )
+
+        blockers = tuple(_string(item) for item in _sequence(rule['blockers']))
+        diagnostics.extend(
+            DatasetMappingDiagnostic(
+                f'{path}.blockers',
+                'mapping.unknown_blocker',
+                f'Reconstruction rule references unknown blocker {blocker!r}.',
+            )
+            for blocker in blockers
+            if blocker not in blocker_ids
+        )
+        status = _string(rule['status'])
+        replacements = _sequence(rule['pressure_replacements'])
+        axis_overrides = (
+            override
+            for block_value in _sequence(rule['blocks'])
+            for override in _mapping(_mapping(block_value).get('axis_overrides', {})).values()
+        )
+        if status == 'confirmed':
+            if blockers:
+                diagnostics.append(
+                    DatasetMappingDiagnostic(
+                        f'{path}.blockers',
+                        'mapping.confirmed_reconstruction_rule_has_blockers',
+                        'A confirmed reconstruction rule cannot retain blockers.',
+                    )
+                )
+            has_proposal = (
+                rule['water_scale_status'] != 'confirmed'
+                or any(_mapping(item)['status'] != 'confirmed' for item in replacements)
+                or any(_mapping(item)['status'] != 'confirmed' for item in axis_overrides)
+            )
+            if has_proposal:
+                diagnostics.append(
+                    DatasetMappingDiagnostic(
+                        path,
+                        'mapping.confirmed_reconstruction_rule_has_proposals',
+                        'A confirmed reconstruction rule cannot use proposed transforms.',
+                    )
+                )
+        elif not blockers:
+            diagnostics.append(
+                DatasetMappingDiagnostic(
+                    f'{path}.blockers',
+                    'mapping.blocked_reconstruction_rule_without_blockers',
+                    'A blocked reconstruction rule must name at least one blocker.',
+                )
+            )
+
+        replacement_values = [str(_mapping(item)['master_value']) for item in replacements]
+        _duplicates(
+            diagnostics,
+            replacement_values,
+            f'{path}.pressure_replacements',
+            'mapping.duplicate_pressure_replacement',
+            'master pressure replacement',
+        )
+        for block_index, block_value in enumerate(_sequence(rule['blocks'])):
+            block = _mapping(block_value)
+            block_path = f'{path}.blocks[{block_index}]'
+            if _integer(block['first_sample_row']) > _integer(block['last_sample_row']):
+                diagnostics.append(
+                    DatasetMappingDiagnostic(
+                        block_path,
+                        'mapping.invalid_row_range',
+                        'Sample-row range starts after it ends.',
+                    )
+                )
+            first_column = column_index_from_string(_string(block['first_column']))
+            last_column = column_index_from_string(_string(block['last_column']))
+            if first_column > last_column:
+                diagnostics.append(
+                    DatasetMappingDiagnostic(
+                        block_path,
+                        'mapping.invalid_column_range',
+                        'Retention column range starts after it ends.',
+                    )
+                )
+        parameter_block = rule['parameter_block']
+        if isinstance(parameter_block, Mapping):
+            _duplicates(
+                diagnostics,
+                (_string(column) for column in _sequence(parameter_block['columns'])),
+                f'{path}.parameter_block.columns',
+                'mapping.duplicate_parameter_column',
+                'retention parameter column',
+            )
+    return diagnostics
+
+
 def _semantic_diagnostics(mapping: Mapping[str, object]) -> list[DatasetMappingDiagnostic]:
     diagnostics: list[DatasetMappingDiagnostic] = []
     worksheets = _sequence(mapping['worksheets'])
@@ -543,6 +826,36 @@ def _reference_diagnostics(
         '$.identity.source_aliases',
         worksheet_names,
     )
+    sample_crosswalks = _sequence(identity['sample_crosswalks'])
+    _check_worksheet_references(
+        diagnostics,
+        sample_crosswalks,
+        '$.identity.sample_crosswalks',
+        worksheet_names,
+    )
+    _duplicates(
+        diagnostics,
+        (
+            f'{_string(_mapping(value)["worksheet"])}\0{_string(_mapping(value)["raw_sample_id"])}'
+            for value in sample_crosswalks
+        ),
+        '$.identity.sample_crosswalks',
+        'mapping.duplicate_sample_crosswalk',
+        'sample crosswalk',
+    )
+    for index, value in enumerate(sample_crosswalks):
+        crosswalk = _mapping(value)
+        canonical_source = _string(crosswalk['canonical_source'])
+        canonical_number = crosswalk['canonical_sample_number']
+        expected_id = f'{canonical_source}_{canonical_number}'
+        if crosswalk['canonical_sample_id'] != expected_id:
+            diagnostics.append(
+                DatasetMappingDiagnostic(
+                    f'$.identity.sample_crosswalks[{index}].canonical_sample_id',
+                    'mapping.inconsistent_sample_crosswalk',
+                    f'Canonical sample id must equal {expected_id!r}.',
+                )
+            )
     _check_worksheet_references(
         diagnostics,
         _sequence(mapping['encodings']),

@@ -37,6 +37,11 @@ identity:
       status: proposed
       evidence: The source labels differ only by Unicode case and share sample numbers.
     - worksheet: ОГХ
+      raw: 2008_Умарова
+      canonical: 2008_Умарова-дисс
+      status: proposed
+      evidence: The author-year label and all 81 retained observations match the dissertation-labelled master block after the declared scale transformation.
+    - worksheet: ОГХ
       raw: 2009_Чудинова
       canonical: 2009_чудинова
       status: proposed
@@ -72,6 +77,11 @@ identity:
       status: proposed
       evidence: The source labels differ only by Unicode case and share sample numbers.
     - worksheet: ОГХ
+      raw: 2015_панина
+      canonical: 2015_Панина. дисер
+      status: proposed
+      evidence: The author and year match the master source, and both contain 132 retention values, but the long-sheet sample-number formulas and the first pressure value do not reproduce the wide blocks exactly.
+    - worksheet: ОГХ
       raw: 2016_сидорова
       canonical: 2016_Сидорова
       status: proposed
@@ -79,8 +89,8 @@ identity:
     - worksheet: ОГХ
       raw: 2017_Честнова
       canonical: 2017_честнова
-      status: proposed
-      evidence: The source labels differ only by Unicode case and share sample numbers.
+      status: confirmed
+      evidence: Each of the ten ordered 13-point long-sheet curves matches exactly one master-sheet curve after the explicit percent-to-fraction scale reversal; the 2017 dissertation title and study objects also match https://soil.msu.ru/attachments/article/2599/CHESTNOVA_AVTOREFERAT.pdf.
     - worksheet: ОГХ
       raw: 2018_Макарычев
       canonical: 2018_макарычев
@@ -91,7 +101,22 @@ identity:
       canonical: 2018_Моисеев
       status: proposed
       evidence: The source labels differ only by Unicode case and share sample numbers.
-  sample_crosswalks: []
+    - worksheet: ОГХ
+      raw: 2018_шеин
+      canonical: 2018_шеин-1
+      status: proposed
+      evidence: All 25 retained observations match the first Shein master block; the adjacent second block contains fitted parameters rather than observations.
+  sample_crosswalks:
+    - {worksheet: ОГХ, raw_sample_id: 2017_Честнова_1, canonical_sample_id: 2017_честнова_1, canonical_source: 2017_честнова, canonical_sample_number: 1, evidence_cells: [Данные!X227:AJ227, Данные!X228:AJ228], status: confirmed, evidence: The complete ordered 13-point curve equals Данные row 228 after dividing long-sheet water percentages by 100.}
+    - {worksheet: ОГХ, raw_sample_id: 2017_Честнова_2, canonical_sample_id: 2017_честнова_9, canonical_source: 2017_честнова, canonical_sample_number: 9, evidence_cells: [Данные!X227:AJ227, Данные!X236:AJ236], status: confirmed, evidence: The complete ordered 13-point curve equals Данные row 236 after dividing long-sheet water percentages by 100.}
+    - {worksheet: ОГХ, raw_sample_id: 2017_Честнова_3, canonical_sample_id: 2017_честнова_10, canonical_source: 2017_честнова, canonical_sample_number: 10, evidence_cells: [Данные!X227:AJ227, Данные!X237:AJ237], status: confirmed, evidence: The complete ordered 13-point curve equals Данные row 237 after dividing long-sheet water percentages by 100.}
+    - {worksheet: ОГХ, raw_sample_id: 2017_Честнова_4, canonical_sample_id: 2017_честнова_2, canonical_source: 2017_честнова, canonical_sample_number: 2, evidence_cells: [Данные!X227:AJ227, Данные!X229:AJ229], status: confirmed, evidence: The complete ordered 13-point curve equals Данные row 229 after dividing long-sheet water percentages by 100.}
+    - {worksheet: ОГХ, raw_sample_id: 2017_Честнова_5, canonical_sample_id: 2017_честнова_3, canonical_source: 2017_честнова, canonical_sample_number: 3, evidence_cells: [Данные!X227:AJ227, Данные!X230:AJ230], status: confirmed, evidence: The complete ordered 13-point curve equals Данные row 230 after dividing long-sheet water percentages by 100.}
+    - {worksheet: ОГХ, raw_sample_id: 2017_Честнова_6, canonical_sample_id: 2017_честнова_4, canonical_source: 2017_честнова, canonical_sample_number: 4, evidence_cells: [Данные!X227:AJ227, Данные!X231:AJ231], status: confirmed, evidence: The complete ordered 13-point curve equals Данные row 231 after dividing long-sheet water percentages by 100.}
+    - {worksheet: ОГХ, raw_sample_id: 2017_Честнова_7, canonical_sample_id: 2017_честнова_5, canonical_source: 2017_честнова, canonical_sample_number: 5, evidence_cells: [Данные!X227:AJ227, Данные!X232:AJ232], status: confirmed, evidence: The complete ordered 13-point curve equals Данные row 232 after dividing long-sheet water percentages by 100.}
+    - {worksheet: ОГХ, raw_sample_id: 2017_Честнова_8, canonical_sample_id: 2017_честнова_6, canonical_source: 2017_честнова, canonical_sample_number: 6, evidence_cells: [Данные!X227:AJ227, Данные!X233:AJ233], status: confirmed, evidence: The complete ordered 13-point curve equals Данные row 233 after dividing long-sheet water percentages by 100.}
+    - {worksheet: ОГХ, raw_sample_id: 2017_Честнова_9, canonical_sample_id: 2017_честнова_7, canonical_source: 2017_честнова, canonical_sample_number: 7, evidence_cells: [Данные!X227:AJ227, Данные!X234:AJ234], status: confirmed, evidence: The complete ordered 13-point curve equals Данные row 234 after dividing long-sheet water percentages by 100.}
+    - {worksheet: ОГХ, raw_sample_id: 2017_Честнова_10, canonical_sample_id: 2017_честнова_8, canonical_source: 2017_честнова, canonical_sample_number: 8, evidence_cells: [Данные!X227:AJ227, Данные!X235:AJ235], status: confirmed, evidence: The complete ordered 13-point curve equals Данные row 235 after dividing long-sheet water percentages by 100.}
 
 worksheets:
   - id: samples_master
@@ -103,13 +128,13 @@ worksheets:
     data_rows: {first: 2, last: 715}
     row_roles:
       - id: source_control
-        status: confirmed
-        when: {column: B, operator: equals, value: 0.1}
-        notes: Carries source-specific retention-axis and particle-size labels; it is not a soil sample.
-      - id: sample_observation
         status: proposed
+        when: {column: B, operator: equals, value: 0.1}
+        notes: Identifies the primary control row for most sources but is not exhaustive; some source-local axis rows use other or missing sample numbers.
+      - id: sample_observation
+        status: blocked
         when: otherwise
-        notes: Duplicate composite identifiers must be resolved before this role is active.
+        notes: The complement includes secondary source-control rows as well as samples, so reconstruction must classify it with source-specific rules.
     columns:
       - column: A
         source_header: sample_id
@@ -556,6 +581,673 @@ encodings:
     interpretation: Salt-equilibrium condition is not yet mapped to matric or osmotic potential.
     blockers: [pressure_over_salts_meaning]
 
+retention_source_rules:
+  - source: 1987_Сапожников
+    observations:
+      - {water_encoding: W, pressure_encoding: pF, status: blocked, water_quantity: gravimetric_water_content, water_unit: null, canonical_water_unit: mass_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
+  - source: 1988_сапожников
+    observations:
+      - {water_encoding: "?", pressure_encoding: pF, status: blocked, water_quantity: null, water_unit: null, canonical_water_unit: null, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [unknown_water_basis, pressure_convention_by_source], evidence: The workbook leaves the water quantity and scale unknown and the source-specific pressure convention has not been reviewed.}
+  - source: 1991_Гуматов
+    observations:
+      - {water_encoding: W, pressure_encoding: pF, status: blocked, water_quantity: gravimetric_water_content, water_unit: null, canonical_water_unit: mass_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
+  - source: 1992_Гуматов
+    observations:
+      - {water_encoding: W, pressure_encoding: mPa, status: blocked, water_quantity: gravimetric_water_content, water_unit: null, canonical_water_unit: mass_fraction, pressure_representation: null, pressure_convention: null, canonical_pressure_unit: null, blockers: [water_scale_by_source, mpa_label_meaning], evidence: The source-specific water scale is unresolved and the case-sensitive mPa pressure label has no confirmed interpretation.}
+  - source: 2001_хайдапова
+    observations:
+      - {water_encoding: W, pressure_encoding: kPa, status: blocked, water_quantity: gravimetric_water_content, water_unit: null, canonical_water_unit: mass_fraction, pressure_representation: kilopascal, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
+  - source: 2007_кокарева
+    observations: []
+    notes: This source contains fitted VGN parameters only; it has no observed retention points in the reviewed workbook.
+  - source: 2007_пестонова
+    observations:
+      - {water_encoding: W, pressure_encoding: pF, status: blocked, water_quantity: gravimetric_water_content, water_unit: null, canonical_water_unit: mass_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
+  - source: 2008_Умарова
+    observations:
+      - {water_encoding: "?", pressure_encoding: pF, status: blocked, water_quantity: null, water_unit: null, canonical_water_unit: null, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [unknown_water_basis, pressure_convention_by_source], evidence: The workbook leaves the water quantity and scale unknown and the source-specific pressure convention has not been reviewed.}
+  - source: 2008_шваров
+    observations:
+      - {water_encoding: W, pressure_encoding: pF, status: blocked, water_quantity: gravimetric_water_content, water_unit: null, canonical_water_unit: mass_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
+  - source: 2009_Смагин
+    observations:
+      - {water_encoding: "?", pressure_encoding: pF, status: blocked, water_quantity: null, water_unit: null, canonical_water_unit: null, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [unknown_water_basis, pressure_convention_by_source], evidence: The workbook leaves the water quantity and scale unknown and the source-specific pressure convention has not been reviewed.}
+  - source: 2009_Чудинова
+    observations:
+      - {water_encoding: "?", pressure_encoding: pF, status: blocked, water_quantity: null, water_unit: null, canonical_water_unit: null, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [unknown_water_basis, pressure_convention_by_source], evidence: The workbook leaves the water quantity and scale unknown and the source-specific pressure convention has not been reviewed.}
+  - source: 2011_Садовникова
+    observations:
+      - {water_encoding: "?", pressure_encoding: pF, status: blocked, water_quantity: null, water_unit: null, canonical_water_unit: null, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [unknown_water_basis, pressure_convention_by_source], evidence: The workbook leaves the water quantity and scale unknown and the source-specific pressure convention has not been reviewed.}
+  - source: 2011_шеин
+    observations:
+      - {water_encoding: "?", pressure_encoding: давление над солями, status: blocked, water_quantity: null, water_unit: null, canonical_water_unit: null, pressure_representation: null, pressure_convention: null, canonical_pressure_unit: null, blockers: [unknown_water_basis, pressure_over_salts_meaning], evidence: Neither the water-content quantity nor the physical interpretation of the salt-equilibrium pressure is confirmed.}
+  - source: 2012_васюков
+    observations:
+      - {water_encoding: "?", pressure_encoding: pF, status: blocked, water_quantity: null, water_unit: null, canonical_water_unit: null, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [unknown_water_basis, pressure_convention_by_source], evidence: The workbook leaves the water quantity and scale unknown and the source-specific pressure convention has not been reviewed.}
+  - source: 2012_манучарова
+    observations:
+      - {water_encoding: W, pressure_encoding: kPa, status: blocked, water_quantity: gravimetric_water_content, water_unit: null, canonical_water_unit: mass_fraction, pressure_representation: kilopascal, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
+  - source: 2012_Шеин
+    observations:
+      - {water_encoding: Q, pressure_encoding: pF, status: blocked, water_quantity: volumetric_water_content, water_unit: null, canonical_water_unit: volume_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
+  - source: 2013_баденко
+    observations:
+      - {water_encoding: "?", pressure_encoding: kPa, status: blocked, water_quantity: null, water_unit: null, canonical_water_unit: null, pressure_representation: kilopascal, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [unknown_water_basis, pressure_convention_by_source], evidence: The workbook leaves the water quantity and scale unknown and the source-specific pressure convention has not been reviewed.}
+  - source: 2014_Болотов
+    observations:
+      - {water_encoding: Q, pressure_encoding: pF, status: blocked, water_quantity: volumetric_water_content, water_unit: null, canonical_water_unit: volume_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
+  - source: 2014_Макарычев-1
+    observations:
+      - {water_encoding: W, pressure_encoding: ПГК, status: blocked, water_quantity: gravimetric_water_content, water_unit: null, canonical_water_unit: mass_fraction, pressure_representation: null, pressure_convention: null, canonical_pressure_unit: null, blockers: [water_scale_by_source, pressure_pgk_meaning], evidence: The source-specific water scale is unresolved and the ПГК pressure label has no confirmed physical interpretation.}
+  - source: 2014_Макарычев-2
+    observations:
+      - {water_encoding: W, pressure_encoding: ПГК, status: blocked, water_quantity: gravimetric_water_content, water_unit: null, canonical_water_unit: mass_fraction, pressure_representation: null, pressure_convention: null, canonical_pressure_unit: null, blockers: [water_scale_by_source, pressure_pgk_meaning], evidence: The source-specific water scale is unresolved and the ПГК pressure label has no confirmed physical interpretation.}
+  - source: 2014_Макарычев-3
+    observations:
+      - {water_encoding: Q, pressure_encoding: pF, status: blocked, water_quantity: volumetric_water_content, water_unit: null, canonical_water_unit: volume_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
+  - source: 2015_панина
+    observations:
+      - {water_encoding: Q, pressure_encoding: pF, status: blocked, water_quantity: volumetric_water_content, water_unit: null, canonical_water_unit: volume_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
+  - source: 2016_сидорова
+    observations:
+      - {water_encoding: Q, pressure_encoding: pF, status: blocked, water_quantity: volumetric_water_content, water_unit: null, canonical_water_unit: volume_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
+  - source: 2017_Честнова
+    observations:
+      - water_encoding: "?"
+        pressure_encoding: pF
+        status: confirmed
+        water_quantity: gravimetric_water_content
+        water_unit: mass_percent
+        canonical_water_unit: mass_fraction
+        pressure_representation: pf_log10_centimeter_water_head
+        pressure_convention: magnitude
+        canonical_pressure_unit: kilopascal
+        blockers: []
+        evidence: The master sheet identifies W as gravimetric water content; every long-sheet value is exactly 100 times its uniquely matched wide value. The source reports moisture in percent, describes pF as soil-water potential, and relates pF 2.17 and 3.7 to progressively drier states (https://soil.msu.ru/attachments/article/2599/CHESTNOVA_AVTOREFERAT.pdf).
+  - source: 2018_Макарычев
+    observations:
+      - {water_encoding: W, pressure_encoding: pF, status: blocked, water_quantity: gravimetric_water_content, water_unit: null, canonical_water_unit: mass_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
+  - source: 2018_моисеев
+    observations:
+      - {water_encoding: Q, pressure_encoding: pF, status: blocked, water_quantity: volumetric_water_content, water_unit: null, canonical_water_unit: volume_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
+  - source: 2018_шеин
+    observations:
+      - {water_encoding: Q, pressure_encoding: pF, status: blocked, water_quantity: volumetric_water_content, water_unit: null, canonical_water_unit: volume_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
+
+retention_reconstruction_rules:
+  - id: sapozhnikov_1987
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 1987_Сапожников
+    long_source: 1987_Сапожников
+    water_scale: 100
+    water_scale_status: confirmed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 0
+    expected_missing_long_water_count: 0
+    wide_missing_representation: omitted_from_long
+    pressure_replacements: []
+    blocks:
+      - {axis_row: 2, first_sample_row: 3, last_sample_row: 6, first_column: X, last_column: AC}
+    parameter_block: null
+    blockers: [water_scale_by_source, pressure_convention_by_source]
+    evidence: All 24 points and all four complete curves match bijectively after multiplying wide-sheet water values by 100; physical unit and pressure semantics remain unreviewed.
+  - id: sapozhnikov_1988
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 1988_Сапожников
+    long_source: 1988_сапожников
+    water_scale: 100
+    water_scale_status: confirmed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 0
+    expected_missing_long_water_count: 0
+    wide_missing_representation: omitted_from_long
+    pressure_replacements:
+      - master_value: 0.01
+        long_value: -1
+        status: proposed
+        evidence: This replacement makes all wide and long points identical, but its physical interpretation remains unreviewed.
+    blocks:
+      - {axis_row: 7, first_sample_row: 8, last_sample_row: 19, first_column: X, last_column: AF}
+    parameter_block: null
+    blockers: [source_alias_review, unknown_water_basis, pressure_convention_by_source, retention_reconstruction]
+    evidence: All 108 transformed points and all 12 complete curves match bijectively; the source alias and pressure replacement remain unreviewed.
+  - id: gumatov_1991
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 1991_Гуматов
+    long_source: 1991_Гуматов
+    water_scale: 1
+    water_scale_status: confirmed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 19
+    expected_missing_long_water_count: 0
+    wide_missing_representation: omitted_from_long
+    pressure_replacements: []
+    blocks:
+      - {axis_row: 20, first_sample_row: 21, last_sample_row: 39, first_column: X, last_column: AH}
+    parameter_block: null
+    blockers: [water_scale_by_source, pressure_convention_by_source]
+    evidence: All 190 points and all 19 complete curves match bijectively with unit workbook scale; physical unit and pressure semantics remain unreviewed.
+  - id: gumatov_1992
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 1992_Гуматов
+    long_source: 1992_Гуматов
+    water_scale: 1
+    water_scale_status: confirmed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 0
+    expected_missing_long_water_count: 0
+    wide_missing_representation: omitted_from_long
+    pressure_replacements: []
+    blocks:
+      - {axis_row: 40, first_sample_row: 41, last_sample_row: 41, first_column: X, last_column: AG}
+    parameter_block: null
+    blockers: [water_scale_by_source, mpa_label_meaning]
+    evidence: All ten points reproduce the single complete wide curve with unit workbook scale; the case-sensitive mPa pressure label remains unresolved.
+  - id: khaydapova_2001
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 2001_Хайдапова
+    long_source: 2001_хайдапова
+    water_scale: 100
+    water_scale_status: proposed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 0
+    expected_missing_long_water_count: 0
+    wide_missing_representation: omitted_from_long
+    pressure_replacements: []
+    blocks:
+      - {axis_row: 42, first_sample_row: 43, last_sample_row: 48, first_column: X, last_column: AF}
+    parameter_block: null
+    blockers: [source_alias_review, water_scale_by_source, pressure_convention_by_source, retention_reconstruction]
+    evidence: The complete 54-point multiset matches after multiplying wide water values by 100, but seven cached long identifiers split six master curves and none preserves a complete curve.
+  - id: kokareva_2007
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 2007_кокарева
+    long_source: 2007_кокарева
+    water_scale: 1
+    water_scale_status: confirmed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 0
+    expected_missing_long_water_count: 0
+    wide_missing_representation: omitted_from_long
+    pressure_replacements: []
+    blocks: []
+    parameter_block:
+      header_row: 49
+      columns: [X, Y, Z, AA]
+      sample_rows: [{first: 50, last: 54}]
+    blockers: [fitted_parameter_conventions]
+    evidence: The source has no long-form retention observations; all 20 fitted van Genuchten parameter name-value pairs and all five parameter sets match bijectively.
+  - id: pestonova_2007
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 2007_Пестонова
+    long_source: 2007_пестонова
+    water_scale: 100
+    water_scale_status: confirmed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 3
+    expected_missing_long_water_count: 0
+    wide_missing_representation: omitted_from_long
+    pressure_replacements:
+      - master_value: 0.01
+        long_value: -1
+        status: proposed
+        evidence: This replacement makes all available wide and long points identical, but its physical interpretation remains unreviewed.
+    blocks:
+      - {axis_row: 55, first_sample_row: 56, last_sample_row: 56, first_column: X, last_column: AK}
+      - {axis_row: 55, first_sample_row: 59, last_sample_row: 61, first_column: X, last_column: AK}
+      - {axis_row: 55, first_sample_row: 70, last_sample_row: 70, first_column: X, last_column: AK}
+      - {axis_row: 55, first_sample_row: 72, last_sample_row: 72, first_column: X, last_column: AK}
+    parameter_block: null
+    blockers: [source_alias_review, water_scale_by_source, pressure_convention_by_source]
+    evidence: Six populated sample rows yield all 81 long observations after the declared scale and pressure replacement; three empty wide cells are explicitly omitted and the 14 other master rows contain no retention values.
+  - id: umarova_2008
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 2008_Умарова-дисс
+    long_source: 2008_Умарова
+    water_scale: 100
+    water_scale_status: confirmed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 22
+    expected_missing_long_water_count: 0
+    wide_missing_representation: omitted_from_long
+    wide_missing_markers: [0]
+    expected_excluded_wide_water_count: 7
+    wide_excluded_cells: [AH78, X79, Y79, Z79, AA79, AB79, AC79]
+    pressure_replacements: []
+    blocks:
+      - {axis_row: 76, first_sample_row: 77, last_sample_row: 86, first_column: X, last_column: AH}
+    parameter_block: null
+    blockers: [source_alias_review, unknown_water_basis, pressure_convention_by_source, retention_reconstruction]
+    evidence: All 81 retained values match the long sheet after multiplying by 100; 22 zero placeholders are declared missing, while seven populated wide cells absent from the long sheet are explicitly excluded pending provenance review.
+  - id: shvarov_2008
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 2008_шваров
+    long_source: 2008_шваров
+    water_scale: 1
+    water_scale_status: proposed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 0
+    expected_missing_long_water_count: 0
+    wide_missing_representation: omitted_from_long
+    pressure_replacements: []
+    blocks:
+      - {axis_row: 87, first_sample_row: 88, last_sample_row: 108, first_column: X, last_column: AB}
+    parameter_block: null
+    blockers: [water_scale_by_source, pressure_convention_by_source, retention_reconstruction]
+    evidence: The master block contains 105 values for 21 samples while the long sheet contains 119 observations in 24 groups; the audit records their exact overlap without inventing three missing master samples.
+  - id: smagin_2009
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 2009_Смагин
+    long_source: 2009_Смагин
+    water_scale: 1
+    water_scale_status: confirmed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 0
+    expected_missing_long_water_count: 0
+    wide_missing_representation: omitted_from_long
+    pressure_replacements:
+      - master_value: 0.001
+        long_value: -1
+        status: proposed
+        evidence: This replacement makes all wide and long points identical, but its physical interpretation remains unreviewed.
+    blocks:
+      - {axis_row: 109, first_sample_row: 110, last_sample_row: 112, first_column: X, last_column: AE}
+    parameter_block: null
+    blockers: [unknown_water_basis, pressure_convention_by_source, retention_reconstruction]
+    evidence: All 24 transformed points and all three complete curves match bijectively; water basis and the pressure replacement remain unreviewed.
+  - id: chudinova_2009
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 2009_чудинова
+    long_source: 2009_Чудинова
+    water_scale: 1
+    water_scale_status: confirmed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 0
+    expected_missing_long_water_count: 0
+    wide_missing_representation: omitted_from_long
+    pressure_replacements: []
+    blocks:
+      - axis_row: 113
+        first_sample_row: 114
+        last_sample_row: 114
+        first_column: X
+        last_column: AW
+        axis_overrides:
+          X: {long_value: -1, status: proposed, evidence: The first of two identical 0.01 control cells maps to the long-sheet -1 axis value.}
+          Y: {long_value: 0, status: proposed, evidence: The second of two identical 0.01 control cells maps to the long-sheet zero axis value.}
+      - axis_row: 115
+        first_sample_row: 116
+        last_sample_row: 116
+        first_column: X
+        last_column: AN
+        axis_overrides:
+          X: {long_value: -1, status: proposed, evidence: The first of two identical 0.01 control cells maps to the long-sheet -1 axis value.}
+          Y: {long_value: 0, status: proposed, evidence: The second of two identical 0.01 control cells maps to the long-sheet zero axis value.}
+      - axis_row: 117
+        first_sample_row: 118
+        last_sample_row: 118
+        first_column: X
+        last_column: AS
+        axis_overrides:
+          X: {long_value: -1, status: proposed, evidence: The first of two identical 0.01 control cells maps to the long-sheet -1 axis value.}
+          Y: {long_value: 0, status: proposed, evidence: The second of two identical 0.01 control cells maps to the long-sheet zero axis value.}
+    parameter_block: null
+    blockers: [source_alias_review, unknown_water_basis, pressure_convention_by_source]
+    evidence: Three sample-specific axes reproduce all 65 observations and all three curves bijectively; six positional axis overrides are structurally exact but physically unreviewed.
+  - id: shein_2011
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 2011_шеин
+    long_source: 2011_шеин
+    water_scale: 1
+    water_scale_status: confirmed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 0
+    expected_missing_long_water_count: 0
+    wide_missing_representation: omitted_from_long
+    pressure_replacements: []
+    blocks:
+      - {axis_row: 127, first_sample_row: 128, last_sample_row: 133, first_column: X, last_column: AB}
+    parameter_block: null
+    blockers: [unknown_water_basis, pressure_over_salts_meaning]
+    evidence: All 30 points and all six complete curves match bijectively with unit workbook scale; water basis and the salt-equilibrium pressure meaning remain unresolved.
+  - id: sadovnikova_2011
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 2011_садовникова
+    long_source: 2011_Садовникова
+    water_scale: 100
+    water_scale_status: confirmed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 0
+    expected_missing_long_water_count: 0
+    wide_missing_representation: omitted_from_long
+    pressure_replacements: []
+    blocks:
+      - {axis_row: 119, first_sample_row: 120, last_sample_row: 120, first_column: X, last_column: AL}
+      - {axis_row: 121, first_sample_row: 122, last_sample_row: 122, first_column: X, last_column: AK}
+      - {axis_row: 123, first_sample_row: 124, last_sample_row: 124, first_column: X, last_column: AP}
+      - {axis_row: 125, first_sample_row: 126, last_sample_row: 126, first_column: X, last_column: AL}
+    parameter_block: null
+    blockers: [source_alias_review, unknown_water_basis, pressure_convention_by_source, retention_reconstruction]
+    evidence: Four sample-specific axes reproduce the complete 63-point multiset after multiplying wide values by 100, but five cached long identifiers split the four master curves; three groups remain complete and two do not.
+  - id: vasyukov_2012
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 2012_васюков
+    long_source: 2012_васюков
+    water_scale: 1
+    water_scale_status: confirmed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 0
+    expected_missing_long_water_count: 0
+    wide_missing_representation: omitted_from_long
+    pressure_replacements: []
+    blocks:
+      - {axis_row: 134, first_sample_row: 135, last_sample_row: 135, first_column: X, last_column: AD}
+      - {axis_row: 136, first_sample_row: 137, last_sample_row: 137, first_column: X, last_column: AD}
+      - {axis_row: 138, first_sample_row: 139, last_sample_row: 139, first_column: X, last_column: AD}
+      - {axis_row: 140, first_sample_row: 141, last_sample_row: 141, first_column: X, last_column: AD}
+    parameter_block: null
+    blockers: [unknown_water_basis, pressure_convention_by_source]
+    evidence: Four source-specific axis rows reproduce all 28 observations and all four complete curves bijectively at unit workbook scale.
+  - id: manucharova_2012
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 2012_манучарова
+    long_source: 2012_манучарова
+    water_scale: 100
+    water_scale_status: confirmed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 2
+    expected_missing_long_water_count: 2
+    wide_missing_representation: explicit_long_null
+    wide_missing_markers: [0]
+    pressure_replacements: []
+    blocks:
+      - {axis_row: 142, first_sample_row: 143, last_sample_row: 145, first_column: X, last_column: AF}
+    parameter_block: null
+    blockers: [water_scale_by_source, pressure_convention_by_source]
+    evidence: All 27 kPa-axis positions match bijectively after multiplying available wide values by 100; the two zero placeholders match explicit long-sheet nulls by sample and pressure.
+  - id: shein_2012
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 2012_шеин
+    long_source: 2012_Шеин
+    water_scale: 1
+    water_scale_status: confirmed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 0
+    expected_missing_long_water_count: 0
+    wide_missing_representation: omitted_from_long
+    pressure_replacements: []
+    blocks:
+      - {axis_row: 149, first_sample_row: 150, last_sample_row: 155, first_column: X, last_column: AB}
+    parameter_block:
+      header_row: 149
+      columns: [AD, AE, AF, AG]
+      sample_rows: [{first: 150, last: 155}]
+    blockers: [source_alias_review, unknown_water_basis, pressure_convention_by_source, fitted_parameter_conventions, retention_reconstruction]
+    evidence: All 30 observations and all 24 fitted parameter pairs match as global multisets, but the cached long identifiers split both curves and parameter sets and do not preserve sample identity.
+  - id: badenko_2013
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 2013_баденко
+    long_source: 2013_баденко
+    water_scale: 1
+    water_scale_status: proposed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 0
+    expected_missing_long_water_count: 0
+    wide_missing_representation: omitted_from_long
+    pressure_replacements: []
+    blocks:
+      - {axis_row: 156, first_sample_row: 157, last_sample_row: 174, first_column: X, last_column: AC}
+    parameter_block: null
+    blockers: [unknown_water_basis, pressure_convention_by_source, retention_reconstruction]
+    evidence: The complete 108-point multiset matches at unit workbook scale, but 14 cached long identifiers split 18 master curves and only one preserves a complete curve.
+  - id: bolotov_2014
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 2014_болотов
+    long_source: 2014_Болотов
+    water_scale: 1
+    water_scale_status: confirmed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 1
+    expected_missing_long_water_count: 1
+    wide_missing_representation: explicit_long_null
+    pressure_replacements: []
+    blocks:
+      - {axis_row: 175, first_sample_row: 176, last_sample_row: 187, first_column: X, last_column: AK}
+    parameter_block: null
+    blockers: [source_alias_review, water_scale_by_source, pressure_convention_by_source]
+    evidence: All 168 axis positions, including the explicit null at pF 3.05 for sample 10, and all 12 sample curves match bijectively at unit workbook scale.
+  - id: makarychev_2014_1
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 2014_макарычев-1
+    long_source: 2014_Макарычев-1
+    water_scale: 100
+    water_scale_status: confirmed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 0
+    expected_missing_long_water_count: 0
+    wide_missing_representation: omitted_from_long
+    pressure_replacements: []
+    blocks:
+      - {axis_row: 188, first_sample_row: 189, last_sample_row: 193, first_column: X, last_column: AB}
+    parameter_block: null
+    blockers: [source_alias_review, water_scale_by_source, pressure_pgk_meaning]
+    evidence: All 25 categorical PGK-axis observations and all five curves match bijectively after multiplying the wide values by 100; the PGK physical meaning remains unresolved.
+  - id: makarychev_2014_2
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 2014_макарычев-2
+    long_source: 2014_Макарычев-2
+    water_scale: 100
+    water_scale_status: confirmed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 0
+    expected_missing_long_water_count: 0
+    wide_missing_representation: omitted_from_long
+    pressure_replacements: []
+    blocks:
+      - {axis_row: 194, first_sample_row: 195, last_sample_row: 200, first_column: X, last_column: AB}
+      - {axis_row: 194, first_sample_row: 204, last_sample_row: 204, first_column: X, last_column: AB, water_scale: 1}
+    parameter_block: null
+    blockers: [source_alias_review, water_scale_by_source, pressure_pgk_meaning]
+    evidence: All 35 categorical PGK-axis observations and all seven populated curves match bijectively; rows 201-203 contain no retention values, and row 204 is already stored on the long-table scale.
+  - id: makarychev_2014_3
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 2014_макарычев-3
+    long_source: 2014_Макарычев-3
+    water_scale: 1
+    water_scale_status: confirmed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 0
+    expected_missing_long_water_count: 0
+    wide_missing_representation: omitted_from_long
+    pressure_replacements: []
+    blocks:
+      - {axis_row: 205, first_sample_row: 206, last_sample_row: 209, first_column: X, last_column: AK}
+    parameter_block: null
+    blockers: [source_alias_review, water_scale_by_source, pressure_convention_by_source]
+    evidence: All 56 points and all four complete curves match bijectively at unit workbook scale; the source alias and physical semantics remain unreviewed.
+  - id: panina_2015
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 2015_Панина. дисер
+    long_source: 2015_панина
+    water_scale: 100
+    water_scale_status: proposed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 0
+    expected_missing_long_water_count: 0
+    wide_missing_representation: omitted_from_long
+    pressure_replacements:
+      - master_value: 0.001
+        long_value: -1
+        status: proposed
+        evidence: The replacement is required for point-multiset equality, but its physical interpretation has not been reviewed.
+    blocks:
+      - {axis_row: 210, first_sample_row: 211, last_sample_row: 216, first_column: X, last_column: AH}
+      - {axis_row: 217, first_sample_row: 218, last_sample_row: 223, first_column: X, last_column: AH}
+    parameter_block:
+      header_row: 210
+      columns: [AK, AL, AM, AN]
+      sample_rows: [{first: 211, last: 216}, {first: 218, last: 223}]
+    blockers: [water_scale_by_source, pressure_convention_by_source, retention_reconstruction]
+    evidence: The transformed 132-point multiset matches exactly, but cached long-sheet identities split and mix the wide curves, so sample identity is not reconstructable from the current formulas.
+  - id: sidorova_2016
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 2016_Сидорова
+    long_source: 2016_сидорова
+    water_scale: 100
+    water_scale_status: confirmed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 5
+    expected_missing_long_water_count: 0
+    wide_missing_representation: omitted_from_long
+    pressure_replacements:
+      - master_value: 0.001
+        long_value: -1
+        status: proposed
+        evidence: This replacement makes all available wide and long points identical, but its physical interpretation remains unreviewed.
+    blocks:
+      - {axis_row: 224, first_sample_row: 225, last_sample_row: 226, first_column: X, last_column: AH}
+    parameter_block: null
+    blockers: [source_alias_review, water_scale_by_source, pressure_convention_by_source, retention_reconstruction]
+    evidence: All 17 available points and both sparse complete curves match bijectively after accounting for exactly five empty wide cells; the alias and pressure replacement remain unreviewed.
+  - id: chestnova_2017
+    status: confirmed
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 2017_честнова
+    long_source: 2017_Честнова
+    water_scale: 100
+    water_scale_status: confirmed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 0
+    expected_missing_long_water_count: 0
+    wide_missing_representation: omitted_from_long
+    pressure_replacements: []
+    blocks:
+      - {axis_row: 227, first_sample_row: 228, last_sample_row: 237, first_column: X, last_column: AJ}
+    parameter_block: null
+    blockers: []
+    evidence: All ten complete 13-point long curves match exactly one wide curve after the reviewed percent-to-fraction scale reversal.
+  - id: makarychev_2018
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 2018_макарычев
+    long_source: 2018_Макарычев
+    water_scale: 100
+    water_scale_status: confirmed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 0
+    expected_missing_long_water_count: 0
+    wide_missing_representation: omitted_from_long
+    pressure_replacements: []
+    blocks:
+      - {axis_row: 238, first_sample_row: 239, last_sample_row: 254, first_column: X, last_column: AC}
+    parameter_block: null
+    blockers: [source_alias_review, water_scale_by_source, pressure_convention_by_source, retention_reconstruction]
+    evidence: All 96 points and all 16 complete curves match bijectively after multiplying wide water values by 100, but the cached identifiers use a permuted sample order and need reviewed crosswalks.
+  - id: moiseev_2018
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 2018_Моисеев
+    long_source: 2018_моисеев
+    water_scale: 100
+    water_scale_status: confirmed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 0
+    expected_missing_long_water_count: 0
+    wide_missing_representation: omitted_from_long
+    pressure_replacements: []
+    blocks:
+      - axis_row: 255
+        first_sample_row: 256
+        last_sample_row: 256
+        first_column: X
+        last_column: AG
+        axis_overrides:
+          X: {long_value: -1, status: proposed, evidence: The 0.001 control value maps to the first long-sheet axis value.}
+      - axis_row: 257
+        first_sample_row: 258
+        last_sample_row: 258
+        first_column: X
+        last_column: AF
+        axis_overrides:
+          X: {long_value: -1, status: proposed, evidence: The control cell is empty but the populated sample cell and long curve contain the first axis position.}
+      - axis_row: 259
+        first_sample_row: 260
+        last_sample_row: 260
+        first_column: X
+        last_column: AG
+        axis_overrides:
+          X: {long_value: -1, status: proposed, evidence: The control cell is empty but the populated sample cell and long curve contain the first axis position.}
+    parameter_block: null
+    blockers: [source_alias_review, water_scale_by_source, pressure_convention_by_source]
+    evidence: Three sample-specific axes reproduce all 29 observations and all three curves bijectively; the first axis position is explicit in the long sheet but missing from two master control rows.
+  - id: shein_2018
+    status: blocked
+    master_worksheet: Данные
+    long_worksheet: ОГХ
+    master_source: 2018_шеин-1
+    long_source: 2018_шеин
+    water_scale: 100
+    water_scale_status: confirmed
+    comparison_decimal_places: 12
+    expected_missing_water_count: 3
+    expected_missing_long_water_count: 0
+    wide_missing_representation: omitted_from_long
+    pressure_replacements: []
+    blocks:
+      - {axis_row: 261, first_sample_row: 262, last_sample_row: 265, first_column: X, last_column: AD}
+    parameter_block: null
+    blockers: [source_alias_review, water_scale_by_source, pressure_convention_by_source]
+    evidence: All 25 available observations and all four sparse curves match bijectively after multiplying wide values by 100; three empty wide cells are explicitly omitted.
+
 formula_policy:
   read_formulas: true
   read_cached_values: true
@@ -574,8 +1266,8 @@ reviewed_corrections: []
 
 quarantines:
   - id: control_rows
-    scope: Данные, дп, ч, сл, and диссертации rows with sample_number = 0.1
-    reason: These rows carry source-specific column labels and are not soil samples.
+    scope: Wide-sheet rows that carry source-specific axis or parameter labels, including but not limited to rows with sample_number = 0.1
+    reason: These rows are not soil samples, and some later control blocks use another or missing sample number.
     release_requires: Never release as samples; consume only through an implemented control-row parser.
   - id: unknown_water_rows
     scope: ОГХ rows where D = ? (637 rows in the reviewed workbook bytes)
@@ -595,14 +1287,14 @@ quarantines:
     release_requires: Establish their interval scheme and relationship to the preceding blocks.
   - id: proposed_identity_aliases
     scope: All sample joins requiring a proposed source alias
-    reason: Case-only similarity is evidence, not proof of sample identity.
+    reason: Label similarity is evidence, not proof of sample identity.
     release_requires: Human review of each source alias and duplicate-key resolution.
 
 blockers:
   - id: source_alias_review
     scope: identity.source_aliases
-    question: Do the 14 case-only source-label pairs denote the same publications and sample-number namespaces?
-    evidence: Case folding increases the Данные-to-ОГХ sample-id overlap from 80 to 171, adding 91 sample identifiers.
+    question: Do the remaining 16 proposed source-label pairs denote the same publications and sample-number namespaces?
+    evidence: Thirteen are case variants, and the Panina, Umarova, and Shein 2018 labels add publication or block suffixes; unlike the confirmed Chestnova join, they do not yet have reviewed source evidence.
   - id: duplicate_master_sample_ids
     scope: Данные sample rows
     question: Which repeated rows are duplicate views, repeated measurements, or distinct samples sharing a weak identifier?
@@ -655,10 +1347,14 @@ blockers:
     scope: Wide source-specific sections
     question: Where is saturated hydraulic conductivity stored, and what unit and logarithm convention applies per source?
     evidence: No stable row-1 column mapping identifies conductivity across the grouped wide layout.
+  - id: fitted_parameter_conventions
+    scope: Wide fitted retention-model parameter blocks and ОГХ rows where D = VGN
+    question: Which approximation family, parameter units, constraints, and fitting procedure produced each stored parameter set?
+    evidence: Parameter names and values are present, but alpha units, model constraints, objective functions, and fit uncertainty are not recorded in the workbook.
   - id: retention_reconstruction
     scope: Данные wide retention sections and ОГХ
     question: Does code reconstruction from source-control rows reproduce every long-form observation and fitted parameter exactly?
-    evidence: ОГХ has 1847 populated data rows and formula-derived identifiers, while Данные uses inherited wide headers.
+    evidence: Chestnova long curves use a different sample order than their cached identifiers, and Panina contains secondary control rows plus shifted long-sheet sample-number formulas; Данные therefore requires source-specific block reconstruction.
   - id: coordinate_publication_policy
     scope: Coordinate columns and source workbook distribution
     question: May coordinates and the workbook itself be redistributed or included in evaluation artifacts?
