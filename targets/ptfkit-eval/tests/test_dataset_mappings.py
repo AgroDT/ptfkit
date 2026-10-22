@@ -21,6 +21,7 @@ INVENTORY_PATH = REPOSITORY_ROOT / 'evaluation/datasets/meta_v3_3.inventory.json
 PROFILE_PATH = REPOSITORY_ROOT / 'evaluation/datasets/meta_v3_3.retention-profile.json'
 SUMMARY_PATH = REPOSITORY_ROOT / 'evaluation/datasets/meta_v3_3.normalization-summary.json'
 RECONSTRUCTION_PATH = REPOSITORY_ROOT / 'evaluation/datasets/meta_v3_3.reconstruction-audit.json'
+PREDICTOR_PATH = REPOSITORY_ROOT / 'evaluation/datasets/meta_v3_3.predictor-audit.json'
 
 
 def _mapping_document() -> dict[str, object]:
@@ -128,6 +129,32 @@ def test_meta_mapping_is_inventory_bound_and_keeps_ambiguities_explicit():
     assert panina['status'] == 'blocked'
     assert panina['water_scale_status'] == 'proposed'
 
+    predictor_bindings = cast(
+        'Sequence[Mapping[str, object]]', mapping.document['predictor_bindings']
+    )
+    assert [
+        (binding['function'], binding['input'], binding['column'], binding['blockers'])
+        for binding in predictor_bindings
+    ] == [
+        ('calc_ptf_clapp1978', 'soil_texture', 'L', ('texture_classification',)),
+        ('calc_ptf_vereecken1989', 'sand', 'P', ('particle_size_schemes',)),
+        ('calc_ptf_vereecken1989', 'clay', 'N', ('particle_size_schemes',)),
+        ('calc_ptf_vereecken1989', 'carbon', 'R', ('organic_property_provenance',)),
+        ('calc_ptf_vereecken1989', 'bulk_density', 'Q', ('density_units',)),
+    ]
+    clay_binding = next(
+        binding
+        for binding in predictor_bindings
+        if binding['function'] == 'calc_ptf_vereecken1989' and binding['input'] == 'clay'
+    )
+    overrides = cast('Sequence[Mapping[str, object]]', clay_binding['measurement_overrides'])
+    assert len(overrides) == 1
+    assert overrides[0]['source_headers'] == (
+        {'worksheet': 'Данные', 'column': 'N', 'row': 210, 'value': '< 2 um'},
+    )
+    override_measurement = cast('Mapping[str, object]', overrides[0]['measurement'])
+    assert cast('Mapping[str, object]', override_measurement['particle_size'])['upper'] == 2
+
     with pytest.raises(TypeError):
         cast('dict[str, object]', mapping.document)['dataset'] = {}
 
@@ -198,6 +225,57 @@ def test_rejects_an_encoding_reference_to_an_unknown_blocker():
     assert [(item.path, item.code) for item in captured.value.diagnostics] == [
         ('$.encodings[0].blockers', 'mapping.unknown_blocker')
     ]
+
+
+def test_confirmed_predictor_binding_cannot_retain_a_blocker():
+    mapping = _mapping_document()
+    bindings = mapping['predictor_bindings']
+    assert isinstance(bindings, list)
+    binding = bindings[0]
+    assert isinstance(binding, dict)
+    binding['status'] = 'confirmed'
+
+    with pytest.raises(DatasetMappingValidationError) as captured:
+        load_dataset_mapping(
+            mapping,
+            inventory=_inventory_document(),
+            retention_profile=_profile_document(),
+        )
+
+    assert [(item.path, item.code) for item in captured.value.diagnostics] == [
+        (
+            '$.predictor_bindings[0].blockers',
+            'mapping.confirmed_predictor_binding_has_blockers',
+        )
+    ]
+
+
+def test_rejects_overlapping_source_local_measurement_overrides():
+    mapping = _mapping_document()
+    bindings = mapping['predictor_bindings']
+    assert isinstance(bindings, list)
+    clay = next(
+        binding
+        for binding in bindings
+        if isinstance(binding, dict) and binding.get('input') == 'clay'
+    )
+    overrides = clay['measurement_overrides']
+    assert isinstance(overrides, list)
+    duplicate = copy.deepcopy(overrides[0])
+    duplicate['sample_rows'] = [{'first': 216, 'last': 218}]
+    overrides.append(duplicate)
+
+    with pytest.raises(DatasetMappingValidationError) as captured:
+        load_dataset_mapping(
+            mapping,
+            inventory=_inventory_document(),
+            retention_profile=_profile_document(),
+        )
+
+    assert any(
+        item.code == 'mapping.overlapping_measurement_override'
+        for item in captured.value.diagnostics
+    )
 
 
 def test_rejects_retention_profile_checksum_drift():
@@ -476,3 +554,49 @@ def test_reconstruction_audit_covers_special_source_structures():
     assert chudinova['axis_override_count'] == 6
     assert chudinova['proposed_axis_override_count'] == 6
     assert chudinova['reconstructable'] is True
+
+
+def test_predictor_audit_covers_every_declared_retention_sample_without_values():
+    audit = json.loads(PREDICTOR_PATH.read_text(encoding='utf-8'))
+
+    assert audit['schema_version'] == 2
+    assert audit['public_function_count'] == 2
+    assert audit['candidate_sample_count'] == 206
+    assert audit['function_audits'] == [
+        {
+            'function': 'calc_ptf_clapp1978',
+            'input_count': 1,
+            'candidate_sample_count': 206,
+            'complete_input_sample_count': 89,
+            'eligible_sample_count': 0,
+            'excluded_sample_count': 206,
+        },
+        {
+            'function': 'calc_ptf_vereecken1989',
+            'input_count': 4,
+            'candidate_sample_count': 206,
+            'complete_input_sample_count': 34,
+            'eligible_sample_count': 0,
+            'excluded_sample_count': 206,
+        },
+    ]
+    assert audit['binding_audits'][0]['populated_count'] == 89
+    assert audit['binding_audits'][0]['missing_count'] == 117
+    assert audit['binding_audits'][0]['compatible_count'] == 0
+    clay_audit = next(
+        item
+        for item in audit['binding_audits']
+        if item['function'] == 'calc_ptf_vereecken1989' and item['input'] == 'clay'
+    )
+    assert clay_audit['populated_count'] == 85
+    assert clay_audit['measurement_compatible_count'] == 0
+    assert clay_audit['particle_size_compatible_count'] == 12
+    assert audit['exclusion_reasons'] == [
+        {'label': 'density_units', 'count': 95},
+        {'label': 'missing_input', 'count': 289},
+        {'label': 'organic_property_provenance', 'count': 125},
+        {'label': 'particle_size_schemes', 'count': 85},
+        {'label': 'texture_classification', 'count': 89},
+    ]
+    assert 'values' not in audit
+    assert 'eligibility' not in audit

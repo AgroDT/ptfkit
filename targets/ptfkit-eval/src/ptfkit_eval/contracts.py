@@ -124,7 +124,7 @@ class ModelAdapterSpec:
 @cache
 def default_model_adapter_specs() -> Mapping[str, ModelAdapterSpec]:
     """Return contracts for the model adapters shipped with ptfkit-eval."""
-    spec = ModelAdapterSpec(
+    clapp = ModelAdapterSpec(
         id='clapp1978_h_theta',
         model_kind='h_theta',
         axis_quantity='matric_potential',
@@ -154,7 +154,48 @@ def default_model_adapter_specs() -> Mapping[str, ModelAdapterSpec]:
             ),
         ),
     )
-    return MappingProxyType({spec.id: spec})
+    vereecken = ModelAdapterSpec(
+        id='vereecken1989_h_theta',
+        model_kind='h_theta',
+        axis_quantity='matric_potential',
+        axis_unit='centimeter_water_head',
+        axis_convention='magnitude',
+        target_quantity='volumetric_water_content',
+        target_unit='volume_fraction',
+        target_material_basis='mineral_soil',
+        target_denominator_basis='bulk_volume',
+        parameters=(
+            ModelParameterSpec(
+                'theta_r',
+                'volumetric_water_content',
+                'volume_fraction',
+                'mineral_soil',
+                'bulk_volume',
+            ),
+            ModelParameterSpec(
+                'theta_s',
+                'volumetric_water_content',
+                'volume_fraction',
+                'mineral_soil',
+                'bulk_volume',
+            ),
+            ModelParameterSpec(
+                'alpha',
+                'van_genuchten_alpha',
+                'inverse_centimeter',
+                'mineral_soil',
+                'not_applicable',
+            ),
+            ModelParameterSpec(
+                'n',
+                'van_genuchten_n',
+                'dimensionless',
+                'mineral_soil',
+                'not_applicable',
+            ),
+        ),
+    )
+    return MappingProxyType({clapp.id: clapp, vereecken.id: vereecken})
 
 
 @dataclass(frozen=True)
