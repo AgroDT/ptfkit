@@ -12,3 +12,5 @@ coverage.xml
 .euptf2-local/
 .mise.local.toml
 codegen/scripts/__pycache__/
+# Local pytest base directories
+.pytest-tmp-*/

@@ -19,6 +19,8 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
 MAPPING_PATH = REPOSITORY_ROOT / 'evaluation/datasets/meta_v3_3.yaml'
 INVENTORY_PATH = REPOSITORY_ROOT / 'evaluation/datasets/meta_v3_3.inventory.json'
 PROFILE_PATH = REPOSITORY_ROOT / 'evaluation/datasets/meta_v3_3.retention-profile.json'
+SUMMARY_PATH = REPOSITORY_ROOT / 'evaluation/datasets/meta_v3_3.normalization-summary.json'
+RECONSTRUCTION_PATH = REPOSITORY_ROOT / 'evaluation/datasets/meta_v3_3.reconstruction-audit.json'
 
 
 def _mapping_document() -> dict[str, object]:
@@ -63,6 +65,68 @@ def test_meta_mapping_is_inventory_bound_and_keeps_ambiguities_explicit():
     assert encodings['pressure_mpa_label']['status'] == 'blocked'
     assert encodings['fitted_vgn']['status'] == 'confirmed'
     assert mapping.document['reviewed_corrections'] == ()
+
+    source_rule_values = cast(
+        'Sequence[Mapping[str, object]]', mapping.document['retention_source_rules']
+    )
+    assert len(source_rule_values) == 27
+    observation_rules = [
+        cast('Mapping[str, object]', rule)
+        for source_rule in source_rule_values
+        for rule in cast('Sequence[object]', source_rule['observations'])
+    ]
+    assert len(observation_rules) == 26
+    assert [rule['status'] for rule in observation_rules].count('confirmed') == 1
+    assert [rule['status'] for rule in observation_rules].count('blocked') == 25
+    assert {rule['water_unit'] for rule in observation_rules} == {None, 'mass_percent'}
+
+    identity = cast('Mapping[str, object]', mapping.document['identity'])
+    crosswalks = cast('Sequence[Mapping[str, object]]', identity['sample_crosswalks'])
+    assert len(crosswalks) == 10
+    chestnova_two = next(item for item in crosswalks if item['raw_sample_id'] == '2017_Честнова_2')
+    assert chestnova_two['canonical_sample_id'] == '2017_честнова_9'
+    assert chestnova_two['canonical_sample_number'] == 9
+    assert chestnova_two['evidence_cells'] == ('Данные!X227:AJ227', 'Данные!X236:AJ236')
+
+    reconstruction_rules = cast(
+        'Sequence[Mapping[str, object]]',
+        mapping.document['retention_reconstruction_rules'],
+    )
+    assert [rule['id'] for rule in reconstruction_rules] == [
+        'sapozhnikov_1987',
+        'sapozhnikov_1988',
+        'gumatov_1991',
+        'gumatov_1992',
+        'khaydapova_2001',
+        'kokareva_2007',
+        'pestonova_2007',
+        'umarova_2008',
+        'shvarov_2008',
+        'smagin_2009',
+        'chudinova_2009',
+        'shein_2011',
+        'sadovnikova_2011',
+        'vasyukov_2012',
+        'manucharova_2012',
+        'shein_2012',
+        'badenko_2013',
+        'bolotov_2014',
+        'makarychev_2014_1',
+        'makarychev_2014_2',
+        'makarychev_2014_3',
+        'panina_2015',
+        'sidorova_2016',
+        'chestnova_2017',
+        'makarychev_2018',
+        'moiseev_2018',
+        'shein_2018',
+    ]
+    chestnova = next(rule for rule in reconstruction_rules if rule['id'] == 'chestnova_2017')
+    panina = next(rule for rule in reconstruction_rules if rule['id'] == 'panina_2015')
+    assert chestnova['status'] == 'confirmed'
+    assert chestnova['parameter_block'] is None
+    assert panina['status'] == 'blocked'
+    assert panina['water_scale_status'] == 'proposed'
 
     with pytest.raises(TypeError):
         cast('dict[str, object]', mapping.document)['dataset'] = {}
@@ -150,3 +214,265 @@ def test_rejects_retention_profile_checksum_drift():
     assert [(item.path, item.code) for item in captured.value.diagnostics] == [
         ('$retention_profile.sha256', 'profile.source_mismatch')
     ]
+
+
+def test_rejects_a_missing_source_rule_even_when_other_rules_are_valid():
+    mapping = _mapping_document()
+    rules = mapping['retention_source_rules']
+    assert isinstance(rules, list)
+    removed = rules.pop()
+    assert isinstance(removed, dict)
+
+    with pytest.raises(DatasetMappingValidationError) as captured:
+        load_dataset_mapping(
+            mapping,
+            inventory=_inventory_document(),
+            retention_profile=_profile_document(),
+        )
+
+    assert [(item.path, item.code) for item in captured.value.diagnostics] == [
+        ('$.retention_source_rules', 'mapping.missing_retention_source_rule')
+    ]
+    assert repr(removed['source']) in captured.value.diagnostics[0].message
+
+
+def test_rejects_confirming_a_rule_without_explicit_units_and_convention():
+    mapping = _mapping_document()
+    rules = mapping['retention_source_rules']
+    assert isinstance(rules, list)
+    first = rules[0]
+    assert isinstance(first, dict)
+    observations = first['observations']
+    assert isinstance(observations, list)
+    rule = observations[0]
+    assert isinstance(rule, dict)
+    rule['status'] = 'confirmed'
+    rule['blockers'] = []
+
+    with pytest.raises(DatasetMappingValidationError) as captured:
+        load_dataset_mapping(
+            mapping,
+            inventory=_inventory_document(),
+            retention_profile=_profile_document(),
+        )
+
+    assert [(item.path, item.code) for item in captured.value.diagnostics] == [
+        (
+            '$.retention_source_rules[0].observations[0]',
+            'mapping.incomplete_confirmed_retention_rule',
+        )
+    ]
+
+
+def test_rejects_a_crosswalk_whose_canonical_fields_disagree():
+    mapping = _mapping_document()
+    identity = mapping['identity']
+    assert isinstance(identity, dict)
+    crosswalks = identity['sample_crosswalks']
+    assert isinstance(crosswalks, list)
+    first = crosswalks[0]
+    assert isinstance(first, dict)
+    first['canonical_sample_number'] = 99
+
+    with pytest.raises(DatasetMappingValidationError) as captured:
+        load_dataset_mapping(
+            mapping,
+            inventory=_inventory_document(),
+            retention_profile=_profile_document(),
+        )
+
+    assert [(item.path, item.code) for item in captured.value.diagnostics] == [
+        (
+            '$.identity.sample_crosswalks[0].canonical_sample_id',
+            'mapping.inconsistent_sample_crosswalk',
+        )
+    ]
+
+
+def test_rejects_confirmed_reconstruction_with_proposed_transforms():
+    mapping = _mapping_document()
+    rules = mapping['retention_reconstruction_rules']
+    assert isinstance(rules, list)
+    panina_index, panina = next(
+        (index, rule)
+        for index, rule in enumerate(rules)
+        if isinstance(rule, dict) and rule.get('id') == 'panina_2015'
+    )
+    assert isinstance(panina, dict)
+    panina['status'] = 'confirmed'
+    panina['blockers'] = []
+
+    with pytest.raises(DatasetMappingValidationError) as captured:
+        load_dataset_mapping(
+            mapping,
+            inventory=_inventory_document(),
+            retention_profile=_profile_document(),
+        )
+
+    assert [(item.path, item.code) for item in captured.value.diagnostics] == [
+        (
+            f'$.retention_reconstruction_rules[{panina_index}]',
+            'mapping.confirmed_reconstruction_rule_has_proposals',
+        )
+    ]
+
+
+def test_rejects_confirmed_reconstruction_with_proposed_axis_override():
+    mapping = _mapping_document()
+    rules = mapping['retention_reconstruction_rules']
+    assert isinstance(rules, list)
+    chudinova_index, chudinova = next(
+        (index, rule)
+        for index, rule in enumerate(rules)
+        if isinstance(rule, dict) and rule.get('id') == 'chudinova_2009'
+    )
+    assert isinstance(chudinova, dict)
+    chudinova['status'] = 'confirmed'
+    chudinova['blockers'] = []
+
+    with pytest.raises(DatasetMappingValidationError) as captured:
+        load_dataset_mapping(
+            mapping,
+            inventory=_inventory_document(),
+            retention_profile=_profile_document(),
+        )
+
+    assert [(item.path, item.code) for item in captured.value.diagnostics] == [
+        (
+            f'$.retention_reconstruction_rules[{chudinova_index}]',
+            'mapping.confirmed_reconstruction_rule_has_proposals',
+        )
+    ]
+
+
+def test_rejects_duplicate_reconstruction_coverage_for_one_long_source():
+    mapping = _mapping_document()
+    rules = mapping['retention_reconstruction_rules']
+    assert isinstance(rules, list)
+    duplicate = copy.deepcopy(rules[0])
+    assert isinstance(duplicate, dict)
+    duplicate['id'] = 'duplicate_source_rule'
+    rules.append(duplicate)
+
+    with pytest.raises(DatasetMappingValidationError) as captured:
+        load_dataset_mapping(
+            mapping,
+            inventory=_inventory_document(),
+            retention_profile=_profile_document(),
+        )
+
+    assert [(item.path, item.code) for item in captured.value.diagnostics] == [
+        (
+            '$.retention_reconstruction_rules',
+            'mapping.duplicate_retention_reconstruction_source',
+        )
+    ]
+
+
+def test_normalization_summary_balances_the_bound_profile_without_measurements():
+    profile = _profile_document()
+    summary = json.loads(SUMMARY_PATH.read_text(encoding='utf-8'))
+
+    assert summary['sha256'] == profile['sha256']
+    assert summary['source_filename'] == profile['source_filename']
+    assert summary['sheet_name'] == profile['sheet_name']
+    assert summary['total_data_rows'] == profile['total_data_rows']
+    assert (
+        summary['normalized_observation_count'] + summary['excluded_observation_count']
+        == profile['observation_count']
+    )
+    assert summary['fitted_parameter_count'] == profile['fitted_parameter_count']
+    assert summary['unclassified_exclusion_count'] == profile['unclassified_count']
+    assert summary['missing_source_exclusion_count'] == profile['missing_source_count']
+    assert 'observations' not in summary
+    assert 'fitted_parameters' not in summary
+
+
+def test_reconstruction_audit_keeps_point_integrity_separate_from_identity():
+    audit = json.loads(RECONSTRUCTION_PATH.read_text(encoding='utf-8'))
+
+    assert audit['rule_count'] == 27
+    assert audit['profile_source_count'] == 27
+    assert audit['unaudited_source_count'] == 0
+    assert audit['unaudited_sources'] == []
+    assert audit['reconstructable_rule_count'] == 21
+    assert audit['normalization_ready_rule_count'] == 1
+    rules = {rule['rule_id']: rule for rule in audit['rules']}
+    assert sum(rule['matched_point_count'] for rule in rules.values()) == 1741
+    chestnova = rules['chestnova_2017']
+    assert chestnova['matched_point_count'] == 130
+    assert chestnova['identity_status'] == 'exact_unique'
+    assert chestnova['normalization_ready'] is True
+    gumatov = rules['gumatov_1991']
+    assert gumatov['matched_point_count'] == 190
+    assert gumatov['wide_missing_water_count'] == 19
+    assert gumatov['identity_status'] == 'exact_unique'
+    assert gumatov['reconstructable'] is True
+    sapozhnikov = rules['sapozhnikov_1988']
+    assert sapozhnikov['matched_point_count'] == 108
+    assert sapozhnikov['proposed_pressure_replacement_count'] == 1
+    assert sapozhnikov['identity_status'] == 'exact_unique'
+    khaydapova = rules['khaydapova_2001']
+    assert khaydapova['point_multiset_status'] == 'exact'
+    assert khaydapova['resolved_group_count'] == 0
+    assert khaydapova['unresolved_group_count'] == 7
+    assert khaydapova['reconstructable'] is False
+    panina = rules['panina_2015']
+    assert panina['matched_point_count'] == 132
+    assert panina['point_multiset_status'] == 'exact'
+    assert panina['ambiguous_row_match_count'] == 6
+    assert panina['resolved_group_count'] == 1
+    assert panina['unresolved_group_count'] == 26
+    assert panina['matched_parameter_count'] == 48
+    assert panina['parameter_multiset_status'] == 'exact'
+    assert panina['resolved_parameter_group_count'] == 2
+    assert panina['unresolved_parameter_group_count'] == 18
+    assert panina['identity_status'] == 'unresolved'
+    assert panina['parameter_identity_status'] == 'unresolved'
+    assert panina['reconstructable'] is False
+    sidorova = rules['sidorova_2016']
+    assert sidorova['matched_point_count'] == 17
+    assert sidorova['wide_missing_water_count'] == 5
+    assert sidorova['identity_status'] == 'exact_unique'
+    makarychev = rules['makarychev_2018']
+    assert makarychev['matched_point_count'] == 96
+    assert makarychev['resolved_group_count'] == 16
+    assert makarychev['identity_status'] == 'exact_unique'
+
+
+def test_reconstruction_audit_covers_special_source_structures():
+    audit = json.loads(RECONSTRUCTION_PATH.read_text(encoding='utf-8'))
+    rules = {rule['rule_id']: rule for rule in audit['rules']}
+
+    kokareva = rules['kokareva_2007']
+    assert kokareva['point_multiset_status'] == 'not_applicable'
+    assert kokareva['observation_reconstructable'] is None
+    assert kokareva['matched_parameter_count'] == 20
+    assert kokareva['parameter_identity_status'] == 'exact_unique'
+    assert kokareva['parameter_reconstructable'] is True
+    assert kokareva['reconstructable'] is True
+
+    bolotov = rules['bolotov_2014']
+    assert bolotov['matched_point_count'] == 168
+    assert bolotov['wide_missing_water_count'] == 1
+    assert bolotov['long_missing_water_count'] == 1
+    assert bolotov['identity_status'] == 'exact_unique'
+
+    makarychev = rules['makarychev_2014_2']
+    assert makarychev['matched_point_count'] == 35
+    assert makarychev['identity_status'] == 'exact_unique'
+
+    umarova = rules['umarova_2008']
+    assert umarova['wide_missing_water_count'] == 22
+    assert umarova['excluded_wide_water_count'] == 7
+    assert umarova['reconstructable'] is True
+
+    shvarov = rules['shvarov_2008']
+    assert shvarov['matched_point_count'] == 105
+    assert shvarov['long_only_point_count'] == 14
+    assert shvarov['reconstructable'] is False
+
+    chudinova = rules['chudinova_2009']
+    assert chudinova['axis_override_count'] == 6
+    assert chudinova['proposed_axis_override_count'] == 6
+    assert chudinova['reconstructable'] is True
