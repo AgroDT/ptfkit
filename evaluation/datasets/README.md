@@ -65,6 +65,24 @@ pairs are covered across Kokareva, Shein, and Panina. Only Chestnova currently
 combines structural reconstruction, reviewed physical transforms, and confirmed
 crosswalks, so it is the sole normalization-ready rule.
 
+`meta_v3_3.predictor-audit.json` is the count-only, manifest-aware input
+eligibility result for the same workbook bytes. Its candidate cohort contains
+the 206 distinct master-sheet rows declared as samples by the retention
+reconstruction rules; control rows are not inferred from numeric markers. The
+current public ptfkit manifest contains two function contracts. The
+`calc_ptf_clapp1978` texture input remains blocked by the unresolved USDA
+crosswalk. The four `calc_ptf_vereecken1989` inputs are bound to the master
+sand, clay, organic-carbon, and bulk-density columns. Thirty-four rows contain
+all four raw values, but their clay fraction is below 1 micrometre rather than
+the required below 2 micrometres. The source-local header at `Данные!N210`
+does establish the correct boundary for 12 Panina 2015 sample rows; the audit
+records those rows separately, but none has all four raw Vereecken inputs and
+their particle-fraction unit and mass basis remain unresolved. The headed
+`ГС-PSD` schemes terminate at below 1 micrometre and do not provide a
+1-to-2-micrometre bin for exact reconstruction. Walkley-Black carbon
+equivalence and the bulk-density unit and method remain unresolved. The
+artifact contains no raw predictor values.
+
 Validate both artifacts together through the public API:
 
 ```python
@@ -119,6 +137,23 @@ audit = audit_retention_reconstruction_workbook('/path/to/meta_v3.3.xlsx', mappi
 write_retention_reconstruction_audit(
     audit,
     'evaluation/datasets/meta_v3_3.reconstruction-audit.json',
+)
+```
+
+Regenerate the manifest-aware predictor evidence without copying raw values:
+
+```python
+from ptfkit_eval import (
+    audit_predictor_workbook,
+    load_dataset_mapping,
+    write_predictor_audit_summary,
+)
+
+mapping = load_dataset_mapping('evaluation/datasets/meta_v3_3.yaml')
+audit = audit_predictor_workbook('/path/to/meta_v3.3.xlsx', mapping)
+write_predictor_audit_summary(
+    audit,
+    'evaluation/datasets/meta_v3_3.predictor-audit.json',
 )
 ```
 

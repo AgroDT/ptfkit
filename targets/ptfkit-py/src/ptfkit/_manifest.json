@@ -2,7 +2,7 @@
   "_generated": "ptfkit-codegen; DO NOT EDIT.",
   "coverage": {
     "implemented_functions": 146,
-    "manifest_functions": 1,
+    "manifest_functions": 2,
     "omitted_functions": [
       {
         "id": "calc_ptf_ahuja1984",
@@ -525,10 +525,6 @@
         "reason": "incomplete_measurement_contract"
       },
       {
-        "id": "calc_ptf_vereecken1989",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
         "id": "calc_ptf_vereecken1989_detailed",
         "reason": "incomplete_measurement_contract"
       },
@@ -836,6 +832,274 @@
         "The paper states that these unverified average values should not be used blindly because saturation suction varies substantially within texture classes.",
         "Sorptivity values must be treated cautiously because the conductivity averages may not represent the same average soils as the other parameters."
       ]
+    },
+    {
+      "callable": "calc_ptf_vereecken1989",
+      "id": "calc_ptf_vereecken1989",
+      "inputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 5.6
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 97.8
+              }
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "sand"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 54.46
+              }
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "clay"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.01
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 6.6
+              }
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "carbon"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 1.04
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 1.73
+              }
+            },
+            "conditions": [],
+            "method": "oven_dry_105_c_24_h_100_cm3_core",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "reported_applicability": [],
+            "reported_unit": "g/cm^3",
+            "role": "predictor",
+            "status": "required",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "name": "bulk_density"
+        }
+      ],
+      "models": {
+        "h_theta": "van Genuchten moisture-retention model with m = 1",
+        "k_h": null
+      },
+      "module": "ptfkit.vereecken1989",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 1.0
+              }
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "volumetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "cm^3/cm^3",
+            "role": "model_parameter",
+            "status": "estimated",
+            "unit": "volume_fraction"
+          },
+          "name": "theta_r"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 1.0
+              }
+            },
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "centimeter_water_head",
+                "value": 0.0
+              }
+            ],
+            "method": null,
+            "particle_size": null,
+            "quantity": "volumetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "cm^3/cm^3",
+            "role": "model_parameter",
+            "status": "estimated",
+            "unit": "volume_fraction"
+          },
+          "name": "theta_s"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "not_applicable",
+              "material": "mineral_soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": false,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "van_genuchten_alpha",
+            "reported_applicability": [],
+            "reported_unit": "cm^-1",
+            "role": "model_parameter",
+            "status": "estimated",
+            "unit": "inverse_centimeter"
+          },
+          "name": "alpha"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "not_applicable",
+              "material": "mineral_soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": false,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "van_genuchten_n",
+            "reported_applicability": [],
+            "reported_unit": "dimensionless",
+            "role": "model_parameter",
+            "status": "estimated",
+            "unit": "dimensionless"
+          },
+          "name": "n"
+        }
+      ],
+      "source": "vereecken1989",
+      "status": "implemented",
+      "warnings": [
+        "The bulk-density maximum is reviewed as 1.730 g/cm^3 because the supplied transcription's 1.230 value is inconsistent with the reported mean."
+      ]
     }
   ],
   "ptfkit_version": "0.4.0",
@@ -918,6 +1182,13 @@
       "units": [
         "centimeter_water_head",
         "kilopascal"
+      ]
+    },
+    "organic_carbon_content": {
+      "description": "Organic carbon content expressed relative to dry soil mass.",
+      "units": [
+        "mass_fraction",
+        "mass_percent"
       ]
     },
     "osmotic_potential": {

@@ -323,6 +323,35 @@ def test_resolves_a_registered_adapter_against_the_packaged_ptfkit_manifest():
     assert candidate.curve.prediction == AdapterPrediction('clapp1978_h_theta')
 
 
+def test_resolves_vereecken_adapter_against_the_packaged_ptfkit_manifest():
+    source = {
+        'schema_version': 1,
+        'ptfkit_manifest_schema_version': 1,
+        'candidates': [
+            {
+                'id': 'vereecken_retention',
+                'kind': 'function_curve',
+                'axis': _axis(),
+                'target': {
+                    'quantity': 'volumetric_water_content',
+                    'unit': 'volume_fraction',
+                    'material_basis': 'mineral_soil',
+                    'denominator_basis': 'bulk_volume',
+                },
+                'function': 'calc_ptf_vereecken1989',
+                'prediction': {'kind': 'model_adapter', 'id': 'vereecken1989_h_theta'},
+            }
+        ],
+    }
+
+    plan = load_evaluation_plan(source)
+
+    candidate = plan.candidates[0]
+    assert isinstance(candidate, FunctionCurveCandidate)
+    assert candidate.curve.function == 'calc_ptf_vereecken1989'
+    assert candidate.curve.prediction == AdapterPrediction('vereecken1989_h_theta')
+
+
 def test_rejects_an_unknown_function_before_execution():
     source = _direct_plan()
     candidate = _first_candidate(source)
