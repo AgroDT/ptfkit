@@ -207,10 +207,8 @@
         }
       ],
       "blockers": [
-        "source_alias_review",
-        "unknown_water_basis",
-        "pressure_convention_by_source",
-        "retention_reconstruction"
+        "water_scale_by_source",
+        "pressure_convention_by_source"
       ]
     },
     {

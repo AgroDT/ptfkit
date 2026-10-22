@@ -23,7 +23,8 @@ the northern part of Sri Lanka. Models were evaluated using tenfold cross-valida
 
 # Arguments
 
-  * sand: Sand percentage measured by sieve analysis. (%)
+  * sand: Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve
+    analysis after dispersion and organic-matter removal. (%)
 
 # Returns
 
@@ -66,7 +67,8 @@ mod calc_ptf_gunarathna2019_vwc10_set1_tests {
 
 # Arguments
 
-  * sand: Sand percentage measured by sieve analysis. (%)
+  * sand: Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve
+    analysis after dispersion and organic-matter removal. (%)
   * silt: Silt percentage measured by the pipette method. (%)
 
 # Returns
@@ -109,7 +111,8 @@ mod calc_ptf_gunarathna2019_vwc10_set2_tests {
 
 # Arguments
 
-  * sand: Sand percentage measured by sieve analysis. (%)
+  * sand: Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve
+    analysis after dispersion and organic-matter removal. (%)
   * silt: Silt percentage measured by the pipette method. (%)
   * bulk_density: Bulk density measured using undisturbed cores. (g/cm3)
 
@@ -153,7 +156,8 @@ mod calc_ptf_gunarathna2019_vwc10_set3_tests {
 
 # Arguments
 
-  * sand: Sand percentage measured by sieve analysis. (%)
+  * sand: Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve
+    analysis after dispersion and organic-matter removal. (%)
   * silt: Silt percentage measured by the pipette method. (%)
   * organic_carbon: Organic carbon percentage measured by the Walkley-Black method. (%)
 
@@ -197,7 +201,8 @@ mod calc_ptf_gunarathna2019_vwc10_set4_tests {
 
 # Arguments
 
-  * sand: Sand percentage measured by sieve analysis. (%)
+  * sand: Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve
+    analysis after dispersion and organic-matter removal. (%)
 
 # Returns
 
@@ -240,7 +245,8 @@ mod calc_ptf_gunarathna2019_vwc33_set1_tests {
 
 # Arguments
 
-  * sand: Sand percentage measured by sieve analysis. (%)
+  * sand: Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve
+    analysis after dispersion and organic-matter removal. (%)
   * silt: Silt percentage measured by the pipette method. (%)
 
 # Returns
@@ -283,7 +289,8 @@ mod calc_ptf_gunarathna2019_vwc33_set2_tests {
 
 # Arguments
 
-  * sand: Sand percentage measured by sieve analysis. (%)
+  * sand: Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve
+    analysis after dispersion and organic-matter removal. (%)
   * silt: Silt percentage measured by the pipette method. (%)
   * bulk_density: Bulk density measured using undisturbed cores. (g/cm3)
 
@@ -327,7 +334,8 @@ mod calc_ptf_gunarathna2019_vwc33_set3_tests {
 
 # Arguments
 
-  * sand: Sand percentage measured by sieve analysis. (%)
+  * sand: Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve
+    analysis after dispersion and organic-matter removal. (%)
   * silt: Silt percentage measured by the pipette method. (%)
   * organic_carbon: Organic carbon percentage measured by the Walkley-Black method. (%)
 
@@ -371,7 +379,8 @@ mod calc_ptf_gunarathna2019_vwc33_set4_tests {
 
 # Arguments
 
-  * sand: Sand percentage measured by sieve analysis. (%)
+  * sand: Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve
+    analysis after dispersion and organic-matter removal. (%)
 
 # Returns
 
@@ -414,7 +423,8 @@ mod calc_ptf_gunarathna2019_vwc1500_set1_tests {
 
 # Arguments
 
-  * sand: Sand percentage measured by sieve analysis. (%)
+  * sand: Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve
+    analysis after dispersion and organic-matter removal. (%)
   * bulk_density: Bulk density measured using undisturbed cores. (g/cm3)
 
 # Returns
@@ -457,7 +467,8 @@ mod calc_ptf_gunarathna2019_vwc1500_set3_tests {
 
 # Arguments
 
-  * sand: Sand percentage measured by sieve analysis. (%)
+  * sand: Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve
+    analysis after dispersion and organic-matter removal. (%)
   * organic_carbon: Organic carbon percentage measured by the Walkley-Black method. (%)
 
 # Returns

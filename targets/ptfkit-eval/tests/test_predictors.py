@@ -1,6 +1,7 @@
 import copy
 import hashlib
 import json
+from collections.abc import Mapping, Sequence
 from pathlib import Path
 
 import pytest
@@ -29,9 +30,9 @@ def _workbook(path: Path) -> None:
 
 def _mapping(
     path: Path,
-    bindings: list[dict[str, object]],
+    bindings: Sequence[Mapping[str, object]],
     *,
-    density_measurement: dict[str, object] | None = None,
+    density_measurement: Mapping[str, object] | None = None,
 ) -> DatasetMapping:
     digest = hashlib.sha256(path.read_bytes()).hexdigest()
     columns = [
@@ -330,7 +331,7 @@ def test_source_local_measurement_override_does_not_treat_below_one_as_below_two
             }
         ],
     }
-    bindings = [
+    bindings: list[dict[str, object]] = [
         {
             'function': 'clay_ptf',
             'input': 'clay',
