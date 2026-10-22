@@ -81,7 +81,8 @@ def calc_ptf_gunarathna2019_vwc10_set1(
     """Estimate volumetric water content at -10 kPa using Set 1.
 
     Arguments:
-        sand: Sand percentage measured by sieve analysis. (%)
+        sand: Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve
+            analysis after dispersion and organic-matter removal. (%)
         out: Optional output arrays for in-place calculation.
 
     Returns:
@@ -126,7 +127,8 @@ def calc_ptf_gunarathna2019_vwc10_set2(
     """Estimate volumetric water content at -10 kPa using Set 2.
 
     Arguments:
-        sand: Sand percentage measured by sieve analysis. (%)
+        sand: Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve
+            analysis after dispersion and organic-matter removal. (%)
         silt: Silt percentage measured by the pipette method. (%)
         out: Optional output arrays for in-place calculation.
 
@@ -176,7 +178,8 @@ def calc_ptf_gunarathna2019_vwc10_set3(
     """Estimate volumetric water content at -10 kPa using Set 3.
 
     Arguments:
-        sand: Sand percentage measured by sieve analysis. (%)
+        sand: Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve
+            analysis after dispersion and organic-matter removal. (%)
         silt: Silt percentage measured by the pipette method. (%)
         bulk_density: Bulk density measured using undisturbed cores. (g/cm3)
         out: Optional output arrays for in-place calculation.
@@ -228,7 +231,8 @@ def calc_ptf_gunarathna2019_vwc10_set4(
     """Estimate volumetric water content at -10 kPa using Set 4.
 
     Arguments:
-        sand: Sand percentage measured by sieve analysis. (%)
+        sand: Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve
+            analysis after dispersion and organic-matter removal. (%)
         silt: Silt percentage measured by the pipette method. (%)
         organic_carbon: Organic carbon percentage measured by the Walkley-Black method. (%)
         out: Optional output arrays for in-place calculation.
@@ -274,7 +278,8 @@ def calc_ptf_gunarathna2019_vwc33_set1(
     """Estimate volumetric water content at -33 kPa using Set 1.
 
     Arguments:
-        sand: Sand percentage measured by sieve analysis. (%)
+        sand: Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve
+            analysis after dispersion and organic-matter removal. (%)
         out: Optional output arrays for in-place calculation.
 
     Returns:
@@ -319,7 +324,8 @@ def calc_ptf_gunarathna2019_vwc33_set2(
     """Estimate volumetric water content at -33 kPa using Set 2.
 
     Arguments:
-        sand: Sand percentage measured by sieve analysis. (%)
+        sand: Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve
+            analysis after dispersion and organic-matter removal. (%)
         silt: Silt percentage measured by the pipette method. (%)
         out: Optional output arrays for in-place calculation.
 
@@ -369,7 +375,8 @@ def calc_ptf_gunarathna2019_vwc33_set3(
     """Estimate volumetric water content at -33 kPa using Set 3.
 
     Arguments:
-        sand: Sand percentage measured by sieve analysis. (%)
+        sand: Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve
+            analysis after dispersion and organic-matter removal. (%)
         silt: Silt percentage measured by the pipette method. (%)
         bulk_density: Bulk density measured using undisturbed cores. (g/cm3)
         out: Optional output arrays for in-place calculation.
@@ -421,7 +428,8 @@ def calc_ptf_gunarathna2019_vwc33_set4(
     """Estimate volumetric water content at -33 kPa using Set 4.
 
     Arguments:
-        sand: Sand percentage measured by sieve analysis. (%)
+        sand: Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve
+            analysis after dispersion and organic-matter removal. (%)
         silt: Silt percentage measured by the pipette method. (%)
         organic_carbon: Organic carbon percentage measured by the Walkley-Black method. (%)
         out: Optional output arrays for in-place calculation.
@@ -467,7 +475,8 @@ def calc_ptf_gunarathna2019_vwc1500_set1(
     """Estimate volumetric water content at -1500 kPa using Set 1.
 
     Arguments:
-        sand: Sand percentage measured by sieve analysis. (%)
+        sand: Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve
+            analysis after dispersion and organic-matter removal. (%)
         out: Optional output arrays for in-place calculation.
 
     Returns:
@@ -512,7 +521,8 @@ def calc_ptf_gunarathna2019_vwc1500_set3(
     """Estimate volumetric water content at -1500 kPa using Set 3.
 
     Arguments:
-        sand: Sand percentage measured by sieve analysis. (%)
+        sand: Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve
+            analysis after dispersion and organic-matter removal. (%)
         bulk_density: Bulk density measured using undisturbed cores. (g/cm3)
         out: Optional output arrays for in-place calculation.
 
@@ -558,7 +568,8 @@ def calc_ptf_gunarathna2019_vwc1500_set4(
     """Estimate volumetric water content at -1500 kPa using Set 4.
 
     Arguments:
-        sand: Sand percentage measured by sieve analysis. (%)
+        sand: Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve
+            analysis after dispersion and organic-matter removal. (%)
         organic_carbon: Organic carbon percentage measured by the Walkley-Black method. (%)
         out: Optional output arrays for in-place calculation.
 

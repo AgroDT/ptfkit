@@ -49,6 +49,12 @@ from .execution import (
     convert_value,
     evaluate_candidate,
 )
+from .eligibility import (
+    ComputationalDomainDecision,
+    ComputationalDomainError,
+    DomainBound,
+    assess_computational_domain,
+)
 from .normalization import (
     FittedRetentionParameter,
     NormalizedRetentionObservation,
@@ -109,6 +115,8 @@ __all__ = [
     'BlendTransition',
     'CanonicalPredictorValue',
     'CompositeMember',
+    'ComputationalDomainDecision',
+    'ComputationalDomainError',
     'Contribution',
     'CurveEvaluation',
     'CurveExecutionError',
@@ -117,6 +125,7 @@ __all__ = [
     'DatasetMappingDiagnostic',
     'DatasetMappingLoadError',
     'DatasetMappingValidationError',
+    'DomainBound',
     'EvaluationPlan',
     'FittedRetentionParameter',
     'FormulaExample',
@@ -167,6 +176,7 @@ __all__ = [
     'WorkbookInventory',
     'audit_predictor_workbook',
     'audit_retention_reconstruction_workbook',
+    'assess_computational_domain',
     'builtin_model_adapters',
     'convert_value',
     'evaluate_candidate',

@@ -137,6 +137,24 @@ def test_meta_mapping_is_inventory_bound_and_keeps_ambiguities_explicit():
         for binding in predictor_bindings
     ] == [
         ('calc_ptf_clapp1978', 'soil_texture', 'L', ('texture_classification',)),
+        (
+            'calc_ptf_gunarathna2019_vwc10_set1',
+            'sand',
+            'P',
+            ('particle_size_schemes',),
+        ),
+        (
+            'calc_ptf_gunarathna2019_vwc33_set1',
+            'sand',
+            'P',
+            ('particle_size_schemes',),
+        ),
+        (
+            'calc_ptf_gunarathna2019_vwc1500_set1',
+            'sand',
+            'P',
+            ('particle_size_schemes',),
+        ),
         ('calc_ptf_vereecken1989', 'sand', 'P', ('particle_size_schemes',)),
         ('calc_ptf_vereecken1989', 'clay', 'N', ('particle_size_schemes',)),
         ('calc_ptf_vereecken1989', 'carbon', 'R', ('organic_property_provenance',)),
@@ -157,6 +175,38 @@ def test_meta_mapping_is_inventory_bound_and_keeps_ambiguities_explicit():
 
     with pytest.raises(TypeError):
         cast('dict[str, object]', mapping.document)['dataset'] = {}
+
+
+def test_sapozhnikov_review_confirms_identity_and_water_quantity_only():
+    mapping = load_dataset_mapping(MAPPING_PATH)
+    identity = cast('Mapping[str, object]', mapping.document['identity'])
+    aliases = cast('Sequence[Mapping[str, object]]', identity['source_aliases'])
+    alias = next(item for item in aliases if item['raw'] == '1988_сапожников')
+    assert alias['canonical'] == '1988_Сапожников'
+    assert alias['status'] == 'confirmed'
+
+    source_rules = cast(
+        'Sequence[Mapping[str, object]]', mapping.document['retention_source_rules']
+    )
+    source = next(item for item in source_rules if item['source'] == '1988_сапожников')
+    observations = cast('Sequence[Mapping[str, object]]', source['observations'])
+    assert len(observations) == 1
+    observation = observations[0]
+    assert observation['water_quantity'] == 'gravimetric_water_content'
+    assert observation['water_unit'] is None
+    assert observation['canonical_water_unit'] == 'mass_fraction'
+    assert observation['blockers'] == (
+        'water_scale_by_source',
+        'pressure_convention_by_source',
+    )
+
+    reconstruction_rules = cast(
+        'Sequence[Mapping[str, object]]',
+        mapping.document['retention_reconstruction_rules'],
+    )
+    reconstruction = next(item for item in reconstruction_rules if item['id'] == 'sapozhnikov_1988')
+    assert reconstruction['status'] == 'blocked'
+    assert reconstruction['blockers'] == observation['blockers']
 
 
 def test_rejects_checksum_drift_in_the_inventory():
@@ -490,6 +540,10 @@ def test_reconstruction_audit_keeps_point_integrity_separate_from_identity():
     assert sapozhnikov['matched_point_count'] == 108
     assert sapozhnikov['proposed_pressure_replacement_count'] == 1
     assert sapozhnikov['identity_status'] == 'exact_unique'
+    assert sapozhnikov['blockers'] == [
+        'water_scale_by_source',
+        'pressure_convention_by_source',
+    ]
     khaydapova = rules['khaydapova_2001']
     assert khaydapova['point_multiset_status'] == 'exact'
     assert khaydapova['resolved_group_count'] == 0
@@ -560,7 +614,7 @@ def test_predictor_audit_covers_every_declared_retention_sample_without_values()
     audit = json.loads(PREDICTOR_PATH.read_text(encoding='utf-8'))
 
     assert audit['schema_version'] == 2
-    assert audit['public_function_count'] == 2
+    assert audit['public_function_count'] == 5
     assert audit['candidate_sample_count'] == 206
     assert audit['function_audits'] == [
         {
@@ -568,6 +622,30 @@ def test_predictor_audit_covers_every_declared_retention_sample_without_values()
             'input_count': 1,
             'candidate_sample_count': 206,
             'complete_input_sample_count': 89,
+            'eligible_sample_count': 0,
+            'excluded_sample_count': 206,
+        },
+        {
+            'function': 'calc_ptf_gunarathna2019_vwc10_set1',
+            'input_count': 1,
+            'candidate_sample_count': 206,
+            'complete_input_sample_count': 51,
+            'eligible_sample_count': 0,
+            'excluded_sample_count': 206,
+        },
+        {
+            'function': 'calc_ptf_gunarathna2019_vwc1500_set1',
+            'input_count': 1,
+            'candidate_sample_count': 206,
+            'complete_input_sample_count': 51,
+            'eligible_sample_count': 0,
+            'excluded_sample_count': 206,
+        },
+        {
+            'function': 'calc_ptf_gunarathna2019_vwc33_set1',
+            'input_count': 1,
+            'candidate_sample_count': 206,
+            'complete_input_sample_count': 51,
             'eligible_sample_count': 0,
             'excluded_sample_count': 206,
         },
@@ -583,6 +661,20 @@ def test_predictor_audit_covers_every_declared_retention_sample_without_values()
     assert audit['binding_audits'][0]['populated_count'] == 89
     assert audit['binding_audits'][0]['missing_count'] == 117
     assert audit['binding_audits'][0]['compatible_count'] == 0
+    gunarathna_audits = [
+        item
+        for item in audit['binding_audits']
+        if item['function'].startswith('calc_ptf_gunarathna2019_')
+    ]
+    assert len(gunarathna_audits) == 3
+    assert {
+        (
+            item['populated_count'],
+            item['measurement_compatible_count'],
+            item['particle_size_compatible_count'],
+        )
+        for item in gunarathna_audits
+    } == {(51, 0, 0)}
     clay_audit = next(
         item
         for item in audit['binding_audits']
@@ -593,9 +685,9 @@ def test_predictor_audit_covers_every_declared_retention_sample_without_values()
     assert clay_audit['particle_size_compatible_count'] == 12
     assert audit['exclusion_reasons'] == [
         {'label': 'density_units', 'count': 95},
-        {'label': 'missing_input', 'count': 289},
+        {'label': 'missing_input', 'count': 754},
         {'label': 'organic_property_provenance', 'count': 125},
-        {'label': 'particle_size_schemes', 'count': 85},
+        {'label': 'particle_size_schemes', 'count': 238},
         {'label': 'texture_classification', 'count': 89},
     ]
     assert 'values' not in audit

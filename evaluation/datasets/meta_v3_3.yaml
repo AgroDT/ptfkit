@@ -24,8 +24,8 @@ identity:
     - worksheet: ОГХ
       raw: 1988_сапожников
       canonical: 1988_Сапожников
-      status: proposed
-      evidence: The source labels differ only by Unicode case and share sample numbers.
+      status: confirmed
+      evidence: The labels differ only by Unicode case, and the 12 long-sheet sample groups map bijectively by sample number to the 12 complete 9-point curves in Данные!X8:AF19.
     - worksheet: ОГХ
       raw: 2001_хайдапова
       canonical: 2001_Хайдапова
@@ -587,7 +587,7 @@ retention_source_rules:
       - {water_encoding: W, pressure_encoding: pF, status: blocked, water_quantity: gravimetric_water_content, water_unit: null, canonical_water_unit: mass_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
   - source: 1988_сапожников
     observations:
-      - {water_encoding: "?", pressure_encoding: pF, status: blocked, water_quantity: null, water_unit: null, canonical_water_unit: null, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [unknown_water_basis, pressure_convention_by_source], evidence: The workbook leaves the water quantity and scale unknown and the source-specific pressure convention has not been reviewed.}
+      - {water_encoding: "?", pressure_encoding: pF, status: blocked, water_quantity: gravimetric_water_content, water_unit: null, canonical_water_unit: mass_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: "Данные!W7 identifies the corresponding wide block as W, and Данные!W1 defines W as mass-based water content; the source-specific percent-versus-fraction scale and pressure convention remain unreviewed."}
   - source: 1991_Гуматов
     observations:
       - {water_encoding: W, pressure_encoding: pF, status: blocked, water_quantity: gravimetric_water_content, water_unit: null, canonical_water_unit: mass_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
@@ -713,8 +713,8 @@ retention_reconstruction_rules:
     blocks:
       - {axis_row: 7, first_sample_row: 8, last_sample_row: 19, first_column: X, last_column: AF}
     parameter_block: null
-    blockers: [source_alias_review, unknown_water_basis, pressure_convention_by_source, retention_reconstruction]
-    evidence: All 108 transformed points and all 12 complete curves match bijectively; the source alias and pressure replacement remain unreviewed.
+    blockers: [water_scale_by_source, pressure_convention_by_source]
+    evidence: All 108 transformed points and all 12 complete curves match bijectively, confirming the case-only source alias and sample-number namespace. Данные!W7 and Данные!W1 establish a gravimetric water quantity, but not its percent-versus-fraction scale. The proposed 0.01-to--1 pressure replacement remains physically unresolved.
   - id: gumatov_1991
     status: blocked
     master_worksheet: Данные
@@ -1256,6 +1256,27 @@ predictor_bindings:
     status: blocked
     blockers: [texture_classification]
     evidence: The column contains a source texture label, but the classification system and a reviewed crosswalk to the USDA classes required by Clapp et al. (1978) are not documented.
+  - function: calc_ptf_gunarathna2019_vwc10_set1
+    input: sand
+    worksheet: Данные
+    column: P
+    status: blocked
+    blockers: [particle_size_schemes]
+    evidence: The master column records particles above 50 micrometres, but its 2-millimetre upper bound, dry-mass fine-earth basis, and source-specific sieve method are not documented as required by Gunarathna et al. (2019).
+  - function: calc_ptf_gunarathna2019_vwc33_set1
+    input: sand
+    worksheet: Данные
+    column: P
+    status: blocked
+    blockers: [particle_size_schemes]
+    evidence: The master column records particles above 50 micrometres, but its 2-millimetre upper bound, dry-mass fine-earth basis, and source-specific sieve method are not documented as required by Gunarathna et al. (2019).
+  - function: calc_ptf_gunarathna2019_vwc1500_set1
+    input: sand
+    worksheet: Данные
+    column: P
+    status: blocked
+    blockers: [particle_size_schemes]
+    evidence: The master column records particles above 50 micrometres, but its 2-millimetre upper bound, dry-mass fine-earth basis, and source-specific sieve method are not documented as required by Gunarathna et al. (2019).
   - function: calc_ptf_vereecken1989
     input: sand
     worksheet: Данные
@@ -1350,8 +1371,8 @@ quarantines:
 blockers:
   - id: source_alias_review
     scope: identity.source_aliases
-    question: Do the remaining 16 proposed source-label pairs denote the same publications and sample-number namespaces?
-    evidence: Thirteen are case variants, and the Panina, Umarova, and Shein 2018 labels add publication or block suffixes; unlike the confirmed Chestnova join, they do not yet have reviewed source evidence.
+    question: Do the remaining 15 proposed source-label pairs denote the same publications and sample-number namespaces?
+    evidence: Twelve are case variants, and the Panina, Umarova, and Shein 2018 labels add publication or block suffixes; unlike the confirmed Chestnova and Sapozhnikov 1988 joins, they do not yet have reviewed source evidence.
   - id: duplicate_master_sample_ids
     scope: Данные sample rows
     question: Which repeated rows are duplicate views, repeated measurements, or distinct samples sharing a weak identifier?

@@ -40,7 +40,7 @@ static inline double calc_ptf_gunarathna2019_vwc10_set1(double sand);
 
 | Name | Direction | Description |
 | --- | --- | --- |
-| `sand` | in | Sand percentage measured by sieve analysis. (%) |
+| `sand` | in | Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve analysis after dispersion and organic-matter removal. (%) |
 
 #### Returns
 
@@ -74,7 +74,7 @@ static inline double calc_ptf_gunarathna2019_vwc10_set2(double sand, double silt
 
 | Name | Direction | Description |
 | --- | --- | --- |
-| `sand` | in | Sand percentage measured by sieve analysis. (%) |
+| `sand` | in | Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve analysis after dispersion and organic-matter removal. (%) |
 | `silt` | in | Silt percentage measured by the pipette method. (%) |
 
 #### Returns
@@ -105,7 +105,7 @@ static inline double calc_ptf_gunarathna2019_vwc10_set3(double sand, double silt
 
 | Name | Direction | Description |
 | --- | --- | --- |
-| `sand` | in | Sand percentage measured by sieve analysis. (%) |
+| `sand` | in | Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve analysis after dispersion and organic-matter removal. (%) |
 | `silt` | in | Silt percentage measured by the pipette method. (%) |
 | `bulk_density` | in | Bulk density measured using undisturbed cores. (g/cm3) |
 
@@ -137,7 +137,7 @@ static inline double calc_ptf_gunarathna2019_vwc10_set4(double sand, double silt
 
 | Name | Direction | Description |
 | --- | --- | --- |
-| `sand` | in | Sand percentage measured by sieve analysis. (%) |
+| `sand` | in | Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve analysis after dispersion and organic-matter removal. (%) |
 | `silt` | in | Silt percentage measured by the pipette method. (%) |
 | `organic_carbon` | in | Organic carbon percentage measured by the Walkley-Black method. (%) |
 
@@ -169,7 +169,7 @@ static inline double calc_ptf_gunarathna2019_vwc33_set1(double sand);
 
 | Name | Direction | Description |
 | --- | --- | --- |
-| `sand` | in | Sand percentage measured by sieve analysis. (%) |
+| `sand` | in | Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve analysis after dispersion and organic-matter removal. (%) |
 
 #### Returns
 
@@ -203,7 +203,7 @@ static inline double calc_ptf_gunarathna2019_vwc33_set2(double sand, double silt
 
 | Name | Direction | Description |
 | --- | --- | --- |
-| `sand` | in | Sand percentage measured by sieve analysis. (%) |
+| `sand` | in | Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve analysis after dispersion and organic-matter removal. (%) |
 | `silt` | in | Silt percentage measured by the pipette method. (%) |
 
 #### Returns
@@ -234,7 +234,7 @@ static inline double calc_ptf_gunarathna2019_vwc33_set3(double sand, double silt
 
 | Name | Direction | Description |
 | --- | --- | --- |
-| `sand` | in | Sand percentage measured by sieve analysis. (%) |
+| `sand` | in | Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve analysis after dispersion and organic-matter removal. (%) |
 | `silt` | in | Silt percentage measured by the pipette method. (%) |
 | `bulk_density` | in | Bulk density measured using undisturbed cores. (g/cm3) |
 
@@ -266,7 +266,7 @@ static inline double calc_ptf_gunarathna2019_vwc33_set4(double sand, double silt
 
 | Name | Direction | Description |
 | --- | --- | --- |
-| `sand` | in | Sand percentage measured by sieve analysis. (%) |
+| `sand` | in | Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve analysis after dispersion and organic-matter removal. (%) |
 | `silt` | in | Silt percentage measured by the pipette method. (%) |
 | `organic_carbon` | in | Organic carbon percentage measured by the Walkley-Black method. (%) |
 
@@ -298,7 +298,7 @@ static inline double calc_ptf_gunarathna2019_vwc1500_set1(double sand);
 
 | Name | Direction | Description |
 | --- | --- | --- |
-| `sand` | in | Sand percentage measured by sieve analysis. (%) |
+| `sand` | in | Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve analysis after dispersion and organic-matter removal. (%) |
 
 #### Returns
 
@@ -332,7 +332,7 @@ static inline double calc_ptf_gunarathna2019_vwc1500_set3(double sand, double bu
 
 | Name | Direction | Description |
 | --- | --- | --- |
-| `sand` | in | Sand percentage measured by sieve analysis. (%) |
+| `sand` | in | Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve analysis after dispersion and organic-matter removal. (%) |
 | `bulk_density` | in | Bulk density measured using undisturbed cores. (g/cm3) |
 
 #### Returns
@@ -363,7 +363,7 @@ static inline double calc_ptf_gunarathna2019_vwc1500_set4(double sand, double or
 
 | Name | Direction | Description |
 | --- | --- | --- |
-| `sand` | in | Sand percentage measured by sieve analysis. (%) |
+| `sand` | in | Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve analysis after dispersion and organic-matter removal. (%) |
 | `organic_carbon` | in | Organic carbon percentage measured by the Walkley-Black method. (%) |
 
 #### Returns

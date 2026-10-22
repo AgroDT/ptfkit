@@ -51,6 +51,13 @@ supported by an exact factor-of-100 relationship plus the source documentation.
 The remaining rules stay blocked; numeric magnitude is never used to infer
 percent versus fraction.
 
+Sapozhnikov et al. (1988) is the first partially reviewed blocked source. Its
+case-only source alias is confirmed by a bijection between all 12 complete
+nine-point curves and their sample numbers. The block control cell `Данные!W7`
+and legend cell `Данные!W1` establish a gravimetric water quantity, but not
+whether the stored values are fractions or percentages. Its pressure convention and the physical
+meaning of the proposed first-axis replacement also remain blocked.
+
 `meta_v3_3.reconstruction-audit.json` is the count-only result of applying the
 declarative wide-block rules to the exact workbook bytes. The audit treats value
 integrity and sample identity as separate claims. Its 27 rules account for all
@@ -69,9 +76,14 @@ crosswalks, so it is the sole normalization-ready rule.
 eligibility result for the same workbook bytes. Its candidate cohort contains
 the 206 distinct master-sheet rows declared as samples by the retention
 reconstruction rules; control rows are not inferred from numeric markers. The
-current public ptfkit manifest contains two function contracts. The
+current public ptfkit manifest contains five function contracts. The
 `calc_ptf_clapp1978` texture input remains blocked by the unresolved USDA
-crosswalk. The four `calc_ptf_vereecken1989` inputs are bound to the master
+crosswalk. The three sand-only Gunarathna et al. (2019) contracts each have 51
+populated raw candidates in the master sand column, but all remain blocked:
+the PTF requires the 50-to-2,000-micrometre dry-mass fraction of fine earth
+measured by sieve analysis, whereas the workbook states only a
+greater-than-50-micrometre lower boundary. The four `calc_ptf_vereecken1989`
+inputs are bound to the master
 sand, clay, organic-carbon, and bulk-density columns. Thirty-four rows contain
 all four raw values, but their clay fraction is below 1 micrometre rather than
 the required below 2 micrometres. The source-local header at `Данные!N210`

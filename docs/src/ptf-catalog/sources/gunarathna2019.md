@@ -33,7 +33,7 @@ Estimate volumetric water content at -10 kPa using Set 1.
 
 | Name | Type | Unit | Domain | Description |
 | --- | --- | --- | --- | --- |
-| `sand` | `number` | % | Table 1 observed range: 5.2 <= value <= 99.0 | Sand percentage measured by sieve analysis. |
+| `sand` | `number` | % | Table 1 observed range: 5.2 <= value <= 99.0 | Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve analysis after dispersion and organic-matter removal. |
 
 #### Outputs
 
@@ -69,7 +69,7 @@ Estimate volumetric water content at -10 kPa using Set 2.
 
 | Name | Type | Unit | Domain | Description |
 | --- | --- | --- | --- | --- |
-| `sand` | `number` | % | Table 1 observed range: 5.2 <= value <= 99.0 | Sand percentage measured by sieve analysis. |
+| `sand` | `number` | % | Table 1 observed range: 5.2 <= value <= 99.0 | Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve analysis after dispersion and organic-matter removal. |
 | `silt` | `number` | % | Table 1 observed range: 0.0 <= value <= 38.6 | Silt percentage measured by the pipette method. |
 
 #### Outputs
@@ -102,7 +102,7 @@ Estimate volumetric water content at -10 kPa using Set 3.
 
 | Name | Type | Unit | Domain | Description |
 | --- | --- | --- | --- | --- |
-| `sand` | `number` | % | Table 1 observed range: 5.2 <= value <= 99.0 | Sand percentage measured by sieve analysis. |
+| `sand` | `number` | % | Table 1 observed range: 5.2 <= value <= 99.0 | Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve analysis after dispersion and organic-matter removal. |
 | `silt` | `number` | % | Table 1 observed range: 0.0 <= value <= 38.6 | Silt percentage measured by the pipette method. |
 | `bulk_density` | `number` | g/cm3 | Table 1 observed range: 1.0 <= value <= 2.0 | Bulk density measured using undisturbed cores. |
 
@@ -136,7 +136,7 @@ Estimate volumetric water content at -10 kPa using Set 4.
 
 | Name | Type | Unit | Domain | Description |
 | --- | --- | --- | --- | --- |
-| `sand` | `number` | % | Table 1 observed range: 5.2 <= value <= 99.0 | Sand percentage measured by sieve analysis. |
+| `sand` | `number` | % | Table 1 observed range: 5.2 <= value <= 99.0 | Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve analysis after dispersion and organic-matter removal. |
 | `silt` | `number` | % | Table 1 observed range: 0.0 <= value <= 38.6 | Silt percentage measured by the pipette method. |
 | `organic_carbon` | `number` | % | Table 1 observed range: 0.0 <= value <= 4.5 | Organic carbon percentage measured by the Walkley-Black method. |
 
@@ -170,7 +170,7 @@ Estimate volumetric water content at -33 kPa using Set 1.
 
 | Name | Type | Unit | Domain | Description |
 | --- | --- | --- | --- | --- |
-| `sand` | `number` | % | Table 1 observed range: 5.2 <= value <= 99.0 | Sand percentage measured by sieve analysis. |
+| `sand` | `number` | % | Table 1 observed range: 5.2 <= value <= 99.0 | Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve analysis after dispersion and organic-matter removal. |
 
 #### Outputs
 
@@ -206,7 +206,7 @@ Estimate volumetric water content at -33 kPa using Set 2.
 
 | Name | Type | Unit | Domain | Description |
 | --- | --- | --- | --- | --- |
-| `sand` | `number` | % | Table 1 observed range: 5.2 <= value <= 99.0 | Sand percentage measured by sieve analysis. |
+| `sand` | `number` | % | Table 1 observed range: 5.2 <= value <= 99.0 | Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve analysis after dispersion and organic-matter removal. |
 | `silt` | `number` | % | Table 1 observed range: 0.0 <= value <= 38.6 | Silt percentage measured by the pipette method. |
 
 #### Outputs
@@ -239,7 +239,7 @@ Estimate volumetric water content at -33 kPa using Set 3.
 
 | Name | Type | Unit | Domain | Description |
 | --- | --- | --- | --- | --- |
-| `sand` | `number` | % | Table 1 observed range: 5.2 <= value <= 99.0 | Sand percentage measured by sieve analysis. |
+| `sand` | `number` | % | Table 1 observed range: 5.2 <= value <= 99.0 | Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve analysis after dispersion and organic-matter removal. |
 | `silt` | `number` | % | Table 1 observed range: 0.0 <= value <= 38.6 | Silt percentage measured by the pipette method. |
 | `bulk_density` | `number` | g/cm3 | Table 1 observed range: 1.0 <= value <= 2.0 | Bulk density measured using undisturbed cores. |
 
@@ -273,7 +273,7 @@ Estimate volumetric water content at -33 kPa using Set 4.
 
 | Name | Type | Unit | Domain | Description |
 | --- | --- | --- | --- | --- |
-| `sand` | `number` | % | Table 1 observed range: 5.2 <= value <= 99.0 | Sand percentage measured by sieve analysis. |
+| `sand` | `number` | % | Table 1 observed range: 5.2 <= value <= 99.0 | Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve analysis after dispersion and organic-matter removal. |
 | `silt` | `number` | % | Table 1 observed range: 0.0 <= value <= 38.6 | Silt percentage measured by the pipette method. |
 | `organic_carbon` | `number` | % | Table 1 observed range: 0.0 <= value <= 4.5 | Organic carbon percentage measured by the Walkley-Black method. |
 
@@ -307,7 +307,7 @@ Estimate volumetric water content at -1500 kPa using Set 1.
 
 | Name | Type | Unit | Domain | Description |
 | --- | --- | --- | --- | --- |
-| `sand` | `number` | % | Table 1 observed range: 5.2 <= value <= 99.0 | Sand percentage measured by sieve analysis. |
+| `sand` | `number` | % | Table 1 observed range: 5.2 <= value <= 99.0 | Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve analysis after dispersion and organic-matter removal. |
 
 #### Outputs
 
@@ -343,7 +343,7 @@ Estimate volumetric water content at -1500 kPa using Set 3.
 
 | Name | Type | Unit | Domain | Description |
 | --- | --- | --- | --- | --- |
-| `sand` | `number` | % | Table 1 observed range: 5.2 <= value <= 99.0 | Sand percentage measured by sieve analysis. |
+| `sand` | `number` | % | Table 1 observed range: 5.2 <= value <= 99.0 | Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve analysis after dispersion and organic-matter removal. |
 | `bulk_density` | `number` | g/cm3 | Table 1 observed range: 1.0 <= value <= 2.0 | Bulk density measured using undisturbed cores. |
 
 #### Outputs
@@ -376,7 +376,7 @@ Estimate volumetric water content at -1500 kPa using Set 4.
 
 | Name | Type | Unit | Domain | Description |
 | --- | --- | --- | --- | --- |
-| `sand` | `number` | % | Table 1 observed range: 5.2 <= value <= 99.0 | Sand percentage measured by sieve analysis. |
+| `sand` | `number` | % | Table 1 observed range: 5.2 <= value <= 99.0 | Dry-mass percentage of the 0.05-2 mm sand fraction of fine earth, measured by sieve analysis after dispersion and organic-matter removal. |
 | `organic_carbon` | `number` | % | Table 1 observed range: 0.0 <= value <= 4.5 | Organic carbon percentage measured by the Walkley-Black method. |
 
 #### Outputs
