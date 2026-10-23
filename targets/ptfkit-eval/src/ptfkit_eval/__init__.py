@@ -8,6 +8,14 @@ from .adapters import (
     evaluate_vereecken1989_h_theta,
     model_adapter_specs,
 )
+from .applicability import (
+    EmpiricalDomainPlan,
+    EmpiricalInputBound,
+    EmpiricalMemberDomain,
+    EmpiricalSampleAssessment,
+    RunEmpiricalDomain,
+    assess_retention_applicability,
+)
 from .artifacts import read_retention_run_report, write_retention_run
 from .canonical import CanonicalRetentionDataset, load_retention_dataset
 from .cohorts import (
@@ -109,7 +117,22 @@ from .folds import (
     OuterGroupFold,
     build_nested_group_folds,
 )
+from .hard_switch import HardSwitchBoundaryScore, HardSwitchGridFit, HardSwitchGridPlan
 from .input_bindings import RunInputTrace, bind_retention_inputs
+from .learned import (
+    ConvexPairFit,
+    ConvexPairPlan,
+    LearnedCandidateScore,
+    LearnedInnerEvidence,
+    LearnedNestedSelection,
+    LearnedOuterAssessment,
+    LearnedOuterFold,
+    LearnedSelectionPlan,
+    select_grouped_forecast_candidates,
+    select_learned_retention_candidates,
+)
+from .learned_applicability import diagnose_learned_applicability
+from .learned_seams import LearnedSwitchSeam, diagnose_learned_switch_seams
 from .losses import (
     LogPressureLossPlan,
     RetentionLossError,
@@ -124,6 +147,14 @@ from .metrics import (
     SampleErrorMetrics,
     summarize_retention_errors,
 )
+from .nested_applicability import (
+    NestedApplicabilityResult,
+    NestedDomainPlan,
+    NestedDomainSample,
+    NestedDomainStratum,
+    NestedFoldDomain,
+    diagnose_nested_applicability,
+)
 from .normalization import (
     FittedRetentionParameter,
     NormalizedRetentionObservation,
@@ -133,6 +164,13 @@ from .normalization import (
     RetentionNormalizationSummary,
     normalize_retention_workbook,
     write_retention_normalization_summary,
+)
+from .paired import (
+    PairedComparisonPlan,
+    PairedRetentionBootstrap,
+    RetentionMetricDifferences,
+    bootstrap_paired_retention_errors,
+    compare_retention_run_pairs,
 )
 from .particles import ParticleSizeInterval, exact_particle_size_cover
 from .predictors import (
@@ -152,8 +190,10 @@ from .quality import (
     RetentionSeriesPoint,
     RetentionSeriesQuality,
     RunCurveQuality,
+    SelectionCurveQuality,
     diagnose_retention_run,
     diagnose_retention_series,
+    diagnose_selection_curves,
 )
 from .reconstruction import (
     InferredRetentionCrosswalk,
@@ -162,6 +202,17 @@ from .reconstruction import (
     RetentionReconstructionRuleAudit,
     audit_retention_reconstruction_workbook,
     write_retention_reconstruction_audit,
+)
+from .resampling import (
+    GroupedForecastResample,
+    GroupMultiplicity,
+    ResampledObservation,
+    ResampledSample,
+    SelectionResample,
+    SelectionResamplingPlan,
+    SelectionResamplingResult,
+    resample_grouped_forecasts,
+    resample_selection_procedure,
 )
 from .retention import (
     LabelCount,
@@ -172,6 +223,15 @@ from .retention import (
     RetentionWorkbookProfile,
     profile_retention_workbook,
     write_retention_profile,
+)
+from .risk_bounds import (
+    BoundedGroupLoss,
+    BoundedRiskInterval,
+    ConditionalOuterFoldBound,
+    ConditionalOuterFoldLoss,
+    ConditionalOuterRiskBound,
+    ConditionalOuterRiskPlan,
+    bound_conditional_outer_risks,
 )
 from .run_plans import RetentionRunPlan, load_retention_run_plan
 from .runner import (
@@ -185,6 +245,7 @@ from .runner import (
     execute_retention_run,
     predict_retention_grid,
 )
+from .seams import CompositeSeamDiagnostic, SeamMemberValue, diagnose_composite_seams
 from .selection import (
     FixedNestedSelection,
     FixedSelectionError,
@@ -196,6 +257,18 @@ from .selection import (
     SelectionProtocolAssessment,
     ValidationLoss,
     select_fixed_retention_candidates,
+)
+from .selection_predictions import SelectionPredictionFrame, selection_prediction_frames
+from .selection_risk import (
+    ConditionalRiskFoldFailure,
+    SelectionConditionalRisk,
+    SelectionRiskPlan,
+    assess_selection_conditional_risks,
+)
+from .strategy_assessment import (
+    OuterStrategySummary,
+    SelectionStrategyAssessment,
+    assess_selection_strategies,
 )
 from .uncertainty import (
     ClusterBootstrapPlan,
@@ -226,18 +299,28 @@ __all__ = [
     'AtomicCurve',
     'AxisSpec',
     'BlendTransition',
+    'BoundedGroupLoss',
+    'BoundedRiskInterval',
     'CanonicalPredictorValue',
     'CanonicalRetentionDataset',
     'ClusterBootstrapPlan',
     'CohortPointExclusion',
     'CompositeMember',
+    'CompositeSeamDiagnostic',
     'ComputationalDomainDecision',
     'ComputationalDomainError',
+    'ConditionalOuterFoldBound',
+    'ConditionalOuterFoldLoss',
+    'ConditionalOuterRiskBound',
+    'ConditionalOuterRiskPlan',
+    'ConditionalRiskFoldFailure',
     'ConformalLeakageError',
     'ConformalPlanError',
     'ConformalPrediction',
     'ConformalPredictionInterval',
     'Contribution',
+    'ConvexPairFit',
+    'ConvexPairPlan',
     'CurveEvaluation',
     'CurveExecutionError',
     'CurvePoint',
@@ -246,6 +329,10 @@ __all__ = [
     'DatasetMappingLoadError',
     'DatasetMappingValidationError',
     'DomainBound',
+    'EmpiricalDomainPlan',
+    'EmpiricalInputBound',
+    'EmpiricalMemberDomain',
+    'EmpiricalSampleAssessment',
     'ErrorMetrics',
     'EvaluationDocumentError',
     'EvaluationPlan',
@@ -263,11 +350,16 @@ __all__ = [
     'FunctionPredictorAudit',
     'FunctionSampleEligibility',
     'GroupMembership',
+    'GroupMultiplicity',
     'GroupResidualScore',
     'GroupValidationError',
     'GroupedConformalCalibration',
     'GroupedConformalPlan',
+    'GroupedForecastResample',
     'GroupedSample',
+    'HardSwitchBoundaryScore',
+    'HardSwitchGridFit',
+    'HardSwitchGridPlan',
     'HardSwitchTransition',
     'HeaderBlock',
     'HeaderCell',
@@ -277,6 +369,13 @@ __all__ = [
     'InnerGroupFold',
     'Interval',
     'LabelCount',
+    'LearnedCandidateScore',
+    'LearnedInnerEvidence',
+    'LearnedNestedSelection',
+    'LearnedOuterAssessment',
+    'LearnedOuterFold',
+    'LearnedSelectionPlan',
+    'LearnedSwitchSeam',
     'LockedCandidateChoice',
     'LogPressureLossPlan',
     'MetricConfidenceInterval',
@@ -284,6 +383,11 @@ __all__ = [
     'ModelAdapterSpec',
     'ModelEvaluationError',
     'ModelParameterSpec',
+    'NestedApplicabilityResult',
+    'NestedDomainPlan',
+    'NestedDomainSample',
+    'NestedDomainStratum',
+    'NestedFoldDomain',
     'NestedGroupFolds',
     'NestedGroupPlan',
     'NormalizedRetentionObservation',
@@ -291,7 +395,10 @@ __all__ = [
     'OuterCandidateAssessment',
     'OuterGroupFold',
     'OuterSelectionResult',
+    'OuterStrategySummary',
     'OutputPrediction',
+    'PairedComparisonPlan',
+    'PairedRetentionBootstrap',
     'ParticleSizeInterval',
     'PlanDiagnostic',
     'PlanLoadError',
@@ -304,6 +411,8 @@ __all__ = [
     'Provenance',
     'RangeGatedCurveCandidate',
     'RangeGatedRouter',
+    'ResampledObservation',
+    'ResampledSample',
     'RetentionBootstrapError',
     'RetentionBootstrapResult',
     'RetentionCandidateComparisons',
@@ -321,6 +430,7 @@ __all__ = [
     'RetentionFitPlan',
     'RetentionFitResult',
     'RetentionLossError',
+    'RetentionMetricDifferences',
     'RetentionMetricIntervals',
     'RetentionMetricsError',
     'RetentionNormalizationError',
@@ -342,6 +452,7 @@ __all__ = [
     'RunApproximationFit',
     'RunCohortResult',
     'RunCurveQuality',
+    'RunEmpiricalDomain',
     'RunFuturePrediction',
     'RunInputTrace',
     'RunPointDecision',
@@ -349,7 +460,16 @@ __all__ = [
     'RunSampleEligibility',
     'SampleCurveLoss',
     'SampleErrorMetrics',
+    'SeamMemberValue',
+    'SelectionConditionalRisk',
+    'SelectionCurveQuality',
+    'SelectionPredictionFrame',
     'SelectionProtocolAssessment',
+    'SelectionResample',
+    'SelectionResamplingPlan',
+    'SelectionResamplingResult',
+    'SelectionRiskPlan',
+    'SelectionStrategyAssessment',
     'SheetInventory',
     'TargetSpec',
     'ValidationLoss',
@@ -357,17 +477,28 @@ __all__ = [
     'WorkbookInventory',
     'apply_grouped_prediction_intervals',
     'assess_computational_domain',
+    'assess_retention_applicability',
+    'assess_selection_conditional_risks',
+    'assess_selection_strategies',
     'audit_predictor_workbook',
     'audit_retention_reconstruction_workbook',
     'bind_retention_inputs',
+    'bootstrap_paired_retention_errors',
     'bootstrap_retention_errors',
+    'bound_conditional_outer_risks',
     'build_nested_group_folds',
     'build_retention_cohorts',
     'builtin_model_adapters',
     'calibrate_grouped_prediction_intervals',
+    'compare_retention_run_pairs',
     'convert_value',
+    'diagnose_composite_seams',
+    'diagnose_learned_applicability',
+    'diagnose_learned_switch_seams',
+    'diagnose_nested_applicability',
     'diagnose_retention_run',
     'diagnose_retention_series',
+    'diagnose_selection_curves',
     'evaluate_candidate',
     'evaluate_clapp1978_h_theta',
     'evaluate_log_pressure_loss',
@@ -387,8 +518,13 @@ __all__ = [
     'predict_retention_grid',
     'profile_retention_workbook',
     'read_retention_run_report',
+    'resample_grouped_forecasts',
+    'resample_selection_procedure',
     'retention_families',
     'select_fixed_retention_candidates',
+    'select_grouped_forecast_candidates',
+    'select_learned_retention_candidates',
+    'selection_prediction_frames',
     'summarize_retention_errors',
     'write_predictor_audit_summary',
     'write_retention_normalization_summary',

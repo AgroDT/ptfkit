@@ -11,9 +11,150 @@
     "bootstrap": {"$ref": "#/$defs/bootstrap"},
     "selection": {"$ref": "#/$defs/selection"},
     "approximations": {"type": "array", "items": {"$ref": "#/$defs/approximation"}},
-    "prediction_intervals": {"type": "array", "items": {"$ref": "#/$defs/predictionIntervals"}}
+    "prediction_intervals": {"type": "array", "items": {"$ref": "#/$defs/predictionIntervals"}},
+    "empirical_domains": {"type": "array", "items": {"$ref": "#/$defs/empiricalDomain"}},
+    "paired_comparisons": {"type": "array", "items": {"$ref": "#/$defs/pairedComparison"}},
+    "learned_selection": {"$ref": "#/$defs/learnedSelection"},
+    "selection_resampling": {"type": "array", "items": {"$ref": "#/$defs/selectionResampling"}},
+    "conditional_outer_risk": {"type": "array", "minItems": 1, "maxItems": 4, "items": {"$ref": "#/$defs/conditionalOuterRisk"}}
   },
   "$defs": {
+    "conditionalOuterRisk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "strategy",
+        "population_id",
+        "grouping",
+        "maximum_sample_loss",
+        "minimum_group_size",
+        "maximum_group_size",
+        "confidence_level",
+        "assumptions",
+        "method"
+      ],
+      "properties": {
+        "protocol": {
+          "enum": [
+            "fixed",
+            "learned"
+          ]
+        },
+        "strategy": {
+          "enum": [
+            "atomic",
+            "ensemble"
+          ]
+        },
+        "population_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grouping": {
+          "enum": [
+            "source",
+            "profile"
+          ]
+        },
+        "maximum_sample_loss": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "minimum_group_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "maximum_group_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "confidence_level": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "exclusiveMaximum": 1
+        },
+        "assumptions": {
+          "const": "iid_groups_value_independent_partition_population_bounds"
+        },
+        "method": {
+          "const": "simultaneous_group_hoeffding_conditional_outer_risk_v1"
+        }
+      }
+    },
+    "selectionResampling": {
+      "type": "object", "additionalProperties": false,
+      "required": ["method", "protocol", "seed", "n_resamples", "minimum_groups"],
+      "properties": {
+        "method": {"const": "whole_group_bootstrap_retraining_sensitivity_v1"},
+        "protocol": {"enum": ["fixed", "learned"]},
+        "seed": {"type": "integer"},
+        "n_resamples": {"type": "integer", "minimum": 2},
+        "minimum_groups": {"type": "integer", "minimum": 2}
+      }
+    },
+    "learnedSelection": {
+      "type": "object", "additionalProperties": false,
+      "required": ["method", "fixed_selection", "ensembles"],
+      "properties": {
+        "empirical_domains": {"$ref": "#/$defs/selection/properties/empirical_domains"},
+        "method": {"enum": ["nested_convex_pair_selection_v1", "nested_two_curve_selection_v1"]},
+        "fixed_selection": {"$ref": "#/$defs/selection"},
+        "ensembles": {"type": "array", "minItems": 1, "items": {"oneOf": [
+          {"$ref": "#/$defs/convexPair"}, {"$ref": "#/$defs/hardSwitchGrid"}
+        ]}}
+      }
+    },
+    "convexPair": {
+          "type": "object", "additionalProperties": false,
+          "required": ["method", "id", "left_candidate_id", "right_candidate_id", "minimum_training_groups", "minimum_mean_squared_contrast"],
+          "properties": {
+            "method": {"const": "constant_convex_pair_log_pressure_v1"},
+            "id": {"$ref": "#/$defs/text"},
+            "left_candidate_id": {"$ref": "#/$defs/text"},
+            "right_candidate_id": {"$ref": "#/$defs/text"},
+            "minimum_training_groups": {"type": "integer", "minimum": 1},
+            "minimum_mean_squared_contrast": {"type": "number", "exclusiveMinimum": 0}
+          }
+        },
+    "hardSwitchGrid": {
+      "type": "object", "additionalProperties": false,
+      "required": ["method", "id", "left_candidate_id", "right_candidate_id", "minimum_training_groups", "boundary_grid_kpa", "boundary_member", "minimum_loss_gap"],
+      "properties": {
+        "method": {"const": "training_grid_hard_switch_v1"},
+        "id": {"$ref": "#/$defs/text"},
+        "left_candidate_id": {"$ref": "#/$defs/text"},
+        "right_candidate_id": {"$ref": "#/$defs/text"},
+        "minimum_training_groups": {"type": "integer", "minimum": 1},
+        "boundary_grid_kpa": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"type": "number", "exclusiveMinimum": 0}},
+        "boundary_member": {"enum": ["left", "right"]},
+        "minimum_loss_gap": {"type": "number", "exclusiveMinimum": 0}
+      }
+    },
+    "pairedComparison": {
+      "type": "object", "additionalProperties": false,
+      "required": ["method", "left_candidate_id", "right_candidate_id", "cohort"],
+      "properties": {
+        "method": {"const": "paired_cluster_percentile_linear_v1"},
+        "left_candidate_id": {"$ref": "#/$defs/text"},
+        "right_candidate_id": {"$ref": "#/$defs/text"},
+        "cohort": {"const": "run_common"}
+      }
+    },
+    "empiricalDomain": {
+      "type": "object", "additionalProperties": false,
+      "required": ["method", "candidate_id", "training_groups", "test_groups", "minimum_training_groups", "grouping"],
+      "properties": {
+        "method": {"const": "training_input_envelope_v1"},
+        "candidate_id": {"$ref": "#/$defs/text"},
+        "grouping": {"enum": ["source", "profile"]},
+        "minimum_training_groups": {"type": "integer", "minimum": 1},
+        "training_groups": {"$ref": "#/$defs/groupIds"},
+        "test_groups": {"$ref": "#/$defs/groupIds"}
+      }
+    },
     "predictionIntervals": {
       "type": "object", "additionalProperties": false,
       "required": ["method", "candidate_id", "training_groups", "calibration_groups", "test_groups", "pressure_grid_kpa", "confidence_level", "minimum_calibration_groups", "grouping"],
@@ -58,6 +199,15 @@
       "type": "object", "additionalProperties": false,
       "required": ["method", "candidate_ids", "folds", "loss", "minimum_coverage", "tie_breaker", "failure_policy"],
       "properties": {
+        "empirical_domains": {
+          "type": "object", "additionalProperties": false,
+          "required": ["method", "minimum_training_groups", "composite_rule"],
+          "properties": {
+            "method": {"const": "nested_training_input_envelope_v1"},
+            "minimum_training_groups": {"type": "integer", "minimum": 1},
+            "composite_rule": {"const": "all_registered_members"}
+          }
+        },
         "method": {"const": "fixed_candidate_nested_selection_v1"},
         "candidate_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/text"}},
         "minimum_coverage": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},

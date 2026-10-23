@@ -210,3 +210,17 @@ def test_lexical_ties_do_not_depend_on_registration_order(tmp_path: Path):
     )
     selected = select_fixed_retention_candidates(replace(result, points=points), plan=PLAN)
     assert all(fold.atomic.choice.candidate_id == 'sand_a' for fold in selected.folds)
+
+
+def test_finite_large_sample_losses_do_not_overflow_fold_or_strategy_averages(tmp_path: Path):
+    result = _controlled_result(tmp_path)
+    points = tuple(
+        replace(point, comparison=replace(point.comparison, predicted=1e154))
+        if point.comparison is not None
+        else point
+        for point in result.points
+    )
+    selected = select_fixed_retention_candidates(replace(result, points=points), plan=PLAN)
+    assert selected.status == 'computed'
+    for protocol in selected.protocols:
+        assert protocol.mean_outer_loss == pytest.approx(1e308)

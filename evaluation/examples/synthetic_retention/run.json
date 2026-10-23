@@ -63,6 +63,11 @@
       "lower_suction_kpa": 0.1,
       "upper_suction_kpa": 1000,
       "minimum_points": 5
+    },
+    "empirical_domains": {
+      "method": "nested_training_input_envelope_v1",
+      "minimum_training_groups": 2,
+      "composite_rule": "all_registered_members"
     }
   },
   "approximations": [
@@ -228,5 +233,167 @@
         }
       ]
     }
-  ]
+  ],
+  "empirical_domains": [
+    {
+      "method": "training_input_envelope_v1",
+      "candidate_id": "clapp",
+      "training_groups": [
+        [
+          "synthetic_source_a",
+          ""
+        ],
+        [
+          "synthetic_source_b",
+          ""
+        ],
+        [
+          "synthetic_source_c",
+          ""
+        ],
+        [
+          "synthetic_source_d",
+          ""
+        ]
+      ],
+      "test_groups": [
+        [
+          "synthetic_source_e",
+          ""
+        ],
+        [
+          "synthetic_source_f",
+          ""
+        ]
+      ],
+      "minimum_training_groups": 4,
+      "grouping": "source"
+    },
+    {
+      "method": "training_input_envelope_v1",
+      "candidate_id": "vereecken",
+      "training_groups": [
+        [
+          "synthetic_source_a",
+          ""
+        ],
+        [
+          "synthetic_source_b",
+          ""
+        ],
+        [
+          "synthetic_source_c",
+          ""
+        ],
+        [
+          "synthetic_source_d",
+          ""
+        ]
+      ],
+      "test_groups": [
+        [
+          "synthetic_source_e",
+          ""
+        ],
+        [
+          "synthetic_source_f",
+          ""
+        ]
+      ],
+      "minimum_training_groups": 4,
+      "grouping": "source"
+    },
+    {
+      "method": "training_input_envelope_v1",
+      "candidate_id": "fixed_blend",
+      "training_groups": [
+        [
+          "synthetic_source_a",
+          ""
+        ],
+        [
+          "synthetic_source_b",
+          ""
+        ],
+        [
+          "synthetic_source_c",
+          ""
+        ],
+        [
+          "synthetic_source_d",
+          ""
+        ]
+      ],
+      "test_groups": [
+        [
+          "synthetic_source_e",
+          ""
+        ],
+        [
+          "synthetic_source_f",
+          ""
+        ]
+      ],
+      "minimum_training_groups": 4,
+      "grouping": "source"
+    }
+  ],
+  "paired_comparisons": [
+    {
+      "method": "paired_cluster_percentile_linear_v1",
+      "cohort": "run_common",
+      "left_candidate_id": "clapp",
+      "right_candidate_id": "vereecken"
+    },
+    {
+      "method": "paired_cluster_percentile_linear_v1",
+      "cohort": "run_common",
+      "left_candidate_id": "fixed_blend",
+      "right_candidate_id": "clapp"
+    }
+  ],
+  "learned_selection": {
+    "method": "nested_convex_pair_selection_v1",
+    "fixed_selection": {
+      "method": "fixed_candidate_nested_selection_v1",
+      "candidate_ids": [
+        "clapp",
+        "vereecken",
+        "fixed_blend"
+      ],
+      "minimum_coverage": 1.0,
+      "tie_breaker": "candidate_id",
+      "failure_policy": "require_common_cohort",
+      "folds": {
+        "seed": 20261023,
+        "outer_folds": 3,
+        "inner_folds": 2,
+        "grouping": "source",
+        "missing_profiles": "reject",
+        "minimum_training_groups": 2,
+        "minimum_validation_groups": 1
+      },
+      "loss": {
+        "method": "log10_trapezoid_mse_v1",
+        "lower_suction_kpa": 0.1,
+        "upper_suction_kpa": 1000,
+        "minimum_points": 5
+      }
+    },
+    "ensembles": [
+      {
+        "method": "constant_convex_pair_log_pressure_v1",
+        "id": "trained_convex_pair",
+        "left_candidate_id": "clapp",
+        "right_candidate_id": "vereecken",
+        "minimum_training_groups": 2,
+        "minimum_mean_squared_contrast": 1e-10
+      }
+    ],
+    "empirical_domains": {
+      "method": "nested_training_input_envelope_v1",
+      "minimum_training_groups": 2,
+      "composite_rule": "all_registered_members"
+    }
+  }
 }

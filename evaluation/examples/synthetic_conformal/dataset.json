@@ -1,0 +1,448 @@
+{
+  "dataset_id": "synthetic_grouped_conformal",
+  "kind": "synthetic",
+  "method": "synthetic_pressure_control",
+  "observations": [
+    {
+      "id": "cal_1_0",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "one",
+      "source_cells": [
+        "cal_1!B1",
+        "cal_1!C1"
+      ],
+      "source_id": "cal_1",
+      "suction_kpa": 0,
+      "value": 0.405
+    },
+    {
+      "id": "cal_1_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "one",
+      "source_cells": [
+        "cal_1!B2",
+        "cal_1!C2"
+      ],
+      "source_id": "cal_1",
+      "suction_kpa": 5.685389228617864,
+      "value": 0.20750000000000002
+    },
+    {
+      "id": "cal_2_0",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "one",
+      "source_cells": [
+        "cal_2!B1",
+        "cal_2!C1"
+      ],
+      "source_id": "cal_2",
+      "suction_kpa": 0,
+      "value": 0.41500000000000004
+    },
+    {
+      "id": "cal_2_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "one",
+      "source_cells": [
+        "cal_2!B2",
+        "cal_2!C2"
+      ],
+      "source_id": "cal_2",
+      "suction_kpa": 5.685389228617864,
+      "value": 0.2175
+    },
+    {
+      "id": "cal_3_0",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "one",
+      "source_cells": [
+        "cal_3!B1",
+        "cal_3!C1"
+      ],
+      "source_id": "cal_3",
+      "suction_kpa": 0,
+      "value": 0.42500000000000004
+    },
+    {
+      "id": "cal_3_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "one",
+      "source_cells": [
+        "cal_3!B2",
+        "cal_3!C2"
+      ],
+      "source_id": "cal_3",
+      "suction_kpa": 5.685389228617864,
+      "value": 0.2275
+    },
+    {
+      "id": "cal_4_0",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "one",
+      "source_cells": [
+        "cal_4!B1",
+        "cal_4!C1"
+      ],
+      "source_id": "cal_4",
+      "suction_kpa": 0,
+      "value": 0.435
+    },
+    {
+      "id": "cal_4_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "one",
+      "source_cells": [
+        "cal_4!B2",
+        "cal_4!C2"
+      ],
+      "source_id": "cal_4",
+      "suction_kpa": 5.685389228617864,
+      "value": 0.23750000000000002
+    },
+    {
+      "id": "cal_5_0",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "one",
+      "source_cells": [
+        "cal_5!B1",
+        "cal_5!C1"
+      ],
+      "source_id": "cal_5",
+      "suction_kpa": 0,
+      "value": 0.445
+    },
+    {
+      "id": "cal_5_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "one",
+      "source_cells": [
+        "cal_5!B2",
+        "cal_5!C2"
+      ],
+      "source_id": "cal_5",
+      "suction_kpa": 5.685389228617864,
+      "value": 0.2475
+    },
+    {
+      "id": "cal_6_0",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "one",
+      "source_cells": [
+        "cal_6!B1",
+        "cal_6!C1"
+      ],
+      "source_id": "cal_6",
+      "suction_kpa": 0,
+      "value": 0.455
+    },
+    {
+      "id": "cal_6_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "one",
+      "source_cells": [
+        "cal_6!B2",
+        "cal_6!C2"
+      ],
+      "source_id": "cal_6",
+      "suction_kpa": 5.685389228617864,
+      "value": 0.2575
+    },
+    {
+      "id": "cal_7_0",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "one",
+      "source_cells": [
+        "cal_7!B1",
+        "cal_7!C1"
+      ],
+      "source_id": "cal_7",
+      "suction_kpa": 0,
+      "value": 0.465
+    },
+    {
+      "id": "cal_7_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "one",
+      "source_cells": [
+        "cal_7!B2",
+        "cal_7!C2"
+      ],
+      "source_id": "cal_7",
+      "suction_kpa": 5.685389228617864,
+      "value": 0.2675
+    },
+    {
+      "id": "cal_8_0",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "one",
+      "source_cells": [
+        "cal_8!B1",
+        "cal_8!C1"
+      ],
+      "source_id": "cal_8",
+      "suction_kpa": 0,
+      "value": 0.47500000000000003
+    },
+    {
+      "id": "cal_8_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "one",
+      "source_cells": [
+        "cal_8!B2",
+        "cal_8!C2"
+      ],
+      "source_id": "cal_8",
+      "suction_kpa": 5.685389228617864,
+      "value": 0.2775
+    },
+    {
+      "id": "cal_9_0",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "one",
+      "source_cells": [
+        "cal_9!B1",
+        "cal_9!C1"
+      ],
+      "source_id": "cal_9",
+      "suction_kpa": 0,
+      "value": 0.485
+    },
+    {
+      "id": "cal_9_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "one",
+      "source_cells": [
+        "cal_9!B2",
+        "cal_9!C2"
+      ],
+      "source_id": "cal_9",
+      "suction_kpa": 5.685389228617864,
+      "value": 0.2875
+    }
+  ],
+  "samples": [
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "cal_1!A1"
+          ],
+          "value": "sand"
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "one",
+      "source_id": "cal_1"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "cal_2!A1"
+          ],
+          "value": "sand"
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "one",
+      "source_id": "cal_2"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "cal_3!A1"
+          ],
+          "value": "sand"
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "one",
+      "source_id": "cal_3"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "cal_4!A1"
+          ],
+          "value": "sand"
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "one",
+      "source_id": "cal_4"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "cal_5!A1"
+          ],
+          "value": "sand"
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "one",
+      "source_id": "cal_5"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "cal_6!A1"
+          ],
+          "value": "sand"
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "one",
+      "source_id": "cal_6"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "cal_7!A1"
+          ],
+          "value": "sand"
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "one",
+      "source_id": "cal_7"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "cal_8!A1"
+          ],
+          "value": "sand"
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "one",
+      "source_id": "cal_8"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "cal_9!A1"
+          ],
+          "value": "sand"
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "one",
+      "source_id": "cal_9"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "test!A1"
+          ],
+          "value": "sand"
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "one",
+      "source_id": "test"
+    }
+  ],
+  "schema_version": 1,
+  "target": {
+    "denominator_basis": "bulk_volume",
+    "material_basis": "mineral_soil",
+    "quantity": "volumetric_water_content",
+    "unit": "volume_fraction"
+  }
+}
