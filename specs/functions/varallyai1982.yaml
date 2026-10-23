@@ -12,19 +12,19 @@ scope:
     meadow-series regressions used 68 samples and the chernozem comparison used
     108 samples.
 $defs:
-  bulkDensity:
+  bulk_density:
     name: bulk_density
     symbol: rho
     unit: g/cm^3
     domain: value > 0
     description: Undisturbed-soil bulk density.
-  fineSandFraction:
+  fine_sand_fraction:
     name: fine_sand_fraction
     symbol: S
     unit: fraction
     domain: 0 <= value <= 1
     description: Mass fraction in the 0.25-0.05 mm particle-size class.
-  fineFraction:
+  fine_fraction:
     name: fine_fraction
     symbol: C
     unit: fraction
@@ -71,9 +71,9 @@ functions:
         h_theta: "theta = theta_0 / (1 + (psi / psi_*)^m)"
         k_h: null
     inputs:
-      - $ref: '#/$defs/bulkDensity'
-      - $ref: '#/$defs/fineSandFraction'
-      - $ref: '#/$defs/fineFraction'
+      - $ref: '#/$defs/bulk_density'
+      - $ref: '#/$defs/fine_sand_fraction'
+      - $ref: '#/$defs/fine_fraction'
     outputs:
       $ref: '#/$defs/Varallyai1982Parameters'
     verification_cases:
@@ -125,8 +125,8 @@ functions:
         h_theta: "theta = theta_0 / (1 + (psi / psi_*)^m)"
         k_h: null
     inputs:
-      - $ref: '#/$defs/bulkDensity'
-      - $ref: '#/$defs/fineFraction'
+      - $ref: '#/$defs/bulk_density'
+      - $ref: '#/$defs/fine_fraction'
     outputs:
       $ref: '#/$defs/Varallyai1982Parameters'
     verification_cases:
@@ -175,8 +175,8 @@ functions:
         h_theta: "theta = theta_0 / (1 + (psi / psi_*)^m)"
         k_h: null
     inputs:
-      - $ref: '#/$defs/bulkDensity'
-      - $ref: '#/$defs/fineFraction'
+      - $ref: '#/$defs/bulk_density'
+      - $ref: '#/$defs/fine_fraction'
     outputs:
       $ref: '#/$defs/Varallyai1982Parameters'
     verification_cases:
@@ -225,8 +225,8 @@ functions:
         h_theta: "theta = theta_0 / (1 + (psi / psi_*)^m)"
         k_h: null
     inputs:
-      - $ref: '#/$defs/bulkDensity'
-      - $ref: '#/$defs/fineFraction'
+      - $ref: '#/$defs/bulk_density'
+      - $ref: '#/$defs/fine_fraction'
     outputs:
       $ref: '#/$defs/Varallyai1982Parameters'
     verification_cases:

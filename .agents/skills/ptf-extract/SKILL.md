@@ -84,9 +84,21 @@ exact YAML path and explicit blockers.
   output, record-field, or local-variable name. A collision requires explicit
   user approval of the replacement name; extraction remains blocked until that
   approval is received.
-- Give every `type: record` output a PascalCase `name`, whether it is inline or
-  declared in `$defs`. It names generated structures and classes; `$defs` keys
-  only resolve local `$ref` targets.
+- Use `snake_case` for `$defs` keys declaring quantitative input parameters or
+  scalar outputs, for example `effective_porosity` and `water_content_pf00`.
+  Lookup and tree keys also use `snake_case`: name lookups by their contents and
+  selection key, such as `parameters_by_texture`, and trees by the quantity they
+  compute, such as `water_content_33`. Add `_lookup` or `_tree` only when needed
+  to distinguish otherwise ambiguous definition names.
+  Use `PascalCase` for keys declaring enum types or record outputs, for example
+  `UsdaTextureClass` and `Weynants2009PTFResult`. Apply these conventions to
+  source-local and shared definitions; letter case does not determine the
+  definition kind.
+- Use `snake_case` for input argument names, scalar output names, record field
+  names, and enum member names. Give every `type: record` output a `PascalCase`
+  `name`, whether it is inline or declared in `$defs`; it names generated
+  structures and classes. When a definition has a separate `name` field, follow
+  the convention for that field's role as well as for the `$defs` key.
 - Give every scalar output and record field a reviewed `quantity`, normalized
   `unit`, and literal `reported_unit`. Resolve aliases only within the quantity
   context and only when they preserve numerical values exactly. Never convert
