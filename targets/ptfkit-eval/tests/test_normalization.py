@@ -1,5 +1,6 @@
 import hashlib
 import json
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -245,3 +246,81 @@ def test_rejects_workbook_bytes_not_bound_to_the_mapping(tmp_path: Path):
 
     with pytest.raises(RetentionNormalizationError, match='checksum'):
         normalize_retention_workbook(changed_path, changed_mapping)
+
+
+@pytest.mark.parametrize(
+    ('representation', 'encoding', 'axis', 'convention', 'expected'),
+    [
+        ('log10_kilopascal', 'pF', -1, 'magnitude', 0.1),
+        ('log10_kilopascal', 'pF', 0, 'magnitude', 1),
+        ('log10_kilopascal', 'pF', 3, 'magnitude', 1000),
+        ('log10_kilopascal', 'pF', 2, 'negative', None),
+        ('log10_kilopascal', 'pF', 400, 'magnitude', None),
+        ('megapascal', 'mPa', 0.001, 'magnitude', 1),
+        ('megapascal', 'mPa', 140, 'magnitude', 140000),
+        ('megapascal', 'mPa', -0.01, 'negative', 10),
+        ('megapascal', 'mPa', -0.01, 'magnitude', None),
+        ('megapascal', 'mPa', 1e308, 'magnitude', None),
+    ],
+)
+def test_reviewed_pressure_representation_overrides_raw_label(
+    tmp_path: Path,
+    *,
+    representation: str,
+    encoding: str,
+    axis: float,
+    convention: str,
+    expected: float | None,
+):
+    path = tmp_path / 'log-pressure.xlsx'
+    workbook = Workbook()
+    sheet = workbook.active
+    sheet.title = '\u041e\u0413\u0425'
+    sheet.append(HEADERS)
+    sheet.append(['b_2', 'b', 2, 'Q', encoding, axis, 0.5])
+    workbook.save(path)
+    workbook.close()
+    mapping = _mapping(path)
+    document = dict(mapping.document)
+    document['retention_source_rules'] = [
+        _rule(
+            source='b',
+            water_encoding='Q',
+            pressure_encoding=encoding,
+            status='confirmed',
+            water_quantity='volumetric_water_content',
+            water_unit='volume_fraction',
+            canonical_water_unit='volume_fraction',
+            pressure_representation=representation,
+            pressure_convention=convention,
+            blockers=[],
+        )
+    ]
+    mapping = replace(
+        mapping,
+        document=document,
+        retention_profile={
+            'sheet_name': '\u041e\u0413\u0425',
+            'total_data_rows': 1,
+            'observation_count': 1,
+            'fitted_parameter_count': 0,
+            'unclassified_count': 0,
+            'missing_source_count': 0,
+        },
+    )
+
+    result = normalize_retention_workbook(path, mapping)
+
+    if expected is None:
+        assert result.observations == ()
+        assert [item.reason for item in result.exclusions] == ['pressure_convention_mismatch']
+        return
+    assert len(result.observations) == 1
+    observation = result.observations[0]
+    assert observation.pressure_encoding == encoding
+    assert observation.raw_pressure == axis
+    assert observation.pressure_kilopascal == pytest.approx(expected)
+    assert observation.water_content == 0.5
+    assert observation.water_quantity == 'volumetric_water_content'
+    assert observation.water_unit == 'volume_fraction'
+    assert observation.water_basis == 'bulk_volume'

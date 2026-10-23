@@ -7,14 +7,16 @@ This is a living handoff for the ongoing implementation of the
 scientific blockers, and the exact continuation point so that a later session
 can resume without reconstructing decisions from chat history.
 
-Last updated: 2026-10-23.
+Last updated: 2026-10-24.
 
 The active implementation goal continues. The latest verified checkpoint is
-**494 component tests**, Ruff 0.16.1 lint/format and ty 0.0.71. Read the final
+**698 component tests**, Ruff 0.16.1 lint/format and ty 0.0.71. Read the final
 entry in [the progress log](ptfkit-eval-progress.md) for exact verification and
 continuation evidence; that log supersedes historical continuation orders and
-counts below. Primary-source review remains explicitly deferred by the user
-until the workbook/papers are available on another computer.
+counts below. Online methodological and PTF publication review resumed; see
+[the source review](ptfkit-eval-source-review.md). Primary workbook-source review has enabled six source rules and 649 normalized
+observations; 223 are volumetric and 426 are gravimetric. Remaining sources
+retain specific evidence blockers.
 
 Implemented slices include portable run/CLI artifacts, fixed-pressure outputs,
 nested fixed and learned selection, four approximation families, grouped
@@ -47,10 +49,24 @@ prior loss/size bounds and a deterministic generator, rather than inferring
 independence from IDs. Its full CLI run and installed-wheel replay are recorded
 in the final progress entry.
 
-Next: inference for average risk over new training datasets, distinct from the
-conditional outer-rule target; learned blend/nonlinear gate roadmap work and
-deferred source/real-data eligibility also remain unfinished. The active goal
-continues and has not been completed.
+Independent training-law inference is now implemented as a low-level API with
+separate failure probability, successful-risk mass, successful-training risk
+and prior-total-learner model risk. Exact multinomial coverage and probability
+oracles are verified. Native conditional-risk integrity additionally reconstructs
+nested splits and verifies complete in-domain pressure grids.
+
+Native independent blocks now rerun the complete selector, retaining every
+original role, inner selection, outer refit and training failure. Independent
+and paired risk policies are registered and portable. Finite-grid learned blend
+intervals and target-free endpoint diagnostics are implemented. Separate
+sample-balanced point MAE/MSE assessment preserves the log-pressure selection
+objective; pooled RMSE is explicitly the root of training-average MSE.
+
+Nonlinear pressure-only sigmoid gates and target-free center forecasts are
+implemented and qualified on finite mathematical populations. Next: continue
+soil-property gating and scientifically justified parameter/remaining metric
+uncertainty. Original scientific/real-data
+eligibility remains blocked on source evidence. The active goal continues.
 
 ## Acceptance target
 
@@ -90,9 +106,12 @@ The workbook remains external because redistribution rights are unresolved.
 ## Current dataset evidence
 
 The retention profile accounts for 1,755 observations and 92 fitted van
-Genuchten parameter values. Chestnova 2017 is the only normalization-ready
-retention source and emits 130 canonical observations. All other observations
-remain explicit exclusions rather than inferred values.
+Genuchten parameter values. Six normalization-ready rules emit 649 canonical
+observations across 62 samples. They cover Chestnova 2017 (130), Gumatov 1991
+(190), Gumatov 1992 (10), Bolotov 2014 (167), orchard Makarychev 2014 (56),
+and arboretum Makarychev 2018 (96). One Bolotov water value remains null.
+The other 1,106 observations remain explicit exclusions: 1,057 blocked rules,
+48 stale cached identities and one null. Predictor compatibility remains blocked.
 
 The predictor cohort contains 206 reviewed sample rows. The current manifest
 contracts have the following raw-input coverage:
@@ -292,3 +311,23 @@ materialization and informative missing-target calibration are verified, includi
 three exact installed-wheel experiment replays. See the last progress entry.
 Continue with parameter-instability/boundary scenarios and justified inference;
 the active goal and deferred scientific requirements remain unfinished.
+
+
+## Independent complete-selector training continuation
+
+Native `independent_training_risk` now registers atomic/ensemble policies for
+whole-selector repeated training on disjoint original-group blocks. The original
+resolved grouping is frozen before allocation. Inner candidate selection and
+learned convex/hard-switch refits repeat independently using only each training
+block; parent CV choices are unused. Every fit failure and every test membership
+is retained. Missing successful-test predictions suppress inference rather than
+becoming training failures. One frozen q-strategy confidence family includes all
+requested failed policies, separate from conditional outer-risk/metric families.
+
+`independent-training-risk.json` and the report preserve complete input/role,
+inner-score, refit, prediction, loss and failure evidence. The portable native
+example is `evaluation/examples/synthetic_training_risk/`; with two blocks its
+bounds are honestly uninformative. Training size is four groups per block, not
+the final full-data size. See the latest progress entry for verification and
+installed-wheel replay. Broader scientific qualification, nonlinear/learned-blend
+extensions and original workbook-source compatibility remain outstanding.

@@ -7,9 +7,10 @@ envelopes, fold-specific domains/error strata, target-free composite transition
 member contrasts, paired cluster metric differences, and nested training of
 constant convex two-curve ensemble weights are implemented and integrated into
 run schemas/artifacts/reports, including learned-fold input domains. The latest
-component verification has 494 passing tests. Finite-grid hard-switch boundary
-training and fitted-seam diagnostics are implemented. Nonlinear gates, learned
-blend boundaries, weight/boundary uncertainty, and full selection-process
+component verification has 698 passing tests. Finite-grid hard-switch boundary
+training and fitted-seam diagnostics are implemented. Finite-grid learned blend intervals and separate complete-learner point
+MAE/MSE risk are implemented. Nonlinear pressure-only sigmoid gates are also implemented. Soil-property
+gates, weight/boundary parameter uncertainty, and remaining ME/median strategy
 uncertainty remain pending.
 Held-out curve physical diagnostics and locked outer strategy descriptive
 maximal/common assessment are implemented. Native strategy confidence intervals
@@ -17,7 +18,9 @@ for descriptive CV statistics remain explicitly unestimated. Conditional
 outer-rule risk intervals now integrate explicit native registration, full
 coverage/provenance checks, failure artifacts and simultaneous family allocation,
 with a generated IID population example. These intervals have a different target;
-averaged-over-training selection-process inference remains unfinished.
+independent-block training-law inference is available at the low-level API,
+with native complete-selector block orchestration, failure accounting and
+portable provenance now integrated under explicit population assumptions.
 Whole-group selection/refitting bootstrap trajectories are now available as
 explicit retraining sensitivity, with preserved original cluster identities,
 unequal sample-occurrence weights, and retained failed draws. They are not
@@ -30,7 +33,9 @@ finite-grid switch failures. Five mathematical scenarios have independent risk
 oracles and installed-wheel replay. They expose selective completion and target
 mismatch; they qualify no confidence interval.
 The latest implementation evidence and continuation order are recorded in
-`ptfkit-eval-progress.md`. Primary-source review remains deferred.
+`ptfkit-eval-progress.md`. Online primary-source methodology review is active; original workbook-paper
+review has enabled six source rules and 649 observations. The remaining
+scientific and identity blockers are recorded in the source-review note.
 
 In progress. The measurement contract, public manifest, initial `ptfkit-eval`
 scaffold, range-gated router, manifest-aware evaluation-plan loader, first
@@ -51,10 +56,10 @@ candidate sample identifiers in `evaluation/datasets/meta_v3_3.inventory.json`.
 The reviewed facts, proposed source aliases, quarantines, and unresolved
 scientific questions are encoded in `evaluation/datasets/meta_v3_3.yaml`. The
 mapping remains `draft_blocked`. The first real normalization run accounts for
-all 1,847 populated `ОГХ` rows. The first evidence-reviewed source now yields
-130 canonical observations for ten Chestnova samples; 1,577 observations retain
-blocked-rule exclusions, 48 expose stale cached sample identifiers, and 92
-fitted van Genuchten parameter rows enter a separate table. Full-curve matching
+all 1,847 populated `ОГХ` rows. Six evidence-reviewed source rules now yield 649 canonical observations for
+62 samples; 1,057 observations retain blocked-rule exclusions, 48 expose stale
+cached sample identifiers, one has a missing water value, and 92 fitted van
+Genuchten parameter rows enter a separate table. Full-curve matching
 against the `Данные` wide blocks also exposed a second failure mode: internally
 consistent long-sheet identifiers can still name the wrong master sample. The
 normalizer therefore applies only confirmed sample crosswalks, never positional
@@ -112,18 +117,18 @@ delivery packages remain before the acceptance criterion is met:
 | 3. Approximation families | Register and implement van Genuchten, Brooks-Corey, and remaining required fit/adaptation variants | Extra large | Four versioned families, bounded multistart fitting, identifiability/failure gates, and local conditional uncertainty implemented; source-specific reference conventions remain blocked |
 | 4. Evaluation matrix | Execute every eligible atomic PTF and fixed composite with full traces | Medium | Portable canonical run pipeline executes curves, fixed-pressure outputs, and fixed composites with observation/sample eligibility and traces |
 | 5. Metrics and uncertainty | Per-sample aggregation, clustered intervals, prediction intervals, parameter uncertainty, and domains | Large | Sample-balanced metrics, maximal/common cohorts, metric and paired cluster intervals, fixed-rule conformal intervals, local fitting uncertainty, and standalone/fold-specific empirical domains implemented; full selection-process uncertainty pending |
-| 6. Nested selection | Deterministic grouped folds, atomic and ensemble selection, learned routing, and leakage protection | Extra large | Identity-only folds, fixed selection, constant convex weights and finite-grid hard-switch boundaries with inner training/outer refits implemented; nonlinear gates and learned blends pending |
+| 6. Nested selection | Deterministic grouped folds, atomic and ensemble selection, learned routing, and leakage protection | Extra large | Identity-only folds, fixed selection, constant convex weights, finite-grid hard switches and learned blend intervals with inner training/outer refits and nonlinear pressure sigmoid gates implemented; soil-property gates pending |
 | 7. Reporting and pilot | Reproducible artifacts, CLI, human report, and the complete Russian-dataset pilot | Large | Checksum-bound run artifacts, replay, CLI, Markdown reporting, and standalone synthetic example implemented; real-data pilot blocked by source review |
 
 The first retention slice of package 1 is implemented. Each of the 1,755
 observation rows now produces either a canonical pressure-water-content record
 with cell lineage or an explicit exclusion, and the 92 fitted VGN rows are kept
-in a separate parameter table. The current checksum-bound result is 130
-normalized and 1,625 explicitly excluded: 1,577 by unresolved source rules and
-48 by cached sample identifiers that disagree with the source and sample-number
-cells. The normalized slice is the 2017 Chestnova source, whose ten 13-point
-curves were matched exactly to master rows before its percent-to-fraction and
-pF-to-kPa conversions were enabled. The reusable reconstruction audit now
+in a separate parameter table. The current checksum-bound result is 649
+normalized and 1,106 explicitly excluded: 1,057 by unresolved source rules,
+48 by cached sample identifiers and one by an explicit missing water value.
+The six reviewed blocks use confirmed full-curve identity crosswalks and
+source-specific physical conversions. The 223 volumetric and 426 gravimetric
+observations remain distinct. The reusable reconstruction audit now
 accounts for all 1,755 observations from all 26 observation sources plus the
 parameter-only Kokareva source. Twenty-one rules preserve complete one-to-one
 records. The Gumatov 1991 and Sidorova rules explicitly account for 19 and five
@@ -501,17 +506,17 @@ inspection API, draft mapping, mapping schema, inventory-aware loader, exact
 source-rule coverage checks, and rule-gated retention normalizer are
 implemented. The `ОГХ` pipeline classifies and accounts for all 1,847 populated
 rows as 1,755 observations or 92 fitted VGN parameter rows, with no unclassified
-or missing-source rows. One observation rule is confirmed: it emits 130
-canonical Chestnova observations after an explicit ten-sample crosswalk derived
-from exact 13-point curve matches between `ОГХ` and `Данные`. The remaining run
-emits 1,577 blocked-rule exclusions and 48 cached sample-identifier mismatches.
+or missing-source rows. Six observation rules are confirmed: they emit 649
+canonical observations after explicit full-curve sample crosswalks between `ОГХ` and `Данные`. The remaining run
+emits 1,057 blocked-rule exclusions, 48 cached sample-identifier mismatches
+and one explicit missing-water exclusion.
 It emits no guessed canonical values. A reusable reconstruction audit now
 compares declared wide blocks with long observations and fitted parameters as
 multisets, then separately tests whether complete raw identifier groups map
 bijectively to master samples and whether confirmed crosswalks agree. It now
 covers all 27 profiled sources and accounts for all 1,755 observations.
-Twenty-one rules are structurally reconstructable, but only Chestnova is
-normalization-ready because the others retain physical-semantic, alias, or
+Twenty-one rules are structurally reconstructable; six are normalization-ready.
+The remaining rules retain physical-semantic, alias, or
 crosswalk blockers. Shvarov has 14 long-only observations; Khaydapova,
 Sadovnikova, Shein 2012, Badenko, and Panina have exact point multisets but
 unresolved complete-record identity. All 92 long-form fitted parameter pairs
@@ -937,3 +942,10 @@ materialization and informative missing-target calibration are verified, includi
 three exact installed-wheel experiment replays. See the last progress entry.
 Continue with parameter-instability/boundary scenarios and justified inference;
 the active goal and deferred scientific requirements remain unfinished.
+
+
+Independent-block identity allocation is implemented and exported. It retains
+all original groups exactly once under the resolved grouping; complete-selector
+reruns and native registration are now implemented. Online publication review is
+recorded in [the source review](ptfkit-eval-source-review.md), including the
+Weynants 2009 erratum. Original workbook measurement blockers remain unresolved.

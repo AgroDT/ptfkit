@@ -10,6 +10,7 @@ import numpy as np
 from scipy.optimize import least_squares
 from scipy.stats import t as student_t
 
+from .adapters import CLAPP1978_MAXIMUM_B
 from .families import (
     RetentionFamily,
     evaluate_retention_family,
@@ -24,9 +25,6 @@ if TYPE_CHECKING:
     from numpy.typing import NDArray
 
     from .contracts import TargetSpec
-
-
-_CLAPP_MAXIMUM_B = 11.5
 
 
 class RetentionFitError(ValueError):
@@ -544,7 +542,7 @@ def _validate_physical_ranges(
             message = 'Shape and suction-scale bounds violate the registered physical convention.'
             raise RetentionFitError(message)
     if plan.family_id == 'clapp1978_gradual_air_entry_v1' and (
-        theta_s.lower <= 0 or theta_s.upper >= 1 or bounds['b'].upper >= _CLAPP_MAXIMUM_B
+        theta_s.lower <= 0 or theta_s.upper >= 1 or bounds['b'].upper >= CLAPP1978_MAXIMUM_B
     ):
         message = (
             'Clapp fitting requires 0 < theta_s < 1 and 0 < b < 11.5 for its parabolic branch.'

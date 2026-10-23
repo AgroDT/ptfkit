@@ -48,7 +48,8 @@ semantics are explicit, and its blocker list is empty. The first confirmed rule
 covers the 2017 Chestnova source. Its ten sample identities are backed by exact
 ordered 13-point curve matches to the master sheet, and its water scale is
 supported by an exact factor-of-100 relationship plus the source documentation.
-The remaining rules stay blocked; numeric magnitude is never used to infer
+Five additional source rules are now supported by primary-source review;
+all remaining rules stay blocked. Numeric magnitude is never used to infer
 percent versus fraction.
 
 Sapozhnikov et al. (1988) is the first partially reviewed blocked source. Its
@@ -68,9 +69,9 @@ broken cached identity groups: Khaydapova, Sadovnikova, Shein 2012, Badenko,
 and Panina. The audit handles numeric and categorical axes, explicit long-table
 nulls, numeric missing markers, coordinate-level exclusions, block-specific
 scales and axes, and parameter-only sources. All 92 stored fitted-parameter
-pairs are covered across Kokareva, Shein, and Panina. Only Chestnova currently
-combines structural reconstruction, reviewed physical transforms, and confirmed
-crosswalks, so it is the sole normalization-ready rule.
+pairs are covered across Kokareva, Shein, and Panina. Six rules now combine
+structural reconstruction, reviewed physical transforms and confirmed
+crosswalks. Their counts and evidence are summarized below.
 
 `meta_v3_3.predictor-audit.json` is the count-only, manifest-aware input
 eligibility result for the same workbook bytes. Its candidate cohort contains
@@ -170,11 +171,35 @@ write_predictor_audit_summary(
 ```
 
 For the reviewed workbook bytes, the summary accounts for all 1,847 populated
-rows: 130 observations are normalized, 1,577 currently have blocked-rule
-exclusions, 48 have stale cached sample identifiers that disagree with the
+rows: 649 observations are normalized, 1,057 currently have blocked-rule
+exclusions, one reviewed observation has an explicit missing water value, 48
+have stale cached sample identifiers that disagree with the
 source and sample-number cells, and 92 fitted van Genuchten parameters are held
 in a separate in-memory table. Confirmed source aliases and sample crosswalks
 are applied to canonical identities; proposed joins remain inactive. No row is
 silently discarded. The summary contains counts only; the workbook and copied
 measurement values remain outside version control while redistribution rights
 are unresolved.
+
+
+Primary-paper review unlocks 167 numeric observations from Bolotov et al. (2014)
+and 56 from the orchard study by Makarychev et al. (2014). Both use volumetric
+fractions and log10(kPa) axes despite the workbook's raw `pF` label. Their 16
+complete curves require reviewed sample crosswalks; source case normalization
+alone cannot repair lexical long-sheet sample numbering. See the
+[source review](../../docs/src/contributing/ptfkit-eval-source-review.md).
+These 223 volumetric observations accompany 426 reviewed gravimetric observations;
+they do not establish predictor method compatibility or external PTF accuracy.
+
+
+Additional primary evidence confirms Gumatov 1991 (190 observations), Gumatov
+1992 (10), and the arboretum Makarychev 2018 block (96). The resulting six
+normalization-ready rules retain 62 sample identities with 223 volumetric and
+426 gravimetric observations. Gumatov's raw `mPa` label denotes MPa magnitudes
+for that source only. Generic unresolved workbook labels remain blocked.
+
+Panina's public thesis confirms volumetric-percent plots, but the long table
+mixes sample identities and its saturation-axis replacement remains disputed.
+Those observations remain excluded. The Makarychev 2014 thermal-property paper
+reports hydrological constants rather than a verified pressure grid; no pressure
+is assigned to those constants by assumption.

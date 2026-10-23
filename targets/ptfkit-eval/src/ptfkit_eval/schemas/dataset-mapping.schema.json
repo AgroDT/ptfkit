@@ -384,7 +384,7 @@
           "enum": ["mass_fraction", "volume_fraction", null]
         },
         "pressure_representation": {
-          "enum": ["pf_log10_centimeter_water_head", "kilopascal", null]
+          "enum": ["pf_log10_centimeter_water_head", "log10_kilopascal", "kilopascal", "megapascal", null]
         },
         "pressure_convention": {"enum": ["magnitude", "negative", null]},
         "canonical_pressure_unit": {"enum": ["kilopascal", null]},

@@ -476,9 +476,9 @@ interval is accepted by this sensitivity protocol. See the
 
 The [inference qualification note](../../docs/src/contributing/ptfkit-eval-inference.md)
 records primary statistical sources, the unequal-group estimand issue, and
-the still-unfinished requirements for full selection-process confidence
-intervals. Retraining trajectories provide infrastructure and evidence for
-that work; they do not replace it.
+the qualified bounded conditional/block constructions, and remaining scientific
+and broader point-metric uncertainty requirements. Retraining trajectories
+provide sensitivity evidence; their output does not supply these intervals.
 
 ## Retention approximation fitting
 
@@ -849,4 +849,237 @@ The original number of registered policies, including failures, controls the
 simultaneous allocation. `conditional-outer-risk.json` and the verified Markdown
 report preserve these results separately from descriptive CV/metric uncertainty.
 The existing strategy-assessment and retraining-sensitivity statuses retain their
-original targets; averaged-over-training full-process inference remains pending.
+original targets. Independent-block inference for the registered complete
+selector now has a separate native policy and estimand.
+
+
+`bound_independent_training_risk` addresses a different target: the learner
+repeated on new independent training datasets. `IndependentTrainingRiskPlan`
+requires named learner/population identities, fixed training/test group counts,
+exact block count, prior loss/size bounds and confidence allocation. Every group
+is disjoint across all roles/blocks, and the entire learner must repeat using
+only each training block. `IndependentTrainingBlock` retains complete roles,
+training-only failures and available `TrainingRiskTestGroup` sample losses.
+
+The output separately bounds training success/failure probability,
+`E[I(training success) R(training)]`, and risk conditional on successful training
+when success probability is separated from zero. Failed training remains in
+all denominators and block counts; it receives no invented zero-error model.
+An unconditional model-risk interval requires an independently justified prior
+`total_learner=True` assertion, never merely zero observed failures. Partial test
+coverage, observed bound violations and contradicted totality suppress intervals.
+The statistical kernel is also used by the native complete-selector block
+policy described below. Derivation and exact multinomial coverage: `evaluation/experiments/training_law_risk/`.
+
+Native conditional-risk integrity also reconstructs the original deterministic
+nested split and requires the complete eligible pressure grid inside the loss
+domain. Coordinated role/fit-metadata changes or omitted interior pressures
+cannot be certified by consistently rewriting their losses. Retained pressure
+diagnostics outside the loss domain remain outside the risk estimand.
+
+
+`allocate_independent_training_blocks(samples, plan=..., seed=...)` prepares
+`IndependentTrainingAllocation` with complete `TrainingBlockRoles` memberships.
+It ranks original group identities by a versioned SHA256 policy, then assigns
+exactly T training and H test groups per block. It rejects extra/missing groups,
+duplicate samples and missing profile IDs under resolved profile grouping.
+No sample is discarded or copied, and group/sample counts cannot determine
+assignment. Administrative IDs must themselves be independent of group values;
+this helper cannot establish IID sampling, run the learner or justify prior
+population bounds. Freeze any global grouping fallback before allocation.
+
+
+`assess_independent_forecast_training` repeats the whole registered learned
+selector on preallocated disjoint blocks of supplied eligible fixed forecasts.
+`assess_independent_selection_training` obtains those fixed forecasts from a
+native run and performs the same computation. Each block gets inner training/
+validation splits only within its T training groups; a candidate is selected
+there and refitted on all T groups before test prediction. Atomic and ensemble
+strategies are assessed separately. `select_grouped_forecast_holdout` exposes
+that single explicit holdout procedure directly. Its split method is
+`explicit_group_holdout_inner_round_robin_v1`; the selector's outer-fold count
+does not reallocate the explicit external roles. Inner gates still apply.
+
+No parent CV choices, fits or predictions are reused. Fixed PTF forecasts are
+cached because currently supported members have no learned preprocessing.
+Reference approximation fits, applicability diagnostics and reporting are not
+part of the selected prediction rule. The original profile/source fallback is
+resolved once before block allocation. Every original group is used exactly
+once; surplus or insufficient groups cause registration failure. A training-only
+fit/selection failure retains all test memberships with unavailable model losses.
+Missing successful-test predictions suppress inference without becoming a
+training failure.
+
+An optional `independent_training_risk` run-plan array registers one or both
+learned-selector strategies. Each policy explicitly supplies `strategy`, `seed`,
+`population_id`, `learner_id`, resolved `grouping`, `maximum_sample_loss`,
+`minimum_group_size`, `maximum_group_size`, `training_groups_per_block`,
+`test_groups_per_block`, `n_blocks`, `total_learner`, `confidence_level`,
+`assumptions="iid_groups_disjoint_blocks_training_only_failure_population_bounds"`
+and `method="independent_blocks_group_hoeffding_training_law_v1"`. Loss is inherited
+from the selector; no independent domain override is accepted. Strategies are
+unique and share one family confidence level. Every registered strategy,
+including failed training, remains in the simultaneous q-policy allocation.
+This family is distinct from conditional outer-risk and metric intervals.
+
+`independent-training-risk.json` retains the original sample/forecast inputs,
+resolved allocation, complete per-block inner evidence, selected candidates,
+refits, predictions, test losses and failure records. The selector checksum binds
+the registered selection plan, strategy, candidate kinds and training group
+count; it does not certify external forecast provenance. Native candidate
+specifications, manifest, original eligibility decisions and dataset are retained
+in the enclosing run snapshots. The report separately identifies training
+success/failure, risk mass, successful-training risk and unconditional model risk.
+The latter remains unavailable unless prior learner totality is explicitly
+asserted and uncontradicted. See
+`evaluation/examples/synthetic_training_risk/` for a portable native example;
+its two blocks honestly produce uninformative bounds, not a precision claim.
+
+
+`PairedTrainingRiskPlan` and `bound_paired_independent_training_risk` provide
+signed left-minus-right sample-risk differences on identical original block
+roles. The success event is that both complete learners train successfully.
+It differs from subtracting risks conditioned on each learner's own success.
+Each model's loss must satisfy the same prior bound B; individual violations
+are rejected before subtraction. The method maps complete sample losses to
+`U=((left-right)/B+1)/2` and reuses the existing bounded independent-block kernel.
+The output records the transformation explicitly; its nested positive-kernel
+risk is a transformed loss, not another retention curve's squared error.
+Signed mass, joint success/failure, conditional joint-success difference and
+prior-totality-only unconditional difference remain separate fields.
+
+`pair_selection_training_evidence` extracts both strategies from the same
+retained actual selector invocations. `assess_paired_selection_training` trains
+both native strategies on shared original blocks and applies that comparison.
+One-sided training failures preserve the successful rule's available test losses
+and leave the other rule undefined. Missing joint-success test losses suppress
+inference; no fit failure is inferred from held-out coverage. Large finite losses
+are handled without forming `2*B`; subtracting bounded nonnegative losses first
+also preserves equal binary differences across different absolute error levels.
+
+An optional `paired_training_risk` run-plan object registers one comparison.
+It uses the independent-block population/count/bound/confidence/seed fields,
+replaces `strategy` with distinct `left_strategy` and `right_strategy`, and
+requires distinct `left_learner_id`/`right_learner_id` plus the joint `learner_id`.
+Its method is `independent_blocks_affine_paired_training_law_v1`; loss is
+inherited from the selector. `total_learner` asserts totality of both procedures.
+`paired-training-risk.json` retains complete inputs, both choices/refits,
+identical roles and separate fit/test evidence. Its confidence allocation is
+separate from marginal, conditional outer-risk and metric families.
+
+The exact whole-selector paired calibration and transformation derivation are in
+`evaluation/experiments/selector_training_law/paired-risk.md`. On the informative
+finite population the joint-success difference is 1/16, while subtraction of
+marginal successful-training risks gives 1559/23552. The native portable example
+is `evaluation/examples/synthetic_training_risk/paired-run.json`. Its generator
+also accepts `--paired` for larger independent designs. No real-workbook sampling
+or scientific compatibility assumption is established by these examples.
+
+
+`BlendGridPlan` adds finite-grid training of a two-curve blend interval under
+`nested_two_curve_selection_v1`. Register distinct atomic members, at least two
+unique ordered positive `interval_grid_kpa` pairs, an explicit `transform`
+(`linear`/`log10`), `weighting` (`linear`/`smoothstep`), minimum training-group
+count and strictly positive minimum best-versus-second loss gap. Every interval
+must lie strictly inside the registered loss domain. The per-ensemble method is
+`training_grid_blend_interval_v1`.
+
+Inner training evaluates every interval using the same existing `BlendTransition`
+routing and exact-grid sample-balanced log-pressure MSE. Inner validation selects
+an ensemble candidate; the locked choice refits its interval on all outer
+training groups before test prediction. `BlendGridFit` retains usable original
+sample/group identities, coverage, every `BlendIntervalScore`, loss gap, selected
+interval and failure reason. A tie or inadequate evidence yields no default
+interval. Fixed axis, weighting and member identities are never learned from
+test data. Finite-grid hard switches share the same training/search substrate,
+with their existing protocol and stored results preserved.
+
+Blend prediction supports the same learned-domain, held-out curve, strategy,
+bootstrap-retraining and independent/paired training-risk paths as the other
+registered two-curve ensembles. These risk intervals do not quantify endpoint
+parameter uncertainty. Nonlinear predictor-dependent gates are not implemented.
+Blending does not itself certify physical monotonicity or validated pressure
+extent, and no prediction clipping is introduced.
+
+`diagnose_learned_blend_endpoints` computes both atomic member forecasts for
+every outer test sample at the already locked lower/upper endpoint. It needs
+only the frozen fit and test predictors, with no observations or retained loss
+assessments. `LearnedBlendEndpoint` records side, active endpoint member, both
+forecast traces, right-minus-left contrast and explicit unavailability. A
+contrast is not a blend jump. The optional `learned-blend-endpoints.json` artifact
+and report preserve the full roster, including missing-member inputs.
+
+The native example is `evaluation/examples/synthetic_learned_blend/`. Exact
+whole-learner calibration in `evaluation/experiments/blend_training_law/` checks
+all actual local fit/failure cases and normalized binary scale equivalence to
+the independently qualified switch law. The informative finite population has
+success 23/32, risk mass 11/2048 and successful-training sample risk 11/1472.
+This mathematical population is separate from the actual native PTF replay and
+supplies no scientific evidence about the real workbook.
+
+Fixed and learned blending now retain finite weights when distinct nearby
+positive endpoints have identical rounded logarithms, using a relative log span.
+Finite linear endpoints whose subtraction overflows also retain valid relative
+weights. Ordinary wide log intervals retain their original arithmetic path.
+
+
+### Sample-balanced point risk of the complete learner
+
+The optional `point_training_risk` array registers up to four unique
+`strategy`/`point_metric` pairs (`atomic` or `ensemble`, `mae` or `mse`). Its
+other fields match `independent_training_risk`; one common confidence level is
+allocated across every registered pair, including failed policies. This is a
+separate family from log-curve and paired risk. Assessment keeps the registered
+log-pressure selection objective unchanged. It uses equal weights within each
+sample on the complete fixed-roster common pressure grid inside that objective's
+domain, followed by sample-balanced population averaging. Missing selected
+predictions suppress the risk bound without removing original samples or
+changing training-success status.
+
+`PointErrorLossPlan`, `evaluate_sample_point_losses` and the existing complete
+forecast/native training APIs also expose this assessment directly.
+`PointSelectionTrainingRisk` retains every `SamplePointLoss` and its reason in
+`PointSelectionBlock`; `point-training-risk.json` persists the complete evidence.
+The optional `point_metric` field on `paired_training_risk` applies the same
+raw score to both learners, comparing their risks on joint training success.
+A paired MSE difference is not a difference of RMSEs.
+
+MSE results additionally expose an interval for the square root of
+training-average MSE (`successful_training_pooled_rmse_interval`), and an
+unconditional counterpart only under the prior total-learner assertion.
+These intervals do not estimate average per-training RMSE. MAE outputs carry
+no square-root intervals. All IID-group, prior loss-bound and fixed-training-size
+assumptions of the independent-block method still apply. The runnable
+`evaluation/examples/synthetic_point_risk` and exact finite-population experiment
+`evaluation/experiments/blend_training_law --point-metric mae|mse` demonstrate
+both routes without workbook accuracy claims.
+
+### Finite-grid nonlinear pressure gates
+
+`SigmoidGridPlan` registers `(center_kpa, steepness)` pairs and uses left weight
+`1 / (1 + exp(steepness * log10(pressure / center_kpa)))` to mix two fixed native
+curves. The method is `training_grid_log_pressure_sigmoid_v1` inside
+`nested_two_curve_selection_v1`. At least two unique finite positive pairs and
+a positive identification gap are required; each center lies strictly inside
+the registered selection-loss domain. Steepness is per log10 pressure decade.
+Both atomic members remain required, including when weights numerically saturate.
+
+The full grid search runs inside each inner training fold and outer-training
+refit. Failed coverage or tied objectives produce explicit unavailable fits.
+The same learned forecast path supports empirical domains, physical diagnostics,
+whole-group retraining sensitivity, independent-block risk, point MAE/MSE and
+paired joint-success comparisons. This is pressure-only routing; soil-property
+gating and fitted-parameter confidence intervals remain unimplemented. A convex
+combination of two curves does not itself guarantee pressure monotonicity.
+
+`learned-sigmoid-centers.json` retains every outer-test sample at its already
+locked center, both member input/prediction traces, steepness and the half-weight
+mixed forecast. This diagnostic reads no observations and performs no refitting.
+Missing member inputs preserve the center record with explicit unavailable output.
+The public helper is `diagnose_learned_sigmoid_centers`.
+
+The runnable `evaluation/examples/synthetic_sigmoid_gate` demonstrates native
+registration/replay. The independent rational-curve experiment in
+`evaluation/experiments/sigmoid_training_law` qualifies its complete small
+training procedure on equal/informative finite group populations while retaining
+failed fits. These controls make no workbook accuracy or scientific IID claim.
