@@ -12,7 +12,7 @@ from .metrics import summarize_retention_errors
 
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable
+    from collections.abc import Iterable, Sequence
 
     from .metrics import RetentionComparison
 
@@ -22,6 +22,25 @@ _MINIMUM_INTEGRATION_POINTS = 2
 
 class RetentionLossError(ValueError):
     """Raised when a registered selection loss has an invalid domain or policy."""
+
+
+def mean_finite_losses(values: Sequence[float]) -> float:
+    """Average finite nonnegative sample losses without overflowing their sum."""
+    if not values or any(not math.isfinite(value) or value < 0 for value in values):
+        message = 'A loss mean requires nonempty finite nonnegative values.'
+        raise RetentionLossError(message)
+    try:
+        return math.fsum(values) / len(values)
+    except OverflowError:
+        scale = max(values)
+        return scale * (math.fsum(value / scale for value in values) / len(values))
+
+
+def log10_pressure_span(lower: float, upper: float) -> float:
+    """Preserve positive spans for nearby representable positive pressures."""
+    if upper <= 2 * lower:
+        return math.log1p((upper - lower) / lower) / math.log(10)
+    return math.log10(upper) - math.log10(lower)
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -88,7 +107,7 @@ def evaluate_log_pressure_loss(
     for point in points:
         groups[point.source_id, point.sample_id].append(point)
     result: list[SampleCurveLoss] = []
-    span = math.log10(plan.upper_suction_kpa) - math.log10(plan.lower_suction_kpa)
+    span = log10_pressure_span(plan.lower_suction_kpa, plan.upper_suction_kpa)
     for (source, sample), sample_points in sorted(groups.items()):
         domain = sorted(
             (
@@ -109,11 +128,12 @@ def evaluate_log_pressure_loss(
                 SampleCurveLoss(source, sample, len(domain), None, 'missing_domain_endpoints')
             )
             continue
-        integral = math.fsum(
-            (math.log10(right.suction_kpa) - math.log10(left.suction_kpa))
-            * ((left.predicted - left.observed) ** 2 + (right.predicted - right.observed) ** 2)
-            / 2
+        normalized_loss = math.fsum(
+            log10_pressure_span(left.suction_kpa, right.suction_kpa)
+            / (2 * span)
+            * (point.predicted - point.observed) ** 2
             for left, right in pairwise(domain)
+            for point in (left, right)
         )
-        result.append(SampleCurveLoss(source, sample, len(domain), integral / span, None))
+        result.append(SampleCurveLoss(source, sample, len(domain), normalized_loss, None))
     return tuple(result)

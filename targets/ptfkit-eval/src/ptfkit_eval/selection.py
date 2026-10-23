@@ -7,17 +7,23 @@ from collections import Counter
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Literal, cast
 
-from .cohorts import RetentionCandidateComparisons, build_retention_cohorts
+from .cohorts import build_retention_cohorts, run_candidate_comparisons
 from .contracts import RangeGatedCurveCandidate
-from .documents import object_mapping, object_records
+from .documents import object_records
 from .folds import GroupedSample, NestedGroupFolds, NestedGroupPlan, build_nested_group_folds
-from .losses import LogPressureLossPlan, SampleCurveLoss, evaluate_log_pressure_loss
+from .losses import (
+    LogPressureLossPlan,
+    SampleCurveLoss,
+    evaluate_log_pressure_loss,
+    mean_finite_losses,
+)
 
 
 if TYPE_CHECKING:
     from collections.abc import Mapping, Sequence
 
     from .folds import GroupKey, InnerGroupFold, OuterGroupFold, SampleKey
+    from .nested_applicability import NestedDomainPlan
     from .runner import RetentionRunResult
 
 
@@ -35,6 +41,7 @@ class FixedSelectionPlan:
     minimum_coverage: float = 1.0
     tie_breaker: Literal['candidate_id'] = 'candidate_id'
     failure_policy: Literal['require_common_cohort'] = 'require_common_cohort'
+    empirical_domains: NestedDomainPlan | None = None
 
     def __post_init__(self) -> None:
         """Reject ambiguous registration before selection evidence is inspected."""
@@ -194,20 +201,7 @@ def select_fixed_retention_candidates(
     }
     if splits.status != 'computed':
         return FixedNestedSelection(plan, splits, (), ())
-    cohort_records = [
-        RetentionCandidateComparisons(
-            candidate_id=identifier,
-            dataset_id=result.plan.dataset.dataset_id,
-            protocol_id=cast('str', object_mapping(result.plan.document['protocol'])['id']),
-            target=result.plan.dataset.target,
-            comparisons=tuple(
-                point.comparison
-                for point in result.points
-                if point.candidate_id == identifier and point.comparison is not None
-            ),
-        )
-        for identifier in sorted(plan.candidate_ids)
-    ]
+    cohort_records = run_candidate_comparisons(result, plan.candidate_ids)
     common = build_retention_cohorts(cohort_records).common
     losses = {
         cohort.candidate_id: {
@@ -272,7 +266,7 @@ def _inner_score(
     mean = (
         None
         if any(fold.mean_loss is None for fold in evidence)
-        else (math.fsum(cast('float', sample.loss) for sample in samples) / len(samples))
+        else (mean_finite_losses([cast('float', sample.loss) for sample in samples]))
     )
     return InnerCandidateScore(identifier, evidence, mean)
 
@@ -295,7 +289,7 @@ def _validation_loss(
         return ValidationLoss(
             fold_id, len(samples), len(valid), coverage, None, records, 'insufficient_coverage'
         )
-    mean = math.fsum(cast('float', record.loss) for record in valid) / len(valid)
+    mean = mean_finite_losses([cast('float', record.loss) for record in valid])
     return ValidationLoss(fold_id, len(samples), len(valid), coverage, mean, records, None)
 
 
@@ -328,7 +322,7 @@ def _protocol_assessment(
         if sample.loss is not None
     ]
     mean = (
-        math.fsum(cast('float', sample.loss) for sample in values) / len(values)
+        mean_finite_losses([cast('float', sample.loss) for sample in values])
         if not failed and values
         else None
     )

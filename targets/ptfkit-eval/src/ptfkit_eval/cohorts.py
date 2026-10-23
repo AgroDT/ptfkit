@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Literal
 
+from .documents import object_mapping
 from .metrics import RetentionComparison, RetentionErrorSummary, summarize_retention_errors
 
 
@@ -12,6 +13,7 @@ if TYPE_CHECKING:
     from collections.abc import Iterable, Mapping, Sequence
 
     from .contracts import TargetSpec
+    from .runner import RetentionRunResult
 
 
 class RetentionCohortError(ValueError):
@@ -67,6 +69,31 @@ class RetentionCohortSet:
     target: TargetSpec
     maximal: tuple[RetentionCohort, ...]
     common: tuple[RetentionCohort, ...]
+
+
+def run_candidate_comparisons(
+    result: RetentionRunResult, candidate_ids: Iterable[str]
+) -> tuple[RetentionCandidateComparisons, ...]:
+    """Recover an explicit candidate roster from already eligible run decisions."""
+    identifiers = tuple(candidate_ids)
+    known = {candidate.id for candidate in result.plan.evaluation.candidates}
+    if not identifiers or len(set(identifiers)) != len(identifiers) or set(identifiers) - known:
+        message = 'Run comparison records require a nonempty unique roster of known candidates.'
+        raise RetentionCohortError(message)
+    return tuple(
+        RetentionCandidateComparisons(
+            candidate_id=identifier,
+            dataset_id=result.plan.dataset.dataset_id,
+            protocol_id=str(object_mapping(result.plan.document['protocol'])['id']),
+            target=result.plan.dataset.target,
+            comparisons=tuple(
+                point.comparison
+                for point in result.points
+                if point.candidate_id == identifier and point.comparison is not None
+            ),
+        )
+        for identifier in sorted(identifiers)
+    )
 
 
 def build_retention_cohorts(

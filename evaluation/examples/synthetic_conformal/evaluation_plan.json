@@ -1,0 +1,27 @@
+{
+  "candidates": [
+    {
+      "axis": {
+        "convention": "magnitude",
+        "quantity": "matric_potential",
+        "transform": "linear",
+        "unit": "kilopascal"
+      },
+      "function": "calc_ptf_clapp1978",
+      "id": "sand_a",
+      "kind": "function_curve",
+      "prediction": {
+        "id": "clapp1978_h_theta",
+        "kind": "model_adapter"
+      },
+      "target": {
+        "denominator_basis": "bulk_volume",
+        "material_basis": "mineral_soil",
+        "quantity": "volumetric_water_content",
+        "unit": "volume_fraction"
+      }
+    }
+  ],
+  "ptfkit_manifest_schema_version": 1,
+  "schema_version": 1
+}
