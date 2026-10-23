@@ -39,8 +39,8 @@ class EnumArray(Generic[E]):
 
         codes = np.fromiter((ordinal(value) for value in values), dtype=np.uint32)
         instance = object.__new__(cls)
-        instance._enum_type = enum_type  # noqa: SLF001
-        instance._codes = codes  # noqa: SLF001
+        instance._enum_type = enum_type
+        instance._codes = codes
         return instance
 
     @staticmethod
