@@ -13,7 +13,7 @@ scope:
     Approximately 12,000 samples from the USDA National Soil Characterization
     database; equations were evaluated with NRCS pilot-study data.
 $defs:
-  Theta33:
+  theta_33:
     type: scalar
     name: theta_33
     quantity: volumetric_water_content
@@ -22,7 +22,7 @@ $defs:
     reported_unit: "cm³/cm³"
     domain: null
     description: Volumetric soil water content at -33 kPa.
-  Theta1500:
+  theta_1500:
     type: scalar
     name: theta_1500
     quantity: volumetric_water_content
@@ -31,12 +31,12 @@ $defs:
     reported_unit: "cm³/cm³"
     domain: null
     description: Volumetric soil water content at -1500 kPa.
-  Theta33Tree:
+  theta_33_tree:
     type: tree
     inputs:
       - {name: texture, $ref: ../definitions/soil.yaml#/$defs/UsdaTextureClass}
       - {name: carbon, type: number}
-    output: {$ref: "#/$defs/Theta33"}
+    output: {$ref: "#/$defs/theta_33"}
     root:
       match:
         input: texture
@@ -130,13 +130,13 @@ $defs:
             then: {leaf: 0.397}
           - values: [clay]
             then: {leaf: 0.426}
-  Theta1500Tree:
+  theta_1500_tree:
     type: tree
     inputs:
       - {name: clay, type: number}
       - {name: sand, type: number}
       - {name: carbon, type: number}
-    output: {$ref: "#/$defs/Theta1500"}
+    output: {$ref: "#/$defs/theta_1500"}
     root:
       split: {input: clay, operator: lt, value: 26}
       yes:
@@ -213,7 +213,7 @@ functions:
         unit: "% mass"
         domain: null
         description: Soil organic carbon content by mass.
-    outputs: {$ref: "#/$defs/Theta33"}
+    outputs: {$ref: "#/$defs/theta_33"}
     verification_cases:
       - id: figure_2_leaf_01_sand
         kind: calculated
@@ -361,7 +361,7 @@ functions:
       variables:
         - name: theta_33
           tree:
-            definition: {$ref: "#/$defs/Theta33Tree"}
+            definition: {$ref: "#/$defs/theta_33_tree"}
             arguments: {texture: soil_texture, carbon: soil_organic_carbon}
 
   - name: calc_ptf_rawls2003_soc_theta1500_tree
@@ -376,7 +376,7 @@ functions:
       - {name: clay, symbol: clay, unit: "% mass", domain: null, description: Clay content by mass.}
       - {name: sand, symbol: sand, unit: "% mass", domain: null, description: Sand content by mass.}
       - {name: soil_organic_carbon, symbol: Corg, unit: "% mass", domain: null, description: Soil organic carbon content by mass.}
-    outputs: {$ref: "#/$defs/Theta1500"}
+    outputs: {$ref: "#/$defs/theta_1500"}
     verification_cases:
       - {id: figure_3_leaf_01_low_corg, kind: calculated, inputs: {clay: 5.0, sand: 70.0, soil_organic_carbon: 1.0}, expected: {theta_1500: 0.061}, source_location: "Figure 3, terminal node [1]", rationale: "Selected inside published terminal region [1]; expected value is the published mean divided by 100."}
       - {id: figure_3_leaf_02_corg_1_5_boundary, kind: calculated, inputs: {clay: 5.0, sand: 70.0, soil_organic_carbon: 1.5}, expected: {theta_1500: 0.085}, source_location: "Figure 3, terminal node [2]", rationale: "Selected at the published 1.5% threshold; strict less-than takes region [2], whose mean is divided by 100."}
@@ -408,7 +408,7 @@ functions:
       variables:
         - name: theta_1500
           tree:
-            definition: {$ref: "#/$defs/Theta1500Tree"}
+            definition: {$ref: "#/$defs/theta_1500_tree"}
             arguments: {clay: clay, sand: sand, carbon: soil_organic_carbon}
 
   - name: calc_ptf_rawls2003_soc_theta33_gmdh

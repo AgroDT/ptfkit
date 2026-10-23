@@ -12,7 +12,7 @@ scope:
     166 soil samples from 42 soil profiles reported by Odell et al. (1974).
     Samples with organic carbon greater than 4% were excluded from the regressions.
 $defs:
-  Sand:
+  sand:
     name: sand
     symbol: x_2
     unit: '%'
@@ -20,7 +20,7 @@ $defs:
     description: >-
       Sand content by mass. The supplied research notes report this observed
       calibration range from a reconstruction of Odell et al. (1974), Appendix B.
-  Clay:
+  clay:
     name: clay
     symbol: x_1
     unit: '%'
@@ -41,8 +41,8 @@ functions:
         h_theta: null
         k_h: null
     inputs:
-      - $ref: '#/$defs/Clay'
-      - $ref: '#/$defs/Sand'
+      - $ref: '#/$defs/clay'
+      - $ref: '#/$defs/sand'
     outputs:
       type: record
       name: Dijkerman1988WaterContent
@@ -132,7 +132,7 @@ functions:
         h_theta: null
         k_h: null
     inputs:
-      - $ref: '#/$defs/Clay'
+      - $ref: '#/$defs/clay'
       - name: silt
         symbol: silt
         unit: '%'

@@ -56,7 +56,7 @@ $defs:
         unit: "1"
         domain: null
         description: Published coefficient.
-  ParametersByTexture:
+  parameters_by_texture:
     type: lookup
     input:
       $ref: "#/$defs/TextureClass"
@@ -71,7 +71,7 @@ functions:
         - name: parameters
           lookup:
             table:
-              $ref: "#/$defs/ParametersByTexture"
+              $ref: "#/$defs/parameters_by_texture"
             key: texture
     verification_cases:
       - id: coarse_table_row

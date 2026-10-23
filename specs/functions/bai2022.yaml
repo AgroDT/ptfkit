@@ -80,7 +80,7 @@ $defs:
       value > 0; the selected equations contain logarithmic and reciprocal
       altitude terms, and the source does not report a sampled marginal range.
     description: Altitude determined using a handheld portable GPS.
-  BulkDensity:
+  bulk_density:
     type: scalar
     name: bulk_density
     quantity: dry_bulk_density
@@ -148,7 +148,7 @@ functions:
       - $ref: '#/$defs/slope'
       - $ref: '#/$defs/clay'
     outputs:
-      $ref: '#/$defs/BulkDensity'
+      $ref: '#/$defs/bulk_density'
     verification_cases:
       - id: mean_texture_interior_slope
         kind: calculated

@@ -95,6 +95,31 @@ are stable public type names, while field order is part of the cross-target
 result contract. Reusable parameter declarations, enum types, and record shapes
 may be declared once in `$defs` and referenced by multiple functions. The
 `$defs` key is the canonical name of a reusable declaration, type, or record.
+
+Use the following naming conventions for `$defs` keys in source specifications
+and shared definition documents:
+
+| Definition | Key style | Example |
+| --- | --- | --- |
+| Quantitative input parameter | `snake_case` | `effective_porosity` |
+| Scalar output | `snake_case` | `water_content_pf00` |
+| Lookup | `snake_case` | `parameters_by_texture` |
+| Tree | `snake_case` | `water_content_33_tree` |
+| Enum type | `PascalCase` | `UsdaTextureClass` |
+| Record output | `PascalCase` | `Weynants2009PTFResult` |
+
+Name lookups by their contents and selection key, and trees by the quantity
+they compute. Add `_lookup` or `_tree` only when needed to distinguish otherwise
+ambiguous definition names. Reserve `PascalCase` for enum and record types;
+other definition keys use `snake_case`.
+
+Input argument names, scalar output names, record field names, and enum member
+names use `snake_case`. Enum type names and record output names use `PascalCase`,
+including inline record outputs. When a definition has a separate `name` field,
+that field follows the convention for its role: a parameter or scalar output
+name uses `snake_case`, and a record output name uses `PascalCase`. The key's
+letter case does not determine the definition kind; its structure does.
+
 Enum definitions shared by multiple source specifications live directly under
 `specs/definitions/` and are referenced with a relative file reference such as
 `../definitions/soil.yaml#/$defs/UsdaTextureClass`. References are resolved

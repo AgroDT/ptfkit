@@ -100,7 +100,7 @@ $defs:
         reported_unit: dimensionless
         domain: value > 1
         description: van Genuchten pore-size distribution parameter.
-  Wosten2001ClassParametersBySoilClass:
+  wosten2001_class_parameters_by_soil_class:
     type: lookup
     input:
       $ref: "#/$defs/Wosten2001SoilClass"
@@ -257,7 +257,7 @@ functions:
         - name: parameters
           lookup:
             table:
-              $ref: "#/$defs/Wosten2001ClassParametersBySoilClass"
+              $ref: "#/$defs/wosten2001_class_parameters_by_soil_class"
             key: soil_class
 
   - name: calc_ptf_wosten2001_hydraulic

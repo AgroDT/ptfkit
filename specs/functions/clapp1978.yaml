@@ -98,7 +98,7 @@ $defs:
         description: >-
           Representative sorptivity for the paper's single initial moisture
           deficit corresponding to 500-cm initial suction.
-  Clapp1978ParametersByTexture:
+  clapp1978_parameters_by_texture:
     type: lookup
     input:
       $ref: "#/$defs/UsdaTextureClass"
@@ -239,7 +239,7 @@ functions:
         - name: parameters
           lookup:
             table:
-              $ref: "#/$defs/Clapp1978ParametersByTexture"
+              $ref: "#/$defs/clapp1978_parameters_by_texture"
             key: soil_texture
 
 scientific_notes: |

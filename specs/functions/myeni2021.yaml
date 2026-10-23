@@ -18,19 +18,19 @@ scope:
     geographic location and climate, then randomly split per granulometric
     range (Sections 2.1-2.2; Tables 2-3).
 $defs:
-  Clay:
+  clay:
     name: clay
     symbol: Cl
     unit: "%"
     domain: "Development dataset range: 1.00-83.00% (Table 3)."
     description: Clay content by weight, particle diameter below 0.002 mm.
-  Silt:
+  silt:
     name: silt
     symbol: Si
     unit: "%"
     domain: "Development dataset range: 1.00-64.00% (Table 3)."
     description: Silt content by weight, particle diameter 0.002-0.05 mm.
-  Soc:
+  soc:
     name: soc
     symbol: SOC
     unit: "%"
@@ -48,9 +48,9 @@ functions:
         h_theta: null
         k_h: null
     inputs:
-      - $ref: '#/$defs/Clay'
-      - $ref: '#/$defs/Silt'
-      - $ref: '#/$defs/Soc'
+      - $ref: '#/$defs/clay'
+      - $ref: '#/$defs/silt'
+      - $ref: '#/$defs/soc'
     outputs:
       type: scalar
       name: fc
@@ -96,9 +96,9 @@ functions:
         h_theta: null
         k_h: null
     inputs:
-      - $ref: '#/$defs/Clay'
-      - $ref: '#/$defs/Silt'
-      - $ref: '#/$defs/Soc'
+      - $ref: '#/$defs/clay'
+      - $ref: '#/$defs/silt'
+      - $ref: '#/$defs/soc'
     outputs:
       type: scalar
       name: pwp
