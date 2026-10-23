@@ -7,6 +7,7 @@ from collections import defaultdict
 from dataclasses import dataclass, replace
 from typing import TYPE_CHECKING, cast
 
+from .applicability import RunEmpiricalDomain, assess_retention_applicability
 from .cohorts import RetentionCandidateComparisons, RetentionCohort, build_retention_cohorts
 from .conformal import (
     ConformalPrediction,
@@ -21,10 +22,19 @@ from .execution import CurveExecutionError, CurvePoint, convert_value, evaluate_
 from .fitting import RetentionFitResult, fit_retention_family
 from .folds import GroupedSample
 from .input_bindings import RunInputTrace, bind_retention_inputs
+from .learned import LearnedNestedSelection, select_learned_retention_candidates
+from .learned_applicability import diagnose_learned_applicability
+from .learned_seams import LearnedSwitchSeam, diagnose_learned_switch_seams
 from .metrics import RetentionComparison
-from .quality import RetentionSeriesPoint
+from .nested_applicability import NestedApplicabilityResult, diagnose_nested_applicability
+from .paired import PairedRetentionBootstrap, compare_retention_run_pairs
+from .quality import RetentionSeriesPoint, SelectionCurveQuality, diagnose_selection_curves
+from .resampling import SelectionResamplingResult, resample_selection_procedure
 from .run_plans import RetentionRunPlan, candidate_atoms
+from .seams import CompositeSeamDiagnostic, diagnose_composite_seams
 from .selection import FixedNestedSelection, select_fixed_retention_candidates
+from .selection_risk import SelectionConditionalRisk, assess_selection_conditional_risks
+from .strategy_assessment import SelectionStrategyAssessment, assess_selection_strategies
 from .uncertainty import RetentionBootstrapResult, bootstrap_retention_errors
 
 
@@ -136,6 +146,17 @@ class RetentionRunResult:
     selection: FixedNestedSelection | None = None
     approximations: tuple[RunApproximationFit, ...] = ()
     prediction_intervals: tuple[RunPredictionIntervals, ...] = ()
+    empirical_domains: tuple[RunEmpiricalDomain, ...] = ()
+    seam_diagnostics: tuple[CompositeSeamDiagnostic, ...] = ()
+    nested_applicability: NestedApplicabilityResult | None = None
+    paired_comparisons: tuple[PairedRetentionBootstrap, ...] = ()
+    learned_selection: LearnedNestedSelection | None = None
+    learned_applicability: NestedApplicabilityResult | None = None
+    learned_seams: tuple[LearnedSwitchSeam, ...] = ()
+    selection_quality: tuple[SelectionCurveQuality, ...] = ()
+    strategy_assessments: tuple[SelectionStrategyAssessment, ...] = ()
+    selection_resampling: tuple[SelectionResamplingResult, ...] = ()
+    conditional_outer_risk: tuple[SelectionConditionalRisk, ...] = ()
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -209,6 +230,10 @@ def execute_retention_run(plan: RetentionRunPlan) -> RetentionRunResult:
         _sample_matrix(plan, decisions),
         results,
         approximations=_fit_reference_curves(plan),
+        empirical_domains=tuple(
+            assess_retention_applicability(plan, policy=policy) for policy in plan.empirical_domains
+        ),
+        seam_diagnostics=diagnose_composite_seams(plan),
     )
     result = (
         result
@@ -216,6 +241,42 @@ def execute_retention_run(plan: RetentionRunPlan) -> RetentionRunResult:
         else replace(
             result, selection=select_fixed_retention_candidates(result, plan=plan.selection)
         )
+    )
+    if plan.selection is not None and plan.selection.empirical_domains is not None:
+        result = replace(
+            result,
+            nested_applicability=diagnose_nested_applicability(
+                result, policy=plan.selection.empirical_domains
+            ),
+        )
+    if plan.paired_comparisons:
+        result = replace(result, paired_comparisons=compare_retention_run_pairs(result))
+    if plan.learned_selection is not None:
+        result = replace(
+            result,
+            learned_selection=select_learned_retention_candidates(
+                result, plan=plan.learned_selection
+            ),
+        )
+        result = replace(result, learned_seams=diagnose_learned_switch_seams(result))
+        if plan.learned_selection.empirical_domains is not None:
+            result = replace(
+                result,
+                learned_applicability=diagnose_learned_applicability(
+                    result, policy=plan.learned_selection.empirical_domains
+                ),
+            )
+    result = replace(
+        result,
+        selection_quality=diagnose_selection_curves(result),
+        strategy_assessments=assess_selection_strategies(result),
+        conditional_outer_risk=assess_selection_conditional_risks(
+            result, policies=plan.conditional_outer_risk
+        ),
+        selection_resampling=tuple(
+            resample_selection_procedure(result, plan=policy)
+            for policy in plan.selection_resampling
+        ),
     )
     return (
         replace(result, prediction_intervals=_prediction_intervals(result))

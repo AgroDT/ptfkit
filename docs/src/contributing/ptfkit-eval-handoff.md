@@ -9,15 +9,48 @@ can resume without reconstructing decisions from chat history.
 
 Last updated: 2026-10-23.
 
-The ongoing extended implementation session is recorded separately in
-`docs/src/contributing/ptfkit-eval-progress.md`. That file supersedes the older
-continuation order and test counts below. Primary-source review is explicitly
-deferred by the user until the workbook/papers are available on another computer.
-The latest verified checkpoint there includes the portable run/CLI pipeline,
-fixed-pressure outputs, nested fixed-candidate selection, four approximation
-families and local conditional fitting uncertainty, grouped conformal PTF
-prediction intervals, and 269 component tests. Work is paused at the user's
-request; see the final checkpoint in the progress file before resuming.
+The active implementation goal continues. The latest verified checkpoint is
+**494 component tests**, Ruff 0.16.1 lint/format and ty 0.0.71. Read the final
+entry in [the progress log](ptfkit-eval-progress.md) for exact verification and
+continuation evidence; that log supersedes historical continuation orders and
+counts below. Primary-source review remains explicitly deferred by the user
+until the workbook/papers are available on another computer.
+
+Implemented slices include portable run/CLI artifacts, fixed-pressure outputs,
+nested fixed and learned selection, four approximation families, grouped
+conformal prediction intervals, training-only empirical domains and error
+strata, paired cluster differences, constant convex pairs, finite-grid hard
+switches, fitted seam/curve diagnostics and descriptive outer strategy
+assessment. Whole-group retraining trajectories preserve original independent
+group identities, sample-occurrence weights and failed draws.
+
+Supplied-forecast selection and shared native/forecast occurrence materialization
+now support exact mathematical calibration. Equal/unequal group sizes,
+informative missing targets and hard-switch identification failures are checked
+against independent finite-state risk oracles. Installed-wheel replays reproduce
+all five scenarios, including full hard-switch selection/failure evidence.
+These are estimand, identification and computability diagnostics. They do not
+qualify a complete strategy confidence interval; see the
+[inference qualification note](ptfkit-eval-inference.md).
+
+A bounded conditional outer-rule inference API now has a documented
+concentration/union-bound derivation, exact equal/unequal-size coverage checks,
+actual nested-selector integration tests and four installed-wheel replays.
+Its explicit target is the equal-fold mean conditional risk of fitted outer
+rules, rather than averaged-over-training risk or a final all-data model.
+
+Native conditional risk registration, complete coverage/provenance validation,
+failed-fit reporting and simultaneous allocation across reported strategies are
+now integrated. Failed policies remain in the original family size. The new
+synthetic conditional-risk example defines an IID binary group population with
+prior loss/size bounds and a deterministic generator, rather than inferring
+independence from IDs. Its full CLI run and installed-wheel replay are recorded
+in the final progress entry.
+
+Next: inference for average risk over new training datasets, distinct from the
+conditional outer-rule target; learned blend/nonlinear gate roadmap work and
+deferred source/real-data eligibility also remain unfinished. The active goal
+continues and has not been completed.
 
 ## Acceptance target
 
@@ -244,3 +277,18 @@ At the beginning of the next session:
 3. Read the latest verification results in this file.
 4. Resume the first unfinished item in **Immediate continuation order**.
 5. Update this handoff as decisions and verification results change.
+
+
+Latest checkpoint: **433 tests**. Read the final progress entry and
+`evaluation/experiments/group_ratio/README.md`. The supplied-forecast selection
+API and exact equal/unequal-group calibration now work from the installed wheel.
+No strategy CI is qualified. Continue with missing-target/parameter-instability
+scenarios and a justified training-law inference procedure; the active goal
+and deferred scientific requirements remain unfinished.
+
+
+Latest checkpoint: **443 tests**. Shared native/supplied-forecast group occurrence
+materialization and informative missing-target calibration are verified, including
+three exact installed-wheel experiment replays. See the last progress entry.
+Continue with parameter-instability/boundary scenarios and justified inference;
+the active goal and deferred scientific requirements remain unfinished.
