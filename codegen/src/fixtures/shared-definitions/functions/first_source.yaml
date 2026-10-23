@@ -7,7 +7,7 @@ $defs:
     type: record
     name: FirstResult
     fields: [{name: value, quantity: volumetric_water_content, unit: volume_fraction, reported_unit: '1', symbol: null, domain: null, description: Result.}, {name: other, quantity: volumetric_water_content, unit: volume_fraction, reported_unit: '1', symbol: null, domain: null, description: Other result.}]
-  SharedValues:
+  shared_values:
     type: lookup
     input: {$ref: ../definitions/soil.yaml#/$defs/SharedCategory}
     output: {$ref: '#/$defs/FirstResult'}
@@ -24,7 +24,7 @@ $defs:
     type: record
     name: LocalResult
     fields: [{name: value, quantity: volumetric_water_content, unit: volume_fraction, reported_unit: '1', symbol: null, domain: null, description: Result.}, {name: other, quantity: volumetric_water_content, unit: volume_fraction, reported_unit: '1', symbol: null, domain: null, description: Other result.}]
-  LocalValues:
+  local_values:
     type: lookup
     input: {$ref: '#/$defs/SharedCategory'}
     output: {$ref: '#/$defs/LocalResult'}
@@ -43,7 +43,7 @@ functions:
     outputs: {$ref: '#/$defs/FirstResult'}
     implementation:
       variables:
-        - {name: parameters, lookup: {table: {$ref: '#/$defs/SharedValues'}, key: category}}
+        - {name: parameters, lookup: {table: {$ref: '#/$defs/shared_values'}, key: category}}
     verification_cases:
       - {id: first, kind: calculated, inputs: {category: first}, expected: {value: 0.1, other: 0.5}, rationale: First table row.}
       - {id: second, kind: calculated, inputs: {category: second}, expected: {value: 0.2, other: 0.5}, rationale: Second table row.}
@@ -58,7 +58,7 @@ functions:
     outputs: {$ref: '#/$defs/LocalResult'}
     implementation:
       variables:
-        - {name: parameters, lookup: {table: {$ref: '#/$defs/LocalValues'}, key: category}}
+        - {name: parameters, lookup: {table: {$ref: '#/$defs/local_values'}, key: category}}
     verification_cases:
       - {id: first, kind: calculated, inputs: {category: first}, expected: {value: 0.9, other: 0.5}, rationale: First table row.}
       - {id: second, kind: calculated, inputs: {category: second}, expected: {value: 0.7, other: 0.5}, rationale: Second table row.}
