@@ -16,3 +16,6 @@ inline = []
 
 [dev-dependencies]
 assertables = "10.1.0"
+
+[lints.clippy]
+approx_constant = "allow"
