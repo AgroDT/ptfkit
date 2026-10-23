@@ -1,0 +1,217 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ptfkit.invalid/evaluation-plan.schema.json",
+  "title": "ptfkit-eval evaluation plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "ptfkit_manifest_schema_version", "candidates"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "ptfkit_manifest_schema_version": {"const": 1},
+    "candidates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/candidate"}
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "bound": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "inclusive"],
+      "properties": {
+        "value": {"type": "number"},
+        "inclusive": {"type": "boolean"}
+      }
+    },
+    "interval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lower", "upper"],
+      "properties": {
+        "lower": {"$ref": "#/$defs/bound"},
+        "upper": {"$ref": "#/$defs/bound"}
+      }
+    },
+    "axis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["quantity", "unit", "convention", "transform"],
+      "properties": {
+        "quantity": {"$ref": "#/$defs/identifier"},
+        "unit": {"$ref": "#/$defs/identifier"},
+        "convention": {"enum": ["signed", "magnitude"]},
+        "transform": {"enum": ["linear", "log10"]}
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["quantity", "unit", "material_basis", "denominator_basis"],
+      "properties": {
+        "quantity": {"$ref": "#/$defs/identifier"},
+        "unit": {"$ref": "#/$defs/identifier"},
+        "material_basis": {"$ref": "#/$defs/identifier"},
+        "denominator_basis": {"$ref": "#/$defs/identifier"}
+      }
+    },
+    "prediction": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "name"],
+          "properties": {
+            "kind": {"const": "output"},
+            "name": {"$ref": "#/$defs/identifier"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "id"],
+          "properties": {
+            "kind": {"const": "model_adapter"},
+            "id": {"$ref": "#/$defs/identifier"}
+          }
+        }
+      ]
+    },
+    "fixedProvenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "source"],
+      "properties": {
+        "kind": {"const": "fixed"},
+        "source": {"type": "string", "minLength": 1}
+      }
+    },
+    "learnedProvenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "source", "training_protocol"],
+      "properties": {
+        "kind": {"const": "learned"},
+        "source": {"type": "string", "minLength": 1},
+        "training_protocol": {"type": "string", "minLength": 1}
+      }
+    },
+    "member": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "function", "prediction", "interval"],
+      "properties": {
+        "id": {"$ref": "#/$defs/identifier"},
+        "function": {"$ref": "#/$defs/identifier"},
+        "prediction": {"$ref": "#/$defs/prediction"},
+        "interval": {"$ref": "#/$defs/interval"}
+      }
+    },
+    "hardSwitch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "left_member", "right_member", "at", "boundary_member"],
+      "properties": {
+        "kind": {"const": "hard_switch"},
+        "left_member": {"$ref": "#/$defs/identifier"},
+        "right_member": {"$ref": "#/$defs/identifier"},
+        "at": {"type": "number"},
+        "boundary_member": {"enum": ["left", "right"]}
+      }
+    },
+    "blend": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "left_member", "right_member", "interval", "weighting"],
+      "properties": {
+        "kind": {"const": "blend"},
+        "left_member": {"$ref": "#/$defs/identifier"},
+        "right_member": {"$ref": "#/$defs/identifier"},
+        "interval": {"$ref": "#/$defs/interval"},
+        "weighting": {"enum": ["linear", "smoothstep"]}
+      }
+    },
+    "routing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gap", "extrapolation", "transitions"],
+      "properties": {
+        "gap": {"const": "reject"},
+        "extrapolation": {"const": "reject"},
+        "transitions": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {"$ref": "#/$defs/hardSwitch"},
+              {"$ref": "#/$defs/blend"}
+            ]
+          }
+        }
+      }
+    },
+    "functionCurve": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "axis", "target", "function", "prediction"],
+      "properties": {
+        "id": {"$ref": "#/$defs/identifier"},
+        "kind": {"const": "function_curve"},
+        "axis": {"$ref": "#/$defs/axis"},
+        "target": {"$ref": "#/$defs/target"},
+        "function": {"$ref": "#/$defs/identifier"},
+        "prediction": {"$ref": "#/$defs/prediction"}
+      }
+    },
+    "rangeGatedCurve": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "axis", "target", "members", "routing", "provenance"],
+      "properties": {
+        "id": {"$ref": "#/$defs/identifier"},
+        "kind": {"const": "range_gated_curve"},
+        "axis": {"$ref": "#/$defs/axis"},
+        "target": {"$ref": "#/$defs/target"},
+        "members": {
+          "type": "array",
+          "minItems": 2,
+          "items": {"$ref": "#/$defs/member"}
+        },
+        "routing": {"$ref": "#/$defs/routing"},
+        "provenance": {
+          "oneOf": [
+            {"$ref": "#/$defs/fixedProvenance"},
+            {"$ref": "#/$defs/learnedProvenance"}
+          ]
+        }
+      }
+    },
+    "functionPoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "axis", "target", "function", "prediction"],
+      "properties": {
+        "id": {"$ref": "#/$defs/identifier"},
+        "kind": {"const": "function_point"},
+        "axis": {"$ref": "#/$defs/axis"},
+        "target": {"$ref": "#/$defs/target"},
+        "function": {"$ref": "#/$defs/identifier"},
+        "prediction": {
+          "type": "object", "additionalProperties": false,
+          "required": ["kind", "name"],
+          "properties": {"kind": {"const": "fixed_output"}, "name": {"$ref": "#/$defs/identifier"}}
+        }
+      }
+    },
+    "candidate": {
+      "oneOf": [
+        {"$ref": "#/$defs/functionCurve"},
+        {"$ref": "#/$defs/functionPoint"},
+        {"$ref": "#/$defs/rangeGatedCurve"}
+      ]
+    }
+  }
+}

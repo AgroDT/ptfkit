@@ -1,6 +1,7 @@
 //! Render concrete generated products from compiled specifications.
 
 mod catalog;
+mod manifest;
 mod native;
 mod python;
 mod reference;
@@ -139,6 +140,7 @@ pub(crate) fn run(root: &Path, loaded: LoadedSpecifications) -> anyhow::Result<(
     let rust = rust::render_with_definitions(&compiled, &definitions)?;
     let python = python::render_with_definitions(&compiled, &definitions)?;
     let native = native::render_with_definitions(&compiled, &definitions)?;
+    let manifest = manifest::render(&entries, &python_package_version(root)?)?;
 
     output::commit(
         root,
@@ -152,12 +154,34 @@ pub(crate) fn run(root: &Path, loaded: LoadedSpecifications) -> anyhow::Result<(
             Output::new(&output::PYTHON_EXTENSION, python.extension),
             Output::new(&output::PYTHON_WRAPPER, python.wrappers),
             Output::new(&output::PYTHON_TEST, python.tests),
+            Output::new(&output::PYTHON_MANIFEST, manifest),
             Output::new(&output::NATIVE_C, native.c_headers),
             Output::new(&output::NATIVE_CPP_MODULE, native.cpp_modules),
             Output::new(&output::NATIVE_C_TEST, native.c_tests),
             Output::new(&output::NATIVE_CPP_TEST, native.cpp_tests),
         ],
     )
+}
+
+pub(crate) fn generate_manifest(
+    root: &Path,
+    entries: &[crate::model::Entry],
+) -> anyhow::Result<()> {
+    let manifest = manifest::render(entries, &python_package_version(root)?)?;
+    output::commit(root, &[Output::new(&output::PYTHON_MANIFEST, manifest)])
+}
+
+fn python_package_version(root: &Path) -> anyhow::Result<String> {
+    let path = root.join("targets/ptfkit-py/src/ptfkit/_version.py");
+    let contents = std::fs::read_to_string(&path)?;
+    contents
+        .lines()
+        .find_map(|line| {
+            line.strip_prefix("__version__ = '")
+                .and_then(|value| value.strip_suffix('\''))
+                .map(str::to_owned)
+        })
+        .ok_or_else(|| anyhow::anyhow!("reading package version from {}", path.display()))
 }
 
 /// Regenerate every target and fail when that changes a codegen-owned file.

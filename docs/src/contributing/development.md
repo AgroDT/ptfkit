@@ -14,6 +14,8 @@ package builds and documentation builds do not depend on running codegen first.
 - `codegen/` contains validation and generation code.
 - `targets/ptfkit-native/` contains the C11 headers and C++23 modules.
 - `targets/ptfkit-py/` contains the Python package and its native extension.
+- `targets/ptfkit-eval/` contains canonical-data external evaluation, retention
+  approximation fitting, grouped validation, and reproducible run artifacts.
 - `targets/ptfkit-rs/` contains the Rust crate.
 - `docs/mkdocs.yml` configures the documentation site.
 - `docs/src/` contains published Markdown, navigation, and static assets
@@ -76,6 +78,8 @@ lock entry.
 The [PTF source specification guide](../ptf-catalog/index.md) explains the
 scientific information represented by each YAML file. The JSON Schema and
 `mise run validate` define the complete structural and semantic contract.
+Machine-readable physical semantics and the staged migration from legacy
+fields are defined by the [measurement contract](measurement-contract.md).
 Verification-case provenance and the shared cross-target comparison policy are
 documented in the [scientific verification policy](verification.md). Calculated
 expected values are fixed in YAML and are not regenerated from semantic IR.
@@ -114,6 +118,16 @@ Each source has one public Python module, `ptfkit.<apa_article_key>`. Codegen
 creates it by default. Set `generation.public_python: manual` only when the
 public wrapper must be maintained manually; the wrapper must still delegate to
 the generated native ufuncs rather than duplicate formulas.
+
+Codegen also writes the versioned Python function manifest to
+`targets/ptfkit-py/src/ptfkit/_manifest.json`. The normal generation pipeline
+updates it together with the language targets; `mise run codegen:manifest`
+provides a focused command when only the manifest is needed. Consumers should
+use `ptfkit.get_manifest()` instead of reading the generated file directly.
+The returned mappings and sequences are recursively read-only. During metadata
+migration, only implemented functions with complete input and output measurement
+descriptors appear in `functions`; `coverage.omitted_functions` accounts for
+every other implemented function.
 
 Codegen compiles each `implementation` into a shared semantic model and renders
 the Rust, C, C++, and native NumPy implementations independently. Documentation
@@ -257,6 +271,7 @@ mise run codegen:verify
 mise run rust:verify
 mise run native:verify
 mise run python:verify
+mise run eval:verify
 ```
 
 Each component `verify` runs all of its format, lint, type-checking, and test

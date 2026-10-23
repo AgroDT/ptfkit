@@ -18,6 +18,26 @@ gravimetric_water_content:
       absolute: 0.1
       rationale: Project-default meaningful resolution in mass percentage points.
 
+particle_mass_fraction:
+  description: Mass fraction of soil particles within an explicitly defined particle-size interval.
+  units:
+    mass_fraction:
+      absolute: 0.001
+      rationale: Project-default meaningful resolution for a particle mass fraction.
+    mass_percent:
+      absolute: 0.1
+      rationale: Project-default meaningful resolution in particle mass percentage points.
+
+organic_carbon_content:
+  description: Organic carbon content expressed relative to dry soil mass.
+  units:
+    mass_fraction:
+      absolute: 0.001
+      rationale: Project-default meaningful resolution for an organic-carbon mass fraction.
+    mass_percent:
+      absolute: 0.1
+      rationale: Project-default meaningful resolution in organic-carbon mass percentage points.
+
 available_water_capacity:
   description: Available water expressed as an equivalent depth per soil depth.
   units:

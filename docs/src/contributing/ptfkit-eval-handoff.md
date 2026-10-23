@@ -1,0 +1,246 @@
+# ptfkit-eval development handoff
+
+## Purpose
+
+This is a living handoff for the ongoing implementation of the
+`ptfkit-eval` roadmap. It records completed work, verification evidence,
+scientific blockers, and the exact continuation point so that a later session
+can resume without reconstructing decisions from chat history.
+
+Last updated: 2026-10-23.
+
+The ongoing extended implementation session is recorded separately in
+`docs/src/contributing/ptfkit-eval-progress.md`. That file supersedes the older
+continuation order and test counts below. Primary-source review is explicitly
+deferred by the user until the workbook/papers are available on another computer.
+The latest verified checkpoint there includes the portable run/CLI pipeline,
+fixed-pressure outputs, nested fixed-candidate selection, four approximation
+families and local conditional fitting uncertainty, grouped conformal PTF
+prediction intervals, and 269 component tests. Work is paused at the user's
+request; see the final checkpoint in the progress file before resuming.
+
+## Acceptance target
+
+The package is intended to evaluate every implemented ptfkit function against
+every scientifically compatible observation that can be recovered from
+`meta_v3.3.xlsx`. It must select atomic functions and registered ensembles only
+through leakage-safe grouped validation, and it must fit and report supported
+retention approximation families with distinct applicability, confidence,
+prediction, and parameter-uncertainty intervals.
+
+The detailed contract and roadmap remain in
+`docs/src/contributing/ptfkit-eval-plan.md`.
+
+## Current repository state
+
+The public manifest contains five evaluation-ready contracts:
+
+- `calc_ptf_clapp1978`;
+- `calc_ptf_vereecken1989`;
+- `calc_ptf_gunarathna2019_vwc10_set1`;
+- `calc_ptf_gunarathna2019_vwc33_set1`;
+- `calc_ptf_gunarathna2019_vwc1500_set1`.
+
+The evaluator already provides a measurement-aware manifest loader, dataset
+mapping schema, workbook inventory, retention profiler, rule-gated
+normalization, wide-to-long reconstruction audit, predictor audit, range-gated
+curve router, reduced van Genuchten adapter, Clapp-Hornberger adapter, and a
+curve execution layer. Descriptive retention metrics now provide per-sample
+errors and sample-balanced cohort ME, MAE, RMSE, and median absolute error.
+Explicit maximal/common cohorts and whole-cluster percentile confidence
+intervals are implemented on top of those metrics.
+
+The real-workbook artifacts are checksum-bound to SHA-256
+`1322bf65b1ca0130085015209858a443d1ee82a7e2ae69232321cd8ede361e68`.
+The workbook remains external because redistribution rights are unresolved.
+
+## Current dataset evidence
+
+The retention profile accounts for 1,755 observations and 92 fitted van
+Genuchten parameter values. Chestnova 2017 is the only normalization-ready
+retention source and emits 130 canonical observations. All other observations
+remain explicit exclusions rather than inferred values.
+
+The predictor cohort contains 206 reviewed sample rows. The current manifest
+contracts have the following raw-input coverage:
+
+- Clapp: 89 complete texture values and zero eligible rows;
+- each Gunarathna Set 1 function: 51 populated sand values and zero eligible
+  rows;
+- Vereecken: 34 rows with all four raw inputs and zero eligible rows.
+
+The 51 sand-bearing rows are split across Sapozhnikov 1988 (12), Khaydapova
+2001 (6), Shein 2011 (6), Makarychev-1 2014 (5), Makarychev-2 2014 (7),
+Chestnova 2017 (10), and the parameter-only Kokareva 2007 block (5).
+Thirty-four rows also contain bulk density.
+
+## Sapozhnikov 1988 review
+
+The following claims are now supported directly by workbook structure:
+
+- the long label `1988_сапожников` and master label `1988_Сапожников` identify
+  the same source and sample-number namespace;
+- all 12 long-sheet sample groups match the 12 complete nine-point master
+  curves bijectively;
+- `Данные!W7` assigns the wide block the `W` encoding;
+- `Данные!W1` defines `W` as mass-based water content, so the physical quantity
+  is `gravimetric_water_content`.
+
+The source is still blocked. The workbook does not distinguish percent from
+fraction for this block, does not establish the source-specific pF convention,
+and does not explain the first-axis `0.01` to `-1` replacement. It also does
+not prove the 2,000-micrometre sand upper boundary, fine-earth dry-mass basis,
+sieve method, bulk-density unit, or bulk-density method required for scoring.
+
+The mapping, reconstruction audit, documentation, and regression tests encode
+this partial review. The primary 1988 article was not recovered during the
+initial search; secondary bibliographies identify it as an article in
+`Pochvovedenie`, issue 10, pages 67-74.
+
+## Kokareva 2007 search
+
+The 2026-10-23 continuation searched both Kokareva and Kokoreva spellings,
+including Cyrillic variants. It did not recover a primary methods record that
+establishes the equation, axis, units, and fitting convention of the five
+workbook parameter sets. The `fitted_parameter_conventions` blocker remains.
+
+A bibliographic lead is reference 68 in
+[Electrical Geophysical Methods in Agriculture](https://landviser.com/wp-content/uploads/2012/05/Electrical_methods_agriculture_2007_China.pdf),
+which lists Kokareva, Pozdnyakov, and Smernikov at a 2007 soil-cover conference.
+This is a search lead only: it does not identify the workbook parameter sets
+or establish their scientific conventions. No source rule was promoted.
+
+## Descriptive metric slice
+
+`summarize_retention_errors()` accepts one already eligible cohort for one
+candidate and protocol in canonical kPa and volumetric volume fractions.
+Samples are identified by `(source_id, sample_id)`. Distinct pressure points
+share a sample's weight equally, and every sample has equal total cohort weight.
+RMSE is the square root of mean sample MSE. Median absolute error uses the
+same balanced point weights, with exact rational weights to resolve half-weight
+boundaries. Per-sample summaries preserve observed pressure extents and counts.
+
+Empty cohorts, duplicate source/sample/pressure keys, nonfinite values, invalid
+observations, and overflowing squared errors are rejected. Finite unphysical
+predictions remain scored without clipping. This function does not construct
+eligibility or implement the future log-pressure-integrated selection loss.
+Callers retain measurement contracts and raw-cell/prediction lineage outside
+this descriptive summary. Comparisons now carry optional source-local profile
+identifiers; summaries count known profiles and samples without profiles.
+
+## Cohorts and clustered confidence intervals
+
+`build_retention_cohorts()` accepts all declared candidates, including empty
+ones, under an identical dataset, protocol, and canonical `TargetSpec`.
+Maximal cohorts retain each candidate's eligible points. Common cohorts use
+the exact source/sample/pressure intersection across every candidate and verify
+observed values and profile identity. They retain excluded points with the code
+`point_not_shared_by_all_candidates`. Empty common cohorts have no descriptive
+summary; they are not represented as zero error. No errors or prediction values
+choose cohort membership.
+
+`bootstrap_retention_errors()` implements whole-source or whole-profile
+sampling with replacement. Cluster multiplicity and all within-cluster rows
+are preserved; each sample occurrence keeps equal total weight. Source-local
+profile grouping and optional whole-cohort source fallback are explicit in
+`ClusterBootstrapPlan`. The seed and minimum group count are mandatory.
+The default confidence level is 95%, the default replicate count is 2,000,
+and the default missing-profile policy rejects estimation. Missing profiles,
+empty cohorts, and insufficient groups return `insufficient_evidence` with a
+machine-readable reason and no intervals. Invalid records fail validation
+before the evidence gate.
+
+The method `cluster_percentile_linear_v1` reports equal-tail percentile
+confidence bounds for all four metrics with linear interpolation at
+`(n_resamples - 1) * probability`. The implementation uses a local seeded
+Python `random.Random` instance and canonical ordering, without changing the
+global random state. Reproducibility assumes the same Python/package
+environment. The registered minimum group count is an evidence gate, not a
+coverage guarantee. Prediction intervals, parameter uncertainty, paired
+candidate-difference intervals, empirical domains, and nested selection remain
+pending. This continuation did not enable real-workbook scoring.
+
+The workbook mapping and count-only artifacts were unchanged; no workbook
+artifact regeneration was needed.
+
+## Verification status
+
+The initial continuation baseline had 119 passing tests and a passing ty check.
+Remaining lint/format failures were confined to import/export ordering and
+boolean argument style in `eligibility.py` and its tests; these are now fixed
+without changing behavior or disabling rules.
+
+`mise` was absent from PATH, so equivalent component checks were run directly
+from `targets/ptfkit-eval` using the repository-pinned executables:
+
+- Environment: `uv sync --frozen --all-groups` completed successfully.
+- Lint: `C:/Users/KT/AppData/Local/mise/installs/ruff/0.16.1/ruff.exe check`
+  passed.
+- Format: the same Ruff executable with `format --check` passed for 33 files.
+- Types: `C:/Users/KT/AppData/Local/mise/installs/ty/0.0.71/ty.exe check` passed.
+- Tests: `.venv/Scripts/python.exe -m pytest` passed all 176 tests.
+- Whitespace: `git diff --check` passed.
+
+The 16 new metric cases use hand-calculated binary-fraction errors and cover
+sample weighting, RMSE aggregation, weighted medians, source-local identifiers,
+input-order invariance, unclipped predictions, invalid inputs, duplicate keys,
+and empty cohorts. An in-memory mutation replaced per-sample point weights with
+uniform point weights; the focused weighting test failed at the expected mean
+error assertion. The production file was verified unchanged by that probe.
+
+The cohort/bootstrap continuation adds 41 cases, including one additional
+metric-validation case. Synthetic examples protect sample/pressure intersection,
+empty-candidate retention, target/protocol consistency, observation and profile
+identity, cluster-count evidence gates, explicit whole-cohort fallback, and
+seed/order/global-state behavior. An exhaustive AA/AB/BA/BB two-cluster fixture
+with unequal sample and pressure counts gives hand-calculated bounds for all
+four metrics. A synthetic cohort-to-bootstrap test verifies exclusions are not
+reintroduced. In-memory mutations replacing intersection with union and sample
+weights with point weights were both detected. Production files were verified
+unchanged, and the full unmodified suite subsequently passed.
+
+## Immediate continuation order
+
+1. Continue source-level review of the remaining sand-bearing observation
+   sources while retaining the unresolved Sapozhnikov and Kokareva blockers.
+   Revisit Kokareva only when a primary methods record becomes available.
+2. Persist dataset/protocol/cohort and bootstrap contracts in evaluation plans
+   and reproducible run artifacts, retaining upstream observation and prediction
+   lineage and full eligibility/exclusion counts. Wire these APIs into a
+   synthetic evaluation run before applying them to eligible workbook records.
+3. Keep the future selection loss separate from descriptive point-grid metrics;
+   its log-pressure weighting must be registered before held-out scoring.
+4. Regenerate every affected count-only workbook artifact and update this file,
+   the main plan, and the package README.
+5. Run the complete relevant verification suite and record exact commands and
+   results here.
+
+## Non-negotiable scientific rules
+
+- Never infer units, bases, methods, or particle boundaries from value
+  magnitudes alone.
+- Never use measured held-out targets to choose a model, ensemble member,
+  boundary, blend weight, or approximation family.
+- Keep fitted-family approximation error separate from PTF prediction error.
+- Keep confidence intervals, prediction intervals, fitted-parameter
+  uncertainty, applicability domains, and validated axis ranges separate.
+- Preserve raw-cell lineage for every normalized value and prediction.
+- Keep ambiguous records visible as exclusions with machine-readable reasons.
+
+## Worktree caution
+
+The 2026-10-23 continuation began with a clean worktree; the earlier Gunarathna
+migration and dataset evaluation changes were already committed. Current edits
+are the metrics, cohort and bootstrap slices, lint/format fixes, and
+corresponding documentation.
+Inspect both `git diff` and `git diff --cached` before editing overlapping files.
+
+## Resume checklist
+
+At the beginning of the next session:
+
+1. Read `AGENTS.md`, the development guide, this handoff, and the main plan.
+2. Run `git status --short` and preserve the existing worktree.
+3. Read the latest verification results in this file.
+4. Resume the first unfinished item in **Immediate continuation order**.
+5. Update this handoff as decisions and verification results change.

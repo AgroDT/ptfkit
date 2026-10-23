@@ -1,18 +1,22 @@
 volume_fraction:
   preferred_notation: "m^3/m^3"
   aliases: ["cm^3/cm^3", "cm³/cm³", "m³/m³", "mm/mm", "1", "dimensionless"]
+  conversion: {dimension: volume_ratio, scale_to_si: 1.0}
 
 volume_percent:
   preferred_notation: "% v/v"
   aliases: ["vol.%", "% volume/volume", "%"]
+  conversion: {dimension: volume_ratio, scale_to_si: 0.01}
 
 mass_fraction:
   preferred_notation: "kg/kg"
   aliases: ["g/g", "g g⁻¹", "kg kg⁻¹"]
+  conversion: {dimension: mass_ratio, scale_to_si: 1.0}
 
 mass_percent:
   preferred_notation: "% w/w"
   aliases: ["%", "% mass"]
+  conversion: {dimension: mass_ratio, scale_to_si: 0.01}
 
 millimeter_per_meter:
   preferred_notation: "mm/m"
@@ -21,38 +25,47 @@ millimeter_per_meter:
 meter_per_second:
   preferred_notation: "m/s"
   aliases: []
+  conversion: {dimension: length_per_time, scale_to_si: 1.0}
 
 centimeter_per_hour:
   preferred_notation: "cm/h"
   aliases: []
+  conversion: {dimension: length_per_time, scale_to_si: 2.7777777777777776e-6}
 
 millimeter_per_hour:
   preferred_notation: "mm/h"
   aliases: ["mm h^-1"]
+  conversion: {dimension: length_per_time, scale_to_si: 2.7777777777777776e-7}
 
 centimeter_per_minute:
   preferred_notation: "cm/min"
   aliases: []
+  conversion: {dimension: length_per_time, scale_to_si: 1.6666666666666667e-4}
 
 millimeter_per_minute:
   preferred_notation: "mm/min"
   aliases: []
+  conversion: {dimension: length_per_time, scale_to_si: 1.6666666666666667e-5}
 
 centimeter_per_day:
   preferred_notation: "cm d^-1"
   aliases: ["cm/day"]
+  conversion: {dimension: length_per_time, scale_to_si: 1.1574074074074074e-7}
 
 gram_per_cubic_centimeter:
   preferred_notation: "g/cm^3"
   aliases: ["g/cm³"]
+  conversion: {dimension: mass_per_volume, scale_to_si: 1000.0}
 
 kilopascal:
   preferred_notation: "kPa"
   aliases: []
+  conversion: {dimension: pressure, scale_to_si: 1000.0}
 
 centimeter_water_head:
   preferred_notation: "cm H2O"
   aliases: ["cm"]
+  conversion: {dimension: pressure, scale_to_si: 98.0665}
 
 inverse_centimeter:
   preferred_notation: "cm^-1"
@@ -73,3 +86,8 @@ centimeter_per_square_root_minute:
 reported_log_value:
   preferred_notation: "reported log value"
   aliases: []
+
+micrometer:
+  preferred_notation: "µm"
+  aliases: ["um"]
+  conversion: {dimension: length, scale_to_si: 1.0e-6}
