@@ -14,6 +14,8 @@ package builds and documentation builds do not depend on running codegen first.
 - `codegen/` contains validation and generation code.
 - `targets/ptfkit-native/` contains the C11 headers and C++23 modules.
 - `targets/ptfkit-py/` contains the Python package and its native extension.
+- `targets/ptfkit-eval/` contains canonical-data external evaluation, retention
+  approximation fitting, grouped validation, and reproducible run artifacts.
 - `targets/ptfkit-rs/` contains the Rust crate.
 - `docs/mkdocs.yml` configures the documentation site.
 - `docs/src/` contains published Markdown, navigation, and static assets
@@ -269,6 +271,7 @@ mise run codegen:verify
 mise run rust:verify
 mise run native:verify
 mise run python:verify
+mise run eval:verify
 ```
 
 Each component `verify` runs all of its format, lint, type-checking, and test
