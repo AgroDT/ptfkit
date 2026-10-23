@@ -43,7 +43,7 @@ def assess_computational_domain(
     numeric_value = _finite_number(value, 'value')
     domain_value = measurement.get('computational_domain')
     if domain_value is None:
-        return ComputationalDomainDecision(numeric_value, True, None, None)
+        return ComputationalDomainDecision(numeric_value, within=True, lower=None, upper=None)
     if not isinstance(domain_value, Mapping):
         message = 'A computational domain must be a mapping or null.'
         raise ComputationalDomainError(message)
@@ -65,9 +65,7 @@ def _parse_bound(value: object, name: str) -> DomainBound | None:
         message = f'The computational-domain {name} boundary must be a mapping or null.'
         raise ComputationalDomainError(message)
     if 'value' not in value or 'inclusive' not in value:
-        message = (
-            f'The computational-domain {name} boundary must declare value and inclusive.'
-        )
+        message = f'The computational-domain {name} boundary must declare value and inclusive.'
         raise ComputationalDomainError(message)
     inclusive = value['inclusive']
     if not isinstance(inclusive, bool):

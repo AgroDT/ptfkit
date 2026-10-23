@@ -79,11 +79,11 @@ delivery packages remain before the acceptance criterion is met:
 | --- | --- | --- | --- |
 | 1. Source rules and normalization | Resolve source-level units and bases; emit canonical samples, measurements, particle bins, retention observations, and exclusions | Large | Retention contract and normalizer implemented; predictor lineage started; source review and particle tables pending |
 | 2. Quality control and eligibility | Validate physical consistency and build the complete function-sample-target matrix | Large | Manifest-aware predictor eligibility implemented for the first five public function contracts |
-| 3. Approximation families | Register and implement van Genuchten, Brooks-Corey, and remaining required fit/adaptation variants | Extra large | Clapp-Hornberger and Vereecken reduced van Genuchten adapters implemented |
-| 4. Evaluation matrix | Execute every eligible atomic PTF and fixed composite with full traces | Medium | Core curve executor exists |
-| 5. Metrics and uncertainty | Per-sample aggregation, clustered intervals, prediction intervals, parameter uncertainty, and domains | Large | Not started |
-| 6. Nested selection | Deterministic grouped folds, atomic and ensemble selection, learned routing, and leakage protection | Extra large | Fixed range routing exists |
-| 7. Reporting and pilot | Reproducible artifacts, CLI, human report, and the complete Russian-dataset pilot | Large | Not started |
+| 3. Approximation families | Register and implement van Genuchten, Brooks-Corey, and remaining required fit/adaptation variants | Extra large | Four versioned families, bounded multistart fitting, identifiability/failure gates, and local conditional uncertainty implemented; source-specific reference conventions remain blocked |
+| 4. Evaluation matrix | Execute every eligible atomic PTF and fixed composite with full traces | Medium | Portable canonical run pipeline executes curves, fixed-pressure outputs, and fixed composites with observation/sample eligibility and traces |
+| 5. Metrics and uncertainty | Per-sample aggregation, clustered intervals, prediction intervals, parameter uncertainty, and domains | Large | Sample-balanced retention metrics, explicit maximal/common cohorts, and cluster-percentile metric confidence intervals implemented; other uncertainty and domains pending |
+| 6. Nested selection | Deterministic grouped folds, atomic and ensemble selection, learned routing, and leakage protection | Extra large | Identity-only nested folds and fixed atomic/ensemble selection with inner-only choices and locked outer assessment implemented; learned routing/weights pending |
+| 7. Reporting and pilot | Reproducible artifacts, CLI, human report, and the complete Russian-dataset pilot | Large | Checksum-bound run artifacts, replay, CLI, Markdown reporting, and standalone synthetic example implemented; real-data pilot blocked by source review |
 
 The first retention slice of package 1 is implemented. Each of the 1,755
 observation rows now produces either a canonical pressure-water-content record
@@ -153,6 +153,34 @@ the next high-value review because all five rows contain sand and density and
 their stored van Genuchten parameter sets can also advance the approximation-
 family validation work. Those parameters remain unusable until their equation,
 axis, units, and fitting convention are confirmed from source-level evidence.
+
+The first descriptive metric slice is implemented in `summarize_retention_errors()`.
+It accepts one already eligible canonical retention cohort, reports per-sample
+errors and source-local sample counts, and gives each sample equal total weight.
+Within a sample, distinct pressure points have equal weight. Cohort RMSE is the
+square root of mean sample MSE; median absolute error uses the same balanced
+point weights and averages adjacent errors at an exact half-weight split.
+Duplicate sample-pressure keys and nonfinite values are rejected; finite
+unphysical predictions are scored without clipping. This is a descriptive
+point-grid protocol, not the future log-pressure-integrated selection loss.
+`build_retention_cohorts()` now constructs maximal cohorts and a common exact
+source/sample/pressure intersection across every declared candidate. It checks
+dataset, protocol, target contract, observed values, and profile consistency;
+excluded points and empty candidates remain explicit. This is stricter than
+matching sample identifiers alone and requires no target-dependent selection.
+
+`bootstrap_retention_errors()` implements the versioned
+`cluster_percentile_linear_v1` method with whole-source or whole-profile draws,
+replacement, and full cluster multiplicity. Profiles are local to their source.
+Replicate metrics preserve equal sample weight. The seed and minimum number of
+groups must be supplied; confidence defaults to 95% with 2,000 replicates.
+Missing profiles either produce `insufficient_evidence` or, only under an
+explicit policy, regroup the entire cohort by source. Empty cohorts and too
+few groups produce no intervals. Results retain the plan, effective grouping,
+group count, and descriptive summary. The minimum group count is a declared
+evidence gate, not a statistical coverage guarantee. Prediction intervals,
+parameter uncertainty, paired candidate-difference intervals, and selection
+contracts remain pending. No real-workbook scoring was enabled by this slice.
 
 ## Objective
 

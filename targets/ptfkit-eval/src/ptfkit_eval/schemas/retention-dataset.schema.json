@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ptfkit-eval canonical retention dataset",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "dataset_id", "kind", "target", "method", "samples", "observations"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "dataset_id": {"$ref": "#/$defs/text"},
+    "kind": {"enum": ["measured", "synthetic"]},
+    "target": {"$ref": "#/$defs/target"},
+    "method": {"$ref": "#/$defs/text"},
+    "source_files": {"type": "array", "items": {"$ref": "#/$defs/sourceFile"}},
+    "samples": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/sample"}},
+    "observations": {"type": "array", "items": {"$ref": "#/$defs/observation"}}
+  },
+  "$defs": {
+    "sourceFile": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "filename", "sha256"],
+      "properties": {"id": {"$ref": "#/$defs/text"}, "filename": {"$ref": "#/$defs/text"},
+                     "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+    },
+    "text": {"type": "string", "minLength": 1, "pattern": "\\S"},
+    "cells": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/text"}},
+    "target": {
+      "type": "object", "additionalProperties": false,
+      "required": ["quantity", "unit", "material_basis", "denominator_basis"],
+      "properties": {
+        "quantity": {"const": "volumetric_water_content"},
+        "unit": {"const": "volume_fraction"},
+        "material_basis": {"$ref": "#/$defs/text"},
+        "denominator_basis": {"const": "bulk_volume"}
+      }
+    },
+    "measurement": {
+      "type": "object", "additionalProperties": false,
+      "required": ["quantity", "unit", "basis", "method", "particle_size", "conditions"],
+      "properties": {
+        "quantity": {"$ref": "#/$defs/text"}, "unit": {"$ref": "#/$defs/text"},
+        "basis": {
+          "type": "object", "additionalProperties": false,
+          "required": ["material", "denominator"],
+          "properties": {"material": {"$ref": "#/$defs/text"}, "denominator": {"$ref": "#/$defs/text"}}
+        },
+        "method": {"type": ["string", "null"]},
+        "particle_size": {"type": ["object", "null"]},
+        "conditions": {"type": "array", "items": {"type": "object"}}
+      }
+    },
+    "feature": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "kind", "value", "review_status", "origin", "source_cells"],
+      "properties": {
+        "id": {"$ref": "#/$defs/text"}, "kind": {"enum": ["numeric", "categorical"]},
+        "value": {"type": ["number", "string", "null"]},
+        "review_status": {"enum": ["confirmed", "blocked"]},
+        "origin": {"enum": ["measured", "derived", "estimated", "synthetic"]},
+        "source_cells": {"$ref": "#/$defs/cells"},
+        "source_file": {"$ref": "#/$defs/text"},
+        "measurement": {"$ref": "#/$defs/measurement"},
+        "category_system": {"$ref": "#/$defs/text"},
+        "blockers": {"type": "array", "items": {"$ref": "#/$defs/text"}}
+      },
+      "allOf": [
+        {"if": {"properties": {"kind": {"const": "numeric"}}}, "then": {"required": ["measurement"], "properties": {"value": {"type": ["number", "null"]}}}},
+        {"if": {"properties": {"kind": {"const": "categorical"}}}, "then": {"required": ["category_system"], "properties": {"value": {"type": ["string", "null"]}}}}
+      ]
+    },
+    "sample": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_id", "sample_id", "profile_id", "features"],
+      "properties": {
+        "source_id": {"$ref": "#/$defs/text"}, "sample_id": {"$ref": "#/$defs/text"},
+        "profile_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/text"}]},
+        "features": {"type": "array", "items": {"$ref": "#/$defs/feature"}}
+      }
+    },
+    "observation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "source_id", "sample_id", "suction_kpa", "value", "origin", "review_status", "quality_flags", "source_cells"],
+      "properties": {
+        "id": {"$ref": "#/$defs/text"}, "source_id": {"$ref": "#/$defs/text"}, "sample_id": {"$ref": "#/$defs/text"},
+        "suction_kpa": {"type": "number", "minimum": 0}, "value": {"type": "number"},
+        "origin": {"enum": ["measured", "derived", "estimated", "synthetic"]},
+        "review_status": {"enum": ["confirmed", "blocked"]},
+        "quality_flags": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/text"}},
+        "source_cells": {"$ref": "#/$defs/cells"},
+        "source_file": {"$ref": "#/$defs/text"}
+      }
+    }
+  }
+}
