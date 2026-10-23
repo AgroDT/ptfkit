@@ -32,13 +32,13 @@ def _measurement(
         (99.001, False),
     ],
 )
-def test_assesses_the_inclusive_gunarathna_sand_domain(value: float, expected: bool):
+def test_assesses_the_inclusive_gunarathna_sand_domain(value: float, *, expected: bool):
     decision = assess_computational_domain(value, _measurement((5.2, True), (99.0, True)))
 
     assert decision.value == value
     assert decision.within is expected
-    assert decision.lower == DomainBound(5.2, True)
-    assert decision.upper == DomainBound(99.0, True)
+    assert decision.lower == DomainBound(5.2, inclusive=True)
+    assert decision.upper == DomainBound(99.0, inclusive=True)
 
 
 @pytest.mark.parametrize(
@@ -51,7 +51,7 @@ def test_assesses_the_inclusive_gunarathna_sand_domain(value: float, expected: b
         (2.0, False),
     ],
 )
-def test_honors_exclusive_boundaries(value: float, expected: bool):
+def test_honors_exclusive_boundaries(value: float, *, expected: bool):
     decision = assess_computational_domain(value, _measurement((0.0, False), (1.0, False)))
 
     assert decision.within is expected

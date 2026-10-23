@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from functools import cache
@@ -30,7 +31,7 @@ from .composites import (
 
 JsonScalar: TypeAlias = bool | int | float | str | None
 JsonValue: TypeAlias = JsonScalar | list['JsonValue'] | dict[str, 'JsonValue']
-PredictionBinding: TypeAlias = 'OutputPrediction | AdapterPrediction'
+PredictionBinding: TypeAlias = 'OutputPrediction | AdapterPrediction | FixedPointPrediction'
 CurveCandidate: TypeAlias = 'FunctionCurveCandidate | RangeGatedCurveCandidate'
 ModelKind: TypeAlias = Literal['h_theta', 'k_h']
 AxisConvention: TypeAlias = Literal['signed', 'magnitude']
@@ -215,6 +216,16 @@ class AdapterPrediction:
 
 
 @dataclass(frozen=True)
+class FixedPointPrediction:
+    """Direct output at exactly one manifest-declared pressure condition."""
+
+    output: str
+    axis_value: float
+    axis_unit: str
+    method: str | None
+
+
+@dataclass(frozen=True)
 class AtomicCurve:
     """One manifest function and its resolved prediction binding."""
 
@@ -230,6 +241,11 @@ class FunctionCurveCandidate:
     axis: AxisSpec
     target: TargetSpec
     curve: AtomicCurve
+
+
+@dataclass(frozen=True)
+class FunctionPointCandidate(FunctionCurveCandidate):
+    """One function output with fixed pressure support, without interpolation."""
 
 
 @dataclass(frozen=True)
@@ -400,7 +416,7 @@ def _resolve_candidate(
     context: _CandidateContext,
 ) -> CurveCandidate | None:
     candidate_id = _string(candidate['id'])
-    if candidate['kind'] == 'function_curve':
+    if candidate['kind'] in ('function_curve', 'function_point'):
         curve = _resolve_curve(
             _string(candidate['function']),
             _mapping(candidate['prediction']),
@@ -408,7 +424,12 @@ def _resolve_candidate(
         )
         if curve is None:
             return None
-        return FunctionCurveCandidate(candidate_id, context.axis, context.target, curve)
+        candidate_type = (
+            FunctionPointCandidate
+            if candidate['kind'] == 'function_point'
+            else FunctionCurveCandidate
+        )
+        return candidate_type(candidate_id, context.axis, context.target, curve)
     return _resolve_composite(candidate, context)
 
 
@@ -508,6 +529,8 @@ def _resolve_curve(  # noqa: PLR0911
         )
         return None
 
+    if prediction['kind'] == 'fixed_output':
+        return _resolve_fixed_output(function_id, function, prediction, context)
     if prediction['kind'] == 'output':
         output_name = _string(prediction['name'])
         output = _binding_by_name(function['outputs'], output_name)
@@ -570,6 +593,63 @@ def _resolve_curve(  # noqa: PLR0911
         return None
     _validate_adapter(adapter, function_id, function, context)
     return AtomicCurve(function_id, AdapterPrediction(adapter_id))
+
+
+def _resolve_fixed_output(
+    function_id: str,
+    function: Mapping[str, object],
+    prediction: Mapping[str, object],
+    context: _CandidateContext,
+) -> AtomicCurve | None:
+    name = _string(prediction['name'])
+    output = _binding_by_name(function['outputs'], name)
+    if output is None:
+        context.resolution.diagnostics.append(
+            PlanDiagnostic(
+                f'{context.path}.prediction.name',
+                'manifest.unknown_output',
+                f'Function {function_id!r} has no output {name!r}.',
+            )
+        )
+        return None
+    _validate_output_measurement(
+        output, context.target, f'{context.path}.target', 'prediction', context.resolution
+    )
+    measurement = _mapping(output['measurement'])
+    conditions = tuple(_mapping(item) for item in _sequence(measurement['conditions']))
+    valid = (
+        len(conditions) == 1
+        and conditions[0].get('quantity') == 'matric_potential'
+        and conditions[0].get('convention') == 'magnitude'
+        and context.axis.quantity == 'matric_potential'
+        and context.axis.convention == 'magnitude'
+        and isinstance(conditions[0].get('unit'), str)
+        and _units_compatible(
+            _string(conditions[0]['unit']), context.axis.unit, context.resolution.index
+        )
+        and isinstance(conditions[0].get('value'), (int, float))
+        and not isinstance(conditions[0].get('value'), bool)
+        and math.isfinite(_number(conditions[0]['value']))
+        and _number(conditions[0]['value']) >= 0
+    )
+    if not valid:
+        context.resolution.diagnostics.append(
+            PlanDiagnostic(
+                f'{context.path}.prediction',
+                'point.unsupported_conditions',
+                'A fixed output requires one finite nonnegative suction-magnitude condition.',
+            )
+        )
+        return None
+    return AtomicCurve(
+        function_id,
+        FixedPointPrediction(
+            name,
+            _number(conditions[0]['value']),
+            _string(conditions[0]['unit']),
+            cast('str | None', measurement['method']),
+        ),
+    )
 
 
 def _validate_adapter(

@@ -1,0 +1,128 @@
+{
+  "candidates": [
+    {
+      "axis": {
+        "convention": "magnitude",
+        "quantity": "matric_potential",
+        "transform": "log10",
+        "unit": "kilopascal"
+      },
+      "function": "calc_ptf_clapp1978",
+      "id": "clapp",
+      "kind": "function_curve",
+      "prediction": {
+        "id": "clapp1978_h_theta",
+        "kind": "model_adapter"
+      },
+      "target": {
+        "denominator_basis": "bulk_volume",
+        "material_basis": "mineral_soil",
+        "quantity": "volumetric_water_content",
+        "unit": "volume_fraction"
+      }
+    },
+    {
+      "axis": {
+        "convention": "magnitude",
+        "quantity": "matric_potential",
+        "transform": "log10",
+        "unit": "kilopascal"
+      },
+      "function": "calc_ptf_vereecken1989",
+      "id": "vereecken",
+      "kind": "function_curve",
+      "prediction": {
+        "id": "vereecken1989_h_theta",
+        "kind": "model_adapter"
+      },
+      "target": {
+        "denominator_basis": "bulk_volume",
+        "material_basis": "mineral_soil",
+        "quantity": "volumetric_water_content",
+        "unit": "volume_fraction"
+      }
+    },
+    {
+      "axis": {
+        "convention": "magnitude",
+        "quantity": "matric_potential",
+        "transform": "log10",
+        "unit": "kilopascal"
+      },
+      "id": "fixed_blend",
+      "kind": "range_gated_curve",
+      "members": [
+        {
+          "function": "calc_ptf_clapp1978",
+          "id": "wet",
+          "interval": {
+            "lower": {
+              "inclusive": true,
+              "value": 0.1
+            },
+            "upper": {
+              "inclusive": true,
+              "value": 100
+            }
+          },
+          "prediction": {
+            "id": "clapp1978_h_theta",
+            "kind": "model_adapter"
+          }
+        },
+        {
+          "function": "calc_ptf_vereecken1989",
+          "id": "dry",
+          "interval": {
+            "lower": {
+              "inclusive": true,
+              "value": 10
+            },
+            "upper": {
+              "inclusive": true,
+              "value": 1000
+            }
+          },
+          "prediction": {
+            "id": "vereecken1989_h_theta",
+            "kind": "model_adapter"
+          }
+        }
+      ],
+      "provenance": {
+        "kind": "fixed",
+        "source": "Predeclared synthetic example; not literature-derived routing or predictive validation."
+      },
+      "routing": {
+        "extrapolation": "reject",
+        "gap": "reject",
+        "transitions": [
+          {
+            "interval": {
+              "lower": {
+                "inclusive": true,
+                "value": 10
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 100
+              }
+            },
+            "kind": "blend",
+            "left_member": "wet",
+            "right_member": "dry",
+            "weighting": "smoothstep"
+          }
+        ]
+      },
+      "target": {
+        "denominator_basis": "bulk_volume",
+        "material_basis": "mineral_soil",
+        "quantity": "volumetric_water_content",
+        "unit": "volume_fraction"
+      }
+    }
+  ],
+  "ptfkit_manifest_schema_version": 1,
+  "schema_version": 1
+}

@@ -11,10 +11,15 @@ license = "MIT"
 requires-python = ">=3.11"
 dependencies = [
     "jsonschema>=4.26,<5",
+    "numpy>=2,<3",
     "openpyxl>=3.1,<4",
     "ptfkit>=0.4,<0.5",
     "pyyaml>=6.0,<7",
+    "scipy>=1.14,<2",
 ]
+
+[project.scripts]
+ptfkit-eval = "ptfkit_eval.cli:main"
 
 [dependency-groups]
 dev = [
