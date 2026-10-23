@@ -1,5 +1,11 @@
 # ptfkit-eval extended implementation progress
 
+Current authorized window ends at **23:28 UTC on 2026-10-23**
+(02:28 Europe/Moscow on 2026-10-24), following explicit renewal.
+Latest verified component checkpoint: **698 passing tests**.
+Online primary-source review is active; unavailable original workbook materials
+remain a separate blocker. Historical session contracts below are preserved.
+
 ## Session contract
 
 Started 2026-10-23 at 08:15 UTC (11:15 Europe/Moscow). The user authorized
@@ -1005,3 +1011,590 @@ its failure law, distinct from the conditional outer-rule target. Learned
 blends/nonlinear gates, deferred scientific source review and real-data
 eligibility remain unfinished. The new native policy does not replace those
 broader requirements or establish real-workbook population assumptions.
+
+
+## Independent training-law inference substrate (513 tests)
+
+`IndependentTrainingRiskPlan`, complete independent block/test-group records
+and `bound_independent_training_risk` implement
+`independent_blocks_group_hoeffding_training_law_v1`. A named learner and named
+IID original-group population, fixed training/test group counts, exact block
+count, prior size/loss bounds, training-only failure classification and
+simultaneous family allocation are explicit. Original groups/samples cannot
+repeat across any block/role. Successful-block test coverage must be complete;
+missing test losses cannot become training failures or change the population.
+
+The API separately bounds training success/failure probability, successful
+training risk mass E[I(success) R(D)], and R(D) averaged conditional on training
+success when success probability is separated from zero. Failed training remains
+in all block counts and population-size normalization; no zero-error model is
+invented. Unconditional model-risk intervals require a prior total-learner
+assertion. Even zero observed failures do not imply totality; a contradicting
+failure suppresses inference. Normalized moment names explicitly distinguish
+loss-sum/group-size means from the population risk ratio. Extreme finite block
+sums are normalized before addition.
+
+Three concentration events bound successful loss mass across independent
+blocks, group size across all independent test groups, and training success
+across blocks. Each receives alpha/(3q). Independent training/test roles give
+B E[X]/E[Y] = E[I(success) R(D)], preserving informative sample weighting. This
+construction averages over new T-group training datasets, unlike the existing
+conditional outer-rule target. The proof, original Hoeffding attribution and
+scope are in `evaluation/experiments/training_law_risk/README.md`.
+
+Four exact twelve-block experiments enumerate all 455 multinomial sufficient-
+count states. Failure learners have success probability 1/2; equal/unequal-size
+risk masses are 1/4 and 3/8 and successful-training risks are 1/2 and 3/4.
+Unconditional model risk remains undefined. Total learners have average risk
+1/2. Exact joint coverage probabilities are 130959/131072 (equal/failure),
+2096059/2097152 (unequal/failure), 2047/2048 (equal/total), and
+16777215/16777216 (unequal/total), all above the nominal 95%. Successful-training
+interval issuance for failure learners has probability 1255/2048. Error-and-
+issuance probabilities are reported separately; no nominal coverage conditional
+on issuing an interval is claimed.
+
+Native conditional-risk integrity was also strengthened: deterministic nested
+splits are rebuilt from the full original sample roster and registered plan,
+catching coordinated inner-role/fit-provenance changes. Complete in-domain
+pressure grids are required even if omitted interior points have consistently
+rewritten losses; retained outside-domain diagnostics do not change the loss.
+These checks preserve existing valid native artifacts and values.
+
+Nineteen new cases cover these three integrity contracts, high-precision
+independent-block moment/radius oracles, informative-size normalization,
+training failure retention, totality assertions, unknown successful-block test
+losses, shared/dropped groups, invented zero errors, finite extreme sums and
+exact joint coverage. Memory-only mutations disabling either integrity check
+were rejected at the public error contracts. A mutation assuming all training
+succeeded failed the exact joint-coverage oracle. No probe changed source files.
+
+Verification: **513 tests** passed in the full component suite using
+`local/pytest-independent-training-law-verified` and workspace-local caches.
+Final normalized-field names and explicit IID-group/learner metadata passed
+32 focused cases in `local/pytest-training-law-final-verified`, Ruff 0.16.1
+lint/format (103 package/test files plus the experiment), ty 0.0.71, and
+`git diff --check`. A fresh final wheel installed into
+`local/ptfkit-eval-wheel-training-law-verified` exactly replayed all four
+`local/training-law-12-{equal,unequal}-{failure,total}.json` experiments, including
+final field names/assumptions. It also verified the existing native conditional
+report and exactly replayed both policies from
+`local/retention-conditional-risk-verified-demo`. Remote CI/Python 3.11 were not run.
+
+The active goal continues. Next: original-group block allocation, native
+whole-selector reruns per block, explicit learner/training-size provenance,
+retained fit/failure evidence, and run-policy/artifact integration for the
+independent training-law method. That orchestration is required before claiming
+native average-training inference. Learned blends/nonlinear gates and deferred
+scientific source/real-data eligibility remain additional unfinished scope.
+
+
+## Original-group block allocation and renewed source review (2026-10-23)
+
+Implemented public `allocate_independent_training_blocks`,
+`IndependentTrainingAllocation` and `TrainingBlockRoles`. Exactly the registered
+original group count is required, with disjoint T/H roles in every block.
+SHA256 ranking uses only the registered seed and original group identities;
+all source-local sample memberships remain intact. Missing profiles under
+resolved profile grouping, duplicate samples, empty identities and extra/missing
+groups are rejected. The allocator does not infer sampling independence from
+labels or rerun the learner. Group identifiers must be value-independent;
+complete native selector block orchestration remains the next implementation.
+
+Applied the unit-test-quality skill. Eight new cases protect full original
+roster conservation, unequal group membership, source-local profile isolation,
+input-order and sample-count invariance, seed influence and malformed roster
+rejection. An in-memory mutation reused training groups as test groups. The
+public conservation test failed at four unique groups versus the required six;
+production file bytes were unchanged. The complete unmodified suite passed:
+521 tests in 53.54 seconds, Ruff 0.16.1 lint/format (105 files), and ty 0.0.71.
+
+Online source review resumed at the user's request. The durable
+[source review](ptfkit-eval-source-review.md) records primary statistical
+evidence, the Weynants 2009 independent-profile validation design and its 2017
+measurement-unit erratum. The Vereecken 2010 methodological review is explicitly
+identified as secondary evidence for original measurements. No Weynants formula
+was added and no correction was transferred to Vereecken 1989 or the workbook.
+Sapozhnikov/Kokareva primary measurement blockers remain unresolved.
+
+
+## Native independent complete-selector training risk (2026-10-23)
+
+Implemented an explicit original-group holdout builder and shared learned
+forecast-validation/selection core. `select_grouped_forecast_holdout` repeats
+inner selection and refits the locked choice on the explicitly allocated
+training groups, with one external holdout. Its split method is distinct from
+ordinary nested-CV allocation. The fixed outer-fold count is not used to
+reassign these explicit roles; inner evidence gates remain active. Existing
+nested selectors retain their previous behavior and public validation errors.
+
+`assess_independent_forecast_training` allocates complete disjoint original
+group blocks and repeats that whole learner per block. The native
+`assess_independent_selection_training` validates registered member provenance,
+caches only eligible fixed PTF forecasts, freezes original grouping/fallback,
+and delegates. Parent CV predictions, choices and fitted weights are unused.
+Original input forecasts and samples, all block memberships, inner scores,
+choices, refits, test predictions and losses are retained. The selector digest
+binds its specification and strategy, not external forecast provenance; native
+snapshots additionally retain the evaluation specification and manifest.
+
+Training-only fit/selection failures remain explicit and retain every original
+test group with unavailable model losses. Missing successful-test predictions
+suppress inference rather than becoming training failures. The risk target
+remains the learner trained on T groups; no claim is transferred to a larger
+final training size. Learned preprocessing is not supported by the cached
+forecast path. Reference fits and domain reporting remain separate diagnostics.
+
+Added the `independent_training_risk` run schema, loader, runner integration,
+`SelectionTrainingRiskPlan` and family allocation. Up to two unique native
+learned-selector strategies share a confidence level. All requested strategies,
+including failed training, remain in q. The family is separate from existing
+conditional outer-risk and descriptive metric families. Loss is inherited from
+the registered selector. All population assertions, including prior learner
+totality, remain explicit; no successful-fit sample proves totality.
+
+`independent-training-risk.json` is an optional integrity-checked run artifact.
+The report separately names success/failure probability, risk mass,
+successful-training risk, unconditional model risk, training size and reasons.
+The portable `evaluation/examples/synthetic_training_risk/` run uses the existing
+constructed IID binary-group population with two disjoint blocks, each with
+four training and two test groups. Its intervals are honestly uninformative;
+this example demonstrates complete provenance and replay rather than precision.
+The source review and inference notes retain the distinction between the
+published bounded-mean inequality and our ratio/failure construction, and leave
+all original workbook scientific blockers unresolved.
+
+Applied the unit-test-quality skill. Twenty-five new cases include independent
+convex-weight oracles (6/8 and 1/4), log-pressure losses 9/16, separate hard-switch
+boundary recovery (10 versus 5 kPa, loss 1/8), target-mutation isolation, partial
+test evidence, failed ensemble/atomic separation, unknown forecast rows,
+overlapping/partial original groups, source fallback, native family budget,
+invalid registrations and exact portable replay. Three in-memory semantic
+mutations were detected: training on test groups changed the expected weight
+from .75 to .6; relabeling test missingness as training failure incorrectly
+issued inference; omitting q changed the radius from sqrt(ln(240)/4) to
+sqrt(ln(120)/4). Production bytes were verified unchanged by each probe.
+
+Verification: Ruff 0.16.1 lint/format (108 Python files), ty 0.0.71 and the full
+component suite passed: **546 tests in 57.00 seconds**. Built the wheel with
+`uv build --wheel` and installed without dependencies into the fresh ignored
+`local/ptfkit-eval-wheel-independent-selection` directory. Imported that installed
+package explicitly, verified the saved CLI report and exactly replayed both
+native policies, including every block's full evidence, against
+`local/retention-independent-training-verified-demo`. The pinned local environment
+is Python 3.13.12; remote CI and Python 3.11 were not run.
+
+Next substantive work: qualify the complete native training procedure on richer
+finite populations and larger independent block designs; retain realistic fit
+failures and informative group sizes. Broader point-metric strategy uncertainty,
+nonlinear gates/learned blends and original-paper scientific compatibility are
+still outstanding. The low-level exact kernel experiments and this native replay
+must not be described as validation on the real workbook.
+
+
+## Renewed execution window (2026-10-23)
+
+The previous five-hour window ended at 13:15 UTC. After checking the clock,
+the user explicitly authorized a new window ending at **23:28 UTC on
+2026-10-23 (02:28 Europe/Moscow on 2026-10-24)**. Work resumed at 18:29 UTC.
+The implementation baseline is 546 passing tests and exact installed-wheel
+native block replay. Continue autonomously within this window, preserving the
+uncommitted worktree and recording verified portable checkpoints. Online
+primary-source/methodological review remains active; unavailable original
+workbook materials and source-specific blockers remain explicit.
+
+
+## Exact complete-selector law calibration (renewed window, 2026-10-23)
+
+Added `evaluation/experiments/selector_training_law/` with actual public
+allocation/inner-selection/refit/test-loss probes for all ordered local group
+states. The T=2 finite-grid learner has genuine tied-refit failures. The equal
+control has success=1/2, mass=1/32 and successful-training risk=1/16. The
+informative four-state population has success=23/32, mass=11/256 and risk=11/184;
+equal-group risk would differ by 1/736. All 8/64 local cases retain actual input,
+fit and failure traces. This specific learner's permutation invariance justifies
+exact convolution to 91/6,188 sufficient-count states at 12 blocks; the full
+learner is not falsely claimed to run once per convolution state.
+
+Joint coverage is 130959/131072 for the equal control and
+79147917377670960618897997173/79228162514264337593543950336 for the informative
+population, both above 95%. Issuance and joint error/issuance remain separate.
+State probabilities are exact Fractions; interval endpoints use the public
+floating-point kernel. The independent binomial issuance oracle requires six
+successes. Outputs: ignored `local/selector-training-law-{equal,informative}-12.json`.
+
+Applied unit-test-quality. Three new tests protect independent target/law
+oracles, preserved failures and sample weighting. An in-memory mutation fitting
+only one sample per group made an unequal-size majority into a tie; the exact
+oracle rejected it. Production bytes remained unchanged. Full component
+verification passed: **549 tests in 62.15 seconds**, Ruff 0.16.1 lint/format
+(109 files), and ty 0.0.71. The standalone experiment also passes explicit
+Ruff and component-environment ty. Installed-wheel replay exactly reproduced
+72 local probes and 6,279 count states, including every retained trace.
+
+Primary-source review added Varma and Simon (2006): the complete tuning
+procedure belongs inside external validation. Their classification evidence is
+not a proof of our informative-group ratio/failure interval construction.
+Original workbook source rules remain unchanged. Derivations and full scope
+limits are in the experiment README and the source-review record.
+
+
+## Larger original-group native design (renewed window)
+
+Added the standalone training-risk generator with separately registered
+population/allocation seeds, checksum-bound self-contained input files and
+no overwrite of existing evidence. Twenty blocks use 120 newly drawn original
+groups and 240 samples, retaining T=4/H=2. A generated population seed is
+embedded in the preserved dataset ID; generation metadata also binds its hash.
+Two tests verify genuine group/sample conservation, deterministic generation,
+seed separation including actual observation values, actual ensemble refits,
+and the independent Decimal ln(240)/40 radius oracle. Full verification at
+that checkpoint passed 551 tests in 67.60 seconds, Ruff/ty and an installed-wheel
+exact replay of all 40 strategy/block invocations. The native example's
+successful-training risk upper bound is about .59564, with success lower bound
+about .62984 and no unconditional-model-risk assertion. Saved current run:
+`local/retention-training-risk-20-final-verified`.
+
+## Paired complete-selector training-law risk (renewed window)
+
+Implemented `training_pairs.py`: a joint-success left-minus-right sample-risk
+comparison on identical original train/test roles. Each raw model loss must
+satisfy its own prior bound B before subtraction. The stable map
+U=((left-right)/B+1)/2 reuses the qualified positive bounded kernel. Signed mass
+is B*(2*M_U-p); joint-success risk differences use its affine conditional
+interval. Nonnegative bounded losses can be subtracted without overflow;
+normalizing afterward preserves identical binary differences across different
+absolute errors. The transform is recorded explicitly. Prior joint totality
+is required for unconditional model-risk differences, and observed failures
+suppress contradicted assertions. All one-sided failures retain the successful
+rule's available evidence and the complete original test roster.
+
+`pair_selection_training_evidence` extracts both actual trained strategies from
+shared retained invocations. Native `paired_training_risk` registration, schema,
+loader/runner, full `paired-training-risk.json` provenance and explicit report
+are integrated. The paired comparison has its own confidence allocation,
+separate from marginal, conditional outer-risk and metric families. It does
+not subtract marginal conditional CIs or infer fit failure from test missingness.
+
+Extended exact complete-selector calibration with --paired. The informative
+population has joint success=23/32, signed mass=23/512 and successful difference
+1/16. Subtracting marginal successful-training risks yields 1559/23552 instead.
+All 64 real local selector probes retain both rules, including atomic evidence
+on switch-failure cases. The four sufficient states produce 455 exact 12-block
+count states; the equal control has 13. Paired joint coverage is
+1151753799494556037/1152921504606846976 and 2047/2048 respectively; both have
+zero joint conditional-error/issuance probability on these finite laws. These
+are finite-population qualification experiments, not workbook validation.
+
+Twenty paired cases protect independent Decimal/Fraction oracles, orientation,
+joint versus marginal success, raw-bound cancellation, missing tests, role
+mismatch, extreme finite values, totality contradictions, stable binary-loss
+transformation, schema rejection, family-budget separation and portable replay.
+In-memory probes detected ignoring one-sided failure and premature per-loss
+normalization that changed otherwise identical sufficient statistics. Production
+bytes were verified unchanged. Full component checks passed: **571 tests in
+76.27 seconds**, Ruff 0.16.1 lint/format (114 files), ty 0.0.71. Standalone
+scripts pass explicit lint/format and component-environment type checks.
+
+The native paired examples are `synthetic_training_risk/paired-run.json` and
+the generator's --paired 20-block design. Current saved runs are
+`local/retention-paired-training-risk-verified` and
+`local/retention-paired-training-risk-20-verified`. Built a fresh wheel and
+installed into `local/ptfkit-eval-wheel-paired-training-risk`; exact replay of
+both native runs and both paired finite-law experiments is the final package
+verification for this slice. Full derivation and limits live in
+`evaluation/experiments/selector_training_law/paired-risk.md`.
+
+The next justified roadmap slice is finite-grid learned blend intervals using
+the existing fixed blend routing semantics, with inner-only fitting, full refits
+and failure/provenance preservation. Nonlinear predictor gates, full descriptive
+point-metric uncertainty and original scientific source compatibility remain
+outstanding. Continue within the renewed deadline; do not mark the whole goal
+complete merely because this checkpoint passes.
+
+
+## Finite-grid learned blend intervals (renewed window)
+
+Implemented `BlendGridPlan`, `BlendIntervalScore`, `BlendGridFit` and shared
+finite-grid training for hard switches/blend intervals. The registered grid,
+member order, axis transform and weighting are frozen before validation. Each
+inner training fold evaluates every interval on the common exact pressure grid;
+inner evidence locks a candidate and all outer training data refit its interval.
+Strict loss separation and group/coverage gates retain explicit failures with
+no invented transition. Fixed/learned selection, empirical domains, curve
+quality, retraining sensitivity and independent/paired risk paths accept the
+new learned fit. Parameter confidence remains unestimated; nonlinear predictor
+gates and broad point-metric process uncertainty remain pending.
+
+Added target-free `LearnedBlendEndpoint` diagnostics for both locked endpoints
+and every outer test sample, with full member input/forecast traces and explicit
+missingness. Deleting observations and inner/outer loss/prediction evidence
+leaves the diagnostic unchanged; deleting a member input leaves both endpoint
+records unavailable on that side. Contrasts are not interpreted as blend jumps.
+The native artifact/report schema includes `learned-blend-endpoints.json`.
+The selector report now distinguishes unestimated parameter intervals from
+separate opt-in risk-policy intervals rather than saying all process intervals
+are unestimated.
+
+Preparation exposed an actual fixed-router numeric defect: adjacent finite
+positive endpoints could share a rounded logarithm and divide by zero. Relative
+log spans now preserve their weights. Finite linear endpoints with overflowing
+span subtraction also retain correct relative positions. Independent 90-digit
+Decimal and hand-fraction tests protect both cases; ordinary wide log routing
+keeps its previous arithmetic path. No prediction clipping is introduced.
+
+The exact blend training-law experiment runs all 8/64 actual local complete
+learner cases. Mismatching the registered curves has sample loss 1/64. Its
+normalized sufficient-state law matches the checked switch experiment; all
+91/6,188 twelve-block count states run the public bounded kernel, with exact
+normalized-moment and binary-scaled endpoint comparisons. Informative targets:
+success=23/32, mass=11/2048, successful-training risk=11/1472. Equal-control
+targets are 1/2,1/256,1/128. Independent sample-majority and loss oracles expose
+extra ties from incorrect equal-group fitting. Actual failures remain undefined
+model errors and stay in every original-group count. Outputs:
+`local/blend-training-law-{equal,informative}-12.json`.
+
+The native example is `evaluation/examples/synthetic_learned_blend/`, using the
+previous explicitly constructed IID population and actual PTF forecasts. It
+registers both independent training policies plus a paired comparison and keeps
+all fit/endpoint/risk evidence. Saved CLI run:
+`local/retention-learned-blend-verified-demo`. Two blocks remain uninformative
+for confidence precision; this is a scientific-provenance/replay example.
+
+Applied unit-test-quality throughout. Twenty-eight additional cases protect
+exact linear/smoothstep interval recovery, hand objectives/gaps, linear-axis
+semantics, held-out target isolation, unidentified members, domain/grid policies,
+all native uncertainty paths, target-free endpoint diagnostics, missing inputs,
+portable replay, precision boundaries and the finite-law proof. A memory-only
+mutation ignoring the registered linear axis raised training loss from zero
+to about .03020 and failed the intended oracle. Full component verification:
+**599 tests in 96.43 seconds**, Ruff 0.16.1 lint/format (118 files), ty 0.0.71.
+The standalone blend-law script passes explicit lint/format/type checks.
+
+Primary-source review added Roberts et al. (2017): blocking must reflect
+dependence and prediction scope; it does not establish IID publication groups.
+Original scientific source-rule blockers remain unchanged. Next, build/replay
+the current installed wheel with the learned blend and finite-law evidence,
+then pursue remaining point-metric process uncertainty within the renewed window.
+
+
+The final blend wheel was installed into
+`local/ptfkit-eval-wheel-learned-blend`. Its exact replay matched the native
+learned-selection, endpoint, independent-risk and paired-risk artifacts, plus
+both complete blend finite-law experiment outputs. The 599-test checkpoint is
+fully packaged and portable. The next active slice is explicit point-MAE/MSE
+assessment of the complete learner, keeping its selection objective unchanged
+and preserving full common pressure grids and failed-training/test evidence.
+
+
+## Point-score whole-training risk checkpoint (2026-10-23)
+
+Added explicit `PointErrorLossPlan` for per-sample equal-point MAE/MSE on the
+complete original eligible common pressure grid inside the selection domain.
+The complete learner still selects/refits with its registered log-pressure
+objective. The new point result/block types retain full sample scores and
+missing-grid/training-failure reasons. Incomplete successful test forecasts
+suppress inference without changing training success or shrinking the roster.
+MSE overflow remains unavailable; finite large MAE is retained without clipping.
+
+Native `point_training_risk` registers up to four unique strategy/metric pairs,
+allocating one simultaneous family across all successes and failures. Its
+portable artifact is `point-training-risk.json`. Optional `point_metric` on the
+paired policy applies the same score to both learners on joint success. The
+point family and the paired comparison retain separate confidence allocations.
+MSE additionally yields an increasing-square-root interval for pooled RMSE,
+meaning sqrt(training-average MSE), not average per-training RMSE. Prior totality
+is still required for the unconditional counterpart.
+
+The blend experiment now also runs all 8/64 actual local complete learners with
+MAE/MSE assessment, checks the independently derived 1/20 and 1/80 mismatch
+losses, and evaluates all 91/6,188 twelve-block count states. Exact probabilities
+and coverage agree with the qualified normalized law; nonbinary risk endpoint
+scales are checked to numerical tolerance. Informative successful-training
+truths are MAE=11/460 and MSE=11/1840, with success 23/32. Neither grid weighting
+nor the selection objective is changed to manufacture that agreement.
+
+The native `synthetic_point_risk` example and `synthetic_training_risk` generator
+`--point-metrics` flag supply portable complete-input runs. Combining the flag
+with `--paired` registers an MSE comparison. The constructed 20-block example
+uses 120 distinct groups and 240 original samples. Its four-policy success
+lower bound is 0.6071327799401579; no observed successes prove prior totality.
+Saved native runs are `local/retention-point-risk-native-verified` and
+`local/retention-point-risk-20-verified`.
+
+Unit-test-quality checks include hand MAE/MSE values on irregular pressure grids,
+complete native replay, unchanged inner selections/refits, fixed family counts,
+failed policies, full original test accounting, paired raw scores, root-functional
+oracles, and rejected registrations. Memory-only mutations replacing squared
+error by absolute error and ignoring missing interior forecasts both failed their
+intended assertions; source bytes remained unchanged. Full component verification: **628 tests in 94.97 seconds**, Ruff 0.16.1
+lint/format (122 files) and ty 0.0.71. The standalone experiment and generator
+were checked separately.
+
+The wheel in `local/ptfkit-eval-wheel-point-risk` was installed separately under
+`local/ptfkit-eval-installed-point-risk`; the replay explicitly checked the
+import path. Both native runs exactly reproduced point/paired/learned artifacts.
+The installed wheel also reran all four equal/informative MAE/MSE finite-law
+experiments, preserving 144 local fit cases and 12,558 count states in total.
+Gneiting (2011) was reviewed for score/functional/weighting distinctions; it is
+not cited as proof of our block intervals or MAE optimality of a log-loss learner.
+No scientific source rule or real-workbook eligibility was promoted.
+
+Next active slice: registered nonlinear log-pressure sigmoid gates, with finite
+center/steepness search inside every inner training fold and outer refit. This
+is a pressure-only extension; soil-property gating remains separate. No sigmoid
+implementation is included in the packaged point-risk checkpoint.
+
+
+## Nonlinear pressure sigmoid checkpoint (2026-10-23)
+
+Added `SigmoidGridPlan/Fit/ParameterScore` and stable
+`sigmoid_left_weight`. The fixed two-curve blend has left weight
+1/(1+exp(s*log10(pressure/center))), with positive finite registered center and
+steepness pairs. Centers must lie strictly inside the original selection domain.
+The generic grid learner refits every inner training fold and outer training
+set; weak separation yields `unidentifiable_sigmoid_parameters`. Both member
+forecasts remain required even at numerical saturation. Adjacent large pressures
+retain their relative logarithm; extreme ratios and steepness avoid exponential
+overflow. No pressure monotonicity or soil-property gating is inferred.
+
+Native schema, loader, artifacts/report, empirical domains, curve diagnostics,
+retraining sensitivity and independent/point/paired risk paths accept this fit.
+`learned-sigmoid-centers.json` forecasts both members for every original outer
+holdout sample at its locked center, retaining input traces, steepness and their
+half-weight average. The diagnostic reads no observations and performs no fits;
+missing member inputs retain explicit unavailable records. The runnable example
+is `evaluation/examples/synthetic_sigmoid_gate`; saved CLI evidence is
+`local/retention-sigmoid-gate-verified`.
+
+The separate `sigmoid_training_law` experiment uses constant mathematical atomics
+1 and 0, center 10 kPa and slopes ln(2),2*ln(2). Rational three-pressure curves
+(2/3,1/2,1/3) and (4/5,1/2,1/5) have mismatch loss 2/225 with log weights
+(1/4,1/2,1/4). The prior 1/64 bound exceeds that support loss. All 8/64 actual
+complete learner cases validate the sample-majority law, matched/mismatched
+losses and retained ties before the generic original-role convolution. All
+91/6,188 twelve-block count states run the production bound. Informative truths
+are p=23/32, mass=11/3600, successful risk=22/5175. Coverage and issuance agree
+with independent binomial-tail oracles. Floating losses/endpoints use explicit
+numeric tolerance; probabilities remain exact Fractions.
+
+Twenty-seven additional cases protect rational weights and grid objectives,
+90-digit adjacent-pressure behavior, extreme saturation, heldout-target isolation,
+identification/registration rejection, native sample/group accounting, risk
+failures, target-free/missing-input center diagnostics, retraining and replay.
+A memory-only log-base mutation failed the rational-weight oracle; production
+source bytes were unchanged. Full component verification: **655 tests in
+151.72 seconds**, Ruff 0.16.1 lint/format (126 files), ty 0.0.71, git diff check.
+The standalone calibration passes separate lint/format/type checks.
+
+The wheel `local/ptfkit-eval-wheel-sigmoid-gate` was installed under
+`local/ptfkit-eval-installed-sigmoid-gate`, with its import path explicitly
+verified. Native learned choices, locked centers, point/paired risks and
+retraining artifacts exactly replayed. Both finite populations ran through the
+installed code; the informative JSON exactly matched the source run. A replay
+harness initially compared a Python tuple to its JSON list; normalizing that
+comparison fixed the harness, while the saved JSON artifacts already matched.
+
+Jacobs et al. (1991) was reviewed from the author-hosted original text. Its
+stochastic expert selection, mixture likelihood and learned experts differ from
+our deterministic blend of fixed PTF forecasts. The review records this scope
+rather than claiming that the publication proves our algorithm or uncertainty.
+Remaining work includes soil-property gates, fitted-parameter confidence and
+broader signed/median metric process inference; scientific source/data blockers
+still apply. Original PTF publication review continues in parallel with roadmap
+implementation within the authorized window.
+
+
+## Adapter stability and real-workbook return (2026-10-24 Europe/Moscow)
+
+Primary Clapp-Hornberger review exposed finite-input numeric failures. The
+adapter now computes dimensionless pressure ratios, uses a rationalized wetness
+deficit root and preserves tiny dry-branch results in log space. The published
+positive-parabola constraint at fixed W_i=0.92 requires b<11.5 globally; invalid
+shapes are rejected even for a dry or empty canonical grid. The fitting bound
+shares the same constant. Canonical kPa evaluation uses the homogeneous ratio
+without an unnecessary overflowing conversion to centimeters.
+
+Reduced van Genuchten evaluation now applies its exponent in log space rather
+than prematurely saturating an overflowing/underflowing alpha*h product. A shared
+positive-product logarithm preserves the exact binary-input product residual
+near unity, where large n amplifies cancellation. Scalar adapters and canonical
+m=1/Mualem families agree with independent Decimal controls. Defined asymptotic
+limits produce no range warnings. Source specifications and generated PTFs were
+not changed.
+
+Thirty-two new regressions cover pressure-scale invariance, tiny shapes and dry
+results, global invalid shape/suction gates, empty grids, small/large exponents,
+reciprocal inputs and scalar/vector consistency. Reference arithmetic uses
+100-450 digits and the original equations; tiny values use zero absolute
+comparison tolerance. A memory-only sum-of-logs mutation failed three intended
+large-exponent controls; source bytes were unchanged. Full verification:
+**687 tests in 130.61 seconds**, Ruff lint/format (127 files), ty 0.0.71.
+Wheel `local/ptfkit-eval-wheel-stable-adapters` was built and installed separately;
+both native replays match the source outputs exactly, and all 54 adapter/fitting
+tests pass from the installed wheel with its import path verified.
+
+The user confirmed `local/meta_v3.3.xlsx` and prioritized unlocking the maximum
+number of scientifically supportable rows. Its digest exactly matches the
+registered mapping (1322bf65b1ca0130085015209858a443d1ee82a7e2ae69232321cd8ede361e68).
+A fresh real-file normalization/predictor/reconstruction audit was saved under
+`local/meta-v3-3-recheck-20261024`: 130 normalized observations, 1,625 excluded
+observation rows, 92 separate fitted parameters, 206 original predictor samples,
+five public contracts and zero fully predictor-ready samples. The 130 reviewed
+observations are gravimetric mass fractions, not volumetric targets; density and
+material/method compatibility still gate their use for volumetric PTF scoring.
+The blocker is scientific conventions, not absence of the workbook.
+
+A count-only source/function overlap module `readiness.py` is under development
+and not yet part of a verified checkpoint. After the user's reprioritization,
+active effort moves to source-level evidence, starting with the large exactly
+reconstructable Gumatov 1991 (190 rows) and Bolotov 2014 (168 rows) blocks.
+Neither source has been promoted yet. Original-case source aliases and physical
+conventions will be reviewed independently. No unit is inferred from magnitude.
+
+
+## Primary-source row unlocking (2026-10-24 Europe/Moscow)
+
+Bolotov 2014 and the orchard Makarychev 2014 block are now reviewed and enabled.
+Their raw pF labels actually encode log10(kPa), established by matching the
+published figures and their positive kPa axes. Added that explicit normalization
+representation and 16 confirmed full-curve sample crosswalks. The real workbook
+now yields **353 normalized observations: 223 volumetric and 130 gravimetric**,
+up from 130. The missing Bolotov value remains explicitly excluded. Three source
+rules are normalization-ready; all 1,847 rows remain accounted for. Predictor
+compatibility remains a separate requirement. Review details and primary links
+are in the source-review note. Focused verification and broader checks follow.
+
+
+The completed source-review checkpoint now retains **649 observations across
+62 samples**, up by 519 observations from the initial 130: Chestnova 130,
+Gumatov 1991 190, Gumatov 1992 10, Bolotov 167, orchard Makarychev 56 and
+arboretum Makarychev 96. Quantities remain distinct: 223 volumetric observations
+and 426 gravimetric observations. All 1,847 long-sheet rows are accounted for:
+649 normalized, 1,057 blocked-rule exclusions, 48 stale cached identifiers,
+one explicit missing water value, and 92 separately retained fitted parameters.
+Six reconstruction rules are normalization-ready and 62 complete-curve sample
+crosswalks are confirmed. Predictor readiness remains zero under the five public
+contracts; newly usable target observations do not prove input-method compatibility.
+
+Normalization now supports explicit log10(kPa) and MPa representations. Ten
+synthetic public-normalizer cases protect decade anchors, unit scale, sign and
+finite-output gates. A memory-only mutation that applied the pF head factor to
+log10(kPa) failed all three intended anchor controls; source bytes were unchanged.
+The mapping test additionally protects the permuted Bolotov identities and null.
+Full verification: **698 tests in 84.28 seconds**, Ruff lint/format and ty pass.
+
+Panina's full public thesis and the 2014 thermal-property paper were reviewed.
+They supply useful quantity evidence but do not resolve the mixed Panina
+identities/saturation pressure or assign pressures to named hydrological
+constants. These rows remain explicitly blocked. The optional overlap-report
+prototype was moved to `local/ptfkit-eval-drafts/readiness.py`; it is deferred,
+not shipped as an unverified module. Source-level unblocking remains the priority.
+
+
+Installed-wheel verification also passed. The separately installed
+`local/ptfkit-eval-wheel-primary-rows` wheel imports from its isolated target,
+loads the packaged schema, normalizes the real workbook into exactly 649
+observations and 62 identities, and reproduces both committed count summaries
+byte-for-byte. All confirmed reconstruction crosswalks are noncontradictory.
+The deferred overlap prototype is outside the distributable package. Final
+Ruff lint/format (127 files), ty and whitespace checks pass.

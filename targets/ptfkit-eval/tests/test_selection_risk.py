@@ -220,3 +220,86 @@ def test_consistently_rewritten_targets_cannot_replace_original_eligible_observa
     )
     with pytest.raises(EvaluationDocumentError, match='common observation grid'):
         assess_selection_conditional_risks(rewritten, policies=(policy(),))
+
+
+def test_interior_pressure_omission_is_rejected_even_when_losses_are_consistently_recomputed(
+    tmp_path: Path,
+):
+    result = diagnostic_result(tmp_path)
+    assert result.learned_selection is not None
+    first = result.learned_selection.folds[0]
+    original = first.atomic
+    assert original.assessment is not None
+    assert any(point.suction_kpa == 10 for point in original.predictions)
+    predictions = tuple(point for point in original.predictions if point.suction_kpa != 10)
+    losses = evaluate_log_pressure_loss(predictions, plan=FIXED.loss)
+    valid = [sample.loss for sample in losses if sample.loss is not None]
+    assert len(valid) == original.assessment.total_sample_count
+    changed = replace(
+        original,
+        predictions=predictions,
+        assessment=replace(
+            original.assessment,
+            samples=losses,
+            mean_loss=sum(valid) / len(valid),
+        ),
+    )
+    rewritten = replace(
+        result,
+        learned_selection=replace(
+            result.learned_selection,
+            folds=(replace(first, atomic=changed), *result.learned_selection.folds[1:]),
+        ),
+    )
+    with pytest.raises(EvaluationDocumentError, match='complete retained common pressure grid'):
+        assess_selection_conditional_risks(rewritten, policies=(policy(),))
+
+
+def test_retained_outside_domain_pressure_diagnostics_do_not_change_the_risk_estimand(
+    tmp_path: Path,
+):
+    result = diagnostic_result(tmp_path, outside_pressure=True)
+    assert result.learned_selection is not None
+    assert {fold.atomic.candidate_id for fold in result.learned_selection.folds} == {'sand_a'}
+    assessed = assess_selection_conditional_risks(result, policies=(policy(),))[0]
+    assert assessed.bound is not None
+    assert assessed.bound.sample_count == 6
+    assert all(
+        fold.normalized_mean_group_loss_sum == pytest.approx(1 / 64)
+        for fold in assessed.bound.folds
+    )
+
+
+def test_coordinated_inner_training_role_and_fit_provenance_tampering_is_rejected(tmp_path: Path):
+    result = diagnostic_result(tmp_path)
+    selection = result.learned_selection
+    assert selection is not None
+    outer = selection.splits.folds[0]
+    inner = outer.inner[0]
+    leaked_training = (outer.test_groups[0], *inner.training_groups[1:])
+    changed_inner = replace(inner, training_groups=leaked_training)
+    changed_outer = replace(outer, inner=(changed_inner, *outer.inner[1:]))
+    fold = selection.folds[0]
+    scores = tuple(
+        replace(
+            score,
+            folds=tuple(
+                replace(evidence, fit=replace(evidence.fit, training_groups=leaked_training))
+                if evidence.fold_id == inner.fold_id and evidence.fit is not None
+                else evidence
+                for evidence in score.folds
+            ),
+        )
+        for score in fold.ensemble.inner_scores
+    )
+    changed_fold = replace(fold, ensemble=replace(fold.ensemble, inner_scores=scores))
+    rewritten = replace(
+        result,
+        learned_selection=replace(
+            selection,
+            splits=replace(selection.splits, folds=(changed_outer, *selection.splits.folds[1:])),
+            folds=(changed_fold, *selection.folds[1:]),
+        ),
+    )
+    with pytest.raises(EvaluationDocumentError, match='original identity-only split'):
+        assess_selection_conditional_risks(rewritten, policies=(policy(),))

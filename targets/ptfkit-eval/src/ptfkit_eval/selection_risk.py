@@ -5,10 +5,15 @@ from __future__ import annotations
 from dataclasses import dataclass, replace
 from typing import TYPE_CHECKING, Literal, cast
 
-from .applicability import domain_group
 from .cohorts import build_retention_cohorts, run_candidate_comparisons
 from .documents import EvaluationDocumentError, object_records
-from .losses import SampleCurveLoss, evaluate_log_pressure_loss, mean_finite_losses
+from .folds import GroupedSample, build_nested_group_folds
+from .losses import (
+    LogPressureLossPlan,
+    SampleCurveLoss,
+    evaluate_log_pressure_loss,
+    mean_finite_losses,
+)
 from .risk_bounds import (
     BoundedGroupLoss,
     ConditionalOuterFoldLoss,
@@ -111,16 +116,13 @@ def _assess(
     if selection is None:
         message = 'Conditional risk references an unexecuted selection protocol.'
         raise EvaluationDocumentError(message)
-    registered_loss = (
-        selection.plan.loss
-        if isinstance(selection, FixedNestedSelection)
-        else selection.plan.fixed.loss
-    )
+    fixed = selection.plan if isinstance(selection, FixedNestedSelection) else selection.plan.fixed
     if (
-        policy.bounds.loss != registered_loss
+        selection.splits.plan != fixed.folds
+        or policy.bounds.loss != fixed.loss
         or policy.bounds.grouping != selection.splits.effective_grouping
     ):
-        message = 'Conditional risk must match the registered loss and resolved grouping.'
+        message = 'Conditional risk must match registered folds, loss and resolved grouping.'
         raise EvaluationDocumentError(message)
     allocation = (1 - policy.bounds.confidence_level) / family_size
     if selection.splits.status != 'computed':
@@ -149,8 +151,7 @@ def _assess(
     ):
         message = 'Conditional risk requires exactly one outer frame per registered fold.'
         raise EvaluationDocumentError(message)
-    fixed = selection.plan if isinstance(selection, FixedNestedSelection) else selection.plan.fixed
-    _validate_common_grid(result, fixed.candidate_ids, outer)
+    _validate_common_grid(result, fixed.candidate_ids, outer, fixed.loss)
     groups = {group.group_id: group for group in selection.splits.groups}
     evidence = []
     failures = []
@@ -173,6 +174,7 @@ def _validate_common_grid(
     result: RetentionRunResult,
     candidate_ids: tuple[str, ...],
     outer: tuple[SelectionPredictionFrame, ...],
+    loss: LogPressureLossPlan,
 ) -> None:
     common = build_retention_cohorts(run_candidate_comparisons(result, candidate_ids)).common
     grid = {
@@ -188,45 +190,43 @@ def _validate_common_grid(
         message = 'Conditional risk forecasts must retain the eligible common observation grid.'
         raise EvaluationDocumentError(message)
 
+    expected = {key for key in grid if loss.lower_suction_kpa <= key[2] <= loss.upper_suction_kpa}
+    for frame in outer:
+        if (
+            frame.reason is not None
+            or frame.assessment is None
+            or frame.assessment.mean_loss is None
+        ):
+            continue
+        if frame.assessment.coverage != 1:
+            continue
+        held_out = set(frame.samples)
+        expected_keys = {key for key in expected if key[:2] in held_out}
+        actual_keys = {
+            (point.source_id, point.sample_id, point.suction_kpa)
+            for point in frame.predictions
+            if loss.lower_suction_kpa <= point.suction_kpa <= loss.upper_suction_kpa
+        }
+        if actual_keys != expected_keys:
+            message = 'Conditional risk requires the complete retained common pressure grid.'
+            raise EvaluationDocumentError(message)
+
 
 def _validate_roster(result: RetentionRunResult, splits: NestedGroupFolds) -> None:
     samples = {
         (str(sample['source_id']), str(sample['sample_id'])): sample
         for sample in object_records(result.plan.dataset.document['samples'])
     }
-    members = [key for group in splits.groups for key in group.samples]
-    if (
-        len(members) != len(set(members))
-        or set(members) != set(samples)
-        or len({group.group_id for group in splits.groups}) != len(splits.groups)
-    ):
-        message = 'Conditional risk groups must cover the entire original sample roster once.'
-        raise EvaluationDocumentError(message)
-    identifiers = {group.group_id for group in splits.groups}
-    held_out = [identifier for fold in splits.folds for identifier in fold.test_groups]
-    if (
-        len({fold.fold_id for fold in splits.folds}) != len(splits.folds)
-        or len(held_out) != len(set(held_out))
-        or set(held_out) != identifiers
-        or any(
-            not fold.test_groups
-            or len(set(fold.training_groups)) != len(fold.training_groups)
-            or set(fold.training_groups) != identifiers - set(fold.test_groups)
-            for fold in splits.folds
+    roster = tuple(
+        GroupedSample(
+            str(sample['source_id']),
+            str(sample['sample_id']),
+            cast('str | None', sample['profile_id']),
         )
-    ):
-        message = (
-            'Conditional risk outer partitions must preserve every original group without overlap.'
-        )
-        raise EvaluationDocumentError(message)
-    if any(
-        domain_group(samples[key], splits.effective_grouping) != group.group_id
-        for group in splits.groups
-        for key in group.samples
-    ):
-        message = (
-            'Conditional risk group identities differ from original source/profile membership.'
-        )
+        for sample in samples.values()
+    )
+    if build_nested_group_folds(roster, plan=splits.plan) != splits:
+        message = 'Conditional risk nested partition differs from the original identity-only split.'
         raise EvaluationDocumentError(message)
 
 

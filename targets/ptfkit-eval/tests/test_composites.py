@@ -1,4 +1,6 @@
 import math
+from decimal import Decimal, localcontext
+from typing import Literal
 
 import pytest
 
@@ -29,6 +31,38 @@ def test_blends_over_log_pressure_and_routes_outside_the_overlap():
     assert midpoint[1].weight == pytest.approx(0.5)
     assert router.route(33.0) == (Contribution('wet', 0.0), Contribution('dry', 1.0))
     assert router.route(100.0) == (Contribution('dry', 1.0),)
+
+
+@pytest.mark.parametrize('weighting', ['linear', 'smoothstep'])
+def test_log_blend_retains_finite_interior_weights_for_distinct_nearby_pressures(
+    weighting: Literal['linear', 'smoothstep'],
+):
+    lower = 1e100
+    middle = math.nextafter(lower, math.inf)
+    upper = math.nextafter(middle, math.inf)
+    assert math.log10(lower) == math.log10(upper)
+    transition = BlendTransition('wet', 'dry', Interval(lower, upper), weighting=weighting)
+    assert transition.route(lower, 'log10') == (Contribution('wet', 1), Contribution('dry', 0))
+    assert transition.route(upper, 'log10') == (Contribution('wet', 0), Contribution('dry', 1))
+    with localcontext() as context:
+        context.prec = 90
+        lo, mid, hi = (Decimal(value) for value in (lower, middle, upper))
+        expected = (mid / lo).ln() / (hi / lo).ln()
+        if weighting == 'smoothstep':
+            expected = expected * expected * (3 - 2 * expected)
+    weights = transition.route(middle, 'log10')
+    assert weights[1].weight == pytest.approx(float(expected), abs=1e-15)
+    assert weights[0].weight == pytest.approx(float(1 - expected), abs=1e-15)
+
+
+@pytest.mark.parametrize(('value', 'expected'), [(0, 0.5), (-5e307, 0.25)])
+def test_linear_blend_preserves_weights_when_the_finite_endpoint_span_overflows(
+    value: float,
+    expected: float,
+):
+    transition = BlendTransition('left', 'right', Interval(-1e308, 1e308))
+    contributions = transition.route(value, 'linear')
+    assert contributions == (Contribution('left', 1 - expected), Contribution('right', expected))
 
 
 def test_rejects_a_hard_switch_outside_the_member_overlap():

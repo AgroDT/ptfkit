@@ -1,11 +1,7 @@
 {
   "blocker_counts": [
     {
-      "count": 10,
-      "label": "mpa_label_meaning"
-    },
-    {
-      "count": 1525,
+      "count": 1015,
       "label": "pressure_convention_by_source"
     },
     {
@@ -21,29 +17,33 @@
       "label": "retention_reconstruction"
     },
     {
-      "count": 507,
+      "count": 399,
       "label": "unknown_water_basis"
     },
     {
-      "count": 1118,
+      "count": 706,
       "label": "water_scale_by_source"
     }
   ],
-  "excluded_observation_count": 1625,
+  "excluded_observation_count": 1106,
   "exclusion_reasons": [
+    {
+      "count": 1,
+      "label": "invalid_water_content_value"
+    },
     {
       "count": 48,
       "label": "sample_identity_mismatch"
     },
     {
-      "count": 1577,
+      "count": 1057,
       "label": "source_rule_blocked"
     }
   ],
   "fitted_parameter_count": 92,
   "input_observation_count": 1755,
   "missing_source_exclusion_count": 0,
-  "normalized_observation_count": 130,
+  "normalized_observation_count": 649,
   "schema_version": 1,
   "sha256": "1322bf65b1ca0130085015209858a443d1ee82a7e2ae69232321cd8ede361e68",
   "sheet_name": "ОГХ",

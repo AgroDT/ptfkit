@@ -77,13 +77,18 @@ def test_meta_mapping_is_inventory_bound_and_keeps_ambiguities_explicit():
         for rule in cast('Sequence[object]', source_rule['observations'])
     ]
     assert len(observation_rules) == 26
-    assert [rule['status'] for rule in observation_rules].count('confirmed') == 1
-    assert [rule['status'] for rule in observation_rules].count('blocked') == 25
-    assert {rule['water_unit'] for rule in observation_rules} == {None, 'mass_percent'}
+    assert [rule['status'] for rule in observation_rules].count('confirmed') == 6
+    assert [rule['status'] for rule in observation_rules].count('blocked') == 20
+    assert {rule['water_unit'] for rule in observation_rules} == {
+        None,
+        'mass_percent',
+        'mass_fraction',
+        'volume_fraction',
+    }
 
     identity = cast('Mapping[str, object]', mapping.document['identity'])
     crosswalks = cast('Sequence[Mapping[str, object]]', identity['sample_crosswalks'])
-    assert len(crosswalks) == 10
+    assert len(crosswalks) == 62
     chestnova_two = next(item for item in crosswalks if item['raw_sample_id'] == '2017_Честнова_2')
     assert chestnova_two['canonical_sample_id'] == '2017_честнова_9'
     assert chestnova_two['canonical_sample_number'] == 9
@@ -524,7 +529,7 @@ def test_reconstruction_audit_keeps_point_integrity_separate_from_identity():
     assert audit['unaudited_source_count'] == 0
     assert audit['unaudited_sources'] == []
     assert audit['reconstructable_rule_count'] == 21
-    assert audit['normalization_ready_rule_count'] == 1
+    assert audit['normalization_ready_rule_count'] == 6
     rules = {rule['rule_id']: rule for rule in audit['rules']}
     assert sum(rule['matched_point_count'] for rule in rules.values()) == 1741
     chestnova = rules['chestnova_2017']
@@ -692,3 +697,35 @@ def test_predictor_audit_covers_every_declared_retention_sample_without_values()
     ]
     assert 'values' not in audit
     assert 'eligibility' not in audit
+
+
+def test_bolotov_primary_review_keeps_pressure_override_and_curve_identity():
+    mapping = load_dataset_mapping(MAPPING_PATH)
+    source_rules = cast(
+        'Sequence[Mapping[str, object]]', mapping.document['retention_source_rules']
+    )
+    source = next(
+        item
+        for item in source_rules
+        if item['source'] == '2014_\u0411\u043e\u043b\u043e\u0442\u043e\u0432'
+    )
+    (rule,) = cast('Sequence[Mapping[str, object]]', source['observations'])
+    assert rule['status'] == 'confirmed'
+    assert rule['water_unit'] == 'volume_fraction'
+    assert rule['pressure_encoding'] == 'pF'
+    assert rule['pressure_representation'] == 'log10_kilopascal'
+    assert rule['pressure_convention'] == 'magnitude'
+    identity = cast('Mapping[str, object]', mapping.document['identity'])
+    rows = cast('Sequence[Mapping[str, object]]', identity['sample_crosswalks'])
+    crosswalks = {item['raw_sample_id']: item for item in rows}
+    # Lexical long-sheet ordering is not the master profile order.
+    prefix = '2014_\u0411\u043e\u043b\u043e\u0442\u043e\u0432'
+    assert crosswalks[prefix + '_10']['canonical_sample_number'] == 4
+    assert crosswalks[prefix + '_2']['canonical_sample_number'] == 7
+    assert crosswalks[prefix + '_5']['canonical_sample_number'] == 10
+    audit = json.loads(RECONSTRUCTION_PATH.read_text(encoding='utf-8'))
+    bolotov = next(item for item in audit['rules'] if item['rule_id'] == 'bolotov_2014')
+    assert bolotov['normalization_ready'] is True
+    assert bolotov['matching_confirmed_crosswalk_count'] == 12
+    assert bolotov['wide_missing_water_count'] == 1
+    assert bolotov['long_missing_water_count'] == 1
