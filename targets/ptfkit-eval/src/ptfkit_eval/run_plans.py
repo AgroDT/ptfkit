@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Literal, cast
 
 from ptfkit import get_manifest
 
+from .applicability import EmpiricalDomainPlan, validate_empirical_domain_roster
 from .canonical import CanonicalRetentionDataset, load_retention_dataset
 from .conformal import GroupedConformalPlan, validate_prediction_interval_roster
 from .contracts import (
@@ -31,9 +32,16 @@ from .documents import (
     validate_document,
 )
 from .fitting import FitParameterRange, RetentionFitPlan
-from .folds import GroupedSample, NestedGroupPlan
+from .folds import GroupedSample, NestedGroupPlan, build_nested_group_folds
+from .hard_switch import HardSwitchGridPlan
+from .learned import ConvexPairPlan, LearnedSelectionPlan, validate_learned_selection_candidates
 from .losses import LogPressureLossPlan
+from .nested_applicability import NestedDomainPlan
+from .paired import PairedComparisonPlan
+from .resampling import SelectionResamplingPlan
+from .risk_bounds import ConditionalOuterRiskPlan
 from .selection import FixedSelectionPlan
+from .selection_risk import SelectionRiskPlan, validate_selection_risk_policies
 from .uncertainty import ClusterBootstrapPlan
 
 
@@ -55,6 +63,11 @@ class RetentionRunPlan:
     selection: FixedSelectionPlan | None = None
     approximations: tuple[RetentionFitPlan, ...] = ()
     prediction_intervals: tuple[GroupedConformalPlan, ...] = ()
+    empirical_domains: tuple[EmpiricalDomainPlan, ...] = ()
+    paired_comparisons: tuple[PairedComparisonPlan, ...] = ()
+    learned_selection: LearnedSelectionPlan | None = None
+    selection_resampling: tuple[SelectionResamplingPlan, ...] = ()
+    conditional_outer_risk: tuple[SelectionRiskPlan, ...] = ()
 
 
 def load_retention_run_plan(
@@ -108,7 +121,8 @@ def load_retention_run_plan(
     }:
         message = 'Selection roster contains candidates absent from the evaluation plan.'
         raise EvaluationDocumentError(message)
-    return RetentionRunPlan(
+    learned_selection = _learned_selection_plan(document.get('learned_selection'), evaluation)
+    result = RetentionRunPlan(
         object_mapping(freeze(document)),
         object_mapping(freeze(evaluation_document)),
         evaluation,
@@ -119,7 +133,185 @@ def load_retention_run_plan(
         selection,
         _approximation_plans(document.get('approximations', ()), dataset),
         _prediction_interval_plans(document, dataset, evaluation),
+        _empirical_domain_plans(document, dataset, evaluation),
+        _paired_comparison_plans(document, evaluation),
+        learned_selection,
+        _selection_resampling_plans(document),
+        _conditional_risk_plans(document, selection, learned_selection, dataset),
     )
+    for policy in result.selection_resampling:
+        if (policy.protocol == 'fixed' and result.selection is None) or (
+            policy.protocol == 'learned' and result.learned_selection is None
+        ):
+            message = (
+                'Selection resampling requires its registered fixed/learned selection protocol.'
+            )
+            raise EvaluationDocumentError(message)
+    return result
+
+
+def _conditional_risk_plans(
+    root: Mapping[str, object],
+    fixed: FixedSelectionPlan | None,
+    learned: LearnedSelectionPlan | None,
+    dataset: CanonicalRetentionDataset,
+) -> tuple[SelectionRiskPlan, ...]:
+    policies = []
+    for item in object_records(root.get('conditional_outer_risk', ())):
+        protocol = cast("Literal['fixed', 'learned']", item['protocol'])
+        selection = fixed if protocol == 'fixed' else learned.fixed if learned is not None else None
+        if selection is None:
+            message = 'Conditional risk requires its registered fixed/learned selection protocol.'
+            raise EvaluationDocumentError(message)
+        roster = tuple(
+            GroupedSample(
+                str(sample['source_id']),
+                str(sample['sample_id']),
+                cast('str | None', sample['profile_id']),
+            )
+            for sample in object_records(dataset.document['samples'])
+        )
+        resolved = build_nested_group_folds(roster, plan=selection.folds).effective_grouping
+        if item['grouping'] != resolved:
+            message = 'Conditional risk grouping must match the resolved selection grouping.'
+            raise EvaluationDocumentError(message)
+        policies.append(
+            SelectionRiskPlan(
+                protocol=protocol,
+                strategy=cast("Literal['atomic', 'ensemble']", item['strategy']),
+                bounds=ConditionalOuterRiskPlan(
+                    population_id=cast('str', item['population_id']),
+                    grouping=cast("Literal['source', 'profile']", item['grouping']),
+                    loss=selection.loss,
+                    maximum_sample_loss=cast('float', item['maximum_sample_loss']),
+                    maximum_group_size=cast('int', item['maximum_group_size']),
+                    minimum_group_size=cast('int', item['minimum_group_size']),
+                    confidence_level=cast('float', item['confidence_level']),
+                ),
+            )
+        )
+    result = tuple(policies)
+    validate_selection_risk_policies(result)
+    return result
+
+
+def _selection_resampling_plans(root: Mapping[str, object]) -> tuple[SelectionResamplingPlan, ...]:
+    plans = tuple(
+        SelectionResamplingPlan(
+            protocol=cast("Literal['fixed', 'learned']", item['protocol']),
+            seed=cast('int', item['seed']),
+            n_resamples=cast('int', item['n_resamples']),
+            minimum_groups=cast('int', item['minimum_groups']),
+        )
+        for item in object_records(root.get('selection_resampling', ()))
+    )
+    if len({policy.protocol for policy in plans}) != len(plans):
+        message = 'Each selection protocol may have only one retraining resampling registration.'
+        raise EvaluationDocumentError(message)
+    return plans
+
+
+def _learned_selection_plan(
+    value: object, evaluation: EvaluationPlan
+) -> LearnedSelectionPlan | None:
+    if value is None:
+        return None
+    document = object_mapping(value)
+    fixed = _selection_plan(document['fixed_selection'])
+    if fixed is None:
+        message = 'Learned selection requires a complete fixed candidate/fold/loss contract.'
+        raise EvaluationDocumentError(message)
+    identifiers = {candidate.id for candidate in evaluation.candidates}
+    if set(fixed.candidate_ids) - identifiers:
+        message = 'Learned selection fixed roster references absent evaluation candidates.'
+        raise EvaluationDocumentError(message)
+    plan = LearnedSelectionPlan(
+        fixed=fixed,
+        method=cast(
+            "Literal['nested_convex_pair_selection_v1', 'nested_two_curve_selection_v1']",
+            document['method'],
+        ),
+        empirical_domains=(
+            NestedDomainPlan(
+                minimum_training_groups=cast(
+                    'int', object_mapping(document['empirical_domains'])['minimum_training_groups']
+                )
+            )
+            if 'empirical_domains' in document
+            else None
+        ),
+        ensembles=tuple(
+            _trainable_ensemble(item) for item in object_records(document['ensembles'])
+        ),
+    )
+    validate_learned_selection_candidates(plan, evaluation)
+    return plan
+
+
+def _trainable_ensemble(item: Mapping[str, object]) -> ConvexPairPlan | HardSwitchGridPlan:
+    if item['method'] == 'training_grid_hard_switch_v1':
+        return HardSwitchGridPlan(
+            id=cast('str', item['id']),
+            left_candidate_id=cast('str', item['left_candidate_id']),
+            right_candidate_id=cast('str', item['right_candidate_id']),
+            minimum_training_groups=cast('int', item['minimum_training_groups']),
+            boundary_grid_kpa=tuple(cast('list[float]', item['boundary_grid_kpa'])),
+            boundary_member=cast("Literal['left', 'right']", item['boundary_member']),
+            minimum_loss_gap=cast('float', item['minimum_loss_gap']),
+        )
+    return ConvexPairPlan(
+        id=cast('str', item['id']),
+        left_candidate_id=cast('str', item['left_candidate_id']),
+        right_candidate_id=cast('str', item['right_candidate_id']),
+        minimum_training_groups=cast('int', item['minimum_training_groups']),
+        minimum_mean_squared_contrast=cast('float', item['minimum_mean_squared_contrast']),
+    )
+
+
+def _paired_comparison_plans(
+    root: Mapping[str, object], evaluation: EvaluationPlan
+) -> tuple[PairedComparisonPlan, ...]:
+    plans = tuple(
+        PairedComparisonPlan(
+            left_candidate_id=cast('str', document['left_candidate_id']),
+            right_candidate_id=cast('str', document['right_candidate_id']),
+        )
+        for document in object_records(root.get('paired_comparisons', ()))
+    )
+    identifiers = {candidate.id for candidate in evaluation.candidates}
+    seen: set[frozenset[str]] = set()
+    for policy in plans:
+        pair = frozenset((policy.left_candidate_id, policy.right_candidate_id))
+        if pair - identifiers or pair in seen:
+            message = 'Paired comparisons require known candidates and unique unordered pairs.'
+            raise EvaluationDocumentError(message)
+        seen.add(pair)
+    return plans
+
+
+def _empirical_domain_plans(
+    root: Mapping[str, object], dataset: CanonicalRetentionDataset, evaluation: EvaluationPlan
+) -> tuple[EmpiricalDomainPlan, ...]:
+    plans = tuple(
+        EmpiricalDomainPlan(
+            candidate_id=cast('str', document['candidate_id']),
+            training_groups=_group_roles(document, 'training_groups'),
+            test_groups=_group_roles(document, 'test_groups'),
+            minimum_training_groups=cast('int', document['minimum_training_groups']),
+            grouping=cast("Literal['source', 'profile']", document['grouping']),
+        )
+        for document in object_records(root.get('empirical_domains', ()))
+    )
+    identifiers = {candidate.id for candidate in evaluation.candidates}
+    if len({plan.candidate_id for plan in plans}) != len(plans):
+        message = 'Each candidate may have only one empirical domain registration per run.'
+        raise EvaluationDocumentError(message)
+    for plan in plans:
+        if plan.candidate_id not in identifiers:
+            message = 'Empirical domain references a candidate absent from the evaluation plan.'
+            raise EvaluationDocumentError(message)
+        validate_empirical_domain_roster(dataset.document, plan)
+    return plans
 
 
 def _prediction_interval_plans(
@@ -210,6 +402,15 @@ def _selection_plan(value: object) -> FixedSelectionPlan | None:
     return FixedSelectionPlan(
         candidate_ids=tuple(cast('tuple[str, ...]', document['candidate_ids'])),
         minimum_coverage=cast('float', document['minimum_coverage']),
+        empirical_domains=(
+            NestedDomainPlan(
+                minimum_training_groups=cast(
+                    'int', object_mapping(document['empirical_domains'])['minimum_training_groups']
+                )
+            )
+            if 'empirical_domains' in document
+            else None
+        ),
         folds=NestedGroupPlan(
             seed=cast('int', folds['seed']),
             outer_folds=cast('int', folds['outer_folds']),

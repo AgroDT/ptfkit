@@ -86,3 +86,17 @@ def test_intervals_for_unlabelled_test_samples_do_not_consume_test_targets(tmp_p
     assert 'PTF prediction intervals' in read_retention_run_report(output)
     replay = execute_retention_run(load_retention_run_plan(output / 'run-plan.json'))
     assert replay.prediction_intervals == first.prediction_intervals
+
+
+def test_standalone_example_matches_hand_calculated_intervals():
+    path = Path(__file__).resolve().parents[3] / 'evaluation/examples/synthetic_conformal/run.json'
+    result = execute_retention_run(load_retention_run_plan(path)).prediction_intervals[0]
+
+    assert result.status == 'computed'
+    assert result.calibration.quantile_rank == 9
+    assert result.calibration.half_width == pytest.approx(0.09)
+    assert len(result.forecasts) == 2
+    assert {point.source_id for point in result.forecasts} == {'test'}
+    assert [point.predicted for point in result.forecasts] == pytest.approx([0.395, 0.1975])
+    assert [interval.lower for interval in result.intervals] == pytest.approx([0.305, 0.1075])
+    assert [interval.upper for interval in result.intervals] == pytest.approx([0.485, 0.2875])

@@ -1,0 +1,4432 @@
+{
+  "dataset_id": "synthetic_group_retraining",
+  "kind": "synthetic",
+  "method": "synthetic_pressure_control",
+  "observations": [
+    {
+      "id": "synthetic_group_00_sample_1_0.1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_00_retention!B1"
+      ],
+      "source_id": "synthetic_group_00",
+      "suction_kpa": 0.1,
+      "value": 0.4
+    },
+    {
+      "id": "synthetic_group_00_sample_1_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_00_retention!B2"
+      ],
+      "source_id": "synthetic_group_00",
+      "suction_kpa": 1,
+      "value": 0.36
+    },
+    {
+      "id": "synthetic_group_00_sample_1_10",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_00_retention!B3"
+      ],
+      "source_id": "synthetic_group_00",
+      "suction_kpa": 10,
+      "value": 0.28
+    },
+    {
+      "id": "synthetic_group_00_sample_1_100",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_00_retention!B4"
+      ],
+      "source_id": "synthetic_group_00",
+      "suction_kpa": 100,
+      "value": 0.2
+    },
+    {
+      "id": "synthetic_group_00_sample_1_1000",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_00_retention!B5"
+      ],
+      "source_id": "synthetic_group_00",
+      "suction_kpa": 1000,
+      "value": 0.15
+    },
+    {
+      "id": "synthetic_group_00_sample_2_0.1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_00_retention!B6"
+      ],
+      "source_id": "synthetic_group_00",
+      "suction_kpa": 0.1,
+      "value": 0.402
+    },
+    {
+      "id": "synthetic_group_00_sample_2_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_00_retention!B7"
+      ],
+      "source_id": "synthetic_group_00",
+      "suction_kpa": 1,
+      "value": 0.362
+    },
+    {
+      "id": "synthetic_group_00_sample_2_10",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_00_retention!B8"
+      ],
+      "source_id": "synthetic_group_00",
+      "suction_kpa": 10,
+      "value": 0.282
+    },
+    {
+      "id": "synthetic_group_00_sample_2_100",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_00_retention!B9"
+      ],
+      "source_id": "synthetic_group_00",
+      "suction_kpa": 100,
+      "value": 0.202
+    },
+    {
+      "id": "synthetic_group_00_sample_2_1000",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_00_retention!B10"
+      ],
+      "source_id": "synthetic_group_00",
+      "suction_kpa": 1000,
+      "value": 0.152
+    },
+    {
+      "id": "synthetic_group_01_sample_1_0.1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_01_retention!B1"
+      ],
+      "source_id": "synthetic_group_01",
+      "suction_kpa": 0.1,
+      "value": 0.403
+    },
+    {
+      "id": "synthetic_group_01_sample_1_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_01_retention!B2"
+      ],
+      "source_id": "synthetic_group_01",
+      "suction_kpa": 1,
+      "value": 0.363
+    },
+    {
+      "id": "synthetic_group_01_sample_1_10",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_01_retention!B3"
+      ],
+      "source_id": "synthetic_group_01",
+      "suction_kpa": 10,
+      "value": 0.283
+    },
+    {
+      "id": "synthetic_group_01_sample_1_100",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_01_retention!B4"
+      ],
+      "source_id": "synthetic_group_01",
+      "suction_kpa": 100,
+      "value": 0.203
+    },
+    {
+      "id": "synthetic_group_01_sample_1_1000",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_01_retention!B5"
+      ],
+      "source_id": "synthetic_group_01",
+      "suction_kpa": 1000,
+      "value": 0.153
+    },
+    {
+      "id": "synthetic_group_01_sample_2_0.1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_01_retention!B6"
+      ],
+      "source_id": "synthetic_group_01",
+      "suction_kpa": 0.1,
+      "value": 0.405
+    },
+    {
+      "id": "synthetic_group_01_sample_2_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_01_retention!B7"
+      ],
+      "source_id": "synthetic_group_01",
+      "suction_kpa": 1,
+      "value": 0.365
+    },
+    {
+      "id": "synthetic_group_01_sample_2_10",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_01_retention!B8"
+      ],
+      "source_id": "synthetic_group_01",
+      "suction_kpa": 10,
+      "value": 0.285
+    },
+    {
+      "id": "synthetic_group_01_sample_2_100",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_01_retention!B9"
+      ],
+      "source_id": "synthetic_group_01",
+      "suction_kpa": 100,
+      "value": 0.205
+    },
+    {
+      "id": "synthetic_group_01_sample_2_1000",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_01_retention!B10"
+      ],
+      "source_id": "synthetic_group_01",
+      "suction_kpa": 1000,
+      "value": 0.155
+    },
+    {
+      "id": "synthetic_group_02_sample_1_0.1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_02_retention!B1"
+      ],
+      "source_id": "synthetic_group_02",
+      "suction_kpa": 0.1,
+      "value": 0.406
+    },
+    {
+      "id": "synthetic_group_02_sample_1_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_02_retention!B2"
+      ],
+      "source_id": "synthetic_group_02",
+      "suction_kpa": 1,
+      "value": 0.366
+    },
+    {
+      "id": "synthetic_group_02_sample_1_10",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_02_retention!B3"
+      ],
+      "source_id": "synthetic_group_02",
+      "suction_kpa": 10,
+      "value": 0.286
+    },
+    {
+      "id": "synthetic_group_02_sample_1_100",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_02_retention!B4"
+      ],
+      "source_id": "synthetic_group_02",
+      "suction_kpa": 100,
+      "value": 0.206
+    },
+    {
+      "id": "synthetic_group_02_sample_1_1000",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_02_retention!B5"
+      ],
+      "source_id": "synthetic_group_02",
+      "suction_kpa": 1000,
+      "value": 0.156
+    },
+    {
+      "id": "synthetic_group_02_sample_2_0.1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_02_retention!B6"
+      ],
+      "source_id": "synthetic_group_02",
+      "suction_kpa": 0.1,
+      "value": 0.408
+    },
+    {
+      "id": "synthetic_group_02_sample_2_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_02_retention!B7"
+      ],
+      "source_id": "synthetic_group_02",
+      "suction_kpa": 1,
+      "value": 0.368
+    },
+    {
+      "id": "synthetic_group_02_sample_2_10",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_02_retention!B8"
+      ],
+      "source_id": "synthetic_group_02",
+      "suction_kpa": 10,
+      "value": 0.288
+    },
+    {
+      "id": "synthetic_group_02_sample_2_100",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_02_retention!B9"
+      ],
+      "source_id": "synthetic_group_02",
+      "suction_kpa": 100,
+      "value": 0.208
+    },
+    {
+      "id": "synthetic_group_02_sample_2_1000",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_02_retention!B10"
+      ],
+      "source_id": "synthetic_group_02",
+      "suction_kpa": 1000,
+      "value": 0.158
+    },
+    {
+      "id": "synthetic_group_03_sample_1_0.1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_03_retention!B1"
+      ],
+      "source_id": "synthetic_group_03",
+      "suction_kpa": 0.1,
+      "value": 0.409
+    },
+    {
+      "id": "synthetic_group_03_sample_1_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_03_retention!B2"
+      ],
+      "source_id": "synthetic_group_03",
+      "suction_kpa": 1,
+      "value": 0.369
+    },
+    {
+      "id": "synthetic_group_03_sample_1_10",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_03_retention!B3"
+      ],
+      "source_id": "synthetic_group_03",
+      "suction_kpa": 10,
+      "value": 0.289
+    },
+    {
+      "id": "synthetic_group_03_sample_1_100",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_03_retention!B4"
+      ],
+      "source_id": "synthetic_group_03",
+      "suction_kpa": 100,
+      "value": 0.209
+    },
+    {
+      "id": "synthetic_group_03_sample_1_1000",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_03_retention!B5"
+      ],
+      "source_id": "synthetic_group_03",
+      "suction_kpa": 1000,
+      "value": 0.159
+    },
+    {
+      "id": "synthetic_group_03_sample_2_0.1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_03_retention!B6"
+      ],
+      "source_id": "synthetic_group_03",
+      "suction_kpa": 0.1,
+      "value": 0.411
+    },
+    {
+      "id": "synthetic_group_03_sample_2_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_03_retention!B7"
+      ],
+      "source_id": "synthetic_group_03",
+      "suction_kpa": 1,
+      "value": 0.371
+    },
+    {
+      "id": "synthetic_group_03_sample_2_10",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_03_retention!B8"
+      ],
+      "source_id": "synthetic_group_03",
+      "suction_kpa": 10,
+      "value": 0.291
+    },
+    {
+      "id": "synthetic_group_03_sample_2_100",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_03_retention!B9"
+      ],
+      "source_id": "synthetic_group_03",
+      "suction_kpa": 100,
+      "value": 0.211
+    },
+    {
+      "id": "synthetic_group_03_sample_2_1000",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_03_retention!B10"
+      ],
+      "source_id": "synthetic_group_03",
+      "suction_kpa": 1000,
+      "value": 0.161
+    },
+    {
+      "id": "synthetic_group_04_sample_1_0.1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_04_retention!B1"
+      ],
+      "source_id": "synthetic_group_04",
+      "suction_kpa": 0.1,
+      "value": 0.412
+    },
+    {
+      "id": "synthetic_group_04_sample_1_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_04_retention!B2"
+      ],
+      "source_id": "synthetic_group_04",
+      "suction_kpa": 1,
+      "value": 0.372
+    },
+    {
+      "id": "synthetic_group_04_sample_1_10",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_04_retention!B3"
+      ],
+      "source_id": "synthetic_group_04",
+      "suction_kpa": 10,
+      "value": 0.292
+    },
+    {
+      "id": "synthetic_group_04_sample_1_100",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_04_retention!B4"
+      ],
+      "source_id": "synthetic_group_04",
+      "suction_kpa": 100,
+      "value": 0.212
+    },
+    {
+      "id": "synthetic_group_04_sample_1_1000",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_04_retention!B5"
+      ],
+      "source_id": "synthetic_group_04",
+      "suction_kpa": 1000,
+      "value": 0.162
+    },
+    {
+      "id": "synthetic_group_04_sample_2_0.1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_04_retention!B6"
+      ],
+      "source_id": "synthetic_group_04",
+      "suction_kpa": 0.1,
+      "value": 0.414
+    },
+    {
+      "id": "synthetic_group_04_sample_2_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_04_retention!B7"
+      ],
+      "source_id": "synthetic_group_04",
+      "suction_kpa": 1,
+      "value": 0.374
+    },
+    {
+      "id": "synthetic_group_04_sample_2_10",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_04_retention!B8"
+      ],
+      "source_id": "synthetic_group_04",
+      "suction_kpa": 10,
+      "value": 0.294
+    },
+    {
+      "id": "synthetic_group_04_sample_2_100",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_04_retention!B9"
+      ],
+      "source_id": "synthetic_group_04",
+      "suction_kpa": 100,
+      "value": 0.214
+    },
+    {
+      "id": "synthetic_group_04_sample_2_1000",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_04_retention!B10"
+      ],
+      "source_id": "synthetic_group_04",
+      "suction_kpa": 1000,
+      "value": 0.164
+    },
+    {
+      "id": "synthetic_group_05_sample_1_0.1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_05_retention!B1"
+      ],
+      "source_id": "synthetic_group_05",
+      "suction_kpa": 0.1,
+      "value": 0.415
+    },
+    {
+      "id": "synthetic_group_05_sample_1_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_05_retention!B2"
+      ],
+      "source_id": "synthetic_group_05",
+      "suction_kpa": 1,
+      "value": 0.375
+    },
+    {
+      "id": "synthetic_group_05_sample_1_10",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_05_retention!B3"
+      ],
+      "source_id": "synthetic_group_05",
+      "suction_kpa": 10,
+      "value": 0.295
+    },
+    {
+      "id": "synthetic_group_05_sample_1_100",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_05_retention!B4"
+      ],
+      "source_id": "synthetic_group_05",
+      "suction_kpa": 100,
+      "value": 0.215
+    },
+    {
+      "id": "synthetic_group_05_sample_1_1000",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_05_retention!B5"
+      ],
+      "source_id": "synthetic_group_05",
+      "suction_kpa": 1000,
+      "value": 0.165
+    },
+    {
+      "id": "synthetic_group_05_sample_2_0.1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_05_retention!B6"
+      ],
+      "source_id": "synthetic_group_05",
+      "suction_kpa": 0.1,
+      "value": 0.417
+    },
+    {
+      "id": "synthetic_group_05_sample_2_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_05_retention!B7"
+      ],
+      "source_id": "synthetic_group_05",
+      "suction_kpa": 1,
+      "value": 0.377
+    },
+    {
+      "id": "synthetic_group_05_sample_2_10",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_05_retention!B8"
+      ],
+      "source_id": "synthetic_group_05",
+      "suction_kpa": 10,
+      "value": 0.297
+    },
+    {
+      "id": "synthetic_group_05_sample_2_100",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_05_retention!B9"
+      ],
+      "source_id": "synthetic_group_05",
+      "suction_kpa": 100,
+      "value": 0.217
+    },
+    {
+      "id": "synthetic_group_05_sample_2_1000",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_05_retention!B10"
+      ],
+      "source_id": "synthetic_group_05",
+      "suction_kpa": 1000,
+      "value": 0.167
+    },
+    {
+      "id": "synthetic_group_06_sample_1_0.1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_06_retention!B1"
+      ],
+      "source_id": "synthetic_group_06",
+      "suction_kpa": 0.1,
+      "value": 0.418
+    },
+    {
+      "id": "synthetic_group_06_sample_1_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_06_retention!B2"
+      ],
+      "source_id": "synthetic_group_06",
+      "suction_kpa": 1,
+      "value": 0.378
+    },
+    {
+      "id": "synthetic_group_06_sample_1_10",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_06_retention!B3"
+      ],
+      "source_id": "synthetic_group_06",
+      "suction_kpa": 10,
+      "value": 0.298
+    },
+    {
+      "id": "synthetic_group_06_sample_1_100",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_06_retention!B4"
+      ],
+      "source_id": "synthetic_group_06",
+      "suction_kpa": 100,
+      "value": 0.218
+    },
+    {
+      "id": "synthetic_group_06_sample_1_1000",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_06_retention!B5"
+      ],
+      "source_id": "synthetic_group_06",
+      "suction_kpa": 1000,
+      "value": 0.168
+    },
+    {
+      "id": "synthetic_group_06_sample_2_0.1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_06_retention!B6"
+      ],
+      "source_id": "synthetic_group_06",
+      "suction_kpa": 0.1,
+      "value": 0.42
+    },
+    {
+      "id": "synthetic_group_06_sample_2_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_06_retention!B7"
+      ],
+      "source_id": "synthetic_group_06",
+      "suction_kpa": 1,
+      "value": 0.38
+    },
+    {
+      "id": "synthetic_group_06_sample_2_10",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_06_retention!B8"
+      ],
+      "source_id": "synthetic_group_06",
+      "suction_kpa": 10,
+      "value": 0.3
+    },
+    {
+      "id": "synthetic_group_06_sample_2_100",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_06_retention!B9"
+      ],
+      "source_id": "synthetic_group_06",
+      "suction_kpa": 100,
+      "value": 0.22
+    },
+    {
+      "id": "synthetic_group_06_sample_2_1000",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_06_retention!B10"
+      ],
+      "source_id": "synthetic_group_06",
+      "suction_kpa": 1000,
+      "value": 0.17
+    },
+    {
+      "id": "synthetic_group_07_sample_1_0.1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_07_retention!B1"
+      ],
+      "source_id": "synthetic_group_07",
+      "suction_kpa": 0.1,
+      "value": 0.421
+    },
+    {
+      "id": "synthetic_group_07_sample_1_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_07_retention!B2"
+      ],
+      "source_id": "synthetic_group_07",
+      "suction_kpa": 1,
+      "value": 0.381
+    },
+    {
+      "id": "synthetic_group_07_sample_1_10",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_07_retention!B3"
+      ],
+      "source_id": "synthetic_group_07",
+      "suction_kpa": 10,
+      "value": 0.301
+    },
+    {
+      "id": "synthetic_group_07_sample_1_100",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_07_retention!B4"
+      ],
+      "source_id": "synthetic_group_07",
+      "suction_kpa": 100,
+      "value": 0.221
+    },
+    {
+      "id": "synthetic_group_07_sample_1_1000",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_07_retention!B5"
+      ],
+      "source_id": "synthetic_group_07",
+      "suction_kpa": 1000,
+      "value": 0.171
+    },
+    {
+      "id": "synthetic_group_07_sample_2_0.1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_07_retention!B6"
+      ],
+      "source_id": "synthetic_group_07",
+      "suction_kpa": 0.1,
+      "value": 0.423
+    },
+    {
+      "id": "synthetic_group_07_sample_2_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_07_retention!B7"
+      ],
+      "source_id": "synthetic_group_07",
+      "suction_kpa": 1,
+      "value": 0.383
+    },
+    {
+      "id": "synthetic_group_07_sample_2_10",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_07_retention!B8"
+      ],
+      "source_id": "synthetic_group_07",
+      "suction_kpa": 10,
+      "value": 0.303
+    },
+    {
+      "id": "synthetic_group_07_sample_2_100",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_07_retention!B9"
+      ],
+      "source_id": "synthetic_group_07",
+      "suction_kpa": 100,
+      "value": 0.223
+    },
+    {
+      "id": "synthetic_group_07_sample_2_1000",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_07_retention!B10"
+      ],
+      "source_id": "synthetic_group_07",
+      "suction_kpa": 1000,
+      "value": 0.173
+    },
+    {
+      "id": "synthetic_group_08_sample_1_0.1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_08_retention!B1"
+      ],
+      "source_id": "synthetic_group_08",
+      "suction_kpa": 0.1,
+      "value": 0.424
+    },
+    {
+      "id": "synthetic_group_08_sample_1_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_08_retention!B2"
+      ],
+      "source_id": "synthetic_group_08",
+      "suction_kpa": 1,
+      "value": 0.384
+    },
+    {
+      "id": "synthetic_group_08_sample_1_10",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_08_retention!B3"
+      ],
+      "source_id": "synthetic_group_08",
+      "suction_kpa": 10,
+      "value": 0.304
+    },
+    {
+      "id": "synthetic_group_08_sample_1_100",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_08_retention!B4"
+      ],
+      "source_id": "synthetic_group_08",
+      "suction_kpa": 100,
+      "value": 0.224
+    },
+    {
+      "id": "synthetic_group_08_sample_1_1000",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_08_retention!B5"
+      ],
+      "source_id": "synthetic_group_08",
+      "suction_kpa": 1000,
+      "value": 0.174
+    },
+    {
+      "id": "synthetic_group_08_sample_2_0.1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_08_retention!B6"
+      ],
+      "source_id": "synthetic_group_08",
+      "suction_kpa": 0.1,
+      "value": 0.426
+    },
+    {
+      "id": "synthetic_group_08_sample_2_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_08_retention!B7"
+      ],
+      "source_id": "synthetic_group_08",
+      "suction_kpa": 1,
+      "value": 0.386
+    },
+    {
+      "id": "synthetic_group_08_sample_2_10",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_08_retention!B8"
+      ],
+      "source_id": "synthetic_group_08",
+      "suction_kpa": 10,
+      "value": 0.306
+    },
+    {
+      "id": "synthetic_group_08_sample_2_100",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_08_retention!B9"
+      ],
+      "source_id": "synthetic_group_08",
+      "suction_kpa": 100,
+      "value": 0.226
+    },
+    {
+      "id": "synthetic_group_08_sample_2_1000",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_08_retention!B10"
+      ],
+      "source_id": "synthetic_group_08",
+      "suction_kpa": 1000,
+      "value": 0.176
+    },
+    {
+      "id": "synthetic_group_09_sample_1_0.1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_09_retention!B1"
+      ],
+      "source_id": "synthetic_group_09",
+      "suction_kpa": 0.1,
+      "value": 0.427
+    },
+    {
+      "id": "synthetic_group_09_sample_1_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_09_retention!B2"
+      ],
+      "source_id": "synthetic_group_09",
+      "suction_kpa": 1,
+      "value": 0.387
+    },
+    {
+      "id": "synthetic_group_09_sample_1_10",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_09_retention!B3"
+      ],
+      "source_id": "synthetic_group_09",
+      "suction_kpa": 10,
+      "value": 0.307
+    },
+    {
+      "id": "synthetic_group_09_sample_1_100",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_09_retention!B4"
+      ],
+      "source_id": "synthetic_group_09",
+      "suction_kpa": 100,
+      "value": 0.227
+    },
+    {
+      "id": "synthetic_group_09_sample_1_1000",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_09_retention!B5"
+      ],
+      "source_id": "synthetic_group_09",
+      "suction_kpa": 1000,
+      "value": 0.177
+    },
+    {
+      "id": "synthetic_group_09_sample_2_0.1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_09_retention!B6"
+      ],
+      "source_id": "synthetic_group_09",
+      "suction_kpa": 0.1,
+      "value": 0.429
+    },
+    {
+      "id": "synthetic_group_09_sample_2_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_09_retention!B7"
+      ],
+      "source_id": "synthetic_group_09",
+      "suction_kpa": 1,
+      "value": 0.389
+    },
+    {
+      "id": "synthetic_group_09_sample_2_10",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_09_retention!B8"
+      ],
+      "source_id": "synthetic_group_09",
+      "suction_kpa": 10,
+      "value": 0.309
+    },
+    {
+      "id": "synthetic_group_09_sample_2_100",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_09_retention!B9"
+      ],
+      "source_id": "synthetic_group_09",
+      "suction_kpa": 100,
+      "value": 0.229
+    },
+    {
+      "id": "synthetic_group_09_sample_2_1000",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_09_retention!B10"
+      ],
+      "source_id": "synthetic_group_09",
+      "suction_kpa": 1000,
+      "value": 0.179
+    },
+    {
+      "id": "synthetic_group_10_sample_1_0.1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_10_retention!B1"
+      ],
+      "source_id": "synthetic_group_10",
+      "suction_kpa": 0.1,
+      "value": 0.43
+    },
+    {
+      "id": "synthetic_group_10_sample_1_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_10_retention!B2"
+      ],
+      "source_id": "synthetic_group_10",
+      "suction_kpa": 1,
+      "value": 0.39
+    },
+    {
+      "id": "synthetic_group_10_sample_1_10",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_10_retention!B3"
+      ],
+      "source_id": "synthetic_group_10",
+      "suction_kpa": 10,
+      "value": 0.31
+    },
+    {
+      "id": "synthetic_group_10_sample_1_100",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_10_retention!B4"
+      ],
+      "source_id": "synthetic_group_10",
+      "suction_kpa": 100,
+      "value": 0.23
+    },
+    {
+      "id": "synthetic_group_10_sample_1_1000",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_10_retention!B5"
+      ],
+      "source_id": "synthetic_group_10",
+      "suction_kpa": 1000,
+      "value": 0.18
+    },
+    {
+      "id": "synthetic_group_10_sample_2_0.1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_10_retention!B6"
+      ],
+      "source_id": "synthetic_group_10",
+      "suction_kpa": 0.1,
+      "value": 0.432
+    },
+    {
+      "id": "synthetic_group_10_sample_2_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_10_retention!B7"
+      ],
+      "source_id": "synthetic_group_10",
+      "suction_kpa": 1,
+      "value": 0.392
+    },
+    {
+      "id": "synthetic_group_10_sample_2_10",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_10_retention!B8"
+      ],
+      "source_id": "synthetic_group_10",
+      "suction_kpa": 10,
+      "value": 0.312
+    },
+    {
+      "id": "synthetic_group_10_sample_2_100",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_10_retention!B9"
+      ],
+      "source_id": "synthetic_group_10",
+      "suction_kpa": 100,
+      "value": 0.232
+    },
+    {
+      "id": "synthetic_group_10_sample_2_1000",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_10_retention!B10"
+      ],
+      "source_id": "synthetic_group_10",
+      "suction_kpa": 1000,
+      "value": 0.182
+    },
+    {
+      "id": "synthetic_group_11_sample_1_0.1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_11_retention!B1"
+      ],
+      "source_id": "synthetic_group_11",
+      "suction_kpa": 0.1,
+      "value": 0.433
+    },
+    {
+      "id": "synthetic_group_11_sample_1_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_11_retention!B2"
+      ],
+      "source_id": "synthetic_group_11",
+      "suction_kpa": 1,
+      "value": 0.393
+    },
+    {
+      "id": "synthetic_group_11_sample_1_10",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_11_retention!B3"
+      ],
+      "source_id": "synthetic_group_11",
+      "suction_kpa": 10,
+      "value": 0.313
+    },
+    {
+      "id": "synthetic_group_11_sample_1_100",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_11_retention!B4"
+      ],
+      "source_id": "synthetic_group_11",
+      "suction_kpa": 100,
+      "value": 0.233
+    },
+    {
+      "id": "synthetic_group_11_sample_1_1000",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_1",
+      "source_cells": [
+        "synthetic_group_11_retention!B5"
+      ],
+      "source_id": "synthetic_group_11",
+      "suction_kpa": 1000,
+      "value": 0.183
+    },
+    {
+      "id": "synthetic_group_11_sample_2_0.1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_11_retention!B6"
+      ],
+      "source_id": "synthetic_group_11",
+      "suction_kpa": 0.1,
+      "value": 0.435
+    },
+    {
+      "id": "synthetic_group_11_sample_2_1",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_11_retention!B7"
+      ],
+      "source_id": "synthetic_group_11",
+      "suction_kpa": 1,
+      "value": 0.395
+    },
+    {
+      "id": "synthetic_group_11_sample_2_10",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_11_retention!B8"
+      ],
+      "source_id": "synthetic_group_11",
+      "suction_kpa": 10,
+      "value": 0.315
+    },
+    {
+      "id": "synthetic_group_11_sample_2_100",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_11_retention!B9"
+      ],
+      "source_id": "synthetic_group_11",
+      "suction_kpa": 100,
+      "value": 0.235
+    },
+    {
+      "id": "synthetic_group_11_sample_2_1000",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "sample_2",
+      "source_cells": [
+        "synthetic_group_11_retention!B10"
+      ],
+      "source_id": "synthetic_group_11",
+      "suction_kpa": 1000,
+      "value": 0.185
+    }
+  ],
+  "samples": [
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_00_predictors!A1"
+          ],
+          "value": "sandy_loam"
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_00_predictors!B1"
+          ],
+          "value": 55
+        },
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "pipette_analysis",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_00_predictors!C1"
+          ],
+          "value": 15.0
+        },
+        {
+          "id": "carbon",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_00_predictors!D1"
+          ],
+          "value": 1.0
+        },
+        {
+          "id": "bulk_density",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "conditions": [],
+            "method": "oven_dry_105_c_24_h_100_cm3_core",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_00_predictors!E1"
+          ],
+          "value": 1.35
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "sample_1",
+      "source_id": "synthetic_group_00"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_00_predictors!A2"
+          ],
+          "value": "sandy_loam"
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_00_predictors!B2"
+          ],
+          "value": 56
+        },
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "pipette_analysis",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_00_predictors!C2"
+          ],
+          "value": 15.0
+        },
+        {
+          "id": "carbon",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_00_predictors!D2"
+          ],
+          "value": 1.0
+        },
+        {
+          "id": "bulk_density",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "conditions": [],
+            "method": "oven_dry_105_c_24_h_100_cm3_core",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_00_predictors!E2"
+          ],
+          "value": 1.36
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "sample_2",
+      "source_id": "synthetic_group_00"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_01_predictors!A1"
+          ],
+          "value": "sandy_loam"
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_01_predictors!B1"
+          ],
+          "value": 56
+        },
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "pipette_analysis",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_01_predictors!C1"
+          ],
+          "value": 15.0
+        },
+        {
+          "id": "carbon",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_01_predictors!D1"
+          ],
+          "value": 1.0
+        },
+        {
+          "id": "bulk_density",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "conditions": [],
+            "method": "oven_dry_105_c_24_h_100_cm3_core",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_01_predictors!E1"
+          ],
+          "value": 1.35
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "sample_1",
+      "source_id": "synthetic_group_01"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_01_predictors!A2"
+          ],
+          "value": "sandy_loam"
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_01_predictors!B2"
+          ],
+          "value": 57
+        },
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "pipette_analysis",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_01_predictors!C2"
+          ],
+          "value": 15.0
+        },
+        {
+          "id": "carbon",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_01_predictors!D2"
+          ],
+          "value": 1.0
+        },
+        {
+          "id": "bulk_density",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "conditions": [],
+            "method": "oven_dry_105_c_24_h_100_cm3_core",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_01_predictors!E2"
+          ],
+          "value": 1.36
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "sample_2",
+      "source_id": "synthetic_group_01"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_02_predictors!A1"
+          ],
+          "value": "sandy_loam"
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_02_predictors!B1"
+          ],
+          "value": 57
+        },
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "pipette_analysis",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_02_predictors!C1"
+          ],
+          "value": 15.0
+        },
+        {
+          "id": "carbon",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_02_predictors!D1"
+          ],
+          "value": 1.0
+        },
+        {
+          "id": "bulk_density",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "conditions": [],
+            "method": "oven_dry_105_c_24_h_100_cm3_core",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_02_predictors!E1"
+          ],
+          "value": 1.35
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "sample_1",
+      "source_id": "synthetic_group_02"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_02_predictors!A2"
+          ],
+          "value": "sandy_loam"
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_02_predictors!B2"
+          ],
+          "value": 58
+        },
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "pipette_analysis",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_02_predictors!C2"
+          ],
+          "value": 15.0
+        },
+        {
+          "id": "carbon",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_02_predictors!D2"
+          ],
+          "value": 1.0
+        },
+        {
+          "id": "bulk_density",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "conditions": [],
+            "method": "oven_dry_105_c_24_h_100_cm3_core",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_02_predictors!E2"
+          ],
+          "value": 1.36
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "sample_2",
+      "source_id": "synthetic_group_02"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_03_predictors!A1"
+          ],
+          "value": "sandy_loam"
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_03_predictors!B1"
+          ],
+          "value": 58
+        },
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "pipette_analysis",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_03_predictors!C1"
+          ],
+          "value": 15.0
+        },
+        {
+          "id": "carbon",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_03_predictors!D1"
+          ],
+          "value": 1.0
+        },
+        {
+          "id": "bulk_density",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "conditions": [],
+            "method": "oven_dry_105_c_24_h_100_cm3_core",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_03_predictors!E1"
+          ],
+          "value": 1.35
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "sample_1",
+      "source_id": "synthetic_group_03"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_03_predictors!A2"
+          ],
+          "value": "sandy_loam"
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_03_predictors!B2"
+          ],
+          "value": 59
+        },
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "pipette_analysis",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_03_predictors!C2"
+          ],
+          "value": 15.0
+        },
+        {
+          "id": "carbon",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_03_predictors!D2"
+          ],
+          "value": 1.0
+        },
+        {
+          "id": "bulk_density",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "conditions": [],
+            "method": "oven_dry_105_c_24_h_100_cm3_core",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_03_predictors!E2"
+          ],
+          "value": 1.36
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "sample_2",
+      "source_id": "synthetic_group_03"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_04_predictors!A1"
+          ],
+          "value": "sandy_loam"
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_04_predictors!B1"
+          ],
+          "value": 59
+        },
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "pipette_analysis",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_04_predictors!C1"
+          ],
+          "value": 15.0
+        },
+        {
+          "id": "carbon",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_04_predictors!D1"
+          ],
+          "value": 1.0
+        },
+        {
+          "id": "bulk_density",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "conditions": [],
+            "method": "oven_dry_105_c_24_h_100_cm3_core",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_04_predictors!E1"
+          ],
+          "value": 1.35
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "sample_1",
+      "source_id": "synthetic_group_04"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_04_predictors!A2"
+          ],
+          "value": "sandy_loam"
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_04_predictors!B2"
+          ],
+          "value": 60
+        },
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "pipette_analysis",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_04_predictors!C2"
+          ],
+          "value": 15.0
+        },
+        {
+          "id": "carbon",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_04_predictors!D2"
+          ],
+          "value": 1.0
+        },
+        {
+          "id": "bulk_density",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "conditions": [],
+            "method": "oven_dry_105_c_24_h_100_cm3_core",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_04_predictors!E2"
+          ],
+          "value": 1.36
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "sample_2",
+      "source_id": "synthetic_group_04"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_05_predictors!A1"
+          ],
+          "value": "sandy_loam"
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_05_predictors!B1"
+          ],
+          "value": 60
+        },
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "pipette_analysis",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_05_predictors!C1"
+          ],
+          "value": 15.0
+        },
+        {
+          "id": "carbon",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_05_predictors!D1"
+          ],
+          "value": 1.0
+        },
+        {
+          "id": "bulk_density",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "conditions": [],
+            "method": "oven_dry_105_c_24_h_100_cm3_core",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_05_predictors!E1"
+          ],
+          "value": 1.35
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "sample_1",
+      "source_id": "synthetic_group_05"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_05_predictors!A2"
+          ],
+          "value": "sandy_loam"
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_05_predictors!B2"
+          ],
+          "value": 61
+        },
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "pipette_analysis",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_05_predictors!C2"
+          ],
+          "value": 15.0
+        },
+        {
+          "id": "carbon",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_05_predictors!D2"
+          ],
+          "value": 1.0
+        },
+        {
+          "id": "bulk_density",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "conditions": [],
+            "method": "oven_dry_105_c_24_h_100_cm3_core",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_05_predictors!E2"
+          ],
+          "value": 1.36
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "sample_2",
+      "source_id": "synthetic_group_05"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_06_predictors!A1"
+          ],
+          "value": "sandy_loam"
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_06_predictors!B1"
+          ],
+          "value": 61
+        },
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "pipette_analysis",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_06_predictors!C1"
+          ],
+          "value": 15.0
+        },
+        {
+          "id": "carbon",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_06_predictors!D1"
+          ],
+          "value": 1.0
+        },
+        {
+          "id": "bulk_density",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "conditions": [],
+            "method": "oven_dry_105_c_24_h_100_cm3_core",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_06_predictors!E1"
+          ],
+          "value": 1.35
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "sample_1",
+      "source_id": "synthetic_group_06"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_06_predictors!A2"
+          ],
+          "value": "sandy_loam"
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_06_predictors!B2"
+          ],
+          "value": 62
+        },
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "pipette_analysis",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_06_predictors!C2"
+          ],
+          "value": 15.0
+        },
+        {
+          "id": "carbon",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_06_predictors!D2"
+          ],
+          "value": 1.0
+        },
+        {
+          "id": "bulk_density",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "conditions": [],
+            "method": "oven_dry_105_c_24_h_100_cm3_core",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_06_predictors!E2"
+          ],
+          "value": 1.36
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "sample_2",
+      "source_id": "synthetic_group_06"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_07_predictors!A1"
+          ],
+          "value": "sandy_loam"
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_07_predictors!B1"
+          ],
+          "value": 62
+        },
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "pipette_analysis",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_07_predictors!C1"
+          ],
+          "value": 15.0
+        },
+        {
+          "id": "carbon",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_07_predictors!D1"
+          ],
+          "value": 1.0
+        },
+        {
+          "id": "bulk_density",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "conditions": [],
+            "method": "oven_dry_105_c_24_h_100_cm3_core",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_07_predictors!E1"
+          ],
+          "value": 1.35
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "sample_1",
+      "source_id": "synthetic_group_07"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_07_predictors!A2"
+          ],
+          "value": "sandy_loam"
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_07_predictors!B2"
+          ],
+          "value": 63
+        },
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "pipette_analysis",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_07_predictors!C2"
+          ],
+          "value": 15.0
+        },
+        {
+          "id": "carbon",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_07_predictors!D2"
+          ],
+          "value": 1.0
+        },
+        {
+          "id": "bulk_density",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "conditions": [],
+            "method": "oven_dry_105_c_24_h_100_cm3_core",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_07_predictors!E2"
+          ],
+          "value": 1.36
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "sample_2",
+      "source_id": "synthetic_group_07"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_08_predictors!A1"
+          ],
+          "value": "sandy_loam"
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_08_predictors!B1"
+          ],
+          "value": 63
+        },
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "pipette_analysis",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_08_predictors!C1"
+          ],
+          "value": 15.0
+        },
+        {
+          "id": "carbon",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_08_predictors!D1"
+          ],
+          "value": 1.0
+        },
+        {
+          "id": "bulk_density",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "conditions": [],
+            "method": "oven_dry_105_c_24_h_100_cm3_core",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_08_predictors!E1"
+          ],
+          "value": 1.35
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "sample_1",
+      "source_id": "synthetic_group_08"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_08_predictors!A2"
+          ],
+          "value": "sandy_loam"
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_08_predictors!B2"
+          ],
+          "value": 64
+        },
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "pipette_analysis",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_08_predictors!C2"
+          ],
+          "value": 15.0
+        },
+        {
+          "id": "carbon",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_08_predictors!D2"
+          ],
+          "value": 1.0
+        },
+        {
+          "id": "bulk_density",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "conditions": [],
+            "method": "oven_dry_105_c_24_h_100_cm3_core",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_08_predictors!E2"
+          ],
+          "value": 1.36
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "sample_2",
+      "source_id": "synthetic_group_08"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_09_predictors!A1"
+          ],
+          "value": "sandy_loam"
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_09_predictors!B1"
+          ],
+          "value": 64
+        },
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "pipette_analysis",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_09_predictors!C1"
+          ],
+          "value": 15.0
+        },
+        {
+          "id": "carbon",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_09_predictors!D1"
+          ],
+          "value": 1.0
+        },
+        {
+          "id": "bulk_density",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "conditions": [],
+            "method": "oven_dry_105_c_24_h_100_cm3_core",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_09_predictors!E1"
+          ],
+          "value": 1.35
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "sample_1",
+      "source_id": "synthetic_group_09"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_09_predictors!A2"
+          ],
+          "value": "sandy_loam"
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_09_predictors!B2"
+          ],
+          "value": 65
+        },
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "pipette_analysis",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_09_predictors!C2"
+          ],
+          "value": 15.0
+        },
+        {
+          "id": "carbon",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_09_predictors!D2"
+          ],
+          "value": 1.0
+        },
+        {
+          "id": "bulk_density",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "conditions": [],
+            "method": "oven_dry_105_c_24_h_100_cm3_core",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_09_predictors!E2"
+          ],
+          "value": 1.36
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "sample_2",
+      "source_id": "synthetic_group_09"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_10_predictors!A1"
+          ],
+          "value": "sandy_loam"
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_10_predictors!B1"
+          ],
+          "value": 65
+        },
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "pipette_analysis",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_10_predictors!C1"
+          ],
+          "value": 15.0
+        },
+        {
+          "id": "carbon",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_10_predictors!D1"
+          ],
+          "value": 1.0
+        },
+        {
+          "id": "bulk_density",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "conditions": [],
+            "method": "oven_dry_105_c_24_h_100_cm3_core",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_10_predictors!E1"
+          ],
+          "value": 1.35
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "sample_1",
+      "source_id": "synthetic_group_10"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_10_predictors!A2"
+          ],
+          "value": "sandy_loam"
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_10_predictors!B2"
+          ],
+          "value": 66
+        },
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "pipette_analysis",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_10_predictors!C2"
+          ],
+          "value": 15.0
+        },
+        {
+          "id": "carbon",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_10_predictors!D2"
+          ],
+          "value": 1.0
+        },
+        {
+          "id": "bulk_density",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "conditions": [],
+            "method": "oven_dry_105_c_24_h_100_cm3_core",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_10_predictors!E2"
+          ],
+          "value": 1.36
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "sample_2",
+      "source_id": "synthetic_group_10"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_11_predictors!A1"
+          ],
+          "value": "sandy_loam"
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_11_predictors!B1"
+          ],
+          "value": 66
+        },
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "pipette_analysis",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_11_predictors!C1"
+          ],
+          "value": 15.0
+        },
+        {
+          "id": "carbon",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_11_predictors!D1"
+          ],
+          "value": 1.0
+        },
+        {
+          "id": "bulk_density",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "conditions": [],
+            "method": "oven_dry_105_c_24_h_100_cm3_core",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_11_predictors!E1"
+          ],
+          "value": 1.35
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "sample_1",
+      "source_id": "synthetic_group_11"
+    },
+    {
+      "features": [
+        {
+          "category_system": "clapp1978.UsdaTextureClass",
+          "id": "texture",
+          "kind": "categorical",
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_11_predictors!A2"
+          ],
+          "value": "sandy_loam"
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_11_predictors!B2"
+          ],
+          "value": 67
+        },
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "pipette_analysis",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_11_predictors!C2"
+          ],
+          "value": 15.0
+        },
+        {
+          "id": "carbon",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_11_predictors!D2"
+          ],
+          "value": 1.0
+        },
+        {
+          "id": "bulk_density",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "mineral_soil"
+            },
+            "conditions": [],
+            "method": "oven_dry_105_c_24_h_100_cm3_core",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "synthetic_group_11_predictors!E2"
+          ],
+          "value": 1.36
+        }
+      ],
+      "profile_id": "profile_one",
+      "sample_id": "sample_2",
+      "source_id": "synthetic_group_11"
+    }
+  ],
+  "schema_version": 1,
+  "target": {
+    "denominator_basis": "bulk_volume",
+    "material_basis": "mineral_soil",
+    "quantity": "volumetric_water_content",
+    "unit": "volume_fraction"
+  }
+}

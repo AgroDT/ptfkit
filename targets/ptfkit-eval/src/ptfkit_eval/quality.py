@@ -9,6 +9,7 @@ from itertools import pairwise
 from typing import TYPE_CHECKING, Literal, cast
 
 from .documents import object_records
+from .selection_predictions import selection_prediction_frames
 
 
 if TYPE_CHECKING:
@@ -57,6 +58,32 @@ class RunCurveQuality:
     kind: Literal['observed', 'predicted']
     candidate_id: str | None
     quality: RetentionSeriesQuality
+
+
+@dataclass(frozen=True)
+class SelectionCurveQuality:
+    """A noncorrecting curve diagnostic in one explicitly labeled holdout frame."""
+
+    protocol: str
+    selection_method: str
+    strategy: str
+    outer_fold_id: int
+    inner_fold_id: int | None
+    candidate_id: str | None
+    source_id: str
+    sample_id: str
+    assessment_status: str
+    quality: RetentionSeriesQuality
+
+    @property
+    def status(self) -> str:
+        """Keep absent predictions separate from a valid curve with no findings."""
+        return 'diagnosed' if self.quality.point_count else 'no_predictions'
+
+    @property
+    def partition(self) -> str:
+        """Inner validation curves are not untouched outer strategy assessments."""
+        return 'outer_test' if self.inner_fold_id is None else 'inner_validation'
 
 
 def diagnose_retention_series(
@@ -152,3 +179,48 @@ def diagnose_retention_run(
         )
         for (source, sample, kind, candidate), points in sorted(groups.items())
     )
+
+
+def diagnose_selection_curves(
+    result: RetentionRunResult, *, monotonicity_tolerance: float = 0.0
+) -> tuple[SelectionCurveQuality, ...]:
+    """Diagnose inner candidates and locked outer predictions without repairing them.
+
+    Frames stay separate across protocols, folds, candidates and strategies.
+    Every declared held-out sample receives a record even if it lacks targets,
+    inputs or a fitted choice. Only retained predictions are inspected; observed
+    values cannot change these findings. No finding changes eligibility or model
+    selection. Pressure support is descriptive and does not certify continuity
+    or monotonicity between observed grid points.
+    """
+    # Validate tolerance even when no selection protocol produced any frames.
+    diagnose_retention_series((), monotonicity_tolerance=monotonicity_tolerance)
+    output = []
+    for frame in selection_prediction_frames(result):
+        groups: dict[tuple[str, str], list[RetentionSeriesPoint]] = defaultdict(list)
+        for point in frame.predictions:
+            groups[point.source_id, point.sample_id].append(
+                RetentionSeriesPoint(
+                    point.suction_kpa,
+                    point.predicted,
+                    f'{frame.candidate_id}@{point.suction_kpa:.17g}',
+                )
+            )
+        for source, sample in frame.samples:
+            output.append(
+                SelectionCurveQuality(
+                    frame.protocol,
+                    frame.selection_method,
+                    frame.strategy,
+                    frame.outer_fold_id,
+                    frame.inner_fold_id,
+                    frame.candidate_id,
+                    source,
+                    sample,
+                    frame.status,
+                    diagnose_retention_series(
+                        groups[source, sample], monotonicity_tolerance=monotonicity_tolerance
+                    ),
+                )
+            )
+    return tuple(output)

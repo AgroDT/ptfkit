@@ -2,6 +2,36 @@
 
 ## Status
 
+Latest continuation (2026-10-23): training-input-only marginal empirical
+envelopes, fold-specific domains/error strata, target-free composite transition
+member contrasts, paired cluster metric differences, and nested training of
+constant convex two-curve ensemble weights are implemented and integrated into
+run schemas/artifacts/reports, including learned-fold input domains. The latest
+component verification has 494 passing tests. Finite-grid hard-switch boundary
+training and fitted-seam diagnostics are implemented. Nonlinear gates, learned
+blend boundaries, weight/boundary uncertainty, and full selection-process
+uncertainty remain pending.
+Held-out curve physical diagnostics and locked outer strategy descriptive
+maximal/common assessment are implemented. Native strategy confidence intervals
+for descriptive CV statistics remain explicitly unestimated. Conditional
+outer-rule risk intervals now integrate explicit native registration, full
+coverage/provenance checks, failure artifacts and simultaneous family allocation,
+with a generated IID population example. These intervals have a different target;
+averaged-over-training selection-process inference remains unfinished.
+Whole-group selection/refitting bootstrap trajectories are now available as
+explicit retraining sensitivity, with preserved original cluster identities,
+unequal sample-occurrence weights, and retained failed draws. They are not
+confidence intervals. The source-backed
+[inference qualification note](ptfkit-eval-inference.md) records why the
+unequal-group target and complete tuning procedure need additional validation.
+Supplied-forecast selection and shared sample-occurrence materialization now
+support exact calibration for informative group sizes, missing targets and
+finite-grid switch failures. Five mathematical scenarios have independent risk
+oracles and installed-wheel replay. They expose selective completion and target
+mismatch; they qualify no confidence interval.
+The latest implementation evidence and continuation order are recorded in
+`ptfkit-eval-progress.md`. Primary-source review remains deferred.
+
 In progress. The measurement contract, public manifest, initial `ptfkit-eval`
 scaffold, range-gated router, manifest-aware evaluation-plan loader, first
 reviewed model adapter, curve execution layer, and reproducible structural
@@ -81,8 +111,8 @@ delivery packages remain before the acceptance criterion is met:
 | 2. Quality control and eligibility | Validate physical consistency and build the complete function-sample-target matrix | Large | Manifest-aware predictor eligibility implemented for the first five public function contracts |
 | 3. Approximation families | Register and implement van Genuchten, Brooks-Corey, and remaining required fit/adaptation variants | Extra large | Four versioned families, bounded multistart fitting, identifiability/failure gates, and local conditional uncertainty implemented; source-specific reference conventions remain blocked |
 | 4. Evaluation matrix | Execute every eligible atomic PTF and fixed composite with full traces | Medium | Portable canonical run pipeline executes curves, fixed-pressure outputs, and fixed composites with observation/sample eligibility and traces |
-| 5. Metrics and uncertainty | Per-sample aggregation, clustered intervals, prediction intervals, parameter uncertainty, and domains | Large | Sample-balanced retention metrics, explicit maximal/common cohorts, and cluster-percentile metric confidence intervals implemented; other uncertainty and domains pending |
-| 6. Nested selection | Deterministic grouped folds, atomic and ensemble selection, learned routing, and leakage protection | Extra large | Identity-only nested folds and fixed atomic/ensemble selection with inner-only choices and locked outer assessment implemented; learned routing/weights pending |
+| 5. Metrics and uncertainty | Per-sample aggregation, clustered intervals, prediction intervals, parameter uncertainty, and domains | Large | Sample-balanced metrics, maximal/common cohorts, metric and paired cluster intervals, fixed-rule conformal intervals, local fitting uncertainty, and standalone/fold-specific empirical domains implemented; full selection-process uncertainty pending |
+| 6. Nested selection | Deterministic grouped folds, atomic and ensemble selection, learned routing, and leakage protection | Extra large | Identity-only folds, fixed selection, constant convex weights and finite-grid hard-switch boundaries with inner training/outer refits implemented; nonlinear gates and learned blends pending |
 | 7. Reporting and pilot | Reproducible artifacts, CLI, human report, and the complete Russian-dataset pilot | Large | Checksum-bound run artifacts, replay, CLI, Markdown reporting, and standalone synthetic example implemented; real-data pilot blocked by source review |
 
 The first retention slice of package 1 is implemented. Each of the 1,755
@@ -895,3 +925,15 @@ The first `ptfkit-eval` release is ready only when:
 - package verification is integrated with Mise and CI;
 - the pilot report clearly distinguishes external validation from calibration
   and from claims of national representativeness.
+
+
+Current verification checkpoint: **433 tests**. The supplied-forecast selection
+boundary and exhaustive equal/unequal-group calibration are implemented; see the
+latest progress entry. Full strategy confidence intervals remain unqualified.
+
+
+Latest checkpoint: **443 tests**. Shared native/supplied-forecast group occurrence
+materialization and informative missing-target calibration are verified, including
+three exact installed-wheel experiment replays. See the last progress entry.
+Continue with parameter-instability/boundary scenarios and justified inference;
+the active goal and deferred scientific requirements remain unfinished.
