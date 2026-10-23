@@ -5,11 +5,59 @@ from types import ModuleType, SimpleNamespace
 import pytest
 
 from ptfkit_eval import (
+    AdapterPrediction,
+    AtomicCurve,
+    AxisSpec,
+    BlendTransition,
+    CompositeMember,
     FunctionCurveCandidate,
+    Interval,
+    Provenance,
     RangeGatedCurveCandidate,
+    RangeGatedRouter,
+    TargetSpec,
     evaluate_candidate,
     load_evaluation_plan,
 )
+
+
+def test_inactive_composite_members_do_not_require_inputs_or_execute():
+    interval_wet = Interval(0.0, 1.0, lower_inclusive=True, upper_inclusive=True)
+    interval_dry = Interval(2.0, 100.0, lower_inclusive=True, upper_inclusive=True)
+    curve = AtomicCurve('calc_ptf_clapp1978', AdapterPrediction('clapp1978_h_theta'))
+    candidate = RangeGatedCurveCandidate(
+        'fixed',
+        AxisSpec('matric_potential', 'kilopascal', 'magnitude', 'linear'),
+        TargetSpec('volumetric_water_content', 'volume_fraction', 'mineral_soil', 'bulk_volume'),
+        (CompositeMember('wet', interval_wet, curve), CompositeMember('dry', interval_dry, curve)),
+        RangeGatedRouter({'wet': interval_wet, 'dry': interval_dry}, (), 'linear'),
+        Provenance('fixed', 'Synthetic routing contract.', None),
+    )
+    evaluated = evaluate_candidate(candidate, [0.0], {'wet': {'soil_texture': 'sand'}})
+
+    assert evaluated.points[0].value == pytest.approx(0.395)
+    assert [item.member_id for item in evaluated.points[0].contributions] == ['wet']
+
+
+def test_zero_weight_at_a_blend_endpoint_does_not_require_the_other_members_inputs():
+    wet = Interval(0.1, 10, lower_inclusive=True, upper_inclusive=True)
+    dry = Interval(1, 100, lower_inclusive=True, upper_inclusive=True)
+    transition = BlendTransition(
+        'wet', 'dry', Interval(1, 10, lower_inclusive=True, upper_inclusive=True), 'linear'
+    )
+    clapp = AtomicCurve('calc_ptf_clapp1978', AdapterPrediction('clapp1978_h_theta'))
+    vereecken = AtomicCurve('calc_ptf_vereecken1989', AdapterPrediction('vereecken1989_h_theta'))
+    candidate = RangeGatedCurveCandidate(
+        'blend',
+        AxisSpec('matric_potential', 'kilopascal', 'magnitude', 'linear'),
+        TargetSpec('volumetric_water_content', 'volume_fraction', 'mineral_soil', 'bulk_volume'),
+        (CompositeMember('wet', wet, clapp), CompositeMember('dry', dry, vereecken)),
+        RangeGatedRouter({'wet': wet, 'dry': dry}, (transition,), 'linear'),
+        Provenance('fixed', 'Synthetic boundary contract.', None),
+    )
+    result = evaluate_candidate(candidate, [1.0], {'wet': {'soil_texture': 'sand'}})
+    assert result.points[0].value == pytest.approx(0.395 * (3.5 * 0.0980665) ** (1 / 4.05))
+    assert [member.member_id for member in result.points[0].contributions] == ['wet']
 
 
 def _axis() -> dict[str, object]:

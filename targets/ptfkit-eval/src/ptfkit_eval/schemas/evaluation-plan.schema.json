@@ -189,9 +189,27 @@
         }
       }
     },
+    "functionPoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "axis", "target", "function", "prediction"],
+      "properties": {
+        "id": {"$ref": "#/$defs/identifier"},
+        "kind": {"const": "function_point"},
+        "axis": {"$ref": "#/$defs/axis"},
+        "target": {"$ref": "#/$defs/target"},
+        "function": {"$ref": "#/$defs/identifier"},
+        "prediction": {
+          "type": "object", "additionalProperties": false,
+          "required": ["kind", "name"],
+          "properties": {"kind": {"const": "fixed_output"}, "name": {"$ref": "#/$defs/identifier"}}
+        }
+      }
+    },
     "candidate": {
       "oneOf": [
         {"$ref": "#/$defs/functionCurve"},
+        {"$ref": "#/$defs/functionPoint"},
         {"$ref": "#/$defs/rangeGatedCurve"}
       ]
     }

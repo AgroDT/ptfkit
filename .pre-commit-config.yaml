@@ -55,6 +55,20 @@ repos:
         args: [--project, targets/ptfkit-py, sync, --frozen]
         always_run: true
         pass_filenames: false
+      - id: uv-lock-ptfkit-eval
+        name: uv lock ptfkit-eval
+        language: system
+        entry: uv
+        args: [--project, targets/ptfkit-eval, lock, --check]
+        files: '^targets/ptfkit-eval/(uv\.lock|pyproject\.toml|uv\.toml)$'
+        pass_filenames: false
+      - id: uv-sync-ptfkit-eval
+        name: uv sync ptfkit-eval
+        language: system
+        entry: uv
+        args: [--project, targets/ptfkit-eval, sync, --frozen]
+        files: '^targets/ptfkit-eval/'
+        pass_filenames: false
       - id: uv-lock-docs
         name: uv lock docs
         language: system
@@ -87,6 +101,13 @@ repos:
         entry: ty
         args: [check, --project, targets/ptfkit-py]
         files: '^targets/ptfkit-py/.*\.py$'
+      - id: ty-check-eval
+        name: ty check ptfkit-eval
+        language: system
+        entry: ty
+        args: [check, --project, targets/ptfkit-eval]
+        files: '^targets/ptfkit-eval/.*\.py$'
+        pass_filenames: false
       - id: ty-check-docs
         name: ty check documentation
         language: system
