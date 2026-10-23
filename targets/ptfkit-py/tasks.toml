@@ -14,9 +14,9 @@ dir = "targets/ptfkit-py"
 run = "uv build"
 
 ["python:test"]
-description = "Run the Python test suite"
+description = "Rebuild the local extension and run the Python test suite"
 dir = "targets/ptfkit-py"
-run = "uv run --no-sync pytest"
+run = "uv run --frozen --reinstall-package ptfkit pytest"
 
 ["python:lint"]
 description = "Run Ruff lint checks for the Python target"
