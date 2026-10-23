@@ -101,7 +101,9 @@ class NestedGroupFolds:
     groups: tuple[GroupMembership, ...]
     folds: tuple[OuterGroupFold, ...]
     reason: Literal['missing_profile_ids', 'insufficient_groups_for_requested_folds'] | None
-    method: Literal['nested_shuffled_group_round_robin_v1'] = 'nested_shuffled_group_round_robin_v1'
+    method: Literal[
+        'nested_shuffled_group_round_robin_v1', 'explicit_group_holdout_inner_round_robin_v1'
+    ] = 'nested_shuffled_group_round_robin_v1'
 
     @property
     def status(self) -> Literal['computed', 'insufficient_evidence']:
@@ -178,6 +180,66 @@ def _validate_roster(samples: Sequence[GroupedSample]) -> None:
             message = f'Duplicate grouped sample identity: {key!r}.'
             raise GroupValidationError(message)
         seen.add(key)
+
+
+def build_group_holdout(
+    samples: Iterable[GroupedSample],
+    *,
+    training_groups: tuple[GroupMembership, ...],
+    test_groups: tuple[GroupMembership, ...],
+    plan: NestedGroupPlan,
+) -> NestedGroupFolds:
+    """Nest training-only tuning inside explicit complete original-group roles.
+
+    The caller preallocates the external holdout. Only inner folds are shuffled;
+    the plan's outer fold count is not used to reallocate these explicit roles.
+    """
+    inventory = build_nested_group_folds(samples, plan=plan)
+    if inventory.reason == 'missing_profile_ids':
+        return NestedGroupFolds(
+            plan,
+            inventory.effective_grouping,
+            (),
+            (),
+            inventory.reason,
+            method='explicit_group_holdout_inner_round_robin_v1',
+        )
+    roles = (*training_groups, *test_groups)
+    if (
+        not training_groups
+        or not test_groups
+        or len({group.group_id for group in roles}) != len(roles)
+        or sorted(roles, key=lambda group: group.group_id) != list(inventory.groups)
+    ):
+        message = 'Explicit holdout roles must partition complete original groups exactly once.'
+        raise GroupValidationError(message)
+    training = tuple(sorted(group.group_id for group in training_groups))
+    test = tuple(sorted(group.group_id for group in test_groups))
+    failed = NestedGroupFolds(
+        plan,
+        inventory.effective_grouping,
+        inventory.groups,
+        (),
+        'insufficient_groups_for_requested_folds',
+        method='explicit_group_holdout_inner_round_robin_v1',
+    )
+    if not _valid_counts(training, test, plan) or len(training) < plan.inner_folds:
+        return failed
+    inner_seed = int.from_bytes(hashlib.sha256(f'{plan.seed}:outer:0'.encode()).digest()[:16])
+    inner = []
+    for index, validation in enumerate(_partitions(training, plan.inner_folds, inner_seed)):
+        inner_training = tuple(sorted(set(training) - set(validation)))
+        if not _valid_counts(inner_training, validation, plan):
+            return failed
+        inner.append(InnerGroupFold(index, inner_training, validation))
+    return NestedGroupFolds(
+        plan,
+        inventory.effective_grouping,
+        inventory.groups,
+        (OuterGroupFold(0, training, test, tuple(inner)),),
+        None,
+        method='explicit_group_holdout_inner_round_robin_v1',
+    )
 
 
 def _partitions(

@@ -121,7 +121,16 @@ class BlendTransition:
 
         lower = _transform(self.interval.lower, transform)
         upper = _transform(self.interval.upper, transform)
-        position = (_transform(value, transform) - lower) / (upper - lower)
+        if transform == 'log10' and self.interval.upper <= 2 * self.interval.lower:
+            # Nearby positive endpoints can have identical rounded logarithms.
+            position = math.log1p((value - self.interval.lower) / self.interval.lower) / math.log1p(
+                (self.interval.upper - self.interval.lower) / self.interval.lower
+            )
+        elif math.isfinite(upper - lower):
+            position = (_transform(value, transform) - lower) / (upper - lower)
+        else:
+            scale = max(abs(lower), abs(upper))
+            position = (value / scale - lower / scale) / (upper / scale - lower / scale)
         if self.weighting == 'smoothstep':
             position = position * position * (3.0 - 2.0 * position)
         return (

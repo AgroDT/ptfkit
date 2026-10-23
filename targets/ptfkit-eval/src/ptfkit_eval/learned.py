@@ -1,4 +1,4 @@
-"""Nested training and assessment of constant-weight and hard-switch ensembles."""
+"""Nested training of constant weights, finite-grid switches and blend intervals."""
 
 from __future__ import annotations
 
@@ -8,6 +8,7 @@ from dataclasses import dataclass, replace
 from itertools import pairwise
 from typing import TYPE_CHECKING, Literal, TypeAlias, cast
 
+from .blend_grid import BlendGridFit, BlendGridPlan, BlendIntervalScore, blend_left_weight
 from .cohorts import (
     RetentionCandidateComparisons,
     build_retention_cohorts,
@@ -15,7 +16,12 @@ from .cohorts import (
 )
 from .contracts import FixedPointPrediction, FunctionCurveCandidate, RangeGatedCurveCandidate
 from .documents import EvaluationDocumentError, object_records
-from .folds import GroupedSample, NestedGroupFolds, build_nested_group_folds
+from .folds import (
+    GroupedSample,
+    NestedGroupFolds,
+    build_group_holdout,
+    build_nested_group_folds,
+)
 from .hard_switch import (
     HardSwitchBoundaryScore,
     HardSwitchGridFit,
@@ -33,13 +39,20 @@ from .selection import (
     SelectionProtocolAssessment,
     ValidationLoss,
 )
+from .sigmoid_grid import (
+    SigmoidGridFit,
+    SigmoidGridPlan,
+    SigmoidParameterScore,
+    sigmoid_left_weight,
+)
 
 
 if TYPE_CHECKING:
     from collections.abc import Iterable, Mapping
 
+    from .cohorts import RetentionCohortSet
     from .contracts import EvaluationPlan
-    from .folds import GroupKey, InnerGroupFold, OuterGroupFold, SampleKey
+    from .folds import GroupKey, GroupMembership, InnerGroupFold, OuterGroupFold, SampleKey
     from .metrics import RetentionComparison
     from .nested_applicability import NestedDomainPlan
     from .runner import RetentionRunResult
@@ -84,7 +97,7 @@ class LearnedSelectionPlan:
     """Fixed candidate roster plus explicitly registered trainable ensembles."""
 
     fixed: FixedSelectionPlan
-    ensembles: tuple[ConvexPairPlan | HardSwitchGridPlan, ...]
+    ensembles: tuple[ConvexPairPlan | HardSwitchGridPlan | BlendGridPlan | SigmoidGridPlan, ...]
     empirical_domains: NestedDomainPlan | None = None
     method: Literal['nested_convex_pair_selection_v1', 'nested_two_curve_selection_v1'] = (
         'nested_convex_pair_selection_v1'
@@ -93,9 +106,10 @@ class LearnedSelectionPlan:
     def __post_init__(self) -> None:
         """Require a nonempty unique learned roster with registered fixed members."""
         if self.method == 'nested_convex_pair_selection_v1' and any(
-            isinstance(ensemble, HardSwitchGridPlan) for ensemble in self.ensembles
+            isinstance(ensemble, (HardSwitchGridPlan, BlendGridPlan, SigmoidGridPlan))
+            for ensemble in self.ensembles
         ):
-            message = 'Grid-trained hard switches require nested_two_curve_selection_v1.'
+            message = 'Grid-trained transitions require nested_two_curve_selection_v1.'
             raise EvaluationDocumentError(message)
         identifiers = [ensemble.id for ensemble in self.ensembles]
         if (
@@ -125,6 +139,30 @@ class LearnedSelectionPlan:
         ):
             message = 'Every learned hard-switch boundary must be strictly inside the loss domain.'
             raise EvaluationDocumentError(message)
+        if any(
+            isinstance(ensemble, BlendGridPlan)
+            and any(
+                not self.fixed.loss.lower_suction_kpa
+                < lower
+                < upper
+                < self.fixed.loss.upper_suction_kpa
+                for lower, upper in ensemble.interval_grid_kpa
+            )
+            for ensemble in self.ensembles
+        ):
+            message = 'Every learned blend interval must be strictly inside the loss domain.'
+            raise EvaluationDocumentError(message)
+
+        if any(
+            isinstance(ensemble, SigmoidGridPlan)
+            and any(
+                not self.fixed.loss.lower_suction_kpa < center < self.fixed.loss.upper_suction_kpa
+                for center, _ in ensemble.parameter_grid
+            )
+            for ensemble in self.ensembles
+        ):
+            message = 'Every sigmoid center must be strictly inside the selection loss domain.'
+            raise EvaluationDocumentError(message)
 
 
 @dataclass(frozen=True)
@@ -148,7 +186,7 @@ class ConvexPairFit:
         return 'fitted' if self.left_weight is not None else 'insufficient_evidence'
 
 
-LearnedFit: TypeAlias = ConvexPairFit | HardSwitchGridFit
+LearnedFit: TypeAlias = ConvexPairFit | HardSwitchGridFit | BlendGridFit | SigmoidGridFit
 
 
 @dataclass(frozen=True)
@@ -217,7 +255,7 @@ class _Context:
     plan: LearnedSelectionPlan
     splits: NestedGroupFolds
     points: Mapping[str, tuple[RetentionComparison, ...]]
-    ensembles: Mapping[str, ConvexPairPlan | HardSwitchGridPlan]
+    ensembles: Mapping[str, ConvexPairPlan | HardSwitchGridPlan | BlendGridPlan | SigmoidGridPlan]
     kinds: Mapping[str, Literal['atomic', 'ensemble']]
 
 
@@ -226,8 +264,8 @@ def select_learned_retention_candidates(
 ) -> LearnedNestedSelection:
     """Fit each inner training fold, lock a candidate, refit only outer training.
 
-    A registration learns either a constant convex weight w in [0, 1] or a
-    hard-switch boundary from a fixed finite kPa grid. Training minimizes the
+    A registration learns a constant convex weight, finite-grid hard-switch
+    boundary or blend interval under a fixed axis/weighting rule. It minimizes the
     same sample-balanced exact-grid log-pressure MSE used in validation. Member
     identities and boundary ownership are fixed; no predictor-dependent gate
     is learned. Fixed composites may compete; trainable members are atomic.
@@ -273,6 +311,87 @@ def select_grouped_forecast_candidates(
     """
     records = tuple(candidates)
     roster = tuple(samples)
+    _validate_forecast_sample_identities(roster)
+    splits = build_nested_group_folds(roster, plan=plan.fixed.folds)
+    context = _forecast_context(records, roster, candidate_kinds, plan, splits)
+    if splits.status != 'computed':
+        return LearnedNestedSelection(plan, splits, (), (), method=plan.method)
+    folds = tuple(
+        LearnedOuterFold(
+            outer.fold_id,
+            _outer(context, outer, 'atomic'),
+            _outer(context, outer, 'ensemble'),
+        )
+        for outer in splits.folds
+    )
+    protocols = tuple(_strategy(folds, kind, len(roster)) for kind in ('atomic', 'ensemble'))
+    return LearnedNestedSelection(plan, splits, folds, protocols, method=plan.method)
+
+
+def select_grouped_forecast_holdout(
+    candidates: Iterable[RetentionCandidateComparisons],
+    *,
+    samples: Iterable[GroupedSample],
+    candidate_kinds: Mapping[str, Literal['atomic', 'ensemble']],
+    training_groups: tuple[GroupMembership, ...],
+    test_groups: tuple[GroupMembership, ...],
+    plan: LearnedSelectionPlan,
+) -> LearnedNestedSelection:
+    """Repeat full inner selection/refitting on preallocated train/test roles.
+
+    The single external holdout is never selected by its error. Every choice,
+    learned weight and boundary uses only the explicit training groups. Fixed
+    forecasts must be independent of held-out targets, as in the nested API.
+    The outer fold count does not apply to explicit roles; inner gates do.
+    """
+    records = tuple(candidates)
+    roster = tuple(samples)
+    _validate_forecast_sample_identities(roster)
+    splits = build_group_holdout(
+        roster, training_groups=training_groups, test_groups=test_groups, plan=plan.fixed.folds
+    )
+    context = _forecast_context(records, roster, candidate_kinds, plan, splits)
+    if splits.status != 'computed':
+        return LearnedNestedSelection(plan, splits, (), (), method=plan.method)
+    outer = splits.folds[0]
+    fold = LearnedOuterFold(0, _outer(context, outer, 'atomic'), _outer(context, outer, 'ensemble'))
+    total = sum(len(group.samples) for group in test_groups)
+    protocols = tuple(_strategy((fold,), kind, total) for kind in ('atomic', 'ensemble'))
+    return LearnedNestedSelection(plan, splits, (fold,), protocols, method=plan.method)
+
+
+def _validate_forecast_sample_identities(roster: tuple[GroupedSample, ...]) -> None:
+    if len({(sample.source_id, sample.sample_id) for sample in roster}) != len(roster):
+        message = 'Forecast sample roster must contain unique source-local identities.'
+        raise EvaluationDocumentError(message)
+
+
+def _forecast_context(
+    records: tuple[RetentionCandidateComparisons, ...],
+    roster: tuple[GroupedSample, ...],
+    candidate_kinds: Mapping[str, Literal['atomic', 'ensemble']],
+    plan: LearnedSelectionPlan,
+    splits: NestedGroupFolds,
+) -> _Context:
+    cohorts = validate_grouped_forecast_inputs(
+        records, samples=roster, candidate_kinds=candidate_kinds, plan=plan
+    )
+    points = {cohort.candidate_id: cohort.comparisons for cohort in cohorts.common}
+    kinds = dict(candidate_kinds)
+    kinds.update({ensemble.id: 'ensemble' for ensemble in plan.ensembles})
+    return _Context(plan, splits, points, {item.id: item for item in plan.ensembles}, kinds)
+
+
+def validate_grouped_forecast_inputs(
+    records: tuple[RetentionCandidateComparisons, ...],
+    *,
+    samples: tuple[GroupedSample, ...],
+    candidate_kinds: Mapping[str, Literal['atomic', 'ensemble']],
+    plan: LearnedSelectionPlan,
+) -> RetentionCohortSet:
+    """Validate all supplied rows before any subset can discard invalid records."""
+    roster = samples
+    _validate_forecast_sample_identities(roster)
     expected = set(plan.fixed.candidate_ids)
     if (
         {item.candidate_id for item in records} != expected
@@ -289,33 +408,13 @@ def select_grouped_forecast_candidates(
         message = 'Trainable ensemble members must be declared atomic forecasts.'
         raise EvaluationDocumentError(message)
     identities = {(sample.source_id, sample.sample_id): sample.profile_id for sample in roster}
-    if len(identities) != len(roster):
-        message = 'Forecast sample roster must contain unique source-local identities.'
-        raise EvaluationDocumentError(message)
     for record in records:
         for point in record.comparisons:
             key = (point.source_id, point.sample_id)
             if key not in identities or identities[key] != point.profile_id:
                 message = 'Forecast rows must match the declared sample and profile roster.'
                 raise EvaluationDocumentError(message)
-    cohorts = build_retention_cohorts(records)
-    splits = build_nested_group_folds(roster, plan=plan.fixed.folds)
-    if splits.status != 'computed':
-        return LearnedNestedSelection(plan, splits, (), (), method=plan.method)
-    points = {cohort.candidate_id: cohort.comparisons for cohort in cohorts.common}
-    kinds = dict(candidate_kinds)
-    kinds.update({ensemble.id: 'ensemble' for ensemble in plan.ensembles})
-    context = _Context(plan, splits, points, {item.id: item for item in plan.ensembles}, kinds)
-    folds = tuple(
-        LearnedOuterFold(
-            outer.fold_id,
-            _outer(context, outer, 'atomic'),
-            _outer(context, outer, 'ensemble'),
-        )
-        for outer in splits.folds
-    )
-    protocols = tuple(_strategy(folds, kind, len(roster)) for kind in ('atomic', 'ensemble'))
-    return LearnedNestedSelection(plan, splits, folds, protocols, method=plan.method)
+    return build_retention_cohorts(records)
 
 
 def _keys(context: _Context, groups: tuple[GroupKey, ...]) -> tuple[SampleKey, ...]:
@@ -367,6 +466,18 @@ def _fitted_pair_point(
             )
             else right.predicted
         )
+    elif isinstance(fit, SigmoidGridFit):
+        if fit.parameters is None:
+            message = 'Cannot predict with an unfitted sigmoid gate.'
+            raise EvaluationDocumentError(message)
+        weight = sigmoid_left_weight(left.suction_kpa, fit.parameters)
+        value = weight * left.predicted + (1 - weight) * right.predicted
+    elif isinstance(fit, BlendGridFit):
+        if fit.interval_kpa is None:
+            message = 'Cannot predict with an unfitted blend interval.'
+            raise EvaluationDocumentError(message)
+        weight = blend_left_weight(left.suction_kpa, fit.interval_kpa, fit.plan)
+        value = weight * left.predicted + (1 - weight) * right.predicted
     else:
         if fit.left_weight is None:
             message = 'Cannot predict with an unfitted convex weight.'
@@ -379,8 +490,8 @@ def _fit(context: _Context, identifier: str, groups: tuple[GroupKey, ...]) -> Le
     if identifier not in context.ensembles:
         return None
     ensemble = context.ensembles[identifier]
-    if isinstance(ensemble, HardSwitchGridPlan):
-        return _fit_switch(context, ensemble, groups)
+    if isinstance(ensemble, (HardSwitchGridPlan, BlendGridPlan, SigmoidGridPlan)):
+        return _fit_grid(context, ensemble, groups)
     left = _partition_points(context, ensemble.left_candidate_id, groups, None)
     right = _partition_points(context, ensemble.right_candidate_id, groups, None)
     losses = evaluate_log_pressure_loss(left, plan=context.plan.fixed.loss)
@@ -463,9 +574,11 @@ def _fit(context: _Context, identifier: str, groups: tuple[GroupKey, ...]) -> Le
     return replace(fitted, training_loss=objective)
 
 
-def _fit_switch(
-    context: _Context, ensemble: HardSwitchGridPlan, groups: tuple[GroupKey, ...]
-) -> HardSwitchGridFit:
+def _fit_grid(
+    context: _Context,
+    ensemble: HardSwitchGridPlan | BlendGridPlan | SigmoidGridPlan,
+    groups: tuple[GroupKey, ...],
+) -> HardSwitchGridFit | BlendGridFit | SigmoidGridFit:
     left = _partition_points(context, ensemble.left_candidate_id, groups, None)
     right = _partition_points(context, ensemble.right_candidate_id, groups, None)
     losses = evaluate_log_pressure_loss(left, plan=context.plan.fixed.loss)
@@ -484,30 +597,27 @@ def _fit_switch(
         if coverage < context.plan.fixed.minimum_coverage
         else None
     )
-    fit = HardSwitchGridFit(
-        ensemble,
-        groups,
-        sample_count,
-        tuple(sorted(valid)),
-        group_count,
-        coverage,
-        (),
-        None,
-        None,
-        None,
-        reason,
+    shared = (groups, sample_count, tuple(sorted(valid)), group_count, coverage)
+    fit = (
+        HardSwitchGridFit(ensemble, *shared, (), None, None, None, reason)
+        if isinstance(ensemble, HardSwitchGridPlan)
+        else SigmoidGridFit(ensemble, *shared, (), None, None, None, reason)
+        if isinstance(ensemble, SigmoidGridPlan)
+        else BlendGridFit(ensemble, *shared, (), None, None, None, reason)
     )
     if reason is not None:
         return fit
+    choices = (
+        tuple((value, value) for value in ensemble.boundary_grid_kpa)
+        if isinstance(ensemble, HardSwitchGridPlan)
+        else ensemble.parameter_grid
+        if isinstance(ensemble, SigmoidGridPlan)
+        else ensemble.interval_grid_kpa
+    )
     scores = []
-    for boundary in ensemble.boundary_grid_kpa:
+    for choice in choices:
         prediction = tuple(
-            replace(
-                one,
-                predicted=one.predicted
-                if hard_switch_uses_left(one.suction_kpa, boundary, ensemble.boundary_member)
-                else two.predicted,
-            )
+            replace(one, predicted=_grid_prediction(one, two, ensemble, choice))
             for one, two in zip(left, right, strict=True)
             if (one.source_id, one.sample_id) in valid
         )
@@ -515,19 +625,59 @@ def _fit_switch(
         objective = mean_finite_losses(
             [sample.loss for sample in evaluated if sample.loss is not None]
         )
-        scores.append(HardSwitchBoundaryScore(boundary, objective))
-    ordered = sorted(scores, key=lambda score: (score.mean_training_loss, score.suction_kpa))
+        scores.append((choice, objective))
+    ordered = sorted(scores, key=lambda item: (item[1], item[0]))
     winner, runner_up = ordered[:2]
-    gap = runner_up.mean_training_loss - winner.mean_training_loss
-    if gap <= ensemble.minimum_loss_gap:
-        return replace(fit, scores=tuple(scores), loss_gap=gap, reason='unidentifiable_boundary')
+    gap = runner_up[1] - winner[1]
+    identified = gap > ensemble.minimum_loss_gap
+    if isinstance(fit, HardSwitchGridFit):
+        return replace(
+            fit,
+            scores=tuple(
+                HardSwitchBoundaryScore(choice[0], objective) for choice, objective in scores
+            ),
+            loss_gap=gap,
+            switch_suction_kpa=winner[0][0] if identified else None,
+            training_loss=winner[1] if identified else None,
+            reason=None if identified else 'unidentifiable_boundary',
+        )
+    if isinstance(fit, SigmoidGridFit):
+        return replace(
+            fit,
+            scores=tuple(SigmoidParameterScore(choice, objective) for choice, objective in scores),
+            loss_gap=gap,
+            parameters=winner[0] if identified else None,
+            training_loss=winner[1] if identified else None,
+            reason=None if identified else 'unidentifiable_sigmoid_parameters',
+        )
     return replace(
         fit,
-        scores=tuple(scores),
+        scores=tuple(BlendIntervalScore(choice, objective) for choice, objective in scores),
         loss_gap=gap,
-        switch_suction_kpa=winner.suction_kpa,
-        training_loss=winner.mean_training_loss,
+        interval_kpa=winner[0] if identified else None,
+        training_loss=winner[1] if identified else None,
+        reason=None if identified else 'unidentifiable_blend_interval',
     )
+
+
+def _grid_prediction(
+    left: RetentionComparison,
+    right: RetentionComparison,
+    plan: HardSwitchGridPlan | BlendGridPlan | SigmoidGridPlan,
+    choice: tuple[float, float],
+) -> float:
+    if isinstance(plan, HardSwitchGridPlan):
+        return (
+            left.predicted
+            if hard_switch_uses_left(left.suction_kpa, choice[0], plan.boundary_member)
+            else right.predicted
+        )
+    weight = (
+        sigmoid_left_weight(left.suction_kpa, choice)
+        if isinstance(plan, SigmoidGridPlan)
+        else blend_left_weight(left.suction_kpa, choice, plan)
+    )
+    return weight * left.predicted + (1 - weight) * right.predicted
 
 
 def _coefficients(

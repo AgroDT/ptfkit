@@ -59,8 +59,8 @@ identity:
     - worksheet: ОГХ
       raw: 2014_Болотов
       canonical: 2014_болотов
-      status: proposed
-      evidence: The source labels differ only by Unicode case and share sample numbers.
+      status: confirmed
+      evidence: All 12 curves and 168 axis positions (including one explicit null) match bijectively in the wide-to-long audit; the case-only labels identify the three four-horizon profiles in Bolotov et al. (2014), Figures 4-6.
     - worksheet: ОГХ
       raw: 2014_Макарычев-1
       canonical: 2014_макарычев-1
@@ -74,8 +74,8 @@ identity:
     - worksheet: ОГХ
       raw: 2014_Макарычев-3
       canonical: 2014_макарычев-3
-      status: proposed
-      evidence: The source labels differ only by Unicode case and share sample numbers.
+      status: confirmed
+      evidence: The four complete 14-position curves match uniquely in the reconstruction audit and identify the orchard horizons in Makarychev et al. (2014), Figure 2.
     - worksheet: ОГХ
       raw: 2015_панина
       canonical: 2015_Панина. дисер
@@ -94,17 +94,17 @@ identity:
     - worksheet: ОГХ
       raw: 2018_Макарычев
       canonical: 2018_макарычев
-      status: proposed
-      evidence: The source labels differ only by Unicode case and share sample numbers.
+      status: confirmed
+      evidence: All 16 complete curves and 96 points map uniquely after the reviewed factor-of-100 long-sheet transformation; sample numbering is repaired by explicit curve crosswalks.
     - worksheet: ОГХ
       raw: 2018_моисеев
       canonical: 2018_Моисеев
-      status: proposed
-      evidence: The source labels differ only by Unicode case and share sample numbers.
+      status: confirmed
+      evidence: All 16 complete curves and 96 points map uniquely after the reviewed factor-of-100 long-sheet transformation; sample numbering is repaired by explicit curve crosswalks.
     - worksheet: ОГХ
       raw: 2018_шеин
       canonical: 2018_шеин-1
-      status: proposed
+      status: confirmed
       evidence: All 25 retained observations match the first Shein master block; the adjacent second block contains fitted parameters rather than observations.
   sample_crosswalks:
     - {worksheet: ОГХ, raw_sample_id: 2017_Честнова_1, canonical_sample_id: 2017_честнова_1, canonical_source: 2017_честнова, canonical_sample_number: 1, evidence_cells: [Данные!X227:AJ227, Данные!X228:AJ228], status: confirmed, evidence: The complete ordered 13-point curve equals Данные row 228 after dividing long-sheet water percentages by 100.}
@@ -117,6 +117,62 @@ identity:
     - {worksheet: ОГХ, raw_sample_id: 2017_Честнова_8, canonical_sample_id: 2017_честнова_6, canonical_source: 2017_честнова, canonical_sample_number: 6, evidence_cells: [Данные!X227:AJ227, Данные!X233:AJ233], status: confirmed, evidence: The complete ordered 13-point curve equals Данные row 233 after dividing long-sheet water percentages by 100.}
     - {worksheet: ОГХ, raw_sample_id: 2017_Честнова_9, canonical_sample_id: 2017_честнова_7, canonical_source: 2017_честнова, canonical_sample_number: 7, evidence_cells: [Данные!X227:AJ227, Данные!X234:AJ234], status: confirmed, evidence: The complete ordered 13-point curve equals Данные row 234 after dividing long-sheet water percentages by 100.}
     - {worksheet: ОГХ, raw_sample_id: 2017_Честнова_10, canonical_sample_id: 2017_честнова_8, canonical_source: 2017_честнова, canonical_sample_number: 8, evidence_cells: [Данные!X227:AJ227, Данные!X235:AJ235], status: confirmed, evidence: The complete ordered 13-point curve equals Данные row 235 after dividing long-sheet water percentages by 100.}
+
+    - {worksheet: ОГХ, raw_sample_id: 2014_Болотов_1, canonical_sample_id: 2014_болотов_1, canonical_source: 2014_болотов, canonical_sample_number: 1, evidence_cells: [Данные!X175:AK175, Данные!X176:AK176], status: confirmed, evidence: The complete ordered 14-position curve matches master row 176 uniquely at unchanged water scale including explicit null positions.}
+    - {worksheet: ОГХ, raw_sample_id: 2014_Болотов_10, canonical_sample_id: 2014_болотов_4, canonical_source: 2014_болотов, canonical_sample_number: 4, evidence_cells: [Данные!X175:AK175, Данные!X179:AK179], status: confirmed, evidence: The complete ordered 14-position curve matches master row 179 uniquely at unchanged water scale including explicit null positions.}
+    - {worksheet: ОГХ, raw_sample_id: 2014_Болотов_11, canonical_sample_id: 2014_болотов_5, canonical_source: 2014_болотов, canonical_sample_number: 5, evidence_cells: [Данные!X175:AK175, Данные!X180:AK180], status: confirmed, evidence: The complete ordered 14-position curve matches master row 180 uniquely at unchanged water scale including explicit null positions.}
+    - {worksheet: ОГХ, raw_sample_id: 2014_Болотов_12, canonical_sample_id: 2014_болотов_6, canonical_source: 2014_болотов, canonical_sample_number: 6, evidence_cells: [Данные!X175:AK175, Данные!X181:AK181], status: confirmed, evidence: The complete ordered 14-position curve matches master row 181 uniquely at unchanged water scale including explicit null positions.}
+    - {worksheet: ОГХ, raw_sample_id: 2014_Болотов_2, canonical_sample_id: 2014_болотов_7, canonical_source: 2014_болотов, canonical_sample_number: 7, evidence_cells: [Данные!X175:AK175, Данные!X182:AK182], status: confirmed, evidence: The complete ordered 14-position curve matches master row 182 uniquely at unchanged water scale including explicit null positions.}
+    - {worksheet: ОГХ, raw_sample_id: 2014_Болотов_3, canonical_sample_id: 2014_болотов_8, canonical_source: 2014_болотов, canonical_sample_number: 8, evidence_cells: [Данные!X175:AK175, Данные!X183:AK183], status: confirmed, evidence: The complete ordered 14-position curve matches master row 183 uniquely at unchanged water scale including explicit null positions.}
+    - {worksheet: ОГХ, raw_sample_id: 2014_Болотов_4, canonical_sample_id: 2014_болотов_9, canonical_source: 2014_болотов, canonical_sample_number: 9, evidence_cells: [Данные!X175:AK175, Данные!X184:AK184], status: confirmed, evidence: The complete ordered 14-position curve matches master row 184 uniquely at unchanged water scale including explicit null positions.}
+    - {worksheet: ОГХ, raw_sample_id: 2014_Болотов_5, canonical_sample_id: 2014_болотов_10, canonical_source: 2014_болотов, canonical_sample_number: 10, evidence_cells: [Данные!X175:AK175, Данные!X185:AK185], status: confirmed, evidence: The complete ordered 14-position curve matches master row 185 uniquely at unchanged water scale including explicit null positions.}
+    - {worksheet: ОГХ, raw_sample_id: 2014_Болотов_6, canonical_sample_id: 2014_болотов_11, canonical_source: 2014_болотов, canonical_sample_number: 11, evidence_cells: [Данные!X175:AK175, Данные!X186:AK186], status: confirmed, evidence: The complete ordered 14-position curve matches master row 186 uniquely at unchanged water scale including explicit null positions.}
+    - {worksheet: ОГХ, raw_sample_id: 2014_Болотов_7, canonical_sample_id: 2014_болотов_12, canonical_source: 2014_болотов, canonical_sample_number: 12, evidence_cells: [Данные!X175:AK175, Данные!X187:AK187], status: confirmed, evidence: The complete ordered 14-position curve matches master row 187 uniquely at unchanged water scale including explicit null positions.}
+    - {worksheet: ОГХ, raw_sample_id: 2014_Болотов_8, canonical_sample_id: 2014_болотов_2, canonical_source: 2014_болотов, canonical_sample_number: 2, evidence_cells: [Данные!X175:AK175, Данные!X177:AK177], status: confirmed, evidence: The complete ordered 14-position curve matches master row 177 uniquely at unchanged water scale including explicit null positions.}
+    - {worksheet: ОГХ, raw_sample_id: 2014_Болотов_9, canonical_sample_id: 2014_болотов_3, canonical_source: 2014_болотов, canonical_sample_number: 3, evidence_cells: [Данные!X175:AK175, Данные!X178:AK178], status: confirmed, evidence: The complete ordered 14-position curve matches master row 178 uniquely at unchanged water scale including explicit null positions.}
+
+    - {worksheet: ОГХ, raw_sample_id: 2014_Макарычев-3_1, canonical_sample_id: 2014_макарычев-3_1, canonical_source: 2014_макарычев-3, canonical_sample_number: 1, evidence_cells: [Данные!X205:AK205, Данные!X206:AK206], status: confirmed, evidence: The complete ordered 14-position curve matches master row 206 uniquely at unchanged water scale.}
+    - {worksheet: ОГХ, raw_sample_id: 2014_Макарычев-3_2, canonical_sample_id: 2014_макарычев-3_2, canonical_source: 2014_макарычев-3, canonical_sample_number: 2, evidence_cells: [Данные!X205:AK205, Данные!X207:AK207], status: confirmed, evidence: The complete ordered 14-position curve matches master row 207 uniquely at unchanged water scale.}
+    - {worksheet: ОГХ, raw_sample_id: 2014_Макарычев-3_3, canonical_sample_id: 2014_макарычев-3_3, canonical_source: 2014_макарычев-3, canonical_sample_number: 3, evidence_cells: [Данные!X205:AK205, Данные!X208:AK208], status: confirmed, evidence: The complete ordered 14-position curve matches master row 208 uniquely at unchanged water scale.}
+    - {worksheet: ОГХ, raw_sample_id: 2014_Макарычев-3_4, canonical_sample_id: 2014_макарычев-3_4, canonical_source: 2014_макарычев-3, canonical_sample_number: 4, evidence_cells: [Данные!X205:AK205, Данные!X209:AK209], status: confirmed, evidence: The complete ordered 14-position curve matches master row 209 uniquely at unchanged water scale.}
+
+    - {worksheet: ОГХ, raw_sample_id: 2018_Макарычев_1, canonical_sample_id: 2018_макарычев_1, canonical_source: 2018_макарычев, canonical_sample_number: 1, evidence_cells: [Данные!X238:AC238, Данные!X239:AC239], status: confirmed, evidence: All six pressure-water pairs equal master row 239 uniquely after dividing long-sheet water percentages by 100.}
+    - {worksheet: ОГХ, raw_sample_id: 2018_Макарычев_10, canonical_sample_id: 2018_макарычев_11, canonical_source: 2018_макарычев, canonical_sample_number: 11, evidence_cells: [Данные!X238:AC238, Данные!X249:AC249], status: confirmed, evidence: All six pressure-water pairs equal master row 249 uniquely after dividing long-sheet water percentages by 100.}
+    - {worksheet: ОГХ, raw_sample_id: 2018_Макарычев_11, canonical_sample_id: 2018_макарычев_12, canonical_source: 2018_макарычев, canonical_sample_number: 12, evidence_cells: [Данные!X238:AC238, Данные!X250:AC250], status: confirmed, evidence: All six pressure-water pairs equal master row 250 uniquely after dividing long-sheet water percentages by 100.}
+    - {worksheet: ОГХ, raw_sample_id: 2018_Макарычев_12, canonical_sample_id: 2018_макарычев_13, canonical_source: 2018_макарычев, canonical_sample_number: 13, evidence_cells: [Данные!X238:AC238, Данные!X251:AC251], status: confirmed, evidence: All six pressure-water pairs equal master row 251 uniquely after dividing long-sheet water percentages by 100.}
+    - {worksheet: ОГХ, raw_sample_id: 2018_Макарычев_13, canonical_sample_id: 2018_макарычев_14, canonical_source: 2018_макарычев, canonical_sample_number: 14, evidence_cells: [Данные!X238:AC238, Данные!X252:AC252], status: confirmed, evidence: All six pressure-water pairs equal master row 252 uniquely after dividing long-sheet water percentages by 100.}
+    - {worksheet: ОГХ, raw_sample_id: 2018_Макарычев_14, canonical_sample_id: 2018_макарычев_15, canonical_source: 2018_макарычев, canonical_sample_number: 15, evidence_cells: [Данные!X238:AC238, Данные!X253:AC253], status: confirmed, evidence: All six pressure-water pairs equal master row 253 uniquely after dividing long-sheet water percentages by 100.}
+    - {worksheet: ОГХ, raw_sample_id: 2018_Макарычев_15, canonical_sample_id: 2018_макарычев_16, canonical_source: 2018_макарычев, canonical_sample_number: 16, evidence_cells: [Данные!X238:AC238, Данные!X254:AC254], status: confirmed, evidence: All six pressure-water pairs equal master row 254 uniquely after dividing long-sheet water percentages by 100.}
+    - {worksheet: ОГХ, raw_sample_id: 2018_Макарычев_16, canonical_sample_id: 2018_макарычев_2, canonical_source: 2018_макарычев, canonical_sample_number: 2, evidence_cells: [Данные!X238:AC238, Данные!X240:AC240], status: confirmed, evidence: All six pressure-water pairs equal master row 240 uniquely after dividing long-sheet water percentages by 100.}
+    - {worksheet: ОГХ, raw_sample_id: 2018_Макарычев_2, canonical_sample_id: 2018_макарычев_3, canonical_source: 2018_макарычев, canonical_sample_number: 3, evidence_cells: [Данные!X238:AC238, Данные!X241:AC241], status: confirmed, evidence: All six pressure-water pairs equal master row 241 uniquely after dividing long-sheet water percentages by 100.}
+    - {worksheet: ОГХ, raw_sample_id: 2018_Макарычев_3, canonical_sample_id: 2018_макарычев_4, canonical_source: 2018_макарычев, canonical_sample_number: 4, evidence_cells: [Данные!X238:AC238, Данные!X242:AC242], status: confirmed, evidence: All six pressure-water pairs equal master row 242 uniquely after dividing long-sheet water percentages by 100.}
+    - {worksheet: ОГХ, raw_sample_id: 2018_Макарычев_4, canonical_sample_id: 2018_макарычев_5, canonical_source: 2018_макарычев, canonical_sample_number: 5, evidence_cells: [Данные!X238:AC238, Данные!X243:AC243], status: confirmed, evidence: All six pressure-water pairs equal master row 243 uniquely after dividing long-sheet water percentages by 100.}
+    - {worksheet: ОГХ, raw_sample_id: 2018_Макарычев_5, canonical_sample_id: 2018_макарычев_6, canonical_source: 2018_макарычев, canonical_sample_number: 6, evidence_cells: [Данные!X238:AC238, Данные!X244:AC244], status: confirmed, evidence: All six pressure-water pairs equal master row 244 uniquely after dividing long-sheet water percentages by 100.}
+    - {worksheet: ОГХ, raw_sample_id: 2018_Макарычев_6, canonical_sample_id: 2018_макарычев_7, canonical_source: 2018_макарычев, canonical_sample_number: 7, evidence_cells: [Данные!X238:AC238, Данные!X245:AC245], status: confirmed, evidence: All six pressure-water pairs equal master row 245 uniquely after dividing long-sheet water percentages by 100.}
+    - {worksheet: ОГХ, raw_sample_id: 2018_Макарычев_7, canonical_sample_id: 2018_макарычев_8, canonical_source: 2018_макарычев, canonical_sample_number: 8, evidence_cells: [Данные!X238:AC238, Данные!X246:AC246], status: confirmed, evidence: All six pressure-water pairs equal master row 246 uniquely after dividing long-sheet water percentages by 100.}
+    - {worksheet: ОГХ, raw_sample_id: 2018_Макарычев_8, canonical_sample_id: 2018_макарычев_9, canonical_source: 2018_макарычев, canonical_sample_number: 9, evidence_cells: [Данные!X238:AC238, Данные!X247:AC247], status: confirmed, evidence: All six pressure-water pairs equal master row 247 uniquely after dividing long-sheet water percentages by 100.}
+    - {worksheet: ОГХ, raw_sample_id: 2018_Макарычев_9, canonical_sample_id: 2018_макарычев_10, canonical_source: 2018_макарычев, canonical_sample_number: 10, evidence_cells: [Данные!X238:AC238, Данные!X248:AC248], status: confirmed, evidence: All six pressure-water pairs equal master row 248 uniquely after dividing long-sheet water percentages by 100.}
+
+    - {worksheet: ОГХ, raw_sample_id: 1991_Гуматов_1, canonical_sample_id: 1991_Гуматов_1, canonical_source: 1991_Гуматов, canonical_sample_number: 1, evidence_cells: [Данные!X20:AH20, Данные!X21:AH21], status: confirmed, evidence: The complete retained curve uniquely matches the master sample including the declared missing positions and unchanged water scale.}
+    - {worksheet: ОГХ, raw_sample_id: 1991_Гуматов_10, canonical_sample_id: 1991_Гуматов_10, canonical_source: 1991_Гуматов, canonical_sample_number: 10, evidence_cells: [Данные!X20:AH20, Данные!X30:AH30], status: confirmed, evidence: The complete retained curve uniquely matches the master sample including the declared missing positions and unchanged water scale.}
+    - {worksheet: ОГХ, raw_sample_id: 1991_Гуматов_11, canonical_sample_id: 1991_Гуматов_11, canonical_source: 1991_Гуматов, canonical_sample_number: 11, evidence_cells: [Данные!X20:AH20, Данные!X31:AH31], status: confirmed, evidence: The complete retained curve uniquely matches the master sample including the declared missing positions and unchanged water scale.}
+    - {worksheet: ОГХ, raw_sample_id: 1991_Гуматов_12, canonical_sample_id: 1991_Гуматов_12, canonical_source: 1991_Гуматов, canonical_sample_number: 12, evidence_cells: [Данные!X20:AH20, Данные!X32:AH32], status: confirmed, evidence: The complete retained curve uniquely matches the master sample including the declared missing positions and unchanged water scale.}
+    - {worksheet: ОГХ, raw_sample_id: 1991_Гуматов_13, canonical_sample_id: 1991_Гуматов_13, canonical_source: 1991_Гуматов, canonical_sample_number: 13, evidence_cells: [Данные!X20:AH20, Данные!X33:AH33], status: confirmed, evidence: The complete retained curve uniquely matches the master sample including the declared missing positions and unchanged water scale.}
+    - {worksheet: ОГХ, raw_sample_id: 1991_Гуматов_14, canonical_sample_id: 1991_Гуматов_14, canonical_source: 1991_Гуматов, canonical_sample_number: 14, evidence_cells: [Данные!X20:AH20, Данные!X34:AH34], status: confirmed, evidence: The complete retained curve uniquely matches the master sample including the declared missing positions and unchanged water scale.}
+    - {worksheet: ОГХ, raw_sample_id: 1991_Гуматов_15, canonical_sample_id: 1991_Гуматов_15, canonical_source: 1991_Гуматов, canonical_sample_number: 15, evidence_cells: [Данные!X20:AH20, Данные!X35:AH35], status: confirmed, evidence: The complete retained curve uniquely matches the master sample including the declared missing positions and unchanged water scale.}
+    - {worksheet: ОГХ, raw_sample_id: 1991_Гуматов_16, canonical_sample_id: 1991_Гуматов_16, canonical_source: 1991_Гуматов, canonical_sample_number: 16, evidence_cells: [Данные!X20:AH20, Данные!X36:AH36], status: confirmed, evidence: The complete retained curve uniquely matches the master sample including the declared missing positions and unchanged water scale.}
+    - {worksheet: ОГХ, raw_sample_id: 1991_Гуматов_17, canonical_sample_id: 1991_Гуматов_17, canonical_source: 1991_Гуматов, canonical_sample_number: 17, evidence_cells: [Данные!X20:AH20, Данные!X37:AH37], status: confirmed, evidence: The complete retained curve uniquely matches the master sample including the declared missing positions and unchanged water scale.}
+    - {worksheet: ОГХ, raw_sample_id: 1991_Гуматов_18, canonical_sample_id: 1991_Гуматов_18, canonical_source: 1991_Гуматов, canonical_sample_number: 18, evidence_cells: [Данные!X20:AH20, Данные!X38:AH38], status: confirmed, evidence: The complete retained curve uniquely matches the master sample including the declared missing positions and unchanged water scale.}
+    - {worksheet: ОГХ, raw_sample_id: 1991_Гуматов_19, canonical_sample_id: 1991_Гуматов_19, canonical_source: 1991_Гуматов, canonical_sample_number: 19, evidence_cells: [Данные!X20:AH20, Данные!X39:AH39], status: confirmed, evidence: The complete retained curve uniquely matches the master sample including the declared missing positions and unchanged water scale.}
+    - {worksheet: ОГХ, raw_sample_id: 1991_Гуматов_2, canonical_sample_id: 1991_Гуматов_2, canonical_source: 1991_Гуматов, canonical_sample_number: 2, evidence_cells: [Данные!X20:AH20, Данные!X22:AH22], status: confirmed, evidence: The complete retained curve uniquely matches the master sample including the declared missing positions and unchanged water scale.}
+    - {worksheet: ОГХ, raw_sample_id: 1991_Гуматов_3, canonical_sample_id: 1991_Гуматов_3, canonical_source: 1991_Гуматов, canonical_sample_number: 3, evidence_cells: [Данные!X20:AH20, Данные!X23:AH23], status: confirmed, evidence: The complete retained curve uniquely matches the master sample including the declared missing positions and unchanged water scale.}
+    - {worksheet: ОГХ, raw_sample_id: 1991_Гуматов_4, canonical_sample_id: 1991_Гуматов_4, canonical_source: 1991_Гуматов, canonical_sample_number: 4, evidence_cells: [Данные!X20:AH20, Данные!X24:AH24], status: confirmed, evidence: The complete retained curve uniquely matches the master sample including the declared missing positions and unchanged water scale.}
+    - {worksheet: ОГХ, raw_sample_id: 1991_Гуматов_5, canonical_sample_id: 1991_Гуматов_5, canonical_source: 1991_Гуматов, canonical_sample_number: 5, evidence_cells: [Данные!X20:AH20, Данные!X25:AH25], status: confirmed, evidence: The complete retained curve uniquely matches the master sample including the declared missing positions and unchanged water scale.}
+    - {worksheet: ОГХ, raw_sample_id: 1991_Гуматов_6, canonical_sample_id: 1991_Гуматов_6, canonical_source: 1991_Гуматов, canonical_sample_number: 6, evidence_cells: [Данные!X20:AH20, Данные!X26:AH26], status: confirmed, evidence: The complete retained curve uniquely matches the master sample including the declared missing positions and unchanged water scale.}
+    - {worksheet: ОГХ, raw_sample_id: 1991_Гуматов_7, canonical_sample_id: 1991_Гуматов_7, canonical_source: 1991_Гуматов, canonical_sample_number: 7, evidence_cells: [Данные!X20:AH20, Данные!X27:AH27], status: confirmed, evidence: The complete retained curve uniquely matches the master sample including the declared missing positions and unchanged water scale.}
+    - {worksheet: ОГХ, raw_sample_id: 1991_Гуматов_8, canonical_sample_id: 1991_Гуматов_8, canonical_source: 1991_Гуматов, canonical_sample_number: 8, evidence_cells: [Данные!X20:AH20, Данные!X28:AH28], status: confirmed, evidence: The complete retained curve uniquely matches the master sample including the declared missing positions and unchanged water scale.}
+    - {worksheet: ОГХ, raw_sample_id: 1991_Гуматов_9, canonical_sample_id: 1991_Гуматов_9, canonical_source: 1991_Гуматов, canonical_sample_number: 9, evidence_cells: [Данные!X20:AH20, Данные!X29:AH29], status: confirmed, evidence: The complete retained curve uniquely matches the master sample including the declared missing positions and unchanged water scale.}
+    - {worksheet: ОГХ, raw_sample_id: 1992_Гуматов_1, canonical_sample_id: 1992_Гуматов_1, canonical_source: 1992_Гуматов, canonical_sample_number: 1, evidence_cells: [Данные!X40:AG40, Данные!X41:AG41], status: confirmed, evidence: The complete retained curve uniquely matches the master sample including the declared missing positions and unchanged water scale.}
 
 worksheets:
   - id: samples_master
@@ -590,10 +646,30 @@ retention_source_rules:
       - {water_encoding: "?", pressure_encoding: pF, status: blocked, water_quantity: gravimetric_water_content, water_unit: null, canonical_water_unit: mass_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: "Данные!W7 identifies the corresponding wide block as W, and Данные!W1 defines W as mass-based water content; the source-specific percent-versus-fraction scale and pressure convention remain unreviewed."}
   - source: 1991_Гуматов
     observations:
-      - {water_encoding: W, pressure_encoding: pF, status: blocked, water_quantity: gravimetric_water_content, water_unit: null, canonical_water_unit: mass_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
+      - water_encoding: W
+        pressure_encoding: pF
+        status: confirmed
+        water_quantity: gravimetric_water_content
+        water_unit: mass_fraction
+        canonical_water_unit: mass_fraction
+        pressure_representation: pf_log10_centimeter_water_head
+        pressure_convention: magnitude
+        canonical_pressure_unit: kilopascal
+        blockers: []
+        evidence: "Gummatov (1992), author abstract, https://earthpapers.net/prostranstvenno-vremennaya-izmenchivost-gidrofizicheskih-harakteristik-seroy-lesnoy-pochvy, Methods and Figures 1 and 4: W is g/g, with capillary and hygroscopic measurements at negative potentials stated in MPa. The same site, years, treatments and horizons identify the workbook block. The workbook pF grid is the rounded centimeter-head magnitude transform of those published pressure levels; retained axis precision is preserved."
   - source: 1992_Гуматов
     observations:
-      - {water_encoding: W, pressure_encoding: mPa, status: blocked, water_quantity: gravimetric_water_content, water_unit: null, canonical_water_unit: mass_fraction, pressure_representation: null, pressure_convention: null, canonical_pressure_unit: null, blockers: [water_scale_by_source, mpa_label_meaning], evidence: The source-specific water scale is unresolved and the case-sensitive mPa pressure label has no confirmed interpretation.}
+      - water_encoding: W
+        pressure_encoding: mPa
+        status: confirmed
+        water_quantity: gravimetric_water_content
+        water_unit: mass_fraction
+        canonical_water_unit: mass_fraction
+        pressure_representation: megapascal
+        pressure_convention: magnitude
+        canonical_pressure_unit: kilopascal
+        blockers: []
+        evidence: "Gummatov (1992), author abstract, https://earthpapers.net/prostranstvenno-vremennaya-izmenchivost-gidrofizicheskih-harakteristik-seroy-lesnoy-pochvy, Methods and Figures 1 and 4: W is g/g, with capillary and hygroscopic measurements at negative potentials stated in MPa. The same site, years, treatments and horizons identify the workbook block. The ten positive values 0.001 through 140 reproduce the published MPa levels as magnitudes; raw mPa is a capitalization error, not millipascal."
   - source: 2001_хайдапова
     observations:
       - {water_encoding: W, pressure_encoding: kPa, status: blocked, water_quantity: gravimetric_water_content, water_unit: null, canonical_water_unit: mass_fraction, pressure_representation: kilopascal, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
@@ -635,7 +711,17 @@ retention_source_rules:
       - {water_encoding: "?", pressure_encoding: kPa, status: blocked, water_quantity: null, water_unit: null, canonical_water_unit: null, pressure_representation: kilopascal, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [unknown_water_basis, pressure_convention_by_source], evidence: The workbook leaves the water quantity and scale unknown and the source-specific pressure convention has not been reviewed.}
   - source: 2014_Болотов
     observations:
-      - {water_encoding: Q, pressure_encoding: pF, status: blocked, water_quantity: volumetric_water_content, water_unit: null, canonical_water_unit: volume_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
+      - water_encoding: Q
+        pressure_encoding: pF
+        status: confirmed
+        water_quantity: volumetric_water_content
+        water_unit: volume_fraction
+        canonical_water_unit: volume_fraction
+        pressure_representation: log10_kilopascal
+        pressure_convention: magnitude
+        canonical_pressure_unit: kilopascal
+        blockers: []
+        evidence: "Bolotov et al. (2014), publisher PDF https://www.asau.ru/vestnik/2014/9/036-041.pdf, printed pp. 38-40 and Figures 4-6: positive P in kPa against theta in cm3/cm3. The 12 workbook curves reproduce the three four-horizon figures; the master axis -0.592095 to 3.05 corresponds to approximately 0.256 to 1122 kPa under 10**axis, whereas standard pF would shift every point downward by a factor of 10.197. The pF cell label is retained as raw encoding only."
   - source: 2014_Макарычев-1
     observations:
       - {water_encoding: W, pressure_encoding: ПГК, status: blocked, water_quantity: gravimetric_water_content, water_unit: null, canonical_water_unit: mass_fraction, pressure_representation: null, pressure_convention: null, canonical_pressure_unit: null, blockers: [water_scale_by_source, pressure_pgk_meaning], evidence: The source-specific water scale is unresolved and the ПГК pressure label has no confirmed physical interpretation.}
@@ -644,7 +730,17 @@ retention_source_rules:
       - {water_encoding: W, pressure_encoding: ПГК, status: blocked, water_quantity: gravimetric_water_content, water_unit: null, canonical_water_unit: mass_fraction, pressure_representation: null, pressure_convention: null, canonical_pressure_unit: null, blockers: [water_scale_by_source, pressure_pgk_meaning], evidence: The source-specific water scale is unresolved and the ПГК pressure label has no confirmed physical interpretation.}
   - source: 2014_Макарычев-3
     observations:
-      - {water_encoding: Q, pressure_encoding: pF, status: blocked, water_quantity: volumetric_water_content, water_unit: null, canonical_water_unit: volume_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
+      - water_encoding: Q
+        pressure_encoding: pF
+        status: confirmed
+        water_quantity: volumetric_water_content
+        water_unit: volume_fraction
+        canonical_water_unit: volume_fraction
+        pressure_representation: log10_kilopascal
+        pressure_convention: magnitude
+        canonical_pressure_unit: kilopascal
+        blockers: []
+        evidence: "Makarychev et al. (2014), https://www.asau.ru/vestnik/2014/12/035-039.pdf, printed pp. 37-38 and Figure 2: centrifuge drainage observations use volumetric water content in cm3/cm3 and positive pressure P in kPa. All four workbook profiles match the plotted horizon order and shape. The axis -0.6049615 to 3.02941 reproduces the approximate 0.25 to 1070 kPa plotted range as log10(kPa); the raw pF label is not the physical representation."
   - source: 2015_панина
     observations:
       - {water_encoding: Q, pressure_encoding: pF, status: blocked, water_quantity: volumetric_water_content, water_unit: null, canonical_water_unit: volume_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
@@ -666,7 +762,17 @@ retention_source_rules:
         evidence: The master sheet identifies W as gravimetric water content; every long-sheet value is exactly 100 times its uniquely matched wide value. The source reports moisture in percent, describes pF as soil-water potential, and relates pF 2.17 and 3.7 to progressively drier states (https://soil.msu.ru/attachments/article/2599/CHESTNOVA_AVTOREFERAT.pdf).
   - source: 2018_Макарычев
     observations:
-      - {water_encoding: W, pressure_encoding: pF, status: blocked, water_quantity: gravimetric_water_content, water_unit: null, canonical_water_unit: mass_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
+      - water_encoding: W
+        pressure_encoding: pF
+        status: confirmed
+        water_quantity: gravimetric_water_content
+        water_unit: mass_percent
+        canonical_water_unit: mass_fraction
+        pressure_representation: pf_log10_centimeter_water_head
+        pressure_convention: magnitude
+        canonical_pressure_unit: kilopascal
+        blockers: []
+        evidence: "The 2018-labelled workbook profiles are corroborated by the same authors' primary monograph Makarychev and Lebedeva (2021), https://www.asau.ru/news/social-work?fileid=24217&task=getfile, pp. 15-16 and 63-64, Figures 31-33. Water is measured gravimetrically and plotted as W percent; retained long-sheet values equal 100 times the wide fractions. The six pF levels reproduce positive pressures approximately 0.01, 0.25, 3.6, 33, 145 and 981 kPa on those figures. Six birch, five grass and five retained oak horizons match the workbook. The monograph corroborates the physical conventions; the original 2018 bibliographic entry remains unidentified."
   - source: 2018_моисеев
     observations:
       - {water_encoding: Q, pressure_encoding: pF, status: blocked, water_quantity: volumetric_water_content, water_unit: null, canonical_water_unit: volume_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
@@ -716,7 +822,7 @@ retention_reconstruction_rules:
     blockers: [water_scale_by_source, pressure_convention_by_source]
     evidence: All 108 transformed points and all 12 complete curves match bijectively, confirming the case-only source alias and sample-number namespace. Данные!W7 and Данные!W1 establish a gravimetric water quantity, but not its percent-versus-fraction scale. The proposed 0.01-to--1 pressure replacement remains physically unresolved.
   - id: gumatov_1991
-    status: blocked
+    status: confirmed
     master_worksheet: Данные
     long_worksheet: ОГХ
     master_source: 1991_Гуматов
@@ -731,10 +837,10 @@ retention_reconstruction_rules:
     blocks:
       - {axis_row: 20, first_sample_row: 21, last_sample_row: 39, first_column: X, last_column: AH}
     parameter_block: null
-    blockers: [water_scale_by_source, pressure_convention_by_source]
+    blockers: []
     evidence: All 190 points and all 19 complete curves match bijectively with unit workbook scale; physical unit and pressure semantics remain unreviewed.
   - id: gumatov_1992
-    status: blocked
+    status: confirmed
     master_worksheet: Данные
     long_worksheet: ОГХ
     master_source: 1992_Гуматов
@@ -749,7 +855,7 @@ retention_reconstruction_rules:
     blocks:
       - {axis_row: 40, first_sample_row: 41, last_sample_row: 41, first_column: X, last_column: AG}
     parameter_block: null
-    blockers: [water_scale_by_source, mpa_label_meaning]
+    blockers: []
     evidence: All ten points reproduce the single complete wide curve with unit workbook scale; the case-sensitive mPa pressure label remains unresolved.
   - id: khaydapova_2001
     status: blocked
@@ -1035,7 +1141,7 @@ retention_reconstruction_rules:
     blockers: [unknown_water_basis, pressure_convention_by_source, retention_reconstruction]
     evidence: The complete 108-point multiset matches at unit workbook scale, but 14 cached long identifiers split 18 master curves and only one preserves a complete curve.
   - id: bolotov_2014
-    status: blocked
+    status: confirmed
     master_worksheet: Данные
     long_worksheet: ОГХ
     master_source: 2014_болотов
@@ -1050,7 +1156,7 @@ retention_reconstruction_rules:
     blocks:
       - {axis_row: 175, first_sample_row: 176, last_sample_row: 187, first_column: X, last_column: AK}
     parameter_block: null
-    blockers: [source_alias_review, water_scale_by_source, pressure_convention_by_source]
+    blockers: []
     evidence: All 168 axis positions, including the explicit null at pF 3.05 for sample 10, and all 12 sample curves match bijectively at unit workbook scale.
   - id: makarychev_2014_1
     status: blocked
@@ -1090,7 +1196,7 @@ retention_reconstruction_rules:
     blockers: [source_alias_review, water_scale_by_source, pressure_pgk_meaning]
     evidence: All 35 categorical PGK-axis observations and all seven populated curves match bijectively; rows 201-203 contain no retention values, and row 204 is already stored on the long-table scale.
   - id: makarychev_2014_3
-    status: blocked
+    status: confirmed
     master_worksheet: Данные
     long_worksheet: ОГХ
     master_source: 2014_макарычев-3
@@ -1105,8 +1211,8 @@ retention_reconstruction_rules:
     blocks:
       - {axis_row: 205, first_sample_row: 206, last_sample_row: 209, first_column: X, last_column: AK}
     parameter_block: null
-    blockers: [source_alias_review, water_scale_by_source, pressure_convention_by_source]
-    evidence: All 56 points and all four complete curves match bijectively at unit workbook scale; the source alias and physical semantics remain unreviewed.
+    blockers: []
+    evidence: All 56 points and all four complete curves match bijectively at unit workbook scale; physical semantics are reviewed against the primary paper and the sample identities use confirmed full-curve crosswalks.
   - id: panina_2015
     status: blocked
     master_worksheet: Данные
@@ -1174,7 +1280,7 @@ retention_reconstruction_rules:
     blockers: []
     evidence: All ten complete 13-point long curves match exactly one wide curve after the reviewed percent-to-fraction scale reversal.
   - id: makarychev_2018
-    status: blocked
+    status: confirmed
     master_worksheet: Данные
     long_worksheet: ОГХ
     master_source: 2018_макарычев
@@ -1189,8 +1295,8 @@ retention_reconstruction_rules:
     blocks:
       - {axis_row: 238, first_sample_row: 239, last_sample_row: 254, first_column: X, last_column: AC}
     parameter_block: null
-    blockers: [source_alias_review, water_scale_by_source, pressure_convention_by_source, retention_reconstruction]
-    evidence: All 96 points and all 16 complete curves match bijectively after multiplying wide water values by 100, but the cached identifiers use a permuted sample order and need reviewed crosswalks.
+    blockers: []
+    evidence: All 96 points and all 16 complete curves match bijectively after multiplying wide water values by 100, but the cached identifiers use a permuted sample order and are resolved by confirmed full-curve crosswalks.
   - id: moiseev_2018
     status: blocked
     master_worksheet: Данные

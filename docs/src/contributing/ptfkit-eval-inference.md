@@ -1,9 +1,9 @@
 # Strategy uncertainty: evidence and qualification
 
 Status: research and retraining infrastructure in progress, 2026-10-23.
-A low-level bounded conditional outer-rule risk API is implemented. No
-averaged-over-training selection-process CI is registered. An explicitly opted-in
-native conditional outer-rule inference policy is now available. The current
+Bounded conditional outer-rule risk is implemented through low-level and native
+opt-in APIs. Native independent-block training-law inference repeats the complete
+registered learned selector, with explicit training/failure targets. The current
 strategy artifact retains `not_estimated_crossfit_dependency`; the retraining
 artifact retains `not_estimated_retraining_sensitivity_only`.
 
@@ -175,3 +175,132 @@ or population-bound failure evidence. Eligible observations and full original
 sample/group coverage are verified before native inference. The generated
 `evaluation/examples/synthetic_conditional_risk/` population supplies actual
 IID draws with prior size/loss bounds; real-workbook assumptions remain unresolved.
+
+
+## Independent training-law blocks
+
+`independent_blocks_group_hoeffding_training_law_v1` now provides low-level
+average-training inference from disjoint independent training/test blocks. The
+complete derivation is in `evaluation/experiments/training_law_risk/README.md`.
+For every block, repeat the whole named learner on T training groups and use
+H independent test groups. Population bounds and value-independent role
+allocation remain explicit assumptions; data-derived tuning shared across blocks
+would invalidate the construction.
+
+Three concentration events bound successful-training loss mass, population
+group size and training success probability. Failed training contributes zero
+to the defined mass variable, while its test sample/group counts remain in the
+normalization. It is not assigned a zero model error. Success/failure, success-
+weighted population risk and successful-training mean risk are separate targets.
+An unconditional model-risk interval requires a prior total-learner assertion;
+observed success alone is insufficient. A contradicted assertion suppresses
+inference. Unknown successful-block test losses cannot become training failures.
+
+Exact multinomial experiments retain every block-count state and test joint
+unconditional coverage. Issuance of a successful-training risk interval and its
+joint error/issuance probability are reported separately, without nominal
+coverage claims conditional on issuance. Identity-only disjoint-block allocation
+and complete-selector reruns are implemented, with native policy schemas,
+portable block provenance and a separate simultaneous strategy family.
+This does not convert the existing overlapping-fold statistic into an IID
+training-risk estimator or transfer T-group risk to a larger final model.
+
+Conditional outer-rule validation now reconstructs the full original nested
+split and verifies every eligible in-domain pressure. Loss/fit metadata cannot
+hide coordinated role changes or interior-point removal. Out-of-domain pressure
+diagnostics do not change the registered loss target.
+
+
+The renewed online review is recorded in
+[the source review](ptfkit-eval-source-review.md). Published statistical results,
+hydraulic evaluation practices, model-specific errata and unavailable workbook
+measurement evidence remain distinct. Identity-only allocation assumes
+value-independent administrative identifiers; hashing a value-encoded identifier
+would not establish the required sampling law.
+
+
+Native `independent_training_risk` now allocates complete original-group blocks,
+repeats inner selection/refitting and preserves every attempted training. Its
+q-policy concentration allocation includes failed strategies without reallocating
+their budget. All block roles, inner scores, fits, predictions and test losses
+are retained with original forecast inputs. A test coverage failure suppresses
+inference; it cannot become a training failure. Global source/profile fallback
+is frozen before allocation. Parent CV choices/fits do not enter this learner.
+
+The public supplied-forecast adapter uses the same selector core and leaves
+scientific forecast provenance with its caller. Native execution additionally
+checks registered member provenance. The implemented training procedure has no
+learned preprocessing; reference approximation fits and empirical-domain
+reporting remain separate diagnostics. Independent administrative IDs and prior
+population bounds remain assumptions, not consequences of successful execution.
+The twelve-group example uses only two independent blocks, giving uninformative
+bounds. It is a replay/provenance demonstration. Exact kernel calibration and
+selector leakage/oracle tests provide complementary evidence; real-workbook
+coverage and scientific compatibility are still unestablished.
+
+
+The exact `evaluation/experiments/selector_training_law/` calibration now pushes
+all ordered training/test state triples through the complete public selector.
+For the informative four-state population, the T=2 switch learner has success
+23/32, risk mass 11/256 and successful-training sample risk 11/184. The 64
+actual local cases collapse to six sufficient states and 6,188 exact 12-block
+count states. This particular learner's permutation invariance justifies the
+convolution; it is not assumed for arbitrary tuned algorithms. All actual
+input/refit/failure traces and exact probabilities are retained. No failed
+training is dropped or assigned a zero-error model.
+
+
+Paired independent-block inference now targets the left-minus-right sample-risk
+difference on joint training success, retaining asymmetric fit failures. It
+maps complete per-model sample losses to a bounded shifted difference and uses
+the qualified three-event kernel, then transforms intervals algebraically.
+It never subtracts marginal successful-training risk intervals with different
+conditioning events. The exact informative-size selector population has joint
+success 23/32, signed risk mass 23/512 and successful difference 1/16, versus
+1559/23552 when subtracting marginal successful-training risks. Native paired
+registration and full two-rule block provenance are integrated. This comparison
+has its own confidence allocation; no joint coverage with separate policy
+families is implied. The derivation and exact calibration are recorded in
+`evaluation/experiments/selector_training_law/paired-risk.md`.
+
+
+The finite-grid learned blend uses the same complete training/assessment and
+independent/paired risk paths as other registered two-curve learners. Its exact
+mathematical law is checked separately in `evaluation/experiments/blend_training_law/`.
+On a five-pressure finite support, mismatch loss is 1/64. All normalized block
+statistics match the checked switch law, and every risk endpoint scales by the
+binary factor 1/8. The informative targets are success=23/32, mass=11/2048 and
+successful-training sample risk=11/1472. Actual blend refits, failed identification
+and complete original-group roles are retained. No endpoint parameter interval,
+physical monotonicity guarantee or real-workbook population qualification follows.
+
+
+Point assessment now separately registers sample-balanced MAE/MSE of the same
+log-loss-trained complete learner. A sample is scored only on its complete
+original fixed-roster common grid inside the selection domain, with equal
+weights within that sample. Missing selected predictions retain the full test
+roster and suppress inference; they never become training failures. The family
+budget counts all registered strategy/metric pairs, including failed learners.
+The independent-block kernel applies to their declared bounded nonnegative
+sample scores without changing its three-event proof or assumptions.
+
+For MSE, monotonic square-root transformation yields pooled RMSE intervals:
+sqrt(E_T[R_MSE(T) | training success]); it is not
+E_T[sqrt(R_MSE(T)) | training success]. The unconditional counterpart requires
+prior totality. MAE receives no square-root transformation. Paired point-risk
+comparisons target differences of the registered MAE/MSE risks on joint success,
+not differences of RMSE or of differently conditioned marginal means. Exact
+finite-population point calibration accompanies the blend experiment; its
+informative truths are MAE=11/460 and MSE=11/1840 on successful training.
+
+The registered nonlinear pressure sigmoid is another finite training-only grid
+learner. Its independent mathematical control uses two fixed atomics 1 and 0,
+center 10 kPa and steepness ln(2) or 2*ln(2). Their three-pressure rational curves
+have symmetric mismatch loss 2/225 under weights (1/4,1/2,1/4). All 8/64 actual
+training/test triples verify the sample-majority rule and retained identification
+failures before the 91/6,188 twelve-block count-state convolution. A prior 1/64
+bound safely exceeds all support losses. Informative truths are success=23/32,
+mass=11/3600 and successful-training risk=22/5175. Exact probability coverage is
+checked against independently computed binomial success tails; model losses and
+CI endpoints use explicitly tolerated floating arithmetic. Neither center nor
+steepness receives a parameter confidence interval from that calculation.
