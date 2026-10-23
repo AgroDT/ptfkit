@@ -6,7 +6,7 @@
   "profile_source_count": 27,
   "unaudited_source_count": 0,
   "reconstructable_rule_count": 21,
-  "normalization_ready_rule_count": 1,
+  "normalization_ready_rule_count": 6,
   "unaudited_sources": [],
   "rules": [
     {
@@ -213,7 +213,7 @@
     },
     {
       "rule_id": "gumatov_1991",
-      "rule_status": "blocked",
+      "rule_status": "confirmed",
       "master_source": "1991_Гуматов",
       "long_source": "1991_Гуматов",
       "water_scale_status": "confirmed",
@@ -249,14 +249,14 @@
       "parameter_multiset_status": "not_applicable",
       "parameter_identity_status": "not_applicable",
       "parameter_reconstructable": null,
-      "confirmed_crosswalk_count": 0,
-      "matching_confirmed_crosswalk_count": 0,
+      "confirmed_crosswalk_count": 19,
+      "matching_confirmed_crosswalk_count": 19,
       "contradictory_confirmed_crosswalk_count": 0,
       "point_multiset_status": "exact",
       "identity_status": "exact_unique",
       "observation_reconstructable": true,
       "reconstructable": true,
-      "normalization_ready": false,
+      "normalization_ready": true,
       "inferred_crosswalks": [
         {
           "raw_sample_id": "1991_Гуматов_1",
@@ -373,14 +373,11 @@
           "canonical_sample_number": 9
         }
       ],
-      "blockers": [
-        "water_scale_by_source",
-        "pressure_convention_by_source"
-      ]
+      "blockers": []
     },
     {
       "rule_id": "gumatov_1992",
-      "rule_status": "blocked",
+      "rule_status": "confirmed",
       "master_source": "1992_Гуматов",
       "long_source": "1992_Гуматов",
       "water_scale_status": "confirmed",
@@ -416,14 +413,14 @@
       "parameter_multiset_status": "not_applicable",
       "parameter_identity_status": "not_applicable",
       "parameter_reconstructable": null,
-      "confirmed_crosswalk_count": 0,
-      "matching_confirmed_crosswalk_count": 0,
+      "confirmed_crosswalk_count": 1,
+      "matching_confirmed_crosswalk_count": 1,
       "contradictory_confirmed_crosswalk_count": 0,
       "point_multiset_status": "exact",
       "identity_status": "exact_unique",
       "observation_reconstructable": true,
       "reconstructable": true,
-      "normalization_ready": false,
+      "normalization_ready": true,
       "inferred_crosswalks": [
         {
           "raw_sample_id": "1992_Гуматов_1",
@@ -432,10 +429,7 @@
           "canonical_sample_number": 1
         }
       ],
-      "blockers": [
-        "water_scale_by_source",
-        "mpa_label_meaning"
-      ]
+      "blockers": []
     },
     {
       "rule_id": "khaydapova_2001",
@@ -1464,7 +1458,7 @@
     },
     {
       "rule_id": "bolotov_2014",
-      "rule_status": "blocked",
+      "rule_status": "confirmed",
       "master_source": "2014_болотов",
       "long_source": "2014_Болотов",
       "water_scale_status": "confirmed",
@@ -1500,14 +1494,14 @@
       "parameter_multiset_status": "not_applicable",
       "parameter_identity_status": "not_applicable",
       "parameter_reconstructable": null,
-      "confirmed_crosswalk_count": 0,
-      "matching_confirmed_crosswalk_count": 0,
+      "confirmed_crosswalk_count": 12,
+      "matching_confirmed_crosswalk_count": 12,
       "contradictory_confirmed_crosswalk_count": 0,
       "point_multiset_status": "exact",
       "identity_status": "exact_unique",
       "observation_reconstructable": true,
       "reconstructable": true,
-      "normalization_ready": false,
+      "normalization_ready": true,
       "inferred_crosswalks": [
         {
           "raw_sample_id": "2014_Болотов_1",
@@ -1582,11 +1576,7 @@
           "canonical_sample_number": 3
         }
       ],
-      "blockers": [
-        "source_alias_review",
-        "water_scale_by_source",
-        "pressure_convention_by_source"
-      ]
+      "blockers": []
     },
     {
       "rule_id": "makarychev_2014_1",
@@ -1770,7 +1760,7 @@
     },
     {
       "rule_id": "makarychev_2014_3",
-      "rule_status": "blocked",
+      "rule_status": "confirmed",
       "master_source": "2014_макарычев-3",
       "long_source": "2014_Макарычев-3",
       "water_scale_status": "confirmed",
@@ -1806,14 +1796,14 @@
       "parameter_multiset_status": "not_applicable",
       "parameter_identity_status": "not_applicable",
       "parameter_reconstructable": null,
-      "confirmed_crosswalk_count": 0,
-      "matching_confirmed_crosswalk_count": 0,
+      "confirmed_crosswalk_count": 4,
+      "matching_confirmed_crosswalk_count": 4,
       "contradictory_confirmed_crosswalk_count": 0,
       "point_multiset_status": "exact",
       "identity_status": "exact_unique",
       "observation_reconstructable": true,
       "reconstructable": true,
-      "normalization_ready": false,
+      "normalization_ready": true,
       "inferred_crosswalks": [
         {
           "raw_sample_id": "2014_Макарычев-3_1",
@@ -1840,11 +1830,7 @@
           "canonical_sample_number": 4
         }
       ],
-      "blockers": [
-        "source_alias_review",
-        "water_scale_by_source",
-        "pressure_convention_by_source"
-      ]
+      "blockers": []
     },
     {
       "rule_id": "panina_2015",
@@ -2085,7 +2071,7 @@
     },
     {
       "rule_id": "makarychev_2018",
-      "rule_status": "blocked",
+      "rule_status": "confirmed",
       "master_source": "2018_макарычев",
       "long_source": "2018_Макарычев",
       "water_scale_status": "confirmed",
@@ -2121,14 +2107,14 @@
       "parameter_multiset_status": "not_applicable",
       "parameter_identity_status": "not_applicable",
       "parameter_reconstructable": null,
-      "confirmed_crosswalk_count": 0,
-      "matching_confirmed_crosswalk_count": 0,
+      "confirmed_crosswalk_count": 16,
+      "matching_confirmed_crosswalk_count": 16,
       "contradictory_confirmed_crosswalk_count": 0,
       "point_multiset_status": "exact",
       "identity_status": "exact_unique",
       "observation_reconstructable": true,
       "reconstructable": true,
-      "normalization_ready": false,
+      "normalization_ready": true,
       "inferred_crosswalks": [
         {
           "raw_sample_id": "2018_Макарычев_1",
@@ -2227,12 +2213,7 @@
           "canonical_sample_number": 10
         }
       ],
-      "blockers": [
-        "source_alias_review",
-        "water_scale_by_source",
-        "pressure_convention_by_source",
-        "retention_reconstruction"
-      ]
+      "blockers": []
     },
     {
       "rule_id": "moiseev_2018",

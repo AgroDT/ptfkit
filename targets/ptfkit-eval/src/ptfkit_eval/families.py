@@ -10,7 +10,8 @@ from typing import TYPE_CHECKING
 
 import numpy as np
 
-from .adapters import evaluate_clapp1978_h_theta
+from .adapters import CLAPP1978_MAXIMUM_B, evaluate_clapp1978_h_theta
+from .numerics import log_positive_product
 
 
 if TYPE_CHECKING:
@@ -142,21 +143,7 @@ def evaluate_retention_family(
         message = 'Family water contents must satisfy 0 <= theta_r < theta_s <= 1.'
         raise RetentionFamilyError(message)
     if family_id == 'clapp1978_gradual_air_entry_v1':
-        factor = 1 / 0.0980665
-        return np.array(
-            [
-                evaluate_clapp1978_h_theta(
-                    {
-                        'b': parameters['b'],
-                        'saturated_water_content': theta_s,
-                        'saturation_suction': parameters['saturation_suction'] * factor,
-                    },
-                    float(value) * factor,
-                )
-                for value in axis
-            ],
-            dtype=np.float64,
-        )
+        return _evaluate_clapp_family(parameters, axis)
     if family_id == 'brooks_corey_v1':
         air_entry, shape = parameters['air_entry'], parameters['lambda']
         if air_entry <= 0 or shape <= 0:
@@ -173,6 +160,42 @@ def evaluate_retention_family(
         m = 1 - 1 / n if family_id == 'van_genuchten_mualem_v1' else 1.0
         effective = np.ones_like(axis)
         positive = axis > 0
-        power_log = n * (math.log(alpha) + np.log(axis[positive]))
-        effective[positive] = np.exp(-m * np.logaddexp(0.0, power_log))
+        with np.errstate(over='ignore', under='ignore'):
+            power_log = n * np.fromiter(
+                (log_positive_product(alpha, float(head)) for head in axis[positive]),
+                dtype=np.float64,
+            )
+            effective[positive] = np.exp(-m * np.logaddexp(0.0, power_log))
     return np.asarray(theta_r + (theta_s - theta_r) * effective, dtype=np.float64)
+
+
+def _evaluate_clapp_family(
+    parameters: Mapping[str, float], axis: NDArray[np.float64]
+) -> NDArray[np.float64]:
+    theta_s = parameters['theta_s']
+    if (
+        not 0 < parameters['b'] < CLAPP1978_MAXIMUM_B
+        or theta_s >= 1
+        or parameters['saturation_suction'] <= 0
+    ):
+        message = (
+            'Clapp gradual air entry requires 0 < b < 11.5, 0 < theta_s < 1 '
+            'and positive saturation suction.'
+        )
+        raise RetentionFamilyError(message)
+    # The curve is homogeneous in pressure: keeping both values in kPa
+    # avoids an unnecessary potentially overflowing conversion to cm.
+    return np.array(
+        [
+            evaluate_clapp1978_h_theta(
+                {
+                    'b': parameters['b'],
+                    'saturated_water_content': theta_s,
+                    'saturation_suction': parameters['saturation_suction'],
+                },
+                float(value),
+            )
+            for value in axis
+        ],
+        dtype=np.float64,
+    )

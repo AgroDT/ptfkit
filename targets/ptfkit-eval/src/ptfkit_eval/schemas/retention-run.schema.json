@@ -16,9 +16,422 @@
     "paired_comparisons": {"type": "array", "items": {"$ref": "#/$defs/pairedComparison"}},
     "learned_selection": {"$ref": "#/$defs/learnedSelection"},
     "selection_resampling": {"type": "array", "items": {"$ref": "#/$defs/selectionResampling"}},
-    "conditional_outer_risk": {"type": "array", "minItems": 1, "maxItems": 4, "items": {"$ref": "#/$defs/conditionalOuterRisk"}}
+    "conditional_outer_risk": {"type": "array", "minItems": 1, "maxItems": 4, "items": {"$ref": "#/$defs/conditionalOuterRisk"}},
+    "independent_training_risk": {"type": "array", "minItems": 1, "maxItems": 2, "items": {"$ref": "#/$defs/independentTrainingRisk"}},
+    "paired_training_risk": {"$ref": "#/$defs/pairedTrainingRisk"},
+    "point_training_risk": {"type": "array", "minItems": 1, "maxItems": 4, "items": {"$ref": "#/$defs/pointTrainingRisk"}}
   },
   "$defs": {
+    "sigmoidGrid": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "id",
+        "left_candidate_id",
+        "right_candidate_id",
+        "parameter_grid",
+        "minimum_training_groups",
+        "minimum_loss_gap"
+      ],
+      "properties": {
+        "method": {
+          "const": "training_grid_log_pressure_sigmoid_v1"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "left_candidate_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "right_candidate_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parameter_grid": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          }
+        },
+        "minimum_training_groups": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "minimum_loss_gap": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      }
+    },
+    "blendGrid": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "id",
+        "left_candidate_id",
+        "right_candidate_id",
+        "transform",
+        "weighting",
+        "minimum_training_groups",
+        "minimum_loss_gap",
+        "interval_grid_kpa"
+      ],
+      "properties": {
+        "method": {
+          "const": "training_grid_blend_interval_v1"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "left_candidate_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "right_candidate_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "transform": {
+          "enum": [
+            "linear",
+            "log10"
+          ]
+        },
+        "weighting": {
+          "enum": [
+            "linear",
+            "smoothstep"
+          ]
+        },
+        "minimum_training_groups": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "minimum_loss_gap": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "interval_grid_kpa": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          }
+        }
+      }
+    },
+    "pairedTrainingRisk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "seed",
+        "population_id",
+        "learner_id",
+        "grouping",
+        "maximum_sample_loss",
+        "minimum_group_size",
+        "maximum_group_size",
+        "training_groups_per_block",
+        "test_groups_per_block",
+        "n_blocks",
+        "total_learner",
+        "confidence_level",
+        "assumptions",
+        "method",
+        "left_strategy",
+        "right_strategy",
+        "left_learner_id",
+        "right_learner_id"
+      ],
+      "properties": {
+        "point_metric": {"enum": ["mae", "mse"]},
+        "seed": {
+          "type": "integer"
+        },
+        "population_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "learner_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grouping": {
+          "enum": [
+            "source",
+            "profile"
+          ]
+        },
+        "maximum_sample_loss": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "minimum_group_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "maximum_group_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "training_groups_per_block": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "test_groups_per_block": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "n_blocks": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 9007199254740992
+        },
+        "total_learner": {
+          "type": "boolean"
+        },
+        "confidence_level": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "exclusiveMaximum": 1
+        },
+        "assumptions": {
+          "const": "iid_groups_disjoint_blocks_training_only_failure_population_bounds"
+        },
+        "method": {
+          "const": "independent_blocks_affine_paired_training_law_v1"
+        },
+        "left_strategy": {
+          "enum": [
+            "atomic",
+            "ensemble"
+          ]
+        },
+        "right_strategy": {
+          "enum": [
+            "atomic",
+            "ensemble"
+          ]
+        },
+        "left_learner_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "right_learner_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "pointTrainingRisk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "strategy",
+        "seed",
+        "population_id",
+        "learner_id",
+        "grouping",
+        "maximum_sample_loss",
+        "minimum_group_size",
+        "maximum_group_size",
+        "training_groups_per_block",
+        "test_groups_per_block",
+        "n_blocks",
+        "total_learner",
+        "confidence_level",
+        "assumptions",
+        "method",
+        "point_metric"
+      ],
+      "properties": {
+        "strategy": {
+          "enum": [
+            "atomic",
+            "ensemble"
+          ]
+        },
+        "seed": {
+          "type": "integer"
+        },
+        "population_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "learner_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grouping": {
+          "enum": [
+            "source",
+            "profile"
+          ]
+        },
+        "maximum_sample_loss": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "minimum_group_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "maximum_group_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "training_groups_per_block": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "test_groups_per_block": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "n_blocks": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 9007199254740992
+        },
+        "total_learner": {
+          "type": "boolean"
+        },
+        "confidence_level": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "exclusiveMaximum": 1
+        },
+        "assumptions": {
+          "const": "iid_groups_disjoint_blocks_training_only_failure_population_bounds"
+        },
+        "method": {
+          "const": "independent_blocks_group_hoeffding_training_law_v1"
+        },
+        "point_metric": {
+          "enum": [
+            "mae",
+            "mse"
+          ]
+        }
+      }
+    },
+    "independentTrainingRisk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "strategy",
+        "seed",
+        "population_id",
+        "learner_id",
+        "grouping",
+        "maximum_sample_loss",
+        "minimum_group_size",
+        "maximum_group_size",
+        "training_groups_per_block",
+        "test_groups_per_block",
+        "n_blocks",
+        "total_learner",
+        "confidence_level",
+        "assumptions",
+        "method"
+      ],
+      "properties": {
+        "strategy": {
+          "enum": [
+            "atomic",
+            "ensemble"
+          ]
+        },
+        "seed": {
+          "type": "integer"
+        },
+        "population_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "learner_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grouping": {
+          "enum": [
+            "source",
+            "profile"
+          ]
+        },
+        "maximum_sample_loss": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "minimum_group_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "maximum_group_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "training_groups_per_block": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "test_groups_per_block": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "n_blocks": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 9007199254740992
+        },
+        "total_learner": {
+          "type": "boolean"
+        },
+        "confidence_level": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "exclusiveMaximum": 1
+        },
+        "assumptions": {
+          "const": "iid_groups_disjoint_blocks_training_only_failure_population_bounds"
+        },
+        "method": {
+          "const": "independent_blocks_group_hoeffding_training_law_v1"
+        }
+      }
+    },
     "conditionalOuterRisk": {
       "type": "object",
       "additionalProperties": false,
@@ -103,7 +516,7 @@
         "method": {"enum": ["nested_convex_pair_selection_v1", "nested_two_curve_selection_v1"]},
         "fixed_selection": {"$ref": "#/$defs/selection"},
         "ensembles": {"type": "array", "minItems": 1, "items": {"oneOf": [
-          {"$ref": "#/$defs/convexPair"}, {"$ref": "#/$defs/hardSwitchGrid"}
+          {"$ref": "#/$defs/convexPair"}, {"$ref": "#/$defs/hardSwitchGrid"}, {"$ref": "#/$defs/blendGrid"}, {"$ref": "#/$defs/sigmoidGrid"}
         ]}}
       }
     },

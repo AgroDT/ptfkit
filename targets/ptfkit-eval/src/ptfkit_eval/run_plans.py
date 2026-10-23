@@ -4,13 +4,14 @@ from __future__ import annotations
 
 import hashlib
 from collections.abc import Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import TYPE_CHECKING, Literal, cast
 
 from ptfkit import get_manifest
 
 from .applicability import EmpiricalDomainPlan, validate_empirical_domain_roster
+from .blend_grid import BlendGridPlan
 from .canonical import CanonicalRetentionDataset, load_retention_dataset
 from .conformal import GroupedConformalPlan, validate_prediction_interval_roster
 from .contracts import (
@@ -38,10 +39,21 @@ from .learned import ConvexPairPlan, LearnedSelectionPlan, validate_learned_sele
 from .losses import LogPressureLossPlan
 from .nested_applicability import NestedDomainPlan
 from .paired import PairedComparisonPlan
+from .point_losses import PointErrorLossPlan
 from .resampling import SelectionResamplingPlan
 from .risk_bounds import ConditionalOuterRiskPlan
 from .selection import FixedSelectionPlan
 from .selection_risk import SelectionRiskPlan, validate_selection_risk_policies
+from .sigmoid_grid import SigmoidGridPlan
+from .training_blocks import allocate_independent_training_blocks
+from .training_pairs import PairedTrainingRiskPlan
+from .training_risk import IndependentTrainingRiskPlan
+from .training_selection import (
+    SelectionPairedTrainingRiskPlan,
+    SelectionTrainingRiskPlan,
+    validate_independent_selection_policies,
+    validate_point_training_policies,
+)
 from .uncertainty import ClusterBootstrapPlan
 
 
@@ -68,6 +80,9 @@ class RetentionRunPlan:
     learned_selection: LearnedSelectionPlan | None = None
     selection_resampling: tuple[SelectionResamplingPlan, ...] = ()
     conditional_outer_risk: tuple[SelectionRiskPlan, ...] = ()
+    independent_training_risk: tuple[SelectionTrainingRiskPlan, ...] = ()
+    paired_training_risk: SelectionPairedTrainingRiskPlan | None = None
+    point_training_risk: tuple[SelectionTrainingRiskPlan, ...] = ()
 
 
 def load_retention_run_plan(
@@ -138,6 +153,9 @@ def load_retention_run_plan(
         learned_selection,
         _selection_resampling_plans(document),
         _conditional_risk_plans(document, selection, learned_selection, dataset),
+        _training_risk_plans(document, learned_selection, dataset),
+        _paired_training_risk_plan(document, learned_selection, dataset),
+        _point_training_risk_plans(document, learned_selection, dataset),
     )
     for policy in result.selection_resampling:
         if (policy.protocol == 'fixed' and result.selection is None) or (
@@ -148,6 +166,116 @@ def load_retention_run_plan(
             )
             raise EvaluationDocumentError(message)
     return result
+
+
+def _point_training_risk_plans(
+    root: Mapping[str, object],
+    learned: LearnedSelectionPlan | None,
+    dataset: CanonicalRetentionDataset,
+) -> tuple[SelectionTrainingRiskPlan, ...]:
+    policies = tuple(
+        SelectionTrainingRiskPlan(
+            strategy=cast("Literal['atomic', 'ensemble']", item['strategy']),
+            seed=cast('int', item['seed']),
+            bounds=_assessment_risk_bounds(item, learned, dataset),
+        )
+        for item in object_records(root.get('point_training_risk', ()))
+    )
+    validate_point_training_policies(policies)
+    return policies
+
+
+def _assessment_risk_bounds(
+    item: Mapping[str, object],
+    learned: LearnedSelectionPlan | None,
+    dataset: CanonicalRetentionDataset,
+) -> IndependentTrainingRiskPlan:
+    bounds = _training_risk_bounds(item, learned, dataset)
+    return (
+        replace(
+            bounds,
+            loss=PointErrorLossPlan(
+                selection_loss=cast('LogPressureLossPlan', bounds.loss),
+                metric=cast("Literal['mae', 'mse']", item['point_metric']),
+            ),
+        )
+        if 'point_metric' in item
+        else bounds
+    )
+
+
+def _training_risk_plans(
+    root: Mapping[str, object],
+    learned: LearnedSelectionPlan | None,
+    dataset: CanonicalRetentionDataset,
+) -> tuple[SelectionTrainingRiskPlan, ...]:
+    policies = []
+    for item in object_records(root.get('independent_training_risk', ())):
+        bounds = _training_risk_bounds(item, learned, dataset)
+        policy = SelectionTrainingRiskPlan(
+            strategy=cast("Literal['atomic', 'ensemble']", item['strategy']),
+            seed=cast('int', item['seed']),
+            bounds=bounds,
+        )
+        policies.append(policy)
+    result = tuple(policies)
+    validate_independent_selection_policies(result)
+    return result
+
+
+def _training_risk_bounds(
+    item: Mapping[str, object],
+    learned: LearnedSelectionPlan | None,
+    dataset: CanonicalRetentionDataset,
+) -> IndependentTrainingRiskPlan:
+    if learned is None:
+        message = 'Independent training risk requires its registered learned selector.'
+        raise EvaluationDocumentError(message)
+    roster = tuple(
+        GroupedSample(str(s['source_id']), str(s['sample_id']), cast('str | None', s['profile_id']))
+        for s in object_records(dataset.document['samples'])
+    )
+    resolved = build_nested_group_folds(roster, plan=learned.fixed.folds).effective_grouping
+    if item['grouping'] != resolved:
+        message = 'Independent training risk must use the resolved original grouping.'
+        raise EvaluationDocumentError(message)
+    bounds = IndependentTrainingRiskPlan(
+        population_id=cast('str', item['population_id']),
+        learner_id=cast('str', item['learner_id']),
+        grouping=cast("Literal['source', 'profile']", item['grouping']),
+        loss=learned.fixed.loss,
+        maximum_sample_loss=cast('float', item['maximum_sample_loss']),
+        minimum_group_size=cast('int', item['minimum_group_size']),
+        maximum_group_size=cast('int', item['maximum_group_size']),
+        training_groups_per_block=cast('int', item['training_groups_per_block']),
+        test_groups_per_block=cast('int', item['test_groups_per_block']),
+        n_blocks=cast('int', item['n_blocks']),
+        total_learner=cast('bool', item['total_learner']),
+        confidence_level=cast('float', item['confidence_level']),
+    )
+    allocate_independent_training_blocks(roster, plan=bounds, seed=cast('int', item['seed']))
+    return bounds
+
+
+def _paired_training_risk_plan(
+    root: Mapping[str, object],
+    learned: LearnedSelectionPlan | None,
+    dataset: CanonicalRetentionDataset,
+) -> SelectionPairedTrainingRiskPlan | None:
+    value = root.get('paired_training_risk')
+    if value is None:
+        return None
+    item = object_mapping(value)
+    return SelectionPairedTrainingRiskPlan(
+        bounds=PairedTrainingRiskPlan(
+            bounds=_assessment_risk_bounds(item, learned, dataset),
+            left_learner_id=cast('str', item['left_learner_id']),
+            right_learner_id=cast('str', item['right_learner_id']),
+        ),
+        left_strategy=cast("Literal['atomic', 'ensemble']", item['left_strategy']),
+        right_strategy=cast("Literal['atomic', 'ensemble']", item['right_strategy']),
+        seed=cast('int', item['seed']),
+    )
 
 
 def _conditional_risk_plans(
@@ -248,7 +376,34 @@ def _learned_selection_plan(
     return plan
 
 
-def _trainable_ensemble(item: Mapping[str, object]) -> ConvexPairPlan | HardSwitchGridPlan:
+def _trainable_ensemble(
+    item: Mapping[str, object],
+) -> ConvexPairPlan | HardSwitchGridPlan | BlendGridPlan | SigmoidGridPlan:
+    if item['method'] == 'training_grid_log_pressure_sigmoid_v1':
+        return SigmoidGridPlan(
+            id=cast('str', item['id']),
+            left_candidate_id=cast('str', item['left_candidate_id']),
+            right_candidate_id=cast('str', item['right_candidate_id']),
+            parameter_grid=tuple(
+                (pair[0], pair[1]) for pair in cast('list[list[float]]', item['parameter_grid'])
+            ),
+            minimum_training_groups=cast('int', item['minimum_training_groups']),
+            minimum_loss_gap=cast('float', item['minimum_loss_gap']),
+        )
+    if item['method'] == 'training_grid_blend_interval_v1':
+        return BlendGridPlan(
+            id=cast('str', item['id']),
+            left_candidate_id=cast('str', item['left_candidate_id']),
+            right_candidate_id=cast('str', item['right_candidate_id']),
+            interval_grid_kpa=tuple(
+                (bounds[0], bounds[1])
+                for bounds in cast('list[list[float]]', item['interval_grid_kpa'])
+            ),
+            transform=cast("Literal['linear', 'log10']", item['transform']),
+            weighting=cast("Literal['linear', 'smoothstep']", item['weighting']),
+            minimum_training_groups=cast('int', item['minimum_training_groups']),
+            minimum_loss_gap=cast('float', item['minimum_loss_gap']),
+        )
     if item['method'] == 'training_grid_hard_switch_v1':
         return HardSwitchGridPlan(
             id=cast('str', item['id']),

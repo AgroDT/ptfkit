@@ -24,7 +24,14 @@ from .folds import GroupedSample
 from .input_bindings import RunInputTrace, bind_retention_inputs
 from .learned import LearnedNestedSelection, select_learned_retention_candidates
 from .learned_applicability import diagnose_learned_applicability
-from .learned_seams import LearnedSwitchSeam, diagnose_learned_switch_seams
+from .learned_seams import (
+    LearnedBlendEndpoint,
+    LearnedSigmoidCenter,
+    LearnedSwitchSeam,
+    diagnose_learned_blend_endpoints,
+    diagnose_learned_sigmoid_centers,
+    diagnose_learned_switch_seams,
+)
 from .metrics import RetentionComparison
 from .nested_applicability import NestedApplicabilityResult, diagnose_nested_applicability
 from .paired import PairedRetentionBootstrap, compare_retention_run_pairs
@@ -35,6 +42,14 @@ from .seams import CompositeSeamDiagnostic, diagnose_composite_seams
 from .selection import FixedNestedSelection, select_fixed_retention_candidates
 from .selection_risk import SelectionConditionalRisk, assess_selection_conditional_risks
 from .strategy_assessment import SelectionStrategyAssessment, assess_selection_strategies
+from .training_selection import (
+    IndependentSelectionTrainingRisk,
+    PairedSelectionTrainingRisk,
+    PointSelectionTrainingRisk,
+    assess_independent_selection_family,
+    assess_paired_selection_training,
+    assess_point_selection_family,
+)
 from .uncertainty import RetentionBootstrapResult, bootstrap_retention_errors
 
 
@@ -153,10 +168,15 @@ class RetentionRunResult:
     learned_selection: LearnedNestedSelection | None = None
     learned_applicability: NestedApplicabilityResult | None = None
     learned_seams: tuple[LearnedSwitchSeam, ...] = ()
+    learned_blend_endpoints: tuple[LearnedBlendEndpoint, ...] = ()
     selection_quality: tuple[SelectionCurveQuality, ...] = ()
     strategy_assessments: tuple[SelectionStrategyAssessment, ...] = ()
     selection_resampling: tuple[SelectionResamplingResult, ...] = ()
     conditional_outer_risk: tuple[SelectionConditionalRisk, ...] = ()
+    independent_training_risk: tuple[IndependentSelectionTrainingRisk, ...] = ()
+    paired_training_risk: PairedSelectionTrainingRisk | None = None
+    point_training_risk: tuple[PointSelectionTrainingRisk, ...] = ()
+    learned_sigmoid_centers: tuple[LearnedSigmoidCenter, ...] = ()
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -258,7 +278,12 @@ def execute_retention_run(plan: RetentionRunPlan) -> RetentionRunResult:
                 result, plan=plan.learned_selection
             ),
         )
-        result = replace(result, learned_seams=diagnose_learned_switch_seams(result))
+        result = replace(
+            result,
+            learned_seams=diagnose_learned_switch_seams(result),
+            learned_blend_endpoints=diagnose_learned_blend_endpoints(result),
+            learned_sigmoid_centers=diagnose_learned_sigmoid_centers(result),
+        )
         if plan.learned_selection.empirical_domains is not None:
             result = replace(
                 result,
@@ -273,6 +298,21 @@ def execute_retention_run(plan: RetentionRunPlan) -> RetentionRunResult:
         conditional_outer_risk=assess_selection_conditional_risks(
             result, policies=plan.conditional_outer_risk
         ),
+        point_training_risk=assess_point_selection_family(
+            result, policies=plan.point_training_risk
+        ),
+        independent_training_risk=assess_independent_selection_family(
+            result, policies=plan.independent_training_risk
+        ),
+        paired_training_risk=assess_paired_selection_training(
+            result,
+            plan=plan.paired_training_risk.bounds,
+            left_strategy=plan.paired_training_risk.left_strategy,
+            right_strategy=plan.paired_training_risk.right_strategy,
+            seed=plan.paired_training_risk.seed,
+        )
+        if plan.paired_training_risk is not None
+        else None,
         selection_resampling=tuple(
             resample_selection_procedure(result, plan=policy)
             for policy in plan.selection_resampling

@@ -16,13 +16,17 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import TYPE_CHECKING
 
+from .blend_grid import BlendGridFit
 from .documents import EvaluationDocumentError, canonical_json, document_hash, object_mapping, plain
 from .hard_switch import HardSwitchGridFit
+from .point_losses import PointErrorLossPlan
 from .quality import diagnose_retention_run
+from .sigmoid_grid import SigmoidGridFit
 
 
 if TYPE_CHECKING:
     from .nested_applicability import NestedApplicabilityResult
+    from .risk_bounds import BoundedRiskInterval
     from .runner import RetentionRunResult
     from .strategy_assessment import OuterStrategySummary
 
@@ -54,10 +58,15 @@ _OPTIONAL_RUN_FILES = frozenset(
         'learned-selection.json',
         'learned-applicability.json',
         'learned-seams.json',
+        'learned-blend-endpoints.json',
+        'learned-sigmoid-centers.json',
         'selection-curve-quality.json',
         'strategy-assessment.json',
         'selection-resampling.json',
         'conditional-outer-risk.json',
+        'independent-training-risk.json',
+        'paired-training-risk.json',
+        'point-training-risk.json',
     }
 )
 
@@ -199,10 +208,15 @@ def _payloads(result: RetentionRunResult) -> dict[str, bytes]:
         'learned-selection.json': result.learned_selection,
         'learned-applicability.json': result.learned_applicability,
         'learned-seams.json': result.learned_seams,
+        'learned-blend-endpoints.json': result.learned_blend_endpoints,
+        'learned-sigmoid-centers.json': result.learned_sigmoid_centers,
         'selection-curve-quality.json': result.selection_quality,
         'strategy-assessment.json': result.strategy_assessments,
         'selection-resampling.json': result.selection_resampling,
         'conditional-outer-risk.json': result.conditional_outer_risk,
+        'independent-training-risk.json': result.independent_training_risk,
+        'paired-training-risk.json': result.paired_training_risk,
+        'point-training-risk.json': result.point_training_risk,
     }
     payloads.update(
         {name: canonical_json(artifact_value(value)) for name, value in optional.items() if value}
@@ -328,10 +342,27 @@ def _report(result: RetentionRunResult) -> str:
     lines.extend(_paired_comparison_report(result))
     lines.extend(_learned_selection_report(result))
     lines.extend(_learned_seam_report(result))
+    lines.extend(_learned_blend_report(result))
+    if result.learned_sigmoid_centers:
+        available = sum(p.status == 'computed' for p in result.learned_sigmoid_centers)
+        lines.extend(
+            [
+                '',
+                '## Locked sigmoid centers',
+                '',
+                'Both registered members receive weight 1/2 at the trained center.',
+                'Center forecasts use input traces without reading observations or refitting.',
+                f'Available centers: {available}/{len(result.learned_sigmoid_centers)}.',
+                '',
+            ]
+        )
     lines.extend(_selection_quality_report(result))
     lines.extend(_strategy_assessment_report(result))
     lines.extend(_selection_resampling_report(result))
     lines.extend(_conditional_risk_report(result))
+    lines.extend(_training_risk_report(result))
+    lines.extend(_paired_training_risk_report(result))
+    lines.extend(_point_training_risk_report(result))
     if result.prediction_intervals:
         lines.extend(
             [
@@ -598,7 +629,8 @@ def _learned_selection_report(result: RetentionRunResult) -> list[str]:
         'Each inner fit uses training groups only; inner validation locks the candidate.',
         'The selected ensemble is refitted on all outer training groups before outer testing.',
         'Learned parameters follow the registered constant-weight or finite-grid switch protocol.',
-        'Weight/boundary uncertainty and full selection-process intervals are not estimated.',
+        'Weight, boundary and interval parameter uncertainty are not estimated.',
+        'Separate opt-in risk policies are reported in their own sections.',
         'Outer errors do not choose a final function or ensemble.',
         '',
     ]
@@ -616,6 +648,12 @@ def _learned_selection_report(result: RetentionRunResult) -> list[str]:
             fitted_parameter = (
                 f'switch kPa={ensemble.outer_fit.switch_suction_kpa}'
                 if isinstance(ensemble.outer_fit, HardSwitchGridFit)
+                else f'blend interval kPa={ensemble.outer_fit.interval_kpa}; '
+                f'axis={ensemble.outer_fit.plan.transform}; '
+                f'weighting={ensemble.outer_fit.plan.weighting}'
+                if isinstance(ensemble.outer_fit, BlendGridFit)
+                else f'sigmoid (center kPa, steepness)={ensemble.outer_fit.parameters}'
+                if isinstance(ensemble.outer_fit, SigmoidGridFit)
                 else f'left weight={ensemble.outer_fit.left_weight}'
             )
             lines.append(
@@ -834,5 +872,216 @@ def _conditional_risk_report(result: RetentionRunResult) -> list[str]:
         )
         lines.extend(
             f'  - Outer fold {failure.fold_id}: {failure.reason}.' for failure in item.fold_failures
+        )
+    return [*lines, '']
+
+
+def _training_risk_report(result: RetentionRunResult) -> list[str]:
+    if not result.independent_training_risk:
+        return []
+    lines = [
+        '',
+        '## Independent training-law risk bounds',
+        '',
+        'Target: repeated complete learner on fresh T-group training datasets.',
+        'Every original group has one role in one block; every failed training is retained.',
+        'Coverage assumes IID groups, value-independent administrative IDs/roles and prior bounds.',
+        'Success probability, risk mass and successful-training risk are separate targets.',
+        'Unconditional model risk requires a prior total-learner assertion.',
+        'This family is separate from conditional outer-risk and descriptive metric families.',
+        (
+            'No transfer to a larger final training dataset '
+            'or conditional-on-issuance guarantee applies.'
+        ),
+        '',
+    ]
+
+    def limits(interval: BoundedRiskInterval | None) -> str:
+        return (
+            f'[{interval.lower:.6g}, {interval.upper:.6g}]'
+            if interval is not None
+            else 'unavailable'
+        )
+
+    for item in result.independent_training_risk:
+        bound = item.bound
+        plan = bound.plan
+        lines.append(
+            f'- learned/{item.strategy}: {bound.reason or bound.status}; '
+            f'learner={plan.learner_id}; population={plan.population_id}; '
+            f'blocks={plan.n_blocks}; training groups/block={plan.training_groups_per_block}; '
+            f'test groups/block={plan.test_groups_per_block}; '
+            f'failed training={bound.training_failure_count}; '
+            f'test samples={bound.test_sample_count}; '
+            f'family size={plan.simultaneous_policy_count}; '
+            f'family confidence={plan.confidence_level!r}; '
+            f'allocated error={(1 - plan.confidence_level) / plan.simultaneous_policy_count:.6g}; '
+            f'grouping={plan.grouping}; '
+            f'group size=[{plan.minimum_group_size}, {plan.maximum_group_size}]; '
+            f'loss bound={plan.maximum_sample_loss:.6g}; '
+            f'loss domain=[{plan.loss.lower_suction_kpa:g}, '
+            f'{plan.loss.upper_suction_kpa:g}] kPa.'
+        )
+        lines.append(
+            f'  - Training success={limits(bound.training_success_probability_interval)}; '
+            f'training failure={limits(bound.training_failure_probability_interval)}; '
+            f'risk mass on success={limits(bound.risk_mass_on_success_interval)}; '
+            f'successful-training risk={limits(bound.successful_training_mean_risk_interval)} '
+            f'({bound.successful_training_risk_reason or "available"}); '
+            f'unconditional model risk={limits(bound.unconditional_model_risk_interval)}; '
+            f'prior total learner={plan.total_learner}.'
+        )
+        lines.extend(
+            f'  - {block.roles.block_id}: '
+            f'{block.evidence.training_failure_reason or "training succeeded"}; '
+            f'selector={item.selector_sha256}.'
+            for block in item.blocks
+        )
+    return [*lines, '']
+
+
+def _point_training_risk_report(result: RetentionRunResult) -> list[str]:
+    if not result.point_training_risk:
+        return []
+    lines = [
+        '',
+        '## Sample-balanced point training-law risk',
+        '',
+        'MAE/MSE use equal point weights within each sample on the complete frozen common grid.',
+        'The registered log-pressure selection objective and its domain remain fixed.',
+        'Every original test sample and every failed training remain in the evidence.',
+        'IID groups, value-independent roles and prior population bounds are required.',
+        'This point-metric family has its own simultaneous confidence allocation.',
+        'Pooled RMSE is the square root of training-average MSE, not mean per-training RMSE.',
+        '',
+    ]
+    for item in result.point_training_risk:
+        bound = item.bound
+        plan = bound.plan
+        lines.extend(
+            [
+                (
+                    f'- learned/{item.strategy}, {item.assessment_loss.metric}: '
+                    f'{bound.reason or bound.status}; population={plan.population_id}; '
+                    f'learner={plan.learner_id}; family size={plan.simultaneous_policy_count}; '
+                    f'confidence={plan.confidence_level!r}; blocks={plan.n_blocks}; '
+                    f'training groups/block={plan.training_groups_per_block}; '
+                    f'test groups/block={plan.test_groups_per_block}; '
+                    f'loss bound={plan.maximum_sample_loss:g}; '
+                    f'failed training={bound.training_failure_count}; '
+                    f'test samples={bound.test_sample_count}.'
+                ),
+                (
+                    f'  - Training success={bound.training_success_probability_interval}; '
+                    f'risk mass on success={bound.risk_mass_on_success_interval}; '
+                    f'successful-training risk={bound.successful_training_mean_risk_interval}; '
+                    f'unconditional model risk={bound.unconditional_model_risk_interval}.'
+                ),
+                (
+                    f'  - Successful-training pooled RMSE='
+                    f'{item.successful_training_pooled_rmse_interval}; '
+                    f'unconditional pooled RMSE={item.unconditional_pooled_rmse_interval}.'
+                ),
+            ]
+        )
+    return [*lines, '']
+
+
+def _paired_training_risk_report(result: RetentionRunResult) -> list[str]:
+    item = result.paired_training_risk
+    if item is None:
+        return []
+    bound = item.bound
+    plan = bound.plan.bounds
+
+    def limits(interval: BoundedRiskInterval | None) -> str:
+        return (
+            f'[{interval.lower:.6g}, {interval.upper:.6g}]'
+            if interval is not None
+            else 'unavailable'
+        )
+
+    lines = [
+        '',
+        '## Paired training-law risk difference',
+        '',
+        f'Orientation: {item.left_strategy} minus {item.right_strategy}.',
+        'Target: sample-risk difference conditional on both training procedures succeeding.',
+        'Marginal successful-training risks with different success events are not subtracted.',
+        'Both strategies use identical original training/test roles in every block.',
+        'Every one-sided training failure remains in the joint-success/failure law.',
+        (
+            'This comparison has its own confidence allocation, '
+            'separate from marginal policy families.'
+        ),
+        (
+            f'Status={bound.reason or bound.status}; population={plan.population_id}; '
+            f'joint learner={plan.learner_id}; '
+            f'left learner={bound.plan.left_learner_id}; '
+            f'right learner={bound.plan.right_learner_id}; '
+            f'confidence={plan.confidence_level!r}; comparisons={plan.simultaneous_policy_count}; '
+            f'blocks={plan.n_blocks}; training groups/block={plan.training_groups_per_block}; '
+            f'test groups/block={plan.test_groups_per_block}; '
+            f'per-model loss bound={plan.maximum_sample_loss:g}; '
+            f'loss domain=[{plan.loss.lower_suction_kpa:g}, {plan.loss.upper_suction_kpa:g}] kPa.'
+        ),
+        (
+            f'Joint training success={limits(bound.joint_success_probability_interval)}; '
+            f'joint training failure={limits(bound.joint_failure_probability_interval)}; '
+            f'signed risk mass={limits(bound.risk_difference_mass_on_joint_success_interval)}; '
+            'joint-success risk difference='
+            f'{limits(bound.joint_success_mean_risk_difference_interval)} '
+            f'({bound.joint_success_risk_reason or bound.reason or "available"}); '
+            'unconditional model-risk difference='
+            f'{limits(bound.unconditional_mean_risk_difference_interval)}; '
+            f'prior joint total learner={plan.total_learner}.'
+        ),
+        '',
+        'IID groups, value-independent roles and prior bounds remain population assumptions.',
+        'The target uses the declared training size, not a larger final model.',
+        '',
+    ]
+    if isinstance(plan.loss, PointErrorLossPlan):
+        lines.extend(
+            [
+                f'Assessment: sample-balanced point {plan.loss.metric}; log selection unchanged.',
+                'A paired MSE difference is not a difference of RMSE values.',
+            ]
+        )
+    lines.extend(
+        f'- {block.roles.block_id}: '
+        f'left={block.left.training_failure_reason or "training succeeded"}; '
+        f'right={block.right.training_failure_reason or "training succeeded"}.'
+        for block in item.blocks
+    )
+    return [*lines, '']
+
+
+def _learned_blend_report(result: RetentionRunResult) -> list[str]:
+    if not result.learned_blend_endpoints:
+        return []
+    lines = [
+        '',
+        '## Fitted blend endpoint diagnostics',
+        '',
+        'Both member forecasts use only test predictors at locked outer-training endpoints.',
+        'Contrasts are not blend jumps; endpoint weights select one member.',
+        (
+            'No observations, refitting, curve correction '
+            'or parameter intervals enter this diagnostic.'
+        ),
+        '',
+    ]
+    groups = {}
+    for item in result.learned_blend_endpoints:
+        key = (item.outer_fold_id, item.candidate_id, item.side, item.suction_kpa)
+        groups.setdefault(key, []).append(item)
+    for (fold, candidate, side, pressure), items in sorted(groups.items()):
+        values = [abs(item.right_minus_left) for item in items if item.right_minus_left is not None]
+        largest = f'{max(values):.8g}' if values else 'unavailable'
+        lines.append(
+            f'- Fold {fold}, {candidate}, {side} endpoint={pressure:g} kPa: '
+            f'samples={len(items)}; unavailable={len(items) - len(values)}; '
+            f'maximum absolute member contrast={largest}.'
         )
     return [*lines, '']

@@ -10,6 +10,7 @@ from types import MappingProxyType
 from typing import TypeAlias
 
 from .contracts import ModelAdapterSpec, default_model_adapter_specs
+from .numerics import log_positive_product
 
 
 ParameterValues: TypeAlias = Mapping[str, float]
@@ -29,11 +30,16 @@ class ModelAdapter:
 
 
 _CLAPP1978_INFLECTION_WETNESS = 0.92
+CLAPP1978_MAXIMUM_B = 11.5
 _ROUNDING_TOLERANCE = 1e-12
 
 
 def evaluate_clapp1978_h_theta(parameters: ParameterValues, suction: float) -> float:
-    """Evaluate the Clapp-Hornberger retention curve for a suction magnitude in cm."""
+    """Evaluate the homogeneous Clapp curve; the registered adapter uses cm.
+
+    Both suction values must share a pressure/head unit. Their ratio is the
+    only dimensional input, so the canonical family can use kPa directly.
+    """
     b = _positive_parameter(parameters, 'b')
     saturation_suction = _positive_parameter(parameters, 'saturation_suction')
     saturated_water_content = _parameter(parameters, 'saturated_water_content')
@@ -44,32 +50,36 @@ def evaluate_clapp1978_h_theta(parameters: ParameterValues, suction: float) -> f
         message = 'Clapp-Hornberger suction must be a finite nonnegative magnitude.'
         raise ModelEvaluationError(message)
 
-    inflection_wetness = _CLAPP1978_INFLECTION_WETNESS
-    inflection_suction = saturation_suction * inflection_wetness ** (-b)
-    if suction >= inflection_suction:
-        wetness = (saturation_suction / suction) ** (1.0 / b)
-        return saturated_water_content * wetness
-
-    gap = 1.0 - inflection_wetness
-    parabola_scale = inflection_suction / gap**2 - (
-        inflection_suction * b / (inflection_wetness * gap)
-    )
-    if parabola_scale <= 0.0:
-        message = 'Clapp-Hornberger parameters do not define the gradual-air-entry parabola.'
+    if b >= CLAPP1978_MAXIMUM_B:
+        message = 'Clapp-Hornberger gradual air entry requires b < 11.5 at fixed wetness 0.92.'
         raise ModelEvaluationError(message)
-    second_root = (
-        2.0 * inflection_wetness
-        - inflection_suction * b / (parabola_scale * inflection_wetness)
-        - 1.0
-    )
-    discriminant = (second_root + 1.0) ** 2 - 4.0 * (second_root + suction / parabola_scale)
-    if discriminant < 0.0 and discriminant > -_ROUNDING_TOLERANCE:
+    inflection_wetness = _CLAPP1978_INFLECTION_WETNESS
+    log_inflection_ratio = -b * math.log(inflection_wetness)
+    if suction > saturation_suction:
+        log_ratio = (
+            math.log1p((suction - saturation_suction) / saturation_suction)
+            if suction <= 2 * saturation_suction
+            else math.log(suction) - math.log(saturation_suction)
+        )
+        if log_ratio >= log_inflection_ratio:
+            return saturated_water_content * math.exp(-log_ratio / b)
+
+    # Normalize pressure by psi_s before constructing the parabola. With
+    # u=1-W, equation (3) becomes q=D*u-A*u**2. Rationalizing its smaller
+    # root avoids subtraction near saturation and near the b=11.5 limit.
+    ratio = suction / saturation_suction
+    gap = 1 - inflection_wetness
+    inflection_ratio = math.exp(log_inflection_ratio)
+    scale = inflection_ratio * (CLAPP1978_MAXIMUM_B - b) / (inflection_wetness * gap)
+    derivative = 2 * scale * gap + inflection_ratio * b / inflection_wetness
+    discriminant = derivative**2 - 4 * scale * ratio
+    if discriminant < 0 and discriminant > -_ROUNDING_TOLERANCE * derivative**2:
         discriminant = 0.0
-    if discriminant < 0.0:
+    if discriminant < 0:
         message = 'Suction is outside the invertible Clapp-Hornberger parabolic branch.'
         raise ModelEvaluationError(message)
-    wetness = (second_root + 1.0 + math.sqrt(discriminant)) / 2.0
-    return saturated_water_content * wetness
+    deficit = 2 * ratio / (derivative + math.sqrt(discriminant))
+    return saturated_water_content * (1 - deficit)
 
 
 def evaluate_vereecken1989_h_theta(parameters: ParameterValues, suction: float) -> float:
@@ -85,13 +95,15 @@ def evaluate_vereecken1989_h_theta(parameters: ParameterValues, suction: float) 
         message = 'Vereecken suction must be a finite nonnegative magnitude.'
         raise ModelEvaluationError(message)
 
-    try:
-        scaled_power = (alpha * suction) ** n
-    except OverflowError:
-        return theta_r
-    if not math.isfinite(scaled_power):
-        return theta_r
-    return theta_r + (theta_s - theta_r) / (1.0 + scaled_power)
+    if suction == 0:
+        return theta_s
+    log_power = n * log_positive_product(alpha, suction)
+    if log_power >= 0:
+        tail = math.exp(-log_power)
+        effective = tail / (1 + tail)
+    else:
+        effective = 1 / (1 + math.exp(log_power))
+    return theta_r + (theta_s - theta_r) * effective
 
 
 @cache

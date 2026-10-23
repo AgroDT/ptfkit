@@ -554,20 +554,28 @@ def _water_basis(quantity: str) -> str:
 
 
 def _normalize_pressure(value: float, representation: str, convention: str) -> float | None:
-    if representation == 'pf_log10_centimeter_water_head':
+    if representation in ('pf_log10_centimeter_water_head', 'log10_kilopascal'):
         if convention != 'magnitude':
             return None
         try:
-            normalized = 10.0**value * _CENTIMETER_WATER_HEAD_TO_KILOPASCAL
+            scale = (
+                _CENTIMETER_WATER_HEAD_TO_KILOPASCAL
+                if representation == 'pf_log10_centimeter_water_head'
+                else 1.0
+            )
+            normalized = 10.0**value * scale
         except OverflowError:
             return None
         return normalized if math.isfinite(normalized) else None
-    if representation == 'kilopascal':
+    if representation in ('kilopascal', 'megapascal'):
+        scale = 1000.0 if representation == 'megapascal' else 1.0
         if convention == 'magnitude' and value >= 0:
-            return value
-        if convention == 'negative' and value <= 0:
-            return abs(value)
-        return None
+            normalized = value * scale
+        elif convention == 'negative' and value <= 0:
+            normalized = abs(value) * scale
+        else:
+            return None
+        return normalized if math.isfinite(normalized) else None
     message = f'Unsupported retention pressure representation {representation!r}.'
     raise RetentionNormalizationError(message)
 
