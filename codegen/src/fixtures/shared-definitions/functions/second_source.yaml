@@ -7,7 +7,7 @@ $defs:
     type: record
     name: SecondResult
     fields: [{name: value, quantity: volumetric_water_content, unit: volume_fraction, reported_unit: '1', symbol: null, domain: null, description: Result.}, {name: other, quantity: volumetric_water_content, unit: volume_fraction, reported_unit: '1', symbol: null, domain: null, description: Other result.}]
-  SharedValues:
+  shared_values:
     type: lookup
     input: {$ref: ../definitions/./soil.yaml#/$defs/SharedCategory}
     output: {$ref: '#/$defs/SecondResult'}
@@ -26,7 +26,7 @@ functions:
     outputs: {$ref: '#/$defs/SecondResult'}
     implementation:
       variables:
-        - {name: parameters, lookup: {table: {$ref: '#/$defs/SharedValues'}, key: category}}
+        - {name: parameters, lookup: {table: {$ref: '#/$defs/shared_values'}, key: category}}
     verification_cases:
       - {id: first, kind: calculated, inputs: {category: first}, expected: {value: 0.3, other: 0.5}, rationale: First table row.}
       - {id: second, kind: calculated, inputs: {category: second}, expected: {value: 0.4, other: 0.5}, rationale: Second table row.}

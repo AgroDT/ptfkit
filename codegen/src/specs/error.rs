@@ -4,6 +4,13 @@ use crate::model::Function;
 
 #[derive(Debug, thiserror::Error)]
 pub(crate) enum SpecificationError {
+    #[error("{path}:\n  {location}:\n    `{name}` must use {style}", path = .path.display())]
+    InvalidName {
+        path: PathBuf,
+        location: String,
+        name: String,
+        style: super::naming::NameStyle,
+    },
     #[error("shared definition module `{module}` in {path} uses a reserved target module name", path = .path.display())]
     ReservedModule { module: String, path: PathBuf },
     #[error("shared definition module `{module}` in {definition} conflicts with source module {path}", definition = .definition.display(), path = .path.display())]

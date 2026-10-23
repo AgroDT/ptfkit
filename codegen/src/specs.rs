@@ -1,4 +1,5 @@
 mod error;
+mod naming;
 pub(crate) use error::{DocumentError, ReferenceError, SpecificationError};
 
 use std::{
@@ -106,6 +107,11 @@ pub(crate) fn load_all(root: &Path) -> Result<LoadedSpecifications> {
                 continue;
             }
         };
+        let naming_errors = naming::validate(&path, &value);
+        if !naming_errors.is_empty() {
+            errors.extend(naming_errors.into_iter().map(Diagnostic::from));
+            continue;
+        }
         let shared = match resolve_external_references(&mut value, &path, &definitions) {
             Ok(shared) => shared,
             Err(error) => {
@@ -227,6 +233,13 @@ fn load_definitions(
             serde_yaml::from_str(&text).map_err(|error| DocumentError::Yaml(error).at(&path))?;
         let value =
             serde_json::to_value(yaml).map_err(|error| DocumentError::Json(error).at(&path))?;
+        let naming_errors = naming::validate(&path, &value);
+        if !naming_errors.is_empty() {
+            return Err(ValidationReport::shared_definitions(
+                naming_errors.into_iter().map(Diagnostic::from).collect(),
+            )
+            .into());
+        }
         let errors = validator
             .iter_errors(&value)
             .map(|error| SpecificationError::schema(&path, error).into())
@@ -656,14 +669,14 @@ $defs:
     values:
       - {name: coarse, value: Coarse}
       - {name: fine, value: Fine}
-  ScalarValue:
+  scalar_value:
     {type: scalar, name: value, quantity: volumetric_water_content, symbol: y, unit: volume_fraction, reported_unit: '1', domain: null, description: Test output.}
-  ScalarTree:
+  scalar_tree:
     type: tree
     inputs:
       - {name: category, $ref: '#/$defs/Category'}
       - {name: predictor, type: number}
-    output: {$ref: '#/$defs/ScalarValue'}
+    output: {$ref: '#/$defs/scalar_value'}
     root:
       split: {input: category, operator: in, values: [coarse]}
       yes:
@@ -681,10 +694,10 @@ functions:
     inputs:
       - {$ref: '#/$defs/Category', name: category}
       - {name: x, symbol: x, unit: '1', domain: null, description: Test input.}
-    outputs: {$ref: '#/$defs/ScalarValue'}
+    outputs: {$ref: '#/$defs/scalar_value'}
     implementation:
       variables:
-        - {name: value, tree: {definition: {$ref: '#/$defs/ScalarTree'}, arguments: {category: category, predictor: x}}}
+        - {name: value, tree: {definition: {$ref: '#/$defs/scalar_tree'}, arguments: {category: category, predictor: x}}}
     verification_cases:
       - {id: below_boundary, kind: calculated, inputs: {category: coarse, x: 1.0}, expected: {value: 1.0}, rationale: Explicit fixture branch.}
       - {id: at_boundary, kind: calculated, inputs: {category: coarse, x: 2.0}, expected: {value: 2.0}, rationale: Equality takes the No branch.}
@@ -704,7 +717,7 @@ $defs:
     values:
       - {name: coarse, value: Coarse}
       - {name: fine, value: Fine}
-  ScalarValue:
+  scalar_value:
     {type: scalar, name: value, quantity: volumetric_water_content, symbol: y, unit: volume_fraction, reported_unit: '1', domain: null, description: Test output.}
   Pair:
     type: record
@@ -712,12 +725,12 @@ $defs:
     fields:
       - {name: low, quantity: volumetric_water_content, symbol: lo, unit: volume_fraction, reported_unit: '1', domain: null, description: Low value.}
       - {name: high, quantity: volumetric_water_content, symbol: hi, unit: volume_fraction, reported_unit: '1', domain: null, description: High value.}
-  ScalarTree:
+  scalar_tree:
     type: tree
     inputs:
       - {name: category, $ref: '#/$defs/Category'}
       - {name: predictor, type: number}
-    output: {$ref: '#/$defs/ScalarValue'}
+    output: {$ref: '#/$defs/scalar_value'}
     root:
       match:
         input: category
@@ -729,7 +742,7 @@ $defs:
               no: {leaf: 2.0}
           - values: [fine]
             then: {leaf: 3.0}
-  RecordTree:
+  record_tree:
     type: tree
     inputs:
       - {name: category, $ref: '#/$defs/Category'}
@@ -749,10 +762,10 @@ functions:
       - {name: category, $ref: '#/$defs/Category'}
       - {name: x, symbol: x, unit: '1', domain: null, description: First input.}
       - {name: y, symbol: y, unit: '1', domain: null, description: Second input.}
-    outputs: {$ref: '#/$defs/ScalarValue'}
+    outputs: {$ref: '#/$defs/scalar_value'}
     implementation:
       variables:
-        - {name: selected, tree: {definition: {$ref: '#/$defs/ScalarTree'}, arguments: {category: category, predictor: x}}}
+        - {name: selected, tree: {definition: {$ref: '#/$defs/scalar_tree'}, arguments: {category: category, predictor: x}}}
         - {name: value, expr: 'selected * 10'}
     verification_cases:
       - {id: strict_boundary, kind: calculated, inputs: {category: coarse, x: 2.0, y: 9.0}, expected: {value: 20.0}, rationale: Equality takes the no branch before scaling.}
@@ -765,10 +778,10 @@ functions:
       - {name: category, $ref: '#/$defs/Category'}
       - {name: x, symbol: x, unit: '1', domain: null, description: First input.}
       - {name: y, symbol: y, unit: '1', domain: null, description: Second input.}
-    outputs: {$ref: '#/$defs/ScalarValue'}
+    outputs: {$ref: '#/$defs/scalar_value'}
     implementation:
       variables:
-        - {name: value, tree: {definition: {$ref: '#/$defs/ScalarTree'}, arguments: {category: category, predictor: y}}}
+        - {name: value, tree: {definition: {$ref: '#/$defs/scalar_tree'}, arguments: {category: category, predictor: y}}}
     verification_cases:
       - {id: rebound_argument, kind: calculated, inputs: {category: coarse, x: 9.0, y: 1.0}, expected: {value: 1.0}, rationale: The formal predictor is bound to y rather than x.}
   - name: calc_ptf_tree_fields
@@ -777,10 +790,10 @@ functions:
     scope: {prediction_target: Test value., models: {h_theta: null, k_h: null}}
     inputs:
       - {name: category, $ref: '#/$defs/Category'}
-    outputs: {$ref: '#/$defs/ScalarValue'}
+    outputs: {$ref: '#/$defs/scalar_value'}
     implementation:
       variables:
-        - {name: pair, tree: {definition: {$ref: '#/$defs/RecordTree'}, arguments: {category: category}}}
+        - {name: pair, tree: {definition: {$ref: '#/$defs/record_tree'}, arguments: {category: category}}}
         - {name: value, expr: 'pair.low + pair.high'}
     verification_cases:
       - {id: record_fields, kind: calculated, inputs: {category: fine}, expected: {value: 8.0}, rationale: Both fields from the fine record leaf contribute.}
@@ -793,7 +806,7 @@ functions:
     outputs: {$ref: '#/$defs/Pair'}
     implementation:
       variables:
-        - {name: result, tree: {definition: {$ref: '#/$defs/RecordTree'}, arguments: {category: category}}}
+        - {name: result, tree: {definition: {$ref: '#/$defs/record_tree'}, arguments: {category: category}}}
     verification_cases:
       - {id: record_result, kind: calculated, inputs: {category: coarse}, expected: {low: 1.0, high: 2.0}, rationale: The complete record leaf is returned.}
 "#
@@ -904,7 +917,7 @@ $defs:
     name: Parameters
     fields:
       - {name: factor, quantity: volumetric_water_content, symbol: f, unit: volume_fraction, reported_unit: '1', domain: null, description: Test factor.}
-  ParametersByTexture:
+  parameters_by_texture:
     type: lookup
     input: {$ref: '#/$defs/Texture'}
     output: {$ref: '#/$defs/Parameters'}
@@ -926,7 +939,7 @@ functions:
       variables:
         - name: parameters
           lookup:
-            table: {$ref: '#/$defs/ParametersByTexture'}
+            table: {$ref: '#/$defs/parameters_by_texture'}
             key: texture
         - {name: value, expr: parameters.factor * x}
     verification_cases:
@@ -1181,8 +1194,8 @@ functions:
             (
                 "tree-incomplete-match",
                 (
-                    "          - values: [fine]\n            then: {leaf: 3.0}\n  RecordTree:",
-                    "  RecordTree:",
+                    "          - values: [fine]\n            then: {leaf: 3.0}\n  record_tree:",
+                    "  record_tree:",
                 ),
                 "match cases must cover every member",
             ),
@@ -1199,7 +1212,7 @@ functions:
                     diagnostic,
                     crate::diagnostics::Diagnostic::Semantic(error)
                         if matches!(&error.kind, crate::semantic::SemanticErrorKind::TreeArguments { tree, missing, unknown }
-                            if tree == "ScalarTree" && missing == &["predictor"] && unknown.is_empty())
+                            if tree == "scalar_tree" && missing == &["predictor"] && unknown.is_empty())
                 )));
             }
             let error = failure.to_string();
@@ -1259,7 +1272,7 @@ functions:
         )
         .replace(
             "functions:\n",
-            "$defs:\n  Texture:\n    type: enum\n    description: Texture class.\n    values:\n      - {name: sand, value: sand}\n      - {name: clay, value: clay}\n  Parameters:\n    type: record\n    name: Parameters\n    fields:\n      - {name: factor, quantity: volumetric_water_content, symbol: f, unit: volume_fraction, reported_unit: '1', domain: null, description: Test factor.}\n  InvalidLookup:\n    type: lookup\n    input: {$ref: '#/$defs/Texture'}\n    output: {$ref: '#/$defs/Parameters'}\n    values:\n      - {key: sand, value: {factor: 2.0}}\nfunctions:\n",
+            "$defs:\n  Texture:\n    type: enum\n    description: Texture class.\n    values:\n      - {name: sand, value: sand}\n      - {name: clay, value: clay}\n  Parameters:\n    type: record\n    name: Parameters\n    fields:\n      - {name: factor, quantity: volumetric_water_content, symbol: f, unit: volume_fraction, reported_unit: '1', domain: null, description: Test factor.}\n  invalid_lookup:\n    type: lookup\n    input: {$ref: '#/$defs/Texture'}\n    output: {$ref: '#/$defs/Parameters'}\n    values:\n      - {key: sand, value: {factor: 2.0}}\nfunctions:\n",
         );
         fs::write(
             root.join("specs/functions/unused_invalid_lookup.yaml"),
@@ -1268,7 +1281,7 @@ functions:
         .unwrap();
 
         let error = load(&root).unwrap_err().to_string();
-        assert!(error.contains("lookup `InvalidLookup` values must cover every member"));
+        assert!(error.contains("lookup `invalid_lookup` values must cover every member"));
         fs::remove_dir_all(root).unwrap();
     }
 
@@ -1526,7 +1539,7 @@ $defs:
     name: Parameters
     fields:
       - {name: factor, quantity: volumetric_water_content, symbol: f, unit: volume_fraction, reported_unit: '1', domain: null, description: Test factor.}
-  ParametersByTexture:
+  parameters_by_texture:
     type: lookup
     input: {$ref: '#/$defs/Texture'}
     output: {$ref: '#/$defs/LookupParameters'}
@@ -1550,7 +1563,7 @@ functions:
       variables:
         - name: parameters
           lookup:
-            table: {$ref: '#/$defs/ParametersByTexture'}
+            table: {$ref: '#/$defs/parameters_by_texture'}
             key: texture
 "#;
         fs::write(
@@ -1666,11 +1679,11 @@ functions:
         )
         .replace(
             "functions:\n",
-            "$defs:\n  reusable_result:\n    type: record\n    fields:\n    - {name: value, quantity: volumetric_water_content, symbol: y, unit: volume_fraction, reported_unit: '1', domain: null, description: Test output.}\nfunctions:\n",
+            "$defs:\n  ReusableResult:\n    type: record\n    fields:\n    - {name: value, quantity: volumetric_water_content, symbol: y, unit: volume_fraction, reported_unit: '1', domain: null, description: Test output.}\nfunctions:\n",
         )
         .replace(
             "outputs: {type: scalar, name: value, quantity: volumetric_water_content, symbol: y, unit: volume_fraction, reported_unit: '1', domain: null, description: Test output.}",
-            "outputs: {$ref: '#/$defs/reusable_result'}",
+            "outputs: {$ref: '#/$defs/ReusableResult'}",
         );
         fs::write(
             root.join("specs/functions/unnamed_record_definition.yaml"),
@@ -1681,7 +1694,7 @@ functions:
         let error = load(&root)
             .expect_err("unnamed record definition must fail")
             .to_string();
-        assert!(error.contains("$defs.reusable_result"), "{error}");
+        assert!(error.contains("$defs.ReusableResult"), "{error}");
         fs::write(
             root.join("specs/functions/unnamed_record_definition.yaml"),
             specification.replace(

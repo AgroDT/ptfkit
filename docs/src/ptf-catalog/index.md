@@ -120,6 +120,13 @@ that field follows the convention for its role: a parameter or scalar output
 name uses `snake_case`, and a record output name uses `PascalCase`. The key's
 letter case does not determine the definition kind; its structure does.
 
+Codegen validates these names before resolving references, including unused
+local and shared definitions. `snake_case` names match
+`^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$`; leading, trailing, and repeated underscores
+are invalid. `PascalCase` names match `^[A-Z][A-Za-z0-9]*$`, allowing acronyms
+and digits such as `PTF2026Result`. Canonical enum values and scientific symbols
+retain their source spelling and are not subject to these naming rules.
+
 Enum definitions shared by multiple source specifications live directly under
 `specs/definitions/` and are referenced with a relative file reference such as
 `../definitions/soil.yaml#/$defs/UsdaTextureClass`. References are resolved
