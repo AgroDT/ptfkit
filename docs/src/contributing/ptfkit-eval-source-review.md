@@ -1,6 +1,6 @@
 # Evaluation source review
 
-Reviewed online on 2026-10-23. This record separates published evidence from
+Reviewed online on 2026-10-23 and 2026-10-24. This record separates published evidence from
 ptfkit design decisions. It complements the inference derivations and the
 workbook-specific evidence in the handoff; it does not approve unresolved
 measurement contracts or replace the missing original workbook papers.
@@ -221,3 +221,271 @@ parameter headings; its stored fits remain separate from observations.
 reports thermal properties at named hydrological constants, not a retention
 pressure grid. This lead does not establish the physical pressure represented
 by the workbook's PGK label, so the corresponding blocked rule remains inactive.
+
+
+### Partial Panina normalization
+
+The later row review releases 116 positive-pF observations whose pressure-water
+pairs uniquely identify original master records after the confirmed percentage
+scaling. Each association is rechecked during normalization. Four ambiguous pairs
+and all 12 saturation-axis rows remain explicit exclusions. This supersedes the
+previous whole-block exclusion without endorsing its proposed saturation-axis
+replacement or corrupted fitted-parameter identities. The full primary thesis
+SHA256 is `eac3553c2a904c8c1a75f67437bc01b1005b3ebed45ada29e189017e8baafaa8`.
+
+### Badenko 2013: original experimental table
+
+[Badenko, Terleev, Mirschel and Nikonova (2013), Agrophysica 1(9), pp. 13-22](https://www.agrophys.ru/Media/Default/Page/Magazine%20Agrophysics/Agrophysica1(9)/Badenko.pdf)
+describes pressure-membrane measurements on pp. 16-17. The table on p. 17 labels
+volumetric water content in cm3/cm3 and pressure in kPa. All 108 water values
+match the original wide table after the printed columns are reordered to
+0, 15, 33, 122, 415 and 1520 kPa magnitudes. The reported table is experimental;
+its hydrological-constant labels do not make those measurements derived targets.
+
+Exhaustive row review releases 106 uniquely matched original points across
+18 horizons. Long rows 1000 and 1086 share an identical pressure-water pair
+between two master horizons and remain excluded. Existing nonmonotonic values
+are retained and diagnosed separately. The full-curve crosswalk stays blocked.
+The reviewed PDF SHA256 is
+`96da74ac7a27a0f58511912fd6b7fc82b93ae05351739c2b28294866cd6fa29e`.
+
+### Umarova 2008: original figure and retained points
+
+[The Russian State Library catalog record](https://search.rsl.ru/ru/record/01003446835)
+provides a freely readable 52-page original author abstract. Figure 5 on printed
+p. 19 ([viewer page 20](https://viewer.rsl.ru/rsl01003446835?page=20)) labels
+pF and volumetric water content in percent. The original viewer text layer
+confirms both axes and the ten plotted horizons; Table 2 independently matches
+the workbook's physical metadata. The hosted OCR transcription was used as a
+search aid, with the original figure supplying the unit evidence.
+
+All 81 retained long-sheet observations uniquely match original master points
+after percentage scaling, across ten sample identities. Matching includes all
+wide positions when checking uniqueness. The 22 declared zero placeholders
+and seven populated wide points absent from the long table are not released.
+The complete-curve rule and proposed source alias remain blocked; row-specific
+canonical identities do not promote either claim.
+
+### Sadovnikova and Smagin 2011: original figure and experimental repeats
+
+[The journal-hosted original paper, pp. 17-20, Figure 1](https://ecokavkaz.ru/media/docs/2011/2/2011-2-2.pdf)
+identifies the Krasnodar chernozem A horizon at 20-30 cm and the Moscow-region
+low-moor peat T horizon at 10-20 cm. The figure labels dry-mass W percent and
+absolute pressure in kPa on a logarithmic axis. Methods distinguish filled and
+open experimental symbols as repeats; solid curves are van Genuchten fits.
+The workbook's four master records preserve two point series for each soil.
+They must remain dependent within those soils/source for statistical assessment.
+
+All 63 literal wide/long pairs match uniquely after percentage scaling.
+Row review releases 61, including legitimate peat water/dry-soil ratios above
+one. Long rows 778 and 793 use the wide chernozem axis placeholder 0.01;
+the figure does not establish that pressure, so both remain excluded without
+inventing replacements. The source's raw pF label is interpreted as log10(kPa)
+only under this reviewed rule. Complete-curve cached identities remain blocked.
+The reviewed PDF SHA256 is
+`b42c91b817f4eadd6844ba33827bbeffde950a8789a075206bbff955d8b1befd`.
+
+### Moiseev, Terleev and Kholokhorenko 2018: experimental table versus statistics
+
+[The journal-hosted original, pp. 80-82, Table 2](https://tvan.niishk.site/data/documents/7_1.pdf)
+reports pF and volumetric-percent experimental water contents separately from
+PSF model calculations. Soil names, locations, horizons and depths match the
+three retained workbook records. All 23 experimental pressure-water pairs
+match Table 2 exactly after percentage scaling. The later 2021 paper provides
+a bibliographic lead but does not independently identify these workbook rows.
+
+Three U/U-critical Mann-Whitney statistic pairs were copied into the workbook
+as pressure-water observations. Long rows 1797, 1807 and 1816 are explicitly
+excluded as `non_observation_table_value`, preserving their original values and
+lineage. Rows 1795, 1805 and 1814 remain excluded for unsupported saturation
+pressure axes. The proposed -1 replacements remain inactive. The row policy
+releases only the 23 original experimental pairs, with exact master identities
+and evidence cells. It does not promote PSF calculations or U statistics to
+independent observations. Complete-curve reconstruction remains blocked.
+
+The reviewed PDF SHA256 is
+`1c6e59cb6c9b2a916a35b77e26af2731c17e21f95669714862839c11c3d11213`.
+
+### Vasyukov 2012: water basis resolved, pressure reference still missing
+
+[The author's university-hosted original issue, pp. 67-70](https://shelly.kpfu.ru/e-ksu/docs/F584517239/2012_3.pdf)
+identifies the buried and modern Tayaba horizons. The original figure on p. 70
+labels volumetric water as fractions. This resolves the water quantity and
+scale for 28 workbook rows. The ordinate, however, identifies only a decimal
+logarithm of soil-water potential, with no pressure or water-head reference
+unit. The workbook's pF label alone cannot establish log10(cm water head).
+The mapping records known volumetric fractions but leaves pressure representation
+and convention unset, retaining all 28 exclusions. No axis or water value is
+replaced. The reviewed complete-issue PDF SHA256 is
+`be459392868c030466791d9ffa38ba7746c85480609b9d1764214bea032c2d1a`.
+
+### Shvarov: original-author evidence warns against absolute-water interpretation
+
+[Shvarov's earlier author abstract, Table 2, hosted OCR](https://earthpapers.net/gisterezis-zavisimosti-kapillyarno-sorbtsionnogo-potentsiala-vody-ot-vlazhnosti-pochvy)
+has a printed imprint of 1984, while the host index dates it 1983. It reports
+differences between adsorption/desorption equilibrium moisture in
+percent, indexed by relative vapor pressure. Two complete five-value vectors
+and their soil/horizon/depth metadata match workbook master rows 88 and 108.
+These are hysteresis differences, not absolute retention water contents. The
+earlier text corroborates this subset without replacing the workbook's 2008
+source attribution. Other rows show discrepancies and are not automatically
+reinterpreted, reversed, repaired, or released.
+
+[The original 2008 publication](https://link.springer.com/article/10.1134/S1064229308100050)
+has only an accessible abstract at the publisher; its exact tables remain
+unreviewed. The 119 source-labelled rows retain a dedicated observation-
+provenance blocker in addition to physical-unit blockers. Confirming units alone
+must not release copied hysteresis differences as absolute-water targets.
+
+### Shein and Mady: the 2019 follow-up does not identify the 2018 curves
+
+The [publisher-hosted 2019 follow-up](https://bgt.cherkasgu.press/journals_n/1564396584.pdf),
+DOI 10.13187/bgt.2019.1.59, is available through the publisher URL registered
+in Crossref, although the OAJI copy returns HTTP 410. It describes field
+moisture dynamics and HYDRUS-1D validation, rather than reproducing the
+original 2018 retention curves. Its laboratory layer intervals differ from
+the four workbook intervals. Aggregate particle-size, density and organic-
+matter statistics cannot establish predictor values for individual records.
+The modeled HYDRUS results cannot substitute for experimental observations.
+The 25 source-labelled workbook observations therefore remain blocked pending
+the original curves, their water units, branch and exact horizon identities.
+The reviewed follow-up PDF SHA256 is
+`9681681b4d9d0256cf531ee58f9b205e5f2540f5cb92b39647d25298c47d74bd`.
+
+### Smagin 2009: distinguish short and extended publications
+
+The [open 2009 chernozem paper, pp. 5-16](https://ecokavkaz.ru/media/docs/2009/4/2009-4-1.pdf)
+contains humus-dynamics models but does not reproduce the three retention
+curves required to identify workbook master rows 110-112. The
+[2011 follow-up](https://ecokavkaz.ru/media/docs/2011/4/2011-4-2.pdf)
+discusses water-retention loss, but that discussion does not establish the
+axes or values of these workbook curves. Neither paper justifies releasing
+the 24 source-labelled observations.
+
+A longer, differently titled 2009 contribution in *Doklady po ekologicheskomu
+pochvovedeniyu*, issue 12, no. 2, pp. 63-93, remains a bibliographic lead.
+Do not conflate it with the reviewed 12-page paper. The current journal
+contents omit the relevant 2009 issue; its 2006 methods contents link to
+archived pages rather than directly to PDFs. Exact figure review is still
+required before assigning water or pressure units.
+The reviewed 2009 and 2011 PDFs have SHA256 values
+`3fb987e3190c54fd6787c22247a8baf2d593b8fc4214931d06f58fce65597e83`
+and `dcca5ed1b099150743911255e701f51852ca1c3e310b0016ce610b0bde8597c6`,
+respectively.
+
+### Sapozhnikov 1988: author abstract corroborates the experiment, not the axes
+
+[Sapozhnikov's 1994 author abstract, hosted OCR](https://earthpapers.net/fizicheskie-parametry-plodorodiya-pochv-pri-antropogennyh-vozdeystviyah)
+discusses long-term manure, NPK and bare-fallow treatments of typical
+chernozem and cites the 1988 coauthored paper. Its methods include vapor
+equilibration, capillarimetry and Voronin's experimental-calculation method.
+The treatment discussion corroborates a source-recovery lead for the 12
+workbook records, but does not reproduce their complete retention table or
+establish the water scale and exact pressure coordinates. General use of pF
+elsewhere in the abstract does not confirm the workbook's saturation
+placeholder. No physical rule or proposed pressure replacement is activated.
+
+The original 1988 figures/tables must also distinguish directly measured
+points from experimental-calculation segments before any points are used as
+independent evaluation targets. The abstract alone cannot assign those
+categories to particular workbook rows. All 108 observations remain blocked.
+The reviewed HTML snapshot SHA256 is
+`8ce14ada02ef0be0af8873c5a096ccd175745528326e61e4ec5819b122c7b6e0`.
+
+For the Smagin methods lead, the journal-linked archived 2006 article page
+was recovered, but its linked PDF returned HTTP 404. Public archive capture
+queries returned no matching successful PDF captures for that exact path or
+the journal's 2009 bibliography directory. This closes that particular
+download route; it does not establish that no public copy exists elsewhere.
+
+### Shein, Shcheglov and Moskvin 2012: reconstructed curves need provenance review
+
+The [publisher abstract](https://link.springer.com/article/10.1134/S1064229312040102)
+identifies the Kamennaya Steppe study and explicitly describes calculated
+retention parameters, including the Voronin method followed by van Genuchten
+approximation. [Moskvin's original 2013 author abstract, hosted OCR](https://earthpapers.net/eksperimentalnoe-obespechenie-modeli-vodnogo-rezhima-chernozemov-kamennoy-stepi)
+matches the field between shelterbelts 138 and 156 and describes how measured
+hydrological and mechanical constants supply inferred pressure-water anchors.
+It distinguishes that reconstruction from direct measurement of pressure-water
+pairs. This supports the workbook's method description but does not make its
+30 stored curve points independent retention measurements.
+
+The original 2012 figures/tables remain necessary to identify the particular
+series, water units, pressure coordinates and any directly measured subset.
+No source rule, fitted-parameter convention or observation row is released.
+The secondary workbook sheet also labels these curves cm3/cm3; this is useful
+internal corroboration, not a replacement for the source review.
+The reviewed 2013 HTML snapshot SHA256 is
+`0ea4e1783dd77251e39d741f0deffce82fb5f9b5dc0dfb047e921ad8d17b89f2`.
+
+### Chudinova and Sidorova: identified publication leads remain unreviewed
+
+[Chudinova's 2009 publisher abstract](https://link.springer.com/article/10.1134/S1064229309040073)
+identifies the three relevant soil classes and Ap horizons. The historically
+cited public Russian PDF at `cryosol.ru/_ld/0/3_Pochved4_09Chud.pdf` returned
+HTTP 403; no matching public archive capture was found. The abstract does not
+resolve the 65 workbook observations or their six disputed initial axes.
+
+Sidorova and Borisova's 2016 article, DOI 10.3103/S0147687416020071,
+*The flow of moisture in the model sod-podzolic soil under mulch fir litter*,
+is a candidate for the 17 source-labelled observations. It must be checked
+against both master horizons before being adopted as their source; the title
+and year alone do not establish that match. No unit or horizon correction is
+made from this bibliographic lead.
+
+The Sidorova/Borisova publisher page was subsequently read directly. It
+identifies the Russian original as *Vestnik Moskovskogo Universiteta.
+Pochvovedenie*, 2016, no. 2, pp. 25-32. The page offers subscription access
+and an abstract, not the original retention figures. Its HTML snapshot SHA256
+is `836bec3c8ea09c878870508e42fa8bff8273239b8c9a21132442548f5fd18ebf`.
+
+### Remaining source-review queue
+
+The current manifest and reconstruction audit identify 692 rows under 15
+blocked physical source rules. This includes 48 Khaydapova rows currently
+reported under identity mismatch; those need both physical and identity
+review. The other 27 exclusions belong to the reviewed sources' explicit
+row decisions or invalid-value checks. Counts below are workbook-labelled
+rows, not promises of independent usable observations.
+
+| Reconstruction rule | Rows | Evidence still required |
+| --- | ---: | --- |
+| `shvarov_2008` | 119 | Original 2008 tables; absolute water versus hysteresis differences; units and long-only records |
+| `sapozhnikov_1988` | 108 | Original retention figures/tables; units; measured versus calculated segments |
+| `pestonova_2007` | 81 | Original Figure 7 pressure-axis labels and saturation convention; dry-mass percent water confirmed |
+| `chudinova_2009` | 65 | Original figures; water basis and six initial axis positions |
+| `khaydapova_2001` | 54 | Original figures; physical units and exact row identities |
+| `makarychev_2014_2` | 35 | Hydrological-constant meaning; any independently established pressure-water pairs |
+| `shein_2011` | 30 | Water basis; salt-equilibrium axis, temperature and applicable potential |
+| `shein_2012` | 30 | Original figures/tables; independent observations versus reconstructed curves; identities |
+| `vasyukov_2012` | 28 | Reference unit of the logarithmic pressure-potential axis |
+| `manucharova_2012` | 27 | Original table/figure column order, soil identities, units and missing-value treatment |
+| `makarychev_2014_1` | 25 | Hydrological-constant meaning; any independently established pressure-water pairs |
+| `shein_2018` | 25 | Original curves; water units, drying/wetting branch and exact depths |
+| `sapozhnikov_1987` | 24 | Original retention figures/tables; water scale and pressure convention |
+| `smagin_2009` | 24 | Exact extended publication and three treatment curves with axes |
+| `sidorova_2016` | 17 | Original 2016 no. 2, pp. 25-32; both horizons and physical axes |
+
+The Shein 2012 source and reconstruction rules now retain a dedicated
+observation-provenance blocker. Together with Shvarov, this protects 149
+source-labelled rows from release based on physical units alone.
+
+### Pestonova 2007: original author abstract resolves the water basis
+
+[The complete original author abstract, hosted OCR](https://earthpapers.net/mehanicheskaya-prochnost-pochvennoy-struktury-vzaimosvyaz-s-fizicheskimi-svoystvami-i-osnovnoy-gidrofizicheskoy-harakteri)
+and [the free library viewer, page 23](https://viewer.rsl.ru/rsl01003058664?page=23)
+identify the six retained horizons in Figure 7 (printed p. 21). The shared
+moisture axes use W percent; methods define dry-soil-mass moisture and describe
+centrifugation/desorption. Water semantics are now dry-mass percent.
+The reviewed text layers do not preserve the pressure-axis labels, and browser
+viewing returned a gateway error followed by a blank page. No pressure meaning
+or saturation replacement is inferred. All 81 rows remain blocked.
+
+The HTML snapshot SHA256 is
+`2ae4a5b0ca84fcab027844c67e07e06071e31ed9933b7c1d6a83890f575dcd4e`;
+the library's public Figure 7 word-coordinate response SHA256 is
+`90e59ea093021924618a0250649c65e4d8762a7e9c2d91c43b50f07acbd4a8da`.
+The library metadata explicitly permits free viewing of all 29 pages without
+authorization, while download is unavailable; no download restriction was
+bypassed. The next concrete step is visual review of that freely viewable
+figure when rendering is available.

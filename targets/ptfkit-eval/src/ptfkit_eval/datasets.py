@@ -331,6 +331,7 @@ def _retention_profile_diagnostics(
     diagnostics.extend(_retention_profile_count_diagnostics(profile))
     diagnostics.extend(_retention_source_rule_diagnostics(mapping, profile))
     diagnostics.extend(_retention_reconstruction_rule_diagnostics(mapping, profile))
+    diagnostics.extend(_retention_row_review_diagnostics(mapping, profile))
     return diagnostics
 
 
@@ -1114,3 +1115,65 @@ def _integer(value: object) -> int:
         message = f'Expected an integer after schema validation, got {type(value).__name__}.'
         raise TypeError(message)
     return value
+
+
+def _retention_row_review_diagnostics(
+    document: Mapping[str, object], profile: Mapping[str, object]
+) -> list[DatasetMappingDiagnostic]:
+    diagnostics: list[DatasetMappingDiagnostic] = []
+    counts = {
+        _string(_mapping(item)['source']): _mapping(item)['observation_count']
+        for item in _sequence(profile['sources'])
+    }
+    masters = {
+        _string(_mapping(item)['long_source']): _mapping(item)['master_source']
+        for item in _sequence(document['retention_reconstruction_rules'])
+    }
+    sources: set[str] = set()
+    rows: set[int] = set()
+    for index, value in enumerate(_sequence(document.get('retention_row_reviews', []))):
+        policy = _mapping(value)
+        source = _string(policy['source'])
+        decisions = [_mapping(item) for item in _sequence(policy['decisions'])]
+        coordinates = [cast('int', item['row']) for item in decisions]
+        consistent = all(
+            'exclusion_reason' in item
+            or (
+                item['canonical_source'] == masters.get(source)
+                and item['canonical_sample_id']
+                == f'{item["canonical_source"]}_{item["canonical_sample_number"]}'
+            )
+            for item in decisions
+        )
+        if (
+            source in sources
+            or policy['worksheet'] != profile['sheet_name']
+            or counts.get(source) != len(decisions)
+            or len(set(coordinates)) != len(coordinates)
+            or bool(rows.intersection(coordinates))
+            or not consistent
+        ):
+            diagnostics.append(
+                DatasetMappingDiagnostic(
+                    f'$.retention_row_reviews[{index}]',
+                    'mapping.invalid_retention_row_review',
+                    'Row reviews must exhaust one known source, use unique coordinates and '
+                    'consistent identities from its master source on the bound worksheet.',
+                )
+            )
+        sources.add(source)
+        rows.update(coordinates)
+    for index, value in enumerate(_sequence(document['retention_source_rules'])):
+        rule = _mapping(value)
+        if rule['source'] not in sources and any(
+            _mapping(item).get('requires_row_review') is True
+            for item in _sequence(rule['observations'])
+        ):
+            diagnostics.append(
+                DatasetMappingDiagnostic(
+                    f'$.retention_source_rules[{index}]',
+                    'mapping.missing_retention_row_review',
+                    'This source requires an exhaustive row-review policy.',
+                )
+            )
+    return diagnostics

@@ -7,7 +7,7 @@ envelopes, fold-specific domains/error strata, target-free composite transition
 member contrasts, paired cluster metric differences, and nested training of
 constant convex two-curve ensemble weights are implemented and integrated into
 run schemas/artifacts/reports, including learned-fold input domains. The latest
-component verification has 698 passing tests. Finite-grid hard-switch boundary
+component verification has 732 passing tests. Finite-grid hard-switch boundary
 training and fitted-seam diagnostics are implemented. Finite-grid learned blend intervals and separate complete-learner point
 MAE/MSE risk are implemented. Nonlinear pressure-only sigmoid gates are also implemented. Soil-property
 gates, weight/boundary parameter uncertainty, and remaining ME/median strategy
@@ -34,7 +34,7 @@ oracles and installed-wheel replay. They expose selective completion and target
 mismatch; they qualify no confidence interval.
 The latest implementation evidence and continuation order are recorded in
 `ptfkit-eval-progress.md`. Online primary-source methodology review is active; original workbook-paper
-review has enabled six source rules and 649 observations. The remaining
+review has enabled eleven source rules and 1,036 observations. The remaining
 scientific and identity blockers are recorded in the source-review note.
 
 In progress. The measurement contract, public manifest, initial `ptfkit-eval`
@@ -56,9 +56,10 @@ candidate sample identifiers in `evaluation/datasets/meta_v3_3.inventory.json`.
 The reviewed facts, proposed source aliases, quarantines, and unresolved
 scientific questions are encoded in `evaluation/datasets/meta_v3_3.yaml`. The
 mapping remains `draft_blocked`. The first real normalization run accounts for
-all 1,847 populated `ОГХ` rows. Six evidence-reviewed source rules now yield 649 canonical observations for
-62 samples; 1,057 observations retain blocked-rule exclusions, 48 expose stale
-cached sample identifiers, one has a missing water value, and 92 fitted van
+all 1,847 populated `ОГХ` rows. Eleven evidence-reviewed source rules now yield 1,036 canonical observations for
+109 sample identities; 644 observations retain blocked-rule exclusions, 48 expose stale
+cached sample identifiers, six have ambiguous identities, 14 have unreviewed
+pressures, three are table statistics, one has a missing water value, and 92 fitted van
 Genuchten parameter rows enter a separate table. Full-curve matching
 against the `Данные` wide blocks also exposed a second failure mode: internally
 consistent long-sheet identifiers can still name the wrong master sample. The
@@ -123,11 +124,13 @@ delivery packages remain before the acceptance criterion is met:
 The first retention slice of package 1 is implemented. Each of the 1,755
 observation rows now produces either a canonical pressure-water-content record
 with cell lineage or an explicit exclusion, and the 92 fitted VGN rows are kept
-in a separate parameter table. The current checksum-bound result is 649
-normalized and 1,106 explicitly excluded: 1,057 by unresolved source rules,
-48 by cached sample identifiers and one by an explicit missing water value.
+in a separate parameter table. The current checksum-bound result is 1,036
+normalized and 719 explicitly excluded: 644 by unresolved source rules,
+48 by cached sample identifiers, six by ambiguous point identities, 17 by
+unreviewed pressures, three non-observation table values, and one missing water value.
 The six reviewed blocks use confirmed full-curve identity crosswalks and
-source-specific physical conversions. The 223 volumetric and 426 gravimetric
+source-specific physical conversions; five partial sources use mandatory
+exhaustive row decisions and unique original-cell matches. The 549 volumetric and 487 gravimetric
 observations remain distinct. The reusable reconstruction audit now
 accounts for all 1,755 observations from all 26 observation sources plus the
 parameter-only Kokareva source. Twenty-one rules preserve complete one-to-one
@@ -506,10 +509,10 @@ inspection API, draft mapping, mapping schema, inventory-aware loader, exact
 source-rule coverage checks, and rule-gated retention normalizer are
 implemented. The `ОГХ` pipeline classifies and accounts for all 1,847 populated
 rows as 1,755 observations or 92 fitted VGN parameter rows, with no unclassified
-or missing-source rows. Six observation rules are confirmed: they emit 649
-canonical observations after explicit full-curve sample crosswalks between `ОГХ` and `Данные`. The remaining run
-emits 1,057 blocked-rule exclusions, 48 cached sample-identifier mismatches
-and one explicit missing-water exclusion.
+or missing-source rows. Eleven observation rules are confirmed: six use full-curve sample crosswalks
+and five require exhaustive row reviews, yielding 1,036 canonical observations between `ОГХ` and `Данные`. The remaining run
+emits 644 blocked-rule exclusions, 48 cached sample-identifier mismatches,
+six ambiguous identity exclusions, 17 unreviewed pressures, three table statistics and one missing-water exclusion.
 It emits no guessed canonical values. A reusable reconstruction audit now
 compares declared wide blocks with long observations and fitted parameters as
 multisets, then separately tests whether complete raw identifier groups map

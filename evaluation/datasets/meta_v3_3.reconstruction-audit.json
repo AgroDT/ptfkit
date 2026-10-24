@@ -653,7 +653,6 @@
       ],
       "blockers": [
         "source_alias_review",
-        "water_scale_by_source",
         "pressure_convention_by_source"
       ]
     },
@@ -766,9 +765,6 @@
         }
       ],
       "blockers": [
-        "source_alias_review",
-        "unknown_water_basis",
-        "pressure_convention_by_source",
         "retention_reconstruction"
       ]
     },
@@ -877,7 +873,8 @@
       "blockers": [
         "water_scale_by_source",
         "pressure_convention_by_source",
-        "retention_reconstruction"
+        "retention_reconstruction",
+        "retention_observation_provenance"
       ]
     },
     {
@@ -1180,9 +1177,6 @@
         }
       ],
       "blockers": [
-        "source_alias_review",
-        "unknown_water_basis",
-        "pressure_convention_by_source",
         "retention_reconstruction"
       ]
     },
@@ -1259,7 +1253,6 @@
         }
       ],
       "blockers": [
-        "unknown_water_basis",
         "pressure_convention_by_source"
       ]
     },
@@ -1393,7 +1386,8 @@
         "unknown_water_basis",
         "pressure_convention_by_source",
         "fitted_parameter_conventions",
-        "retention_reconstruction"
+        "retention_reconstruction",
+        "retention_observation_provenance"
       ]
     },
     {
@@ -1401,7 +1395,7 @@
       "rule_status": "blocked",
       "master_source": "2013_баденко",
       "long_source": "2013_баденко",
-      "water_scale_status": "proposed",
+      "water_scale_status": "confirmed",
       "pressure_replacement_count": 0,
       "proposed_pressure_replacement_count": 0,
       "axis_override_count": 0,
@@ -1451,8 +1445,6 @@
         }
       ],
       "blockers": [
-        "unknown_water_basis",
-        "pressure_convention_by_source",
         "retention_reconstruction"
       ]
     },
@@ -1837,7 +1829,7 @@
       "rule_status": "blocked",
       "master_source": "2015_Панина. дисер",
       "long_source": "2015_панина",
-      "water_scale_status": "proposed",
+      "water_scale_status": "confirmed",
       "pressure_replacement_count": 1,
       "proposed_pressure_replacement_count": 1,
       "axis_override_count": 0,
@@ -1887,8 +1879,6 @@
         }
       ],
       "blockers": [
-        "water_scale_by_source",
-        "pressure_convention_by_source",
         "retention_reconstruction"
       ]
     },
@@ -2282,9 +2272,7 @@
         }
       ],
       "blockers": [
-        "source_alias_review",
-        "water_scale_by_source",
-        "pressure_convention_by_source"
+        "retention_reconstruction"
       ]
     },
     {
