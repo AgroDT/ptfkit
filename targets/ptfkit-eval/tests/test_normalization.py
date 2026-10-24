@@ -1,10 +1,11 @@
+import copy
 import hashlib
 import json
 from dataclasses import replace
 from pathlib import Path
 
 import pytest
-from openpyxl import Workbook
+from openpyxl import Workbook, load_workbook
 
 from ptfkit_eval import (
     DatasetMapping,
@@ -168,13 +169,13 @@ def test_normalizes_only_confirmed_rules_and_balances_every_row(tmp_path: Path):
 
     assert result.summary.total_data_rows == 9
     assert result.summary.input_observation_count == 6
-    assert result.summary.normalized_observation_count == 3
-    assert result.summary.excluded_observation_count == 3
+    assert result.summary.normalized_observation_count == 4
+    assert result.summary.excluded_observation_count == 2
     assert result.summary.fitted_parameter_count == 1
     assert result.summary.unclassified_exclusion_count == 1
     assert result.summary.missing_source_exclusion_count == 1
 
-    first, second, third = result.observations
+    first, second, third, fourth = result.observations
     assert first.pressure_kilopascal == pytest.approx(9.80665)
     assert first.sample_id == 'canonical_a_9'
     assert first.source == 'canonical_a'
@@ -194,13 +195,14 @@ def test_normalizes_only_confirmed_rules_and_balances_every_row(tmp_path: Path):
     assert third.water_content == pytest.approx(0.5)
     assert third.water_unit == 'volume_fraction'
     assert third.water_basis == 'bulk_volume'
+    assert fourth.water_content == pytest.approx(1.25)
+    assert fourth.water_basis == 'dry_soil_mass'
 
     assert [
         (item.model_family, item.parameter_name, item.value) for item in result.fitted_parameters
     ] == [('van_genuchten', 'Qr', 0.05)]
     assert [(item.row, item.reason) for item in result.exclusions] == [
         (5, 'source_rule_blocked'),
-        (7, 'water_content_out_of_range'),
         (8, 'unclassified_water_encoding'),
         (9, 'missing_source'),
         (10, 'sample_identity_mismatch'),
@@ -223,9 +225,37 @@ def test_summary_is_stable_and_does_not_redistribute_measurements(tmp_path: Path
 
     assert first.read_bytes() == second.read_bytes()
     document = json.loads(first.read_text(encoding='utf-8'))
-    assert document['normalized_observation_count'] == 3
+    assert document['normalized_observation_count'] == 4
     assert '9.80665' not in first.read_text(encoding='utf-8')
     assert '0.05' not in first.read_text(encoding='utf-8')
+
+
+@pytest.mark.parametrize(
+    ('row', 'water', 'expected'),
+    [(2, 125, 1.25), (2, -1, None), (4, 1.25, None), (4, -0.01, None)],
+)
+def test_water_bounds_distinguish_dry_mass_ratio_from_bulk_volume_fraction(
+    tmp_path: Path, row: int, water: float, expected: float | None
+):
+    path = tmp_path / 'retention.xlsx'
+    _workbook(path)
+    workbook = load_workbook(path)
+    workbook.worksheets[0].cell(row, 7, water)
+    workbook.save(path)
+    workbook.close()
+
+    result = normalize_retention_workbook(path, _mapping(path))
+
+    if expected is None:
+        excluded = next(item for item in result.exclusions if item.row == row)
+        assert excluded.reason == 'water_content_out_of_range'
+        assert not any(item.row == row for item in result.observations)
+    else:
+        observation = next(item for item in result.observations if item.row == row)
+        # 1.25 g water / 1 g dry soil is 125%; it is not a volume fraction.
+        assert observation.water_content == pytest.approx(expected)
+        assert observation.water_basis == 'dry_soil_mass'
+        assert not any(item.row == row for item in result.exclusions)
 
 
 def test_rejects_workbook_bytes_not_bound_to_the_mapping(tmp_path: Path):
@@ -256,6 +286,7 @@ def test_rejects_workbook_bytes_not_bound_to_the_mapping(tmp_path: Path):
         ('log10_kilopascal', 'pF', 3, 'magnitude', 1000),
         ('log10_kilopascal', 'pF', 2, 'negative', None),
         ('log10_kilopascal', 'pF', 400, 'magnitude', None),
+        ('kilopascal', 'kPa', 0, 'magnitude', 0),
         ('megapascal', 'mPa', 0.001, 'magnitude', 1),
         ('megapascal', 'mPa', 140, 'magnitude', 140000),
         ('megapascal', 'mPa', -0.01, 'negative', 10),
@@ -324,3 +355,282 @@ def test_reviewed_pressure_representation_overrides_raw_label(
     assert observation.water_quantity == 'volumetric_water_content'
     assert observation.water_unit == 'volume_fraction'
     assert observation.water_basis == 'bulk_volume'
+
+
+def _row_review_mapping(path: Path) -> DatasetMapping:
+    workbook = load_workbook(path)
+    workbook['\u041e\u0413\u0425']['G10'] = 21
+    master = workbook.create_sheet('master')
+    master['X1'], master['Y1'] = 2, 1
+    for row, number, column, water in [(2, 9, 24, 25), (3, 10, 25, 0.25), (4, 11, 24, 21)]:
+        master.cell(row, 1, f'canonical_a_{number}')
+        master.cell(row, 2, number)
+        master.cell(row, 3, 'canonical_a')
+        master.cell(row, column, water)
+    workbook.save(path)
+    workbook.close()
+    mapping = _mapping(path)
+    document = dict(mapping.document)
+    document['retention_reconstruction_rules'] = [
+        {
+            'long_source': 'a',
+            'master_source': 'canonical_a',
+            'master_worksheet': 'master',
+            'water_scale_status': 'confirmed',
+            'water_scale': 1,
+            'comparison_decimal_places': 12,
+            'blocks': [
+                {
+                    'first_sample_row': 2,
+                    'last_sample_row': 4,
+                    'axis_row': 1,
+                    'first_column': 'X',
+                    'last_column': 'Y',
+                }
+            ],
+        }
+    ]
+    rules = document['retention_source_rules']
+    assert isinstance(rules, list)
+    rules[0]['observations'][0]['requires_row_review'] = True
+    document['retention_row_reviews'] = [
+        {
+            'source': 'a',
+            'worksheet': '\u041e\u0413\u0425',
+            'evidence': 'Independent row identities from the original wide records.',
+            'decisions': [
+                {
+                    'row': row,
+                    'canonical_sample_id': f'canonical_a_{number}',
+                    'canonical_source': 'canonical_a',
+                    'canonical_sample_number': number,
+                    'evidence_cells': [
+                        f'master!{column}1',
+                        f'master!{column}{master_row}',
+                        f'master!A{master_row}:C{master_row}',
+                    ],
+                }
+                for row, number, master_row, column in [
+                    (2, 9, 2, 'X'),
+                    (3, 10, 3, 'Y'),
+                    (10, 11, 4, 'X'),
+                ]
+            ]
+            + [
+                {
+                    'row': 7,
+                    'exclusion_reason': 'ambiguous_sample_identity',
+                    'evidence_cells': ['master!X5', 'master!X6'],
+                }
+            ],
+        }
+    ]
+    return replace(mapping, document=document)
+
+
+def test_row_reviews_separate_shared_ids_and_repair_stale_cached_ids(tmp_path: Path):
+    path = tmp_path / 'retention.xlsx'
+    _workbook(path)
+    result = normalize_retention_workbook(path, _row_review_mapping(path))
+    assert [(p.row, p.sample_id, p.sample_number) for p in result.observations] == [
+        (2, 'canonical_a_9', 9),
+        (3, 'canonical_a_10', 10),
+        (4, 'b_2', 2),
+        (10, 'canonical_a_11', 11),
+    ]
+    assert result.observations[0].water_content == pytest.approx(0.25)
+    assert result.observations[1].water_content == pytest.approx(0.0025)
+    assert result.observations[-1].pressure_kilopascal == pytest.approx(9.80665)
+    assert 'master!A4:C4' in result.observations[-1].source_cells
+    excluded = next(p for p in result.exclusions if p.row == 7)
+    assert excluded.reason == 'ambiguous_sample_identity'
+    assert excluded.raw_water_content == 125
+    assert excluded.source_cells[-2:] == ('master!X5', 'master!X6')
+    assert result.summary.normalized_observation_count == 4
+    assert result.summary.excluded_observation_count == 2
+
+
+@pytest.mark.parametrize('defect', ['missing', 'extra', 'duplicate', 'worksheet', 'identity'])
+def test_row_reviews_fail_closed_on_incomplete_or_inconsistent_evidence(
+    tmp_path: Path, defect: str
+):
+    path = tmp_path / 'retention.xlsx'
+    _workbook(path)
+    mapping = _row_review_mapping(path)
+    document = copy.deepcopy(dict(mapping.document))
+    policies = document['retention_row_reviews']
+    assert isinstance(policies, list)
+    policy = policies[0]
+    decisions = policy['decisions']
+    if defect == 'missing':
+        decisions.pop(0)
+    elif defect == 'extra':
+        decisions.append(dict(decisions[0], row=6))
+    elif defect == 'duplicate':
+        decisions.append(dict(decisions[0]))
+    elif defect == 'worksheet':
+        policy['worksheet'] = 'other'
+    else:
+        decisions[0]['canonical_sample_id'] = 'wrong'
+    with pytest.raises(RetentionNormalizationError):
+        normalize_retention_workbook(path, replace(mapping, document=document))
+
+
+def test_row_review_identity_does_not_override_blocked_physical_semantics(tmp_path: Path):
+    path = tmp_path / 'retention.xlsx'
+    _workbook(path)
+    mapping = _mapping(path)
+    document = dict(mapping.document)
+    document['retention_row_reviews'] = [
+        {
+            'source': 'c',
+            'worksheet': '\u041e\u0413\u0425',
+            'evidence': 'Identity only.',
+            'decisions': [
+                {
+                    'row': 5,
+                    'canonical_sample_id': 'canonical_c_1',
+                    'canonical_source': 'canonical_c',
+                    'canonical_sample_number': 1,
+                    'evidence_cells': ['master!A1:C1'],
+                }
+            ],
+        }
+    ]
+    result = normalize_retention_workbook(path, replace(mapping, document=document))
+    assert all(p.row != 5 for p in result.observations)
+    excluded = next(p for p in result.exclusions if p.row == 5)
+    assert excluded.reason == 'source_rule_blocked'
+    assert excluded.blockers == ('water_scale_by_source',)
+
+
+def test_required_row_review_cannot_be_removed_to_restore_cached_id_fallback(tmp_path: Path):
+    path = tmp_path / 'retention.xlsx'
+    _workbook(path)
+    mapping = _row_review_mapping(path)
+    document = dict(mapping.document)
+    del document['retention_row_reviews']
+    with pytest.raises(RetentionNormalizationError, match='requires exhaustive'):
+        normalize_retention_workbook(path, replace(mapping, document=document))
+
+
+@pytest.mark.parametrize(
+    'defect',
+    ['wrong_identity', 'ambiguous_master', 'wrong_axis', 'unreviewed_scale', 'wrong_provenance'],
+)
+def test_row_release_rechecks_master_point_evidence(tmp_path: Path, defect: str):
+    path = tmp_path / 'retention.xlsx'
+    _workbook(path)
+    mapping = _row_review_mapping(path)
+    document = copy.deepcopy(dict(mapping.document))
+    if defect == 'wrong_identity':
+        policies = document['retention_row_reviews']
+        assert isinstance(policies, list)
+        policies[0]['decisions'][0].update(
+            canonical_sample_id='canonical_a_10', canonical_sample_number=10
+        )
+    elif defect == 'wrong_provenance':
+        policies = document['retention_row_reviews']
+        assert isinstance(policies, list)
+        policies[0]['decisions'][0]['evidence_cells'] = ['master!A99:C99']
+    elif defect == 'unreviewed_scale':
+        rules = document['retention_reconstruction_rules']
+        assert isinstance(rules, list)
+        rules[0]['water_scale_status'] = 'proposed'
+    else:
+        workbook = load_workbook(path)
+        if defect == 'ambiguous_master':
+            workbook['master']['X4'] = 25
+            policies = document['retention_row_reviews']
+            assert isinstance(policies, list)
+            policies[0]['decisions'][2] = {
+                'row': 10,
+                'exclusion_reason': 'ambiguous_sample_identity',
+                'evidence_cells': ['master!X4'],
+            }
+        else:
+            workbook['master']['X1'] = 3
+        workbook.save(path)
+        workbook.close()
+        mapping = replace(mapping, source_sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+    with pytest.raises(
+        RetentionNormalizationError,
+        match=r'master point|master identity|confirmed water scaling|provenance',
+    ):
+        normalize_retention_workbook(path, replace(mapping, document=document))
+
+
+def test_two_long_rows_cannot_release_the_same_master_point_twice(tmp_path: Path):
+    path = tmp_path / 'retention.xlsx'
+    _workbook(path)
+    mapping = _row_review_mapping(path)
+    workbook = load_workbook(path)
+    workbook['\u041e\u0413\u0425'].append(['a_99', 'a', 99, 'W', 'pF', 2, 25])
+    workbook.save(path)
+    workbook.close()
+    document = copy.deepcopy(dict(mapping.document))
+    policies = document['retention_row_reviews']
+    assert isinstance(policies, list)
+    policies[0]['decisions'].append(dict(policies[0]['decisions'][0], row=11))
+    profile = dict(mapping.retention_profile, total_data_rows=10, observation_count=7)
+    mapping = replace(
+        mapping,
+        document=document,
+        retention_profile=profile,
+        source_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
+    )
+    with pytest.raises(RetentionNormalizationError, match='unused exact master identity'):
+        normalize_retention_workbook(path, mapping)
+
+
+def test_missing_original_axis_cannot_be_released_but_does_not_block_other_reviewed_rows(
+    tmp_path: Path,
+):
+    path = tmp_path / 'retention.xlsx'
+    _workbook(path)
+    mapping = _row_review_mapping(path)
+    workbook = load_workbook(path)
+    workbook['master']['Y1'] = None
+    workbook.save(path)
+    workbook.close()
+    mapping = replace(mapping, source_sha256=hashlib.sha256(path.read_bytes()).hexdigest())
+
+    with pytest.raises(RetentionNormalizationError, match='master point'):
+        normalize_retention_workbook(path, mapping)
+
+    document = copy.deepcopy(dict(mapping.document))
+    policies = document['retention_row_reviews']
+    assert isinstance(policies, list)
+    policies[0]['decisions'][1] = {
+        'row': 3,
+        'exclusion_reason': 'unreviewed_pressure_value',
+        'evidence_cells': ['master!Y1', 'master!Y3'],
+    }
+    result = normalize_retention_workbook(path, replace(mapping, document=document))
+    assert [item.row for item in result.observations] == [2, 4, 10]
+    excluded = next(item for item in result.exclusions if item.row == 3)
+    assert excluded.reason == 'unreviewed_pressure_value'
+    assert excluded.source_cells[-2:] == ('master!Y1', 'master!Y3')
+
+
+def test_reviewed_table_statistic_is_excluded_before_pressure_interpretation(tmp_path: Path):
+    path = tmp_path / 'retention.xlsx'
+    _workbook(path)
+    mapping = _row_review_mapping(path)
+    document = copy.deepcopy(dict(mapping.document))
+    policies = document['retention_row_reviews']
+    assert isinstance(policies, list)
+    policies[0]['decisions'][0] = {
+        'row': 2,
+        'exclusion_reason': 'non_observation_table_value',
+        'evidence_cells': ['master!X1', 'master!X2'],
+    }
+
+    result = normalize_retention_workbook(path, replace(mapping, document=document))
+
+    assert [item.row for item in result.observations] == [3, 4, 10]
+    excluded = next(item for item in result.exclusions if item.row == 2)
+    assert excluded.reason == 'non_observation_table_value'
+    assert excluded.raw_pressure == 2
+    assert excluded.raw_water_content == 25
+    assert excluded.source_cells[-2:] == ('master!X1', 'master!X2')

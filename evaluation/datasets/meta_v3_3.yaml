@@ -678,13 +678,24 @@ retention_source_rules:
     notes: This source contains fitted VGN parameters only; it has no observed retention points in the reviewed workbook.
   - source: 2007_пестонова
     observations:
-      - {water_encoding: W, pressure_encoding: pF, status: blocked, water_quantity: gravimetric_water_content, water_unit: null, canonical_water_unit: mass_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
+      - {water_encoding: W, pressure_encoding: pF, status: blocked, water_quantity: gravimetric_water_content, water_unit: mass_percent, canonical_water_unit: mass_fraction, pressure_representation: null, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [pressure_convention_by_source], evidence: "Pestonova's original 2007 author abstract, methods and Figure 7, identifies six matching soil/horizon records and W percent on shared moisture axes; methods define moisture relative to dry soil mass. The freely accessible RSL record rsl01003058664, viewer page 23 (printed p. 21), independently supplies the figure text layer. Pressure-axis labels are not preserved in the reviewed text layers; the workbook pF label and proposed saturation replacement remain unconfirmed. All 81 observations remain blocked without a pressure-unit guess."}
   - source: 2008_Умарова
     observations:
-      - {water_encoding: "?", pressure_encoding: pF, status: blocked, water_quantity: null, water_unit: null, canonical_water_unit: null, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [unknown_water_basis, pressure_convention_by_source], evidence: The workbook leaves the water quantity and scale unknown and the source-specific pressure convention has not been reviewed.}
+      - water_encoding: "?"
+        pressure_encoding: pF
+        status: confirmed
+        requires_row_review: true
+        water_quantity: volumetric_water_content
+        water_unit: volume_percent
+        canonical_water_unit: volume_fraction
+        pressure_representation: pf_log10_centimeter_water_head
+        pressure_convention: magnitude
+        canonical_pressure_unit: kilopascal
+        blockers: []
+        evidence: "Umarova (2008), original author abstract, Figure 5 on printed p. 19; https://viewer.rsl.ru/rsl01003446835?page=20 and https://earthpapers.net/preimuschestvennye-potoki-vlagi-v-pochvah-zakonomernosti-formirovaniya-i-znachenie-v-funktsionirovanii-pochv. The figure labels pF and theta percent; the text uses volumetric moisture. Site, horizon names and retention curves identify the two gray-forest profiles. The confirmed wide-to-long percentage scale and exhaustive row decisions release only the 81 retained long observations, without converting mass water content or releasing omitted/zero-placeholder wide cells."
   - source: 2008_шваров
     observations:
-      - {water_encoding: W, pressure_encoding: pF, status: blocked, water_quantity: gravimetric_water_content, water_unit: null, canonical_water_unit: mass_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
+      - {water_encoding: W, pressure_encoding: pF, status: blocked, water_quantity: gravimetric_water_content, water_unit: null, canonical_water_unit: mass_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source, retention_observation_provenance], evidence: "Shvarov's earlier author abstract (printed imprint 1984), Table 2, reports adsorption-desorption moisture differences in percent against relative vapor pressure. Complete vectors and soil/horizon/depth metadata match master rows 88 and 108. Such differences cannot be treated as absolute retention water contents. Other rows and the original 2008 tables remain unreviewed; no reversal, unit guess or blanket reinterpretation is authorized."}
   - source: 2009_Смагин
     observations:
       - {water_encoding: "?", pressure_encoding: pF, status: blocked, water_quantity: null, water_unit: null, canonical_water_unit: null, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [unknown_water_basis, pressure_convention_by_source], evidence: The workbook leaves the water quantity and scale unknown and the source-specific pressure convention has not been reviewed.}
@@ -693,22 +704,33 @@ retention_source_rules:
       - {water_encoding: "?", pressure_encoding: pF, status: blocked, water_quantity: null, water_unit: null, canonical_water_unit: null, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [unknown_water_basis, pressure_convention_by_source], evidence: The workbook leaves the water quantity and scale unknown and the source-specific pressure convention has not been reviewed.}
   - source: 2011_Садовникова
     observations:
-      - {water_encoding: "?", pressure_encoding: pF, status: blocked, water_quantity: null, water_unit: null, canonical_water_unit: null, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [unknown_water_basis, pressure_convention_by_source], evidence: The workbook leaves the water quantity and scale unknown and the source-specific pressure convention has not been reviewed.}
+      - {blockers: [], canonical_pressure_unit: kilopascal, canonical_water_unit: mass_fraction, evidence: 'Sadovnikova and Smagin (2011), journal-hosted original pp. 17-20, Figure 1 confirms dry-mass W percent and a logarithmic kPa axis. Exhaustive row review releases 61 literal master matches; two unsupported chernozem 0.01 pressure placeholders remain excluded. Experimental repeats remain dependent within their original soil/source.', pressure_convention: magnitude, pressure_encoding: pF, pressure_representation: log10_kilopascal, requires_row_review: true, status: confirmed, water_encoding: '?', water_quantity: gravimetric_water_content, water_unit: mass_percent}
   - source: 2011_шеин
     observations:
       - {water_encoding: "?", pressure_encoding: давление над солями, status: blocked, water_quantity: null, water_unit: null, canonical_water_unit: null, pressure_representation: null, pressure_convention: null, canonical_pressure_unit: null, blockers: [unknown_water_basis, pressure_over_salts_meaning], evidence: Neither the water-content quantity nor the physical interpretation of the salt-equilibrium pressure is confirmed.}
   - source: 2012_васюков
     observations:
-      - {water_encoding: "?", pressure_encoding: pF, status: blocked, water_quantity: null, water_unit: null, canonical_water_unit: null, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [unknown_water_basis, pressure_convention_by_source], evidence: The workbook leaves the water quantity and scale unknown and the source-specific pressure convention has not been reviewed.}
+      - {water_encoding: "?", pressure_encoding: pF, status: blocked, water_quantity: volumetric_water_content, water_unit: volume_fraction, canonical_water_unit: volume_fraction, pressure_representation: null, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [pressure_convention_by_source], evidence: "Vasyukov et al. (2012), university-hosted original https://shelly.kpfu.ru/e-ksu/docs/F584517239/2012_3.pdf, pp. 67-70, figure on p. 70 confirms volumetric water as fractions. The pressure axis names a decimal logarithm of soil-water potential without identifying a pressure or head unit. The raw workbook pF label does not establish standard log10 centimeter head; all 28 rows remain blocked."}
   - source: 2012_манучарова
     observations:
       - {water_encoding: W, pressure_encoding: kPa, status: blocked, water_quantity: gravimetric_water_content, water_unit: null, canonical_water_unit: mass_fraction, pressure_representation: kilopascal, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
   - source: 2012_Шеин
     observations:
-      - {water_encoding: Q, pressure_encoding: pF, status: blocked, water_quantity: volumetric_water_content, water_unit: null, canonical_water_unit: volume_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
+      - {water_encoding: Q, pressure_encoding: pF, status: blocked, water_quantity: volumetric_water_content, water_unit: null, canonical_water_unit: volume_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source, retention_observation_provenance], evidence: "Shein, Shcheglov and Moskvin (2012), DOI 10.1134/S1064229312040102, describe calculated retention parameters and van Genuchten approximation. Moskvin's original 2013 author abstract matches the experimental field and describes reconstruction from measured constants with inferred pressure coordinates. The workbook likewise labels this method as approximation. The original figures/tables must identify any directly measured subset; physical units alone cannot release these 30 stored curve points as independent observations."}
   - source: 2013_баденко
     observations:
-      - {water_encoding: "?", pressure_encoding: kPa, status: blocked, water_quantity: null, water_unit: null, canonical_water_unit: null, pressure_representation: kilopascal, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [unknown_water_basis, pressure_convention_by_source], evidence: The workbook leaves the water quantity and scale unknown and the source-specific pressure convention has not been reviewed.}
+      - water_encoding: "?"
+        pressure_encoding: kPa
+        status: confirmed
+        requires_row_review: true
+        water_quantity: volumetric_water_content
+        water_unit: volume_fraction
+        canonical_water_unit: volume_fraction
+        pressure_representation: kilopascal
+        pressure_convention: magnitude
+        canonical_pressure_unit: kilopascal
+        blockers: []
+        evidence: "Badenko et al. (2013), https://www.agrophys.ru/Media/Default/Page/Magazine%20Agrophysics/Agrophysica1(9)/Badenko.pdf, pp. 16-17: pressure-membrane measurements and a table explicitly in cm3/cm3 and kPa. All 108 water values equal the wide workbook table; the long axes store nonnegative pressure magnitudes, including the explicitly reported zero-pressure point. Exhaustive row decisions release 106 unique matches and retain two ambiguous points as exclusions. Published nonmonotonic values are preserved without correction; normalization is not a quality or scoring-eligibility decision."
   - source: 2014_Болотов
     observations:
       - water_encoding: Q
@@ -743,7 +765,18 @@ retention_source_rules:
         evidence: "Makarychev et al. (2014), https://www.asau.ru/vestnik/2014/12/035-039.pdf, printed pp. 37-38 and Figure 2: centrifuge drainage observations use volumetric water content in cm3/cm3 and positive pressure P in kPa. All four workbook profiles match the plotted horizon order and shape. The axis -0.6049615 to 3.02941 reproduces the approximate 0.25 to 1070 kPa plotted range as log10(kPa); the raw pF label is not the physical representation."
   - source: 2015_панина
     observations:
-      - {water_encoding: Q, pressure_encoding: pF, status: blocked, water_quantity: volumetric_water_content, water_unit: null, canonical_water_unit: volume_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
+      - water_encoding: Q
+        pressure_encoding: pF
+        status: confirmed
+        requires_row_review: true
+        water_quantity: volumetric_water_content
+        water_unit: volume_percent
+        canonical_water_unit: volume_fraction
+        pressure_representation: pf_log10_centimeter_water_head
+        pressure_convention: magnitude
+        canonical_pressure_unit: kilopascal
+        blockers: []
+        evidence: "Panina (2015), https://soil.msu.ru/attachments/article/2063/Panina_Disser.pdf, pp. 64-68 and Figures 9-10 reports theta in percent and pF. This physical rule is gated by exhaustive retention_row_reviews: only 116 unambiguous positive-pF observations are released; the saturation pressure and four ambiguous point identities remain excluded."
   - source: 2016_сидорова
     observations:
       - {water_encoding: Q, pressure_encoding: pF, status: blocked, water_quantity: volumetric_water_content, water_unit: null, canonical_water_unit: volume_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
@@ -775,7 +808,7 @@ retention_source_rules:
         evidence: "The 2018-labelled workbook profiles are corroborated by the same authors' primary monograph Makarychev and Lebedeva (2021), https://www.asau.ru/news/social-work?fileid=24217&task=getfile, pp. 15-16 and 63-64, Figures 31-33. Water is measured gravimetrically and plotted as W percent; retained long-sheet values equal 100 times the wide fractions. The six pF levels reproduce positive pressures approximately 0.01, 0.25, 3.6, 33, 145 and 981 kPa on those figures. Six birch, five grass and five retained oak horizons match the workbook. The monograph corroborates the physical conventions; the original 2018 bibliographic entry remains unidentified."
   - source: 2018_моисеев
     observations:
-      - {water_encoding: Q, pressure_encoding: pF, status: blocked, water_quantity: volumetric_water_content, water_unit: null, canonical_water_unit: volume_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
+      - {blockers: [], canonical_pressure_unit: kilopascal, canonical_water_unit: volume_fraction, evidence: 'Moiseev et al. (2018), journal-hosted original pp. 80-82, Table 2 confirms 23 experimental volumetric-percent / pF pairs. Mandatory row review excludes three table statistics and three unsupported saturation-axis rows. Literal pressure-water pairs and sample metadata match the primary experimental column; calculated PSF values remain separate.', pressure_convention: magnitude, pressure_encoding: pF, pressure_representation: pf_log10_centimeter_water_head, requires_row_review: true, status: confirmed, water_encoding: Q, water_quantity: volumetric_water_content, water_unit: volume_percent}
   - source: 2018_шеин
     observations:
       - {water_encoding: Q, pressure_encoding: pF, status: blocked, water_quantity: volumetric_water_content, water_unit: null, canonical_water_unit: volume_fraction, pressure_representation: pf_log10_centimeter_water_head, pressure_convention: null, canonical_pressure_unit: kilopascal, blockers: [water_scale_by_source, pressure_convention_by_source], evidence: Workbook labels identify the quantities but the source-specific water scale and pressure convention have not been reviewed.}
@@ -918,8 +951,8 @@ retention_reconstruction_rules:
       - {axis_row: 55, first_sample_row: 70, last_sample_row: 70, first_column: X, last_column: AK}
       - {axis_row: 55, first_sample_row: 72, last_sample_row: 72, first_column: X, last_column: AK}
     parameter_block: null
-    blockers: [source_alias_review, water_scale_by_source, pressure_convention_by_source]
-    evidence: Six populated sample rows yield all 81 long observations after the declared scale and pressure replacement; three empty wide cells are explicitly omitted and the 14 other master rows contain no retention values.
+    blockers: [source_alias_review, pressure_convention_by_source]
+    evidence: Six populated sample rows yield all 81 long observations after the declared scale and pressure replacement; three empty wide cells are explicitly omitted and the 14 other master rows contain no retention values. The original author abstract methods and Figure 7 confirm dry-mass percent moisture, but the pressure axis and proposed replacement remain unreviewed.
   - id: umarova_2008
     status: blocked
     master_worksheet: Данные
@@ -939,7 +972,7 @@ retention_reconstruction_rules:
     blocks:
       - {axis_row: 76, first_sample_row: 77, last_sample_row: 86, first_column: X, last_column: AH}
     parameter_block: null
-    blockers: [source_alias_review, unknown_water_basis, pressure_convention_by_source, retention_reconstruction]
+    blockers: [retention_reconstruction]
     evidence: All 81 retained values match the long sheet after multiplying by 100; 22 zero placeholders are declared missing, while seven populated wide cells absent from the long sheet are explicitly excluded pending provenance review.
   - id: shvarov_2008
     status: blocked
@@ -957,7 +990,7 @@ retention_reconstruction_rules:
     blocks:
       - {axis_row: 87, first_sample_row: 88, last_sample_row: 108, first_column: X, last_column: AB}
     parameter_block: null
-    blockers: [water_scale_by_source, pressure_convention_by_source, retention_reconstruction]
+    blockers: [water_scale_by_source, pressure_convention_by_source, retention_reconstruction, retention_observation_provenance]
     evidence: The master block contains 105 values for 21 samples while the long sheet contains 119 observations in 24 groups; the audit records their exact overlap without inventing three missing master samples.
   - id: smagin_2009
     status: blocked
@@ -1059,7 +1092,7 @@ retention_reconstruction_rules:
       - {axis_row: 123, first_sample_row: 124, last_sample_row: 124, first_column: X, last_column: AP}
       - {axis_row: 125, first_sample_row: 126, last_sample_row: 126, first_column: X, last_column: AL}
     parameter_block: null
-    blockers: [source_alias_review, unknown_water_basis, pressure_convention_by_source, retention_reconstruction]
+    blockers: [retention_reconstruction]
     evidence: Four sample-specific axes reproduce the complete 63-point multiset after multiplying wide values by 100, but five cached long identifiers split the four master curves; three groups remain complete and two do not.
   - id: vasyukov_2012
     status: blocked
@@ -1080,8 +1113,8 @@ retention_reconstruction_rules:
       - {axis_row: 138, first_sample_row: 139, last_sample_row: 139, first_column: X, last_column: AD}
       - {axis_row: 140, first_sample_row: 141, last_sample_row: 141, first_column: X, last_column: AD}
     parameter_block: null
-    blockers: [unknown_water_basis, pressure_convention_by_source]
-    evidence: Four source-specific axis rows reproduce all 28 observations and all four complete curves bijectively at unit workbook scale.
+    blockers: [pressure_convention_by_source]
+    evidence: Four source-specific axis rows reproduce all 28 observations and all four complete curves bijectively at unit workbook scale. The original 2012 figure confirms volumetric fractions but leaves the logarithmic pressure-potential reference unit unidentified; no physical pressure conversion is released.
   - id: manucharova_2012
     status: blocked
     master_worksheet: Данные
@@ -1120,8 +1153,8 @@ retention_reconstruction_rules:
       header_row: 149
       columns: [AD, AE, AF, AG]
       sample_rows: [{first: 150, last: 155}]
-    blockers: [source_alias_review, unknown_water_basis, pressure_convention_by_source, fitted_parameter_conventions, retention_reconstruction]
-    evidence: All 30 observations and all 24 fitted parameter pairs match as global multisets, but the cached long identifiers split both curves and parameter sets and do not preserve sample identity.
+    blockers: [source_alias_review, unknown_water_basis, pressure_convention_by_source, fitted_parameter_conventions, retention_reconstruction, retention_observation_provenance]
+    evidence: All 30 observations and all 24 fitted parameter pairs match as global multisets, but the cached long identifiers split both curves and parameter sets and do not preserve sample identity. The original study and related author abstract describe reconstructed curves; any directly measured subset requires original figure/table review.
   - id: badenko_2013
     status: blocked
     master_worksheet: Данные
@@ -1129,7 +1162,7 @@ retention_reconstruction_rules:
     master_source: 2013_баденко
     long_source: 2013_баденко
     water_scale: 1
-    water_scale_status: proposed
+    water_scale_status: confirmed
     comparison_decimal_places: 12
     expected_missing_water_count: 0
     expected_missing_long_water_count: 0
@@ -1138,7 +1171,7 @@ retention_reconstruction_rules:
     blocks:
       - {axis_row: 156, first_sample_row: 157, last_sample_row: 174, first_column: X, last_column: AC}
     parameter_block: null
-    blockers: [unknown_water_basis, pressure_convention_by_source, retention_reconstruction]
+    blockers: [retention_reconstruction]
     evidence: The complete 108-point multiset matches at unit workbook scale, but 14 cached long identifiers split 18 master curves and only one preserves a complete curve.
   - id: bolotov_2014
     status: confirmed
@@ -1220,7 +1253,7 @@ retention_reconstruction_rules:
     master_source: 2015_Панина. дисер
     long_source: 2015_панина
     water_scale: 100
-    water_scale_status: proposed
+    water_scale_status: confirmed
     comparison_decimal_places: 12
     expected_missing_water_count: 0
     expected_missing_long_water_count: 0
@@ -1237,7 +1270,7 @@ retention_reconstruction_rules:
       header_row: 210
       columns: [AK, AL, AM, AN]
       sample_rows: [{first: 211, last: 216}, {first: 218, last: 223}]
-    blockers: [water_scale_by_source, pressure_convention_by_source, retention_reconstruction]
+    blockers: [retention_reconstruction]
     evidence: The transformed 132-point multiset matches exactly, but cached long-sheet identities split and mix the wide curves, so sample identity is not reconstructable from the current formulas.
   - id: sidorova_2016
     status: blocked
@@ -1333,7 +1366,7 @@ retention_reconstruction_rules:
         axis_overrides:
           X: {long_value: -1, status: proposed, evidence: The control cell is empty but the populated sample cell and long curve contain the first axis position.}
     parameter_block: null
-    blockers: [source_alias_review, water_scale_by_source, pressure_convention_by_source]
+    blockers: [retention_reconstruction]
     evidence: Three sample-specific axes reproduce all 29 observations and all three curves bijectively; the first axis position is explicit in the long sheet but missing from two master control rows.
   - id: shein_2018
     status: blocked
@@ -1353,6 +1386,445 @@ retention_reconstruction_rules:
     parameter_block: null
     blockers: [source_alias_review, water_scale_by_source, pressure_convention_by_source]
     evidence: All 25 available observations and all four sparse curves match bijectively after multiplying wide values by 100; three empty wide cells are explicitly omitted.
+
+retention_row_reviews:
+  - source: 2015_панина
+    worksheet: ОГХ
+    evidence: "Panina (2015), university-hosted thesis pp. 64-68, Figures 9-10 confirms theta percent and pF. Exact pressure-water matching at 12 decimal places identifies 116 positive-pressure rows uniquely. All 12 disputed saturation rows and four ambiguous rows remain excluded. The immutable workbook checksum binds every row decision; global cached sample groups are not used."
+    decisions:
+      - {row: 1372, exclusion_reason: unreviewed_pressure_value, evidence_cells: [ОГХ!F1372:G1372, Данные!X211]}
+      - {row: 1373, canonical_sample_id: 2015_Панина. дисер_1, canonical_source: 2015_Панина. дисер, canonical_sample_number: 1, evidence_cells: [Данные!Y210, Данные!Y211, Данные!A211:C211]}
+      - {row: 1374, canonical_sample_id: 2015_Панина. дисер_1, canonical_source: 2015_Панина. дисер, canonical_sample_number: 1, evidence_cells: [Данные!Z210, Данные!Z211, Данные!A211:C211]}
+      - {row: 1375, canonical_sample_id: 2015_Панина. дисер_1, canonical_source: 2015_Панина. дисер, canonical_sample_number: 1, evidence_cells: [Данные!AA210, Данные!AA211, Данные!A211:C211]}
+      - {row: 1376, canonical_sample_id: 2015_Панина. дисер_1, canonical_source: 2015_Панина. дисер, canonical_sample_number: 1, evidence_cells: [Данные!AB210, Данные!AB211, Данные!A211:C211]}
+      - {row: 1377, canonical_sample_id: 2015_Панина. дисер_1, canonical_source: 2015_Панина. дисер, canonical_sample_number: 1, evidence_cells: [Данные!AC210, Данные!AC211, Данные!A211:C211]}
+      - {row: 1378, canonical_sample_id: 2015_Панина. дисер_1, canonical_source: 2015_Панина. дисер, canonical_sample_number: 1, evidence_cells: [Данные!AD210, Данные!AD211, Данные!A211:C211]}
+      - {row: 1379, exclusion_reason: ambiguous_sample_identity, evidence_cells: [ОГХ!F1379:G1379, Данные!AE211, Данные!AE212]}
+      - {row: 1380, exclusion_reason: ambiguous_sample_identity, evidence_cells: [ОГХ!F1380:G1380, Данные!AF211, Данные!AF212]}
+      - {row: 1381, canonical_sample_id: 2015_Панина. дисер_1, canonical_source: 2015_Панина. дисер, canonical_sample_number: 1, evidence_cells: [Данные!AG210, Данные!AG211, Данные!A211:C211]}
+      - {row: 1382, canonical_sample_id: 2015_Панина. дисер_1, canonical_source: 2015_Панина. дисер, canonical_sample_number: 1, evidence_cells: [Данные!AH210, Данные!AH211, Данные!A211:C211]}
+      - {row: 1391, canonical_sample_id: 2015_Панина. дисер_9, canonical_source: 2015_Панина. дисер, canonical_sample_number: 9, evidence_cells: [Данные!AA217, Данные!AA220, Данные!A220:C220]}
+      - {row: 1392, canonical_sample_id: 2015_Панина. дисер_9, canonical_source: 2015_Панина. дисер, canonical_sample_number: 9, evidence_cells: [Данные!AB217, Данные!AB220, Данные!A220:C220]}
+      - {row: 1393, canonical_sample_id: 2015_Панина. дисер_9, canonical_source: 2015_Панина. дисер, canonical_sample_number: 9, evidence_cells: [Данные!AC217, Данные!AC220, Данные!A220:C220]}
+      - {row: 1394, canonical_sample_id: 2015_Панина. дисер_9, canonical_source: 2015_Панина. дисер, canonical_sample_number: 9, evidence_cells: [Данные!AD217, Данные!AD220, Данные!A220:C220]}
+      - {row: 1395, canonical_sample_id: 2015_Панина. дисер_3, canonical_source: 2015_Панина. дисер, canonical_sample_number: 3, evidence_cells: [Данные!AE210, Данные!AE213, Данные!A213:C213]}
+      - {row: 1396, canonical_sample_id: 2015_Панина. дисер_3, canonical_source: 2015_Панина. дисер, canonical_sample_number: 3, evidence_cells: [Данные!AF210, Данные!AF213, Данные!A213:C213]}
+      - {row: 1397, canonical_sample_id: 2015_Панина. дисер_3, canonical_source: 2015_Панина. дисер, canonical_sample_number: 3, evidence_cells: [Данные!AG210, Данные!AG213, Данные!A213:C213]}
+      - {row: 1398, canonical_sample_id: 2015_Панина. дисер_3, canonical_source: 2015_Панина. дисер, canonical_sample_number: 3, evidence_cells: [Данные!AH210, Данные!AH213, Данные!A213:C213]}
+      - {row: 1399, exclusion_reason: unreviewed_pressure_value, evidence_cells: [ОГХ!F1399:G1399, Данные!X214]}
+      - {row: 1400, canonical_sample_id: 2015_Панина. дисер_4, canonical_source: 2015_Панина. дисер, canonical_sample_number: 4, evidence_cells: [Данные!Y210, Данные!Y214, Данные!A214:C214]}
+      - {row: 1401, canonical_sample_id: 2015_Панина. дисер_4, canonical_source: 2015_Панина. дисер, canonical_sample_number: 4, evidence_cells: [Данные!Z210, Данные!Z214, Данные!A214:C214]}
+      - {row: 1402, canonical_sample_id: 2015_Панина. дисер_9, canonical_source: 2015_Панина. дисер, canonical_sample_number: 9, evidence_cells: [Данные!AE217, Данные!AE220, Данные!A220:C220]}
+      - {row: 1403, canonical_sample_id: 2015_Панина. дисер_9, canonical_source: 2015_Панина. дисер, canonical_sample_number: 9, evidence_cells: [Данные!AF217, Данные!AF220, Данные!A220:C220]}
+      - {row: 1404, canonical_sample_id: 2015_Панина. дисер_9, canonical_source: 2015_Панина. дисер, canonical_sample_number: 9, evidence_cells: [Данные!AG217, Данные!AG220, Данные!A220:C220]}
+      - {row: 1405, canonical_sample_id: 2015_Панина. дисер_9, canonical_source: 2015_Панина. дисер, canonical_sample_number: 9, evidence_cells: [Данные!AH217, Данные!AH220, Данные!A220:C220]}
+      - {row: 1410, canonical_sample_id: 2015_Панина. дисер_4, canonical_source: 2015_Панина. дисер, canonical_sample_number: 4, evidence_cells: [Данные!AA210, Данные!AA214, Данные!A214:C214]}
+      - {row: 1411, canonical_sample_id: 2015_Панина. дисер_4, canonical_source: 2015_Панина. дисер, canonical_sample_number: 4, evidence_cells: [Данные!AB210, Данные!AB214, Данные!A214:C214]}
+      - {row: 1412, canonical_sample_id: 2015_Панина. дисер_4, canonical_source: 2015_Панина. дисер, canonical_sample_number: 4, evidence_cells: [Данные!AC210, Данные!AC214, Данные!A214:C214]}
+      - {row: 1413, canonical_sample_id: 2015_Панина. дисер_4, canonical_source: 2015_Панина. дисер, canonical_sample_number: 4, evidence_cells: [Данные!AD210, Данные!AD214, Данные!A214:C214]}
+      - {row: 1418, canonical_sample_id: 2015_Панина. дисер_4, canonical_source: 2015_Панина. дисер, canonical_sample_number: 4, evidence_cells: [Данные!AE210, Данные!AE214, Данные!A214:C214]}
+      - {row: 1419, canonical_sample_id: 2015_Панина. дисер_4, canonical_source: 2015_Панина. дисер, canonical_sample_number: 4, evidence_cells: [Данные!AF210, Данные!AF214, Данные!A214:C214]}
+      - {row: 1420, canonical_sample_id: 2015_Панина. дисер_4, canonical_source: 2015_Панина. дисер, canonical_sample_number: 4, evidence_cells: [Данные!AG210, Данные!AG214, Данные!A214:C214]}
+      - {row: 1421, canonical_sample_id: 2015_Панина. дисер_4, canonical_source: 2015_Панина. дисер, canonical_sample_number: 4, evidence_cells: [Данные!AH210, Данные!AH214, Данные!A214:C214]}
+      - {row: 1422, exclusion_reason: unreviewed_pressure_value, evidence_cells: [ОГХ!F1422:G1422, Данные!X215]}
+      - {row: 1423, canonical_sample_id: 2015_Панина. дисер_5, canonical_source: 2015_Панина. дисер, canonical_sample_number: 5, evidence_cells: [Данные!Y210, Данные!Y215, Данные!A215:C215]}
+      - {row: 1424, canonical_sample_id: 2015_Панина. дисер_5, canonical_source: 2015_Панина. дисер, canonical_sample_number: 5, evidence_cells: [Данные!Z210, Данные!Z215, Данные!A215:C215]}
+      - {row: 1429, canonical_sample_id: 2015_Панина. дисер_5, canonical_source: 2015_Панина. дисер, canonical_sample_number: 5, evidence_cells: [Данные!AA210, Данные!AA215, Данные!A215:C215]}
+      - {row: 1430, canonical_sample_id: 2015_Панина. дисер_5, canonical_source: 2015_Панина. дисер, canonical_sample_number: 5, evidence_cells: [Данные!AB210, Данные!AB215, Данные!A215:C215]}
+      - {row: 1431, canonical_sample_id: 2015_Панина. дисер_5, canonical_source: 2015_Панина. дисер, canonical_sample_number: 5, evidence_cells: [Данные!AC210, Данные!AC215, Данные!A215:C215]}
+      - {row: 1432, canonical_sample_id: 2015_Панина. дисер_5, canonical_source: 2015_Панина. дисер, canonical_sample_number: 5, evidence_cells: [Данные!AD210, Данные!AD215, Данные!A215:C215]}
+      - {row: 1433, canonical_sample_id: 2015_Панина. дисер_5, canonical_source: 2015_Панина. дисер, canonical_sample_number: 5, evidence_cells: [Данные!AE210, Данные!AE215, Данные!A215:C215]}
+      - {row: 1434, canonical_sample_id: 2015_Панина. дисер_5, canonical_source: 2015_Панина. дисер, canonical_sample_number: 5, evidence_cells: [Данные!AF210, Данные!AF215, Данные!A215:C215]}
+      - {row: 1435, canonical_sample_id: 2015_Панина. дисер_5, canonical_source: 2015_Панина. дисер, canonical_sample_number: 5, evidence_cells: [Данные!AG210, Данные!AG215, Данные!A215:C215]}
+      - {row: 1436, canonical_sample_id: 2015_Панина. дисер_5, canonical_source: 2015_Панина. дисер, canonical_sample_number: 5, evidence_cells: [Данные!AH210, Данные!AH215, Данные!A215:C215]}
+      - {row: 1437, exclusion_reason: unreviewed_pressure_value, evidence_cells: [ОГХ!F1437:G1437, Данные!X216]}
+      - {row: 1438, canonical_sample_id: 2015_Панина. дисер_6, canonical_source: 2015_Панина. дисер, canonical_sample_number: 6, evidence_cells: [Данные!Y210, Данные!Y216, Данные!A216:C216]}
+      - {row: 1439, canonical_sample_id: 2015_Панина. дисер_6, canonical_source: 2015_Панина. дисер, canonical_sample_number: 6, evidence_cells: [Данные!Z210, Данные!Z216, Данные!A216:C216]}
+      - {row: 1444, canonical_sample_id: 2015_Панина. дисер_6, canonical_source: 2015_Панина. дисер, canonical_sample_number: 6, evidence_cells: [Данные!AA210, Данные!AA216, Данные!A216:C216]}
+      - {row: 1445, canonical_sample_id: 2015_Панина. дисер_6, canonical_source: 2015_Панина. дисер, canonical_sample_number: 6, evidence_cells: [Данные!AB210, Данные!AB216, Данные!A216:C216]}
+      - {row: 1446, canonical_sample_id: 2015_Панина. дисер_6, canonical_source: 2015_Панина. дисер, canonical_sample_number: 6, evidence_cells: [Данные!AC210, Данные!AC216, Данные!A216:C216]}
+      - {row: 1447, canonical_sample_id: 2015_Панина. дисер_6, canonical_source: 2015_Панина. дисер, canonical_sample_number: 6, evidence_cells: [Данные!AD210, Данные!AD216, Данные!A216:C216]}
+      - {row: 1448, canonical_sample_id: 2015_Панина. дисер_6, canonical_source: 2015_Панина. дисер, canonical_sample_number: 6, evidence_cells: [Данные!AE210, Данные!AE216, Данные!A216:C216]}
+      - {row: 1449, canonical_sample_id: 2015_Панина. дисер_6, canonical_source: 2015_Панина. дисер, canonical_sample_number: 6, evidence_cells: [Данные!AF210, Данные!AF216, Данные!A216:C216]}
+      - {row: 1450, canonical_sample_id: 2015_Панина. дисер_6, canonical_source: 2015_Панина. дисер, canonical_sample_number: 6, evidence_cells: [Данные!AG210, Данные!AG216, Данные!A216:C216]}
+      - {row: 1451, canonical_sample_id: 2015_Панина. дисер_6, canonical_source: 2015_Панина. дисер, canonical_sample_number: 6, evidence_cells: [Данные!AH210, Данные!AH216, Данные!A216:C216]}
+      - {row: 1456, exclusion_reason: unreviewed_pressure_value, evidence_cells: [ОГХ!F1456:G1456, Данные!X221]}
+      - {row: 1457, canonical_sample_id: 2015_Панина. дисер_10, canonical_source: 2015_Панина. дисер, canonical_sample_number: 10, evidence_cells: [Данные!Y217, Данные!Y221, Данные!A221:C221]}
+      - {row: 1458, canonical_sample_id: 2015_Панина. дисер_10, canonical_source: 2015_Панина. дисер, canonical_sample_number: 10, evidence_cells: [Данные!Z217, Данные!Z221, Данные!A221:C221]}
+      - {row: 1459, canonical_sample_id: 2015_Панина. дисер_10, canonical_source: 2015_Панина. дисер, canonical_sample_number: 10, evidence_cells: [Данные!AA217, Данные!AA221, Данные!A221:C221]}
+      - {row: 1460, canonical_sample_id: 2015_Панина. дисер_10, canonical_source: 2015_Панина. дисер, canonical_sample_number: 10, evidence_cells: [Данные!AB217, Данные!AB221, Данные!A221:C221]}
+      - {row: 1461, canonical_sample_id: 2015_Панина. дисер_10, canonical_source: 2015_Панина. дисер, canonical_sample_number: 10, evidence_cells: [Данные!AC217, Данные!AC221, Данные!A221:C221]}
+      - {row: 1462, canonical_sample_id: 2015_Панина. дисер_10, canonical_source: 2015_Панина. дисер, canonical_sample_number: 10, evidence_cells: [Данные!AD217, Данные!AD221, Данные!A221:C221]}
+      - {row: 1463, canonical_sample_id: 2015_Панина. дисер_10, canonical_source: 2015_Панина. дисер, canonical_sample_number: 10, evidence_cells: [Данные!AE217, Данные!AE221, Данные!A221:C221]}
+      - {row: 1464, canonical_sample_id: 2015_Панина. дисер_10, canonical_source: 2015_Панина. дисер, canonical_sample_number: 10, evidence_cells: [Данные!AF217, Данные!AF221, Данные!A221:C221]}
+      - {row: 1465, canonical_sample_id: 2015_Панина. дисер_10, canonical_source: 2015_Панина. дисер, canonical_sample_number: 10, evidence_cells: [Данные!AG217, Данные!AG221, Данные!A221:C221]}
+      - {row: 1466, canonical_sample_id: 2015_Панина. дисер_10, canonical_source: 2015_Панина. дисер, canonical_sample_number: 10, evidence_cells: [Данные!AH217, Данные!AH221, Данные!A221:C221]}
+      - {row: 1467, exclusion_reason: unreviewed_pressure_value, evidence_cells: [ОГХ!F1467:G1467, Данные!X222]}
+      - {row: 1468, canonical_sample_id: 2015_Панина. дисер_11, canonical_source: 2015_Панина. дисер, canonical_sample_number: 11, evidence_cells: [Данные!Y217, Данные!Y222, Данные!A222:C222]}
+      - {row: 1469, canonical_sample_id: 2015_Панина. дисер_11, canonical_source: 2015_Панина. дисер, canonical_sample_number: 11, evidence_cells: [Данные!Z217, Данные!Z222, Данные!A222:C222]}
+      - {row: 1474, canonical_sample_id: 2015_Панина. дисер_11, canonical_source: 2015_Панина. дисер, canonical_sample_number: 11, evidence_cells: [Данные!AA217, Данные!AA222, Данные!A222:C222]}
+      - {row: 1475, canonical_sample_id: 2015_Панина. дисер_11, canonical_source: 2015_Панина. дисер, canonical_sample_number: 11, evidence_cells: [Данные!AB217, Данные!AB222, Данные!A222:C222]}
+      - {row: 1476, canonical_sample_id: 2015_Панина. дисер_11, canonical_source: 2015_Панина. дисер, canonical_sample_number: 11, evidence_cells: [Данные!AC217, Данные!AC222, Данные!A222:C222]}
+      - {row: 1477, canonical_sample_id: 2015_Панина. дисер_11, canonical_source: 2015_Панина. дисер, canonical_sample_number: 11, evidence_cells: [Данные!AD217, Данные!AD222, Данные!A222:C222]}
+      - {row: 1478, canonical_sample_id: 2015_Панина. дисер_11, canonical_source: 2015_Панина. дисер, canonical_sample_number: 11, evidence_cells: [Данные!AE217, Данные!AE222, Данные!A222:C222]}
+      - {row: 1479, canonical_sample_id: 2015_Панина. дисер_11, canonical_source: 2015_Панина. дисер, canonical_sample_number: 11, evidence_cells: [Данные!AF217, Данные!AF222, Данные!A222:C222]}
+      - {row: 1480, canonical_sample_id: 2015_Панина. дисер_11, canonical_source: 2015_Панина. дисер, canonical_sample_number: 11, evidence_cells: [Данные!AG217, Данные!AG222, Данные!A222:C222]}
+      - {row: 1481, canonical_sample_id: 2015_Панина. дисер_11, canonical_source: 2015_Панина. дисер, canonical_sample_number: 11, evidence_cells: [Данные!AH217, Данные!AH222, Данные!A222:C222]}
+      - {row: 1482, exclusion_reason: unreviewed_pressure_value, evidence_cells: [ОГХ!F1482:G1482, Данные!X223]}
+      - {row: 1483, canonical_sample_id: 2015_Панина. дисер_12, canonical_source: 2015_Панина. дисер, canonical_sample_number: 12, evidence_cells: [Данные!Y217, Данные!Y223, Данные!A223:C223]}
+      - {row: 1484, canonical_sample_id: 2015_Панина. дисер_12, canonical_source: 2015_Панина. дисер, canonical_sample_number: 12, evidence_cells: [Данные!Z217, Данные!Z223, Данные!A223:C223]}
+      - {row: 1489, canonical_sample_id: 2015_Панина. дисер_12, canonical_source: 2015_Панина. дисер, canonical_sample_number: 12, evidence_cells: [Данные!AA217, Данные!AA223, Данные!A223:C223]}
+      - {row: 1490, canonical_sample_id: 2015_Панина. дисер_12, canonical_source: 2015_Панина. дисер, canonical_sample_number: 12, evidence_cells: [Данные!AB217, Данные!AB223, Данные!A223:C223]}
+      - {row: 1491, canonical_sample_id: 2015_Панина. дисер_12, canonical_source: 2015_Панина. дисер, canonical_sample_number: 12, evidence_cells: [Данные!AC217, Данные!AC223, Данные!A223:C223]}
+      - {row: 1492, canonical_sample_id: 2015_Панина. дисер_12, canonical_source: 2015_Панина. дисер, canonical_sample_number: 12, evidence_cells: [Данные!AD217, Данные!AD223, Данные!A223:C223]}
+      - {row: 1493, canonical_sample_id: 2015_Панина. дисер_12, canonical_source: 2015_Панина. дисер, canonical_sample_number: 12, evidence_cells: [Данные!AE217, Данные!AE223, Данные!A223:C223]}
+      - {row: 1494, canonical_sample_id: 2015_Панина. дисер_12, canonical_source: 2015_Панина. дисер, canonical_sample_number: 12, evidence_cells: [Данные!AF217, Данные!AF223, Данные!A223:C223]}
+      - {row: 1495, canonical_sample_id: 2015_Панина. дисер_12, canonical_source: 2015_Панина. дисер, canonical_sample_number: 12, evidence_cells: [Данные!AG217, Данные!AG223, Данные!A223:C223]}
+      - {row: 1496, canonical_sample_id: 2015_Панина. дисер_12, canonical_source: 2015_Панина. дисер, canonical_sample_number: 12, evidence_cells: [Данные!AH217, Данные!AH223, Данные!A223:C223]}
+      - {row: 1497, exclusion_reason: unreviewed_pressure_value, evidence_cells: [ОГХ!F1497:G1497, Данные!X212, Данные!X213]}
+      - {row: 1498, canonical_sample_id: 2015_Панина. дисер_2, canonical_source: 2015_Панина. дисер, canonical_sample_number: 2, evidence_cells: [Данные!Y210, Данные!Y212, Данные!A212:C212]}
+      - {row: 1499, canonical_sample_id: 2015_Панина. дисер_2, canonical_source: 2015_Панина. дисер, canonical_sample_number: 2, evidence_cells: [Данные!Z210, Данные!Z212, Данные!A212:C212]}
+      - {row: 1500, exclusion_reason: unreviewed_pressure_value, evidence_cells: [ОГХ!F1500:G1500, Данные!X218]}
+      - {row: 1501, canonical_sample_id: 2015_Панина. дисер_7, canonical_source: 2015_Панина. дисер, canonical_sample_number: 7, evidence_cells: [Данные!Y217, Данные!Y218, Данные!A218:C218]}
+      - {row: 1502, canonical_sample_id: 2015_Панина. дисер_7, canonical_source: 2015_Панина. дисер, canonical_sample_number: 7, evidence_cells: [Данные!Z217, Данные!Z218, Данные!A218:C218]}
+      - {row: 1503, canonical_sample_id: 2015_Панина. дисер_7, canonical_source: 2015_Панина. дисер, canonical_sample_number: 7, evidence_cells: [Данные!AA217, Данные!AA218, Данные!A218:C218]}
+      - {row: 1504, canonical_sample_id: 2015_Панина. дисер_7, canonical_source: 2015_Панина. дисер, canonical_sample_number: 7, evidence_cells: [Данные!AB217, Данные!AB218, Данные!A218:C218]}
+      - {row: 1505, canonical_sample_id: 2015_Панина. дисер_7, canonical_source: 2015_Панина. дисер, canonical_sample_number: 7, evidence_cells: [Данные!AC217, Данные!AC218, Данные!A218:C218]}
+      - {row: 1506, canonical_sample_id: 2015_Панина. дисер_7, canonical_source: 2015_Панина. дисер, canonical_sample_number: 7, evidence_cells: [Данные!AD217, Данные!AD218, Данные!A218:C218]}
+      - {row: 1507, canonical_sample_id: 2015_Панина. дисер_7, canonical_source: 2015_Панина. дисер, canonical_sample_number: 7, evidence_cells: [Данные!AE217, Данные!AE218, Данные!A218:C218]}
+      - {row: 1508, canonical_sample_id: 2015_Панина. дисер_7, canonical_source: 2015_Панина. дисер, canonical_sample_number: 7, evidence_cells: [Данные!AF217, Данные!AF218, Данные!A218:C218]}
+      - {row: 1509, canonical_sample_id: 2015_Панина. дисер_7, canonical_source: 2015_Панина. дисер, canonical_sample_number: 7, evidence_cells: [Данные!AG217, Данные!AG218, Данные!A218:C218]}
+      - {row: 1510, canonical_sample_id: 2015_Панина. дисер_7, canonical_source: 2015_Панина. дисер, canonical_sample_number: 7, evidence_cells: [Данные!AH217, Данные!AH218, Данные!A218:C218]}
+      - {row: 1515, canonical_sample_id: 2015_Панина. дисер_2, canonical_source: 2015_Панина. дисер, canonical_sample_number: 2, evidence_cells: [Данные!AA210, Данные!AA212, Данные!A212:C212]}
+      - {row: 1516, canonical_sample_id: 2015_Панина. дисер_2, canonical_source: 2015_Панина. дисер, canonical_sample_number: 2, evidence_cells: [Данные!AB210, Данные!AB212, Данные!A212:C212]}
+      - {row: 1517, canonical_sample_id: 2015_Панина. дисер_2, canonical_source: 2015_Панина. дисер, canonical_sample_number: 2, evidence_cells: [Данные!AC210, Данные!AC212, Данные!A212:C212]}
+      - {row: 1518, canonical_sample_id: 2015_Панина. дисер_2, canonical_source: 2015_Панина. дисер, canonical_sample_number: 2, evidence_cells: [Данные!AD210, Данные!AD212, Данные!A212:C212]}
+      - {row: 1523, exclusion_reason: unreviewed_pressure_value, evidence_cells: [ОГХ!F1523:G1523, Данные!X219]}
+      - {row: 1524, canonical_sample_id: 2015_Панина. дисер_8, canonical_source: 2015_Панина. дисер, canonical_sample_number: 8, evidence_cells: [Данные!Y217, Данные!Y219, Данные!A219:C219]}
+      - {row: 1525, canonical_sample_id: 2015_Панина. дисер_8, canonical_source: 2015_Панина. дисер, canonical_sample_number: 8, evidence_cells: [Данные!Z217, Данные!Z219, Данные!A219:C219]}
+      - {row: 1526, canonical_sample_id: 2015_Панина. дисер_8, canonical_source: 2015_Панина. дисер, canonical_sample_number: 8, evidence_cells: [Данные!AA217, Данные!AA219, Данные!A219:C219]}
+      - {row: 1527, canonical_sample_id: 2015_Панина. дисер_8, canonical_source: 2015_Панина. дисер, canonical_sample_number: 8, evidence_cells: [Данные!AB217, Данные!AB219, Данные!A219:C219]}
+      - {row: 1528, canonical_sample_id: 2015_Панина. дисер_8, canonical_source: 2015_Панина. дисер, canonical_sample_number: 8, evidence_cells: [Данные!AC217, Данные!AC219, Данные!A219:C219]}
+      - {row: 1529, canonical_sample_id: 2015_Панина. дисер_8, canonical_source: 2015_Панина. дисер, canonical_sample_number: 8, evidence_cells: [Данные!AD217, Данные!AD219, Данные!A219:C219]}
+      - {row: 1530, exclusion_reason: ambiguous_sample_identity, evidence_cells: [ОГХ!F1530:G1530, Данные!AE211, Данные!AE212]}
+      - {row: 1531, exclusion_reason: ambiguous_sample_identity, evidence_cells: [ОГХ!F1531:G1531, Данные!AF211, Данные!AF212]}
+      - {row: 1532, canonical_sample_id: 2015_Панина. дисер_2, canonical_source: 2015_Панина. дисер, canonical_sample_number: 2, evidence_cells: [Данные!AG210, Данные!AG212, Данные!A212:C212]}
+      - {row: 1533, canonical_sample_id: 2015_Панина. дисер_2, canonical_source: 2015_Панина. дисер, canonical_sample_number: 2, evidence_cells: [Данные!AH210, Данные!AH212, Данные!A212:C212]}
+      - {row: 1534, exclusion_reason: unreviewed_pressure_value, evidence_cells: [ОГХ!F1534:G1534, Данные!X212, Данные!X213]}
+      - {row: 1535, canonical_sample_id: 2015_Панина. дисер_3, canonical_source: 2015_Панина. дисер, canonical_sample_number: 3, evidence_cells: [Данные!Y210, Данные!Y213, Данные!A213:C213]}
+      - {row: 1536, canonical_sample_id: 2015_Панина. дисер_3, canonical_source: 2015_Панина. дисер, canonical_sample_number: 3, evidence_cells: [Данные!Z210, Данные!Z213, Данные!A213:C213]}
+      - {row: 1537, canonical_sample_id: 2015_Панина. дисер_8, canonical_source: 2015_Панина. дисер, canonical_sample_number: 8, evidence_cells: [Данные!AE217, Данные!AE219, Данные!A219:C219]}
+      - {row: 1538, canonical_sample_id: 2015_Панина. дисер_8, canonical_source: 2015_Панина. дисер, canonical_sample_number: 8, evidence_cells: [Данные!AF217, Данные!AF219, Данные!A219:C219]}
+      - {row: 1539, canonical_sample_id: 2015_Панина. дисер_8, canonical_source: 2015_Панина. дисер, canonical_sample_number: 8, evidence_cells: [Данные!AG217, Данные!AG219, Данные!A219:C219]}
+      - {row: 1540, canonical_sample_id: 2015_Панина. дисер_8, canonical_source: 2015_Панина. дисер, canonical_sample_number: 8, evidence_cells: [Данные!AH217, Данные!AH219, Данные!A219:C219]}
+      - {row: 1541, exclusion_reason: unreviewed_pressure_value, evidence_cells: [ОГХ!F1541:G1541, Данные!X220]}
+      - {row: 1542, canonical_sample_id: 2015_Панина. дисер_9, canonical_source: 2015_Панина. дисер, canonical_sample_number: 9, evidence_cells: [Данные!Y217, Данные!Y220, Данные!A220:C220]}
+      - {row: 1543, canonical_sample_id: 2015_Панина. дисер_9, canonical_source: 2015_Панина. дисер, canonical_sample_number: 9, evidence_cells: [Данные!Z217, Данные!Z220, Данные!A220:C220]}
+      - {row: 1548, canonical_sample_id: 2015_Панина. дисер_3, canonical_source: 2015_Панина. дисер, canonical_sample_number: 3, evidence_cells: [Данные!AA210, Данные!AA213, Данные!A213:C213]}
+      - {row: 1549, canonical_sample_id: 2015_Панина. дисер_3, canonical_source: 2015_Панина. дисер, canonical_sample_number: 3, evidence_cells: [Данные!AB210, Данные!AB213, Данные!A213:C213]}
+      - {row: 1550, canonical_sample_id: 2015_Панина. дисер_3, canonical_source: 2015_Панина. дисер, canonical_sample_number: 3, evidence_cells: [Данные!AC210, Данные!AC213, Данные!A213:C213]}
+      - {row: 1551, canonical_sample_id: 2015_Панина. дисер_3, canonical_source: 2015_Панина. дисер, canonical_sample_number: 3, evidence_cells: [Данные!AD210, Данные!AD213, Данные!A213:C213]}
+
+  - source: 2013_баденко
+    worksheet: ОГХ
+    evidence: "Badenko et al. (2013), primary publisher PDF, p. 17: all 108 water values match the experimental table exactly after column reordering. The table explicitly gives volumetric fractions and kPa; long-sheet pressures are magnitudes. Exact pressure-water matching identifies 106 rows uniquely; two equal points remain excluded rather than assigning a horizon by cached IDs."
+    decisions:
+      - {row: 980, canonical_sample_id: 2013_баденко_1, canonical_source: 2013_баденко, canonical_sample_number: 1, evidence_cells: [Данные!X156, Данные!X157, Данные!A157:C157]}
+      - {row: 981, canonical_sample_id: 2013_баденко_1, canonical_source: 2013_баденко, canonical_sample_number: 1, evidence_cells: [Данные!Y156, Данные!Y157, Данные!A157:C157]}
+      - {row: 982, canonical_sample_id: 2013_баденко_1, canonical_source: 2013_баденко, canonical_sample_number: 1, evidence_cells: [Данные!Z156, Данные!Z157, Данные!A157:C157]}
+      - {row: 983, canonical_sample_id: 2013_баденко_1, canonical_source: 2013_баденко, canonical_sample_number: 1, evidence_cells: [Данные!AA156, Данные!AA157, Данные!A157:C157]}
+      - {row: 984, canonical_sample_id: 2013_баденко_1, canonical_source: 2013_баденко, canonical_sample_number: 1, evidence_cells: [Данные!AB156, Данные!AB157, Данные!A157:C157]}
+      - {row: 985, canonical_sample_id: 2013_баденко_1, canonical_source: 2013_баденко, canonical_sample_number: 1, evidence_cells: [Данные!AC156, Данные!AC157, Данные!A157:C157]}
+      - {row: 986, canonical_sample_id: 2013_баденко_15, canonical_source: 2013_баденко, canonical_sample_number: 15, evidence_cells: [Данные!AB156, Данные!AB171, Данные!A171:C171]}
+      - {row: 987, canonical_sample_id: 2013_баденко_15, canonical_source: 2013_баденко, canonical_sample_number: 15, evidence_cells: [Данные!AC156, Данные!AC171, Данные!A171:C171]}
+      - {row: 988, canonical_sample_id: 2013_баденко_16, canonical_source: 2013_баденко, canonical_sample_number: 16, evidence_cells: [Данные!X156, Данные!X172, Данные!A172:C172]}
+      - {row: 989, canonical_sample_id: 2013_баденко_16, canonical_source: 2013_баденко, canonical_sample_number: 16, evidence_cells: [Данные!Y156, Данные!Y172, Данные!A172:C172]}
+      - {row: 990, canonical_sample_id: 2013_баденко_16, canonical_source: 2013_баденко, canonical_sample_number: 16, evidence_cells: [Данные!Z156, Данные!Z172, Данные!A172:C172]}
+      - {row: 991, canonical_sample_id: 2013_баденко_16, canonical_source: 2013_баденко, canonical_sample_number: 16, evidence_cells: [Данные!AA156, Данные!AA172, Данные!A172:C172]}
+      - {row: 992, canonical_sample_id: 2013_баденко_16, canonical_source: 2013_баденко, canonical_sample_number: 16, evidence_cells: [Данные!AB156, Данные!AB172, Данные!A172:C172]}
+      - {row: 993, canonical_sample_id: 2013_баденко_16, canonical_source: 2013_баденко, canonical_sample_number: 16, evidence_cells: [Данные!AC156, Данные!AC172, Данные!A172:C172]}
+      - {row: 994, canonical_sample_id: 2013_баденко_17, canonical_source: 2013_баденко, canonical_sample_number: 17, evidence_cells: [Данные!X156, Данные!X173, Данные!A173:C173]}
+      - {row: 995, canonical_sample_id: 2013_баденко_17, canonical_source: 2013_баденко, canonical_sample_number: 17, evidence_cells: [Данные!Y156, Данные!Y173, Данные!A173:C173]}
+      - {row: 996, canonical_sample_id: 2013_баденко_9, canonical_source: 2013_баденко, canonical_sample_number: 9, evidence_cells: [Данные!X156, Данные!X165, Данные!A165:C165]}
+      - {row: 997, canonical_sample_id: 2013_баденко_9, canonical_source: 2013_баденко, canonical_sample_number: 9, evidence_cells: [Данные!Y156, Данные!Y165, Данные!A165:C165]}
+      - {row: 998, canonical_sample_id: 2013_баденко_9, canonical_source: 2013_баденко, canonical_sample_number: 9, evidence_cells: [Данные!Z156, Данные!Z165, Данные!A165:C165]}
+      - {row: 999, canonical_sample_id: 2013_баденко_9, canonical_source: 2013_баденко, canonical_sample_number: 9, evidence_cells: [Данные!AA156, Данные!AA165, Данные!A165:C165]}
+      - {row: 1000, exclusion_reason: ambiguous_sample_identity, evidence_cells: [Данные!AB164, Данные!AB165]}
+      - {row: 1001, canonical_sample_id: 2013_баденко_2, canonical_source: 2013_баденко, canonical_sample_number: 2, evidence_cells: [Данные!X156, Данные!X158, Данные!A158:C158]}
+      - {row: 1002, canonical_sample_id: 2013_баденко_2, canonical_source: 2013_баденко, canonical_sample_number: 2, evidence_cells: [Данные!Y156, Данные!Y158, Данные!A158:C158]}
+      - {row: 1003, canonical_sample_id: 2013_баденко_2, canonical_source: 2013_баденко, canonical_sample_number: 2, evidence_cells: [Данные!Z156, Данные!Z158, Данные!A158:C158]}
+      - {row: 1004, canonical_sample_id: 2013_баденко_2, canonical_source: 2013_баденко, canonical_sample_number: 2, evidence_cells: [Данные!AA156, Данные!AA158, Данные!A158:C158]}
+      - {row: 1005, canonical_sample_id: 2013_баденко_2, canonical_source: 2013_баденко, canonical_sample_number: 2, evidence_cells: [Данные!AB156, Данные!AB158, Данные!A158:C158]}
+      - {row: 1006, canonical_sample_id: 2013_баденко_2, canonical_source: 2013_баденко, canonical_sample_number: 2, evidence_cells: [Данные!AC156, Данные!AC158, Данные!A158:C158]}
+      - {row: 1007, canonical_sample_id: 2013_баденко_9, canonical_source: 2013_баденко, canonical_sample_number: 9, evidence_cells: [Данные!AC156, Данные!AC165, Данные!A165:C165]}
+      - {row: 1008, canonical_sample_id: 2013_баденко_10, canonical_source: 2013_баденко, canonical_sample_number: 10, evidence_cells: [Данные!X156, Данные!X166, Данные!A166:C166]}
+      - {row: 1009, canonical_sample_id: 2013_баденко_10, canonical_source: 2013_баденко, canonical_sample_number: 10, evidence_cells: [Данные!Y156, Данные!Y166, Данные!A166:C166]}
+      - {row: 1010, canonical_sample_id: 2013_баденко_10, canonical_source: 2013_баденко, canonical_sample_number: 10, evidence_cells: [Данные!Z156, Данные!Z166, Данные!A166:C166]}
+      - {row: 1011, canonical_sample_id: 2013_баденко_10, canonical_source: 2013_баденко, canonical_sample_number: 10, evidence_cells: [Данные!AA156, Данные!AA166, Данные!A166:C166]}
+      - {row: 1012, canonical_sample_id: 2013_баденко_17, canonical_source: 2013_баденко, canonical_sample_number: 17, evidence_cells: [Данные!Z156, Данные!Z173, Данные!A173:C173]}
+      - {row: 1013, canonical_sample_id: 2013_баденко_17, canonical_source: 2013_баденко, canonical_sample_number: 17, evidence_cells: [Данные!AA156, Данные!AA173, Данные!A173:C173]}
+      - {row: 1014, canonical_sample_id: 2013_баденко_17, canonical_source: 2013_баденко, canonical_sample_number: 17, evidence_cells: [Данные!AB156, Данные!AB173, Данные!A173:C173]}
+      - {row: 1015, canonical_sample_id: 2013_баденко_17, canonical_source: 2013_баденко, canonical_sample_number: 17, evidence_cells: [Данные!AC156, Данные!AC173, Данные!A173:C173]}
+      - {row: 1016, canonical_sample_id: 2013_баденко_18, canonical_source: 2013_баденко, canonical_sample_number: 18, evidence_cells: [Данные!X156, Данные!X174, Данные!A174:C174]}
+      - {row: 1017, canonical_sample_id: 2013_баденко_3, canonical_source: 2013_баденко, canonical_sample_number: 3, evidence_cells: [Данные!X156, Данные!X159, Данные!A159:C159]}
+      - {row: 1018, canonical_sample_id: 2013_баденко_3, canonical_source: 2013_баденко, canonical_sample_number: 3, evidence_cells: [Данные!Y156, Данные!Y159, Данные!A159:C159]}
+      - {row: 1019, canonical_sample_id: 2013_баденко_3, canonical_source: 2013_баденко, canonical_sample_number: 3, evidence_cells: [Данные!Z156, Данные!Z159, Данные!A159:C159]}
+      - {row: 1020, canonical_sample_id: 2013_баденко_3, canonical_source: 2013_баденко, canonical_sample_number: 3, evidence_cells: [Данные!AA156, Данные!AA159, Данные!A159:C159]}
+      - {row: 1021, canonical_sample_id: 2013_баденко_3, canonical_source: 2013_баденко, canonical_sample_number: 3, evidence_cells: [Данные!AB156, Данные!AB159, Данные!A159:C159]}
+      - {row: 1022, canonical_sample_id: 2013_баденко_3, canonical_source: 2013_баденко, canonical_sample_number: 3, evidence_cells: [Данные!AC156, Данные!AC159, Данные!A159:C159]}
+      - {row: 1023, canonical_sample_id: 2013_баденко_10, canonical_source: 2013_баденко, canonical_sample_number: 10, evidence_cells: [Данные!AB156, Данные!AB166, Данные!A166:C166]}
+      - {row: 1024, canonical_sample_id: 2013_баденко_10, canonical_source: 2013_баденко, canonical_sample_number: 10, evidence_cells: [Данные!AC156, Данные!AC166, Данные!A166:C166]}
+      - {row: 1025, canonical_sample_id: 2013_баденко_11, canonical_source: 2013_баденко, canonical_sample_number: 11, evidence_cells: [Данные!X156, Данные!X167, Данные!A167:C167]}
+      - {row: 1026, canonical_sample_id: 2013_баденко_11, canonical_source: 2013_баденко, canonical_sample_number: 11, evidence_cells: [Данные!Y156, Данные!Y167, Данные!A167:C167]}
+      - {row: 1027, canonical_sample_id: 2013_баденко_11, canonical_source: 2013_баденко, canonical_sample_number: 11, evidence_cells: [Данные!Z156, Данные!Z167, Данные!A167:C167]}
+      - {row: 1028, canonical_sample_id: 2013_баденко_18, canonical_source: 2013_баденко, canonical_sample_number: 18, evidence_cells: [Данные!Y156, Данные!Y174, Данные!A174:C174]}
+      - {row: 1029, canonical_sample_id: 2013_баденко_18, canonical_source: 2013_баденко, canonical_sample_number: 18, evidence_cells: [Данные!Z156, Данные!Z174, Данные!A174:C174]}
+      - {row: 1030, canonical_sample_id: 2013_баденко_18, canonical_source: 2013_баденко, canonical_sample_number: 18, evidence_cells: [Данные!AA156, Данные!AA174, Данные!A174:C174]}
+      - {row: 1031, canonical_sample_id: 2013_баденко_18, canonical_source: 2013_баденко, canonical_sample_number: 18, evidence_cells: [Данные!AB156, Данные!AB174, Данные!A174:C174]}
+      - {row: 1032, canonical_sample_id: 2013_баденко_18, canonical_source: 2013_баденко, canonical_sample_number: 18, evidence_cells: [Данные!AC156, Данные!AC174, Данные!A174:C174]}
+      - {row: 1033, canonical_sample_id: 2013_баденко_4, canonical_source: 2013_баденко, canonical_sample_number: 4, evidence_cells: [Данные!X156, Данные!X160, Данные!A160:C160]}
+      - {row: 1034, canonical_sample_id: 2013_баденко_4, canonical_source: 2013_баденко, canonical_sample_number: 4, evidence_cells: [Данные!Y156, Данные!Y160, Данные!A160:C160]}
+      - {row: 1035, canonical_sample_id: 2013_баденко_4, canonical_source: 2013_баденко, canonical_sample_number: 4, evidence_cells: [Данные!Z156, Данные!Z160, Данные!A160:C160]}
+      - {row: 1036, canonical_sample_id: 2013_баденко_4, canonical_source: 2013_баденко, canonical_sample_number: 4, evidence_cells: [Данные!AA156, Данные!AA160, Данные!A160:C160]}
+      - {row: 1037, canonical_sample_id: 2013_баденко_4, canonical_source: 2013_баденко, canonical_sample_number: 4, evidence_cells: [Данные!AB156, Данные!AB160, Данные!A160:C160]}
+      - {row: 1038, canonical_sample_id: 2013_баденко_11, canonical_source: 2013_баденко, canonical_sample_number: 11, evidence_cells: [Данные!AA156, Данные!AA167, Данные!A167:C167]}
+      - {row: 1039, canonical_sample_id: 2013_баденко_11, canonical_source: 2013_баденко, canonical_sample_number: 11, evidence_cells: [Данные!AB156, Данные!AB167, Данные!A167:C167]}
+      - {row: 1040, canonical_sample_id: 2013_баденко_11, canonical_source: 2013_баденко, canonical_sample_number: 11, evidence_cells: [Данные!AC156, Данные!AC167, Данные!A167:C167]}
+      - {row: 1041, canonical_sample_id: 2013_баденко_12, canonical_source: 2013_баденко, canonical_sample_number: 12, evidence_cells: [Данные!X156, Данные!X168, Данные!A168:C168]}
+      - {row: 1042, canonical_sample_id: 2013_баденко_12, canonical_source: 2013_баденко, canonical_sample_number: 12, evidence_cells: [Данные!Y156, Данные!Y168, Данные!A168:C168]}
+      - {row: 1043, canonical_sample_id: 2013_баденко_4, canonical_source: 2013_баденко, canonical_sample_number: 4, evidence_cells: [Данные!AC156, Данные!AC160, Данные!A160:C160]}
+      - {row: 1044, canonical_sample_id: 2013_баденко_5, canonical_source: 2013_баденко, canonical_sample_number: 5, evidence_cells: [Данные!X156, Данные!X161, Данные!A161:C161]}
+      - {row: 1045, canonical_sample_id: 2013_баденко_5, canonical_source: 2013_баденко, canonical_sample_number: 5, evidence_cells: [Данные!Y156, Данные!Y161, Данные!A161:C161]}
+      - {row: 1046, canonical_sample_id: 2013_баденко_5, canonical_source: 2013_баденко, canonical_sample_number: 5, evidence_cells: [Данные!Z156, Данные!Z161, Данные!A161:C161]}
+      - {row: 1047, canonical_sample_id: 2013_баденко_5, canonical_source: 2013_баденко, canonical_sample_number: 5, evidence_cells: [Данные!AA156, Данные!AA161, Данные!A161:C161]}
+      - {row: 1048, canonical_sample_id: 2013_баденко_12, canonical_source: 2013_баденко, canonical_sample_number: 12, evidence_cells: [Данные!Z156, Данные!Z168, Данные!A168:C168]}
+      - {row: 1049, canonical_sample_id: 2013_баденко_12, canonical_source: 2013_баденко, canonical_sample_number: 12, evidence_cells: [Данные!AA156, Данные!AA168, Данные!A168:C168]}
+      - {row: 1050, canonical_sample_id: 2013_баденко_12, canonical_source: 2013_баденко, canonical_sample_number: 12, evidence_cells: [Данные!AB156, Данные!AB168, Данные!A168:C168]}
+      - {row: 1051, canonical_sample_id: 2013_баденко_12, canonical_source: 2013_баденко, canonical_sample_number: 12, evidence_cells: [Данные!AC156, Данные!AC168, Данные!A168:C168]}
+      - {row: 1052, canonical_sample_id: 2013_баденко_13, canonical_source: 2013_баденко, canonical_sample_number: 13, evidence_cells: [Данные!X156, Данные!X169, Данные!A169:C169]}
+      - {row: 1053, canonical_sample_id: 2013_баденко_5, canonical_source: 2013_баденко, canonical_sample_number: 5, evidence_cells: [Данные!AB156, Данные!AB161, Данные!A161:C161]}
+      - {row: 1054, canonical_sample_id: 2013_баденко_5, canonical_source: 2013_баденко, canonical_sample_number: 5, evidence_cells: [Данные!AC156, Данные!AC161, Данные!A161:C161]}
+      - {row: 1055, canonical_sample_id: 2013_баденко_6, canonical_source: 2013_баденко, canonical_sample_number: 6, evidence_cells: [Данные!X156, Данные!X162, Данные!A162:C162]}
+      - {row: 1056, canonical_sample_id: 2013_баденко_6, canonical_source: 2013_баденко, canonical_sample_number: 6, evidence_cells: [Данные!Y156, Данные!Y162, Данные!A162:C162]}
+      - {row: 1057, canonical_sample_id: 2013_баденко_6, canonical_source: 2013_баденко, canonical_sample_number: 6, evidence_cells: [Данные!Z156, Данные!Z162, Данные!A162:C162]}
+      - {row: 1058, canonical_sample_id: 2013_баденко_13, canonical_source: 2013_баденко, canonical_sample_number: 13, evidence_cells: [Данные!Y156, Данные!Y169, Данные!A169:C169]}
+      - {row: 1059, canonical_sample_id: 2013_баденко_13, canonical_source: 2013_баденко, canonical_sample_number: 13, evidence_cells: [Данные!Z156, Данные!Z169, Данные!A169:C169]}
+      - {row: 1060, canonical_sample_id: 2013_баденко_13, canonical_source: 2013_баденко, canonical_sample_number: 13, evidence_cells: [Данные!AA156, Данные!AA169, Данные!A169:C169]}
+      - {row: 1061, canonical_sample_id: 2013_баденко_13, canonical_source: 2013_баденко, canonical_sample_number: 13, evidence_cells: [Данные!AB156, Данные!AB169, Данные!A169:C169]}
+      - {row: 1062, canonical_sample_id: 2013_баденко_13, canonical_source: 2013_баденко, canonical_sample_number: 13, evidence_cells: [Данные!AC156, Данные!AC169, Данные!A169:C169]}
+      - {row: 1063, canonical_sample_id: 2013_баденко_6, canonical_source: 2013_баденко, canonical_sample_number: 6, evidence_cells: [Данные!AA156, Данные!AA162, Данные!A162:C162]}
+      - {row: 1064, canonical_sample_id: 2013_баденко_6, canonical_source: 2013_баденко, canonical_sample_number: 6, evidence_cells: [Данные!AB156, Данные!AB162, Данные!A162:C162]}
+      - {row: 1065, canonical_sample_id: 2013_баденко_6, canonical_source: 2013_баденко, canonical_sample_number: 6, evidence_cells: [Данные!AC156, Данные!AC162, Данные!A162:C162]}
+      - {row: 1066, canonical_sample_id: 2013_баденко_7, canonical_source: 2013_баденко, canonical_sample_number: 7, evidence_cells: [Данные!X156, Данные!X163, Данные!A163:C163]}
+      - {row: 1067, canonical_sample_id: 2013_баденко_7, canonical_source: 2013_баденко, canonical_sample_number: 7, evidence_cells: [Данные!Y156, Данные!Y163, Данные!A163:C163]}
+      - {row: 1068, canonical_sample_id: 2013_баденко_14, canonical_source: 2013_баденко, canonical_sample_number: 14, evidence_cells: [Данные!X156, Данные!X170, Данные!A170:C170]}
+      - {row: 1069, canonical_sample_id: 2013_баденко_14, canonical_source: 2013_баденко, canonical_sample_number: 14, evidence_cells: [Данные!Y156, Данные!Y170, Данные!A170:C170]}
+      - {row: 1070, canonical_sample_id: 2013_баденко_14, canonical_source: 2013_баденко, canonical_sample_number: 14, evidence_cells: [Данные!Z156, Данные!Z170, Данные!A170:C170]}
+      - {row: 1071, canonical_sample_id: 2013_баденко_14, canonical_source: 2013_баденко, canonical_sample_number: 14, evidence_cells: [Данные!AA156, Данные!AA170, Данные!A170:C170]}
+      - {row: 1072, canonical_sample_id: 2013_баденко_14, canonical_source: 2013_баденко, canonical_sample_number: 14, evidence_cells: [Данные!AB156, Данные!AB170, Данные!A170:C170]}
+      - {row: 1073, canonical_sample_id: 2013_баденко_7, canonical_source: 2013_баденко, canonical_sample_number: 7, evidence_cells: [Данные!Z156, Данные!Z163, Данные!A163:C163]}
+      - {row: 1074, canonical_sample_id: 2013_баденко_7, canonical_source: 2013_баденко, canonical_sample_number: 7, evidence_cells: [Данные!AA156, Данные!AA163, Данные!A163:C163]}
+      - {row: 1075, canonical_sample_id: 2013_баденко_7, canonical_source: 2013_баденко, canonical_sample_number: 7, evidence_cells: [Данные!AB156, Данные!AB163, Данные!A163:C163]}
+      - {row: 1076, canonical_sample_id: 2013_баденко_7, canonical_source: 2013_баденко, canonical_sample_number: 7, evidence_cells: [Данные!AC156, Данные!AC163, Данные!A163:C163]}
+      - {row: 1077, canonical_sample_id: 2013_баденко_8, canonical_source: 2013_баденко, canonical_sample_number: 8, evidence_cells: [Данные!X156, Данные!X164, Данные!A164:C164]}
+      - {row: 1078, canonical_sample_id: 2013_баденко_14, canonical_source: 2013_баденко, canonical_sample_number: 14, evidence_cells: [Данные!AC156, Данные!AC170, Данные!A170:C170]}
+      - {row: 1079, canonical_sample_id: 2013_баденко_15, canonical_source: 2013_баденко, canonical_sample_number: 15, evidence_cells: [Данные!X156, Данные!X171, Данные!A171:C171]}
+      - {row: 1080, canonical_sample_id: 2013_баденко_15, canonical_source: 2013_баденко, canonical_sample_number: 15, evidence_cells: [Данные!Y156, Данные!Y171, Данные!A171:C171]}
+      - {row: 1081, canonical_sample_id: 2013_баденко_15, canonical_source: 2013_баденко, canonical_sample_number: 15, evidence_cells: [Данные!Z156, Данные!Z171, Данные!A171:C171]}
+      - {row: 1082, canonical_sample_id: 2013_баденко_15, canonical_source: 2013_баденко, canonical_sample_number: 15, evidence_cells: [Данные!AA156, Данные!AA171, Данные!A171:C171]}
+      - {row: 1083, canonical_sample_id: 2013_баденко_8, canonical_source: 2013_баденко, canonical_sample_number: 8, evidence_cells: [Данные!Y156, Данные!Y164, Данные!A164:C164]}
+      - {row: 1084, canonical_sample_id: 2013_баденко_8, canonical_source: 2013_баденко, canonical_sample_number: 8, evidence_cells: [Данные!Z156, Данные!Z164, Данные!A164:C164]}
+      - {row: 1085, canonical_sample_id: 2013_баденко_8, canonical_source: 2013_баденко, canonical_sample_number: 8, evidence_cells: [Данные!AA156, Данные!AA164, Данные!A164:C164]}
+      - {row: 1086, exclusion_reason: ambiguous_sample_identity, evidence_cells: [Данные!AB164, Данные!AB165]}
+      - {row: 1087, canonical_sample_id: 2013_баденко_8, canonical_source: 2013_баденко, canonical_sample_number: 8, evidence_cells: [Данные!AC156, Данные!AC164, Данные!A164:C164]}
+
+  - source: 2008_Умарова
+    worksheet: ОГХ
+    evidence: "Umarova (2008), original author abstract Figure 5, printed p. 19 (RSL viewer page 20), explicitly plots pF against theta percent for the ten retained horizons. All 81 long observations match one original wide point uniquely under the confirmed factor-of-100 scale. The 22 wide zero placeholders and seven populated wide cells absent from the long table are not released."
+    decisions:
+      - {row: 489, canonical_sample_id: 2008_Умарова-дисс_1, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 1, evidence_cells: [Данные!X76, Данные!X77, Данные!A77:C77]}
+      - {row: 490, canonical_sample_id: 2008_Умарова-дисс_1, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 1, evidence_cells: [Данные!Y76, Данные!Y77, Данные!A77:C77]}
+      - {row: 491, canonical_sample_id: 2008_Умарова-дисс_1, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 1, evidence_cells: [Данные!Z76, Данные!Z77, Данные!A77:C77]}
+      - {row: 492, canonical_sample_id: 2008_Умарова-дисс_1, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 1, evidence_cells: [Данные!AA76, Данные!AA77, Данные!A77:C77]}
+      - {row: 493, canonical_sample_id: 2008_Умарова-дисс_1, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 1, evidence_cells: [Данные!AB76, Данные!AB77, Данные!A77:C77]}
+      - {row: 494, canonical_sample_id: 2008_Умарова-дисс_1, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 1, evidence_cells: [Данные!AC76, Данные!AC77, Данные!A77:C77]}
+      - {row: 495, canonical_sample_id: 2008_Умарова-дисс_1, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 1, evidence_cells: [Данные!AD76, Данные!AD77, Данные!A77:C77]}
+      - {row: 496, canonical_sample_id: 2008_Умарова-дисс_1, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 1, evidence_cells: [Данные!AF76, Данные!AF77, Данные!A77:C77]}
+      - {row: 497, canonical_sample_id: 2008_Умарова-дисс_1, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 1, evidence_cells: [Данные!AH76, Данные!AH77, Данные!A77:C77]}
+      - {row: 498, canonical_sample_id: 2008_Умарова-дисс_10, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 10, evidence_cells: [Данные!X76, Данные!X86, Данные!A86:C86]}
+      - {row: 499, canonical_sample_id: 2008_Умарова-дисс_10, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 10, evidence_cells: [Данные!Y76, Данные!Y86, Данные!A86:C86]}
+      - {row: 500, canonical_sample_id: 2008_Умарова-дисс_10, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 10, evidence_cells: [Данные!Z76, Данные!Z86, Данные!A86:C86]}
+      - {row: 501, canonical_sample_id: 2008_Умарова-дисс_10, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 10, evidence_cells: [Данные!AA76, Данные!AA86, Данные!A86:C86]}
+      - {row: 502, canonical_sample_id: 2008_Умарова-дисс_10, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 10, evidence_cells: [Данные!AB76, Данные!AB86, Данные!A86:C86]}
+      - {row: 503, canonical_sample_id: 2008_Умарова-дисс_10, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 10, evidence_cells: [Данные!AC76, Данные!AC86, Данные!A86:C86]}
+      - {row: 504, canonical_sample_id: 2008_Умарова-дисс_10, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 10, evidence_cells: [Данные!AD76, Данные!AD86, Данные!A86:C86]}
+      - {row: 505, canonical_sample_id: 2008_Умарова-дисс_10, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 10, evidence_cells: [Данные!AE76, Данные!AE86, Данные!A86:C86]}
+      - {row: 506, canonical_sample_id: 2008_Умарова-дисс_10, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 10, evidence_cells: [Данные!AG76, Данные!AG86, Данные!A86:C86]}
+      - {row: 507, canonical_sample_id: 2008_Умарова-дисс_10, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 10, evidence_cells: [Данные!AH76, Данные!AH86, Данные!A86:C86]}
+      - {row: 508, canonical_sample_id: 2008_Умарова-дисс_2, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 2, evidence_cells: [Данные!X76, Данные!X78, Данные!A78:C78]}
+      - {row: 509, canonical_sample_id: 2008_Умарова-дисс_2, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 2, evidence_cells: [Данные!Y76, Данные!Y78, Данные!A78:C78]}
+      - {row: 510, canonical_sample_id: 2008_Умарова-дисс_2, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 2, evidence_cells: [Данные!Z76, Данные!Z78, Данные!A78:C78]}
+      - {row: 511, canonical_sample_id: 2008_Умарова-дисс_2, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 2, evidence_cells: [Данные!AA76, Данные!AA78, Данные!A78:C78]}
+      - {row: 512, canonical_sample_id: 2008_Умарова-дисс_2, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 2, evidence_cells: [Данные!AC76, Данные!AC78, Данные!A78:C78]}
+      - {row: 513, canonical_sample_id: 2008_Умарова-дисс_3, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 3, evidence_cells: [Данные!AE76, Данные!AE79, Данные!A79:C79]}
+      - {row: 514, canonical_sample_id: 2008_Умарова-дисс_3, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 3, evidence_cells: [Данные!AG76, Данные!AG79, Данные!A79:C79]}
+      - {row: 515, canonical_sample_id: 2008_Умарова-дисс_4, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 4, evidence_cells: [Данные!X76, Данные!X80, Данные!A80:C80]}
+      - {row: 516, canonical_sample_id: 2008_Умарова-дисс_4, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 4, evidence_cells: [Данные!Y76, Данные!Y80, Данные!A80:C80]}
+      - {row: 517, canonical_sample_id: 2008_Умарова-дисс_4, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 4, evidence_cells: [Данные!Z76, Данные!Z80, Данные!A80:C80]}
+      - {row: 518, canonical_sample_id: 2008_Умарова-дисс_4, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 4, evidence_cells: [Данные!AA76, Данные!AA80, Данные!A80:C80]}
+      - {row: 519, canonical_sample_id: 2008_Умарова-дисс_4, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 4, evidence_cells: [Данные!AB76, Данные!AB80, Данные!A80:C80]}
+      - {row: 520, canonical_sample_id: 2008_Умарова-дисс_4, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 4, evidence_cells: [Данные!AC76, Данные!AC80, Данные!A80:C80]}
+      - {row: 521, canonical_sample_id: 2008_Умарова-дисс_4, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 4, evidence_cells: [Данные!AD76, Данные!AD80, Данные!A80:C80]}
+      - {row: 522, canonical_sample_id: 2008_Умарова-дисс_4, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 4, evidence_cells: [Данные!AG76, Данные!AG80, Данные!A80:C80]}
+      - {row: 523, canonical_sample_id: 2008_Умарова-дисс_4, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 4, evidence_cells: [Данные!AH76, Данные!AH80, Данные!A80:C80]}
+      - {row: 524, canonical_sample_id: 2008_Умарова-дисс_5, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 5, evidence_cells: [Данные!X76, Данные!X81, Данные!A81:C81]}
+      - {row: 525, canonical_sample_id: 2008_Умарова-дисс_5, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 5, evidence_cells: [Данные!Y76, Данные!Y81, Данные!A81:C81]}
+      - {row: 526, canonical_sample_id: 2008_Умарова-дисс_5, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 5, evidence_cells: [Данные!Z76, Данные!Z81, Данные!A81:C81]}
+      - {row: 527, canonical_sample_id: 2008_Умарова-дисс_5, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 5, evidence_cells: [Данные!AA76, Данные!AA81, Данные!A81:C81]}
+      - {row: 528, canonical_sample_id: 2008_Умарова-дисс_5, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 5, evidence_cells: [Данные!AB76, Данные!AB81, Данные!A81:C81]}
+      - {row: 529, canonical_sample_id: 2008_Умарова-дисс_5, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 5, evidence_cells: [Данные!AC76, Данные!AC81, Данные!A81:C81]}
+      - {row: 530, canonical_sample_id: 2008_Умарова-дисс_5, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 5, evidence_cells: [Данные!AD76, Данные!AD81, Данные!A81:C81]}
+      - {row: 531, canonical_sample_id: 2008_Умарова-дисс_5, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 5, evidence_cells: [Данные!AF76, Данные!AF81, Данные!A81:C81]}
+      - {row: 532, canonical_sample_id: 2008_Умарова-дисс_5, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 5, evidence_cells: [Данные!AH76, Данные!AH81, Данные!A81:C81]}
+      - {row: 533, canonical_sample_id: 2008_Умарова-дисс_6, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 6, evidence_cells: [Данные!X76, Данные!X82, Данные!A82:C82]}
+      - {row: 534, canonical_sample_id: 2008_Умарова-дисс_6, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 6, evidence_cells: [Данные!Y76, Данные!Y82, Данные!A82:C82]}
+      - {row: 535, canonical_sample_id: 2008_Умарова-дисс_6, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 6, evidence_cells: [Данные!Z76, Данные!Z82, Данные!A82:C82]}
+      - {row: 536, canonical_sample_id: 2008_Умарова-дисс_6, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 6, evidence_cells: [Данные!AA76, Данные!AA82, Данные!A82:C82]}
+      - {row: 537, canonical_sample_id: 2008_Умарова-дисс_6, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 6, evidence_cells: [Данные!AB76, Данные!AB82, Данные!A82:C82]}
+      - {row: 538, canonical_sample_id: 2008_Умарова-дисс_6, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 6, evidence_cells: [Данные!AC76, Данные!AC82, Данные!A82:C82]}
+      - {row: 539, canonical_sample_id: 2008_Умарова-дисс_6, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 6, evidence_cells: [Данные!AD76, Данные!AD82, Данные!A82:C82]}
+      - {row: 540, canonical_sample_id: 2008_Умарова-дисс_6, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 6, evidence_cells: [Данные!AF76, Данные!AF82, Данные!A82:C82]}
+      - {row: 541, canonical_sample_id: 2008_Умарова-дисс_6, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 6, evidence_cells: [Данные!AG76, Данные!AG82, Данные!A82:C82]}
+      - {row: 542, canonical_sample_id: 2008_Умарова-дисс_7, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 7, evidence_cells: [Данные!X76, Данные!X83, Данные!A83:C83]}
+      - {row: 543, canonical_sample_id: 2008_Умарова-дисс_7, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 7, evidence_cells: [Данные!Y76, Данные!Y83, Данные!A83:C83]}
+      - {row: 544, canonical_sample_id: 2008_Умарова-дисс_7, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 7, evidence_cells: [Данные!Z76, Данные!Z83, Данные!A83:C83]}
+      - {row: 545, canonical_sample_id: 2008_Умарова-дисс_7, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 7, evidence_cells: [Данные!AA76, Данные!AA83, Данные!A83:C83]}
+      - {row: 546, canonical_sample_id: 2008_Умарова-дисс_7, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 7, evidence_cells: [Данные!AB76, Данные!AB83, Данные!A83:C83]}
+      - {row: 547, canonical_sample_id: 2008_Умарова-дисс_7, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 7, evidence_cells: [Данные!AC76, Данные!AC83, Данные!A83:C83]}
+      - {row: 548, canonical_sample_id: 2008_Умарова-дисс_7, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 7, evidence_cells: [Данные!AD76, Данные!AD83, Данные!A83:C83]}
+      - {row: 549, canonical_sample_id: 2008_Умарова-дисс_7, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 7, evidence_cells: [Данные!AE76, Данные!AE83, Данные!A83:C83]}
+      - {row: 550, canonical_sample_id: 2008_Умарова-дисс_7, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 7, evidence_cells: [Данные!AF76, Данные!AF83, Данные!A83:C83]}
+      - {row: 551, canonical_sample_id: 2008_Умарова-дисс_7, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 7, evidence_cells: [Данные!AH76, Данные!AH83, Данные!A83:C83]}
+      - {row: 552, canonical_sample_id: 2008_Умарова-дисс_8, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 8, evidence_cells: [Данные!X76, Данные!X84, Данные!A84:C84]}
+      - {row: 553, canonical_sample_id: 2008_Умарова-дисс_8, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 8, evidence_cells: [Данные!Y76, Данные!Y84, Данные!A84:C84]}
+      - {row: 554, canonical_sample_id: 2008_Умарова-дисс_8, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 8, evidence_cells: [Данные!Z76, Данные!Z84, Данные!A84:C84]}
+      - {row: 555, canonical_sample_id: 2008_Умарова-дисс_8, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 8, evidence_cells: [Данные!AA76, Данные!AA84, Данные!A84:C84]}
+      - {row: 556, canonical_sample_id: 2008_Умарова-дисс_8, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 8, evidence_cells: [Данные!AB76, Данные!AB84, Данные!A84:C84]}
+      - {row: 557, canonical_sample_id: 2008_Умарова-дисс_8, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 8, evidence_cells: [Данные!AC76, Данные!AC84, Данные!A84:C84]}
+      - {row: 558, canonical_sample_id: 2008_Умарова-дисс_8, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 8, evidence_cells: [Данные!AE76, Данные!AE84, Данные!A84:C84]}
+      - {row: 559, canonical_sample_id: 2008_Умарова-дисс_8, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 8, evidence_cells: [Данные!AF76, Данные!AF84, Данные!A84:C84]}
+      - {row: 560, canonical_sample_id: 2008_Умарова-дисс_8, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 8, evidence_cells: [Данные!AG76, Данные!AG84, Данные!A84:C84]}
+      - {row: 561, canonical_sample_id: 2008_Умарова-дисс_9, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 9, evidence_cells: [Данные!X76, Данные!X85, Данные!A85:C85]}
+      - {row: 562, canonical_sample_id: 2008_Умарова-дисс_9, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 9, evidence_cells: [Данные!Y76, Данные!Y85, Данные!A85:C85]}
+      - {row: 563, canonical_sample_id: 2008_Умарова-дисс_9, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 9, evidence_cells: [Данные!Z76, Данные!Z85, Данные!A85:C85]}
+      - {row: 564, canonical_sample_id: 2008_Умарова-дисс_9, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 9, evidence_cells: [Данные!AA76, Данные!AA85, Данные!A85:C85]}
+      - {row: 565, canonical_sample_id: 2008_Умарова-дисс_9, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 9, evidence_cells: [Данные!AB76, Данные!AB85, Данные!A85:C85]}
+      - {row: 566, canonical_sample_id: 2008_Умарова-дисс_9, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 9, evidence_cells: [Данные!AC76, Данные!AC85, Данные!A85:C85]}
+      - {row: 567, canonical_sample_id: 2008_Умарова-дисс_9, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 9, evidence_cells: [Данные!AE76, Данные!AE85, Данные!A85:C85]}
+      - {row: 568, canonical_sample_id: 2008_Умарова-дисс_9, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 9, evidence_cells: [Данные!AG76, Данные!AG85, Данные!A85:C85]}
+      - {row: 569, canonical_sample_id: 2008_Умарова-дисс_9, canonical_source: 2008_Умарова-дисс, canonical_sample_number: 9, evidence_cells: [Данные!AH76, Данные!AH85, Данные!A85:C85]}
+
+  - source: 2011_Садовникова
+    worksheet: ОГХ
+    evidence: "Sadovnikova and Smagin (2011), https://ecokavkaz.ru/media/docs/2011/2/2011-2-2.pdf, pp. 19-20, Figure 1: dry-mass W percent and logarithmic kPa magnitudes. Retain 61 uniquely matched experimental points. Exclude both chernozem 0.01 axis placeholders, which lack original pressure support. Four master identities represent two experimental repeats of two soils, not four independent soil units."
+    decisions:
+      - {row: 778, exclusion_reason: "unreviewed_pressure_value", evidence_cells: ["Данные!X119", "Данные!X120", "Данные!A120:C120"]}
+      - {row: 779, canonical_sample_id: "2011_садовникова_1", canonical_source: "2011_садовникова", canonical_sample_number: 1, evidence_cells: ["Данные!Y119", "Данные!Y120", "Данные!A120:C120"]}
+      - {row: 780, canonical_sample_id: "2011_садовникова_1", canonical_source: "2011_садовникова", canonical_sample_number: 1, evidence_cells: ["Данные!Z119", "Данные!Z120", "Данные!A120:C120"]}
+      - {row: 781, canonical_sample_id: "2011_садовникова_1", canonical_source: "2011_садовникова", canonical_sample_number: 1, evidence_cells: ["Данные!AA119", "Данные!AA120", "Данные!A120:C120"]}
+      - {row: 782, canonical_sample_id: "2011_садовникова_1", canonical_source: "2011_садовникова", canonical_sample_number: 1, evidence_cells: ["Данные!AB119", "Данные!AB120", "Данные!A120:C120"]}
+      - {row: 783, canonical_sample_id: "2011_садовникова_1", canonical_source: "2011_садовникова", canonical_sample_number: 1, evidence_cells: ["Данные!AC119", "Данные!AC120", "Данные!A120:C120"]}
+      - {row: 784, canonical_sample_id: "2011_садовникова_1", canonical_source: "2011_садовникова", canonical_sample_number: 1, evidence_cells: ["Данные!AD119", "Данные!AD120", "Данные!A120:C120"]}
+      - {row: 785, canonical_sample_id: "2011_садовникова_1", canonical_source: "2011_садовникова", canonical_sample_number: 1, evidence_cells: ["Данные!AE119", "Данные!AE120", "Данные!A120:C120"]}
+      - {row: 786, canonical_sample_id: "2011_садовникова_1", canonical_source: "2011_садовникова", canonical_sample_number: 1, evidence_cells: ["Данные!AF119", "Данные!AF120", "Данные!A120:C120"]}
+      - {row: 787, canonical_sample_id: "2011_садовникова_1", canonical_source: "2011_садовникова", canonical_sample_number: 1, evidence_cells: ["Данные!AG119", "Данные!AG120", "Данные!A120:C120"]}
+      - {row: 788, canonical_sample_id: "2011_садовникова_1", canonical_source: "2011_садовникова", canonical_sample_number: 1, evidence_cells: ["Данные!AH119", "Данные!AH120", "Данные!A120:C120"]}
+      - {row: 789, canonical_sample_id: "2011_садовникова_1", canonical_source: "2011_садовникова", canonical_sample_number: 1, evidence_cells: ["Данные!AI119", "Данные!AI120", "Данные!A120:C120"]}
+      - {row: 790, canonical_sample_id: "2011_садовникова_1", canonical_source: "2011_садовникова", canonical_sample_number: 1, evidence_cells: ["Данные!AJ119", "Данные!AJ120", "Данные!A120:C120"]}
+      - {row: 791, canonical_sample_id: "2011_садовникова_1", canonical_source: "2011_садовникова", canonical_sample_number: 1, evidence_cells: ["Данные!AK119", "Данные!AK120", "Данные!A120:C120"]}
+      - {row: 792, canonical_sample_id: "2011_садовникова_1", canonical_source: "2011_садовникова", canonical_sample_number: 1, evidence_cells: ["Данные!AL119", "Данные!AL120", "Данные!A120:C120"]}
+      - {row: 793, exclusion_reason: "unreviewed_pressure_value", evidence_cells: ["Данные!X121", "Данные!X122", "Данные!A122:C122"]}
+      - {row: 794, canonical_sample_id: "2011_садовникова_2", canonical_source: "2011_садовникова", canonical_sample_number: 2, evidence_cells: ["Данные!Y121", "Данные!Y122", "Данные!A122:C122"]}
+      - {row: 795, canonical_sample_id: "2011_садовникова_2", canonical_source: "2011_садовникова", canonical_sample_number: 2, evidence_cells: ["Данные!Z121", "Данные!Z122", "Данные!A122:C122"]}
+      - {row: 796, canonical_sample_id: "2011_садовникова_2", canonical_source: "2011_садовникова", canonical_sample_number: 2, evidence_cells: ["Данные!AA121", "Данные!AA122", "Данные!A122:C122"]}
+      - {row: 797, canonical_sample_id: "2011_садовникова_2", canonical_source: "2011_садовникова", canonical_sample_number: 2, evidence_cells: ["Данные!AB121", "Данные!AB122", "Данные!A122:C122"]}
+      - {row: 798, canonical_sample_id: "2011_садовникова_2", canonical_source: "2011_садовникова", canonical_sample_number: 2, evidence_cells: ["Данные!AC121", "Данные!AC122", "Данные!A122:C122"]}
+      - {row: 799, canonical_sample_id: "2011_садовникова_2", canonical_source: "2011_садовникова", canonical_sample_number: 2, evidence_cells: ["Данные!AD121", "Данные!AD122", "Данные!A122:C122"]}
+      - {row: 800, canonical_sample_id: "2011_садовникова_2", canonical_source: "2011_садовникова", canonical_sample_number: 2, evidence_cells: ["Данные!AE121", "Данные!AE122", "Данные!A122:C122"]}
+      - {row: 801, canonical_sample_id: "2011_садовникова_2", canonical_source: "2011_садовникова", canonical_sample_number: 2, evidence_cells: ["Данные!AF121", "Данные!AF122", "Данные!A122:C122"]}
+      - {row: 802, canonical_sample_id: "2011_садовникова_2", canonical_source: "2011_садовникова", canonical_sample_number: 2, evidence_cells: ["Данные!AG121", "Данные!AG122", "Данные!A122:C122"]}
+      - {row: 803, canonical_sample_id: "2011_садовникова_2", canonical_source: "2011_садовникова", canonical_sample_number: 2, evidence_cells: ["Данные!AH121", "Данные!AH122", "Данные!A122:C122"]}
+      - {row: 804, canonical_sample_id: "2011_садовникова_2", canonical_source: "2011_садовникова", canonical_sample_number: 2, evidence_cells: ["Данные!AI121", "Данные!AI122", "Данные!A122:C122"]}
+      - {row: 805, canonical_sample_id: "2011_садовникова_2", canonical_source: "2011_садовникова", canonical_sample_number: 2, evidence_cells: ["Данные!AJ121", "Данные!AJ122", "Данные!A122:C122"]}
+      - {row: 806, canonical_sample_id: "2011_садовникова_2", canonical_source: "2011_садовникова", canonical_sample_number: 2, evidence_cells: ["Данные!AK121", "Данные!AK122", "Данные!A122:C122"]}
+      - {row: 807, canonical_sample_id: "2011_садовникова_3", canonical_source: "2011_садовникова", canonical_sample_number: 3, evidence_cells: ["Данные!X123", "Данные!X124", "Данные!A124:C124"]}
+      - {row: 808, canonical_sample_id: "2011_садовникова_3", canonical_source: "2011_садовникова", canonical_sample_number: 3, evidence_cells: ["Данные!Y123", "Данные!Y124", "Данные!A124:C124"]}
+      - {row: 809, canonical_sample_id: "2011_садовникова_3", canonical_source: "2011_садовникова", canonical_sample_number: 3, evidence_cells: ["Данные!Z123", "Данные!Z124", "Данные!A124:C124"]}
+      - {row: 810, canonical_sample_id: "2011_садовникова_3", canonical_source: "2011_садовникова", canonical_sample_number: 3, evidence_cells: ["Данные!AA123", "Данные!AA124", "Данные!A124:C124"]}
+      - {row: 811, canonical_sample_id: "2011_садовникова_3", canonical_source: "2011_садовникова", canonical_sample_number: 3, evidence_cells: ["Данные!AB123", "Данные!AB124", "Данные!A124:C124"]}
+      - {row: 812, canonical_sample_id: "2011_садовникова_3", canonical_source: "2011_садовникова", canonical_sample_number: 3, evidence_cells: ["Данные!AC123", "Данные!AC124", "Данные!A124:C124"]}
+      - {row: 813, canonical_sample_id: "2011_садовникова_3", canonical_source: "2011_садовникова", canonical_sample_number: 3, evidence_cells: ["Данные!AD123", "Данные!AD124", "Данные!A124:C124"]}
+      - {row: 814, canonical_sample_id: "2011_садовникова_3", canonical_source: "2011_садовникова", canonical_sample_number: 3, evidence_cells: ["Данные!AE123", "Данные!AE124", "Данные!A124:C124"]}
+      - {row: 815, canonical_sample_id: "2011_садовникова_3", canonical_source: "2011_садовникова", canonical_sample_number: 3, evidence_cells: ["Данные!AF123", "Данные!AF124", "Данные!A124:C124"]}
+      - {row: 816, canonical_sample_id: "2011_садовникова_3", canonical_source: "2011_садовникова", canonical_sample_number: 3, evidence_cells: ["Данные!AG123", "Данные!AG124", "Данные!A124:C124"]}
+      - {row: 817, canonical_sample_id: "2011_садовникова_3", canonical_source: "2011_садовникова", canonical_sample_number: 3, evidence_cells: ["Данные!AH123", "Данные!AH124", "Данные!A124:C124"]}
+      - {row: 818, canonical_sample_id: "2011_садовникова_3", canonical_source: "2011_садовникова", canonical_sample_number: 3, evidence_cells: ["Данные!AI123", "Данные!AI124", "Данные!A124:C124"]}
+      - {row: 819, canonical_sample_id: "2011_садовникова_3", canonical_source: "2011_садовникова", canonical_sample_number: 3, evidence_cells: ["Данные!AJ123", "Данные!AJ124", "Данные!A124:C124"]}
+      - {row: 820, canonical_sample_id: "2011_садовникова_3", canonical_source: "2011_садовникова", canonical_sample_number: 3, evidence_cells: ["Данные!AK123", "Данные!AK124", "Данные!A124:C124"]}
+      - {row: 821, canonical_sample_id: "2011_садовникова_3", canonical_source: "2011_садовникова", canonical_sample_number: 3, evidence_cells: ["Данные!AL123", "Данные!AL124", "Данные!A124:C124"]}
+      - {row: 822, canonical_sample_id: "2011_садовникова_3", canonical_source: "2011_садовникова", canonical_sample_number: 3, evidence_cells: ["Данные!AM123", "Данные!AM124", "Данные!A124:C124"]}
+      - {row: 823, canonical_sample_id: "2011_садовникова_3", canonical_source: "2011_садовникова", canonical_sample_number: 3, evidence_cells: ["Данные!AN123", "Данные!AN124", "Данные!A124:C124"]}
+      - {row: 824, canonical_sample_id: "2011_садовникова_3", canonical_source: "2011_садовникова", canonical_sample_number: 3, evidence_cells: ["Данные!AO123", "Данные!AO124", "Данные!A124:C124"]}
+      - {row: 825, canonical_sample_id: "2011_садовникова_3", canonical_source: "2011_садовникова", canonical_sample_number: 3, evidence_cells: ["Данные!AP123", "Данные!AP124", "Данные!A124:C124"]}
+      - {row: 826, canonical_sample_id: "2011_садовникова_4", canonical_source: "2011_садовникова", canonical_sample_number: 4, evidence_cells: ["Данные!X125", "Данные!X126", "Данные!A126:C126"]}
+      - {row: 827, canonical_sample_id: "2011_садовникова_4", canonical_source: "2011_садовникова", canonical_sample_number: 4, evidence_cells: ["Данные!Y125", "Данные!Y126", "Данные!A126:C126"]}
+      - {row: 828, canonical_sample_id: "2011_садовникова_4", canonical_source: "2011_садовникова", canonical_sample_number: 4, evidence_cells: ["Данные!Z125", "Данные!Z126", "Данные!A126:C126"]}
+      - {row: 829, canonical_sample_id: "2011_садовникова_4", canonical_source: "2011_садовникова", canonical_sample_number: 4, evidence_cells: ["Данные!AA125", "Данные!AA126", "Данные!A126:C126"]}
+      - {row: 830, canonical_sample_id: "2011_садовникова_4", canonical_source: "2011_садовникова", canonical_sample_number: 4, evidence_cells: ["Данные!AB125", "Данные!AB126", "Данные!A126:C126"]}
+      - {row: 831, canonical_sample_id: "2011_садовникова_4", canonical_source: "2011_садовникова", canonical_sample_number: 4, evidence_cells: ["Данные!AC125", "Данные!AC126", "Данные!A126:C126"]}
+      - {row: 832, canonical_sample_id: "2011_садовникова_4", canonical_source: "2011_садовникова", canonical_sample_number: 4, evidence_cells: ["Данные!AD125", "Данные!AD126", "Данные!A126:C126"]}
+      - {row: 833, canonical_sample_id: "2011_садовникова_4", canonical_source: "2011_садовникова", canonical_sample_number: 4, evidence_cells: ["Данные!AE125", "Данные!AE126", "Данные!A126:C126"]}
+      - {row: 834, canonical_sample_id: "2011_садовникова_4", canonical_source: "2011_садовникова", canonical_sample_number: 4, evidence_cells: ["Данные!AF125", "Данные!AF126", "Данные!A126:C126"]}
+      - {row: 835, canonical_sample_id: "2011_садовникова_4", canonical_source: "2011_садовникова", canonical_sample_number: 4, evidence_cells: ["Данные!AG125", "Данные!AG126", "Данные!A126:C126"]}
+      - {row: 836, canonical_sample_id: "2011_садовникова_4", canonical_source: "2011_садовникова", canonical_sample_number: 4, evidence_cells: ["Данные!AH125", "Данные!AH126", "Данные!A126:C126"]}
+      - {row: 837, canonical_sample_id: "2011_садовникова_4", canonical_source: "2011_садовникова", canonical_sample_number: 4, evidence_cells: ["Данные!AI125", "Данные!AI126", "Данные!A126:C126"]}
+      - {row: 838, canonical_sample_id: "2011_садовникова_4", canonical_source: "2011_садовникова", canonical_sample_number: 4, evidence_cells: ["Данные!AJ125", "Данные!AJ126", "Данные!A126:C126"]}
+      - {row: 839, canonical_sample_id: "2011_садовникова_4", canonical_source: "2011_садовникова", canonical_sample_number: 4, evidence_cells: ["Данные!AK125", "Данные!AK126", "Данные!A126:C126"]}
+      - {row: 840, canonical_sample_id: "2011_садовникова_4", canonical_source: "2011_садовникова", canonical_sample_number: 4, evidence_cells: ["Данные!AL125", "Данные!AL126", "Данные!A126:C126"]}
+
+  - source: 2018_моисеев
+    worksheet: ОГХ
+    evidence: "Moiseev et al. (2018), https://tvan.niishk.site/data/documents/7_1.pdf, pp. 80-82, Table 2: all 23 experimental volumetric-percent / pF pairs match the primary experimental column exactly. Three U/U-critical statistic pairs miscopied as observations and three unsupported saturation-axis rows remain excluded. PSF calculated values are not released as measurements."
+    decisions:
+      - {row: 1795, exclusion_reason: "unreviewed_pressure_value", evidence_cells: ["Данные!X255", "Данные!X256", "Данные!A256:C256"]}
+      - {row: 1796, canonical_sample_id: "2018_Моисеев_1", canonical_source: "2018_Моисеев", canonical_sample_number: 1, evidence_cells: ["Данные!Y255", "Данные!Y256", "Данные!A256:C256"]}
+      - {row: 1797, exclusion_reason: "non_observation_table_value", evidence_cells: ["Данные!Z255", "Данные!Z256", "Данные!A256:C256"]}
+      - {row: 1798, canonical_sample_id: "2018_Моисеев_1", canonical_source: "2018_Моисеев", canonical_sample_number: 1, evidence_cells: ["Данные!AA255", "Данные!AA256", "Данные!A256:C256"]}
+      - {row: 1799, canonical_sample_id: "2018_Моисеев_1", canonical_source: "2018_Моисеев", canonical_sample_number: 1, evidence_cells: ["Данные!AB255", "Данные!AB256", "Данные!A256:C256"]}
+      - {row: 1800, canonical_sample_id: "2018_Моисеев_1", canonical_source: "2018_Моисеев", canonical_sample_number: 1, evidence_cells: ["Данные!AC255", "Данные!AC256", "Данные!A256:C256"]}
+      - {row: 1801, canonical_sample_id: "2018_Моисеев_1", canonical_source: "2018_Моисеев", canonical_sample_number: 1, evidence_cells: ["Данные!AD255", "Данные!AD256", "Данные!A256:C256"]}
+      - {row: 1802, canonical_sample_id: "2018_Моисеев_1", canonical_source: "2018_Моисеев", canonical_sample_number: 1, evidence_cells: ["Данные!AE255", "Данные!AE256", "Данные!A256:C256"]}
+      - {row: 1803, canonical_sample_id: "2018_Моисеев_1", canonical_source: "2018_Моисеев", canonical_sample_number: 1, evidence_cells: ["Данные!AF255", "Данные!AF256", "Данные!A256:C256"]}
+      - {row: 1804, canonical_sample_id: "2018_Моисеев_1", canonical_source: "2018_Моисеев", canonical_sample_number: 1, evidence_cells: ["Данные!AG255", "Данные!AG256", "Данные!A256:C256"]}
+      - {row: 1805, exclusion_reason: "unreviewed_pressure_value", evidence_cells: ["Данные!X257", "Данные!X258", "Данные!A258:C258"]}
+      - {row: 1806, canonical_sample_id: "2018_Моисеев_3", canonical_source: "2018_Моисеев", canonical_sample_number: 3, evidence_cells: ["Данные!Y257", "Данные!Y258", "Данные!A258:C258"]}
+      - {row: 1807, exclusion_reason: "non_observation_table_value", evidence_cells: ["Данные!Z257", "Данные!Z258", "Данные!A258:C258"]}
+      - {row: 1808, canonical_sample_id: "2018_Моисеев_3", canonical_source: "2018_Моисеев", canonical_sample_number: 3, evidence_cells: ["Данные!AA257", "Данные!AA258", "Данные!A258:C258"]}
+      - {row: 1809, canonical_sample_id: "2018_Моисеев_3", canonical_source: "2018_Моисеев", canonical_sample_number: 3, evidence_cells: ["Данные!AB257", "Данные!AB258", "Данные!A258:C258"]}
+      - {row: 1810, canonical_sample_id: "2018_Моисеев_3", canonical_source: "2018_Моисеев", canonical_sample_number: 3, evidence_cells: ["Данные!AC257", "Данные!AC258", "Данные!A258:C258"]}
+      - {row: 1811, canonical_sample_id: "2018_Моисеев_3", canonical_source: "2018_Моисеев", canonical_sample_number: 3, evidence_cells: ["Данные!AD257", "Данные!AD258", "Данные!A258:C258"]}
+      - {row: 1812, canonical_sample_id: "2018_Моисеев_3", canonical_source: "2018_Моисеев", canonical_sample_number: 3, evidence_cells: ["Данные!AE257", "Данные!AE258", "Данные!A258:C258"]}
+      - {row: 1813, canonical_sample_id: "2018_Моисеев_3", canonical_source: "2018_Моисеев", canonical_sample_number: 3, evidence_cells: ["Данные!AF257", "Данные!AF258", "Данные!A258:C258"]}
+      - {row: 1814, exclusion_reason: "unreviewed_pressure_value", evidence_cells: ["Данные!X259", "Данные!X260", "Данные!A260:C260"]}
+      - {row: 1815, canonical_sample_id: "2018_Моисеев_5", canonical_source: "2018_Моисеев", canonical_sample_number: 5, evidence_cells: ["Данные!Y259", "Данные!Y260", "Данные!A260:C260"]}
+      - {row: 1816, exclusion_reason: "non_observation_table_value", evidence_cells: ["Данные!Z259", "Данные!Z260", "Данные!A260:C260"]}
+      - {row: 1817, canonical_sample_id: "2018_Моисеев_5", canonical_source: "2018_Моисеев", canonical_sample_number: 5, evidence_cells: ["Данные!AA259", "Данные!AA260", "Данные!A260:C260"]}
+      - {row: 1818, canonical_sample_id: "2018_Моисеев_5", canonical_source: "2018_Моисеев", canonical_sample_number: 5, evidence_cells: ["Данные!AB259", "Данные!AB260", "Данные!A260:C260"]}
+      - {row: 1819, canonical_sample_id: "2018_Моисеев_5", canonical_source: "2018_Моисеев", canonical_sample_number: 5, evidence_cells: ["Данные!AC259", "Данные!AC260", "Данные!A260:C260"]}
+      - {row: 1820, canonical_sample_id: "2018_Моисеев_5", canonical_source: "2018_Моисеев", canonical_sample_number: 5, evidence_cells: ["Данные!AD259", "Данные!AD260", "Данные!A260:C260"]}
+      - {row: 1821, canonical_sample_id: "2018_Моисеев_5", canonical_source: "2018_Моисеев", canonical_sample_number: 5, evidence_cells: ["Данные!AE259", "Данные!AE260", "Данные!A260:C260"]}
+      - {row: 1822, canonical_sample_id: "2018_Моисеев_5", canonical_source: "2018_Моисеев", canonical_sample_number: 5, evidence_cells: ["Данные!AF259", "Данные!AF260", "Данные!A260:C260"]}
+      - {row: 1823, canonical_sample_id: "2018_Моисеев_5", canonical_source: "2018_Моисеев", canonical_sample_number: 5, evidence_cells: ["Данные!AG259", "Данные!AG260", "Данные!A260:C260"]}
 
 predictor_bindings:
   - function: calc_ptf_clapp1978
@@ -1539,6 +2011,10 @@ blockers:
     scope: Данные wide retention sections and ОГХ
     question: Does code reconstruction from source-control rows reproduce every long-form observation and fitted parameter exactly?
     evidence: Chestnova long curves use a different sample order than their cached identifiers, and Panina contains secondary control rows plus shifted long-sheet sample-number formulas; Данные therefore requires source-specific block reconstruction.
+  - id: retention_observation_provenance
+    scope: Shvarov 2008 and Shein 2012 retention-labelled rows and corresponding wide master values
+    question: Which source values are absolute retention water contents rather than hysteresis differences, derived curves or copied non-observation quantities?
+    evidence: Shvarov's earlier author abstract Table 2 reports moisture differences matching master rows 88 and 108. Shein et al. (2012) and Moskvin's related 2013 author abstract describe curves reconstructed from measured constants and inferred pressure coordinates. The original tables/figures must distinguish independent absolute-water measurements from differences and reconstructed values. Physical units alone cannot establish target provenance.
   - id: coordinate_publication_policy
     scope: Coordinate columns and source workbook distribution
     question: May coordinates and the workbook itself be redistributed or included in evaluation artifacts?

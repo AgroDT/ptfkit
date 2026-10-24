@@ -41,6 +41,10 @@
       "type": "array",
       "items": {"$ref": "#/$defs/retentionReconstructionRule"}
     },
+    "retention_row_reviews": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/retentionRowReview"}
+    },
     "predictor_bindings": {
       "type": "array",
       "items": {"$ref": "#/$defs/predictorBinding"}
@@ -361,6 +365,7 @@
         "evidence"
       ],
       "properties": {
+        "requires_row_review": {"type": "boolean"},
         "water_encoding": {"enum": ["W", "Q", "?"]},
         "pressure_encoding": {"type": ["string", "null"]},
         "status": {"enum": ["confirmed", "blocked"]},
@@ -630,6 +635,34 @@
         "column": {"type": "string", "pattern": "^[A-Z]+$"},
         "purpose": {"type": "string", "minLength": 1},
         "validation": {"type": "string", "minLength": 1}
+      }
+    },
+    "retentionRowReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "worksheet", "evidence", "decisions"],
+      "properties": {
+        "source": {"type": "string", "minLength": 1},
+        "worksheet": {"type": "string", "minLength": 1},
+        "evidence": {"type": "string", "minLength": 1},
+        "decisions": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/retentionRowDecision"}}
+      }
+    },
+    "retentionRowDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["row", "evidence_cells"],
+      "oneOf": [
+        {"required": ["canonical_sample_id", "canonical_source", "canonical_sample_number"], "not": {"required": ["exclusion_reason"]}},
+        {"required": ["exclusion_reason"], "not": {"anyOf": [{"required": ["canonical_sample_id"]}, {"required": ["canonical_source"]}, {"required": ["canonical_sample_number"]}]}}
+      ],
+      "properties": {
+        "row": {"type": "integer", "minimum": 2},
+        "canonical_sample_id": {"type": "string", "minLength": 1},
+        "canonical_source": {"type": "string", "minLength": 1},
+        "canonical_sample_number": {"type": ["string", "number"]},
+        "exclusion_reason": {"enum": ["ambiguous_sample_identity", "unreviewed_pressure_value", "non_observation_table_value"]},
+        "evidence_cells": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
       }
     },
     "correction": {

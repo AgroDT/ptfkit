@@ -14,12 +14,15 @@ from typing import TYPE_CHECKING, cast
 from zipfile import BadZipFile
 
 from openpyxl import load_workbook
+from openpyxl.utils import column_index_from_string
 from openpyxl.utils.exceptions import InvalidFileException
 
 from .retention import LabelCount
 
 
 if TYPE_CHECKING:
+    from openpyxl.workbook.workbook import Workbook
+
     from .datasets import DatasetMapping, JsonScalar
 
 
@@ -33,6 +36,7 @@ _EXPECTED_HEADERS = (
     'Значение/Содержание влаги',
 )
 _CENTIMETER_WATER_HEAD_TO_KILOPASCAL = 0.0980665
+_FIRST_OBSERVATION_ROW = 2
 
 
 class RetentionNormalizationError(ValueError):
@@ -139,6 +143,7 @@ class _ObservationRule:
     pressure_convention: str | None
     canonical_pressure_unit: str | None
     blockers: tuple[str, ...]
+    requires_row_review: bool
 
 
 @dataclass(frozen=True)
@@ -155,6 +160,13 @@ class _IdentityRules:
     sample_crosswalks: Mapping[str, _SampleIdentity]
 
 
+@dataclass(frozen=True)
+class _RowReview:
+    identity: _SampleIdentity | None
+    reason: str | None
+    evidence_cells: tuple[str, ...]
+
+
 def normalize_retention_workbook(  # noqa: C901, PLR0912, PLR0915
     source: str | Path, mapping: DatasetMapping
 ) -> RetentionNormalizationResult:
@@ -165,6 +177,10 @@ def normalize_retention_workbook(  # noqa: C901, PLR0912, PLR0915
     sheet_name = _profile_string(mapping, 'sheet_name')
     rules = _observation_rules(mapping.document)
     identity_rules = _identity_rules(mapping.document, sheet_name)
+    row_reviews = _row_reviews(mapping.document, sheet_name)
+    consumed_reviews: set[tuple[str, int]] = set()
+    point_indexes: dict[str, tuple[int, dict[tuple[float, float], list[_SampleIdentity]]]] = {}
+    released_points: set[tuple[str, float, float]] = set()
 
     observations: list[NormalizedRetentionObservation] = []
     parameters: list[FittedRetentionParameter] = []
@@ -293,7 +309,40 @@ def normalize_retention_workbook(  # noqa: C901, PLR0912, PLR0915
                     )
                 )
                 continue
-            if not _sample_identity_matches(sample_id, source_label, sample_number):
+            if rule.requires_row_review and source_label not in row_reviews:
+                message = 'This source requires exhaustive reviewed row decisions.'
+                raise RetentionNormalizationError(message)
+            review = None
+            if source_label in row_reviews:
+                review = row_reviews[source_label].get(row_number)
+                if review is None:
+                    message = f'Missing reviewed observation decision at {sheet_name}!{row_number}.'
+                    raise RetentionNormalizationError(message)
+                consumed_reviews.add((source_label, row_number))
+                lineage = (*lineage, *review.evidence_cells)
+                if review.reason is not None:
+                    exclusions.append(
+                        _exclusion(
+                            path.name,
+                            sheet_name,
+                            row_number,
+                            'observation',
+                            review.reason,
+                            ('retention_reconstruction',),
+                            sample_id,
+                            source_label,
+                            sample_number,
+                            water_encoding,
+                            pressure_encoding,
+                            axis,
+                            water,
+                            lineage,
+                        )
+                    )
+                    continue
+            if review is None and not _sample_identity_matches(
+                sample_id, source_label, sample_number
+            ):
                 exclusions.append(
                     _exclusion(
                         path.name,
@@ -334,12 +383,41 @@ def normalize_retention_workbook(  # noqa: C901, PLR0912, PLR0915
                 )
                 continue
 
-            identity = _resolve_identity(
-                sample_id,
-                source_label,
-                sample_number,
-                identity_rules,
+            identity = (
+                review.identity
+                if review is not None
+                else _resolve_identity(sample_id, source_label, sample_number, identity_rules)
             )
+            if identity is None:
+                message = 'A released row requires a reviewed canonical identity.'
+                raise RetentionNormalizationError(message)
+            if review is not None:
+                if source_label not in point_indexes:
+                    point_indexes[source_label] = _review_point_index(
+                        workbook, mapping.document, source_label
+                    )
+                places, point_index = point_indexes[source_label]
+                point_key = _review_point_key(axis, water, places)
+                match = point_index.get(point_key, [])
+                release_key = (source_label, *point_key)
+                if len(match) != 1:
+                    message = (
+                        f'Released row {row_number} requires exactly one master point; '
+                        f'found {len(match)}.'
+                    )
+                    raise RetentionNormalizationError(message)
+                master = match[0]
+                if (master.sample_id, master.source, master.sample_number) != (
+                    identity.sample_id,
+                    identity.source,
+                    identity.sample_number,
+                ) or release_key in released_points:
+                    message = f'Released row {row_number} requires an unused exact master identity.'
+                    raise RetentionNormalizationError(message)
+                if not set(master.evidence_cells).issubset(review.evidence_cells):
+                    message = 'Reviewed row provenance must include its matched master cells.'
+                    raise RetentionNormalizationError(message)
+                released_points.add(release_key)
             normalized = _normalize_observation(
                 path.name,
                 sheet_name,
@@ -361,6 +439,10 @@ def normalize_retention_workbook(  # noqa: C901, PLR0912, PLR0915
     finally:
         workbook.close()
 
+    expected_reviews = {(label, row) for label, rows in row_reviews.items() for row in rows}
+    if consumed_reviews != expected_reviews:
+        message = 'Reviewed observation decisions must exactly cover the declared source rows.'
+        raise RetentionNormalizationError(message)
     _validate_profile_counts(
         mapping,
         total_data_rows=total_data_rows,
@@ -473,7 +555,9 @@ def _normalize_observation(  # noqa: PLR0917
         )
 
     normalized_water = _normalize_water(water, cast('str', rule.water_unit))
-    if normalized_water < 0 or normalized_water > 1:
+    if normalized_water < 0 or (
+        rule.water_quantity == 'volumetric_water_content' and normalized_water > 1
+    ):
         return _exclusion(
             source_filename,
             sheet_name,
@@ -599,6 +683,7 @@ def _observation_rules(
                 raise RetentionNormalizationError(message)
             result[key] = _ObservationRule(
                 status=_string(observation['status']),
+                requires_row_review=observation.get('requires_row_review') is True,
                 water_quantity=cast('str | None', observation['water_quantity']),
                 water_unit=cast('str | None', observation['water_unit']),
                 canonical_water_unit=cast('str | None', observation['canonical_water_unit']),
@@ -808,3 +893,125 @@ def _string(value: object) -> str:
         message = 'Dataset mapping contains a non-string rule value.'
         raise RetentionNormalizationError(message)
     return value
+
+
+def _row_reviews(
+    document: Mapping[str, object], worksheet: str
+) -> dict[str, dict[int, _RowReview]]:
+    result: dict[str, dict[int, _RowReview]] = {}
+    occupied: set[int] = set()
+    for value in _sequence(document.get('retention_row_reviews', [])):
+        policy = _mapping(value)
+        source = _string(policy['source'])
+        if policy['worksheet'] != worksheet or source in result:
+            message = 'Row reviews require unique sources on the bound retention worksheet.'
+            raise RetentionNormalizationError(message)
+        rows: dict[int, _RowReview] = {}
+        for item in _sequence(policy['decisions']):
+            decision = _mapping(item)
+            row = decision['row']
+            if (
+                isinstance(row, bool)
+                or not isinstance(row, int)
+                or row < _FIRST_OBSERVATION_ROW
+                or row in occupied
+            ):
+                message = 'Row-review coordinates must be unique observation rows.'
+                raise RetentionNormalizationError(message)
+            occupied.add(row)
+            cells = tuple(_string(cell) for cell in _sequence(decision['evidence_cells']))
+            reason = decision.get('exclusion_reason')
+            identity = (
+                None
+                if reason is not None
+                else _SampleIdentity(
+                    sample_id=_json_scalar(decision['canonical_sample_id']),
+                    source=_string(decision['canonical_source']),
+                    sample_number=_json_scalar(decision['canonical_sample_number']),
+                    evidence_cells=(),
+                )
+            )
+            if identity is not None and not _sample_identity_matches(
+                identity.sample_id, identity.source, identity.sample_number
+            ):
+                message = 'Reviewed row identities must match their source and sample number.'
+                raise RetentionNormalizationError(message)
+            rows[row] = _RowReview(identity, None if reason is None else _string(reason), cells)
+        if not rows:
+            message = 'Row-review policies cannot be empty.'
+            raise RetentionNormalizationError(message)
+        result[source] = rows
+    return result
+
+
+def _review_point_key(pressure: object, water: object, places: int) -> tuple[float, float]:
+    numeric_pressure, numeric_water = _finite_number(pressure), _finite_number(water)
+    if numeric_pressure is None or numeric_water is None:
+        message = 'Reviewed point matching requires finite pressure and water values.'
+        raise RetentionNormalizationError(message)
+    return round(numeric_pressure, places), round(numeric_water, places)
+
+
+def _review_point_index(
+    workbook: Workbook,
+    document: Mapping[str, object],
+    source: str,
+) -> tuple[int, dict[tuple[float, float], list[_SampleIdentity]]]:
+    rules = [
+        _mapping(item)
+        for item in _sequence(document.get('retention_reconstruction_rules', []))
+        if _mapping(item)['long_source'] == source
+    ]
+    if len(rules) != 1 or rules[0]['water_scale_status'] != 'confirmed':
+        message = 'Row releases require one reconstruction rule with confirmed water scaling.'
+        raise RetentionNormalizationError(message)
+    rule = rules[0]
+    scale = _finite_number(rule['water_scale'])
+    if scale is None or scale <= 0:
+        message = 'Reviewed water scaling must be finite and positive.'
+        raise RetentionNormalizationError(message)
+    places = cast('int', rule['comparison_decimal_places'])
+    sheet = workbook[_string(rule['master_worksheet'])]
+    result: dict[tuple[float, float], list[_SampleIdentity]] = {}
+    for value in _sequence(rule['blocks']):
+        block = _mapping(value)
+        for row in range(
+            cast('int', block['first_sample_row']), cast('int', block['last_sample_row']) + 1
+        ):
+            identity = _SampleIdentity(
+                _json_scalar(sheet.cell(row, 1).value),
+                _string(rule['master_source']),
+                _json_scalar(sheet.cell(row, 2).value),
+                (),
+            )
+            if sheet.cell(row, 3).value != identity.source or not _sample_identity_matches(
+                identity.sample_id, identity.source, identity.sample_number
+            ):
+                message = 'Reviewed master samples require consistent source/id/number cells.'
+                raise RetentionNormalizationError(message)
+            for column in range(
+                column_index_from_string(_string(block['first_column'])),
+                column_index_from_string(_string(block['last_column'])) + 1,
+            ):
+                water = _finite_number(sheet.cell(row, column).value)
+                if water is None:
+                    continue
+                axis_cell = sheet.cell(cast('int', block['axis_row']), column)
+                axis = _finite_number(axis_cell.value)
+                if axis is None:
+                    continue
+                key = _review_point_key(axis, water * scale, places)
+                evidence = (
+                    f'{sheet.title}!{axis_cell.coordinate}',
+                    f'{sheet.title}!{sheet.cell(row, column).coordinate}',
+                    f'{sheet.title}!A{row}:C{row}',
+                )
+                result.setdefault(key, []).append(
+                    _SampleIdentity(
+                        identity.sample_id,
+                        identity.source,
+                        identity.sample_number,
+                        evidence,
+                    )
+                )
+    return places, result

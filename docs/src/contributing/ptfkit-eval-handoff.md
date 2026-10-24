@@ -10,13 +10,17 @@ can resume without reconstructing decisions from chat history.
 Last updated: 2026-10-24.
 
 The active implementation goal continues. The latest verified checkpoint is
-**698 component tests**, Ruff 0.16.1 lint/format and ty 0.0.71. Read the final
+**732 component tests**, Ruff 0.16.1 lint/format and ty 0.0.71. Read the final
 entry in [the progress log](ptfkit-eval-progress.md) for exact verification and
 continuation evidence; that log supersedes historical continuation orders and
 counts below. Online methodological and PTF publication review resumed; see
-[the source review](ptfkit-eval-source-review.md). Primary workbook-source review has enabled six source rules and 649 normalized
-observations; 223 are volumetric and 426 are gravimetric. Remaining sources
+[the source review](ptfkit-eval-source-review.md). Primary workbook-source review has enabled eleven source rules and 1,036 normalized
+observations; 549 are volumetric and 487 are gravimetric. Remaining sources
 retain specific evidence blockers.
+The source-review queue lists the missing evidence for all 15 blocked physical
+source rules (692 rows). Shvarov 2008 and Shein 2012 together retain a separate
+observation-provenance blocker for 149 rows; unit confirmation alone cannot
+qualify differences or reconstructed curves as independent measurements.
 
 Implemented slices include portable run/CLI artifacts, fixed-pressure outputs,
 nested fixed and learned selection, four approximation families, grouped
@@ -106,12 +110,17 @@ The workbook remains external because redistribution rights are unresolved.
 ## Current dataset evidence
 
 The retention profile accounts for 1,755 observations and 92 fitted van
-Genuchten parameter values. Six normalization-ready rules emit 649 canonical
-observations across 62 samples. They cover Chestnova 2017 (130), Gumatov 1991
+Genuchten parameter values. Six complete source rules and five partial row reviews emit 1,036 canonical
+observations across 109 sample identities. They cover Chestnova 2017 (130), Gumatov 1991
 (190), Gumatov 1992 (10), Bolotov 2014 (167), orchard Makarychev 2014 (56),
-and arboretum Makarychev 2018 (96). One Bolotov water value remains null.
-The other 1,106 observations remain explicit exclusions: 1,057 blocked rules,
-48 stale cached identities and one null. Predictor compatibility remains blocked.
+and arboretum Makarychev 2018 (96), plus Panina 2015 (116), Badenko 2013
+(106), Umarova 2008 (81), Sadovnikova 2011 (61), and Moiseev 2018 (23).
+Sadovnikova preserves two
+experimental repeats of two soils, not four independent samples.
+One Bolotov water value remains null.
+The other 719 observations remain explicit exclusions: 644 blocked rules,
+48 stale cached identities, six ambiguous matches, 17 unreviewed pressures
+three table statistics and one null. Complete-curve readiness remains limited to six rules. Predictor compatibility remains blocked.
 
 The predictor cohort contains 206 reviewed sample rows. The current manifest
 contracts have the following raw-input coverage:
