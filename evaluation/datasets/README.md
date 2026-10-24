@@ -135,6 +135,14 @@ write_retention_normalization_summary(
 )
 ```
 
+To write a private canonical volumetric dataset, use `ptfkit-eval export` with
+`--mapping`, `--dataset-id`, `--material-basis` and an explicit `--output` path.
+Use `unspecified` for an unreviewed material basis. The current workbook exports
+549 volumetric observations and accounts separately for 487 gravimetric rows;
+no mass-to-volume conversion is inferred. Export preserves cell lineage and
+does not fill predictors or establish scoring eligibility. Output contains
+measurements and belongs outside versioned summaries, for example under `local/`.
+
 Regenerate the wide-to-long reconstruction evidence through the same bound
 mapping:
 
@@ -254,3 +262,25 @@ local/meta_v3.3.xlsx` from the repository root. At zero monotonicity tolerance,
 none has values outside volumetric bounds. These diagnostics preserve all values
 and establish no scoring eligibility. The 50 gravimetric curves require their own
 physical checks and are excluded from this volumetric diagnostic.
+# Canonical curve and predictor readiness join
+
+`audit_meta_v3_3_readiness.py` joins canonical curve identities to the reviewed
+predictor audit by exact source and sample identifiers, requiring one master
+row and identical workbook bytes. It reports counts only; ambiguous identities
+and unmatched rows remain explicit. Predictor readiness is not scoring
+eligibility and does not create predictor features in the canonical export.
+
+All 59 exported curve identities match exactly, but no current public function
+has eligible inputs on this cohort. Clapp has 24 complete raw texture inputs,
+all blocked by classification compatibility; the other 35 lack texture. Every
+one of these 59 curves lacks at least one input for Vereecken, and all 59 lack
+the bound sand input for the three Gunarathna functions. Consequently, resolving
+particle-size metadata for the 51 populated sand rows elsewhere in the workbook
+would not unlock these 59 curves by itself. New source-backed inputs or another
+reviewed predictor/target cohort are required. See the count-only
+`meta_v3_3.readiness-summary.json` and `meta_v3_3.fit-policy-comparison.json`.
+
+The export's target material basis is still `unspecified`; resolving predictor
+availability does not resolve that target-contract gate. A source-backed
+classification/material review and compatible predictor values are required
+before any external PTF score can be produced for a retained subset.

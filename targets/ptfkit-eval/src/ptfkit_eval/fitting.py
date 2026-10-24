@@ -16,6 +16,7 @@ from .families import (
     evaluate_retention_family,
     retention_families,
 )
+from .fit_restarts import PressureIntervalTrial, pressure_interval_trials, pressure_partition_values
 from .quality import RetentionSeriesPoint, diagnose_retention_series
 
 
@@ -29,6 +30,11 @@ if TYPE_CHECKING:
 
 class RetentionFitError(ValueError):
     """Raised when a fit plan or its canonical observations are invalid."""
+
+
+RestartPolicy = Literal[
+    'seeded_box_v1', 'brooks_corey_pressure_partitions_v1', 'brooks_corey_interval_solves_v1'
+]
 
 
 @dataclass(frozen=True)
@@ -49,6 +55,8 @@ class RetentionFitPlan:
     and theta_s ranges to guarantee physical ordering throughout optimization.
     Parameter uncertainty assumes local linearity and independent homoscedastic
     observation errors. It is conditional on the declared family and fit policy.
+    The optional Brooks--Corey restart policy appends pressure-knot and geometric
+    partition-midpoint starts to the n_starts original seeded box starts.
     """
 
     family_id: str
@@ -57,6 +65,9 @@ class RetentionFitPlan:
     seed: int
     minimum_log10_span: float
     n_starts: int = 3
+    restart_policy: Literal[
+        'seeded_box_v1', 'brooks_corey_pressure_partitions_v1', 'brooks_corey_interval_solves_v1'
+    ] = 'seeded_box_v1'
     max_evaluations: int = 2000
     optimizer_tolerance: float = 1e-10
     boundary_tolerance: float = 1e-6
@@ -118,6 +129,7 @@ class RetentionFitAttempt:
     sum_squared_error: float | None
     values: tuple[float, ...]
     error: str | None
+    air_entry_interval: tuple[float, float] | None = None
 
 
 @dataclass(frozen=True)
@@ -188,6 +200,7 @@ def fit_retention_family(
     parameters). Boundary, rank-deficient, ill-conditioned, or competing solutions
     are rejected. Local Student-t parameter/curve/prediction intervals assume
     independent homoscedastic residuals and do not estimate PTF prediction error.
+    Explicit pressure-partition restarts preserve all original starts and bounds.
     """
     points = tuple(sorted(observations, key=lambda point: point.suction_kpa))
     diagnose_retention_series(points)
@@ -360,15 +373,34 @@ def _solve_starts(context: _FitContext) -> tuple[tuple[RetentionFitAttempt, ...]
                 else bounds.lower + fraction * (bounds.upper - bounds.lower)
             )
         starts.append(np.array(values, dtype=np.float64))
+    if context.plan.restart_policy == 'brooks_corey_pressure_partitions_v1':
+        index = next(
+            index for index, bounds in enumerate(context.ranges) if bounds.name == 'air_entry'
+        )
+        for value in pressure_partition_values(
+            context.axis, context.lower[index], context.upper[index]
+        ):
+            start = initial.copy()
+            start[index] = value
+            starts.append(start)
+    trials = [PressureIntervalTrial(start, context.lower, context.upper) for start in starts]
+    if context.plan.restart_policy == 'brooks_corey_interval_solves_v1':
+        air_index = next(
+            index for index, bounds in enumerate(context.ranges) if bounds.name == 'air_entry'
+        )
+        trials = pressure_interval_trials(
+            starts, context.lower, context.upper, air_index=air_index, pressures=context.axis
+        )
     attempts: list[RetentionFitAttempt] = []
     solutions: list[_Solution] = []
-    for index, start in enumerate(starts):
+    for index, trial in enumerate(trials):
+        start = trial.initial
         try:
             optimized = least_squares(
                 _residuals,
                 start,
                 args=(context,),
-                bounds=(context.lower, context.upper),
+                bounds=(trial.lower, trial.upper),
                 method='trf',
                 jac='3-point',
                 x_scale='jac',
@@ -394,6 +426,7 @@ def _solve_starts(context: _FitContext) -> tuple[tuple[RetentionFitAttempt, ...]
                     objective if math.isfinite(objective) else None,
                     tuple(float(value) for value in optimized.x),
                     None,
+                    trial.air_entry_interval,
                 )
             )
             if converged:
@@ -417,6 +450,7 @@ def _solve_starts(context: _FitContext) -> tuple[tuple[RetentionFitAttempt, ...]
                     sum_squared_error=None,
                     values=(),
                     error=f'{type(error).__name__}: {error}',
+                    air_entry_interval=trial.air_entry_interval,
                 )
             )
     return tuple(attempts), solutions
@@ -445,6 +479,13 @@ def _failed(
 
 
 def _validate_plan(plan: RetentionFitPlan, family: RetentionFamily) -> None:
+    if plan.restart_policy not in (
+        'seeded_box_v1',
+        'brooks_corey_pressure_partitions_v1',
+        'brooks_corey_interval_solves_v1',
+    ) or (plan.restart_policy != 'seeded_box_v1' and plan.family_id != 'brooks_corey_v1'):
+        message = 'Unsupported restart policy for the declared retention family.'
+        raise RetentionFitError(message)
     if (
         plan.target.quantity != family.target_quantity
         or plan.target.unit != family.target_unit
