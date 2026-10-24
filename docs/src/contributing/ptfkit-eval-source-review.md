@@ -489,3 +489,143 @@ The library metadata explicitly permits free viewing of all 29 pages without
 authorization, while download is unavailable; no download restriction was
 bypassed. The next concrete step is visual review of that freely viewable
 figure when rendering is available.
+
+Before the user redirected work to technical implementation, the standard
+free-page viewing endpoint successfully returned Figure 7. Its visible axes
+confirm pF and W percent. The viewed JPEG SHA256 is
+`8c21815a76bfb49480fd1e1e712695d012172eb26df5cf6cb2354a3e62474de4`.
+A draft row audit found 72 unique positive-pressure candidates, six unsupported
+saturation placeholders, two ambiguous pairs and one questionable water value
+at master cell AD60. No source rule or row policy was changed for these
+candidates. Any future release must review that discrepancy and retain explicit
+exclusions; the current artifacts still contain 1,036 normalized observations.
+## Local fit interval support review
+
+The official [SciPy curve-fit reference](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.curve_fit.html)
+states that its covariance interpretation relies on local linearization and
+can be inaccurate when that approximation fails. This supports retaining the
+existing conditional interpretation rather than treating optimizer convergence
+as evidence of valid uncertainty. It does not supply soil-specific parameter
+bounds or justify residual independence for the workbook.
+
+The new `diagnose_fit_uncertainty_support` API reports interval containment
+separately from fit acceptance. Under the unchanged initial fitting policy,
+67 of 133 accepted real-data fits have at least one parameter interval outside
+its declared box; 12 have a mean interval outside [0, 1], and 44 a conditional
+prediction interval outside [0, 1]. Counts overlap. Intervals remain unchanged;
+no clipping, expanded boxes, or coverage qualification is introduced.
+## Bounded parameter profile implementation
+
+The official [JMP profile-likelihood details](https://www.jmp.com/support/help/en/19.2/jmp/statistical-details-for-profile-likelihood-confidence-limits.shtml)
+describe fixing a parameter, minimizing over nuisance parameters, and finding
+objective thresholds for interval endpoints. The new
+`profile_retention_parameter` implements only explicit-grid nuisance refits.
+It intentionally supplies no threshold or inferred confidence endpoints:
+finite-sample coverage, active constraints, local minima, and residual model
+assumptions still require separate qualification.
+
+The numerical solver uses bounded trust-region least squares, as documented
+in the [SciPy optimization tutorial](https://github.com/scipy/scipy/blob/main/doc/source/tutorial/optimize.rst).
+Each grid point uses the accepted estimate followed by seeded uniform nuisance
+starts. This profile restart policy is explicit and differs from logarithmic
+scale restarts in the original fitting policy. All outcomes remain recorded;
+the smallest converged SSE is not certified as a global minimum.
+## Single-parameter extra-SSE grid threshold
+
+The [JMP profile-likelihood reference](https://www.jmp.com/support/help/en/19.2/jmp/statistical-details-for-profile-likelihood-confidence-limits.shtml)
+uses F-based extra-SSE goals with nuisance refitting. The implemented
+single-constraint rule is derived as
+`(SSEprofile-SSEmin)/(SSEmin/(n-p)) <= F(1,n-p; confidence)`.
+The denominator retains all originally fitted parameters, including the
+profiled parameter; fixing it during a nuisance solve does not add a residual
+degree of freedom to the reference fit. The resulting threshold is applied
+only to explicit nodes, without root interpolation or global guarantees.
+
+This remains approximate nonlinear inference under iid Gaussian homoscedastic
+errors. The threshold is not a calibrated finite-sample constrained procedure;
+parameter-box contact, nonlinear geometry, and workbook residual assumptions
+remain qualification work. The independent test uses the reciprocal symmetry
+of F(1,1), whose median is one, rather than reproducing the SciPy quantile call.
+## Gaussian bounded-mean coverage control
+
+The [NIST confidence limits for a mean](https://itl.nist.gov/div898/handbook/eda/section3/eda352.htm)
+provide an independent unbounded one-sample t control with n-1 residual degrees
+of freedom. For a Gaussian mean at a single lower boundary, sign symmetry and
+the t acceptance event give (1 + nominal level)/2 unconditional coverage for
+the unadjusted bounded extra-SSE rule: half the samples fit the true boundary
+exactly, and the positive half contributes nominal coverage. This is a derived
+half-line result, not an exact statement for arbitrary finite parameter boxes.
+
+The new `evaluation/experiments/profile_coverage` experiment evaluates finite
+[0, 1] mean constraints and retains both boundary-fit counts, the unbounded t
+control, and conditional/unconditional coverage denominators. It does not
+establish coverage for nonlinear retention families or justify Gaussian,
+homoscedastic independent errors in the workbook. Near-boundary conditioning
+is deliberately reported separately from all-generated-sample evidence.
+## Nonlinear retention coverage pilot scope
+
+The new `evaluation/experiments/retention_coverage` pilot extends the existing
+reviewed extra-SSE grid rule to the four registered families, without changing
+its threshold or relaxing the fitting policy. Known synthetic saturation truth
+is included in the inference grid, never in initial fit starts. Generative
+curves use explicit van Genuchten, Brooks--Corey, and Clapp dry-branch equations;
+Clapp's gradual wet branch is outside this particular generating grid.
+
+At 50 repetitions per scenario, the experiment is a failure-accounting pilot,
+not sufficient coverage evidence. Its 102 boundary fit rejections and ten
+Brooks--Corey lower-objective profile counterexamples remain visible in the
+denominators and raw records. Gaussian residuals, finite-box effects, sparse
+pressure design, fit selection, and the distinction between conditional and
+all-generated coverage remain essential limitations. No new source-derived
+parameter ranges or confidence correction were inferred from these outcomes.
+## Pressure-partition restart policy
+
+`brooks_corey_pressure_partitions_v1` is an explicit engineering policy derived
+from the registered piecewise Brooks--Corey equation, not a new source-derived
+parameter range or a claimed global optimization method. It supplements the
+original seeded starts with interior observed pressure knots and geometric
+partition midpoints for air entry. Restart locations do not depend on observed
+water content, fitting residuals, or synthetic truth. The original starts,
+parameter bounds, optimizer limits per attempt, and acceptance gates remain.
+Profile nuisance refits use the same added air-entry locations when applicable.
+
+The nonlinear pilot can compare this policy with the original on identical
+generated observations and seeds. A smaller objective or fewer profile
+counterexamples is numerical evidence only; it does not validate finite-sample
+coverage, justify bound widening, or authorize selecting a policy to maximize
+observed coverage.
+## Piecewise air-entry solver policy
+
+The optional `brooks_corey_interval_solves_v1` policy partitions the original
+air-entry box at observed pressure knots, following the branch structure of
+the registered Brooks--Corey equation. It is an engineering optimizer policy,
+not a source-derived equation or a statistical coverage correction. Closed
+local intervals include every original air-entry value; every seeded nuisance
+start is tried in each interval, in addition to original full-box solves.
+
+Local interval limits are recorded separately from scientific parameter bounds.
+Knot contact alone is not physical boundary failure, but local Jacobians at
+knots do not establish the smoothness assumptions required by approximate fit
+uncertainty. All acceptance and inference qualification limitations remain.
+The paired synthetic pilot tests numerical stability under a fixed known
+generator, not real-soil residual assumptions or national representativeness.
+## Expanded simulation protocol and real-cohort readiness
+
+[Morris, White and Crowther (2019)](https://doi.org/10.1002/sim.8086) motivates
+the expanded study's explicit design, estimands, performance measures, and
+Monte Carlo uncertainty reporting. Before execution, `expanded-plan.json`
+fixed 34 cells and 6800 realizations spanning noise, grid density, saturation
+boundary proximity, and Brooks--Corey air entry between pressure knots. The
+one-sided exact binomial undercoverage test with Bonferroni 0.05/34 is this
+project's declared decision rule, not a threshold prescribed by that paper.
+Unflagged cells do not establish adequacy or real-soil coverage.
+
+The count-only canonical/predictor join now shows that the 59 exported curve
+identities have no sand input for any Gunarathna contract and no complete
+Vereecken input set. Only Clapp has complete raw inputs on this cohort (24
+texture values), all blocked by classification compatibility. Predictor
+metadata review for other workbook rows alone cannot repair this cohort's
+missing values. Canonical target material remains `unspecified`, so even a
+future predictor-compatible subset still requires a reviewed target contract
+before scoring. No source-derived properties or classification crosswalks were
+inferred from successful curve fitting.

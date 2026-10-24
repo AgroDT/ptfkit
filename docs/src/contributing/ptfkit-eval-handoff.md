@@ -10,7 +10,7 @@ can resume without reconstructing decisions from chat history.
 Last updated: 2026-10-24.
 
 The active implementation goal continues. The latest verified checkpoint is
-**732 component tests**, Ruff 0.16.1 lint/format and ty 0.0.71. Read the final
+**740 component tests**, Ruff 0.16.1 lint/format and ty 0.0.71. Read the final
 entry in [the progress log](ptfkit-eval-progress.md) for exact verification and
 continuation evidence; that log supersedes historical continuation orders and
 counts below. Online methodological and PTF publication review resumed; see
@@ -21,6 +21,15 @@ The source-review queue lists the missing evidence for all 15 blocked physical
 source rules (692 rows). Shvarov 2008 and Shein 2012 together retain a separate
 observation-provenance blocker for 149 rows; unit confirmation alone cannot
 qualify differences or reconstructed curves as independent measurements.
+
+The user's latest priority is technical implementation rather than further
+source recovery. A new public normalization-to-canonical export and `export`
+CLI command preserve volumetric observations and cell lineage, explicitly
+account for gravimetric omissions, and require a declared material basis.
+The private real-workbook replay exports 549 points across 59 records without
+predictor or profile inference. Continue with executable real-data fitting
+integration; soil-property gates and remaining uncertainty requirements stay
+on the roadmap. Source exclusions remain active.
 
 Implemented slices include portable run/CLI artifacts, fixed-pressure outputs,
 nested fixed and learned selection, four approximation families, grouped
@@ -340,3 +349,143 @@ bounds are honestly uninformative. Training size is four groups per block, not
 the final full-data size. See the latest progress entry for verification and
 installed-wheel replay. Broader scientific qualification, nonlinear/learned-blend
 extensions and original workbook-source compatibility remain outstanding.
+# Latest technical checkpoint: measured reference fits
+
+Run `evaluation/experiments/measured_retention/fit.py` on the canonical export
+for an approximation-only experiment; see its adjacent README. This avoids the
+general runner's requirement for a PTF candidate while predictors remain
+unavailable. All 236 sample/family results are retained (133 accepted, 103
+failed), with input lineage, physical diagnostics, optimizer attempts, and
+identifiability. Real artifacts remain ignored under `local/`.
+
+The initial boxes reproduce the synthetic-example engineering policy and were
+not tuned to release boundary failures. Exact byte replay, exclusive-output
+protection, Ruff, and ty passed. Source-specific bounds and residual uncertainty
+assumptions remain unqualified; family acceptance is not external PTF accuracy.
+# Latest checkpoint: interval support diagnostics
+
+`diagnose_fit_uncertainty_support` is public and included in the standalone
+measured experiment. It flags parameter-box and physical water-content interval
+violations without changing fit status or clipping intervals. Failed fits and
+unavailable parameter intervals remain explicit. Full verification is now
+**741 passing tests**, with Ruff, ty, and byte-identical real-data replay.
+See the progress and source review for the overlapping 67/12/44 diagnostic
+counts and the official covariance reference. Constrained uncertainty and
+source-specific bounds remain future work.
+# Latest checkpoint: bounded nuisance profiles
+
+`profile_retention_parameter` and `--profile-saturation-points` in the measured
+experiment are implemented. Full verification: **742 tests passed**, Ruff and
+ty passed. Exact real-data replay covers 133 saturation profiles / 798 grid
+points. Five profiles improve original SSE by more than 1e-10: investigate
+optimizer stability before assigning profile confidence thresholds. Neither
+profile roots nor statistical coverage are implemented or claimed. Original
+fits, parameter bounds, and previously reported local intervals remain intact.
+# Latest checkpoint: profile counterexamples and full refits
+
+`assess_profile_optimality` now explicitly flags grid objective improvements.
+The measured experiment runs a separate full fit from an interior best-profile
+start, preserves the original fit, and records the changed initial values.
+All five Brooks--Corey counterexamples produced accepted full refits with
+approximately 16--29% smaller SSE. Exact boundary starts are not nudged.
+Two full experiment artifacts replay byte-for-byte. Verification is now
+**743 passing tests**, with Ruff and ty passing. These findings do not certify
+global optimality or statistical coverage; profile confidence endpoints remain
+unqualified.
+# Latest checkpoint: all-parameter post-refit audit
+
+The measured experiment now records `profile_refit_audit`: every accepted full
+refit is profiled across all family parameters, with updated uncertainty support.
+The five Brooks--Corey refits produced 20 profiles with no new improvement over
+the 1e-10 SSE threshold. Exact replay passed. One parameter-support violation
+remains among these five fits, despite no curve-interval support violations.
+These are grid diagnostics, not global or statistical coverage guarantees.
+Verification: **744 tests passed**, Ruff lint/format and ty passed. Next work
+remains justified constrained interval inference and its coverage calibration.
+# Latest checkpoint: approximate profile grid regions
+
+`assess_profile_grid_region` applies the single-parameter extra-SSE F threshold
+to explicit profile nodes. Profiles now retain original n-p and parameter-box
+metadata. Unavailable evidence is withheld; disconnected accepted runs and
+contact with either parameter bound are explicit. No continuous endpoints or
+calibrated constrained coverage are claimed. All 20 real-data post-refit regions
+were assessed at nominal 95%, with two reaching a declared bound; exact replay
+passed. Verification: **751 tests passed**, Ruff lint/format and ty passed.
+Next: boundary/coverage calibration and justified grid refinement or root
+searches, with convergence and missing-evidence safeguards retained.
+# Latest checkpoint: Gaussian boundary coverage control
+
+`evaluation/experiments/profile_coverage` now tests the public F-grid region
+API on an exact bounded mean SSE profile, with independent unbounded t
+classification and separate selected-fit coverage denominators. At nominal
+95%, the fixed 4000-repetition run observed 94.9% coverage in the interior
+and about 97.5% at either boundary. The half-line boundary reference and
+finite-box limitations are documented; these are not retention coverage claims.
+Exact replay passed. Verification: **753 tests passed**, Ruff lint/format and
+ty passed. Next: nonlinear retention-family coverage with fit failure and
+boundary withholding accounted for, plus justified profile-grid refinement.
+# Latest checkpoint: nonlinear coverage pilot
+
+`evaluation/experiments/retention_coverage` now exercises all four registered
+families at interior and lower-boundary saturation truths. Two full runs replay
+byte-for-byte. Among 400 generated samples: 298 accepted fits, 102 boundary
+rejections, ten withheld Brooks--Corey lower-objective profile assessments,
+and 269 covered truths among 288 assessed regions. These pooled totals are
+accounting, not a pooled coverage claim; see the eight-scenario README table.
+The 50-repeat scenarios remain an unqualified pilot. Verification:
+**755 tests passed**, Ruff lint/format and ty passed. Next: prespecified larger
+calibration and a stable Brooks--Corey optimization policy before qualifying
+profile uncertainty. Retain all failure and selection denominators.
+# Latest checkpoint: optional pressure restart policy
+
+`brooks_corey_pressure_partitions_v1` is available via fit/run plans and profile
+nuisance refits. It preserves original starts, bounds, and gates, adding only
+pressure-knot/geometric-midpoint air-entry starts. Default policy is unchanged.
+Two paired 400-realization replays were byte-identical and used observations
+identical to the original pilot. Eighteen of 100 Brooks--Corey fits improved SSE
+by >1e-10, but nine profile counterexamples persisted (seven interior, two
+boundary-truth). This is not a stability fix or a coverage improvement claim.
+Verification: **758 tests passed**, Ruff and ty passed. Next: piecewise
+air-entry interval optimization, with failures and all denominators preserved.
+# Latest checkpoint: piecewise interval optimization
+
+`brooks_corey_interval_solves_v1` is implemented for full fits, nuisance profiles,
+and run plans. It preserves original full-box attempts and adds bounded solves
+in every pressure-defined air-entry interval. Attempts retain local interval
+limits, separate from scientific bounds. Internal knot solutions do not become
+physical boundary failures. Default behavior is unchanged.
+
+On identical pilot observations, 19/100 Brooks--Corey fits improved SSE, and no
+profile lower-objective counterexamples remained. Interior coverage was 47/50;
+selected-boundary coverage was 21/25, with 25 boundary fit rejections. Therefore
+numerical improvement does not qualify nominal coverage. Verification:
+**760 tests passed**, plus eight focused tests after final refactoring; Ruff
+and ty passed. Next: prespecified larger coverage calibration, especially for
+boundary-fit selection and nonsmooth knot uncertainty, without hiding failures.
+# Latest checkpoint: expanded study and real-data readiness
+
+The 34-cell prespecified expanded study completed **6800 realizations** with
+checksummed resume and Monte Carlo reporting. See
+`evaluation/experiments/retention_coverage/EXPANDED.md` and `expanded-summary.json`.
+All cells replayed unchanged using archived exact implementation snapshots.
+There is one Bonferroni-adjusted undercoverage flag: dense van
+Genuchten--Mualem, theta_s=0.3, sigma=0.002, 85/99 covered assessed regions,
+p=0.0004174. No F-grid uncertainty method is promoted or declared qualified.
+
+The real-data interval-policy comparison is in
+`evaluation/datasets/meta_v3_3.fit-policy-comparison.json`: 21/59 Brooks--Corey
+objectives improved, none worsened, 21 fits remained accepted overall, and
+profile counterexamples fell from five to zero. Installed-wheel replay matched
+the real fitting artifact byte-for-byte.
+
+`meta_v3_3.readiness-summary.json` binds the same workbook, mapping, manifest,
+and canonical dataset. All 59 identities match uniquely; no PTF has eligible
+predictors. Only Clapp has complete raw inputs on this cohort (24 texture
+values), all classification-blocked. Other functions need missing predictors,
+and the target material basis is still unspecified. No scientific gates were
+relaxed and no scores were fabricated.
+
+Verification: **765 passing tests**, Ruff lint/format and ty passed. Next work
+is constrained uncertainty qualification for the flagged case and source-backed
+predictor/target readiness; optimization instability is no longer the only or
+main blocker. Large raw simulation and measurement artifacts remain local.
