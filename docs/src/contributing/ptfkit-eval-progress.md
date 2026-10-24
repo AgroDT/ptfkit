@@ -1,10 +1,19 @@
 # ptfkit-eval extended implementation progress
 
-Current authorized window ends at **23:28 UTC on 2026-10-23**
-(02:28 Europe/Moscow on 2026-10-24), following explicit renewal.
-Latest verified component checkpoint: **698 passing tests**.
-Online primary-source review is active; unavailable original workbook materials
-remain a separate blocker. Historical session contracts below are preserved.
+Historical session window ended at **23:28 UTC on 2026-10-23**
+(02:28 Europe/Moscow on 2026-10-24). Subsequent work follows the active goal
+continuation requested by the user.
+Latest verified component checkpoint: **732 passing tests**.
+Latest subsequent mapping verification: **35 passing dataset-mapping tests**.
+
+Current real-workbook checkpoint: **1,036 observations across 109 master
+identities**, including 549 volumetric and 487 gravimetric observations. Six
+complete source rules and five mandatory partial row reviews are active. Of
+719 explicit exclusions, 644 have blocked physical rules, 48 have stale cached
+identities, six have ambiguous master matches, 17 have unreviewed pressures,
+three are non-observation table statistics, and one has missing water content.
+Predictor method compatibility remains unresolved. Repeated measurements do not
+establish independent soil samples.
 
 ## Session contract
 
@@ -1598,3 +1607,305 @@ observations and 62 identities, and reproduces both committed count summaries
 byte-for-byte. All confirmed reconstruction crosswalks are noncontradictory.
 The deferred overlap prototype is outside the distributable package. Final
 Ruff lint/format (127 files), ty and whitespace checks pass.
+
+
+## Partial Panina recovery with row-level proof (2026-10-24 Europe/Moscow)
+
+The Panina source's positive-pF observations can be released without repairing
+its broken global identifier groups or assigning a pressure to saturation.
+The reviewed physical rule uses volumetric percent and centimeter-head pF.
+An exhaustive 132-row decision table releases 116 unique pressure-water matches,
+excludes four ambiguous matches and excludes all 12 disputed saturation points.
+The first-axis replacement remains proposed and unused for normalization. Stored
+fit parameters and the unresolved complete-curve reconstruction remain separate.
+
+Every release is rechecked against the immutable workbook's original wide
+records at the declared decimal precision and confirmed water scale. It must
+match exactly one unused master point and its source/id/number triple. Missing,
+duplicate, misplaced or inconsistent decisions fail closed. The required-review
+flag prevents deleting the policy to restore cached-id fallback. Physical source
+blockers still prevent normalization even when a row identity is reviewed.
+
+The real-file result is now **765 observations across 74 samples**: 339 volumetric
+and 426 gravimetric. Exclusions total 990: 925 blocked source rules, 48 stale IDs,
+one missing water value, four ambiguous point identities and 12 unresolved
+saturation pressures. The six complete-source rules remain normalization-ready;
+Panina is a partial seventh source, not a fully reconstructed curve/parameter set.
+
+New behavioral tests cover shared cached IDs, stale-ID repair, provenance,
+exhaustive policy coverage, invalid canonical IDs, absent policies, duplicate
+coordinates, wrong master identities/axes, ambiguous master matches and scaling
+gates. An initial ambiguity mutation exposed an incidental later failure in the
+fixture; the fixture was strengthened to isolate the ambiguous point. The
+corrected memory-only first-match mutation is detected with source bytes intact.
+Full-suite checkpoint: **716 tests in 87.38 seconds**; strengthened focused suite:
+52 passing tests. Final post-strengthening broad verification follows.
+
+
+## Real workbook: three partial sources and physical diagnostics (2026-10-24)
+
+Primary-source review now releases 106 Badenko observations and 81 Umarova
+observations in addition to the 116 Panina observations released in this goal.
+Together these add 303 observations and 40 exact sample identities to the
+previous 649/62 checkpoint. All 952 retained observations preserve original
+values and cell lineage. Six complete source rules remain normalization-ready;
+partial row evidence does not promote complete-curve or fitted-parameter joins.
+
+The loader requires exhaustive row decisions for flagged physical rules.
+Normalization rechecks the source's literal original wide points, confirmed
+water scale, canonical master identity, and actual axis/water/identity cells.
+An ambiguous master pair, reused master point, missing policy, uncovered row,
+wrong identity, or invented evidence coordinate fails closed. Proposed axis
+replacements remain inactive. An in-memory ambiguity mutation initially exposed
+an incidental-failure weakness in its fixture; the corrected independent case
+now rejects that mutation for the intended uniqueness contract.
+
+The count-only physical audit diagnoses 56 volumetric curves at zero tolerance:
+20 have 32 adjacent increases with suction, and none exceeds volumetric bounds.
+The 46 gravimetric curves are outside that diagnostic's scope. These findings
+remain visible without clipping, smoothing, deletion, or scoring qualification.
+A separate normalization correction permits dry-soil-mass water ratios above
+one while retaining nonnegative bounds and the volumetric upper bound. Its
+independent example is 1.25 g water per 1 g dry soil, equivalent to 125%.
+The real-workbook counts are unchanged by this correction.
+
+Verification: **725 component tests pass in 89.45 seconds**, with Ruff lint and
+format checks and ty passing. The standalone physical-audit script also passes
+Ruff and ty. A fresh isolated wheel installs successfully and reproduces the
+normalization and reconstruction JSON bytes and physical-summary content:
+952 observations, 102 samples, 526 volumetric and 426 gravimetric observations.
+No workbook values are redistributed. The workbook SHA256 remains unchanged.
+
+Remaining work prioritizes original source evidence for blocked retention
+rules and exact predictor methods/particle-size boundaries. The real PTF pilot
+still has zero qualified predictor sets; normalized retention counts do not
+establish input compatibility or external accuracy. Pestonova's newly found
+catalog lead returned HTTP 403, and the author-hosted Khaidapova paper returned
+HTTP 429; neither supplied unit evidence, so their exclusions remain active.
+
+
+### Sadovnikova continuation: 61 additional experimental points
+
+The original journal archive supplied the complete Sadovnikova and Smagin
+2011 paper. Figure 1 confirms dry-mass W percent, logarithmic kPa pressure
+magnitudes, and filled/open symbols for experimental repeats. Its exact
+soil/horizon/depth descriptions match the workbook. Sixty-one unique literal
+master points are now released through 63 exhaustive row decisions; long rows
+778 and 793 retain explicit exclusions for unsupported 0.01 pressure placeholders.
+No guessed replacement is applied. The four retained master identities describe
+two experimental series for each of two soils, not four independent soil units.
+
+The updated result is **1,013 observations / 106 master identities**, comprising
+526 volumetric and 487 gravimetric points. There are 742 explicit exclusions:
+673 blocked physical rules, 48 stale cached identities, six ambiguous matches,
+14 unreviewed pressures, and one null. The 92 stored fitted-parameter rows stay
+separate. Complete-curve readiness remains six rules. The count-only physical
+summary diagnoses the same 56 volumetric series and keeps the now 50 gravimetric
+series outside that volumetric diagnostic. Predictor eligibility remains zero.
+
+Verification: **726 tests pass in 154.36 seconds**, Ruff lint/format and ty pass.
+The installed wheel reproduces both count JSON files byte for byte and the
+physical-summary content exactly at 1,013 observations and 106 identities.
+The unchanged workbook SHA256 was checked again. The source-review note records
+the journal URL, figure, physical interpretation, dependent repeats, exclusions,
+and reviewed PDF hash. No generated PTF target, source specification, or workbook
+measurement value was changed or redistributed.
+
+Next source leads include Sidorova and Borisova's 2016 paper (DOI
+10.3103/S0147687416020071), whose abstract alone does not confirm the retention
+units, and the original Smagin/Khaydapova/Pestonova papers. The journal's 2016
+issue page exposed no article or figure text. Keep these rows excluded until
+source evidence is obtained. Also preserve the workbook warning that Shein
+2012 curves were approximated from physical/hydrological constants: unit recovery
+alone must not promote them to independent measured validation targets.
+
+
+### Moiseev continuation: measured table columns and non-observation exclusions
+
+The original 2018 journal PDF (Table 2, printed p. 82) independently confirms
+23 volumetric-percent / pF experimental points for three workbook horizons.
+Each pair was compared against an independent transcription of the published
+experimental column, not the PSF calculated column. Soil/source/horizon/depth
+metadata also match. All 29 observation-labelled long rows now have exhaustive
+row decisions: 23 releases, three unsupported saturation-axis exclusions and
+three explicitly non-observational U/U-critical table-statistic exclusions.
+No proposed pressure replacement is activated. Source evidence and PDF SHA256
+are recorded in the source-review note.
+
+The canonical result is **1,036 observations / 109 master identities**, with
+549 volumetric and 487 gravimetric points. The 719 exclusions comprise 644
+blocked source rules, 48 stale cached identities, six ambiguous master matches,
+17 unreviewed pressures, three non-observation table values and one null.
+The raw profiler's 1,755 observation-labelled rows include those three table
+statistics; exclusion preserves their role discrepancy without changing bytes.
+Complete-curve readiness remains six sources. Volumetric physical diagnostics
+now cover 59 series, of which the same 20 contain 32 adjacent increases at zero
+tolerance. Predictor eligibility remains zero.
+
+The runtime can leave an original missing pressure axis unindexed while
+releasing other unique literal source points. It still rejects any attempted
+release of that missing-axis point. New behavioral tests distinguish these two
+cases and preserve explicit statistic exclusion before pressure interpretation.
+The first focused run encountered the preceding physical-summary artifact while
+its regeneration process was still running; after regeneration completed, the
+full suite passed **729 tests in 154.15 seconds**. Ruff lint/format and ty pass.
+A fresh wheel installs and reproduces both count JSON files byte for byte and
+physical-summary content exactly, including three non-observation exclusions.
+
+A further lead identifies Manucharova et al. (2012), DOI
+10.3103/S0147687412010048. Its prose suggests checking whether the workbook's
+soil names were aligned with the original moisture-table columns. The primary
+table/figure could not yet be inspected, so neither units nor any metadata
+correction is promoted from this lead. These rows remain excluded.
+
+
+The 48 remaining stale cached identities all belong to Khaydapova 2001. Their
+physical source rule is still blocked; repairing cached identifiers alone cannot
+release them. The workbook-linked Aksenov 2003 library record rsl01002343790 is
+the full 107-page thesis, and the public viewer reports restricted access. No
+restricted reading or download was attempted. A freely readable original author
+abstract or original 2001 paper is still needed for that source review.
+
+
+### Source semantics: known water basis and hysteresis provenance
+
+Vasyukov et al. (2012), printed pp. 67-70, was obtained from the author's
+university-hosted original issue. Its p. 70 figure confirms volumetric fractions
+for all 28 source rows, resolving the water quantity and scale. It does not name
+the pressure/head unit behind its logarithmic potential ordinate. The source
+rule now records the known water semantics and explicitly leaves pressure
+representation/convention unset. All 28 rows remain blocked without guessing
+standard pF from the workbook label.
+
+Shvarov's earlier original author abstract, Table 2, provides a more fundamental
+warning: two complete five-value vectors and their soil/horizon/depth metadata
+match master rows 88 and 108, but the table explicitly reports adsorption-
+desorption moisture differences in percent against relative vapor pressure.
+These cannot be treated as absolute retention water contents. The printed
+imprint is 1984 although the hosting index dates the abstract 1983; the
+workbook's 2008 source year is unchanged. Other source rows and the original
+2008 tables remain unreviewed; no blanket reversal, reinterpretation or repair
+is applied. The manifest now carries a dedicated
+`retention_observation_provenance` blocker for all 119 source-labelled rows.
+
+Two independent contracts are protected by new tests: a confirmed volumetric
+water basis does not supply a missing logarithmic pressure reference, and
+hypothetically confirmed physical units cannot override unresolved absolute-
+water versus hysteresis provenance. Verification passes **731 tests in 154.18
+seconds**, Ruff lint/format and ty. The installed wheel reproduces all three
+regenerated artifacts, including 119 provenance-blocked source rows. The result
+remains 1,036 normalized observations / 109 master identities and 719 exclusions;
+the workbook checksum remains unchanged.
+
+A new lead identifies Shein and Mady (2018), DOI
+10.3103/S0147687418030080, as a possible original for the four Eldigino curves.
+Its abstract confirms capillarimetric head units but does not establish water
+scaling, retained drying/wetting branch or all horizon identities. The publicly
+indexed Russian PDF returned a CAPTCHA; no challenge bypass was attempted.
+The openly published 2019 follow-up, DOI 10.13187/bgt.2019.1.59, may supply
+independent corroboration, but its OAJI copy currently returns HTTP 410.
+Keep the 2018 source blocked until the primary figures/tables can be reviewed.
+
+### Goal continuation: distinguish supporting papers from source observations
+
+Recovered the publisher-hosted Shein/Mady 2019 follow-up through its registered
+DOI metadata. It describes field dynamics and HYDRUS validation, does not
+reproduce the required 2018 curves, and uses different laboratory layer
+intervals. No predictor overrides or observation releases follow from it.
+
+Reviewed Smagin's open 2009 chernozem paper and 2011 follow-up. Their discussion
+and humus models do not establish the three workbook retention curves. A
+longer 2009 journal contribution remains a separate source-recovery lead;
+the current journal archive omits that issue. Recorded exact reviewed PDF
+checksums and the distinction between publications in the source-review log.
+
+This checkpoint changes documentation only. Counts remain 1,036 observations,
+109 master identities and 719 exclusions. The last code verification remains
+731 passing tests; no additional test run is needed for these evidence notes.
+The goal remains active: recover original figures/tables for blocked sources,
+verify physical units and exact identities, then release supported rows and
+rerun normalization and behavioral checks for any mapping or code changes.
+
+### Goal continuation: Sapozhnikov experiment and archived methods review
+
+Recovered Sapozhnikov's 1994 original author abstract as hosted OCR. It links
+the 1988 paper to the long-term fertilizer experiment and describes a mixture
+of measurement methods and an experimental-calculation method. It does not
+reproduce the required 12 retention curves or confirm their water scale and
+pressure coordinates. Recorded an explicit review requirement to separate
+measured points from calculated segments, without assigning an unverified
+provenance category to individual rows. The 108 source observations stay
+blocked pending original figures/tables.
+
+Recovered the archived original journal page for Smagin's 2006 methods
+paper. Its PDF link returns HTTP 404; public archive metadata contains no
+successful capture for that path or the checked 2009 bibliography directory.
+Continue with other source copies rather than repeating those download paths.
+Only evidence documentation changes in this checkpoint; normalization counts
+and the last 731-test verification remain unchanged.
+
+### Goal continuation: Kamennaya Steppe provenance and two source leads
+
+Identified the Shein/Shcheglov/Moskvin 2012 article and reviewed the related
+original 2013 author abstract. Exact field-location wording matches the
+workbook. The methods reconstruct retention curves from measured constants
+through Voronin pressure assignments and van Genuchten approximation; the
+30 stored curve points cannot yet be classified as independent measurements.
+Recorded that distinction and the original-figure requirement without
+releasing rows or changing the existing exclusions.
+
+Identified Chudinova 2009, DOI 10.1134/S1064229309040073, with the relevant
+three soil classes. The historical public PDF is unavailable on the checked
+route. Identified Sidorova/Borisova 2016, DOI 10.3103/S0147687416020071, as a
+candidate for the two remaining sod-podzolic records; exact horizon matching
+is still required. These are source-recovery leads, not physical confirmations.
+Counts remain 1,036 normalized observations and 719 exclusions. This stage
+changes evidence documentation only; the last code check is 731 passing tests.
+
+### Goal continuation: protect reconstructed targets and consolidate source requests
+
+The Shein 2012 mapping now requires observation-provenance review in both its
+source and reconstruction rules. The original publication and related author
+abstract describe reconstruction from measured constants and inferred pressure
+coordinates; confirming units cannot establish independent target measurements.
+Extended the existing public-loader regression to both this source and Shvarov.
+It checks that hypothetical physical confirmation with an unresolved provenance
+blocker is rejected. Removing the source's blocker also fails its precondition.
+
+Recomputed normalization, reconstruction and count-only quality artifacts.
+The result remains 1,036 observations / 109 master identities and 719 exclusions;
+149 rows now carry the dedicated provenance blocker. The installed wheel
+reproduces all three artifacts and the workbook checksum is unchanged.
+Verification passes **732 tests in 151.58 seconds**, Ruff lint/format and ty.
+
+The source-review document now has a complete queue for the 15 blocked physical
+source rules and their 692 workbook-labelled rows, including 48 Khaydapova
+identity mismatches. It names the specific missing scientific evidence for each
+source. The other 27 exclusions remain explicit reviewed-row or invalid-value
+decisions. Sidorova's publisher confirms the Russian citation as 2016, no. 2,
+pp. 25-32, but exposes only an abstract and subscription access. Exact figures,
+axes and both horizon identities remain unverified. Continue source recovery
+from this queue without treating source-row counts as promised usable targets.
+
+### Goal continuation: Pestonova water scale resolved from the author abstract
+
+Recovered the complete original 2007 author abstract and identified its free
+RSL viewer record, `rsl01003058664`. Figure 7's six horizon labels match the
+six populated workbook records. The shared W-percent axes and dry-mass methods
+resolve water semantics as gravimetric percent. The public library text layer
+independently corroborates the figure labels; its pressure-axis text is lost.
+Browser rendering returned a gateway error, then a blank page. Free viewing
+is authorized by library metadata; downloading is unavailable and was not
+attempted. Visual pressure-axis review remains the next source-specific step.
+
+Updated the source and reconstruction rules without confirming pressure or
+the proposed saturation replacement. The water-scale blocker count decreases
+from 545 to 464 rows. All 81 Pestonova rows remain excluded, and normalized
+counts remain 1,036 / 109 identities with 719 total exclusions. All three
+artifacts were regenerated and the workbook checksum is unchanged.
+
+Extended the known-water/unknown-pressure contract to this source. All **35
+dataset-mapping tests pass in 15.30 seconds**, including the four focused
+water/provenance cases; Ruff lint/format, ty and diff checks pass. Production
+Python code is unchanged. The preceding full component checkpoint remains
+732 passing tests; this checkpoint does not claim a new full-suite run.

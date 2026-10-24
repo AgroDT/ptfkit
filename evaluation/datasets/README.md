@@ -171,15 +171,30 @@ write_predictor_audit_summary(
 ```
 
 For the reviewed workbook bytes, the summary accounts for all 1,847 populated
-rows: 649 observations are normalized, 1,057 currently have blocked-rule
+rows: 1,036 observations are normalized, 644 currently have blocked-rule
 exclusions, one reviewed observation has an explicit missing water value, 48
 have stale cached sample identifiers that disagree with the
 source and sample-number cells, and 92 fitted van Genuchten parameters are held
-in a separate in-memory table. Confirmed source aliases and sample crosswalks
+in a separate in-memory table. Six ambiguous sample matches and 17 unreviewed
+pressures remain explicit exclusions. Three miscopied table-statistic pairs are
+excluded as non-observations. Confirmed source aliases and sample crosswalks
 are applied to canonical identities; proposed joins remain inactive. No row is
 silently discarded. The summary contains counts only; the workbook and copied
 measurement values remain outside version control while redistribution rights
 are unresolved.
+
+The original Vasyukov 2012 figure resolves volumetric fractions for 28 rows but
+does not identify the unit behind its logarithmic potential axis. These rows
+remain blocked. Shvarov's source additionally requires observation-provenance
+review: matching original-author table vectors describe hysteresis moisture
+differences, which cannot be released as absolute retention water contents merely
+by confirming physical units. The 119 source-labelled rows retain this blocker.
+The 30 Shein 2012 rows also retain it: the original study describes retention
+curves reconstructed from measured constants and inferred pressures. Original
+figure/table review must identify any independent measurement subset before
+release. In total, 149 source-labelled rows require this provenance review.
+The source-review document includes a count-based queue for all 15 blocked
+physical source rules and their 692 affected rows.
 
 
 Primary-paper review unlocks 167 numeric observations from Bolotov et al. (2014)
@@ -188,18 +203,54 @@ fractions and log10(kPa) axes despite the workbook's raw `pF` label. Their 16
 complete curves require reviewed sample crosswalks; source case normalization
 alone cannot repair lexical long-sheet sample numbering. See the
 [source review](../../docs/src/contributing/ptfkit-eval-source-review.md).
-These 223 volumetric observations accompany 426 reviewed gravimetric observations;
+The current 549 volumetric observations accompany 487 reviewed gravimetric observations;
 they do not establish predictor method compatibility or external PTF accuracy.
 
 
 Additional primary evidence confirms Gumatov 1991 (190 observations), Gumatov
 1992 (10), and the arboretum Makarychev 2018 block (96). The resulting six
-normalization-ready rules retain 62 sample identities with 223 volumetric and
-426 gravimetric observations. Gumatov's raw `mPa` label denotes MPa magnitudes
+normalization-ready rules retain 62 sample identities. Five partially reviewed
+sources add 387 observations and 47 sample identities. Gumatov's raw `mPa` label denotes MPa magnitudes
 for that source only. Generic unresolved workbook labels remain blocked.
 
-Panina's public thesis confirms volumetric-percent plots, but the long table
-mixes sample identities and its saturation-axis replacement remains disputed.
-Those observations remain excluded. The Makarychev 2014 thermal-property paper
+Panina's public thesis confirms volumetric-percent plots. Exhaustive row decisions
+release 116 uniquely matched positive-pF observations, while four ambiguous pairs
+and 12 saturation-axis rows remain excluded. Badenko's original experimental table
+confirms volumetric fractions and kPa magnitudes: 106 unique observations are
+released and two ambiguous sample matches remain excluded. Umarova's original
+author abstract confirms volumetric-percent/pF plots, releasing 81 unique retained
+observations. Missing and omitted wide-sheet points remain unreleased.
+
+Sadovnikova and Smagin's original 2011 paper additionally confirms dry-mass
+percent water content and logarithmic kPa magnitudes. It releases 61 unique
+experimental points; two unsupported chernozem pressure placeholders remain
+excluded. Four master identities represent experimental repeats of two soils
+and do not establish four independent samples. Gravimetric water/dry-soil ratios
+may exceed one, as the original peat observations demonstrate.
+
+Moiseev et al. (2018), Table 2, supplies 23 exact experimental volumetric-percent
+and pF pairs across three master identities. Three Mann-Whitney U/U-critical
+pairs were copied into the workbook as observations and are explicitly excluded
+as `non_observation_table_value`; three unsupported saturation-axis rows remain
+excluded too. PSF calculated curves are not treated as independent measurements.
+The profiler's 1,755 observation-labelled input rows include these three
+misclassified statistics; the original workbook bytes and classification counts
+remain auditable while normalization records their exclusion explicitly.
+
+The optional `retention_row_reviews` policy accounts for every observation in each
+participating source. Its physical rule must require row review. Every released
+row is rechecked against one unique original master point, its canonical identity,
+and its axis, water and identity evidence cells. Proposed axis replacements are
+inactive. Complete-curve reconstruction remains blocked for these five sources.
+
+The Makarychev 2014 thermal-property paper
 reports hydrological constants rather than a verified pressure grid; no pressure
 is assigned to those constants by assumption.
+
+`meta_v3_3.quality-summary.json` reports counts without measurements. Regenerate it
+with the component environment and `audit_meta_v3_3_quality.py --workbook
+local/meta_v3.3.xlsx` from the repository root. At zero monotonicity tolerance,
+20 of 59 reviewed volumetric curves contain 32 adjacent increases with suction;
+none has values outside volumetric bounds. These diagnostics preserve all values
+and establish no scoring eligibility. The 50 gravimetric curves require their own
+physical checks and are excluded from this volumetric diagnostic.

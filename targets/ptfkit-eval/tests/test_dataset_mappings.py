@@ -77,13 +77,14 @@ def test_meta_mapping_is_inventory_bound_and_keeps_ambiguities_explicit():
         for rule in cast('Sequence[object]', source_rule['observations'])
     ]
     assert len(observation_rules) == 26
-    assert [rule['status'] for rule in observation_rules].count('confirmed') == 6
-    assert [rule['status'] for rule in observation_rules].count('blocked') == 20
+    assert [rule['status'] for rule in observation_rules].count('confirmed') == 11
+    assert [rule['status'] for rule in observation_rules].count('blocked') == 15
     assert {rule['water_unit'] for rule in observation_rules} == {
         None,
         'mass_percent',
         'mass_fraction',
         'volume_fraction',
+        'volume_percent',
     }
 
     identity = cast('Mapping[str, object]', mapping.document['identity'])
@@ -132,7 +133,7 @@ def test_meta_mapping_is_inventory_bound_and_keeps_ambiguities_explicit():
     assert chestnova['status'] == 'confirmed'
     assert chestnova['parameter_block'] is None
     assert panina['status'] == 'blocked'
-    assert panina['water_scale_status'] == 'proposed'
+    assert panina['water_scale_status'] == 'confirmed'
 
     predictor_bindings = cast(
         'Sequence[Mapping[str, object]]', mapping.document['predictor_bindings']
@@ -729,3 +730,227 @@ def test_bolotov_primary_review_keeps_pressure_override_and_curve_identity():
     assert bolotov['matching_confirmed_crosswalk_count'] == 12
     assert bolotov['wide_missing_water_count'] == 1
     assert bolotov['long_missing_water_count'] == 1
+
+
+@pytest.mark.parametrize('defect', ['missing', 'duplicate', 'coordinate', 'source', 'identity'])
+def test_panina_row_review_contract_rejects_incomplete_or_inconsistent_policy(defect: str):
+    document = _mapping_document()
+    policies = document['retention_row_reviews']
+    assert isinstance(policies, list)
+    policy = policies[0]
+    decisions = policy['decisions']
+    if defect == 'missing':
+        del document['retention_row_reviews']
+    elif defect == 'duplicate':
+        decisions.append(copy.deepcopy(decisions[0]))
+    elif defect == 'coordinate':
+        decisions[0]['row'] = decisions[1]['row']
+    elif defect == 'source':
+        policy['source'] = 'unreviewed'
+    else:
+        release = next(item for item in decisions if 'canonical_sample_id' in item)
+        release['canonical_sample_id'] = 'wrong'
+    with pytest.raises(DatasetMappingValidationError) as error:
+        load_dataset_mapping(
+            document, inventory=_inventory_document(), retention_profile=_profile_document()
+        )
+    assert any('retention_row_review' in item.code for item in error.value.diagnostics)
+
+
+def test_panina_releases_only_unique_nonsaturation_rows():
+    document = _mapping_document()
+    policies = document['retention_row_reviews']
+    assert isinstance(policies, list)
+    decisions = policies[0]['decisions']
+    assert len(decisions) == 132
+    assert sum('canonical_sample_id' in item for item in decisions) == 116
+    assert (
+        sum(item.get('exclusion_reason') == 'unreviewed_pressure_value' for item in decisions) == 12
+    )
+    assert (
+        sum(item.get('exclusion_reason') == 'ambiguous_sample_identity' for item in decisions) == 4
+    )
+    by_row = {item['row']: item for item in decisions}
+    assert by_row[1379]['exclusion_reason'] == 'ambiguous_sample_identity'
+    assert by_row[1372]['exclusion_reason'] == 'unreviewed_pressure_value'
+    assert by_row[1373]['canonical_sample_number'] == 1
+    summary = json.loads(SUMMARY_PATH.read_text(encoding='utf-8'))
+    assert summary['normalized_observation_count'] == 1036
+    assert summary['excluded_observation_count'] == 719
+
+
+def test_other_partial_sources_preserve_ambiguous_and_omitted_points():
+    document = _mapping_document()
+    policies = document['retention_row_reviews']
+    assert isinstance(policies, list)
+    badenko, umarova = policies[1:3]
+    assert len(badenko['decisions']) == 108
+    assert sum('canonical_sample_id' in item for item in badenko['decisions']) == 106
+    assert {item['row'] for item in badenko['decisions'] if 'exclusion_reason' in item} == {
+        1000,
+        1086,
+    }
+    assert len(umarova['decisions']) == 81
+    assert all('canonical_sample_id' in item for item in umarova['decisions'])
+    rules = document['retention_reconstruction_rules']
+    assert isinstance(rules, list)
+    reconstruction = next(item for item in rules if item['id'] == 'umarova_2008')
+    assert reconstruction['expected_missing_water_count'] == 22
+    assert len(reconstruction['wide_excluded_cells']) == 7
+    assert reconstruction['status'] == 'blocked'
+
+
+def test_sadovnikova_review_preserves_weight_basis_and_quarantines_pressure_placeholders():
+    document = _mapping_document()
+    policies = document['retention_row_reviews']
+    assert isinstance(policies, list)
+    policy = policies[3]
+    decisions = policy['decisions']
+    assert len(decisions) == 63
+    assert sum('canonical_sample_id' in item for item in decisions) == 61
+    assert {
+        (item['row'], item['exclusion_reason']) for item in decisions if 'exclusion_reason' in item
+    } == {(778, 'unreviewed_pressure_value'), (793, 'unreviewed_pressure_value')}
+    sources = document['retention_source_rules']
+    assert isinstance(sources, list)
+    source = next(item for item in sources if item['source'] == policy['source'])
+    (rule,) = source['observations']
+    assert rule['water_quantity'] == 'gravimetric_water_content'
+    assert rule['water_unit'] == 'mass_percent'
+    assert rule['pressure_representation'] == 'log10_kilopascal'
+    assert rule['requires_row_review'] is True
+    assert rule['status'] == 'confirmed'
+
+
+def test_moiseev_primary_table_releases_experiments_and_excludes_statistic_columns():
+    document = _mapping_document()
+    policies = document['retention_row_reviews']
+    assert isinstance(policies, list)
+    decisions = policies[4]['decisions']
+    assert len(decisions) == 29
+    assert sum('canonical_sample_id' in item for item in decisions) == 23
+    excluded = {
+        item['row']: item['exclusion_reason'] for item in decisions if 'exclusion_reason' in item
+    }
+    assert excluded == {
+        1795: 'unreviewed_pressure_value',
+        1797: 'non_observation_table_value',
+        1805: 'unreviewed_pressure_value',
+        1807: 'non_observation_table_value',
+        1814: 'unreviewed_pressure_value',
+        1816: 'non_observation_table_value',
+    }
+    sources = document['retention_source_rules']
+    assert isinstance(sources, list)
+    source = next(item for item in sources if item['source'] == policies[4]['source'])
+    (rule,) = source['observations']
+    assert rule['water_unit'] == 'volume_percent'
+    assert rule['pressure_representation'] == 'pf_log10_centimeter_water_head'
+    assert rule['requires_row_review'] is True
+
+
+@pytest.mark.parametrize(
+    ('rule_id', 'quantity', 'unit'),
+    [
+        ('vasyukov_2012', 'volumetric_water_content', 'volume_fraction'),
+        ('pestonova_2007', 'gravimetric_water_content', 'mass_percent'),
+    ],
+)
+def test_known_water_basis_does_not_establish_an_unlabelled_pressure_unit(
+    rule_id: str, quantity: str, unit: str
+):
+    document = _mapping_document()
+    rules = document['retention_reconstruction_rules']
+    assert isinstance(rules, list)
+    reconstruction = next(item for item in rules if item['id'] == rule_id)
+    sources = document['retention_source_rules']
+    assert isinstance(sources, list)
+    source = next(item for item in sources if item['source'] == reconstruction['long_source'])
+    (rule,) = source['observations']
+    assert rule['water_quantity'] == quantity
+    assert rule['water_unit'] == unit
+    assert rule['pressure_encoding'] == 'pF'
+    assert rule['pressure_representation'] is None
+    assert rule['pressure_convention'] is None
+    assert rule['status'] == 'blocked'
+    assert rule['blockers'] == ['pressure_convention_by_source']
+    assert reconstruction['status'] == 'blocked'
+
+
+@pytest.mark.parametrize(
+    ('rule_id', 'water_unit'),
+    [('shvarov_2008', 'mass_percent'), ('shein_2012', 'volume_fraction')],
+)
+def test_physical_units_cannot_release_unreviewed_retention_provenance(
+    rule_id: str, water_unit: str
+):
+    document = _mapping_document()
+    reconstructions = document['retention_reconstruction_rules']
+    assert isinstance(reconstructions, list)
+    reconstruction = next(item for item in reconstructions if item['id'] == rule_id)
+    sources = document['retention_source_rules']
+    assert isinstance(sources, list)
+    source = next(item for item in sources if item['source'] == reconstruction['long_source'])
+    (rule,) = source['observations']
+    assert rule['status'] == 'blocked'
+    assert 'retention_observation_provenance' in rule['blockers']
+    assert 'retention_observation_provenance' in reconstruction['blockers']
+
+    rule.update(
+        status='confirmed',
+        water_unit=water_unit,
+        pressure_convention='magnitude',
+        blockers=['retention_observation_provenance'],
+    )
+    with pytest.raises(DatasetMappingValidationError) as error:
+        load_dataset_mapping(
+            document, inventory=_inventory_document(), retention_profile=_profile_document()
+        )
+    assert any(
+        item.code == 'mapping.confirmed_retention_rule_has_blockers'
+        for item in error.value.diagnostics
+    )
+
+
+def test_real_quality_artifact_exports_counts_without_measurement_records():
+    path = REPOSITORY_ROOT / 'evaluation/datasets/meta_v3_3.quality-summary.json'
+    summary = json.loads(path.read_text(encoding='utf-8'))
+    assert set(summary) == {
+        'schema_version',
+        'dataset_id',
+        'source_filename',
+        'workbook_sha256',
+        'mapping_sha256',
+        'normalized_observation_count',
+        'normalized_sample_count',
+        'monotonicity_tolerance_volume_fraction',
+        'scope',
+        'scoring_eligibility',
+        'sources',
+    }
+    assert summary['workbook_sha256'] == _profile_document()['sha256']
+    assert summary['scoring_eligibility'] == 'not_established_by_this_report'
+    assert summary['monotonicity_tolerance_volume_fraction'] == 0
+    allowed_counts = {
+        'normalized_sample_count',
+        'normalized_observation_count',
+        'gravimetric_sample_count',
+        'volumetric_sample_count',
+        'diagnosed_volumetric_sample_count',
+        'unsupported_semantics_sample_count',
+        'duplicate_pressure_sample_count',
+        'increasing_water_sample_count',
+        'increasing_water_adjacent_pair_count',
+        'outside_volume_bounds_sample_count',
+    }
+    for source in summary['sources']:
+        assert set(source) <= {'source', *allowed_counts}
+        assert all(
+            type(value) is int and value >= 0 for key, value in source.items() if key != 'source'
+        )
+    assert sum(source['normalized_observation_count'] for source in summary['sources']) == 1036
+    assert sum(source['normalized_sample_count'] for source in summary['sources']) == 109
+    assert (
+        sum(source.get('diagnosed_volumetric_sample_count', 0) for source in summary['sources'])
+        == 59
+    )
