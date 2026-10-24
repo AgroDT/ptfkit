@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "dataset_id": "meta_v3_3",
+  "source_filename": "meta_v3.3.xlsx",
+  "workbook_sha256": "1322bf65b1ca0130085015209858a443d1ee82a7e2ae69232321cd8ede361e68",
+  "mapping_sha256": "5a5b41b68aefec6deb752ec5b9f10c0cd9421577da982856346392768d4da77c",
+  "normalized_observation_count": 1036,
+  "normalized_sample_count": 109,
+  "monotonicity_tolerance_volume_fraction": 0,
+  "scope": "noncorrecting_diagnostics_of_reviewed_volumetric_observations",
+  "scoring_eligibility": "not_established_by_this_report",
+  "sources": [
+    {
+      "source": "1991_Гуматов",
+      "gravimetric_sample_count": 19,
+      "normalized_observation_count": 190,
+      "normalized_sample_count": 19
+    },
+    {
+      "source": "1992_Гуматов",
+      "gravimetric_sample_count": 1,
+      "normalized_observation_count": 10,
+      "normalized_sample_count": 1
+    },
+    {
+      "source": "2008_Умарова-дисс",
+      "diagnosed_volumetric_sample_count": 10,
+      "increasing_water_adjacent_pair_count": 2,
+      "increasing_water_sample_count": 1,
+      "normalized_observation_count": 81,
+      "normalized_sample_count": 10,
+      "outside_volume_bounds_sample_count": 0,
+      "volumetric_sample_count": 10
+    },
+    {
+      "source": "2011_садовникова",
+      "gravimetric_sample_count": 4,
+      "normalized_observation_count": 61,
+      "normalized_sample_count": 4
+    },
+    {
+      "source": "2013_баденко",
+      "diagnosed_volumetric_sample_count": 18,
+      "increasing_water_adjacent_pair_count": 5,
+      "increasing_water_sample_count": 4,
+      "normalized_observation_count": 106,
+      "normalized_sample_count": 18,
+      "outside_volume_bounds_sample_count": 0,
+      "volumetric_sample_count": 18
+    },
+    {
+      "source": "2014_болотов",
+      "diagnosed_volumetric_sample_count": 12,
+      "increasing_water_adjacent_pair_count": 20,
+      "increasing_water_sample_count": 11,
+      "normalized_observation_count": 167,
+      "normalized_sample_count": 12,
+      "outside_volume_bounds_sample_count": 0,
+      "volumetric_sample_count": 12
+    },
+    {
+      "source": "2014_макарычев-3",
+      "diagnosed_volumetric_sample_count": 4,
+      "increasing_water_adjacent_pair_count": 3,
+      "increasing_water_sample_count": 2,
+      "normalized_observation_count": 56,
+      "normalized_sample_count": 4,
+      "outside_volume_bounds_sample_count": 0,
+      "volumetric_sample_count": 4
+    },
+    {
+      "source": "2015_Панина. дисер",
+      "diagnosed_volumetric_sample_count": 12,
+      "increasing_water_adjacent_pair_count": 2,
+      "increasing_water_sample_count": 2,
+      "normalized_observation_count": 116,
+      "normalized_sample_count": 12,
+      "outside_volume_bounds_sample_count": 0,
+      "volumetric_sample_count": 12
+    },
+    {
+      "source": "2017_честнова",
+      "gravimetric_sample_count": 10,
+      "normalized_observation_count": 130,
+      "normalized_sample_count": 10
+    },
+    {
+      "source": "2018_Моисеев",
+      "diagnosed_volumetric_sample_count": 3,
+      "increasing_water_adjacent_pair_count": 0,
+      "increasing_water_sample_count": 0,
+      "normalized_observation_count": 23,
+      "normalized_sample_count": 3,
+      "outside_volume_bounds_sample_count": 0,
+      "volumetric_sample_count": 3
+    },
+    {
+      "source": "2018_макарычев",
+      "gravimetric_sample_count": 16,
+      "normalized_observation_count": 96,
+      "normalized_sample_count": 16
+    }
+  ]
+}
