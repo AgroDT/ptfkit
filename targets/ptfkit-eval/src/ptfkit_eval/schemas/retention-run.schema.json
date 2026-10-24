@@ -605,6 +605,7 @@
         "parameter_agreement_tolerance": {"type": "number", "exclusiveMinimum": 0},
         "confidence_level": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1},
         "method": {"const": "bounded_trf_uniform_multistart_v1"},
+        "restart_policy": {"enum": ["seeded_box_v1", "brooks_corey_pressure_partitions_v1", "brooks_corey_interval_solves_v1"]},
         "uncertainty_method": {"const": "local_linear_iid_student_t_v1"}
       }
     },

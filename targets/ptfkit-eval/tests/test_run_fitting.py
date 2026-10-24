@@ -38,6 +38,31 @@ def _fit_configuration() -> dict[str, object]:
     }
 
 
+@pytest.mark.parametrize(
+    'policy', ['brooks_corey_pressure_partitions_v1', 'brooks_corey_interval_solves_v1']
+)
+def test_run_plan_preserves_explicit_pressure_restart_policy(tmp_path: Path, policy: str):
+    path = write_run_fixture(tmp_path / 'inputs')
+    document = json.loads(path.read_text('utf-8'))
+    configuration = _fit_configuration()
+    configuration.update(
+        {
+            'family_id': 'brooks_corey_v1',
+            'restart_policy': policy,
+            'parameters': [
+                {'name': 'theta_r', 'lower': 0, 'upper': 0.2, 'initial': 0.05},
+                {'name': 'theta_s', 'lower': 0.3, 'upper': 0.8, 'initial': 0.45},
+                {'name': 'air_entry', 'lower': 1, 'upper': 30, 'initial': 7},
+                {'name': 'lambda', 'lower': 0.1, 'upper': 2, 'initial': 0.8},
+            ],
+        }
+    )
+    document['approximations'] = [configuration]
+    path.write_text(json.dumps(document), encoding='utf-8')
+    plan = load_retention_run_plan(path)
+    assert plan.approximations[0].restart_policy == policy
+
+
 def test_reference_fitting_is_independent_of_ptf_input_eligibility_and_replays(tmp_path: Path):
     dataset = json.loads(json.dumps(dataset_document()))
     dataset['samples'][0]['features'][0]['review_status'] = 'blocked'

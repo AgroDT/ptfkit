@@ -59,6 +59,7 @@ from .uncertainty import ClusterBootstrapPlan
 
 if TYPE_CHECKING:
     from .contracts import AtomicCurve, CurveCandidate
+    from .fitting import RestartPolicy
 
 
 @dataclass(frozen=True)
@@ -531,6 +532,10 @@ def _approximation_plans(
             seed=cast('int', document['seed']),
             minimum_log10_span=cast('float', document['minimum_log10_span']),
             n_starts=cast('int', document['n_starts']),
+            restart_policy=cast(
+                'RestartPolicy',
+                document.get('restart_policy', 'seeded_box_v1'),
+            ),
             max_evaluations=cast('int', document['max_evaluations']),
             optimizer_tolerance=cast('float', document['optimizer_tolerance']),
             boundary_tolerance=cast('float', document['boundary_tolerance']),

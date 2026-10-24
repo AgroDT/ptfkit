@@ -88,6 +88,7 @@ from .execution import (
     convert_value,
     evaluate_candidate,
 )
+from .exports import RetentionDatasetExport, export_normalized_retention_dataset
 from .families import (
     FamilyParameter,
     RetentionFamily,
@@ -95,6 +96,13 @@ from .families import (
     evaluate_retention_family,
     retention_families,
 )
+from .fit_profiles import (
+    ProfileOptimalityAssessment,
+    RetentionParameterProfile,
+    assess_profile_optimality,
+    profile_retention_parameter,
+)
+from .fit_uncertainty import FitUncertaintySupport, diagnose_fit_uncertainty_support
 from .fitting import (
     ApproximationCurvePoint,
     ApproximationInterval,
@@ -194,6 +202,7 @@ from .predictors import (
     audit_predictor_workbook,
     write_predictor_audit_summary,
 )
+from .profile_regions import ProfileGridRegion, assess_profile_grid_region
 from .quality import (
     RetentionQualityError,
     RetentionSeriesDiagnostic,
@@ -392,6 +401,7 @@ __all__ = [
     'FamilyParameter',
     'FitIdentifiability',
     'FitParameterRange',
+    'FitUncertaintySupport',
     'FittedRetentionParameter',
     'FixedNestedSelection',
     'FixedPointPrediction',
@@ -477,6 +487,8 @@ __all__ = [
     'PredictorAuditResult',
     'PredictorAuditSummary',
     'PredictorBindingAudit',
+    'ProfileGridRegion',
+    'ProfileOptimalityAssessment',
     'Provenance',
     'RangeGatedCurveCandidate',
     'RangeGatedRouter',
@@ -489,6 +501,7 @@ __all__ = [
     'RetentionCohortError',
     'RetentionCohortSet',
     'RetentionComparison',
+    'RetentionDatasetExport',
     'RetentionEncodingProfile',
     'RetentionErrorSummary',
     'RetentionExclusion',
@@ -505,6 +518,7 @@ __all__ = [
     'RetentionNormalizationError',
     'RetentionNormalizationResult',
     'RetentionNormalizationSummary',
+    'RetentionParameterProfile',
     'RetentionProfileError',
     'RetentionQualityError',
     'RetentionReconstructionAudit',
@@ -560,6 +574,8 @@ __all__ = [
     'assess_independent_selection_family',
     'assess_independent_selection_training',
     'assess_paired_selection_training',
+    'assess_profile_grid_region',
+    'assess_profile_optimality',
     'assess_retention_applicability',
     'assess_selection_conditional_risks',
     'assess_selection_strategies',
@@ -578,6 +594,7 @@ __all__ = [
     'compare_retention_run_pairs',
     'convert_value',
     'diagnose_composite_seams',
+    'diagnose_fit_uncertainty_support',
     'diagnose_learned_applicability',
     'diagnose_learned_blend_endpoints',
     'diagnose_learned_sigmoid_centers',
@@ -595,6 +612,7 @@ __all__ = [
     'evaluate_vereecken1989_h_theta',
     'exact_particle_size_cover',
     'execute_retention_run',
+    'export_normalized_retention_dataset',
     'fit_retention_family',
     'inspect_workbook',
     'load_dataset_mapping',
@@ -605,6 +623,7 @@ __all__ = [
     'normalize_retention_workbook',
     'pair_selection_training_evidence',
     'predict_retention_grid',
+    'profile_retention_parameter',
     'profile_retention_workbook',
     'read_retention_run_report',
     'resample_grouped_forecasts',

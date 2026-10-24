@@ -7,7 +7,7 @@ envelopes, fold-specific domains/error strata, target-free composite transition
 member contrasts, paired cluster metric differences, and nested training of
 constant convex two-curve ensemble weights are implemented and integrated into
 run schemas/artifacts/reports, including learned-fold input domains. The latest
-component verification has 732 passing tests. Finite-grid hard-switch boundary
+component verification has 740 passing tests. Finite-grid hard-switch boundary
 training and fitted-seam diagnostics are implemented. Finite-grid learned blend intervals and separate complete-learner point
 MAE/MSE risk are implemented. Nonlinear pressure-only sigmoid gates are also implemented. Soil-property
 gates, weight/boundary parameter uncertainty, and remaining ME/median strategy

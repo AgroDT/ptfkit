@@ -10,9 +10,112 @@ from openpyxl import Workbook, load_workbook
 from ptfkit_eval import (
     DatasetMapping,
     RetentionNormalizationError,
+    cli,
+    export_normalized_retention_dataset,
+    load_retention_dataset,
     normalize_retention_workbook,
     write_retention_normalization_summary,
 )
+from ptfkit_eval.documents import object_mapping, object_records
+
+
+def test_canonical_export_preserves_volume_lineage_and_accounts_for_mass_rows(tmp_path: Path):
+    path = tmp_path / 'retention.xlsx'
+    _workbook(path)
+    normalized = normalize_retention_workbook(path, _mapping(path))
+    exported = export_normalized_retention_dataset(
+        normalized, dataset_id='reviewed', material_basis='unspecified'
+    )
+    document = exported.dataset.document
+    (point,) = object_records(document['observations'])
+    assert point['value'] == 0.5
+    assert point['suction_kpa'] == 33
+    assert point['source_id'] == 'b'
+    assert point['sample_id'] == 'b_2'
+    assert point['source_cells'] == normalized.observations[2].source_cells
+    assert point['source_file'] == 'workbook'
+    assert len(exported.omitted_gravimetric_rows) == len(normalized.observations) - 1
+    (sample,) = object_records(document['samples'])
+    assert sample['features'] == ()
+    assert sample['profile_id'] is None
+    assert object_mapping(document['target'])['material_basis'] == 'unspecified'
+    assert (
+        object_records(document['source_files'])[0]['sha256']
+        == hashlib.sha256(path.read_bytes()).hexdigest()
+    )
+
+
+def test_canonical_export_rejects_duplicate_pressures_without_averaging(tmp_path: Path):
+    path = tmp_path / 'retention.xlsx'
+    _workbook(path)
+    normalized = normalize_retention_workbook(path, _mapping(path))
+    volume = normalized.observations[2]
+    duplicated = replace(
+        normalized,
+        observations=(volume, replace(volume, row=99, water_content=0.25)),
+        summary=replace(normalized.summary, normalized_observation_count=2),
+    )
+    with pytest.raises(ValueError, match='Duplicate canonical observation'):
+        export_normalized_retention_dataset(
+            duplicated, dataset_id='reviewed', material_basis='unspecified'
+        )
+
+
+@pytest.mark.parametrize(
+    'changes',
+    [
+        {'water_unit': 'volume_percent'},
+        {'pressure_convention': 'signed'},
+        {'pressure_quantity': 'total_potential'},
+        {'water_basis': 'solid_volume'},
+    ],
+)
+def test_canonical_export_rejects_incompatible_physical_contracts(tmp_path: Path, changes: dict):
+    path = tmp_path / 'retention.xlsx'
+    _workbook(path)
+    normalized = normalize_retention_workbook(path, _mapping(path))
+    volume = replace(normalized.observations[2], **changes)
+    invalid = replace(
+        normalized,
+        observations=(volume,),
+        summary=replace(normalized.summary, normalized_observation_count=1),
+    )
+    with pytest.raises(ValueError, match='canonical volumetric'):
+        export_normalized_retention_dataset(
+            invalid, dataset_id='reviewed', material_basis='unspecified'
+        )
+
+
+def test_export_cli_writes_a_loadable_dataset_and_never_overwrites(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+):
+    path = tmp_path / 'retention.xlsx'
+    _workbook(path)
+    monkeypatch.setattr(cli, 'load_dataset_mapping', lambda _path: _mapping(path))
+    output = tmp_path / 'canonical.json'
+    arguments = [
+        'export',
+        str(path),
+        '--mapping',
+        'fixture.yaml',
+        '--dataset-id',
+        'reviewed',
+        '--material-basis',
+        'unspecified',
+        '--output',
+        str(output),
+    ]
+    assert cli.main(arguments) == 0
+    summary = json.loads(capsys.readouterr().out)
+    dataset = load_retention_dataset(output)
+    assert summary['dataset_sha256'] == dataset.sha256
+    assert summary['exported_observations'] == 1
+    assert summary['omitted_gravimetric_observations'] == 3
+    original = output.read_bytes()
+    with pytest.raises(SystemExit) as error:
+        cli.main(arguments)
+    assert error.value.code == 2
+    assert output.read_bytes() == original
 
 
 HEADERS = [

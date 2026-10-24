@@ -56,6 +56,34 @@ curve = evaluate_candidate(
 )
 ```
 
+## Export reviewed workbook observations
+
+`ptfkit-eval export` connects reviewed normalization to the canonical dataset
+loader used by retention runs. It writes measurement values, so keep the output
+in a private location until redistribution rights are established:
+
+```sh
+ptfkit-eval export local/meta_v3.3.xlsx \
+  --mapping evaluation/datasets/meta_v3_3.yaml \
+  --dataset-id meta-v3-3-reviewed-volume \
+  --material-basis unspecified \
+  --output local/reviewed-retention.json
+```
+
+The command refuses to overwrite an existing file and prints a count-only
+summary with dataset, mapping and workbook checksums. The Python API is
+`export_normalized_retention_dataset()`. Its result separately lists normalized
+gravimetric rows omitted from the volumetric dataset. No density conversion,
+predictor filling, profile inference, duplicate-pressure averaging or physical
+correction is performed. Original cell lineage and values are preserved.
+
+Declare a reviewed material basis when available; `unspecified` records that
+this information remains unresolved. Export does not establish compatibility
+with a PTF, independence of samples, physical quality or scoring eligibility.
+Samples have empty predictors and unknown profile identities until separately
+reviewed. Existing normalization exclusions and fitted parameters remain in
+the original normalization result, outside the observation dataset.
+
 ## Descriptive retention metrics
 
 `summarize_retention_errors()` summarizes one already eligible cohort for one
@@ -1083,3 +1111,65 @@ registration/replay. The independent rational-curve experiment in
 `evaluation/experiments/sigmoid_training_law` qualifies its complete small
 training procedure on equal/informative finite group populations while retaining
 failed fits. These controls make no workbook accuracy or scientific IID claim.
+# Fit interval support diagnostics
+
+`diagnose_fit_uncertainty_support(result)` reports parameter intervals outside
+their declared fit boxes and mean-curve or conditional prediction intervals
+outside volumetric support [0, 1]. The diagnostic preserves interval values and
+fit status, allows exact endpoint contact, and distinguishes unavailable
+parameter intervals and failed fits. Containment does not qualify statistical
+coverage, local linearity, or residual assumptions. The standalone measured
+retention experiment includes these diagnostics in every result.
+# Bounded parameter profiles
+
+`profile_retention_parameter(result, parameter_name=..., grid=...)` fixes one
+parameter on an explicit finite, increasing grid within its original bounds,
+and refits the nuisance parameters. It requires an accepted fit and preserves
+every bounded multistart attempt, including exhausted solves. Grid endpoints
+may equal parameter bounds. The output is an objective diagnostic, without
+confidence thresholds, inferred interval endpoints, or global-minimum claims.
+The measured retention experiment can include saturation profiles with
+`--profile-saturation-points 5`.
+# Profile optimality checks
+
+`assess_profile_optimality(profile, absolute_tolerance=..., relative_tolerance=...)`
+reports a lower objective only when improvement strictly exceeds
+`atol + rtol * abs(baseline SSE)`. It records the best grid point, actual signed
+improvement, threshold, and number of failed grid points. An entirely failed
+grid reports `no_converged_points`; `no_improvement_detected` is limited to the
+declared grid and local nuisance solves. This does not establish global
+optimality or qualify confidence intervals.
+# Approximate profile grid regions
+
+`assess_profile_grid_region` classifies explicit profile nodes against a
+single-parameter extra-SSE F threshold with declared nominal confidence and
+optimality tolerances. Generated profiles carry residual degrees of freedom
+and parameter bounds. Disconnected accepted runs and contact with declared
+bounds remain explicit; missing calculations and incomplete grids withhold
+assessment. Output nodes are not continuous confidence interval endpoints.
+Nonlinear and constrained coverage, residual assumptions, and adequate
+optimization remain separate scientific requirements.
+# Pressure-partition restarts for Brooks--Corey
+
+`RetentionFitPlan(restart_policy='brooks_corey_pressure_partitions_v1', ...)`
+keeps the original `n_starts` seeded starts and appends air-entry starts at
+interior observed pressure knots and geometric midpoints of the resulting box
+partitions. Other initial parameters remain unchanged. The policy uses only
+pressure coordinates, preserves parameter bounds and acceptance gates, and
+records every additional attempt. The default remains `seeded_box_v1`.
+
+Run plans accept the optional `restart_policy` field. The pressure policy is
+rejected for other families. Nuisance profiles add the same air-entry locations
+when air entry is free, and omit them when it is the fixed profile parameter.
+The extra starts cost additional optimizer work and do not certify global
+optimality or interval coverage.
+# Piecewise air-entry solves
+
+`restart_policy='brooks_corey_interval_solves_v1'` preserves the original
+full-box attempts and adds one solve per seeded start in each closed
+pressure-defined air-entry interval. Attempts record `air_entry_interval`;
+these local limits are separate from the scientific parameter bounds used by
+the original acceptance diagnostics. The same policy applies to nuisance
+profiles when air entry is free. The default and pressure-restart policies
+remain available. Piecewise local solves are not a global optimum certificate
+or a qualification of local parameter uncertainty at nondifferentiable knots.

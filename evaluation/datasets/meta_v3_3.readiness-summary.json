@@ -1,0 +1,77 @@
+{
+  "dataset_id": "meta-v3-3-reviewed-volume",
+  "dataset_sha256": "000c3c9fff04a714ff2cc6e9d32fc3d00bd3a3246616caf5dfac4f1673fdd93f",
+  "functions": [
+    {
+      "blockers": {
+        "missing_input": 35,
+        "texture_classification": 24
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 24,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_clapp1978"
+    },
+    {
+      "blockers": {
+        "missing_input": 59
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 0,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_gunarathna2019_vwc10_set1"
+    },
+    {
+      "blockers": {
+        "missing_input": 59
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 0,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_gunarathna2019_vwc1500_set1"
+    },
+    {
+      "blockers": {
+        "missing_input": 59
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 0,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_gunarathna2019_vwc33_set1"
+    },
+    {
+      "blockers": {
+        "density_units": 26,
+        "missing_input": 59,
+        "organic_property_provenance": 21,
+        "particle_size_schemes": 19
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 0,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_vereecken1989"
+    }
+  ],
+  "join_policy": "exact_source_and_sample_id_unique_master_row",
+  "manifest_sha256": "0f17e500ab3d4715ec10210229319d31d5e9f32cb6b3b1134d520411d2db4691",
+  "mapping_sha256": "5a5b41b68aefec6deb752ec5b9f10c0cd9421577da982856346392768d4da77c",
+  "schema_version": 1,
+  "scope": "predictor_readiness_for_canonical_curve_identities_not_scoring_eligibility",
+  "target_material_basis": "unspecified",
+  "workbook_sha256": "1322bf65b1ca0130085015209858a443d1ee82a7e2ae69232321cd8ede361e68"
+}
