@@ -1,0 +1,935 @@
+{
+  "scope": "current_released_canonical_data_not_all_unreviewed_workbook_cells",
+  "counts": {
+    "functions_with_measured_target_coordinates": 28,
+    "implemented": 146,
+    "new_scored_atomic": 0,
+    "scored_atomic": 2
+  },
+  "baseline": {
+    "evaluated_combinations": 12,
+    "reviewed_scoring_profiles": 1,
+    "reviewed_scoring_sources": 1,
+    "scored_atomic": 2
+  },
+  "scoring_result": {
+    "ensemble_diagnostic": "unchanged_completed_clapp_cosby_experiment",
+    "evaluated_combinations": 12,
+    "new_functions": [],
+    "new_maximal_common_cohorts": [],
+    "new_profiles": [],
+    "new_sources": [],
+    "new_target_pools": [],
+    "reviewed_scoring_profiles": 1,
+    "reviewed_scoring_sources": 1,
+    "scored_atomic": 2
+  },
+  "target_pools": [
+    {
+      "catalog_functions": [
+        "calc_ptf_oosterveld1980_retention"
+      ],
+      "catalog_ptfs": 1,
+      "main_target_blocker": "predictor_and_source_protocol_review",
+      "potential_measured_samples": 50,
+      "potential_measured_sources": 5,
+      "reviewed_coordinate_sources": [
+        "1991_\u0413\u0443\u043c\u0430\u0442\u043e\u0432",
+        "1992_\u0413\u0443\u043c\u0430\u0442\u043e\u0432",
+        "2011_\u0441\u0430\u0434\u043e\u0432\u043d\u0438\u043a\u043e\u0432\u0430",
+        "2017_\u0447\u0435\u0441\u0442\u043d\u043e\u0432\u0430",
+        "2018_\u043c\u0430\u043a\u0430\u0440\u044b\u0447\u0435\u0432"
+      ],
+      "reviewed_sources": 5,
+      "scored_ptfs": 0,
+      "target_pool": "curve:gravimetric_water_content",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_bai2022",
+        "calc_ptf_clapp1978",
+        "calc_ptf_cosby1984_univariate",
+        "calc_ptf_hodnett2002",
+        "calc_ptf_li2007",
+        "calc_ptf_mayr1999",
+        "calc_ptf_saxton2006",
+        "calc_ptf_varallyai1982_chernozem_a",
+        "calc_ptf_varallyai1982_chernozem_b",
+        "calc_ptf_varallyai1982_chernozem_c",
+        "calc_ptf_varallyai1982_meadow",
+        "calc_ptf_vereecken1989",
+        "calc_ptf_vereecken1989_detailed",
+        "calc_ptf_weber2020",
+        "calc_ptf_wosten2001_class_parameters",
+        "calc_ptf_wosten2001_loam_clay_table5",
+        "calc_ptf_wosten2001_sand_subsoil_table5",
+        "calc_ptf_wosten2001_sand_topsoil_table5"
+      ],
+      "catalog_ptfs": 18,
+      "main_target_blocker": "predictor_and_source_protocol_review",
+      "potential_measured_samples": 59,
+      "potential_measured_sources": 6,
+      "reviewed_coordinate_sources": [
+        "2008_\u0423\u043c\u0430\u0440\u043e\u0432\u0430-\u0434\u0438\u0441\u0441",
+        "2013_\u0431\u0430\u0434\u0435\u043d\u043a\u043e",
+        "2014_\u0431\u043e\u043b\u043e\u0442\u043e\u0432",
+        "2014_\u043c\u0430\u043a\u0430\u0440\u044b\u0447\u0435\u0432-3",
+        "2015_\u041f\u0430\u043d\u0438\u043d\u0430. \u0434\u0438\u0441\u0435\u0440",
+        "2018_\u041c\u043e\u0438\u0441\u0435\u0435\u0432"
+      ],
+      "reviewed_sources": 6,
+      "scored_ptfs": 2,
+      "target_pool": "curve:volumetric_water_content",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_chakraborty2011_eq1",
+        "calc_ptf_chakraborty2011_eq2",
+        "calc_ptf_chakraborty2011_eq3",
+        "calc_ptf_chakraborty2011_eq4",
+        "calc_ptf_chakraborty2011_eq5",
+        "calc_ptf_chakraborty2011_eq6",
+        "calc_ptf_tiwary2014_bsr"
+      ],
+      "catalog_ptfs": 7,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "fixed_pressure:gravimetric_water_content:100kPa",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_beniaich2023_mlr1",
+        "calc_ptf_beniaich2023_mlr2",
+        "calc_ptf_beniaich2023_mlr3",
+        "calc_ptf_beniaich2023_mlr4",
+        "calc_ptf_beniaich2023_mlr5",
+        "calc_ptf_beniaich2023_slr1",
+        "calc_ptf_beniaich2023_slr2",
+        "calc_ptf_beniaich2023_slr3",
+        "calc_ptf_beniaich2023_slr4",
+        "calc_ptf_beniaich2023_slr5",
+        "calc_ptf_beniaich2023_slr6",
+        "calc_ptf_chakraborty2011_eq1",
+        "calc_ptf_chakraborty2011_eq2",
+        "calc_ptf_chakraborty2011_eq3",
+        "calc_ptf_chakraborty2011_eq4",
+        "calc_ptf_chakraborty2011_eq5",
+        "calc_ptf_chakraborty2011_eq6",
+        "calc_ptf_dharumarajan2019_nkp",
+        "calc_ptf_dharumarajan2019_nkp_clay",
+        "calc_ptf_dharumarajan2019_skp",
+        "calc_ptf_dharumarajan2019_skp_clay",
+        "calc_ptf_myeni2021_pwp",
+        "calc_ptf_oosterveld1980_wilting_point",
+        "calc_ptf_tiwary2014_bsr"
+      ],
+      "catalog_ptfs": 24,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "fixed_pressure:gravimetric_water_content:1500kPa",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_beniaich2023_mlr1",
+        "calc_ptf_beniaich2023_mlr2",
+        "calc_ptf_beniaich2023_mlr3",
+        "calc_ptf_beniaich2023_mlr4",
+        "calc_ptf_beniaich2023_mlr5",
+        "calc_ptf_beniaich2023_slr1",
+        "calc_ptf_beniaich2023_slr2",
+        "calc_ptf_beniaich2023_slr3",
+        "calc_ptf_beniaich2023_slr4",
+        "calc_ptf_beniaich2023_slr5",
+        "calc_ptf_beniaich2023_slr6",
+        "calc_ptf_chakraborty2011_eq1",
+        "calc_ptf_chakraborty2011_eq2",
+        "calc_ptf_chakraborty2011_eq3",
+        "calc_ptf_chakraborty2011_eq4",
+        "calc_ptf_chakraborty2011_eq5",
+        "calc_ptf_chakraborty2011_eq6",
+        "calc_ptf_dharumarajan2019_nkp",
+        "calc_ptf_dharumarajan2019_nkp_clay",
+        "calc_ptf_dharumarajan2019_skp",
+        "calc_ptf_dharumarajan2019_skp_clay",
+        "calc_ptf_myeni2021_fc",
+        "calc_ptf_tiwary2014_bsr"
+      ],
+      "catalog_ptfs": 23,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "fixed_pressure:gravimetric_water_content:33kPa",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_chakraborty2011_eq1",
+        "calc_ptf_chakraborty2011_eq2",
+        "calc_ptf_chakraborty2011_eq3",
+        "calc_ptf_chakraborty2011_eq4",
+        "calc_ptf_chakraborty2011_eq5",
+        "calc_ptf_chakraborty2011_eq6"
+      ],
+      "catalog_ptfs": 6,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "fixed_pressure:gravimetric_water_content:500kPa",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_saxton2006"
+      ],
+      "catalog_ptfs": 1,
+      "main_target_blocker": "predictor_and_source_protocol_review",
+      "potential_measured_samples": 18,
+      "potential_measured_sources": 1,
+      "reviewed_coordinate_sources": [
+        "2013_\u0431\u0430\u0434\u0435\u043d\u043a\u043e"
+      ],
+      "reviewed_sources": 1,
+      "scored_ptfs": 0,
+      "target_pool": "fixed_pressure:volumetric_water_content:0kPa",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_rawls1982_full_wrc"
+      ],
+      "catalog_ptfs": 1,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "fixed_pressure:volumetric_water_content:1000kPa",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_rawls1982_full_wrc"
+      ],
+      "catalog_ptfs": 1,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "fixed_pressure:volumetric_water_content:100kPa",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_gunarathna2019_vwc10_set1",
+        "calc_ptf_gunarathna2019_vwc10_set2",
+        "calc_ptf_gunarathna2019_vwc10_set3",
+        "calc_ptf_gunarathna2019_vwc10_set4",
+        "calc_ptf_rawls1982_full_wrc"
+      ],
+      "catalog_ptfs": 5,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "fixed_pressure:volumetric_water_content:10kPa",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_gunarathna2019_vwc1500_set1",
+        "calc_ptf_gunarathna2019_vwc1500_set3",
+        "calc_ptf_gunarathna2019_vwc1500_set4",
+        "calc_ptf_rawls1982_full_wrc",
+        "calc_ptf_rawls1982_theta_1500",
+        "calc_ptf_rawls2003_soc_theta1500_gmdh",
+        "calc_ptf_rawls2003_soc_theta1500_tree",
+        "calc_ptf_saxton2006"
+      ],
+      "catalog_ptfs": 8,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "fixed_pressure:volumetric_water_content:1500kPa",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_rawls1982_full_wrc"
+      ],
+      "catalog_ptfs": 1,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "fixed_pressure:volumetric_water_content:200kPa",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_rawls1982_full_wrc"
+      ],
+      "catalog_ptfs": 1,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "fixed_pressure:volumetric_water_content:20kPa",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_gunarathna2019_vwc33_set1",
+        "calc_ptf_gunarathna2019_vwc33_set2",
+        "calc_ptf_gunarathna2019_vwc33_set3",
+        "calc_ptf_gunarathna2019_vwc33_set4",
+        "calc_ptf_rawls1982_full_wrc",
+        "calc_ptf_rawls1982_theta_33",
+        "calc_ptf_rawls2003_soc_theta33_gmdh",
+        "calc_ptf_rawls2003_soc_theta33_tree",
+        "calc_ptf_saxton2006",
+        "calc_ptf_wang2012"
+      ],
+      "catalog_ptfs": 10,
+      "main_target_blocker": "predictor_and_source_protocol_review",
+      "potential_measured_samples": 18,
+      "potential_measured_sources": 1,
+      "reviewed_coordinate_sources": [
+        "2013_\u0431\u0430\u0434\u0435\u043d\u043a\u043e"
+      ],
+      "reviewed_sources": 1,
+      "scored_ptfs": 0,
+      "target_pool": "fixed_pressure:volumetric_water_content:33kPa",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_rawls1982_full_wrc"
+      ],
+      "catalog_ptfs": 1,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "fixed_pressure:volumetric_water_content:400kPa",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_rawls1982_full_wrc"
+      ],
+      "catalog_ptfs": 1,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "fixed_pressure:volumetric_water_content:4kPa",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_rawls1982_full_wrc"
+      ],
+      "catalog_ptfs": 1,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "fixed_pressure:volumetric_water_content:60kPa",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_rawls1982_full_wrc"
+      ],
+      "catalog_ptfs": 1,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "fixed_pressure:volumetric_water_content:700kPa",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_rawls1982_full_wrc"
+      ],
+      "catalog_ptfs": 1,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "fixed_pressure:volumetric_water_content:7kPa",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_pidgeon1972_awc",
+        "calc_ptf_pidgeon1972_awc_coarse_sand",
+        "calc_ptf_pidgeon1972_awc_fine_sand",
+        "calc_ptf_pidgeon1972_awc_sand_organic_matter",
+        "calc_ptf_pidgeon1972_awc_very_fine_sand",
+        "calc_ptf_pidgeon1972_eawc",
+        "calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter",
+        "calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter",
+        "calc_ptf_pidgeon1972_eawc_sand",
+        "calc_ptf_pidgeon1972_eawc_sand_organic_matter"
+      ],
+      "catalog_ptfs": 10,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "operational:available_water_capacity",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_bai2022_bulk_density",
+        "calc_ptf_saxton2006",
+        "calc_ptf_saxton2006_density",
+        "calc_ptf_saxton2006_gravel",
+        "calc_ptf_wosten2001_loam_clay_table5",
+        "calc_ptf_wosten2001_sand_subsoil_table5",
+        "calc_ptf_wosten2001_sand_topsoil_table5"
+      ],
+      "catalog_ptfs": 7,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 30,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "operational:dry_bulk_density",
+      "unreviewed_raw_sources": [
+        "1987_\u0421\u0430\u043f\u043e\u0436\u043d\u0438\u043a\u043e\u0432",
+        "1988_\u0421\u0430\u043f\u043e\u0436\u043d\u0438\u043a\u043e\u0432",
+        "1991_\u0413\u0443\u043c\u0430\u0442\u043e\u0432",
+        "1992_\u0413\u0443\u043c\u0430\u0442\u043e\u0432",
+        "2001_\u041d\u0438\u043a\u0443\u043b\u0438\u043d\u0430-\u0434\u0438\u0441\u0441",
+        "2003_\u0424\u0430\u0443\u0441\u0442\u043e\u0432\u0430-\u0434\u0438\u0441\u0441",
+        "2004_\u0422\u044b\u043c\u0431\u0430\u0435\u0432-\u0434\u0438\u0441\u0441",
+        "2007_\u041f\u0435\u0441\u0442\u043e\u043d\u043e\u0432\u0430",
+        "2007_\u043a\u043e\u043a\u0430\u0440\u0435\u0432\u0430",
+        "2008_\u0423\u043c\u0430\u0440\u043e\u0432\u0430-\u0434\u0438\u0441\u0441",
+        "2009_\u041a\u043e\u043a\u043e\u0440\u0435\u0432\u0430-\u0434\u0438\u0441\u0441",
+        "2009_\u0447\u0443\u0434\u0438\u043d\u043e\u0432\u0430",
+        "2010_\u0413\u043e\u043d\u0447\u0430\u0440\u043e\u0432-\u0434\u0438\u0441\u0441",
+        "2011_\u0422\u0440\u043e\u0448\u0438\u043d\u0430-\u0434\u0438\u0441\u0441",
+        "2011_\u0448\u0435\u0438\u043d",
+        "2012_\u041c\u0435\u0434\u043a\u043e-\u0434\u0438\u0441\u0441",
+        "2012_\u0448\u0435\u0438\u043d",
+        "2014_\u043c\u0430\u043a\u0430\u0440\u044b\u0447\u0435\u0432-1",
+        "2014_\u043c\u0430\u043a\u0430\u0440\u044b\u0447\u0435\u0432-2",
+        "2014_\u043c\u0430\u043a\u0430\u0440\u044b\u0447\u0435\u0432-3",
+        "2015_\u041f\u0430\u043d\u0438\u043d\u0430. \u0434\u0438\u0441\u0435\u0440",
+        "2018_\u041c\u043e\u0438\u0441\u0435\u0435\u0432",
+        "2018_\u0448\u0435\u0438\u043d-2",
+        "2019_\u041b\u0435\u0431\u0435\u0434\u0435\u0432\u0430",
+        "2022_\u0411\u0430\u0431\u043e\u0448\u043a\u0438\u043d\u0430",
+        "2023_fomin",
+        "2023_\u0411\u0430\u0431\u043e\u0448\u043a\u0438\u043d\u0430",
+        "2024_\u041e\u0433\u043e\u0440\u043e\u0434\u043d\u044f\u044f",
+        "2025_\u0411\u0430\u0431\u043e\u0448\u043a\u0438\u043d\u0430",
+        "2025_\u0417\u0430\u0433\u0438\u0440\u043e\u0432"
+      ]
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_oosterveld1980_field_capacity_tension"
+      ],
+      "catalog_ptfs": 1,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "operational:field_capacity_tension",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_oosterveld1980_available_water"
+      ],
+      "catalog_ptfs": 1,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "operational:gravimetric_available_moisture",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_oosterveld1980_field_capacity",
+        "calc_ptf_pidgeon1972_fc",
+        "calc_ptf_pidgeon1972_fc_sand",
+        "calc_ptf_pidgeon1972_fc_sand_organic_matter"
+      ],
+      "catalog_ptfs": 4,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "operational:gravimetric_field_capacity",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_pidgeon1972_pwp",
+        "calc_ptf_pidgeon1972_pwp_sand",
+        "calc_ptf_pidgeon1972_pwp_sand_organic_matter"
+      ],
+      "catalog_ptfs": 3,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "operational:gravimetric_permanent_wilting_point",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_beniaich2023_mlr1",
+        "calc_ptf_beniaich2023_mlr2",
+        "calc_ptf_beniaich2023_mlr3",
+        "calc_ptf_beniaich2023_mlr4",
+        "calc_ptf_beniaich2023_mlr5",
+        "calc_ptf_beniaich2023_slr1",
+        "calc_ptf_beniaich2023_slr2",
+        "calc_ptf_beniaich2023_slr3",
+        "calc_ptf_beniaich2023_slr4",
+        "calc_ptf_beniaich2023_slr5",
+        "calc_ptf_beniaich2023_slr6"
+      ],
+      "catalog_ptfs": 11,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "operational:gravimetric_saturation",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_dharumarajan2019_infiltration"
+      ],
+      "catalog_ptfs": 1,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "operational:infiltration_rate",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_saxton2006_salinity"
+      ],
+      "catalog_ptfs": 1,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "operational:osmotic_potential",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_saxton2006_tension_dry",
+        "calc_ptf_saxton2006_tension_wet"
+      ],
+      "catalog_ptfs": 2,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "operational:other_output_contract_unresolved",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_puckett1985",
+        "calc_ptf_saxton2006_density",
+        "calc_ptf_saxton2006_gravel",
+        "calc_ptf_wosten2001_hydraulic"
+      ],
+      "catalog_ptfs": 4,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "operational:retention_output_contract_unresolved",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_ahuja1984",
+        "calc_ptf_aimrun2009",
+        "calc_ptf_bai2022",
+        "calc_ptf_clapp1978",
+        "calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand",
+        "calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter",
+        "calc_ptf_ferrerjulia2004_calcaric_regosol_sand",
+        "calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter",
+        "calc_ptf_ferrerjulia2004_calcic_cambisol_sand",
+        "calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter",
+        "calc_ptf_ferrerjulia2004_calcic_luvisol_sand",
+        "calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter",
+        "calc_ptf_ferrerjulia2004_campbell_shiozawa",
+        "calc_ptf_ferrerjulia2004_chromic_luvisol_sand",
+        "calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter",
+        "calc_ptf_ferrerjulia2004_cosby",
+        "calc_ptf_ferrerjulia2004_dane_puckett",
+        "calc_ptf_ferrerjulia2004_dystric_cambisol_sand",
+        "calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter",
+        "calc_ptf_ferrerjulia2004_dystric_regosol_sand",
+        "calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter",
+        "calc_ptf_ferrerjulia2004_eutric_cambisol_sand",
+        "calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter",
+        "calc_ptf_ferrerjulia2004_eutric_regosol_sand",
+        "calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter",
+        "calc_ptf_ferrerjulia2004_general_sand",
+        "calc_ptf_ferrerjulia2004_general_texture_organic_matter",
+        "calc_ptf_ferrerjulia2004_gleyic_cambisol_sand",
+        "calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter",
+        "calc_ptf_ferrerjulia2004_gleyic_luvisol_sand",
+        "calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter",
+        "calc_ptf_ferrerjulia2004_gleyic_solonchak_sand",
+        "calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter",
+        "calc_ptf_ferrerjulia2004_humic_acrisol_sand",
+        "calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter",
+        "calc_ptf_ferrerjulia2004_humic_cambisol_sand",
+        "calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter",
+        "calc_ptf_ferrerjulia2004_orthic_luvisol_sand",
+        "calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter",
+        "calc_ptf_ferrerjulia2004_puckett",
+        "calc_ptf_ferrerjulia2004_ranker_sand",
+        "calc_ptf_ferrerjulia2004_ranker_texture_organic_matter",
+        "calc_ptf_ferrerjulia2004_rendzina_sand",
+        "calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter",
+        "calc_ptf_ferrerjulia2004_saxton",
+        "calc_ptf_li2007",
+        "calc_ptf_ottoni2019_wm330",
+        "calc_ptf_ottoni2019_wmssc",
+        "calc_ptf_ottoni2019_wmsscbd",
+        "calc_ptf_puckett1985",
+        "calc_ptf_saxton2006",
+        "calc_ptf_saxton2006_gravel",
+        "calc_ptf_tiwary2014_bsr",
+        "calc_ptf_tiwary2014_igp",
+        "calc_ptf_wang2012",
+        "calc_ptf_weber2020",
+        "calc_ptf_wosten2001_class_parameters",
+        "calc_ptf_wosten2001_loam_clay_table5",
+        "calc_ptf_wosten2001_sand_subsoil_table5",
+        "calc_ptf_wosten2001_sand_topsoil_table5",
+        "calc_ptf_zhao2016_m2_1",
+        "calc_ptf_zhao2016_m2_2",
+        "calc_ptf_zhao2016_m2_3",
+        "calc_ptf_zhao2016_m2_4",
+        "calc_ptf_zhao2016_m2_5",
+        "calc_ptf_zhao2016_m2_6"
+      ],
+      "catalog_ptfs": 66,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "operational:saturated_hydraulic_conductivity",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_saxton2006_conductivity",
+        "calc_ptf_wosten2001_hydraulic"
+      ],
+      "catalog_ptfs": 2,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "operational:unsaturated_hydraulic_conductivity",
+      "unreviewed_raw_sources": []
+    },
+    {
+      "catalog_functions": [
+        "calc_ptf_pidgeon1972_fc_vol_sand_organic_matter"
+      ],
+      "catalog_ptfs": 1,
+      "main_target_blocker": "no_exact_or_operational_measured_target_in_current_release",
+      "potential_measured_samples": 0,
+      "potential_measured_sources": 0,
+      "reviewed_coordinate_sources": [],
+      "reviewed_sources": 0,
+      "scored_ptfs": 0,
+      "target_pool": "operational:volumetric_field_capacity",
+      "unreviewed_raw_sources": []
+    }
+  ],
+  "review": {
+    "family_reviews": [
+      {
+        "evidence": [
+          "chestnova_2017",
+          "pidgeon_1972"
+        ],
+        "id": "chestnova_high_yield",
+        "review": "All 15 previous Chestnova candidate functions are reviewed in their target groups below. The 15-function/150-combination discovery ceiling is withdrawn as an actionable target ceiling.",
+        "sources": [
+          "chakraborty2011",
+          "dharumarajan2019",
+          "myeni2021",
+          "oosterveld1980",
+          "pidgeon1972"
+        ]
+      },
+      {
+        "evidence": [
+          "chestnova_2017",
+          "canonical-mass.json",
+          "reviewed source specifications"
+        ],
+        "id": "gravimetric_fixed_pressure",
+        "review": "No released gravimetric point is exactly 0, 33, 100, 500 or 1500 kPa. The 1992 Gumatov 10 kPa points have the wrong pressure for these candidates. Predictor review cannot overcome target absence.",
+        "sources": [
+          "beniaich2023",
+          "chakraborty2011",
+          "dharumarajan2019",
+          "myeni2021",
+          "tiwary2014"
+        ]
+      },
+      {
+        "evidence": [
+          "badenko_2013",
+          "panina_2015",
+          "canonical-volume.json"
+        ],
+        "id": "volumetric_fixed_pressure",
+        "review": "Badenko supplies exact theta33 and saturation. No released volumetric theta10 or theta1500 exists. The Badenko predictor columns are empty. Panina SOC/texture trees remain target-blocked; no class-midpoint substitution is permitted.",
+        "sources": [
+          "gunarathna2019",
+          "rawls1982",
+          "rawls2003",
+          "saxton2006"
+        ]
+      },
+      {
+        "evidence": [
+          "panina_2015",
+          "chestnova_2017",
+          "meta_v3_3.yaml predictor bindings",
+          "reviewed source specifications"
+        ],
+        "id": "continuous_water_retention",
+        "review": "Volumetric WRC targets exist, so missing adapters are not scientific impossibility. Numeric Panina candidates remain blocked on laser-PSD mass equivalence and/or organic-matter/SOC definition. Vereecken additionally requires Walkley-Black carbon and its specified core protocol. Other candidate sources have <1 micrometer clay or unresolved fraction methods/bases; Varallyai needs its specific fine fractions and horizon class; Wosten class parameters need a source-defined Staring class. Additional CEC, climate, terrain and median-sand-size requirements remain uninventoried where applicable.",
+        "sources": [
+          "bai2022",
+          "hodnett2002",
+          "li2007",
+          "mayr1999",
+          "varallyai1982",
+          "vereecken1989",
+          "wosten2001"
+        ]
+      },
+      {
+        "evidence": [
+          "chestnova_2017",
+          "specs/functions/oosterveld1980.yaml"
+        ],
+        "id": "continuous_gravimetric_retention",
+        "review": "Oosterveld retention can use measured pressures between 10 and 1500 kPa; it must not be rejected for lacking full WRC or fixed-pressure targets. Chestnova has such points, but dry-mass sand/clay and exact mean-depth identity are not established. FC, PWP, available moisture and FC tension retain separate operational targets.",
+        "sources": [
+          "oosterveld1980"
+        ]
+      },
+      {
+        "evidence": [
+          "pidgeon_1972",
+          "panina_2015",
+          "reviewed source specifications"
+        ],
+        "id": "direct_field_capacity_and_available_water",
+        "review": "Field drainage/cylinder FC and available-water endpoints are not interchangeable with arbitrary measured retention points. No compatible direct FC/AWC/EAWC dataset is released. Voronin reconstructed constants are not measured targets.",
+        "sources": [
+          "pidgeon1972",
+          "oosterveld1980"
+        ]
+      },
+      {
+        "evidence": [
+          "meta_v3_3.inventory.json",
+          "meta_v3_3.yaml",
+          "canonical-volume.json",
+          "canonical-mass.json"
+        ],
+        "id": "conductivity_and_infiltration",
+        "review": "No measured Ksat or infiltration target has a reviewed sample/unit/protocol binding in the current canonical releases. Matching texture predictors alone cannot score these groups. Unclassified trailing workbook columns are not proof of absence, and are not authorized measurements.",
+        "sources": [
+          "ferrerjulia2004",
+          "zhao2016",
+          "ottoni2019",
+          "aimrun2009",
+          "ahuja1984",
+          "tiwary2014",
+          "dharumarajan2019"
+        ]
+      },
+      {
+        "evidence": [
+          "panina_2015",
+          "reviewed source specifications"
+        ],
+        "id": "bulk_density",
+        "review": "Panina reports measured core density, but Bai requires slope and Wosten requires compatible clay/organic matter or median sand size. No function has a complete reviewed predictor-plus-target contract.",
+        "sources": [
+          "bai2022",
+          "wosten2001"
+        ]
+      }
+    ],
+    "policy": "Predictor compatibility and measured-target availability are independent. No PSD crosswalk, carbon-to-organic-matter conversion, density conversion, pressure snapping or interpolated measured target is authorized.",
+    "review_date": "2026-10-25",
+    "schema_version": 1,
+    "scope": "Reviewed canonical releases and mapped predictor fields; no claim of impossibility for unreviewed workbook blocks",
+    "sources": {
+      "badenko_2013": {
+        "cross_sheet_review": "The sod-podzolic worksheet rows 33-51 repeats the same 18 water curves and has empty M:S predictors. No Badenko-labelled block occurs in the PSD worksheet or other soil/dissertation worksheets.",
+        "decision": "Exact volumetric theta33 is available, but Gunarathna, Rawls and Saxton predictors are not. Obtaining the matching field/laboratory predictor records is a higher-value next review than further ensemble work.",
+        "local_evidence": "local/source-review/badenko2013.pdf",
+        "predictors": "All 18 master rows have no numerical values in M:S: no quantitative PSD, density or carbon/organic matter. Six topsoil categorical labels do not authorize measured sand/clay. The article's experimental table contains water contents rather than the required numeric predictors.",
+        "profile_identity": "The table names six field pits, each with three horizons. No scoring release or independent profile claim is added without compatible predictors.",
+        "reference": "local/source-review/badenko2013.pdf",
+        "retention": "Pressure-membrane measurements include 0, 15, 33, 122, 415 and 1520 kPa for 18 horizons. The printed 1520 coordinate is not 1500 kPa. Exact theta33 is a real target opportunity.",
+        "reviewed_locations": [
+          "printed pp. 16-17, experimental methods and table",
+          "master rows 156-174, L:S"
+        ],
+        "sha256": "96da74ac7a27a0f58511912fd6b7fc82b93ae05351739c2b28294866cd6fa29e"
+      },
+      "chestnova_2017": {
+        "bulk_density": "No values in master Q228:Q237; no matched sample-specific dry bulk density is established in the reviewed abstract.",
+        "carbon": "Total carbon by dry combustion on AN-7529; organic carbon is not isolated by the published method. The study includes carbonate-containing material. Workbook R must not be treated as validated SOC.",
+        "cross_sheet_review": "All eight worksheets were searched. PSD rows 15-24 and 59-68 and the chernozem view rows 118-128 repeat the Table 1 fraction bins; no 2 micrometer cut or matched density was found there. Aggregate dry/wet sieve bins describe aggregates and cannot replace primary particle fractions.",
+        "decision": "No new atomic candidate has both reviewed predictors and a compatible measured target. Retain existing gravimetric release; authorize no new predictor binding.",
+        "local_evidence": "local/source-review/chestnova2017-abstract.pdf",
+        "organic_matter": "Workbook S equals R*1.724 for all ten rows. This arithmetic match does not establish measured organic matter or Walkley-Black carbon equivalence.",
+        "particle_size": "Laser diffraction with Analysette 22 comfort after ultrasonic dispersion. Table 1 bins are <1, 1-5, 5-10, 10-50, 50-250 and >250 micrometers. The 1-5 micrometer bin straddles the required 2 micrometer clay boundary; subdivision and mass-basis equivalence are not established.",
+        "profile_identity": "Unresolved: five land uses are not five proven independent profiles. Abstract upper layers are 0-10 cm and lower layer depths differ from workbook J228:J237. No new profile IDs are assigned.",
+        "reference": "https://soil.msu.ru/attachments/article/2599/CHESTNOVA_AVTOREFERAT.pdf",
+        "retention": "Existing release: 130 gravimetric measurements in ten series; centrifugation and saturated-salt desorption are reported. None of the converted measured pressures is exactly 0, 10, 33, 100, 500 or 1500 kPa.",
+        "reviewed_locations": [
+          "printed pp. 6-8, sections 2.1, 2.2 and Table 1",
+          "meta_v3_3.yaml exact long/master crosswalk",
+          "master rows 227-237, columns J and M:S"
+        ],
+        "sample_identity": "Ten internal workbook curve identities are confirmed by the existing bijective crosswalk. Table 1 carbon and less-than-1-micrometer values identify the five land-use pairs. This does not establish independent pedon IDs.",
+        "sha256": "9fd5b999be308406270cb5ccf05a603b04baf8eb98c294f6566268d9aa3d7926"
+      },
+      "panina_2015": {
+        "bulk_density": "The source reports a 5.585 cubic-centimeter cylinder core method. This resolves a bibliographic method claim, but does not establish equivalence to other sources' required core dimensions or drying protocols.",
+        "carbon": "Combustion of the <0.25 mm sample at 1000 degrees Celsius with gravimetric carbon-dioxide determination. This is not the required Walkley-Black protocol of Vereecken/Gunarathna. Carbonate discrimination for SOC transfer remains unresolved.",
+        "cross_sheet_review": "The sod-podzolic worksheet rows 52-65 repeats the Panina predictors and fitted parameters. It supplies no independent mass-PSD or organic-matter measurement. Stored fitted parameters are not extra atomic PTFs or measured targets.",
+        "decision": "Rawls1982 theta1500 and Rawls2003 point variants are target-blocked. Wosten2001 loam/clay is not fixed-pressure-blocked, but laser-PSD mass equivalence and organic-matter definition remain unresolved. No new binding.",
+        "local_evidence": "local/source-review/panina2015.pdf",
+        "organic_matter": "Workbook S is R*1.724 numerically. The source reports carbon, not a separately validated organic-matter measurement. No generic conversion to Rawls/Wosten/Saxton predictors is authorized.",
+        "particle_size": "Analysette 22 Comfort laser diffraction after ultrasonic dispersion in water. Table 17 provides <2, 2-50 and >50 micrometer bins and categorical classes, but no equivalence to measured dry-mass fractions required by other PTFs is established.",
+        "reference": "https://soil.msu.ru/attachments/article/2063/Panina_Disser.pdf",
+        "retention": "Released volumetric observations exist, but none is exactly 10, 33 or 1500 kPa. No fixed-pressure target is synthesized.",
+        "reviewed_locations": [
+          "printed pp. 49-54, field and laboratory methods",
+          "printed pp. 88-91, Tables 17-18",
+          "existing six-horizon clapp-source-review overlay",
+          "master rows 210-223, N:S"
+        ],
+        "sample_identity": "The existing gray-forest six-horizon overlay remains the only scoring-authorized profile. The twelve-row source ceiling also includes sod-podzolic horizons outside that overlay.",
+        "sha256": "eac3553c2a904c8c1a75f67437bc01b1005b3ebed45ada29e189017e8baafaa8"
+      },
+      "pidgeon_1972": {
+        "decision": "No reviewed direct field-capacity or matching AWC/EAWC target is released for the candidate workbook samples.",
+        "predictors": "The source distinguishes dispersion methods. Matching a sand column name or laser instrument does not establish particle-size method 1 or 2 equivalence.",
+        "reference": "https://onlinelibrary.wiley.com/doi/10.1111/j.1365-2389.1972.tb01674.x/full",
+        "reviewed_locations": [
+          "publisher Summary",
+          "reviewed specs/functions/pidgeon1972.yaml"
+        ],
+        "target": "Field capacity was measured directly. The publisher states there was no single moisture tension corresponding to field capacity. Do not substitute a retention point at 33 kPa for Pidgeon FC. AWC/EAWC need their own measured endpoint and depth contracts."
+      }
+    }
+  },
+  "input_sha256": {
+    "benchmark_inventory": "30858a16018276021fa54fd1e312bf6359c4040640d92e41555dd2480413844a",
+    "implementation": "45ed40970eda784a9cf7b11faf366d1ba3a40f74c897d3e7e72b239a71834ae3",
+    "review": "5d4168a572b351cd4e35bc0c14c54a74d6c81a4c241005e53ea2c1839f7aaeba",
+    "workbook": "1322bf65b1ca0130085015209858a443d1ee82a7e2ae69232321cd8ede361e68"
+  },
+  "evidence_sha256": {
+    "local/source-review/badenko2013.pdf": "96da74ac7a27a0f58511912fd6b7fc82b93ae05351739c2b28294866cd6fa29e",
+    "local/source-review/chestnova2017-abstract.pdf": "9fd5b999be308406270cb5ccf05a603b04baf8eb98c294f6566268d9aa3d7926",
+    "local/source-review/panina2015.pdf": "eac3553c2a904c8c1a75f67437bc01b1005b3ebed45ada29e189017e8baafaa8"
+  }
+}

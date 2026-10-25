@@ -51,7 +51,7 @@ def audit(root: Path) -> dict:  # noqa: C901, PLR0915 - One reconciled inventory
     manifest = json.loads(manifest_bytes)
     emitted = {item['id'] for item in manifest['functions']}
     omitted = {item['id'] for item in manifest['coverage']['omitted_functions']}
-    records = []
+    records: list[dict] = []
     statuses = Counter()
     for path in sorted((specs / 'functions').glob('*.yaml')):
         document = read(path)
@@ -88,6 +88,7 @@ def audit(root: Path) -> dict:  # noqa: C901, PLR0915 - One reconciled inventory
                     'inputs': [
                         {
                             'name': item['name'],
+                            'description': item.get('description'),
                             'unit': item.get('unit'),
                             'measurement': item.get('measurement'),
                             'reference': original.get('$ref'),

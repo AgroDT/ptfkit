@@ -66,3 +66,62 @@ directory, so published output inherits that parent's access controls. The
 previous temporary-directory ACL could remain attached to the renamed output
 under Python 3.13. Publication still uses exclusive staging and atomic rename;
 failed writes remove their own staging without publishing a partial run.
+
+## One-command workbook pilot
+
+Run from the repository root in the prepared project environment:
+
+```sh
+mise run eval:pilot local/meta_v3.3.xlsx local/source-review/panina2015.pdf local/panina-pilot
+```
+
+The output directory must be new. The equivalent direct command is:
+
+```sh
+uv run --project targets/ptfkit-eval --no-sync python evaluation/experiments/panina_clapp/pilot.py \
+  --workbook local/meta_v3.3.xlsx --paper local/source-review/panina2015.pdf \
+  --output local/panina-pilot
+```
+
+This command normalizes the exact reviewed workbook, exports the canonical
+volumetric dataset, applies the checksum-bound source overlay, executes the
+existing fixed Clapp plan, fits all four registered reference families, and
+writes `decision/summary.json` and `decision/report.md`. The report contains
+separate PTF and per-horizon approximation tables. It checks the fitting
+dataset, sample/family roster and original observations against the evaluated
+dataset. Measurements, parameters and detailed intervals remain local.
+
+`clapp/artifacts/` retains native predictions, eligibility/point decisions,
+exclusions, coverage, maximal/common cohorts, metrics, the registered
+profile-bootstrap plan and its insufficient-evidence result. The separate
+`approximation-fits.json` retains all optimizer attempts, parameters, parameter
+intervals, mean-curve intervals, conditional prediction intervals and support
+diagnostics. The fitting policy reuses the measured-retention experiment's
+original boxes, seed and three starts; workbook-stored parameters are unused.
+
+The real six-horizon run accepted five of 24 fits: three van Genuchten--Mualem
+and two van Genuchten m=1. Brooks--Corey produced five boundary failures and one
+nonidentifiable fit; Clapp gradual air entry produced six nonidentifiable fits.
+Five parameter interval sets exceed their fit boxes, three conditional
+prediction interval sets exceed physical water bounds, and none of the five
+mean-curve interval sets does. Intervals retain their original endpoints.
+They are conditional local-linear Student-t approximations; residual assumptions
+and interval coverage have not been validated for these observations.
+
+This is still an **incomplete selection vertical slice**. The pilot executes
+one atomic candidate on one profile. It reports `insufficient_evidence` for
+selection stability, outer strategy performance, final atomic recommendation
+and final ensemble recommendation. Clapp is not labelled a selected winner.
+The complete PTF catalog has not been scored by this pilot; the separate
+catalog readiness matrices remain diagnostic evidence, not eligibility grants.
+
+The next focused source is Bolotov 2014. Its reviewed paper, printed pp. 37--38,
+describes laser diffraction with ultrasonic preparation and sand fractions of
+50--1000 micrometres. Its Russian texture names do not establish the required
+USDA classes. Recover exact horizon-level USDA class evidence, then bind the
+profile, depth and mineral-material evidence to workbook identities. Do not
+infer classes from the published curves or convert the particle-size methods
+by assumption. If this evidence is unavailable, the source remains blocked.
+Even a successful class review would still require a justified population and
+grouped split: three profiles within one source do not establish independent
+source replication or by themselves unlock the intended nested assessment.

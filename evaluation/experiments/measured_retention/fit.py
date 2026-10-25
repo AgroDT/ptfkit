@@ -113,10 +113,10 @@ def _parser() -> argparse.ArgumentParser:
     return parser
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> None:
     """Write one exclusive, self-contained descriptive fitting artifact."""
     parser = _parser()
-    arguments = parser.parse_args()
+    arguments = parser.parse_args(argv)
     if (
         arguments.profile_saturation_points != 0
         and arguments.profile_saturation_points < _MINIMUM_PROFILE_POINTS
