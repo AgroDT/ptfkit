@@ -10,6 +10,7 @@
  * Cosby, B. J., Hornberger, G. M., Clapp, R. B., & Ginn, T. R. (1984). A statistical
  * exploration of the relationships of soil moisture characteristics to the physical properties
  * of soils. Water Resources Research, 20(6), 682-690.
+ * @see https://doi.org/10.1029/WR020i006p00682 DOI: 10.1029/WR020i006p00682
  *
  * @remark Geographic scope:
  * United States
@@ -25,12 +26,12 @@ typedef struct {
     double mean_b;
     /**
      * @brief Mean log saturation matric potential; the underlying potential is expressed in cm
-     * H2O. (reported log value)
+     * H2O. (log10(cm H2O))
      */
     double mean_log_psi_s;
     /**
      * @brief Mean log saturated hydraulic conductivity; the underlying conductivity is expressed
-     * in inches per hour. (reported log value)
+     * in inches per hour. (log10(in/h))
      */
     double mean_log_k_sat;
     /**
@@ -42,7 +43,7 @@ typedef struct {
      */
     double sd_b;
     /**
-     * @brief Standard deviation of log saturated hydraulic conductivity. (reported log value)
+     * @brief Standard deviation of log saturated hydraulic conductivity. (log10(in/h))
      */
     double sd_log_k_sat;
     /**
@@ -54,27 +55,29 @@ typedef struct {
 /**
  * @brief Estimate Cosby et al. (1984) univariate hydraulic parameter statistics from soil
  * texture.
- * @param sand Sand content. (%)
- * @param silt Silt content. (%)
- * @param clay Clay content. (%)
+ * @param sand Representative USDA-class sand mass percentage from Table 2. (%)
+ * @param silt Representative USDA-class silt mass percentage from Table 2. (%)
+ * @param clay Representative USDA-class clay mass percentage from Table 2. (%)
  * @return A result with the following fields:
  * - `mean_b` — Mean slope of the moisture characteristic. (dimensionless)
  * - `mean_log_psi_s` — Mean log saturation matric potential; the underlying potential is
- * expressed in cm H2O. (reported log value)
+ * expressed in cm H2O. (log10(cm H2O))
  * - `mean_log_k_sat` — Mean log saturated hydraulic conductivity; the underlying
- * conductivity is expressed in inches per hour. (reported log value)
+ * conductivity is expressed in inches per hour. (log10(in/h))
  * - `mean_theta_s` — Mean saturated water content. (% volume/volume)
  * - `sd_b` — Standard deviation of b. (dimensionless)
- * - `sd_log_k_sat` — Standard deviation of log saturated hydraulic conductivity. (reported
- * log value)
+ * - `sd_log_k_sat` — Standard deviation of log saturated hydraulic conductivity.
+ * (log10(in/h))
  * - `sd_theta_s` — Standard deviation of saturated water content. (% volume/volume)
  *
  * @details Prediction target:
  * Mean and standard deviation estimates for hydraulic parameters from sand, silt, and clay
  * percentages.
  * @note No back-transform is applied to logarithmic outputs.
- * @note Public API names are provisional for pilot testing.
- * @warning Log-transformed output units use the pilot contract `reported log value`.
+ * @note Source-faithful evaluation uses the Table 2 class midpoints, not measured individual
+ * texture.
+ * @warning Within-class standard deviations are not confidence intervals for means or
+ * predictions.
  */
 static inline cosby1984_univariate_ptf_result
 calc_ptf_cosby1984_univariate(double sand, double silt, double clay) {

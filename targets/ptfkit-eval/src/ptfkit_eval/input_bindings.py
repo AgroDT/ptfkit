@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, cast
 from .documents import object_mapping, object_records
 from .eligibility import assess_computational_domain
 from .execution import convert_value
+from .input_derivations import requires_registered_derivation, verify_input_derivation
 
 
 if TYPE_CHECKING:
@@ -54,19 +55,7 @@ def bind_retention_inputs(
             continue  # The run resolver has already accounted for an explicit axis input.
         feature_id = cast('str', bindings[name])
         feature = features.get(feature_id)
-        reasons: list[str] = []
-        if feature is None or feature['value'] is None:
-            reasons.append('missing_input')
-        elif feature['review_status'] != 'confirmed':
-            reasons.append('unreviewed_input')
-        elif feature['origin'] in ('estimated', 'derived'):
-            reasons.append(
-                'estimated_input_not_allowed'
-                if feature['origin'] == 'estimated'
-                else 'unverified_derivation'
-            )
-        elif feature['kind'] != binding['kind']:
-            reasons.append('input_kind_mismatch')
+        reasons = _feature_reasons(function, binding, feature, features, bindings)
         value: object = None
         source_unit: str | None = None
         target_unit: str | None = None
@@ -98,6 +87,28 @@ def bind_retention_inputs(
             )
         )
     return tuple(traces)
+
+
+def _feature_reasons(
+    function: Mapping[str, object],
+    binding: Mapping[str, object],
+    feature: Mapping[str, object] | None,
+    features: Mapping[object, Mapping[str, object]],
+    bindings: Mapping[str, object],
+) -> list[str]:
+    if feature is None or feature['value'] is None:
+        return ['missing_input']
+    if feature['review_status'] != 'confirmed':
+        return ['unreviewed_input']
+    if feature['origin'] == 'estimated':
+        return ['estimated_input_not_allowed']
+    if (feature['origin'] == 'derived' or requires_registered_derivation(binding)) and (
+        not verify_input_derivation(function, features, bindings)
+    ):
+        return ['unverified_derivation']
+    if feature['kind'] != binding['kind']:
+        return ['input_kind_mismatch']
+    return []
 
 
 def _categorical_value(

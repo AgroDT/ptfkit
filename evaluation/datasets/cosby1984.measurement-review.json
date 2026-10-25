@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "source": "cosby1984",
-  "status": "logarithmic_contract_and_application_protocol_pending",
+  "status": "logarithmic_semantics_corroborated_class_midpoint_contract_migration_pending",
   "function": "calc_ptf_cosby1984_univariate",
   "paper": {
     "doi": "10.1029/WR020i006p00682",
@@ -16,9 +16,25 @@
     "Printed page 683: retention was converted from mass to volume using density; saturation used an assumed particle density of 2.65."
   ],
   "pending": [
-    "Confirm logarithm base and underlying conductivity units from a reliable typeset original or source-linked implementation.",
-    "Declare class-midpoint application or an explicit measured-texture extension before benchmarking; do not silently equate their calibration protocols.",
-    "Retain parameter covariation limitations when considering stochastic or curve uncertainty."
+    "Migrate explicit logarithmic units and distinguish model parameters from within-class dispersions without altering regression expressions.",
+    "Register a verifiable USDA-class-to-Table-2 midpoint derivation; do not relabel derived class coordinates as measured sample texture.",
+    "Review the source power-curve support and do not invent a near-saturation branch.",
+    "Retain parameter covariation limitations and empirical uncertainty insufficiency."
   ],
-  "decision": "Keep the function outside manifest-driven evaluation pending supported logarithmic measurement semantics. No Cosby formulas, statuses or numeric bindings changed."
+  "decision": "Pinned source-linked software resolves the prior logarithmic-base evidence gap. Manifest migration and real candidate registration remain pending; no Cosby formulas or bindings changed in this checkpoint.",
+  "source_linked_implementation": {
+    "repository": "ESCOMP/CTSM",
+    "commit": "350a14d5ba1a7f782223d72df570ea41617298d3",
+    "url": "https://github.com/ESCOMP/CTSM/blob/350a14d5ba1a7f782223d72df570ea41617298d3/src/main/FuncPedotransferMod.F90",
+    "file": "src/main/FuncPedotransferMod.F90",
+    "git_blob_sha1": "f775b688c446174db777a5922aa68a9b364e3c72",
+    "local_snapshot_sha256": "975c1842c8a939070c4d2ac5ab8f625cf4e53f07e5c682c4e2e94a0f176a80f3",
+    "locations": "Lines 83-103, explicitly named pedotransf_cosby1984_table5; outputs declare suction mm and conductivity mm/s.",
+    "supported_facts": [
+      "The exact 1.88-0.0131*sand and -0.884+0.0153*sand regressions are back-transformed with base 10.",
+      "The suction factor 10 converts original cm to output mm, consistent with the original article.",
+      "The rounded conductivity factor 0.0070556 mm/s is consistent with 25.4/3600 mm/s per inch/hour; interpreting the original unit is a corroborated inference."
+    ],
+    "limitations": "This software corroborates the mean-regression logarithmic convention. It does not provide confidence coverage, resolve within-class covariance, or justify raw measured-texture use as the original class-midpoint calibration protocol."
+  }
 }

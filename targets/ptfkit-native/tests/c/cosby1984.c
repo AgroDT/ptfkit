@@ -10,16 +10,16 @@ int main() {
         assert_close(result.mean_b, 6.09, 0.001, 0.0, "campbell_b", "dimensionless", "registry",
                      "scalar_mid_texture");
         assert_close(result.mean_log_psi_s, 1.225, 0.001, 0.0, "log_saturation_potential",
-                     "reported_log_value", "registry", "scalar_mid_texture");
+                     "log10_centimeter_water_head", "registry", "scalar_mid_texture");
         assert_close(result.mean_log_k_sat, -0.119, 0.001, 0.0,
-                     "log_saturated_hydraulic_conductivity", "reported_log_value", "registry",
+                     "log_saturated_hydraulic_conductivity", "log10_inch_per_hour", "registry",
                      "scalar_mid_texture");
         assert_close(result.mean_theta_s, 42.6, 0.1, 0.0, "volumetric_water_content",
                      "volume_percent", "registry", "scalar_mid_texture");
         assert_close(result.sd_b, 2.34, 0.001, 0.0, "campbell_b", "dimensionless", "registry",
                      "scalar_mid_texture");
         assert_close(result.sd_log_k_sat, 0.5553, 0.001, 0.0,
-                     "log_saturated_hydraulic_conductivity", "reported_log_value", "registry",
+                     "log_saturated_hydraulic_conductivity", "log10_inch_per_hour", "registry",
                      "scalar_mid_texture");
         assert_close(result.sd_theta_s, 6.27, 0.1, 0.0, "volumetric_water_content",
                      "volume_percent", "registry", "scalar_mid_texture");
@@ -30,16 +30,16 @@ int main() {
         assert_close(result.mean_b, 3.705, 0.001, 0.0, "campbell_b", "dimensionless", "registry",
                      "scalar_sandy_texture");
         assert_close(result.mean_log_psi_s, 0.832, 0.001, 0.0, "log_saturation_potential",
-                     "reported_log_value", "registry", "scalar_sandy_texture");
+                     "log10_centimeter_water_head", "registry", "scalar_sandy_texture");
         assert_close(result.mean_log_k_sat, 0.34, 0.001, 0.0,
-                     "log_saturated_hydraulic_conductivity", "reported_log_value", "registry",
+                     "log_saturated_hydraulic_conductivity", "log10_inch_per_hour", "registry",
                      "scalar_sandy_texture");
         assert_close(result.mean_theta_s, 38.82, 0.1, 0.0, "volumetric_water_content",
                      "volume_percent", "registry", "scalar_sandy_texture");
         assert_close(result.sd_b, 1.59, 0.001, 0.0, "campbell_b", "dimensionless", "registry",
                      "scalar_sandy_texture");
         assert_close(result.sd_log_k_sat, 0.50715, 0.001, 0.0,
-                     "log_saturated_hydraulic_conductivity", "reported_log_value", "registry",
+                     "log_saturated_hydraulic_conductivity", "log10_inch_per_hour", "registry",
                      "scalar_sandy_texture");
         assert_close(result.sd_theta_s, 7.365, 0.1, 0.0, "volumetric_water_content",
                      "volume_percent", "registry", "scalar_sandy_texture");

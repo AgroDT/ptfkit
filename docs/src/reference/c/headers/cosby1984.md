@@ -16,6 +16,8 @@ Cosby et al. (1984), United States.
 
 Cosby, B. J., Hornberger, G. M., Clapp, R. B., & Ginn, T. R. (1984). A statistical exploration of the relationships of soil moisture characteristics to the physical properties of soils. Water Resources Research, 20(6), 682-690.
 
+[DOI: 10.1029/WR020i006p00682](https://doi.org/10.1029/WR020i006p00682)
+
 ## Scope
 
 **Territory:** United States
@@ -41,11 +43,11 @@ typedef struct {
 | Field | Description |
 | --- | --- |
 | `mean_b` | Mean slope of the moisture characteristic. (dimensionless) |
-| `mean_log_psi_s` | Mean log saturation matric potential; the underlying potential is expressed in cm H2O. (reported log value) |
-| `mean_log_k_sat` | Mean log saturated hydraulic conductivity; the underlying conductivity is expressed in inches per hour. (reported log value) |
+| `mean_log_psi_s` | Mean log saturation matric potential; the underlying potential is expressed in cm H2O. (log10(cm H2O)) |
+| `mean_log_k_sat` | Mean log saturated hydraulic conductivity; the underlying conductivity is expressed in inches per hour. (log10(in/h)) |
 | `mean_theta_s` | Mean saturated water content. (% volume/volume) |
 | `sd_b` | Standard deviation of b. (dimensionless) |
-| `sd_log_k_sat` | Standard deviation of log saturated hydraulic conductivity. (reported log value) |
+| `sd_log_k_sat` | Standard deviation of log saturated hydraulic conductivity. (log10(in/h)) |
 | `sd_theta_s` | Standard deviation of saturated water content. (% volume/volume) |
 
 ## Functions
@@ -62,9 +64,9 @@ static inline cosby1984_univariate_ptf_result calc_ptf_cosby1984_univariate(doub
 
 | Name | Direction | Description |
 | --- | --- | --- |
-| `sand` | in | Sand content. (%) |
-| `silt` | in | Silt content. (%) |
-| `clay` | in | Clay content. (%) |
+| `sand` | in | Representative USDA-class sand mass percentage from Table 2. (%) |
+| `silt` | in | Representative USDA-class silt mass percentage from Table 2. (%) |
+| `clay` | in | Representative USDA-class clay mass percentage from Table 2. (%) |
 
 #### Returns
 
@@ -76,8 +78,8 @@ A `cosby1984_univariate_ptf_result` value.
 
 !!! note
 
-    Public API names are provisional for pilot testing.
+    Source-faithful evaluation uses the Table 2 class midpoints, not measured individual texture.
 
 !!! warning
 
-    Log-transformed output units use the pilot contract \`reported log value\`.
+    Within-class standard deviations are not confidence intervals for means or predictions.

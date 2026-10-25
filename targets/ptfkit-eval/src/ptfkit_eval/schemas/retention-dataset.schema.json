@@ -70,6 +70,14 @@
         "source_file": {"$ref": "#/$defs/text"},
         "measurement": {"$ref": "#/$defs/measurement"},
         "category_system": {"$ref": "#/$defs/text"},
+        "derivation": {
+          "type": "object", "additionalProperties": false,
+          "required": ["method", "source_feature"],
+          "properties": {
+            "method": {"const": "cosby1984_table2_class_midpoint_v1"},
+            "source_feature": {"$ref": "#/$defs/text"}
+          }
+        },
         "blockers": {"type": "array", "items": {"$ref": "#/$defs/text"}}
       },
       "allOf": [
