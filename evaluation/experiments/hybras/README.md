@@ -273,3 +273,31 @@ Historical approximation fits and native accuracy scores retain their original
 input hashes. They must not be relabelled as results on this new coordinate
 view. Four source groups also limit broad new-study uncertainty claims even
 though there are 224 profile identifiers.
+
+
+## Source-reference blocking and source-bootstrap Clapp replay
+
+```powershell
+python evaluation/experiments/hybras/group_sources.py local/source-review/hybras2018/hybras_v1_2020.zip local/hybras-clapp-reviewed-final/dataset.json local/hybras-clapp-linked-new
+python evaluation/experiments/hybras/run_clapp.py local/source-review/hybras2018/hybras_v1_2020.zip local/hybras-positive-head-reviewed/fitting-dataset.json local/source-review/hybras2018/manual.pdf local/hybras-clapp-source-bootstrap-new --bootstrap-grouping source --source-group-review local/hybras-clapp-linked-new/source-group-review.json
+python evaluation/experiments/hybras/summarize_clapp.py local/hybras-clapp-source-bootstrap-new local/hybras-clapp-source-summary-new.json
+```
+
+`group_sources.py` builds exact shared-reference components on the complete
+workbook, including unselected reference bridges. It creates a separate view
+with explicit original-key lineage, leaving all water/pressure/feature records
+unchanged. Use source grouping to preserve these blocks. Distinct components
+are not proof of independent studies. The reviewed 987-sample view has 34
+components instead of 35 source IDs; the controlled-pressure view has three
+instead of four. The Clapp subset remains at 22. Identity-only fold feasibility
+is recorded separately from native eligibility and statistical independence.
+
+Final source-bootstrap runs are `local/hybras-clapp-source-bootstrap-final` and
+`local/hybras-clapp-source-bootstrap-wheel`. All 11 payloads and five input files
+reproduce byte for byte. RMSE remains 0.0737532960617378; the 22-source 95%
+bootstrap metric interval is [0.06264537542628838,0.08477170261973371]. The
+historical profile-bootstrap run remains separate. Scripts, matching wheels,
+manifest and Python/native runtime snapshot are archived in `reproduction`.
+Source bootstrap is only supported by this replay when the reviewed Clapp
+cohort has no unapplied source merges; other cohorts must use the regrouped
+canonical dataset in their own plans.

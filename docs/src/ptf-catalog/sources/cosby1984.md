@@ -11,6 +11,8 @@ nav-title: cosby1984
 
 Cosby, B. J., Hornberger, G. M., Clapp, R. B., & Ginn, T. R. (1984). A statistical exploration of the relationships of soil moisture characteristics to the physical properties of soils. Water Resources Research, 20(6), 682-690.
 
+[DOI: 10.1029/WR020i006p00682](https://doi.org/10.1029/WR020i006p00682)
+
 ## Scope
 
 **Territory:** United States
@@ -33,20 +35,20 @@ Estimate Cosby et al. (1984) univariate hydraulic parameter statistics from soil
 
 | Name | Type | Unit | Domain | Description |
 | --- | --- | --- | --- | --- |
-| `sand` | `number` | % | 0 <= value <= 100 | Sand content. |
-| `silt` | `number` | % | 0 <= value <= 100 | Silt content. |
-| `clay` | `number` | % | 0 <= value <= 100 | Clay content. |
+| `sand` | `number` | % | 0 <= value <= 100 | Representative USDA-class sand mass percentage from Table 2. |
+| `silt` | `number` | % | 0 <= value <= 100 | Representative USDA-class silt mass percentage from Table 2. |
+| `clay` | `number` | % | 0 <= value <= 100 | Representative USDA-class clay mass percentage from Table 2. |
 
 #### Outputs
 
 | Name | Unit | Domain | Description |
 | --- | --- | --- | --- |
 | `mean_b` | dimensionless | — | Mean slope of the moisture characteristic. |
-| `mean_log_psi_s` | reported log value | — | Mean log saturation matric potential; the underlying potential is expressed in cm H2O. |
-| `mean_log_k_sat` | reported log value | — | Mean log saturated hydraulic conductivity; the underlying conductivity is expressed in inches per hour. |
+| `mean_log_psi_s` | log10(cm H2O) | — | Mean log saturation matric potential; the underlying potential is expressed in cm H2O. |
+| `mean_log_k_sat` | log10(in/h) | — | Mean log saturated hydraulic conductivity; the underlying conductivity is expressed in inches per hour. |
 | `mean_theta_s` | % volume/volume | — | Mean saturated water content. |
 | `sd_b` | dimensionless | — | Standard deviation of b. |
-| `sd_log_k_sat` | reported log value | — | Standard deviation of log saturated hydraulic conductivity. |
+| `sd_log_k_sat` | log10(in/h) | — | Standard deviation of log saturated hydraulic conductivity. |
 | `sd_theta_s` | % volume/volume | — | Standard deviation of saturated water content. |
 
 !!! note
@@ -55,8 +57,8 @@ Estimate Cosby et al. (1984) univariate hydraulic parameter statistics from soil
 
 !!! note
 
-    Public API names are provisional for pilot testing.
+    Source-faithful evaluation uses the Table 2 class midpoints, not measured individual texture.
 
 !!! warning
 
-    Log-transformed output units use the pilot contract `reported log value`.
+    Within-class standard deviations are not confidence intervals for means or predictions.

@@ -95,3 +95,11 @@ micrometer:
   preferred_notation: "µm"
   aliases: ["um"]
   conversion: {dimension: length, scale_to_si: 1.0e-6}
+
+log10_centimeter_water_head:
+  preferred_notation: "log10(cm H2O)"
+  aliases: []
+
+log10_inch_per_hour:
+  preferred_notation: "log10(in/h)"
+  aliases: []

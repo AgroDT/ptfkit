@@ -938,3 +938,80 @@ subset, and resolve validation units across shared source citations and spatial
 sampling before real nested selection. Do not treat profile counts or hashed
 reference-pair IDs as proof of independence. Real model/ensemble winners and
 VG/BC uncertainty qualification remain unfinished.
+
+
+## Shared-reference source groups and source-level Clapp uncertainty
+
+`evaluation/experiments/hybras/group_sources.py` now creates a separate canonical
+source-group view. It computes exact nonempty-reference connected components
+on the full pinned workbook before projecting a subset, so an omitted source
+can still connect two selected sources. No fuzzy citation normalization is
+performed. Source/sample/profile identities are checked against the workbook.
+Only source-group keys change; original keys remain in a checksum-bound sidecar.
+Every sample and observation was restored exactly to its parent in verification,
+including all pressures, water values, features and quality flags.
+
+Authoritative views and counts:
+- `local/hybras-reviewed-linked-final`: 987 samples, 7,054 points; 35 source IDs
+  become 34 reference components.
+- `local/hybras-controlled-linked-final`: 254 samples, 1,465 points; four source
+  IDs become three components. The Nebel/Parfitt block contains 199 samples.
+- `local/hybras-clapp-linked-final`: 378 samples, 2,882 points; all 22 source IDs
+  remain separate under exact-reference connectivity.
+
+The controlled view fails the declared three-outer/two-inner split with at least
+two training groups per partition. The full reviewed and Clapp views pass this
+identity-only feasibility check. Neither outcome proves population independence
+or predictor eligibility. Use source grouping on these views; profile grouping
+would split reference blocks again. The controlled view reproduces byte for
+byte under `local/hybras-controlled-linked-wheel`. Matching scripts and wheels
+are archived under `reproduction`; the tracked count-only report is
+`evaluation/datasets/hybras_v1.source-group-summary.json`.
+
+Clapp was rerun with a reviewed source-group sidecar and whole-source bootstrap
+rather than profile bootstrap. The helper rejects a different cohort, duplicate
+review identities, mismatched profiles or source components requiring an
+unapplied merge. Source and wheel runs are
+`local/hybras-clapp-source-bootstrap-final` and
+`local/hybras-clapp-source-bootstrap-wheel`; all 11 payload files and five input
+files match byte for byte. Independent source-equation verification passes for
+all predictions; the four descriptive error metrics exactly match the earlier
+profile-bootstrap experiment. RMSE remains 0.0737532960617378, while the 95%
+metric interval over 22 source blocks is
+[0.06264537542628838, 0.08477170261973371]. Study independence and interval coverage
+remain assumptions, not established by distinct references. This is not an
+individual prediction interval or best-function selection. The new tracked
+summary is `evaluation/datasets/hybras_v1.clapp-source-bootstrap-summary.json`;
+the historical profile-bootstrap summary is retained separately.
+
+An editable-install provenance gap was also corrected: hashing the Python
+package root can omit the loaded extension, which is outside that root here.
+Future run manifests record `ptfkit_native_binary_filename` and
+`ptfkit_native_binary_sha256` separately. The actual binary SHA256 is
+`a8e9522f4cd1e9cf5878d3928d0cbd9c1705c7b66cdf410be4d4acd94793eca9`.
+Both source-bootstrap reproduction directories additionally archive an exact
+26-function ptfkit Python/native snapshot ZIP with source-root and binary hashes.
+Those runs precede the new manifest field; their matching old evaluator wheel
+is retained. The field itself is verified in the new isolated source-groups
+wheel. Validation passes 924 full evaluator tests, 22 focused installed-wheel
+tests, Ruff and ty. No numerical regression expressions changed.
+
+The Cosby logarithmic evidence gap now has a concrete next path. The official
+ESCOMP/CTSM repository at commit
+`350a14d5ba1a7f782223d72df570ea41617298d3` explicitly names a Table-5 implementation
+in `src/main/FuncPedotransferMod.F90`, lines 83-103. It back-transforms the exact
+published expressions with base 10, converts suction cm to mm, and uses the
+rounded inch/hour-to-mm/s conductivity factor. The saved file's Git blob SHA1
+is verified as `f775b688c446174db777a5922aa68a9b364e3c72`. Local snapshots and the
+updated `cosby1984.measurement-review.json` distinguish this software
+corroboration from an original-paper visual review. Cosby formulas, units,
+manifest entries and bindings have not yet been changed.
+
+Next migrate explicit logarithmic units/roles and register a verified Table-2
+USDA-class midpoint derivation. Derived coordinates must not masquerade as
+measured sand/silt/clay. Review the dry power-curve support without inventing a
+wet branch. A target-free pressure-grid audit found 377 of the 378 Clapp curves,
+covering all 22 source groups, contain both reported heads 102 and 15300 cm
+(10.002783 and 1500.41745 kPa); that is a promising declared dry comparison
+domain, not exact 10/1500-kPa support. Keep original units and all exclusions.
+Real multi-function selection and qualified VG/BC uncertainty remain required.

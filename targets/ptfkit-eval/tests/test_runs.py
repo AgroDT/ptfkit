@@ -1,6 +1,7 @@
 import hashlib
 import json
 import math
+from importlib import import_module
 from pathlib import Path
 from typing import cast
 
@@ -91,6 +92,12 @@ def test_artifacts_are_repeatable_complete_and_integrity_checked(tmp_path: Path)
     manifest = json.loads((first / 'run-manifest.json').read_text('utf-8'))
     assert manifest['run_kind'] == 'synthetic_validation'
     assert len(manifest['input_hashes']['ptfkit_manifest']) == 64
+    native_binary = Path(import_module('ptfkit._ptfkit').__file__)
+    assert manifest['environment']['ptfkit_native_binary_filename'] == native_binary.name
+    assert (
+        manifest['environment']['ptfkit_native_binary_sha256']
+        == hashlib.sha256(native_binary.read_bytes()).hexdigest()
+    )
     for name, metadata in manifest['files'].items():
         assert hashlib.sha256((first / name).read_bytes()).hexdigest() == metadata['sha256']
     report = read_retention_run_report(first)

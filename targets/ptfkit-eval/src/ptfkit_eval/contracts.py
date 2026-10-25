@@ -266,7 +266,32 @@ def default_model_adapter_specs() -> Mapping[str, ModelAdapterSpec]:
         ),
         supported_functions=('calc_ptf_saxton2006',),
     )
-    return MappingProxyType({item.id: item for item in (clapp, vereecken, wosten, saxton)})
+    cosby = ModelAdapterSpec(
+        id='cosby1984_class_midpoint_dry_h_theta',
+        model_kind='h_theta',
+        axis_quantity='matric_potential',
+        axis_unit='centimeter_water_head',
+        axis_convention='magnitude',
+        target_quantity='volumetric_water_content',
+        target_unit='volume_fraction',
+        target_material_basis='mineral_soil',
+        target_denominator_basis='bulk_volume',
+        parameters=(
+            ModelParameterSpec('mean_b', 'campbell_b', 'dimensionless', 'soil', 'not_applicable'),
+            ModelParameterSpec(
+                'mean_log_psi_s',
+                'log_saturation_potential',
+                'log10_centimeter_water_head',
+                'soil',
+                'not_applicable',
+            ),
+            ModelParameterSpec(
+                'mean_theta_s', 'volumetric_water_content', 'volume_fraction', 'soil', 'bulk_volume'
+            ),
+        ),
+        supported_functions=('calc_ptf_cosby1984_univariate',),
+    )
+    return MappingProxyType({item.id: item for item in (clapp, vereecken, wosten, saxton, cosby)})
 
 
 @dataclass(frozen=True)

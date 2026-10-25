@@ -10,6 +10,7 @@ from types import MappingProxyType
 from typing import TypeAlias, cast
 
 from .contracts import ModelAdapterSpec, default_model_adapter_specs
+from .input_derivations import COSBY_CLASS_MIDPOINTS
 from .numerics import log_positive_product
 
 
@@ -111,6 +112,37 @@ def evaluate_vereecken1989_h_theta(parameters: ParameterValues, suction: float) 
     return theta_r + (theta_s - theta_r) * effective
 
 
+def evaluate_cosby1984_dry_h_theta(parameters: ParameterValues, suction: float) -> float:
+    """Evaluate the source power curve for a reviewed mineral-soil subset, in cm."""
+    b = _positive_parameter(parameters, 'mean_b')
+    saturated = _parameter(parameters, 'mean_theta_s')
+    log_head = _parameter(parameters, 'mean_log_psi_s')
+    if not 0 < saturated < 1 or not math.isfinite(suction) or suction <= 0:
+        message = 'Cosby requires positive suction and saturation strictly between zero and one.'
+        raise ModelEvaluationError(message)
+    try:
+        reference_head = 10.0**log_head
+    except OverflowError as error:
+        message = 'Cosby reference head cannot be represented as a finite positive value.'
+        raise ModelEvaluationError(message) from error
+    if not math.isfinite(reference_head) or reference_head <= 0:
+        message = 'Cosby reference head cannot be represented as a finite positive value.'
+        raise ModelEvaluationError(message)
+    if suction < reference_head:
+        message = 'Cosby dry power curve has no registered wet branch below its reference head.'
+        raise ModelEvaluationError(message)
+    log_ratio = (
+        math.log1p((suction - reference_head) / reference_head)
+        if suction <= 2 * reference_head
+        else math.log(suction) - math.log(reference_head)
+    )
+    water = saturated * math.exp(-log_ratio / b)
+    if not math.isfinite(water) or water <= 0:
+        message = 'Cosby dry power-curve water content is unrepresentable.'
+        raise ModelEvaluationError(message)
+    return water
+
+
 @cache
 def builtin_model_adapters() -> Mapping[str, ModelAdapter]:
     """Return the immutable registry of executable adapters shipped with ptfkit-eval."""
@@ -119,12 +151,14 @@ def builtin_model_adapters() -> Mapping[str, ModelAdapter]:
     vereecken = specs['vereecken1989_h_theta']
     wosten = specs['wosten2001_h_theta']
     saxton = specs['saxton2006_h_theta']
+    cosby = specs['cosby1984_class_midpoint_dry_h_theta']
     return MappingProxyType(
         {
             clapp.id: ModelAdapter(clapp, evaluate_clapp1978_h_theta),
             vereecken.id: ModelAdapter(vereecken, evaluate_vereecken1989_h_theta),
             wosten.id: ModelAdapter(wosten, evaluate_van_genuchten_mualem_h_theta),
             saxton.id: ModelAdapter(saxton, evaluate_saxton2006_h_theta),
+            cosby.id: ModelAdapter(cosby, evaluate_cosby1984_dry_h_theta),
         }
     )
 
@@ -157,6 +191,13 @@ def validate_function_inputs(function: Mapping[str, object], inputs: Mapping[str
     """Enforce reviewed joint input constraints for every native execution path."""
     if function.get('id') == 'calc_ptf_saxton2006':
         _validate_saxton2006_inputs(inputs)
+    elif function.get('id') == 'calc_ptf_cosby1984_univariate':
+        coordinates = tuple(
+            _parameter(cast('ParameterValues', inputs), name) for name in ('sand', 'silt', 'clay')
+        )
+        if coordinates not in COSBY_CLASS_MIDPOINTS.values():
+            message = 'Source-faithful Cosby evaluation requires a complete Table 2 class midpoint.'
+            raise ModelEvaluationError(message)
 
 
 def _validate_saxton2006_inputs(inputs: Mapping[str, object]) -> None:

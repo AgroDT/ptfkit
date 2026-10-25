@@ -2,6 +2,7 @@
 
 import copy
 import hashlib
+import json
 import runpy
 from collections.abc import Callable
 from pathlib import Path
@@ -101,3 +102,44 @@ def test_independent_verifier_inverts_the_gradual_air_entry_parabola():
     assert water('sand', 3.247557198080535328) == pytest.approx(0.3792, abs=2e-15)
     assert water('sand', 0) == pytest.approx(0.395, abs=2e-15)
     assert water('sand', 3.5 * 2**4.05) == pytest.approx(0.1975, abs=2e-15)
+
+
+@pytest.mark.parametrize('change', ['none', 'merged', 'duplicate', 'wrong_profile'])
+def test_source_bootstrap_requires_the_exact_reviewed_unmerged_cohort(change: str):
+    root = Path(__file__).resolve().parents[3]
+    namespace = runpy.run_path(str(root / 'evaluation/experiments/hybras/run_clapp.py'))
+    document, rows = _fixture()
+    subset, report = namespace['overlay'](document, rows)
+    subset['source_files'] = []
+    before = copy.deepcopy(subset)
+    source = subset['samples'][0]['source_id']
+    review = {
+        'archive_sha256': namespace['ARCHIVE_SHA256'],
+        'method': 'exact_shared_primary_reference_components_v1',
+        'source_mapping': {source: source},
+        'samples': [
+            {
+                'original_source_id': s['source_id'],
+                'sample_id': s['sample_id'],
+                'profile_id': s['profile_id'],
+            }
+            for s in subset['samples']
+        ],
+    }
+    if change == 'merged':
+        review['source_mapping'][source] = 'another_source'
+    elif change == 'duplicate':
+        review['samples'].append(dict(review['samples'][0]))
+    elif change == 'wrong_profile':
+        review['samples'][0]['profile_id'] = 'another_profile'
+    raw = json.dumps(review).encode()
+    if change != 'none':
+        with pytest.raises(ValueError, match='exact subset'):
+            namespace['review_source_bootstrap'](subset, report, raw)
+        return
+    namespace['review_source_bootstrap'](subset, report, raw)
+    assert subset['samples'] == before['samples']
+    assert subset['observations'] == before['observations']
+    assert subset['target'] == before['target']
+    assert subset['source_files'][0]['sha256'] == hashlib.sha256(raw).hexdigest()
+    assert not any('profile resampling' in v for v in report['limitations'])

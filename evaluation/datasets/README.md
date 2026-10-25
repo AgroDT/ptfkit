@@ -369,3 +369,14 @@ exact shared Parfitt citation across two HYBRAS source IDs. Neither reference-pa
 hashes nor profile counts establish independent validation replicates. The
 controlled-pressure support audit now checks 15 volumetric prediction outputs;
 its original data view and historical runs remain unchanged.
+
+
+`hybras_v1.source-group-summary.json` records exact-reference source blocking
+for three parent views. The controlled-pressure cohort has three source
+components rather than four; this does not establish independence or input
+eligibility. Original source keys and every measured record remain recoverable.
+`hybras_v1.clapp-source-bootstrap-summary.json` is the separate whole-source
+Clapp metric bootstrap: unchanged RMSE 0.0737533, 95% interval
+[0.0626454,0.0847717] over 22 source groups. The earlier profile-bootstrap
+summary is preserved as a historical experiment. These are aggregate metric
+intervals, not qualified prediction/parameter intervals or a model winner.

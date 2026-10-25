@@ -245,6 +245,9 @@ log_saturated_hydraulic_conductivity:
     reported_log_value:
       absolute: 0.001
       rationale: Project-default meaningful resolution for a reported logarithmic value.
+    log10_inch_per_hour:
+      absolute: 0.001
+      rationale: Comparison resolution in base-10 logarithmic coordinates.
 
 log_saturation_potential:
   description: Reported logarithm of saturation matric potential.
@@ -252,6 +255,9 @@ log_saturation_potential:
     reported_log_value:
       absolute: 0.001
       rationale: Project-default meaningful resolution for a reported logarithmic value.
+    log10_centimeter_water_head:
+      absolute: 0.001
+      rationale: Comparison resolution in base-10 logarithmic coordinates.
 
 gravel_volume_fraction:
   description: Volumetric fraction of gravel in bulk soil.
