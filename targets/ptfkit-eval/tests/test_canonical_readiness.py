@@ -56,5 +56,13 @@ def test_readiness_requires_exact_unique_identity_and_same_workbook():
         'unmatched_identity': 1,
     }
     assert function['blockers'] == {'particle_size_schemes': 1}
+    for reason in ('missing_input', 'missing_input_binding'):
+        missing = replace(
+            audit,
+            eligibility=(replace(audit.eligibility[0], reasons=(reason,)),),
+        )
+        result = join(dataset, missing)['functions'][0]
+        assert result['counts']['complete_raw_inputs'] == 0
+        assert result['blockers'] == {reason: 1}
     with pytest.raises(ValueError, match='same workbook'):
         join(dataset, replace(audit, summary=replace(summary, sha256='b' * 64)))

@@ -1,6 +1,7 @@
 import json
 import math
 from pathlib import Path
+from typing import cast
 
 import pytest
 from _run_fixtures import dataset_document, write_run_fixture
@@ -63,7 +64,12 @@ def test_run_plan_preserves_explicit_pressure_restart_policy(tmp_path: Path, pol
     assert plan.approximations[0].restart_policy == policy
 
 
-def test_reference_fitting_is_independent_of_ptf_input_eligibility_and_replays(tmp_path: Path):
+@pytest.mark.parametrize(
+    'method', ['bounded_trf_uniform_multistart_v1', 'bounded_trf_ordered_water_multistart_v1']
+)
+def test_reference_fitting_is_independent_of_ptf_input_eligibility_and_replays(
+    tmp_path: Path, method: str
+):
     dataset = json.loads(json.dumps(dataset_document()))
     dataset['samples'][0]['features'][0]['review_status'] = 'blocked'
     dataset['observations'] = [
@@ -92,9 +98,20 @@ def test_reference_fitting_is_independent_of_ptf_input_eligibility_and_replays(t
     )
     path = write_run_fixture(tmp_path / 'inputs', dataset=dataset)
     run = json.loads(path.read_text('utf-8'))
-    run['approximations'] = [_fit_configuration()]
+    configuration = _fit_configuration()
+    configuration['method'] = method
+    if method == 'bounded_trf_ordered_water_multistart_v1':
+        parameters = cast('list[dict]', configuration['parameters'])
+        parameters[0]['upper'] = 0.533
+        parameters[1]['lower'] = 0.1
+        configuration['additional_starts'] = [[0.1, 0.5, 0.1, 2]]
+    run['approximations'] = [configuration]
     path.write_text(json.dumps(run), encoding='utf-8')
-    result = execute_retention_run(load_retention_run_plan(path))
+    plan = load_retention_run_plan(path)
+    assert plan.approximations[0].method == method
+    if method == 'bounded_trf_ordered_water_multistart_v1':
+        assert plan.approximations[0].additional_starts == ((0.1, 0.5, 0.1, 2),)
+    result = execute_retention_run(plan)
     fits = {item.source_id: item for item in result.approximations}
 
     assert not any(point.eligible for point in result.points if point.source_id == 'a')

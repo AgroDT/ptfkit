@@ -1,0 +1,102 @@
+{
+  "bootstrap": {
+    "confidence_level": 0.95,
+    "grouping": "profile",
+    "method": "cluster_percentile_linear_v1",
+    "minimum_groups": 2,
+    "missing_profiles": "reject",
+    "n_resamples": 16,
+    "seed": 20261025
+  },
+  "dataset": {
+    "path": "dataset.json",
+    "sha256": "70cc3b8a357bc6c251b1d4899719baccaa5c44dad6cbcc1088f8ad3da23bb207"
+  },
+  "evaluation_plan": {
+    "path": "evaluation_plan.json",
+    "sha256": "8e7528da8cc9157e091ee20a7e8528073fe2a069c37baa14c0851b3b5a4ab058"
+  },
+  "learned_selection": {
+    "ensembles": [
+      {
+        "id": "pair",
+        "left_candidate_id": "slr1",
+        "method": "constant_convex_pair_log_pressure_v1",
+        "minimum_mean_squared_contrast": 1e-10,
+        "minimum_training_groups": 2,
+        "right_candidate_id": "slr3"
+      }
+    ],
+    "fixed_selection": {
+      "candidate_ids": [
+        "slr1",
+        "slr3"
+      ],
+      "failure_policy": "require_common_cohort",
+      "folds": {
+        "grouping": "profile",
+        "inner_folds": 2,
+        "minimum_training_groups": 2,
+        "minimum_validation_groups": 1,
+        "missing_profiles": "reject",
+        "outer_folds": 3,
+        "seed": 20261025
+      },
+      "loss": {
+        "lower_suction_kpa": 33,
+        "method": "log10_trapezoid_mse_v1",
+        "minimum_points": 2,
+        "upper_suction_kpa": 1500
+      },
+      "method": "fixed_candidate_nested_selection_v1",
+      "minimum_coverage": 1.0,
+      "tie_breaker": "candidate_id"
+    },
+    "method": "nested_convex_pair_selection_v1"
+  },
+  "protocol": {
+    "allowed_target_origins": [
+      "synthetic"
+    ],
+    "bindings": {
+      "calc_ptf_beniaich2023_slr1": {
+        "clay": "clay"
+      },
+      "calc_ptf_beniaich2023_slr3": {
+        "sand": "sand"
+      }
+    },
+    "cohorts": [
+      "maximal",
+      "common"
+    ],
+    "id": "synthetic_discrete_retention_v1",
+    "observation_method": "klute1986_disturbed_ring_retention"
+  },
+  "schema_version": 1,
+  "selection": {
+    "candidate_ids": [
+      "slr1",
+      "slr3"
+    ],
+    "failure_policy": "require_common_cohort",
+    "folds": {
+      "grouping": "profile",
+      "inner_folds": 2,
+      "minimum_training_groups": 2,
+      "minimum_validation_groups": 1,
+      "missing_profiles": "reject",
+      "outer_folds": 3,
+      "seed": 20261025
+    },
+    "loss": {
+      "lower_suction_kpa": 33,
+      "method": "log10_trapezoid_mse_v1",
+      "minimum_points": 2,
+      "upper_suction_kpa": 1500
+    },
+    "method": "fixed_candidate_nested_selection_v1",
+    "minimum_coverage": 1.0,
+    "tie_breaker": "candidate_id"
+  }
+}

@@ -30,7 +30,8 @@ from .hard_switch import (
 )
 from .losses import (
     SampleCurveLoss,
-    evaluate_log_pressure_loss,
+    SinglePressureLossPlan,
+    evaluate_selection_loss,
     log10_pressure_span,
     mean_finite_losses,
 )
@@ -58,6 +59,11 @@ if TYPE_CHECKING:
     from .runner import RetentionRunResult
 
 
+ConvexPairMethod: TypeAlias = Literal[
+    'constant_convex_pair_log_pressure_v1', 'constant_convex_pair_single_pressure_v1'
+]
+
+
 @dataclass(frozen=True, kw_only=True)
 class ConvexPairPlan:
     """A fixed two-member roster and preregistered training evidence gates."""
@@ -67,7 +73,7 @@ class ConvexPairPlan:
     right_candidate_id: str
     minimum_training_groups: int
     minimum_mean_squared_contrast: float
-    method: Literal['constant_convex_pair_log_pressure_v1'] = 'constant_convex_pair_log_pressure_v1'
+    method: ConvexPairMethod = 'constant_convex_pair_log_pressure_v1'
 
     def __post_init__(self) -> None:
         """Reject ambiguous identities or unsupported training choices."""
@@ -84,7 +90,11 @@ class ConvexPairPlan:
             or isinstance(self.minimum_mean_squared_contrast, bool)
             or not math.isfinite(self.minimum_mean_squared_contrast)
             or self.minimum_mean_squared_contrast <= 0
-            or self.method != 'constant_convex_pair_log_pressure_v1'
+            or self.method
+            not in (
+                'constant_convex_pair_log_pressure_v1',
+                'constant_convex_pair_single_pressure_v1',
+            )
         ):
             message = (
                 'Convex pair training requires distinct identities and positive evidence gates.'
@@ -105,6 +115,23 @@ class LearnedSelectionPlan:
 
     def __post_init__(self) -> None:
         """Require a nonempty unique learned roster with registered fixed members."""
+        expected_pair_method = (
+            'constant_convex_pair_single_pressure_v1'
+            if isinstance(self.fixed.loss, SinglePressureLossPlan)
+            else 'constant_convex_pair_log_pressure_v1'
+        )
+        if any(
+            isinstance(e, ConvexPairPlan) and e.method != expected_pair_method
+            for e in self.ensembles
+        ):
+            message = 'Convex pair method must match the registered selection loss.'
+            raise EvaluationDocumentError(message)
+        if isinstance(self.fixed.loss, SinglePressureLossPlan) and (
+            self.empirical_domains is not None
+            or any(not isinstance(e, ConvexPairPlan) for e in self.ensembles)
+        ):
+            message = 'Single-pressure learning supports constant convex pairs only.'
+            raise EvaluationDocumentError(message)
         if self.method == 'nested_convex_pair_selection_v1' and any(
             isinstance(ensemble, (HardSwitchGridPlan, BlendGridPlan, SigmoidGridPlan))
             for ensemble in self.ensembles
@@ -266,7 +293,7 @@ def select_learned_retention_candidates(
 
     A registration learns a constant convex weight, finite-grid hard-switch
     boundary or blend interval under a fixed axis/weighting rule. It minimizes the
-    same sample-balanced exact-grid log-pressure MSE used in validation. Member
+    same registered sample-balanced point or log-pressure MSE used in validation. Member
     identities and boundary ownership are fixed; no predictor-dependent gate
     is learned. Fixed composites may compete; trainable members are atomic.
     """
@@ -494,7 +521,7 @@ def _fit(context: _Context, identifier: str, groups: tuple[GroupKey, ...]) -> Le
         return _fit_grid(context, ensemble, groups)
     left = _partition_points(context, ensemble.left_candidate_id, groups, None)
     right = _partition_points(context, ensemble.right_candidate_id, groups, None)
-    losses = evaluate_log_pressure_loss(left, plan=context.plan.fixed.loss)
+    losses = evaluate_selection_loss(left, plan=context.plan.fixed.loss)
     valid = {(sample.source_id, sample.sample_id) for sample in losses if sample.loss is not None}
     sample_count = len(_keys(context, groups))
     coverage = len(valid) / sample_count if sample_count else 0.0
@@ -567,7 +594,7 @@ def _fit(context: _Context, identifier: str, groups: tuple[GroupKey, ...]) -> Le
         None,
     )
     fitted_points = _partition_points(context, identifier, groups, fitted)
-    fitted_losses = evaluate_log_pressure_loss(fitted_points, plan=context.plan.fixed.loss)
+    fitted_losses = evaluate_selection_loss(fitted_points, plan=context.plan.fixed.loss)
     objective = mean_finite_losses(
         [sample.loss for sample in fitted_losses if sample.loss is not None]
     )
@@ -581,7 +608,7 @@ def _fit_grid(
 ) -> HardSwitchGridFit | BlendGridFit | SigmoidGridFit:
     left = _partition_points(context, ensemble.left_candidate_id, groups, None)
     right = _partition_points(context, ensemble.right_candidate_id, groups, None)
-    losses = evaluate_log_pressure_loss(left, plan=context.plan.fixed.loss)
+    losses = evaluate_selection_loss(left, plan=context.plan.fixed.loss)
     valid = {(sample.source_id, sample.sample_id) for sample in losses if sample.loss is not None}
     sample_count = len(_keys(context, groups))
     coverage = len(valid) / sample_count if sample_count else 0.0
@@ -621,7 +648,7 @@ def _fit_grid(
             for one, two in zip(left, right, strict=True)
             if (one.source_id, one.sample_id) in valid
         )
-        evaluated = evaluate_log_pressure_loss(prediction, plan=context.plan.fixed.loss)
+        evaluated = evaluate_selection_loss(prediction, plan=context.plan.fixed.loss)
         objective = mean_finite_losses(
             [sample.loss for sample in evaluated if sample.loss is not None]
         )
@@ -687,7 +714,11 @@ def _coefficients(
     valid: set[SampleKey],
 ) -> list[tuple[float, float]]:
     loss = context.plan.fixed.loss
-    span = log10_pressure_span(loss.lower_suction_kpa, loss.upper_suction_kpa)
+    span = (
+        None
+        if isinstance(loss, SinglePressureLossPlan)
+        else log10_pressure_span(loss.lower_suction_kpa, loss.upper_suction_kpa)
+    )
     samples: dict[SampleKey, list[tuple[float, float, float]]] = defaultdict(list)
     for one, two in zip(left, right, strict=True):
         key = (one.source_id, one.sample_id)
@@ -697,6 +728,11 @@ def _coefficients(
             )
     coefficients = []
     for key in sorted(samples):
+        if isinstance(loss, SinglePressureLossPlan):
+            _, contrast, residual = samples[key][0]
+            coefficients.append((contrast * contrast, contrast * residual))
+            continue
+        assert span is not None  # noqa: S101 - Narrow the registered integral branch.
         pairs = tuple(pairwise(samples[key]))
         coefficients.append(
             tuple(
@@ -723,7 +759,7 @@ def _assess(
     keys = _keys(context, groups)
     losses = {
         (sample.source_id, sample.sample_id): sample
-        for sample in evaluate_log_pressure_loss(
+        for sample in evaluate_selection_loss(
             _partition_points(context, identifier, groups, fit),
             plan=context.plan.fixed.loss,
         )
@@ -824,7 +860,12 @@ def _strategy(
 def validate_learned_selection_candidates(
     plan: LearnedSelectionPlan, evaluation: EvaluationPlan
 ) -> None:
-    """Validate member types and provenance at both loading and execution boundaries."""
+    """Validate atomic members at loading and execution boundaries.
+
+    Multi-output point members retain finite native support. Forecast and
+    common-grid gates still apply. A single fixed output requires the separate
+    single-pressure loss and cannot define a multi-pressure integration domain.
+    """
     candidates = {candidate.id: candidate for candidate in evaluation.candidates}
     if set(plan.fixed.candidate_ids) - set(candidates):
         message = 'Learned selection references absent fixed candidates.'
@@ -832,8 +873,9 @@ def validate_learned_selection_candidates(
     for ensemble in plan.ensembles:
         for identifier in (ensemble.left_candidate_id, ensemble.right_candidate_id):
             candidate = candidates[identifier]
-            if not isinstance(candidate, FunctionCurveCandidate) or isinstance(
-                candidate.curve.prediction, FixedPointPrediction
+            if not isinstance(candidate, FunctionCurveCandidate) or (
+                isinstance(candidate.curve.prediction, FixedPointPrediction)
+                and not isinstance(plan.fixed.loss, SinglePressureLossPlan)
             ):
                 message = 'Trainable ensemble members must be registered atomic candidates.'
                 raise EvaluationDocumentError(message)

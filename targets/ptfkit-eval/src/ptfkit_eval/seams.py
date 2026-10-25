@@ -144,7 +144,10 @@ def _member_value(
                 manifest=plan.manifest,
             ).points[0]
             value = convert_value(
-                prediction.value, candidate.target.unit, 'volume_fraction', manifest=plan.manifest
+                prediction.value,
+                candidate.target.unit,
+                plan.dataset.target.unit,
+                manifest=plan.manifest,
             )
             if not math.isfinite(value):
                 reasons = ('nonfinite_prediction',)

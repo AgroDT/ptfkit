@@ -218,6 +218,12 @@ def test_recovers_clapp_parameters_in_kpa_without_reusing_the_adapter_as_an_orac
     assert {parameter.name: parameter.value for parameter in result.parameters} == pytest.approx(
         {'theta_s': 0.4, 'saturation_suction': 1, 'b': 4}, abs=1e-5
     )
+    augmented = fit_retention_family(points, plan=replace(plan, additional_starts=((0.4, 1, 4),)))
+    assert augmented.attempts[: plan.n_starts] == result.attempts
+    assert len(augmented.attempts) == plan.n_starts + 1
+    assert augmented.attempts[-1].initial_values == (0.4, 1, 4)
+    profile = profile_retention_parameter(augmented, parameter_name='theta_s', grid=[0.4])
+    assert profile.points[0].attempts[-1].initial_values == (1, 4)
 
 
 def test_local_uncertainty_matches_independent_analytic_jacobian_and_distinguishes_prediction():

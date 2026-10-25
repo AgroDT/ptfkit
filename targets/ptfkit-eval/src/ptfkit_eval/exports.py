@@ -1,4 +1,4 @@
-"""Explicit volumetric exports from reviewed workbook normalization."""
+"""Separate water-content exports from reviewed workbook normalization."""
 
 from __future__ import annotations
 
@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING
 
 from .canonical import CanonicalRetentionDataset, load_retention_dataset
 from .documents import EvaluationDocumentError
+from .water import canonical_water_contract
 
 
 if TYPE_CHECKING:
@@ -15,44 +16,56 @@ if TYPE_CHECKING:
 
 @dataclass(frozen=True)
 class RetentionDatasetExport:
-    """Canonical volume observations and explicit omitted normalized row identities."""
+    """One canonical physical target and explicit omitted normalized row identities."""
 
     dataset: CanonicalRetentionDataset
     omitted_gravimetric_rows: tuple[int, ...]
+    omitted_volumetric_rows: tuple[int, ...] = ()
 
 
 def export_normalized_retention_dataset(
-    result: RetentionNormalizationResult, *, dataset_id: str, material_basis: str
+    result: RetentionNormalizationResult,
+    *,
+    dataset_id: str,
+    material_basis: str,
+    water_quantity: str = 'volumetric_water_content',
 ) -> RetentionDatasetExport:
-    """Preserve measured volumetric values without inferring predictors or profiles.
+    """Preserve one reviewed water quantity without inferring predictors or profiles.
 
     The caller declares the target material basis; use ``unspecified`` when it
-    has not been reviewed. Gravimetric observations remain explicitly accounted
-    for and are never converted using unreviewed density. Duplicate sample/
+    has not been reviewed. The other quantity remains explicitly accounted
+    for and is never converted using density. Duplicate sample/
     pressure pairs fail canonical validation instead of being averaged.
     """
+    water_unit, water_basis = canonical_water_contract(water_quantity)
     if len(result.observations) != result.summary.normalized_observation_count:
         message = 'Export requires consistent normalized observation accounting.'
         raise EvaluationDocumentError(message)
     samples: dict[tuple[str, str], dict[str, object]] = {}
     observations: list[dict[str, object]] = []
-    omitted = []
+    omitted: dict[str, list[int]] = {
+        'volumetric_water_content': [],
+        'gravimetric_water_content': [],
+    }
     for point in result.observations:
         if point.source_filename != result.summary.source_filename:
             message = 'Export observation does not belong to the normalized source file.'
             raise EvaluationDocumentError(message)
-        if point.water_quantity == 'gravimetric_water_content':
-            omitted.append(point.row)
+        canonical_water_contract(point.water_quantity)
+        if point.water_quantity != water_quantity:
+            omitted[point.water_quantity].append(point.row)
             continue
         if (
-            point.water_quantity != 'volumetric_water_content'
-            or point.water_unit != 'volume_fraction'
+            point.water_unit != water_unit
             or point.pressure_unit != 'kilopascal'
             or point.pressure_convention != 'magnitude'
             or point.pressure_quantity != 'matric_potential'
-            or point.water_basis != 'bulk_volume'
+            or point.water_basis != water_basis
         ):
-            message = 'Export requires canonical volumetric water and suction magnitudes.'
+            message = (
+                'Export requires canonical volumetric or gravimetric water '
+                'with matching units/basis and suction magnitudes.'
+            )
             raise EvaluationDocumentError(message)
         if not isinstance(point.sample_id, str) or not point.sample_id.strip():
             message = 'Export requires a reviewed string sample identity.'
@@ -83,14 +96,14 @@ def export_normalized_retention_dataset(
         )
     dataset = load_retention_dataset(
         {
-            'schema_version': 1,
+            'schema_version': 1 if water_quantity == 'volumetric_water_content' else 2,
             'dataset_id': dataset_id,
             'kind': 'measured',
             'target': {
-                'quantity': 'volumetric_water_content',
-                'unit': 'volume_fraction',
+                'quantity': water_quantity,
+                'unit': water_unit,
                 'material_basis': material_basis,
-                'denominator_basis': 'bulk_volume',
+                'denominator_basis': water_basis,
             },
             'method': 'Reviewed workbook normalization; physical quality assessed separately.',
             'source_files': [
@@ -104,4 +117,8 @@ def export_normalized_retention_dataset(
             'observations': observations,
         }
     )
-    return RetentionDatasetExport(dataset, tuple(omitted))
+    return RetentionDatasetExport(
+        dataset,
+        tuple(omitted['gravimetric_water_content']),
+        tuple(omitted['volumetric_water_content']),
+    )

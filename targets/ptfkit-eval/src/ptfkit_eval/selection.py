@@ -12,9 +12,10 @@ from .contracts import RangeGatedCurveCandidate
 from .documents import object_records
 from .folds import GroupedSample, NestedGroupFolds, NestedGroupPlan, build_nested_group_folds
 from .losses import (
-    LogPressureLossPlan,
     SampleCurveLoss,
-    evaluate_log_pressure_loss,
+    SelectionLossPlan,
+    SinglePressureLossPlan,
+    evaluate_selection_loss,
     mean_finite_losses,
 )
 
@@ -37,7 +38,7 @@ class FixedSelectionPlan:
 
     candidate_ids: tuple[str, ...]
     folds: NestedGroupPlan
-    loss: LogPressureLossPlan
+    loss: SelectionLossPlan
     minimum_coverage: float = 1.0
     tie_breaker: Literal['candidate_id'] = 'candidate_id'
     failure_policy: Literal['require_common_cohort'] = 'require_common_cohort'
@@ -45,6 +46,9 @@ class FixedSelectionPlan:
 
     def __post_init__(self) -> None:
         """Reject ambiguous registration before selection evidence is inspected."""
+        if isinstance(self.loss, SinglePressureLossPlan) and self.empirical_domains is not None:
+            message = 'Single-pressure selection does not support empirical-domain protocols.'
+            raise FixedSelectionError(message)
         if (
             not self.candidate_ids
             or len(set(self.candidate_ids)) != len(self.candidate_ids)
@@ -168,7 +172,7 @@ def select_fixed_retention_candidates(
     This function does not fit or tune candidates, boundaries, weights, or gates.
     Such learned candidates must use a separate training API and are rejected.
     Folds use the full declared sample roster. All candidates share an exact
-    common point cohort and registered observed-endpoint log-pressure loss.
+    common point cohort and registered exact-point or observed-endpoint integral loss.
     Coverage denominators include samples with missing targets or failed inputs.
     Outer targets never select a candidate; no outer-error leaderboard is used
     to recommend a final function. Outputs assess the two selection strategies.
@@ -206,7 +210,7 @@ def select_fixed_retention_candidates(
     losses = {
         cohort.candidate_id: {
             (loss.source_id, loss.sample_id): loss
-            for loss in evaluate_log_pressure_loss(cohort.comparisons, plan=plan.loss)
+            for loss in evaluate_selection_loss(cohort.comparisons, plan=plan.loss)
         }
         for cohort in common
     }

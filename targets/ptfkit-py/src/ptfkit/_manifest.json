@@ -2,7 +2,7 @@
   "_generated": "ptfkit-codegen; DO NOT EDIT.",
   "coverage": {
     "implemented_functions": 146,
-    "manifest_functions": 5,
+    "manifest_functions": 26,
     "omitted_functions": [
       {
         "id": "calc_ptf_ahuja1984",
@@ -18,50 +18,6 @@
       },
       {
         "id": "calc_ptf_bai2022_bulk_density",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
-        "id": "calc_ptf_beniaich2023_mlr1",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
-        "id": "calc_ptf_beniaich2023_mlr2",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
-        "id": "calc_ptf_beniaich2023_mlr3",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
-        "id": "calc_ptf_beniaich2023_mlr4",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
-        "id": "calc_ptf_beniaich2023_mlr5",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
-        "id": "calc_ptf_beniaich2023_slr1",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
-        "id": "calc_ptf_beniaich2023_slr2",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
-        "id": "calc_ptf_beniaich2023_slr3",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
-        "id": "calc_ptf_beniaich2023_slr4",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
-        "id": "calc_ptf_beniaich2023_slr5",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
-        "id": "calc_ptf_beniaich2023_slr6",
         "reason": "incomplete_measurement_contract"
       },
       {
@@ -277,38 +233,6 @@
         "reason": "incomplete_measurement_contract"
       },
       {
-        "id": "calc_ptf_gunarathna2019_vwc10_set2",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
-        "id": "calc_ptf_gunarathna2019_vwc10_set3",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
-        "id": "calc_ptf_gunarathna2019_vwc10_set4",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
-        "id": "calc_ptf_gunarathna2019_vwc1500_set3",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
-        "id": "calc_ptf_gunarathna2019_vwc1500_set4",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
-        "id": "calc_ptf_gunarathna2019_vwc33_set2",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
-        "id": "calc_ptf_gunarathna2019_vwc33_set3",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
-        "id": "calc_ptf_gunarathna2019_vwc33_set4",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
         "id": "calc_ptf_hodnett2002",
         "reason": "incomplete_measurement_contract"
       },
@@ -461,10 +385,6 @@
         "reason": "incomplete_measurement_contract"
       },
       {
-        "id": "calc_ptf_saxton2006",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
         "id": "calc_ptf_saxton2006_conductivity",
         "reason": "incomplete_measurement_contract"
       },
@@ -525,10 +445,6 @@
         "reason": "incomplete_measurement_contract"
       },
       {
-        "id": "calc_ptf_wosten2001_class_parameters",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
         "id": "calc_ptf_wosten2001_hydraulic",
         "reason": "incomplete_measurement_contract"
       },
@@ -571,6 +487,1705 @@
     ]
   },
   "functions": [
+    {
+      "callable": "calc_ptf_beniaich2023_mlr1",
+      "id": "calc_ptf_beniaich2023_mlr1",
+      "inputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 100.0
+              }
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 2.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 50.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "silt"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 100.0
+              }
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "sand"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": "walkley_black_carbon_times_1_724",
+            "particle_size": null,
+            "quantity": "organic_matter_content",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "soil_organic_matter"
+        }
+      ],
+      "models": {
+        "h_theta": "Three point estimates",
+        "k_h": null
+      },
+      "module": "ptfkit.beniaich2023",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_saturation"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 33.0
+              }
+            ],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_field_capacity"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 1500.0
+              }
+            ],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_wilting_point"
+        }
+      ],
+      "source": "beniaich2023",
+      "status": "implemented",
+      "warnings": [
+        "Developed from Moroccan agricultural topsoils and not independently validated outside the source territory."
+      ]
+    },
+    {
+      "callable": "calc_ptf_beniaich2023_mlr2",
+      "id": "calc_ptf_beniaich2023_mlr2",
+      "inputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 100.0
+              }
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "sand"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": "walkley_black_carbon_times_1_724",
+            "particle_size": null,
+            "quantity": "organic_matter_content",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "soil_organic_matter"
+        }
+      ],
+      "models": {
+        "h_theta": "Three point estimates",
+        "k_h": null
+      },
+      "module": "ptfkit.beniaich2023",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_saturation"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 33.0
+              }
+            ],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_field_capacity"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 1500.0
+              }
+            ],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_wilting_point"
+        }
+      ],
+      "source": "beniaich2023",
+      "status": "implemented",
+      "warnings": [
+        "Developed from Moroccan agricultural topsoils and not independently validated outside the source territory."
+      ]
+    },
+    {
+      "callable": "calc_ptf_beniaich2023_mlr3",
+      "id": "calc_ptf_beniaich2023_mlr3",
+      "inputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 100.0
+              }
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 2.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 50.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "silt"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": "walkley_black_carbon_times_1_724",
+            "particle_size": null,
+            "quantity": "organic_matter_content",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "soil_organic_matter"
+        }
+      ],
+      "models": {
+        "h_theta": "Three point estimates",
+        "k_h": null
+      },
+      "module": "ptfkit.beniaich2023",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_saturation"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 33.0
+              }
+            ],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_field_capacity"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 1500.0
+              }
+            ],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_wilting_point"
+        }
+      ],
+      "source": "beniaich2023",
+      "status": "implemented",
+      "warnings": [
+        "Developed from Moroccan agricultural topsoils and not independently validated outside the source territory."
+      ]
+    },
+    {
+      "callable": "calc_ptf_beniaich2023_mlr4",
+      "id": "calc_ptf_beniaich2023_mlr4",
+      "inputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 100.0
+              }
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "clay"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": "walkley_black_carbon_times_1_724",
+            "particle_size": null,
+            "quantity": "organic_matter_content",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "soil_organic_matter"
+        }
+      ],
+      "models": {
+        "h_theta": "Three point estimates",
+        "k_h": null
+      },
+      "module": "ptfkit.beniaich2023",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_saturation"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 33.0
+              }
+            ],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_field_capacity"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 1500.0
+              }
+            ],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_wilting_point"
+        }
+      ],
+      "source": "beniaich2023",
+      "status": "implemented",
+      "warnings": [
+        "Developed from Moroccan agricultural topsoils and not independently validated outside the source territory."
+      ]
+    },
+    {
+      "callable": "calc_ptf_beniaich2023_mlr5",
+      "id": "calc_ptf_beniaich2023_mlr5",
+      "inputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 100.0
+              }
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "clay"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 100.0
+              }
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 2.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 50.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "silt"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": "walkley_black_carbon_times_1_724",
+            "particle_size": null,
+            "quantity": "organic_matter_content",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "soil_organic_matter"
+        }
+      ],
+      "models": {
+        "h_theta": "Three point estimates",
+        "k_h": null
+      },
+      "module": "ptfkit.beniaich2023",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_saturation"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 33.0
+              }
+            ],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_field_capacity"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 1500.0
+              }
+            ],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_wilting_point"
+        }
+      ],
+      "source": "beniaich2023",
+      "status": "implemented",
+      "warnings": [
+        "Developed from Moroccan agricultural topsoils and not independently validated outside the source territory."
+      ]
+    },
+    {
+      "callable": "calc_ptf_beniaich2023_slr1",
+      "id": "calc_ptf_beniaich2023_slr1",
+      "inputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 100.0
+              }
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "clay"
+        }
+      ],
+      "models": {
+        "h_theta": "Three point estimates",
+        "k_h": null
+      },
+      "module": "ptfkit.beniaich2023",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_saturation"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 33.0
+              }
+            ],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_field_capacity"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 1500.0
+              }
+            ],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_wilting_point"
+        }
+      ],
+      "source": "beniaich2023",
+      "status": "implemented",
+      "warnings": [
+        "Developed from Moroccan agricultural topsoils and not independently validated outside the source territory."
+      ]
+    },
+    {
+      "callable": "calc_ptf_beniaich2023_slr2",
+      "id": "calc_ptf_beniaich2023_slr2",
+      "inputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 100.0
+              }
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 2.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 50.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "silt"
+        }
+      ],
+      "models": {
+        "h_theta": "Three point estimates",
+        "k_h": null
+      },
+      "module": "ptfkit.beniaich2023",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_saturation"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 33.0
+              }
+            ],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_field_capacity"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 1500.0
+              }
+            ],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_wilting_point"
+        }
+      ],
+      "source": "beniaich2023",
+      "status": "implemented",
+      "warnings": [
+        "Developed from Moroccan agricultural topsoils and not independently validated outside the source territory."
+      ]
+    },
+    {
+      "callable": "calc_ptf_beniaich2023_slr3",
+      "id": "calc_ptf_beniaich2023_slr3",
+      "inputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 100.0
+              }
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "sand"
+        }
+      ],
+      "models": {
+        "h_theta": "Three point estimates",
+        "k_h": null
+      },
+      "module": "ptfkit.beniaich2023",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_saturation"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 33.0
+              }
+            ],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_field_capacity"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 1500.0
+              }
+            ],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_wilting_point"
+        }
+      ],
+      "source": "beniaich2023",
+      "status": "implemented",
+      "warnings": [
+        "Developed from Moroccan agricultural topsoils and not independently validated outside the source territory."
+      ]
+    },
+    {
+      "callable": "calc_ptf_beniaich2023_slr4",
+      "id": "calc_ptf_beniaich2023_slr4",
+      "inputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 100.0
+              }
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "clay"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 100.0
+              }
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 2.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 50.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "silt"
+        }
+      ],
+      "models": {
+        "h_theta": "Three point estimates",
+        "k_h": null
+      },
+      "module": "ptfkit.beniaich2023",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_saturation"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 33.0
+              }
+            ],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_field_capacity"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 1500.0
+              }
+            ],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_wilting_point"
+        }
+      ],
+      "source": "beniaich2023",
+      "status": "implemented",
+      "warnings": [
+        "Developed from Moroccan agricultural topsoils and not independently validated outside the source territory."
+      ]
+    },
+    {
+      "callable": "calc_ptf_beniaich2023_slr5",
+      "id": "calc_ptf_beniaich2023_slr5",
+      "inputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 100.0
+              }
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "clay"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": false,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 100.0
+              }
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 2.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 50.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "silt"
+        }
+      ],
+      "models": {
+        "h_theta": "Three point estimates",
+        "k_h": null
+      },
+      "module": "ptfkit.beniaich2023",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_saturation"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 33.0
+              }
+            ],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_field_capacity"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 1500.0
+              }
+            ],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_wilting_point"
+        }
+      ],
+      "source": "beniaich2023",
+      "status": "implemented",
+      "warnings": [
+        "Developed from Moroccan agricultural topsoils and not independently validated outside the source territory."
+      ]
+    },
+    {
+      "callable": "calc_ptf_beniaich2023_slr6",
+      "id": "calc_ptf_beniaich2023_slr6",
+      "inputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": "walkley_black_carbon_times_1_724",
+            "particle_size": null,
+            "quantity": "organic_matter_content",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "soil_organic_matter"
+        }
+      ],
+      "models": {
+        "h_theta": "Three point estimates",
+        "k_h": null
+      },
+      "module": "ptfkit.beniaich2023",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_saturation"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 33.0
+              }
+            ],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_field_capacity"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_soil_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": null,
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 1500.0
+              }
+            ],
+            "method": "klute1986_disturbed_ring_retention",
+            "particle_size": null,
+            "quantity": "gravimetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "mass_fraction"
+          },
+          "name": "water_wilting_point"
+        }
+      ],
+      "source": "beniaich2023",
+      "status": "implemented",
+      "warnings": [
+        "Developed from Moroccan agricultural topsoils and not independently validated outside the source territory."
+      ]
+    },
     {
       "callable": "calc_ptf_clapp1978",
       "id": "calc_ptf_clapp1978",
@@ -876,7 +2491,7 @@
           "measurement": {
             "basis": {
               "denominator": "bulk_volume",
-              "material": "fine_earth"
+              "material": "soil"
             },
             "computational_domain": {
               "lower": {
@@ -913,6 +2528,460 @@
       "warnings": [
         "Predictions are empirical and are not clipped to physical bounds.",
         "Section 3.1 reports slight overprediction above 64% sand at this pressure."
+      ]
+    },
+    {
+      "callable": "calc_ptf_gunarathna2019_vwc10_set2",
+      "id": "calc_ptf_gunarathna2019_vwc10_set2",
+      "inputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 5.2
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 99.0
+              }
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "sand"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 38.6
+              }
+            },
+            "conditions": [],
+            "method": "pipette_method",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 2.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 50.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "silt"
+        }
+      ],
+      "models": {
+        "h_theta": null,
+        "k_h": null
+      },
+      "module": "ptfkit.gunarathna2019",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 1.0
+              }
+            },
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 10.0
+              }
+            ],
+            "method": "pressure_plate",
+            "particle_size": null,
+            "quantity": "volumetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "mm/mm",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "volume_fraction"
+          },
+          "name": "theta_10"
+        }
+      ],
+      "source": "gunarathna2019",
+      "status": "implemented",
+      "warnings": [
+        "Predictions are empirical and are not clipped to physical bounds."
+      ]
+    },
+    {
+      "callable": "calc_ptf_gunarathna2019_vwc10_set3",
+      "id": "calc_ptf_gunarathna2019_vwc10_set3",
+      "inputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 5.2
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 99.0
+              }
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "sand"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 38.6
+              }
+            },
+            "conditions": [],
+            "method": "pipette_method",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 2.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 50.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "silt"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 1.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 2.0
+              }
+            },
+            "conditions": [],
+            "method": "undisturbed_core_54_mm_diameter_60_mm_height",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "reported_applicability": [],
+            "reported_unit": "g/cm3",
+            "role": "predictor",
+            "status": "required",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "name": "bulk_density"
+        }
+      ],
+      "models": {
+        "h_theta": null,
+        "k_h": null
+      },
+      "module": "ptfkit.gunarathna2019",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 1.0
+              }
+            },
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 10.0
+              }
+            ],
+            "method": "pressure_plate",
+            "particle_size": null,
+            "quantity": "volumetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "mm/mm",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "volume_fraction"
+          },
+          "name": "theta_10"
+        }
+      ],
+      "source": "gunarathna2019",
+      "status": "implemented",
+      "warnings": [
+        "Predictions are empirical and are not clipped to physical bounds."
+      ]
+    },
+    {
+      "callable": "calc_ptf_gunarathna2019_vwc10_set4",
+      "id": "calc_ptf_gunarathna2019_vwc10_set4",
+      "inputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 5.2
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 99.0
+              }
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "sand"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 38.6
+              }
+            },
+            "conditions": [],
+            "method": "pipette_method",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 2.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 50.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "silt"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 4.5
+              }
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "organic_carbon"
+        }
+      ],
+      "models": {
+        "h_theta": null,
+        "k_h": null
+      },
+      "module": "ptfkit.gunarathna2019",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 1.0
+              }
+            },
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 10.0
+              }
+            ],
+            "method": "pressure_plate",
+            "particle_size": null,
+            "quantity": "volumetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "mm/mm",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "volume_fraction"
+          },
+          "name": "theta_10"
+        }
+      ],
+      "source": "gunarathna2019",
+      "status": "implemented",
+      "warnings": [
+        "Predictions are empirical and are not clipped to physical bounds."
       ]
     },
     {
@@ -970,7 +3039,7 @@
           "measurement": {
             "basis": {
               "denominator": "bulk_volume",
-              "material": "fine_earth"
+              "material": "soil"
             },
             "computational_domain": {
               "lower": {
@@ -1007,6 +3076,250 @@
       "warnings": [
         "Predictions are empirical and are not clipped to physical bounds.",
         "Section 3.1 reports slight overprediction above 66% sand at this pressure."
+      ]
+    },
+    {
+      "callable": "calc_ptf_gunarathna2019_vwc1500_set3",
+      "id": "calc_ptf_gunarathna2019_vwc1500_set3",
+      "inputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 5.2
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 99.0
+              }
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "sand"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 1.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 2.0
+              }
+            },
+            "conditions": [],
+            "method": "undisturbed_core_54_mm_diameter_60_mm_height",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "reported_applicability": [],
+            "reported_unit": "g/cm3",
+            "role": "predictor",
+            "status": "required",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "name": "bulk_density"
+        }
+      ],
+      "models": {
+        "h_theta": null,
+        "k_h": null
+      },
+      "module": "ptfkit.gunarathna2019",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 1.0
+              }
+            },
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 1500.0
+              }
+            ],
+            "method": "pressure_plate",
+            "particle_size": null,
+            "quantity": "volumetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "mm/mm",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "volume_fraction"
+          },
+          "name": "theta_1500"
+        }
+      ],
+      "source": "gunarathna2019",
+      "status": "implemented",
+      "warnings": [
+        "Predictions are empirical and are not clipped to physical bounds."
+      ]
+    },
+    {
+      "callable": "calc_ptf_gunarathna2019_vwc1500_set4",
+      "id": "calc_ptf_gunarathna2019_vwc1500_set4",
+      "inputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 5.2
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 99.0
+              }
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "sand"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 4.5
+              }
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "organic_carbon"
+        }
+      ],
+      "models": {
+        "h_theta": null,
+        "k_h": null
+      },
+      "module": "ptfkit.gunarathna2019",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 1.0
+              }
+            },
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 1500.0
+              }
+            ],
+            "method": "pressure_plate",
+            "particle_size": null,
+            "quantity": "volumetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "mm/mm",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "volume_fraction"
+          },
+          "name": "theta_1500"
+        }
+      ],
+      "source": "gunarathna2019",
+      "status": "implemented",
+      "warnings": [
+        "Predictions are empirical and are not clipped to physical bounds."
       ]
     },
     {
@@ -1064,7 +3377,7 @@
           "measurement": {
             "basis": {
               "denominator": "bulk_volume",
-              "material": "fine_earth"
+              "material": "soil"
             },
             "computational_domain": {
               "lower": {
@@ -1101,6 +3414,865 @@
       "warnings": [
         "Predictions are empirical and are not clipped to physical bounds.",
         "Section 3.1 reports slight overprediction above 66% sand at this pressure."
+      ]
+    },
+    {
+      "callable": "calc_ptf_gunarathna2019_vwc33_set2",
+      "id": "calc_ptf_gunarathna2019_vwc33_set2",
+      "inputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 5.2
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 99.0
+              }
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "sand"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 38.6
+              }
+            },
+            "conditions": [],
+            "method": "pipette_method",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 2.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 50.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "silt"
+        }
+      ],
+      "models": {
+        "h_theta": null,
+        "k_h": null
+      },
+      "module": "ptfkit.gunarathna2019",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 1.0
+              }
+            },
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 33.0
+              }
+            ],
+            "method": "pressure_plate",
+            "particle_size": null,
+            "quantity": "volumetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "mm/mm",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "volume_fraction"
+          },
+          "name": "theta_33"
+        }
+      ],
+      "source": "gunarathna2019",
+      "status": "implemented",
+      "warnings": [
+        "Predictions are empirical and are not clipped to physical bounds."
+      ]
+    },
+    {
+      "callable": "calc_ptf_gunarathna2019_vwc33_set3",
+      "id": "calc_ptf_gunarathna2019_vwc33_set3",
+      "inputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 5.2
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 99.0
+              }
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "sand"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 38.6
+              }
+            },
+            "conditions": [],
+            "method": "pipette_method",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 2.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 50.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "silt"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 1.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 2.0
+              }
+            },
+            "conditions": [],
+            "method": "undisturbed_core_54_mm_diameter_60_mm_height",
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "reported_applicability": [],
+            "reported_unit": "g/cm3",
+            "role": "predictor",
+            "status": "required",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "name": "bulk_density"
+        }
+      ],
+      "models": {
+        "h_theta": null,
+        "k_h": null
+      },
+      "module": "ptfkit.gunarathna2019",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 1.0
+              }
+            },
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 33.0
+              }
+            ],
+            "method": "pressure_plate",
+            "particle_size": null,
+            "quantity": "volumetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "mm/mm",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "volume_fraction"
+          },
+          "name": "theta_33"
+        }
+      ],
+      "source": "gunarathna2019",
+      "status": "implemented",
+      "warnings": [
+        "Predictions are empirical and are not clipped to physical bounds."
+      ]
+    },
+    {
+      "callable": "calc_ptf_gunarathna2019_vwc33_set4",
+      "id": "calc_ptf_gunarathna2019_vwc33_set4",
+      "inputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 5.2
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 99.0
+              }
+            },
+            "conditions": [],
+            "method": "sieve_analysis",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "sand"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 38.6
+              }
+            },
+            "conditions": [],
+            "method": "pipette_method",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 2.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 50.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "silt"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 4.5
+              }
+            },
+            "conditions": [],
+            "method": "walkley_black",
+            "particle_size": null,
+            "quantity": "organic_carbon_content",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "organic_carbon"
+        }
+      ],
+      "models": {
+        "h_theta": null,
+        "k_h": null
+      },
+      "module": "ptfkit.gunarathna2019",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 1.0
+              }
+            },
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 33.0
+              }
+            ],
+            "method": "pressure_plate",
+            "particle_size": null,
+            "quantity": "volumetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "mm/mm",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "volume_fraction"
+          },
+          "name": "theta_33"
+        }
+      ],
+      "source": "gunarathna2019",
+      "status": "implemented",
+      "warnings": [
+        "Predictions are empirical and are not clipped to physical bounds."
+      ]
+    },
+    {
+      "callable": "calc_ptf_saxton2006",
+      "id": "calc_ptf_saxton2006",
+      "inputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 1.0
+              }
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_fraction"
+          },
+          "name": "sand"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 0.6
+              }
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "g/g",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_fraction"
+          },
+          "name": "clay"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 8.0
+              }
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "organic_matter_content",
+            "reported_applicability": [],
+            "reported_unit": "% mass",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "organic_matter"
+        }
+      ],
+      "models": {
+        "h_theta": "Campbell power function with a linear wet-range segment",
+        "k_h": "Campbell unsaturated conductivity model"
+      },
+      "module": "ptfkit.saxton2006",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": false,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 1500.0
+              }
+            ],
+            "method": null,
+            "particle_size": null,
+            "quantity": "volumetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "m^3/m^3",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "volume_fraction"
+          },
+          "name": "theta_1500"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": false,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 33.0
+              }
+            ],
+            "method": null,
+            "particle_size": null,
+            "quantity": "volumetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "m^3/m^3",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "volume_fraction"
+          },
+          "name": "theta_33"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": false,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [
+              {
+                "convention": "magnitude",
+                "quantity": "matric_potential",
+                "unit": "kilopascal",
+                "value": 0.0
+              }
+            ],
+            "method": null,
+            "particle_size": null,
+            "quantity": "volumetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "m^3/m^3",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "volume_fraction"
+          },
+          "name": "theta_s"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "volumetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "m^3/m^3",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "volume_fraction"
+          },
+          "name": "plant_available_water"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "not_applicable",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": false,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "matric_potential",
+            "reported_applicability": [],
+            "reported_unit": "kPa",
+            "role": "model_parameter",
+            "status": "estimated",
+            "unit": "kilopascal"
+          },
+          "name": "air_entry_tension"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "not_applicable",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": false,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "retention_coefficient_a",
+            "reported_applicability": [],
+            "reported_unit": "kPa",
+            "role": "model_parameter",
+            "status": "estimated",
+            "unit": "kilopascal"
+          },
+          "name": "retention_a"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "not_applicable",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": false,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "retention_coefficient_b",
+            "reported_applicability": [],
+            "reported_unit": "dimensionless",
+            "role": "model_parameter",
+            "status": "estimated",
+            "unit": "dimensionless"
+          },
+          "name": "retention_b"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "not_applicable",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": false,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "conductivity_shape_parameter",
+            "reported_applicability": [],
+            "reported_unit": "dimensionless",
+            "role": "model_parameter",
+            "status": "estimated",
+            "unit": "dimensionless"
+          },
+          "name": "conductivity_lambda"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "not_applicable",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "saturated_hydraulic_conductivity",
+            "reported_applicability": [],
+            "reported_unit": "mm/h",
+            "role": "prediction",
+            "status": "estimated",
+            "unit": "millimeter_per_hour"
+          },
+          "name": "saturated_conductivity"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": false,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "dry_bulk_density",
+            "reported_applicability": [],
+            "reported_unit": "g/cm^3",
+            "role": "model_parameter",
+            "status": "estimated",
+            "unit": "gram_per_cubic_centimeter"
+          },
+          "name": "normal_density"
+        }
+      ],
+      "source": "saxton2006",
+      "status": "implemented",
+      "warnings": [
+        "Do not apply the regression above 8% organic matter or 60% clay.",
+        "Sand and clay fractions must describe one soil and therefore must sum to at most 1.",
+        "These statistical-average estimates should be calibrated to local measurements when available."
       ]
     },
     {
@@ -1370,6 +4542,370 @@
       "warnings": [
         "The bulk-density maximum is reviewed as 1.730 g/cm^3 because the supplied transcription's 1.230 value is inconsistent with the reported mean."
       ]
+    },
+    {
+      "callable": "calc_ptf_wosten2001_class_parameters",
+      "id": "calc_ptf_wosten2001_class_parameters",
+      "inputs": [
+        {
+          "enum": {
+            "description": "One of the 36 source-defined Staring Series identifiers: B1-B18 for topsoils and O1-O18 for subsoils.",
+            "id": "wosten2001.Wosten2001SoilClass",
+            "values": [
+              {
+                "description": "Topsoil: low-silt fine sand; 0-10% particles below 50 µm, 0-15% organic matter, M50 105-210 µm.",
+                "name": "b1",
+                "value": "B1"
+              },
+              {
+                "description": "Topsoil: weakly silty fine sand; 10-18% particles below 50 µm, 0-15% organic matter, M50 105-210 µm.",
+                "name": "b2",
+                "value": "B2"
+              },
+              {
+                "description": "Topsoil: strongly silty fine sand; 18-33% particles below 50 µm, 0-15% organic matter, M50 105-210 µm.",
+                "name": "b3",
+                "value": "B3"
+              },
+              {
+                "description": "Topsoil: very strongly silty fine sand; 33-50% particles below 50 µm, 0-15% organic matter, M50 105-210 µm.",
+                "name": "b4",
+                "value": "B4"
+              },
+              {
+                "description": "Topsoil: coarse sand; 0-15% organic matter and M50 210-2000 µm.",
+                "name": "b5",
+                "value": "B5"
+              },
+              {
+                "description": "Topsoil: glacial till; 0-50% particles below 50 µm, 0-15% organic matter, M50 50-2000 µm.",
+                "name": "b6",
+                "value": "B6"
+              },
+              {
+                "description": "Topsoil: very light loam; 8-12% clay and 0-15% organic matter.",
+                "name": "b7",
+                "value": "B7"
+              },
+              {
+                "description": "Topsoil: moderately light loam; 12-18% clay and 0-15% organic matter.",
+                "name": "b8",
+                "value": "B8"
+              },
+              {
+                "description": "Topsoil: heavy loam; 18-25% clay and 0-15% organic matter.",
+                "name": "b9",
+                "value": "B9"
+              },
+              {
+                "description": "Topsoil: light clay; 25-35% clay and 0-15% organic matter.",
+                "name": "b10",
+                "value": "B10"
+              },
+              {
+                "description": "Topsoil: moderately heavy clay; 35-50% clay and 0-15% organic matter.",
+                "name": "b11",
+                "value": "B11"
+              },
+              {
+                "description": "Topsoil: very heavy clay; 50-100% clay and 0-15% organic matter.",
+                "name": "b12",
+                "value": "B12"
+              },
+              {
+                "description": "Topsoil: sandy silt loam; 50-85% particles below 50 µm and 0-15% organic matter.",
+                "name": "b13",
+                "value": "B13"
+              },
+              {
+                "description": "Topsoil: silty loam; 85-100% particles below 50 µm and 0-15% organic matter.",
+                "name": "b14",
+                "value": "B14"
+              },
+              {
+                "description": "Topsoil: peaty sand; 0-8% clay and 15-25% organic matter.",
+                "name": "b15",
+                "value": "B15"
+              },
+              {
+                "description": "Topsoil: sandy peat and peat; 0-8% clay and 25-100% organic matter.",
+                "name": "b16",
+                "value": "B16"
+              },
+              {
+                "description": "Topsoil: peaty clay; 8-100% clay and 16-45% organic matter.",
+                "name": "b17",
+                "value": "B17"
+              },
+              {
+                "description": "Topsoil: clayey peat; 8-100% clay and 25-70% organic matter.",
+                "name": "b18",
+                "value": "B18"
+              },
+              {
+                "description": "Subsoil: low-silt fine sand; 0-10% particles below 50 µm, 0-3% organic matter, M50 105-210 µm.",
+                "name": "o1",
+                "value": "O1"
+              },
+              {
+                "description": "Subsoil: weakly silty fine sand; 10-18% particles below 50 µm, 0-3% organic matter, M50 105-210 µm.",
+                "name": "o2",
+                "value": "O2"
+              },
+              {
+                "description": "Subsoil: strongly silty fine sand; 18-33% particles below 50 µm, 0-3% organic matter, M50 105-210 µm.",
+                "name": "o3",
+                "value": "O3"
+              },
+              {
+                "description": "Subsoil: very strongly silty fine sand; 33-50% particles below 50 µm, 0-3% organic matter, M50 105-210 µm.",
+                "name": "o4",
+                "value": "O4"
+              },
+              {
+                "description": "Subsoil: coarse sand; 0-3% organic matter and M50 210-2000 µm.",
+                "name": "o5",
+                "value": "O5"
+              },
+              {
+                "description": "Subsoil: glacial till; 0-50% particles below 50 µm, 0-3% organic matter, M50 50-2000 µm.",
+                "name": "o6",
+                "value": "O6"
+              },
+              {
+                "description": "Subsoil: brook loam; 33-50% particles below 50 µm, 0-3% organic matter, M50 50-150 µm.",
+                "name": "o7",
+                "value": "O7"
+              },
+              {
+                "description": "Subsoil: very light loam; 8-12% clay and 0-3% organic matter.",
+                "name": "o8",
+                "value": "O8"
+              },
+              {
+                "description": "Subsoil: moderately light loam; 12-18% clay and 0-3% organic matter.",
+                "name": "o9",
+                "value": "O9"
+              },
+              {
+                "description": "Subsoil: heavy loam; 18-25% clay and 0-3% organic matter.",
+                "name": "o10",
+                "value": "O10"
+              },
+              {
+                "description": "Subsoil: light clay; 25-35% clay and 0-3% organic matter.",
+                "name": "o11",
+                "value": "O11"
+              },
+              {
+                "description": "Subsoil: moderately heavy clay; 35-50% clay and 0-3% organic matter.",
+                "name": "o12",
+                "value": "O12"
+              },
+              {
+                "description": "Subsoil: very heavy clay; 50-100% clay and 0-3% organic matter.",
+                "name": "o13",
+                "value": "O13"
+              },
+              {
+                "description": "Subsoil: sandy silt loam; 50-85% particles below 50 µm and 0-3% organic matter.",
+                "name": "o14",
+                "value": "O14"
+              },
+              {
+                "description": "Subsoil: silty loam; 85-100% particles below 50 µm and 0-3% organic matter.",
+                "name": "o15",
+                "value": "O15"
+              },
+              {
+                "description": "Subsoil: oligotrophic peat with 35-100% organic matter.",
+                "name": "o16",
+                "value": "O16"
+              },
+              {
+                "description": "Subsoil: mesotrophic or eutrophic peat with 35-100% organic matter.",
+                "name": "o17",
+                "value": "O17"
+              },
+              {
+                "description": "Subsoil: organic interlayer with 15-35% organic matter.",
+                "name": "o18",
+                "value": "O18"
+              }
+            ]
+          },
+          "kind": "categorical",
+          "name": "soil_class"
+        }
+      ],
+      "models": {
+        "h_theta": "van Genuchten model with m = 1 - 1 / n",
+        "k_h": "Mualem-van Genuchten hydraulic-conductivity model"
+      },
+      "module": "ptfkit.wosten2001",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 1.0
+              }
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "volumetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "cm³/cm³",
+            "role": "model_parameter",
+            "status": "estimated",
+            "unit": "volume_fraction"
+          },
+          "name": "theta_r"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": false,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 1.0
+              }
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "volumetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "cm³/cm³",
+            "role": "model_parameter",
+            "status": "estimated",
+            "unit": "volume_fraction"
+          },
+          "name": "theta_s"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "not_applicable",
+              "material": "soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "saturated_hydraulic_conductivity",
+            "reported_applicability": [],
+            "reported_unit": "cm/day",
+            "role": "model_parameter",
+            "status": "estimated",
+            "unit": "centimeter_per_day"
+          },
+          "name": "saturated_conductivity"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "not_applicable",
+              "material": "soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": false,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "van_genuchten_alpha",
+            "reported_applicability": [],
+            "reported_unit": "1/cm",
+            "role": "model_parameter",
+            "status": "estimated",
+            "unit": "inverse_centimeter"
+          },
+          "name": "alpha"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "not_applicable",
+              "material": "soil"
+            },
+            "computational_domain": null,
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "conductivity_shape_parameter",
+            "reported_applicability": [],
+            "reported_unit": "dimensionless",
+            "role": "model_parameter",
+            "status": "estimated",
+            "unit": "dimensionless"
+          },
+          "name": "conductivity_shape_parameter"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "not_applicable",
+              "material": "soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": false,
+                "value": 1.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "van_genuchten_n",
+            "reported_applicability": [],
+            "reported_unit": "dimensionless",
+            "role": "model_parameter",
+            "status": "estimated",
+            "unit": "dimensionless"
+          },
+          "name": "n"
+        }
+      ],
+      "source": "wosten2001",
+      "status": "implemented",
+      "warnings": [
+        "The source cautions that class means may not apply outside the measured ranges within each class."
+      ]
     }
   ],
   "ptfkit_version": "0.4.0",
@@ -1456,6 +4992,13 @@
     },
     "organic_carbon_content": {
       "description": "Organic carbon content expressed relative to dry soil mass.",
+      "units": [
+        "mass_fraction",
+        "mass_percent"
+      ]
+    },
+    "organic_matter_content": {
+      "description": "Organic matter content expressed relative to dry soil mass under the declared analytical method.",
       "units": [
         "mass_fraction",
         "mass_percent"
@@ -1599,7 +5142,8 @@
     },
     "gram_per_cubic_centimeter": {
       "aliases": [
-        "g/cm³"
+        "g/cm³",
+        "g/cm3"
       ],
       "conversion": {
         "dimension": "mass_per_volume",

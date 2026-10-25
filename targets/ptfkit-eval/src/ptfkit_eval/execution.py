@@ -5,22 +5,27 @@ from __future__ import annotations
 import math
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
-from decimal import Decimal, localcontext
 from enum import Enum
 from importlib import import_module
 from numbers import Real
-from typing import overload
+from typing import TYPE_CHECKING, overload
 
 from ptfkit import get_manifest
 
-from .adapters import ModelAdapter, builtin_model_adapters
+from .adapters import ModelAdapter, builtin_model_adapters, validate_function_inputs
 from .contracts import (
     AdapterPrediction,
     AtomicCurve,
-    FixedPointPrediction,
     FunctionCurveCandidate,
+    OutputPrediction,
     RangeGatedCurveCandidate,
+    fixed_output_predictions,
 )
+from .unit_conversion import convert_with_units
+
+
+if TYPE_CHECKING:
+    from .contracts import FixedPointPrediction
 
 
 class CurveExecutionError(ValueError):
@@ -164,15 +169,10 @@ def convert_value(
     if not isinstance(units, Mapping):
         message = 'Manifest has no unit registry.'
         raise CurveExecutionError(message)
-    source = _unit_conversion(units, source_unit)
-    target = _unit_conversion(units, target_unit)
-    if source[0] != target[0]:
-        message = f'Units {source_unit!r} and {target_unit!r} are not convertible.'
-        raise CurveExecutionError(message)
-    with localcontext() as context:
-        context.prec = 40
-        si_value = Decimal(str(numeric_value)) * Decimal(str(source[1])) + Decimal(str(source[2]))
-        return float((si_value - Decimal(str(target[2]))) / Decimal(str(target[1])))
+    try:
+        return convert_with_units(numeric_value, source_unit, target_unit, units)
+    except ValueError as error:
+        raise CurveExecutionError(str(error)) from error
 
 
 def _function_point(
@@ -214,6 +214,14 @@ def _atomic_evaluator(
         if adapter is None:
             message = f'Model adapter {curve.prediction.adapter!r} has no implementation.'
             raise CurveExecutionError(message)
+        if (
+            adapter.spec.supported_functions is not None
+            and curve.function not in adapter.spec.supported_functions
+        ):
+            message = (
+                f'Function {curve.function!r} is not reviewed for adapter {adapter.spec.id!r}.'
+            )
+            raise CurveExecutionError(message)
         result = callable_(**_coerce_inputs(function, inputs))
         parameters = {
             parameter.output: _result_value(result, parameter.output)
@@ -231,27 +239,23 @@ def _atomic_evaluator(
 
         return evaluate_adapter
 
-    if isinstance(curve.prediction, FixedPointPrediction):
-        fixed = curve.prediction
-        required_axis = convert_value(
-            fixed.axis_value, fixed.axis_unit, axis_unit, manifest=manifest
+    fixed_outputs = fixed_output_predictions(curve.prediction)
+    if fixed_outputs:
+        return _fixed_evaluator(
+            fixed_outputs,
+            callable_,
+            function=function,
+            inputs=inputs,
+            axis_unit=axis_unit,
+            target_unit=target_unit,
+            manifest=manifest,
+            scalar_output=scalar_output,
         )
 
-        def evaluate_fixed(axis_value: float) -> float:
-            if axis_value != required_axis:
-                message = 'Fixed-pressure output cannot be evaluated at another pressure.'
-                raise CurveExecutionError(message)
-            result = callable_(**_coerce_inputs(function, inputs))
-            return convert_value(
-                _result_value(result, fixed.output, scalar_output=scalar_output),
-                _output_unit(function, fixed.output),
-                target_unit,
-                manifest=manifest,
-            )
-
-        return evaluate_fixed
-
     prediction = curve.prediction
+    if not isinstance(prediction, OutputPrediction):
+        message = 'Unknown prediction binding.'
+        raise CurveExecutionError(message)
 
     def evaluate_output(axis_value: float) -> float:
         function_inputs = dict(inputs)
@@ -264,6 +268,43 @@ def _atomic_evaluator(
         return convert_value(output, output_unit, target_unit, manifest=manifest)
 
     return evaluate_output
+
+
+def _fixed_evaluator(
+    points: tuple[FixedPointPrediction, ...],
+    callable_: Callable[..., object],
+    *,
+    function: Mapping[str, object],
+    inputs: Mapping[str, object],
+    axis_unit: str,
+    target_unit: str,
+    manifest: Mapping[str, object],
+    scalar_output: bool,
+) -> Callable[[float], float]:
+    support = {
+        convert_value(point.axis_value, point.axis_unit, axis_unit, manifest=manifest): point
+        for point in points
+    }
+    if len(support) != len(points) or any(
+        not math.isfinite(value) or value < 0 for value in support
+    ):
+        message = 'Fixed outputs require distinct finite nonnegative converted pressures.'
+        raise CurveExecutionError(message)
+
+    def evaluate(axis_value: float) -> float:
+        fixed = support.get(axis_value)
+        if fixed is None:
+            message = 'Fixed-pressure output cannot be evaluated at another pressure.'
+            raise CurveExecutionError(message)
+        result = callable_(**_coerce_inputs(function, inputs))
+        return convert_value(
+            _result_value(result, fixed.output, scalar_output=scalar_output),
+            _output_unit(function, fixed.output),
+            target_unit,
+            manifest=manifest,
+        )
+
+    return evaluate
 
 
 def _load_callable(function: Mapping[str, object]) -> Callable[..., object]:
@@ -302,7 +343,14 @@ def _coerce_inputs(
             message = f'Missing function input {name!r}.'
             raise CurveExecutionError(message)
         value = supplied[name]
-        result[name] = _coerce_categorical(binding, value)
+        result[name] = (
+            float(value)
+            if binding.get('kind') == 'numeric'
+            and isinstance(value, Real)
+            and not isinstance(value, bool)
+            else _coerce_categorical(binding, value)
+        )
+    validate_function_inputs(function, result)
     return result
 
 
@@ -381,28 +429,6 @@ def _output_unit(function: Mapping[str, object], output_name: str) -> str:
                 return measurement['unit']
     message = f'Manifest output {output_name!r} has no unit.'
     raise CurveExecutionError(message)
-
-
-def _unit_conversion(units: Mapping[object, object], unit: str) -> tuple[str, float, float]:
-    definition = units.get(unit)
-    conversion = definition.get('conversion') if isinstance(definition, Mapping) else None
-    if not isinstance(conversion, Mapping):
-        message = f'Unit {unit!r} has no affine conversion.'
-        raise CurveExecutionError(message)
-    dimension = conversion.get('dimension')
-    scale = conversion.get('scale_to_si')
-    offset = conversion.get('offset_to_si')
-    if (
-        not isinstance(dimension, str)
-        or not isinstance(scale, (int, float))
-        or not isinstance(offset, (int, float))
-    ):
-        message = f'Unit {unit!r} has an invalid affine conversion.'
-        raise CurveExecutionError(message)
-    if scale == 0 or not math.isfinite(scale) or not math.isfinite(offset):
-        message = f'Unit {unit!r} has a zero or nonfinite affine conversion.'
-        raise CurveExecutionError(message)
-    return dimension, float(scale), float(offset)
 
 
 def _flat_inputs(

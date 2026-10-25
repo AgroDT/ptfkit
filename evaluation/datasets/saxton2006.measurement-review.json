@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "source": "saxton2006",
+  "status": "base_contract_complete_curve_adapter_registered_dataset_binding_pending",
+  "function": "calc_ptf_saxton2006",
+  "paper": {
+    "doi": "10.2136/sssaj2005.0117",
+    "publisher_url": "https://acsess.onlinelibrary.wiley.com/doi/10.2136/sssaj2005.0117",
+    "author_institution_record": "https://www.ars.usda.gov/research/publications/publication/?seqNo115=178719",
+    "parsed_original_pdf": "https://scispace.com/pdf/soil-water-characteristic-estimates-by-texture-and-organic-56ntsbkyo4.pdf",
+    "local_pdf_sha256": null,
+    "visual_table_review": false,
+    "review_basis": "Parsed original article text; existing prepared specification and regression coefficients preserved. Direct PDF downloads were unavailable."
+  },
+  "particle_size_reference": "https://www.nrcs.usda.gov/sites/default/files/2022-10/SSIR45.pdf",
+  "evidence": [
+    "Printed page 1570: mineral A-horizon calibration, excluding clay above 60%, OM above 8%, and sample densities outside 1.0-1.8 g/cm3.",
+    "Printed page 1571, Tables 1-2: mass-based texture and OM inputs, volumetric water outputs, positive kPa tension, normal-density reference and three retention segments.",
+    "Printed page 1574: fine matric soil is distinguished from gravel-adjusted bulk soil."
+  ],
+  "contract_decisions": [
+    "Sand/clay use fine-earth mass fractions; OM remains mass percent. Laboratory method identifiers remain unspecified rather than inferred.",
+    "Predicted water at 0, 33 and 1500 kPa has explicit conditions. Available water is a difference with no single pressure condition.",
+    "Normal density is a model reference parameter. The adapter recovers saturation by Equation 6 and uses Equations 11-15 over 0-1500 kPa.",
+    "Shared native input validation enforces marginal limits and sand+clay<=1 for curve and fixed-output execution. Nonphysical outputs remain failures."
+  ],
+  "remaining": [
+    "Six source helper functions still require measurement-contract migration.",
+    "HYBRAS fine-earth target basis, predictor protocols/origins and normal-density applicability remain unbound.",
+    "Numerical preflight is not external accuracy, grouped selection or uncertainty qualification."
+  ]
+}

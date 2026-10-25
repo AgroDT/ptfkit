@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "scope": "raw_predictor_numerical_preflight_not_external_accuracy",
+  "function": "calc_ptf_saxton2006",
+  "dataset_sha256": "7ee2c78e07da2ffe97b987e776620ce275390b1e24939a63552f08f3039fd665",
+  "archive_sha256": "e9164c2f74e9ad75033b99248b0eee7ba426230150a499a6e6b3a285eebcf618",
+  "samples": 987,
+  "counts": {
+    "curve_preflight_passed": 604,
+    "executed_preflight_only": 607,
+    "not_executed": 380,
+    "clay_above_60_percent": 124,
+    "organic_matter_outside_0_8_percent": 20,
+    "missing_or_nonnumeric_predictor": 238,
+    "curve_preflight_failed": 3,
+    "air_entry_outside_wet_branch": 2,
+    "nonfinite_native_output": 1,
+    "water_anchor_order_or_physical_bounds": 1
+  },
+  "native_eligibility": "not_granted",
+  "blockers": [
+    "fine_earth_target_basis_not_bound",
+    "predictor_protocol_and_origin_review_pending",
+    "normal_density_and_applicability_review_pending"
+  ],
+  "script_sha256": "f8b343ded663505bdf4770dbeb333f1010f565fc001c53b2645ab0c07fe6fa98",
+  "environment": {
+    "python": "3.13.12",
+    "ptfkit": "0.4.0",
+    "ptfkit-eval": "0.1.0",
+    "numpy": "2.5.4",
+    "openpyxl": "3.1.5"
+  },
+  "manifest_sha256": "f1441fcd1abd8b73b752af6acf7c6d7154362d0d1ed8ba1d23031a419071999e",
+  "evaluator_source_sha256": "b7d498e06095bf9e4b2b6b47ddffe419a66482bdeb5c917f96a4a635169b498f",
+  "wrapper_sha256": "250236cb5126560bb8312db64e07e33308577b35fc6028a28f4106bfc5f4cdd0",
+  "native_binary_sha256": "a8e9522f4cd1e9cf5878d3928d0cbd9c1705c7b66cdf410be4d4acd94793eca9",
+  "preflight_sha256": "9c84d3f54249e0cbb6999689a3e969b0363e66082851526258679be355202e5b"
+}

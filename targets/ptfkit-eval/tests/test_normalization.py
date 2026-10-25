@@ -45,6 +45,33 @@ def test_canonical_export_preserves_volume_lineage_and_accounts_for_mass_rows(tm
     )
 
 
+def test_gravimetric_export_preserves_mass_above_one_without_density_conversion(tmp_path: Path):
+    path = tmp_path / 'retention.xlsx'
+    _workbook(path)
+    normalized = normalize_retention_workbook(path, _mapping(path))
+    exported = export_normalized_retention_dataset(
+        normalized,
+        dataset_id='reviewed-mass',
+        material_basis='unspecified',
+        water_quantity='gravimetric_water_content',
+    )
+    document = exported.dataset.document
+    assert document['schema_version'] == 2
+    assert dict(object_mapping(document['target'])) == {
+        'quantity': 'gravimetric_water_content',
+        'unit': 'mass_fraction',
+        'material_basis': 'unspecified',
+        'denominator_basis': 'dry_soil_mass',
+    }
+    points = object_records(document['observations'])
+    assert [point['value'] for point in points] == pytest.approx([0.25, 0.0025, 1.25])
+    assert points[0]['suction_kpa'] == pytest.approx(9.80665)
+    assert points[0]['source_cells'] == normalized.observations[0].source_cells
+    assert points[2]['source_cells'] == normalized.observations[3].source_cells
+    assert exported.omitted_gravimetric_rows == ()
+    assert exported.omitted_volumetric_rows == (normalized.observations[2].row,)
+
+
 def test_canonical_export_rejects_duplicate_pressures_without_averaging(tmp_path: Path):
     path = tmp_path / 'retention.xlsx'
     _workbook(path)
