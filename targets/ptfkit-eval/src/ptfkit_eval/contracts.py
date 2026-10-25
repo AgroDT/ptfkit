@@ -27,11 +27,14 @@ from .composites import (
     RangeGatedRouter,
     Transition,
 )
+from .unit_conversion import convert_with_units
 
 
 JsonScalar: TypeAlias = bool | int | float | str | None
 JsonValue: TypeAlias = JsonScalar | list['JsonValue'] | dict[str, 'JsonValue']
-PredictionBinding: TypeAlias = 'OutputPrediction | AdapterPrediction | FixedPointPrediction'
+PredictionBinding: TypeAlias = (
+    'OutputPrediction | AdapterPrediction | FixedPointPrediction | FixedPointsPrediction'
+)
 CurveCandidate: TypeAlias = 'FunctionCurveCandidate | RangeGatedCurveCandidate'
 ModelKind: TypeAlias = Literal['h_theta', 'k_h']
 AxisConvention: TypeAlias = Literal['signed', 'magnitude']
@@ -110,6 +113,7 @@ class ModelAdapterSpec:
     target_material_basis: str
     target_denominator_basis: str
     parameters: tuple[ModelParameterSpec, ...]
+    supported_functions: tuple[str, ...] | None = None
 
     def __post_init__(self) -> None:
         """Reject adapter registrations with ambiguous parameter bindings."""
@@ -196,7 +200,73 @@ def default_model_adapter_specs() -> Mapping[str, ModelAdapterSpec]:
             ),
         ),
     )
-    return MappingProxyType({clapp.id: clapp, vereecken.id: vereecken})
+    wosten = ModelAdapterSpec(
+        id='wosten2001_h_theta',
+        model_kind='h_theta',
+        axis_quantity='matric_potential',
+        axis_unit='centimeter_water_head',
+        axis_convention='magnitude',
+        target_quantity='volumetric_water_content',
+        target_unit='volume_fraction',
+        target_material_basis='soil',
+        target_denominator_basis='bulk_volume',
+        parameters=(
+            ModelParameterSpec(
+                'theta_r', 'volumetric_water_content', 'volume_fraction', 'soil', 'bulk_volume'
+            ),
+            ModelParameterSpec(
+                'theta_s', 'volumetric_water_content', 'volume_fraction', 'soil', 'bulk_volume'
+            ),
+            ModelParameterSpec(
+                'alpha', 'van_genuchten_alpha', 'inverse_centimeter', 'soil', 'not_applicable'
+            ),
+            ModelParameterSpec('n', 'van_genuchten_n', 'dimensionless', 'soil', 'not_applicable'),
+        ),
+        supported_functions=('calc_ptf_wosten2001_class_parameters',),
+    )
+    saxton = ModelAdapterSpec(
+        id='saxton2006_h_theta',
+        model_kind='h_theta',
+        axis_quantity='matric_potential',
+        axis_unit='kilopascal',
+        axis_convention='magnitude',
+        target_quantity='volumetric_water_content',
+        target_unit='volume_fraction',
+        target_material_basis='fine_earth',
+        target_denominator_basis='bulk_volume',
+        parameters=(
+            ModelParameterSpec(
+                'normal_density',
+                'dry_bulk_density',
+                'gram_per_cubic_centimeter',
+                'fine_earth',
+                'bulk_volume',
+            ),
+            ModelParameterSpec(
+                'air_entry_tension',
+                'matric_potential',
+                'kilopascal',
+                'fine_earth',
+                'not_applicable',
+            ),
+            ModelParameterSpec(
+                'retention_a',
+                'retention_coefficient_a',
+                'kilopascal',
+                'fine_earth',
+                'not_applicable',
+            ),
+            ModelParameterSpec(
+                'retention_b',
+                'retention_coefficient_b',
+                'dimensionless',
+                'fine_earth',
+                'not_applicable',
+            ),
+        ),
+        supported_functions=('calc_ptf_saxton2006',),
+    )
+    return MappingProxyType({item.id: item for item in (clapp, vereecken, wosten, saxton)})
 
 
 @dataclass(frozen=True)
@@ -225,6 +295,30 @@ class FixedPointPrediction:
     method: str | None
 
 
+_MINIMUM_FIXED_OUTPUTS = 2
+
+
+@dataclass(frozen=True)
+class FixedPointsPrediction:
+    """Several outputs on a finite pressure support; no interpolation is implied."""
+
+    outputs: tuple[FixedPointPrediction, ...]
+
+    def __post_init__(self) -> None:
+        """Require a genuine multi-output registration without duplicate names."""
+        names = tuple(point.output for point in self.outputs)
+        if len(names) < _MINIMUM_FIXED_OUTPUTS or len(set(names)) != len(names):
+            message = 'Fixed output sets require at least two distinct output names.'
+            raise ValueError(message)
+
+
+def fixed_output_predictions(prediction: PredictionBinding) -> tuple[FixedPointPrediction, ...]:
+    """Expose the finite support of either fixed-output binding variant."""
+    if isinstance(prediction, FixedPointPrediction):
+        return (prediction,)
+    return prediction.outputs if isinstance(prediction, FixedPointsPrediction) else ()
+
+
 @dataclass(frozen=True)
 class AtomicCurve:
     """One manifest function and its resolved prediction binding."""
@@ -245,7 +339,7 @@ class FunctionCurveCandidate:
 
 @dataclass(frozen=True)
 class FunctionPointCandidate(FunctionCurveCandidate):
-    """One function output with fixed pressure support, without interpolation."""
+    """One function's outputs on fixed pressure support, without interpolation."""
 
 
 @dataclass(frozen=True)
@@ -416,7 +510,7 @@ def _resolve_candidate(
     context: _CandidateContext,
 ) -> CurveCandidate | None:
     candidate_id = _string(candidate['id'])
-    if candidate['kind'] in ('function_curve', 'function_point'):
+    if candidate['kind'] in ('function_curve', 'function_point', 'function_points'):
         curve = _resolve_curve(
             _string(candidate['function']),
             _mapping(candidate['prediction']),
@@ -426,7 +520,7 @@ def _resolve_candidate(
             return None
         candidate_type = (
             FunctionPointCandidate
-            if candidate['kind'] == 'function_point'
+            if candidate['kind'] in ('function_point', 'function_points')
             else FunctionCurveCandidate
         )
         return candidate_type(candidate_id, context.axis, context.target, curve)
@@ -531,6 +625,8 @@ def _resolve_curve(  # noqa: PLR0911
 
     if prediction['kind'] == 'fixed_output':
         return _resolve_fixed_output(function_id, function, prediction, context)
+    if prediction['kind'] == 'fixed_outputs':
+        return _resolve_fixed_outputs(function_id, function, prediction, context)
     if prediction['kind'] == 'output':
         output_name = _string(prediction['name'])
         output = _binding_by_name(function['outputs'], output_name)
@@ -652,6 +748,56 @@ def _resolve_fixed_output(
     )
 
 
+def _resolve_fixed_outputs(
+    function_id: str,
+    function: Mapping[str, object],
+    prediction: Mapping[str, object],
+    context: _CandidateContext,
+) -> AtomicCurve | None:
+    points = []
+    for name in _sequence(prediction['names']):
+        curve = _resolve_fixed_output(function_id, function, {'name': name}, context)
+        if curve is not None:
+            points.append(cast('FixedPointPrediction', curve.prediction))
+    if len(points) != len(_sequence(prediction['names'])):
+        return None
+    try:
+        pressures = [
+            convert_with_units(
+                point.axis_value, point.axis_unit, context.axis.unit, context.resolution.index.units
+            )
+            for point in points
+        ]
+    except ValueError as error:
+        context.resolution.diagnostics.append(
+            PlanDiagnostic(
+                f'{context.path}.prediction.names',
+                'points.invalid_support',
+                str(error),
+            )
+        )
+        return None
+    if any(not math.isfinite(value) or value < 0 for value in pressures):
+        context.resolution.diagnostics.append(
+            PlanDiagnostic(
+                f'{context.path}.prediction.names',
+                'points.invalid_support',
+                'Fixed output pressures must be finite nonnegative converted magnitudes.',
+            )
+        )
+        return None
+    if len(set(pressures)) != len(pressures):
+        context.resolution.diagnostics.append(
+            PlanDiagnostic(
+                f'{context.path}.prediction.names',
+                'points.duplicate_pressure',
+                'Fixed output sets require distinct pressures after unit conversion.',
+            )
+        )
+        return None
+    return AtomicCurve(function_id, FixedPointsPrediction(tuple(points)))
+
+
 def _validate_adapter(
     adapter: ModelAdapterSpec,
     function_id: str,
@@ -661,6 +807,14 @@ def _validate_adapter(
     path = context.path
     resolution = context.resolution
     diagnostics = resolution.diagnostics
+    if adapter.supported_functions is not None and function_id not in adapter.supported_functions:
+        diagnostics.append(
+            PlanDiagnostic(
+                f'{path}.prediction.id',
+                'adapter.function_unsupported',
+                f'Function {function_id!r} has not been reviewed for adapter {adapter.id!r}.',
+            )
+        )
     models = _mapping(function['models'])
     if models.get(adapter.model_kind) is None:
         diagnostics.append(

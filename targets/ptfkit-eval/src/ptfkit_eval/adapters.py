@@ -7,7 +7,7 @@ from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from functools import cache
 from types import MappingProxyType
-from typing import TypeAlias
+from typing import TypeAlias, cast
 
 from .contracts import ModelAdapterSpec, default_model_adapter_specs
 from .numerics import log_positive_product
@@ -32,6 +32,11 @@ class ModelAdapter:
 _CLAPP1978_INFLECTION_WETNESS = 0.92
 CLAPP1978_MAXIMUM_B = 11.5
 _ROUNDING_TOLERANCE = 1e-12
+_SAXTON_FIELD_CAPACITY_KPA = 33.0
+_SAXTON_MAXIMUM_SUCTION_KPA = 1500.0
+_SAXTON_PARTICLE_DENSITY = 2.65
+_SAXTON_MAXIMUM_CLAY = 0.60
+_SAXTON_MAXIMUM_ORGANIC_MATTER = 8.0
 
 
 def evaluate_clapp1978_h_theta(parameters: ParameterValues, suction: float) -> float:
@@ -112,12 +117,104 @@ def builtin_model_adapters() -> Mapping[str, ModelAdapter]:
     specs = model_adapter_specs()
     clapp = specs['clapp1978_h_theta']
     vereecken = specs['vereecken1989_h_theta']
+    wosten = specs['wosten2001_h_theta']
+    saxton = specs['saxton2006_h_theta']
     return MappingProxyType(
         {
             clapp.id: ModelAdapter(clapp, evaluate_clapp1978_h_theta),
             vereecken.id: ModelAdapter(vereecken, evaluate_vereecken1989_h_theta),
+            wosten.id: ModelAdapter(wosten, evaluate_van_genuchten_mualem_h_theta),
+            saxton.id: ModelAdapter(saxton, evaluate_saxton2006_h_theta),
         }
     )
+
+
+def evaluate_van_genuchten_mualem_h_theta(parameters: ParameterValues, suction: float) -> float:
+    """Evaluate theta(h) with m = 1 - 1/n; alpha and suction use reciprocal units."""
+    theta_r = _parameter(parameters, 'theta_r')
+    theta_s = _parameter(parameters, 'theta_s')
+    alpha = _positive_parameter(parameters, 'alpha')
+    n = _positive_parameter(parameters, 'n')
+    if not 0 <= theta_r < theta_s <= 1:
+        message = 'van Genuchten water contents must satisfy 0 <= theta_r < theta_s <= 1.'
+        raise ModelEvaluationError(message)
+    if n <= 1:
+        message = 'The Mualem van Genuchten convention requires n > 1.'
+        raise ModelEvaluationError(message)
+    if not math.isfinite(suction) or suction < 0:
+        message = 'van Genuchten suction must be a finite nonnegative magnitude.'
+        raise ModelEvaluationError(message)
+    if suction == 0:
+        return theta_s
+    power_log = n * log_positive_product(alpha, suction)
+    log_denominator = max(power_log, 0.0) + math.log1p(math.exp(-abs(power_log)))
+    m = (n - 1) / n
+    effective = math.exp(-m * log_denominator)
+    return theta_r + (theta_s - theta_r) * effective
+
+
+def validate_function_inputs(function: Mapping[str, object], inputs: Mapping[str, object]) -> None:
+    """Enforce reviewed joint input constraints for every native execution path."""
+    if function.get('id') == 'calc_ptf_saxton2006':
+        _validate_saxton2006_inputs(inputs)
+
+
+def _validate_saxton2006_inputs(inputs: Mapping[str, object]) -> None:
+    try:
+        sand, clay, organic_matter = (
+            _parameter(cast('ParameterValues', inputs), name)
+            for name in ('sand', 'clay', 'organic_matter')
+        )
+    except (KeyError, ValueError, TypeError) as error:
+        message = 'Saxton inputs require numeric sand, clay and organic matter.'
+        raise ModelEvaluationError(message) from error
+    if (
+        any(isinstance(inputs[name], bool) for name in ('sand', 'clay', 'organic_matter'))
+        or not all(math.isfinite(value) for value in (sand, clay, organic_matter))
+        or not 0 <= sand <= 1
+        or not 0 <= clay <= _SAXTON_MAXIMUM_CLAY
+        or sand + clay > 1
+        or not 0 <= organic_matter <= _SAXTON_MAXIMUM_ORGANIC_MATTER
+    ):
+        message = (
+            'Saxton inputs must satisfy texture fractions, sand+clay<=1, clay<=0.60 and OM<=8%.'
+        )
+        raise ModelEvaluationError(message)
+
+
+def evaluate_saxton2006_h_theta(parameters: ParameterValues, suction: float) -> float:
+    """Invert source Equations 6 and 11-15 at normal density, in kPa and volume fraction."""
+    density = _positive_parameter(parameters, 'normal_density')
+    entry = _parameter(parameters, 'air_entry_tension')
+    coefficient = _positive_parameter(parameters, 'retention_a')
+    exponent = _positive_parameter(parameters, 'retention_b')
+    theta_s = 1 - density / _SAXTON_PARTICLE_DENSITY
+    if not 0 < theta_s < 1 or not 0 < entry < _SAXTON_FIELD_CAPACITY_KPA:
+        message = 'Saxton normal-density saturation and air-entry parameters are nonphysical.'
+        raise ModelEvaluationError(message)
+    if not math.isfinite(suction) or not 0 <= suction <= _SAXTON_MAXIMUM_SUCTION_KPA:
+        message = 'Saxton retention is registered only for finite magnitudes from 0 to 1500 kPa.'
+        raise ModelEvaluationError(message)
+    log_coefficient = math.log(coefficient)
+    log_theta_33 = (log_coefficient - math.log(_SAXTON_FIELD_CAPACITY_KPA)) / exponent
+    if log_theta_33 >= math.log(theta_s):
+        message = 'Saxton water anchors must satisfy theta_33 < theta_s.'
+        raise ModelEvaluationError(message)
+    theta_33 = math.exp(log_theta_33)
+    if theta_33 <= 0:
+        message = 'Saxton theta_33 is not representable as a positive volume fraction.'
+        raise ModelEvaluationError(message)
+    if suction <= entry:
+        return theta_s
+    if suction < _SAXTON_FIELD_CAPACITY_KPA:
+        return theta_33 + (_SAXTON_FIELD_CAPACITY_KPA - suction) * (theta_s - theta_33) / (
+            _SAXTON_FIELD_CAPACITY_KPA - entry
+        )
+    value = math.exp((log_coefficient - math.log(suction)) / exponent)
+    if value <= 0:
+        message = 'Saxton dry-branch water content underflows its positive domain.'
+        raise ModelEvaluationError(message)
+    return value
 
 
 def model_adapter_specs() -> Mapping[str, ModelAdapterSpec]:

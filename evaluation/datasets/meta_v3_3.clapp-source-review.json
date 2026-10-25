@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "review_id": "meta_v3_3_clapp_source_review_v1",
+  "workbook_sha256": "1322bf65b1ca0130085015209858a443d1ee82a7e2ae69232321cd8ede361e68",
+  "canonical_dataset_sha256": "000c3c9fff04a714ff2cc6e9d32fc3d00bd3a3246616caf5dfac4f1673fdd93f",
+  "candidate_count": 24,
+  "eligible_count": 6,
+  "unsupported_class_count": 6,
+  "unresolved_count": 12,
+  "paper": {
+    "id": "panina2015",
+    "filename": "panina2015.pdf",
+    "sha256": "eac3553c2a904c8c1a75f67437bc01b1005b3ebed45ada29e189017e8baafaa8",
+    "url": "https://soil.msu.ru/attachments/article/2063/Panina_Disser.pdf",
+    "classification_evidence": "Printed page 88, Table 17; international classes used for HYDRUS/ROSETTA. Page 91 Table 18 gives unsupported silt for the other profile.",
+    "material_evidence": "Printed pp. 37-41, named gray forest soil on calcareous loesslike loam, mineral horizon descriptions and Table 2 carbon contents. Reviewed material inference: mineral_soil."
+  },
+  "classification_reference": "https://www.ars.usda.gov/arsuserfiles/20361500/pdf_pubs/P2164.pdf",
+  "sources": [
+    {
+      "source_id": "2013_\u0431\u0430\u0434\u0435\u043d\u043a\u043e",
+      "paper_sha256": "96da74ac7a27a0f58511912fd6b7fc82b93ae05351739c2b28294866cd6fa29e",
+      "candidate_count": 6,
+      "status": "blocked",
+      "evidence": "No USDA class is supplied by the reviewed experimental table; raw code C is not an authorized crosswalk.",
+      "url": "https://www.agrophys.ru/Media/Default/Page/Magazine%20Agrophysics/Agrophysica1(9)/Badenko.pdf"
+    },
+    {
+      "source_id": "2014_\u0431\u043e\u043b\u043e\u0442\u043e\u0432",
+      "paper_sha256": "e05eef190ba57a0f2b6118676314baf0716c6da5538f2a10d96cb6432ae1d1cd",
+      "candidate_count": 3,
+      "status": "blocked",
+      "evidence": "Russian texture groups and laser fractions do not establish a unique USDA class at the required clay boundary.",
+      "url": "https://www.asau.ru/vestnik/2014/9/036-041.pdf"
+    },
+    {
+      "source_id": "2015_\u041f\u0430\u043d\u0438\u043d\u0430. \u0434\u0438\u0441\u0435\u0440",
+      "paper_sha256": "eac3553c2a904c8c1a75f67437bc01b1005b3ebed45ada29e189017e8baafaa8",
+      "candidate_count": 12,
+      "status": "partial",
+      "evidence": "Table 17 reports silt loam for the gray forest profile; Table 18 reports silt, absent from the Clapp enumeration.",
+      "url": "https://soil.msu.ru/attachments/article/2063/Panina_Disser.pdf"
+    },
+    {
+      "source_id": "2018_\u041c\u043e\u0438\u0441\u0435\u0435\u0432",
+      "paper_sha256": "1c6e59cb6c9b2a916a35b77e26af2731c17e21f95669714862839c11c3d11213",
+      "candidate_count": 3,
+      "status": "blocked",
+      "evidence": "The source reports Russian texture descriptors; no reviewed USDA class for these three matched horizons is established.",
+      "url": "https://tvan.niishk.site/data/documents/7_1.pdf"
+    }
+  ],
+  "selected_samples": [
+    {
+      "source_id": "2015_\u041f\u0430\u043d\u0438\u043d\u0430. \u0434\u0438\u0441\u0435\u0440",
+      "sample_id": "2015_\u041f\u0430\u043d\u0438\u043d\u0430. \u0434\u0438\u0441\u0435\u0440_1",
+      "master_row": 211,
+      "depth_cm": "0-10",
+      "published_depth_rows": [
+        "0-5",
+        "5-10"
+      ],
+      "texture": "silt loam",
+      "category_system": "clapp1978.UsdaTextureClass",
+      "material_basis": "mineral_soil",
+      "profile_id": "panina2015_gray_forest_vladimir_profile",
+      "source_locations": [
+        "Table 17, printed p.88, depth 0-5 cm",
+        "Table 17, printed p.88, depth 5-10 cm"
+      ]
+    },
+    {
+      "source_id": "2015_\u041f\u0430\u043d\u0438\u043d\u0430. \u0434\u0438\u0441\u0435\u0440",
+      "sample_id": "2015_\u041f\u0430\u043d\u0438\u043d\u0430. \u0434\u0438\u0441\u0435\u0440_2",
+      "master_row": 212,
+      "depth_cm": "10-20",
+      "published_depth_rows": [
+        "10-20"
+      ],
+      "texture": "silt loam",
+      "category_system": "clapp1978.UsdaTextureClass",
+      "material_basis": "mineral_soil",
+      "profile_id": "panina2015_gray_forest_vladimir_profile",
+      "source_locations": [
+        "Table 17, printed p.88, depth 10-20 cm"
+      ]
+    },
+    {
+      "source_id": "2015_\u041f\u0430\u043d\u0438\u043d\u0430. \u0434\u0438\u0441\u0435\u0440",
+      "sample_id": "2015_\u041f\u0430\u043d\u0438\u043d\u0430. \u0434\u0438\u0441\u0435\u0440_3",
+      "master_row": 213,
+      "depth_cm": "20-30",
+      "published_depth_rows": [
+        "20-30"
+      ],
+      "texture": "silt loam",
+      "category_system": "clapp1978.UsdaTextureClass",
+      "material_basis": "mineral_soil",
+      "profile_id": "panina2015_gray_forest_vladimir_profile",
+      "source_locations": [
+        "Table 17, printed p.88, depth 20-30 cm"
+      ]
+    },
+    {
+      "source_id": "2015_\u041f\u0430\u043d\u0438\u043d\u0430. \u0434\u0438\u0441\u0435\u0440",
+      "sample_id": "2015_\u041f\u0430\u043d\u0438\u043d\u0430. \u0434\u0438\u0441\u0435\u0440_4",
+      "master_row": 214,
+      "depth_cm": "30-40",
+      "published_depth_rows": [
+        "30-40"
+      ],
+      "texture": "silt loam",
+      "category_system": "clapp1978.UsdaTextureClass",
+      "material_basis": "mineral_soil",
+      "profile_id": "panina2015_gray_forest_vladimir_profile",
+      "source_locations": [
+        "Table 17, printed p.88, depth 30-40 cm"
+      ]
+    },
+    {
+      "source_id": "2015_\u041f\u0430\u043d\u0438\u043d\u0430. \u0434\u0438\u0441\u0435\u0440",
+      "sample_id": "2015_\u041f\u0430\u043d\u0438\u043d\u0430. \u0434\u0438\u0441\u0435\u0440_5",
+      "master_row": 215,
+      "depth_cm": "40-50",
+      "published_depth_rows": [
+        "40-50"
+      ],
+      "texture": "silt loam",
+      "category_system": "clapp1978.UsdaTextureClass",
+      "material_basis": "mineral_soil",
+      "profile_id": "panina2015_gray_forest_vladimir_profile",
+      "source_locations": [
+        "Table 17, printed p.88, depth 40-50 cm"
+      ]
+    },
+    {
+      "source_id": "2015_\u041f\u0430\u043d\u0438\u043d\u0430. \u0434\u0438\u0441\u0435\u0440",
+      "sample_id": "2015_\u041f\u0430\u043d\u0438\u043d\u0430. \u0434\u0438\u0441\u0435\u0440_6",
+      "master_row": 216,
+      "depth_cm": "50-60",
+      "published_depth_rows": [
+        "50-60"
+      ],
+      "texture": "silt loam",
+      "category_system": "clapp1978.UsdaTextureClass",
+      "material_basis": "mineral_soil",
+      "profile_id": "panina2015_gray_forest_vladimir_profile",
+      "source_locations": [
+        "Table 17, printed p.88, depth 50-60 cm"
+      ]
+    }
+  ],
+  "predictor_origin": "measured: directly transcribed published observed texture class, not a locally calculated or translated class",
+  "global_workbook_binding_policy": "unchanged; this review supplies a separate source-backed subset"
+}

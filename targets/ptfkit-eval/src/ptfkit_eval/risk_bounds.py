@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING, Literal
 
 from .documents import EvaluationDocumentError
-from .losses import LogPressureLossPlan, mean_finite_losses
+from .losses import SelectionLossPlan, mean_finite_losses
 
 
 if TYPE_CHECKING:
@@ -30,7 +30,7 @@ class ConditionalOuterRiskPlan:
 
     population_id: str
     grouping: Literal['source', 'profile']
-    loss: LogPressureLossPlan
+    loss: SelectionLossPlan
     maximum_sample_loss: float
     maximum_group_size: int
     minimum_group_size: int = 1

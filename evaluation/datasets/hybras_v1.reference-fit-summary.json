@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "scope": "descriptive_fixed_box_fits_not_native_PTF_ranking_or_coverage_qualification",
+  "dataset_sha256": "7ee2c78e07da2ffe97b987e776620ce275390b1e24939a63552f08f3039fd665",
+  "parent_dataset_sha256": "fb18621135906b4fab7777c28b5383a31e2349bb11b80cb43b737bd8e6824f70",
+  "samples": 987,
+  "observations": 7054,
+  "fits": 3948,
+  "reuse_policy": "Exact unchanged per-curve observations; exclusions based only on pressure provenance.",
+  "summary": [
+    {
+      "family_id": "brooks_corey_v1",
+      "status": "failed",
+      "reason": "boundary_solution",
+      "count": 751
+    },
+    {
+      "family_id": "brooks_corey_v1",
+      "status": "failed",
+      "reason": "insufficient_observations",
+      "count": 11
+    },
+    {
+      "family_id": "brooks_corey_v1",
+      "status": "failed",
+      "reason": "nonidentifiable",
+      "count": 134
+    },
+    {
+      "family_id": "brooks_corey_v1",
+      "status": "fitted",
+      "reason": null,
+      "count": 91
+    },
+    {
+      "family_id": "clapp1978_gradual_air_entry_v1",
+      "status": "failed",
+      "reason": "boundary_solution",
+      "count": 498
+    },
+    {
+      "family_id": "clapp1978_gradual_air_entry_v1",
+      "status": "failed",
+      "reason": "nonidentifiable",
+      "count": 380
+    },
+    {
+      "family_id": "clapp1978_gradual_air_entry_v1",
+      "status": "fitted",
+      "reason": null,
+      "count": 109
+    },
+    {
+      "family_id": "van_genuchten_m1_v1",
+      "status": "failed",
+      "reason": "boundary_solution",
+      "count": 856
+    },
+    {
+      "family_id": "van_genuchten_m1_v1",
+      "status": "failed",
+      "reason": "insufficient_observations",
+      "count": 11
+    },
+    {
+      "family_id": "van_genuchten_m1_v1",
+      "status": "fitted",
+      "reason": null,
+      "count": 120
+    },
+    {
+      "family_id": "van_genuchten_mualem_v1",
+      "status": "failed",
+      "reason": "boundary_solution",
+      "count": 838
+    },
+    {
+      "family_id": "van_genuchten_mualem_v1",
+      "status": "failed",
+      "reason": "insufficient_observations",
+      "count": 11
+    },
+    {
+      "family_id": "van_genuchten_mualem_v1",
+      "status": "fitted",
+      "reason": null,
+      "count": 138
+    }
+  ],
+  "parent_artifact_sha256": "9e6e9cbd27ee7d83bd9572de60a81a48acf3ecb37ee45b10d93b2e8a9af27b34"
+}

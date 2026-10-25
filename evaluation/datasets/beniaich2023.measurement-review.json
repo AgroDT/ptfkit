@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "review_scope": "implemented_linear_regression_measurement_contract_migration",
+  "source": "beniaich2023",
+  "status": "contracts_completed_dataset_eligibility_not_established",
+  "implemented_regression_count": 11,
+  "paper": {
+    "url": "https://www.frontiersin.org/journals/environmental-science/articles/10.3389/fenvs.2023.1090688/full",
+    "pdf_url": "https://www.frontiersin.org/journals/environmental-science/articles/10.3389/fenvs.2023.1090688/pdf",
+    "sha256": "e4da261c0f8f2819e738a251b9780c7ae420a1cc9264ae20ce8ac7d55a8ca517",
+    "doi": "10.3389/fenvs.2023.1090688",
+    "visually_checked": ["PDF page 4, Sections 2.2-2.4", "PDF page 10, Tables 5-6"]
+  },
+  "decisions": [
+    "Section 2.2 supports disturbed air-dried soil passed through a 2-mm sieve, represented as fine_earth.",
+    "Particle fractions retain USDA diameter boundaries and the reported Bouyoucos hydrometer method with 5-percent sodium hexametaphosphate dispersant.",
+    "Sections 2.3-2.4 identify Walkley-Black organic carbon and the factor 1.724 used to obtain organic matter. The required organic-matter input retains this operational definition; no generic humus or carbon substitution is authorized.",
+    "Water outputs are explicitly mass of water per mass of dry soil. Public outputs use mass_fraction; source regression percentages are divided by 100 by the existing formulas.",
+    "Field capacity and wilting point retain magnitude conditions of 33 and 1500 kPa, respectively, and the disturbed-ring retention method.",
+    "Capillary saturation is reported without an exact controlled suction. Its descriptor has no fixed-pressure condition; it cannot be scored as an assumed zero-kPa output.",
+    "The new organic_matter_content quantity is distinct from organic_carbon_content; a unit conversion cannot interchange them.",
+    "No coefficients, formulas, class values or function statuses are changed."
+  ],
+  "limitations": [
+    "Reported Moroccan agricultural topsoils at 0-20 cm are source calibration scope, not a validated transfer domain for meta_v3.3.",
+    "A deterministic carbon-to-organic-matter calculation still requires verified transformation lineage and does not automatically enter the observed-only benchmark.",
+    "Raw predictors, observation preparation and exact target pressures require separate dataset review.",
+    "The paper reports 331 samples, while its listed regional counts sum to 341; no raw sample crosswalk is supplied. No sample-count confidence claim is inferred.",
+    "Unpublished fitted trees and ensembles remain blocked under the existing specification."
+  ]
+}

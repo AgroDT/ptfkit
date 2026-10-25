@@ -39,7 +39,7 @@ def _evaluation() -> dict[str, object]:
                 'target': {
                     'quantity': 'volumetric_water_content',
                     'unit': 'volume_fraction',
-                    'material_basis': 'fine_earth',
+                    'material_basis': 'soil',
                     'denominator_basis': 'bulk_volume',
                 },
                 'function': f'calc_ptf_gunarathna2019_vwc{pressure}_set1',
@@ -71,7 +71,7 @@ def test_executes_scalar_public_outputs_only_at_the_manifest_pressure(
 
 def _write_point_fixture(directory: Path) -> Path:
     document = json.loads(json.dumps(dataset_document()))
-    document['target']['material_basis'] = 'fine_earth'
+    document['target']['material_basis'] = 'soil'
     document['method'] = 'pressure_plate'
     for sample in document['samples']:
         sample['features'] = [

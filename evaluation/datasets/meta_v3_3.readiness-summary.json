@@ -4,6 +4,138 @@
   "functions": [
     {
       "blockers": {
+        "missing_input_binding": 59
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 0,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_beniaich2023_mlr1"
+    },
+    {
+      "blockers": {
+        "missing_input_binding": 59
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 0,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_beniaich2023_mlr2"
+    },
+    {
+      "blockers": {
+        "missing_input_binding": 59
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 0,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_beniaich2023_mlr3"
+    },
+    {
+      "blockers": {
+        "missing_input_binding": 59
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 0,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_beniaich2023_mlr4"
+    },
+    {
+      "blockers": {
+        "missing_input_binding": 59
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 0,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_beniaich2023_mlr5"
+    },
+    {
+      "blockers": {
+        "missing_input_binding": 59
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 0,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_beniaich2023_slr1"
+    },
+    {
+      "blockers": {
+        "missing_input_binding": 59
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 0,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_beniaich2023_slr2"
+    },
+    {
+      "blockers": {
+        "missing_input_binding": 59
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 0,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_beniaich2023_slr3"
+    },
+    {
+      "blockers": {
+        "missing_input_binding": 59
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 0,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_beniaich2023_slr4"
+    },
+    {
+      "blockers": {
+        "missing_input_binding": 59
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 0,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_beniaich2023_slr5"
+    },
+    {
+      "blockers": {
+        "missing_input_binding": 59
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 0,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_beniaich2023_slr6"
+    },
+    {
+      "blockers": {
         "missing_input": 35,
         "texture_classification": 24
       },
@@ -29,6 +161,42 @@
     },
     {
       "blockers": {
+        "missing_input_binding": 59
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 0,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_gunarathna2019_vwc10_set2"
+    },
+    {
+      "blockers": {
+        "missing_input_binding": 59
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 0,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_gunarathna2019_vwc10_set3"
+    },
+    {
+      "blockers": {
+        "missing_input_binding": 59
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 0,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_gunarathna2019_vwc10_set4"
+    },
+    {
+      "blockers": {
         "missing_input": 59
       },
       "counts": {
@@ -38,6 +206,30 @@
         "predictor_blocked": 59
       },
       "function": "calc_ptf_gunarathna2019_vwc1500_set1"
+    },
+    {
+      "blockers": {
+        "missing_input_binding": 59
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 0,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_gunarathna2019_vwc1500_set3"
+    },
+    {
+      "blockers": {
+        "missing_input_binding": 59
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 0,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_gunarathna2019_vwc1500_set4"
     },
     {
       "blockers": {
@@ -53,6 +245,54 @@
     },
     {
       "blockers": {
+        "missing_input_binding": 59
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 0,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_gunarathna2019_vwc33_set2"
+    },
+    {
+      "blockers": {
+        "missing_input_binding": 59
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 0,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_gunarathna2019_vwc33_set3"
+    },
+    {
+      "blockers": {
+        "missing_input_binding": 59
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 0,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_gunarathna2019_vwc33_set4"
+    },
+    {
+      "blockers": {
+        "missing_input_binding": 59
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 0,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_saxton2006"
+    },
+    {
+      "blockers": {
         "density_units": 26,
         "missing_input": 59,
         "organic_property_provenance": 21,
@@ -65,10 +305,22 @@
         "predictor_blocked": 59
       },
       "function": "calc_ptf_vereecken1989"
+    },
+    {
+      "blockers": {
+        "missing_input_binding": 59
+      },
+      "counts": {
+        "canonical_samples": 59,
+        "complete_raw_inputs": 0,
+        "matched_samples": 59,
+        "predictor_blocked": 59
+      },
+      "function": "calc_ptf_wosten2001_class_parameters"
     }
   ],
   "join_policy": "exact_source_and_sample_id_unique_master_row",
-  "manifest_sha256": "0f17e500ab3d4715ec10210229319d31d5e9f32cb6b3b1134d520411d2db4691",
+  "manifest_sha256": "34fc0bf4f00972069f1cb57dee61a42aaac6503ad48e773afcdb2c99968317fd",
   "mapping_sha256": "5a5b41b68aefec6deb752ec5b9f10c0cd9421577da982856346392768d4da77c",
   "schema_version": 1,
   "scope": "predictor_readiness_for_canonical_curve_identities_not_scoring_eligibility",

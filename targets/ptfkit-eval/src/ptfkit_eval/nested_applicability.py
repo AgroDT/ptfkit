@@ -8,13 +8,13 @@ from typing import TYPE_CHECKING, Literal
 from .applicability import EmpiricalDomainPlan, RunEmpiricalDomain, assess_retention_applicability
 from .cohorts import build_retention_cohorts, run_candidate_comparisons
 from .documents import EvaluationDocumentError
-from .losses import SampleCurveLoss, evaluate_log_pressure_loss, mean_finite_losses
+from .losses import SampleCurveLoss, evaluate_selection_loss, mean_finite_losses
 from .uncertainty import RetentionBootstrapResult, bootstrap_retention_errors
 
 
 if TYPE_CHECKING:
     from .folds import GroupKey, NestedGroupFolds, SampleKey
-    from .losses import LogPressureLossPlan
+    from .losses import SelectionLossPlan
     from .metrics import RetentionComparison
     from .runner import RetentionRunResult
     from .selection import FixedNestedSelection
@@ -253,7 +253,7 @@ def summarize_domain_strata(
     *,
     samples: tuple[NestedDomainSample, ...],
     comparisons: tuple[RetentionComparison, ...],
-    loss_plan: LogPressureLossPlan,
+    loss_plan: SelectionLossPlan,
 ) -> tuple[NestedDomainStratum, ...]:
     """Summarize all four input strata without changing their sample rosters."""
     return tuple(_stratum(result, loss_plan, status, samples, comparisons) for status in _STATUSES)
@@ -261,7 +261,7 @@ def summarize_domain_strata(
 
 def _stratum(
     result: RetentionRunResult,
-    loss_plan: LogPressureLossPlan,
+    loss_plan: SelectionLossPlan,
     status: DomainStatus,
     samples: tuple[NestedDomainSample, ...],
     comparisons: tuple[RetentionComparison, ...],
@@ -273,7 +273,7 @@ def _stratum(
     points = tuple(point for point in comparisons if (point.source_id, point.sample_id) in selected)
     losses = {
         (sample.source_id, sample.sample_id): sample
-        for sample in evaluate_log_pressure_loss(points, plan=loss_plan)
+        for sample in evaluate_selection_loss(points, plan=loss_plan)
     }
     records = tuple(
         losses.get(key, SampleCurveLoss(*key, 0, None, 'insufficient_points')) for key in keys

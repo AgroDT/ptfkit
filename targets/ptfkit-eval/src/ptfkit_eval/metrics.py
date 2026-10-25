@@ -8,6 +8,8 @@ from dataclasses import dataclass
 from fractions import Fraction
 from typing import TYPE_CHECKING
 
+from .water import canonical_water_contract, within_water_bounds
+
 
 if TYPE_CHECKING:
     from collections.abc import Iterable, Sequence
@@ -19,7 +21,7 @@ class RetentionMetricsError(ValueError):
 
 @dataclass(frozen=True)
 class RetentionComparison:
-    """One already eligible comparison in kPa and volumetric volume fractions.
+    """One eligible comparison in kPa and the declared canonical water fraction.
 
     Sample identifiers are local to a source. All rows passed to a summary
     must belong to the same candidate, target contract, and evaluation protocol.
@@ -32,11 +34,12 @@ class RetentionComparison:
     observed: float
     predicted: float
     profile_id: str | None = None
+    water_quantity: str = 'volumetric_water_content'
 
 
 @dataclass(frozen=True)
 class ErrorMetrics:
-    """Prediction-minus-observation errors in volume fractions."""
+    """Prediction-minus-observation errors in the cohort's canonical water unit."""
 
     mean_error: float
     mean_absolute_error: float
@@ -68,6 +71,7 @@ class RetentionErrorSummary:
     metrics: ErrorMetrics
     profile_count: int
     samples_without_profile_count: int
+    water_quantity: str = 'volumetric_water_content'
 
 
 def summarize_retention_errors(
@@ -89,8 +93,13 @@ def summarize_retention_errors(
     groups: dict[tuple[str, str], list[RetentionComparison]] = defaultdict(list)
     profiles: dict[tuple[str, str], str | None] = {}
     seen: set[tuple[str, str, float]] = set()
+    quantity: str | None = None
     for point in comparisons:
         _validate_point(point)
+        if quantity is not None and point.water_quantity != quantity:
+            message = 'Retention comparisons must share one water quantity.'
+            raise RetentionMetricsError(message)
+        quantity = point.water_quantity
         key = (point.source_id, point.sample_id, point.suction_kpa)
         if key in seen:
             message = f'Duplicate source/sample/pressure comparison: {key!r}.'
@@ -102,7 +111,7 @@ def summarize_retention_errors(
             raise RetentionMetricsError(message)
         profiles[sample] = point.profile_id
         groups[sample].append(point)
-    if not groups:
+    if not groups or quantity is None:
         message = 'Retention metrics require at least one comparison.'
         raise RetentionMetricsError(message)
 
@@ -124,6 +133,7 @@ def summarize_retention_errors(
             )
         )
     return RetentionErrorSummary(
+        water_quantity=quantity,
         source_count=len({source_id for source_id, _ in groups}),
         sample_count=len(samples),
         point_count=len(seen),
@@ -147,8 +157,15 @@ def _validate_point(point: RetentionComparison) -> None:
     if any(isinstance(value, bool) or not math.isfinite(value) for value in values):
         message = 'Pressure, observed water content, and prediction must be finite numbers.'
         raise RetentionMetricsError(message)
-    if point.suction_kpa < 0 or not 0 <= point.observed <= 1:
-        message = 'Suction must be nonnegative and observed volume fraction must be in [0, 1].'
+    try:
+        canonical_water_contract(point.water_quantity)
+    except ValueError as error:
+        raise RetentionMetricsError(str(error)) from error
+    if point.suction_kpa < 0 or not within_water_bounds(point.observed, point.water_quantity):
+        message = (
+            'Suction must be nonnegative and observed volume fraction must be in [0, 1]; '
+            'gravimetric water content must be nonnegative.'
+        )
         raise RetentionMetricsError(message)
     error = point.predicted - point.observed
     if not math.isfinite(error * error):

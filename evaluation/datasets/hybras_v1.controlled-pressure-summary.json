@@ -1,0 +1,37 @@
+{
+  "archive_sha256": "e9164c2f74e9ad75033b99248b0eee7ba426230150a499a6e6b3a285eebcf618",
+  "dataset_sha256": "760f3bfd997264d811fbcffca241bb84a684edd9c33a6f4b327718701d2f5c5b",
+  "exclusions": {
+    "protocol_or_original_unit_not_confirmed": 5589
+  },
+  "limitations": [
+    "Targets and identities stay unchanged in this separate pressure-coordinate view.",
+    "Absent, ranged and unreviewed method lists do not permit original-unit inversion.",
+    "Atmosphere-based, MPa-based and cm-based protocols are outside this first view.",
+    "Material, predictor and function applicability still require independent binding.",
+    "Historical fits and accuracy results belong to the unchanged rounded-head datasets."
+  ],
+  "native_eligibility": "not_granted",
+  "observations": 1465,
+  "parent_dataset_sha256": "7ee2c78e07da2ffe97b987e776620ce275390b1e24939a63552f08f3039fd665",
+  "pressure_counts_kpa": {
+    "1.0": 10,
+    "10.0": 254,
+    "100.0": 254,
+    "1500.0": 254,
+    "2.0": 55,
+    "33.0": 254,
+    "4.0": 55,
+    "500.0": 55,
+    "6.0": 254,
+    "60.0": 10,
+    "8.0": 10
+  },
+  "profiles": 224,
+  "review_sha256": "d15324b96ba6dfa95f444c1bf34448acaf5f87bd1a3a77e7b1f63d7e59980d4e",
+  "samples": 254,
+  "schema_version": 1,
+  "scope": "source_coordinate_restoration_not_native_eligibility",
+  "script_sha256": "1841231112a80551e5d256a89e89f466e9992b9f1737307e202198066ded5614",
+  "sources": 4
+}

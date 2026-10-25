@@ -2208,3 +2208,595 @@ conditional scenario; obtain reviewed compatible predictor values and target
 material evidence before external scoring. Additional optimizer restarts or
 particle-size metadata on non-overlapping workbook rows do not resolve those
 remaining requirements.
+# Independent boundary-coverage investigation checkpoint
+
+The flagged van Genuchten--Mualem case now has a separately prespecified
+follow-up: five independent blocks of 400 nonlinear realizations, analytic
+Jacobian audits of all 200 original cases, paired exact linear-model controls,
+and a separate 100000-draw fixed-design Gaussian control. Public fitting,
+profile thresholds, parameter boxes, and acceptance gates remain unchanged.
+
+All original analytic full/nuisance audits converged and none improved public
+objectives by more than 1e-10. In the original joint-selected cohort the linear
+and nonlinear coverage events were identical (85/99). Independent nonlinear
+coverage was 937/992, or 94.46%, exact 95% simulation interval
+[92.84%, 95.80%], Monte Carlo SE 0.73 percentage points, one-sided p=0.2343.
+The large exact linear control covered 94979/100000 overall and 47536/50005
+after sign selection. Only three coverage decisions differed among the 986
+jointly selected independent realizations.
+
+The independent series did not reproduce the original strong shortfall; the
+controls support sampling fluctuation as a possible explanation rather than
+identifying a numerical profile-solver defect. The original 34-cell adjusted
+flag remains recorded, and no global or real-soil coverage qualification is
+claimed. See `BOUNDARY-FOLLOWUP.md` and `boundary-followup-summary.json`.
+
+Verification binds the exact plan, generator, diagnostic implementation,
+original source cell, and unchanged public fitting implementation. All 2000
+generated error vectors, all derived paired counts, the pooled primary
+inference, the first 400 complete fit/profile records, and the 100000-draw
+linear control were replayed. The report generator is committed separately
+from large local raw records. **767 tests passed** in the full package suite;
+hand-derived derivative and coupled-design t-control regression tests passed
+again after strengthening, with Ruff and ty passing.
+
+Next work should not retune the F threshold from the old flag. Continued
+uncertainty qualification needs prespecified practical tolerances and enough
+Monte Carlo precision; external PTF evaluation still needs compatible inputs
+and reviewed target-material evidence on the retained real cohort.
+# Source-backed Clapp external pilot checkpoint
+
+The 24 raw texture candidates were audited across four primary sources.
+Six Panina gray forest horizons have a directly published supported class
+and reviewed mineral material; six sod-podzolic horizons have an unsupported
+Clapp class. Twelve Badenko/Bolotov/Moiseev candidates remain unresolved for
+USDA compatibility. The source-review JSON records PDF hashes, locations,
+master rows, depth correspondence and exact selected identities. No Russian
+category crosswalk or unsupported Clapp class was invented.
+
+`evaluation/experiments/panina_clapp/run.py` creates a separate checksum-bound
+canonical overlay from the original export and reviewed PDF. It preserves
+all selected pressures, water values and lineage, adds the directly reported
+categorical predictor, and records all horizons as one profile. The global
+workbook normalization and predictor mapping are unchanged.
+
+The first nonempty fixed-candidate external check has six eligible horizons
+and 56 points. Sample-equal metrics in volume fraction are ME 0.0288498422,
+MAE 0.0305541769, RMSE 0.0350360985 and median AE 0.0325632289. Aggregate
+confidence intervals are `insufficient_evidence/too_few_groups`, because the
+independent profile count is one. The broad tested pressure extent does not
+establish pressure-domain validation or national representativeness. See the
+count/metric `meta_v3_3.clapp-pilot-summary.json`; raw runs remain local.
+
+Artifact publication exposed a Windows 3.13 inherited temporary-ACL problem.
+The writer now creates exclusive publication staging under the destination
+parent on Windows, with bounded failure cleanup and atomic rename retained.
+POSIX temporary staging is unchanged. Separate-process reading now succeeds;
+complete original-plan replay and installed-wheel replay are byte-identical,
+and persisted-plan predictions/cohorts match.
+
+Verification: **771 tests passed** in the full package suite; 13 focused
+builder/native-run/publication tests passed after final changes. Ruff and ty
+passed. The native curve oracle uses the published Clapp silt-loam parameters
+at a dry point; other tests protect source hashes, unchanged observations,
+unsupported-class rejection, one-profile interval withholding and cleanup of
+failed publication on both platform branches.
+
+Next: expand independently reviewed class/material cohorts and source coverage,
+and prespecify pressure-domain reporting. The pilot is a concrete end-to-end
+external check, not evidence that remaining workbook rows or uncertainty
+protocols are qualified.
+# Full-catalog completion objective
+
+The completion criterion is a per-dataset decision across all scientifically
+eligible implemented functions and supported ensembles, together with explicit
+selection blockers, approximation criteria, uncertainty and applicability for
+van Genuchten and Brooks-Corey. A successful narrow pilot does not complete
+this objective.
+
+The reproducible inventory in
+`evaluation/datasets/implemented-function-coverage.json` reconciles all 146
+implemented functions with the generated manifest: five emitted, 141 omitted
+for incomplete measurement contracts. It identifies 362 missing numeric-input
+and 281 missing output descriptor bindings. The inventory resolves shared
+definitions and records specification and manifest hashes. Its exact replay
+was byte-identical; Ruff and formatting checks passed.
+
+The next implementation dependency is source-reviewed contract migration for
+retention-compatible functions, followed by a dataset eligibility matrix and
+grouped nested strategy comparison. Other output targets remain in scope but
+require their own compatible observations. The completion sequence and the
+distinction between parameter intervals, curve uncertainty and applicability
+are recorded in `evaluation/experiments/catalog_coverage/README.md`.
+
+# Wosten adapter and full-catalog readiness matrix
+
+The source-reviewed Wosten class-parameter function now enters the generated
+manifest with six explicit output descriptors. A source-restricted retention
+adapter implements its Mualem van Genuchten convention. The manifest contains
+six functions; 140 implemented functions remain omitted. The inventory now
+identifies 362 missing numeric-input and 275 missing output bindings.
+
+All retained targets were regenerated through codegen. Deterministic
+regeneration reported unchanged output, and the manifest generator test
+passed. The package suite passed **784 tests** after the adapter change.
+Subsequent focused tests passed **24 tests** covering the readiness matrix,
+exact identity joins, predictor gates and adapter behavior. Ruff and ty passed.
+
+`meta_v3_3.function-readiness-matrix.json` preserves all 146 implemented
+functions across six source reporting partitions, 59 samples and 549
+volumetric observations. It is raw predictor readiness, not scoring permission
+or a selected-model result. A missing feature binding no longer counts as
+complete raw inputs. The raw Wosten predictor count is correctly zero: no
+reviewed Staring class is supplied by the workbook mapping.
+
+The next implementation gap includes gravimetric canonical evaluation:
+487 reviewed gravimetric observations are normalized, but the current canonical
+retention schema/export accepts volumetric targets only. They must receive an
+explicit compatible contract and evaluation path rather than an assumed
+density conversion. Fixed-pressure gravimetric PTF contracts remain part of
+the complete-catalog objective.
+
+Additional verification: 55 public Python Wosten/manifest tests passed. The
+matrix replay was byte-identical across all 876 function/source cells. A
+separately executed m=1 probe was rejected by the analytic Mualem oracle,
+without modifying production files. Existing Clapp predictions, cohorts,
+eligibility and curve-quality artifacts remained byte-identical after the
+manifest expansion. An isolated installed wheel reproduced every artifact
+from the corresponding current-source Clapp run and passed the new scalar
+adapter oracle. Historical source-pinned simulation artifacts were preserved.
+# Gravimetric canonical evaluation checkpoint
+
+Canonical dataset version 2 adds an explicit gravimetric contract:
+`gravimetric_water_content`, `mass_fraction`, `dry_soil_mass`. Version 1 remains
+volumetric-only, and the original volumetric export's semantic checksum is
+unchanged. Export selects one quantity and accounts for omitted rows of the
+other quantity without a density conversion. The real export retains all 487
+mass-basis points from 50 sample curves, including 20 ratios above one.
+Together with the 549 volume observations, these account for all 1,036
+normalized points. Mass export replay is byte-identical.
+
+Native fixed-output scoring, sample-balanced metrics, aggregate cluster
+bootstrap intervals, curve quality and report units now respect the declared
+water quantity. Comparisons preserve that quantity, mixed quantities are
+rejected, and cohort targets must agree with comparison quantities. Volume
+bounds remain [0, 1]; mass ratios are nonnegative without a universal upper
+bound. The approximation families and grouped conformal prediction protocol
+remain explicitly volumetric-only. New tests protect those rejection gates.
+
+The full package suite passed **794 tests** after the execution changes;
+subsequent focused export, physical-contract and unsupported-method tests
+passed **51 tests**. Ruff and ty passed. The real mass readiness matrix retains
+all 146 implemented functions across five source partitions; metadata and raw
+predictor readiness still do not establish scoring permission.
+
+The original Dharumarajan (2019) PDF was reviewed and relevant methods/tables
+checked visually. It confirms the two target pressures but does not establish
+the mass/volume water-content denominator. Existing YAML warnings already
+preserve that ambiguity. The source review now records the blocker and PDF
+checksum, so the legacy gravimetric identifier is not mistaken for reviewed
+physical semantics. No unsupported contract or class crosswalk was added.
+
+Final verification passed **797 tests** in the full package suite. An isolated
+wheel passed all **51** focused normalization, export, unit/basis, native
+execution and unsupported-method tests, and loaded the checksum-identical real
+mass export. A temporary in-memory mutation imposing an upper bound of one on
+mass ratios caused the intended regression test to fail; production files
+were unchanged. All 730 mass function/source cells bind the current dataset
+and coverage inventory. Readiness does not establish predictive validation.
+# Beniaich gravimetric contract migration
+
+The original Beniaich et al. (2023) PDF supports the gravimetric denominator,
+disturbed 2-mm-sieved material, hydrometer protocol and organic-matter
+processing. Sections 2.2-2.4 and Tables 5-6 were reviewed visually. All 11
+implemented linear regressions now have complete measurement descriptors.
+The new `organic_matter_content` quantity remains distinct from organic
+carbon; method and derivation gates are retained. Source saturation is not
+assigned an unreported controlled zero pressure.
+
+The manifest now contains **17 of 146 implemented functions**, with 129
+omitted. Remaining gaps are 342 numeric-input and 242 output bindings. All
+targets were regenerated; deterministic regeneration was unchanged and all
+130 generator tests passed. Public Beniaich/manifest tests passed 34 tests.
+The full evaluator suite passed 813 tests; 18 subsequent focused contract,
+organic-matter and exact-pressure support tests passed. Ruff and ty passed.
+
+Both real-data readiness matrices and the canonical-volume readiness summary
+were rebuilt against the 17-function manifest. The pressure-support audit
+reveals no exact 33- or 1500-kPa observations in the 487-point mass cohort.
+The 22 fixed-pressure Beniaich outputs therefore have no primary observed
+targets in that cohort; 11 saturation outputs have no fixed-pressure
+condition. See `meta_v3_3.fixed-pressure-support.json`. No near-pressure snap,
+target interpolation, generic humus substitution or method relaxation was
+introduced. Native real-function tests use explicitly synthetic inputs and
+hand-derived Table 5 oracles; they are not external accuracy evidence.
+
+Next technical dependency: discrete multi-output candidates or an explicitly
+registered single-pressure selection loss are needed to compare point PTFs
+within grouped nested selection. Existing log-pressure curve selection
+requires at least two supported pressures. A single fixed output must not be
+treated as a continuous curve. More real-data scoring additionally requires
+reviewed predictors, material/method compatibility and observed targets at the
+declared pressures, or a separate justified approximation-reference protocol.
+# Discrete multi-output grouped selection checkpoint
+
+Evaluation plan version 2 introduces `function_points` / `fixed_outputs`.
+One native function can now contribute several explicitly registered output
+pressures to the same candidate. Every output retains its physical contract
+and method. Converted duplicate pressures and unsupported output conditions
+invalidate the whole candidate; intermediate, near and extrapolated pressures
+are never supplied. Version-1 plans retain their original types.
+
+The native executor, observation exclusions, target-free forecast gates and
+run-method checks all handle finite output sets. Plan resolution and execution
+share the same affine conversion implementation. The public numeric-input
+path now converts real scalar integers to float before native ufunc dispatch;
+a regression test reproduced and protects that previously failing input.
+
+The self-contained `synthetic_discrete_retention` example uses real Beniaich
+SLR1/SLR3 functions, six synthetic profile groups and exact FC/PWP targets.
+Targets are hand-derived constants, not generated with ptfkit. Grouped nested
+selection locks SLR3 for the atomic strategy and trains a convex pair with
+left weight 0.25. Changing untouched outer targets to favor SLR1 leaves inner
+choices, training evidence and ensemble weights unchanged. Outer losses change
+as expected. This is technical evidence, not external accuracy or interval
+coverage, and no final strategy is chosen using the best outer test error.
+
+Verification: **829 tests passed** in the full evaluator suite. Fourteen
+focused tests also passed from an isolated installed wheel. The wheel
+reproduced every current-source example artifact byte-for-byte; input
+regeneration was identical. Ruff and ty passed. Two in-memory semantic
+mutations were detected: inventing off-support predictions and checking only
+the first output's observation method. Production files were untouched by the
+probes. Historical source-pinned studies remain unchanged.
+
+The scientific blockers remain: the real mass cohort has no exact FC/PWP
+pressure targets and lacks reviewed compatible predictors/material/method
+bindings. Single-pressure-only functions still need an explicit selection
+loss rather than a degenerate log-pressure integral. The full objective,
+including broad source migration, real-data strategy decisions and justified
+van Genuchten/Brooks-Corey uncertainty, is not complete.
+
+## HYBRAS inventory checkpoint
+
+Retrieved the official HYBRAS archive and manual into local source review.
+The reproducible inventory in `evaluation/experiments/hybras/` records archive
+and workbook hashes, 1,075 horizons, 445 profile identifiers and 8,793 raw-table
+points. It distinguishes 289 porosity-derived zero-head values from the 7,718
+positive-head points. Saturation provenance repeats across each curve, so it
+must not cause all points in that curve to be excluded. Two synthetic-workbook
+tests protect this distinction and reject observations without horizon metadata.
+
+This is an acquisition/inventory checkpoint, not an additional validation
+result. Import still requires per-row provenance, group identity, method and
+material compatibility, calibration-overlap and redistribution review. Fitted
+and estimated retention columns must remain separate from observed targets.
+
+## HYBRAS positive-head import
+
+Reviewed manual PDF pages 12 and 14 (printed pages 6 and 8), including visual
+inspection. Added a checksum-pinned adapter for the positive-head raw table:
+7,718 observations, 1,075 horizons, 445 profile IDs and 36 source-reference
+groups. Canonical data and complete observation/source comments remain local.
+Two independent builds reproduced both dataset and provenance byte for byte.
+The canonical dataset hash is
+`fb18621135906b4fab7777c28b5383a31e2349bb11b80cb43b737bd8e6824f70`.
+
+All zero-head values are deferred, including the 786 reported saturation
+values. Reported cm heads use the standard cmH2O conversion without snapping
+to the wide table's approximate kPa labels. Source digitization, averaging
+and rounding remain explicit limitations. Physical diagnostics preserve 83
+increases in water content across 68 curves without modifying observations.
+Material remains unspecified and predictor features empty: this enables
+descriptive approximation, not native PTF ranking or independent validation.
+
+Three focused tests cover derived saturation versus positive-head points,
+orphan metadata, exact pressure conversion, group identity, comment lineage
+and noncorrecting physical diagnostics. Ruff and evaluator type checks pass.
+The current evaluator's 63 Python/schema files match the archived wheel saved
+with the HYBRAS reproduction scripts. Existing reference-fit boxes remain
+computational limits; they do not become validated HYBRAS applicability ranges.
+
+### Pressure review and completed reference fits
+
+Subsequent inspection of every distinct raw comment identified `1atm=1020cm`
+for 664 positive-head points in 88 horizons; other comments use `1atm=1033cm`.
+The full canonical import now marks the ambiguous points blocked without
+changing their heads. The reviewed fitting subset contains 7,054 observations
+from 987 horizons, hash
+`7ee2c78e07da2ffe97b987e776620ce275390b1e24939a63552f08f3039fd665`.
+Earlier preliminary hashes above are retained for provenance, not current
+eligibility. The source-review JSON records this additional exclusion.
+
+The preliminary 4,300 independent per-curve reference fits completed. A strict
+exact-observation review retains 3,948 fits for the reviewed cohort, with no
+refitting or outcome-based cohort exclusions. Accepted counts are 91
+Brooks-Corey, 138 van Genuchten Mualem, 120 van Genuchten m=1 and 109 Clapp.
+Most rejections are boundary solutions under the existing restrictive boxes.
+These findings prioritize broader physically ordered parameter support and
+separate review of measured saturation anchors; they do not establish coverage
+qualification or identify a best native PTF/ensemble. Tests reject changed
+observations or duplicate records when reusing independent descriptive fits.
+
+## Ordered water parameters and broader HYBRAS approximation
+
+Implemented `bounded_trf_ordered_water_multistart_v1` alongside the unchanged
+default method. A conditional residual-water fraction enforces physical water
+ordering while permitting overlapping declared boxes. The numerical water
+separation is 1e-10 volume fraction. Jacobians are transformed back to physical
+parameters before identifiability and covariance calculations. Boundary/rank,
+conditioning and competing-start gates remain active; the coordinate cap's
+nondifferentiable neighborhood produces an explicit rejection. Fixed-parameter
+profiles restrict nuisance water ranges to their feasible region.
+
+The run schema and loader preserve the selected method through publication
+and replay. Independent formula/finite-difference oracles cover VG Mualem,
+VG m=1 and Brooks-Corey, including physical covariance and nuisance profiles.
+An in-memory mutation omitting the inverse chain rule failed all three
+covariance regressions. The complete suite passed 844 tests; the isolated wheel
+passed 18 focused tests and reproduced eight full real-data fit records exactly.
+
+HYBRAS manual PDF page 21 (printed page 15) was visually reviewed for VG bounds.
+The new experiment uses those computational boxes, converts alpha from cm^-1
+to kPa^-1, and declares separate BC scale/shape bounds. It does not reproduce
+the manual's optimizer or saturation-anchor policy. All 1,974 fits completed:
+486 VG Mualem and 399 BC fits passed local numerical gates. The paired audit
+checks the complete 987-curve roster, unchanged targets and nested physical
+boxes. Six formerly accepted fits are rejected; 27 BC fits have worse converged
+SSE than the narrower-box baseline, including six locally accepted fits.
+These optimizer counterexamples remain explicit uncertainty blockers.
+
+Marginal parameter intervals exceed declared boxes for 327 accepted VG fits
+and 130 BC fits; fitted-mean intervals exceed physical bounds for 11 and 5.
+The tracked comparison declares `insufficient_evidence` for uncertainty
+qualification. More local fits are not evidence of empirical coverage or
+external PTF skill. Next audit baseline-seeded/pressure-partition restarts and
+parameter profiles, separately review measured saturation, and continue the
+original native function/data/ensemble selection work.
+
+The installed wheel subsequently replayed all 1,974 complete fit records
+byte for byte against the losslessly repaired first-run stream. Its terminal
+summary hash matches the replay stream. Exact first-run sources, replay wheel,
+scripts and environment records remain local; historical package hashes were
+not rewritten.
+
+## Explicit additional starts and BC counterexample audit
+
+`RetentionFitPlan.additional_starts` now accepts immutable physical vectors in
+registered family parameter order. Additional starts append after the original
+seeded starts, preserve their solutions exactly, and participate in the existing
+acceptance gates. The run schema/loader and nuisance profiles retain them,
+including profiles whose declared parameter order differs from registry order.
+All four approximation families are covered. Invalid dimensions, nonfinite or
+out-of-box values and nonphysical water ordering are rejected. The full suite
+passed 862 tests; 48 isolated-wheel tests also passed, including the independent
+objective verifier added after that full-suite run.
+
+The source-pinned audit retains all 27 BC cases whose broader-box objective was
+worse than the narrower-box baseline. It appends each old best solution as an
+additional start and compares seeded, pressure-partition and interval-solve
+policies. Every original seeded attempt is checked for exact equality. All 81
+refits resolve the known objective regressions within 1e-12; every policy
+retains 11 locally accepted fits and 16 boundary rejections. These targeted
+counts do not replace the full-cohort results.
+
+Five of the six originally accepted counterexamples remain accepted; one is
+now boundary-rejected. The five accepted interval-solve results have 20 explicit
+parameter profiles. No lower objective was found on the declared grids, but
+six regions reach box boundaries and 13 contain only the fitted estimate.
+Grid regions remain approximate diagnostics, not continuous or coverage-qualified
+intervals. The independent direct BC plateau/power verifier checked 5,325
+converged objectives across fitting and nuisance-profile solves.
+
+All 81 complete refit records, including the 20 profiles, and the terminal
+summary reproduced byte for byte from the isolated wheel. Matching code/wheels
+are archived with both runs. The count-only verified result is tracked as
+`hybras_v1.restart-audit-summary.json`; raw numerical records remain local.
+The known optimizer-regression checkpoint is resolved. Continue the original
+native function contract/data/selection scope; empirical uncertainty coverage
+and separately reviewed saturation observations remain outstanding.
+
+
+## Saxton2006 native execution checkpoint
+
+The source-reviewed base function now has a complete measurement contract and
+uses the corrected DOI `10.2136/sssaj2005.0117`. Regression expressions remain
+unchanged. The registered `saxton2006_h_theta` adapter implements the source's
+three branches over 0-1500 kPa, recovers saturation from model reference density,
+and rejects invalid anchors. Shared native input validation enforces sand and
+clay fractions, clay <= 0.60, organic matter <= 8 mass percent, and sand+clay <= 1.
+Reference density is not a measured-density conversion of observed water.
+
+The current catalog contains 18 manifest functions out of 146 implemented
+functions, with 128 omitted, 340 missing numeric-input descriptors and 234
+missing output descriptors. Metadata completeness does not establish dataset
+eligibility. Six Saxton helper functions still need contract migration.
+
+On 987 reviewed HYBRAS horizons, raw predictors permit 607 numerical executions:
+604 pass the curve preflight, two have negative air entry, and one has negative
+wilting-point water with nonfinite derived parameters. Missing predictors exclude
+238 horizons and numeric limits exclude 142 more. These diagnostics preserve
+invalid outputs; they are not external accuracy scores. Fine-earth target basis,
+predictor protocols/origins and normal-density applicability remain unbound.
+
+Authoritative runs are `local/hybras-saxton2006-native-final` and
+`local/hybras-saxton2006-native-wheel`. Complete streams and summaries match byte
+for byte. Each reproduction directory archives the matching wheel, script,
+specification, generated manifest, source review and checksums. Tracked results:
+`evaluation/datasets/hybras_v1.saxton-preflight-summary.json`.
+Validation passed 888 evaluator tests, 130 generator tests, 21 public Saxton
+regression tests and 25 focused installed-wheel tests; Ruff, ty and generated
+file checks passed.
+
+Next review HYBRAS horizon/material labels, reported USDA texture classes and
+per-row carbon/density methods for compatible Clapp/Vereecken bindings. Do not
+infer fine-earth equivalence from a mineral horizon. Run real grouped selection
+only after those contracts match. Final function/ensemble selection and empirical
+VG/BC uncertainty qualification remain unfinished.
+
+
+## HYBRAS Clapp external-validation checkpoint
+
+A source-reviewed overlay now binds reported HYBRAS texture classes to
+`clapp1978.UsdaTextureClass` and restricts target material to the strict single
+A/B/E mineral-horizon subset. The HYBRAS manual Figure 3 (PDF page 16, printed
+page 10) was visually inspected; it pairs Portuguese names with the standard
+USDA triangle classes. NRCS Soil Survey Manual Chapter 3 identifies these master
+horizons as mineral. The overlay checks exact source/sample/profile identities,
+retains feature source cells and preserves all selected pressure/water targets.
+It does not infer absent gravel or fine-earth preparation. Missing, compound,
+transitional and annotated horizon names remain outside this first subset.
+The archive contains Brazilian samples, distinct from Clapp's US calibration.
+Unknown rocky-soil status and transfer outside that calibration population
+remain applicability limitations, not evidence of broad validated support.
+
+The reviewed positive-head subset contains 378 horizons, 144 profiles, 22 source
+reference groups and 2,882 observations. All targets execute successfully;
+50 observed monotonicity findings remain in the dataset without deletion.
+Sample-balanced errors (prediction minus observation, volume fraction):
+ME 0.002573254354125888, MAE 0.05631867785092228,
+RMSE 0.0737532960617378, median absolute error 0.0465950410852472.
+The declared 2,000-replicate profile bootstrap gives a 95% RMSE metric interval
+[0.06738509083752754, 0.08060986217917754]. This conditions on represented
+studies and does not provide individual prediction intervals, parameter
+intervals, empirical coverage qualification or best-model selection.
+
+Authoritative runs: `local/hybras-clapp-reviewed-final` and
+`local/hybras-clapp-reviewed-wheel`. All 11 artifact payloads and four input
+files match byte for byte. Matching wheel, experiment/verifier scripts,
+source specification and checksums are in each `reproduction` directory.
+`evaluation/experiments/hybras/summarize_clapp.py` independently verifies all
+5,764 duplicated cohort prediction records against source Table 2 and
+parabolic/power equations, using bisection for the wet branch, and separately
+checks sample-balanced ME/MAE/RMSE. The initial verifier incorrectly used a
+plateau; its failure exposed that mistake before any verification claim.
+The production adapter already implements gradual air entry correctly.
+Tracked output: `evaluation/datasets/hybras_v1.clapp-validation-summary.json`.
+Six focused HYBRAS/Panina tests pass, including source/profile mismatch,
+unsupported horizon/class exclusions, unchanged targets and an independently
+computed wet-branch point. Ruff and ty checks pass. No core runtime code changed
+in this checkpoint; the preceding complete evaluator suite passed 888 tests.
+
+Next identify a scientifically compatible second native candidate. Vereecken
+remains blocked by density protocol details (all HYBRAS method cells currently
+say only volumetric ring); Saxton requires a separately justified fine-earth
+binding. Do not use these blocked candidates to manufacture a multi-model
+comparison. The larger objective of real grouped function/ensemble selection
+and qualified VG/BC uncertainty remains active.
+
+
+## Explicit controlled-pressure restoration checkpoint
+
+`evaluation/experiments/hybras/restore_pressure_protocols.py` creates a separate
+source-reviewed coordinate view. It requires an exact reviewed HYBRAS method
+string with a finite list of controlled kPa regimes, a raw comment explicitly
+identifying original kPa and the 10.20 conversion factor, a unique matching
+three-significant-figure converted head, identical wide/long water values,
+and an exact canonical source/sample/profile/observation join. This is not
+nearest-pressure snapping, division of every head by a presumed factor or
+interpolation. A ranged method, unsupported source unit or merely nearby
+head is insufficient. The original rounded-cm datasets remain unchanged.
+
+The view retains 1,465 water observations from 254 horizons, 224 profiles and
+four source reference groups. It provides 254 exact original-regime observations
+at each of 10, 33 and 1500 kPa. The separate pressure audit reports support for
+Gunarathna set-1 outputs and Saxton 33/1500 outputs; zero-head saturation remains
+unsupported and available-water differences have no single pressure anchor.
+The target material remains unspecified and predictors remain unbound, so
+native scoring eligibility is explicitly not granted. In particular, pressure
+support alone must not bypass fine-earth or analytical-method requirements.
+
+Authoritative source and isolated-wheel outputs are
+`local/hybras-controlled-kpa-first` and `local/hybras-controlled-kpa-wheel`.
+All three complete output documents reproduce byte for byte. Each archives
+the matching script, pressure-audit script, wheel and checksums in `reproduction`.
+Canonical dataset SHA256:
+`760f3bfd997264d811fbcffca241bb84a684edd9c33a6f4b327718701d2f5c5b`.
+Every retained target record was independently checked equal to its parent
+except the explicitly restored pressure coordinate. Review sidecars retain
+both coordinates, original comments and method/wide/raw source cells.
+Tracked summaries are `hybras_v1.controlled-pressure-summary.json` and
+`hybras_v1.controlled-pressure-support.json` in `evaluation/datasets`.
+
+Twelve new tests protect explicit regime matching, original-unit requirements,
+exact coordinates, source-target identity, wide/long agreement and unchanged
+water values. A temporary nearest-integer matching mutation failed the tests
+for `nextafter(337,+inf)` and 336.6; the original script was restored byte for
+byte. All 17 focused pressure/support/Clapp tests then passed; Ruff and ty
+passed. No core runtime or scientific regression expressions changed.
+
+Next review material preparation and predictor protocols for these 254 horizons,
+and independently revisit whether the existing Gunarathna target material
+contract is directly supported by its source measurement procedure. Do not
+relax it to obtain more rows without source evidence. Existing Clapp external
+scores and earlier VG/BC fits still belong to their original datasets; they
+are not results for this restored-coordinate view. Real multi-function grouped
+selection and VG/BC uncertainty qualification remain required.
+
+
+## Gunarathna2019 and single-pressure selection checkpoint
+
+The author's primary dissertation Chapter 6, Section 6.2 (printed page 96),
+identifies the 2019 article and separates analytical texture samples from
+undisturbed retention cores (54-mm diameter, 30-mm height) and density cores
+(54-mm diameter, 60-mm height). The retention target was corrected from
+`fine_earth/bulk_volume` to `soil/bulk_volume`; this does not change the prepared
+fine-earth texture denominator. The remaining eight equations now have complete
+measurement descriptors. All eleven regression expressions, statuses and
+verification cases are unchanged. Source review is recorded in
+`evaluation/datasets/gunarathna2019.measurement-review.json`. The primary text
+was indexed from the author's university repository; direct PDF retrieval failed,
+so no local PDF hash or visual inspection is claimed. The existing `g/cm3`
+notation is registered as a density-unit alias.
+
+Current inventory: 26 manifest functions of 146 implemented, 120 omitted,
+328 missing numeric-input descriptors and 226 missing output descriptors.
+Both meta-v3.3 readiness matrices, the raw-binding readiness summary and pressure
+support reports were refreshed. Pressure support is not scoring eligibility.
+
+The technical single-pressure selection gap is now implemented.
+`SinglePressureLossPlan` / `single_pressure_mse_v1` score squared water-content
+error at one exact declared pressure. Missing or nearby observations cannot
+supply it. Zero pressure is allowed without constructing a log integral; the
+old positive-width log-pressure contract remains unchanged. Registered constant
+pairs use `constant_convex_pair_single_pressure_v1`, which must match the loss.
+Atomic and ensemble strategies are assessed separately inside the existing
+grouped nested validation. Pressure-transition learners, empirical domains and
+additional uncertainty protocols are explicitly outside this first point-loss
+run contract. The generic evaluator is `evaluate_selection_loss`; the original
+log-pressure evaluation API is retained.
+
+The standalone fixture builder is
+`evaluation/examples/synthetic_single_pressure/build.py`. It restricts the
+independent Beniaich two-pressure fixture to 33 kPa without generating targets
+from native predictions. Three outer folds and two inner folds recover weights
+0.25/0.75; altering outer test targets leaves training choices and weights
+unchanged. This is technical validation, not evidence of real-soil accuracy.
+Authoritative source and wheel runs: `local/single-pressure-source` and
+`local/single-pressure-wheel`. All 15 payload files and three input documents
+match byte for byte. All 64 installed package/schema files match source.
+Each reproduction directory contains the matching wheel, generated manifest,
+builder and dependent fixture documents with recursive checksums; use the
+nested `examples/synthetic_single_pressure/build.py` snapshot for replay.
+Validation: 917 full evaluator tests, 130 generator tests, 33 public Gunarathna
+tests and 11 focused installed-wheel tests pass. Deterministic generation,
+Ruff, ty and diff whitespace checks pass. The full suite preceded only
+nonbehavioral docstring edits and strengthening existing assertions.
+
+A further primary review of Nebel2010 found one 1-ha, 10-m-spaced, 100-point
+sampling grid. These points are not demonstrated independent profile-level
+population replicates. The 100-row Nebel and 99-row Parfitt-only HYBRAS groups
+share a byte-identical Parfitt dissertation citation despite having different
+reference-pair source IDs. This is recorded in
+`evaluation/datasets/nebel2010.measurement-review.json`, with publisher PDF hash
+`6308bea9b5af4f453ade4cc9f0c5398a45d8c3092fd7753d01fda0bca762a904`.
+The source also reports 50x30-mm rings, Day pipette analysis with NaOH, and
+Walkley-Black carbon. Generic pipette labels do not by themselves confirm
+Gunarathna sand-preparation equivalence, and the ring geometry does not match
+its density predictor. Gravimetric/volumetric source lineage needs review.
+
+Next confirm exact sand preparation and target lineage for a declared real
+subset, and resolve validation units across shared source citations and spatial
+sampling before real nested selection. Do not treat profile counts or hashed
+reference-pair IDs as proof of independence. Real model/ensemble winners and
+VG/BC uncertainty qualification remain unfinished.

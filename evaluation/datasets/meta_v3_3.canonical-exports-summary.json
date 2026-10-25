@@ -1,0 +1,43 @@
+{
+  "datasets": [
+    {
+      "dataset_id": "meta-v3-3-reviewed-volume",
+      "dataset_sha256": "000c3c9fff04a714ff2cc6e9d32fc3d00bd3a3246616caf5dfac4f1673fdd93f",
+      "observation_count": 549,
+      "observations_above_one": 0,
+      "sample_count": 59,
+      "samples_without_profile_id": 59,
+      "schema_version": 1,
+      "scoring_permission": "not_established",
+      "source_partition_count": 6,
+      "target": {
+        "denominator_basis": "bulk_volume",
+        "material_basis": "unspecified",
+        "quantity": "volumetric_water_content",
+        "unit": "volume_fraction"
+      }
+    },
+    {
+      "dataset_id": "meta-v3-3-reviewed-mass",
+      "dataset_sha256": "5a487164ca3bbd91d3b020c3bedca617f2468e973758f23128efb02f9a3dfb2a",
+      "observation_count": 487,
+      "observations_above_one": 20,
+      "sample_count": 50,
+      "samples_without_profile_id": 50,
+      "schema_version": 2,
+      "scoring_permission": "not_established",
+      "source_partition_count": 5,
+      "target": {
+        "denominator_basis": "dry_soil_mass",
+        "material_basis": "unspecified",
+        "quantity": "gravimetric_water_content",
+        "unit": "mass_fraction"
+      }
+    }
+  ],
+  "mapping_sha256": "5a5b41b68aefec6deb752ec5b9f10c0cd9421577da982856346392768d4da77c",
+  "normalized_observation_count": 1036,
+  "schema_version": 1,
+  "scope": "canonical_export_accounting_not_predictive_validation",
+  "workbook_sha256": "1322bf65b1ca0130085015209858a443d1ee82a7e2ae69232321cd8ede361e68"
+}

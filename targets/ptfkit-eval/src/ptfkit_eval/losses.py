@@ -75,6 +75,43 @@ class LogPressureLossPlan:
             raise RetentionLossError(message)
 
 
+@dataclass(frozen=True, kw_only=True)
+class SinglePressureLossPlan:
+    """Squared water-content error at one exact, predeclared observed pressure."""
+
+    suction_kpa: float
+    method: Literal['single_pressure_mse_v1'] = 'single_pressure_mse_v1'
+
+    def __post_init__(self) -> None:
+        """Permit zero pressure without constructing a zero-width log integral."""
+        if (
+            isinstance(self.suction_kpa, bool)
+            or not math.isfinite(self.suction_kpa)
+            or self.suction_kpa < 0
+            or self.method != 'single_pressure_mse_v1'
+        ):
+            message = 'Single-pressure MSE requires a finite nonnegative declared pressure.'
+            raise RetentionLossError(message)
+
+    @property
+    def lower_suction_kpa(self) -> float:
+        """Expose the exact point support to shared forecast-grid checks."""
+        return self.suction_kpa
+
+    @property
+    def upper_suction_kpa(self) -> float:
+        """Expose the exact point support without integration semantics."""
+        return self.suction_kpa
+
+    @property
+    def minimum_points(self) -> int:
+        """Require the one declared observation for every scored sample."""
+        return 1
+
+
+SelectionLossPlan = LogPressureLossPlan | SinglePressureLossPlan
+
+
 @dataclass(frozen=True)
 class SampleCurveLoss:
     """One sample's registered pressure-domain loss or exact failure reason."""
@@ -86,13 +123,14 @@ class SampleCurveLoss:
     reason: Literal['insufficient_points', 'missing_domain_endpoints'] | None
 
 
-def evaluate_log_pressure_loss(
+def evaluate_selection_loss(
     comparisons: Iterable[RetentionComparison],
     *,
-    plan: LogPressureLossPlan,
+    plan: SelectionLossPlan,
 ) -> tuple[SampleCurveLoss, ...]:
-    """Integrate squared errors on the observed grid and normalize by log span.
+    """Evaluate the explicitly registered point loss or log-pressure integral.
 
+    Single-pressure loss requires an exact observation and never integrates.
     No endpoints are interpolated or extrapolated. Samples require observations
     at both declared domain endpoints. Within a valid sample, the trapezoid rule
     integrates the piecewise-linear squared-error diagnostic over log10 pressure.
@@ -107,6 +145,19 @@ def evaluate_log_pressure_loss(
     for point in points:
         groups[point.source_id, point.sample_id].append(point)
     result: list[SampleCurveLoss] = []
+    if isinstance(plan, SinglePressureLossPlan):
+        for (source, sample), sample_points in sorted(groups.items()):
+            exact = [p for p in sample_points if p.suction_kpa == plan.suction_kpa]
+            result.append(
+                SampleCurveLoss(
+                    source,
+                    sample,
+                    len(exact),
+                    (exact[0].predicted - exact[0].observed) ** 2 if exact else None,
+                    None if exact else 'insufficient_points',
+                )
+            )
+        return tuple(result)
     span = log10_pressure_span(plan.lower_suction_kpa, plan.upper_suction_kpa)
     for (source, sample), sample_points in sorted(groups.items()):
         domain = sorted(
@@ -137,3 +188,13 @@ def evaluate_log_pressure_loss(
         )
         result.append(SampleCurveLoss(source, sample, len(domain), normalized_loss, None))
     return tuple(result)
+
+
+def evaluate_log_pressure_loss(
+    comparisons: Iterable[RetentionComparison], *, plan: SelectionLossPlan
+) -> tuple[SampleCurveLoss, ...]:
+    """Preserve the original log-pressure integration API and its declared domain."""
+    if not isinstance(plan, LogPressureLossPlan):
+        message = 'The log-pressure API requires a log-pressure loss plan.'
+        raise RetentionLossError(message)
+    return evaluate_selection_loss(comparisons, plan=plan)

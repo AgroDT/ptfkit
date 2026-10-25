@@ -9,10 +9,9 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import TYPE_CHECKING
 
+from ptfkit import get_manifest
 from ptfkit_eval import audit_predictor_workbook, load_dataset_mapping, load_retention_dataset
 from ptfkit_eval.documents import canonical_json, document_hash, object_records
-
-from ptfkit import get_manifest
 
 
 if TYPE_CHECKING:
@@ -45,7 +44,10 @@ def join_readiness(
                 continue
             item = matches[0]
             counts['matched_samples'] += 1
-            counts['complete_raw_inputs'] += 'missing_input' not in item.reasons
+            counts['complete_raw_inputs'] += not {
+                'missing_input',
+                'missing_input_binding',
+            }.intersection(item.reasons)
             counts['predictor_eligible' if item.eligible else 'predictor_blocked'] += 1
             reasons.update(set(item.reasons))
         functions.append(

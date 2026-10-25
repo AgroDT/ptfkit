@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "scope": "fixed_clapp_external_validation_not_best_model_selection",
+  "dataset_id": "hybras-v1-clapp-reviewed-mineral-positive-head",
+  "samples": 378,
+  "profiles": 144,
+  "sources": 22,
+  "observations": 2882,
+  "metrics": {
+    "mean_absolute_error": 0.05631867785092228,
+    "mean_error": 0.002573254354125888,
+    "median_absolute_error": 0.0465950410852472,
+    "root_mean_squared_error": 0.0737532960617378
+  },
+  "confidence": {
+    "effective_grouping": "profile",
+    "group_count": 144,
+    "intervals": {
+      "mean_absolute_error": {
+        "lower": 0.05197548220176921,
+        "upper": 0.06107666293944521
+      },
+      "mean_error": {
+        "lower": -0.005549062843559476,
+        "upper": 0.010945674121159456
+      },
+      "median_absolute_error": {
+        "lower": 0.042055171711209816,
+        "upper": 0.05064076603185266
+      },
+      "root_mean_squared_error": {
+        "lower": 0.06738509083752754,
+        "upper": 0.08060986217917754
+      }
+    },
+    "method": "cluster_percentile_linear_v1",
+    "plan": {
+      "confidence_level": 0.95,
+      "grouping": "profile",
+      "minimum_groups": 5,
+      "missing_profiles": "reject",
+      "n_resamples": 2000,
+      "seed": 20261025
+    },
+    "reason": null,
+    "status": "computed"
+  },
+  "verified_prediction_records": 5764,
+  "verification": "Published Table 2, parabolic/power curves and independent sample means.",
+  "limitations": [
+    "No fine-earth preparation or zero-gravel assumption is inferred.",
+    "Unknown, compound, transitional and annotated horizon labels remain excluded.",
+    "Bootstrap intervals describe mean prediction error under profile resampling, not prediction intervals for individual water contents.",
+    "Profiles can share a study; profile bootstrap is conditional on represented studies.",
+    "Only one native function is evaluated; no best-function or ensemble claim follows."
+  ],
+  "review_sha256": "554063fd2b63ddd4e94775c06e29d02425563648cf35fd06d9c7841b4a9be813",
+  "cohorts_sha256": "6bb73cdff190ea02f7b33e284847677c1083e22ee774d20d74be3672929e02c4",
+  "verifier_sha256": "10fb6534c733ed5479ad8dfbcdb6d12e44f8c24182f07b61361c0d0e10410976"
+}
