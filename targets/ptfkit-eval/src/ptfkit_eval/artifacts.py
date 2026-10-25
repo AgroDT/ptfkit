@@ -9,12 +9,14 @@ import shutil
 import subprocess
 from collections import Counter
 from collections.abc import Mapping
+from contextlib import contextmanager
 from dataclasses import fields, is_dataclass
 from importlib import import_module
 from importlib.metadata import version
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from typing import TYPE_CHECKING
+from uuid import uuid4
 
 from .blend_grid import BlendGridFit
 from .documents import EvaluationDocumentError, canonical_json, document_hash, object_mapping, plain
@@ -25,6 +27,8 @@ from .sigmoid_grid import SigmoidGridFit
 
 
 if TYPE_CHECKING:
+    from collections.abc import Iterator
+
     from .nested_applicability import NestedApplicabilityResult
     from .risk_bounds import BoundedRiskInterval
     from .runner import RetentionRunResult
@@ -93,6 +97,27 @@ def artifact_value(value: object) -> object:
     return plain(value)
 
 
+@contextmanager
+def _publication_staging(target: Path) -> Iterator[Path]:
+    """Windows publication inherits destination ACLs instead of temporary ACLs."""
+    if platform.system() == 'Windows':
+        staging = target.parent / f'.{target.name}.{uuid4().hex}'
+        staging.mkdir()
+        try:
+            yield staging
+        finally:
+            if staging.exists():
+                if staging.resolve().parent != target.parent.resolve():
+                    message = 'Refusing staging cleanup outside the publication parent.'
+                    raise ValueError(message)
+                shutil.rmtree(staging)
+    else:
+        with TemporaryDirectory(prefix=f'.{target.name}.', dir=target.parent) as temporary:
+            staging = Path(temporary) / 'run'
+            staging.mkdir()
+            yield staging
+
+
 def write_retention_run(result: RetentionRunResult, destination: str | Path) -> Path:
     """Publish a complete run directory without overwriting an existing run."""
     target = Path(destination)
@@ -135,9 +160,7 @@ def write_retention_run(result: RetentionRunResult, destination: str | Path) -> 
     manifest['run_id'] = document_hash(manifest)
     payloads['run-manifest.json'] = canonical_json(manifest)
     target.parent.mkdir(parents=True, exist_ok=True)
-    with TemporaryDirectory(prefix=f'.{target.name}.', dir=target.parent) as temporary:
-        staging = Path(temporary) / 'run'
-        staging.mkdir()
+    with _publication_staging(target) as staging:
         for name, contents in payloads.items():
             (staging / name).write_bytes(contents)
         if target.exists() or target.is_symlink():
@@ -273,7 +296,13 @@ def _report(result: RetentionRunResult) -> str:
         else 'Fixed-candidate external validation under the declared eligibility protocol.',
         '',
         (
-            'Errors use prediction minus observation, volume fractions, '
+            'Errors use prediction minus observation, '
+            + (
+                'volume fractions'
+                if result.plan.dataset.target.unit == 'volume_fraction'
+                else 'mass fractions'
+            )
+            + ', '
             'and equal total weight per sample.'
         ),
         'Intervals are cluster-percentile confidence intervals for aggregate metrics.',

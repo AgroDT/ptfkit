@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Literal, cast
 
 from .documents import object_records
 from .selection_predictions import selection_prediction_frames
+from .water import canonical_water_contract, within_water_bounds
 
 
 if TYPE_CHECKING:
@@ -24,7 +25,7 @@ class RetentionQualityError(ValueError):
 
 @dataclass(frozen=True)
 class RetentionSeriesPoint:
-    """One observed or predicted volumetric point with an auditable reference."""
+    """One canonical water-content point with an auditable reference."""
 
     suction_kpa: float
     water_content: float
@@ -90,11 +91,13 @@ def diagnose_retention_series(
     points: Iterable[RetentionSeriesPoint],
     *,
     monotonicity_tolerance: float = 0.0,
+    water_quantity: str = 'volumetric_water_content',
 ) -> RetentionSeriesQuality:
     """Report bounds and monotonicity without clipping, smoothing, or exclusion.
 
-    Tolerance applies only to increases in volume fraction between adjacent
-    distinct pressures. Physical bounds remain exactly [0, 1]. The pressure
+    Tolerance applies to increases in the canonical water fraction between
+    distinct pressures. Volume bounds are [0, 1]; dry-mass ratios are nonnegative.
+    The pressure
     extent is descriptive support, not an applicability or uncertainty interval.
     """
     if (
@@ -104,6 +107,7 @@ def diagnose_retention_series(
     ):
         message = 'Monotonicity tolerance must be finite and nonnegative.'
         raise RetentionQualityError(message)
+    canonical_water_contract(water_quantity)
     ordered = sorted(points, key=lambda point: point.suction_kpa)
     seen: set[float] = set()
     for point in ordered:
@@ -122,7 +126,7 @@ def diagnose_retention_series(
     diagnostics = [
         RetentionSeriesDiagnostic('water_outside_physical_bounds', (point,))
         for point in ordered
-        if not 0 <= point.water_content <= 1
+        if not within_water_bounds(point.water_content, water_quantity)
     ]
     diagnostics.extend(
         RetentionSeriesDiagnostic('increasing_water_with_suction', (left, right))
@@ -175,7 +179,11 @@ def diagnose_retention_run(
             sample,
             cast("Literal['observed', 'predicted']", kind),
             candidate or None,
-            diagnose_retention_series(points, monotonicity_tolerance=monotonicity_tolerance),
+            diagnose_retention_series(
+                points,
+                monotonicity_tolerance=monotonicity_tolerance,
+                water_quantity=result.plan.dataset.target.quantity,
+            ),
         )
         for (source, sample, kind, candidate), points in sorted(groups.items())
     )
@@ -219,7 +227,9 @@ def diagnose_selection_curves(
                     sample,
                     frame.status,
                     diagnose_retention_series(
-                        groups[source, sample], monotonicity_tolerance=monotonicity_tolerance
+                        groups[source, sample],
+                        monotonicity_tolerance=monotonicity_tolerance,
+                        water_quantity=result.plan.dataset.target.quantity,
                     ),
                 )
             )

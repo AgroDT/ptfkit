@@ -629,3 +629,151 @@ missing values. Canonical target material remains `unspecified`, so even a
 future predictor-compatible subset still requires a reviewed target contract
 before scoring. No source-derived properties or classification crosswalks were
 inferred from successful curve fitting.
+## Independent investigation of the coverage flag
+
+The [NIST fitting reference](https://www.itl.nist.gov/div898/software/dataplot/refman1/ch3/fit.pdf)
+supports the linear least-squares residual n-p and coefficient-inference
+control used in the boundary follow-up. The analytic Jacobian and positive-sign
+selection argument are explicit project derivations, not a new published
+retention uncertainty procedure. Truth-initialized diagnostic solves never
+replace public fits or enter the independent primary simulation policy.
+
+The fixed 2000-realization follow-up did not reproduce the original strong
+shortfall. The original joint-selected linear control shared all 85/99
+coverage classifications with the nonlinear method, and a 100000-draw exact
+linear control was consistent with nominal coverage. These findings support
+sampling fluctuation as a possible explanation; they do not erase the original
+adjusted flag or establish small-bias absence, global adequacy, or workbook
+residual assumptions. Confidence thresholds and scientific bounds remain fixed.
+## Clapp source audit: first eligible real subset
+
+The 24 populated texture candidates span Badenko 2013 (six), Bolotov 2014
+(three), Panina 2015 (twelve), and Moiseev 2018 (three). Russian abbreviations
+were not translated into USDA classes. The first, second and fourth sources
+remain unresolved for this contract (twelve candidates in total).
+
+[Panina, printed p. 88, Table 17](https://soil.msu.ru/attachments/article/2063/Panina_Disser.pdf)
+directly reports the supported class for the six gray forest horizons; Table 18
+reports an unsupported class for the six sod-podzolic horizons. The
+[USDA-hosted HYDRUS manual, section 3.8](https://www.ars.usda.gov/arsuserfiles/20361500/pdf_pubs/P2164.pdf)
+establishes the USDA classification used by ROSETTA. The mineral-material
+review and exact depth lineage are recorded in the source-review artifact.
+The 0--10 cm workbook horizon is covered by two source subintervals with the
+same class; no numeric predictor averaging is performed.
+
+An external source-backed overlay now selects six horizons and 56 unchanged
+measured targets. It leaves global workbook bindings blocked and retains one
+profile group. Native fixed Clapp predictions give sample-equal MAE 0.0305542
+and RMSE 0.0350361 volume fraction; cluster intervals are withheld for one
+independent profile. This is a descriptive external check, not population or
+pressure-domain validation. No PTF coefficient or unsupported class was added.
+
+During publication, a Windows/Python 3.13 access-control defect was reproduced:
+the final directory inherited the temporary directory's restricted ACL. The
+[Python documentation](https://docs.python.org/3.13/library/os.html#os.mkdir)
+documents special handling of mode 0o700 on Windows. Publication now stages
+under the intended destination parent on Windows, preserving inherited access
+controls, exclusive creation, atomic rename, and failure cleanup. Independent
+process reads and installed-wheel replay verified the fix.
+# Wosten class-parameter contract migration
+
+The original [Alterra report 153](https://edepot.wur.nl/43272) was retrieved
+and checksum-bound in `evaluation/datasets/wosten2001.measurement-review.json`.
+Tables 3 and 4 were checked visually. The six class outputs now have explicit
+measurement contracts. The target material `soil` covers the original mineral
+and organic classes and remains distinct from other material identifiers.
+
+The new retention adapter uses `m = 1 - 1/n`, is restricted to the reviewed
+class-parameter function, and retains centimeter pressure-head units. Native
+class-to-curve tests use published rounded values; an independent analytic
+oracle distinguishes this variant from the reduced Vereecken model. Source
+Table 4 values are model-computed references, not independent validation data.
+No Dutch/USDA/Russian class crosswalk or uncertainty claim was introduced.
+# Dharumarajan retention denominator review
+
+The original [Current Science paper](https://www.currentscience.ac.in/Volumes/116/07/1237.pdf)
+was retrieved and checksum-bound. Printed page 1239 and Tables 3-4 on printed
+page 1242 were checked visually. The reported target pressures are explicit,
+but percentage notation and the generic laboratory-protocol statement do not
+establish a mass or volume denominator. Existing specification warnings
+already record this ambiguity. Predictor preparation and particle-size
+definitions also require a source-linked analytical protocol.
+
+`evaluation/datasets/dharumarajan2019.measurement-review.json` records the four
+affected retention functions and missing evidence. Their legacy gravimetric
+quantity identifier is not a completed scientific contract. They remain
+excluded from manifest-driven evaluation; the newly available gravimetric
+benchmark does not justify inferring a denominator for them.
+# Beniaich linear-regression measurement review
+
+The [original article](https://www.frontiersin.org/journals/environmental-science/articles/10.3389/fenvs.2023.1090688/full)
+and its PDF were reviewed. Sections 2.2-2.4 and Tables 5-6 establish the
+gravimetric denominator, prepared fine-earth material, hydrometer protocol
+and organic-matter processing. Review decisions and the PDF checksum are in
+`evaluation/datasets/beniaich2023.measurement-review.json`. Eleven existing
+linear regressions now have complete descriptors, with analytical methods
+retained and no coefficient or status changes.
+
+Only FC and PWP have explicit fixed-pressure support. Source capillary
+saturation is not assigned a controlled zero-kPa condition. The real mass
+cohort has no exact 33/1500-kPa observations, so the new contracts do not
+create an external scoring cohort by themselves. A separate exact-pressure
+audit records this limitation; nearby observations are not substituted.
+
+
+## Saxton2006 and Cosby1984 follow-up
+
+[Saxton and Rawls (2006)](https://www.ars.usda.gov/research/publications/publication/?seqNo115=178719)
+was reviewed using parsed original article text and the existing prepared
+specification. The corrected DOI is `10.2136/sssaj2005.0117`. No local PDF hash
+or visual table inspection is claimed. Existing regression coefficients and
+prepared corrections remain unchanged. Explicit fine-earth measurements,
+pressure anchors, normal reference density and three source curve branches
+are recorded in `evaluation/datasets/saxton2006.measurement-review.json`.
+
+For [Cosby et al. (1984)](https://agupubs.onlinelibrary.wiley.com/doi/10.1029/WR020i006p00682),
+article transcription confirms that predictor compositions are texture-class
+midpoints and reported dispersions are within-class standard deviations.
+Logarithmic units/base and application equivalence remain unresolved; no Cosby
+contract or native data binding was changed. The machine-readable review
+preserves these limits rather than treating transcription as visual PDF review.
+
+
+## HYBRAS class and mineral-horizon overlay
+
+The local HYBRAS manual (SHA256
+`0d1ae08d0962fa1157b8b1f3af71e539220fa99f77675984fd81096ecfcc81e0`)
+was visually reviewed at PDF page 16, printed page 10. Figure 3 explicitly pairs
+Portuguese texture labels and C/SC/CL/SCL/SL/LS/S/L/SiC/SiCL/SiL abbreviations
+on the USDA triangle. The workbook's reported categories are translated by
+this figure; no numeric texture-based reclassification is performed.
+[NRCS Chapter 3](https://www.nrcs.usda.gov/sites/default/files/2022-09/SSM-ch3.pdf)
+provides the mineral status of A/E/B master horizons. A strict single-master
+subset is used; other labels require separate review. Mineral classification
+is not proof of fine-earth preparation or absent gravel.
+
+The [original Clapp article](https://scispace.com/pdf/empirical-equations-for-some-soil-hydraulic-properties-4hsglsjqwf.pdf)
+was revisited for equations 1/3 and US calibration provenance. The verifier
+inverts the wet parabola by bisection independently of the runtime's analytic
+root. Original calibration excludes rocky soils; unknown HYBRAS gravel status
+remains an applicability limitation of this external transfer experiment.
+
+
+## Gunarathna specimen correction and Nebel sampling dependence
+
+The author's dissertation in the
+[Kagoshima repository](https://ir.kagoshima-u.ac.jp/records/14922), Chapter 6,
+Section 6.2, printed page 96, reports distinct undisturbed retention and density
+core geometries. Indexed primary text supports correcting the retention target
+to bulk soil while retaining the analytical fine-earth texture denominator.
+Direct PDF retrieval failed; no visual-table inspection or local PDF hash is
+claimed. Regression coefficients remain unchanged.
+
+The original
+[Nebel2010 publisher PDF](https://www.rbcsjournal.org/wp-content/uploads/articles_xml/0100-0683-rbcs-S0100-06832010000300008/0100-0683-rbcs-S0100-06832010000300008.x29164.pdf)
+was retrieved and reviewed at printed page 671. It describes 100 sampling points
+on a 10-m grid in one hectare and discusses spatial dependence. Two HYBRAS
+reference-pair groups share the exact same Parfitt citation, so their different
+hashes do not establish study independence. Native input preparation and
+original gravimetric-to-volumetric lineage remain separate review questions.
+See the two machine-readable measurement reviews for hashes and limitations.

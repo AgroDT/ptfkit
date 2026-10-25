@@ -1,0 +1,417 @@
+{
+  "datasets": [
+    {
+      "dataset_id": "meta-v3-3-reviewed-volume",
+      "dataset_sha256": "000c3c9fff04a714ff2cc6e9d32fc3d00bd3a3246616caf5dfac4f1673fdd93f",
+      "outputs": [
+        {
+          "function": "calc_ptf_gunarathna2019_vwc10_set1",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "theta_10",
+          "status": "fixed_pressure",
+          "suction_kpa": 10.0
+        },
+        {
+          "function": "calc_ptf_gunarathna2019_vwc10_set2",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "theta_10",
+          "status": "fixed_pressure",
+          "suction_kpa": 10.0
+        },
+        {
+          "function": "calc_ptf_gunarathna2019_vwc10_set3",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "theta_10",
+          "status": "fixed_pressure",
+          "suction_kpa": 10.0
+        },
+        {
+          "function": "calc_ptf_gunarathna2019_vwc10_set4",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "theta_10",
+          "status": "fixed_pressure",
+          "suction_kpa": 10.0
+        },
+        {
+          "function": "calc_ptf_gunarathna2019_vwc1500_set1",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "theta_1500",
+          "status": "fixed_pressure",
+          "suction_kpa": 1500.0
+        },
+        {
+          "function": "calc_ptf_gunarathna2019_vwc1500_set3",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "theta_1500",
+          "status": "fixed_pressure",
+          "suction_kpa": 1500.0
+        },
+        {
+          "function": "calc_ptf_gunarathna2019_vwc1500_set4",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "theta_1500",
+          "status": "fixed_pressure",
+          "suction_kpa": 1500.0
+        },
+        {
+          "function": "calc_ptf_gunarathna2019_vwc33_set1",
+          "matching_observation_count": 18,
+          "matching_sample_count": 18,
+          "output": "theta_33",
+          "status": "fixed_pressure",
+          "suction_kpa": 33.0
+        },
+        {
+          "function": "calc_ptf_gunarathna2019_vwc33_set2",
+          "matching_observation_count": 18,
+          "matching_sample_count": 18,
+          "output": "theta_33",
+          "status": "fixed_pressure",
+          "suction_kpa": 33.0
+        },
+        {
+          "function": "calc_ptf_gunarathna2019_vwc33_set3",
+          "matching_observation_count": 18,
+          "matching_sample_count": 18,
+          "output": "theta_33",
+          "status": "fixed_pressure",
+          "suction_kpa": 33.0
+        },
+        {
+          "function": "calc_ptf_gunarathna2019_vwc33_set4",
+          "matching_observation_count": 18,
+          "matching_sample_count": 18,
+          "output": "theta_33",
+          "status": "fixed_pressure",
+          "suction_kpa": 33.0
+        },
+        {
+          "function": "calc_ptf_saxton2006",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "theta_1500",
+          "status": "fixed_pressure",
+          "suction_kpa": 1500.0
+        },
+        {
+          "function": "calc_ptf_saxton2006",
+          "matching_observation_count": 18,
+          "matching_sample_count": 18,
+          "output": "theta_33",
+          "status": "fixed_pressure",
+          "suction_kpa": 33.0
+        },
+        {
+          "function": "calc_ptf_saxton2006",
+          "matching_observation_count": 18,
+          "matching_sample_count": 18,
+          "output": "theta_s",
+          "status": "fixed_pressure",
+          "suction_kpa": 0.0
+        },
+        {
+          "function": "calc_ptf_saxton2006",
+          "matching_observation_count": null,
+          "matching_sample_count": null,
+          "output": "plant_available_water",
+          "status": "no_supported_fixed_pressure_condition",
+          "suction_kpa": null
+        }
+      ],
+      "scope": "pressure_support_only_not_predictor_material_method_or_scoring_eligibility",
+      "target": {
+        "denominator_basis": "bulk_volume",
+        "material_basis": "unspecified",
+        "quantity": "volumetric_water_content",
+        "unit": "volume_fraction"
+      }
+    },
+    {
+      "dataset_id": "meta-v3-3-reviewed-mass",
+      "dataset_sha256": "5a487164ca3bbd91d3b020c3bedca617f2468e973758f23128efb02f9a3dfb2a",
+      "outputs": [
+        {
+          "function": "calc_ptf_beniaich2023_mlr1",
+          "matching_observation_count": null,
+          "matching_sample_count": null,
+          "output": "water_saturation",
+          "status": "no_supported_fixed_pressure_condition",
+          "suction_kpa": null
+        },
+        {
+          "function": "calc_ptf_beniaich2023_mlr1",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "water_field_capacity",
+          "status": "fixed_pressure",
+          "suction_kpa": 33.0
+        },
+        {
+          "function": "calc_ptf_beniaich2023_mlr1",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "water_wilting_point",
+          "status": "fixed_pressure",
+          "suction_kpa": 1500.0
+        },
+        {
+          "function": "calc_ptf_beniaich2023_mlr2",
+          "matching_observation_count": null,
+          "matching_sample_count": null,
+          "output": "water_saturation",
+          "status": "no_supported_fixed_pressure_condition",
+          "suction_kpa": null
+        },
+        {
+          "function": "calc_ptf_beniaich2023_mlr2",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "water_field_capacity",
+          "status": "fixed_pressure",
+          "suction_kpa": 33.0
+        },
+        {
+          "function": "calc_ptf_beniaich2023_mlr2",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "water_wilting_point",
+          "status": "fixed_pressure",
+          "suction_kpa": 1500.0
+        },
+        {
+          "function": "calc_ptf_beniaich2023_mlr3",
+          "matching_observation_count": null,
+          "matching_sample_count": null,
+          "output": "water_saturation",
+          "status": "no_supported_fixed_pressure_condition",
+          "suction_kpa": null
+        },
+        {
+          "function": "calc_ptf_beniaich2023_mlr3",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "water_field_capacity",
+          "status": "fixed_pressure",
+          "suction_kpa": 33.0
+        },
+        {
+          "function": "calc_ptf_beniaich2023_mlr3",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "water_wilting_point",
+          "status": "fixed_pressure",
+          "suction_kpa": 1500.0
+        },
+        {
+          "function": "calc_ptf_beniaich2023_mlr4",
+          "matching_observation_count": null,
+          "matching_sample_count": null,
+          "output": "water_saturation",
+          "status": "no_supported_fixed_pressure_condition",
+          "suction_kpa": null
+        },
+        {
+          "function": "calc_ptf_beniaich2023_mlr4",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "water_field_capacity",
+          "status": "fixed_pressure",
+          "suction_kpa": 33.0
+        },
+        {
+          "function": "calc_ptf_beniaich2023_mlr4",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "water_wilting_point",
+          "status": "fixed_pressure",
+          "suction_kpa": 1500.0
+        },
+        {
+          "function": "calc_ptf_beniaich2023_mlr5",
+          "matching_observation_count": null,
+          "matching_sample_count": null,
+          "output": "water_saturation",
+          "status": "no_supported_fixed_pressure_condition",
+          "suction_kpa": null
+        },
+        {
+          "function": "calc_ptf_beniaich2023_mlr5",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "water_field_capacity",
+          "status": "fixed_pressure",
+          "suction_kpa": 33.0
+        },
+        {
+          "function": "calc_ptf_beniaich2023_mlr5",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "water_wilting_point",
+          "status": "fixed_pressure",
+          "suction_kpa": 1500.0
+        },
+        {
+          "function": "calc_ptf_beniaich2023_slr1",
+          "matching_observation_count": null,
+          "matching_sample_count": null,
+          "output": "water_saturation",
+          "status": "no_supported_fixed_pressure_condition",
+          "suction_kpa": null
+        },
+        {
+          "function": "calc_ptf_beniaich2023_slr1",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "water_field_capacity",
+          "status": "fixed_pressure",
+          "suction_kpa": 33.0
+        },
+        {
+          "function": "calc_ptf_beniaich2023_slr1",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "water_wilting_point",
+          "status": "fixed_pressure",
+          "suction_kpa": 1500.0
+        },
+        {
+          "function": "calc_ptf_beniaich2023_slr2",
+          "matching_observation_count": null,
+          "matching_sample_count": null,
+          "output": "water_saturation",
+          "status": "no_supported_fixed_pressure_condition",
+          "suction_kpa": null
+        },
+        {
+          "function": "calc_ptf_beniaich2023_slr2",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "water_field_capacity",
+          "status": "fixed_pressure",
+          "suction_kpa": 33.0
+        },
+        {
+          "function": "calc_ptf_beniaich2023_slr2",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "water_wilting_point",
+          "status": "fixed_pressure",
+          "suction_kpa": 1500.0
+        },
+        {
+          "function": "calc_ptf_beniaich2023_slr3",
+          "matching_observation_count": null,
+          "matching_sample_count": null,
+          "output": "water_saturation",
+          "status": "no_supported_fixed_pressure_condition",
+          "suction_kpa": null
+        },
+        {
+          "function": "calc_ptf_beniaich2023_slr3",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "water_field_capacity",
+          "status": "fixed_pressure",
+          "suction_kpa": 33.0
+        },
+        {
+          "function": "calc_ptf_beniaich2023_slr3",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "water_wilting_point",
+          "status": "fixed_pressure",
+          "suction_kpa": 1500.0
+        },
+        {
+          "function": "calc_ptf_beniaich2023_slr4",
+          "matching_observation_count": null,
+          "matching_sample_count": null,
+          "output": "water_saturation",
+          "status": "no_supported_fixed_pressure_condition",
+          "suction_kpa": null
+        },
+        {
+          "function": "calc_ptf_beniaich2023_slr4",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "water_field_capacity",
+          "status": "fixed_pressure",
+          "suction_kpa": 33.0
+        },
+        {
+          "function": "calc_ptf_beniaich2023_slr4",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "water_wilting_point",
+          "status": "fixed_pressure",
+          "suction_kpa": 1500.0
+        },
+        {
+          "function": "calc_ptf_beniaich2023_slr5",
+          "matching_observation_count": null,
+          "matching_sample_count": null,
+          "output": "water_saturation",
+          "status": "no_supported_fixed_pressure_condition",
+          "suction_kpa": null
+        },
+        {
+          "function": "calc_ptf_beniaich2023_slr5",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "water_field_capacity",
+          "status": "fixed_pressure",
+          "suction_kpa": 33.0
+        },
+        {
+          "function": "calc_ptf_beniaich2023_slr5",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "water_wilting_point",
+          "status": "fixed_pressure",
+          "suction_kpa": 1500.0
+        },
+        {
+          "function": "calc_ptf_beniaich2023_slr6",
+          "matching_observation_count": null,
+          "matching_sample_count": null,
+          "output": "water_saturation",
+          "status": "no_supported_fixed_pressure_condition",
+          "suction_kpa": null
+        },
+        {
+          "function": "calc_ptf_beniaich2023_slr6",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "water_field_capacity",
+          "status": "fixed_pressure",
+          "suction_kpa": 33.0
+        },
+        {
+          "function": "calc_ptf_beniaich2023_slr6",
+          "matching_observation_count": 0,
+          "matching_sample_count": 0,
+          "output": "water_wilting_point",
+          "status": "fixed_pressure",
+          "suction_kpa": 1500.0
+        }
+      ],
+      "scope": "pressure_support_only_not_predictor_material_method_or_scoring_eligibility",
+      "target": {
+        "denominator_basis": "dry_soil_mass",
+        "material_basis": "unspecified",
+        "quantity": "gravimetric_water_content",
+        "unit": "mass_fraction"
+      }
+    }
+  ],
+  "manifest_sha256": "34fc0bf4f00972069f1cb57dee61a42aaac6503ad48e773afcdb2c99968317fd",
+  "policy": "exact_converted_suction_equality_no_rounding_tolerance_or_interpolation",
+  "schema_version": 1
+}

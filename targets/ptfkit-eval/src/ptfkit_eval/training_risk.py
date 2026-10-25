@@ -12,7 +12,7 @@ from .risk_bounds import BoundedRiskInterval
 
 if TYPE_CHECKING:
     from .folds import GroupMembership
-    from .losses import LogPressureLossPlan
+    from .losses import SelectionLossPlan
     from .point_losses import PointErrorLossPlan
 
 
@@ -34,7 +34,7 @@ class IndependentTrainingRiskPlan:
     population_id: str
     learner_id: str
     grouping: Literal['source', 'profile']
-    loss: LogPressureLossPlan | PointErrorLossPlan
+    loss: SelectionLossPlan | PointErrorLossPlan
     maximum_sample_loss: float
     minimum_group_size: int
     maximum_group_size: int

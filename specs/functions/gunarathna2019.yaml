@@ -46,18 +46,63 @@ $defs:
     name: silt
     symbol: SI
     unit: "%"
+    measurement:
+      quantity: particle_mass_fraction
+      unit: mass_percent
+      reported_unit: "%"
+      basis: {material: fine_earth, denominator: dry_mass}
+      particle_size:
+        unit: micrometer
+        lower: {value: 2, inclusive: true}
+        upper: {value: 50, inclusive: false}
+      conditions: []
+      status: required
+      method: pipette_method
+      role: predictor
+      computational_domain:
+        lower: {value: 0, inclusive: true}
+        upper: {value: 38.6, inclusive: true}
+      reported_applicability: []
     domain: "Table 1 observed range: 0.0 <= value <= 38.6"
     description: Silt percentage measured by the pipette method.
   bulk_density:
     name: bulk_density
     symbol: BD
     unit: "g/cm3"
+    measurement:
+      quantity: dry_bulk_density
+      unit: gram_per_cubic_centimeter
+      reported_unit: "g/cm3"
+      basis: {material: soil, denominator: bulk_volume}
+      particle_size: null
+      conditions: []
+      status: required
+      method: undisturbed_core_54_mm_diameter_60_mm_height
+      role: predictor
+      computational_domain:
+        lower: {value: 1, inclusive: true}
+        upper: {value: 2, inclusive: true}
+      reported_applicability: []
     domain: "Table 1 observed range: 1.0 <= value <= 2.0"
     description: Bulk density measured using undisturbed cores.
   organic_carbon:
     name: organic_carbon
     symbol: OC
     unit: "%"
+    measurement:
+      quantity: organic_carbon_content
+      unit: mass_percent
+      reported_unit: "%"
+      basis: {material: fine_earth, denominator: dry_mass}
+      particle_size: null
+      conditions: []
+      status: required
+      method: walkley_black
+      role: predictor
+      computational_domain:
+        lower: {value: 0, inclusive: true}
+        upper: {value: 4.5, inclusive: true}
+      reported_applicability: []
     domain: "Table 1 observed range: 0.0 <= value <= 4.5"
     description: Organic carbon percentage measured by the Walkley-Black method.
 functions:
@@ -85,7 +130,7 @@ functions:
         quantity: volumetric_water_content
         unit: volume_fraction
         reported_unit: mm/mm
-        basis: {material: fine_earth, denominator: bulk_volume}
+        basis: {material: soil, denominator: bulk_volume}
         particle_size: null
         conditions:
           - {quantity: matric_potential, value: 10, unit: kilopascal, convention: magnitude}
@@ -148,6 +193,21 @@ functions:
       symbol: VWC10
       unit: volume_fraction
       reported_unit: mm/mm
+      measurement:
+        quantity: volumetric_water_content
+        unit: volume_fraction
+        reported_unit: mm/mm
+        basis: {material: soil, denominator: bulk_volume}
+        particle_size: null
+        conditions:
+          - {quantity: matric_potential, value: 10, unit: kilopascal, convention: magnitude}
+        status: estimated
+        method: pressure_plate
+        role: prediction
+        computational_domain:
+          lower: {value: 0, inclusive: true}
+          upper: {value: 1, inclusive: true}
+        reported_applicability: []
       domain: null
       description: Volumetric water content at -10 kPa matric potential.
     verification_cases:
@@ -201,6 +261,21 @@ functions:
       symbol: VWC10
       unit: volume_fraction
       reported_unit: mm/mm
+      measurement:
+        quantity: volumetric_water_content
+        unit: volume_fraction
+        reported_unit: mm/mm
+        basis: {material: soil, denominator: bulk_volume}
+        particle_size: null
+        conditions:
+          - {quantity: matric_potential, value: 10, unit: kilopascal, convention: magnitude}
+        status: estimated
+        method: pressure_plate
+        role: prediction
+        computational_domain:
+          lower: {value: 0, inclusive: true}
+          upper: {value: 1, inclusive: true}
+        reported_applicability: []
       domain: null
       description: Volumetric water content at -10 kPa matric potential.
     verification_cases:
@@ -255,6 +330,21 @@ functions:
       symbol: VWC10
       unit: volume_fraction
       reported_unit: mm/mm
+      measurement:
+        quantity: volumetric_water_content
+        unit: volume_fraction
+        reported_unit: mm/mm
+        basis: {material: soil, denominator: bulk_volume}
+        particle_size: null
+        conditions:
+          - {quantity: matric_potential, value: 10, unit: kilopascal, convention: magnitude}
+        status: estimated
+        method: pressure_plate
+        role: prediction
+        computational_domain:
+          lower: {value: 0, inclusive: true}
+          upper: {value: 1, inclusive: true}
+        reported_applicability: []
       domain: null
       description: Volumetric water content at -10 kPa matric potential.
     verification_cases:
@@ -311,7 +401,7 @@ functions:
         quantity: volumetric_water_content
         unit: volume_fraction
         reported_unit: mm/mm
-        basis: {material: fine_earth, denominator: bulk_volume}
+        basis: {material: soil, denominator: bulk_volume}
         particle_size: null
         conditions:
           - {quantity: matric_potential, value: 33, unit: kilopascal, convention: magnitude}
@@ -374,6 +464,21 @@ functions:
       symbol: VWC33
       unit: volume_fraction
       reported_unit: mm/mm
+      measurement:
+        quantity: volumetric_water_content
+        unit: volume_fraction
+        reported_unit: mm/mm
+        basis: {material: soil, denominator: bulk_volume}
+        particle_size: null
+        conditions:
+          - {quantity: matric_potential, value: 33, unit: kilopascal, convention: magnitude}
+        status: estimated
+        method: pressure_plate
+        role: prediction
+        computational_domain:
+          lower: {value: 0, inclusive: true}
+          upper: {value: 1, inclusive: true}
+        reported_applicability: []
       domain: null
       description: Volumetric water content at -33 kPa matric potential.
     verification_cases:
@@ -427,6 +532,21 @@ functions:
       symbol: VWC33
       unit: volume_fraction
       reported_unit: mm/mm
+      measurement:
+        quantity: volumetric_water_content
+        unit: volume_fraction
+        reported_unit: mm/mm
+        basis: {material: soil, denominator: bulk_volume}
+        particle_size: null
+        conditions:
+          - {quantity: matric_potential, value: 33, unit: kilopascal, convention: magnitude}
+        status: estimated
+        method: pressure_plate
+        role: prediction
+        computational_domain:
+          lower: {value: 0, inclusive: true}
+          upper: {value: 1, inclusive: true}
+        reported_applicability: []
       domain: null
       description: Volumetric water content at -33 kPa matric potential.
     verification_cases:
@@ -481,6 +601,21 @@ functions:
       symbol: VWC33
       unit: volume_fraction
       reported_unit: mm/mm
+      measurement:
+        quantity: volumetric_water_content
+        unit: volume_fraction
+        reported_unit: mm/mm
+        basis: {material: soil, denominator: bulk_volume}
+        particle_size: null
+        conditions:
+          - {quantity: matric_potential, value: 33, unit: kilopascal, convention: magnitude}
+        status: estimated
+        method: pressure_plate
+        role: prediction
+        computational_domain:
+          lower: {value: 0, inclusive: true}
+          upper: {value: 1, inclusive: true}
+        reported_applicability: []
       domain: null
       description: Volumetric water content at -33 kPa matric potential.
     verification_cases:
@@ -537,7 +672,7 @@ functions:
         quantity: volumetric_water_content
         unit: volume_fraction
         reported_unit: mm/mm
-        basis: {material: fine_earth, denominator: bulk_volume}
+        basis: {material: soil, denominator: bulk_volume}
         particle_size: null
         conditions:
           - {quantity: matric_potential, value: 1500, unit: kilopascal, convention: magnitude}
@@ -600,6 +735,21 @@ functions:
       symbol: VWC1500
       unit: volume_fraction
       reported_unit: mm/mm
+      measurement:
+        quantity: volumetric_water_content
+        unit: volume_fraction
+        reported_unit: mm/mm
+        basis: {material: soil, denominator: bulk_volume}
+        particle_size: null
+        conditions:
+          - {quantity: matric_potential, value: 1500, unit: kilopascal, convention: magnitude}
+        status: estimated
+        method: pressure_plate
+        role: prediction
+        computational_domain:
+          lower: {value: 0, inclusive: true}
+          upper: {value: 1, inclusive: true}
+        reported_applicability: []
       domain: null
       description: Volumetric water content at -1500 kPa matric potential.
     verification_cases:
@@ -652,6 +802,21 @@ functions:
       symbol: VWC1500
       unit: volume_fraction
       reported_unit: mm/mm
+      measurement:
+        quantity: volumetric_water_content
+        unit: volume_fraction
+        reported_unit: mm/mm
+        basis: {material: soil, denominator: bulk_volume}
+        particle_size: null
+        conditions:
+          - {quantity: matric_potential, value: 1500, unit: kilopascal, convention: magnitude}
+        status: estimated
+        method: pressure_plate
+        role: prediction
+        computational_domain:
+          lower: {value: 0, inclusive: true}
+          upper: {value: 1, inclusive: true}
+        reported_applicability: []
       domain: null
       description: Volumetric water content at -1500 kPa matric potential.
     verification_cases:
@@ -735,3 +900,18 @@ scientific_notes: |
   The supplied text identifies the authors, year, title, journal and DOI.
   Volume 190 and pages 109-119 were confirmed against the publisher record:
   https://www.sciencedirect.com/science/article/abs/pii/S0167198718307360
+
+
+  ## Undisturbed-core measurement review
+
+  The author's dissertation Chapter 6 explicitly identifies this chapter with
+  the 2019 article. Section 6.2 (printed page 96) reports pressure-plate water
+  measurements on undisturbed soil cores 5.4 cm in diameter and 3 cm high,
+  separately from sieve/pipette texture measurements. Retention outputs therefore
+  describe bulk soil, not a prepared fine-earth retention specimen. The sand
+  fine-earth dry-mass descriptor is retained; it does not determine the target
+  material. Bulk-density predictors use distinct undisturbed cores 5.4 cm in
+  diameter and 6 cm high. Carbon uses Walkley-Black and silt uses pipette analysis.
+  Numeric predictor screening boxes retain the reported marginal study ranges;
+  they do not establish joint support, transferable accuracy or physical limits
+  on the unchanged public regression functions.

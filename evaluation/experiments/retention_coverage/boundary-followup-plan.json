@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "study_id": "vg_mualem_boundary_followup_v1",
+  "source_cell": "van_genuchten_mualem_v1__dense__saturation_0.3__sigma_0.002",
+  "seed": 20261026,
+  "blocks": 5,
+  "repetitions_per_block": 400,
+  "linear_control_repetitions": 100000,
+  "nominal_confidence": 0.95,
+  "sigma": 0.002,
+  "objective_tolerance": 1e-10,
+  "primary_estimand": "conditional_nonlinear_coverage_among_assessed_regions",
+  "primary_alpha": 0.05,
+  "scope": "independent_fixed_followup_not_threshold_tuning"
+}

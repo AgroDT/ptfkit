@@ -72,3 +72,10 @@ This replay verified every saved cell and left all artifact bytes and file
 modification times unchanged. Later repository changes, including formatting,
 can change the strict context hash; use a new output directory for a changed
 runner rather than weakening compatibility checks.
+
+The separate, prespecified [boundary follow-up](BOUNDARY-FOLLOWUP.md) later
+audited the flagged cell and ran 2000 independent nonlinear realizations.
+It did not reproduce the original large shortfall and found the original
+joint-selected coverage classifications identical to an exact linear control.
+The original flag above is retained; follow-up evidence is reported separately
+and does not retroactively qualify the F-grid method or unflagged scenarios.

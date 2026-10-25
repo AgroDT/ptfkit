@@ -9,9 +9,9 @@ from .cohorts import build_retention_cohorts, run_candidate_comparisons
 from .documents import EvaluationDocumentError, object_records
 from .folds import GroupedSample, build_nested_group_folds
 from .losses import (
-    LogPressureLossPlan,
     SampleCurveLoss,
-    evaluate_log_pressure_loss,
+    SelectionLossPlan,
+    evaluate_selection_loss,
     mean_finite_losses,
 )
 from .risk_bounds import (
@@ -174,7 +174,7 @@ def _validate_common_grid(
     result: RetentionRunResult,
     candidate_ids: tuple[str, ...],
     outer: tuple[SelectionPredictionFrame, ...],
-    loss: LogPressureLossPlan,
+    loss: SelectionLossPlan,
 ) -> None:
     common = build_retention_cohorts(run_candidate_comparisons(result, candidate_ids)).common
     grid = {
@@ -239,7 +239,7 @@ def _fold_evidence(
         return None, frame.reason or 'unavailable_outer_assessment'
     computed = {
         (item.source_id, item.sample_id): item
-        for item in evaluate_log_pressure_loss(frame.predictions, plan=plan.loss)
+        for item in evaluate_selection_loss(frame.predictions, plan=plan.loss)
     }
     reproduced = tuple(
         computed.get(key, SampleCurveLoss(*key, 0, None, 'insufficient_points'))

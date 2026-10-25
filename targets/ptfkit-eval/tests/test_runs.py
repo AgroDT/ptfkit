@@ -108,6 +108,26 @@ def test_artifacts_are_repeatable_complete_and_integrity_checked(tmp_path: Path)
         read_retention_run_report(first)
 
 
+@pytest.mark.parametrize('system', ['Windows', 'Linux'])
+def test_failed_publication_removes_its_staging_without_publishing_partial_run(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    system: str,
+):
+    result = execute_retention_run(load_retention_run_plan(write_run_fixture(tmp_path / 'inputs')))
+    monkeypatch.setattr('ptfkit_eval.artifacts.platform.system', lambda: system)
+
+    def failed_write(_path: Path, _data: bytes) -> int:
+        message = 'Injected publication failure.'
+        raise OSError(message)
+
+    monkeypatch.setattr(Path, 'write_bytes', failed_write)
+    with pytest.raises(OSError, match='Injected publication failure'):
+        write_retention_run(result, tmp_path / 'output')
+    assert not (tmp_path / 'output').exists()
+    assert list(tmp_path.glob('.output.*')) == []
+
+
 def test_checksum_drift_is_rejected_before_execution(tmp_path: Path):
     path = write_run_fixture(tmp_path)
     with (tmp_path / 'dataset.json').open('a', encoding='utf-8') as stream:

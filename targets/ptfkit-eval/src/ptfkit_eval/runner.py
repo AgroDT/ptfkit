@@ -16,7 +16,7 @@ from .conformal import (
     apply_grouped_prediction_intervals,
     calibrate_grouped_prediction_intervals,
 )
-from .contracts import FixedPointPrediction, FunctionCurveCandidate, RangeGatedCurveCandidate
+from .contracts import FunctionCurveCandidate, RangeGatedCurveCandidate, fixed_output_predictions
 from .documents import object_mapping, object_records
 from .execution import CurveExecutionError, CurvePoint, convert_value, evaluate_candidate
 from .fitting import RetentionFitResult, fit_retention_family
@@ -51,6 +51,7 @@ from .training_selection import (
     assess_point_selection_family,
 )
 from .uncertainty import RetentionBootstrapResult, bootstrap_retention_errors
+from .water import within_water_bounds
 
 
 if TYPE_CHECKING:
@@ -377,6 +378,7 @@ def _future_prediction(context: _InputContext, pressure: float) -> RunFuturePred
     value: float | None = None
     error: str | None = None
     try:
+        reasons.extend(_fixed_pressure_reasons(context.candidate, pressure, context.plan.manifest))
         axis = convert_value(
             pressure, 'kilopascal', context.candidate.axis.unit, manifest=context.plan.manifest
         )
@@ -387,7 +389,7 @@ def _future_prediction(context: _InputContext, pressure: float) -> RunFuturePred
             value = convert_value(
                 prediction.value,
                 context.candidate.target.unit,
-                'volume_fraction',
+                context.plan.dataset.target.unit,
                 manifest=context.plan.manifest,
             )
             if not math.isfinite(value):
@@ -520,15 +522,10 @@ def _evaluate_point(context: _PointContext) -> RunPointDecision:
     suction = cast('float', observation['suction_kpa'])
     observed = cast('float', observation['value'])
     protocol = object_mapping(context.plan.document['protocol'])
-    reasons = _target_reasons(observation, protocol)
-    if isinstance(context.candidate, FunctionCurveCandidate):
-        binding = context.candidate.curve.prediction
-        if isinstance(binding, FixedPointPrediction):
-            required = convert_value(
-                binding.axis_value, binding.axis_unit, 'kilopascal', manifest=context.plan.manifest
-            )
-            if suction != required:
-                reasons.append('pressure_condition_mismatch')
+    reasons = _target_reasons(
+        observation, protocol, water_quantity=context.plan.dataset.target.quantity
+    )
+    reasons.extend(_fixed_pressure_reasons(context.candidate, suction, context.plan.manifest))
     traces: tuple[RunInputTrace, ...] = ()
     prediction: CurvePoint | None = None
     comparison: RetentionComparison | None = None
@@ -546,7 +543,7 @@ def _evaluate_point(context: _PointContext) -> RunPointDecision:
                 canonical_value = convert_value(
                     prediction.value,
                     context.candidate.target.unit,
-                    'volume_fraction',
+                    context.plan.dataset.target.unit,
                     manifest=context.plan.manifest,
                 )
                 if not math.isfinite(canonical_value) or not math.isfinite(
@@ -557,9 +554,17 @@ def _evaluate_point(context: _PointContext) -> RunPointDecision:
                     prediction = None
                 else:
                     comparison = RetentionComparison(
-                        source, sample, suction, observed, canonical_value, profile
+                        source,
+                        sample,
+                        suction,
+                        observed,
+                        canonical_value,
+                        profile,
+                        context.plan.dataset.target.quantity,
                     )
-                    if not 0 <= canonical_value <= 1:
+                    if not within_water_bounds(
+                        canonical_value, context.plan.dataset.target.quantity
+                    ):
                         diagnostics.append('prediction_outside_physical_bounds')
         except (ValueError, ArithmeticError) as error:
             reasons.append('execution_failed')
@@ -583,7 +588,27 @@ def _evaluate_point(context: _PointContext) -> RunPointDecision:
     )
 
 
-def _target_reasons(observation: Mapping[str, object], protocol: Mapping[str, object]) -> list[str]:
+def _fixed_pressure_reasons(
+    candidate: CurveCandidate, pressure: float, manifest: Mapping[str, object]
+) -> tuple[str, ...]:
+    if not isinstance(candidate, FunctionCurveCandidate):
+        return ()
+    fixed = fixed_output_predictions(candidate.curve.prediction)
+    if not fixed:
+        return ()
+    support = {
+        convert_value(point.axis_value, point.axis_unit, 'kilopascal', manifest=manifest)
+        for point in fixed
+    }
+    return () if pressure in support else ('pressure_condition_mismatch',)
+
+
+def _target_reasons(
+    observation: Mapping[str, object],
+    protocol: Mapping[str, object],
+    *,
+    water_quantity: str = 'volumetric_water_content',
+) -> list[str]:
     reasons: list[str] = []
     if observation['review_status'] != 'confirmed':
         reasons.append('unreviewed_target')
@@ -591,7 +616,9 @@ def _target_reasons(observation: Mapping[str, object], protocol: Mapping[str, ob
         reasons.append('target_origin_not_allowed')
     if observation['origin'] == 'derived':
         reasons.append('unverified_target_derivation')
-    if observation['quality_flags'] or not 0 <= cast('float', observation['value']) <= 1:
+    if observation['quality_flags'] or not within_water_bounds(
+        cast('float', observation['value']), water_quantity
+    ):
         reasons.append('failed_quality_control')
     return reasons
 

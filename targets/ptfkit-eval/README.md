@@ -72,8 +72,11 @@ ptfkit-eval export local/meta_v3.3.xlsx \
 
 The command refuses to overwrite an existing file and prints a count-only
 summary with dataset, mapping and workbook checksums. The Python API is
-`export_normalized_retention_dataset()`. Its result separately lists normalized
-gravimetric rows omitted from the volumetric dataset. No density conversion,
+`export_normalized_retention_dataset()`. The default preserves the original
+volumetric version-1 export. Use `--water-quantity gravimetric_water_content`
+or the API's `water_quantity` argument to export a separate version-2 dataset
+in `mass_fraction` with denominator `dry_soil_mass`. The returned object lists
+both omitted gravimetric and omitted volumetric row identities. No density conversion,
 predictor filling, profile inference, duplicate-pressure averaging or physical
 correction is performed. Original cell lineage and values are preserved.
 
@@ -83,6 +86,18 @@ with a PTF, independence of samples, physical quality or scoring eligibility.
 Samples have empty predictors and unknown profile identities until separately
 reviewed. Existing normalization exclusions and fitted parameters remain in
 the original normalization result, outside the observation dataset.
+
+Canonical version 1 continues to accept only volumetric water content. Version
+2 also accepts gravimetric water content and requires its exact unit/basis
+combination. It does not reinterpret version-1 records. Fixed-output execution,
+sample-balanced errors, aggregate cluster bootstrap intervals and curve quality
+support either canonical quantity, with quantities kept separate. Dry-mass
+ratios can exceed one; volumetric fractions retain their upper bound of one.
+`RetentionComparison.water_quantity` defaults to volumetric for existing callers
+and must explicitly name gravimetric comparisons. Mixed quantities are rejected.
+The shipped approximation families and grouped conformal prediction protocol
+remain volumetric-only and reject mass targets. This extension does not qualify
+those methods for mass-basis fitting or uncertainty.
 
 ## Descriptive retention metrics
 
@@ -519,13 +534,37 @@ of workbook-supplied parameter sets.
 
 `fit_retention_family()` fits one sample curve under a `RetentionFitPlan`.
 Parameter bounds and interior initial values are required, with no data-derived
-guessing. The first implementation requires nonoverlapping residual/saturated
-water-content boxes to preserve physical ordering. It uses SciPy bounded TRF,
+guessing. The default method requires nonoverlapping residual/saturated
+water-content boxes. The optional `bounded_trf_ordered_water_multistart_v1`
+method allows overlapping boxes by using a conditional residual-water fraction
+below saturation, with a numerical separation of `1e-10` volume fraction.
+The saturation lower bound must exceed the residual lower bound plus this
+separation, and initial water values must be feasible. Near-contact water
+solutions are rejected as boundary solutions. Fits near the coordinate cap's
+nondifferentiable transition are rejected as `water_coordinate_kink`.
+Both methods use SciPy bounded TRF,
 three-point numerical Jacobians, equal point weights, and deterministic
 multistart seeds. Scale-parameter restarts are log-uniform. The plan records
 minimum pressure span, evaluation/convergence limits, boundary/rank/condition
 and competing-solution gates, and confidence settings. Rejected fits retain
 attempt provenance and explicit failure reasons and never change family.
+
+The ordered method converts optimizer Jacobians back to physical parameter
+coordinates before rank, conditioning and covariance calculations. Parameter
+profiles restrict nuisance water ranges to the fixed value's feasible region;
+infeasible grid points retain no converged objective. These numerical changes
+do not qualify the local iid uncertainty assumptions or enlarge validated soil
+applicability domains.
+
+`additional_starts` optionally registers immutable physical parameter vectors
+in the family's registered parameter order, independent of the order used to
+declare parameter boxes. For Brooks-Corey this is `(theta_r, theta_s, air_entry,
+lambda)`. These vectors append after the original `n_starts` seeded solves and
+before optional pressure-based restarts. Additional vectors may contact box
+endpoints but must remain physical; the optimizer records their exact declared
+values. Parameter profiles project them onto the nuisance coordinates and,
+for ordered water, into each fixed value's feasible region. They do not replace
+or reseed the original solves.
 
 Accepted fits distinguish:
 
@@ -1173,3 +1212,97 @@ the original acceptance diagnostics. The same policy applies to nuisance
 profiles when air entry is free. The default and pressure-restart policies
 remain available. Piecewise local solves are not a global optimum certificate
 or a qualification of local parameter uncertainty at nondifferentiable knots.
+# Source-reviewed real-data example
+
+`evaluation/experiments/panina_clapp` demonstrates the complete external-data
+path with PDF-bound source classes and material review, unchanged canonical
+targets, native Clapp predictions, eligibility traces, descriptive errors and
+withheld cluster intervals for a single profile. Its review overlay is separate
+from blocked raw workbook predictor bindings.
+
+On Windows, published run directories inherit access controls from their
+destination parent. Exclusive staging, atomic rename, no-overwrite checks and
+cleanup on failure remain in force. POSIX publication retains private temporary
+staging.
+
+# Staring class retention adapter
+
+`wosten2001_h_theta` evaluates the reviewed Wosten (2001) class parameters
+using the van Genuchten convention `m = 1 - 1/n`, pressure-head magnitude in
+centimeters and water content as a volume fraction. Its target material is
+`soil`, covering the original mineral and organic Staring classes. Material
+equality and the original class enumeration remain mandatory; the adapter
+does not translate local texture classes. Only the explicitly reviewed
+`calc_ptf_wosten2001_class_parameters` binding is supported. The public scalar
+`evaluate_van_genuchten_mualem_h_theta` evaluates the same equation with alpha
+and suction in reciprocal units; it does not establish PTF applicability.
+
+Class parameters and the source's computed Table 4 curves are not independent
+external observations or confidence intervals. Source review is recorded in
+`evaluation/datasets/wosten2001.measurement-review.json`.
+
+# Discrete multi-output candidates
+
+Evaluation plan version 2 adds `kind: function_points` with prediction
+`{kind: fixed_outputs, names: [water_field_capacity, water_wilting_point]}`.
+Each output resolves its own pressure, unit, target and operational method
+from the manifest. At least two distinct output names and converted pressures
+are required. Unsupported outputs invalidate the whole candidate. Version-1
+plans retain their existing candidate types and reject this new kind.
+
+The candidate predicts only at its registered pressures, without interpolation,
+rounding or extrapolation. Native observations and target-free forecasts retain
+explicit `pressure_condition_mismatch` exclusions outside that support. Several
+fixed outputs can therefore enter one grouped nested comparison and a
+training-only convex ensemble, provided every common-grid and evidence gate is
+met. The registered log-pressure loss diagnoses the errors on those points;
+it does not establish continuous prediction support between them.
+
+`evaluation/examples/synthetic_discrete_retention` demonstrates native Beniaich
+FC/PWP predictions, grouped atomic selection, a fitted convex pair and exact
+artifact replay. Its observations are explicitly synthetic and provide no
+external accuracy, interval-coverage or transfer-domain claim.
+
+
+### Saxton2006 retention adapter
+
+`saxton2006_h_theta` supports only `calc_ptf_saxton2006`. It uses model parameters
+normal density, air-entry tension, retention A and retention B to evaluate the
+source plateau, wet linear branch and dry power branch over 0-1500 kPa.
+Saturation follows `1 - normal_density / 2.65`; this model identity does not
+convert measured water using sample density. Targets require volumetric water
+on a fine-earth basis. Shared input validation checks marginal source limits
+and `sand + clay <= 1` before native curve or fixed-output execution. Invalid
+or unordered anchors fail rather than being clipped. Source limits and local
+fit intervals are not empirically calibrated confidence coverage.
+
+
+### Selecting functions at one pressure
+
+Use `single_pressure_mse_v1` with an explicit `suction_kpa` to select atomic
+functions on one observed pressure. `SinglePressureLossPlan` and
+`evaluate_selection_loss` expose the same contract in Python. The loss is the
+squared water-content error at that exact coordinate; nearby points, snapping,
+interpolation and a zero-width log integral cannot supply the observation.
+The original `LogPressureLossPlan` and `evaluate_log_pressure_loss` API retain
+their positive-width integration contract.
+
+For trainable constant pairs, register
+`constant_convex_pair_single_pressure_v1`. Inner training fits weights from
+sample-balanced point MSE, inner validation chooses candidates, and outer test
+targets only assess the locked choices. Training group/contrast/coverage gates
+remain required. The loss method and pair method must match. Atomic and
+ensemble strategies remain separately assessed; outer error does not choose
+between them. Pressure-transition learners, empirical domains and additional
+uncertainty protocols are not enabled for this new loss. Aggregate descriptive
+bootstrap intervals remain distinct from prediction or parameter uncertainty.
+
+A synthetic native-function example can be built and run with:
+
+```powershell
+python evaluation/examples/synthetic_single_pressure/build.py local/single-pressure-example
+ptfkit-eval run local/single-pressure-example/run.json --output local/single-pressure-artifacts
+```
+
+This example tests the technical selection path. It does not establish real-data
+eligibility, an empirical winner or confidence coverage.

@@ -284,3 +284,88 @@ The export's target material basis is still `unspecified`; resolving predictor
 availability does not resolve that target-contract gate. A source-backed
 classification/material review and compatible predictor values are required
 before any external PTF score can be produced for a retained subset.
+
+The subsequent source audit supplied a separate reviewed Panina subset:
+six mineral gray forest horizons with directly published USDA-compatible
+classes. This external overlay does not reinterpret the global workbook
+category binding. Its 56 eligible measured points now have a descriptive
+Clapp check; see `meta_v3_3.clapp-source-review.json`,
+`meta_v3_3.clapp-pilot-summary.json`, and
+`evaluation/experiments/panina_clapp/README.md`. Six other Panina horizons have
+the source-reported class silt, which the Clapp contract does not support.
+
+The complete implemented-function inventory is
+`implemented-function-coverage.json`. The associated
+`meta_v3_3.function-readiness-matrix.json` keeps every implemented function
+visible across the six source partitions in the volumetric export, with
+contract gaps and raw predictor blockers. These partitions are reporting
+strata, not assumed independent experiments. Neither artifact grants scoring
+permission. Reproduction commands are in
+`evaluation/experiments/catalog_coverage/README.md`.
+
+`wosten2001.measurement-review.json` records the source review that added the
+Staring class-parameter function to the manifest. Its original Dutch classes
+have no reviewed raw workbook binding; its inclusion does not unlock this
+dataset or authorize a texture crosswalk.
+
+Canonical export now accounts for all 1,036 normalized observations in two
+separate datasets: 549 volumetric observations in version 1 and 487 gravimetric
+observations in version 2. The count-only checksums and target contracts are in
+`meta_v3_3.canonical-exports-summary.json`; raw exports remain local. The
+gravimetric export preserves 20 dry-mass ratios above one and does not apply a
+density conversion. Its full-catalog raw readiness matrix is
+`meta_v3_3.gravimetric-readiness-matrix.json`.
+
+The primary-source review in `dharumarajan2019.measurement-review.json` preserves
+an unresolved water-content denominator. The legacy gravimetric output label
+does not authorize measurement-contract migration or evaluation on the newly
+exported mass-basis data.
+
+`beniaich2023.measurement-review.json` records the successful contract migration
+for 11 implemented linear regressions. The current inventory and readiness
+matrices include 17 manifest functions. The exact-pressure audit in
+`meta_v3_3.fixed-pressure-support.json` separates output pressure support from
+predictor readiness. None of the mass observations is exactly at 33 or
+1500 kPa. Nearby pressures and capillary saturation are not assigned invented
+fixed-pressure targets. Reproduction is documented in the catalog coverage
+experiment directory.
+
+
+The Saxton2006 checkpoint adds `saxton2006.measurement-review.json` and
+`hybras_v1.saxton-preflight-summary.json`. Current metadata coverage is 18 of
+146 implemented functions; 128 remain omitted. The HYBRAS audit executes 607
+numerically eligible raw predictor rows, of which 604 pass curve checks, without
+claiming target compatibility or external accuracy. The separate
+`cosby1984.measurement-review.json` retains unresolved logarithmic-contract and
+application-protocol questions. Raw source data remain local.
+
+
+`hybras_v1.clapp-validation-summary.json` records the first real HYBRAS native
+external accuracy run: 378 source-reviewed mineral horizons, 144 profiles,
+22 source groups and 2,882 observations. The crosswalk and horizon decisions
+are checksum-bound in each local run's `review.json`. Fixed Clapp RMSE is
+0.0737533 volume fraction, with profile-bootstrap 95% metric CI
+[0.0673851,0.0806099]. This is not final function/ensemble selection or
+individual prediction uncertainty. See the HYBRAS experiment README for
+source and wheel replay commands and independent numerical verification.
+
+
+`hybras_v1.controlled-pressure-summary.json` and
+`hybras_v1.controlled-pressure-support.json` describe a separate source-reviewed
+view of 1,465 observations from 254 horizons. Exact original-controlled regimes
+are recoverable from explicit method lists, original-unit comments and matching
+wide/long observations: 254 points each at 10, 33 and 1500 kPa. This removes a
+pressure-coordinate blocker, not material, predictor or scoring blockers.
+Historical datasets, fits and Clapp results remain bound to their original
+hashes. See the HYBRAS experiment README for source and installed-wheel replay.
+
+
+The current Gunarathna2019 checkpoint raises complete manifest coverage to
+26 of 146 implemented functions. `gunarathna2019.measurement-review.json`
+corrects the undisturbed bulk-soil retention target separately from fine-earth
+texture aliquots and records the remaining predictor-method review.
+`nebel2010.measurement-review.json` identifies a 100-point spatial grid and an
+exact shared Parfitt citation across two HYBRAS source IDs. Neither reference-pair
+hashes nor profile counts establish independent validation replicates. The
+controlled-pressure support audit now checks 15 volumetric prediction outputs;
+its original data view and historical runs remain unchanged.

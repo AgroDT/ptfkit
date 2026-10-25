@@ -105,11 +105,19 @@ the staged migration. `coverage` records the total implemented count, emitted
 count, and every omitted function with reason
 `incomplete_measurement_contract`; omission is never silent.
 
-The corpus currently contains 449 numeric input bindings and 359 output-field
-bindings. The vertical slice annotates one input and two outputs, leaving 448
-input bindings and 357 output bindings for source-reviewed migration. Output
-quantity and canonical-unit identifiers already exist; their missing work is
-primarily basis, conditions, role, structured domain, and applicability.
+The reproducible implemented-function inventory is maintained in
+`evaluation/datasets/implemented-function-coverage.json` by
+`evaluation/experiments/catalog_coverage/audit.py`. It resolves shared
+definitions, names every missing input/output descriptor binding and checks
+exact agreement with the generated manifest. Counts are per function binding,
+including repeated uses of shared definitions. Manifest inclusion is metadata
+readiness and does not establish compatibility with a particular dataset.
+
+The Wosten (2001) class-parameter contract uses material `soil` because its
+original Dutch Staring classes include mineral and organic soils. This is a
+distinct material identifier, not a compatibility wildcard for `mineral_soil`,
+`fine_earth` or `unspecified`. Source evidence and review decisions are recorded
+in `evaluation/datasets/wosten2001.measurement-review.json`.
 
 Migration proceeds by semantic family rather than by bulk text inference:
 
@@ -129,8 +137,29 @@ legacy and is ineligible for manifest-driven evaluation.
 
 ## Schema evolution
 
+Canonical retention datasets have their own version independently of manifest
+v1. Dataset version 1 remains restricted to volumetric water content. Dataset
+version 2 additionally supports gravimetric `mass_fraction` with denominator
+`dry_soil_mass`. Unit and denominator combinations are validated together;
+version-1 records are not reinterpreted. A mass ratio has no universal upper
+bound of one. The material identifier must still be supplied explicitly, and
+neither export nor schema acceptance proves PTF compatibility.
+
+Evaluation plans also have an independent version. Version 2 adds explicit
+finite multi-output candidates, with each pressure and measurement method
+resolved from the manifest. This does not change manifest v1 or reinterpret
+version-1 evaluation plans. A finite set of output pressures is not a
+continuous pressure-domain claim.
+
 New registry identifiers can be introduced within version 1 when their existing
 field semantics are unchanged. Adding descriptor fields, changing required
 fields, expanding closed vocabularies, changing compatibility meaning or
 ordering guarantees, or reinterpreting registry data requires a new manifest
 schema version and an explicit reader migration.
+
+
+The Saxton2006 base function adds the eighteenth complete manifest entry
+(146 implemented functions total). Its available-water output is a pressure
+interval difference, not a prediction at one pressure. Normal density is a
+model parameter, not observed sample density. Complete metadata and successful
+numeric execution still require separate source/data eligibility review.

@@ -1,0 +1,54 @@
+{
+  "candidates": [
+    {
+      "axis": {
+        "convention": "magnitude",
+        "quantity": "matric_potential",
+        "transform": "log10",
+        "unit": "kilopascal"
+      },
+      "function": "calc_ptf_beniaich2023_slr1",
+      "id": "slr1",
+      "kind": "function_points",
+      "prediction": {
+        "kind": "fixed_outputs",
+        "names": [
+          "water_field_capacity",
+          "water_wilting_point"
+        ]
+      },
+      "target": {
+        "denominator_basis": "dry_soil_mass",
+        "material_basis": "fine_earth",
+        "quantity": "gravimetric_water_content",
+        "unit": "mass_fraction"
+      }
+    },
+    {
+      "axis": {
+        "convention": "magnitude",
+        "quantity": "matric_potential",
+        "transform": "log10",
+        "unit": "kilopascal"
+      },
+      "function": "calc_ptf_beniaich2023_slr3",
+      "id": "slr3",
+      "kind": "function_points",
+      "prediction": {
+        "kind": "fixed_outputs",
+        "names": [
+          "water_field_capacity",
+          "water_wilting_point"
+        ]
+      },
+      "target": {
+        "denominator_basis": "dry_soil_mass",
+        "material_basis": "fine_earth",
+        "quantity": "gravimetric_water_content",
+        "unit": "mass_fraction"
+      }
+    }
+  ],
+  "ptfkit_manifest_schema_version": 1,
+  "schema_version": 2
+}

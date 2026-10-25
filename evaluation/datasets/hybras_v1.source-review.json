@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "status": "positive_head_approximation_import_reviewed_native_ptf_binding_pending",
+  "repository_url": "https://rigeo.sgb.gov.br/items/edfbb5ff-604c-43c6-940b-18fc6fa53caf",
+  "manual": {
+    "url": "https://rigeo.sgb.gov.br/bitstreams/8895347f-2767-4aca-aae8-43e3eccdb9a1/download",
+    "sha256": "0d1ae08d0962fa1157b8b1f3af71e539220fa99f77675984fd81096ecfcc81e0",
+    "reviewed_pages": [
+      {
+        "pdf_page": 12,
+        "printed_page": 6,
+        "evidence": "Undisturbed samples with directly measured pressure and water content; the saturation anchor may instead be total porosity."
+      },
+      {
+        "pdf_page": 14,
+        "printed_page": 8,
+        "evidence": "Heads standardized to cm with source conversion factors in raw comments. Heads rounded to three significant figures. Texture sums may be adjusted. The database contains 445 sites/profiles."
+      },
+      {
+        "pdf_page": 21,
+        "printed_page": 15,
+        "evidence": "VG Mualem optimization boxes: residual [0,0.533], saturation [0.1,0.96], alpha [0.00001,0.99999] cm^-1, n [1.01,15]. These are optimization restrictions, not validated confidence or applicability ranges."
+      }
+    ]
+  },
+  "workbook_evidence": {
+    "HYBRAS!DU4:DZ1078": "Retention method, drying path and undisturbed sample descriptors are retained in the local provenance sidecar.",
+    "RAWRET_lines!A1:H8794": "Long-form pressure head, volumetric water content, curve identifier and source comments.",
+    "HYBRAS_V1_METADADOS_ENG.xlsx:RAWRET": "Pressure head in cm and retained volumetric water content in cm3/cm3."
+  },
+  "import_decisions": [
+    "Import all positive-head raw rows without interpolation or deletion of nonmonotone values.",
+    "Defer every zero-head value, including 289 porosity-derived anchors and 786 reported saturation values.",
+    "Keep measured-target digitization, replicate averaging and pressure conversion comments in a local sidecar.",
+    "Do not import fitted parameters or estimated retention values as observations.",
+    "Do not infer predictor methods, material basis, external calibration independence or coverage qualification.",
+    "Block 664 positive-head points in 88 horizons whose source comments declare 1atm=1020cm. Other comments use 1atm=1033cm. Preserve original heads and defer interpretation pending original-source review."
+  ]
+}

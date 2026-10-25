@@ -6,7 +6,7 @@
   "additionalProperties": false,
   "required": ["schema_version", "ptfkit_manifest_schema_version", "candidates"],
   "properties": {
-    "schema_version": {"const": 1},
+    "schema_version": {"enum": [1, 2]},
     "ptfkit_manifest_schema_version": {"const": 1},
     "candidates": {
       "type": "array",
@@ -14,6 +14,10 @@
       "items": {"$ref": "#/$defs/candidate"}
     }
   },
+  "allOf": [{
+    "if": {"properties": {"schema_version": {"const": 1}}},
+    "then": {"properties": {"candidates": {"items": {"not": {"properties": {"kind": {"const": "function_points"}}}}}}}
+  }],
   "$defs": {
     "identifier": {
       "type": "string",
@@ -206,10 +210,30 @@
         }
       }
     },
+    "functionPoints": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "kind", "axis", "target", "function", "prediction"],
+      "properties": {
+        "id": {"$ref": "#/$defs/identifier"},
+        "kind": {"const": "function_points"},
+        "axis": {"$ref": "#/$defs/axis"},
+        "target": {"$ref": "#/$defs/target"},
+        "function": {"$ref": "#/$defs/identifier"},
+        "prediction": {
+          "type": "object", "additionalProperties": false,
+          "required": ["kind", "names"],
+          "properties": {
+            "kind": {"const": "fixed_outputs"},
+            "names": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"$ref": "#/$defs/identifier"}}
+          }
+        }
+      }
+    },
     "candidate": {
       "oneOf": [
         {"$ref": "#/$defs/functionCurve"},
         {"$ref": "#/$defs/functionPoint"},
+        {"$ref": "#/$defs/functionPoints"},
         {"$ref": "#/$defs/rangeGatedCurve"}
       ]
     }

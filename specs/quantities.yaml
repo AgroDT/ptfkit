@@ -43,6 +43,16 @@ organic_carbon_content:
       absolute: 0.1
       rationale: Project-default meaningful resolution in organic-carbon mass percentage points.
 
+organic_matter_content:
+  description: Organic matter content expressed relative to dry soil mass under the declared analytical method.
+  units:
+    mass_fraction:
+      absolute: 0.001
+      rationale: Project-default meaningful resolution for an organic-matter mass fraction.
+    mass_percent:
+      absolute: 0.1
+      rationale: Project-default meaningful resolution in organic-matter mass percentage points.
+
 available_water_capacity:
   description: Available water expressed as an equivalent depth per soil depth.
   units:

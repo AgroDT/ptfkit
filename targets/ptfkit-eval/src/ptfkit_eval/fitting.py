@@ -17,6 +17,7 @@ from .families import (
     retention_families,
 )
 from .fit_restarts import PressureIntervalTrial, pressure_interval_trials, pressure_partition_values
+from .ordered_water import WATER_SEPARATION, OrderedWaterCoordinates
 from .quality import RetentionSeriesPoint, diagnose_retention_series
 
 
@@ -36,6 +37,8 @@ RestartPolicy = Literal[
     'seeded_box_v1', 'brooks_corey_pressure_partitions_v1', 'brooks_corey_interval_solves_v1'
 ]
 
+FitMethod = Literal['bounded_trf_uniform_multistart_v1', 'bounded_trf_ordered_water_multistart_v1']
+
 
 @dataclass(frozen=True)
 class FitParameterRange:
@@ -51,12 +54,15 @@ class FitParameterRange:
 class RetentionFitPlan:
     """Fully registered local fitting policy; bounds are never inferred from data.
 
-    The first implementation uses independent boxes with nonoverlapping theta_r
-    and theta_s ranges to guarantee physical ordering throughout optimization.
+    The default uses nonoverlapping water boxes. The optional ordered-water
+    method maps a residual-water fraction conditionally on saturation, allowing
+    overlapping physical boxes with a numerical separation of 1e-10.
     Parameter uncertainty assumes local linearity and independent homoscedastic
     observation errors. It is conditional on the declared family and fit policy.
     The optional Brooks--Corey restart policy appends pressure-knot and geometric
     partition-midpoint starts to the n_starts original seeded box starts.
+    Additional starts are explicit physical vectors in registered family
+    parameter order. They append to, rather than replace, the seeded starts.
     """
 
     family_id: str
@@ -76,8 +82,9 @@ class RetentionFitPlan:
     objective_agreement_tolerance: float = 1e-10
     parameter_agreement_tolerance: float = 1e-3
     confidence_level: float = 0.95
-    method: Literal['bounded_trf_uniform_multistart_v1'] = 'bounded_trf_uniform_multistart_v1'
+    method: FitMethod = 'bounded_trf_uniform_multistart_v1'
     uncertainty_method: Literal['local_linear_iid_student_t_v1'] = 'local_linear_iid_student_t_v1'
+    additional_starts: tuple[tuple[float, ...], ...] = ()
 
     def __post_init__(self) -> None:
         """Validate scientific bounds and every numerical/evidence choice upfront."""
@@ -249,6 +256,18 @@ def fit_retention_family(
         if min(best.values[index] - item.lower, item.upper - best.values[index])
         <= plan.boundary_tolerance * widths[index]
     )
+    if plan.method == 'bounded_trf_ordered_water_multistart_v1':
+        estimates = dict(zip((item.name for item in ranges), best.values, strict=True))
+        if estimates['theta_s'] - estimates['theta_r'] <= (
+            WATER_SEPARATION + plan.boundary_tolerance * max(widths)
+        ):
+            boundary += ('theta_s_minus_theta_r',)
+        residual_upper = next(item.upper for item in ranges if item.name == 'theta_r')
+        if abs(estimates['theta_s'] - WATER_SEPARATION - residual_upper) <= (
+            4 * np.cbrt(np.finfo(float).eps)
+        ):
+            diagnostic = FitIdentifiability(rank, len(ranges), condition, boundary, ())
+            return _failed(plan, points, 'water_coordinate_kink', attempts, diagnostic)
     competing = tuple(
         solution.start_index
         for solution in solutions
@@ -373,6 +392,19 @@ def _solve_starts(context: _FitContext) -> tuple[tuple[RetentionFitAttempt, ...]
                 else bounds.lower + fraction * (bounds.upper - bounds.lower)
             )
         starts.append(np.array(values, dtype=np.float64))
+    coordinates = None
+    if context.plan.method == 'bounded_trf_ordered_water_multistart_v1':
+        coordinates = OrderedWaterCoordinates.create(
+            tuple(item.name for item in context.ranges), context.lower, context.upper
+        )
+        starts = [
+            starts[0],
+            *(
+                coordinates.map_box_draw(start, context.lower, context.upper)
+                for start in starts[1:]
+            ),
+        ]
+    starts.extend(np.array(start, dtype=np.float64) for start in context.plan.additional_starts)
     if context.plan.restart_policy == 'brooks_corey_pressure_partitions_v1':
         index = next(
             index for index, bounds in enumerate(context.ranges) if bounds.name == 'air_entry'
@@ -396,11 +428,22 @@ def _solve_starts(context: _FitContext) -> tuple[tuple[RetentionFitAttempt, ...]
     for index, trial in enumerate(trials):
         start = trial.initial
         try:
+            transform = (
+                OrderedWaterCoordinates.create(
+                    tuple(item.name for item in context.ranges), trial.lower, trial.upper
+                )
+                if coordinates is not None
+                else None
+            )
             optimized = least_squares(
-                _residuals,
-                start,
-                args=(context,),
-                bounds=(trial.lower, trial.upper),
+                (lambda values, transform=transform: _residuals(transform.decode(values), context))
+                if transform is not None
+                else _residuals,
+                transform.encode(start) if transform is not None else start,
+                args=() if transform is not None else (context,),
+                bounds=transform.optimizer_bounds()
+                if transform is not None
+                else (trial.lower, trial.upper),
                 method='trf',
                 jac='3-point',
                 x_scale='jac',
@@ -411,10 +454,18 @@ def _solve_starts(context: _FitContext) -> tuple[tuple[RetentionFitAttempt, ...]
                 max_nfev=context.plan.max_evaluations,
             )
             objective = float(optimized.fun @ optimized.fun)
+            physical_values = (
+                transform.decode(optimized.x) if transform is not None else optimized.x
+            )
+            physical_jacobian = (
+                transform.physical_jacobian(optimized.x, optimized.jac)
+                if transform is not None
+                else optimized.jac
+            )
             converged = (
                 bool(optimized.success)
                 and math.isfinite(objective)
-                and bool(np.all(np.isfinite(optimized.jac)))
+                and bool(np.all(np.isfinite(physical_jacobian)))
             )
             attempts.append(
                 RetentionFitAttempt(
@@ -424,7 +475,7 @@ def _solve_starts(context: _FitContext) -> tuple[tuple[RetentionFitAttempt, ...]
                     int(optimized.status),
                     int(optimized.nfev),
                     objective if math.isfinite(objective) else None,
-                    tuple(float(value) for value in optimized.x),
+                    tuple(float(value) for value in physical_values),
                     None,
                     trial.air_entry_interval,
                 )
@@ -433,8 +484,8 @@ def _solve_starts(context: _FitContext) -> tuple[tuple[RetentionFitAttempt, ...]
                 solutions.append(
                     _Solution(
                         index,
-                        np.asarray(optimized.x, dtype=np.float64),
-                        np.asarray(optimized.jac, dtype=np.float64),
+                        np.asarray(physical_values, dtype=np.float64),
+                        np.asarray(physical_jacobian, dtype=np.float64),
                         np.asarray(optimized.fun, dtype=np.float64),
                         objective,
                     )
@@ -499,13 +550,47 @@ def _validate_plan(plan: RetentionFitPlan, family: RetentionFamily) -> None:
         )
         raise RetentionFitError(message)
     _validate_numerical_policy(plan)
-    _validate_physical_ranges(plan, _parameter_boxes(plan, family))
+    bounds = _parameter_boxes(plan, family)
+    _validate_physical_ranges(plan, bounds)
+    _validate_additional_starts(plan, family, bounds)
     if (
-        plan.method != 'bounded_trf_uniform_multistart_v1'
+        plan.method
+        not in ('bounded_trf_uniform_multistart_v1', 'bounded_trf_ordered_water_multistart_v1')
         or plan.uncertainty_method != 'local_linear_iid_student_t_v1'
     ):
         message = 'Unsupported fitting or uncertainty policy.'
         raise RetentionFitError(message)
+
+
+def _validate_additional_starts(
+    plan: RetentionFitPlan, family: RetentionFamily, bounds: Mapping[str, FitParameterRange]
+) -> None:
+    names = tuple(parameter.name for parameter in family.parameters)
+    if not isinstance(plan.additional_starts, tuple) or any(
+        not isinstance(start, tuple) or len(start) != len(names) for start in plan.additional_starts
+    ):
+        message = (
+            'Additional starts must be immutable vectors in registered family parameter order.'
+        )
+        raise RetentionFitError(message)
+    for start in plan.additional_starts:
+        if any(
+            isinstance(value, bool)
+            or not isinstance(value, (int, float))
+            or not math.isfinite(value)
+            or not bounds[name].lower <= value <= bounds[name].upper
+            for name, value in zip(names, start, strict=True)
+        ):
+            message = (
+                'Additional starts must be finite physical values inside their declared boxes.'
+            )
+            raise RetentionFitError(message)
+        mapping = dict(zip(names, start, strict=True))
+        if plan.method == 'bounded_trf_ordered_water_multistart_v1' and (
+            mapping['theta_r'] + WATER_SEPARATION >= mapping['theta_s']
+        ):
+            message = 'Additional ordered-water starts must preserve physical water separation.'
+            raise RetentionFitError(message)
 
 
 def _validate_numerical_policy(plan: RetentionFitPlan) -> None:
@@ -566,12 +651,24 @@ def _validate_physical_ranges(
     plan: RetentionFitPlan, bounds: Mapping[str, FitParameterRange]
 ) -> None:
     theta_s = bounds['theta_s']
+    ordered = plan.method == 'bounded_trf_ordered_water_multistart_v1'
+    if ordered and (
+        'theta_r' not in bounds
+        or bounds['theta_r'].upper > 1
+        or bounds['theta_r'].lower + WATER_SEPARATION >= theta_s.lower
+        or bounds['theta_r'].initial + WATER_SEPARATION >= theta_s.initial
+    ):
+        message = 'Ordered water fitting requires feasible water bounds and initial values.'
+        raise RetentionFitError(message)
     if (
         theta_s.lower < 0
         or theta_s.upper > 1
         or (
             'theta_r' in bounds
-            and (bounds['theta_r'].lower < 0 or bounds['theta_r'].upper >= theta_s.lower)
+            and (
+                bounds['theta_r'].lower < 0
+                or (not ordered and bounds['theta_r'].upper >= theta_s.lower)
+            )
         )
     ):
         message = 'Fitting requires physical, nonoverlapping theta_r and theta_s boxes.'

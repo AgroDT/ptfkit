@@ -5,8 +5,8 @@ source:
     estimates by texture and organic matter for hydrologic solutions. Soil
     Science Society of America Journal, 70(5), 1569-1578.
   doi:
-    identifier: 10.2136/ssaj2005.0117
-    url: https://doi.org/10.2136/ssaj2005.0117
+    identifier: 10.2136/sssaj2005.0117
+    url: https://doi.org/10.2136/sssaj2005.0117
 scope:
   territory: United States
   dataset: >-
@@ -34,6 +34,18 @@ functions:
         symbol: S
         unit: g/g
         domain: 0 <= value <= 1
+        measurement:
+          quantity: particle_mass_fraction
+          unit: mass_fraction
+          reported_unit: g/g
+          basis: {material: fine_earth, denominator: dry_mass}
+          particle_size: {unit: micrometer, lower: {value: 50, inclusive: true}, upper: {value: 2000, inclusive: false}}
+          conditions: []
+          status: required
+          method: null
+          role: predictor
+          computational_domain: {lower: {value: 0, inclusive: true}, upper: {value: 1, inclusive: true}}
+          reported_applicability: []
         description: Sand mass fraction of the fine-earth soil.
       - name: clay
         symbol: C
@@ -61,6 +73,18 @@ functions:
         symbol: OM
         unit: '% mass'
         domain: 0 <= value <= 8
+        measurement:
+          quantity: organic_matter_content
+          unit: mass_percent
+          reported_unit: '% mass'
+          basis: {material: fine_earth, denominator: dry_mass}
+          particle_size: null
+          conditions: []
+          status: required
+          method: null
+          role: predictor
+          computational_domain: {lower: {value: 0, inclusive: true}, upper: {value: 8, inclusive: true}}
+          reported_applicability: []
         description: Organic matter content on a mass percentage basis.
     outputs:
       type: record
@@ -73,6 +97,18 @@ functions:
           reported_unit: m^3/m^3
           domain: value > 0
           description: Volumetric water content at 1500 kPa matric tension.
+          measurement:
+            quantity: volumetric_water_content
+            unit: volume_fraction
+            reported_unit: m^3/m^3
+            basis: {material: fine_earth, denominator: bulk_volume}
+            particle_size: null
+            conditions: [{quantity: matric_potential, value: 1500, unit: kilopascal, convention: magnitude}]
+            status: estimated
+            method: null
+            role: prediction
+            computational_domain: {lower: {value: 0, inclusive: false}, upper: null}
+            reported_applicability: []
         - name: theta_33
           quantity: volumetric_water_content
           symbol: theta_33
@@ -102,6 +138,18 @@ functions:
           reported_unit: m^3/m^3
           domain: value > 0
           description: Saturated volumetric water content at normal density.
+          measurement:
+            quantity: volumetric_water_content
+            unit: volume_fraction
+            reported_unit: m^3/m^3
+            basis: {material: fine_earth, denominator: bulk_volume}
+            particle_size: null
+            conditions: [{quantity: matric_potential, value: 0, unit: kilopascal, convention: magnitude}]
+            status: estimated
+            method: null
+            role: prediction
+            computational_domain: {lower: {value: 0, inclusive: false}, upper: null}
+            reported_applicability: []
         - name: plant_available_water
           quantity: volumetric_water_content
           symbol: PAW
@@ -109,6 +157,18 @@ functions:
           reported_unit: m^3/m^3
           domain: value >= 0
           description: Difference between the 33 and 1500 kPa water contents.
+          measurement:
+            quantity: volumetric_water_content
+            unit: volume_fraction
+            reported_unit: m^3/m^3
+            basis: {material: fine_earth, denominator: bulk_volume}
+            particle_size: null
+            conditions: []
+            status: estimated
+            method: null
+            role: prediction
+            computational_domain: {lower: {value: 0, inclusive: true}, upper: null}
+            reported_applicability: []
         - name: air_entry_tension
           quantity: matric_potential
           symbol: psi_e
@@ -116,6 +176,18 @@ functions:
           reported_unit: kPa
           domain: value > 0
           description: Air-entry or bubbling-pressure tension.
+          measurement:
+            quantity: matric_potential
+            unit: kilopascal
+            reported_unit: kPa
+            basis: {material: fine_earth, denominator: not_applicable}
+            particle_size: null
+            conditions: []
+            status: estimated
+            method: null
+            role: model_parameter
+            computational_domain: {lower: {value: 0, inclusive: false}, upper: null}
+            reported_applicability: []
         - name: retention_a
           quantity: retention_coefficient_a
           symbol: A
@@ -123,6 +195,18 @@ functions:
           reported_unit: kPa
           domain: value > 0
           description: Coefficient A of the dry-range moisture-tension curve.
+          measurement:
+            quantity: retention_coefficient_a
+            unit: kilopascal
+            reported_unit: kPa
+            basis: {material: fine_earth, denominator: not_applicable}
+            particle_size: null
+            conditions: []
+            status: estimated
+            method: null
+            role: model_parameter
+            computational_domain: {lower: {value: 0, inclusive: false}, upper: null}
+            reported_applicability: []
         - name: retention_b
           quantity: retention_coefficient_b
           symbol: B
@@ -130,6 +214,18 @@ functions:
           reported_unit: dimensionless
           domain: value > 0
           description: Exponent B of the dry-range moisture-tension curve.
+          measurement:
+            quantity: retention_coefficient_b
+            unit: dimensionless
+            reported_unit: dimensionless
+            basis: {material: fine_earth, denominator: not_applicable}
+            particle_size: null
+            conditions: []
+            status: estimated
+            method: null
+            role: model_parameter
+            computational_domain: {lower: {value: 0, inclusive: false}, upper: null}
+            reported_applicability: []
         - name: conductivity_lambda
           quantity: conductivity_shape_parameter
           symbol: lambda
@@ -137,6 +233,18 @@ functions:
           reported_unit: dimensionless
           domain: value > 0
           description: Inverse of retention exponent B.
+          measurement:
+            quantity: conductivity_shape_parameter
+            unit: dimensionless
+            reported_unit: dimensionless
+            basis: {material: fine_earth, denominator: not_applicable}
+            particle_size: null
+            conditions: []
+            status: estimated
+            method: null
+            role: model_parameter
+            computational_domain: {lower: {value: 0, inclusive: false}, upper: null}
+            reported_applicability: []
         - name: saturated_conductivity
           quantity: saturated_hydraulic_conductivity
           symbol: K_s
@@ -165,6 +273,18 @@ functions:
           reported_unit: g/cm^3
           domain: value > 0
           description: Normal dry bulk density assuming particle density 2.65 g/cm^3.
+          measurement:
+            quantity: dry_bulk_density
+            unit: gram_per_cubic_centimeter
+            reported_unit: g/cm^3
+            basis: {material: fine_earth, denominator: bulk_volume}
+            particle_size: null
+            conditions: []
+            status: estimated
+            method: null
+            role: model_parameter
+            computational_domain: {lower: {value: 0, inclusive: false}, upper: null}
+            reported_applicability: []
     verification_cases:
       - id: table_3_sand
         kind: calculated

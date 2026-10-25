@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "source": "cosby1984",
+  "status": "logarithmic_contract_and_application_protocol_pending",
+  "function": "calc_ptf_cosby1984_univariate",
+  "paper": {
+    "doi": "10.1029/WR020i006p00682",
+    "publisher_url": "https://agupubs.onlinelibrary.wiley.com/doi/10.1029/WR020i006p00682",
+    "transcription_url": "https://paperzz.com/doc/9229810/--wiley-online-library",
+    "local_pdf_sha256": null,
+    "review_basis": "Parsed original-paper transcription; original typeset pages not visually verified."
+  },
+  "supported_facts": [
+    "Printed pages 683-684: sample particle-size measurements were unavailable; regressions used representative USDA textural-class compositions from Table 2.",
+    "Table 5: regressions estimate class means and within-class standard deviations. These deviations are not confidence intervals for fitted means.",
+    "Printed page 683: retention was converted from mass to volume using density; saturation used an assumed particle density of 2.65."
+  ],
+  "pending": [
+    "Confirm logarithm base and underlying conductivity units from a reliable typeset original or source-linked implementation.",
+    "Declare class-midpoint application or an explicit measured-texture extension before benchmarking; do not silently equate their calibration protocols.",
+    "Retain parameter covariation limitations when considering stochastic or curve uncertainty."
+  ],
+  "decision": "Keep the function outside manifest-driven evaluation pending supported logarithmic measurement semantics. No Cosby formulas, statuses or numeric bindings changed."
+}

@@ -16,10 +16,10 @@ from .canonical import CanonicalRetentionDataset, load_retention_dataset
 from .conformal import GroupedConformalPlan, validate_prediction_interval_roster
 from .contracts import (
     EvaluationPlan,
-    FixedPointPrediction,
     FunctionCurveCandidate,
     OutputPrediction,
     RangeGatedCurveCandidate,
+    fixed_output_predictions,
     load_evaluation_plan,
 )
 from .documents import (
@@ -35,8 +35,13 @@ from .documents import (
 from .fitting import FitParameterRange, RetentionFitPlan
 from .folds import GroupedSample, NestedGroupPlan, build_nested_group_folds
 from .hard_switch import HardSwitchGridPlan
-from .learned import ConvexPairPlan, LearnedSelectionPlan, validate_learned_selection_candidates
-from .losses import LogPressureLossPlan
+from .learned import (
+    ConvexPairMethod,
+    ConvexPairPlan,
+    LearnedSelectionPlan,
+    validate_learned_selection_candidates,
+)
+from .losses import LogPressureLossPlan, SinglePressureLossPlan
 from .nested_applicability import NestedDomainPlan
 from .paired import PairedComparisonPlan
 from .point_losses import PointErrorLossPlan
@@ -59,7 +64,7 @@ from .uncertainty import ClusterBootstrapPlan
 
 if TYPE_CHECKING:
     from .contracts import AtomicCurve, CurveCandidate
-    from .fitting import RestartPolicy
+    from .fitting import FitMethod, RestartPolicy
 
 
 @dataclass(frozen=True)
@@ -138,6 +143,23 @@ def load_retention_run_plan(
         message = 'Selection roster contains candidates absent from the evaluation plan.'
         raise EvaluationDocumentError(message)
     learned_selection = _learned_selection_plan(document.get('learned_selection'), evaluation)
+    if any(
+        isinstance(p.loss, SinglePressureLossPlan)
+        for p in (selection, learned_selection.fixed if learned_selection else None)
+        if p is not None
+    ):
+        permitted = {
+            'schema_version',
+            'dataset',
+            'evaluation_plan',
+            'protocol',
+            'bootstrap',
+            'selection',
+            'learned_selection',
+        }
+        if set(document) - permitted:
+            message = 'Single-pressure selection does not support additional uncertainty protocols.'
+            raise EvaluationDocumentError(message)
     result = RetentionRunPlan(
         object_mapping(freeze(document)),
         object_mapping(freeze(evaluation_document)),
@@ -416,6 +438,7 @@ def _trainable_ensemble(
             minimum_loss_gap=cast('float', item['minimum_loss_gap']),
         )
     return ConvexPairPlan(
+        method=cast('ConvexPairMethod', item['method']),
         id=cast('str', item['id']),
         left_candidate_id=cast('str', item['left_candidate_id']),
         right_candidate_id=cast('str', item['right_candidate_id']),
@@ -544,6 +567,13 @@ def _approximation_plans(
             objective_agreement_tolerance=cast('float', document['objective_agreement_tolerance']),
             parameter_agreement_tolerance=cast('float', document['parameter_agreement_tolerance']),
             confidence_level=cast('float', document['confidence_level']),
+            method=cast('FitMethod', document['method']),
+            additional_starts=tuple(
+                tuple(start)
+                for start in cast(
+                    'tuple[tuple[float, ...], ...]', document.get('additional_starts', ())
+                )
+            ),
         )
         for document in object_records(value)
     ]
@@ -580,7 +610,9 @@ def _selection_plan(value: object) -> FixedSelectionPlan | None:
             minimum_training_groups=cast('int', folds['minimum_training_groups']),
             minimum_validation_groups=cast('int', folds['minimum_validation_groups']),
         ),
-        loss=LogPressureLossPlan(
+        loss=SinglePressureLossPlan(suction_kpa=cast('float', loss['suction_kpa']))
+        if loss['method'] == 'single_pressure_mse_v1'
+        else LogPressureLossPlan(
             lower_suction_kpa=cast('float', loss['lower_suction_kpa']),
             upper_suction_kpa=cast('float', loss['upper_suction_kpa']),
             minimum_points=cast('int', loss['minimum_points']),
@@ -648,10 +680,9 @@ def _validate_run_candidates(
             )
             raise EvaluationDocumentError(message)
         for _, atom in candidate_atoms(candidate):
-            if (
-                isinstance(atom.prediction, FixedPointPrediction)
-                and atom.prediction.method is not None
-                and atom.prediction.method != protocol['observation_method']
+            if any(
+                point.method is not None and point.method != protocol['observation_method']
+                for point in fixed_output_predictions(atom.prediction)
             ):
                 message = 'Fixed-output observation method does not match the manifest contract.'
                 raise EvaluationDocumentError(message)

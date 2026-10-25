@@ -524,7 +524,7 @@
           "type": "object", "additionalProperties": false,
           "required": ["method", "id", "left_candidate_id", "right_candidate_id", "minimum_training_groups", "minimum_mean_squared_contrast"],
           "properties": {
-            "method": {"const": "constant_convex_pair_log_pressure_v1"},
+            "method": {"enum": ["constant_convex_pair_log_pressure_v1", "constant_convex_pair_single_pressure_v1"]},
             "id": {"$ref": "#/$defs/text"},
             "left_candidate_id": {"$ref": "#/$defs/text"},
             "right_candidate_id": {"$ref": "#/$defs/text"},
@@ -604,8 +604,9 @@
         "objective_agreement_tolerance": {"type": "number", "exclusiveMinimum": 0},
         "parameter_agreement_tolerance": {"type": "number", "exclusiveMinimum": 0},
         "confidence_level": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1},
-        "method": {"const": "bounded_trf_uniform_multistart_v1"},
+        "method": {"enum": ["bounded_trf_uniform_multistart_v1", "bounded_trf_ordered_water_multistart_v1"]},
         "restart_policy": {"enum": ["seeded_box_v1", "brooks_corey_pressure_partitions_v1", "brooks_corey_interval_solves_v1"]},
+        "additional_starts": {"type": "array", "items": {"type": "array", "minItems": 1, "items": {"type": "number"}}},
         "uncertainty_method": {"const": "local_linear_iid_student_t_v1"}
       }
     },
@@ -639,12 +640,22 @@
           }
         },
         "loss": {
-          "type": "object", "additionalProperties": false,
-          "required": ["method", "lower_suction_kpa", "upper_suction_kpa", "minimum_points"],
-          "properties": {"method": {"const": "log10_trapezoid_mse_v1"},
-                         "lower_suction_kpa": {"type": "number", "exclusiveMinimum": 0},
-                         "upper_suction_kpa": {"type": "number", "exclusiveMinimum": 0},
-                         "minimum_points": {"type": "integer", "minimum": 2}}
+          "oneOf": [
+            {
+              "type": "object", "additionalProperties": false,
+              "required": ["method", "lower_suction_kpa", "upper_suction_kpa", "minimum_points"],
+              "properties": {"method": {"const": "log10_trapezoid_mse_v1"},
+                             "lower_suction_kpa": {"type": "number", "exclusiveMinimum": 0},
+                             "upper_suction_kpa": {"type": "number", "exclusiveMinimum": 0},
+                             "minimum_points": {"type": "integer", "minimum": 2}}
+            },
+            {
+              "type": "object", "additionalProperties": false,
+              "required": ["method", "suction_kpa"],
+              "properties": {"method": {"const": "single_pressure_mse_v1"},
+                             "suction_kpa": {"type": "number", "minimum": 0}}
+            }
+          ]
         }
       }
     },

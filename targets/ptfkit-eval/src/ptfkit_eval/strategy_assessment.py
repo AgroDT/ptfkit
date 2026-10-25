@@ -9,9 +9,9 @@ from typing import TYPE_CHECKING, Literal
 from .cohorts import RetentionCandidateComparisons, RetentionCohortSet, build_retention_cohorts
 from .documents import EvaluationDocumentError, object_mapping, object_records
 from .losses import (
-    LogPressureLossPlan,
     SampleCurveLoss,
-    evaluate_log_pressure_loss,
+    SelectionLossPlan,
+    evaluate_selection_loss,
     mean_finite_losses,
 )
 from .paired import RetentionMetricDifferences
@@ -56,7 +56,7 @@ class SelectionStrategyAssessment:
 
     protocol: Literal['fixed', 'learned']
     selection_method: str
-    loss_plan: LogPressureLossPlan
+    loss_plan: SelectionLossPlan
     strategies: tuple[OuterStrategySummary, ...]
     cohorts: RetentionCohortSet
     atomic_minus_ensemble: RetentionMetricDifferences | None
@@ -76,7 +76,7 @@ def assess_selection_strategies(
     """Score only locked outer forecasts; inner predictions never enter metrics.
 
     Each sample belongs to exactly one outer fold per strategy. Predictions are
-    restricted to that protocol's registered log-pressure loss domain. Atomic
+    restricted to that protocol's registered selection-loss support. Atomic
     and ensemble strategies retain maximal and exact common point cohorts;
     incomplete folds remain explicit, with partial descriptive data labeled.
     No confidence intervals are estimated: overlapping training sets and model
@@ -116,7 +116,7 @@ def _protocol(
     *,
     protocol: Literal['fixed', 'learned'],
     method: str,
-    loss: LogPressureLossPlan,
+    loss: SelectionLossPlan,
     frames: tuple[SelectionPredictionFrame, ...],
     split_reason: str | None,
 ) -> SelectionStrategyAssessment:
@@ -178,7 +178,7 @@ def _strategy(
     kind: Literal['atomic', 'ensemble'],
     frames: tuple[SelectionPredictionFrame, ...],
     roster: tuple[SampleKey, ...],
-    loss: LogPressureLossPlan,
+    loss: SelectionLossPlan,
     split_reason: str | None,
 ) -> OuterStrategySummary:
     if split_reason is not None:
@@ -199,7 +199,7 @@ def _strategy(
         excluded += len(frame.predictions) - len(domain)
         evaluated = {
             (sample.source_id, sample.sample_id): sample
-            for sample in evaluate_log_pressure_loss(domain, plan=loss)
+            for sample in evaluate_selection_loss(domain, plan=loss)
         }
         frame_losses = tuple(
             evaluated.get(sample, SampleCurveLoss(*sample, 0, None, 'insufficient_points'))

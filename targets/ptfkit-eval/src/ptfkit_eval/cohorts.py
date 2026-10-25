@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Literal
 
 from .documents import object_mapping
 from .metrics import RetentionComparison, RetentionErrorSummary, summarize_retention_errors
+from .water import canonical_water_contract
 
 
 if TYPE_CHECKING:
@@ -145,6 +146,11 @@ def _validate_contracts(candidates: list[RetentionCandidateComparisons]) -> None
             message = f'Duplicate candidate identifier: {candidate.candidate_id!r}.'
             raise RetentionCohortError(message)
         seen.add(candidate.candidate_id)
+        if any(
+            point.water_quantity != candidate.target.quantity for point in candidate.comparisons
+        ):
+            message = 'Comparison water quantities must match the candidate target.'
+            raise RetentionCohortError(message)
         if (candidate.dataset_id, candidate.protocol_id, candidate.target) != (
             reference.dataset_id,
             reference.protocol_id,
@@ -153,13 +159,16 @@ def _validate_contracts(candidates: list[RetentionCandidateComparisons]) -> None
             message = 'Retention candidates must share dataset, protocol, and target contracts.'
             raise RetentionCohortError(message)
     target = reference.target
+    try:
+        unit, denominator = canonical_water_contract(target.quantity)
+    except ValueError as error:
+        raise RetentionCohortError(str(error)) from error
     if (
-        target.quantity != 'volumetric_water_content'
-        or target.unit != 'volume_fraction'
-        or target.denominator_basis != 'bulk_volume'
+        target.unit != unit
+        or target.denominator_basis != denominator
         or not target.material_basis.strip()
     ):
-        message = 'Retention cohorts require canonical volumetric water-content contracts.'
+        message = 'Retention cohorts require canonical volumetric or gravimetric water contracts.'
         raise RetentionCohortError(message)
 
 

@@ -58,7 +58,7 @@ centimeter_per_day:
 
 gram_per_cubic_centimeter:
   preferred_notation: "g/cm^3"
-  aliases: ["g/cm³"]
+  aliases: ["g/cm³", "g/cm3"]
   conversion: {dimension: mass_per_volume, scale_to_si: 1000.0}
 
 kilopascal:

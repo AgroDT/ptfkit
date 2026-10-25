@@ -19,30 +19,90 @@ $defs:
     unit: '%'
     domain: 0 <= value <= 100
     description: Clay content by mass.
+    measurement:
+      quantity: particle_mass_fraction
+      unit: mass_percent
+      reported_unit: '%'
+      basis: {material: fine_earth, denominator: dry_mass}
+      particle_size: {unit: micrometer, lower: null, upper: {value: 2, inclusive: false}}
+      conditions: []
+      status: required
+      method: bouyoucos1962_hydrometer_hexametaphosphate_5_percent
+      role: predictor
+      computational_domain: {lower: {value: 0, inclusive: true}, upper: {value: 100, inclusive: true}}
+      reported_applicability: []
   silt:
     name: silt
     symbol: Silt
     unit: '%'
     domain: 0 <= value <= 100
     description: Silt content by mass.
+    measurement:
+      quantity: particle_mass_fraction
+      unit: mass_percent
+      reported_unit: '%'
+      basis: {material: fine_earth, denominator: dry_mass}
+      particle_size: {unit: micrometer, lower: {value: 2, inclusive: true}, upper: {value: 50, inclusive: false}}
+      conditions: []
+      status: required
+      method: bouyoucos1962_hydrometer_hexametaphosphate_5_percent
+      role: predictor
+      computational_domain: {lower: {value: 0, inclusive: true}, upper: {value: 100, inclusive: true}}
+      reported_applicability: []
   sand:
     name: sand
     symbol: Sand
     unit: '%'
     domain: 0 <= value <= 100
     description: Sand content by mass.
+    measurement:
+      quantity: particle_mass_fraction
+      unit: mass_percent
+      reported_unit: '%'
+      basis: {material: fine_earth, denominator: dry_mass}
+      particle_size: {unit: micrometer, lower: {value: 50, inclusive: true}, upper: {value: 2000, inclusive: false}}
+      conditions: []
+      status: required
+      method: bouyoucos1962_hydrometer_hexametaphosphate_5_percent
+      role: predictor
+      computational_domain: {lower: {value: 0, inclusive: true}, upper: {value: 100, inclusive: true}}
+      reported_applicability: []
   silt_nonzero:
     name: silt
     symbol: Silt
     unit: '%'
     domain: 0 < value <= 100
     description: Silt content by mass and denominator of the clay-to-silt ratio.
+    measurement:
+      quantity: particle_mass_fraction
+      unit: mass_percent
+      reported_unit: '%'
+      basis: {material: fine_earth, denominator: dry_mass}
+      particle_size: {unit: micrometer, lower: {value: 2, inclusive: true}, upper: {value: 50, inclusive: false}}
+      conditions: []
+      status: required
+      method: bouyoucos1962_hydrometer_hexametaphosphate_5_percent
+      role: predictor
+      computational_domain: {lower: {value: 0, inclusive: false}, upper: {value: 100, inclusive: true}}
+      reported_applicability: []
   soil_organic_matter:
     name: soil_organic_matter
     symbol: SOM
     unit: '%'
     domain: value >= 0
     description: Soil organic matter content by mass.
+    measurement:
+      quantity: organic_matter_content
+      unit: mass_percent
+      reported_unit: '%'
+      basis: {material: fine_earth, denominator: dry_mass}
+      particle_size: null
+      conditions: []
+      status: required
+      method: walkley_black_carbon_times_1_724
+      role: predictor
+      computational_domain: {lower: {value: 0, inclusive: true}, upper: null}
+      reported_applicability: []
   Beniaich2023PTFResult:
     type: record
     name: Beniaich2023PTFResult
@@ -54,6 +114,18 @@ $defs:
       reported_unit: g/g
       domain: null
       description: Gravimetric water content at saturation.
+      measurement:
+        quantity: gravimetric_water_content
+        unit: mass_fraction
+        reported_unit: g/g
+        basis: {material: fine_earth, denominator: dry_soil_mass}
+        particle_size: null
+        conditions: []
+        status: estimated
+        method: klute1986_disturbed_ring_retention
+        role: prediction
+        computational_domain: null
+        reported_applicability: []
     - name: water_field_capacity
       quantity: gravimetric_water_content
       symbol: w_330
@@ -61,6 +133,18 @@ $defs:
       reported_unit: g/g
       domain: null
       description: Gravimetric water content at -33 kPa.
+      measurement:
+        quantity: gravimetric_water_content
+        unit: mass_fraction
+        reported_unit: g/g
+        basis: {material: fine_earth, denominator: dry_soil_mass}
+        particle_size: null
+        conditions: [{quantity: matric_potential, value: 33, unit: kilopascal, convention: magnitude}]
+        status: estimated
+        method: klute1986_disturbed_ring_retention
+        role: prediction
+        computational_domain: null
+        reported_applicability: []
     - name: water_wilting_point
       quantity: gravimetric_water_content
       symbol: w_15000
@@ -68,6 +152,18 @@ $defs:
       reported_unit: g/g
       domain: null
       description: Gravimetric water content at -1,500 kPa.
+      measurement:
+        quantity: gravimetric_water_content
+        unit: mass_fraction
+        reported_unit: g/g
+        basis: {material: fine_earth, denominator: dry_soil_mass}
+        particle_size: null
+        conditions: [{quantity: matric_potential, value: 1500, unit: kilopascal, convention: magnitude}]
+        status: estimated
+        method: klute1986_disturbed_ring_retention
+        role: prediction
+        computational_domain: null
+        reported_applicability: []
 functions:
 - name: calc_ptf_beniaich2023_slr1
   status: implemented
@@ -640,6 +736,20 @@ scientific_notes: |
   `Clay`, `Silt`, `Sand`, and `SOM` are mass percentages. The published linear
   regressions return gravimetric percentage points, which are divided by 100 for
   the public `g/g` outputs.
+
+  ## Measurement contract
+
+  Measurement descriptors follow Sections 2.2-2.4: the tested material is the
+  disturbed, air-dried, 2-mm-sieved fine-earth fraction. Particle fractions use
+  the USDA boundaries and the reported hydrometer/dispersant protocol. SOM is
+  defined by Walkley-Black carbon multiplied by 1.724; it is not interchangeable
+  with an unspecified organic-matter measurement. Retention predictions retain
+  the disturbed-ring operational method and exact target pressure. Contract
+  inclusion does not validate geographic transfer or authorize estimated inputs.
+  The saturation output retains its source-defined capillary-saturation state;
+  it has no fixed-pressure condition because an exact controlled suction for
+  that preparation is not specified. Fixed-pressure evaluation therefore uses
+  only the explicitly reported 33 and 1500 kPa outputs.
 
   ## Blockers
 

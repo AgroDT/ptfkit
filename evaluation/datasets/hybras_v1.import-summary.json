@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "dataset_id": "hybras-v1-positive-head-volume",
+  "canonical_dataset_sha256": "5d278899f7352f5ba49ac89681b63876b915b47b7361c2359015430a1711caaf",
+  "archive_sha256": "e9164c2f74e9ad75033b99248b0eee7ba426230150a499a6e6b3a285eebcf618",
+  "samples": 1075,
+  "profiles": 445,
+  "source_reference_groups": 36,
+  "positive_head_observations": 7718,
+  "pressure_conversion_blocked_observations": 664,
+  "confirmed_subset_sha256": "7ee2c78e07da2ffe97b987e776620ce275390b1e24939a63552f08f3039fd665",
+  "confirmed_subset_samples": 987,
+  "confirmed_subset_observations": 7054,
+  "deferred_zero_head": {
+    "derived_porosity": 289,
+    "saturation_deferred": 786
+  },
+  "curves_with_physical_diagnostics": 68,
+  "diagnostics": {
+    "increasing_water_with_suction": 83
+  },
+  "point_count_distribution": {
+    "4": 11,
+    "5": 255,
+    "6": 199,
+    "7": 154,
+    "8": 208,
+    "9": 110,
+    "10": 50,
+    "11": 83,
+    "12": 5
+  },
+  "native_ptf_eligibility": "not_granted",
+  "material_basis": "unspecified",
+  "pressure_policy": "reported_cm_times_0.0980665_no_snap_to_approximate_kPa_labels",
+  "parameter_uncertainty_status": "not_qualified_for_empirical_coverage",
+  "limitations": [
+    "Material basis and predictor protocols not bound for native PTF scoring.",
+    "Measured targets may be digitized or replicate averages; source comments preserved.",
+    "Profile IDs group horizons, but do not establish independence between profiles.",
+    "Study reference strings define source groups; calibration overlap not yet reviewed.",
+    "Zero-head measurements deferred, including reported measured saturation.",
+    "Source comments declaring 1atm=1020cm require original-pressure review; do not repair by inference."
+  ]
+}
