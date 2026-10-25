@@ -1306,3 +1306,10 @@ ptfkit-eval run local/single-pressure-example/run.json --output local/single-pre
 
 This example tests the technical selection path. It does not establish real-data
 eligibility, an empirical winner or confidence coverage.
+
+
+Run manifests separately hash the actually loaded ptfkit native extension and
+the Python package source root. Editable installations can load the extension
+from a different directory, so the source-root hash alone does not bind its
+machine code. Historical runs retain their matching wheels and manifests;
+new metadata must not be relabelled as evidence captured by old runs.

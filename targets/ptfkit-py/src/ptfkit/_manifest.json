@@ -2,7 +2,7 @@
   "_generated": "ptfkit-codegen; DO NOT EDIT.",
   "coverage": {
     "implemented_functions": 146,
-    "manifest_functions": 26,
+    "manifest_functions": 27,
     "omitted_functions": [
       {
         "id": "calc_ptf_ahuja1984",
@@ -42,10 +42,6 @@
       },
       {
         "id": "calc_ptf_chakraborty2011_eq6",
-        "reason": "incomplete_measurement_contract"
-      },
-      {
-        "id": "calc_ptf_cosby1984_univariate",
         "reason": "incomplete_measurement_contract"
       },
       {
@@ -2434,6 +2430,314 @@
       "warnings": [
         "The paper states that these unverified average values should not be used blindly because saturation suction varies substantially within texture classes.",
         "Sorptivity values must be treated cautiously because the conductivity averages may not represent the same average soils as the other parameters."
+      ]
+    },
+    {
+      "callable": "calc_ptf_cosby1984_univariate",
+      "id": "calc_ptf_cosby1984_univariate",
+      "inputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 100.0
+              }
+            },
+            "conditions": [],
+            "method": "cosby1984_table2_class_midpoint_v1",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "sand"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 100.0
+              }
+            },
+            "conditions": [],
+            "method": "cosby1984_table2_class_midpoint_v1",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 2.0
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 50.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "silt"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 100.0
+              }
+            },
+            "conditions": [],
+            "method": "cosby1984_table2_class_midpoint_v1",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2.0
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "reported_applicability": [],
+            "reported_unit": "%",
+            "role": "predictor",
+            "status": "required",
+            "unit": "mass_percent"
+          },
+          "name": "clay"
+        }
+      ],
+      "models": {
+        "h_theta": "Power function moisture characteristic",
+        "k_h": "Saturated hydraulic conductivity parameter statistics"
+      },
+      "module": "ptfkit.cosby1984",
+      "outputs": [
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "not_applicable",
+              "material": "soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "campbell_b",
+            "reported_applicability": [],
+            "reported_unit": "dimensionless",
+            "role": "model_parameter",
+            "status": "estimated",
+            "unit": "dimensionless"
+          },
+          "name": "mean_b"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "not_applicable",
+              "material": "soil"
+            },
+            "computational_domain": null,
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "log_saturation_potential",
+            "reported_applicability": [],
+            "reported_unit": "log10(cm H2O)",
+            "role": "model_parameter",
+            "status": "estimated",
+            "unit": "log10_centimeter_water_head"
+          },
+          "name": "mean_log_psi_s"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "not_applicable",
+              "material": "soil"
+            },
+            "computational_domain": null,
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "log_saturated_hydraulic_conductivity",
+            "reported_applicability": [],
+            "reported_unit": "log10(in/h)",
+            "role": "model_parameter",
+            "status": "estimated",
+            "unit": "log10_inch_per_hour"
+          },
+          "name": "mean_log_k_sat"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 100.0
+              }
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "volumetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "% volume/volume",
+            "role": "model_parameter",
+            "status": "estimated",
+            "unit": "volume_percent"
+          },
+          "name": "mean_theta_s"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "not_applicable",
+              "material": "soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "campbell_b",
+            "reported_applicability": [],
+            "reported_unit": "dimensionless",
+            "role": "uncertainty",
+            "status": "estimated",
+            "unit": "dimensionless"
+          },
+          "name": "sd_b"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "not_applicable",
+              "material": "soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": null
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "log_saturated_hydraulic_conductivity",
+            "reported_applicability": [],
+            "reported_unit": "log10(in/h)",
+            "role": "uncertainty",
+            "status": "estimated",
+            "unit": "log10_inch_per_hour"
+          },
+          "name": "sd_log_k_sat"
+        },
+        {
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "bulk_volume",
+              "material": "soil"
+            },
+            "computational_domain": {
+              "lower": {
+                "inclusive": true,
+                "value": 0.0
+              },
+              "upper": {
+                "inclusive": true,
+                "value": 100.0
+              }
+            },
+            "conditions": [],
+            "method": null,
+            "particle_size": null,
+            "quantity": "volumetric_water_content",
+            "reported_applicability": [],
+            "reported_unit": "% volume/volume",
+            "role": "uncertainty",
+            "status": "estimated",
+            "unit": "volume_percent"
+          },
+          "name": "sd_theta_s"
+        }
+      ],
+      "source": "cosby1984",
+      "status": "implemented",
+      "warnings": [
+        "Within-class standard deviations are not confidence intervals for means or predictions."
       ]
     },
     {
@@ -4974,12 +5278,14 @@
     "log_saturated_hydraulic_conductivity": {
       "description": "Reported logarithm of saturated hydraulic conductivity.",
       "units": [
+        "log10_inch_per_hour",
         "reported_log_value"
       ]
     },
     "log_saturation_potential": {
       "description": "Reported logarithm of saturation matric potential.",
       "units": [
+        "log10_centimeter_water_head",
         "reported_log_value"
       ]
     },
@@ -5172,6 +5478,16 @@
         "scale_to_si": 1000.0
       },
       "preferred_notation": "kPa"
+    },
+    "log10_centimeter_water_head": {
+      "aliases": [],
+      "conversion": null,
+      "preferred_notation": "log10(cm H2O)"
+    },
+    "log10_inch_per_hour": {
+      "aliases": [],
+      "conversion": null,
+      "preferred_notation": "log10(in/h)"
     },
     "mass_fraction": {
       "aliases": [

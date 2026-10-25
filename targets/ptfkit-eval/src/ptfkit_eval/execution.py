@@ -224,7 +224,12 @@ def _atomic_evaluator(
             raise CurveExecutionError(message)
         result = callable_(**_coerce_inputs(function, inputs))
         parameters = {
-            parameter.output: _result_value(result, parameter.output)
+            parameter.output: convert_value(
+                _result_value(result, parameter.output),
+                _output_unit(function, parameter.output),
+                parameter.unit,
+                manifest=manifest,
+            )
             for parameter in adapter.spec.parameters
         }
 

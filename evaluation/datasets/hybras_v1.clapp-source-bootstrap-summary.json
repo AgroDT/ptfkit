@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "scope": "fixed_clapp_external_validation_not_best_model_selection",
+  "dataset_id": "hybras-v1-clapp-reviewed-mineral-positive-head",
+  "samples": 378,
+  "profiles": 144,
+  "sources": 22,
+  "observations": 2882,
+  "metrics": {
+    "mean_absolute_error": 0.05631867785092228,
+    "mean_error": 0.002573254354125888,
+    "median_absolute_error": 0.0465950410852472,
+    "root_mean_squared_error": 0.0737532960617378
+  },
+  "confidence": {
+    "effective_grouping": "source",
+    "group_count": 22,
+    "intervals": {
+      "mean_absolute_error": {
+        "lower": 0.04832326774914016,
+        "upper": 0.06523085340940717
+      },
+      "mean_error": {
+        "lower": -0.013826513707441762,
+        "upper": 0.022031723536973597
+      },
+      "median_absolute_error": {
+        "lower": 0.038370926381782466,
+        "upper": 0.055882397873730796
+      },
+      "root_mean_squared_error": {
+        "lower": 0.06264537542628838,
+        "upper": 0.08477170261973371
+      }
+    },
+    "method": "cluster_percentile_linear_v1",
+    "plan": {
+      "confidence_level": 0.95,
+      "grouping": "source",
+      "minimum_groups": 5,
+      "missing_profiles": "reject",
+      "n_resamples": 2000,
+      "seed": 20261025
+    },
+    "reason": null,
+    "status": "computed"
+  },
+  "verified_prediction_records": 5764,
+  "verification": "Published Table 2, parabolic/power curves and independent sample means.",
+  "limitations": [
+    "No fine-earth preparation or zero-gravel assumption is inferred.",
+    "Unknown, compound, transitional and annotated horizon labels remain excluded.",
+    "Only one native function is evaluated; no best-function or ensemble claim follows.",
+    "Bootstrap intervals describe aggregate error under whole-source-group resampling.",
+    "Distinct reference components do not prove independent study populations."
+  ],
+  "review_sha256": "2528301b4845938ab030a0c48ae601afa7b42de68438cc5b11ea87578063dd20",
+  "cohorts_sha256": "f5378f532af6695f4f5a13cbd01f2133fa0d78c7d6b7bcf9fe2b190d8d76d605",
+  "verifier_sha256": "10fb6534c733ed5479ad8dfbcdb6d12e44f8c24182f07b61361c0d0e10410976"
+}

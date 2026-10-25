@@ -125,6 +125,7 @@ def write_retention_run(result: RetentionRunResult, destination: str | Path) -> 
         message = f'Run output already exists: {target}.'
         raise FileExistsError(message)
     payloads = _payloads(result)
+    native_binary = Path(import_module('ptfkit._ptfkit').__file__)
     environment = {
         'python': platform.python_version(),
         'packages': {
@@ -142,6 +143,8 @@ def write_retention_run(result: RetentionRunResult, destination: str | Path) -> 
         'git': _git_state(),
         'evaluator_source_sha256': _source_hash(),
         'ptfkit_package_sha256': _source_hash(Path(import_module('ptfkit').__file__).parent),
+        'ptfkit_native_binary_filename': native_binary.name,
+        'ptfkit_native_binary_sha256': hashlib.sha256(native_binary.read_bytes()).hexdigest(),
     }
     manifest = {
         'schema_version': 1,

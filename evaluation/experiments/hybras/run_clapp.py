@@ -132,13 +132,54 @@ def overlay(document: dict, rows: dict[int, tuple[int, tuple]]) -> tuple[dict, d
     return subset, report
 
 
-def main() -> None:
+def review_source_bootstrap(subset: dict, report: dict, group_review_bytes: bytes) -> None:
+    """Bind the exact cohort to reviewed source blocks before source resampling."""
+    group_review = json.loads(group_review_bytes)
+    selected = {(s['source_id'], s['sample_id'], s['profile_id']) for s in subset['samples']}
+    reviewed = {
+        (s['original_source_id'], s['sample_id'], s['profile_id']) for s in group_review['samples']
+    }
+    if (
+        group_review['archive_sha256'] != ARCHIVE_SHA256
+        or group_review['method'] != 'exact_shared_primary_reference_components_v1'
+        or selected != reviewed
+        or len(reviewed) != len(group_review['samples'])
+        or any(group_review['source_mapping'].get(source) != source for source, _, _ in selected)
+    ):
+        message = 'This Clapp replay requires the exact subset with no unresolved source merges.'
+        raise ValueError(message)
+    report['limitations'] = [
+        item
+        for item in report['limitations']
+        if not item.startswith(('Bootstrap intervals', 'Profiles can share'))
+    ] + [
+        'Bootstrap intervals describe aggregate error under whole-source-group resampling.',
+        'Distinct reference components do not prove independent study populations.',
+    ]
+    report['source_group_review_sha256'] = hashlib.sha256(group_review_bytes).hexdigest()
+    subset['source_files'].append(
+        {
+            'id': 'hybras-source-group-review',
+            'filename': 'source-group-review.json',
+            'sha256': report['source_group_review_sha256'],
+        }
+    )
+
+
+def parse_arguments() -> argparse.Namespace:
+    """Parse source paths and the declared resampling unit."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('archive', type=Path)
     parser.add_argument('dataset', type=Path)
     parser.add_argument('manual', type=Path)
     parser.add_argument('output', type=Path)
-    args = parser.parse_args()
+    parser.add_argument('--bootstrap-grouping', choices=('profile', 'source'), default='profile')
+    parser.add_argument('--source-group-review', type=Path)
+    return parser.parse_args()
+
+
+def main() -> None:
+    args = parse_arguments()
     archive_bytes = args.archive.read_bytes()
     if (
         hashlib.sha256(archive_bytes).hexdigest() != ARCHIVE_SHA256
@@ -166,6 +207,14 @@ def main() -> None:
     finally:
         workbook.close()
     subset, report = overlay(json.loads(args.dataset.read_bytes()), rows)
+    group_review_bytes = None
+    if args.bootstrap_grouping == 'source':
+        if args.source_group_review is None:
+            message = 'Source bootstrap requires the reviewed reference-connectivity sidecar.'
+            raise ValueError(message)
+        group_review_bytes = args.source_group_review.read_bytes()
+        review_source_bootstrap(subset, report, group_review_bytes)
+    report['bootstrap_grouping'] = args.bootstrap_grouping
     report.update(
         {
             'archive_sha256': ARCHIVE_SHA256,
@@ -193,6 +242,8 @@ def main() -> None:
     )
     load_retention_dataset(subset)
     args.output.mkdir(parents=True, exist_ok=False)
+    if group_review_bytes is not None:
+        (args.output / 'source-group-review.json').write_bytes(group_review_bytes)
     evaluation = {
         'schema_version': 1,
         'ptfkit_manifest_schema_version': 1,
@@ -232,7 +283,7 @@ def main() -> None:
             'method': 'cluster_percentile_linear_v1',
             'seed': 20261025,
             'minimum_groups': 5,
-            'grouping': 'profile',
+            'grouping': args.bootstrap_grouping,
             'missing_profiles': 'reject',
             'confidence_level': 0.95,
             'n_resamples': 2000,
