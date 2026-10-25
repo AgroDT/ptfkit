@@ -294,6 +294,37 @@ Clapp check; see `meta_v3_3.clapp-source-review.json`,
 `evaluation/experiments/panina_clapp/README.md`. Six other Panina horizons have
 the source-reported class silt, which the Clapp contract does not support.
 
+The one-command `mise run eval:pilot` now reproduces this source-reviewed check
+directly from the workbook and adds per-horizon fits of all four registered
+retention families, a machine-readable decision summary and two Markdown
+tables. Five of 24 fits pass the unchanged engineering policy. Grouped model
+selection and final atomic/ensemble recommendations remain
+`insufficient_evidence`: six horizons share one profile, and the pilot executes
+one compatible atomic candidate. See the Panina experiment README for the
+command, interval qualifications and the focused Bolotov source blockers.
+
+The broader `mise run eval:benchmark` command reconciles the entire populated
+workbook scope, all 1,847 retention-sheet row dispositions and the current
+implemented-function catalog. Its count-only checkpoint is
+`meta_v3_3.benchmark-summary.json`; reproduction and scientific limitations are
+documented in `evaluation/experiments/meta_v3_3/README.md`. The checkpoint keeps
+60,152 function/master-row/target records visible and summarizes fitting of
+all 59 confirmed volumetric series: four families, 236 sample/family fit attempts,
+133 accepted fits. It does not claim additional source releases or a model winner.
+The current benchmark also executes Cosby1984 on the six already reviewed
+Panina horizons through the registered Table 2 class-coordinate derivation:
+12 evaluated combinations, 60,140 unresolved, and 56 newly scored observations.
+Maximal and exact common cohorts coincide. The evidence and Clapp comparison
+are recorded in `evaluation/experiments/meta_v3_3/scoring-unlock-review.md`.
+
+The workbook-wide scope audit exposes 977 populated rows with unresolved row
+roles or measurement contracts, including extra master and dissertation blocks
+outside the historical 27-source retention mapping. These are not automatically
+experimental samples. Source follow-up records preserve confirmed claims,
+bibliographic hypotheses, original-document access limitations and exact missing
+evidence separately. In particular, the Fomin 2023 saturation plotting marker
+is not assigned an invented physical suction.
+
 The complete implemented-function inventory is
 `implemented-function-coverage.json`. The associated
 `meta_v3_3.function-readiness-matrix.json` keeps every implemented function
@@ -336,8 +367,9 @@ The Saxton2006 checkpoint adds `saxton2006.measurement-review.json` and
 146 implemented functions; 128 remain omitted. The HYBRAS audit executes 607
 numerically eligible raw predictor rows, of which 604 pass curve checks, without
 claiming target compatibility or external accuracy. The separate
-`cosby1984.measurement-review.json` retains unresolved logarithmic-contract and
-application-protocol questions. Raw source data remain local.
+`cosby1984.measurement-review.json` records the source-specific class-midpoint
+derivation and dry-branch protocol. The historical Saxton checkpoint predates
+that migration. Raw source data remain local.
 
 
 `hybras_v1.clapp-validation-summary.json` records the first real HYBRAS native

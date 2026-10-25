@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-10-25",
+  "scope": "Follow-up evidence and bibliographic leads; no new observation release",
+  "policy": "A bibliographic hypothesis never grants measurement compatibility or identity",
+  "additional_master_blocks": [
+    {
+      "raw_source": "2023_fomin",
+      "workbook_schema": {"original_sheet_index": 3, "first_value_column": 24, "water_vector_label": null, "control_rows": [85], "noncontrol_role": "reported_water_vector"},
+      "required_claims": ["original_core_identity", "water_denominator_and_scale", "pressure_convention_and_saturation_marker", "branch_and_replicate", "matric_versus_total_potential", "predictor_protocols"],
+      "claim_status": "unresolved",
+      "reference": "https://doi.org/10.1016/j.geoderma.2023.116401",
+      "reviewed": "Fomin et al. 2023, Objects and methods sections 2.1-2.2, Table 1 and Figure 1",
+      "directly_reported": [
+        "Daryino/Zelenograd mixed-spruce forest Albic Glossic Retisol, five cores from each of A, E and Bt horizons",
+        "Sandbox and kaolinite-sand-box equilibration, followed by saturated-salt vapor equilibration at high pF",
+        "Full saturation is denoted pF 0 for graphical representation"
+      ],
+      "unresolved": [
+        "Exact five-workbook-core identity and A-horizon depth difference: workbook 0-5 cm versus published 0-7 cm",
+        "Water denominator and scale for the literal workbook W values",
+        "Workbook first-axis 0.01 versus source graphical saturation marker; no finite physical suction is inferred",
+        "Branch and replicate identity; vapor-equilibrium potential interpretation before treating all retained coordinates as matric pressure"
+      ],
+      "eligibility_effect": "No release; do not transplant related-paper methods or horizon means into individual cores"
+    },
+    {
+      "raw_source": "2001_Никулина-дисс",
+      "workbook_schema": {"original_sheet_index": 6, "first_value_column": 36, "last_value_column": 95, "master_last_value_column": 84, "water_vector_label": "Q"},
+      "required_claims": ["original_experimental_curve_identity", "head_vector_to_water_vector_binding", "water_denominator_and_scale", "head_sign_and_measurement_method", "duplicate_coordinate_disposition", "profile_identity", "predictor_protocols"],
+      "access_evidence": {"url": "https://viewer.rsl.ru/api/v1/document/rsl01000338321/info", "accessLevel": "restricted", "isAvailable": false, "pageCount": 138, "local_record": "local/source-review/nikulina2001-view-info.json"},
+      "claim_status": "unresolved",
+      "reference": "https://rusneb.ru/catalog/000199_000009_000338321/",
+      "reviewed": "Workbook dissertation-link row 6; raw dissertation and master representations; primary library reference",
+      "finding": "The workbook retains source-local meter-water-head labels and repeated numeric coordinates, but unit labels alone do not establish branch/sample identity or water-content scale. The linked full experimental document was not retrieved through the available library interface.",
+      "required_evidence": "Readable original experimental tables/figures, water denominator and scale, wetting/drying and replicate identities, duplicate-coordinate disposition, exact wide/master identity crosswalk"
+    },
+    {
+      "raw_source": "2012_Медко-дисс",
+      "workbook_schema": {"original_sheet_index": 6, "first_value_column": 35, "water_vector_label": null, "control_rows": [99, 106, 119, 138], "noncontrol_role": "reported_water_vector"},
+      "required_claims": ["original_experimental_curve_identity", "pressure_block_to_water_vector_binding", "water_denominator_and_scale", "pressure_convention", "measured_versus_voronin_reconstructed_points", "profile_identity", "predictor_protocols"],
+      "access_evidence": {"url": "https://viewer.rsl.ru/api/v1/document/rsl01005423835/info", "accessLevel": "restricted", "isAvailable": false, "pageCount": 120, "local_record": "local/source-review/medko2012-view-info.json"},
+      "additional_evidence": {
+        "reference": "https://earthpapers.net/osobennosti-gidrofizicheskih-gidrohimicheskih-svoystv-i-peredvizheniya-vlagi-v-agroseryh-pochvah-vladimirskogo-opolya",
+        "local_record": "local/source-review/medko2012.html",
+        "status": "related_author_abstract_transcription_not_exact_curve_authorization",
+        "finding": "Methods section 2.2 distinguishes repacked samples, intact cores of several dimensions, field drying experiments, tensiostats and saturated-salt equilibration. It also describes middle-curve reconstruction by the Voronin method. Table 3 reports volumetric fitted saturation parameters, not a point-level measurement crosswalk. These experiment-wide statements do not identify which literal workbook points were measured."
+      },
+      "claim_status": "unresolved",
+      "reference": "https://rusneb.ru/catalog/000199_000009_005423835/",
+      "reviewed": "Workbook dissertation-link row 19 and raw dissertation blocks; original university listing of the 2012 thesis",
+      "finding": "The linked dissertation title and author are confirmed by the university, but the accessible descriptions do not supply the exact original retention tables, absolute-water scale and sample/replicate crosswalk for the workbook vectors.",
+      "required_evidence": "Original retention figures/tables and methods with exact sample and pressure-coordinate mapping"
+    }
+  ],
+  "sources": [
+    {
+      "source_id": "sapozhnikov_1987",
+      "claim_status": "unresolved",
+      "reviewed": "Sapozhnikov 1994 original author abstract, hydrophysical properties discussion",
+      "local_evidence": "local/source-review/sapozhnikov1994.txt",
+      "finding": "The author discusses retention curves against pF, but the reviewed abstract does not identify the exact four workbook curves, their water scale and the centimeter-head definition together.",
+      "required_evidence": "Original 1987 experimental figure/table with absolute water denominator, scale and pressure definition; exact curve and treatment match"
+    },
+    {
+      "source_id": "sapozhnikov_1988",
+      "claim_status": "unresolved",
+      "reviewed": "Sapozhnikov 1994 original author abstract; existing complete-curve reconstruction",
+      "local_evidence": "local/source-review/sapozhnikov1994.txt",
+      "finding": "The bijective 12-curve workbook match establishes identity and relative scale only. It does not establish percent-versus-fraction semantics or the physical meaning of the proposed first-axis replacement.",
+      "required_evidence": "Original 1988 water-axis caption and pressure definition, including saturation convention"
+    },
+    {
+      "source_id": "khaydapova_2001",
+      "claim_status": "unresolved",
+      "bibliographic_hypothesis": "Khaydapova and Aksenov, relationship of plastic strength and stickiness with the retention curve, Pochvovedenie 2001(5), 586-593",
+      "local_evidence": "local/source-review/aksenov2003-view-info.json",
+      "finding": "The related original dissertation is restricted in the RSL access record. Citations do not establish the exact experimental curves, dry-mass scale or source pressure convention. Cached long identifiers also mix master curves.",
+      "required_evidence": "Accessible original methods/figures and exhaustive point-level identity review"
+    },
+    {
+      "source_id": "pestonova_2007",
+      "claim_status": "unresolved",
+      "reviewed": "Pestonova 2007 original author abstract, Figure 7, printed p.21 / RSL viewer p.23",
+      "reference": "https://viewer.rsl.ru/rsl01003058664?page=23",
+      "finding": "Dry-mass percent water is already confirmed. Reviewed text layers do not preserve an unambiguous pressure-unit label; local image retrievals contain a gateway error or an empty image. Neither image is scientific evidence.",
+      "required_evidence": "Readable original pressure-axis caption and physical meaning of the proposed saturation replacement"
+    },
+    {
+      "source_id": "shvarov_2008",
+      "additional_primary_followup": {
+        "reference": "https://link.springer.com/article/10.1134/S1064229308100050",
+        "reviewed": "Publisher abstract, author metadata, original Russian citation and access statement",
+        "claim_status": "directly_reported",
+        "finding": "Shvarov and Koreneva (2008) studied capillary-sorption hysteresis in European Russian zonal soils. The original Russian article is Pochvovedenie 10, 1179-1187; the translation is Eurasian Soil Science 41, 1041-1049. The publisher exposes subscription preview content. This confirms a 2008 publication lead, not the exact identities, absolute-water scale or pressure definitions of the 21 workbook rows. Earlier matched difference vectors remain unsuitable as absolute retention measurements.",
+        "eligibility_effect": "No release; highest conditional source-review ceiling in the current audited roster still requires original experimental tables"
+      },
+      "claim_status": "unresolved",
+      "reviewed": "Earlier Shvarov original author abstract, imprint 1984, Table 2",
+      "local_evidence": "local/source-review/shvarov1983.txt",
+      "finding": "Two matching complete vectors describe adsorption-desorption differences, not absolute water content. This is a provenance incompatibility independent of scale. Other curves and the 2008 attribution remain unresolved.",
+      "required_evidence": "Original 2008 absolute-retention tables with exact sample crosswalk; reject confirmed difference vectors as retention targets"
+    },
+    {
+      "source_id": "smagin_2009",
+      "claim_status": "unresolved",
+      "local_evidence": "local/source-review/smagin2009-chernozems.txt",
+      "finding": "The reviewed 2009 chernozem publication concerns carbon dynamics; the separate revegetation paper concerns drilling wastes. Shared author/year and mentions of chernozems do not identify the three workbook centrifugation curves.",
+      "required_evidence": "Exact original retention figure for the three Kursk land uses, with water basis and pressure-unit definition"
+    },
+    {
+      "source_id": "chudinova_2009",
+      "claim_status": "unresolved",
+      "bibliographic_hypothesis": "Chudinova, Dielectric characteristics of soils and categories of soil water, Eurasian Soil Science 42, 405-414",
+      "reference": "https://link.springer.com/article/10.1134/S1064229309040073",
+      "finding": "The publisher abstract names three matching soil types but does not give the W denominator/scale, exact retention pressure coordinates or duplicate-placeholder interpretation. The full experimental article is subscription content.",
+      "required_evidence": "Original methods and retention figure with exact three-sample match; water and pressure units; first two axis positions"
+    },
+    {
+      "source_id": "shein_2011",
+      "claim_status": "unresolved",
+      "finding": "The workbook labels pressure over salts. A relative humidity or salt identity is not interchangeable with a measured matric-potential coordinate. No exact primary table has been identified for these six workbook records.",
+      "required_evidence": "Exact primary publication, water denominator and scale, salt identities, temperature, equilibrium convention and justified matric-versus-total potential treatment"
+    },
+    {
+      "source_id": "vasyukov_2012",
+      "claim_status": "unresolved",
+      "reviewed": "Vasyukov et al. 2012, original pp.67-70, retention figure p.70",
+      "reference": "https://shelly.kpfu.ru/e-ksu/docs/F584517239/2012_3.pdf",
+      "finding": "The original figure establishes volumetric fractions but labels a logarithm of water potential without a pressure or head unit. The workbook pF label is not independent confirmation.",
+      "required_evidence": "Source-specific definition of the logarithmic pressure coordinate"
+    },
+    {
+      "source_id": "manucharova_2012",
+      "claim_status": "unresolved",
+      "bibliographic_hypothesis": "Manucharova 2012, Hydrolytic prokaryotic complexes of terrestrial ecosystems, original author abstract",
+      "reference": "https://www.earthpapers.net/gidroliticheskie-prokariotnye-kompleksy-nazemnyh-ekosistem",
+      "finding": "The author/year lead identifies a microbiology dissertation, not an exact methods/table match for the three workbook retention curves. Bibliographic agreement cannot establish dry-mass scale or pressure convention.",
+      "required_evidence": "Exact original retention experiment, curve identities, dry-mass water scale and pressure convention"
+    },
+    {
+      "source_id": "shein_2012",
+      "claim_status": "unresolved",
+      "reference": "https://doi.org/10.1134/S1064229312040102",
+      "reviewed": "Shein, Shcheglov and Moskvin 2012; Moskvin 2013 original author abstract",
+      "finding": "The primary study describes reconstructed retention parameters and van Genuchten approximation. The workbook labels approximation too. Physical unit confirmation cannot turn reconstructed curve points into independent measured observations.",
+      "required_evidence": "Original figure/table identifying a directly measured subset and exact point-level identity, if one exists"
+    },
+    {
+      "source_id": "makarychev_2014_1",
+      "claim_status": "unresolved",
+      "local_evidence": "local/source-review/makarychev2014-1.txt",
+      "finding": "The reviewed thermal-property publication supplies hydrological constants, not a verified pressure grid. A categorical PGK axis is not assigned invented matric pressures.",
+      "required_evidence": "Exact original constants, water scale and a source-supported pressure condition for each constant; otherwise retain as non-WRC data"
+    },
+    {
+      "source_id": "makarychev_2014_2",
+      "claim_status": "unresolved",
+      "finding": "The workbook uses the same categorical PGK axis, but its label and similar values do not establish the first Makarychev publication's identity or a continuous pressure coordinate.",
+      "required_evidence": "Exact original publication and sample crosswalk, water scale and pressure condition for each hydrological constant"
+    },
+    {
+      "source_id": "sidorova_2016",
+      "claim_status": "unresolved",
+      "bibliographic_hypothesis": "Sidorova and Borisova, The flow of moisture in the model sod-podzolic soil under mulch fir litter, 71(2), 63-70",
+      "reference": "https://doi.org/10.3103/S0147687416020071",
+      "local_evidence": "local/source-review/sidorova2016-publisher.html",
+      "finding": "Publisher metadata and abstract describe moisture redistribution under mulch; they do not establish the exact two sparse workbook curves, volumetric scale, pressure convention or saturation replacement.",
+      "required_evidence": "Original experimental figure and methods with exact two-sample match and pressure-axis definition"
+    },
+    {
+      "source_id": "shein_2018",
+      "claim_status": "unresolved",
+      "bibliographic_hypothesis": "Shein and Mady 2018, Hysteresis of the water retention curve: wetting branch simulation based on the drying curve",
+      "reference": "https://journals.rcsi.science/0147-6874/article/view/174708",
+      "reviewed": "Publisher abstract; Shein 2019 HYDRUS primary paper methods and references",
+      "finding": "The 2018 publisher abstract directly reports capillarimetry and 0 to -800 cmH2O for wetting/drying branches. It does not identify the four workbook horizons, their water scale or their branch. The 2019 related paper uses a different layer partition. These claims cannot release the 25 workbook points.",
+      "required_evidence": "Exact original four-horizon table/figure, branch identity, volumetric scale and retained coordinate match"
+    }
+  ]
+}

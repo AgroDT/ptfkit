@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-10-25",
+  "scope": "Reviewed canonical releases and mapped predictor fields; no claim of impossibility for unreviewed workbook blocks",
+  "policy": "Predictor compatibility and measured-target availability are independent. No PSD crosswalk, carbon-to-organic-matter conversion, density conversion, pressure snapping or interpolated measured target is authorized.",
+  "sources": {
+    "chestnova_2017": {
+      "reference": "https://soil.msu.ru/attachments/article/2599/CHESTNOVA_AVTOREFERAT.pdf",
+      "local_evidence": "local/source-review/chestnova2017-abstract.pdf",
+      "reviewed_locations": [
+        "printed pp. 6-8, sections 2.1, 2.2 and Table 1",
+        "meta_v3_3.yaml exact long/master crosswalk",
+        "master rows 227-237, columns J and M:S"
+      ],
+      "sample_identity": "Ten internal workbook curve identities are confirmed by the existing bijective crosswalk. Table 1 carbon and less-than-1-micrometer values identify the five land-use pairs. This does not establish independent pedon IDs.",
+      "profile_identity": "Unresolved: five land uses are not five proven independent profiles. Abstract upper layers are 0-10 cm and lower layer depths differ from workbook J228:J237. No new profile IDs are assigned.",
+      "retention": "Existing release: 130 gravimetric measurements in ten series; centrifugation and saturated-salt desorption are reported. None of the converted measured pressures is exactly 0, 10, 33, 100, 500 or 1500 kPa.",
+      "particle_size": "Laser diffraction with Analysette 22 comfort after ultrasonic dispersion. Table 1 bins are <1, 1-5, 5-10, 10-50, 50-250 and >250 micrometers. The 1-5 micrometer bin straddles the required 2 micrometer clay boundary; subdivision and mass-basis equivalence are not established.",
+      "carbon": "Total carbon by dry combustion on AN-7529; organic carbon is not isolated by the published method. The study includes carbonate-containing material. Workbook R must not be treated as validated SOC.",
+      "organic_matter": "Workbook S equals R*1.724 for all ten rows. This arithmetic match does not establish measured organic matter or Walkley-Black carbon equivalence.",
+      "bulk_density": "No values in master Q228:Q237; no matched sample-specific dry bulk density is established in the reviewed abstract.",
+      "decision": "No new atomic candidate has both reviewed predictors and a compatible measured target. Retain existing gravimetric release; authorize no new predictor binding.",
+      "sha256": "9fd5b999be308406270cb5ccf05a603b04baf8eb98c294f6566268d9aa3d7926",
+      "cross_sheet_review": "All eight worksheets were searched. PSD rows 15-24 and 59-68 and the chernozem view rows 118-128 repeat the Table 1 fraction bins; no 2 micrometer cut or matched density was found there. Aggregate dry/wet sieve bins describe aggregates and cannot replace primary particle fractions."
+    },
+    "panina_2015": {
+      "reference": "https://soil.msu.ru/attachments/article/2063/Panina_Disser.pdf",
+      "local_evidence": "local/source-review/panina2015.pdf",
+      "reviewed_locations": [
+        "printed pp. 49-54, field and laboratory methods",
+        "printed pp. 88-91, Tables 17-18",
+        "existing six-horizon clapp-source-review overlay",
+        "master rows 210-223, N:S"
+      ],
+      "sample_identity": "The existing gray-forest six-horizon overlay remains the only scoring-authorized profile. The twelve-row source ceiling also includes sod-podzolic horizons outside that overlay.",
+      "particle_size": "Analysette 22 Comfort laser diffraction after ultrasonic dispersion in water. Table 17 provides <2, 2-50 and >50 micrometer bins and categorical classes, but no equivalence to measured dry-mass fractions required by other PTFs is established.",
+      "carbon": "Combustion of the <0.25 mm sample at 1000 degrees Celsius with gravimetric carbon-dioxide determination. This is not the required Walkley-Black protocol of Vereecken/Gunarathna. Carbonate discrimination for SOC transfer remains unresolved.",
+      "organic_matter": "Workbook S is R*1.724 numerically. The source reports carbon, not a separately validated organic-matter measurement. No generic conversion to Rawls/Wosten/Saxton predictors is authorized.",
+      "bulk_density": "The source reports a 5.585 cubic-centimeter cylinder core method. This resolves a bibliographic method claim, but does not establish equivalence to other sources' required core dimensions or drying protocols.",
+      "retention": "Released volumetric observations exist, but none is exactly 10, 33 or 1500 kPa. No fixed-pressure target is synthesized.",
+      "decision": "Rawls1982 theta1500 and Rawls2003 point variants are target-blocked. Wosten2001 loam/clay is not fixed-pressure-blocked, but laser-PSD mass equivalence and organic-matter definition remain unresolved. No new binding.",
+      "sha256": "eac3553c2a904c8c1a75f67437bc01b1005b3ebed45ada29e189017e8baafaa8",
+      "cross_sheet_review": "The sod-podzolic worksheet rows 52-65 repeats the Panina predictors and fitted parameters. It supplies no independent mass-PSD or organic-matter measurement. Stored fitted parameters are not extra atomic PTFs or measured targets."
+    },
+    "badenko_2013": {
+      "reference": "local/source-review/badenko2013.pdf",
+      "local_evidence": "local/source-review/badenko2013.pdf",
+      "reviewed_locations": [
+        "printed pp. 16-17, experimental methods and table",
+        "master rows 156-174, L:S"
+      ],
+      "retention": "Pressure-membrane measurements include 0, 15, 33, 122, 415 and 1520 kPa for 18 horizons. The printed 1520 coordinate is not 1500 kPa. Exact theta33 is a real target opportunity.",
+      "predictors": "All 18 master rows have no numerical values in M:S: no quantitative PSD, density or carbon/organic matter. Six topsoil categorical labels do not authorize measured sand/clay. The article's experimental table contains water contents rather than the required numeric predictors.",
+      "profile_identity": "The table names six field pits, each with three horizons. No scoring release or independent profile claim is added without compatible predictors.",
+      "decision": "Exact volumetric theta33 is available, but Gunarathna, Rawls and Saxton predictors are not. Obtaining the matching field/laboratory predictor records is a higher-value next review than further ensemble work.",
+      "sha256": "96da74ac7a27a0f58511912fd6b7fc82b93ae05351739c2b28294866cd6fa29e",
+      "cross_sheet_review": "The sod-podzolic worksheet rows 33-51 repeats the same 18 water curves and has empty M:S predictors. No Badenko-labelled block occurs in the PSD worksheet or other soil/dissertation worksheets."
+    },
+    "pidgeon_1972": {
+      "reference": "https://onlinelibrary.wiley.com/doi/10.1111/j.1365-2389.1972.tb01674.x/full",
+      "reviewed_locations": [
+        "publisher Summary",
+        "reviewed specs/functions/pidgeon1972.yaml"
+      ],
+      "target": "Field capacity was measured directly. The publisher states there was no single moisture tension corresponding to field capacity. Do not substitute a retention point at 33 kPa for Pidgeon FC. AWC/EAWC need their own measured endpoint and depth contracts.",
+      "predictors": "The source distinguishes dispersion methods. Matching a sand column name or laser instrument does not establish particle-size method 1 or 2 equivalence.",
+      "decision": "No reviewed direct field-capacity or matching AWC/EAWC target is released for the candidate workbook samples."
+    }
+  },
+  "family_reviews": [
+    {
+      "id": "chestnova_high_yield",
+      "sources": [
+        "chakraborty2011",
+        "dharumarajan2019",
+        "myeni2021",
+        "oosterveld1980",
+        "pidgeon1972"
+      ],
+      "review": "All 15 previous Chestnova candidate functions are reviewed in their target groups below. The 15-function/150-combination discovery ceiling is withdrawn as an actionable target ceiling.",
+      "evidence": [
+        "chestnova_2017",
+        "pidgeon_1972"
+      ]
+    },
+    {
+      "id": "gravimetric_fixed_pressure",
+      "sources": [
+        "beniaich2023",
+        "chakraborty2011",
+        "dharumarajan2019",
+        "myeni2021",
+        "tiwary2014"
+      ],
+      "review": "No released gravimetric point is exactly 0, 33, 100, 500 or 1500 kPa. The 1992 Gumatov 10 kPa points have the wrong pressure for these candidates. Predictor review cannot overcome target absence.",
+      "evidence": [
+        "chestnova_2017",
+        "canonical-mass.json",
+        "reviewed source specifications"
+      ]
+    },
+    {
+      "id": "volumetric_fixed_pressure",
+      "sources": [
+        "gunarathna2019",
+        "rawls1982",
+        "rawls2003",
+        "saxton2006"
+      ],
+      "review": "Badenko supplies exact theta33 and saturation. No released volumetric theta10 or theta1500 exists. The Badenko predictor columns are empty. Panina SOC/texture trees remain target-blocked; no class-midpoint substitution is permitted.",
+      "evidence": [
+        "badenko_2013",
+        "panina_2015",
+        "canonical-volume.json"
+      ]
+    },
+    {
+      "id": "continuous_water_retention",
+      "sources": [
+        "bai2022",
+        "hodnett2002",
+        "li2007",
+        "mayr1999",
+        "varallyai1982",
+        "vereecken1989",
+        "wosten2001"
+      ],
+      "review": "Volumetric WRC targets exist, so missing adapters are not scientific impossibility. Numeric Panina candidates remain blocked on laser-PSD mass equivalence and/or organic-matter/SOC definition. Vereecken additionally requires Walkley-Black carbon and its specified core protocol. Other candidate sources have <1 micrometer clay or unresolved fraction methods/bases; Varallyai needs its specific fine fractions and horizon class; Wosten class parameters need a source-defined Staring class. Additional CEC, climate, terrain and median-sand-size requirements remain uninventoried where applicable.",
+      "evidence": [
+        "panina_2015",
+        "chestnova_2017",
+        "meta_v3_3.yaml predictor bindings",
+        "reviewed source specifications"
+      ]
+    },
+    {
+      "id": "continuous_gravimetric_retention",
+      "sources": [
+        "oosterveld1980"
+      ],
+      "review": "Oosterveld retention can use measured pressures between 10 and 1500 kPa; it must not be rejected for lacking full WRC or fixed-pressure targets. Chestnova has such points, but dry-mass sand/clay and exact mean-depth identity are not established. FC, PWP, available moisture and FC tension retain separate operational targets.",
+      "evidence": [
+        "chestnova_2017",
+        "specs/functions/oosterveld1980.yaml"
+      ]
+    },
+    {
+      "id": "direct_field_capacity_and_available_water",
+      "sources": [
+        "pidgeon1972",
+        "oosterveld1980"
+      ],
+      "review": "Field drainage/cylinder FC and available-water endpoints are not interchangeable with arbitrary measured retention points. No compatible direct FC/AWC/EAWC dataset is released. Voronin reconstructed constants are not measured targets.",
+      "evidence": [
+        "pidgeon_1972",
+        "panina_2015",
+        "reviewed source specifications"
+      ]
+    },
+    {
+      "id": "conductivity_and_infiltration",
+      "sources": [
+        "ferrerjulia2004",
+        "zhao2016",
+        "ottoni2019",
+        "aimrun2009",
+        "ahuja1984",
+        "tiwary2014",
+        "dharumarajan2019"
+      ],
+      "review": "No measured Ksat or infiltration target has a reviewed sample/unit/protocol binding in the current canonical releases. Matching texture predictors alone cannot score these groups. Unclassified trailing workbook columns are not proof of absence, and are not authorized measurements.",
+      "evidence": [
+        "meta_v3_3.inventory.json",
+        "meta_v3_3.yaml",
+        "canonical-volume.json",
+        "canonical-mass.json"
+      ]
+    },
+    {
+      "id": "bulk_density",
+      "sources": [
+        "bai2022",
+        "wosten2001"
+      ],
+      "review": "Panina reports measured core density, but Bai requires slope and Wosten requires compatible clay/organic matter or median sand size. No function has a complete reviewed predictor-plus-target contract.",
+      "evidence": [
+        "panina_2015",
+        "reviewed source specifications"
+      ]
+    }
+  ]
+}

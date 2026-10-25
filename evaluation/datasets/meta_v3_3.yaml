@@ -100,7 +100,7 @@ identity:
       raw: 2018_моисеев
       canonical: 2018_Моисеев
       status: confirmed
-      evidence: All 16 complete curves and 96 points map uniquely after the reviewed factor-of-100 long-sheet transformation; sample numbering is repaired by explicit curve crosswalks.
+      evidence: Three sample-specific wide blocks account for all 29 long-sheet pairs. Source Table 2 and exhaustive row review identify 23 experimental pairs, exclude three copied table statistics and retain three unsupported saturation coordinates as exclusions; canonical identities use exact master-row lineage.
     - worksheet: ОГХ
       raw: 2018_шеин
       canonical: 2018_шеин-1
