@@ -7,8 +7,8 @@ import pytest
 from ptfkit import get_manifest
 
 from ptfkit_eval import (
-    ModelEvaluationError,
     FunctionCurveCandidate,
+    ModelEvaluationError,
     RunInputTrace,
     bind_retention_inputs,
     evaluate_candidate,
