@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import ast
 import importlib
 import math
 import re
@@ -11,8 +12,10 @@ from typing import TYPE_CHECKING
 
 import yaml
 from ptfkit_eval import evaluate_candidate, load_evaluation_plan
-from ptfkit_eval.adapters import validate_function_inputs
+from ptfkit_eval.adapters import evaluate_van_genuchten_mualem_h_theta, validate_function_inputs
 from ptfkit_eval.execution import convert_value
+
+from evaluation.experiments.meta_v3_3.pressure_semantics import coordinates, explicit_pressure
 
 
 if TYPE_CHECKING:
@@ -20,9 +23,6 @@ if TYPE_CHECKING:
 
 
 WATER = {'volumetric_water_content', 'gravimetric_water_content'}
-_PRESSURE = re.compile(
-    r'(?<![\w.])[-−]?(\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+(?:\.\d+)?)\s*kPa\b', re.IGNORECASE
-)
 _UNITS = {
     '%': 'mass_percent',
     '% mass': 'mass_percent',
@@ -32,6 +32,8 @@ _UNITS = {
     'Mg/m^3': 'gram_per_cubic_centimeter',
     'cm': 'centimeter',
     'kPa': 'kilopascal',
+    'Pa': 'pascal',
+    'bar': 'bar',
     'cm^3/cm^3': 'volume_fraction',
     'm^3/m^3': 'volume_fraction',
     'fraction': 'mass_fraction',
@@ -41,6 +43,7 @@ _UNITS = {
 
 def load_catalog(root: Path) -> list[dict]:  # noqa: C901 - Resolve a complete reference graph.
     """Resolve local references and retain the exact prose and native public API binding."""
+    root = root.resolve()
     specs = (root / 'specs').resolve()
     documents = {}
 
@@ -76,8 +79,19 @@ def load_catalog(root: Path) -> list[dict]:  # noqa: C901 - Resolve a complete r
     result = []
     for path in sorted((specs / 'functions').glob('*.yaml')):
         document = read(path)
+        wrapper = root / 'targets/ptfkit-py/src/ptfkit' / (path.stem + '.py')
+        public_names = (
+            {
+                node.name
+                for node in ast.parse(wrapper.read_text(encoding='utf-8')).body
+                if isinstance(node, ast.FunctionDef)
+            }
+            if wrapper.exists()
+            else set()
+        )
         for function in document['functions']:
-            if function['status'] != 'implemented':
+            public_name = function.get('public_api', {}).get('name', function['name'])
+            if function['status'] != 'implemented' and public_name not in public_names:
                 continue
             outputs = resolve(function['outputs'], path)
             fields = (
@@ -105,24 +119,86 @@ def canonical_input_unit(binding: dict) -> str | None:
     return measurement['unit'] if measurement else _UNITS.get(binding.get('unit'))
 
 
-def explicit_pressure(description: str) -> float | None:
-    """Require a single explicitly stated kPa coordinate; never infer FC/PWP by name."""
-    if re.search(r'\d\s*(?:[-−–]|,\s+|\s+(?:and|or|to)\s+)[-−]?\d', description):
-        return None
-    values = {float(value.replace(',', '')) for value in _PRESSURE.findall(description)}
-    return next(iter(values)) if len(values) == 1 else None
-
-
 def unknown_water_basis(function: dict) -> bool:
     text = ' '.join(function.get('documentation', {}).get('warnings', []))
     return bool(re.search(r'whether.+gravimetric.+volumetric', text, re.IGNORECASE))
 
 
-def targets(function: dict, public_support: dict) -> list[dict]:  # noqa: C901, PLR0912 - Distinct physical adapters.
+def compound_target(function: dict, field: dict) -> dict | None:
+    """Require an explicit difference and an ordered pair in the source contract."""
+    description = field.get('description', '')
+    scope = function.get('scope', {}).get('prediction_target', '')
+    basis = None
+    pressure_pair = None
+    match = re.fullmatch(
+        r'Difference between (?:calculated volumetric water contents at|the) '
+        r'([-−]?\d+(?:\.\d+)?) and ([-−]?\d+(?:\.\d+)?) kPa'
+        r'(?: water contents| matric potential)\.',
+        description,
+        re.IGNORECASE,
+    )
+    if match and (
+        field.get('quantity') == 'volumetric_water_content' or 'volumetric' in description
+    ):
+        basis = 'volumetric_water_content'
+        pressure_pair = [coordinates(value + ' kPa')[0] for value in match.groups()]
+    elif (
+        'difference' in description.casefold()
+        and field.get('quantity') == 'gravimetric_water_content'
+        and re.fullmatch(r'Gravimetric available (?:water|moisture) between .+ and .+\.', scope)
+    ):
+        lower, upper = scope.removesuffix('.').split('between ', 1)[1].split(' and ')
+        low_value, high_value = explicit_pressure(lower), explicit_pressure(upper)
+        if low_value is not None and high_value is not None:
+            basis, pressure_pair = 'gravimetric_water_content', [low_value, high_value]
+    if basis is None or pressure_pair is None or not pressure_pair[0] < pressure_pair[1]:
+        return None
+    return {
+        'kind': 'pressure_difference',
+        'quantity': basis,
+        'component_pressures_kpa': pressure_pair,
+        'field': field['name'],
+        'unit': field['unit'],
+        'adapter': 'explicit_pressure_difference_v1',
+    }
+
+
+def explicit_vg_signature(function: dict) -> dict | None:
+    """Accept only a source-declared m=1-1/n model with four unambiguous outputs."""
+    model = function.get('scope', {}).get('models', {}).get('h_theta') or ''
+    if 'van genuchten' not in model.casefold() or 'm=1-1/n' not in re.sub(r'\s+', '', model):
+        return None
+    requirements = {
+        'alpha': lambda f: f.get('quantity') == 'van_genuchten_alpha',
+        'n': lambda f: f.get('quantity') == 'van_genuchten_n',
+        'theta_r': lambda f: (
+            f.get('quantity') == 'volumetric_water_content'
+            and 'residual' in f.get('description', '').casefold()
+        ),
+        'theta_s': lambda f: (
+            f.get('quantity') == 'volumetric_water_content'
+            and 'saturated' in f.get('description', '').casefold()
+        ),
+    }
+    result = {}
+    for name, predicate in requirements.items():
+        matches = [f for f in function['fields'] if predicate(f)]
+        if len(matches) != 1:
+            return None
+        result[name] = matches[0]
+    return result
+
+
+def targets(function: dict, public_support: dict) -> list[dict]:  # noqa: C901, PLR0912, PLR0915 - Distinct physical adapters.
     """Recognize structured/prose fixed points, direct density and explicit scalar water axes."""
     result = []
     for field in function['fields']:
         quantity = field.get('quantity')
+        description = field.get('description', '')
+        compound = None if unknown_water_basis(function) else compound_target(function, field)
+        if compound:
+            result.append(compound)
+            continue
         if quantity not in WATER | {'dry_bulk_density'}:
             continue
         if quantity in WATER and unknown_water_basis(function):
@@ -171,15 +247,23 @@ def targets(function: dict, public_support: dict) -> list[dict]:  # noqa: C901, 
                     'pressure_kpa': pressure,
                     'field': field['name'],
                     'unit': field['unit'],
-                    'adapter': 'native_spec_fixed_pressure_v1',
+                    'adapter': 'native_spec_fixed_pressure_v1'
+                    if measurement or 'kpa' in description.lower() or pressure == 0
+                    else 'native_spec_pressure_units_v2',
                 }
             )
+    if unknown_water_basis(function):
+        return result
     if any(field.get('quantity') in WATER for field in function['fields']):
         axis = [
             i
             for i in function['inputs']
-            if canonical_input_unit(i) in ('kilopascal', 'centimeter', 'centimeter_water_head')
-            and any(word in i.get('description', '').lower() for word in ('tension', 'pressure'))
+            if canonical_input_unit(i)
+            in ('kilopascal', 'pascal', 'bar', 'centimeter', 'centimeter_water_head')
+            and any(
+                word in i.get('description', '').lower()
+                for word in ('tension', 'pressure', 'potential', 'suction', 'head')
+            )
         ]
         axis_fields = [
             f
@@ -189,7 +273,7 @@ def targets(function: dict, public_support: dict) -> list[dict]:  # noqa: C901, 
                 function['scalar_output']
                 or any(
                     word in f.get('description', '').lower()
-                    for word in ('pressure', 'head', 'tension')
+                    for word in ('pressure', 'head', 'tension', 'potential', 'suction')
                 )
             )
         ]
@@ -207,11 +291,25 @@ def targets(function: dict, public_support: dict) -> list[dict]:  # noqa: C901, 
                     'axis_unit': 'centimeter_water_head'
                     if axis_unit == 'centimeter'
                     else axis_unit,
-                    'adapter': 'native_scalar_water_axis_v1',
+                    'adapter': 'native_scalar_water_axis_units_v2'
+                    if axis_unit in ('bar', 'pascal')
+                    else 'native_scalar_water_axis_v1',
                 }
                 for p in (10, 33, 100, 500, 1500)
             )
     available = public_support.get(function['id'], {}).get('curves', [])
+    signature = explicit_vg_signature(function)
+    if not available and signature:
+        result.extend(
+            {
+                'kind': 'fixed_pressure',
+                'quantity': 'volumetric_water_content',
+                'pressure_kpa': p,
+                'adapter': 'explicit_vg_mualem_signature_v1',
+                'parameter_fields': signature,
+            }
+            for p in (10, 33, 100, 500, 1500)
+        )
     if len(available) == 1:
         curve = available[0]
         result.extend(
@@ -255,6 +353,9 @@ def targets(function: dict, public_support: dict) -> list[dict]:  # noqa: C901, 
 
 
 def pool_id(target: dict) -> str:
+    if target['kind'] == 'pressure_difference':
+        low, high = target['component_pressures_kpa']
+        return f'{target["quantity"]}:difference:{low:g}-{high:g}kPa'
     return (
         f'{target["quantity"]}:{target["pressure_kpa"]:g}kPa'
         if 'pressure_kpa' in target
@@ -278,13 +379,21 @@ def _enum(binding: dict, value: object) -> object:
     return matches[0]
 
 
+def axis_value(target: dict) -> float:
+    unit = target.get('axis_unit', 'kilopascal')
+    pressure = target['pressure_kpa']
+    if unit == 'bar':
+        return pressure / 100
+    if unit == 'pascal':
+        return pressure * 1000
+    return convert_value(pressure, 'kilopascal', unit)
+
+
 def native_outputs(function: dict, values: dict, target: dict) -> dict:
     """Use the source-declared public wrapper, including public aliases and typed enums."""
     inputs = dict(values)
     if 'axis_input' in target:
-        inputs[target['axis_input']] = convert_value(
-            target['pressure_kpa'], 'kilopascal', target.get('axis_unit', 'kilopascal')
-        )
+        inputs[target['axis_input']] = axis_value(target)
     validate_function_inputs(function, inputs)
     for binding in function['inputs']:
         if binding.get('type') == 'enum':
@@ -318,6 +427,22 @@ def predicted(function: dict, target: dict, values: dict, manifest: dict) -> flo
             .value
         )
     output = native_outputs(function, values, target)
+    if target['adapter'] == 'explicit_vg_mualem_signature_v1':
+        parameters = {
+            name: convert_value(
+                output[field['name']],
+                field['unit'],
+                'inverse_centimeter'
+                if name == 'alpha'
+                else 'dimensionless'
+                if name == 'n'
+                else 'volume_fraction',
+                manifest=manifest,
+            )
+            for name, field in target['parameter_fields'].items()
+        }
+        head = convert_value(target['pressure_kpa'], 'kilopascal', 'centimeter_water_head')
+        return evaluate_van_genuchten_mualem_h_theta(parameters, head)
     if 'field' in target:
         unit = (
             'gram_per_cubic_centimeter'

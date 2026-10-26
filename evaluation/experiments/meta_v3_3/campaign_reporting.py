@@ -334,8 +334,9 @@ def render(report: dict) -> str:
         '# Catalog exploratory expansion',
         '',
         (
-            f'Strict: {report["strict_coverage"]}/146; exploratory excluding strict: '
-            f'{report["exploratory_coverage_excluding_strict"]}/146.'
+            f'Strict: {report["strict_coverage"]}/{report["catalog_count"]}; '
+            f'exploratory excluding strict: '
+            f'{report["exploratory_coverage_excluding_strict"]}/{report["catalog_count"]}.'
         ),
         (
             f'Samples: {report["samples"]}; unique function/sample/target combinations: '
@@ -358,7 +359,7 @@ def render(report: dict) -> str:
     lines += [
         '',
         (
-            'E0 is the pinned strict result. E1-E4 ceilings are cumulative. '
+            'E0 reapplies the strict policy to the current catalog. E1-E4 ceilings are cumulative. '
             'E4 includes combined target reconstruction and predictor/material assumptions.'
         ),
         '',

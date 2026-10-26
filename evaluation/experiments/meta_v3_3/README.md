@@ -1,6 +1,34 @@
 # meta_v3.3 workbook benchmark
 
-This experiment reconciles the existing source-reviewed normalization,
+The coverage-first exploratory entry point is now the separate
+[E5 workbook semantic benchmark](WORKBOOK-SEMANTIC.md). It preserves the frozen
+strict and E0-E4 runs and records workbook assumptions without requiring a
+complete laboratory or original-table provenance contract. The three hard
+rules remain physical quantity compatibility, exact sample identity and no
+invented missing values.
+
+```sh
+mise run eval:workbook-semantic local/meta-deep-unlock-audited \
+  local/meta-catalog-resource local/meta-catalog-harmonized \
+  local/meta_v3.3.xlsx local/meta-workbook-semantic-v1
+```
+
+The output directory must be new. See the E5 report for the direct Python
+command, coverage attribution, remaining physical ambiguities and replay checks.
+The historical benchmark and evidence-review instructions below retain their
+original policies and results.
+
+The standard run discovers the current public Python catalog, reconciles it
+with source specifications and reapplies the existing strict and E1-E4 policies
+to the fixed dataset. It performs exact common cohort comparisons, ranking
+sensitivity, residual correlation, fixed ensemble comparisons and Pareto analysis.
+It does not continue the manual source-unlocking campaign.
+
+See [the current compact benchmark](BENCHMARK.md) for results. The sections below
+the replay instructions retain historical scientific context; their catalog
+counts describe those historical runs, not the current denominator.
+
+The underlying resource builder reconciles the existing source-reviewed normalization,
 implemented-function inventory, predictor audit, native Panina check and
 measured-curve fitting in one reproducible run. It adds no inference method,
 model family, density conversion or texture crosswalk.
@@ -14,18 +42,89 @@ mise run eval:benchmark local/meta_v3.3.xlsx local/source-review/panina2015.pdf 
 The equivalent direct command, also usable without Mise, is:
 
 ```sh
-uv run --no-sync --project targets/ptfkit-eval python -m evaluation.experiments.meta_v3_3.benchmark \
+uv run --no-sync --project targets/ptfkit-eval python -B -m evaluation.experiments.meta_v3_3.catalog_benchmark \
   --workbook local/meta_v3.3.xlsx --paper local/source-review/panina2015.pdf \
   --output local/meta-benchmark
 ```
 
-The output directory must be new. Add `--checkpoint <new-path.json>` to export
-the count-only checkpoint represented by
-`evaluation/datasets/meta_v3_3.benchmark-summary.json`. It excludes observations,
-individual fitted parameters and local sample identities. Measurements, detailed
-fits, exact row records and full reports stay in ignored local storage.
+The output directory must be new. The command builds `resource/`, `harmonized/`
+and `comparison/`. Read `comparison/benchmark.md` for the compact report and
+`comparison/summary.json` for full metrics, exact cohorts, per-function audit,
+rank changes, pair ordering changes, correlations and Pareto members. All
+artifacts are hashed after successful completion. Private measurements, sample
+identities, predictions and fits stay in ignored local storage.
+
+The reviewed PDF must match its pinned checksum. The run never changes dataset
+metadata or scientific policies. Public wrappers whose specifications have a
+status other than `implemented` are included and flagged; a missing wrapper or
+unaccounted public function fails the API reconciliation. If the native extension
+is stale, rebuild it with `uv sync --frozen --all-groups --reinstall-package ptfkit`
+from `targets/ptfkit-eval` before running.
+
+The default previous benchmark is the committed historical campaign checkpoint.
+Pass `--previous <completed-comparison/summary.json>` to measure changes against
+a later run. To reuse the exact resource and fits without rebuilding them:
+
+```sh
+uv run --no-sync --project targets/ptfkit-eval python -B -m evaluation.experiments.meta_v3_3.campaign \
+  --benchmark local/meta-benchmark/resource --harmonized local/meta-benchmark/harmonized \
+  --workbook local/meta_v3.3.xlsx --output local/meta-comparison-replay
+```
+
+This compatibility entry point reapplies policies automatically; it performs no
+manual source recovery. New generated public PTFs enter discovery, requirements,
+strict eligibility, all policy stages, target pools and blocker decisions without
+a registration list. Functions lacking supported targets remain explicitly
+unbenchmarkable on this fixed dataset. Empty roster intersections retain separate
+exact pair comparisons; those cohorts never form a pooled leaderboard.
+
+RMSE, MAE and bias weight samples equally; median absolute error and residual
+Pearson correlations weight points equally. Coverage includes both executable
+pool-coordinate coverage and maximal sample coverage against all retained
+canonical samples. The minimum tier and highest tier required by the comparison
+are both recorded. The Pareto analysis uses a 1% relative error tolerance to
+avoid preferring greater assumption burden for negligible error improvement.
+Reduced ensemble membership uses the same observed cohort, so its apparent gain
+is descriptive and subject to selection optimism. Learned blends retain the
+existing grouped validation gates. Accepted-fit targets remain diagnostic.
+
+The legacy strict-only resource builder remains available as the `benchmark`
+module; its optional `--checkpoint` exports the original count-only format.
 
 ## Current scientific status
+
+The separate [deep unlock audit](DEEP-UNLOCK.md) revisits the frozen 216-function,
+44-executable snapshot in `BENCHMARK.md`. Confirmed generic mappings increase
+exploratory coverage to 64 functions; strict coverage remains two. The frozen
+benchmark files are retained as the baseline. The current campaign code applies
+the registered mappings, including source-specific pressure units, explicitly
+defined water-content differences and explicit retention-model conventions.
+
+Reproduce discovery before running a new comparison:
+
+```sh
+mise run eval:deep-unlock local/meta-catalog-final local/meta-catalog-resource \
+  local/meta-catalog-harmonized local/meta_v3.3.xlsx local/meta-unlock-discovery
+
+uv run --no-sync --project targets/ptfkit-eval python -B -m evaluation.experiments.meta_v3_3.campaign \
+  --benchmark local/meta-catalog-resource --harmonized local/meta-catalog-harmonized \
+  --workbook local/meta_v3.3.xlsx --previous local/meta-catalog-final/summary.json \
+  --output local/meta-unlock-comparison
+
+uv run --no-sync --project targets/ptfkit-eval python -B -m evaluation.experiments.meta_v3_3.deep_unlock \
+  --baseline local/meta-catalog-final --benchmark local/meta-catalog-resource \
+  --harmonized local/meta-catalog-harmonized --workbook local/meta_v3.3.xlsx \
+  --comparison local/meta-unlock-comparison --output local/meta-unlock-final-audit
+```
+
+The final audit includes `aggregate-summary.json` for publication and a Markdown
+report. Its complete workbook cell scan, cached formulas, candidate inventory,
+per-sample pressure gaps, predictions and evidence remain private. The aggregate
+checkpoint is [stored separately](../../datasets/meta_v3_3.deep-unlock-summary.json).
+Ksat and particle-density candidates are inventoried but require scientific
+contract review before binding. Unspecified operational FC/PWP and model variants
+remain unresolved. Fixed-pressure outputs are parsed from the specification;
+the five reference coordinates used for curve comparisons do not restrict them.
 
 **Source review remains incomplete.** The historical 27-source retention
 mapping is not a complete interpretation of the workbook. The master sheet
@@ -218,3 +317,57 @@ versioned reconstruction and approximation policies. It revisits every function
 after each policy stage, retains a concrete blocker for every unexecuted function,
 and compares candidates only on identical scenario/cohort observations. Its
 results remain separate from the main leaderboard and recommendations.
+
+## Ksat and predictor evidence review
+
+The [workbook evidence audit](WORKBOOK-EVIDENCE.md) supersedes the historical
+deep-unlock candidate classifications without rewriting frozen run artifacts.
+Its [review registry](workbook-evidence-review.json) records block-specific units,
+primary-source locators, measurement/origin limitations and predictor decisions.
+The [aggregate checkpoint](../../datasets/meta_v3_3.workbook-evidence-summary.json)
+contains all function decisions and source-specific candidate counts; individual
+measurements and sample identities remain in ignored local artifacts.
+
+Use the matching frozen 64-function campaign and deep-unlock scan:
+
+```sh
+mise run eval:workbook-evidence local/meta-deep-unlock-audited \
+  local/meta-deep-unlock-report local/meta-catalog-resource \
+  local/meta-catalog-harmonized local/meta_v3.3.xlsx local/source-review \
+  local/meta-workbook-evidence-reviewed
+```
+
+The equivalent direct invocation is:
+
+```sh
+targets/ptfkit-eval/.venv/Scripts/python.exe -B \
+  -m evaluation.experiments.meta_v3_3.workbook_evidence \
+  --baseline local/meta-deep-unlock-audited \
+  --discovery local/meta-deep-unlock-report \
+  --benchmark local/meta-catalog-resource \
+  --harmonized local/meta-catalog-harmonized \
+  --workbook local/meta_v3.3.xlsx --sources local/source-review \
+  --output local/meta-workbook-evidence-reviewed
+```
+
+The source directory must contain the four original document downloads named by
+`references.*.local_file` in the registry, retrieved from their corresponding
+`url` fields. Their SHA256 fingerprints are recorded in the checkpoint. Do not
+substitute an HTML landing page for a PDF. Document interpretation is the
+explicit versioned review, not an automatic inference from a filename or label.
+
+Replay into a second new output directory with identical arguments except
+`--output`. Compare the two `artifact-hashes.json` files byte for byte. Each run
+also verifies frozen input inventories before and after execution, recomputes
+strict predictions and requires both strict and exploratory prediction bytes
+to match the completed campaign. Consequently the previous scored metrics remain
+applicable; this evidence-only review does not recompute unchanged ensembles or
+ablations. A newly approved target or changed prediction requires a new scored
+campaign before publication.
+
+Private outputs include the complete 36-row Ksat identity map, the automatically
+selected Ksat catalog matrix, full per-sample catalog decisions, predictions,
+strict predictions, source fingerprints, report and final artifact inventory.
+No target pool is created until quantity, identity, units, method, origin and
+material are confirmed. A future release must keep method-specific Ksat pools
+and explicitly define logarithmic output transforms and reference units.
