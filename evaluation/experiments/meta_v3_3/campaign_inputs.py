@@ -16,6 +16,7 @@ from evaluation.experiments.meta_v3_3 import exploratory_inputs as previous
 from evaluation.experiments.meta_v3_3.campaign_contracts import (
     canonical_input_unit,
 )
+from evaluation.experiments.meta_v3_3.source_domains import within_named_domain
 
 
 _TEXTURE = ('sand', 'silt', 'clay')
@@ -122,12 +123,15 @@ def interval(binding: dict) -> tuple[float, float] | None:
             float(particle['upper']['value']) if particle.get('upper') else 2000.0,
         )
     description = binding.get('description', '').replace('−', '-').replace('–', '-')
-    match = re.search(r'(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)\s*(mm|[µμ]m)', description)
+    match = re.search(r'(\d+(?:\.\d+)?)\s*(?:-|to)\s*(\d+(?:\.\d+)?)\s*(mm|[µμ]m)', description)
     if match:
         factor = 1000 if match[3] == 'mm' else 1
         bounds = (float(match[1]) * factor, float(match[2]) * factor)
         return min(bounds), max(bounds)
-    match = re.search(r'(?:below|smaller than|<)\s*(\d+(?:\.\d+)?)\s*(mm|[µμ]m)', description)
+    match = re.search(
+        r'(?:below|smaller than|<)\s*(\d+(?:\.\d+)?)\s*(mm|[µμ]m|micrometres|micrometers)',
+        description,
+    )
     if match:
         return 0.0, float(match[1]) * (1000 if match[2] == 'mm' else 1)
     return {'sand': (50.0, 2000.0), 'silt': (2.0, 50.0), 'clay': (0.0, 2.0)}.get(binding['name'])
@@ -219,7 +223,15 @@ def resolve_inputs(  # noqa: C901, PLR0912, PLR0915 - Explicit predictor types a
                     proof = evidence(
                         label, 'exploratory_derived_texture_class', tuple(texture.values())
                     )
-        elif name in _TEXTURE or name in ('fine_sand', 'fine_fraction', 'fine_sand_fraction'):
+        elif name in _TEXTURE or name in (
+            'fine_sand',
+            'coarse_sand',
+            'fine_fraction',
+            'fine_sand_fraction',
+            'clay_content',
+            'sand_content',
+            'silt_content',
+        ):
             proof = texture_input(binding, texture)
         elif name == 'bulk_density' and row:
             proof, source_unit = density(row, registration), 'gram_per_cubic_centimeter'
@@ -317,4 +329,10 @@ def resolve_inputs(  # noqa: C901, PLR0912, PLR0915 - Explicit predictor types a
         proofs[name] = proof.document()
         proofs[name]['native_unit'] = binding.get('unit')
         proofs[name]['canonical_input_unit'] = unit
+    for binding in function['inputs']:
+        name = binding['name']
+        if name in values and not within_named_domain(
+            binding.get('domain') or '', {**values, 'value': values[name]}
+        ):
+            reasons.append('computational_domain:' + name)
     return values, proofs, reasons
