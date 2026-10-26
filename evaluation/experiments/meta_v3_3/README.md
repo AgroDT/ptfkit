@@ -1,6 +1,41 @@
 # meta_v3.3 workbook benchmark
 
-The coverage-first exploratory entry point is now the separate
+The model-selection entry point audits original WRC/Ksat coordinates, preserves
+separate water bases and compares exact common cohorts. Read
+[MODEL-SELECTION.md](MODEL-SELECTION.md) for dataset-specific recommendations,
+ensemble evidence, block sensitivity and limitations.
+
+```sh
+mise run eval:model-selection local/meta-catalog-resource \
+  local/meta-catalog-harmonized local/meta_v3.3.xlsx local/meta-model-selection
+```
+
+The output directory must be new. The run writes a private observation ledger,
+all-sheet target audit, catalog decisions, predictions, full cohort analyses,
+an aggregate checkpoint and a final SHA256 inventory. Repeat with another output
+directory and compare `artifact-hashes.json` byte for byte. The direct command is:
+
+```sh
+uv run --no-sync --project targets/ptfkit-eval python -B \
+  -m evaluation.experiments.meta_v3_3.model_selection \
+  --benchmark local/meta-catalog-resource \
+  --harmonized local/meta-catalog-harmonized \
+  --workbook local/meta_v3.3.xlsx --output local/meta-model-selection
+```
+
+Frozen strict/harmonized input inventories and workbook bytes are verified;
+no atomic PTF is fitted to benchmark observations. E5 target assumptions are
+retained alongside a reviewed-target-only sensitivity analysis.
+
+The committed aggregate checkpoint is
+[meta_v3_3.model-selection-summary.json](../../datasets/meta_v3_3.model-selection-summary.json).
+Its two private runs produced identical artifact inventories and verified file
+hashes. Validation passed 1,090 ptfkit-eval tests, including 33 focused selection
+and workbook-semantic tests, plus Ruff lint/format and type checks. Removing the
+Cosby midpoint-preservation fix makes its regression test fail on the mixed
+measured/class clay coordinate; the fix was restored before the final checks.
+
+The completed coverage-first exploratory checkpoint is the separate
 [E5 workbook semantic benchmark](WORKBOOK-SEMANTIC.md). It preserves the frozen
 strict and E0-E4 runs and records workbook assumptions without requiring a
 complete laboratory or original-table provenance contract. The three hard

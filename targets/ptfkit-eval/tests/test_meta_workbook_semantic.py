@@ -24,6 +24,45 @@ def workbook() -> Workbook:
     return book
 
 
+def test_cosby_retains_complete_reviewed_midpoint_when_measured_clay_exists(semantic: ModuleType):
+    root = Path(__file__).resolve().parents[3]
+    function = next(
+        f
+        for f in semantic.contracts.load_catalog(root)
+        if f['id'] == 'calc_ptf_cosby1984_univariate'
+    )
+    registration = json.loads(
+        (root / 'evaluation/experiments/meta_v3_3/exploratory-policies.json').read_bytes()
+    )
+    book = workbook()
+    sheet = book.worksheets[0]
+    sheet['A2'], sheet['C2'], sheet['N2'] = 'core', 'source', 20
+    row = semantic.workbook_rows(book)[0]
+    sample = {
+        'features': [
+            {
+                'id': name,
+                'value': value,
+                'kind': 'numeric',
+                'origin': 'derived',
+                'review_status': 'confirmed',
+                'source_cells': ['reviewed:Table2'],
+                'derivation': {'method': 'cosby1984_table2_class_midpoint_v1'},
+            }
+            for name, value in (('sand', 17), ('silt', 70), ('clay', 13))
+        ]
+    }
+    values, proofs, reasons = semantic.semantic_inputs(
+        function, sample, row, {'old_registration': registration}, {}, set()
+    )
+    assert reasons == []
+    assert values == {'sand': 17, 'silt': 70, 'clay': 13}
+    assert proofs['clay']['sources'] == ['reviewed:Table2']
+    # The public execution gate rejects mixed measured/class coordinates.
+    result = semantic.contracts.native_outputs(function, values, {})
+    assert math.isfinite(result['mean_b'])
+
+
 def test_ksat_typo_and_velocity_conversions_are_e5_only(semantic: ModuleType):
     book = workbook()
     thesis = book.worksheets[6]
