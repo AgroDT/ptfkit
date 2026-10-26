@@ -13,8 +13,8 @@ from typing import cast
 
 import ptfkit._ptfkit as native_extension
 import yaml
+from ptfkit import get_manifest
 from ptfkit_eval.documents import canonical_json, plain
-from ptfkit_eval.execution import convert_value
 from ptfkit_eval.harmonization import EvidenceValue
 from ptfkit_eval.water import canonical_water_contract
 
@@ -23,8 +23,9 @@ from evaluation.experiments.meta_v3_3 import campaign_contracts as contracts
 from evaluation.experiments.meta_v3_3 import campaign_inputs as inputs
 from evaluation.experiments.meta_v3_3 import campaign_reporting as reporting
 from evaluation.experiments.meta_v3_3 import campaign_targets as targets
+from evaluation.experiments.meta_v3_3 import comparative, rolling
 from evaluation.experiments.meta_v3_3 import exploratory as prior
-from ptfkit import get_manifest
+from evaluation.experiments.meta_v3_3.summaries import catalog_support
 
 
 def metrics(points: list[dict]) -> dict | None:
@@ -85,7 +86,10 @@ def water_predictors(
     for binding in function['inputs']:
         description = binding.get('description', '')
         pressure = contracts.explicit_pressure(description)
-        if pressure is None or 'water content' not in description.lower():
+        if pressure is None or not any(
+            word in description.lower()
+            for word in ('water content', 'moisture content', 'moisture retention')
+        ):
             continue
         value, reason = targets.reconstruct(
             dataset,
@@ -118,7 +122,9 @@ def water_predictors(
             result[binding['name']] = EvidenceValue(
                 value.value,
                 value.tier,
-                'retention_predictor_v1',
+                'retention_predictor_v1'
+                if 'water content' in description.lower()
+                else 'retention_predictor_terminology_v2',
                 value.sources,
                 (('requested_pressure_kpa', pressure), ('conditional_retention_input', True)),
                 (value,),
@@ -148,7 +154,7 @@ def tier(proofs: dict, target: dict, *, bridge: bool) -> str:
 def evaluate(  # noqa: C901, PLR0912, PLR0915 - Independent per-coordinate scientific decisions.
     context: dict, stage: dict, scenario: str, route: str
 ) -> tuple[list[dict], list[dict]]:
-    """Revisit all 146 functions, even when a source contract has no supported target."""
+    """Revisit every current function, including unsupported target contracts."""
     records, points = [], []
     disabled = context.get('disabled', set())
     for function in context['catalog']:
@@ -244,9 +250,7 @@ def evaluate(  # noqa: C901, PLR0912, PLR0915 - Independent per-coordinate scien
                         binding = next(
                             i for i in function['inputs'] if i['name'] == target['axis_input']
                         )
-                        axis_value = convert_value(
-                            target['pressure_kpa'], 'kilopascal', target['axis_unit']
-                        )
+                        axis_value = contracts.axis_value(target)
                         if not inputs.legacy_domain(axis_value, binding):
                             reasons.append('computational_domain:' + binding['name'])
                     if target['quantity'] == 'dry_bulk_density':
@@ -258,23 +262,16 @@ def evaluate(  # noqa: C901, PLR0912, PLR0915 - Independent per-coordinate scien
                             reasons.append('target_property_absent')
                         target_reason = None
                     else:
-                        observed, target_reason = targets.reconstruct(
+                        observed, target_reason = reconstruct_target(
+                            context,
+                            function,
+                            target,
                             dataset,
                             sample,
-                            target['pressure_kpa'],
-                            route,
-                            context['fits'],
-                            interpolate='interpolation' not in disabled,
+                            row=row,
+                            route=route,
+                            disabled=disabled,
                         )
-                        if observed:
-                            observed, target_reason = targets.convert_target(
-                                observed,
-                                dataset['target'],
-                                _required(target, function, dataset),
-                                row,
-                                context['old_registration'],
-                                density_conversion='density_conversion' not in disabled,
-                            )
                     if target_reason:
                         reasons.append(target_reason)
                     if observed is None or reasons:
@@ -325,6 +322,64 @@ def evaluate(  # noqa: C901, PLR0912, PLR0915 - Independent per-coordinate scien
         message = 'Every catalog function must have an explicit execution or blocker decision.'
         raise ValueError(message)
     return records, points
+
+
+def reconstruct_target(
+    context: dict,
+    function: dict,
+    target: dict,
+    dataset: dict,
+    sample: dict,
+    *,
+    row: dict | None,
+    route: str,
+    disabled: set,
+) -> tuple[EvidenceValue | None, str | None]:
+    pressures = target.get('component_pressures_kpa', [target.get('pressure_kpa')])
+    parents = []
+    for pressure in pressures:
+        value, reason = targets.reconstruct(
+            dataset,
+            sample,
+            pressure,
+            route,
+            context['fits'],
+            interpolate='interpolation' not in disabled,
+        )
+        if value:
+            value, reason = targets.convert_target(
+                value,
+                dataset['target'],
+                _required(target, function, dataset),
+                row,
+                context['old_registration'],
+                density_conversion='density_conversion' not in disabled,
+            )
+        if value is None or reason:
+            return None, reason
+        parents.append(value)
+    if target['kind'] != 'pressure_difference':
+        return parents[0], None
+    difference = cast('float', parents[0].value) - cast('float', parents[1].value)
+    if not 0 <= difference <= 1:
+        return None, 'physically_invalid_pressure_difference'
+    return EvidenceValue(
+        difference,
+        max(
+            parents,
+            key=lambda p: {
+                'strict': 0,
+                'converted': 1,
+                'derived': 2,
+                'reconstructed': 3,
+                'approximate': 4,
+            }.get(str(p.tier), 4),
+        ).tier,
+        'explicit_pressure_difference_v1',
+        tuple(sorted({s for p in parents for s in p.sources})),
+        (('component_pressures_kpa', tuple(pressures)), ('formula', 'theta(A) - theta(B)')),
+        tuple(parents),
+    ), None
 
 
 def finite_prediction(value: float) -> float:
@@ -383,11 +438,11 @@ def prepare(reference: Path, main: Path, workbook: Path) -> dict:
     if manifest != json.loads((root / 'targets/ptfkit-py/src/ptfkit/_manifest.json').read_bytes()):
         message = 'Installed and generated manifests must agree.'
         raise ValueError(message)
-    return {
+    context = {
         'catalog': contracts.load_catalog(root),
         'manifest': manifest,
         'public_ids': {f['id'] for f in manifest['functions']},
-        'support': json.loads((reference / 'catalog-support.json').read_bytes()),
+        'support': catalog_support(manifest),
         'datasets': datasets,
         'rows': rows,
         'fits': targets.accepted_fit_index(fit_artifact, datasets),
@@ -402,15 +457,21 @@ def prepare(reference: Path, main: Path, workbook: Path) -> dict:
             r['function'] for r in json.loads((main / 'strict-predictions.json').read_bytes())
         },
     }
+    rolling.refresh_strict(context)
+    return context
 
 
 def run(  # noqa: PLR0915 - One complete catalog/ablation artifact transaction.
-    reference: Path, main: Path, workbook: Path, output: Path
+    reference: Path, main: Path, workbook: Path, output: Path, previous: Path | None = None
 ) -> dict:
     if any(output.resolve().is_relative_to(p.resolve()) for p in (reference, main)):
         message = 'Campaign output must be separate from the pinned main benchmarks.'
         raise ValueError(message)
     context = prepare(reference, main, workbook)
+    baseline_path = (
+        previous or context['root'] / 'evaluation/datasets/meta_v3_3.campaign-summary.json'
+    )
+    baseline = json.loads(baseline_path.read_bytes())
     output.mkdir(parents=True, exist_ok=False)
     (output / 'policies.json').write_bytes(canonical_json(context['registration']))
     (output / 'inherited-policies.json').write_bytes(canonical_json(context['old_registration']))
@@ -460,6 +521,8 @@ def run(  # noqa: PLR0915 - One complete catalog/ablation artifact transaction.
         final_records, final_points = records, points
     (output / 'matrix.json').write_bytes(canonical_json(final_records))
     (output / 'predictions.json').write_bytes(canonical_json(final_points))
+    (output / 'strict-matrix.json').write_bytes(canonical_json(context['strict_matrix']))
+    (output / 'strict-predictions.json').write_bytes(canonical_json(context['strict_points']))
     primary = reporting.summarize(
         context['catalog'], final_records, final_points, context['strict_ids'], metrics
     )
@@ -513,7 +576,7 @@ def run(  # noqa: PLR0915 - One complete catalog/ablation artifact transaction.
         )
         (output / ('ablation-' + disabled + '.json')).write_bytes(canonical_json(ablations[-1]))
     all_comparisons = [*final_points, *diagnostic_points]
-    summary = {
+    summary: dict = {
         **primary,
         'protocol': context['registration']['protocol'],
         'stages': stages,
@@ -533,6 +596,21 @@ def run(  # noqa: PLR0915 - One complete catalog/ablation artifact transaction.
         all_comparisons, context['registration']['psd_scenarios'], metrics
     )
     summary['ensembles'] = comparisons.ensembles(all_comparisons, metrics)
+    summary['catalog_refresh'] = rolling.catalog_refresh(context['catalog'], baseline)
+    summary['catalog_refresh'].update(context['public_api_audit'])
+    summary['assumption_ladder'] = rolling.ladder_delta(summary['assumption_ladder'], baseline)
+    summary['comparative_benchmark'] = comparative.analyze(
+        [*all_comparisons, *context['strict_points']],
+        dataset_samples=len(
+            {(s['source_id'], s['sample_id']) for d in context['datasets'] for s in d['samples']}
+        ),
+    )
+    summary['ranking_robustness'] = {
+        'psd_scenarios': comparative.robustness(all_comparisons, dimension='scenario'),
+        'target_routes': comparative.robustness(all_comparisons, dimension='route'),
+    }
+    summary['function_audit'] = rolling.function_audit(context, final_records, summary)
+    summary['target_evidence_diagnostics'] = rolling.target_diagnostics(final_points)
     disagreements = [
         {
             'function': p['function'],
@@ -578,10 +656,12 @@ def run(  # noqa: PLR0915 - One complete catalog/ablation artifact transaction.
             context['root'] / 'evaluation/datasets/meta_v3_3.exploratory-summary.json'
         ),
         'mapping': prior._hash(context['root'] / 'evaluation/datasets/meta_v3_3.yaml'),
+        'previous_benchmark': prior._hash(baseline_path),
+        'manifest': prior._hash(context['root'] / 'targets/ptfkit-py/src/ptfkit/_manifest.json'),
     }
     summary['implementation_sha256'] = {
         p.relative_to(context['root']).as_posix(): prior._hash(p)
-        for p in sorted(Path(__file__).parent.glob('campaign*.py'))
+        for p in sorted(Path(__file__).parent.glob('*.py'))
     }
     summary['specification_sha256'] = {
         p.relative_to(context['root']).as_posix(): prior._hash(p)
@@ -600,6 +680,7 @@ def run(  # noqa: PLR0915 - One complete catalog/ablation artifact transaction.
     )
     (output / 'summary.json').write_bytes(canonical_json(summary))
     (output / 'report.md').write_text(reporting.render(summary), encoding='utf-8')
+    (output / 'benchmark.md').write_text(rolling.render(summary), encoding='utf-8')
     (output / 'artifact-hashes.json').write_bytes(
         canonical_json({p.name: prior._hash(p) for p in sorted(output.iterdir())})
     )
@@ -616,8 +697,11 @@ def main() -> None:
     parser.add_argument('--harmonized', type=Path, required=True)
     parser.add_argument('--workbook', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument(
+        '--previous', type=Path, help='Previous completed summary for catalog/tier deltas'
+    )
     args = parser.parse_args()
-    run(args.benchmark, args.harmonized, args.workbook, args.output)
+    run(args.benchmark, args.harmonized, args.workbook, args.output, args.previous)
 
 
 if __name__ == '__main__':
