@@ -36,6 +36,14 @@ description = "Run Ruff lint checks for ptfkit-eval"
 dir = "targets/ptfkit-eval"
 run = "ruff check"
 
+["eval:harmonized"]
+description = "Evaluate the catalog with separate strict and harmonized evidence views"
+usage = '''
+arg "<benchmark>" help="Completed strict benchmark directory"
+arg "<output>" help="New local output directory"
+'''
+run = 'uv run --project targets/ptfkit-eval --no-sync python -B -m evaluation.experiments.meta_v3_3.harmonized --benchmark "{{ usage.benchmark }}" --output "{{ usage.output }}"'
+
 ["eval:atomic-campaign"]
 description = "Review atomic PTF opportunities against exact measured targets"
 usage = '''
@@ -49,6 +57,26 @@ run = 'uv run --project targets/ptfkit-eval --no-sync python -m evaluation.exper
 description = "Check ptfkit-eval formatting"
 dir = "targets/ptfkit-eval"
 run = "ruff format --check"
+
+["eval:exploratory"]
+description = "Run isolated approximate predictor and target sensitivity scenarios"
+usage = '''
+arg "<benchmark>" help="Completed strict benchmark directory"
+arg "<harmonized>" help="Matching completed harmonized benchmark directory"
+arg "<workbook>" help="Private meta_v3.3.xlsx path"
+arg "<output>" help="New local output directory outside both benchmark directories"
+'''
+run = 'uv run --project targets/ptfkit-eval --no-sync python -B -m evaluation.experiments.meta_v3_3.exploratory --benchmark "{{ usage.benchmark }}" --harmonized "{{ usage.harmonized }}" --workbook "{{ usage.workbook }}" --output "{{ usage.output }}"'
+
+["eval:campaign"]
+description = "Expand isolated exploratory execution across the complete PTF catalog"
+usage = '''
+arg "<benchmark>" help="Completed strict benchmark directory"
+arg "<harmonized>" help="Matching completed harmonized benchmark directory"
+arg "<workbook>" help="Private meta_v3.3.xlsx path"
+arg "<output>" help="New local output directory outside both benchmark directories"
+'''
+run = 'uv run --project targets/ptfkit-eval --no-sync python -B -m evaluation.experiments.meta_v3_3.campaign --benchmark "{{ usage.benchmark }}" --harmonized "{{ usage.harmonized }}" --workbook "{{ usage.workbook }}" --output "{{ usage.output }}"'
 
 ["eval:typecheck"]
 description = "Run ty for ptfkit-eval"
