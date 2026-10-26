@@ -480,6 +480,8 @@ def predicted(function: dict, target: dict, values: dict, manifest: dict) -> flo
     if not 0 < saturation <= 1 or m <= 0:
         message = 'Invalid logistic water-retention parameters.'
         raise ValueError(message)
+    if head == 0:
+        return saturation  # Exact zero-suction limit of theta_0 / (1 + (h/h_star)^m).
     exponent = m * (math.log(head) - pf * math.log(10))
     return saturation * (
         math.exp(-exponent) / (1 + math.exp(-exponent))

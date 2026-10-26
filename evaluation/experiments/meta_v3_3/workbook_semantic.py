@@ -380,6 +380,10 @@ def semantic_inputs(
         name = binding['name']
         if name in axis:
             continue
+        if function['id'] == 'calc_ptf_cosby1984_univariate' and name in ('sand', 'silt', 'clay'):
+            # The resolver requires the complete reviewed Table 2 midpoint. A measured
+            # fraction must never replace one component of that categorical coordinate.
+            continue
         item, source_unit = None, None
         if name in (
             'ph',
