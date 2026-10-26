@@ -206,3 +206,15 @@ The final hash inventory is written only after the report succeeds. Its absence
 means the run is incomplete. Input, mapping, manifest, source follow-up and
 experiment implementation hashes preserve the interpretation used by each run;
 historical experiment artifacts are not rewritten.
+
+The opt-in [harmonized benchmark](HARMONIZED.md) adds registered evidence tiers,
+in-range fixed-pressure reconstruction, a full catalog matrix and separate
+target-pool ensembles alongside these strict artifacts. Its current META run
+retains two scored atomic functions; the requested larger-coverage milestone
+remains open because numerical predictor contracts are unresolved.
+
+The [catalog exploratory campaign](CAMPAIGN.md) expands coverage through shared,
+versioned reconstruction and approximation policies. It revisits every function
+after each policy stage, retains a concrete blocker for every unexecuted function,
+and compares candidates only on identical scenario/cohort observations. Its
+results remain separate from the main leaderboard and recommendations.
