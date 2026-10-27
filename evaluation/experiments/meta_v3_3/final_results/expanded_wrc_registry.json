@@ -1,0 +1,1453 @@
+{
+  "adapters": {
+    "calc_ptf_saxton1986_calcptf_parameters": {
+      "basis": "volumetric_water_content",
+      "extrapolation": "Only the explicit registered model domain; E5 application, no empirical validation claim.",
+      "formula": "theta_s if alpha*h_cm<=1 else theta_r+(theta_s-theta_r)*(alpha*h_cm)^(-lambda)",
+      "parameters": {
+        "alpha": "1/cm",
+        "conductivity_lambda": "1",
+        "theta_r": "volume_fraction",
+        "theta_s": "volume_fraction"
+      },
+      "pressure_convention": "nonnegative matric suction magnitude; h_cm=p_kpa/0.0980665",
+      "pressure_domain_kpa": [
+        0,
+        null
+      ],
+      "required_terms": "All terms predicted; theta_r=0 is explicit in the source parameterization.",
+      "route_type": "parameter_derived_WRC"
+    },
+    "calc_ptf_saxton2006_tension_dry": {
+      "basis": "volumetric_water_content",
+      "extrapolation": "Only the explicit registered model domain; E5 application, no empirical validation claim.",
+      "formula": "theta_33*(pressure_kpa/33)^(-1/B); B=ln(1500/33)/ln(theta_33/theta_1500)",
+      "parameters": {
+        "theta_1500": "volume_fraction",
+        "theta_33": "volume_fraction"
+      },
+      "parent_function": "calc_ptf_saxton2006",
+      "pressure_convention": "nonnegative matric suction magnitude; h_cm=p_kpa/0.0980665",
+      "pressure_domain_kpa": [
+        33,
+        1500
+      ],
+      "required_terms": "Anchors predicted by calc_ptf_saxton2006, never taken from measured WRC.",
+      "route_type": "parameter_derived_WRC"
+    },
+    "calc_ptf_saxton2006_tension_wet": {
+      "basis": "volumetric_water_content",
+      "extrapolation": "Only the explicit registered model domain; E5 application, no empirical validation claim.",
+      "formula": "theta_s at p<=air_entry; otherwise theta_33+(33-p)*(theta_s-theta_33)/(33-air_entry)",
+      "parameters": {
+        "air_entry_tension": "kPa",
+        "theta_33": "volume_fraction",
+        "theta_s": "volume_fraction"
+      },
+      "parent_function": "calc_ptf_saxton2006",
+      "pressure_convention": "nonnegative matric suction magnitude; h_cm=p_kpa/0.0980665",
+      "pressure_domain_kpa": [
+        0,
+        33
+      ],
+      "required_terms": "All anchors predicted by calc_ptf_saxton2006; theta_s=1-normal_density/2.65 per its source.",
+      "route_type": "parameter_derived_WRC"
+    },
+    "calc_ptf_vereecken1989_detailed": {
+      "basis": "volumetric_water_content",
+      "extrapolation": "Only the explicit registered model domain; E5 application, no empirical validation claim.",
+      "formula": "theta_r + (theta_s-theta_r)/(1+(alpha*h_cm)^n)",
+      "parameters": {
+        "alpha": "1/cm",
+        "n": "1",
+        "theta_r": "volume_fraction",
+        "theta_s": "volume_fraction"
+      },
+      "pressure_convention": "nonnegative matric suction magnitude; h_cm=p_kpa/0.0980665",
+      "pressure_domain_kpa": [
+        0,
+        null
+      ],
+      "required_terms": "All four terms predicted by this function; m=1 in source specification.",
+      "route_type": "parameter_derived_WRC"
+    }
+  },
+  "families": {
+    "family_beniaich2023_mlr1_WRC_mass": {
+      "basis": "gravimetric_water_content",
+      "can_form_full_wrc": false,
+      "extrapolation": "forbidden",
+      "id": "family_beniaich2023_mlr1_WRC_mass",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_beniaich2023_mlr1",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_field_capacity",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 33.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_beniaich2023_mlr1",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_wilting_point",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        33.0,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "beniaich2023",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_beniaich2023_mlr2_WRC_mass": {
+      "basis": "gravimetric_water_content",
+      "can_form_full_wrc": false,
+      "extrapolation": "forbidden",
+      "id": "family_beniaich2023_mlr2_WRC_mass",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_beniaich2023_mlr2",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_field_capacity",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 33.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_beniaich2023_mlr2",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_wilting_point",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        33.0,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "beniaich2023",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_beniaich2023_mlr3_WRC_mass": {
+      "basis": "gravimetric_water_content",
+      "can_form_full_wrc": false,
+      "extrapolation": "forbidden",
+      "id": "family_beniaich2023_mlr3_WRC_mass",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_beniaich2023_mlr3",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_field_capacity",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 33.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_beniaich2023_mlr3",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_wilting_point",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        33.0,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "beniaich2023",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_beniaich2023_mlr4_WRC_mass": {
+      "basis": "gravimetric_water_content",
+      "can_form_full_wrc": false,
+      "extrapolation": "forbidden",
+      "id": "family_beniaich2023_mlr4_WRC_mass",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_beniaich2023_mlr4",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_field_capacity",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 33.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_beniaich2023_mlr4",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_wilting_point",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        33.0,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "beniaich2023",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_beniaich2023_mlr5_WRC_mass": {
+      "basis": "gravimetric_water_content",
+      "can_form_full_wrc": false,
+      "extrapolation": "forbidden",
+      "id": "family_beniaich2023_mlr5_WRC_mass",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_beniaich2023_mlr5",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_field_capacity",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 33.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_beniaich2023_mlr5",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_wilting_point",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        33.0,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "beniaich2023",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_beniaich2023_slr1_WRC_mass": {
+      "basis": "gravimetric_water_content",
+      "can_form_full_wrc": false,
+      "extrapolation": "forbidden",
+      "id": "family_beniaich2023_slr1_WRC_mass",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_beniaich2023_slr1",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_field_capacity",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 33.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_beniaich2023_slr1",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_wilting_point",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        33.0,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "beniaich2023",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_beniaich2023_slr2_WRC_mass": {
+      "basis": "gravimetric_water_content",
+      "can_form_full_wrc": false,
+      "extrapolation": "forbidden",
+      "id": "family_beniaich2023_slr2_WRC_mass",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_beniaich2023_slr2",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_field_capacity",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 33.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_beniaich2023_slr2",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_wilting_point",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        33.0,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "beniaich2023",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_beniaich2023_slr3_WRC_mass": {
+      "basis": "gravimetric_water_content",
+      "can_form_full_wrc": false,
+      "extrapolation": "forbidden",
+      "id": "family_beniaich2023_slr3_WRC_mass",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_beniaich2023_slr3",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_field_capacity",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 33.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_beniaich2023_slr3",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_wilting_point",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        33.0,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "beniaich2023",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_beniaich2023_slr4_WRC_mass": {
+      "basis": "gravimetric_water_content",
+      "can_form_full_wrc": false,
+      "extrapolation": "forbidden",
+      "id": "family_beniaich2023_slr4_WRC_mass",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_beniaich2023_slr4",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_field_capacity",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 33.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_beniaich2023_slr4",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_wilting_point",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        33.0,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "beniaich2023",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_beniaich2023_slr5_WRC_mass": {
+      "basis": "gravimetric_water_content",
+      "can_form_full_wrc": false,
+      "extrapolation": "forbidden",
+      "id": "family_beniaich2023_slr5_WRC_mass",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_beniaich2023_slr5",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_field_capacity",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 33.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_beniaich2023_slr5",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_wilting_point",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        33.0,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "beniaich2023",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_beniaich2023_slr6_WRC_mass": {
+      "basis": "gravimetric_water_content",
+      "can_form_full_wrc": false,
+      "extrapolation": "forbidden",
+      "id": "family_beniaich2023_slr6_WRC_mass",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_beniaich2023_slr6",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_field_capacity",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 33.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_beniaich2023_slr6",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_wilting_point",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        33.0,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "beniaich2023",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_bruand1994_bulk_volume_water_retention_WRC_mass": {
+      "basis": "gravimetric_water_content",
+      "can_form_full_wrc": false,
+      "extrapolation": "forbidden",
+      "id": "family_bruand1994_bulk_volume_water_retention_WRC_mass",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_bruand1994_bulk_volume_water_retention",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_content_30_kpa",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 30.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "cubic_centimeter_per_gram"
+          }
+        },
+        {
+          "function": "calc_ptf_bruand1994_bulk_volume_water_retention",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_content_1500_kpa",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "cubic_centimeter_per_gram"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        30.0,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "bruand1994",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_bruand1994_clay_water_retention_WRC_mass": {
+      "basis": "gravimetric_water_content",
+      "can_form_full_wrc": false,
+      "extrapolation": "forbidden",
+      "id": "family_bruand1994_clay_water_retention_WRC_mass",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_bruand1994_clay_water_retention",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_content_30_kpa",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 30.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "cubic_centimeter_per_gram"
+          }
+        },
+        {
+          "function": "calc_ptf_bruand1994_clay_water_retention",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_content_1500_kpa",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "cubic_centimeter_per_gram"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        30.0,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "bruand1994",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_dijkerman1988_WRC_mass": {
+      "basis": "gravimetric_water_content",
+      "can_form_full_wrc": false,
+      "extrapolation": "forbidden",
+      "id": "family_dijkerman1988_WRC_mass",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_dijkerman1988",
+          "target": {
+            "adapter": "native_spec_pressure_units_v2",
+            "field": "water_content_one_third_bar",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 33.33333333333333,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_percent"
+          }
+        },
+        {
+          "function": "calc_ptf_dijkerman1988",
+          "target": {
+            "adapter": "native_spec_pressure_units_v2",
+            "field": "water_content_15_bar",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_percent"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        33.33333333333333,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "dijkerman1988",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_gunarathna2019_set1_WRC_volume": {
+      "basis": "volumetric_water_content",
+      "can_form_full_wrc": true,
+      "extrapolation": "forbidden",
+      "id": "family_gunarathna2019_set1_WRC_volume",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_gunarathna2019_vwc10_set1",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "theta_10",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 10.0,
+            "quantity": "volumetric_water_content",
+            "unit": "volume_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_gunarathna2019_vwc1500_set1",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "theta_1500",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "volumetric_water_content",
+            "unit": "volume_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_gunarathna2019_vwc33_set1",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "theta_33",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 33.0,
+            "quantity": "volumetric_water_content",
+            "unit": "volume_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        10.0,
+        33.0,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "gunarathna2019",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_gunarathna2019_set2_WRC_volume": {
+      "basis": "volumetric_water_content",
+      "can_form_full_wrc": false,
+      "extrapolation": "forbidden",
+      "id": "family_gunarathna2019_set2_WRC_volume",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_gunarathna2019_vwc10_set2",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "theta_10",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 10.0,
+            "quantity": "volumetric_water_content",
+            "unit": "volume_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_gunarathna2019_vwc33_set2",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "theta_33",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 33.0,
+            "quantity": "volumetric_water_content",
+            "unit": "volume_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        10.0,
+        33.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "gunarathna2019",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_gunarathna2019_set3_WRC_volume": {
+      "basis": "volumetric_water_content",
+      "can_form_full_wrc": true,
+      "extrapolation": "forbidden",
+      "id": "family_gunarathna2019_set3_WRC_volume",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_gunarathna2019_vwc10_set3",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "theta_10",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 10.0,
+            "quantity": "volumetric_water_content",
+            "unit": "volume_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_gunarathna2019_vwc1500_set3",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "theta_1500",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "volumetric_water_content",
+            "unit": "volume_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_gunarathna2019_vwc33_set3",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "theta_33",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 33.0,
+            "quantity": "volumetric_water_content",
+            "unit": "volume_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        10.0,
+        33.0,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "gunarathna2019",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_gunarathna2019_set4_WRC_volume": {
+      "basis": "volumetric_water_content",
+      "can_form_full_wrc": true,
+      "extrapolation": "forbidden",
+      "id": "family_gunarathna2019_set4_WRC_volume",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_gunarathna2019_vwc10_set4",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "theta_10",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 10.0,
+            "quantity": "volumetric_water_content",
+            "unit": "volume_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_gunarathna2019_vwc1500_set4",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "theta_1500",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "volumetric_water_content",
+            "unit": "volume_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_gunarathna2019_vwc33_set4",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "theta_33",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 33.0,
+            "quantity": "volumetric_water_content",
+            "unit": "volume_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        10.0,
+        33.0,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "gunarathna2019",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_kalumba2021_mlr_WRC_volume": {
+      "basis": "volumetric_water_content",
+      "can_form_full_wrc": true,
+      "extrapolation": "forbidden",
+      "id": "family_kalumba2021_mlr_WRC_volume",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_kalumba2021_mlr_pf00",
+          "target": {
+            "adapter": "native_spec_pressure_units_v2",
+            "field": "water_content_pf00",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 0.0980665,
+            "quantity": "volumetric_water_content",
+            "unit": "volume_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_kalumba2021_mlr_pf10",
+          "target": {
+            "adapter": "native_spec_pressure_units_v2",
+            "field": "water_content_pf10",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 0.980665,
+            "quantity": "volumetric_water_content",
+            "unit": "volume_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_kalumba2021_mlr_pf20",
+          "target": {
+            "adapter": "native_spec_pressure_units_v2",
+            "field": "water_content_pf20",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 9.80665,
+            "quantity": "volumetric_water_content",
+            "unit": "volume_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_kalumba2021_mlr_pf28",
+          "target": {
+            "adapter": "native_spec_pressure_units_v2",
+            "field": "water_content_pf28",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 61.875778422466844,
+            "quantity": "volumetric_water_content",
+            "unit": "volume_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_kalumba2021_mlr_pf34",
+          "target": {
+            "adapter": "native_spec_pressure_units_v2",
+            "field": "water_content_pf34",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 246.3319107356342,
+            "quantity": "volumetric_water_content",
+            "unit": "volume_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_kalumba2021_mlr_pf42",
+          "target": {
+            "adapter": "native_spec_pressure_units_v2",
+            "field": "water_content_pf42",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1554.2492825848785,
+            "quantity": "volumetric_water_content",
+            "unit": "volume_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        0.0980665,
+        0.980665,
+        9.80665,
+        61.875778422466844,
+        246.3319107356342,
+        1554.2492825848785
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "kalumba2021",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_lal1979_group_i_from_clay_WRC_mass": {
+      "basis": "gravimetric_water_content",
+      "can_form_full_wrc": true,
+      "extrapolation": "forbidden",
+      "id": "family_lal1979_group_i_from_clay_WRC_mass",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_lal1979_group_i_water_01bar_from_clay",
+          "target": {
+            "adapter": "native_spec_pressure_units_v2",
+            "field": "water_01bar",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 10.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_lal1979_group_i_water_03bar_from_clay",
+          "target": {
+            "adapter": "native_spec_pressure_units_v2",
+            "field": "water_03bar",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 30.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_lal1979_group_i_water_0bar_from_clay",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_0bar",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 0.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_lal1979_group_i_water_15bar_from_clay",
+          "target": {
+            "adapter": "native_spec_pressure_units_v2",
+            "field": "water_15bar",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        0.0,
+        10.0,
+        30.0,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "lal1979",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_lal1979_group_i_from_sand_WRC_mass": {
+      "basis": "gravimetric_water_content",
+      "can_form_full_wrc": true,
+      "extrapolation": "forbidden",
+      "id": "family_lal1979_group_i_from_sand_WRC_mass",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_lal1979_group_i_water_01bar_from_sand",
+          "target": {
+            "adapter": "native_spec_pressure_units_v2",
+            "field": "water_01bar",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 10.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_lal1979_group_i_water_03bar_from_sand",
+          "target": {
+            "adapter": "native_spec_pressure_units_v2",
+            "field": "water_03bar",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 30.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_lal1979_group_i_water_0bar_from_sand",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_0bar",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 0.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_lal1979_group_i_water_15bar_from_sand",
+          "target": {
+            "adapter": "native_spec_pressure_units_v2",
+            "field": "water_15bar",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        0.0,
+        10.0,
+        30.0,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "lal1979",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_lal1979_group_i_from_silt_WRC_mass": {
+      "basis": "gravimetric_water_content",
+      "can_form_full_wrc": false,
+      "extrapolation": "forbidden",
+      "id": "family_lal1979_group_i_from_silt_WRC_mass",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_lal1979_group_i_water_15bar_from_silt",
+          "target": {
+            "adapter": "native_spec_pressure_units_v2",
+            "field": "water_15bar",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "lal1979",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_lal1979_group_ii_from_clay_WRC_mass": {
+      "basis": "gravimetric_water_content",
+      "can_form_full_wrc": true,
+      "extrapolation": "forbidden",
+      "id": "family_lal1979_group_ii_from_clay_WRC_mass",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_lal1979_group_ii_water_01bar_from_clay",
+          "target": {
+            "adapter": "native_spec_pressure_units_v2",
+            "field": "water_01bar",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 10.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_lal1979_group_ii_water_03bar_from_clay",
+          "target": {
+            "adapter": "native_spec_pressure_units_v2",
+            "field": "water_03bar",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 30.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_lal1979_group_ii_water_0bar_from_clay",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_0bar",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 0.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_lal1979_group_ii_water_15bar_from_clay",
+          "target": {
+            "adapter": "native_spec_pressure_units_v2",
+            "field": "water_15bar",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        0.0,
+        10.0,
+        30.0,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "lal1979",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_lal1979_group_ii_from_sand_WRC_mass": {
+      "basis": "gravimetric_water_content",
+      "can_form_full_wrc": true,
+      "extrapolation": "forbidden",
+      "id": "family_lal1979_group_ii_from_sand_WRC_mass",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_lal1979_group_ii_water_01bar_from_sand",
+          "target": {
+            "adapter": "native_spec_pressure_units_v2",
+            "field": "water_01bar",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 10.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_lal1979_group_ii_water_03bar_from_sand",
+          "target": {
+            "adapter": "native_spec_pressure_units_v2",
+            "field": "water_03bar",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 30.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_lal1979_group_ii_water_0bar_from_sand",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "water_0bar",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 0.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_lal1979_group_ii_water_15bar_from_sand",
+          "target": {
+            "adapter": "native_spec_pressure_units_v2",
+            "field": "water_15bar",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        0.0,
+        10.0,
+        30.0,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "lal1979",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_lal1979_group_ii_from_water_01bar_WRC_mass": {
+      "basis": "gravimetric_water_content",
+      "can_form_full_wrc": false,
+      "extrapolation": "forbidden",
+      "id": "family_lal1979_group_ii_from_water_01bar_WRC_mass",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_lal1979_group_ii_water_03bar_from_water_01bar",
+          "target": {
+            "adapter": "native_spec_pressure_units_v2",
+            "field": "water_03bar",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 30.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_lal1979_group_ii_water_15bar_from_water_01bar",
+          "target": {
+            "adapter": "native_spec_pressure_units_v2",
+            "field": "water_15bar",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        30.0,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "lal1979",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_myeni2021_WRC_mass": {
+      "basis": "gravimetric_water_content",
+      "can_form_full_wrc": false,
+      "extrapolation": "forbidden",
+      "id": "family_myeni2021_WRC_mass",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_myeni2021_fc",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "fc",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 33.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_myeni2021_pwp",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "pwp",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        33.0,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "myeni2021",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_oosterveld1980_wilting_point_WRC_mass": {
+      "basis": "gravimetric_water_content",
+      "can_form_full_wrc": false,
+      "extrapolation": "forbidden",
+      "id": "family_oosterveld1980_wilting_point_WRC_mass",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_oosterveld1980_wilting_point",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "wilting_point_moisture",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "gravimetric_water_content",
+            "unit": "mass_percent"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "oosterveld1980",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_rawls1982_WRC_volume": {
+      "basis": "volumetric_water_content",
+      "can_form_full_wrc": false,
+      "extrapolation": "forbidden",
+      "id": "family_rawls1982_WRC_volume",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_rawls1982_theta_1500",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "theta_1500",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "volumetric_water_content",
+            "unit": "volume_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_rawls1982_theta_33",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "theta_33",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 33.0,
+            "quantity": "volumetric_water_content",
+            "unit": "volume_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        33.0,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "rawls1982",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_rawls2003_soc_gmdh_WRC_volume": {
+      "basis": "volumetric_water_content",
+      "can_form_full_wrc": false,
+      "extrapolation": "forbidden",
+      "id": "family_rawls2003_soc_gmdh_WRC_volume",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_rawls2003_soc_theta1500_gmdh",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "theta_1500",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "volumetric_water_content",
+            "unit": "volume_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_rawls2003_soc_theta33_gmdh",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "theta_33",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 33.0,
+            "quantity": "volumetric_water_content",
+            "unit": "volume_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        33.0,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "rawls2003",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_rawls2003_soc_tree_WRC_volume": {
+      "basis": "volumetric_water_content",
+      "can_form_full_wrc": false,
+      "extrapolation": "forbidden",
+      "id": "family_rawls2003_soc_tree_WRC_volume",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_rawls2003_soc_theta1500_tree",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "theta_1500",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 1500.0,
+            "quantity": "volumetric_water_content",
+            "unit": "volume_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_rawls2003_soc_theta33_tree",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "theta_33",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 33.0,
+            "quantity": "volumetric_water_content",
+            "unit": "volume_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        33.0,
+        1500.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "rawls2003",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    },
+    "family_saxton2006_density_WRC_volume": {
+      "basis": "volumetric_water_content",
+      "can_form_full_wrc": false,
+      "extrapolation": "forbidden",
+      "id": "family_saxton2006_density_WRC_volume",
+      "interpolation": "linear water content in log10(kPa) between positive native coordinates only",
+      "members": [
+        {
+          "function": "calc_ptf_saxton2006_density",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "adjusted_theta_s",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 0.0,
+            "quantity": "volumetric_water_content",
+            "unit": "volume_fraction"
+          }
+        },
+        {
+          "function": "calc_ptf_saxton2006_density",
+          "target": {
+            "adapter": "native_spec_fixed_pressure_v1",
+            "field": "adjusted_theta_33",
+            "kind": "fixed_pressure",
+            "pressure_kpa": 33.0,
+            "quantity": "volumetric_water_content",
+            "unit": "volume_fraction"
+          }
+        }
+      ],
+      "minimum_valid_native_coordinates": 3,
+      "native_pressures_kpa": [
+        0.0,
+        33.0
+      ],
+      "route_type": "discrete_family_WRC",
+      "source": "saxton2006",
+      "zero_pressure": "exact zero coordinate only; no interpolation between zero and first positive point"
+    }
+  },
+  "unresolved": {
+    "calc_ptf_dharumarajan2019_nkp": "needs_user_decision: source warnings explicitly leave gravimetric versus volumetric percentages unresolved; the provisional field quantity cannot override that physical ambiguity.",
+    "calc_ptf_dharumarajan2019_nkp_clay": "needs_user_decision: source warnings explicitly leave gravimetric versus volumetric percentages unresolved; the provisional field quantity cannot override that physical ambiguity.",
+    "calc_ptf_dharumarajan2019_skp": "needs_user_decision: source warnings explicitly leave gravimetric versus volumetric percentages unresolved; the provisional field quantity cannot override that physical ambiguity.",
+    "calc_ptf_dharumarajan2019_skp_clay": "needs_user_decision: source warnings explicitly leave gravimetric versus volumetric percentages unresolved; the provisional field quantity cannot override that physical ambiguity.",
+    "calc_ptf_li2007": "needs_user_decision: zero residual is explicit, but the encoded metadata does not identify m=1 versus m=1-1/n.",
+    "calc_ptf_wang2022_h2": "needs_user_decision: alpha/n/m/theta_s alone do not specify the corrected residual-water convention noted in the source metadata.",
+    "calc_ptf_wang2022_h3": "needs_user_decision: alpha/n/m/theta_s alone do not specify the corrected residual-water convention noted in the source metadata.",
+    "calc_ptf_weber2020": "still_missing_predictor: six VGM input parameters are unavailable independently; fitted experimental parameters would leak targets. Full Brunswick noncapillary formula is also absent from the encoded regression metadata.",
+    "calc_ptf_williams1992_table5": "still_missing_predictor: Northcote structure/field-texture group and saturated water term are not supplied; no USDA-to-Northcote crosswalk or assumed saturation."
+  }
+}
