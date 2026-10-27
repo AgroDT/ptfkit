@@ -4,6 +4,7 @@
 
 from __future__ import annotations
 
+import math
 from collections import Counter
 from dataclasses import asdict
 from typing import TYPE_CHECKING
@@ -11,9 +12,6 @@ from typing import TYPE_CHECKING
 import yaml
 from openpyxl.utils import column_index_from_string
 from ptfkit_eval import load_dataset_mapping, normalize_retention_workbook
-
-from evaluation.experiments.meta_v3_3 import workbook_semantic as semantic
-from evaluation.experiments.meta_v3_3.deep_unlock import scan_workbook
 
 
 if TYPE_CHECKING:
@@ -40,6 +38,11 @@ SEMANTIC_WRC_BLOCKS = {
     'sidorova_2016': 'volumetric_water_content',
     'shein_2018': 'volumetric_water_content',
 }
+
+
+def numeric(value: object) -> bool:
+    """Accept finite workbook numbers without importing native prediction workflows."""
+    return isinstance(value, (float, int)) and not isinstance(value, bool) and math.isfinite(value)
 
 
 def additional_wrc(context: dict, book: Workbook) -> tuple[list[dict], list[dict]]:
@@ -78,10 +81,10 @@ def additional_wrc(context: dict, book: Workbook) -> tuple[list[dict], list[dict
                     axis = sheet.cell(block['axis_row'], column)
                     raw, pressure = water.value, axis.value
                     reason = None
-                    if not semantic.numeric(raw) or raw <= 0:
+                    if not numeric(raw) or raw <= 0:
                         reason = 'missing_or_declared_zero_placeholder'
                     elif (
-                        not semantic.numeric(pressure)
+                        not numeric(pressure)
                         or pressure < 0
                         or any(p['master_value'] == pressure for p in rule['pressure_replacements'])
                     ):
@@ -186,12 +189,11 @@ def thesis_wrc(context: dict, book: Workbook) -> tuple[list[dict], list[dict]]:
         heads = Counter(
             sheet.cell(axis_row, c).value
             for c in range(first, last + 1)
-            if semantic.numeric(sheet.cell(axis_row, c).value)
-            and semantic.numeric(sheet.cell(number, c).value)
+            if numeric(sheet.cell(axis_row, c).value) and numeric(sheet.cell(number, c).value)
         )
         for c in range(first, last + 1):
             axis, water = sheet.cell(axis_row, c), sheet.cell(number, c)
-            if not semantic.numeric(water.value) or not semantic.numeric(axis.value):
+            if not numeric(water.value) or not numeric(axis.value):
                 continue
             reason = (
                 'repeated_head_without_independent_measurement_evidence'
@@ -282,6 +284,9 @@ def rescan(
     context: dict, workbook: Path, book: Workbook, formulas: Workbook
 ) -> tuple[dict, list[dict], list[dict]]:
     """Revisit all cells, including comments/hidden views, before any scoring."""
+    from evaluation.experiments.meta_v3_3 import workbook_semantic as semantic  # noqa: PLC0415 - Native PTF dependency belongs to the full selection workflow.
+    from evaluation.experiments.meta_v3_3.deep_unlock import scan_workbook  # noqa: PLC0415 - Keep WRC extraction usable without a native PTF build.
+
     scan = scan_workbook(workbook)
     normalized = normalize_retention_workbook(
         workbook, load_dataset_mapping(context['root'] / 'evaluation/datasets/meta_v3_3.yaml')
