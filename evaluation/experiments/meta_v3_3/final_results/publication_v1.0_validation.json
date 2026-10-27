@@ -1,0 +1,21 @@
+{
+  "benchmark_version": "1.0",
+  "benchmark_recomputed": false,
+  "slides": 3,
+  "aspect_ratio": "16:9",
+  "powerpoint_rendered": true,
+  "text_overflows": 0,
+  "conclusion_words": 169,
+  "pngs": 523,
+  "index_rows": 946,
+  "missing_png": 0,
+  "corrupt_png": 0,
+  "stale_png": 0,
+  "duplicate_png": 0,
+  "zip_members": 525,
+  "zip_crc_verified": true,
+  "scientific_metrics_verified": true,
+  "ruff": "passed",
+  "ty_with_publication_dependencies": "passed",
+  "diagnostic_zip_sha256": "312bcb95af5a536363b1f359c01f5071ed2bd0b80bd9279b21c0421dc92292d8"
+}
