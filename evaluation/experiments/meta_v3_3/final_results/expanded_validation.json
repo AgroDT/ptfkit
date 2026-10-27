@@ -1,0 +1,25 @@
+{
+  "pngs_verified": 523,
+  "index_rows_verified": 946,
+  "ptf_metric_rows_verified": 374,
+  "native_family_points_recomputed": 874,
+  "source_profile_folds_independently_checked": 12,
+  "audit_functions": 119,
+  "independent_functions": 77,
+  "including_secondary": 95,
+  "baseline_predictions_unchanged": true,
+  "approximation_unchanged": true,
+  "pptx_and_original_figures_unchanged": true,
+  "archive_verified": true,
+  "tests": {
+    "ptfkit_eval_passed": 1105,
+    "expanded_numeric_tests_passed_after_type_annotations": 11,
+    "linear_pressure_mutation_detected_in_memory": true
+  },
+  "static_checks": {
+    "ruff_new_modules_and_eval_component": "passed",
+    "format_eval_files": 179,
+    "ty_new_modules_and_tests": "passed (0.0.90)",
+    "ty_eval_component": "one existing contextmanager Iterator deprecation in unchanged artifacts.py:100; no new-module diagnostics"
+  }
+}
