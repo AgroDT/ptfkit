@@ -1,5 +1,57 @@
 # meta_v3.3 workbook benchmark
 
+The current v1.0 handoff uses **all predictable experimental WRC points**.
+Predictor-defined testing datasets are described in
+[PREDICTOR-SUBSETS.md](final_results/PREDICTOR-SUBSETS.md). Exact availability
+signatures and overlapping input-requirement pools retain reported versus E5
+predictors separately. Rebuild them with
+`python -B -m evaluation.experiments.meta_v3_3.predictor_subsets` in the prepared
+ptfkit-eval environment. Private memberships and datasets are under
+`local/meta-predictor-subsets-v1_0/`.
+
+Read [FINAL-RESULTS.md](final_results/FINAL-RESULTS.md),
+[the accuracy/coverage table](final_results/wrc_accuracy_coverage.csv),
+[the Pareto figure](final_results/wrc_accuracy_coverage.png), and
+[the PNG audit](final_results/PNG-AUDIT.md). The Russian presentation is
+[ptfkit_benchmark_summary_RU_v1.0.pptx](final_results/ptfkit_benchmark_summary_RU_v1.0.pptx).
+The cohort-based reports below and `expanded_selection.json` retain historical
+analyses; they are not the current primary WRC ranking.
+
+The ledger has 1701 experimental coordinates: 1069 volumetric points in 77
+samples and 632 gravimetric points in 65 samples, across 19 sources. Each route
+uses every compatible coordinate with available predictors, without a minimum
+number of observations per sample. No fitted value or interpolated target is
+counted as an independent experimental observation. Fixed-pressure secondary
+diagnostics explicitly distinguish reconstructed target pairs from directly
+observed coordinates. Sample-balanced RMSE is the primary ranking metric;
+pointwise metrics and coverage of the complete basis-specific ledger accompany
+every model. Ensembles select their members inside each leave-one-source-out
+training fold and use only available selected members at each held-out point.
+Ksat retains its separate log metrics and block sensitivity, without ensembles.
+
+To reproduce from the pinned local workbook and persisted source review:
+
+```sh
+uv run --no-sync --project targets/ptfkit-eval python -B \
+  -m evaluation.experiments.meta_v3_3.replay_diagnostic_predictions
+uv run --no-sync --project targets/ptfkit-eval python -B \
+  -m evaluation.experiments.meta_v3_3.expanded_participation
+uv run --no-sync --project targets/ptfkit-eval python -B \
+  -m evaluation.experiments.meta_v3_3.final_approximation
+uv run --no-sync --project targets/ptfkit-eval --with matplotlib --with python-pptx \
+  python -B -m evaluation.experiments.meta_v3_3.publish_pointwise_wrc
+```
+
+The first step requires a new `local/meta-diagnostic-replay` directory; omit it
+when reusing an already validated replay. The final step can be repeated and
+regenerates every PNG from the saved forecasts and fits. It validates workbook
+fingerprints, measured coordinates, fit targets and image integrity before
+completing the package. The private ledger, `wrc_pointwise_predictions.csv`,
+complete `diagnostic_index.csv`, diagnostic README and PNG ZIP are written to
+`local/meta-final-v1_0-pointwise/`. Aggregate tables, reports, figures and the
+presentation are under `final_results/`. Private sample data must remain in
+ignored local storage.
+
 The model-selection entry point audits original WRC/Ksat coordinates, preserves
 separate water bases and compares exact common cohorts. Read
 [MODEL-SELECTION.md](MODEL-SELECTION.md) for dataset-specific recommendations,

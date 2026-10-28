@@ -137,6 +137,16 @@ def run_predictions() -> None:
         for path in PUBLIC.iterdir():
             if path.is_file():
                 shutil.copyfile(path, OUTPUT / 'baseline' / path.name)
+        # The reconsidered roster belongs to the frozen original selection,
+        # rather than whichever report was most recently published.
+        json_write(
+            baseline_path,
+            {
+                'selection': read(
+                    ROOT / 'evaluation/datasets/meta_v3_3.model-selection-summary.json'
+                )
+            },
+        )
     baseline = read(baseline_path)
     if (
         hashlib.sha256((ROOT / 'local/meta_v3.3.xlsx').read_bytes()).hexdigest()
