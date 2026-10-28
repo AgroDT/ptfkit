@@ -1,61 +1,119 @@
-# Результаты benchmark ptfkit — v1.0
+# ptfkit v1.0: all experimental WRC points
 
-В финальном анализе ptfkit v1.0 наилучшей индивидуальной PTF для объёмной основной гидрофизической характеристики (ОГХ) является Varallyai1982 chernozem B: RMSE составляет 0.036778 м³/м³ на сопоставимой когорте из 15 образцов и 136 наблюдений. Равновесный ансамбль top-5 обеспечивает RMSE 0.029326 м³/м³ и снижение ошибки на 20.26%; top-3 и top-5 проходят зарегистрированный критерий устойчивости при проверке на отложенных источниках. Этот результат относится к поддержке примерно 10–50.1 кПа и не устанавливает точность на всей кривой. Для массовой ОГХ предпочтительно дискретное семейство Lal1979 group I from sand с RMSE 0.068027 кг/кг на 10 образцах и 30 наблюдениях; устойчивого преимущества ансамблей не установлено. Для Ksat лучший результат на общем наборе из 30 образцов показывает Ferrer-Julià 2004 gleyic cambisol sand, а при максимальном покрытии 39 образцов рекомендуется Dane–Puckett, с учётом чувствительности к источникам и единицам данных. При аппроксимации экспериментальных ОГХ van Genuchten m=1 имеет наименьшую медианную RMSE для обеих водных баз. Аппроксимация описывает подгонку к измерениям, тогда как PTF оцениваются по независимым прогнозам. Все выводы специфичны для используемого набора данных (dataset-specific); ошибки различных когорт напрямую не сопоставимы.
+The ledger contains 1701 experimental points, 142 samples and 19 sources. Volumetric: 1069 points / 77 samples; gravimetric: 632 / 65. Fitted workbook parameters and reconstructed target values are excluded.
 
-## Данные и интерпретация
+Every PTF is evaluated on all compatible experimental coordinates with available predictors and valid pressure support. No minimum number of observed points per sample or common cohort is imposed. Coverage denominators are the complete ledger for the respective water basis. Bias is prediction minus measurement. R squared is descriptive.
 
-Экспериментальный ledger содержит 1701 точку ОГХ и 142 записей образцов; для Ksat доступны 39 наблюдений. Это данные workbook с ограничениями подтверждения лабораторных методов, происхождения измерений и применимости PTF. Политика E5 допускает явно зарегистрированные приближения и преобразования одного образца, но не подмену физических величин, смешение образцов или вымышленные численные значения.
+Sample-balanced RMSE = sqrt(mean over samples of mean squared point error within each sample). Pointwise RMSE uses equal point weights. Sample-balanced MAE and bias are also supplied. Models have different evaluation subsets; rankings describe this dataset and do not establish causal superiority on a common population.
 
-Объёмная и массовая влажность сравниваются отдельно. RMSE, MAE и bias ОГХ дают образцам равный вес; bias — прогноз минус измерение. Для Ksat используются ошибки log10(прогноз/измерение). Между различными когортами и водными базами ошибки напрямую не ранжируются.
+## volumetric_water_content
 
-## Выбор PTF
+**Best accuracy:** `calc_ptf_cosby1984_univariate`: sample-balanced RMSE 0.022732; pointwise RMSE 0.022609; points 56/1069 (5.2%); samples 6/77 (7.8%)
 
-| Задача | Функция / решение | RMSE | Образцы / точки |
-|---|---|---:|---:|
-| Объёмная ОГХ, индивидуальная PTF | Varallyai1982 chernozem B | 0.036778 м³/м³ | 15 / 136 |
-| Объёмная ОГХ, ансамбль | top-5, равные веса | 0.029326 м³/м³ | 15 / 136 |
-| Массовая ОГХ | Lal1979 group I from sand, дискретное семейство | 0.068027 кг/кг | 10 / 30 |
-| Ksat, общий сопоставимый набор | Ferrer-Julià 2004 gleyic cambisol sand | 0.270425 log10 | 30 / 30 |
-| Ksat, максимальное покрытие | Ferrer-Julià 2004 Dane–Puckett | 0.717641 log10 | 39 / 39 |
+**Best individual at coverage >= 25%:** `calc_ptf_varallyai1982_chernozem_b`: sample-balanced RMSE 0.045390; pointwise RMSE 0.043883; points 608/1069 (56.9%); samples 30/77 (39.0%)
 
-Top-5 снижает RMSE относительно лучшей индивидуальной PTF на 20.26%; top-3 также проходит критерий устойчивого улучшения. Основная объёмная когорта охватывает приблизительно 10–50.1 кПа и два источника. Этот результат не переносится автоматически на всю ОГХ. Для массовой когорты устойчивого преимущества ансамблей не установлено; её поддержка составляет приблизительно 93.8–585.6 кПа.
+**Best individual at coverage >= 50%:** `calc_ptf_varallyai1982_chernozem_b`: sample-balanced RMSE 0.045390; pointwise RMSE 0.043883; points 608/1069 (56.9%); samples 30/77 (39.0%)
 
-На общем наборе Ksat доли прогнозов gleyic cambisol sand в пределах факторов ×2 / ×5 / ×10 составляют 80.0% / 96.7% / 100.0%. Рекомендация Dane–Puckett относится к максимальному покрытию, а не к устойчивому превосходству во всех блоках. Единица `cm/smin` интерпретирована как cm/min; исходные методы и происхождение измерений остаются неподтверждёнными. Классовые регрессии Ferrer-Julià имеют ограничения применимости E5: классы FAO по workbook не установлены. Ансамбли Ksat не используются.
+**Best individual at coverage >= 75%:** No eligible model
 
-Дискретные семейства содержат минимум три допустимые native-координаты давления одного научного метода и варианта уравнений. Между положительными координатами применяется линейная интерполяция влажности по log10 давления без extrapolation. Нулевая координата используется только точно при нуле. Point-target сравнения на отдельных native-давлениях — отдельный вторичный анализ. Матрицы корреляций остатков и результаты проверки составов ансамбля включены в `selection_v1.0.json`.
+**Accuracy-coverage compromise:** `calc_ptf_varallyai1982_chernozem_b`: sample-balanced RMSE 0.045390; pointwise RMSE 0.043883; points 608/1069 (56.9%); samples 30/77 (39.0%)
 
-## Аппроксимация экспериментальной ОГХ
+Minimum RMSE on the Pareto frontier at the highest attainable coverage threshold among 75%, 50%, 25%; if none, maximum frontier coverage. Descriptive practical choice, not a uniquely optimal model.
 
-Предпочтительное общее описательное семейство — van Genuchten m=1. Сравниваются одни и те же образцы и точки внутри каждой водной базы: 76 объёмных и 65 массовых кривых. Все четыре семейства имеют описательные допустимые fit на этих 141 образце. Один из 142 образцов имеет недостаточно точек. Это fitted-аппроксимация по тем же измерениям, а не независимый PTF-прогноз.
+**Best source-held-out ensemble:** `ensemble:median`: sample-balanced RMSE 0.055576; pointwise RMSE 0.051167; points 608/1069 (56.9%); samples 30/77 (39.0%)
 
-| База | Семейство | Строгие fit | Описательные fit | Median RMSE | Median MAE |
+| Model | Points predicted / total | Coverage % | Samples predicted / total | Sample coverage % | SB RMSE | RMSE | MAE | Bias |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| calc_ptf_cosby1984_univariate | 56/1069 | 5.24 | 6/77 | 7.79 | 0.022732 | 0.022609 | 0.018181 | +0.005575 |
+| calc_ptf_weynants2009 | 56/1069 | 5.24 | 6/77 | 7.79 | 0.026969 | 0.027043 | 0.020011 | +0.007444 |
+| calc_ptf_williams1992_function_1 | 56/1069 | 5.24 | 6/77 | 7.79 | 0.036729 | 0.036438 | 0.031321 | +0.016493 |
+| calc_ptf_varallyai1982_chernozem_b | 608/1069 | 56.88 | 30/77 | 38.96 | 0.045390 | 0.043883 | 0.035539 | +0.018482 |
+| calc_ptf_mayr1999 | 56/1069 | 5.24 | 6/77 | 7.79 | 0.053380 | 0.053581 | 0.047149 | +0.026283 |
+| calc_ptf_vereecken1989 | 56/1069 | 5.24 | 6/77 | 7.79 | 0.055469 | 0.055367 | 0.044928 | +0.033822 |
+| calc_ptf_saxton2006 | 24/1069 | 2.25 | 6/77 | 7.79 | 0.056010 | 0.056010 | 0.044293 | +0.039548 |
+| calc_ptf_varallyai1982_chernozem_a | 608/1069 | 56.88 | 30/77 | 38.96 | 0.056260 | 0.048728 | 0.038443 | +0.003586 |
+| calc_ptf_saxton1986_calcptf_parameters | 329/1069 | 30.78 | 8/77 | 10.39 | 0.062269 | 0.060812 | 0.055266 | +0.054672 |
+| calc_ptf_varallyai1982_chernozem_c | 608/1069 | 56.88 | 30/77 | 38.96 | 0.066577 | 0.068904 | 0.063014 | +0.037084 |
+| calc_ptf_varallyai1982_meadow | 495/1069 | 46.30 | 17/77 | 22.08 | 0.067764 | 0.053990 | 0.047196 | -0.032661 |
+| calc_ptf_clapp1978 | 495/1069 | 46.30 | 17/77 | 22.08 | 0.087605 | 0.101707 | 0.091391 | +0.090859 |
+| calc_ptf_gupta1979 | 24/1069 | 2.25 | 6/77 | 7.79 | 0.093922 | 0.093922 | 0.088877 | +0.088877 |
+| family_gunarathna2019_set1_WRC_volume | 90/1069 | 8.42 | 7/77 | 9.09 | 0.094935 | 0.093571 | 0.090931 | +0.090931 |
+| calc_ptf_tomasella1998 | 24/1069 | 2.25 | 6/77 | 7.79 | 0.097937 | 0.097937 | 0.093632 | +0.093632 |
+| family_lal1979_group_i_from_clay_WRC_mass | 165/1069 | 15.43 | 26/77 | 33.77 | 0.140599 | 0.114355 | 0.099315 | -0.099315 |
+| family_lal1979_group_i_from_sand_WRC_mass | 118/1069 | 11.04 | 9/77 | 11.69 | 0.172430 | 0.170455 | 0.166993 | +0.166993 |
+| family_lal1979_group_ii_from_clay_WRC_mass | 165/1069 | 15.43 | 26/77 | 33.77 | 0.176990 | 0.151568 | 0.141682 | -0.141682 |
+| family_lal1979_group_ii_from_sand_WRC_mass | 118/1069 | 11.04 | 9/77 | 11.69 | 0.217401 | 0.215445 | 0.211310 | +0.211310 |
+| calc_ptf_chakraborty2011_eq2 | 8/1069 | 0.75 | 2/77 | 2.60 | 0.233739 | 0.233739 | 0.233341 | +0.233341 |
+| calc_ptf_chakraborty2011_eq5 | 8/1069 | 0.75 | 2/77 | 2.60 | 0.323019 | 0.323019 | 0.321632 | +0.321632 |
+| calc_ptf_chakraborty2011_eq3 | 8/1069 | 0.75 | 2/77 | 2.60 | 0.326632 | 0.326632 | 0.325015 | +0.325015 |
+| ensemble:median | 608/1069 | 56.88 | 30/77 | 38.96 | 0.055576 | 0.051167 | 0.041782 | +0.012519 |
+| ensemble:all_available_mean | 608/1069 | 56.88 | 30/77 | 38.96 | 0.058693 | 0.051424 | 0.040604 | +0.009346 |
+| ensemble:top_5 | 608/1069 | 56.88 | 30/77 | 38.96 | 0.059789 | 0.067883 | 0.059175 | +0.040947 |
+| ensemble:top_3 | 555/1069 | 51.92 | 23/77 | 29.87 | 0.085176 | 0.099337 | 0.087823 | +0.071736 |
+
+Ensemble comparison with the best individual at highest attained threshold (50%):
+
+- ensemble:median: common-point SB RMSE 0.055576 versus 0.045390; N=608; lower error: False; coverage at least individual: True.
+- ensemble:all_available_mean: common-point SB RMSE 0.058693 versus 0.045390; N=608; lower error: False; coverage at least individual: True.
+- ensemble:top_5: common-point SB RMSE 0.059789 versus 0.045390; N=608; lower error: False; coverage at least individual: True.
+- ensemble:top_3: common-point SB RMSE 0.085176 versus 0.045838; N=555; lower error: False; coverage at least individual: False.
+
+## gravimetric_water_content
+
+**Best accuracy:** `family_lal1979_group_i_from_sand_WRC_mass`: sample-balanced RMSE 0.069892; pointwise RMSE 0.069892; points 40/632 (6.3%); samples 10/65 (15.4%)
+
+**Best individual at coverage >= 25%:** No eligible model
+
+**Best individual at coverage >= 50%:** No eligible model
+
+**Best individual at coverage >= 75%:** No eligible model
+
+**Accuracy-coverage compromise:** `family_lal1979_group_i_from_clay_WRC_mass`: sample-balanced RMSE 0.180691; pointwise RMSE 0.179996; points 69/632 (10.9%); samples 17/65 (26.2%)
+
+Minimum RMSE on the Pareto frontier at the highest attainable coverage threshold among 75%, 50%, 25%; if none, maximum frontier coverage. Descriptive practical choice, not a uniquely optimal model.
+
+**Best source-held-out ensemble:** `ensemble:all_available_mean`: sample-balanced RMSE 0.188362; pointwise RMSE 0.187701; points 69/632 (10.9%); samples 17/65 (26.2%)
+
+| Model | Points predicted / total | Coverage % | Samples predicted / total | Sample coverage % | SB RMSE | RMSE | MAE | Bias |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| family_lal1979_group_i_from_sand_WRC_mass | 40/632 | 6.33 | 10/65 | 15.38 | 0.069892 | 0.069892 | 0.060234 | +0.010509 |
+| family_lal1979_group_ii_from_sand_WRC_mass | 40/632 | 6.33 | 10/65 | 15.38 | 0.079074 | 0.079074 | 0.070608 | +0.036888 |
+| calc_ptf_chakraborty2011_eq4 | 30/632 | 4.75 | 10/65 | 15.38 | 0.087744 | 0.087744 | 0.072986 | +0.048010 |
+| calc_ptf_chakraborty2011_eq1 | 30/632 | 4.75 | 10/65 | 15.38 | 0.088089 | 0.088089 | 0.073213 | +0.049274 |
+| calc_ptf_oosterveld1980_retention | 32/632 | 5.06 | 8/65 | 12.31 | 0.142891 | 0.142891 | 0.132346 | -0.132346 |
+| family_lal1979_group_i_from_clay_WRC_mass | 69/632 | 10.92 | 17/65 | 26.15 | 0.180691 | 0.179996 | 0.166050 | -0.166050 |
+| family_lal1979_group_ii_from_clay_WRC_mass | 69/632 | 10.92 | 17/65 | 26.15 | 0.196230 | 0.195604 | 0.181612 | -0.181612 |
+| ensemble:all_available_mean | 69/632 | 10.92 | 17/65 | 26.15 | 0.188362 | 0.187701 | 0.173831 | -0.173831 |
+| ensemble:median | 69/632 | 10.92 | 17/65 | 26.15 | 0.188362 | 0.187701 | 0.173831 | -0.173831 |
+| ensemble:top_3 | 40/632 | 6.33 | 10/65 | 15.38 | 0.211805 | 0.211805 | 0.202618 | -0.202618 |
+| ensemble:top_5 | 40/632 | 6.33 | 10/65 | 15.38 | 0.211805 | 0.211805 | 0.202618 | -0.202618 |
+
+Ensemble comparison with the best individual at maximum available coverage (below 25%):
+
+- ensemble:all_available_mean: common-point SB RMSE 0.188362 versus 0.180691; N=69; lower error: False; coverage at least individual: True.
+- ensemble:median: common-point SB RMSE 0.188362 versus 0.180691; N=69; lower error: False; coverage at least individual: True.
+- ensemble:top_3: common-point SB RMSE 0.211805 versus 0.205477; N=40; lower error: False; coverage at least individual: False.
+- ensemble:top_5: common-point SB RMSE 0.211805 versus 0.205477; N=40; lower error: False; coverage at least individual: False.
+
+## Ksat
+
+Ksat remains a separate benchmark without ensembles. The original common-cohort and maximum-coverage recommendations and source/unit caveats are retained: Ferrer-Julia gleyic cambisol sand on the 30-sample common set; Dane-Puckett on all 39 samples. Per-function log10 RMSE, MAE, bias, factor fractions and block sensitivity are saved in ksat_metrics.json and shown in the regenerated PNG.
+
+## Approximation and artifacts
+
+Four approximation families are fitted separately to each water basis. These are same-data fits, never independent PTF observations. Aggregated PNG use all accepted fits per family, with eligible counts and relaxed/strict success shown explicitly; per-sample curves stay inside observed support.
+
+See wrc_accuracy_coverage.csv, ptf_selection_summary.csv, selection_v1.0.json, PNG-AUDIT.md and wrc_accuracy_coverage.png. Private ledger, predictions, diagnostic_index.csv, all diagnostic PNG and ZIP are in local/meta-final-v1_0-pointwise/. Reproduce with the commands in ../README.md.
+
+| Basis | Approximation family | Accepted / total samples | Median RMSE | Median MAE | Median bias |
 |---|---|---:|---:|---:|---:|
-| Объёмная | VG–Mualem | 75/76 | 76/76 | 0.008226 | 0.006779 |
-| Объёмная | VG m=1 | 69/76 | 76/76 | 0.007472 | 0.006102 |
-| Объёмная | Brooks–Corey | 75/76 | 76/76 | 0.010739 | 0.008741 |
-| Объёмная | Clapp | 63/76 | 76/76 | 0.011478 | 0.009293 |
-| Массовая | VG–Mualem | 61/65 | 65/65 | 0.011576 | 0.008915 |
-| Массовая | VG m=1 | 57/65 | 65/65 | 0.009073 | 0.007116 |
-| Массовая | Brooks–Corey | 65/65 | 65/65 | 0.014410 | 0.011688 |
-| Массовая | Clapp | 63/65 | 65/65 | 0.016585 | 0.013586 |
+| volumetric_water_content | van_genuchten_mualem_v1 | 76/77 | 0.008226 | 0.006779 | +0.000000 |
+| volumetric_water_content | van_genuchten_m1_v1 | 76/77 | 0.007472 | 0.006102 | +0.000000 |
+| volumetric_water_content | brooks_corey_v1 | 76/77 | 0.010739 | 0.008741 | +0.000000 |
+| volumetric_water_content | clapp1978_gradual_air_entry_v1 | 76/77 | 0.011478 | 0.009293 | +0.000000 |
+| gravimetric_water_content | van_genuchten_mualem_v1 | 65/65 | 0.011576 | 0.008915 | +0.000353 |
+| gravimetric_water_content | van_genuchten_m1_v1 | 65/65 | 0.009073 | 0.007116 | +0.000000 |
+| gravimetric_water_content | brooks_corey_v1 | 65/65 | 0.014410 | 0.011688 | +0.000570 |
+| gravimetric_water_content | clapp1978_gradual_air_entry_v1 | 65/65 | 0.016585 | 0.013586 | +0.000622 |
 
-### Поддержка давления и ошибки
-
-Для строгих fit VG m=1 наблюдённая поддержка составляет 0–9.80665×10⁶ кПа для объёмной и 0–310114 кПа для массовой влажности. Центральные 5–95% поддержки с равными весами образцов: 0.10035–77897 и 0.24633–158085 кПа соответственно. Большие давления сухого конца — сохранённые значения workbook, требующие осторожности в интерпретации протоколов.
-
-У VG m=1 для объёмной влажности минимальная наблюдаемая MAE отмечена при p<10 кПа: N=76, медианная абсолютная ошибка 0.00344, 95-й процентиль 0.01164 м³/м³. Для массовой — при p≥1500 кПа: N=37, 0.00477 и 0.01483 кг/кг. Эти описательные закономерности зависят от доступных образцов и не задают универсальную границу надёжности.
-
-Поддержка — диапазон экспериментальных давлений, а не доверительный или предиктивный интервал. Эмпирические распределения fitted-остатков, bootstrap-интервалы сводных ошибок и условные интервалы параметров — разные величины. Fit-ошибки не устанавливают покрытие прогнозных интервалов для будущих образцов.
-
-Строгий fit требует сходимости, физических конечных прогнозов, положительных остаточных степеней свободы, отсутствия критического упора в границы, непостоянной кривой и приемлемой идентифицируемости якобиана. Описательный relaxed fit сохраняет предупреждения о границах и обусловленности. AICc/BIC используются описательно с учётом числа параметров и области определённости; выбор по медианной RMSE не тождественен выбору по информационным критериям.
-
-## Итоговый комплект
-
-- `ptfkit_benchmark_summary_RU_v1.0.pptx`: два основных слайда и приложение.
-- `CONCLUSION-RU.md`: итоговые выводы одним абзацем.
-- `ENSEMBLE-METHODOLOGY-RU.md`: описание ансамбля.
-- `PNG-AUDIT.md`: проверка всех диагностических изображений.
-- `ptfkit_diagnostics_v1.0.zip`: PTF и fitted-диагностика, README и индекс.
-- `selection_v1.0.json`, `benchmark_aggregates.json` и CSV: сводные научные результаты.
-
-Диагностические изображения и ZIP содержат идентификаторы образцов и хранятся в `local/meta-final-v1_0/`. Воспроизведение оформления и проверки без повторного benchmark: `uv run --project targets/ptfkit-eval --no-sync --with matplotlib --with python-pptx python -B -m evaluation.experiments.meta_v3_3.publish_v1_0`. Расчётные артефакты необходимы локально. Все выводы являются dataset-specific.
+Legacy expanded_selection.json and point_target_selection.json retain historical cohort analyses. They are supplementary records, not the current primary WRC ranking.
