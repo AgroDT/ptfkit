@@ -1,23 +1,154 @@
-# Проверка диагностических PNG — v1.0
+# ptfkit v1.0 PNG audit
 
-| Проверка | Результат |
-|---|---:|
-| Ожидается изображений | 523 |
-| Фактически в комплекте | 523 |
-| Полная ОГХ и Ksat | 308 |
-| Point-target | 66 |
-| Общие measured-vs-fitted графики | 8 |
-| Графики отдельных образцов | 141 |
-| Недостающих при проверке | 0 |
-| Невалидных / повреждённых при проверке | 0 |
-| Не совпадающих с актуальной визуализацией | 0 |
-| Перегенерировано из сохранённых прогнозов / fit | 0 |
-| Неиндексированных исходных PNG | 0 |
-| Групп файлов с идентичными пикселями | 0 |
-| Недостающих / повреждённых / неактуальных в итоговом комплекте | 0 / 0 / 0 |
+Expected / actual PTF PNG: 131 / 131.
+Expected / actual approximation PNG: 149 / 149.
+One additional accuracy-coverage PNG.
 
-Индекс содержит 946 строк для 523 уникальных PNG. Для per-sample графиков предусмотрены четыре строки — по одной на семейство, с общим путём файла; это не дублирование изображений.
+Missing: none. Stale/outdated: none. Invalid/corrupt: none.
 
-Каждый PNG открывается, имеет непустое содержимое и размеры не менее 1200×800 пикселей. Имена функций, route type, когорты, N и метрики PTF проверены сравнением пикселей с визуализацией сохранённых финальных прогнозов. Для аппроксимации проверены все четыре семейства в обеих водных базах и все пригодные образцы; числа и идентификаторы сверены с сохранёнными fit. Benchmark и fitting не пересчитывались.
+Every file was regenerated from current pointwise forecasts or current saved fits. Expected paths are independently enumerated from scored model IDs, all eight basis/family combinations and every sample with an accepted fit. The image index is checked against that set. PNG headers, complete decoding and dimensions are verified. SHA256 per image is saved in local/meta-final-v1_0-pointwise/png-audit.json.
 
-ZIP содержит только `PTF/`, `APPROXIMATION/`, `README.md` и `diagnostic_index.csv`; SVG, временные файлы и расчётные артефакты в него не включены. Проверены CRC и побайтовое соответствие файлов архива итоговой папке.
+Regenerated files:
+
+- APPROXIMATION/gravimetric/brooks_corey_v1.png
+- APPROXIMATION/gravimetric/clapp1978_gradual_air_entry_v1.png
+- APPROXIMATION/gravimetric/van_genuchten_m1_v1.png
+- APPROXIMATION/gravimetric/van_genuchten_mualem_v1.png
+- APPROXIMATION/volumetric/brooks_corey_v1.png
+- APPROXIMATION/volumetric/clapp1978_gradual_air_entry_v1.png
+- APPROXIMATION/volumetric/van_genuchten_m1_v1.png
+- APPROXIMATION/volumetric/van_genuchten_mualem_v1.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_calcaric_regosol_sand.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_calcic_cambisol_sand.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_calcic_luvisol_sand.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_campbell_shiozawa.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_chromic_luvisol_sand.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_cosby.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_dane_puckett.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_dystric_cambisol_sand.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_dystric_regosol_sand.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_eutric_cambisol_sand.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_eutric_regosol_sand.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_general_sand.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_general_texture_organic_matter.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_gleyic_cambisol_sand.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_gleyic_luvisol_sand.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_gleyic_solonchak_sand.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_humic_acrisol_sand.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_humic_cambisol_sand.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_orthic_luvisol_sand.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_puckett.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_ranker_sand.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_ranker_texture_organic_matter.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_rendzina_sand.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter.png
+- PTF/Ksat/calc_ptf_ferrerjulia2004_saxton.png
+- PTF/Ksat/calc_ptf_saxton2006.png
+- PTF/Ksat/calc_ptf_wosten2001_loam_clay_table5.png
+- PTF/gravimetric_WRC/calc_ptf_chakraborty2011_eq1.png
+- PTF/gravimetric_WRC/calc_ptf_chakraborty2011_eq4.png
+- PTF/gravimetric_WRC/calc_ptf_oosterveld1980_retention.png
+- PTF/gravimetric_WRC/ensemble_all_available_mean.png
+- PTF/gravimetric_WRC/ensemble_median.png
+- PTF/gravimetric_WRC/ensemble_top_3.png
+- PTF/gravimetric_WRC/ensemble_top_5.png
+- PTF/gravimetric_WRC/family_lal1979_group_i_from_clay_WRC_mass.png
+- PTF/gravimetric_WRC/family_lal1979_group_i_from_sand_WRC_mass.png
+- PTF/gravimetric_WRC/family_lal1979_group_ii_from_clay_WRC_mass.png
+- PTF/gravimetric_WRC/family_lal1979_group_ii_from_sand_WRC_mass.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_beniaich2023_mlr1.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_beniaich2023_mlr2.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_beniaich2023_mlr3.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_beniaich2023_mlr4.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_beniaich2023_mlr5.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_beniaich2023_slr1.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_beniaich2023_slr2.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_beniaich2023_slr3.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_beniaich2023_slr4.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_beniaich2023_slr5.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_beniaich2023_slr6.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_dijkerman1988.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_lal1979_group_i_water_01bar_from_clay.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_lal1979_group_i_water_01bar_from_sand.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_lal1979_group_i_water_03bar_from_clay.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_lal1979_group_i_water_03bar_from_sand.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_lal1979_group_i_water_15bar_from_clay.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_lal1979_group_i_water_15bar_from_sand.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_lal1979_group_i_water_15bar_from_silt.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_lal1979_group_ii_water_01bar_from_clay.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_lal1979_group_ii_water_01bar_from_sand.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_lal1979_group_ii_water_03bar_from_clay.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_lal1979_group_ii_water_03bar_from_sand.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_lal1979_group_ii_water_15bar_from_clay.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_lal1979_group_ii_water_15bar_from_sand.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_myeni2021_fc.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_myeni2021_pwp.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_oosterveld1980_wilting_point.png
+- PTF/gravimetric_WRC/point_targets/calc_ptf_rawls1982_theta_1500.png
+- PTF/volumetric_WRC/calc_ptf_chakraborty2011_eq2.png
+- PTF/volumetric_WRC/calc_ptf_chakraborty2011_eq3.png
+- PTF/volumetric_WRC/calc_ptf_chakraborty2011_eq5.png
+- PTF/volumetric_WRC/calc_ptf_clapp1978.png
+- PTF/volumetric_WRC/calc_ptf_cosby1984_univariate.png
+- PTF/volumetric_WRC/calc_ptf_gupta1979.png
+- PTF/volumetric_WRC/calc_ptf_mayr1999.png
+- PTF/volumetric_WRC/calc_ptf_saxton1986_calcptf_parameters.png
+- PTF/volumetric_WRC/calc_ptf_saxton2006.png
+- PTF/volumetric_WRC/calc_ptf_tomasella1998.png
+- PTF/volumetric_WRC/calc_ptf_varallyai1982_chernozem_a.png
+- PTF/volumetric_WRC/calc_ptf_varallyai1982_chernozem_b.png
+- PTF/volumetric_WRC/calc_ptf_varallyai1982_chernozem_c.png
+- PTF/volumetric_WRC/calc_ptf_varallyai1982_meadow.png
+- PTF/volumetric_WRC/calc_ptf_vereecken1989.png
+- PTF/volumetric_WRC/calc_ptf_weynants2009.png
+- PTF/volumetric_WRC/calc_ptf_williams1992_function_1.png
+- PTF/volumetric_WRC/ensemble_all_available_mean.png
+- PTF/volumetric_WRC/ensemble_median.png
+- PTF/volumetric_WRC/ensemble_top_3.png
+- PTF/volumetric_WRC/ensemble_top_5.png
+- PTF/volumetric_WRC/family_gunarathna2019_set1_WRC_volume.png
+- PTF/volumetric_WRC/family_lal1979_group_i_from_clay_WRC_mass.png
+- PTF/volumetric_WRC/family_lal1979_group_i_from_sand_WRC_mass.png
+- PTF/volumetric_WRC/family_lal1979_group_ii_from_clay_WRC_mass.png
+- PTF/volumetric_WRC/family_lal1979_group_ii_from_sand_WRC_mass.png
+- PTF/volumetric_WRC/point_targets/calc_ptf_beniaich2023_mlr4.png
+- PTF/volumetric_WRC/point_targets/calc_ptf_beniaich2023_slr1.png
+- PTF/volumetric_WRC/point_targets/calc_ptf_beniaich2023_slr2.png
+- PTF/volumetric_WRC/point_targets/calc_ptf_beniaich2023_slr3.png
+- PTF/volumetric_WRC/point_targets/calc_ptf_beniaich2023_slr4.png
+- PTF/volumetric_WRC/point_targets/calc_ptf_beniaich2023_slr5.png
+- PTF/volumetric_WRC/point_targets/calc_ptf_beniaich2023_slr6.png
+- PTF/volumetric_WRC/point_targets/calc_ptf_dijkerman1988.png
+- PTF/volumetric_WRC/point_targets/calc_ptf_gunarathna2019_vwc10_set1.png
+- PTF/volumetric_WRC/point_targets/calc_ptf_gunarathna2019_vwc33_set1.png
+- PTF/volumetric_WRC/point_targets/calc_ptf_lal1979_group_i_water_01bar_from_clay.png
+- PTF/volumetric_WRC/point_targets/calc_ptf_lal1979_group_i_water_01bar_from_sand.png
+- PTF/volumetric_WRC/point_targets/calc_ptf_lal1979_group_i_water_03bar_from_clay.png
+- PTF/volumetric_WRC/point_targets/calc_ptf_lal1979_group_i_water_03bar_from_sand.png
+- PTF/volumetric_WRC/point_targets/calc_ptf_lal1979_group_i_water_15bar_from_clay.png
+- PTF/volumetric_WRC/point_targets/calc_ptf_lal1979_group_ii_water_01bar_from_clay.png
+- PTF/volumetric_WRC/point_targets/calc_ptf_lal1979_group_ii_water_01bar_from_sand.png
+- PTF/volumetric_WRC/point_targets/calc_ptf_lal1979_group_ii_water_03bar_from_clay.png
+- PTF/volumetric_WRC/point_targets/calc_ptf_lal1979_group_ii_water_03bar_from_sand.png
+- PTF/volumetric_WRC/point_targets/calc_ptf_lal1979_group_ii_water_15bar_from_clay.png
+- PTF/volumetric_WRC/point_targets/calc_ptf_rawls1982_theta_1500.png
+- PTF/volumetric_WRC/point_targets/calc_ptf_rawls2003_soc_theta33_tree.png
+- wrc_accuracy_coverage.png
+
+Per-sample filenames contain private identities; the complete regenerated-file list is in local/meta-final-v1_0-pointwise/png-audit.json.

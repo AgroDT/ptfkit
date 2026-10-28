@@ -116,7 +116,10 @@ def restored_datasets(workbook: Path) -> list[dict]:
 
 def main() -> None:
     workbook = ROOT / 'local/meta_v3.3.xlsx'
-    frozen = json.loads((PUBLIC / 'benchmark_aggregates.json').read_bytes())['selection']
+    # Publication files evolve; replay is pinned to the historical checkpoint.
+    frozen = json.loads(
+        (ROOT / 'evaluation/datasets/meta_v3_3.model-selection-summary.json').read_bytes()
+    )
     digest = hashlib.sha256(workbook.read_bytes()).hexdigest()
     if digest != frozen['input_sha256']['workbook']:
         msg = 'Workbook differs from the final benchmark.'

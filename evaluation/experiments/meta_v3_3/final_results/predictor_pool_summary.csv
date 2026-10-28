@@ -1,0 +1,133 @@
+pool_id,availability_policy,required_predictors,basis,n_samples,n_predictor_records,n_observations,n_sources
+texture_class,reported,"[""soil_texture""]",volumetric_water_content,6,6,56,1
+texture_class,reported,"[""soil_texture""]",gravimetric_water_content,0,0,0,0
+texture_class,reported,"[""soil_texture""]",ksat,0,0,0,0
+texture_class_bd,reported,"[""soil_texture"", ""bulk_density""]",volumetric_water_content,6,6,56,1
+texture_class_bd,reported,"[""soil_texture"", ""bulk_density""]",gravimetric_water_content,0,0,0,0
+texture_class_bd,reported,"[""soil_texture"", ""bulk_density""]",ksat,0,0,0,0
+clay,reported,"[""clay""]",volumetric_water_content,19,19,169,2
+clay,reported,"[""clay""]",gravimetric_water_content,17,17,218,3
+clay,reported,"[""clay""]",ksat,9,9,9,3
+sand,reported,"[""sand""]",volumetric_water_content,0,0,0,0
+sand,reported,"[""sand""]",gravimetric_water_content,10,10,130,1
+sand,reported,"[""sand""]",ksat,0,0,0,0
+bulk_density,reported,"[""bulk_density""]",volumetric_water_content,38,38,732,5
+bulk_density,reported,"[""bulk_density""]",gravimetric_water_content,27,27,285,5
+bulk_density,reported,"[""bulk_density""]",ksat,39,39,39,3
+organic_carbon,reported,"[""organic_carbon""]",volumetric_water_content,20,20,206,3
+organic_carbon,reported,"[""organic_carbon""]",gravimetric_water_content,37,37,428,6
+organic_carbon,reported,"[""organic_carbon""]",ksat,36,36,36,2
+clay_bd,reported,"[""clay"", ""bulk_density""]",volumetric_water_content,19,19,169,2
+clay_bd,reported,"[""clay"", ""bulk_density""]",gravimetric_water_content,6,6,76,2
+clay_bd,reported,"[""clay"", ""bulk_density""]",ksat,9,9,9,3
+clay_oc,reported,"[""clay"", ""organic_carbon""]",volumetric_water_content,16,16,150,2
+clay_oc,reported,"[""clay"", ""organic_carbon""]",gravimetric_water_content,17,17,218,3
+clay_oc,reported,"[""clay"", ""organic_carbon""]",ksat,6,6,6,2
+clay_bd_oc,reported,"[""clay"", ""bulk_density"", ""organic_carbon""]",volumetric_water_content,16,16,150,2
+clay_bd_oc,reported,"[""clay"", ""bulk_density"", ""organic_carbon""]",gravimetric_water_content,6,6,76,2
+clay_bd_oc,reported,"[""clay"", ""bulk_density"", ""organic_carbon""]",ksat,6,6,6,2
+sand_clay,reported,"[""sand"", ""clay""]",volumetric_water_content,0,0,0,0
+sand_clay,reported,"[""sand"", ""clay""]",gravimetric_water_content,10,10,130,1
+sand_clay,reported,"[""sand"", ""clay""]",ksat,0,0,0,0
+sand_clay_bd,reported,"[""sand"", ""clay"", ""bulk_density""]",volumetric_water_content,0,0,0,0
+sand_clay_bd,reported,"[""sand"", ""clay"", ""bulk_density""]",gravimetric_water_content,0,0,0,0
+sand_clay_bd,reported,"[""sand"", ""clay"", ""bulk_density""]",ksat,0,0,0,0
+sand_clay_oc,reported,"[""sand"", ""clay"", ""organic_carbon""]",volumetric_water_content,0,0,0,0
+sand_clay_oc,reported,"[""sand"", ""clay"", ""organic_carbon""]",gravimetric_water_content,10,10,130,1
+sand_clay_oc,reported,"[""sand"", ""clay"", ""organic_carbon""]",ksat,0,0,0,0
+sand_clay_bd_oc,reported,"[""sand"", ""clay"", ""bulk_density"", ""organic_carbon""]",volumetric_water_content,0,0,0,0
+sand_clay_bd_oc,reported,"[""sand"", ""clay"", ""bulk_density"", ""organic_carbon""]",gravimetric_water_content,0,0,0,0
+sand_clay_bd_oc,reported,"[""sand"", ""clay"", ""bulk_density"", ""organic_carbon""]",ksat,0,0,0,0
+texture,reported,"[""sand"", ""silt"", ""clay""]",volumetric_water_content,0,0,0,0
+texture,reported,"[""sand"", ""silt"", ""clay""]",gravimetric_water_content,10,10,130,1
+texture,reported,"[""sand"", ""silt"", ""clay""]",ksat,0,0,0,0
+texture_bd,reported,"[""sand"", ""silt"", ""clay"", ""bulk_density""]",volumetric_water_content,0,0,0,0
+texture_bd,reported,"[""sand"", ""silt"", ""clay"", ""bulk_density""]",gravimetric_water_content,0,0,0,0
+texture_bd,reported,"[""sand"", ""silt"", ""clay"", ""bulk_density""]",ksat,0,0,0,0
+texture_oc,reported,"[""sand"", ""silt"", ""clay"", ""organic_carbon""]",volumetric_water_content,0,0,0,0
+texture_oc,reported,"[""sand"", ""silt"", ""clay"", ""organic_carbon""]",gravimetric_water_content,10,10,130,1
+texture_oc,reported,"[""sand"", ""silt"", ""clay"", ""organic_carbon""]",ksat,0,0,0,0
+texture_om,reported,"[""sand"", ""silt"", ""clay"", ""organic_matter""]",volumetric_water_content,0,0,0,0
+texture_om,reported,"[""sand"", ""silt"", ""clay"", ""organic_matter""]",gravimetric_water_content,10,10,130,1
+texture_om,reported,"[""sand"", ""silt"", ""clay"", ""organic_matter""]",ksat,0,0,0,0
+texture_bd_oc,reported,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_carbon""]",volumetric_water_content,0,0,0,0
+texture_bd_oc,reported,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_carbon""]",gravimetric_water_content,0,0,0,0
+texture_bd_oc,reported,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_carbon""]",ksat,0,0,0,0
+texture_bd_om,reported,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_matter""]",volumetric_water_content,0,0,0,0
+texture_bd_om,reported,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_matter""]",gravimetric_water_content,0,0,0,0
+texture_bd_om,reported,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_matter""]",ksat,0,0,0,0
+texture_bd_oc_ph,reported,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_carbon"", ""ph""]",volumetric_water_content,0,0,0,0
+texture_bd_oc_ph,reported,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_carbon"", ""ph""]",gravimetric_water_content,0,0,0,0
+texture_bd_oc_ph,reported,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_carbon"", ""ph""]",ksat,0,0,0,0
+texture_bd_oc_pd,reported,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_carbon"", ""particle_density""]",volumetric_water_content,0,0,0,0
+texture_bd_oc_pd,reported,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_carbon"", ""particle_density""]",gravimetric_water_content,0,0,0,0
+texture_bd_oc_pd,reported,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_carbon"", ""particle_density""]",ksat,0,0,0,0
+texture_bd_oc_porosity,reported,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_carbon"", ""porosity""]",volumetric_water_content,0,0,0,0
+texture_bd_oc_porosity,reported,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_carbon"", ""porosity""]",gravimetric_water_content,0,0,0,0
+texture_bd_oc_porosity,reported,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_carbon"", ""porosity""]",ksat,0,0,0,0
+texture_class,e5_usable,"[""soil_texture""]",volumetric_water_content,17,17,495,2
+texture_class,e5_usable,"[""soil_texture""]",gravimetric_water_content,10,10,130,1
+texture_class,e5_usable,"[""soil_texture""]",ksat,0,0,0,0
+texture_class_bd,e5_usable,"[""soil_texture"", ""bulk_density""]",volumetric_water_content,17,17,495,2
+texture_class_bd,e5_usable,"[""soil_texture"", ""bulk_density""]",gravimetric_water_content,0,0,0,0
+texture_class_bd,e5_usable,"[""soil_texture"", ""bulk_density""]",ksat,0,0,0,0
+clay,e5_usable,"[""clay""]",volumetric_water_content,30,30,608,3
+clay,e5_usable,"[""clay""]",gravimetric_water_content,17,17,218,3
+clay,e5_usable,"[""clay""]",ksat,39,39,39,3
+sand,e5_usable,"[""sand""]",volumetric_water_content,11,11,439,1
+sand,e5_usable,"[""sand""]",gravimetric_water_content,10,10,130,1
+sand,e5_usable,"[""sand""]",ksat,33,33,33,2
+bulk_density,e5_usable,"[""bulk_density""]",volumetric_water_content,38,38,732,5
+bulk_density,e5_usable,"[""bulk_density""]",gravimetric_water_content,27,27,285,5
+bulk_density,e5_usable,"[""bulk_density""]",ksat,39,39,39,3
+organic_carbon,e5_usable,"[""organic_carbon""]",volumetric_water_content,24,24,237,4
+organic_carbon,e5_usable,"[""organic_carbon""]",gravimetric_water_content,37,37,428,6
+organic_carbon,e5_usable,"[""organic_carbon""]",ksat,39,39,39,3
+clay_bd,e5_usable,"[""clay"", ""bulk_density""]",volumetric_water_content,30,30,608,3
+clay_bd,e5_usable,"[""clay"", ""bulk_density""]",gravimetric_water_content,6,6,76,2
+clay_bd,e5_usable,"[""clay"", ""bulk_density""]",ksat,39,39,39,3
+clay_oc,e5_usable,"[""clay"", ""organic_carbon""]",volumetric_water_content,17,17,158,2
+clay_oc,e5_usable,"[""clay"", ""organic_carbon""]",gravimetric_water_content,17,17,218,3
+clay_oc,e5_usable,"[""clay"", ""organic_carbon""]",ksat,39,39,39,3
+clay_bd_oc,e5_usable,"[""clay"", ""bulk_density"", ""organic_carbon""]",volumetric_water_content,17,17,158,2
+clay_bd_oc,e5_usable,"[""clay"", ""bulk_density"", ""organic_carbon""]",gravimetric_water_content,6,6,76,2
+clay_bd_oc,e5_usable,"[""clay"", ""bulk_density"", ""organic_carbon""]",ksat,39,39,39,3
+sand_clay,e5_usable,"[""sand"", ""clay""]",volumetric_water_content,11,11,439,1
+sand_clay,e5_usable,"[""sand"", ""clay""]",gravimetric_water_content,10,10,130,1
+sand_clay,e5_usable,"[""sand"", ""clay""]",ksat,33,33,33,2
+sand_clay_bd,e5_usable,"[""sand"", ""clay"", ""bulk_density""]",volumetric_water_content,11,11,439,1
+sand_clay_bd,e5_usable,"[""sand"", ""clay"", ""bulk_density""]",gravimetric_water_content,0,0,0,0
+sand_clay_bd,e5_usable,"[""sand"", ""clay"", ""bulk_density""]",ksat,33,33,33,2
+sand_clay_oc,e5_usable,"[""sand"", ""clay"", ""organic_carbon""]",volumetric_water_content,0,0,0,0
+sand_clay_oc,e5_usable,"[""sand"", ""clay"", ""organic_carbon""]",gravimetric_water_content,10,10,130,1
+sand_clay_oc,e5_usable,"[""sand"", ""clay"", ""organic_carbon""]",ksat,33,33,33,2
+sand_clay_bd_oc,e5_usable,"[""sand"", ""clay"", ""bulk_density"", ""organic_carbon""]",volumetric_water_content,0,0,0,0
+sand_clay_bd_oc,e5_usable,"[""sand"", ""clay"", ""bulk_density"", ""organic_carbon""]",gravimetric_water_content,0,0,0,0
+sand_clay_bd_oc,e5_usable,"[""sand"", ""clay"", ""bulk_density"", ""organic_carbon""]",ksat,33,33,33,2
+texture,e5_usable,"[""sand"", ""silt"", ""clay""]",volumetric_water_content,11,11,439,1
+texture,e5_usable,"[""sand"", ""silt"", ""clay""]",gravimetric_water_content,10,10,130,1
+texture,e5_usable,"[""sand"", ""silt"", ""clay""]",ksat,0,0,0,0
+texture_bd,e5_usable,"[""sand"", ""silt"", ""clay"", ""bulk_density""]",volumetric_water_content,11,11,439,1
+texture_bd,e5_usable,"[""sand"", ""silt"", ""clay"", ""bulk_density""]",gravimetric_water_content,0,0,0,0
+texture_bd,e5_usable,"[""sand"", ""silt"", ""clay"", ""bulk_density""]",ksat,0,0,0,0
+texture_oc,e5_usable,"[""sand"", ""silt"", ""clay"", ""organic_carbon""]",volumetric_water_content,0,0,0,0
+texture_oc,e5_usable,"[""sand"", ""silt"", ""clay"", ""organic_carbon""]",gravimetric_water_content,10,10,130,1
+texture_oc,e5_usable,"[""sand"", ""silt"", ""clay"", ""organic_carbon""]",ksat,0,0,0,0
+texture_om,e5_usable,"[""sand"", ""silt"", ""clay"", ""organic_matter""]",volumetric_water_content,0,0,0,0
+texture_om,e5_usable,"[""sand"", ""silt"", ""clay"", ""organic_matter""]",gravimetric_water_content,10,10,130,1
+texture_om,e5_usable,"[""sand"", ""silt"", ""clay"", ""organic_matter""]",ksat,0,0,0,0
+texture_bd_oc,e5_usable,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_carbon""]",volumetric_water_content,0,0,0,0
+texture_bd_oc,e5_usable,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_carbon""]",gravimetric_water_content,0,0,0,0
+texture_bd_oc,e5_usable,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_carbon""]",ksat,0,0,0,0
+texture_bd_om,e5_usable,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_matter""]",volumetric_water_content,0,0,0,0
+texture_bd_om,e5_usable,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_matter""]",gravimetric_water_content,0,0,0,0
+texture_bd_om,e5_usable,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_matter""]",ksat,0,0,0,0
+texture_bd_oc_ph,e5_usable,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_carbon"", ""ph""]",volumetric_water_content,0,0,0,0
+texture_bd_oc_ph,e5_usable,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_carbon"", ""ph""]",gravimetric_water_content,0,0,0,0
+texture_bd_oc_ph,e5_usable,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_carbon"", ""ph""]",ksat,0,0,0,0
+texture_bd_oc_pd,e5_usable,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_carbon"", ""particle_density""]",volumetric_water_content,0,0,0,0
+texture_bd_oc_pd,e5_usable,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_carbon"", ""particle_density""]",gravimetric_water_content,0,0,0,0
+texture_bd_oc_pd,e5_usable,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_carbon"", ""particle_density""]",ksat,0,0,0,0
+texture_bd_oc_porosity,e5_usable,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_carbon"", ""porosity""]",volumetric_water_content,0,0,0,0
+texture_bd_oc_porosity,e5_usable,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_carbon"", ""porosity""]",gravimetric_water_content,0,0,0,0
+texture_bd_oc_porosity,e5_usable,"[""sand"", ""silt"", ""clay"", ""bulk_density"", ""organic_carbon"", ""porosity""]",ksat,0,0,0,0
