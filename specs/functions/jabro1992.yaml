@@ -13,7 +13,7 @@ scope:
     data.
 functions:
 - name: calc_ptf_jabro1992
-  status: ready-for-implementation
+  status: implemented
   public_api:
     name: calc_ptf_jabro1992
     result_class: null

@@ -14,7 +14,7 @@ $defs:
   water_01bar: {"name": "water_01bar", "symbol": null, "unit": "g/g", "domain": null, "description": "Gravimetric moisture retention at 0.1 bar suction on disturbed soil."}
 functions:
   - name: calc_ptf_lal1979_group_i_water_0bar_from_clay
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_i_water_0bar_from_clay", "result_class": null, "summary": "Estimate gravimetric moisture retention at saturation for Group I."}
     scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture retention at saturation", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/clay"}]
@@ -28,7 +28,7 @@ functions:
         - name: water_0bar
           expr: "0.004 * clay + (0.289)"
   - name: calc_ptf_lal1979_group_i_water_0bar_from_sand
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_i_water_0bar_from_sand", "result_class": null, "summary": "Estimate gravimetric moisture retention at saturation for Group I."}
     scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture retention at saturation", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/sand"}]
@@ -42,7 +42,7 @@ functions:
         - name: water_0bar
           expr: "-0.003 * sand + (0.579)"
   - name: calc_ptf_lal1979_group_ii_water_0bar_from_clay
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_ii_water_0bar_from_clay", "result_class": null, "summary": "Estimate gravimetric moisture retention at saturation for Group II."}
     scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture retention at saturation", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/clay"}]
@@ -56,7 +56,7 @@ functions:
         - name: water_0bar
           expr: "0.004 * clay + (0.296)"
   - name: calc_ptf_lal1979_group_ii_water_0bar_from_sand
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_ii_water_0bar_from_sand", "result_class": null, "summary": "Estimate gravimetric moisture retention at saturation for Group II."}
     scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture retention at saturation", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/sand"}]
@@ -70,7 +70,7 @@ functions:
         - name: water_0bar
           expr: "-0.004 * sand + (0.645)"
   - name: calc_ptf_lal1979_group_i_water_01bar_from_clay
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_i_water_01bar_from_clay", "result_class": null, "summary": "Estimate gravimetric moisture retention at 0.1 bar suction for Group I."}
     scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture retention at 0.1 bar suction", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/clay"}]
@@ -84,7 +84,7 @@ functions:
         - name: water_01bar
           expr: "0.003 * clay + (0.102)"
   - name: calc_ptf_lal1979_group_i_water_03bar_from_clay
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_i_water_03bar_from_clay", "result_class": null, "summary": "Estimate gravimetric moisture retention at 0.3 bar suction for Group I."}
     scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture retention at 0.3 bar suction", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/clay"}]
@@ -98,7 +98,7 @@ functions:
         - name: water_03bar
           expr: "0.004 * clay + (0.065)"
   - name: calc_ptf_lal1979_group_i_water_01bar_from_sand
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_i_water_01bar_from_sand", "result_class": null, "summary": "Estimate gravimetric moisture retention at 0.1 bar suction for Group I."}
     scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture retention at 0.1 bar suction", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/sand"}]
@@ -112,7 +112,7 @@ functions:
         - name: water_01bar
           expr: "-0.003 * sand + (0.364)"
   - name: calc_ptf_lal1979_group_i_water_03bar_from_sand
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_i_water_03bar_from_sand", "result_class": null, "summary": "Estimate gravimetric moisture retention at 0.3 bar suction for Group I."}
     scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture retention at 0.3 bar suction", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/sand"}]
@@ -126,7 +126,7 @@ functions:
         - name: water_03bar
           expr: "-0.003 * sand + (0.334)"
   - name: calc_ptf_lal1979_group_ii_water_01bar_from_clay
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_ii_water_01bar_from_clay", "result_class": null, "summary": "Estimate gravimetric moisture retention at 0.1 bar suction for Group II."}
     scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture retention at 0.1 bar suction", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/clay"}]
@@ -140,7 +140,7 @@ functions:
         - name: water_01bar
           expr: "0.003 * clay + (0.080)"
   - name: calc_ptf_lal1979_group_ii_water_03bar_from_clay
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_ii_water_03bar_from_clay", "result_class": null, "summary": "Estimate gravimetric moisture retention at 0.3 bar suction for Group II."}
     scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture retention at 0.3 bar suction", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/clay"}]
@@ -154,7 +154,7 @@ functions:
         - name: water_03bar
           expr: "0.003 * clay + (0.047)"
   - name: calc_ptf_lal1979_group_ii_water_01bar_from_sand
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_ii_water_01bar_from_sand", "result_class": null, "summary": "Estimate gravimetric moisture retention at 0.1 bar suction for Group II."}
     scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture retention at 0.1 bar suction", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/sand"}]
@@ -168,7 +168,7 @@ functions:
         - name: water_01bar
           expr: "-0.0035 * sand + (0.406)"
   - name: calc_ptf_lal1979_group_ii_water_03bar_from_sand
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_ii_water_03bar_from_sand", "result_class": null, "summary": "Estimate gravimetric moisture retention at 0.3 bar suction for Group II."}
     scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture retention at 0.3 bar suction", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/sand"}]
@@ -182,7 +182,7 @@ functions:
         - name: water_03bar
           expr: "-0.003 * sand + (0.349)"
   - name: calc_ptf_lal1979_group_i_water_15bar_from_clay
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_i_water_15bar_from_clay", "result_class": null, "summary": "Estimate gravimetric moisture retention at 15 bar suction for Group I."}
     scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture retention at 15 bar suction", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/clay"}]
@@ -196,7 +196,7 @@ functions:
         - name: water_15bar
           expr: "0.003 * clay + (0.006)"
   - name: calc_ptf_lal1979_group_i_water_15bar_from_sand
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_i_water_15bar_from_sand", "result_class": null, "summary": "Estimate gravimetric moisture retention at 15 bar suction for Group I."}
     scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture retention at 15 bar suction", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/sand"}]
@@ -210,7 +210,7 @@ functions:
         - name: water_15bar
           expr: "-0.003 * sand + (0.247)"
   - name: calc_ptf_lal1979_group_i_water_15bar_from_silt
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_i_water_15bar_from_silt", "result_class": null, "summary": "Estimate gravimetric moisture retention at 15 bar suction for Group I."}
     scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture retention at 15 bar suction", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/silt"}]
@@ -224,7 +224,7 @@ functions:
         - name: water_15bar
           expr: "0.005 * silt + (0.053)"
   - name: calc_ptf_lal1979_group_ii_water_15bar_from_clay
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_ii_water_15bar_from_clay", "result_class": null, "summary": "Estimate gravimetric moisture retention at 15 bar suction for Group II."}
     scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture retention at 15 bar suction", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/clay"}]
@@ -238,7 +238,7 @@ functions:
         - name: water_15bar
           expr: "0.0022 * clay + (0.025)"
   - name: calc_ptf_lal1979_group_ii_water_15bar_from_sand
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_ii_water_15bar_from_sand", "result_class": null, "summary": "Estimate gravimetric moisture retention at 15 bar suction for Group II."}
     scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture retention at 15 bar suction", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/sand"}]
@@ -252,7 +252,7 @@ functions:
         - name: water_15bar
           expr: "-0.0024 * sand + (0.284)"
   - name: calc_ptf_lal1979_group_i_moisture_equivalent_from_clay
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_i_moisture_equivalent_from_clay", "result_class": null, "summary": "Estimate gravimetric moisture equivalent measured at 1000 times gravity for Group I."}
     scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture equivalent measured at 1000 times gravity", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/clay"}]
@@ -266,7 +266,7 @@ functions:
         - name: moisture_equivalent
           expr: "0.004 * clay + (0.052)"
   - name: calc_ptf_lal1979_group_i_moisture_equivalent_from_sand
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_i_moisture_equivalent_from_sand", "result_class": null, "summary": "Estimate gravimetric moisture equivalent measured at 1000 times gravity for Group I."}
     scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Gravimetric moisture equivalent measured at 1000 times gravity", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/sand"}]
@@ -280,7 +280,7 @@ functions:
         - name: moisture_equivalent
           expr: "-0.003 * sand + (0.339)"
   - name: calc_ptf_lal1979_group_ii_moisture_equivalent_from_clay
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_ii_moisture_equivalent_from_clay", "result_class": null, "summary": "Estimate gravimetric moisture equivalent measured at 1000 times gravity for Group II."}
     scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture equivalent measured at 1000 times gravity", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/clay"}]
@@ -294,7 +294,7 @@ functions:
         - name: moisture_equivalent
           expr: "0.0025 * clay + (0.057)"
   - name: calc_ptf_lal1979_group_ii_moisture_equivalent_from_sand
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_ii_moisture_equivalent_from_sand", "result_class": null, "summary": "Estimate gravimetric moisture equivalent measured at 1000 times gravity for Group II."}
     scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture equivalent measured at 1000 times gravity", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/sand"}]
@@ -308,7 +308,7 @@ functions:
         - name: moisture_equivalent
           expr: "-0.002 * sand + (0.284)"
   - name: calc_ptf_lal1979_group_ii_moisture_equivalent_from_silt
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_ii_moisture_equivalent_from_silt", "result_class": null, "summary": "Estimate gravimetric moisture equivalent measured at 1000 times gravity for Group II."}
     scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture equivalent measured at 1000 times gravity", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/silt"}]
@@ -385,7 +385,7 @@ functions:
     edge_cases: []
     documentation: {"notes": ["Table VIII, Group II, water_0bar predictor, water_15bar response.", "Printed regression slope m = 1.45; intercept b = 0.277."], "warnings": ["Blocked: the printed dependent/independent labels and coefficients predict increasing water content with increasing suction. Confirm regression direction and intercept sign from authoritative evidence; no reversal or sign correction is assumed."]}
   - name: calc_ptf_lal1979_group_ii_water_03bar_from_water_01bar
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_ii_water_03bar_from_water_01bar", "result_class": null, "summary": "Estimate gravimetric moisture retention at 0.3 bar suction for Group II."}
     scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture retention at 0.3 bar suction", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/water_01bar"}]
@@ -399,7 +399,7 @@ functions:
         - name: water_03bar
           expr: "0.86 * water_01bar + (-0.014)"
   - name: calc_ptf_lal1979_group_ii_water_15bar_from_water_01bar
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_ii_water_15bar_from_water_01bar", "result_class": null, "summary": "Estimate gravimetric moisture retention at 15 bar suction for Group II."}
     scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Gravimetric moisture retention at 15 bar suction", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/water_01bar"}]
@@ -413,7 +413,7 @@ functions:
         - name: water_15bar
           expr: "0.54 * water_01bar + (-0.005)"
   - name: calc_ptf_lal1979_group_i_upper_plastic_limit_from_organic_carbon
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_i_upper_plastic_limit_from_organic_carbon", "result_class": null, "summary": "Estimate upper plastic limit for Group I."}
     scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Upper plastic limit", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/organic_carbon"}]
@@ -427,7 +427,7 @@ functions:
         - name: upper_plastic_limit
           expr: "-5.40 * organic_carbon + (31.73)"
   - name: calc_ptf_lal1979_group_i_lower_plastic_limit_from_organic_carbon
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_i_lower_plastic_limit_from_organic_carbon", "result_class": null, "summary": "Estimate lower plastic limit for Group I."}
     scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Lower plastic limit", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/organic_carbon"}]
@@ -441,7 +441,7 @@ functions:
         - name: lower_plastic_limit
           expr: "-4.24 * organic_carbon + (24.73)"
   - name: calc_ptf_lal1979_group_i_plasticity_index_from_organic_carbon
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_i_plasticity_index_from_organic_carbon", "result_class": null, "summary": "Estimate plasticity index (upper minus lower plastic limit) for Group I."}
     scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Plasticity index (upper minus lower plastic limit)", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/organic_carbon"}]
@@ -455,7 +455,7 @@ functions:
         - name: plasticity_index
           expr: "-1.24 * organic_carbon + (7.42)"
   - name: calc_ptf_lal1979_group_i_upper_plastic_limit_from_clay
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_i_upper_plastic_limit_from_clay", "result_class": null, "summary": "Estimate upper plastic limit for Group I."}
     scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Upper plastic limit", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/clay"}]
@@ -469,7 +469,7 @@ functions:
         - name: upper_plastic_limit
           expr: "0.46 * clay + (11.48)"
   - name: calc_ptf_lal1979_group_i_lower_plastic_limit_from_clay
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_i_lower_plastic_limit_from_clay", "result_class": null, "summary": "Estimate lower plastic limit for Group I."}
     scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Lower plastic limit", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/clay"}]
@@ -483,7 +483,7 @@ functions:
         - name: lower_plastic_limit
           expr: "0.34 * clay + (9.50)"
   - name: calc_ptf_lal1979_group_i_plasticity_index_from_clay
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_i_plasticity_index_from_clay", "result_class": null, "summary": "Estimate plasticity index (upper minus lower plastic limit) for Group I."}
     scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Plasticity index (upper minus lower plastic limit)", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/clay"}]
@@ -506,7 +506,7 @@ functions:
     edge_cases: []
     documentation: {"notes": ["Table IX, Group I, sand predictor, upper_plastic_limit response.", "Printed regression slope m = -0.40; intercept b = -46.20."], "warnings": ["Blocked: printed intercept -46.20 with slope -0.40 produces a negative upper plastic limit for nonnegative sand. Confirm the intercept sign; no correction is assumed."]}
   - name: calc_ptf_lal1979_group_i_lower_plastic_limit_from_sand
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_i_lower_plastic_limit_from_sand", "result_class": null, "summary": "Estimate lower plastic limit for Group I."}
     scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Lower plastic limit", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/sand"}]
@@ -520,7 +520,7 @@ functions:
         - name: lower_plastic_limit
           expr: "-0.30 * sand + (35.50)"
   - name: calc_ptf_lal1979_group_i_plasticity_index_from_sand
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_i_plasticity_index_from_sand", "result_class": null, "summary": "Estimate plasticity index (upper minus lower plastic limit) for Group I."}
     scope: {"territory": "Group I: 11 well-drained upland profiles in western Nigeria developed over pre-Cambrian basement complex rocks, mainly biotite-muscovite paragneisses.", "prediction_target": "Plasticity index (upper minus lower plastic limit)", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/sand"}]
@@ -534,7 +534,7 @@ functions:
         - name: plasticity_index
           expr: "-0.10 * sand + (11.00)"
   - name: calc_ptf_lal1979_group_ii_upper_plastic_limit_from_organic_carbon
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_ii_upper_plastic_limit_from_organic_carbon", "result_class": null, "summary": "Estimate upper plastic limit for Group II."}
     scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Upper plastic limit", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/organic_carbon"}]
@@ -548,7 +548,7 @@ functions:
         - name: upper_plastic_limit
           expr: "-3.01 * organic_carbon + (32.20)"
   - name: calc_ptf_lal1979_group_ii_plasticity_index_from_organic_carbon
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_ii_plasticity_index_from_organic_carbon", "result_class": null, "summary": "Estimate plasticity index (upper minus lower plastic limit) for Group II."}
     scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Plasticity index (upper minus lower plastic limit)", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/organic_carbon"}]
@@ -562,7 +562,7 @@ functions:
         - name: plasticity_index
           expr: "-3.22 * organic_carbon + (12.70)"
   - name: calc_ptf_lal1979_group_ii_upper_plastic_limit_from_clay
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_ii_upper_plastic_limit_from_clay", "result_class": null, "summary": "Estimate upper plastic limit for Group II."}
     scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Upper plastic limit", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/clay"}]
@@ -576,7 +576,7 @@ functions:
         - name: upper_plastic_limit
           expr: "0.16 * clay + (24.59)"
   - name: calc_ptf_lal1979_group_ii_lower_plastic_limit_from_clay
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_ii_lower_plastic_limit_from_clay", "result_class": null, "summary": "Estimate lower plastic limit for Group II."}
     scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Lower plastic limit", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/clay"}]
@@ -590,7 +590,7 @@ functions:
         - name: lower_plastic_limit
           expr: "0.14 * clay + (14.64)"
   - name: calc_ptf_lal1979_group_ii_upper_plastic_limit_from_sand
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_ii_upper_plastic_limit_from_sand", "result_class": null, "summary": "Estimate upper plastic limit for Group II."}
     scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Upper plastic limit", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/sand"}]
@@ -604,7 +604,7 @@ functions:
         - name: upper_plastic_limit
           expr: "-0.17 * sand + (40.41)"
   - name: calc_ptf_lal1979_group_ii_lower_plastic_limit_from_sand
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_ii_lower_plastic_limit_from_sand", "result_class": null, "summary": "Estimate lower plastic limit for Group II."}
     scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Lower plastic limit", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/sand"}]
@@ -618,7 +618,7 @@ functions:
         - name: lower_plastic_limit
           expr: "-0.17 * sand + (29.88)"
   - name: calc_ptf_lal1979_group_ii_upper_plastic_limit_from_silt
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_ii_upper_plastic_limit_from_silt", "result_class": null, "summary": "Estimate upper plastic limit for Group II."}
     scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Upper plastic limit", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/silt"}]
@@ -632,7 +632,7 @@ functions:
         - name: upper_plastic_limit
           expr: "0.35 * silt + (28.24)"
   - name: calc_ptf_lal1979_group_ii_lower_plastic_limit_from_silt
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_ii_lower_plastic_limit_from_silt", "result_class": null, "summary": "Estimate lower plastic limit for Group II."}
     scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Lower plastic limit", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/silt"}]
@@ -646,7 +646,7 @@ functions:
         - name: lower_plastic_limit
           expr: "0.67 * silt + (16.16)"
   - name: calc_ptf_lal1979_group_ii_plasticity_index_from_silt
-    status: "ready-for-implementation"
+    status: "implemented"
     public_api: {"name": "calc_ptf_lal1979_group_ii_plasticity_index_from_silt", "result_class": null, "summary": "Estimate plasticity index (upper minus lower plastic limit) for Group II."}
     scope: {"territory": "Group II: 12 profiles in Nigeria developed from arenaceous sedimentary rocks, partly Cretaceous and partly Lower Pleistocene.", "prediction_target": "Plasticity index (upper minus lower plastic limit)", "models": {"h_theta": null, "k_h": null}}
     inputs: [{"$ref": "#/$defs/silt"}]
