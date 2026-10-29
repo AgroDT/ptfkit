@@ -25,7 +25,7 @@ Dijkerman, J. C. (1988). An Ustult-Aquult-Tropept catena in Sierra Leone, West A
 
 Estimate gravimetric water contents at 15 bar and one-third bar from texture.
 
-**Status:** `ready-for-implementation`
+**Status:** `implemented`
 
 **Prediction target:** Gravimetric water contents at 15 bar and one-third bar.
 
@@ -71,7 +71,7 @@ Estimate gravimetric water contents at 15 bar and one-third bar from texture.
 
 Estimate the gravimetric available moisture between one-third bar and 15 bar.
 
-**Status:** `ready-for-implementation`
+**Status:** `implemented`
 
 **Prediction target:** Gravimetric available moisture between one-third bar and 15 bar.
 

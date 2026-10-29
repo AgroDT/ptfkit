@@ -25,7 +25,7 @@ Jabro, J. D. (1992). Estimation of saturated hydraulic conductivity of soils fro
 
 Estimate saturated hydraulic conductivity from silt, clay, and bulk density.
 
-**Status:** `ready-for-implementation`
+**Status:** `implemented`
 
 **Prediction target:** Saturated hydraulic conductivity from silt, clay, and bulk density.
 
