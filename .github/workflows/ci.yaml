@@ -182,6 +182,9 @@ jobs:
       - name: Test ptfkit-native
         run: ctest --test-dir targets/ptfkit-native/build --output-on-failure
 
+      - name: Verify bundled Rosetta3 in all four public APIs
+        run: mise run rosetta:verify-bundled
+
   docs:
     name: Build Documentation
     runs-on: ubuntu-latest

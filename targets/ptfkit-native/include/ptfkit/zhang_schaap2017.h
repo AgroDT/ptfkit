@@ -133,6 +133,19 @@ PTFKIT_MODEL_INLINE ptfkit_model_status ptfkit_rosetta3_predict(const ptfkit_mod
     return ptfkit_detail_rosetta(model, level, mode, x, count, out) ? PTFKIT_MODEL_OK
                                                                     : PTFKIT_MODEL_INPUT;
 }
+
+#define PTFKIT_ROSETTA3_BYTES 2212632
+#ifdef __cplusplus
+extern "C" {
+#endif
+extern const unsigned char ptfkit_detail_rosetta3_data[PTFKIT_ROSETTA3_BYTES];
+#ifdef __cplusplus
+}
+#endif
+PTFKIT_MODEL_INLINE ptfkit_model_status ptfkit_rosetta3_builtin(ptfkit_model **out) {
+    return ptfkit_model_from_bytes(ptfkit_detail_rosetta3_data, PTFKIT_ROSETTA3_BYTES,
+                                   PTFKIT_ROSETTA3_SHA256, out);
+}
 /* calc_ptf_zhang2017_mod2 */
 PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_zhang2017_mod2(const ptfkit_model *model,
                                                                 double sand, double silt,

@@ -5,7 +5,9 @@ int main(int argc, char **argv) {
     if (argc < 7 || argc > 10)
         return 2;
     ptfkit_model *model = NULL;
-    ptfkit_model_status status = ptfkit_rosetta3_load(argv[1], &model);
+    ptfkit_model_status status = strcmp(argv[1], "--builtin") == 0
+                                     ? ptfkit_rosetta3_builtin(&model)
+                                     : ptfkit_rosetta3_load(argv[1], &model);
     if (status != PTFKIT_MODEL_OK)
         return 10 + (int)status;
     unsigned level = (unsigned)strtoul(argv[2], NULL, 10),

@@ -26,7 +26,7 @@ impl std::error::Error for ModelError {
     }
 }
 
-/// An immutable model that owns its decoded parameters. No weights are bundled.
+/// An immutable model that owns its decoded parameters.
 /// The expected SHA-256 must come from a trusted manifest, never the model file.
 #[derive(Debug)]
 pub struct Model {

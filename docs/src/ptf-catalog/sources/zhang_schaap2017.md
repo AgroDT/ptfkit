@@ -5,7 +5,7 @@ title: PTF source zhang_schaap2017
 nav-title: zhang_schaap2017
 ---
 
-# Rosetta3 hydraulic parameters and uncertainty from integrity-checked external models.
+# Rosetta3 hydraulic parameters and uncertainty from bundled CC0 neural ensembles.
 
 ## Source
 
@@ -64,15 +64,15 @@ Estimate Rosetta3 level 2 physical-scale arithmetic means and uncertainty.
 
 !!! note
 
-    Full arithmetic, log10, and geometric reference results are in the external model fixture.
+    Full arithmetic, log10, and geometric reference results are in the frozen upstream model fixture.
 
 !!! warning
 
-    A verified external model handle is required; parameters are not bundled.
+    A model handle is required; the reviewed CC0 parameters are bundled.
 
 !!! warning
 
-    Trained-parameter redistribution rights remain unresolved; no weights are bundled.
+    Trained parameters are published by USDA under CC0 and bundled unchanged; optional external loading remains available.
 
 !!! warning
 
@@ -122,15 +122,15 @@ Estimate Rosetta3 level 3 physical-scale arithmetic means and uncertainty.
 
 !!! note
 
-    Full arithmetic, log10, and geometric reference results are in the external model fixture.
+    Full arithmetic, log10, and geometric reference results are in the frozen upstream model fixture.
 
 !!! warning
 
-    A verified external model handle is required; parameters are not bundled.
+    A model handle is required; the reviewed CC0 parameters are bundled.
 
 !!! warning
 
-    Trained-parameter redistribution rights remain unresolved; no weights are bundled.
+    Trained parameters are published by USDA under CC0 and bundled unchanged; optional external loading remains available.
 
 !!! warning
 
@@ -181,15 +181,15 @@ Estimate Rosetta3 level 4 physical-scale arithmetic means and uncertainty.
 
 !!! note
 
-    Full arithmetic, log10, and geometric reference results are in the external model fixture.
+    Full arithmetic, log10, and geometric reference results are in the frozen upstream model fixture.
 
 !!! warning
 
-    A verified external model handle is required; parameters are not bundled.
+    A model handle is required; the reviewed CC0 parameters are bundled.
 
 !!! warning
 
-    Trained-parameter redistribution rights remain unresolved; no weights are bundled.
+    Trained parameters are published by USDA under CC0 and bundled unchanged; optional external loading remains available.
 
 !!! warning
 
@@ -241,15 +241,15 @@ Estimate Rosetta3 level 5 physical-scale arithmetic means and uncertainty.
 
 !!! note
 
-    Full arithmetic, log10, and geometric reference results are in the external model fixture.
+    Full arithmetic, log10, and geometric reference results are in the frozen upstream model fixture.
 
 !!! warning
 
-    A verified external model handle is required; parameters are not bundled.
+    A model handle is required; the reviewed CC0 parameters are bundled.
 
 !!! warning
 
-    Trained-parameter redistribution rights remain unresolved; no weights are bundled.
+    Trained parameters are published by USDA under CC0 and bundled unchanged; optional external loading remains available.
 
 !!! warning
 

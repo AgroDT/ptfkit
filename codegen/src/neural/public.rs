@@ -53,6 +53,8 @@ pub(crate) struct Files {
     pub(crate) python: Vec<GeneratedFile>,
     pub(crate) c_docs: Vec<GeneratedFile>,
     pub(crate) cpp_docs: Vec<GeneratedFile>,
+    pub(crate) rust_data: Vec<GeneratedFile>,
+    pub(crate) c_sources: Vec<GeneratedFile>,
 }
 
 impl Files {
@@ -64,6 +66,8 @@ impl Files {
         self.python.extend(other.python);
         self.c_docs.extend(other.c_docs);
         self.cpp_docs.extend(other.cpp_docs);
+        self.rust_data.extend(other.rust_data);
+        self.c_sources.extend(other.c_sources);
     }
 }
 

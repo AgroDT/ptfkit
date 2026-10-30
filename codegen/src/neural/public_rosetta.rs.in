@@ -1,4 +1,4 @@
-//! Rosetta3 predictions from an authenticated external model. No parameters are bundled.
+//! Rosetta3 with the bundled CC0 model and optional authenticated external models.
 use crate::models::{Model, ModelError};
 use std::path::Path;
 
@@ -12,10 +12,12 @@ pub enum Estimate { Arithmetic = 0, Log10 = 1, Geometric = 2 }
 /// Physical units are cm³/cm³, cm³/cm³, 1/cm, 1, cm/day, cm/day, 1.
 /// Log10 mode reports alpha/n/Ksat/K0 statistics in log10 of those numeric units.
 @STATISTICS@
-/// Rosetta3 with explicitly selected predictor level and owned external parameters.
+/// Rosetta3 with explicitly selected predictor level and owned parameters.
 #[derive(Debug)]
 pub struct Rosetta3 { model: Model }
 impl Rosetta3 {
+    /// Load the bundled, integrity-checked CC0 model without filesystem access.
+    pub fn builtin() -> Result<Self, ModelError> { Self::from_bytes(include_bytes!("data/rosetta3.ptfm")) }
     pub fn load(path: impl AsRef<Path>) -> Result<Self, ModelError> { Self::from_model(Model::load(path,MODEL_SHA256)?) }
     pub fn from_bytes(bytes: &[u8]) -> Result<Self, ModelError> { Self::from_model(Model::from_bytes(bytes,MODEL_SHA256)?) }
     pub fn from_model(model: Model) -> Result<Self, ModelError> {

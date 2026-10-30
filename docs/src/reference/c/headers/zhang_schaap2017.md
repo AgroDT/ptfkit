@@ -4,8 +4,7 @@
 
 Zhang, Y., & Schaap, M. G. (2017). Weighted recalibration of the Rosetta pedotransfer model with improved estimates of hydraulic parameter distributions and summary statistics (Rosetta3). Journal of Hydrology, 547, 39-53.
 
-Models are external PTFKNN01 containers. No trained parameters are distributed.
-Load with the pinned SHA-256 `d4d2ca39f41762830f736c70fba16ed68a81cb52d4639b1f48c6a24e502c4796`. Missing files, digest mismatches, invalid containers and invalid predictors are errors.
+The reviewed CC0 model is bundled. Use `ptfkit_rosetta3_builtin` (C) or `Rosetta3::builtin` (C++) without a file. External PTFKNN01 loading remains available with pinned SHA-256 `d4d2ca39f41762830f736c70fba16ed68a81cb52d4639b1f48c6a24e502c4796`. Invalid predictors, containers and digest mismatches are errors.
 
 `models.h` / `ptfkit.models` provides owned, immutable generic model loading and original-scale network prediction. Rosetta3 requires the pinned complete-container digest. C models must be freed exactly once with `ptfkit_model_free`; C++ models use move-only RAII. Never share a C handle with a thread that frees it. Predictions on a live model use no shared mutable state.
 

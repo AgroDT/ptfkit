@@ -7,7 +7,11 @@ fn run() -> Result<(), ModelError> {
     if args.len() < 6 {
         std::process::exit(2);
     }
-    let model = Rosetta3::load(&args[0])?;
+    let model = if args[0] == "--builtin" {
+        Rosetta3::builtin()?
+    } else {
+        Rosetta3::load(&args[0])?
+    };
     let level: usize = args[1].parse().unwrap();
     let estimate = match args[2].as_str() {
         "0" => Estimate::Arithmetic,

@@ -2,12 +2,14 @@
 #include <cstdlib>
 #include <vector>
 #include <array>
+#include <cstring>
 import ptfkit;
 int main(int argc, char **argv) {
     if (argc < 7 || argc > 10)
         return 2;
     try {
-        auto model = ptfkit::Rosetta3::load(argv[1]);
+        auto model = std::strcmp(argv[1], "--builtin") == 0 ? ptfkit::Rosetta3::builtin()
+                                                            : ptfkit::Rosetta3::load(argv[1]);
         unsigned level = (unsigned)std::strtoul(argv[2], nullptr, 10),
                  mode = (unsigned)std::strtoul(argv[3], nullptr, 10);
         std::vector<double> x;

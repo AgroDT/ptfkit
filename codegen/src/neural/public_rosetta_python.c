@@ -1,3 +1,10 @@
+static PyObject *ptfkit_python_rosetta_data(PyObject *module, PyObject *unused) {
+    (void)module;
+    (void)unused;
+    return PyBytes_FromStringAndSize((const char *)ptfkit_detail_rosetta3_data,
+                                     PTFKIT_ROSETTA3_BYTES);
+}
+
 static PyObject *ptfkit_python_rosetta(PyObject *module, PyObject *args) {
     PyObject *capsule, *values;
     unsigned level, mode;

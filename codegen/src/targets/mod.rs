@@ -139,7 +139,11 @@ pub(crate) fn run(root: &Path, loaded: LoadedSpecifications) -> anyhow::Result<(
     let mut rust = rust::render_with_definitions(&compiled, &definitions)?;
     let mut python = python::render_with_definitions(&compiled, &definitions)?;
     let mut native = native::render_with_definitions(&compiled, &definitions)?;
+    let mut model_data = Vec::new();
+    let mut native_sources = Vec::new();
     if let Some(external) = crate::neural::public::render(root, &entries)? {
+        model_data.extend(external.rust_data);
+        native_sources.extend(external.c_sources);
         rust.iter_mut()
             .find(|f| f.path == Path::new("lib.rs"))
             .unwrap()
@@ -198,6 +202,8 @@ pub(crate) fn run(root: &Path, loaded: LoadedSpecifications) -> anyhow::Result<(
             Output::new(&output::NATIVE_CPP_MODULE, native.cpp_modules),
             Output::new(&output::NATIVE_C_TEST, native.c_tests),
             Output::new(&output::NATIVE_CPP_TEST, native.cpp_tests),
+            Output::new(&output::RUST_MODEL_DATA, model_data),
+            Output::new(&output::NATIVE_SOURCE, native_sources),
         ],
     )
 }

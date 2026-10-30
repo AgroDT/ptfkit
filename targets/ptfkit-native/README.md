@@ -2,7 +2,7 @@
 
 The native ptfkit distribution provides:
 
-- header-only C11 functions through the `ptfkit::c` CMake target;
+- C11 functions and bundled Rosetta3 parameters through the `ptfkit::c` CMake target;
 - optional C++23 modules through the `ptfkit::cpp` CMake target.
 
 ## Install from a release archive
@@ -52,7 +52,8 @@ The C++ target compiles the supplied module sources into a static library with
 the consumer's compiler. Both module interfaces and their object code are
 required: module-owned exception RTTI and vtables cannot be supplied by a
 BMI-only interface. Installed archives retain portable module sources rather
-than compiler-specific prebuilt BMIs or trained model weights.
+than compiler-specific prebuilt BMIs. The reviewed CC0 Rosetta3 data is bundled
+in a separate source file and compiled once; public headers contain no arrays.
 
 ```cmake
 find_package(ptfkit CONFIG REQUIRED)
@@ -88,3 +89,7 @@ double k_sat = ptfkit::jabro1992::calc_ptf_jabro1992(20.0, 30.0, 1.3);
 
 The applicability of each PTF depends on the dataset, territory, measurement
 methods, and variable ranges reported by its source publication.
+
+Rosetta3 needs no external model file: use `ptfkit_rosetta3_builtin` in C or
+`ptfkit::Rosetta3::builtin()` in C++. Parameter provenance and CC0 terms are
+recorded in `MODEL_NOTICE.txt`. Generic external model loading remains available.

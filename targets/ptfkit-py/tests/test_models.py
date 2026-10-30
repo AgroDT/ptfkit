@@ -63,3 +63,37 @@ def test_bad_digest_and_malformed_authenticated_container():
         Model.from_bytes(changed, hashlib.sha256(changed).hexdigest())
     with pytest.raises(ModelFormatError):
         Model.from_bytes(data, 'not a digest')
+
+
+def test_bundled_rosetta_matches_upstream_without_a_model_file(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+):
+    monkeypatch.chdir(tmp_path)
+    result = Rosetta3().predict(2, [30, 30, 40])
+    # Frozen upstream case mod2_arith_clay_loam, not a value from the ptfkit engine.
+    assert result.mean == pytest.approx(
+        [
+            0.11921313412479762,
+            0.4348486578079577,
+            0.009109686083606867,
+            1.3094213646469939,
+            8.74047181417013,
+            1.3099307799553759,
+            -1.009187960743742,
+        ],
+        rel=1e-12,
+        abs=1e-11,
+    )
+    assert result.stddev == pytest.approx(
+        [
+            0.009022699466985867,
+            0.010140469075525323,
+            0.0022509742698824248,
+            0.0366504620061113,
+            2.930411333703784,
+            0.843530623042398,
+            1.547848314232419,
+        ],
+        rel=1e-12,
+        abs=1e-11,
+    )
