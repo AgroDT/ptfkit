@@ -158,9 +158,10 @@ pub(crate) fn load_all(root: &Path) -> Result<LoadedSpecifications> {
             .functions
             .iter()
             .map(|function| match &function.implementation {
-                Some(implementation) => {
+                Some(implementation) if implementation.external_model.is_none() => {
                     compile(&path, function, implementation, &mut expression_locations).map(Some)
                 }
+                Some(_) => Ok(None),
                 None => Ok(None),
             })
             .collect::<Result<Vec<_>, _>>();
@@ -229,7 +230,7 @@ fn load_definitions(
         let module = source_slug(&path)?;
         if matches!(
             module.as_str(),
-            "enums" | "lib" | "mod" | "ptfkit" | "test_support"
+            "enums" | "lib" | "mod" | "ptfkit" | "test_support" | "models"
         ) {
             return Err(SpecificationError::ReservedModule { module, path }.into());
         }
@@ -1489,7 +1490,7 @@ functions:
 
     #[test]
     fn rejects_shared_modules_that_shadow_target_infrastructure() {
-        for module in ["enums", "lib", "mod", "ptfkit", "test_support"] {
+        for module in ["enums", "lib", "mod", "ptfkit", "test_support", "models"] {
             let root = fixture_root(&format!("reserved-shared-module-{module}"));
             crate::test_support::copy_shared_definition_fixture(&root);
             let path = root.join(format!("specs/definitions/{module}.yaml"));

@@ -1,0 +1,8 @@
+{
+  "format": "PTFKNN01",
+  "bytes": 2212632,
+  "sha256": "d4d2ca39f41762830f736c70fba16ed68a81cb52d4639b1f48c6a24e502c4796",
+  "upstream_revision": "6b0e3902f8a145805d41b691dc36f8e69e898f2a",
+  "parameters_sha256": "f2b0ed39cc763fd2924e38cdfdafb5e0abb298094e561f73f7be290405b70990",
+  "distribution": "external_only"
+}

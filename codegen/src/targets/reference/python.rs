@@ -13,6 +13,11 @@ pub(crate) fn render(entries: &[Entry], functions: &[CompiledFunction]) -> Vec<G
         .iter()
         .filter(|entry| {
             compiled_sources.contains(entry.slug.as_str())
+                || entry
+                    .spec
+                    .functions
+                    .iter()
+                    .any(crate::neural::public::enabled)
                 || matches!(
                     entry.spec.generation.public_python,
                     crate::model::PythonGeneration::Manual

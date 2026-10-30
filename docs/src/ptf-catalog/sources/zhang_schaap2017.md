@@ -5,7 +5,7 @@ title: PTF source zhang_schaap2017
 nav-title: zhang_schaap2017
 ---
 
-# Rosetta3 native-inference audit and local verification; production integration blocked.
+# Rosetta3 hydraulic parameters and uncertainty from integrity-checked external models.
 
 ## Source
 
@@ -25,7 +25,7 @@ Zhang, Y., & Schaap, M. G. (2017). Weighted recalibration of the Rosetta pedotra
 
 Estimate Rosetta3 level 2 physical-scale arithmetic means and uncertainty.
 
-**Status:** `blocked`
+**Status:** `implemented`
 
 **Prediction target:** Seven hydraulic parameters and their bootstrap sample standard deviations.
 
@@ -68,7 +68,7 @@ Estimate Rosetta3 level 2 physical-scale arithmetic means and uncertainty.
 
 !!! warning
 
-    Production API integration is incomplete; this entry is intentionally blocked.
+    A verified external model handle is required; parameters are not bundled.
 
 !!! warning
 
@@ -82,7 +82,7 @@ Estimate Rosetta3 level 2 physical-scale arithmetic means and uncertainty.
 
 Estimate Rosetta3 level 3 physical-scale arithmetic means and uncertainty.
 
-**Status:** `blocked`
+**Status:** `implemented`
 
 **Prediction target:** Seven hydraulic parameters and their bootstrap sample standard deviations.
 
@@ -126,7 +126,7 @@ Estimate Rosetta3 level 3 physical-scale arithmetic means and uncertainty.
 
 !!! warning
 
-    Production API integration is incomplete; this entry is intentionally blocked.
+    A verified external model handle is required; parameters are not bundled.
 
 !!! warning
 
@@ -140,7 +140,7 @@ Estimate Rosetta3 level 3 physical-scale arithmetic means and uncertainty.
 
 Estimate Rosetta3 level 4 physical-scale arithmetic means and uncertainty.
 
-**Status:** `blocked`
+**Status:** `implemented`
 
 **Prediction target:** Seven hydraulic parameters and their bootstrap sample standard deviations.
 
@@ -185,7 +185,7 @@ Estimate Rosetta3 level 4 physical-scale arithmetic means and uncertainty.
 
 !!! warning
 
-    Production API integration is incomplete; this entry is intentionally blocked.
+    A verified external model handle is required; parameters are not bundled.
 
 !!! warning
 
@@ -199,7 +199,7 @@ Estimate Rosetta3 level 4 physical-scale arithmetic means and uncertainty.
 
 Estimate Rosetta3 level 5 physical-scale arithmetic means and uncertainty.
 
-**Status:** `blocked`
+**Status:** `implemented`
 
 **Prediction target:** Seven hydraulic parameters and their bootstrap sample standard deviations.
 
@@ -245,7 +245,7 @@ Estimate Rosetta3 level 5 physical-scale arithmetic means and uncertainty.
 
 !!! warning
 
-    Production API integration is incomplete; this entry is intentionally blocked.
+    A verified external model handle is required; parameters are not bundled.
 
 !!! warning
 

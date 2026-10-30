@@ -1,0 +1,26 @@
+module;
+#include <ptfkit/zhang_schaap2017.h>
+#include <array>
+#include <span>
+#include <utility>
+export module ptfkit.zhang_schaap2017;
+export import ptfkit.models;
+export namespace ptfkit {
+enum class Estimate : unsigned { Arithmetic=0,Log10=1,Geometric=2 };
+@STATISTICS@
+class Rosetta3 {
+    Model model_;
+public:
+    inline explicit Rosetta3(Model model) : model_(std::move(model)) {
+        if(!::ptfkit_rosetta3_accepts(model_.native_handle()))throw ModelError(PTFKIT_MODEL_INTEGRITY);
+    }
+    static inline Rosetta3 load(const char *path) { return Rosetta3(Model::load(path,PTFKIT_ROSETTA3_SHA256)); }
+    static inline Rosetta3 from_bytes(std::span<const unsigned char> bytes) { return Rosetta3(Model::from_bytes(bytes,PTFKIT_ROSETTA3_SHA256)); }
+    inline const Model& model() const noexcept { return model_; }
+    inline Rosetta3Statistics predict(unsigned level,Estimate estimate,std::span<const double> inputs) const {
+        double values[14];auto status=::ptfkit_rosetta3_predict(model_.native_handle(),level,(unsigned)estimate,inputs.data(),inputs.size(),values);
+        if(status!=PTFKIT_MODEL_OK)throw ModelError(status);
+        return Rosetta3Statistics{ @VALUES@ };
+    }
+};
+}

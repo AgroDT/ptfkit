@@ -1,0 +1,56 @@
+"""Rosetta3 with integrity-checked external parameters and explicit statistic scales.
+
+Predictor order is sand, silt, clay (%), bulk density (g/cm³), theta_33,
+theta_1500 (cm³/cm³). Levels 2 through 5 require the first level+1 predictors.
+Invalid required predictors raise ValueError; levels never downgrade silently.
+Parameters are theta_r, theta_s, alpha (1/cm), n, Ksat (cm/day), K0 (cm/day), L.
+Log10 mode reports alpha/n/Ksat/K0 in log10 of those numeric units. Geometric
+mode retains physical-scale sample standard deviations, as in the original.
+All standard deviations use ddof=1, never standard errors. No weights are bundled.
+"""
+from collections.abc import Sequence
+from dataclasses import dataclass
+from enum import IntEnum
+from pathlib import Path
+
+from ptfkit import _models
+from ptfkit.models import Model, ModelIntegrityError
+
+
+MODEL_SHA256 = '@SHA256@'
+
+class Estimate(IntEnum):
+    """Explicit upstream bootstrap summary convention."""
+    ARITHMETIC = 0
+    LOG10 = 1
+    GEOMETRIC = 2
+
+@STATISTICS@
+
+Rosetta3ArithmeticStatistics = Rosetta3Statistics
+
+class Rosetta3:
+    """A Rosetta3 model pinned to the audited architecture and trained parameters."""
+    __slots__ = ('model',)
+
+    def __init__(self, model: Model) -> None:
+        """Require the exact reviewed Rosetta3 container."""
+        if model.sha256 != MODEL_SHA256:
+            message = 'model is not the pinned Rosetta3 container'
+            raise ModelIntegrityError(message)
+        self.model = model
+
+    @classmethod
+    def load(cls, path: str | Path) -> 'Rosetta3':
+        """Load a user-supplied container using the built-in trusted digest."""
+        return cls(Model.load(path, MODEL_SHA256))
+
+    @classmethod
+    def from_bytes(cls, data: bytes) -> 'Rosetta3':
+        """Authenticate and copy user-supplied model bytes."""
+        return cls(Model.from_bytes(data, MODEL_SHA256))
+
+    def predict(self, level: int, inputs: Sequence[float], estimate: Estimate = Estimate.ARITHMETIC) -> Rosetta3Statistics:
+        """Predict all seven hydraulic parameters and their uncertainty."""
+        values = _models.rosetta3(self.model.native_handle, level, int(estimate), inputs)
+        return Rosetta3Statistics(*values)

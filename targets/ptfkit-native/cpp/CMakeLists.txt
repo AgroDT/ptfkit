@@ -2,6 +2,7 @@ file(GLOB_RECURSE PTFKIT_CPP_MODULES CONFIGURE_DEPENDS *.cppm)
 
 add_library(ptfkit::cpp INTERFACE IMPORTED GLOBAL)
 target_compile_features(ptfkit::cpp INTERFACE cxx_std_23)
+target_link_libraries(ptfkit::cpp INTERFACE ptfkit::c)
 target_compile_definitions(ptfkit::cpp INTERFACE
     PTFKIT_VERSION=\"${PROJECT_VERSION}\"
 )

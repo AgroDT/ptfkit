@@ -121,3 +121,33 @@ fn importer_rejects_corrupted_bytes_and_incompatible_metadata() {
     ));
     fs::remove_dir_all(root).unwrap();
 }
+
+#[test]
+fn portable_encoder_matches_independently_specified_affine_container() {
+    use sha2::{Digest, Sha256};
+    let model = super::Model {
+        networks: vec![Network {
+            nboot: 2,
+            widths: vec![2, 1],
+            activations: vec!["linear".into()],
+            inputs: vec![scale("asis", &[]), scale("asis", &[])],
+            outputs: vec![scale("linear", &[2.0, -1.0])],
+            offset: 0,
+        }],
+        data: vec![2.0, 1.0, 1.0, -1.0, 2.0, 0.0],
+        revision: "hand-specified".into(),
+        contract: serde_json::Value::Null,
+    };
+    let bytes = super::pack::encode(&model);
+    let sha: String = Sha256::digest(&bytes)
+        .iter()
+        .map(|b| format!("{b:02x}"))
+        .collect();
+    // Independent struct.pack('<6I',1,2,1,2,1,0), three scaler records,
+    // offsets [0,6], and six parameter doubles; retained public fixture oracle.
+    assert_eq!(bytes.len(), 180);
+    assert_eq!(
+        sha,
+        "7b160f19c85818a5995d9154563a44a8edd8e63f44d961542a4ca5d3b3a0e5ec"
+    );
+}

@@ -3,6 +3,8 @@
 
 pub(crate) mod engine;
 mod generate;
+pub(crate) mod pack;
+pub(crate) mod public;
 pub(crate) mod rosetta;
 #[cfg(test)]
 mod tests;
@@ -17,6 +19,10 @@ use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub(crate) enum ModelError {
+    #[error("invalid trusted external artifact descriptor {path}", path = .path.display())]
+    Artifact { path: std::path::PathBuf },
+    #[error("invalid external model binding in {function}")]
+    Contract { function: String },
     #[error("unsupported neural artifact format version {0}")]
     Version(u32),
     #[error("neural artifact SHA-256 mismatch")]

@@ -49,3 +49,18 @@ arg "<build>" help="Local CMake binary directory"
 arg "<rust>" help="Generated Rust runner executable"
 '''
 run = 'uv run --no-project python codegen/scripts/verify_rosetta3_targets.py --build "{{ usage.build }}" --rust "{{ usage.rust }}"'
+
+["rosetta:pack"]
+description = "Pack the verified external Rosetta container without bundling weights"
+run = 'cargo run --manifest-path codegen/Cargo.toml -- pack-neural-model --model .rosetta-local/imported/models.json --output .rosetta-local/rosetta3.ptfm'
+
+["rosetta:public-rust-build"]
+description = "Build the real Rust crate public API reference runner"
+dir = "targets/ptfkit-rs"
+run = 'cargo build --example rosetta_runner'
+
+["rosetta:verify-public"]
+description = "Verify all four public APIs against unchanged upstream Rosetta references"
+depends = ["native:build", "python:test", "rosetta:public-rust-build"]
+run = 'uv run --project targets/ptfkit-py --frozen python codegen/scripts/verify_rosetta3_public.py --model .rosetta-local/rosetta3.ptfm --build targets/ptfkit-native/build/tests --rust targets/ptfkit-rs/target/debug/examples/rosetta_runner'
+run_windows = 'uv run --project targets/ptfkit-py --frozen python codegen/scripts/verify_rosetta3_public.py --model .rosetta-local/rosetta3.ptfm --build targets/ptfkit-native/build/tests --rust targets/ptfkit-rs/target/debug/examples/rosetta_runner.exe'

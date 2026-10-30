@@ -32,6 +32,13 @@ pub(crate) struct Cli {
 
 #[derive(Subcommand)]
 enum Command {
+    /// Pack validated external model metadata and parameters into a portable container.
+    PackNeuralModel {
+        #[arg(long)]
+        model: std::path::PathBuf,
+        #[arg(long)]
+        output: std::path::PathBuf,
+    },
     /// Generate opt-in local targets; trained artifacts are never added to packages.
     GenerateRosettaLocal {
         #[arg(long)]
@@ -73,6 +80,7 @@ impl Cli {
             .context("finding the ptfkit workspace root")?;
 
         match self.command {
+            Command::PackNeuralModel { model, output } => neural::pack::run(&model, &output),
             Command::GenerateRosettaLocal { model, output } => {
                 neural::generate_local(&model, &output)
             }
@@ -126,6 +134,7 @@ fn load_validated_all(root: &Path) -> Result<specs::LoadedSpecifications> {
         )
         .into());
     }
+    neural::public::validate(&loaded.entries)?;
     Ok(loaded)
 }
 
