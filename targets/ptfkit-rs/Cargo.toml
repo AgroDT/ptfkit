@@ -19,3 +19,6 @@ assertables = "10.1.0"
 
 [lints.clippy]
 approx_constant = "allow"
+
+[dependencies]
+sha2 = "0.11.1"

@@ -52,4 +52,9 @@ ptfkit's Python API is organized around public modules.
 - [`ptfkit.weynants2009`](weynants2009.md) — Corrected Weynants et al. hydraulic-parameter pedotransfer function.
 - [`ptfkit.williams1992`](williams1992.md) — Williams et al. (1992) Campbell water-retention regressions and parameter table.
 - [`ptfkit.wosten2001`](wosten2001.md) — Wösten et al. (2001), Staring Series hydraulic parameters for Dutch soils.
+- [`ptfkit.zhang_schaap2017`](zhang_schaap2017.md) — Rosetta3 hydraulic parameters and uncertainty from integrity-checked external models.
 - [`ptfkit.zhao2016`](zhao2016.md) — Saturated hydraulic conductivity PTFs for the Loess Plateau of China.
+
+## External model loading
+
+- [`ptfkit.models`](models.md)

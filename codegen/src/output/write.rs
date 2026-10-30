@@ -219,8 +219,8 @@ fn format(root: &Path, staged: &[StagedWrite]) -> Result<()> {
             .filter(|file| std::ptr::eq(file.layout, layout))
             .collect::<Vec<_>>();
         if !files.is_empty() {
-            if std::ptr::eq(layout, &super::RUST) {
-                format_rust_staged(root, &files)?;
+            if matches!(layout.formatter, Formatter::Rust | Formatter::Python) {
+                format_staged(root, &files, layout.formatter)?;
             } else {
                 let paths = files
                     .iter()
@@ -253,9 +253,9 @@ pub(super) fn format_rust(paths: &[PathBuf]) -> Result<()> {
     )
 }
 
-fn format_rust_staged(root: &Path, files: &[&StagedWrite]) -> Result<()> {
+fn format_staged(root: &Path, files: &[&StagedWrite], formatter: Formatter) -> Result<()> {
     let directory = std::env::temp_dir().join(format!(
-        "ptfkit-codegen-rust-format-{}-{}",
+        "ptfkit-codegen-format-{}-{}",
         std::process::id(),
         TEMPORARY_SEQUENCE.fetch_add(1, Ordering::Relaxed)
     ));
@@ -266,7 +266,7 @@ fn format_rust_staged(root: &Path, files: &[&StagedWrite]) -> Result<()> {
             let relative = file
                 .target
                 .strip_prefix(root)
-                .context("finding staged Rust output path")?;
+                .context("finding staged output path")?;
             let target = directory.join(relative);
             if let Some(parent) = target.parent() {
                 fs::create_dir_all(parent)?;
@@ -274,7 +274,7 @@ fn format_rust_staged(root: &Path, files: &[&StagedWrite]) -> Result<()> {
             fs::copy(&file.temporary, &target)?;
             paths.push(target);
         }
-        format_rust(&paths)?;
+        format_layout(formatter, root, &paths)?;
         for (file, path) in files.iter().zip(paths) {
             fs::copy(path, &file.temporary)?;
         }
@@ -287,7 +287,7 @@ fn format_rust_staged(root: &Path, files: &[&StagedWrite]) -> Result<()> {
 pub(super) fn format_python(root: &Path, paths: &[PathBuf]) -> Result<()> {
     run(
         "ruff",
-        &["format"],
+        &["format", "--config", "ruff.toml"],
         paths,
         Some(&root.join("targets/ptfkit-py")),
     )

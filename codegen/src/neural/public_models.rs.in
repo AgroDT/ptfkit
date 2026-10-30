@@ -1,0 +1,133 @@
+//! Integrity-checked, owned external dense ensembles (PTFKNN01).
+#[path = "detail/neural.rs"]
+pub(crate) mod engine;
+use engine::{Network, Scale};
+use sha2::{Digest, Sha256};
+use std::{fmt, io::Read, path::Path};
+
+const MAX_BYTES: usize = 64 * 1024 * 1024;
+
+/// A failure to read, authenticate, decode, or evaluate an external model.
+#[derive(Debug)]
+pub enum ModelError { Io(std::io::Error), Integrity, Format, Input }
+impl fmt::Display for ModelError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Io(e) => write!(f, "external model I/O: {e}"),
+            Self::Integrity => f.write_str("external model SHA-256 mismatch"),
+            Self::Format => f.write_str("invalid or unsupported external model container"),
+            Self::Input => f.write_str("invalid network index or predictors"),
+        }
+    }
+}
+impl std::error::Error for ModelError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        if let Self::Io(e) = self { Some(e) } else { None }
+    }
+}
+
+/// An immutable model that owns its decoded parameters. No weights are bundled.
+/// The expected SHA-256 must come from a trusted manifest, never the model file.
+#[derive(Debug)]
+pub struct Model {
+    pub(crate) networks: Vec<Network>,
+    pub(crate) data: Vec<f64>,
+    digest: [u8; 32],
+}
+
+struct Reader<'a> { data: &'a [u8], pos: usize }
+impl Reader<'_> {
+    fn bytes<const N: usize>(&mut self) -> Result<[u8; N], ModelError> {
+        let slice = self.data.get(self.pos..self.pos + N).ok_or(ModelError::Format)?;
+        self.pos += N;
+        slice.try_into().map_err(|_| ModelError::Format)
+    }
+    fn u32(&mut self) -> Result<usize, ModelError> { Ok(u32::from_le_bytes(self.bytes()?) as usize) }
+    fn u64(&mut self) -> Result<usize, ModelError> { usize::try_from(u64::from_le_bytes(self.bytes()?)).map_err(|_| ModelError::Format) }
+    fn f64(&mut self) -> Result<f64, ModelError> {
+        let value = f64::from_le_bytes(self.bytes()?);
+        if value.is_finite() { Ok(value) } else { Err(ModelError::Format) }
+    }
+    fn scale(&mut self) -> Result<Scale, ModelError> {
+        let kind = self.u32()?;
+        let params = [self.f64()?, self.f64()?, self.f64()?];
+        let (name, count) = match kind {
+            0 => ("asis",0), 1 => ("division",1), 2 => ("logtr",2),
+            3 => ("affine",2), 4 => ("minmax",3), 5 => ("linear",2),
+            _ => return Err(ModelError::Format),
+        };
+        if ((kind == 1 || kind == 2) && params[0] == 0.0) || params[count..].iter().any(|v| *v != 0.0) { return Err(ModelError::Format); }
+        Ok(Scale { kind: name.into(), params: params[..count].to_vec() })
+    }
+}
+
+impl Model {
+    /// Load an external container, authenticating metadata and parameters together.
+    pub fn load(path: impl AsRef<Path>, expected_sha256: &str) -> Result<Self, ModelError> {
+        let mut bytes = Vec::new();
+        std::fs::File::open(path).map_err(ModelError::Io)?.take((MAX_BYTES + 1) as u64)
+            .read_to_end(&mut bytes).map_err(ModelError::Io)?;
+        Self::from_bytes(&bytes, expected_sha256)
+    }
+
+    /// Decode a borrowed container into owned data, after SHA-256 verification.
+    pub fn from_bytes(bytes: &[u8], expected_sha256: &str) -> Result<Self, ModelError> {
+        if bytes.len() < 12 || bytes.len() > MAX_BYTES || expected_sha256.len() != 64 { return Err(ModelError::Format); }
+        let mut expected = [0u8;32];
+        for (i, value) in expected.iter_mut().enumerate() {
+            *value = u8::from_str_radix(expected_sha256.get(i*2..i*2+2).ok_or(ModelError::Format)?,16).map_err(|_|ModelError::Format)?;
+        }
+        let actual = Sha256::digest(bytes);
+        if actual.iter().zip(expected).any(|(a,b)| *a != b) { return Err(ModelError::Integrity); }
+        let mut reader = Reader { data: bytes, pos: 0 };
+        if &reader.bytes::<8>()? != b"PTFKNN01" { return Err(ModelError::Format); }
+        let count = reader.u32()?;
+        if !(1..=64).contains(&count) { return Err(ModelError::Format); }
+        let mut networks = Vec::with_capacity(count);
+        let mut end = 0usize;
+        for _ in 0..count {
+            let nboot = reader.u32()?;
+            let nlayer = reader.u32()?;
+            if !(2..=1000).contains(&nboot) || !(1..=16).contains(&nlayer) { return Err(ModelError::Format); }
+            let mut widths = Vec::new();
+            for _ in 0..=nlayer {
+                let width = reader.u32()?;
+                if !(1..=64).contains(&width) { return Err(ModelError::Format); }
+                widths.push(width);
+            }
+            let mut activations = Vec::new();
+            for _ in 0..nlayer {
+                activations.push(match reader.u32()? { 0 => "linear", 1 => "sigmoid", 2 => "tansig", 3 => "relu", _ => return Err(ModelError::Format) }.into());
+            }
+            let mut inputs = Vec::new();
+            let mut outputs = Vec::new();
+            for _ in 0..widths[0] { inputs.push(reader.scale()?); }
+            for _ in 0..widths[nlayer] { outputs.push(reader.scale()?); }
+            let offset = reader.u64()?;
+            if offset != end { return Err(ModelError::Format); }
+            end += widths.windows(2).map(|w|w[0]*w[1]+w[1]).sum::<usize>() * nboot;
+            if end > MAX_BYTES / 8 { return Err(ModelError::Format); }
+            networks.push(Network { nboot, widths, activations, inputs, outputs, offset });
+        }
+        if reader.u64()? != end || bytes.len() - reader.pos != end * 8 { return Err(ModelError::Format); }
+        let mut data = Vec::with_capacity(end);
+        for _ in 0..end { data.push(reader.f64()?); }
+        Ok(Self { networks, data, digest: expected })
+    }
+
+    /// Authenticated container digest in lowercase hexadecimal.
+    pub fn sha256(&self) -> String { self.digest.iter().map(|b|format!("{b:02x}")).collect() }
+    /// Number of bootstrap networks described by the container.
+    pub fn network_count(&self) -> usize { self.networks.len() }
+    /// Input width, output width and bootstrap member count for one network.
+    pub fn network_shape(&self, index: usize) -> Result<(usize,usize,usize), ModelError> {
+        let network=self.networks.get(index).ok_or(ModelError::Input)?;
+        Ok((network.widths[0],*network.widths.last().unwrap(),network.nboot))
+    }
+    /// Predict every ensemble member in the model's original output scales.
+    pub fn predict_network(&self, index: usize, input: &[f64]) -> Result<Vec<Vec<f64>>, ModelError> {
+        let network = self.networks.get(index).ok_or(ModelError::Input)?;
+        if input.len() != network.widths[0] || input.iter().any(|v|!v.is_finite()) { return Err(ModelError::Input); }
+        Ok(network.predict(&self.data, input))
+    }
+}

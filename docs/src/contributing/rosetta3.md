@@ -1,15 +1,20 @@
 ---
-title: Rosetta3 local native verification
+title: Rosetta3 and external models
 ---
 
-# Rosetta3 local native verification
+# Rosetta3 and external models
 
-Rosetta3 is **not implemented in the released ptfkit APIs**. This work provides
-the requested fallback for unresolved trained-parameter redistribution rights:
-a pinned importer, a reusable native neural ensemble interpreter, independently
-executed reference fixtures, and opt-in local Rust, C11, C++23 module, and
-CPython targets. The four catalogue entries remain blocked. Do not describe
-local verification as completion of the production integration.
+Rosetta3 is available in the public Rust, C11, C++23 and Python APIs. All four
+predictor levels require an explicitly loaded external model. No trained
+Rosetta parameters are included in wheels, crates, native installations or
+headers, and loading never downloads data or invokes the original Python
+package. Python inference delegates to a separate native extension without a
+NumPy runtime dependency.
+
+The versioned scientific binding is `implementation.external_model` in
+`specs/functions/zhang_schaap2017.yaml`. The normal generator emits public APIs,
+umbrella registrations and reference documentation from that binding. Scalar
+formula and Random Forest implementations retain their existing pipeline.
 
 ## Computational source and rights assessment
 
@@ -39,10 +44,11 @@ The other eight Rosetta1 retention/conductivity artifacts are unnecessary for
 Rosetta3. Rosetta3 uses one joint ensemble for its first five outputs; K0 and L
 come from the separate 100-member Rosetta1 ensemble. No models are retrained.
 
-Trained NPZs, converted binaries, generated weight sources, local executables,
-and development environments remain under ignored local directories. They are
-not copied to any package, crate, native installation, or generated release API.
-The committed network metadata contains normalization constants and topology,
+Trained NPZs, converted binaries, generated local weight sources and development
+environments remain under ignored local directories. They are not copied to any
+package, crate, native installation, or generated public header.
+The committed network metadata and trusted artifact descriptor contain hashes,
+normalization constants and topology,
 not trained weights. The fixtures contain predictions, not parameter tensors.
 The CC0 source declaration and unresolved third-party parameter provenance must
 both be preserved in any future distribution assessment.
@@ -50,8 +56,8 @@ both be preserved in any future distribution assessment.
 ## Exact inference contract
 
 Predictors are ordered sand, silt, clay (mass percentages), bulk density
-(g/cm³), volumetric water content at 33 kPa, and volumetric water content at
-1500 kPa (cm³/cm³). Level N takes the first N+1 predictors. The software audit
+(g/cmВі), volumetric water content at 33 kPa, and volumetric water content at
+1500 kPa (cmВі/cmВі). Level N takes the first N+1 predictors. The software audit
 does not establish granulometric cutoffs or applicability beyond this upstream
 contract. No texture conversion, renormalization, or representative texture
 values are introduced.
@@ -99,16 +105,17 @@ members. It does not propagate the entire retention ensemble uncertainty.
 ## Input policy and numerical behavior
 
 The upstream high-level API selects the best available model: nonnegative
-texture components summing to 99–101 inclusive; bulk density 0.5–2 inclusive;
+texture components summing to 99вЂ“101 inclusive; bulk density 0.5вЂ“2 inclusive;
 `0 < theta_1500 < theta_33 < 1`. Missing/invalid optional inputs downgrade the
 model. Invalid texture produces code -1 and NaNs. The upstream low-level
 `Rosetta.predict` validates shape but does not impose these physical checks.
 
-The local API intentionally requires an explicit level and rejects invalid or
-non-finite required predictors instead of downgrading. Rust returns `None`,
-C/C++ return 0 (and initialize available output storage to NaNs), and CPython
-raises `ValueError`. This difference is documented and tested against the eight
-frozen upstream validation cases. Missing-value sentinels and strings are not
+The public APIs require an explicit level and reject invalid or non-finite
+required predictors instead of downgrading. Rust returns `ModelError::Input`,
+C returns `PTFKIT_MODEL_INPUT`, C++ throws `ModelError` with `ModelStatus::Input`,
+and Python raises `ModelInputError`. C initializes valid output storage to NaNs
+on failure. This difference is tested against the eight frozen upstream
+validation cases. Missing-value sentinels and strings are not
 interpreted as soil measurements. The texture sum is not forced to 100.
 
 All trained parameters and operations use binary64. Scalar dot-product order
@@ -122,175 +129,230 @@ the larger absolute difference occurs on a large conductivity uncertainty.
 The tolerances were not widened to make a failing case pass. Results on other
 architectures and math libraries still require measurement.
 
-## Reproduction workflow
+## Build the external artifact
 
-Use a dedicated feature branch. Install the project toolchains as described in
-the [development guide](development.md). Commands below run from the repository
-root. Download and check out the exact revision:
+Run from the repository root with the pinned toolchains from the
+[development guide](development.md). The upstream audit/import and all existing
+local verification commands remain available unchanged:
 
 ```sh
 git clone https://github.com/usda-ars-ussl/rosetta-soil .rosetta-upstream
 git -C .rosetta-upstream checkout 6b0e3902f8a145805d41b691dc36f8e69e898f2a
-uv venv .rosetta-env
-```
-
-Install the local upstream checkout, NumPy 2.4.3 and pytest 9.2.0 into this
-separate environment. On Windows its interpreter is
-`.rosetta-env/Scripts/python.exe`; on POSIX use `.rosetta-env/bin/python`:
-
-```sh
-uv pip install --python .rosetta-env/Scripts/python.exe numpy==2.4.3 pytest==9.2.0 ./.rosetta-upstream
-.rosetta-env/Scripts/python.exe -m pytest .rosetta-upstream/tests -q
 mise run rosetta:import .rosetta-upstream
+mise run rosetta:pack
 mise run rosetta:verify-rust
-mise run rosetta:generate-local
 ```
 
-Every source/artifact hash is checked **before** loading NPZ object metadata
-with pickle. Only trusted pinned artifacts are accepted. The binary stores
-little-endian binary64 parameters in network, member, layer order; each layer
-stores row-major weights followed by biases. Its size is 2,211,200 bytes and
-SHA-256 is
+For an existing imported checkout, run only `rosetta:pack`. Import and packing
+use exclusive output creation; choose a new output path for a repeat run rather
+than silently replacing an artifact. The general packer is:
+
+```sh
+cargo run --manifest-path codegen/Cargo.toml -- pack-neural-model --model .rosetta-local/imported/models.json --output .rosetta-local/rosetta3.ptfm
+```
+
+The resulting PTFKNN01 container is 2,212,632 bytes. Its SHA-256 is
+`d4d2ca39f41762830f736c70fba16ed68a81cb52d4639b1f48c6a24e502c4796`.
+The original parameter-only binary remains unchanged: 2,211,200 bytes, SHA-256
 `f2b0ed39cc763fd2924e38cdfdafb5e0abb298094e561f73f7be290405b70990`.
-The Rust loader also validates SHA-256, finite parameters, topology, contiguous
-offsets, scaler arity, denominator validity, and exact byte consumption.
-The Rosetta-specific local renderer additionally compares all metadata to the
-reviewed network contract. Output directories must not already exist: an import
-or generation never silently replaces reviewed local artifacts.
+The public APIs pin the complete container digest from
+`specs/models/rosetta3/artifact.json`; architecture and parameters are checked
+together. The old manifest and reference fixtures are not rewritten by packing.
 
-Compile the generated Rust runner and CMake targets:
+## Public APIs
 
-```sh
-mise exec -- rustc --edition 2024 -O .rosetta-local/native/runner.rs -o .rosetta-local/native/rosetta_rust.exe
-mise exec -- cmake -S .rosetta-local/native -B .rosetta-local/build -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DPython_EXECUTABLE=.rosetta-env/Scripts/python.exe
-mise exec -- cmake --build .rosetta-local/build
-.rosetta-env/Scripts/python.exe codegen/scripts/verify_rosetta3_targets.py --build .rosetta-local/build --rust .rosetta-local/native/rosetta_rust.exe
+Python uses named result fields and requires no scientific Python runtime for
+model evaluation:
+
+```python
+from ptfkit.zhang_schaap2017 import Rosetta3, Estimate, calc_ptf_zhang2017_mod5
+
+model = Rosetta3.load("rosetta3.ptfm")
+result = calc_ptf_zhang2017_mod5(
+    model, sand=30, silt=30, clay=40, bulk_density=1.5,
+    theta_33=0.3, theta_1500=0.1,
+)
+print(result.alpha_mean, result.alpha_std)
+logged = model.predict(5, [30, 30, 40, 1.5, 0.3, 0.1], Estimate.LOG10)
 ```
 
-On Windows run CMake in a Visual Studio x64 development shell, use the pinned
-`clang-cl.exe` for both compilers, and provide the pinned
-`clang-scan-deps.exe` through `CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS`. Use an absolute
-Python executable path. The repository's `native:configure` task demonstrates
-the same SDK setup. On POSIX omit `.exe` and adjust interpreter paths. The
-verification task `rosetta:verify-targets` can also run the comparison when its
-Python interpreter matches the built extension ABI.
+The four `calc_ptf_zhang2017_mod2` through `mod5` functions report arithmetic
+statistics in physical units, matching their scientific specifications.
+`Rosetta3.predict` additionally exposes log10 and geometric estimates. Result
+fields are `theta_r_mean` through `l_mean` and `theta_r_std` through `l_std`.
+Python provides `mean` and `stddev` tuple properties; Rust and C++ provide the
+same ordered arrays through methods.
 
-The immutable reference is `specs/models/rosetta3/reference.json`: 120 prediction
-cases (four levels, three estimate modes, ten soils), eight validation cases,
-selected original ensemble-member values, and separate conductivity reference
-statistics. Expected values come from actual upstream execution in the isolated
-environment, never the ptfkit interpreter. Provenance includes revision,
-manifest hash, Python/NumPy/distribution versions, and the called upstream API.
-To independently reproduce it, write to a **new** file:
+```rust
+use ptfkit::zhang_schaap2017::{Rosetta3, Estimate, calc_ptf_zhang2017_mod2};
 
-```sh
-.rosetta-env/Scripts/python.exe codegen/scripts/reference_rosetta3.py --upstream .rosetta-upstream --output .rosetta-local/reference-repeat.json
+fn example() -> Result<(), ptfkit::models::ModelError> {
+let model = Rosetta3::load("rosetta3.ptfm")?;
+let result = calc_ptf_zhang2017_mod2(&model, 30.0, 30.0, 40.0)?;
+let logged = model.predict(2, Estimate::Log10, &[30.0, 30.0, 40.0])?;
+    Ok(())
+}
 ```
 
-Fixture replacement requires scientific review; neither ordinary generation
-nor verification updates expected results. Changing a hash is not permission to
-redistribute the model.
+```c
+#include <ptfkit/ptfkit.h>
 
-## Architecture decision: local artifact fallback
+int main(void) {
+    ptfkit_model *model = NULL;
+    if (ptfkit_rosetta3_load("rosetta3.ptfm", &model) != PTFKIT_MODEL_OK)
+        return 1;
+    ptfkit_rosetta3_statistics result;
+    ptfkit_model_status status = calc_ptf_zhang2017_mod2(model, 30, 30, 40, &result);
+    ptfkit_model_free(model);
+    return status == PTFKIT_MODEL_OK ? 0 : 1;
+}
+```
 
-Status: experimental fallback, production integration deferred.
+C's `ptfkit_rosetta3_predict` accepts a level, a numeric mode (0 arithmetic,
+1 log10, 2 geometric), required predictors, and storage for fourteen doubles:
+seven means followed by seven SDs. Its outputs are initialized to NaN on errors.
+Callers must check status; failed loading returns a null output handle. Free a
+successful handle exactly once after all readers have finished. C paths use the
+platform C runtime encoding; `ptfkit_model_from_bytes` allows caller-managed I/O.
+Low-level C input and output buffers must not overlap.
 
-The existing scalar formula/Random Forest semantic IR does not express model
-handles, external binary artifacts, ensemble-valued predictions, or uncertainty
-aggregation. Pretending a neural model is a scalar formula would obscure that
-contract. The local path is separate and explicitly does not change the public
-pipeline. A reusable dense-network representation supports validated layer
-widths, per-layer activations, input/output transforms, row-major parameters,
-and bootstrap membership. Rosetta aggregation is a separate layer.
+```cpp
+import ptfkit;
 
-The Rust generator emits local standalone targets from this representation.
-Rust embeds the little-endian binary with `include_bytes!`; C compiles weights
-once in a separate translation unit. Public headers contain no trained arrays.
-C++23 exports the C API through a compiled module; CPython delegates directly
-to the C engine with no NumPy, SciPy, original Rosetta package, or ML framework
-runtime. The release trees remain weight-free. Local generated sources are not
-manually edited or committed. SHA-256 binds data to metadata before generation.
+int main() {
+    auto model = ptfkit::Rosetta3::load("rosetta3.ptfm");
+    auto result = ptfkit::calc_ptf_zhang2017_mod2(model, 30, 30, 40);
+    return result.theta_s_mean > result.theta_r_mean ? 0 : 1;
+}
+```
 
-Before production integration, design and review a public model-handle and
-optional external artifact contract across semantic IR and all targets, wire
-that into normal generation/packaging, add package-level parity tests and API
-documentation, and establish distribution permission for any shipped trained
-data. Unresolved weight rights block bundling; they do not inherently prohibit
-a future weight-free public model-loading API. That API remains engineering
-work, not an alleged legal prohibition. The current local C API embeds a model
-in the local binary; it is not the future external-artifact loading API.
+C++ model handles use move-only RAII. Installed `ptfkit::cpp` propagates the
+public header include path and math-library requirements through `ptfkit::c`.
+Rust models own their data and can be shared through `Arc`; Python owns a native
+capsule. Prediction uses per-call scratch data and never modifies a loaded
+model. Changing or removing the source file after loading does not change
+predictions. A failed new load does not change another live model.
 
-## Measured local results and limitations
+## Universal model loading and container contract
 
-Windows x64, Clang 23.1.4 (MSVC ABI), optimized CMake build, Rust 1.98.1,
-CPython 3.13.12, NumPy 2.4.3 for offline references:
+`ptfkit.models.Model` (Python), `ptfkit::models::Model` (Rust), `ptfkit::Model`
+(C++), and `ptfkit_model` (C) load the same external container. Generic loaders
+require an explicit trusted SHA-256. Obtain that digest from a trusted manifest;
+accepting a digest from the same untrusted file would not establish its origin.
+Rosetta3 adapters supply the reviewed digest automatically and reject other
+valid model containers. Generic prediction returns raw ensemble members in the
+container's original output scales, without Rosetta-specific aggregation.
 
-| Local target | Upstream prediction cases passed | Executable/extension bytes |
-| --- | ---: | ---: |
-| Rust | 120 | 2,448,896 |
-| C11 | 120 | 2,249,216 |
-| C++23 module | 120 | 2,249,216 |
-| CPython native extension | 120 | 2,249,728 |
+The complete file is hashed before decoding parameter data. Readers validate
+version, topology, scaler/activation identifiers, finite values, nonzero scale
+denominators, unused scale padding, contiguous parameter offsets, exact tensor
+counts, truncation and trailing bytes. Limits are 64 MiB, 1?64 networks,
+2?1000 members per ensemble, 1?16 layers, and 1?64 nodes per layer. There is no
+pickle, executable content, automatic file search, implicit default model or
+network access. Exceeding a limit produces an error rather than partial inference.
 
-All four also rejected the eight invalid-input cases under the documented
-fixed-level policy, plus 22 additional checks of invalid levels/modes, predictor
-counts, and non-finite values in every predictor. Explicit cross-target
-comparisons showed zero difference on this platform. The upstream's own test
-suite passed 25 tests. The first
-local C/C++/CPython configure and build command took approximately 7.8 seconds
-wall time, including SDK setup and CMake compiler detection. A 1000-call warm
-CPython level-5 arithmetic run took approximately 128 microseconds per sample.
-These are local observations, not cross-platform performance guarantees.
+All integers and IEEE binary64 values are little-endian. The version-1 layout is:
 
-The C engine allocates two 5000-double retention buffers (80,000 bytes) plus
-small network and conductivity scratch arrays on the stack and accesses the
-2.21 MB trained array in read-only storage. Rust additionally decodes the
-embedded little-endian data into a 2.21 MB `Vec<f64>` and allocates ensemble rows.
-These are storage accounting figures; peak process RSS was not measured.
-Wheel size, Rust crate size, and native release-distribution impact are not
-measured because no release package includes the models. The local binary
-measurements do not substitute for those packaging measurements.
-
-The retained release APIs do not expose Rosetta3 yet. Generated release Rust,
-Python, C, and C++ API reference pages therefore intentionally make no claim of
-support. The normal catalogue contains four blocked scientific source entries.
-The complete model paper, training population limitations, and granulometric
-definitions require further scientific review; the computational software audit
-does not establish those facts. The task's full Definition of Done is not met.
-
-## Executed verification report
-
-The following checks were actually executed successfully on this branch:
-
-| Command/check | Result |
+| Field | Encoding |
 | --- | --- |
-| `mise run validate` | 40 source specifications, 253 declared functions validated |
-| `mise run generate` | Normal release trees and blocked-source catalogue regenerated |
-| `mise run generate-check` | No generated-output drift |
-| `mise run verify` | Full component format/lint/type/test checks passed; 362 Rust tests, 805 Python tests, 134 native CTest cases |
-| `mise run codegen:verify` after the documentation fix | 136 tests passed, formatting and Clippy passed |
-| `mise run docs:build` | Strict documentation build passed |
-| `mise run rosetta:verify-rust` | 120 upstream prediction cases plus selected raw members and separate conductivity checks passed |
-| Local CMake/Rust builds and `verify_rosetta3_targets.py` | All four local targets passed 120 upstream cases, eight upstream invalid cases, and 22 additional rejection checks each |
-| Upstream `pytest .rosetta-upstream/tests -q` | 25 passed; two upstream pytest deprecation warnings |
-| Repeated import/reference execution | Byte-identical binary, metadata, and upstream fixture |
-| Repeated local target generation | All 13 generated files byte-identical |
-| CPython inference with `-I -S` | Passed with site packages disabled and no NumPy import |
-| Sample-SD mutation probe | Replacing `ddof=1` with population SD failed the intended assertion; original source restored |
-| Matrix-orientation mutation probe | Transposing asymmetric weight matrices failed the intended prediction assertion; original source restored |
+| Magic/version | Eight bytes `PTFKNN01` |
+| Network count | u32 |
+| Each network | u32 member count; u32 layer count; layer-count+1 u32 widths; layer-count u32 activation identifiers |
+| Input then output scalers | Each scaler: u32 identifier and three f64 parameters, zero-padded to its declared arity |
+| Each network parameter offset | u64 offset in doubles into the common tensor array |
+| Tensor count and tensor data | u64 count, followed by f64 values in network/member/layer order; row-major weights then biases per layer |
 
-The new offline Python scripts also pass the repository's Ruff checks and
-formatter. A pre-existing Windows toolchain environment issue required an
-ignored `.mise.local.toml` PATH override pointing at the already installed
-pinned Clang binaries. The first generation attempt failed because the
-formatter was missing from the tool runner's PATH; generation and consistency
-checks subsequently passed with that environment repaired. The first strict
-documentation build exposed generation of an API page for an entirely blocked
-source; the renderer now excludes nonexistent generated Python modules and has
-a regression test. No generated source was edited to repair either issue.
+Activation identifiers are linear=0, sigmoid=1, tansig=2, ReLU=3. Scalers are
+asis=0, division=1, logtr=2, affine=3, minmax=4, linear=5, using the previously
+audited formulas. The digest covers every byte, including architecture.
+`network_count` and `network_shape` expose ensemble dimensions without decoding
+metadata in application code. C uses status codes, Rust `ModelError` variants,
+C++ `ModelError` with `ModelStatus`, and Python `ModelIntegrityError`,
+`ModelFormatError`, or `ModelInputError` (all `ValueError` subclasses).
+Missing-file errors remain I/O errors.
 
-Nothing was merged, published, or released. Production model handles, semantic
-IR integration, package-level Rosetta APIs and documentation, release artifact
-packaging measurements, peak RSS measurements, and trained-weight redistribution
-permission remain outstanding. The local verification results are evidence for
-the preserved numerical contract, not a claim that those deliverables are done.
+## Architecture decision: external model handles
+
+Status: implemented, external parameters required.
+
+The ordinary scalar formula/Random Forest IR is preserved. An explicitly typed
+`implementation.external_model` binding selects the external ensemble backend;
+its model kind, artifact reference, predictor ordering, level, function names and
+output fields are validated before rendering. The backend emits generic loaders
+and model-specific adapters through the normal atomic output pipeline, including
+umbrella modules and API references. `generate-check` covers those files.
+The four Rosetta3 bindings form one enabled model family; blocked bindings do
+not produce public APIs or trigger artifact lookup.
+
+The dense Rust kernel and C kernel retain their original operation order and
+transforms. The Rosetta statistics layer is reused unchanged. C remains header
+only, with a small SHA-256 implementation and owned heap data. C++ exports inline
+adapters compatible with the existing interface-module installation. The Python
+extension uses only the CPython C API and the native C loader. Rust uses `sha2`
+for integrity checks. No runtime depends on the importer or original package.
+
+The original local generation workflow remains available as an additional
+reference path; it is no longer the public implementation. Unresolved weight
+redistribution rights continue to prohibit bundling under this project's stated
+release policy; they do not block these weight-free public APIs. The full paper,
+training-population applicability and granulometric cutoffs still require
+separate scientific review. This integration establishes computational parity,
+not predictive accuracy for a new soil population.
+
+## Verification
+
+The immutable `specs/models/rosetta3/reference.json` and all pre-existing tests
+are preserved. Public verification executes the released-package interfaces,
+not copies of generated kernels: the Python native package, Rust crate example,
+C umbrella header and C++ umbrella module. It checks all 120 upstream cases,
+raw selected members, explicit-level rejection and changed-file integrity
+failures. Independent hand-specified affine containers exercise all four generic
+loaders, including owned data, typed failures, move semantics and correctly
+hashed malformed inputs. The numerical reproduction tolerance remains
+`max(1e-11, 1e-12*abs(expected))`.
+
+```sh
+mise run validate
+mise run generate
+mise run generate-check
+mise run verify
+mise run docs:build
+mise run rosetta:verify-rust
+mise run rosetta:verify-public
+```
+
+`rosetta:verify-public` requires the external artifact and explicitly fails when
+it is absent. It builds the actual native targets and Rust example and rebuilds
+the Python package before comparing the original fixtures. Ordinary tests use
+only tiny hand-specified affine test data and do not require trained Rosetta
+weights. No numerical expectations are regenerated from the new implementation.
+
+## Executed integration checks
+
+On Windows x64, the public Python package, Rust crate, C11 umbrella header and
+C++23 umbrella module each passed all 120 unchanged upstream cases. Each also
+rejected 30 invalid predictor/level/mode cases and changed model files. The
+maximum observed absolute difference remained `3.965396899729967e-10`, and the
+maximum relative difference remained `4.649452749860472e-13`. The original
+reference JSON, import manifest, network metadata and parameter bytes were
+unchanged. Repeated container packing produced byte-identical output.
+
+| Check | Result |
+| --- | --- |
+| Specification validation | 40 source files, 253 declared functions |
+| Codegen verification | 140 tests, formatting and Clippy passed |
+| Rust verification | 362 existing tests and 2 new public loader tests passed |
+| Python verification | 805 existing tests and 2 new public loader tests passed |
+| Native verification | 134 existing tests and 2 new C/C++ loader tests passed |
+| Public reference task | 120 upstream cases and 30 rejection cases per language passed |
+| Distribution wheel, with `-I -S` and NumPy unavailable | All 120 original reference cases passed |
+| Installed C++ package | Independent consumer compiled and matched upstream results; TU-local exposure diagnostics treated as errors |
+| SHA-256 | Independent affine-container fingerprint and standard empty/abc/56-byte known-answer vectors passed |
+
+The wheel, Python sdist, Rust crate and native installation were built locally
+and inspected for `.npz`, `.ptfm`, `models.bin` and generated `weights.c` files;
+none were present. Example archive sizes for the full existing ptfkit corpus
+were approximately 1.85 MB (Windows wheel), 2.47 MB (Python sdist), and 2.12 MB
+(Rust crate). These are local build measurements, not universal package sizes
+or Rosetta-only costs. The 2.21 MB external trained artifact remains separate.
+No package was published and nothing was merged to main.

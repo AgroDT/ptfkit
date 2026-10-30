@@ -1,0 +1,55 @@
+"""Owned external neural ensembles with native SHA-256 and structural validation."""
+from collections.abc import Sequence
+from pathlib import Path
+
+from ptfkit import _models
+from ptfkit._models import ModelFormatError, ModelInputError, ModelIntegrityError
+
+
+__all__ = ['Model', 'ModelFormatError', 'ModelInputError', 'ModelIntegrityError']
+
+class Model:
+    """An immutable native model; the digest must come from a trusted manifest.
+
+    Loading copies all parameters. Changes to the source bytes or file cannot
+    change an existing model. Runtime inference requires no NumPy or ML framework.
+    """
+    __slots__ = ('_handle',)
+
+    def __init__(self, data: bytes, sha256: str) -> None:
+        """Authenticate and copy an in-memory external model."""
+        self._handle = _models.from_bytes(data, sha256)
+
+    @classmethod
+    def load(cls, path: str | Path, sha256: str) -> 'Model':
+        """Read and authenticate a PTFKNN01 external model container."""
+        with Path(path).open('rb') as source:
+            return cls(source.read(64 * 1024 * 1024 + 1), sha256)
+
+    @classmethod
+    def from_bytes(cls, data: bytes, sha256: str) -> 'Model':
+        """Authenticate and copy an in-memory model container."""
+        return cls(data, sha256)
+
+    @property
+    def native_handle(self) -> object:
+        """Opaque owned native handle, for native model-specific adapters."""
+        return self._handle
+
+    @property
+    def sha256(self) -> str:
+        """Verified digest of the complete container, including architecture."""
+        return _models.sha256(self._handle)
+
+    @property
+    def network_count(self) -> int:
+        """Number of network ensembles in the authenticated container."""
+        return _models.network_count(self._handle)
+
+    def network_shape(self, index: int) -> tuple[int, int, int]:
+        """Return input width, output width and bootstrap member count."""
+        return _models.network_shape(self._handle, index)
+
+    def predict_network(self, index: int, inputs: Sequence[float]) -> list[tuple[float, ...]]:
+        """Return original-scale raw predictions, indexed by member then output."""
+        return _models.predict_network(self._handle, index, inputs)
