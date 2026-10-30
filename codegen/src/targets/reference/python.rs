@@ -8,7 +8,17 @@ use crate::{
 };
 
 pub(crate) fn render(entries: &[Entry], functions: &[CompiledFunction]) -> Vec<GeneratedFile> {
-    let mut entries = entries.iter().collect::<Vec<_>>();
+    let compiled_sources: BTreeSet<_> = functions.iter().map(|f| f.entry.slug.as_str()).collect();
+    let mut entries = entries
+        .iter()
+        .filter(|entry| {
+            compiled_sources.contains(entry.slug.as_str())
+                || matches!(
+                    entry.spec.generation.public_python,
+                    crate::model::PythonGeneration::Manual
+                )
+        })
+        .collect::<Vec<_>>();
     entries.sort_by_key(|entry| natural_sort_key(&entry.slug));
     let shared = shared_enum_groups(functions);
     let mut source_shared = BTreeMap::<&str, BTreeSet<(&str, &str)>>::new();
@@ -210,6 +220,22 @@ mod tests {
         );
 
         assert!(contents(&files, "example2.md").contains("::: ptfkit.example2"));
+    }
+
+    #[test]
+    fn blocked_sources_without_a_public_module_have_no_api_page_or_link() {
+        let mut entries = crate::test_support::entries();
+        let blocked = entries.iter_mut().find(|e| e.slug == "example2").unwrap();
+        for function in &mut blocked.spec.functions {
+            function.status = "blocked".to_owned();
+        }
+        let functions = crate::compile::functions(entries.clone()).unwrap();
+        assert!(!functions.iter().any(|f| f.entry.slug == "example2"));
+        assert!(functions.iter().any(|f| f.entry.slug == "example10"));
+        let files = render(&entries, &functions);
+        assert!(!files.iter().any(|f| f.path == Path::new("example2.md")));
+        assert!(!contents(&files, "index.md").contains("ptfkit.example2"));
+        assert!(contents(&files, "example10.md").contains("::: ptfkit.example10"));
     }
 
     #[test]
