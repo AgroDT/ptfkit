@@ -1,10 +1,10 @@
-//! Experimental local neural-model conversion and independent verification.
-//! This path does not register a publication as implemented in the corpus.
+//! External neural-model loading, scientific adapters and local verification.
 
 pub(crate) mod engine;
 mod generate;
 pub(crate) mod pack;
 pub(crate) mod public;
+mod public_rosetta;
 pub(crate) mod rosetta;
 #[cfg(test)]
 mod tests;
