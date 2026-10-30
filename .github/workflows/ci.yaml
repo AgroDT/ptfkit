@@ -181,6 +181,9 @@ jobs:
         run: ctest --test-dir targets/ptfkit-native/build --output-on-failure
 
       - name: Verify bundled Rosetta3 in all four public APIs
+        env:
+          UV_PYTHON: "3.14"
+          UV_PYTHON_PREFERENCE: only-managed
         run: mise run rosetta:verify-bundled
 
   docs:
