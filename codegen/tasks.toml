@@ -28,3 +28,24 @@ depends = ["codegen:format", "codegen:lint", "codegen:test"]
 description = "Remove code generator Cargo build artifacts"
 dir = "codegen"
 run = "cargo clean"
+
+["rosetta:import"]
+description = "Verify and import pinned Rosetta artifacts for local use only"
+usage = 'arg "<upstream>" help="Path to the pinned official checkout"'
+run = 'uv run --no-project --with numpy==2.4.3 python codegen/scripts/import_rosetta3.py --upstream "{{ usage.upstream }}"'
+
+["rosetta:generate-local"]
+description = "Generate opt-in local Rosetta targets without changing release packages"
+run = 'cargo run --manifest-path codegen/Cargo.toml -- generate-rosetta-local --model .rosetta-local/imported/models.json --output .rosetta-local/native'
+
+["rosetta:verify-rust"]
+description = "Compare native Rust inference with frozen upstream Rosetta references"
+run = 'cargo run --manifest-path codegen/Cargo.toml -- verify-rosetta --model .rosetta-local/imported/models.json --reference specs/models/rosetta3/reference.json'
+
+["rosetta:verify-targets"]
+description = "Compare built local C, C++, Rust and CPython targets with upstream"
+usage = '''
+arg "<build>" help="Local CMake binary directory"
+arg "<rust>" help="Generated Rust runner executable"
+'''
+run = 'uv run --no-project python codegen/scripts/verify_rosetta3_targets.py --build "{{ usage.build }}" --rust "{{ usage.rust }}"'
