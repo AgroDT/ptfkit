@@ -1,0 +1,138 @@
+["eval:sync"]
+description = "Synchronize the locked ptfkit-eval development environment"
+dir = "targets/ptfkit-eval"
+run = "uv sync --frozen --all-groups"
+
+["eval:lock"]
+description = "Verify that the ptfkit-eval lockfile is current"
+dir = "targets/ptfkit-eval"
+run = "uv lock --check"
+
+["eval:test"]
+description = "Run the ptfkit-eval test suite"
+dir = "targets/ptfkit-eval"
+run = "uv run --no-sync pytest"
+
+["eval:pilot"]
+description = "Run the source-reviewed meta_v3.3 descriptive pilot"
+usage = '''
+arg "<workbook>" help="Private meta_v3.3.xlsx path"
+arg "<paper>" help="Reviewed Panina 2015 PDF path"
+arg "<output>" help="New local output directory"
+'''
+run = 'uv run --project targets/ptfkit-eval --no-sync python evaluation/experiments/panina_clapp/pilot.py --workbook "{{ usage.workbook }}" --paper "{{ usage.paper }}" --output "{{ usage.output }}"'
+
+["eval:benchmark"]
+description = "Refresh the current catalog and run the complete comparative benchmark"
+usage = '''
+arg "<workbook>" help="Private meta_v3.3.xlsx path"
+arg "<paper>" help="Reviewed Panina 2015 PDF path"
+arg "<output>" help="New local output directory"
+'''
+run = 'uv run --project targets/ptfkit-eval --no-sync python -m evaluation.experiments.meta_v3_3.catalog_benchmark --workbook "{{ usage.workbook }}" --paper "{{ usage.paper }}" --output "{{ usage.output }}"'
+
+["eval:lint"]
+description = "Run Ruff lint checks for ptfkit-eval"
+dir = "targets/ptfkit-eval"
+run = "ruff check"
+
+["eval:harmonized"]
+description = "Evaluate the catalog with separate strict and harmonized evidence views"
+usage = '''
+arg "<benchmark>" help="Completed strict benchmark directory"
+arg "<output>" help="New local output directory"
+'''
+run = 'uv run --project targets/ptfkit-eval --no-sync python -B -m evaluation.experiments.meta_v3_3.harmonized --benchmark "{{ usage.benchmark }}" --output "{{ usage.output }}"'
+
+["eval:atomic-campaign"]
+description = "Review atomic PTF opportunities against exact measured targets"
+usage = '''
+arg "<benchmark>" help="Completed reviewed benchmark directory"
+arg "<workbook>" help="Private meta_v3.3.xlsx path"
+arg "<output>" help="New local output directory"
+'''
+run = 'uv run --project targets/ptfkit-eval --no-sync python -m evaluation.experiments.meta_v3_3.atomic_campaign --benchmark "{{ usage.benchmark }}" --workbook "{{ usage.workbook }}" --output "{{ usage.output }}"'
+
+["eval:format"]
+description = "Check ptfkit-eval formatting"
+dir = "targets/ptfkit-eval"
+run = "ruff format --check"
+
+["eval:exploratory"]
+description = "Run isolated approximate predictor and target sensitivity scenarios"
+usage = '''
+arg "<benchmark>" help="Completed strict benchmark directory"
+arg "<harmonized>" help="Matching completed harmonized benchmark directory"
+arg "<workbook>" help="Private meta_v3.3.xlsx path"
+arg "<output>" help="New local output directory outside both benchmark directories"
+'''
+run = 'uv run --project targets/ptfkit-eval --no-sync python -B -m evaluation.experiments.meta_v3_3.exploratory --benchmark "{{ usage.benchmark }}" --harmonized "{{ usage.harmonized }}" --workbook "{{ usage.workbook }}" --output "{{ usage.output }}"'
+
+["eval:campaign"]
+description = "Expand isolated exploratory execution across the complete PTF catalog"
+usage = '''
+arg "<benchmark>" help="Completed strict benchmark directory"
+arg "<harmonized>" help="Matching completed harmonized benchmark directory"
+arg "<workbook>" help="Private meta_v3.3.xlsx path"
+arg "<output>" help="New local output directory outside both benchmark directories"
+'''
+run = 'uv run --project targets/ptfkit-eval --no-sync python -B -m evaluation.experiments.meta_v3_3.campaign --benchmark "{{ usage.benchmark }}" --harmonized "{{ usage.harmonized }}" --workbook "{{ usage.workbook }}" --output "{{ usage.output }}"'
+
+["eval:typecheck"]
+description = "Run ty for ptfkit-eval"
+dir = "targets/ptfkit-eval"
+run = "ty check"
+
+["eval:deep-unlock"]
+description = "Audit workbook candidates and pressure semantics outside the frozen benchmark"
+usage = '''
+arg "<baseline>" help="Frozen completed catalog campaign directory"
+arg "<benchmark>" help="Completed strict resource directory"
+arg "<harmonized>" help="Matching completed harmonized directory"
+arg "<workbook>" help="Private meta_v3.3.xlsx path"
+arg "<output>" help="New private audit output directory"
+'''
+run = 'uv run --project targets/ptfkit-eval --no-sync python -B -m evaluation.experiments.meta_v3_3.deep_unlock --baseline "{{ usage.baseline }}" --benchmark "{{ usage.benchmark }}" --harmonized "{{ usage.harmonized }}" --workbook "{{ usage.workbook }}" --output "{{ usage.output }}"'
+
+["eval:verify"]
+description = "Run all ptfkit-eval quality checks"
+depends = ["eval:lint", "eval:format", "eval:typecheck", "eval:test"]
+
+["eval:workbook-evidence"]
+description = "Review Ksat and predictor contracts and replay the complete catalog"
+usage = '''
+arg "<baseline>" help="Frozen 64-function catalog campaign"
+arg "<discovery>" help="Matching completed deep-unlock audit with private scan"
+arg "<benchmark>" help="Completed strict resource directory"
+arg "<harmonized>" help="Matching harmonized directory"
+arg "<workbook>" help="Private meta_v3.3.xlsx path"
+arg "<sources>" help="Private primary-document directory; filenames in review registry"
+arg "<output>" help="New private audit output directory"
+'''
+run = 'uv run --project targets/ptfkit-eval --no-sync python -B -m evaluation.experiments.meta_v3_3.workbook_evidence --baseline "{{ usage.baseline }}" --discovery "{{ usage.discovery }}" --benchmark "{{ usage.benchmark }}" --harmonized "{{ usage.harmonized }}" --workbook "{{ usage.workbook }}" --sources "{{ usage.sources }}" --output "{{ usage.output }}"'
+
+["eval:workbook-semantic"]
+description = "Run the isolated E5 workbook semantic exploratory benchmark"
+usage = '''
+arg "<baseline>" help="Frozen completed E4 campaign"
+arg "<benchmark>" help="Completed strict resource directory"
+arg "<harmonized>" help="Matching completed harmonized directory"
+arg "<workbook>" help="Private meta_v3.3.xlsx path"
+arg "<output>" help="New private E5 output directory"
+'''
+run = 'uv run --project targets/ptfkit-eval --no-sync python -B -m evaluation.experiments.meta_v3_3.workbook_semantic --baseline "{{ usage.baseline }}" --benchmark "{{ usage.benchmark }}" --harmonized "{{ usage.harmonized }}" --workbook "{{ usage.workbook }}" --output "{{ usage.output }}"'
+
+["eval:clean"]
+description = "Remove ptfkit-eval build artifacts and its development environment"
+dir = "targets/ptfkit-eval"
+run = "cmake -E rm -rf .venv build dist src/ptfkit_eval.egg-info"
+
+["eval:model-selection"]
+description = "Audit WRC/Ksat observations and compare atomic PTFs and simple WRC ensembles"
+usage = '''
+arg "<benchmark>" help="Frozen strict resource directory"
+arg "<harmonized>" help="Matching frozen harmonized directory"
+arg "<workbook>" help="Private meta_v3.3.xlsx path"
+arg "<output>" help="New private model-selection output directory"
+'''
+run = 'uv run --project targets/ptfkit-eval --no-sync python -B -m evaluation.experiments.meta_v3_3.model_selection --benchmark "{{ usage.benchmark }}" --harmonized "{{ usage.harmonized }}" --workbook "{{ usage.workbook }}" --output "{{ usage.output }}"'

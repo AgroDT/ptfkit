@@ -1,0 +1,568 @@
+{
+  "dataset_id": "synthetic_discrete_retention",
+  "kind": "synthetic",
+  "method": "klute1986_disturbed_ring_retention",
+  "observations": [
+    {
+      "id": "soil_0_33",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "soil_0",
+      "source_cells": [
+        "generator:soil_0:33"
+      ],
+      "source_id": "synthetic",
+      "suction_kpa": 33,
+      "value": 0.1825425
+    },
+    {
+      "id": "soil_0_1500",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "soil_0",
+      "source_cells": [
+        "generator:soil_0:1500"
+      ],
+      "source_id": "synthetic",
+      "suction_kpa": 1500,
+      "value": 0.10713
+    },
+    {
+      "id": "soil_1_33",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "soil_1",
+      "source_cells": [
+        "generator:soil_1:33"
+      ],
+      "source_id": "synthetic",
+      "suction_kpa": 33,
+      "value": 0.1825425
+    },
+    {
+      "id": "soil_1_1500",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "soil_1",
+      "source_cells": [
+        "generator:soil_1:1500"
+      ],
+      "source_id": "synthetic",
+      "suction_kpa": 1500,
+      "value": 0.10713
+    },
+    {
+      "id": "soil_2_33",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "soil_2",
+      "source_cells": [
+        "generator:soil_2:33"
+      ],
+      "source_id": "synthetic",
+      "suction_kpa": 33,
+      "value": 0.1825425
+    },
+    {
+      "id": "soil_2_1500",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "soil_2",
+      "source_cells": [
+        "generator:soil_2:1500"
+      ],
+      "source_id": "synthetic",
+      "suction_kpa": 1500,
+      "value": 0.10713
+    },
+    {
+      "id": "soil_3_33",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "soil_3",
+      "source_cells": [
+        "generator:soil_3:33"
+      ],
+      "source_id": "synthetic",
+      "suction_kpa": 33,
+      "value": 0.1825425
+    },
+    {
+      "id": "soil_3_1500",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "soil_3",
+      "source_cells": [
+        "generator:soil_3:1500"
+      ],
+      "source_id": "synthetic",
+      "suction_kpa": 1500,
+      "value": 0.10713
+    },
+    {
+      "id": "soil_4_33",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "soil_4",
+      "source_cells": [
+        "generator:soil_4:33"
+      ],
+      "source_id": "synthetic",
+      "suction_kpa": 33,
+      "value": 0.1825425
+    },
+    {
+      "id": "soil_4_1500",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "soil_4",
+      "source_cells": [
+        "generator:soil_4:1500"
+      ],
+      "source_id": "synthetic",
+      "suction_kpa": 1500,
+      "value": 0.10713
+    },
+    {
+      "id": "soil_5_33",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "soil_5",
+      "source_cells": [
+        "generator:soil_5:33"
+      ],
+      "source_id": "synthetic",
+      "suction_kpa": 33,
+      "value": 0.1825425
+    },
+    {
+      "id": "soil_5_1500",
+      "origin": "synthetic",
+      "quality_flags": [],
+      "review_status": "confirmed",
+      "sample_id": "soil_5",
+      "source_cells": [
+        "generator:soil_5:1500"
+      ],
+      "source_id": "synthetic",
+      "suction_kpa": 1500,
+      "value": 0.10713
+    }
+  ],
+  "samples": [
+    {
+      "features": [
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "generator:soil_0:clay"
+          ],
+          "value": 20
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "generator:soil_0:sand"
+          ],
+          "value": 50
+        }
+      ],
+      "profile_id": "soil_0",
+      "sample_id": "soil_0",
+      "source_id": "synthetic"
+    },
+    {
+      "features": [
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "generator:soil_1:clay"
+          ],
+          "value": 20
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "generator:soil_1:sand"
+          ],
+          "value": 50
+        }
+      ],
+      "profile_id": "soil_1",
+      "sample_id": "soil_1",
+      "source_id": "synthetic"
+    },
+    {
+      "features": [
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "generator:soil_2:clay"
+          ],
+          "value": 20
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "generator:soil_2:sand"
+          ],
+          "value": 50
+        }
+      ],
+      "profile_id": "soil_2",
+      "sample_id": "soil_2",
+      "source_id": "synthetic"
+    },
+    {
+      "features": [
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "generator:soil_3:clay"
+          ],
+          "value": 20
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "generator:soil_3:sand"
+          ],
+          "value": 50
+        }
+      ],
+      "profile_id": "soil_3",
+      "sample_id": "soil_3",
+      "source_id": "synthetic"
+    },
+    {
+      "features": [
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "generator:soil_4:clay"
+          ],
+          "value": 20
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "generator:soil_4:sand"
+          ],
+          "value": 50
+        }
+      ],
+      "profile_id": "soil_4",
+      "sample_id": "soil_4",
+      "source_id": "synthetic"
+    },
+    {
+      "features": [
+        {
+          "id": "clay",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": null,
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "generator:soil_5:clay"
+          ],
+          "value": 20
+        },
+        {
+          "id": "sand",
+          "kind": "numeric",
+          "measurement": {
+            "basis": {
+              "denominator": "dry_mass",
+              "material": "fine_earth"
+            },
+            "conditions": [],
+            "method": "bouyoucos1962_hydrometer_hexametaphosphate_5_percent",
+            "particle_size": {
+              "lower": {
+                "inclusive": true,
+                "value": 50
+              },
+              "unit": "micrometer",
+              "upper": {
+                "inclusive": false,
+                "value": 2000
+              }
+            },
+            "quantity": "particle_mass_fraction",
+            "unit": "mass_percent"
+          },
+          "origin": "synthetic",
+          "review_status": "confirmed",
+          "source_cells": [
+            "generator:soil_5:sand"
+          ],
+          "value": 50
+        }
+      ],
+      "profile_id": "soil_5",
+      "sample_id": "soil_5",
+      "source_id": "synthetic"
+    }
+  ],
+  "schema_version": 2,
+  "target": {
+    "denominator_basis": "dry_soil_mass",
+    "material_basis": "fine_earth",
+    "quantity": "gravimetric_water_content",
+    "unit": "mass_fraction"
+  }
+}

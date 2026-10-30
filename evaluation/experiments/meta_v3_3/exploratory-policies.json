@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "protocol": "meta_exploratory_assumptions_v1",
+  "scope": "Optional sensitivity analysis; never main benchmark eligibility",
+  "recommendation": null,
+  "scenarios": ["reported_boundary_proxy", "log_psd"],
+  "organic_carbon_to_matter_factor": 1.724,
+  "water_density_g_cm3": 1.0,
+  "maximum_texture_closure_residual_percent": 1.0,
+  "policies": {
+    "meta_texture_basis_v1": [
+      "Treat reported texture columns as dry-mass percentages of fine earth below 2000 micrometres.",
+      "Treat analytical methods and endpoint conventions as comparable to the requested PTF contract.",
+      "Use a reported 50-micrometre sand cutoff as the USDA sand lower boundary; assume no unreported coarse material.",
+      "These assumptions do not establish measured USDA fractions."
+    ],
+    "meta_reported_boundary_proxy_v1": [
+      "Use reported below-1-micrometre clay and 1-50-micrometre silt as proxies for USDA below-2 and 2-50 fractions.",
+      "This limiting scenario neglects the unobserved 1-2-micrometre mass; it is not an exact rebin.",
+      "Respect source-local below-2-micrometre overrides already recorded in the dataset mapping."
+    ],
+    "meta_log_psd_boundary_v1": [
+      "Interpolate cumulative mass linearly in log10 diameter between adjacent available boundaries.",
+      "Use reported below-1 and below-10 micrometre values when available; otherwise use the below-50 cumulative value.",
+      "Derive below-50 mass from clay plus silt or from 100 minus reported sand under assumed closure.",
+      "Wide-bin interpolation is approximate, regardless of resolution, because the source material/mass basis remains assumed.",
+      "Never extrapolate a missing clay boundary or invent a missing lower-tail distribution."
+    ],
+    "meta_texture_closure_v1": [
+      "Assume a closed partition when deriving one missing texture fraction from two reported fractions.",
+      "If all three reported fractions exist, allow normalization to 100 only when the absolute closure residual is at most one percentage point.",
+      "Reject negative fractions, nonmonotone cumulative mass and larger closure discrepancies."
+    ],
+    "meta_density_v1": [
+      "Interpret positive column Q values as dry bulk density in grams per cubic centimetre.",
+      "Assume the material and analytical protocol are comparable to the PTF contract; do not infer profile identity."
+    ],
+    "meta_organic_v1": [
+      "Interpret column R as organic carbon mass percent; treat its material and analytical protocol as comparable to the PTF contract.",
+      "Treat column S humus content as an organic-matter proxy in mass percent.",
+      "Use the fixed coefficient 1.724 only when deriving a missing OC or OM value; record the coefficient and source cell.",
+      "Never replace an available reported organic value with a derived alternative."
+    ],
+    "meta_target_material_v1": [
+      "Treat retained canonical water observations as applicable to the candidate's target material basis when that basis is unresolved or different.",
+      "Preserve original quantity, unit, denominator, material, value and observation provenance in the trace.",
+      "This material comparability assumption never establishes main eligibility."
+    ],
+    "meta_target_density_conversion_v1": [
+      "For the same assumed material, convert volumetric to gravimetric water as mass_ratio = volume_fraction * water_density / dry_bulk_density; invert for gravimetric to volumetric.",
+      "Use the registered water density of 1.0 gram per cubic centimetre and approximate bulk density from column Q.",
+      "Reconstruct in the original experimental water basis before applying this approximate density conversion.",
+      "Never borrow a density from another sample or extrapolate beyond the measured pressure range."
+    ]
+  }
+}

@@ -64,7 +64,7 @@ def test_calc_ptf_cosby1984_univariate_verification(
         absolute=0.001,
         relative=0.0,
         quantity='log_saturation_potential',
-        unit='reported_log_value',
+        unit='log10_centimeter_water_head',
         source='registry',
     )
     assert_close(
@@ -73,7 +73,7 @@ def test_calc_ptf_cosby1984_univariate_verification(
         absolute=0.001,
         relative=0.0,
         quantity='log_saturated_hydraulic_conductivity',
-        unit='reported_log_value',
+        unit='log10_inch_per_hour',
         source='registry',
     )
     assert_close(
@@ -100,7 +100,7 @@ def test_calc_ptf_cosby1984_univariate_verification(
         absolute=0.001,
         relative=0.0,
         quantity='log_saturated_hydraulic_conductivity',
-        unit='reported_log_value',
+        unit='log10_inch_per_hour',
         source='registry',
     )
     assert_close(
@@ -134,7 +134,7 @@ def test_calc_ptf_cosby1984_univariate_array():
         absolute=0.001,
         relative=0.0,
         quantity='log_saturation_potential',
-        unit='reported_log_value',
+        unit='log10_centimeter_water_head',
         source='registry',
     )
     assert_close(
@@ -143,7 +143,7 @@ def test_calc_ptf_cosby1984_univariate_array():
         absolute=0.001,
         relative=0.0,
         quantity='log_saturated_hydraulic_conductivity',
-        unit='reported_log_value',
+        unit='log10_inch_per_hour',
         source='registry',
     )
     assert_close(
@@ -170,7 +170,7 @@ def test_calc_ptf_cosby1984_univariate_array():
         absolute=0.001,
         relative=0.0,
         quantity='log_saturated_hydraulic_conductivity',
-        unit='reported_log_value',
+        unit='log10_inch_per_hour',
         source='registry',
     )
     assert_close(
@@ -206,7 +206,7 @@ def test_calc_ptf_cosby1984_univariate_out():
         absolute=0.001,
         relative=0.0,
         quantity='log_saturation_potential',
-        unit='reported_log_value',
+        unit='log10_centimeter_water_head',
         source='registry',
     )
     assert_close(
@@ -215,7 +215,7 @@ def test_calc_ptf_cosby1984_univariate_out():
         absolute=0.001,
         relative=0.0,
         quantity='log_saturated_hydraulic_conductivity',
-        unit='reported_log_value',
+        unit='log10_inch_per_hour',
         source='registry',
     )
     assert_close(
@@ -242,7 +242,7 @@ def test_calc_ptf_cosby1984_univariate_out():
         absolute=0.001,
         relative=0.0,
         quantity='log_saturated_hydraulic_conductivity',
-        unit='reported_log_value',
+        unit='log10_inch_per_hour',
         source='registry',
     )
     assert_close(

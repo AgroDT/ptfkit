@@ -1,0 +1,77 @@
+{
+  "protocol": "workbook_evidence_review_v1",
+  "workbook_sha256": "1322bf65b1ca0130085015209858a443d1ee82a7e2ae69232321cd8ede361e68",
+  "ksat_blocks": [
+    {
+      "first": 33, "last": 40, "unit_cell": "AB32", "unit_label": "м/сут",
+      "unit": "meter_per_day", "source_header": "D32", "reference": "kokoreva2009",
+      "setting": "MSU lysimeters; sod-podzolic soil; sample preparation and saturation state not linked to individual values",
+      "reported_related_method": "Constant-head tubes for absorption coefficient; lysimeter absorption data supplied by Umarova",
+      "quantity": "unresolved_filtration_or_absorption_or_model_parameter",
+      "origin": "unresolved_measured_or_calibrated",
+      "blockers": ["exact_value_to_source_table_not_established", "absorption_not_automatically_saturated_conductivity", "measurement_vs_model_parameter_unresolved", "material_and_saturation_protocol_unresolved"]
+    },
+    {
+      "first": 42, "last": 71, "unit_cell": "AB41", "unit_label": "см/смин",
+      "unit": null, "source_header": "D32", "reference": "kokoreva2009",
+      "setting": "Svetlana agricultural field, Melenki; explicit profile labels retained only where populated",
+      "reported_related_method": "Constant-head tubes for absorption coefficient; no row-level method binding",
+      "quantity": "unresolved_absorption_or_conductivity",
+      "origin": "unresolved_measured_or_calculated",
+      "blockers": ["ambiguous_unit_label_not_cm_per_minute_by_default", "exact_value_to_source_table_not_established", "absorption_not_automatically_saturated_conductivity", "material_and_saturation_protocol_unresolved"]
+    },
+    {
+      "first": 87, "last": 87, "unit_cell": "AB86", "unit_label": "см/сут",
+      "unit": "centimeter_per_day", "source_header": "D86", "reference": "tymbaev2004",
+      "setting": "Vladimir agricultural research institute; gray forest soil; Ap, 0-20 cm; individual profile not reported",
+      "reported_related_method": "Variable-head tubes for water permeability; source discusses absorption coefficient",
+      "quantity": "unresolved_permeability_or_absorption_or_conductivity",
+      "origin": "unresolved_measured_or_calculated",
+      "blockers": ["exact_value_to_source_table_not_established", "permeability_or_absorption_not_automatically_saturated_conductivity", "measurement_vs_model_parameter_unresolved", "material_and_saturation_protocol_unresolved"]
+    }
+  ],
+  "references": {
+    "kokoreva2009": {
+      "url": "https://new-disser.ru/_avtoreferats/01004321956.pdf",
+      "local_file": "kokoreva2009-abstract.pdf",
+      "locator": "Author abstract, Materials and methods, printed pp. 6-7; model parameterization and sensitivity sections",
+      "decision": "Methods distinguish absorption measurements and parameterized models; no exact table binding for workbook AB33:AB71 established. Full dissertation not used."
+    },
+    "tymbaev2004": {
+      "url": "https://new-disser.ru/_avtoreferats/01002631995.pdf",
+      "local_file": "tymbaev2004-abstract.pdf",
+      "locator": "Author abstract, Objects and methods; spatial variability of absorption; SWAP modeling",
+      "decision": "Both laboratory/field properties and model inputs discussed; exact origin of AB87 not established. Full dissertation not used."
+    },
+    "umarova2008": {
+      "url": "https://earthpapers.net/preimuschestvennye-potoki-vlagi-v-pochvah-zakonomernosti-formirovaniya-i-znachenie-v-funktsionirovanii-pochv",
+      "local_file": "umarova-abstract.html",
+      "locator": "Primary author abstract reproduced in HTML, Table 2, gray forest soil profiles",
+      "decision": "Particle density and total porosity labels, units and profile/depth identity corroborated. Particle-density preparation/protocol and porosity measured-versus-derived origin not specified in that table. Workbook V81 is an Excel datetime; no repair authorized."
+    },
+    "makarychev2014": {
+      "url": "https://www.asau.ru/vestnik/2014/12/035-039.pdf",
+      "local_file": "makarychev2014.pdf",
+      "locator": "Original article pp. 35-39, Figure 1 and methods paragraph",
+      "decision": "Figure labels soil and solid-phase density in g/cm3. Workbook precision suggests digitization; exact point/horizon and preparation protocol not established for release."
+    }
+  },
+  "reviewed_header_columns": {
+    "sand": ["P", "S"], "silt": ["O", "R"], "clay": ["M,N", "P,Q"],
+    "bulk_density": ["Q", "T"], "organic_carbon": ["R", "U"],
+    "organic_matter": ["S", "V"], "ph": ["T", "W"],
+    "particle_density": ["V", "Y"], "porosity": ["U,Z", "X,AK"],
+    "depth": ["J,AJ", "M"], "nitrogen": ["", "AE"]
+  },
+  "predictor_decisions": {
+    "particle_density": "Partial corroboration at master V77:V80,V83,V85 from Umarova Table 2; method and dry-soil preparation unreported. V81 datetime rejected. Makarychev3 V206:V209 lacks exact figure-point provenance. Other sources: quantity label only, source-specific unit/method/material unresolved. No assumed density. All retained candidates still lack compatible sand/silt for Saxton1986.",
+    "porosity": "Master U and thesis X mix potential percent/fraction scales; no global rescaling. Additional master Z421 and thesis AK41 porosity headers have fraction-like numeric blocks, but their scale, saturation/total-pore meaning and measured/model-derived origin remain unresolved. Umarova Table 2 distinguishes total, aggregate and interaggregate porosity. Reported total labels are corroborated but measured/derived origin unresolved. Effective porosity is a different contract. Existing exploratory percent policy is preserved as historical policy, not upgraded by this review.",
+    "total_porosity": "Same candidates as porosity; no synonym binding authorized. Density-derived total porosity requires two independently confirmed same-sample dry-soil measurements in matching units/material. No candidate pair has a complete new preparation/protocol contract; no new derivation released.",
+    "ph": "Master T and thesis W: numeric pH candidates, but H2O/KCl/CaCl2, extraction ratio and measurement origin are not recorded. No numeric pH candidate overlaps retained canonical WRC samples. Kalumba requires 1:5 soil-to-water; generic Hodnett/Tiwary contracts do not prove workbook measurement origin. No guessed method.",
+    "nitrogen": "Thesis AE1 is specific surface measured by nitrogen adsorption, not nitrogen concentration. No numeric values below AE1. No reviewed total/mineral N measurement, dry-mass basis or percentage unit. Kalumba nitrogen contract remains unsatisfied.",
+    "clay_content": "Master M/thesis P physical clay below 10 micrometres is not Bruand below-2-micrometre clay. Master N/thesis Q default below 1 micrometre, with source-local overrides including Q32 below 2. No source-global relabeling; Bruand clay-fabric/domain support is additionally sample-specific and unresolved.",
+    "depth": "Existing explicit interval midpoint policy retained. Thesis M includes numeric depths, intervals with cm and intervals without a unit; no new unit or profile inheritance. Depth cannot repair source/sample mismatch.",
+    "carbon": "Existing OC/humus alias policies remain exploratory with conversion provenance. Thesis U is OC whereas master U is porosity; never transfer by column letter. Formula-derived humus is not an independent measured predictor.",
+    "plasticity": "Thesis AF/AG contain numeric plastic/liquid-limit candidates, including Nikulina and Faustova. Previous blanket absence of 17 plasticity functions is retracted. Exact source/table identity, dry-mass water units and protocol remain unresolved; no plasticity target released. AC is heat of wetting, not filtration."
+  }
+}

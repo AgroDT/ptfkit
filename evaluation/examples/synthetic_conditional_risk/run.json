@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "dataset": {
+    "path": "dataset.json",
+    "sha256": "3c9adc0b2ba8151f7e94e05c53446fc9e31a87a6d27ee2cbd8b598c6c58a8899"
+  },
+  "evaluation_plan": {
+    "path": "../synthetic_retention/evaluation_plan.json",
+    "sha256": "ebf533a969e466c1af91d7ef118a32522824cba92a2fe30df7dbc233e8e4f6df"
+  },
+  "protocol": {
+    "id": "synthetic_retention_v1",
+    "observation_method": "synthetic_pressure_control",
+    "allowed_target_origins": [
+      "synthetic"
+    ],
+    "cohorts": [
+      "maximal",
+      "common"
+    ],
+    "bindings": {
+      "calc_ptf_clapp1978": {
+        "soil_texture": "texture"
+      },
+      "calc_ptf_vereecken1989": {
+        "sand": "sand",
+        "clay": "clay",
+        "carbon": "carbon",
+        "bulk_density": "bulk_density"
+      }
+    }
+  },
+  "bootstrap": {
+    "method": "cluster_percentile_linear_v1",
+    "seed": 20261023,
+    "minimum_groups": 5,
+    "grouping": "source",
+    "missing_profiles": "reject",
+    "confidence_level": 0.95,
+    "n_resamples": 2000
+  },
+  "learned_selection": {
+    "method": "nested_convex_pair_selection_v1",
+    "fixed_selection": {
+      "method": "fixed_candidate_nested_selection_v1",
+      "candidate_ids": [
+        "clapp",
+        "vereecken",
+        "fixed_blend"
+      ],
+      "minimum_coverage": 1.0,
+      "tie_breaker": "candidate_id",
+      "failure_policy": "require_common_cohort",
+      "folds": {
+        "seed": 20261023,
+        "outer_folds": 3,
+        "inner_folds": 2,
+        "grouping": "source",
+        "missing_profiles": "reject",
+        "minimum_training_groups": 2,
+        "minimum_validation_groups": 1
+      },
+      "loss": {
+        "method": "log10_trapezoid_mse_v1",
+        "lower_suction_kpa": 0.1,
+        "upper_suction_kpa": 1000,
+        "minimum_points": 5
+      }
+    },
+    "ensembles": [
+      {
+        "method": "constant_convex_pair_log_pressure_v1",
+        "id": "trained_convex_pair",
+        "left_candidate_id": "clapp",
+        "right_candidate_id": "vereecken",
+        "minimum_training_groups": 2,
+        "minimum_mean_squared_contrast": 1e-10
+      }
+    ],
+    "empirical_domains": {
+      "method": "nested_training_input_envelope_v1",
+      "minimum_training_groups": 2,
+      "composite_rule": "all_registered_members"
+    }
+  },
+  "conditional_outer_risk": [
+    {
+      "protocol": "learned",
+      "strategy": "atomic",
+      "population_id": "iid_binary_group_fixed_predictors_two_samples_v1",
+      "grouping": "source",
+      "maximum_sample_loss": 1,
+      "minimum_group_size": 2,
+      "maximum_group_size": 2,
+      "confidence_level": 0.95,
+      "assumptions": "iid_groups_value_independent_partition_population_bounds",
+      "method": "simultaneous_group_hoeffding_conditional_outer_risk_v1"
+    },
+    {
+      "protocol": "learned",
+      "strategy": "ensemble",
+      "population_id": "iid_binary_group_fixed_predictors_two_samples_v1",
+      "grouping": "source",
+      "maximum_sample_loss": 1,
+      "minimum_group_size": 2,
+      "maximum_group_size": 2,
+      "confidence_level": 0.95,
+      "assumptions": "iid_groups_value_independent_partition_population_bounds",
+      "method": "simultaneous_group_hoeffding_conditional_outer_risk_v1"
+    }
+  ]
+}

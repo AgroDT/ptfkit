@@ -1,0 +1,693 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ptfkit-eval reproducible retention run",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "evaluation_plan", "dataset", "protocol", "bootstrap"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "evaluation_plan": {"$ref": "#/$defs/file"},
+    "dataset": {"$ref": "#/$defs/file"},
+    "protocol": {"$ref": "#/$defs/protocol"},
+    "bootstrap": {"$ref": "#/$defs/bootstrap"},
+    "selection": {"$ref": "#/$defs/selection"},
+    "approximations": {"type": "array", "items": {"$ref": "#/$defs/approximation"}},
+    "prediction_intervals": {"type": "array", "items": {"$ref": "#/$defs/predictionIntervals"}},
+    "empirical_domains": {"type": "array", "items": {"$ref": "#/$defs/empiricalDomain"}},
+    "paired_comparisons": {"type": "array", "items": {"$ref": "#/$defs/pairedComparison"}},
+    "learned_selection": {"$ref": "#/$defs/learnedSelection"},
+    "selection_resampling": {"type": "array", "items": {"$ref": "#/$defs/selectionResampling"}},
+    "conditional_outer_risk": {"type": "array", "minItems": 1, "maxItems": 4, "items": {"$ref": "#/$defs/conditionalOuterRisk"}},
+    "independent_training_risk": {"type": "array", "minItems": 1, "maxItems": 2, "items": {"$ref": "#/$defs/independentTrainingRisk"}},
+    "paired_training_risk": {"$ref": "#/$defs/pairedTrainingRisk"},
+    "point_training_risk": {"type": "array", "minItems": 1, "maxItems": 4, "items": {"$ref": "#/$defs/pointTrainingRisk"}}
+  },
+  "$defs": {
+    "sigmoidGrid": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "id",
+        "left_candidate_id",
+        "right_candidate_id",
+        "parameter_grid",
+        "minimum_training_groups",
+        "minimum_loss_gap"
+      ],
+      "properties": {
+        "method": {
+          "const": "training_grid_log_pressure_sigmoid_v1"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "left_candidate_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "right_candidate_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "parameter_grid": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          }
+        },
+        "minimum_training_groups": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "minimum_loss_gap": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      }
+    },
+    "blendGrid": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method",
+        "id",
+        "left_candidate_id",
+        "right_candidate_id",
+        "transform",
+        "weighting",
+        "minimum_training_groups",
+        "minimum_loss_gap",
+        "interval_grid_kpa"
+      ],
+      "properties": {
+        "method": {
+          "const": "training_grid_blend_interval_v1"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "left_candidate_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "right_candidate_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "transform": {
+          "enum": [
+            "linear",
+            "log10"
+          ]
+        },
+        "weighting": {
+          "enum": [
+            "linear",
+            "smoothstep"
+          ]
+        },
+        "minimum_training_groups": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "minimum_loss_gap": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "interval_grid_kpa": {
+          "type": "array",
+          "minItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          }
+        }
+      }
+    },
+    "pairedTrainingRisk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "seed",
+        "population_id",
+        "learner_id",
+        "grouping",
+        "maximum_sample_loss",
+        "minimum_group_size",
+        "maximum_group_size",
+        "training_groups_per_block",
+        "test_groups_per_block",
+        "n_blocks",
+        "total_learner",
+        "confidence_level",
+        "assumptions",
+        "method",
+        "left_strategy",
+        "right_strategy",
+        "left_learner_id",
+        "right_learner_id"
+      ],
+      "properties": {
+        "point_metric": {"enum": ["mae", "mse"]},
+        "seed": {
+          "type": "integer"
+        },
+        "population_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "learner_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grouping": {
+          "enum": [
+            "source",
+            "profile"
+          ]
+        },
+        "maximum_sample_loss": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "minimum_group_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "maximum_group_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "training_groups_per_block": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "test_groups_per_block": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "n_blocks": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 9007199254740992
+        },
+        "total_learner": {
+          "type": "boolean"
+        },
+        "confidence_level": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "exclusiveMaximum": 1
+        },
+        "assumptions": {
+          "const": "iid_groups_disjoint_blocks_training_only_failure_population_bounds"
+        },
+        "method": {
+          "const": "independent_blocks_affine_paired_training_law_v1"
+        },
+        "left_strategy": {
+          "enum": [
+            "atomic",
+            "ensemble"
+          ]
+        },
+        "right_strategy": {
+          "enum": [
+            "atomic",
+            "ensemble"
+          ]
+        },
+        "left_learner_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "right_learner_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "pointTrainingRisk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "strategy",
+        "seed",
+        "population_id",
+        "learner_id",
+        "grouping",
+        "maximum_sample_loss",
+        "minimum_group_size",
+        "maximum_group_size",
+        "training_groups_per_block",
+        "test_groups_per_block",
+        "n_blocks",
+        "total_learner",
+        "confidence_level",
+        "assumptions",
+        "method",
+        "point_metric"
+      ],
+      "properties": {
+        "strategy": {
+          "enum": [
+            "atomic",
+            "ensemble"
+          ]
+        },
+        "seed": {
+          "type": "integer"
+        },
+        "population_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "learner_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grouping": {
+          "enum": [
+            "source",
+            "profile"
+          ]
+        },
+        "maximum_sample_loss": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "minimum_group_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "maximum_group_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "training_groups_per_block": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "test_groups_per_block": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "n_blocks": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 9007199254740992
+        },
+        "total_learner": {
+          "type": "boolean"
+        },
+        "confidence_level": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "exclusiveMaximum": 1
+        },
+        "assumptions": {
+          "const": "iid_groups_disjoint_blocks_training_only_failure_population_bounds"
+        },
+        "method": {
+          "const": "independent_blocks_group_hoeffding_training_law_v1"
+        },
+        "point_metric": {
+          "enum": [
+            "mae",
+            "mse"
+          ]
+        }
+      }
+    },
+    "independentTrainingRisk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "strategy",
+        "seed",
+        "population_id",
+        "learner_id",
+        "grouping",
+        "maximum_sample_loss",
+        "minimum_group_size",
+        "maximum_group_size",
+        "training_groups_per_block",
+        "test_groups_per_block",
+        "n_blocks",
+        "total_learner",
+        "confidence_level",
+        "assumptions",
+        "method"
+      ],
+      "properties": {
+        "strategy": {
+          "enum": [
+            "atomic",
+            "ensemble"
+          ]
+        },
+        "seed": {
+          "type": "integer"
+        },
+        "population_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "learner_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grouping": {
+          "enum": [
+            "source",
+            "profile"
+          ]
+        },
+        "maximum_sample_loss": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "minimum_group_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "maximum_group_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "training_groups_per_block": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "test_groups_per_block": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "n_blocks": {
+          "type": "integer",
+          "minimum": 2,
+          "maximum": 9007199254740992
+        },
+        "total_learner": {
+          "type": "boolean"
+        },
+        "confidence_level": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "exclusiveMaximum": 1
+        },
+        "assumptions": {
+          "const": "iid_groups_disjoint_blocks_training_only_failure_population_bounds"
+        },
+        "method": {
+          "const": "independent_blocks_group_hoeffding_training_law_v1"
+        }
+      }
+    },
+    "conditionalOuterRisk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "strategy",
+        "population_id",
+        "grouping",
+        "maximum_sample_loss",
+        "minimum_group_size",
+        "maximum_group_size",
+        "confidence_level",
+        "assumptions",
+        "method"
+      ],
+      "properties": {
+        "protocol": {
+          "enum": [
+            "fixed",
+            "learned"
+          ]
+        },
+        "strategy": {
+          "enum": [
+            "atomic",
+            "ensemble"
+          ]
+        },
+        "population_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "grouping": {
+          "enum": [
+            "source",
+            "profile"
+          ]
+        },
+        "maximum_sample_loss": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "minimum_group_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "maximum_group_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740992
+        },
+        "confidence_level": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "exclusiveMaximum": 1
+        },
+        "assumptions": {
+          "const": "iid_groups_value_independent_partition_population_bounds"
+        },
+        "method": {
+          "const": "simultaneous_group_hoeffding_conditional_outer_risk_v1"
+        }
+      }
+    },
+    "selectionResampling": {
+      "type": "object", "additionalProperties": false,
+      "required": ["method", "protocol", "seed", "n_resamples", "minimum_groups"],
+      "properties": {
+        "method": {"const": "whole_group_bootstrap_retraining_sensitivity_v1"},
+        "protocol": {"enum": ["fixed", "learned"]},
+        "seed": {"type": "integer"},
+        "n_resamples": {"type": "integer", "minimum": 2},
+        "minimum_groups": {"type": "integer", "minimum": 2}
+      }
+    },
+    "learnedSelection": {
+      "type": "object", "additionalProperties": false,
+      "required": ["method", "fixed_selection", "ensembles"],
+      "properties": {
+        "empirical_domains": {"$ref": "#/$defs/selection/properties/empirical_domains"},
+        "method": {"enum": ["nested_convex_pair_selection_v1", "nested_two_curve_selection_v1"]},
+        "fixed_selection": {"$ref": "#/$defs/selection"},
+        "ensembles": {"type": "array", "minItems": 1, "items": {"oneOf": [
+          {"$ref": "#/$defs/convexPair"}, {"$ref": "#/$defs/hardSwitchGrid"}, {"$ref": "#/$defs/blendGrid"}, {"$ref": "#/$defs/sigmoidGrid"}
+        ]}}
+      }
+    },
+    "convexPair": {
+          "type": "object", "additionalProperties": false,
+          "required": ["method", "id", "left_candidate_id", "right_candidate_id", "minimum_training_groups", "minimum_mean_squared_contrast"],
+          "properties": {
+            "method": {"enum": ["constant_convex_pair_log_pressure_v1", "constant_convex_pair_single_pressure_v1"]},
+            "id": {"$ref": "#/$defs/text"},
+            "left_candidate_id": {"$ref": "#/$defs/text"},
+            "right_candidate_id": {"$ref": "#/$defs/text"},
+            "minimum_training_groups": {"type": "integer", "minimum": 1},
+            "minimum_mean_squared_contrast": {"type": "number", "exclusiveMinimum": 0}
+          }
+        },
+    "hardSwitchGrid": {
+      "type": "object", "additionalProperties": false,
+      "required": ["method", "id", "left_candidate_id", "right_candidate_id", "minimum_training_groups", "boundary_grid_kpa", "boundary_member", "minimum_loss_gap"],
+      "properties": {
+        "method": {"const": "training_grid_hard_switch_v1"},
+        "id": {"$ref": "#/$defs/text"},
+        "left_candidate_id": {"$ref": "#/$defs/text"},
+        "right_candidate_id": {"$ref": "#/$defs/text"},
+        "minimum_training_groups": {"type": "integer", "minimum": 1},
+        "boundary_grid_kpa": {"type": "array", "minItems": 2, "uniqueItems": true, "items": {"type": "number", "exclusiveMinimum": 0}},
+        "boundary_member": {"enum": ["left", "right"]},
+        "minimum_loss_gap": {"type": "number", "exclusiveMinimum": 0}
+      }
+    },
+    "pairedComparison": {
+      "type": "object", "additionalProperties": false,
+      "required": ["method", "left_candidate_id", "right_candidate_id", "cohort"],
+      "properties": {
+        "method": {"const": "paired_cluster_percentile_linear_v1"},
+        "left_candidate_id": {"$ref": "#/$defs/text"},
+        "right_candidate_id": {"$ref": "#/$defs/text"},
+        "cohort": {"const": "run_common"}
+      }
+    },
+    "empiricalDomain": {
+      "type": "object", "additionalProperties": false,
+      "required": ["method", "candidate_id", "training_groups", "test_groups", "minimum_training_groups", "grouping"],
+      "properties": {
+        "method": {"const": "training_input_envelope_v1"},
+        "candidate_id": {"$ref": "#/$defs/text"},
+        "grouping": {"enum": ["source", "profile"]},
+        "minimum_training_groups": {"type": "integer", "minimum": 1},
+        "training_groups": {"$ref": "#/$defs/groupIds"},
+        "test_groups": {"$ref": "#/$defs/groupIds"}
+      }
+    },
+    "predictionIntervals": {
+      "type": "object", "additionalProperties": false,
+      "required": ["method", "candidate_id", "training_groups", "calibration_groups", "test_groups", "pressure_grid_kpa", "confidence_level", "minimum_calibration_groups", "grouping"],
+      "properties": {
+        "method": {"const": "fixed_group_max_split_conformal_v1"},
+        "candidate_id": {"$ref": "#/$defs/text"},
+        "grouping": {"enum": ["source", "profile"]},
+        "confidence_level": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1},
+        "minimum_calibration_groups": {"type": "integer", "minimum": 2},
+        "pressure_grid_kpa": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "number", "minimum": 0}},
+        "training_groups": {"$ref": "#/$defs/groupIds"}, "calibration_groups": {"$ref": "#/$defs/groupIds"}, "test_groups": {"$ref": "#/$defs/groupIds"}
+      }
+    },
+    "groupIds": {"type": "array", "uniqueItems": true, "items": {
+      "type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "string"}
+    }},
+    "approximation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["family_id", "parameters", "seed", "minimum_log10_span", "n_starts", "max_evaluations", "optimizer_tolerance", "boundary_tolerance", "rank_tolerance", "maximum_condition_number", "objective_agreement_tolerance", "parameter_agreement_tolerance", "confidence_level", "method", "uncertainty_method"],
+      "properties": {
+        "family_id": {"enum": ["van_genuchten_mualem_v1", "van_genuchten_m1_v1", "brooks_corey_v1", "clapp1978_gradual_air_entry_v1"]},
+        "parameters": {"type": "array", "minItems": 1, "items": {
+          "type": "object", "additionalProperties": false,
+          "required": ["name", "lower", "upper", "initial"],
+          "properties": {"name": {"$ref": "#/$defs/text"}, "lower": {"type": "number"}, "upper": {"type": "number"}, "initial": {"type": "number"}}
+        }},
+        "seed": {"type": "integer", "minimum": 0},
+        "minimum_log10_span": {"type": "number", "exclusiveMinimum": 0},
+        "n_starts": {"type": "integer", "minimum": 1}, "max_evaluations": {"type": "integer", "minimum": 1},
+        "optimizer_tolerance": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1},
+        "boundary_tolerance": {"type": "number", "exclusiveMinimum": 0},
+        "rank_tolerance": {"type": "number", "exclusiveMinimum": 0},
+        "maximum_condition_number": {"type": "number", "minimum": 1},
+        "objective_agreement_tolerance": {"type": "number", "exclusiveMinimum": 0},
+        "parameter_agreement_tolerance": {"type": "number", "exclusiveMinimum": 0},
+        "confidence_level": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1},
+        "method": {"enum": ["bounded_trf_uniform_multistart_v1", "bounded_trf_ordered_water_multistart_v1"]},
+        "restart_policy": {"enum": ["seeded_box_v1", "brooks_corey_pressure_partitions_v1", "brooks_corey_interval_solves_v1"]},
+        "additional_starts": {"type": "array", "items": {"type": "array", "minItems": 1, "items": {"type": "number"}}},
+        "uncertainty_method": {"const": "local_linear_iid_student_t_v1"}
+      }
+    },
+    "selection": {
+      "type": "object", "additionalProperties": false,
+      "required": ["method", "candidate_ids", "folds", "loss", "minimum_coverage", "tie_breaker", "failure_policy"],
+      "properties": {
+        "empirical_domains": {
+          "type": "object", "additionalProperties": false,
+          "required": ["method", "minimum_training_groups", "composite_rule"],
+          "properties": {
+            "method": {"const": "nested_training_input_envelope_v1"},
+            "minimum_training_groups": {"type": "integer", "minimum": 1},
+            "composite_rule": {"const": "all_registered_members"}
+          }
+        },
+        "method": {"const": "fixed_candidate_nested_selection_v1"},
+        "candidate_ids": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"$ref": "#/$defs/text"}},
+        "minimum_coverage": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+        "tie_breaker": {"const": "candidate_id"},
+        "failure_policy": {"const": "require_common_cohort"},
+        "folds": {
+          "type": "object", "additionalProperties": false,
+          "required": ["seed", "outer_folds", "inner_folds", "grouping", "missing_profiles", "minimum_training_groups", "minimum_validation_groups"],
+          "properties": {
+            "seed": {"type": "integer"},
+            "outer_folds": {"type": "integer", "minimum": 2}, "inner_folds": {"type": "integer", "minimum": 2},
+            "grouping": {"enum": ["source", "profile"]}, "missing_profiles": {"enum": ["reject", "source"]},
+            "minimum_training_groups": {"type": "integer", "minimum": 1},
+            "minimum_validation_groups": {"type": "integer", "minimum": 1}
+          }
+        },
+        "loss": {
+          "oneOf": [
+            {
+              "type": "object", "additionalProperties": false,
+              "required": ["method", "lower_suction_kpa", "upper_suction_kpa", "minimum_points"],
+              "properties": {"method": {"const": "log10_trapezoid_mse_v1"},
+                             "lower_suction_kpa": {"type": "number", "exclusiveMinimum": 0},
+                             "upper_suction_kpa": {"type": "number", "exclusiveMinimum": 0},
+                             "minimum_points": {"type": "integer", "minimum": 2}}
+            },
+            {
+              "type": "object", "additionalProperties": false,
+              "required": ["method", "suction_kpa"],
+              "properties": {"method": {"const": "single_pressure_mse_v1"},
+                             "suction_kpa": {"type": "number", "minimum": 0}}
+            }
+          ]
+        }
+      }
+    },
+    "text": {"type": "string", "minLength": 1, "pattern": "\\S"},
+    "file": {
+      "type": "object", "additionalProperties": false, "required": ["path", "sha256"],
+      "properties": {"path": {"$ref": "#/$defs/text"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+    },
+    "protocol": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "observation_method", "allowed_target_origins", "cohorts", "bindings"],
+      "properties": {
+        "id": {"$ref": "#/$defs/text"}, "observation_method": {"$ref": "#/$defs/text"},
+        "allowed_target_origins": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["measured", "derived", "synthetic"]}},
+        "cohorts": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["maximal", "common"]}},
+        "bindings": {
+          "type": "object", "additionalProperties": {
+            "type": "object", "additionalProperties": {"$ref": "#/$defs/text"}
+          }
+        }
+      }
+    },
+    "bootstrap": {
+      "type": "object", "additionalProperties": false,
+      "required": ["method", "seed", "minimum_groups", "grouping", "missing_profiles", "confidence_level", "n_resamples"],
+      "properties": {
+        "method": {"const": "cluster_percentile_linear_v1"},
+        "seed": {"type": "integer"}, "minimum_groups": {"type": "integer", "minimum": 2},
+        "grouping": {"enum": ["source", "profile"]}, "missing_profiles": {"enum": ["reject", "source"]},
+        "confidence_level": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 1},
+        "n_resamples": {"type": "integer", "minimum": 2}
+      }
+    }
+  }
+}

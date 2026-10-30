@@ -12,7 +12,7 @@
  * Saxton, K. E., & Rawls, W. J. (2006). Soil water characteristic estimates by texture and
  * organic matter for hydrologic solutions. Soil Science Society of America Journal, 70(5),
  * 1569-1578.
- * @see https://doi.org/10.2136/ssaj2005.0117 DOI: 10.2136/ssaj2005.0117
+ * @see https://doi.org/10.2136/sssaj2005.0117 DOI: 10.2136/sssaj2005.0117
  *
  * @remark Geographic scope:
  * United States

@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "review_scope": "existing_class_parameter_function_measurement_contract_and_retention_adapter",
+  "source": "wosten2001",
+  "function": "calc_ptf_wosten2001_class_parameters",
+  "paper": {
+    "url": "https://edepot.wur.nl/43272",
+    "sha256": "6d515931502e54d97e6a84c0aa80dc78f15adc8839d0b0fd5a55496dc89d5289",
+    "locations": [
+      "Section 2.2, printed pages 13-15: analytic hydraulic models and parameter definitions",
+      "Section 3.1, printed pages 17-21: Dutch soil classes, including organic soils",
+      "Table 3, printed pages 23-24: six class parameters and their units",
+      "Table 4, printed pages 25-28: computed hydraulic curves, not independent observations"
+    ],
+    "visually_checked_tables": ["Table 3, pages 23-24", "Table 4, pages 26-27"]
+  },
+  "material_basis": {
+    "identifier": "soil",
+    "meaning": "Bulk soil represented by the selected original Staring class, including mineral and organic classes.",
+    "water_content_denominator": "bulk_volume",
+    "parameter_denominator": "not_applicable",
+    "compatibility_policy": "Exact material equality remains required; soil does not silently match mineral_soil, fine_earth or unspecified."
+  },
+  "decisions": [
+    "All six Table 3 outputs are estimated model parameters, not observations or confidence bounds.",
+    "The class identifier retains the original 36-class Dutch Staring classification; no USDA or Russian texture crosswalk is introduced.",
+    "Water contents use volume_fraction, conductivity uses centimeter_per_day, alpha uses inverse_centimeter, l and n are dimensionless.",
+    "The retention adapter uses theta_r, theta_s, alpha and n with m = 1 - 1/n and nonnegative pressure-head magnitude in centimeters.",
+    "The adapter is restricted to the explicitly reviewed class-parameter function; matching output names do not establish model equivalence.",
+    "Conductivity parameters are retained in the manifest but conductivity evaluation is outside this adapter.",
+    "No formulas, coefficients, class values, computational target code or function status are changed."
+  ],
+  "real_dataset_status": {
+    "dataset": "meta-v3-3-reviewed-volume",
+    "status": "blocked",
+    "reasons": ["no_reviewed_staring_class_binding", "target_material_unspecified"],
+    "claim": "Manifest inclusion enables evaluation on compatible datasets; it does not establish eligibility for this workbook."
+  }
+}

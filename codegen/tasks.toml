@@ -13,6 +13,11 @@ description = "Run code generator tests"
 dir = "codegen"
 run = "cargo test"
 
+["codegen:manifest"]
+description = "Generate the packaged Python function manifest"
+dir = "codegen"
+run = "cargo run -- generate-manifest"
+
 ["codegen:test-update"]
 description = "Update code generator snapshots for all or selected tests"
 dir = "codegen"

@@ -1,0 +1,334 @@
+import math
+import sys
+from types import ModuleType, SimpleNamespace
+
+import pytest
+
+from ptfkit_eval import (
+    AdapterPrediction,
+    AtomicCurve,
+    AxisSpec,
+    BlendTransition,
+    CompositeMember,
+    FunctionCurveCandidate,
+    Interval,
+    Provenance,
+    RangeGatedCurveCandidate,
+    RangeGatedRouter,
+    TargetSpec,
+    evaluate_candidate,
+    load_evaluation_plan,
+)
+
+
+def test_inactive_composite_members_do_not_require_inputs_or_execute():
+    interval_wet = Interval(0.0, 1.0, lower_inclusive=True, upper_inclusive=True)
+    interval_dry = Interval(2.0, 100.0, lower_inclusive=True, upper_inclusive=True)
+    curve = AtomicCurve('calc_ptf_clapp1978', AdapterPrediction('clapp1978_h_theta'))
+    candidate = RangeGatedCurveCandidate(
+        'fixed',
+        AxisSpec('matric_potential', 'kilopascal', 'magnitude', 'linear'),
+        TargetSpec('volumetric_water_content', 'volume_fraction', 'mineral_soil', 'bulk_volume'),
+        (CompositeMember('wet', interval_wet, curve), CompositeMember('dry', interval_dry, curve)),
+        RangeGatedRouter({'wet': interval_wet, 'dry': interval_dry}, (), 'linear'),
+        Provenance('fixed', 'Synthetic routing contract.', None),
+    )
+    evaluated = evaluate_candidate(candidate, [0.0], {'wet': {'soil_texture': 'sand'}})
+
+    assert evaluated.points[0].value == pytest.approx(0.395)
+    assert [item.member_id for item in evaluated.points[0].contributions] == ['wet']
+
+
+def test_zero_weight_at_a_blend_endpoint_does_not_require_the_other_members_inputs():
+    wet = Interval(0.1, 10, lower_inclusive=True, upper_inclusive=True)
+    dry = Interval(1, 100, lower_inclusive=True, upper_inclusive=True)
+    transition = BlendTransition(
+        'wet', 'dry', Interval(1, 10, lower_inclusive=True, upper_inclusive=True), 'linear'
+    )
+    clapp = AtomicCurve('calc_ptf_clapp1978', AdapterPrediction('clapp1978_h_theta'))
+    vereecken = AtomicCurve('calc_ptf_vereecken1989', AdapterPrediction('vereecken1989_h_theta'))
+    candidate = RangeGatedCurveCandidate(
+        'blend',
+        AxisSpec('matric_potential', 'kilopascal', 'magnitude', 'linear'),
+        TargetSpec('volumetric_water_content', 'volume_fraction', 'mineral_soil', 'bulk_volume'),
+        (CompositeMember('wet', wet, clapp), CompositeMember('dry', dry, vereecken)),
+        RangeGatedRouter({'wet': wet, 'dry': dry}, (transition,), 'linear'),
+        Provenance('fixed', 'Synthetic boundary contract.', None),
+    )
+    result = evaluate_candidate(candidate, [1.0], {'wet': {'soil_texture': 'sand'}})
+    assert result.points[0].value == pytest.approx(0.395 * (3.5 * 0.0980665) ** (1 / 4.05))
+    assert [member.member_id for member in result.points[0].contributions] == ['wet']
+
+
+def _axis() -> dict[str, object]:
+    return {
+        'quantity': 'matric_potential',
+        'unit': 'kilopascal',
+        'convention': 'magnitude',
+        'transform': 'log10',
+    }
+
+
+def _target(unit: str = 'volume_fraction') -> dict[str, object]:
+    return {
+        'quantity': 'volumetric_water_content',
+        'unit': unit,
+        'material_basis': 'mineral_soil',
+        'denominator_basis': 'bulk_volume',
+    }
+
+
+def _clapp_prediction() -> dict[str, object]:
+    return {'kind': 'model_adapter', 'id': 'clapp1978_h_theta'}
+
+
+def _vereecken_prediction() -> dict[str, object]:
+    return {'kind': 'model_adapter', 'id': 'vereecken1989_h_theta'}
+
+
+def _direct_manifest() -> dict[str, object]:
+    basis = {'material': 'mineral_soil', 'denominator': 'bulk_volume'}
+    return {
+        'schema_version': 1,
+        'units': {
+            'kilopascal': {
+                'conversion': {'dimension': 'pressure', 'scale_to_si': 1000.0, 'offset_to_si': 0.0}
+            },
+            'centimeter_water_head': {
+                'conversion': {
+                    'dimension': 'pressure',
+                    'scale_to_si': 98.0665,
+                    'offset_to_si': 0.0,
+                }
+            },
+            'volume_fraction': {
+                'conversion': {'dimension': 'volume_ratio', 'scale_to_si': 1.0, 'offset_to_si': 0.0}
+            },
+            'volume_percent': {
+                'conversion': {
+                    'dimension': 'volume_ratio',
+                    'scale_to_si': 0.01,
+                    'offset_to_si': 0.0,
+                }
+            },
+        },
+        'quantities': {
+            'matric_potential': {'units': ['kilopascal', 'centimeter_water_head']},
+            'volumetric_water_content': {'units': ['volume_fraction', 'volume_percent']},
+        },
+        'functions': [
+            {
+                'id': 'calc_fixture_curve',
+                'module': 'ptfkit_eval_test_fixture',
+                'callable': 'calc_fixture_curve',
+                'models': {'h_theta': None, 'k_h': None},
+                'inputs': [
+                    {
+                        'kind': 'numeric',
+                        'name': 'pressure',
+                        'measurement': {
+                            'quantity': 'matric_potential',
+                            'unit': 'centimeter_water_head',
+                            'basis': {
+                                'material': 'mineral_soil',
+                                'denominator': 'not_applicable',
+                            },
+                            'role': 'predictor',
+                        },
+                    }
+                ],
+                'outputs': [
+                    {
+                        'kind': 'numeric',
+                        'name': 'theta',
+                        'measurement': {
+                            'quantity': 'volumetric_water_content',
+                            'unit': 'volume_fraction',
+                            'basis': basis,
+                            'role': 'prediction',
+                        },
+                    }
+                ],
+            }
+        ],
+    }
+
+
+def test_executes_clapp1978_from_categorical_input_through_unit_conversions():
+    plan = load_evaluation_plan(
+        {
+            'schema_version': 1,
+            'ptfkit_manifest_schema_version': 1,
+            'candidates': [
+                {
+                    'id': 'clapp_sand',
+                    'kind': 'function_curve',
+                    'axis': _axis(),
+                    'target': _target('volume_percent'),
+                    'function': 'calc_ptf_clapp1978',
+                    'prediction': _clapp_prediction(),
+                }
+            ],
+        }
+    )
+    candidate = plan.candidates[0]
+    assert isinstance(candidate, FunctionCurveCandidate)
+    half_wetness_suction_kpa = 3.50 * 2.0**4.05 * 0.0980665
+
+    evaluated = evaluate_candidate(
+        candidate,
+        [0.0, half_wetness_suction_kpa],
+        {'soil_texture': 'sand'},
+    )
+
+    assert [point.value for point in evaluated.points] == pytest.approx([39.5, 19.75])
+    assert evaluated.points[1].contributions[0].function == 'calc_ptf_clapp1978'
+
+
+def test_executes_vereecken1989_parameters_as_a_reduced_van_genuchten_curve():
+    plan = load_evaluation_plan(
+        {
+            'schema_version': 1,
+            'ptfkit_manifest_schema_version': 1,
+            'candidates': [
+                {
+                    'id': 'vereecken_mean_soil',
+                    'kind': 'function_curve',
+                    'axis': _axis(),
+                    'target': _target(),
+                    'function': 'calc_ptf_vereecken1989',
+                    'prediction': _vereecken_prediction(),
+                }
+            ],
+        }
+    )
+    candidate = plan.candidates[0]
+    assert isinstance(candidate, FunctionCurveCandidate)
+
+    evaluated = evaluate_candidate(
+        candidate,
+        [0.0, 9.80665],
+        {'sand': 52.14, 'clay': 10.93, 'carbon': 1.03, 'bulk_density': 1.466},
+    )
+
+    assert [point.value for point in evaluated.points] == pytest.approx(
+        [0.4060520000000001, 0.311870949865206]
+    )
+    assert evaluated.points[1].contributions[0].function == 'calc_ptf_vereecken1989'
+
+
+def test_executes_a_direct_curve_output_with_a_resolved_axis_input(
+    monkeypatch: pytest.MonkeyPatch,
+):
+    module = ModuleType('ptfkit_eval_test_fixture')
+
+    def calc_fixture_curve(*, pressure: float) -> SimpleNamespace:
+        return SimpleNamespace(theta=pressure / 200.0)
+
+    module.__dict__['calc_fixture_curve'] = calc_fixture_curve
+    monkeypatch.setitem(sys.modules, module.__name__, module)
+    manifest = _direct_manifest()
+    plan = load_evaluation_plan(
+        {
+            'schema_version': 1,
+            'ptfkit_manifest_schema_version': 1,
+            'candidates': [
+                {
+                    'id': 'direct_curve',
+                    'kind': 'function_curve',
+                    'axis': _axis(),
+                    'target': _target('volume_percent'),
+                    'function': 'calc_fixture_curve',
+                    'prediction': {'kind': 'output', 'name': 'theta'},
+                }
+            ],
+        },
+        manifest=manifest,
+    )
+    candidate = plan.candidates[0]
+    assert isinstance(candidate, FunctionCurveCandidate)
+
+    evaluated = evaluate_candidate(
+        candidate,
+        [9.80665],
+        {},
+        manifest=manifest,
+    )
+
+    assert evaluated.points[0].value == pytest.approx(50.0)
+
+
+def test_executes_and_traces_a_range_gated_clapp1978_ensemble():
+    plan = load_evaluation_plan(
+        {
+            'schema_version': 1,
+            'ptfkit_manifest_schema_version': 1,
+            'candidates': [
+                {
+                    'id': 'texture_ensemble',
+                    'kind': 'range_gated_curve',
+                    'axis': _axis(),
+                    'target': _target(),
+                    'members': [
+                        {
+                            'id': 'wet',
+                            'function': 'calc_ptf_clapp1978',
+                            'prediction': _clapp_prediction(),
+                            'interval': {
+                                'lower': {'value': 0.1, 'inclusive': True},
+                                'upper': {'value': 10.0, 'inclusive': True},
+                            },
+                        },
+                        {
+                            'id': 'dry',
+                            'function': 'calc_ptf_clapp1978',
+                            'prediction': _clapp_prediction(),
+                            'interval': {
+                                'lower': {'value': 1.0, 'inclusive': True},
+                                'upper': {'value': 100.0, 'inclusive': True},
+                            },
+                        },
+                    ],
+                    'routing': {
+                        'gap': 'reject',
+                        'extrapolation': 'reject',
+                        'transitions': [
+                            {
+                                'kind': 'blend',
+                                'left_member': 'wet',
+                                'right_member': 'dry',
+                                'interval': {
+                                    'lower': {'value': 1.0, 'inclusive': True},
+                                    'upper': {'value': 10.0, 'inclusive': True},
+                                },
+                                'weighting': 'linear',
+                            }
+                        ],
+                    },
+                    'provenance': {
+                        'kind': 'fixed',
+                        'source': 'Execution test with explicit range boundaries.',
+                    },
+                }
+            ],
+        }
+    )
+    candidate = plan.candidates[0]
+    assert isinstance(candidate, RangeGatedCurveCandidate)
+
+    evaluated = evaluate_candidate(
+        candidate,
+        [math.sqrt(10.0)],
+        {
+            'wet': {'soil_texture': 'sand'},
+            'dry': {'soil_texture': 'clay'},
+        },
+    )
+
+    point = evaluated.points[0]
+    assert [item.member_id for item in point.contributions] == ['wet', 'dry']
+    assert [item.weight for item in point.contributions] == pytest.approx([0.5, 0.5])
+    assert point.contributions[0].value != point.contributions[1].value
+    assert point.value == pytest.approx(
+        sum(item.weight * item.value for item in point.contributions)
+    )

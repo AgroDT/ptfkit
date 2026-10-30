@@ -1,0 +1,69 @@
+{
+  "blocker_counts": [
+    {
+      "count": 602,
+      "label": "pressure_convention_by_source"
+    },
+    {
+      "count": 30,
+      "label": "pressure_over_salts_meaning"
+    },
+    {
+      "count": 60,
+      "label": "pressure_pgk_meaning"
+    },
+    {
+      "count": 149,
+      "label": "retention_observation_provenance"
+    },
+    {
+      "count": 74,
+      "label": "retention_reconstruction"
+    },
+    {
+      "count": 119,
+      "label": "unknown_water_basis"
+    },
+    {
+      "count": 464,
+      "label": "water_scale_by_source"
+    }
+  ],
+  "excluded_observation_count": 719,
+  "exclusion_reasons": [
+    {
+      "count": 6,
+      "label": "ambiguous_sample_identity"
+    },
+    {
+      "count": 1,
+      "label": "invalid_water_content_value"
+    },
+    {
+      "count": 3,
+      "label": "non_observation_table_value"
+    },
+    {
+      "count": 48,
+      "label": "sample_identity_mismatch"
+    },
+    {
+      "count": 644,
+      "label": "source_rule_blocked"
+    },
+    {
+      "count": 17,
+      "label": "unreviewed_pressure_value"
+    }
+  ],
+  "fitted_parameter_count": 92,
+  "input_observation_count": 1755,
+  "missing_source_exclusion_count": 0,
+  "normalized_observation_count": 1036,
+  "schema_version": 1,
+  "sha256": "1322bf65b1ca0130085015209858a443d1ee82a7e2ae69232321cd8ede361e68",
+  "sheet_name": "ОГХ",
+  "source_filename": "meta_v3.3.xlsx",
+  "total_data_rows": 1847,
+  "unclassified_exclusion_count": 0
+}

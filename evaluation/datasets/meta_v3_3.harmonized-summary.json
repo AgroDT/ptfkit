@@ -1,0 +1,3562 @@
+{
+  "approximate_in_main_leaderboard": false,
+  "coverage_milestone_met": false,
+  "ensembles": [
+    {
+      "learning_status": "insufficient_independent_profiles",
+      "members": {
+        "calc_ptf_clapp1978": [
+          "strict"
+        ],
+        "calc_ptf_cosby1984_univariate": [
+          "derived",
+          "strict"
+        ]
+      },
+      "recommendation": null,
+      "status": "descriptive",
+      "target_pool": "curve:volumetric_water_content",
+      "training_observation_tiers": [
+        "strict"
+      ],
+      "view": "harmonized"
+    },
+    {
+      "learning_status": "insufficient_independent_profiles",
+      "members": {
+        "calc_ptf_clapp1978": [
+          "reconstructed",
+          "strict"
+        ],
+        "calc_ptf_cosby1984_univariate": [
+          "derived",
+          "reconstructed"
+        ]
+      },
+      "recommendation": null,
+      "status": "descriptive",
+      "target_pool": "fixed_pressure:volumetric_water_content:10kPa",
+      "training_observation_tiers": [
+        "reconstructed"
+      ],
+      "view": "harmonized"
+    },
+    {
+      "learning_status": "insufficient_independent_profiles",
+      "members": {
+        "calc_ptf_clapp1978": [
+          "reconstructed",
+          "strict"
+        ],
+        "calc_ptf_cosby1984_univariate": [
+          "derived",
+          "reconstructed"
+        ]
+      },
+      "recommendation": null,
+      "status": "descriptive",
+      "target_pool": "fixed_pressure:volumetric_water_content:1500kPa",
+      "training_observation_tiers": [
+        "reconstructed"
+      ],
+      "view": "harmonized"
+    },
+    {
+      "learning_status": "insufficient_independent_profiles",
+      "members": {
+        "calc_ptf_clapp1978": [
+          "reconstructed",
+          "strict"
+        ],
+        "calc_ptf_cosby1984_univariate": [
+          "derived",
+          "reconstructed"
+        ]
+      },
+      "recommendation": null,
+      "status": "descriptive",
+      "target_pool": "fixed_pressure:volumetric_water_content:33kPa",
+      "training_observation_tiers": [
+        "reconstructed"
+      ],
+      "view": "harmonized"
+    }
+  ],
+  "exploratory_executed": false,
+  "fixed_pressure_targets": {
+    "fixed_pressure:gravimetric_water_content:100kPa": {
+      "reconstructed": 47
+    },
+    "fixed_pressure:gravimetric_water_content:1500kPa": {
+      "reconstructed": 29
+    },
+    "fixed_pressure:gravimetric_water_content:33kPa": {
+      "reconstructed": 50
+    },
+    "fixed_pressure:gravimetric_water_content:500kPa": {
+      "reconstructed": 47
+    },
+    "fixed_pressure:volumetric_water_content:0kPa": {
+      "strict": 18
+    },
+    "fixed_pressure:volumetric_water_content:1000kPa": {
+      "reconstructed": 57
+    },
+    "fixed_pressure:volumetric_water_content:100kPa": {
+      "reconstructed": 58
+    },
+    "fixed_pressure:volumetric_water_content:10kPa": {
+      "reconstructed": 40
+    },
+    "fixed_pressure:volumetric_water_content:1500kPa": {
+      "reconstructed": 42
+    },
+    "fixed_pressure:volumetric_water_content:200kPa": {
+      "reconstructed": 58
+    },
+    "fixed_pressure:volumetric_water_content:20kPa": {
+      "reconstructed": 58
+    },
+    "fixed_pressure:volumetric_water_content:33kPa": {
+      "reconstructed": 40,
+      "strict": 18
+    },
+    "fixed_pressure:volumetric_water_content:400kPa": {
+      "reconstructed": 58
+    },
+    "fixed_pressure:volumetric_water_content:4kPa": {
+      "reconstructed": 28
+    },
+    "fixed_pressure:volumetric_water_content:60kPa": {
+      "reconstructed": 58
+    },
+    "fixed_pressure:volumetric_water_content:700kPa": {
+      "reconstructed": 57
+    },
+    "fixed_pressure:volumetric_water_content:7kPa": {
+      "reconstructed": 40
+    }
+  },
+  "functions": [
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ahuja1984",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_aimrun2009",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 159,
+        "target_quantity_mismatch": 159,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_bai2022",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_bai2022_bulk_density",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:sand": 309,
+        "missing_predictor:silt": 309,
+        "missing_predictor:soil_organic_matter": 327,
+        "no_supported_target_observations": 248,
+        "outside_measured_wrc_range": 21,
+        "target_physical_contract_mismatch": 218,
+        "target_quantity_mismatch": 227,
+        "unsupported_operational_target": 109,
+        "unverified_derivation:sand": 18,
+        "unverified_derivation:silt": 18
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_beniaich2023_mlr1",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:sand": 309,
+        "missing_predictor:soil_organic_matter": 327,
+        "no_supported_target_observations": 248,
+        "outside_measured_wrc_range": 21,
+        "target_physical_contract_mismatch": 218,
+        "target_quantity_mismatch": 227,
+        "unsupported_operational_target": 109,
+        "unverified_derivation:sand": 18
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_beniaich2023_mlr2",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:silt": 309,
+        "missing_predictor:soil_organic_matter": 327,
+        "no_supported_target_observations": 248,
+        "outside_measured_wrc_range": 21,
+        "target_physical_contract_mismatch": 218,
+        "target_quantity_mismatch": 227,
+        "unsupported_operational_target": 109,
+        "unverified_derivation:silt": 18
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_beniaich2023_mlr3",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:clay": 309,
+        "missing_predictor:soil_organic_matter": 327,
+        "no_supported_target_observations": 248,
+        "outside_measured_wrc_range": 21,
+        "target_physical_contract_mismatch": 218,
+        "target_quantity_mismatch": 227,
+        "unsupported_operational_target": 109,
+        "unverified_derivation:clay": 18
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_beniaich2023_mlr4",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:clay": 309,
+        "missing_predictor:silt": 309,
+        "missing_predictor:soil_organic_matter": 327,
+        "no_supported_target_observations": 248,
+        "outside_measured_wrc_range": 21,
+        "target_physical_contract_mismatch": 218,
+        "target_quantity_mismatch": 227,
+        "unsupported_operational_target": 109,
+        "unverified_derivation:clay": 18,
+        "unverified_derivation:silt": 18
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_beniaich2023_mlr5",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:clay": 309,
+        "no_supported_target_observations": 248,
+        "outside_measured_wrc_range": 21,
+        "target_physical_contract_mismatch": 218,
+        "target_quantity_mismatch": 227,
+        "unsupported_operational_target": 109,
+        "unverified_derivation:clay": 18
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_beniaich2023_slr1",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:silt": 309,
+        "no_supported_target_observations": 248,
+        "outside_measured_wrc_range": 21,
+        "target_physical_contract_mismatch": 218,
+        "target_quantity_mismatch": 227,
+        "unsupported_operational_target": 109,
+        "unverified_derivation:silt": 18
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_beniaich2023_slr2",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:sand": 309,
+        "no_supported_target_observations": 248,
+        "outside_measured_wrc_range": 21,
+        "target_physical_contract_mismatch": 218,
+        "target_quantity_mismatch": 227,
+        "unsupported_operational_target": 109,
+        "unverified_derivation:sand": 18
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_beniaich2023_slr3",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:clay": 309,
+        "missing_predictor:silt": 309,
+        "no_supported_target_observations": 248,
+        "outside_measured_wrc_range": 21,
+        "target_physical_contract_mismatch": 218,
+        "target_quantity_mismatch": 227,
+        "unsupported_operational_target": 109,
+        "unverified_derivation:clay": 18,
+        "unverified_derivation:silt": 18
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_beniaich2023_slr4",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:clay": 309,
+        "missing_predictor:silt": 309,
+        "no_supported_target_observations": 248,
+        "outside_measured_wrc_range": 21,
+        "target_physical_contract_mismatch": 218,
+        "target_quantity_mismatch": 227,
+        "unsupported_operational_target": 109,
+        "unverified_derivation:clay": 18,
+        "unverified_derivation:silt": 18
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_beniaich2023_slr5",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:soil_organic_matter": 327,
+        "no_supported_target_observations": 248,
+        "outside_measured_wrc_range": 21,
+        "target_physical_contract_mismatch": 218,
+        "target_quantity_mismatch": 227,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_beniaich2023_slr6",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 436,
+        "missing_public_measurement_contract": 436,
+        "no_supported_target_observations": 263,
+        "outside_measured_wrc_range": 27,
+        "target_quantity_mismatch": 236
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_chakraborty2011_eq1",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 436,
+        "missing_public_measurement_contract": 436,
+        "no_supported_target_observations": 263,
+        "outside_measured_wrc_range": 27,
+        "target_quantity_mismatch": 236
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_chakraborty2011_eq2",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 436,
+        "missing_public_measurement_contract": 436,
+        "no_supported_target_observations": 263,
+        "outside_measured_wrc_range": 27,
+        "target_quantity_mismatch": 236
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_chakraborty2011_eq3",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 436,
+        "missing_public_measurement_contract": 436,
+        "no_supported_target_observations": 263,
+        "outside_measured_wrc_range": 27,
+        "target_quantity_mismatch": 236
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_chakraborty2011_eq4",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 436,
+        "missing_public_measurement_contract": 436,
+        "no_supported_target_observations": 263,
+        "outside_measured_wrc_range": 27,
+        "target_quantity_mismatch": 236
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_chakraborty2011_eq5",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 436,
+        "missing_public_measurement_contract": 436,
+        "no_supported_target_observations": 263,
+        "outside_measured_wrc_range": 27,
+        "target_quantity_mismatch": 236
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_chakraborty2011_eq6",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:soil_texture": 515,
+        "no_supported_target_observations": 346,
+        "outside_measured_wrc_range": 37,
+        "target_physical_contract_mismatch": 412,
+        "target_quantity_mismatch": 309,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_clapp1978",
+      "harmonized_n": 6,
+      "metrics_by_pool": {
+        "curve:volumetric_water_content": {
+          "mean_absolute_error": 0.030554176892914654,
+          "mean_error": 0.02884984219531155,
+          "median_absolute_error": 0.0325632289342067,
+          "root_mean_squared_error": 0.035036098541883734
+        },
+        "fixed_pressure:volumetric_water_content:10kPa": {
+          "mean_absolute_error": 0.028935353187647256,
+          "mean_error": 0.027467090544054135,
+          "median_absolute_error": 0.024405664556377715,
+          "root_mean_squared_error": 0.03882186352881948
+        },
+        "fixed_pressure:volumetric_water_content:1500kPa": {
+          "mean_absolute_error": 0.0322782546313916,
+          "mean_error": 0.0322782546313916,
+          "median_absolute_error": 0.033318543198611134,
+          "root_mean_squared_error": 0.035426220099447674
+        },
+        "fixed_pressure:volumetric_water_content:33kPa": {
+          "mean_absolute_error": 0.03277413873965185,
+          "mean_error": 0.03277413873965185,
+          "median_absolute_error": 0.032540327482019904,
+          "root_mean_squared_error": 0.03696796408075762
+        }
+      },
+      "reconstructed_targets": 18,
+      "sensitivity": {
+        "difference_on_strict_subset": 0.0,
+        "harmonized_on_strict_subset": {
+          "mean_absolute_error": 0.030554176892914654,
+          "mean_error": 0.02884984219531155,
+          "median_absolute_error": 0.0325632289342067,
+          "root_mean_squared_error": 0.035036098541883734
+        },
+        "strict_only": {
+          "mean_absolute_error": 0.030554176892914654,
+          "mean_error": 0.02884984219531155,
+          "median_absolute_error": 0.0325632289342067,
+          "root_mean_squared_error": 0.035036098541883734
+        }
+      },
+      "strict_n": 6,
+      "strict_subset_preserved": true
+    },
+    {
+      "blockers": {
+        "missing_predictor:clay": 412,
+        "missing_predictor:sand": 412,
+        "missing_predictor:silt": 412,
+        "no_supported_target_observations": 237,
+        "outside_measured_wrc_range": 37,
+        "target_physical_contract_mismatch": 412,
+        "target_quantity_mismatch": 200
+      },
+      "derived_predictors": 18,
+      "function": "calc_ptf_cosby1984_univariate",
+      "harmonized_n": 6,
+      "metrics_by_pool": {
+        "curve:volumetric_water_content": {
+          "mean_absolute_error": 0.018430046783019006,
+          "mean_error": 0.005519214132212693,
+          "median_absolute_error": 0.016686038313994817,
+          "root_mean_squared_error": 0.022732425780276875
+        },
+        "fixed_pressure:volumetric_water_content:10kPa": {
+          "mean_absolute_error": 0.024724622285168186,
+          "mean_error": -0.009084746546847905,
+          "median_absolute_error": 0.02645864927317304,
+          "root_mean_squared_error": 0.02890032257113198
+        },
+        "fixed_pressure:volumetric_water_content:1500kPa": {
+          "mean_absolute_error": 0.014045767720102048,
+          "mean_error": 0.008887162154491663,
+          "median_absolute_error": 0.015630117577867836,
+          "root_mean_squared_error": 0.01709131357285875
+        },
+        "fixed_pressure:volumetric_water_content:33kPa": {
+          "mean_absolute_error": 0.01576952350355513,
+          "mean_error": -0.0010102362542398489,
+          "median_absolute_error": 0.013893743186711244,
+          "root_mean_squared_error": 0.017132039441923378
+        }
+      },
+      "reconstructed_targets": 18,
+      "sensitivity": {
+        "difference_on_strict_subset": 0.0,
+        "harmonized_on_strict_subset": {
+          "mean_absolute_error": 0.018430046783019006,
+          "mean_error": 0.005519214132212693,
+          "median_absolute_error": 0.016686038313994817,
+          "root_mean_squared_error": 0.022732425780276875
+        },
+        "strict_only": {
+          "mean_absolute_error": 0.018430046783019006,
+          "mean_error": 0.005519214132212693,
+          "median_absolute_error": 0.016686038313994817,
+          "root_mean_squared_error": 0.022732425780276875
+        }
+      },
+      "strict_n": 6,
+      "strict_subset_preserved": true
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_dharumarajan2019_infiltration",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 218,
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 139,
+        "outside_measured_wrc_range": 21,
+        "target_quantity_mismatch": 118
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_dharumarajan2019_nkp",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 218,
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 139,
+        "outside_measured_wrc_range": 21,
+        "target_quantity_mismatch": 118
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_dharumarajan2019_nkp_clay",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 218,
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 139,
+        "outside_measured_wrc_range": 21,
+        "target_quantity_mismatch": 118
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_dharumarajan2019_skp",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 218,
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 139,
+        "outside_measured_wrc_range": 21,
+        "target_quantity_mismatch": 118
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_dharumarajan2019_skp_clay",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcaric_regosol_sand",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcic_cambisol_sand",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcic_luvisol_sand",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_campbell_shiozawa",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_chromic_luvisol_sand",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_cosby",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_dane_puckett",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_dystric_cambisol_sand",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_dystric_regosol_sand",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_eutric_cambisol_sand",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_eutric_regosol_sand",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_general_sand",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_general_texture_organic_matter",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_cambisol_sand",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_luvisol_sand",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_solonchak_sand",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_humic_acrisol_sand",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_humic_cambisol_sand",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_orthic_luvisol_sand",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_puckett",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_ranker_sand",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_ranker_texture_organic_matter",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_rendzina_sand",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ferrerjulia2004_saxton",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:sand": 103,
+        "no_supported_target_observations": 69,
+        "outside_measured_wrc_range": 19,
+        "target_physical_contract_mismatch": 109,
+        "target_quantity_mismatch": 50,
+        "unverified_derivation:sand": 6
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_gunarathna2019_vwc10_set1",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:sand": 103,
+        "missing_predictor:silt": 103,
+        "no_supported_target_observations": 69,
+        "outside_measured_wrc_range": 19,
+        "target_physical_contract_mismatch": 109,
+        "target_quantity_mismatch": 50,
+        "unverified_derivation:sand": 6,
+        "unverified_derivation:silt": 6
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_gunarathna2019_vwc10_set2",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:bulk_density": 109,
+        "missing_predictor:sand": 103,
+        "missing_predictor:silt": 103,
+        "no_supported_target_observations": 69,
+        "outside_measured_wrc_range": 19,
+        "target_physical_contract_mismatch": 109,
+        "target_quantity_mismatch": 50,
+        "unverified_derivation:sand": 6,
+        "unverified_derivation:silt": 6
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_gunarathna2019_vwc10_set3",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:organic_carbon": 109,
+        "missing_predictor:sand": 103,
+        "missing_predictor:silt": 103,
+        "no_supported_target_observations": 69,
+        "outside_measured_wrc_range": 19,
+        "target_physical_contract_mismatch": 109,
+        "target_quantity_mismatch": 50,
+        "unverified_derivation:sand": 6,
+        "unverified_derivation:silt": 6
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_gunarathna2019_vwc10_set4",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:sand": 103,
+        "no_supported_target_observations": 67,
+        "outside_measured_wrc_range": 17,
+        "target_physical_contract_mismatch": 109,
+        "target_quantity_mismatch": 50,
+        "unverified_derivation:sand": 6
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_gunarathna2019_vwc1500_set1",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:bulk_density": 109,
+        "missing_predictor:sand": 103,
+        "no_supported_target_observations": 67,
+        "outside_measured_wrc_range": 17,
+        "target_physical_contract_mismatch": 109,
+        "target_quantity_mismatch": 50,
+        "unverified_derivation:sand": 6
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_gunarathna2019_vwc1500_set3",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:organic_carbon": 109,
+        "missing_predictor:sand": 103,
+        "no_supported_target_observations": 67,
+        "outside_measured_wrc_range": 17,
+        "target_physical_contract_mismatch": 109,
+        "target_quantity_mismatch": 50,
+        "unverified_derivation:sand": 6
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_gunarathna2019_vwc1500_set4",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:sand": 103,
+        "no_supported_target_observations": 51,
+        "outside_measured_wrc_range": 1,
+        "target_physical_contract_mismatch": 109,
+        "target_quantity_mismatch": 50,
+        "unverified_derivation:sand": 6
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_gunarathna2019_vwc33_set1",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:sand": 103,
+        "missing_predictor:silt": 103,
+        "no_supported_target_observations": 51,
+        "outside_measured_wrc_range": 1,
+        "target_physical_contract_mismatch": 109,
+        "target_quantity_mismatch": 50,
+        "unverified_derivation:sand": 6,
+        "unverified_derivation:silt": 6
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_gunarathna2019_vwc33_set2",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:bulk_density": 109,
+        "missing_predictor:sand": 103,
+        "missing_predictor:silt": 103,
+        "no_supported_target_observations": 51,
+        "outside_measured_wrc_range": 1,
+        "target_physical_contract_mismatch": 109,
+        "target_quantity_mismatch": 50,
+        "unverified_derivation:sand": 6,
+        "unverified_derivation:silt": 6
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_gunarathna2019_vwc33_set3",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:organic_carbon": 109,
+        "missing_predictor:sand": 103,
+        "missing_predictor:silt": 103,
+        "no_supported_target_observations": 51,
+        "outside_measured_wrc_range": 1,
+        "target_physical_contract_mismatch": 109,
+        "target_quantity_mismatch": 50,
+        "unverified_derivation:sand": 6,
+        "unverified_derivation:silt": 6
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_gunarathna2019_vwc33_set4",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 50,
+        "target_quantity_mismatch": 50
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_hodnett2002",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 159,
+        "target_quantity_mismatch": 159,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_li2007",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 50,
+        "target_quantity_mismatch": 50
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_mayr1999",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 59,
+        "target_quantity_mismatch": 59
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_myeni2021_fc",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 80,
+        "outside_measured_wrc_range": 21,
+        "target_quantity_mismatch": 59
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_myeni2021_pwp",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_oosterveld1980_available_water",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_oosterveld1980_field_capacity",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_oosterveld1980_field_capacity_tension",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 59,
+        "target_quantity_mismatch": 59
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_oosterveld1980_retention",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 80,
+        "outside_measured_wrc_range": 21,
+        "target_quantity_mismatch": 59
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_oosterveld1980_wilting_point",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ottoni2019_wm330",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ottoni2019_wmssc",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_ottoni2019_wmsscbd",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_pidgeon1972_awc",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_pidgeon1972_awc_coarse_sand",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_pidgeon1972_awc_fine_sand",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_pidgeon1972_awc_sand_organic_matter",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_pidgeon1972_awc_very_fine_sand",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_pidgeon1972_eawc",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_pidgeon1972_eawc_sand",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_pidgeon1972_eawc_sand_organic_matter",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_pidgeon1972_fc",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_pidgeon1972_fc_sand",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_pidgeon1972_fc_sand_organic_matter",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_pidgeon1972_fc_vol_sand_organic_matter",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_pidgeon1972_pwp",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_pidgeon1972_pwp_sand",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_pidgeon1972_pwp_sand_organic_matter",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 218,
+        "target_quantity_mismatch": 218,
+        "unsupported_operational_target": 218
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_puckett1985",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 1308,
+        "missing_public_measurement_contract": 1308,
+        "no_supported_target_observations": 696,
+        "outside_measured_wrc_range": 96,
+        "target_quantity_mismatch": 600
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_rawls1982_full_wrc",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 67,
+        "outside_measured_wrc_range": 17,
+        "target_quantity_mismatch": 50
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_rawls1982_theta_1500",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 51,
+        "outside_measured_wrc_range": 1,
+        "target_quantity_mismatch": 50
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_rawls1982_theta_33",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 67,
+        "outside_measured_wrc_range": 17,
+        "target_quantity_mismatch": 50
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_rawls2003_soc_theta1500_gmdh",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 67,
+        "outside_measured_wrc_range": 17,
+        "target_quantity_mismatch": 50
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_rawls2003_soc_theta1500_tree",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 51,
+        "outside_measured_wrc_range": 1,
+        "target_quantity_mismatch": 50
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_rawls2003_soc_theta33_gmdh",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 51,
+        "outside_measured_wrc_range": 1,
+        "target_quantity_mismatch": 50
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_rawls2003_soc_theta33_tree",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:clay": 721,
+        "missing_predictor:organic_matter": 763,
+        "missing_predictor:sand": 721,
+        "no_supported_target_observations": 546,
+        "outside_measured_wrc_range": 78,
+        "target_physical_contract_mismatch": 545,
+        "target_quantity_mismatch": 468,
+        "unsupported_operational_target": 218,
+        "unverified_derivation:clay": 42,
+        "unverified_derivation:sand": 42
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_saxton2006",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_saxton2006_conductivity",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 218,
+        "target_quantity_mismatch": 218,
+        "unsupported_operational_target": 218
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_saxton2006_density",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 327,
+        "no_supported_target_observations": 327,
+        "target_quantity_mismatch": 327,
+        "unsupported_operational_target": 327
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_saxton2006_gravel",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_saxton2006_salinity",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_saxton2006_tension_dry",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_saxton2006_tension_wet",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 327,
+        "missing_public_measurement_contract": 436,
+        "no_supported_target_observations": 310,
+        "outside_measured_wrc_range": 24,
+        "target_quantity_mismatch": 286,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_tiwary2014_bsr",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_tiwary2014_igp",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 50,
+        "target_quantity_mismatch": 50
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_varallyai1982_chernozem_a",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 50,
+        "target_quantity_mismatch": 50
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_varallyai1982_chernozem_b",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 50,
+        "target_quantity_mismatch": 50
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_varallyai1982_chernozem_c",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 50,
+        "target_quantity_mismatch": 50
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_varallyai1982_meadow",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:bulk_density": 436,
+        "missing_predictor:carbon": 436,
+        "missing_predictor:clay": 412,
+        "missing_predictor:sand": 412,
+        "no_supported_target_observations": 237,
+        "outside_measured_wrc_range": 37,
+        "target_physical_contract_mismatch": 412,
+        "target_quantity_mismatch": 200,
+        "unverified_derivation:clay": 24,
+        "unverified_derivation:sand": 24
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_vereecken1989",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 50,
+        "target_quantity_mismatch": 50
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_vereecken1989_detailed",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 160,
+        "outside_measured_wrc_range": 1,
+        "target_quantity_mismatch": 159,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_wang2012",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 159,
+        "target_quantity_mismatch": 159,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_weber2020",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_predictor:soil_class": 545,
+        "no_supported_target_observations": 346,
+        "outside_measured_wrc_range": 37,
+        "target_physical_contract_mismatch": 436,
+        "target_quantity_mismatch": 309,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_wosten2001_class_parameters",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 218,
+        "target_quantity_mismatch": 218,
+        "unsupported_operational_target": 218
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_wosten2001_hydraulic",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 327,
+        "no_supported_target_observations": 268,
+        "target_quantity_mismatch": 268,
+        "unsupported_operational_target": 218
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_wosten2001_loam_clay_table5",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 327,
+        "no_supported_target_observations": 268,
+        "target_quantity_mismatch": 268,
+        "unsupported_operational_target": 218
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_wosten2001_sand_subsoil_table5",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 327,
+        "no_supported_target_observations": 268,
+        "target_quantity_mismatch": 268,
+        "unsupported_operational_target": 218
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_wosten2001_sand_topsoil_table5",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_zhao2016_m2_1",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_zhao2016_m2_2",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_zhao2016_m2_3",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_zhao2016_m2_4",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_zhao2016_m2_5",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "target_quantity_mismatch": 109,
+        "unsupported_operational_target": 109
+      },
+      "derived_predictors": 0,
+      "function": "calc_ptf_zhao2016_m2_6",
+      "harmonized_n": 0,
+      "metrics_by_pool": {},
+      "reconstructed_targets": 0,
+      "sensitivity": {
+        "difference_on_strict_subset": null,
+        "harmonized_on_strict_subset": null,
+        "strict_only": null
+      },
+      "strict_n": 0,
+      "strict_subset_preserved": null
+    }
+  ],
+  "harmonized_scored_functions": 2,
+  "implementation_sha256": {
+    "evaluation\\experiments\\meta_v3_3\\harmonized.py": "14a3eb800500c9e49a38961c3f47ec3c71c07053ff7ca017c02120d3c9cad14d",
+    "targets\\ptfkit-eval\\src\\ptfkit_eval\\harmonization.py": "ab30f6f3ee5540b62b24b7cb65b303571fdd3b73b593eb4c50982d2565e45f6d",
+    "targets\\ptfkit-eval\\src\\ptfkit_eval\\harmonized_inputs.py": "8913d9a41a00f1e1d5b79aa0f4aaf01318413b9a5acfd22d1e8b88acbb87f8c5"
+  },
+  "implemented_functions": 146,
+  "input_sha256": {
+    "canonical-mass.json": "5a487164ca3bbd91d3b020c3bedca617f2468e973758f23128efb02f9a3dfb2a",
+    "canonical-volume.json": "000c3c9fff04a714ff2cc6e9d32fc3d00bd3a3246616caf5dfac4f1673fdd93f",
+    "catalog-support.json": "13b78c497a1d10b4be0622c7eb56bdae43b55d5a2b361d77b80f7ef2a1aeef47",
+    "eligibility-matrix.json": "732f68d103dd69fc9ed87626b721d0457896bc71135addd9009fa49a205525df",
+    "native-class-comparison\\artifacts\\cohorts.json": "7f7b0a25ae23ae3949be4bc0780dfeaf89b611505f4a0f666c80e83dbdf4e67e",
+    "native-class-comparison\\artifacts\\dataset.json": "909eff93e578b8da61416200812993a8d1372e06006d94fb41c09fb24c33fd22"
+  },
+  "limitations": [
+    "Unknown units, material/mass basis and PSD boundaries cannot be recovered by deterministic transformation.",
+    "No source-wide review gate is imposed; only the predictors and target needed by a function are checked.",
+    "Missing legacy measurement contracts remain unsupported; discovery target names do not grant execution.",
+    "Per-pool metrics are descriptive; no new final recommendation is authorized."
+  ],
+  "matrix_counts": {
+    "harmonized": 36,
+    "strict": 12,
+    "unsupported": 26003
+  },
+  "policy_sha256": "be53949b087e2da00fbf7d9c749608f83054d01d5f569016d175a13e92b06410",
+  "protocol": "registered_harmonization_v1",
+  "schema_version": 1,
+  "status": "completed_with_unresolved_predictor_contracts",
+  "strict_scored_functions": 2,
+  "target_pools": [
+    {
+      "catalog_ptfs": 1,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "curve:gravimetric_water_content"
+    },
+    {
+      "catalog_ptfs": 18,
+      "harmonized_scored": 2,
+      "profiles": 1,
+      "samples": 6,
+      "strict_scored": 2,
+      "target": "curve:volumetric_water_content"
+    },
+    {
+      "catalog_ptfs": 7,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "fixed_pressure:gravimetric_water_content:100kPa"
+    },
+    {
+      "catalog_ptfs": 24,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "fixed_pressure:gravimetric_water_content:1500kPa"
+    },
+    {
+      "catalog_ptfs": 23,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "fixed_pressure:gravimetric_water_content:33kPa"
+    },
+    {
+      "catalog_ptfs": 6,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "fixed_pressure:gravimetric_water_content:500kPa"
+    },
+    {
+      "catalog_ptfs": 1,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "fixed_pressure:volumetric_water_content:0kPa"
+    },
+    {
+      "catalog_ptfs": 1,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "fixed_pressure:volumetric_water_content:1000kPa"
+    },
+    {
+      "catalog_ptfs": 1,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "fixed_pressure:volumetric_water_content:100kPa"
+    },
+    {
+      "catalog_ptfs": 10,
+      "harmonized_scored": 2,
+      "profiles": 1,
+      "samples": 6,
+      "strict_scored": 0,
+      "target": "fixed_pressure:volumetric_water_content:10kPa"
+    },
+    {
+      "catalog_ptfs": 12,
+      "harmonized_scored": 2,
+      "profiles": 1,
+      "samples": 6,
+      "strict_scored": 0,
+      "target": "fixed_pressure:volumetric_water_content:1500kPa"
+    },
+    {
+      "catalog_ptfs": 1,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "fixed_pressure:volumetric_water_content:200kPa"
+    },
+    {
+      "catalog_ptfs": 1,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "fixed_pressure:volumetric_water_content:20kPa"
+    },
+    {
+      "catalog_ptfs": 14,
+      "harmonized_scored": 2,
+      "profiles": 1,
+      "samples": 6,
+      "strict_scored": 0,
+      "target": "fixed_pressure:volumetric_water_content:33kPa"
+    },
+    {
+      "catalog_ptfs": 1,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "fixed_pressure:volumetric_water_content:400kPa"
+    },
+    {
+      "catalog_ptfs": 1,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "fixed_pressure:volumetric_water_content:4kPa"
+    },
+    {
+      "catalog_ptfs": 1,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "fixed_pressure:volumetric_water_content:60kPa"
+    },
+    {
+      "catalog_ptfs": 1,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "fixed_pressure:volumetric_water_content:700kPa"
+    },
+    {
+      "catalog_ptfs": 1,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "fixed_pressure:volumetric_water_content:7kPa"
+    },
+    {
+      "catalog_ptfs": 10,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "operational:available_water_capacity"
+    },
+    {
+      "catalog_ptfs": 7,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "operational:dry_bulk_density"
+    },
+    {
+      "catalog_ptfs": 1,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "operational:field_capacity_tension"
+    },
+    {
+      "catalog_ptfs": 1,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "operational:gravimetric_available_moisture"
+    },
+    {
+      "catalog_ptfs": 4,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "operational:gravimetric_field_capacity"
+    },
+    {
+      "catalog_ptfs": 3,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "operational:gravimetric_permanent_wilting_point"
+    },
+    {
+      "catalog_ptfs": 11,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "operational:gravimetric_saturation"
+    },
+    {
+      "catalog_ptfs": 1,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "operational:infiltration_rate"
+    },
+    {
+      "catalog_ptfs": 1,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "operational:osmotic_potential"
+    },
+    {
+      "catalog_ptfs": 2,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "operational:other_output_contract_unresolved"
+    },
+    {
+      "catalog_ptfs": 4,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "operational:retention_output_contract_unresolved"
+    },
+    {
+      "catalog_ptfs": 66,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "operational:saturated_hydraulic_conductivity"
+    },
+    {
+      "catalog_ptfs": 2,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "operational:unsaturated_hydraulic_conductivity"
+    },
+    {
+      "catalog_ptfs": 1,
+      "harmonized_scored": 0,
+      "profiles": 0,
+      "samples": 0,
+      "strict_scored": 0,
+      "target": "operational:volumetric_field_capacity"
+    }
+  ]
+}

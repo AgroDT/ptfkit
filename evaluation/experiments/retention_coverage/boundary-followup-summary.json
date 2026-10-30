@@ -1,0 +1,231 @@
+{
+  "plan": {
+    "schema_version": 1,
+    "study_id": "vg_mualem_boundary_followup_v1",
+    "source_cell": "van_genuchten_mualem_v1__dense__saturation_0.3__sigma_0.002",
+    "seed": 20261026,
+    "blocks": 5,
+    "repetitions_per_block": 400,
+    "linear_control_repetitions": 100000,
+    "nominal_confidence": 0.95,
+    "sigma": 0.002,
+    "objective_tolerance": 1e-10,
+    "primary_estimand": "conditional_nonlinear_coverage_among_assessed_regions",
+    "primary_alpha": 0.05,
+    "scope": "independent_fixed_followup_not_threshold_tuning"
+  },
+  "plan_sha256": "6a3654d98facebed29f1362d0296ec2cabd8c0bdeedf5ace6976cd6e825f4b47",
+  "source_sha256": "80b3d324bb93de8fa72442a72f4808b4cd131f60e1bc23783471a9df94cc1c6f",
+  "script_sha256": "b5eed975131686fcaba02db89e8346e655242fe834610d160b97aec94c017b26",
+  "generator_sha256": "714060ddfd1ee1a9064beedf59140bc071e0b1db0462fb71ff632dcd6bc36cc9",
+  "environment": {
+    "python": "3.13.12",
+    "ptfkit-eval": "0.1.0",
+    "numpy": "2.5.4",
+    "scipy": "1.18.1"
+  },
+  "original_paired_counts": {
+    "generated": 200,
+    "joint_coverage_disagreements": 0,
+    "joint_linear_covered": 85,
+    "joint_nonlinear_covered": 85,
+    "joint_selected": 99,
+    "linear_all_covered": 180,
+    "linear_selected": 101,
+    "linear_selected_covered": 87,
+    "nonlinear_assessed": 99,
+    "nonlinear_covered": 85
+  },
+  "blocks": [
+    {
+      "block": 0,
+      "fit_counts": {
+        "assessed": 184,
+        "boundary_solution": 216,
+        "covered": 175,
+        "failed": 216,
+        "fitted": 184,
+        "generated": 400
+      },
+      "paired_counts": {
+        "generated": 400,
+        "joint_coverage_disagreements": 0,
+        "joint_linear_covered": 173,
+        "joint_nonlinear_covered": 173,
+        "joint_selected": 182,
+        "linear_all_covered": 384,
+        "linear_selected": 183,
+        "linear_selected_covered": 174,
+        "nonlinear_assessed": 184,
+        "nonlinear_covered": 175
+      }
+    },
+    {
+      "block": 1,
+      "fit_counts": {
+        "assessed": 200,
+        "boundary_solution": 200,
+        "covered": 192,
+        "failed": 200,
+        "fitted": 200,
+        "generated": 400
+      },
+      "paired_counts": {
+        "generated": 400,
+        "joint_coverage_disagreements": 1,
+        "joint_linear_covered": 190,
+        "joint_nonlinear_covered": 191,
+        "joint_selected": 199,
+        "linear_all_covered": 372,
+        "linear_selected": 201,
+        "linear_selected_covered": 192,
+        "nonlinear_assessed": 200,
+        "nonlinear_covered": 192
+      }
+    },
+    {
+      "block": 2,
+      "fit_counts": {
+        "assessed": 211,
+        "boundary_solution": 189,
+        "covered": 196,
+        "failed": 189,
+        "fitted": 211,
+        "generated": 400
+      },
+      "paired_counts": {
+        "generated": 400,
+        "joint_coverage_disagreements": 2,
+        "joint_linear_covered": 193,
+        "joint_nonlinear_covered": 195,
+        "joint_selected": 210,
+        "linear_all_covered": 377,
+        "linear_selected": 210,
+        "linear_selected_covered": 193,
+        "nonlinear_assessed": 211,
+        "nonlinear_covered": 196
+      }
+    },
+    {
+      "block": 3,
+      "fit_counts": {
+        "assessed": 205,
+        "boundary_solution": 195,
+        "covered": 193,
+        "failed": 195,
+        "fitted": 205,
+        "generated": 400
+      },
+      "paired_counts": {
+        "generated": 400,
+        "joint_coverage_disagreements": 0,
+        "joint_linear_covered": 191,
+        "joint_nonlinear_covered": 191,
+        "joint_selected": 203,
+        "linear_all_covered": 377,
+        "linear_selected": 203,
+        "linear_selected_covered": 191,
+        "nonlinear_assessed": 205,
+        "nonlinear_covered": 193
+      }
+    },
+    {
+      "block": 4,
+      "fit_counts": {
+        "assessed": 192,
+        "boundary_solution": 208,
+        "covered": 181,
+        "failed": 208,
+        "fitted": 192,
+        "generated": 400
+      },
+      "paired_counts": {
+        "generated": 400,
+        "joint_coverage_disagreements": 0,
+        "joint_linear_covered": 181,
+        "joint_nonlinear_covered": 181,
+        "joint_selected": 192,
+        "linear_all_covered": 381,
+        "linear_selected": 194,
+        "linear_selected_covered": 183,
+        "nonlinear_assessed": 192,
+        "nonlinear_covered": 181
+      }
+    }
+  ],
+  "totals": {
+    "generated": 2000,
+    "joint_coverage_disagreements": 3,
+    "joint_linear_covered": 928,
+    "joint_nonlinear_covered": 931,
+    "joint_selected": 986,
+    "linear_all_covered": 1891,
+    "linear_selected": 991,
+    "linear_selected_covered": 933,
+    "nonlinear_assessed": 992,
+    "nonlinear_covered": 937
+  },
+  "primary_conditional_coverage": {
+    "covered": 937,
+    "total": 992,
+    "estimate": 0.9445564516129032,
+    "monte_carlo_standard_error": 0.0072658032247890705,
+    "simulation_probability_interval": [
+      0.9284408779539542,
+      0.9579627261921272
+    ],
+    "undercoverage_p_value": 0.23433365314778512
+  },
+  "linear_conditional_coverage": {
+    "covered": 933,
+    "total": 991,
+    "estimate": 0.941473259334006,
+    "monte_carlo_standard_error": 0.007456659928453684,
+    "simulation_probability_interval": [
+      0.9249943353350666,
+      0.9552617992320784
+    ],
+    "undercoverage_p_value": 0.12455667494926657
+  },
+  "qualification": "no_global_coverage_qualification",
+  "primary_undercoverage_flag": false,
+  "large_linear_control": {
+    "generated": 100000,
+    "all_coverage": {
+      "covered": 94979,
+      "total": 100000,
+      "estimate": 0.94979,
+      "monte_carlo_standard_error": 0.0006905719071899753,
+      "simulation_probability_interval": [
+        0.9484184013838203,
+        0.9511354349964452
+      ],
+      "undercoverage_p_value": 0.3823068010738717
+    },
+    "selected_coverage": {
+      "covered": 47536,
+      "total": 50005,
+      "estimate": 0.9506249375062493,
+      "monte_carlo_standard_error": 0.0009688392276352549,
+      "simulation_probability_interval": [
+        0.948689725114727,
+        0.9525076232587987
+      ],
+      "undercoverage_p_value": 0.7420543173111981
+    }
+  },
+  "evaluation_implementation_sha256": "9f2d0901e212a046affc9c861d116654dbaa01293d028d6d8973569da9ae7b88",
+  "optimizer_audit_summary": {
+    "cases": 200,
+    "solve_failures": 0,
+    "full_objective_improvements": 0,
+    "profile_objective_improvements": 0,
+    "profile_comparisons": 99
+  },
+  "verification": {
+    "all_2000_generated_noise_vectors_replayed": true,
+    "first_400_full_fit_profile_records_replayed": true,
+    "all_100000_linear_control_results_replayed": true,
+    "public_implementation_matches_original_study": true
+  }
+}

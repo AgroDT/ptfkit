@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "dataset": {
+    "path": "dataset.json",
+    "sha256": "8d17943a2373a4bf19b0703048335640ff57dcdec176f541a1825d64d89ee38f"
+  },
+  "evaluation_plan": {
+    "path": "evaluation_plan.json",
+    "sha256": "a0673ea7398809716bfc23d623def5840fd1c50af7803c707f2949401a4c0ee8"
+  },
+  "protocol": {
+    "id": "synthetic_retention_v1",
+    "observation_method": "synthetic_pressure_control",
+    "allowed_target_origins": [
+      "synthetic"
+    ],
+    "cohorts": [
+      "maximal",
+      "common"
+    ],
+    "bindings": {
+      "calc_ptf_clapp1978": {
+        "soil_texture": "texture"
+      }
+    }
+  },
+  "bootstrap": {
+    "method": "cluster_percentile_linear_v1",
+    "seed": 7123,
+    "minimum_groups": 2,
+    "grouping": "source",
+    "missing_profiles": "reject",
+    "confidence_level": 0.95,
+    "n_resamples": 2000
+  },
+  "prediction_intervals": [
+    {
+      "method": "fixed_group_max_split_conformal_v1",
+      "candidate_id": "sand_a",
+      "training_groups": [],
+      "calibration_groups": [
+        [
+          "cal_1",
+          ""
+        ],
+        [
+          "cal_2",
+          ""
+        ],
+        [
+          "cal_3",
+          ""
+        ],
+        [
+          "cal_4",
+          ""
+        ],
+        [
+          "cal_5",
+          ""
+        ],
+        [
+          "cal_6",
+          ""
+        ],
+        [
+          "cal_7",
+          ""
+        ],
+        [
+          "cal_8",
+          ""
+        ],
+        [
+          "cal_9",
+          ""
+        ]
+      ],
+      "test_groups": [
+        [
+          "test",
+          ""
+        ]
+      ],
+      "pressure_grid_kpa": [
+        0,
+        5.685389228617864
+      ],
+      "confidence_level": 0.9,
+      "minimum_calibration_groups": 9,
+      "grouping": "source"
+    }
+  ]
+}

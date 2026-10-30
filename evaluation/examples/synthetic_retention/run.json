@@ -1,0 +1,399 @@
+{
+  "schema_version": 1,
+  "dataset": {
+    "path": "dataset.json",
+    "sha256": "624ff2fe8118cccc95f14cd81ada4088bbc6d9a03338cd37604bba76c0feeb03"
+  },
+  "evaluation_plan": {
+    "path": "evaluation_plan.json",
+    "sha256": "ebf533a969e466c1af91d7ef118a32522824cba92a2fe30df7dbc233e8e4f6df"
+  },
+  "protocol": {
+    "id": "synthetic_retention_v1",
+    "observation_method": "synthetic_pressure_control",
+    "allowed_target_origins": [
+      "synthetic"
+    ],
+    "cohorts": [
+      "maximal",
+      "common"
+    ],
+    "bindings": {
+      "calc_ptf_clapp1978": {
+        "soil_texture": "texture"
+      },
+      "calc_ptf_vereecken1989": {
+        "sand": "sand",
+        "clay": "clay",
+        "carbon": "carbon",
+        "bulk_density": "bulk_density"
+      }
+    }
+  },
+  "bootstrap": {
+    "method": "cluster_percentile_linear_v1",
+    "seed": 20261023,
+    "minimum_groups": 5,
+    "grouping": "source",
+    "missing_profiles": "reject",
+    "confidence_level": 0.95,
+    "n_resamples": 2000
+  },
+  "selection": {
+    "method": "fixed_candidate_nested_selection_v1",
+    "candidate_ids": [
+      "clapp",
+      "vereecken",
+      "fixed_blend"
+    ],
+    "minimum_coverage": 1.0,
+    "tie_breaker": "candidate_id",
+    "failure_policy": "require_common_cohort",
+    "folds": {
+      "seed": 20261023,
+      "outer_folds": 3,
+      "inner_folds": 2,
+      "grouping": "source",
+      "missing_profiles": "reject",
+      "minimum_training_groups": 2,
+      "minimum_validation_groups": 1
+    },
+    "loss": {
+      "method": "log10_trapezoid_mse_v1",
+      "lower_suction_kpa": 0.1,
+      "upper_suction_kpa": 1000,
+      "minimum_points": 5
+    },
+    "empirical_domains": {
+      "method": "nested_training_input_envelope_v1",
+      "minimum_training_groups": 2,
+      "composite_rule": "all_registered_members"
+    }
+  },
+  "approximations": [
+    {
+      "seed": 7123,
+      "minimum_log10_span": 2.0,
+      "n_starts": 3,
+      "max_evaluations": 2000,
+      "optimizer_tolerance": 1e-10,
+      "boundary_tolerance": 1e-06,
+      "rank_tolerance": 1e-10,
+      "maximum_condition_number": 10000000000.0,
+      "objective_agreement_tolerance": 1e-10,
+      "parameter_agreement_tolerance": 0.001,
+      "confidence_level": 0.95,
+      "method": "bounded_trf_uniform_multistart_v1",
+      "uncertainty_method": "local_linear_iid_student_t_v1",
+      "family_id": "van_genuchten_mualem_v1",
+      "parameters": [
+        {
+          "name": "theta_r",
+          "lower": 0,
+          "upper": 0.14,
+          "initial": 0.05
+        },
+        {
+          "name": "theta_s",
+          "lower": 0.25,
+          "upper": 0.8,
+          "initial": 0.45
+        },
+        {
+          "name": "alpha",
+          "lower": 0.001,
+          "upper": 10,
+          "initial": 0.1
+        },
+        {
+          "name": "n",
+          "lower": 1.05,
+          "upper": 5,
+          "initial": 1.8
+        }
+      ]
+    },
+    {
+      "seed": 7123,
+      "minimum_log10_span": 2.0,
+      "n_starts": 3,
+      "max_evaluations": 2000,
+      "optimizer_tolerance": 1e-10,
+      "boundary_tolerance": 1e-06,
+      "rank_tolerance": 1e-10,
+      "maximum_condition_number": 10000000000.0,
+      "objective_agreement_tolerance": 1e-10,
+      "parameter_agreement_tolerance": 0.001,
+      "confidence_level": 0.95,
+      "method": "bounded_trf_uniform_multistart_v1",
+      "uncertainty_method": "local_linear_iid_student_t_v1",
+      "family_id": "van_genuchten_m1_v1",
+      "parameters": [
+        {
+          "name": "theta_r",
+          "lower": 0,
+          "upper": 0.14,
+          "initial": 0.05
+        },
+        {
+          "name": "theta_s",
+          "lower": 0.25,
+          "upper": 0.8,
+          "initial": 0.45
+        },
+        {
+          "name": "alpha",
+          "lower": 0.001,
+          "upper": 10,
+          "initial": 0.1
+        },
+        {
+          "name": "n",
+          "lower": 0.05,
+          "upper": 5,
+          "initial": 1.8
+        }
+      ]
+    },
+    {
+      "seed": 7123,
+      "minimum_log10_span": 2.0,
+      "n_starts": 3,
+      "max_evaluations": 2000,
+      "optimizer_tolerance": 1e-10,
+      "boundary_tolerance": 1e-06,
+      "rank_tolerance": 1e-10,
+      "maximum_condition_number": 10000000000.0,
+      "objective_agreement_tolerance": 1e-10,
+      "parameter_agreement_tolerance": 0.001,
+      "confidence_level": 0.95,
+      "method": "bounded_trf_uniform_multistart_v1",
+      "uncertainty_method": "local_linear_iid_student_t_v1",
+      "family_id": "brooks_corey_v1",
+      "parameters": [
+        {
+          "name": "theta_r",
+          "lower": 0,
+          "upper": 0.14,
+          "initial": 0.05
+        },
+        {
+          "name": "theta_s",
+          "lower": 0.25,
+          "upper": 0.8,
+          "initial": 0.45
+        },
+        {
+          "name": "air_entry",
+          "lower": 0.05,
+          "upper": 10,
+          "initial": 1
+        },
+        {
+          "name": "lambda",
+          "lower": 0.05,
+          "upper": 2,
+          "initial": 0.5
+        }
+      ]
+    },
+    {
+      "seed": 7123,
+      "minimum_log10_span": 2.0,
+      "n_starts": 3,
+      "max_evaluations": 2000,
+      "optimizer_tolerance": 1e-10,
+      "boundary_tolerance": 1e-06,
+      "rank_tolerance": 1e-10,
+      "maximum_condition_number": 10000000000.0,
+      "objective_agreement_tolerance": 1e-10,
+      "parameter_agreement_tolerance": 0.001,
+      "confidence_level": 0.95,
+      "method": "bounded_trf_uniform_multistart_v1",
+      "uncertainty_method": "local_linear_iid_student_t_v1",
+      "family_id": "clapp1978_gradual_air_entry_v1",
+      "parameters": [
+        {
+          "name": "theta_s",
+          "lower": 0.25,
+          "upper": 0.8,
+          "initial": 0.45
+        },
+        {
+          "name": "saturation_suction",
+          "lower": 0.001,
+          "upper": 5,
+          "initial": 0.2
+        },
+        {
+          "name": "b",
+          "lower": 0.5,
+          "upper": 11.4,
+          "initial": 4.5
+        }
+      ]
+    }
+  ],
+  "empirical_domains": [
+    {
+      "method": "training_input_envelope_v1",
+      "candidate_id": "clapp",
+      "training_groups": [
+        [
+          "synthetic_source_a",
+          ""
+        ],
+        [
+          "synthetic_source_b",
+          ""
+        ],
+        [
+          "synthetic_source_c",
+          ""
+        ],
+        [
+          "synthetic_source_d",
+          ""
+        ]
+      ],
+      "test_groups": [
+        [
+          "synthetic_source_e",
+          ""
+        ],
+        [
+          "synthetic_source_f",
+          ""
+        ]
+      ],
+      "minimum_training_groups": 4,
+      "grouping": "source"
+    },
+    {
+      "method": "training_input_envelope_v1",
+      "candidate_id": "vereecken",
+      "training_groups": [
+        [
+          "synthetic_source_a",
+          ""
+        ],
+        [
+          "synthetic_source_b",
+          ""
+        ],
+        [
+          "synthetic_source_c",
+          ""
+        ],
+        [
+          "synthetic_source_d",
+          ""
+        ]
+      ],
+      "test_groups": [
+        [
+          "synthetic_source_e",
+          ""
+        ],
+        [
+          "synthetic_source_f",
+          ""
+        ]
+      ],
+      "minimum_training_groups": 4,
+      "grouping": "source"
+    },
+    {
+      "method": "training_input_envelope_v1",
+      "candidate_id": "fixed_blend",
+      "training_groups": [
+        [
+          "synthetic_source_a",
+          ""
+        ],
+        [
+          "synthetic_source_b",
+          ""
+        ],
+        [
+          "synthetic_source_c",
+          ""
+        ],
+        [
+          "synthetic_source_d",
+          ""
+        ]
+      ],
+      "test_groups": [
+        [
+          "synthetic_source_e",
+          ""
+        ],
+        [
+          "synthetic_source_f",
+          ""
+        ]
+      ],
+      "minimum_training_groups": 4,
+      "grouping": "source"
+    }
+  ],
+  "paired_comparisons": [
+    {
+      "method": "paired_cluster_percentile_linear_v1",
+      "cohort": "run_common",
+      "left_candidate_id": "clapp",
+      "right_candidate_id": "vereecken"
+    },
+    {
+      "method": "paired_cluster_percentile_linear_v1",
+      "cohort": "run_common",
+      "left_candidate_id": "fixed_blend",
+      "right_candidate_id": "clapp"
+    }
+  ],
+  "learned_selection": {
+    "method": "nested_convex_pair_selection_v1",
+    "fixed_selection": {
+      "method": "fixed_candidate_nested_selection_v1",
+      "candidate_ids": [
+        "clapp",
+        "vereecken",
+        "fixed_blend"
+      ],
+      "minimum_coverage": 1.0,
+      "tie_breaker": "candidate_id",
+      "failure_policy": "require_common_cohort",
+      "folds": {
+        "seed": 20261023,
+        "outer_folds": 3,
+        "inner_folds": 2,
+        "grouping": "source",
+        "missing_profiles": "reject",
+        "minimum_training_groups": 2,
+        "minimum_validation_groups": 1
+      },
+      "loss": {
+        "method": "log10_trapezoid_mse_v1",
+        "lower_suction_kpa": 0.1,
+        "upper_suction_kpa": 1000,
+        "minimum_points": 5
+      }
+    },
+    "ensembles": [
+      {
+        "method": "constant_convex_pair_log_pressure_v1",
+        "id": "trained_convex_pair",
+        "left_candidate_id": "clapp",
+        "right_candidate_id": "vereecken",
+        "minimum_training_groups": 2,
+        "minimum_mean_squared_contrast": 1e-10
+      }
+    ],
+    "empirical_domains": {
+      "method": "nested_training_input_envelope_v1",
+      "minimum_training_groups": 2,
+      "composite_rule": "all_registered_members"
+    }
+  }
+}

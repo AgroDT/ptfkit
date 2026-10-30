@@ -4,3 +4,10 @@
 # Test coverage
 .coverage*
 coverage.xml
+
+# Local pytest base directories
+.pytest-tmp-*/
+
+# Python bytecode and local evaluation artifacts
+__pycache__/
+local/

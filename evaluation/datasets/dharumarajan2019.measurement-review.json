@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "review_scope": "retention_measurement_contract_migration",
+  "source": "dharumarajan2019",
+  "status": "blocked_measurement_contract",
+  "functions": [
+    "calc_ptf_dharumarajan2019_nkp",
+    "calc_ptf_dharumarajan2019_nkp_clay",
+    "calc_ptf_dharumarajan2019_skp",
+    "calc_ptf_dharumarajan2019_skp_clay"
+  ],
+  "paper": {
+    "url": "https://www.currentscience.ac.in/Volumes/116/07/1237.pdf",
+    "sha256": "5bb6a5deb0235f618b1f2fa2d76522df06ed2a2f220d68997a5fba0313a228a2",
+    "doi": "10.18520/cs/v116/i7/1237-1246",
+    "locations": [
+      "Printed page 1239: sample analysis described by reference to standard protocol; target pressures -33 and -1500 kPa",
+      "Tables 1-2: percentage water-content summaries without a mass/volume denominator definition",
+      "Tables 3-5: retention regressions; Tables 3-4 on printed page 1242 checked visually"
+    ]
+  },
+  "supported_facts": [
+    "The two target pressures are explicitly reported as -33 and -1500 kPa.",
+    "The source supplies separate Northern and Southern Karnataka regressions, including clay-only alternatives.",
+    "Percentages and regression coefficients do not by themselves establish gravimetric or volumetric water content."
+  ],
+  "blockers": [
+    "water_content_mass_or_volume_basis_unresolved",
+    "predictor_particle_size_and_material_basis_protocol_unresolved"
+  ],
+  "legacy_quantity_policy": "The existing legacy gravimetric_water_content identifier is not sufficient evidence to add a measurement descriptor. Existing YAML warnings explicitly preserve the missing mass/volume statement.",
+  "required_evidence": "A source-linked analytical protocol or documented clarification establishing the water-content denominator, sample preparation and particle-size definitions.",
+  "decision": "Keep these implemented formulas outside manifest-driven evaluation until the scientific measurement contract is supported; do not infer a denominator from percentages or local benchmark availability."
+}

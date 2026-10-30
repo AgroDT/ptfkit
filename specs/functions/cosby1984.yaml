@@ -3,7 +3,9 @@ source:
   citation_apa: Cosby, B. J., Hornberger, G. M., Clapp, R. B., & Ginn, T. R. (1984).
     A statistical exploration of the relationships of soil moisture characteristics
     to the physical properties of soils. Water Resources Research, 20(6), 682-690.
-  doi: null
+  doi:
+    identifier: 10.1029/WR020i006p00682
+    url: https://doi.org/10.1029/WR020i006p00682
 scope:
   territory: United States
   dataset: 1448 soil samples from Holtan et al. (1968) and Rawls et al. (1976).
@@ -25,18 +27,69 @@ functions:
   - name: sand
     symbol: sand
     unit: '%'
+    measurement:
+      quantity: particle_mass_fraction
+      unit: mass_percent
+      reported_unit: '%'
+      basis: {material: fine_earth, denominator: dry_mass}
+      particle_size:
+        unit: micrometer
+        lower: {value: 50, inclusive: true}
+        upper: {value: 2000, inclusive: false}
+      conditions: []
+      status: required
+      method: cosby1984_table2_class_midpoint_v1
+      role: predictor
+      computational_domain:
+        lower: {value: 0, inclusive: true}
+        upper: {value: 100, inclusive: true}
+      reported_applicability: []
     domain: 0 <= value <= 100
-    description: Sand content.
+    description: Representative USDA-class sand mass percentage from Table 2.
   - name: silt
     symbol: silt
     unit: '%'
+    measurement:
+      quantity: particle_mass_fraction
+      unit: mass_percent
+      reported_unit: '%'
+      basis: {material: fine_earth, denominator: dry_mass}
+      particle_size:
+        unit: micrometer
+        lower: {value: 2, inclusive: true}
+        upper: {value: 50, inclusive: false}
+      conditions: []
+      status: required
+      method: cosby1984_table2_class_midpoint_v1
+      role: predictor
+      computational_domain:
+        lower: {value: 0, inclusive: true}
+        upper: {value: 100, inclusive: true}
+      reported_applicability: []
     domain: 0 <= value <= 100
-    description: Silt content.
+    description: Representative USDA-class silt mass percentage from Table 2.
   - name: clay
     symbol: clay
     unit: '%'
+    measurement:
+      quantity: particle_mass_fraction
+      unit: mass_percent
+      reported_unit: '%'
+      basis: {material: fine_earth, denominator: dry_mass}
+      particle_size:
+        unit: micrometer
+        lower: null
+        upper: {value: 2, inclusive: false}
+      conditions: []
+      status: required
+      method: cosby1984_table2_class_midpoint_v1
+      role: predictor
+      computational_domain:
+        lower: {value: 0, inclusive: true}
+        upper: {value: 100, inclusive: true}
+      reported_applicability: []
     domain: 0 <= value <= 100
-    description: Clay content.
+    description: Representative USDA-class clay mass percentage from Table 2.
   outputs:
     type: record
     name: Cosby1984UnivariatePTFResult
@@ -46,21 +99,57 @@ functions:
       symbol: b
       unit: dimensionless
       reported_unit: dimensionless
+      measurement:
+        quantity: campbell_b
+        unit: dimensionless
+        reported_unit: 'dimensionless'
+        basis: {material: soil, denominator: not_applicable}
+        particle_size: null
+        conditions: []
+        status: estimated
+        method: null
+        role: model_parameter
+        computational_domain: {lower: {value: 0, inclusive: true}, upper: null}
+        reported_applicability: []
       domain: null
       description: Mean slope of the moisture characteristic.
     - name: mean_log_psi_s
       quantity: log_saturation_potential
       symbol: log_psi_s
-      unit: reported_log_value
-      reported_unit: reported log value
+      unit: log10_centimeter_water_head
+      reported_unit: log10(cm H2O)
+      measurement:
+        quantity: log_saturation_potential
+        unit: log10_centimeter_water_head
+        reported_unit: 'log10(cm H2O)'
+        basis: {material: soil, denominator: not_applicable}
+        particle_size: null
+        conditions: []
+        status: estimated
+        method: null
+        role: model_parameter
+        computational_domain: null
+        reported_applicability: []
       domain: null
       description: Mean log saturation matric potential; the underlying potential is
         expressed in cm H2O.
     - name: mean_log_k_sat
       quantity: log_saturated_hydraulic_conductivity
       symbol: log_k_sat
-      unit: reported_log_value
-      reported_unit: reported log value
+      unit: log10_inch_per_hour
+      reported_unit: log10(in/h)
+      measurement:
+        quantity: log_saturated_hydraulic_conductivity
+        unit: log10_inch_per_hour
+        reported_unit: 'log10(in/h)'
+        basis: {material: soil, denominator: not_applicable}
+        particle_size: null
+        conditions: []
+        status: estimated
+        method: null
+        role: model_parameter
+        computational_domain: null
+        reported_applicability: []
       domain: null
       description: Mean log saturated hydraulic conductivity; the underlying conductivity
         is expressed in inches per hour.
@@ -69,6 +158,18 @@ functions:
       symbol: theta_s
       unit: volume_percent
       reported_unit: '% volume/volume'
+      measurement:
+        quantity: volumetric_water_content
+        unit: volume_percent
+        reported_unit: '% volume/volume'
+        basis: {material: soil, denominator: bulk_volume}
+        particle_size: null
+        conditions: []
+        status: estimated
+        method: null
+        role: model_parameter
+        computational_domain: {lower: {value: 0, inclusive: true}, upper: {value: 100, inclusive: true}}
+        reported_applicability: []
       domain: null
       description: Mean saturated water content.
     - name: sd_b
@@ -76,13 +177,37 @@ functions:
       symbol: b
       unit: dimensionless
       reported_unit: dimensionless
+      measurement:
+        quantity: campbell_b
+        unit: dimensionless
+        reported_unit: 'dimensionless'
+        basis: {material: soil, denominator: not_applicable}
+        particle_size: null
+        conditions: []
+        status: estimated
+        method: null
+        role: uncertainty
+        computational_domain: {lower: {value: 0, inclusive: true}, upper: null}
+        reported_applicability: []
       domain: null
       description: Standard deviation of b.
     - name: sd_log_k_sat
       quantity: log_saturated_hydraulic_conductivity
       symbol: log_k_sat
-      unit: reported_log_value
-      reported_unit: reported log value
+      unit: log10_inch_per_hour
+      reported_unit: log10(in/h)
+      measurement:
+        quantity: log_saturated_hydraulic_conductivity
+        unit: log10_inch_per_hour
+        reported_unit: 'log10(in/h)'
+        basis: {material: soil, denominator: not_applicable}
+        particle_size: null
+        conditions: []
+        status: estimated
+        method: null
+        role: uncertainty
+        computational_domain: {lower: {value: 0, inclusive: true}, upper: null}
+        reported_applicability: []
       domain: null
       description: Standard deviation of log saturated hydraulic conductivity.
     - name: sd_theta_s
@@ -90,6 +215,18 @@ functions:
       symbol: theta_s
       unit: volume_percent
       reported_unit: '% volume/volume'
+      measurement:
+        quantity: volumetric_water_content
+        unit: volume_percent
+        reported_unit: '% volume/volume'
+        basis: {material: soil, denominator: bulk_volume}
+        particle_size: null
+        conditions: []
+        status: estimated
+        method: null
+        role: uncertainty
+        computational_domain: {lower: {value: 0, inclusive: true}, upper: {value: 100, inclusive: true}}
+        reported_applicability: []
       domain: null
       description: Standard deviation of saturated water content.
   verification_cases:
@@ -134,9 +271,9 @@ functions:
   documentation:
     notes:
     - No back-transform is applied to logarithmic outputs.
-    - Public API names are provisional for pilot testing.
+    - Source-faithful evaluation uses the Table 2 class midpoints, not measured individual texture.
     warnings:
-    - Log-transformed output units use the pilot contract `reported log value`.
+    - Within-class standard deviations are not confidence intervals for means or predictions.
   implementation:
     variables:
     - name: mean_b
@@ -161,3 +298,29 @@ scientific_notes: |
   The implementation contains the significant univariate regressions from Table
   5. `sd_log_psi_s` is excluded because the table reports no significant
   univariate regression for it.
+
+
+  ## Measurement-contract review
+
+  Table 2 supplies representative USDA-class compositions because individual
+  particle-size measurements were unavailable. Table 5 predicts class parameter
+  means and within-class dispersions. Evaluator inputs must therefore verify
+  the registered class-midpoint derivation. Direct public arithmetic calls remain
+  unchanged and do not establish measured-texture calibration equivalence.
+
+  Logarithms are interpreted as base 10, corroborated by the explicitly named
+  Table-5 implementation in ESCOMP/CTSM commit
+  350a14d5ba1a7f782223d72df570ea41617298d3, FuncPedotransferMod.F90 lines 83-103.
+  That implementation converts original suction cm to mm with a factor 10.
+  Its rounded conductivity factor 0.0070556 mm/s corroborates the original
+  inch/hour interpretation (25.4/3600); this unit evidence is a source-linked
+  inference rather than a new visual review of the original article.
+  Logarithmic units deliberately have no multiplicative SI conversion: changing
+  a logarithmic reference unit requires an offset, not a linear scale factor.
+
+  The retention adapter uses the original dry power curve only at heads at or
+  above the geometric reference head. It supplies no invented wet branch and
+  makes no uncertainty claim from marginal dispersions without covariance.
+  Bulk-soil parameters may be evaluated on an explicitly reviewed mineral-soil
+  subset; this is a restriction of the application population, not a conversion
+  of measured water or a global equivalence between material identifiers.

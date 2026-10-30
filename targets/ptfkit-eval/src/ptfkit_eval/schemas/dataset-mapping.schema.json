@@ -1,0 +1,702 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ptfkit.org/schemas/dataset-mapping.schema.json",
+  "title": "ptfkit-eval dataset mapping",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "dataset",
+    "source",
+    "identity",
+    "worksheets",
+    "encodings",
+    "retention_source_rules",
+    "retention_reconstruction_rules",
+    "formula_policy",
+    "reviewed_corrections",
+    "quarantines",
+    "blockers"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "dataset": {"$ref": "#/$defs/dataset"},
+    "source": {"$ref": "#/$defs/source"},
+    "identity": {"$ref": "#/$defs/identity"},
+    "worksheets": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/worksheet"}
+    },
+    "encodings": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/encoding"}
+    },
+    "retention_source_rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/retentionSourceRule"}
+    },
+    "retention_reconstruction_rules": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/retentionReconstructionRule"}
+    },
+    "retention_row_reviews": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/retentionRowReview"}
+    },
+    "predictor_bindings": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/predictorBinding"}
+    },
+    "formula_policy": {"$ref": "#/$defs/formulaPolicy"},
+    "reviewed_corrections": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/correction"}
+    },
+    "quarantines": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/quarantine"}
+    },
+    "blockers": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/blocker"}
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]*$"
+    },
+    "status": {
+      "enum": ["confirmed", "proposed", "blocked", "context_only", "derived"]
+    },
+    "dataset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "status"],
+      "properties": {
+        "id": {"$ref": "#/$defs/identifier"},
+        "title": {"type": "string", "minLength": 1},
+        "status": {"enum": ["draft_blocked", "review_ready", "active"]}
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["filename", "sha256", "size_bytes", "inventory", "retention_profile"],
+      "properties": {
+        "filename": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "size_bytes": {"type": "integer", "minimum": 1},
+        "inventory": {"type": "string", "minLength": 1},
+        "retention_profile": {"type": "string", "minLength": 1},
+        "redistribution_status": {"type": "string", "minLength": 1}
+      }
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sample_id", "join_policy", "source_aliases", "sample_crosswalks"],
+      "properties": {
+        "sample_id": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "components", "separator"],
+          "properties": {
+            "kind": {"const": "composite"},
+            "components": {
+              "type": "array",
+              "prefixItems": [{"const": "source"}, {"const": "sample_number"}],
+              "items": false
+            },
+            "separator": {"const": "_"},
+            "formula": {"type": "string", "minLength": 1}
+          }
+        },
+        "join_policy": {"enum": ["exact_after_reviewed_aliases", "exact_only"]},
+        "source_aliases": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/sourceAlias"}
+        },
+        "sample_crosswalks": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/sampleCrosswalk"}
+        }
+      }
+    },
+    "sourceAlias": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["worksheet", "raw", "canonical", "status", "evidence"],
+      "properties": {
+        "worksheet": {"type": "string", "minLength": 1},
+        "raw": {"type": "string", "minLength": 1},
+        "canonical": {"type": "string", "minLength": 1},
+        "status": {"enum": ["proposed", "confirmed"]},
+        "evidence": {"type": "string", "minLength": 1}
+      }
+    },
+    "sampleCrosswalk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "worksheet",
+        "raw_sample_id",
+        "canonical_sample_id",
+        "canonical_source",
+        "canonical_sample_number",
+        "evidence_cells",
+        "status",
+        "evidence"
+      ],
+      "properties": {
+        "worksheet": {"type": "string", "minLength": 1},
+        "raw_sample_id": {"type": "string", "minLength": 1},
+        "canonical_sample_id": {"type": "string", "minLength": 1},
+        "canonical_source": {"type": "string", "minLength": 1},
+        "canonical_sample_number": {"type": ["string", "number"]},
+        "evidence_cells": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^[^!]+![A-Z]+[1-9][0-9]*(?::[A-Z]+[1-9][0-9]*)?$"
+          }
+        },
+        "status": {"enum": ["proposed", "confirmed"]},
+        "evidence": {"type": "string", "minLength": 1}
+      }
+    },
+    "worksheet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "dimension",
+        "kind",
+        "status",
+        "header_rows",
+        "data_rows",
+        "row_roles",
+        "columns"
+      ],
+      "properties": {
+        "id": {"$ref": "#/$defs/identifier"},
+        "name": {"type": "string", "minLength": 1},
+        "dimension": {"type": "string", "pattern": "^[A-Z]+[1-9][0-9]*:[A-Z]+[1-9][0-9]*$"},
+        "kind": {"$ref": "#/$defs/identifier"},
+        "status": {"$ref": "#/$defs/status"},
+        "header_rows": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"type": "integer", "minimum": 1}
+          }
+        },
+        "data_rows": {"$ref": "#/$defs/rowRange"},
+        "row_roles": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/rowRole"}
+        },
+        "columns": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/column"}
+        },
+        "notes": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "rowRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["first", "last"],
+      "properties": {
+        "first": {"type": "integer", "minimum": 1},
+        "last": {"type": "integer", "minimum": 1}
+      }
+    },
+    "rowRole": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "status", "when"],
+      "properties": {
+        "id": {"$ref": "#/$defs/identifier"},
+        "status": {"$ref": "#/$defs/status"},
+        "when": {
+          "oneOf": [
+            {"const": "otherwise"},
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["column", "operator", "value"],
+              "properties": {
+                "column": {"type": "string", "pattern": "^[A-Z]+$"},
+                "operator": {"enum": ["equals", "not_equals"]},
+                "value": {}
+              }
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["column", "operator", "values"],
+              "properties": {
+                "column": {"type": "string", "pattern": "^[A-Z]+$"},
+                "operator": {"enum": ["in", "not_in"]},
+                "values": {"type": "array", "minItems": 1}
+              }
+            }
+          ]
+        },
+        "notes": {"type": "string", "minLength": 1}
+      }
+    },
+    "column": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["column", "role", "status"],
+      "properties": {
+        "column": {"type": "string", "pattern": "^[A-Z]+$"},
+        "source_header": {"type": ["string", "null"]},
+        "role": {"$ref": "#/$defs/identifier"},
+        "status": {"$ref": "#/$defs/status"},
+        "measurement": {"$ref": "#/$defs/measurement"},
+        "notes": {"type": "string", "minLength": 1}
+      }
+    },
+    "measurement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["quantity", "unit"],
+      "properties": {
+        "quantity": {"type": "string", "minLength": 1},
+        "unit": {"type": ["string", "null"]},
+        "material_basis": {"type": ["string", "null"]},
+        "denominator_basis": {"type": ["string", "null"]},
+        "particle_size": {"$ref": "#/$defs/particleSize"},
+        "method": {"type": ["string", "null"]},
+        "conditions": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/measurementCondition"}
+        }
+      }
+    },
+    "measurementCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["quantity", "value", "unit", "convention"],
+      "properties": {
+        "quantity": {"type": "string", "minLength": 1},
+        "value": {"type": "number"},
+        "unit": {"type": "string", "minLength": 1},
+        "convention": {"enum": ["signed", "magnitude"]}
+      }
+    },
+    "particleSize": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["unit", "lower", "upper", "lower_inclusive", "upper_inclusive"],
+      "properties": {
+        "unit": {"const": "micrometer"},
+        "lower": {"type": ["number", "null"], "minimum": 0},
+        "upper": {"type": ["number", "null"], "minimum": 0},
+        "lower_inclusive": {"type": "boolean"},
+        "upper_inclusive": {"type": "boolean"}
+      }
+    },
+    "encoding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "worksheet", "selector", "status", "interpretation"],
+      "properties": {
+        "id": {"$ref": "#/$defs/identifier"},
+        "worksheet": {"type": "string", "minLength": 1},
+        "selector": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["column", "value"],
+          "properties": {
+            "column": {"type": "string", "pattern": "^[A-Z]+$"},
+            "value": {}
+          }
+        },
+        "status": {"$ref": "#/$defs/status"},
+        "interpretation": {"type": "string", "minLength": 1},
+        "measurement": {"$ref": "#/$defs/measurement"},
+        "conversion": {"type": "string", "minLength": 1},
+        "blockers": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/identifier"}
+        }
+      }
+    },
+    "retentionSourceRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "observations"],
+      "properties": {
+        "source": {"type": "string", "minLength": 1},
+        "observations": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/retentionObservationRule"}
+        },
+        "notes": {"type": "string", "minLength": 1}
+      }
+    },
+    "retentionObservationRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "water_encoding",
+        "pressure_encoding",
+        "status",
+        "water_quantity",
+        "water_unit",
+        "canonical_water_unit",
+        "pressure_representation",
+        "pressure_convention",
+        "canonical_pressure_unit",
+        "blockers",
+        "evidence"
+      ],
+      "properties": {
+        "requires_row_review": {"type": "boolean"},
+        "water_encoding": {"enum": ["W", "Q", "?"]},
+        "pressure_encoding": {"type": ["string", "null"]},
+        "status": {"enum": ["confirmed", "blocked"]},
+        "water_quantity": {
+          "enum": [
+            "gravimetric_water_content",
+            "volumetric_water_content",
+            null
+          ]
+        },
+        "water_unit": {
+          "enum": [
+            "mass_fraction",
+            "mass_percent",
+            "volume_fraction",
+            "volume_percent",
+            null
+          ]
+        },
+        "canonical_water_unit": {
+          "enum": ["mass_fraction", "volume_fraction", null]
+        },
+        "pressure_representation": {
+          "enum": ["pf_log10_centimeter_water_head", "log10_kilopascal", "kilopascal", "megapascal", null]
+        },
+        "pressure_convention": {"enum": ["magnitude", "negative", null]},
+        "canonical_pressure_unit": {"enum": ["kilopascal", null]},
+        "blockers": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/identifier"}
+        },
+        "evidence": {"type": "string", "minLength": 1}
+      }
+    },
+    "retentionReconstructionRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "status",
+        "master_worksheet",
+        "long_worksheet",
+        "master_source",
+        "long_source",
+        "water_scale",
+        "water_scale_status",
+        "comparison_decimal_places",
+        "expected_missing_water_count",
+        "expected_missing_long_water_count",
+        "wide_missing_representation",
+        "pressure_replacements",
+        "blocks",
+        "parameter_block",
+        "blockers",
+        "evidence"
+      ],
+      "properties": {
+        "id": {"$ref": "#/$defs/identifier"},
+        "status": {"enum": ["confirmed", "blocked"]},
+        "master_worksheet": {"type": "string", "minLength": 1},
+        "long_worksheet": {"type": "string", "minLength": 1},
+        "master_source": {"type": "string", "minLength": 1},
+        "long_source": {"type": "string", "minLength": 1},
+        "water_scale": {"type": "number", "exclusiveMinimum": 0},
+        "water_scale_status": {"enum": ["proposed", "confirmed"]},
+        "comparison_decimal_places": {"type": "integer", "minimum": 0, "maximum": 15},
+        "expected_missing_water_count": {"type": "integer", "minimum": 0},
+        "expected_missing_long_water_count": {"type": "integer", "minimum": 0},
+        "wide_missing_representation": {
+          "enum": ["omitted_from_long", "explicit_long_null"]
+        },
+        "wide_missing_markers": {
+          "type": "array",
+          "items": {"type": "number"},
+          "uniqueItems": true
+        },
+        "expected_excluded_wide_water_count": {"type": "integer", "minimum": 0},
+        "wide_excluded_cells": {
+          "type": "array",
+          "items": {"type": "string", "pattern": "^[A-Z]+[1-9][0-9]*$"},
+          "uniqueItems": true
+        },
+        "pressure_replacements": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/pressureReplacement"}
+        },
+        "blocks": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/retentionWideBlock"}
+        },
+        "parameter_block": {
+          "oneOf": [
+            {"type": "null"},
+            {"$ref": "#/$defs/retentionParameterBlock"}
+          ]
+        },
+        "blockers": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/identifier"}
+        },
+        "evidence": {"type": "string", "minLength": 1}
+      }
+    },
+    "pressureReplacement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["master_value", "long_value", "status", "evidence"],
+      "properties": {
+        "master_value": {"type": "number"},
+        "long_value": {"type": "number"},
+        "status": {"enum": ["proposed", "confirmed"]},
+        "evidence": {"type": "string", "minLength": 1}
+      }
+    },
+    "axisOverride": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["long_value", "status", "evidence"],
+      "properties": {
+        "long_value": {
+          "oneOf": [
+            {"type": "number"},
+            {"type": "string", "minLength": 1}
+          ]
+        },
+        "status": {"enum": ["proposed", "confirmed"]},
+        "evidence": {"type": "string", "minLength": 1}
+      }
+    },
+    "retentionWideBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "axis_row",
+        "first_sample_row",
+        "last_sample_row",
+        "first_column",
+        "last_column"
+      ],
+      "properties": {
+        "axis_row": {"type": "integer", "minimum": 1},
+        "first_sample_row": {"type": "integer", "minimum": 1},
+        "last_sample_row": {"type": "integer", "minimum": 1},
+        "first_column": {"type": "string", "pattern": "^[A-Z]+$"},
+        "last_column": {"type": "string", "pattern": "^[A-Z]+$"},
+        "water_scale": {"type": "number", "exclusiveMinimum": 0},
+        "axis_overrides": {
+          "type": "object",
+          "propertyNames": {"pattern": "^[A-Z]+$"},
+          "additionalProperties": {"$ref": "#/$defs/axisOverride"}
+        }
+      }
+    },
+    "retentionParameterBlock": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["header_row", "columns", "sample_rows"],
+      "properties": {
+        "header_row": {"type": "integer", "minimum": 1},
+        "columns": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "string", "pattern": "^[A-Z]+$"}
+        },
+        "sample_rows": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/rowRange"}
+        }
+      }
+    },
+    "predictorBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "function",
+        "input",
+        "worksheet",
+        "column",
+        "status",
+        "blockers",
+        "evidence"
+      ],
+      "properties": {
+        "function": {"$ref": "#/$defs/identifier"},
+        "input": {"$ref": "#/$defs/identifier"},
+        "worksheet": {"type": "string", "minLength": 1},
+        "column": {"type": "string", "pattern": "^[A-Z]+$"},
+        "status": {"enum": ["confirmed", "proposed", "blocked"]},
+        "category_map": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/categoryMapping"}
+        },
+        "measurement_overrides": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/measurementOverride"}
+        },
+        "blockers": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/identifier"},
+          "uniqueItems": true
+        },
+        "evidence": {"type": "string", "minLength": 1}
+      }
+    },
+    "measurementOverride": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sample_rows", "measurement", "source_headers", "evidence"],
+      "properties": {
+        "sample_rows": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/rowRange"}
+        },
+        "measurement": {"$ref": "#/$defs/measurement"},
+        "source_headers": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/sourceHeader"}
+        },
+        "evidence": {"type": "string", "minLength": 1}
+      }
+    },
+    "sourceHeader": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["worksheet", "column", "row", "value"],
+      "properties": {
+        "worksheet": {"type": "string", "minLength": 1},
+        "column": {"type": "string", "pattern": "^[A-Z]+$"},
+        "row": {"type": "integer", "minimum": 1},
+        "value": {"type": "string", "minLength": 1}
+      }
+    },
+    "categoryMapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["raw", "value", "status", "evidence"],
+      "properties": {
+        "raw": {"type": "string", "minLength": 1},
+        "value": {"type": "string", "minLength": 1},
+        "status": {"enum": ["confirmed", "proposed"]},
+        "evidence": {"type": "string", "minLength": 1}
+      }
+    },
+    "formulaPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["read_formulas", "read_cached_values", "recalculate", "derived_columns"],
+      "properties": {
+        "read_formulas": {"const": true},
+        "read_cached_values": {"const": true},
+        "recalculate": {"const": false},
+        "derived_columns": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/derivedColumn"}
+        }
+      }
+    },
+    "derivedColumn": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["worksheet", "column", "purpose", "validation"],
+      "properties": {
+        "worksheet": {"type": "string", "minLength": 1},
+        "column": {"type": "string", "pattern": "^[A-Z]+$"},
+        "purpose": {"type": "string", "minLength": 1},
+        "validation": {"type": "string", "minLength": 1}
+      }
+    },
+    "retentionRowReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "worksheet", "evidence", "decisions"],
+      "properties": {
+        "source": {"type": "string", "minLength": 1},
+        "worksheet": {"type": "string", "minLength": 1},
+        "evidence": {"type": "string", "minLength": 1},
+        "decisions": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/retentionRowDecision"}}
+      }
+    },
+    "retentionRowDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["row", "evidence_cells"],
+      "oneOf": [
+        {"required": ["canonical_sample_id", "canonical_source", "canonical_sample_number"], "not": {"required": ["exclusion_reason"]}},
+        {"required": ["exclusion_reason"], "not": {"anyOf": [{"required": ["canonical_sample_id"]}, {"required": ["canonical_source"]}, {"required": ["canonical_sample_number"]}]}}
+      ],
+      "properties": {
+        "row": {"type": "integer", "minimum": 2},
+        "canonical_sample_id": {"type": "string", "minLength": 1},
+        "canonical_source": {"type": "string", "minLength": 1},
+        "canonical_sample_number": {"type": ["string", "number"]},
+        "exclusion_reason": {"enum": ["ambiguous_sample_identity", "unreviewed_pressure_value", "non_observation_table_value"]},
+        "evidence_cells": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+      }
+    },
+    "correction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "cells", "replacement", "evidence"],
+      "properties": {
+        "id": {"$ref": "#/$defs/identifier"},
+        "cells": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "replacement": {},
+        "evidence": {"type": "string", "minLength": 1}
+      }
+    },
+    "quarantine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "scope", "reason", "release_requires"],
+      "properties": {
+        "id": {"$ref": "#/$defs/identifier"},
+        "scope": {"type": "string", "minLength": 1},
+        "reason": {"type": "string", "minLength": 1},
+        "release_requires": {"type": "string", "minLength": 1}
+      }
+    },
+    "blocker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "scope", "question", "evidence"],
+      "properties": {
+        "id": {"$ref": "#/$defs/identifier"},
+        "scope": {"type": "string", "minLength": 1},
+        "question": {"type": "string", "minLength": 1},
+        "evidence": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}
