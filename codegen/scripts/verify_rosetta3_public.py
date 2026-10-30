@@ -20,14 +20,21 @@ def require(condition: bool, context: str) -> None:  # noqa: FBT001
         raise AssertionError(context)
 
 
-def run(model_path: Path, build: Path, rust: Path) -> None:
+def run(model_path: Path | None, build: Path, rust: Path, *, builtin: bool = False) -> None:
     from ptfkit import zhang_schaap2017 as api
     from ptfkit.models import Model, ModelIntegrityError
 
     refs = json.loads((ROOT / 'specs/models/rosetta3/reference.json').read_text(encoding='utf-8'))
     require(len(refs['cases']) == 120, 'incomplete frozen reference cases')
-    model = api.Rosetta3.load(model_path)
-    generic = Model.load(model_path, api.MODEL_SHA256)
+    if builtin:
+        model = api.Rosetta3()
+        generic = model.model
+    else:
+        if model_path is None:
+            raise ValueError('an external model path is required without --builtin')
+        model = api.Rosetta3.load(model_path)
+        generic = Model.load(model_path, api.MODEL_SHA256)
+    selector = '--builtin' if builtin else str(model_path)
     require(generic.sha256 == api.MODEL_SHA256, 'wrong loaded digest')
     suffix = '.exe' if rust.suffix == '.exe' else ''
     executables = {
@@ -72,7 +79,7 @@ def run(model_path: Path, build: Path, rust: Path) -> None:
                 output = subprocess.check_output(
                     [
                         str(executables[target]),
-                        str(model_path),
+                        selector,
                         str(level),
                         str(int(mode)),
                         *map(str, inputs),
@@ -96,7 +103,7 @@ def run(model_path: Path, build: Path, rust: Path) -> None:
                 result = subprocess.run(
                     [
                         str(executables[target]),
-                        str(model_path),
+                        selector,
                         str(level),
                         str(mode),
                         *map(str, inputs),
@@ -116,6 +123,14 @@ def run(model_path: Path, build: Path, rust: Path) -> None:
                     abs(actual - expected) <= max(1e-11, 1e-12 * abs(expected)),
                     'raw member differs',
                 )
+    if builtin:
+        print(
+            'Bundled model: no model path supplied; '
+            'original members and invalid predictors verified'
+        )
+        return
+    if model_path is None:
+        raise ValueError('missing external model path')
     with tempfile.TemporaryDirectory(prefix='ptfkit-model-integrity-') as temp:
         damaged = Path(temp) / 'damaged.ptfm'
         data = bytearray(model_path.read_bytes())
@@ -145,8 +160,14 @@ def run(model_path: Path, build: Path, rust: Path) -> None:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--model', type=Path, required=True)
+    parser.add_argument('--model', type=Path)
+    parser.add_argument('--builtin', action='store_true')
     parser.add_argument('--build', type=Path, required=True)
     parser.add_argument('--rust', type=Path, required=True)
     args = parser.parse_args()
-    run(args.model.resolve(), args.build.resolve(), args.rust.resolve())
+    run(
+        args.model.resolve() if args.model else None,
+        args.build.resolve(),
+        args.rust.resolve(),
+        builtin=args.builtin,
+    )

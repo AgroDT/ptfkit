@@ -22,6 +22,14 @@ target_include_directories(ptfkit_c INTERFACE
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/rosetta3_data.c")
+    add_library(ptfkit_model_data STATIC src/rosetta3_data.c)
+    set_target_properties(ptfkit_model_data PROPERTIES POSITION_INDEPENDENT_CODE ON)
+    target_link_libraries(ptfkit_c INTERFACE $<BUILD_INTERFACE:ptfkit_model_data>)
+    # Keep native archives compiler-independent: consumers compile this data once.
+    install(FILES src/rosetta3_data.c DESTINATION ${CMAKE_INSTALL_DATADIR}/ptfkit)
+endif()
+
 cmake_dependent_option(
     PTFKIT_BUILD_CPP_MODULES
     "Provide the C++23 module interface target"
@@ -41,7 +49,7 @@ install(
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/ptfkit
 )
 install(
-    FILES README.md LICENSE
+    FILES README.md LICENSE MODEL_NOTICE.txt
     DESTINATION ${CMAKE_INSTALL_DOCDIR}
 )
 install(

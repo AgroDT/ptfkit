@@ -1,0 +1,672 @@
+{
+  "format_version": 1,
+  "author_revision": "2a4aae0bdcea20cc2f1887ce25aa0b4336dd9510",
+  "author_manifest_sha256": "e7c0e8678ccc693e38d902c4270444bc33879eae4f02252a0415ef16c077ded4",
+  "usda_revision": "6b0e3902f8a145805d41b691dc36f8e69e898f2a",
+  "usda_manifest_sha256": "3b24036d44930d3dee653cff25b9a04874ce404614830e850a3945b10ada37d3",
+  "comparison": "Exact little-endian binary64 bytes; row-major weights then biases, member order by Ann.seq.",
+  "rosetta3": [
+    {
+      "author_model_id": 2,
+      "usda_artifact": "rose3_mod2_0.npz",
+      "members": 1000,
+      "widths": [
+        3,
+        6,
+        5
+      ],
+      "parameter_values": 59000,
+      "parameter_sha256": "028e85c7fc06ebdc80799af3afb4dfecd2c55af4cadd5746b310594f82b46b8a",
+      "parameters_bitwise_equal_in_sequence_order": true,
+      "parameter_multisets_equal": true,
+      "activations_equal": true,
+      "rosetta3_scalers": {
+        "equal": true,
+        "inputs": [
+          {
+            "variable": "sand",
+            "scale": "minmax",
+            "params": [
+              0.0,
+              0.01,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          },
+          {
+            "variable": "silt",
+            "scale": "minmax",
+            "params": [
+              0.0,
+              0.01,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          },
+          {
+            "variable": "clay",
+            "scale": "minmax",
+            "params": [
+              0.0,
+              0.01,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          }
+        ],
+        "outputs": [
+          {
+            "variable": "theta_r",
+            "scale": "linear",
+            "params": [
+              1.0,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          },
+          {
+            "variable": "theta_s",
+            "scale": "linear",
+            "params": [
+              1.0,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          },
+          {
+            "variable": "alpha",
+            "scale": "linear",
+            "params": [
+              -8.0,
+              2.0
+            ],
+            "physical_output_is_log10": true
+          },
+          {
+            "variable": "npar",
+            "scale": "linear",
+            "params": [
+              1.5,
+              0.0
+            ],
+            "physical_output_is_log10": true
+          },
+          {
+            "variable": "ks",
+            "scale": "linear",
+            "params": [
+              8.0,
+              -2.0
+            ],
+            "physical_output_is_log10": true
+          }
+        ]
+      }
+    },
+    {
+      "author_model_id": 3,
+      "usda_artifact": "rose3_mod3_0.npz",
+      "members": 1000,
+      "widths": [
+        4,
+        6,
+        5
+      ],
+      "parameter_values": 65000,
+      "parameter_sha256": "442a86582f721a64bfc33a052de049353dd56b55da0e48e5e2432182286b248a",
+      "parameters_bitwise_equal_in_sequence_order": true,
+      "parameter_multisets_equal": true,
+      "activations_equal": true,
+      "rosetta3_scalers": {
+        "equal": true,
+        "inputs": [
+          {
+            "variable": "sand",
+            "scale": "minmax",
+            "params": [
+              0.0,
+              0.01,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          },
+          {
+            "variable": "silt",
+            "scale": "minmax",
+            "params": [
+              0.0,
+              0.01,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          },
+          {
+            "variable": "clay",
+            "scale": "minmax",
+            "params": [
+              0.0,
+              0.01,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          },
+          {
+            "variable": "bd",
+            "scale": "minmax",
+            "params": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          }
+        ],
+        "outputs": [
+          {
+            "variable": "theta_r",
+            "scale": "linear",
+            "params": [
+              1.0,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          },
+          {
+            "variable": "theta_s",
+            "scale": "linear",
+            "params": [
+              1.0,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          },
+          {
+            "variable": "alpha",
+            "scale": "linear",
+            "params": [
+              -8.0,
+              2.0
+            ],
+            "physical_output_is_log10": true
+          },
+          {
+            "variable": "npar",
+            "scale": "linear",
+            "params": [
+              1.5,
+              0.0
+            ],
+            "physical_output_is_log10": true
+          },
+          {
+            "variable": "ks",
+            "scale": "linear",
+            "params": [
+              8.0,
+              -2.0
+            ],
+            "physical_output_is_log10": true
+          }
+        ]
+      }
+    },
+    {
+      "author_model_id": 4,
+      "usda_artifact": "rose3_mod4_0.npz",
+      "members": 1000,
+      "widths": [
+        5,
+        6,
+        5
+      ],
+      "parameter_values": 71000,
+      "parameter_sha256": "7a0a8ac0770b8a6cafa5d8d69329a70663ceede6787fa4f9825b699874f0ec12",
+      "parameters_bitwise_equal_in_sequence_order": true,
+      "parameter_multisets_equal": true,
+      "activations_equal": true,
+      "rosetta3_scalers": {
+        "equal": true,
+        "inputs": [
+          {
+            "variable": "sand",
+            "scale": "minmax",
+            "params": [
+              0.0,
+              0.01,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          },
+          {
+            "variable": "silt",
+            "scale": "minmax",
+            "params": [
+              0.0,
+              0.01,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          },
+          {
+            "variable": "clay",
+            "scale": "minmax",
+            "params": [
+              0.0,
+              0.01,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          },
+          {
+            "variable": "bd",
+            "scale": "minmax",
+            "params": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          },
+          {
+            "variable": "th33",
+            "scale": "minmax",
+            "params": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          }
+        ],
+        "outputs": [
+          {
+            "variable": "theta_r",
+            "scale": "linear",
+            "params": [
+              1.0,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          },
+          {
+            "variable": "theta_s",
+            "scale": "linear",
+            "params": [
+              1.0,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          },
+          {
+            "variable": "alpha",
+            "scale": "linear",
+            "params": [
+              -8.0,
+              2.0
+            ],
+            "physical_output_is_log10": true
+          },
+          {
+            "variable": "npar",
+            "scale": "linear",
+            "params": [
+              1.5,
+              0.0
+            ],
+            "physical_output_is_log10": true
+          },
+          {
+            "variable": "ks",
+            "scale": "linear",
+            "params": [
+              8.0,
+              -2.0
+            ],
+            "physical_output_is_log10": true
+          }
+        ]
+      }
+    },
+    {
+      "author_model_id": 5,
+      "usda_artifact": "rose3_mod5_0.npz",
+      "members": 1000,
+      "widths": [
+        6,
+        6,
+        5
+      ],
+      "parameter_values": 77000,
+      "parameter_sha256": "0c559cb3104aa0c1ceb07ded90e2c1a7ba3c31dff731c8c1d068837a1862e449",
+      "parameters_bitwise_equal_in_sequence_order": true,
+      "parameter_multisets_equal": true,
+      "activations_equal": true,
+      "rosetta3_scalers": {
+        "equal": true,
+        "inputs": [
+          {
+            "variable": "sand",
+            "scale": "minmax",
+            "params": [
+              0.0,
+              0.01,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          },
+          {
+            "variable": "silt",
+            "scale": "minmax",
+            "params": [
+              0.0,
+              0.01,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          },
+          {
+            "variable": "clay",
+            "scale": "minmax",
+            "params": [
+              0.0,
+              0.01,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          },
+          {
+            "variable": "bd",
+            "scale": "minmax",
+            "params": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          },
+          {
+            "variable": "th33",
+            "scale": "minmax",
+            "params": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          },
+          {
+            "variable": "th1500",
+            "scale": "minmax",
+            "params": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          }
+        ],
+        "outputs": [
+          {
+            "variable": "theta_r",
+            "scale": "linear",
+            "params": [
+              1.0,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          },
+          {
+            "variable": "theta_s",
+            "scale": "linear",
+            "params": [
+              1.0,
+              0.0
+            ],
+            "physical_output_is_log10": false
+          },
+          {
+            "variable": "alpha",
+            "scale": "linear",
+            "params": [
+              -8.0,
+              2.0
+            ],
+            "physical_output_is_log10": true
+          },
+          {
+            "variable": "npar",
+            "scale": "linear",
+            "params": [
+              1.5,
+              0.0
+            ],
+            "physical_output_is_log10": true
+          },
+          {
+            "variable": "ks",
+            "scale": "linear",
+            "params": [
+              8.0,
+              -2.0
+            ],
+            "physical_output_is_log10": true
+          }
+        ]
+      }
+    }
+  ],
+  "legacy_retention_and_ksat": [
+    {
+      "author_model_id": 102,
+      "usda_artifact": "rose1_mod2_0.npz",
+      "members": 60,
+      "widths": [
+        3,
+        6,
+        4
+      ],
+      "parameter_values": 3120,
+      "parameter_sha256": "c4a6fadc9ce706eb9e6e999a1d648041f6bafb291a97acb33ed51fe3d94fbad0",
+      "parameters_bitwise_equal_in_sequence_order": true,
+      "parameter_multisets_equal": true,
+      "activations_equal": true,
+      "rosetta3_scalers": null
+    },
+    {
+      "author_model_id": 103,
+      "usda_artifact": "rose1_mod3_0.npz",
+      "members": 60,
+      "widths": [
+        4,
+        6,
+        4
+      ],
+      "parameter_values": 3480,
+      "parameter_sha256": "d6bb75b9f065c81ace3d654cada8938b246a16740179c3da52c5183bcffe587b",
+      "parameters_bitwise_equal_in_sequence_order": true,
+      "parameter_multisets_equal": true,
+      "activations_equal": true,
+      "rosetta3_scalers": null
+    },
+    {
+      "author_model_id": 104,
+      "usda_artifact": "rose1_mod4_0.npz",
+      "members": 60,
+      "widths": [
+        5,
+        6,
+        4
+      ],
+      "parameter_values": 3840,
+      "parameter_sha256": "88e4fc75da651ac5aa35379cfd7e6243878970e15afb2cddc2822b23b47451cc",
+      "parameters_bitwise_equal_in_sequence_order": true,
+      "parameter_multisets_equal": true,
+      "activations_equal": true,
+      "rosetta3_scalers": null
+    },
+    {
+      "author_model_id": 105,
+      "usda_artifact": "rose1_mod5_0.npz",
+      "members": 60,
+      "widths": [
+        6,
+        6,
+        4
+      ],
+      "parameter_values": 4200,
+      "parameter_sha256": "314ee0ba81e6c192e12033a8e8a434cf7ed68ef8625fb689a1167d03407ab923",
+      "parameters_bitwise_equal_in_sequence_order": true,
+      "parameter_multisets_equal": true,
+      "activations_equal": true,
+      "rosetta3_scalers": null
+    },
+    {
+      "author_model_id": 202,
+      "usda_artifact": "rose1_mod2_1.npz",
+      "members": 100,
+      "widths": [
+        3,
+        6,
+        1
+      ],
+      "parameter_values": 3100,
+      "parameter_sha256": "30249b60e5c1db90534ede6361345dc6c7e107a1cde05e47582b52a040ca69e3",
+      "parameters_bitwise_equal_in_sequence_order": true,
+      "parameter_multisets_equal": true,
+      "activations_equal": true,
+      "rosetta3_scalers": null
+    },
+    {
+      "author_model_id": 203,
+      "usda_artifact": "rose1_mod3_1.npz",
+      "members": 100,
+      "widths": [
+        4,
+        6,
+        1
+      ],
+      "parameter_values": 3700,
+      "parameter_sha256": "9b20ac7c35f12b51a6b7dda0a95d2bc4e96a33bdc31db1aec5678d604ef58fbb",
+      "parameters_bitwise_equal_in_sequence_order": true,
+      "parameter_multisets_equal": true,
+      "activations_equal": true,
+      "rosetta3_scalers": null
+    },
+    {
+      "author_model_id": 204,
+      "usda_artifact": "rose1_mod4_1.npz",
+      "members": 100,
+      "widths": [
+        5,
+        6,
+        1
+      ],
+      "parameter_values": 4300,
+      "parameter_sha256": "8cafd52586cb32906e0676e3cb587f16f46c1895e1d7750aa7bf8a303040d0ad",
+      "parameters_bitwise_equal_in_sequence_order": true,
+      "parameter_multisets_equal": true,
+      "activations_equal": true,
+      "rosetta3_scalers": null
+    },
+    {
+      "author_model_id": 205,
+      "usda_artifact": "rose1_mod5_1.npz",
+      "members": 100,
+      "widths": [
+        6,
+        6,
+        1
+      ],
+      "parameter_values": 4900,
+      "parameter_sha256": "2162fd1ff197dd5c725a9fa8847e26f4bf3aaff6df28fb4417818ce4baf3db44",
+      "parameters_bitwise_equal_in_sequence_order": true,
+      "parameter_multisets_equal": true,
+      "activations_equal": true,
+      "rosetta3_scalers": null
+    }
+  ],
+  "author_database_inventory": [
+    {
+      "model_id": 2,
+      "input_width": 3,
+      "output_width": 5,
+      "members": 1000
+    },
+    {
+      "model_id": 3,
+      "input_width": 4,
+      "output_width": 5,
+      "members": 1000
+    },
+    {
+      "model_id": 4,
+      "input_width": 5,
+      "output_width": 5,
+      "members": 1000
+    },
+    {
+      "model_id": 5,
+      "input_width": 6,
+      "output_width": 5,
+      "members": 1000
+    },
+    {
+      "model_id": 102,
+      "input_width": 3,
+      "output_width": 4,
+      "members": 60
+    },
+    {
+      "model_id": 103,
+      "input_width": 4,
+      "output_width": 4,
+      "members": 60
+    },
+    {
+      "model_id": 104,
+      "input_width": 5,
+      "output_width": 4,
+      "members": 60
+    },
+    {
+      "model_id": 105,
+      "input_width": 6,
+      "output_width": 4,
+      "members": 60
+    },
+    {
+      "model_id": 202,
+      "input_width": 3,
+      "output_width": 1,
+      "members": 100
+    },
+    {
+      "model_id": 203,
+      "input_width": 4,
+      "output_width": 1,
+      "members": 100
+    },
+    {
+      "model_id": 204,
+      "input_width": 5,
+      "output_width": 1,
+      "members": 100
+    },
+    {
+      "model_id": 205,
+      "input_width": 6,
+      "output_width": 1,
+      "members": 100
+    }
+  ],
+  "unsaturated_conductivity": {
+    "usda_artifact": "rose1_unsat_k.npz",
+    "required_topology": [
+      4,
+      6,
+      2
+    ],
+    "status": "No two-output network exists in this author database; K0/L provenance is not established by this comparison."
+  },
+  "scope": "Parameter/topology/scaler comparison only. The author uses population covariance (ddof=0); ptfkit retains USDA sample SD (ddof=1). This does not establish identical high-level APIs or determine ownership or license validity."
+}

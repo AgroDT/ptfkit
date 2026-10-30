@@ -48,5 +48,5 @@ Each page describes the source, scope, inputs, outputs, status, and limitations 
 | [Corrected Weynants et al. hydraulic-parameter pedotransfer function.](./weynants2009.md) | — | 1 |
 | [Williams et al. (1992) Campbell water-retention regressions and parameter table.](./williams1992.md) | Australia, England and Wales, and the United States | 9 |
 | [Wösten et al. (2001), Staring Series hydraulic parameters for Dutch soils.](./wosten2001.md) | Netherlands | 5 |
-| [Rosetta3 hydraulic parameters and uncertainty from integrity-checked external models.](./zhang_schaap2017.md) | Not independently established by this software audit. | 4 |
+| [Rosetta3 hydraulic parameters and uncertainty from bundled CC0 neural ensembles.](./zhang_schaap2017.md) | Not independently established by this software audit. | 4 |
 | [Saturated hydraulic conductivity PTFs for the Loess Plateau of China.](./zhao2016.md) | Typical Loess Plateau of China, covering approximately 430,000 square kilometers. | 6 |

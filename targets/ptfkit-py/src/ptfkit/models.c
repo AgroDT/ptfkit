@@ -147,6 +147,13 @@ static PyObject *ptfkit_python_predict(PyObject *module, PyObject *args) {
     free(raw);
     return rows;
 }
+static PyObject *ptfkit_python_rosetta_data(PyObject *module, PyObject *unused) {
+    (void)module;
+    (void)unused;
+    return PyBytes_FromStringAndSize((const char *)ptfkit_detail_rosetta3_data,
+                                     PTFKIT_ROSETTA3_BYTES);
+}
+
 static PyObject *ptfkit_python_rosetta(PyObject *module, PyObject *args) {
     PyObject *capsule, *values;
     unsigned level, mode;
@@ -183,6 +190,7 @@ static PyMethodDef ptfkit_model_methods[] = {
     {"network_shape", ptfkit_python_shape, METH_VARARGS, NULL},
     {"predict_network", ptfkit_python_predict, METH_VARARGS, NULL},
     {"rosetta3", ptfkit_python_rosetta, METH_VARARGS, NULL},
+    {"rosetta3_data", ptfkit_python_rosetta_data, METH_NOARGS, NULL},
     {NULL, NULL, 0, NULL}};
 static struct PyModuleDef ptfkit_models_module = {
     PyModuleDef_HEAD_INIT, "_models", NULL, -1, ptfkit_model_methods, NULL, NULL, NULL, NULL};

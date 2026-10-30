@@ -4,12 +4,12 @@ title: Rosetta3 and external models
 
 # Rosetta3 and external models
 
-Rosetta3 is available in the public Rust, C11, C++23 and Python APIs. All four
-predictor levels require an explicitly loaded external model. No trained
-Rosetta parameters are included in wheels, crates, native installations or
-headers, and loading never downloads data or invokes the original Python
-package. Python inference delegates to a separate native extension without a
-NumPy runtime dependency.
+Rosetta3 is available in the public Rust, C11, C++23 and Python APIs with
+bundled CC0 parameters. No model download, conversion, external model file,
+NumPy inference runtime or original Rosetta package is required. All four
+predictor levels and all three reporting modes use the same pinned parameters
+and numerical kernels as the existing upstream reference tests. Generic
+integrity-checked external model loading remains available as an option.
 
 The versioned scientific binding is `implementation.external_model` in
 `specs/functions/zhang_schaap2017.yaml`. The normal generator emits public APIs,
@@ -20,13 +20,33 @@ formula and Random Forest implementations retain their existing pipeline.
 
 The audited source is the [official implementation at revision
 6b0e3902f8a145805d41b691dc36f8e69e898f2a](https://github.com/usda-ars-ussl/rosetta-soil/tree/6b0e3902f8a145805d41b691dc36f8e69e898f2a).
-The repository declares CC0, but its README attributes the trained weights and
-biases to Marcel Schaap and Yonggen Zhang at the University of Arizona. The
-reviewed repository contains no separate statement establishing their authority
-to dedicate those contributed parameters to CC0. This audit does not establish
-that redistribution is prohibited; it establishes that the requested evidence
-of permission remains unresolved. No author has been contacted and no permission
-is inferred or fabricated.
+The USDA repository publishes its implementation and included NPZ artifacts
+with a [CC0 declaration](https://creativecommons.org/publicdomain/zero/1.0/).
+No NPZ-specific license exclusion was found in the reviewed checkout. CC0 is
+an explicit public-domain dedication, with a fallback license where a waiver
+cannot take effect; it permits copying and redistribution without requesting
+individual permission. Its README attributes the trained weights and biases
+to Marcel Schaap and Yonggen Zhang at the University of Arizona.
+An initial review of that repository alone missed the separate
+[author repository](https://github.com/YonggenZhang/Rosetta/tree/2a4aae0bdcea20cc2f1887ce25aa0b4336dd9510).
+The author repository supplies the original trained networks in a SQLite
+database, a GPLv3 `LICENSE`, and source headers identifying Marcel G. Schaap's
+2016 copyright and GPLv2-or-later terms. This is positive evidence of author
+publication with GPL licensing notices; describing these weights as having no
+author-published licensing evidence would be incorrect.
+
+The exact comparison below establishes parameter identity for the four
+Rosetta3 retention/Ksat ensembles. The author GPL notices and USDA CC0
+declaration are both recorded. Neither an acknowledgment of other authors nor
+another publication under GPL, by itself, establishes that USDA's CC0
+declaration is invalid. This comparison does not determine ownership or license
+validity, and CC0 does not waive rights its declarant does not hold.
+
+The earlier assessment treated the absence of a separate permission statement
+from each contributor as a distribution blocker. That conclusion was too
+categorical and was not established by the reviewed evidence. The reviewed USDA parameters are now bundled under their published CC0 terms.
+This adds no author approval requirement. No author has
+been contacted.
 
 The committed `specs/models/rosetta3/manifest.json` pins the revision and SHA-256
 hashes of the implementation, README, license, packaging definition, tests, and
@@ -44,14 +64,71 @@ The other eight Rosetta1 retention/conductivity artifacts are unnecessary for
 Rosetta3. Rosetta3 uses one joint ensemble for its first five outputs; K0 and L
 come from the separate 100-member Rosetta1 ensemble. No models are retrained.
 
-Trained NPZs, converted binaries, generated local weight sources and development
-environments remain under ignored local directories. They are not copied to any
-package, crate, native installation, or generated public header.
-The committed network metadata and trusted artifact descriptor contain hashes,
-normalization constants and topology,
-not trained weights. The fixtures contain predictions, not parameter tensors.
-The CC0 source declaration and unresolved third-party parameter provenance must
-both be preserved in any future distribution assessment.
+The original NPZs and author database remain in ignored audit checkouts.
+The byte-identical reviewed PTFKNN01 container is committed at
+`specs/models/rosetta3/rosetta3.ptfm`. Normal generation verifies its size and
+SHA-256, emits the Rust binary resource and the C data translation unit, and
+checks both for generated-output drift. Public headers contain declarations,
+not trained arrays. `MODEL_NOTICE.txt` in each distribution records CC0,
+upstream revision, credits and container hash. ptfkit code remains MIT-licensed.
+The network metadata and fixtures contain topology, normalization and
+predictions; the trained tensors are confined to the designated model assets.
+Preserve the USDA CC0 declaration, the author GPL notices and the verified
+parameter identity in provenance records. The absence of K0/L from this author
+database limits this particular comparison; it is not evidence that the USDA
+K0/L artifact cannot be distributed under its published terms. The original
+import manifest's redistribution label records the earlier fallback decision;
+it remains unchanged to preserve the hashes recorded in the frozen reference
+fixture and is not the current licensing assessment.
+
+## Author database comparison
+
+`specs/models/rosetta3/author-manifest.json` pins author revision
+`2a4aae0bdcea20cc2f1887ce25aa0b4336dd9510` and SHA-256 hashes of its license,
+README, three Python sources, SQLite database and SQL dump. The database hash is
+`0e1a3f3ccbcf569066dc3c19027183646e434eece30213896f00df6f477910de`.
+The committed `author-comparison.json` records the independently executed audit;
+it contains hashes, dimensions, scalers and comparison outcomes, not weights.
+
+| USDA NPZ | Author model ID | Members | Weight/bias values | Result |
+| --- | ---: | ---: | ---: | --- |
+| `rose3_mod2_0.npz` | 2 | 1000 | 59,000 | Bitwise equal |
+| `rose3_mod3_0.npz` | 3 | 1000 | 65,000 | Bitwise equal |
+| `rose3_mod4_0.npz` | 4 | 1000 | 71,000 | Bitwise equal |
+| `rose3_mod5_0.npz` | 5 | 1000 | 77,000 | Bitwise equal |
+| `rose1_unsat_k.npz` | Absent | 100 in USDA | 4,400 in USDA | Not established |
+
+All 272,000 Rosetta3 binary64 weight/bias values match exactly, including member
+order when SQLite rows are sorted by `Ann.seq`. Network widths, activation
+functions, input normalization, output transforms and log-output conventions
+also match. These are comparisons of every stored parameter, not inference from
+similar aggregate predictions. The eight additional Rosetta1 retention/Ksat
+NPZs also match their author ensembles, covering all 4,640 networks in the
+database. The database has no two-output network and therefore does not supply
+the separate 4-6-2 K0/L ensemble used by ptfkit.
+
+Parameter identity does not imply identical high-level software behavior. The
+author beta's `PTF_MODEL.sum_stat` uses population covariance (`ddof=0`) and its
+code marks unsaturated-conductivity integration as unfinished. ptfkit continues
+to use the audited USDA reporting modes, sample SD (`ddof=1`), K0/L ensemble and
+unchanged upstream reference fixture. No inference kernel, trained binary or
+existing numerical expectation was changed by this provenance audit.
+
+To reproduce the audit from the repository root:
+
+```sh
+git clone https://github.com/YonggenZhang/Rosetta .rosetta-local/author-upstream
+git -C .rosetta-local/author-upstream checkout 2a4aae0bdcea20cc2f1887ce25aa0b4336dd9510
+mise exec -- uv run --no-project --with numpy==2.4.3 python codegen/scripts/compare_rosetta3_author.py --author .rosetta-local/author-upstream --upstream .rosetta-upstream --output .rosetta-local/author-comparison-repeat.json
+```
+
+Obtain the pinned USDA checkout as described under
+[Build the external artifact](#build-the-external-artifact). Both checkout
+revisions and all pinned file hashes are verified before NPZ pickle loading.
+The author Python code is inspected but never imported or executed; the script
+reads the SQLite database in immutable read-only mode and decodes network
+matrices independently. The output path must be new. Ordinary generation does
+not replace the committed audit report.
 
 ## Exact inference contract
 
@@ -131,9 +208,9 @@ architectures and math libraries still require measurement.
 
 ## Build the external artifact
 
-The ptfkit package does not supply a ready-made `PTFKNN01` file. Obtain the
-original `.npz` files from the official upstream Git repository, then convert
-them locally. Run the following commands from a ptfkit repository checkout with
+This section is optional: installed packages already contain the reviewed
+model. It independently reproduces the bundled container from the original
+`.npz` files in the official upstream Git repository. Run the following commands from a ptfkit repository checkout with
 Git and the pinned toolchains installed as described in the
 [development guide](development.md):
 
@@ -177,12 +254,10 @@ The public APIs pin the complete container digest from
 `specs/models/rosetta3/artifact.json`; architecture and parameters are checked
 together. The old manifest and reference fixtures are not rewritten by packing.
 
-Use `.rosetta-local/rosetta3.ptfm` directly from the repository root, or copy it
-to an application-controlled location and pass that path to the public APIs.
-All examples below use the output path of the commands above. Keep the trained
-file outside package/release trees. The loader performs no download or
-conversion on your behalf. To check the imported model against the frozen
-upstream reference before using it, run `mise run rosetta:verify-rust`.
+The reproduced file must be byte-identical to
+`specs/models/rosetta3/rosetta3.ptfm`. It can also be supplied to the optional
+`Rosetta3.load` APIs. No application needs this workflow to use the bundled
+model. Loading never downloads or converts parameters implicitly.
 
 ## Public APIs
 
@@ -192,7 +267,7 @@ model evaluation:
 ```python
 from ptfkit.zhang_schaap2017 import Rosetta3, Estimate, calc_ptf_zhang2017_mod5
 
-model = Rosetta3.load('.rosetta-local/rosetta3.ptfm')
+model = Rosetta3()
 result = calc_ptf_zhang2017_mod5(
     model,
     sand=30,
@@ -217,7 +292,7 @@ same ordered arrays through methods.
 use ptfkit::zhang_schaap2017::{Rosetta3, Estimate, calc_ptf_zhang2017_mod2};
 
 fn example() -> Result<(), ptfkit::models::ModelError> {
-let model = Rosetta3::load(".rosetta-local/rosetta3.ptfm")?;
+let model = Rosetta3::builtin()?;
 let result = calc_ptf_zhang2017_mod2(&model, 30.0, 30.0, 40.0)?;
 let logged = model.predict(2, Estimate::Log10, &[30.0, 30.0, 40.0])?;
     Ok(())
@@ -229,7 +304,7 @@ let logged = model.predict(2, Estimate::Log10, &[30.0, 30.0, 40.0])?;
 
 int main(void) {
     ptfkit_model *model = NULL;
-    if (ptfkit_rosetta3_load(".rosetta-local/rosetta3.ptfm", &model) != PTFKIT_MODEL_OK)
+    if (ptfkit_rosetta3_builtin(&model) != PTFKIT_MODEL_OK)
         return 1;
     ptfkit_rosetta3_statistics result;
     ptfkit_model_status status = calc_ptf_zhang2017_mod2(model, 30, 30, 40, &result);
@@ -250,7 +325,7 @@ Low-level C input and output buffers must not overlap.
 import ptfkit;
 
 int main() {
-    auto model = ptfkit::Rosetta3::load(".rosetta-local/rosetta3.ptfm");
+    auto model = ptfkit::Rosetta3::builtin();
     auto result = ptfkit::calc_ptf_zhang2017_mod2(model, 30, 30, 40);
     return result.theta_s_mean > result.theta_r_mean ? 0 : 1;
 }
@@ -310,12 +385,12 @@ C++ `ModelError` with `ModelStatus`, and Python `ModelIntegrityError`,
 `ModelFormatError`, or `ModelInputError` (all `ValueError` subclasses).
 Missing-file errors remain I/O errors.
 
-## Architecture decision: external model handles
+## Architecture decision: bundled model with optional external handles
 
-Status: implemented, external parameters required.
+Status: implemented, reviewed parameters bundled.
 
 The ordinary scalar formula/Random Forest IR is preserved. An explicitly typed
-`implementation.external_model` binding selects the external ensemble backend;
+`implementation.external_model` binding selects the ensemble backend;
 its model kind, artifact reference, predictor ordering, level, function names and
 output fields are validated before rendering. The backend emits generic loaders
 and model-specific adapters through the normal atomic output pipeline, including
@@ -324,16 +399,23 @@ The four Rosetta3 bindings form one enabled model family; blocked bindings do
 not produce public APIs or trigger artifact lookup.
 
 The dense Rust kernel and C kernel retain their original operation order and
-transforms. The Rosetta statistics layer is reused unchanged. C remains header
-only, with a small SHA-256 implementation and owned heap data. C++ exports inline
-adapters compatible with the existing interface-module installation. The Python
-extension uses only the CPython C API and the native C loader. Rust uses `sha2`
-for integrity checks. No runtime depends on the importer or original package.
+transforms. The Rosetta statistics layer is reused unchanged. Rust uses
+`include_bytes!` for a generated binary resource. C compiles the container once
+in a separate data translation unit; model handles authenticate and decode it
+through the existing generic loader. The installed native package includes
+portable data source and compiles it once with the consumer's toolchain, for
+C-only, C++-only and mixed projects. C++ module objects supply their runtime
+definitions, including exception RTTI. The Python native extension links the
+same data translation unit and uses no NumPy runtime API. Its constructor
+briefly copies the embedded bytes before the generic native loader owns the
+decoded model. Rust uses `sha2` for integrity checks. No runtime depends on
+local audit checkouts or development environments.
 
 The original local generation workflow remains available as an additional
-reference path; it is no longer the public implementation. Unresolved weight
-redistribution rights continue to prohibit bundling under this project's stated
-release policy; they do not block these weight-free public APIs. The full paper,
+reference path; it is no longer the public implementation. Bundled parameters are the default; external model
+loading remains optional. The published CC0 declaration does
+not itself prohibit bundling, and this document imposes no additional author
+permission requirement. The full paper,
 training-population applicability and granulometric cutoffs still require
 separate scientific review. This integration establishes computational parity,
 not predictive accuracy for a new soil population.
@@ -358,13 +440,15 @@ mise run verify
 mise run docs:build
 mise run rosetta:verify-rust
 mise run rosetta:verify-public
+mise run rosetta:verify-bundled
 ```
 
 `rosetta:verify-public` requires the external artifact and explicitly fails when
 it is absent. It builds the actual native targets and Rust example and rebuilds
-the Python package before comparing the original fixtures. Ordinary tests use
-only tiny hand-specified affine test data and do not require trained Rosetta
-weights. No numerical expectations are regenerated from the new implementation.
+the Python package before comparing the original fixtures. Ordinary tests include hand-specified affine containers and bundled-model
+checks against frozen upstream values. `rosetta:verify-bundled` compares all
+four bundled APIs with the 120 upstream cases and 30 rejection cases without
+accepting any external model path; CI runs it in the native job. No numerical expectations are regenerated from the new implementation.
 
 ## Executed integration checks
 
@@ -379,19 +463,35 @@ unchanged. Repeated container packing produced byte-identical output.
 | Check | Result |
 | --- | --- |
 | Specification validation | 40 source files, 253 declared functions |
-| Codegen verification | 142 tests, formatting and Clippy passed |
-| Rust verification | 362 existing tests and 2 new public loader tests passed |
-| Python verification | 805 existing tests and 2 new public loader tests passed |
+| Codegen verification | 144 tests, formatting and Clippy passed |
+| Rust verification | 362 existing tests and 3 public model tests passed |
+| Python verification | 805 existing tests and 3 public model tests passed |
 | Native verification | 134 existing tests and 2 new C/C++ loader tests passed |
-| Public reference task | 120 upstream cases and 30 rejection cases per language passed |
+| External and bundled reference tasks | Each path passed 120 upstream cases and 30 rejection cases per language |
 | Distribution wheel, with `-I -S` and NumPy unavailable | All 120 original reference cases passed |
 | Installed C++ package | Independent consumer compiled and matched upstream results; TU-local exposure diagnostics treated as errors |
 | SHA-256 | Independent affine-container fingerprint and standard empty/abc/56-byte known-answer vectors passed |
 
-The wheel, Python sdist, Rust crate and native installation were built locally
-and inspected for `.npz`, `.ptfm`, `models.bin` and generated `weights.c` files;
-none were present. Example archive sizes for the full existing ptfkit corpus
-were approximately 1.85 MB (Windows wheel), 2.47 MB (Python sdist), and 2.12 MB
-(Rust crate). These are local build measurements, not universal package sizes
-or Rosetta-only costs. The 2.21 MB external trained artifact remains separate.
-No package was published and nothing was merged to main.
+The earlier weight-free build measured approximately 1.85 MB for the Windows
+wheel, 2.47 MB for the Python sdist and 2.12 MB for the Rust crate. Those are
+historical baseline measurements, not measurements of the bundled packages.
+The bundled container adds 2,212,632 binary bytes before compression; the C data
+translation unit is a textual representation of those same bytes. The new Windows packages were built and inspected, including the model data
+and CC0 notices. The wheel was built from the sdist and passed all 120 original
+cases with `-I -S`, NumPy unavailable and an empty working directory. Fresh
+C-only and C++-only installed consumers passed the bundled upstream case.
+
+| Bundled distribution | Measured bytes |
+| --- | ---: |
+| CPython 3.13 Windows x64 wheel | 4,000,832 |
+| Python sdist | 5,524,479 |
+| Rust crate | 4,271,931 |
+| Native portable source archive | 7,666,392 |
+
+The installed native source tree occupied 49,862,462 bytes, including the
+existing PTF corpus. In the isolated CPython wheel check, a warm 1000-call
+level-5 arithmetic run measured about 132 microseconds per sample; the process
+peak working set was 24,084,480 bytes. The latter includes Python, imported
+modules and the verification workload, not just the model. These are local
+Windows measurements, not cross-platform size, memory or speed guarantees.
+No package has been published by this work.

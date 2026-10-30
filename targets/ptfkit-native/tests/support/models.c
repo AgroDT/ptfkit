@@ -59,6 +59,19 @@ int main(void) {
         assert(ptfkit_model_from_bytes(affine_model, n, hex, &model) == PTFKIT_MODEL_FORMAT &&
                model == NULL);
     }
+    /* Frozen upstream case mod2_arith_clay_loam; no model file is loaded. */
+    model = NULL;
+    assert(ptfkit_rosetta3_builtin(&model) == PTFKIT_MODEL_OK);
+    const double soil[] = {30, 30, 40};
+    const double expected[] = {0.11921313412479762,   0.4348486578079577,   0.009109686083606867,
+                               1.3094213646469939,    8.74047181417013,     1.3099307799553759,
+                               -1.009187960743742,    0.009022699466985867, 0.010140469075525323,
+                               0.0022509742698824248, 0.0366504620061113,   2.930411333703784,
+                               0.843530623042398,     1.547848314232419};
+    assert(ptfkit_rosetta3_predict(model, 2, 0, soil, 3, results) == PTFKIT_MODEL_OK);
+    for (size_t i = 0; i < 14; ++i)
+        assert(fabs(results[i] - expected[i]) <= fmax(1e-11, 1e-12 * fabs(expected[i])));
+    ptfkit_model_free(model);
     ptfkit_model_free(NULL);
     return 0;
 }
