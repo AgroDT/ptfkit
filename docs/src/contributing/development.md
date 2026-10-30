@@ -32,6 +32,10 @@ Ninja, Clang, Ruff, ty, and prek toolchains; `mise.lock` records their resolved
 downloads and checksums. The native target requires the C11/C++23 compiler
 provided by Clang.
 
+On POSIX, `native:configure` uses the pinned `clang` executable for both C and
+C++, selecting `--driver-mode=g++` for C++. This avoids mixing the Conda-backed
+C compiler and sysroot with an unrelated system `clang++` and C++ runtime.
+
 From the repository root, trust the repository configuration and install the
 pinned toolchains:
 
