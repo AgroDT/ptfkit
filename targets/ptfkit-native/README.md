@@ -44,8 +44,15 @@ target_link_libraries(example PRIVATE ptfkit::c)
 ```
 
 For C++ modules, scan the importing target and link against `ptfkit::cpp`.
-The installed package provides both targets, so consumers use the same
-`find_package` call.
+In a project with the C++ language enabled, the installed package provides both
+targets, so consumers use the same `find_package` call. C-only projects do not
+create the C++ target or require a C++ compiler.
+
+The C++ target compiles the supplied module sources into a static library with
+the consumer's compiler. Both module interfaces and their object code are
+required: module-owned exception RTTI and vtables cannot be supplied by a
+BMI-only interface. Installed archives retain portable module sources rather
+than compiler-specific prebuilt BMIs or trained model weights.
 
 ```cmake
 find_package(ptfkit CONFIG REQUIRED)

@@ -192,10 +192,15 @@ model evaluation:
 ```python
 from ptfkit.zhang_schaap2017 import Rosetta3, Estimate, calc_ptf_zhang2017_mod5
 
-model = Rosetta3.load(".rosetta-local/rosetta3.ptfm")
+model = Rosetta3.load('.rosetta-local/rosetta3.ptfm')
 result = calc_ptf_zhang2017_mod5(
-    model, sand=30, silt=30, clay=40, bulk_density=1.5,
-    theta_33=0.3, theta_1500=0.1,
+    model,
+    sand=30,
+    silt=30,
+    clay=40,
+    bulk_density=1.5,
+    theta_33=0.3,
+    theta_1500=0.1,
 )
 print(result.alpha_mean, result.alpha_std)
 logged = model.predict(5, [30, 30, 40, 1.5, 0.3, 0.1], Estimate.LOG10)
