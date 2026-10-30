@@ -162,7 +162,7 @@ jobs:
     runs-on: ubuntu-26.04
     env:
       CC: clang
-      CXX: clang --driver-mode=g++
+      CXX: clang++
       CMAKE_GENERATOR: Ninja
     steps:
       - name: Checkout

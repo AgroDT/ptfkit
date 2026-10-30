@@ -1,7 +1,7 @@
 ["native:configure"]
 description = "Configure the native build with tests enabled"
 dir = "targets/ptfkit-native"
-run = 'cmake -S . -B build -GNinja -DBUILD_TESTING=ON -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang -DCMAKE_CXX_COMPILER_ARG1=--driver-mode=g++ "-DCMAKE_CXX_COMPILER_CLANG_SCAN_DEPS={{ tools.clang_tools.path }}/bin/clang-scan-deps"'
+run = 'cmake -S . -B build -GNinja -DBUILD_TESTING=ON "-DCMAKE_C_COMPILER={{ tools.clangxx.path }}/bin/clang" "-DCMAKE_CXX_COMPILER={{ tools.clangxx.path }}/bin/clang++" "-DCMAKE_CXX_COMPILER_CLANG_SCAN_DEPS={{ tools.clang_tools.path }}/bin/clang-scan-deps"'
 run_windows = '''powershell -NoProfile -Command "& { $vswhere = Join-Path ([Environment]::GetFolderPath('ProgramFilesX86')) 'Microsoft Visual Studio\Installer\vswhere.exe'; if (-not (Test-Path -LiteralPath $vswhere -PathType Leaf)) { throw 'Visual Studio locator not found' }; $installation = & $vswhere -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath; if (-not $installation) { throw 'Visual Studio C++ build tools not found' }; $vsdev = Join-Path $installation 'Common7\Tools\VsDevCmd.bat'; $clang = '{{ tools.clang.path }}/Library/bin/clang-cl.exe'; $scan_deps = '{{ tools.clang_tools.path }}/Library/bin/clang-scan-deps.exe'; $command = 'call \"' + $vsdev + '\" -arch=x64 >nul && cmake -S . -B build -GNinja -DBUILD_TESTING=ON \"-DCMAKE_C_COMPILER=' + $clang + '\" \"-DCMAKE_CXX_COMPILER=' + $clang + '\" \"-DCMAKE_CXX_COMPILER_CLANG_SCAN_DEPS=' + $scan_deps + '\"'; cmd /d /s /c $command; exit $LASTEXITCODE }"'''
 
 ["native:build"]

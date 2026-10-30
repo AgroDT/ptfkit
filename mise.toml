@@ -3,6 +3,7 @@ lockfile = true
 
 [tool_alias]
 clang_tools = "conda:clang-tools"
+clangxx = "conda:clangxx"
 
 [tools]
 rust = { version = "stable", components = ["rustfmt", "clippy"] }
@@ -11,6 +12,7 @@ cmake = "4.4.4"
 ninja = "1.13.2"
 clang = "23.1.4"
 clang_tools = "23.1.4"
+clangxx = "23.1.4"
 ruff = "0.17.1"
 ty = "0.0.90"
 prek = "0.5.7"
