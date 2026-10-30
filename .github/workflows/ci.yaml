@@ -162,7 +162,7 @@ jobs:
     runs-on: ubuntu-26.04
     env:
       CC: clang
-      CXX: clang++
+      CXX: clang --driver-mode=g++
       CMAKE_GENERATOR: Ninja
     steps:
       - name: Checkout
@@ -172,9 +172,7 @@ jobs:
         uses: jdx/mise-action@v4
 
       - name: Configure ptfkit-native
-        run: >
-          cmake -S targets/ptfkit-native -B targets/ptfkit-native/build
-          -GNinja -DBUILD_TESTING=ON -DPTFKIT_BUILD_CPP_MODULES=ON
+        run: mise run native:configure
 
       - name: Build ptfkit-native
         run: cmake --build targets/ptfkit-native/build
