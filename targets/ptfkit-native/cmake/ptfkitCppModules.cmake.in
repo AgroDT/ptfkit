@@ -1,14 +1,17 @@
-if(NOT TARGET ptfkit::cpp)
-    add_library(ptfkit::cpp INTERFACE IMPORTED)
-    target_compile_features(ptfkit::cpp INTERFACE cxx_std_23)
-    target_link_libraries(ptfkit::cpp INTERFACE ptfkit::c)
-    target_compile_definitions(ptfkit::cpp INTERFACE
+if(NOT TARGET ptfkit::cpp AND CMAKE_CXX_COMPILER_LOADED)
+    # Compile module objects with the consumer's toolchain; BMIs alone do not
+    # supply module-owned runtime definitions such as exception RTTI and vtables.
+    add_library(ptfkit_cpp STATIC)
+    add_library(ptfkit::cpp ALIAS ptfkit_cpp)
+    target_compile_features(ptfkit_cpp PUBLIC cxx_std_23)
+    target_link_libraries(ptfkit_cpp PUBLIC ptfkit::c)
+    target_compile_definitions(ptfkit_cpp PUBLIC
         PTFKIT_VERSION="@PROJECT_VERSION@"
     )
-    target_compile_options(ptfkit::cpp INTERFACE
+    target_compile_options(ptfkit_cpp PUBLIC
         $<$<CXX_COMPILER_ID:GNU>:-fmodules-ts>
     )
-    target_sources(ptfkit::cpp INTERFACE
+    target_sources(ptfkit_cpp PUBLIC
         FILE_SET CXX_MODULES
         BASE_DIRS "${PACKAGE_PREFIX_DIR}/@PTFKIT_CPP_MODULE_INSTALL_DIR@"
         FILES @PTFKIT_CPP_MODULE_PACKAGE_FILES@
