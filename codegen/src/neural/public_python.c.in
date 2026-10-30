@@ -1,6 +1,7 @@
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
-#include <ptfkit/zhang_schaap2017.h>
+#include <ptfkit/models.h>
+@ADAPTER_HEADERS@
 
 static PyObject *ptfkit_python_failure(PyObject *module, ptfkit_model_status status) {
     if (status == PTFKIT_MODEL_MEMORY)
@@ -145,41 +146,14 @@ static PyObject *ptfkit_python_predict(PyObject *module, PyObject *args) {
     free(raw);
     return rows;
 }
-static PyObject *ptfkit_python_rosetta(PyObject *module, PyObject *args) {
-    PyObject *capsule, *values;
-    unsigned level, mode;
-    if (!PyArg_ParseTuple(args, "OIIO", &capsule, &level, &mode, &values))
-        return NULL;
-    ptfkit_model *model = (ptfkit_model *)PyCapsule_GetPointer(capsule, "ptfkit.Model");
-    if (!model)
-        return NULL;
-    double x[64], out[14];
-    size_t count;
-    if (!ptfkit_python_inputs(values, x, &count))
-        return NULL;
-    ptfkit_model_status status = ptfkit_rosetta3_predict(model, level, mode, x, count, out);
-    if (status != PTFKIT_MODEL_OK)
-        return ptfkit_python_failure(module, status);
-    PyObject *result = PyTuple_New(14);
-    if (!result)
-        return NULL;
-    for (Py_ssize_t i = 0; i < 14; ++i) {
-        PyObject *v = PyFloat_FromDouble(out[i]);
-        if (!v) {
-            Py_DECREF(result);
-            return NULL;
-        }
-        PyTuple_SET_ITEM(result, i, v);
-    }
-    return result;
-}
+@ADAPTER_FUNCTIONS@
 static PyMethodDef ptfkit_model_methods[] = {
     {"from_bytes", ptfkit_python_load, METH_VARARGS, NULL},
     {"sha256", ptfkit_python_sha, METH_O, NULL},
     {"network_count", ptfkit_python_count, METH_O, NULL},
     {"network_shape", ptfkit_python_shape, METH_VARARGS, NULL},
     {"predict_network", ptfkit_python_predict, METH_VARARGS, NULL},
-    {"rosetta3", ptfkit_python_rosetta, METH_VARARGS, NULL},
+@ADAPTER_METHODS@
     {NULL, NULL, 0, NULL}};
 static struct PyModuleDef ptfkit_models_module = {
     PyModuleDef_HEAD_INIT, "_models", NULL, -1, ptfkit_model_methods, NULL, NULL, NULL, NULL};

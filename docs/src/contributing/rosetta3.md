@@ -131,24 +131,42 @@ architectures and math libraries still require measurement.
 
 ## Build the external artifact
 
-Run from the repository root with the pinned toolchains from the
-[development guide](development.md). The upstream audit/import and all existing
-local verification commands remain available unchanged:
+The ptfkit package does not supply a ready-made `PTFKNN01` file. Obtain the
+original `.npz` files from the official upstream Git repository, then convert
+them locally. Run the following commands from a ptfkit repository checkout with
+Git and the pinned toolchains installed as described in the
+[development guide](development.md):
 
 ```sh
 git clone https://github.com/usda-ars-ussl/rosetta-soil .rosetta-upstream
 git -C .rosetta-upstream checkout 6b0e3902f8a145805d41b691dc36f8e69e898f2a
 mise run rosetta:import .rosetta-upstream
 mise run rosetta:pack
-mise run rosetta:verify-rust
 ```
+
+The clone contains all thirteen original `.npz` files under
+`.rosetta-upstream/src/rosetta/data/`; no separate model download or installed
+Rosetta Python package is needed. Keep the complete checkout: the importer
+checks the exact Git revision and every source/artifact hash recorded in
+`specs/models/rosetta3/manifest.json`, including the eight unused model files,
+before opening any NPZ pickle metadata. A different revision or changed file
+is rejected.
+
+`rosetta:import` runs `codegen/scripts/import_rosetta3.py` using uv's isolated
+environment with NumPy 2.4.3. On the first run, uv needs access to that dependency;
+there is no need to install NumPy into the application's runtime environment.
+Import writes `.rosetta-local/imported/models.json` (network metadata) and
+`.rosetta-local/imported/models.bin` (binary64 parameters).
+`rosetta:pack` then runs the Rust converter and writes the complete external
+container `.rosetta-local/rosetta3.ptfm`. Loading an original `.npz` or the
+intermediate `models.bin` directly with `Model.load()` is unsupported.
 
 For an existing imported checkout, run only `rosetta:pack`. Import and packing
 use exclusive output creation; choose a new output path for a repeat run rather
 than silently replacing an artifact. The general packer is:
 
 ```sh
-cargo run --manifest-path codegen/Cargo.toml -- pack-neural-model --model .rosetta-local/imported/models.json --output .rosetta-local/rosetta3.ptfm
+mise exec -- cargo run --manifest-path codegen/Cargo.toml -- pack-neural-model --model .rosetta-local/imported/models.json --output .rosetta-local/rosetta3.ptfm
 ```
 
 The resulting PTFKNN01 container is 2,212,632 bytes. Its SHA-256 is
@@ -159,6 +177,13 @@ The public APIs pin the complete container digest from
 `specs/models/rosetta3/artifact.json`; architecture and parameters are checked
 together. The old manifest and reference fixtures are not rewritten by packing.
 
+Use `.rosetta-local/rosetta3.ptfm` directly from the repository root, or copy it
+to an application-controlled location and pass that path to the public APIs.
+All examples below use the output path of the commands above. Keep the trained
+file outside package/release trees. The loader performs no download or
+conversion on your behalf. To check the imported model against the frozen
+upstream reference before using it, run `mise run rosetta:verify-rust`.
+
 ## Public APIs
 
 Python uses named result fields and requires no scientific Python runtime for
@@ -167,7 +192,7 @@ model evaluation:
 ```python
 from ptfkit.zhang_schaap2017 import Rosetta3, Estimate, calc_ptf_zhang2017_mod5
 
-model = Rosetta3.load("rosetta3.ptfm")
+model = Rosetta3.load(".rosetta-local/rosetta3.ptfm")
 result = calc_ptf_zhang2017_mod5(
     model, sand=30, silt=30, clay=40, bulk_density=1.5,
     theta_33=0.3, theta_1500=0.1,
@@ -187,7 +212,7 @@ same ordered arrays through methods.
 use ptfkit::zhang_schaap2017::{Rosetta3, Estimate, calc_ptf_zhang2017_mod2};
 
 fn example() -> Result<(), ptfkit::models::ModelError> {
-let model = Rosetta3::load("rosetta3.ptfm")?;
+let model = Rosetta3::load(".rosetta-local/rosetta3.ptfm")?;
 let result = calc_ptf_zhang2017_mod2(&model, 30.0, 30.0, 40.0)?;
 let logged = model.predict(2, Estimate::Log10, &[30.0, 30.0, 40.0])?;
     Ok(())
@@ -199,7 +224,7 @@ let logged = model.predict(2, Estimate::Log10, &[30.0, 30.0, 40.0])?;
 
 int main(void) {
     ptfkit_model *model = NULL;
-    if (ptfkit_rosetta3_load("rosetta3.ptfm", &model) != PTFKIT_MODEL_OK)
+    if (ptfkit_rosetta3_load(".rosetta-local/rosetta3.ptfm", &model) != PTFKIT_MODEL_OK)
         return 1;
     ptfkit_rosetta3_statistics result;
     ptfkit_model_status status = calc_ptf_zhang2017_mod2(model, 30, 30, 40, &result);
@@ -220,7 +245,7 @@ Low-level C input and output buffers must not overlap.
 import ptfkit;
 
 int main() {
-    auto model = ptfkit::Rosetta3::load("rosetta3.ptfm");
+    auto model = ptfkit::Rosetta3::load(".rosetta-local/rosetta3.ptfm");
     auto result = ptfkit::calc_ptf_zhang2017_mod2(model, 30, 30, 40);
     return result.theta_s_mean > result.theta_r_mean ? 0 : 1;
 }
@@ -242,6 +267,15 @@ accepting a digest from the same untrusted file would not establish its origin.
 Rosetta3 adapters supply the reviewed digest automatically and reject other
 valid model containers. Generic prediction returns raw ensemble members in the
 container's original output scales, without Rosetta-specific aggregation.
+
+In codegen, `neural/public.rs` renders the shared loaders and dispatches model
+kinds to scientific adapters. `neural/public_rosetta.rs` owns the Rosetta3
+publication identity, predictor/output ordering, required levels, pinned
+artifact and aggregation bindings. Its CPython method is supplied separately
+by `public_rosetta_python.c`; the generic bridge has no Rosetta method or header
+unless the adapter registers them. The existing local C runtime remains the
+shared source for the dense kernel so this separation does not duplicate or
+change its numerical operations.
 
 The complete file is hashed before decoding parameter data. Readers validate
 version, topology, scaler/activation identifiers, finite values, nonzero scale
@@ -340,7 +374,7 @@ unchanged. Repeated container packing produced byte-identical output.
 | Check | Result |
 | --- | --- |
 | Specification validation | 40 source files, 253 declared functions |
-| Codegen verification | 140 tests, formatting and Clippy passed |
+| Codegen verification | 142 tests, formatting and Clippy passed |
 | Rust verification | 362 existing tests and 2 new public loader tests passed |
 | Python verification | 805 existing tests and 2 new public loader tests passed |
 | Native verification | 134 existing tests and 2 new C/C++ loader tests passed |
