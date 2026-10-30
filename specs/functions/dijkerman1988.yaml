@@ -30,7 +30,7 @@ $defs:
       calibration range from a reconstruction of Odell et al. (1974), Appendix B.
 functions:
   - name: calc_ptf_dijkerman1988
-    status: ready-for-implementation
+    status: implemented
     public_api:
       name: calc_ptf_dijkerman1988
       result_class: Dijkerman1988WaterContent
@@ -121,7 +121,7 @@ functions:
         - name: water_content_one_third_bar
           expr: 36.97 - 0.35 * sand
   - name: calc_ptf_dijkerman1988_available_water
-    status: ready-for-implementation
+    status: implemented
     public_api:
       name: calc_ptf_dijkerman1988_available_water
       result_class: null
