@@ -1,0 +1,422 @@
+{
+  "format_version": 1,
+  "upstream_revision": "6b0e3902f8a145805d41b691dc36f8e69e898f2a",
+  "artifact": "models.bin",
+  "sha256": "f2b0ed39cc763fd2924e38cdfdafb5e0abb298094e561f73f7be290405b70990",
+  "networks": [
+    {
+      "name": "rose3_mod2_0",
+      "nboot": 1000,
+      "widths": [
+        3,
+        6,
+        5
+      ],
+      "activations": [
+        "tansig",
+        "sigmoid"
+      ],
+      "offset": 0,
+      "inputs": [
+        {
+          "kind": "minmax",
+          "params": [
+            0.0,
+            0.01,
+            0.0
+          ]
+        },
+        {
+          "kind": "minmax",
+          "params": [
+            0.0,
+            0.01,
+            0.0
+          ]
+        },
+        {
+          "kind": "minmax",
+          "params": [
+            0.0,
+            0.01,
+            0.0
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "kind": "linear",
+          "params": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "kind": "linear",
+          "params": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "kind": "linear",
+          "params": [
+            -8.0,
+            2.0
+          ]
+        },
+        {
+          "kind": "linear",
+          "params": [
+            1.5,
+            0.0
+          ]
+        },
+        {
+          "kind": "linear",
+          "params": [
+            8.0,
+            -2.0
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rose3_mod3_0",
+      "nboot": 1000,
+      "widths": [
+        4,
+        6,
+        5
+      ],
+      "activations": [
+        "tansig",
+        "sigmoid"
+      ],
+      "offset": 59000,
+      "inputs": [
+        {
+          "kind": "minmax",
+          "params": [
+            0.0,
+            0.01,
+            0.0
+          ]
+        },
+        {
+          "kind": "minmax",
+          "params": [
+            0.0,
+            0.01,
+            0.0
+          ]
+        },
+        {
+          "kind": "minmax",
+          "params": [
+            0.0,
+            0.01,
+            0.0
+          ]
+        },
+        {
+          "kind": "minmax",
+          "params": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "kind": "linear",
+          "params": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "kind": "linear",
+          "params": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "kind": "linear",
+          "params": [
+            -8.0,
+            2.0
+          ]
+        },
+        {
+          "kind": "linear",
+          "params": [
+            1.5,
+            0.0
+          ]
+        },
+        {
+          "kind": "linear",
+          "params": [
+            8.0,
+            -2.0
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rose3_mod4_0",
+      "nboot": 1000,
+      "widths": [
+        5,
+        6,
+        5
+      ],
+      "activations": [
+        "tansig",
+        "sigmoid"
+      ],
+      "offset": 124000,
+      "inputs": [
+        {
+          "kind": "minmax",
+          "params": [
+            0.0,
+            0.01,
+            0.0
+          ]
+        },
+        {
+          "kind": "minmax",
+          "params": [
+            0.0,
+            0.01,
+            0.0
+          ]
+        },
+        {
+          "kind": "minmax",
+          "params": [
+            0.0,
+            0.01,
+            0.0
+          ]
+        },
+        {
+          "kind": "minmax",
+          "params": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "kind": "minmax",
+          "params": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "kind": "linear",
+          "params": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "kind": "linear",
+          "params": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "kind": "linear",
+          "params": [
+            -8.0,
+            2.0
+          ]
+        },
+        {
+          "kind": "linear",
+          "params": [
+            1.5,
+            0.0
+          ]
+        },
+        {
+          "kind": "linear",
+          "params": [
+            8.0,
+            -2.0
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rose3_mod5_0",
+      "nboot": 1000,
+      "widths": [
+        6,
+        6,
+        5
+      ],
+      "activations": [
+        "tansig",
+        "sigmoid"
+      ],
+      "offset": 195000,
+      "inputs": [
+        {
+          "kind": "minmax",
+          "params": [
+            0.0,
+            0.01,
+            0.0
+          ]
+        },
+        {
+          "kind": "minmax",
+          "params": [
+            0.0,
+            0.01,
+            0.0
+          ]
+        },
+        {
+          "kind": "minmax",
+          "params": [
+            0.0,
+            0.01,
+            0.0
+          ]
+        },
+        {
+          "kind": "minmax",
+          "params": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "kind": "minmax",
+          "params": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "kind": "minmax",
+          "params": [
+            0.0,
+            1.0,
+            0.0
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "kind": "linear",
+          "params": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "kind": "linear",
+          "params": [
+            1.0,
+            0.0
+          ]
+        },
+        {
+          "kind": "linear",
+          "params": [
+            -8.0,
+            2.0
+          ]
+        },
+        {
+          "kind": "linear",
+          "params": [
+            1.5,
+            0.0
+          ]
+        },
+        {
+          "kind": "linear",
+          "params": [
+            8.0,
+            -2.0
+          ]
+        }
+      ]
+    },
+    {
+      "name": "rose1_unsat_k",
+      "nboot": 100,
+      "widths": [
+        4,
+        6,
+        2
+      ],
+      "activations": [
+        "sigmoid",
+        "sigmoid"
+      ],
+      "offset": 272000,
+      "inputs": [
+        {
+          "kind": "division",
+          "params": [
+            1.0
+          ]
+        },
+        {
+          "kind": "division",
+          "params": [
+            1.0
+          ]
+        },
+        {
+          "kind": "logtr",
+          "params": [
+            -8.0,
+            0.25
+          ]
+        },
+        {
+          "kind": "logtr",
+          "params": [
+            1.5,
+            0.0
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "kind": "affine",
+          "params": [
+            10.0,
+            -0.3
+          ]
+        },
+        {
+          "kind": "affine",
+          "params": [
+            100.0,
+            -0.5
+          ]
+        }
+      ]
+    }
+  ]
+}

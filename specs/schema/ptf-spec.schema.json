@@ -207,8 +207,17 @@
     "implementation": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["variables"],
+      "oneOf": [{"required": ["variables"]}, {"required": ["external_model"]}],
       "properties": {
+        "external_model": {
+          "type": "object", "additionalProperties": false,
+          "required": ["kind", "artifact", "level"],
+          "properties": {
+            "kind": {"const": "rosetta3"},
+            "artifact": {"const": "../models/rosetta3/artifact.json"},
+            "level": {"type": "integer", "minimum": 2, "maximum": 5}
+          }
+        },
         "variables": {
           "type": "array",
           "minItems": 1,

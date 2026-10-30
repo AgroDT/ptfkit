@@ -1,0 +1,39 @@
+{
+  "format_version": 1,
+  "repository": "https://github.com/usda-ars-ussl/rosetta-soil",
+  "revision": "6b0e3902f8a145805d41b691dc36f8e69e898f2a",
+  "redistribution": "unresolved_third_party_weights_do_not_bundle",
+  "required_models": [
+    "rose3_mod2_0",
+    "rose3_mod3_0",
+    "rose3_mod4_0",
+    "rose3_mod5_0",
+    "rose1_unsat_k"
+  ],
+  "converted_sha256": "f2b0ed39cc763fd2924e38cdfdafb5e0abb298094e561f73f7be290405b70990",
+  "converted_bytes": 2211200,
+  "files": {
+    "LICENSE": "da332aa198f41210d828e99d697b8e416bc6bb4f38b77f1a969a22e3169c1465",
+    "README.rst": "58b0673527eecd05db32418f7fba49c62535331018c86ee5baf6b21a99e71df4",
+    "pyproject.toml": "23bd4ba323c569c8f826a607ae6f01e7069eca69af7931e607208ab954fc3f37",
+    "src/rosetta/data/rose1_mod2_0.npz": "6ad3dfaa0b714dfc07d21709bba27373f16b47864e72308f776e85ebe09f2060",
+    "src/rosetta/data/rose1_mod2_1.npz": "12b830e4452bfbb58abd26e53db9c2854f4bd2d7db18d1ea0cba749bc020e8c6",
+    "src/rosetta/data/rose1_mod3_0.npz": "f38f45d27a5dd32b41735e10bb5f13f504cc03d6a4d4f55dbe244d4cc3308d71",
+    "src/rosetta/data/rose1_mod3_1.npz": "266c451ddb1ed9d49b094eef36aa10ad465f915c2be7d501bb788d7082146360",
+    "src/rosetta/data/rose1_mod4_0.npz": "5ab63eb5cd991683fbc116630bf7f20da2863587e772f84a380b8c4c16386b65",
+    "src/rosetta/data/rose1_mod4_1.npz": "1f3ceea2d2c6aa66afcf378f7048d18982de5207de9b35dfa53bf949724c82fe",
+    "src/rosetta/data/rose1_mod5_0.npz": "551f0a2d426faab1bb81268a0b270673aa3d7593f4c4d3f24c9b77ed924cad61",
+    "src/rosetta/data/rose1_mod5_1.npz": "1e48e833a1bae8277dc6b845bffa11df21935bd66b0760060784e9d415c75a26",
+    "src/rosetta/data/rose1_unsat_k.npz": "38a1e62ece328a4717bcbfca4eb284f070c75ab124b0e9e923d7ad8107f22608",
+    "src/rosetta/data/rose3_mod2_0.npz": "6a07b2f29f9bbffac513945cb1da212416ac1dfaf302c2cf286204f36e2ca2d9",
+    "src/rosetta/data/rose3_mod3_0.npz": "cf428d59123fbf5e6a83495e9b775b5f77276a296d08aa601823e331a2474fa1",
+    "src/rosetta/data/rose3_mod4_0.npz": "8b09f7cd5139c2a4003c31ea92983c0892731e8cd065dc2f0da4e0b8ac52d4f7",
+    "src/rosetta/data/rose3_mod5_0.npz": "277b8ddc8d336f89db25be917c4013fe553c0cf1388ef2deb800749f45ee5dbf",
+    "src/rosetta/nn_model.py": "c018c9f896d156f7fc18fc2b9b605a533bb282845304528451f2199b3c857eea",
+    "src/rosetta/rosetta.py": "db0bb0236175f4a05ca592d1e04d1ec15c57b09521236830cca391fb86fc32fc",
+    "tests/test_nn_model.py": "65da2646f148191dd0373a246f40f44d8e1dee7f9f0ae793734170cffc4747c0",
+    "tests/test_rosetta1.py": "e4aa67d99397351cb6466498ec1be4871d1868a137cdd89edee496cf2304c6a7",
+    "tests/test_rosetta3.py": "faa36ac0721361ef5fea235d3325152da702c323643b6f6cf280cb7dd6e3d178",
+    "tests/test_unsat_k.py": "e4ec24d495271a971f8d929d6413a344703d64892f5c9e8adec0fdf427196190"
+  }
+}

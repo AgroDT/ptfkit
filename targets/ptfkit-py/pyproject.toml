@@ -7,8 +7,8 @@ name = "ptfkit"
 dynamic = ["version"]
 description = "Collection of published pedotransfer functions for estimating soil hydraulic properties"
 readme = "README.md"
-license = "MIT"
-license-files = ["LICENSE"]
+license = "MIT AND CC0-1.0"
+license-files = ["LICENSE", "MODEL_NOTICE.txt"]
 requires-python = ">=3.11"
 keywords = [
     "pedotransfer functions",
@@ -74,3 +74,4 @@ wheel.exclude = ["*.c", "*.h"]
 
 [tool.scikit-build.sdist.force-include]
 "../ptfkit-native/include" = "vendor/ptfkit-native/include"
+"../ptfkit-native/src" = "vendor/ptfkit-native/src"

@@ -126,16 +126,16 @@ fn stage(root: &Path, outputs: &[Output]) -> Result<Vec<StagedWrite>> {
     for output in outputs {
         for file in &output.files {
             let target = root.join(output.layout.output_directory).join(&file.path);
-            if target.exists()
-                && fs::read_to_string(&target)? == file.contents
-                && output.layout.formatter == Formatter::None
+            if output.layout.formatter == Formatter::None
+                && target.exists()
+                && fs::read(&target)? == file.bytes()
             {
                 continue;
             }
             let parent = target.parent().context("finding generated-file parent")?;
             fs::create_dir_all(parent)?;
             let temporary = temporary_path(&target);
-            if let Err(error) = write_temporary(&temporary, &file.contents) {
+            if let Err(error) = write_temporary(&temporary, file.bytes()) {
                 let _ = fs::remove_file(&temporary);
                 remove_temporary(&staged);
                 return Err(error);
@@ -163,13 +163,13 @@ fn temporary_path(target: &Path) -> PathBuf {
     ))
 }
 
-fn write_temporary(path: &Path, contents: &str) -> Result<()> {
+fn write_temporary(path: &Path, contents: &[u8]) -> Result<()> {
     let mut file = OpenOptions::new()
         .write(true)
         .create_new(true)
         .open(path)
         .with_context(|| format!("creating temporary generated file {}", path.display()))?;
-    file.write_all(contents.as_bytes())
+    file.write_all(contents)
         .with_context(|| format!("writing temporary generated file {}", path.display()))
 }
 
@@ -219,8 +219,8 @@ fn format(root: &Path, staged: &[StagedWrite]) -> Result<()> {
             .filter(|file| std::ptr::eq(file.layout, layout))
             .collect::<Vec<_>>();
         if !files.is_empty() {
-            if std::ptr::eq(layout, &super::RUST) {
-                format_rust_staged(root, &files)?;
+            if matches!(layout.formatter, Formatter::Rust | Formatter::Python) {
+                format_staged(root, &files, layout.formatter)?;
             } else {
                 let paths = files
                     .iter()
@@ -253,9 +253,9 @@ pub(super) fn format_rust(paths: &[PathBuf]) -> Result<()> {
     )
 }
 
-fn format_rust_staged(root: &Path, files: &[&StagedWrite]) -> Result<()> {
+fn format_staged(root: &Path, files: &[&StagedWrite], formatter: Formatter) -> Result<()> {
     let directory = std::env::temp_dir().join(format!(
-        "ptfkit-codegen-rust-format-{}-{}",
+        "ptfkit-codegen-format-{}-{}",
         std::process::id(),
         TEMPORARY_SEQUENCE.fetch_add(1, Ordering::Relaxed)
     ));
@@ -266,7 +266,7 @@ fn format_rust_staged(root: &Path, files: &[&StagedWrite]) -> Result<()> {
             let relative = file
                 .target
                 .strip_prefix(root)
-                .context("finding staged Rust output path")?;
+                .context("finding staged output path")?;
             let target = directory.join(relative);
             if let Some(parent) = target.parent() {
                 fs::create_dir_all(parent)?;
@@ -274,7 +274,7 @@ fn format_rust_staged(root: &Path, files: &[&StagedWrite]) -> Result<()> {
             fs::copy(&file.temporary, &target)?;
             paths.push(target);
         }
-        format_rust(&paths)?;
+        format_layout(formatter, root, &paths)?;
         for (file, path) in files.iter().zip(paths) {
             fs::copy(path, &file.temporary)?;
         }
@@ -287,7 +287,7 @@ fn format_rust_staged(root: &Path, files: &[&StagedWrite]) -> Result<()> {
 pub(super) fn format_python(root: &Path, paths: &[PathBuf]) -> Result<()> {
     run(
         "ruff",
-        &["format"],
+        &["format", "--config", "ruff.toml"],
         paths,
         Some(&root.join("targets/ptfkit-py")),
     )
@@ -353,6 +353,31 @@ mod tests {
             "ptfkit-codegen-write-{label}-{}",
             std::process::id()
         ))
+    }
+
+    #[test]
+    fn binary_model_output_preserves_bytes_and_detects_drift() {
+        let root = temporary_root("binary-model");
+        let bytes = b"PTFKNN01\x00\xff\x80\r\n";
+        commit(
+            &root,
+            &[Output::new(
+                &super::super::RUST_MODEL_DATA,
+                vec![GeneratedFile::binary("sample.ptfm".into(), bytes.to_vec())],
+            )],
+        )
+        .unwrap();
+        let path = root.join("targets/ptfkit-rs/src/data/sample.ptfm");
+        assert_eq!(fs::read(&path).unwrap(), bytes);
+        let before = snapshot_generated(&root).unwrap();
+        fs::write(&path, b"PTFKNN01\x00\xfe\x80\r\n").unwrap();
+        let error = assert_unchanged(&root, before).unwrap_err();
+        let drift = error.downcast_ref::<GeneratedDrift>().unwrap();
+        assert_eq!(
+            drift.modified,
+            [PathBuf::from("targets/ptfkit-rs/src/data/sample.ptfm")]
+        );
+        fs::remove_dir_all(root).unwrap();
     }
 
     #[test]

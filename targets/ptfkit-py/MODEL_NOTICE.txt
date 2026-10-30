@@ -1,0 +1,16 @@
+Bundled Rosetta3 trained parameters
+
+License: CC0-1.0
+https://creativecommons.org/publicdomain/zero/1.0/
+
+Source: https://github.com/usda-ars-ussl/rosetta-soil
+Revision: 6b0e3902f8a145805d41b691dc36f8e69e898f2a
+Source license: CC0 1.0 (https://creativecommons.org/publicdomain/zero/1.0/)
+The source README credits Marcel Schaap and Yonggen Zhang at the University of Arizona.
+
+Includes rose3_mod2_0, rose3_mod3_0, rose3_mod4_0, rose3_mod5_0 and rose1_unsat_k.
+The binary64 parameters are unchanged; only their container representation was converted.
+PTFKNN01 SHA-256: d4d2ca39f41762830f736c70fba16ed68a81cb52d4639b1f48c6a24e502c4796
+
+ptfkit code remains under its MIT license. No endorsement by USDA or the model authors is implied.
+The separate author GPL implementation was used only for provenance comparison and is not bundled.

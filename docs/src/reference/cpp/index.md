@@ -59,3 +59,7 @@ ptfkit's C++ API is organized around C++23 modules.
 - [`ptfkit.zhao2016`](modules/zhao2016.md) — Saturated hydraulic conductivity PTFs for the Loess Plateau of China.
 
 See the [function index](functions.md) for all public C++ functions.
+
+## External models
+
+- [Rosetta3 and external model loading](modules/zhang_schaap2017.md)
