@@ -251,4 +251,5 @@ PTFKIT_MODEL_INLINE ptfkit_model_status ptfkit_model_predict_network(const ptfki
     ptfkit_detail_network_predict(&model->detail_networks[index], model->detail_data, input, out);
     return PTFKIT_MODEL_OK;
 }
+#include <ptfkit/detail/qrf.h>
 #endif

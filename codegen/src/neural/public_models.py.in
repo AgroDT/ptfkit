@@ -6,7 +6,7 @@ from ptfkit import _models
 from ptfkit._models import ModelFormatError, ModelInputError, ModelIntegrityError
 
 
-__all__ = ['Model', 'ModelFormatError', 'ModelInputError', 'ModelIntegrityError']
+__all__ = ['Euptf2Ths', 'Model', 'ModelFormatError', 'ModelInputError', 'ModelIntegrityError']
 
 class Model:
     """An immutable native model; the digest must come from a trusted manifest.

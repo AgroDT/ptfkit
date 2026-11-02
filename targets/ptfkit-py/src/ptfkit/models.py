@@ -8,7 +8,7 @@ from ptfkit import _models
 from ptfkit._models import ModelFormatError, ModelInputError, ModelIntegrityError
 
 
-__all__ = ['Model', 'ModelFormatError', 'ModelInputError', 'ModelIntegrityError']
+__all__ = ['Euptf2Ths', 'Model', 'ModelFormatError', 'ModelInputError', 'ModelIntegrityError']
 
 
 class Model:
@@ -57,3 +57,39 @@ class Model:
     def predict_network(self, index: int, inputs: Sequence[float]) -> list[tuple[float, ...]]:
         """Return original-scale raw predictions, indexed by member then output."""
         return _models.predict_network(self._handle, index, inputs)
+
+
+class Euptf2Ths:
+    """EU-PTF v2 THS_PTF01 with mean and conditional quantile predictions.
+
+    Trained parameters must be imported locally. Loading checks the pinned
+    SHA-256 before decoding; no R or ML framework is needed for prediction.
+    """
+
+    __slots__ = ('_handle',)
+
+    def __init__(self, data: bytes) -> None:
+        """Authenticate and copy an imported THS_PTF01 artifact."""
+        self._handle = _models.euptf2_ths_from_bytes(data)
+
+    @classmethod
+    def load(cls, path: str | Path) -> 'Euptf2Ths':
+        """Load the externally imported, authenticated THS_PTF01 container."""
+        with Path(path).open('rb') as source:
+            return cls(source.read(64 * 1024 * 1024 + 1))
+
+    @classmethod
+    def from_bytes(cls, data: bytes) -> 'Euptf2Ths':
+        """Copy and authenticate a PTFKQF01 container."""
+        return cls(data)
+
+    def predict(
+        self, sand: float, silt: float, clay: float, mean_depth: float
+    ) -> tuple[float, float, float, float]:
+        """Return mean, q05, q50, q95 in cm3/cm3.
+
+        Texture uses USDA mass percentages; mean horizon depth uses cm.
+        NaN means missing and raises ModelInputError. No imputation, texture
+        normalization, clipping or output transformation is performed.
+        """
+        return _models.euptf2_ths_predict(self._handle, (sand, silt, clay, mean_depth))

@@ -5,6 +5,7 @@ module;
 #include <vector>
 #include <span>
 #include <string>
+#include <array>
 export module ptfkit.models;
 export namespace ptfkit {
 enum class ModelStatus { Io=1,Integrity=2,Format=3,Memory=4,Input=5 };

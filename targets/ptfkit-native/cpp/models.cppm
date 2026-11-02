@@ -6,6 +6,7 @@ module;
 #include <vector>
 #include <span>
 #include <string>
+#include <array>
 export module ptfkit.models;
 export namespace ptfkit {
 enum class ModelStatus { Io = 1, Integrity = 2, Format = 3, Memory = 4, Input = 5 };
@@ -83,6 +84,50 @@ class Model {
         for (size_t i = 0; i < nboot; ++i)
             rows.emplace_back(raw.begin() + i * nout, raw.begin() + (i + 1) * nout);
         return rows;
+    }
+};
+} // namespace ptfkit
+
+export namespace ptfkit {
+/// Locally imported EU-PTF v2 THS_PTF01, with no bundled trained parameters.
+class Euptf2Ths {
+    ::ptfkit_euptf2_ths *handle_ = nullptr;
+    inline explicit Euptf2Ths(::ptfkit_euptf2_ths *handle) : handle_(handle) {}
+
+  public:
+    inline ~Euptf2Ths() { ::ptfkit_euptf2_ths_free(handle_); }
+    Euptf2Ths(const Euptf2Ths &) = delete;
+    Euptf2Ths &operator=(const Euptf2Ths &) = delete;
+    inline Euptf2Ths(Euptf2Ths &&other) noexcept : handle_(std::exchange(other.handle_, nullptr)) {}
+    inline Euptf2Ths &operator=(Euptf2Ths &&other) noexcept {
+        if (this != &other) {
+            ::ptfkit_euptf2_ths_free(handle_);
+            handle_ = std::exchange(other.handle_, nullptr);
+        }
+        return *this;
+    }
+    static inline Euptf2Ths load(const char *path) {
+        ::ptfkit_euptf2_ths *handle = nullptr;
+        auto status = ::ptfkit_euptf2_ths_load(path, &handle);
+        if (status != PTFKIT_MODEL_OK)
+            throw ModelError(status);
+        return Euptf2Ths(handle);
+    }
+    static inline Euptf2Ths from_bytes(std::span<const unsigned char> bytes) {
+        ::ptfkit_euptf2_ths *handle = nullptr;
+        auto status = ::ptfkit_euptf2_ths_from_bytes(bytes.data(), bytes.size(), &handle);
+        if (status != PTFKIT_MODEL_OK)
+            throw ModelError(status);
+        return Euptf2Ths(handle);
+    }
+    /// Inputs: sand, silt, clay (mass %), mean depth (cm).
+    /// Output: mean, q05, q50, q95 (cm3/cm3).
+    inline std::array<double, 4> predict(std::array<double, 4> inputs) const {
+        std::array<double, 4> out;
+        auto status = ::ptfkit_euptf2_ths_predict(handle_, inputs.data(), out.data());
+        if (status != PTFKIT_MODEL_OK)
+            throw ModelError(status);
+        return out;
     }
 };
 } // namespace ptfkit
