@@ -43,6 +43,7 @@ ptfkit's Python API is organized around public modules.
 - [`ptfkit.rudiyanto2021`](rudiyanto2021.md) — Rudiyanto et al. (2021), neuroFX hydraulic parameters from saturation to dryness.
 - [`ptfkit.saxton1986`](saxton1986.md) — Saxton et al. retention relationships parameterized by USDA CalcPTF.
 - [`ptfkit.saxton2006`](saxton2006.md) — Saxton and Rawls (2006), soil water characteristics from texture and organic matter.
+- [`ptfkit.szabo_weynants_weber2021`](szabo_weynants_weber2021.md) — Original EU-PTF v2 hydraulic predictions with native QRF uncertainty and external artifacts.
 - [`ptfkit.tiwary2014`](tiwary2014.md) — Tiwary et al. (2014), hydraulic PTFs for two major soil regions of India.
 - [`ptfkit.tomasella1998`](tomasella1998.md) — Tomasella and Hodnett (1998), point-retention regressions for Amazonian soils.
 - [`ptfkit.varallyai1982`](varallyai1982.md) — Varallyai et al. (1982), water-retention parameter regressions for Hungarian soils.

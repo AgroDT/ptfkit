@@ -1,0 +1,3550 @@
+source:
+  summary: Original EU-PTF v2 hydraulic predictions with native QRF uncertainty and external artifacts.
+  citation_apa: Szabó, B., Weynants, M., & Weber, T. K. D. (2021). Updated European hydraulic pedotransfer
+    functions with communicated uncertainties in the predicted variables (euptfv2). Geoscientific Model
+    Development, 14, 151-175.
+  doi:
+    identifier: 10.5194/gmd-14-151-2021
+    url: https://doi.org/10.5194/gmd-14-151-2021
+scope:
+  territory: European soils represented by subsets of the EU-HYDI inventory; no extrapolation validation
+    is asserted.
+  dataset: Original trained EU-PTF v2 saved ranger objects; no retraining.
+scientific_notes: 'Original predictor units and USDA particle sizes follow the paper and package sample_data
+  documentation. FC_2 and FC denote -100 and -330 cm matric potential head respectively. KS and K0 use
+  cm/day; ALP uses inverse cm. Fitted scales: KS/K0 log10, THR log10(THR+1), ALP log10, N log10(N-1);
+  all others identity. Means are averaged before back-transform. Stored ranger terminal response samples
+  support the exact upstream type-7 quantile algorithm. Parameters and quantiles are marginal; no joint
+  parameter distribution or uncertainty for derived M is claimed. The 77 trained objects must not be confused
+  with the package selection aliases for 32 predictor combinations. All artifacts remain external.'
+$defs:
+  Euptf2Awc2Statistics:
+    type: record
+    name: Euptf2Awc2Statistics
+    fields:
+    - name: mean
+      quantity: available_water_capacity
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'AWC_2: original-scale point estimate. Ranger means are aggregated on the fitted scale
+        before the original back-transform; M is derived only for means.'
+    - name: q05
+      quantity: available_water_capacity
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'AWC_2: conditional quantile at probability 0.05; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q25
+      quantity: available_water_capacity
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'AWC_2: conditional quantile at probability 0.25; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q50
+      quantity: available_water_capacity
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'AWC_2: conditional quantile at probability 0.5; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q75
+      quantity: available_water_capacity
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'AWC_2: conditional quantile at probability 0.75; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q95
+      quantity: available_water_capacity
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'AWC_2: conditional quantile at probability 0.95; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+  Euptf2AwcStatistics:
+    type: record
+    name: Euptf2AwcStatistics
+    fields:
+    - name: mean
+      quantity: available_water_capacity
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'AWC: original-scale point estimate. Ranger means are aggregated on the fitted scale
+        before the original back-transform; M is derived only for means.'
+    - name: q05
+      quantity: available_water_capacity
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'AWC: conditional quantile at probability 0.05; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q25
+      quantity: available_water_capacity
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'AWC: conditional quantile at probability 0.25; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q50
+      quantity: available_water_capacity
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'AWC: conditional quantile at probability 0.5; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q75
+      quantity: available_water_capacity
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'AWC: conditional quantile at probability 0.75; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q95
+      quantity: available_water_capacity
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'AWC: conditional quantile at probability 0.95; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+  Euptf2Fc2Statistics:
+    type: record
+    name: Euptf2Fc2Statistics
+    fields:
+    - name: mean
+      quantity: volumetric_water_content
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'FC_2: original-scale point estimate. Ranger means are aggregated on the fitted scale
+        before the original back-transform; M is derived only for means.'
+    - name: q05
+      quantity: volumetric_water_content
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'FC_2: conditional quantile at probability 0.05; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q25
+      quantity: volumetric_water_content
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'FC_2: conditional quantile at probability 0.25; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q50
+      quantity: volumetric_water_content
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'FC_2: conditional quantile at probability 0.5; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q75
+      quantity: volumetric_water_content
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'FC_2: conditional quantile at probability 0.75; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q95
+      quantity: volumetric_water_content
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'FC_2: conditional quantile at probability 0.95; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+  Euptf2FcStatistics:
+    type: record
+    name: Euptf2FcStatistics
+    fields:
+    - name: mean
+      quantity: volumetric_water_content
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'FC: original-scale point estimate. Ranger means are aggregated on the fitted scale
+        before the original back-transform; M is derived only for means.'
+    - name: q05
+      quantity: volumetric_water_content
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'FC: conditional quantile at probability 0.05; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q25
+      quantity: volumetric_water_content
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'FC: conditional quantile at probability 0.25; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q50
+      quantity: volumetric_water_content
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'FC: conditional quantile at probability 0.5; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q75
+      quantity: volumetric_water_content
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'FC: conditional quantile at probability 0.75; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q95
+      quantity: volumetric_water_content
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'FC: conditional quantile at probability 0.95; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+  Euptf2KsStatistics:
+    type: record
+    name: Euptf2KsStatistics
+    fields:
+    - name: mean
+      quantity: saturated_hydraulic_conductivity
+      symbol: null
+      unit: centimeter_per_day
+      reported_unit: cm/day
+      domain: null
+      description: 'KS: original-scale point estimate. Ranger means are aggregated on the fitted scale
+        before the original back-transform; M is derived only for means.'
+    - name: q05
+      quantity: saturated_hydraulic_conductivity
+      symbol: null
+      unit: centimeter_per_day
+      reported_unit: cm/day
+      domain: null
+      description: 'KS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q25
+      quantity: saturated_hydraulic_conductivity
+      symbol: null
+      unit: centimeter_per_day
+      reported_unit: cm/day
+      domain: null
+      description: 'KS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q50
+      quantity: saturated_hydraulic_conductivity
+      symbol: null
+      unit: centimeter_per_day
+      reported_unit: cm/day
+      domain: null
+      description: 'KS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q75
+      quantity: saturated_hydraulic_conductivity
+      symbol: null
+      unit: centimeter_per_day
+      reported_unit: cm/day
+      domain: null
+      description: 'KS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q95
+      quantity: saturated_hydraulic_conductivity
+      symbol: null
+      unit: centimeter_per_day
+      reported_unit: cm/day
+      domain: null
+      description: 'KS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+  Euptf2ThsStatistics:
+    type: record
+    name: Euptf2ThsStatistics
+    fields:
+    - name: mean
+      quantity: volumetric_water_content
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'THS: original-scale point estimate. Ranger means are aggregated on the fitted scale
+        before the original back-transform; M is derived only for means.'
+    - name: q05
+      quantity: volumetric_water_content
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q25
+      quantity: volumetric_water_content
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q50
+      quantity: volumetric_water_content
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q75
+      quantity: volumetric_water_content
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q95
+      quantity: volumetric_water_content
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+  Euptf2WpStatistics:
+    type: record
+    name: Euptf2WpStatistics
+    fields:
+    - name: mean
+      quantity: volumetric_water_content
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'WP: original-scale point estimate. Ranger means are aggregated on the fitted scale
+        before the original back-transform; M is derived only for means.'
+    - name: q05
+      quantity: volumetric_water_content
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'WP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q25
+      quantity: volumetric_water_content
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'WP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q50
+      quantity: volumetric_water_content
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'WP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q75
+      quantity: volumetric_water_content
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'WP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+    - name: q95
+      quantity: volumetric_water_content
+      symbol: null
+      unit: volume_fraction
+      reported_unit: cm^3/cm^3
+      domain: null
+      description: 'WP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal
+        response samples, then original back-transform.'
+functions:
+- name: calc_ptf_szabo2021_awc_2_ptf01
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 1
+  public_api:
+    name: calc_ptf_szabo2021_awc_2_ptf01
+    result_class: Euptf2Awc2Statistics
+    summary: Predict AWC_2_PTF01 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Directly fitted available water content between -100 and -15000 cm.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2Awc2Statistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+    expected:
+      mean: 0.206020837964712
+      q05: 0.09395
+      q25: 0.13525
+      q50: 0.2085
+      q75: 0.232
+      q95: 0.456
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/AWC_2_PTF01.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object AWC_2_PTF01; artifact SHA-256 1ae1832bddc02221fc16a742ab716a7bfa635ea5d0c69d7861a2ea1a667dd9ad.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_awc_2_ptf02
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 2
+  public_api:
+    name: calc_ptf_szabo2021_awc_2_ptf02
+    result_class: Euptf2Awc2Statistics
+    summary: Predict AWC_2_PTF02 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Directly fitted available water content between -100 and -15000 cm.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: oc
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Soil organic carbon mass percentage. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2Awc2Statistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      oc: 1.69
+    expected:
+      mean: 0.264304384920635
+      q05: 0.103
+      q25: 0.185
+      q50: 0.209
+      q75: 0.257
+      q95: 0.456
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/AWC_2_PTF02.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object AWC_2_PTF02; artifact SHA-256 ed6378d4fe35845b014e6a736fcbb9bae17474abcb4915154603e17f95e57ab2.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_awc_2_ptf03
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 3
+  public_api:
+    name: calc_ptf_szabo2021_awc_2_ptf03
+    result_class: Euptf2Awc2Statistics
+    summary: Predict AWC_2_PTF03 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Directly fitted available water content between -100 and -15000 cm.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: bd
+    symbol: null
+    unit: g/cm^3
+    domain: null
+    description: Dry soil bulk density. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2Awc2Statistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      bd: 1.41
+    expected:
+      mean: 0.189772449404762
+      q05: 0.091
+      q25: 0.12875
+      q50: 0.209
+      q75: 0.209
+      q95: 0.303
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/AWC_2_PTF03.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object AWC_2_PTF03; artifact SHA-256 41927bb0ac26799d5aba8408e122987c6d6f5da836b3a69e394bec2b6b451712.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_awc_ptf01
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 4
+  public_api:
+    name: calc_ptf_szabo2021_awc_ptf01
+    result_class: Euptf2AwcStatistics
+    summary: Predict AWC_PTF01 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Directly fitted available water content between -330 and -15000 cm.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2AwcStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+    expected:
+      mean: 0.158020273809524
+      q05: 0.059
+      q25: 0.13075
+      q50: 0.1695
+      q75: 0.195
+      q95: 0.205
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/AWC_PTF01.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object AWC_PTF01; artifact SHA-256 067967083cd57c0094169e34d384f2ff5d45bb1b559ba68584d69de96e106142.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_awc_ptf03
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 5
+  public_api:
+    name: calc_ptf_szabo2021_awc_ptf03
+    result_class: Euptf2AwcStatistics
+    summary: Predict AWC_PTF03 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Directly fitted available water content between -330 and -15000 cm.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: bd
+    symbol: null
+    unit: g/cm^3
+    domain: null
+    description: Dry soil bulk density. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2AwcStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      bd: 1.41
+    expected:
+      mean: 0.14578566888388
+      q05: 0.05795
+      q25: 0.096
+      q50: 0.141
+      q75: 0.186
+      q95: 0.205
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/AWC_PTF03.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object AWC_PTF03; artifact SHA-256 536b3f78b061c35e2ac1b4681db430fdc6613f0c9b88ea9414cccc54463357f6.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_fc_2_ptf01
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 6
+  public_api:
+    name: calc_ptf_szabo2021_fc_2_ptf01
+    result_class: Euptf2Fc2Statistics
+    summary: Predict FC_2_PTF01 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -100 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2Fc2Statistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+    expected:
+      mean: 0.418066173050886
+      q05: 0.344
+      q25: 0.354
+      q50: 0.378
+      q75: 0.47
+      q95: 0.58
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/FC_2_PTF01.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object FC_2_PTF01; artifact SHA-256 5137cb2fdf356e83452e4e38e985bf292c65481929717c21a6ae4ac68aafb88c.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_fc_2_ptf02
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 7
+  public_api:
+    name: calc_ptf_szabo2021_fc_2_ptf02
+    result_class: Euptf2Fc2Statistics
+    summary: Predict FC_2_PTF02 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -100 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: oc
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Soil organic carbon mass percentage. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2Fc2Statistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      oc: 1.69
+    expected:
+      mean: 0.410768646825397
+      q05: 0.3414
+      q25: 0.358
+      q50: 0.3835
+      q75: 0.4545
+      q95: 0.51915
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/FC_2_PTF02.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object FC_2_PTF02; artifact SHA-256 526cc46ae02975ab02517d468236195ab446ff28d5f064cf8fdb6980dac4d26b.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_fc_2_ptf03
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 8
+  public_api:
+    name: calc_ptf_szabo2021_fc_2_ptf03
+    result_class: Euptf2Fc2Statistics
+    summary: Predict FC_2_PTF03 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -100 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: bd
+    symbol: null
+    unit: g/cm^3
+    domain: null
+    description: Dry soil bulk density. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2Fc2Statistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      bd: 1.41
+    expected:
+      mean: 0.419321998015873
+      q05: 0.32895
+      q25: 0.365
+      q50: 0.432
+      q75: 0.486
+      q95: 0.551
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/FC_2_PTF03.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object FC_2_PTF03; artifact SHA-256 d69cbfb6a343cd56d2d3a6100e780fd352b0bda40e1d00480302feaef6471f4a.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_fc_2_ptf04
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 9
+  public_api:
+    name: calc_ptf_szabo2021_fc_2_ptf04
+    result_class: Euptf2Fc2Statistics
+    summary: Predict FC_2_PTF04 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -100 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: caco3
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Calcium carbonate mass percentage. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2Fc2Statistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      caco3: 3.6
+    expected:
+      mean: 0.471630732142858
+      q05: 0.3538
+      q25: 0.444
+      q50: 0.488
+      q75: 0.515
+      q95: 0.551
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/FC_2_PTF04.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object FC_2_PTF04; artifact SHA-256 9c65eb9c2b5b7319a11fa11737a40697b03b6b41bb1d4bf7775519415c10ac6b.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_fc_2_ptf05
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 10
+  public_api:
+    name: calc_ptf_szabo2021_fc_2_ptf05
+    result_class: Euptf2Fc2Statistics
+    summary: Predict FC_2_PTF05 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -100 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: ph_h2o
+    symbol: null
+    unit: '1'
+    domain: null
+    description: Soil pH measured in water. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2Fc2Statistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      ph_h2o: 7.9
+    expected:
+      mean: 0.475223932539683
+      q05: 0.39
+      q25: 0.444
+      q50: 0.484
+      q75: 0.513
+      q95: 0.551
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/FC_2_PTF05.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object FC_2_PTF05; artifact SHA-256 6f28243063eac0825c38409d30163bb25ec8223a1fd4baa71aec94bd1959ff5b.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_fc_2_ptf06
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 11
+  public_api:
+    name: calc_ptf_szabo2021_fc_2_ptf06
+    result_class: Euptf2Fc2Statistics
+    summary: Predict FC_2_PTF06 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -100 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: cec
+    symbol: null
+    unit: meq/100g
+    domain: null
+    description: Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping
+      or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2Fc2Statistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      cec: 43.4
+    expected:
+      mean: 0.466464551587302
+      q05: 0.36255
+      q25: 0.444
+      q50: 0.4625
+      q75: 0.513
+      q95: 0.574
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/FC_2_PTF06.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object FC_2_PTF06; artifact SHA-256 1f27f81a7496cac3f9953b284a0645facfd0f77844724d411514e5941b1704b5.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_fc_2_ptf07
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 12
+  public_api:
+    name: calc_ptf_szabo2021_fc_2_ptf07
+    result_class: Euptf2Fc2Statistics
+    summary: Predict FC_2_PTF07 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -100 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: oc
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Soil organic carbon mass percentage. No normalization, clipping or imputation.
+  - name: bd
+    symbol: null
+    unit: g/cm^3
+    domain: null
+    description: Dry soil bulk density. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2Fc2Statistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      oc: 1.69
+      bd: 1.41
+    expected:
+      mean: 0.406673797619047
+      q05: 0.324
+      q25: 0.36625
+      q50: 0.41
+      q75: 0.47
+      q95: 0.50715
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/FC_2_PTF07.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object FC_2_PTF07; artifact SHA-256 f5f57150ebb61db738c76af95947e37385d6500d69d91ef516aa9b2281502ed5.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_fc_2_ptf08
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 13
+  public_api:
+    name: calc_ptf_szabo2021_fc_2_ptf08
+    result_class: Euptf2Fc2Statistics
+    summary: Predict FC_2_PTF08 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -100 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: oc
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Soil organic carbon mass percentage. No normalization, clipping or imputation.
+  - name: caco3
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Calcium carbonate mass percentage. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2Fc2Statistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      oc: 1.69
+      caco3: 3.6
+    expected:
+      mean: 0.461994714285715
+      q05: 0.38465
+      q25: 0.444
+      q50: 0.455
+      q75: 0.5
+      q95: 0.55405
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/FC_2_PTF08.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object FC_2_PTF08; artifact SHA-256 adbfdffa2f31d6fbf0d798c69e7cc4c5526f46599ad9900a71bc1fddcc663aba.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_fc_2_ptf09
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 14
+  public_api:
+    name: calc_ptf_szabo2021_fc_2_ptf09
+    result_class: Euptf2Fc2Statistics
+    summary: Predict FC_2_PTF09 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -100 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: oc
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Soil organic carbon mass percentage. No normalization, clipping or imputation.
+  - name: ph_h2o
+    symbol: null
+    unit: '1'
+    domain: null
+    description: Soil pH measured in water. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2Fc2Statistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      oc: 1.69
+      ph_h2o: 7.9
+    expected:
+      mean: 0.449700597222222
+      q05: 0.347
+      q25: 0.4235
+      q50: 0.444
+      q75: 0.489
+      q95: 0.5511
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/FC_2_PTF09.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object FC_2_PTF09; artifact SHA-256 691e86de14e7d881e12d299d78caf87fef3e918f982533cbae7859ab71ec3225.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_fc_2_ptf11
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 15
+  public_api:
+    name: calc_ptf_szabo2021_fc_2_ptf11
+    result_class: Euptf2Fc2Statistics
+    summary: Predict FC_2_PTF11 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -100 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: bd
+    symbol: null
+    unit: g/cm^3
+    domain: null
+    description: Dry soil bulk density. No normalization, clipping or imputation.
+  - name: caco3
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Calcium carbonate mass percentage. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2Fc2Statistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      bd: 1.41
+      caco3: 3.6
+    expected:
+      mean: 0.431052337301588
+      q05: 0.332
+      q25: 0.39
+      q50: 0.444
+      q75: 0.458
+      q95: 0.515
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/FC_2_PTF11.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object FC_2_PTF11; artifact SHA-256 432dcde50925c4efd51e262d3fd9e838da4b25d449f1d518eefa2677d6e04248.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_fc_2_ptf12
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 16
+  public_api:
+    name: calc_ptf_szabo2021_fc_2_ptf12
+    result_class: Euptf2Fc2Statistics
+    summary: Predict FC_2_PTF12 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -100 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: bd
+    symbol: null
+    unit: g/cm^3
+    domain: null
+    description: Dry soil bulk density. No normalization, clipping or imputation.
+  - name: ph_h2o
+    symbol: null
+    unit: '1'
+    domain: null
+    description: Soil pH measured in water. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2Fc2Statistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      bd: 1.41
+      ph_h2o: 7.9
+    expected:
+      mean: 0.44446728968254
+      q05: 0.36295
+      q25: 0.41675
+      q50: 0.444
+      q75: 0.46
+      q95: 0.543
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/FC_2_PTF12.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object FC_2_PTF12; artifact SHA-256 cdba5160c8a35084ae644cc07304e7db0f8edf23b91913d6396a0b5eb287d651.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_fc_2_ptf13
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 17
+  public_api:
+    name: calc_ptf_szabo2021_fc_2_ptf13
+    result_class: Euptf2Fc2Statistics
+    summary: Predict FC_2_PTF13 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -100 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: bd
+    symbol: null
+    unit: g/cm^3
+    domain: null
+    description: Dry soil bulk density. No normalization, clipping or imputation.
+  - name: cec
+    symbol: null
+    unit: meq/100g
+    domain: null
+    description: Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping
+      or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2Fc2Statistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      bd: 1.41
+      cec: 43.4
+    expected:
+      mean: 0.429515246031746
+      q05: 0.35265
+      q25: 0.4
+      q50: 0.444
+      q75: 0.4585
+      q95: 0.515
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/FC_2_PTF13.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object FC_2_PTF13; artifact SHA-256 9b8e0a094770f9bd42789423b1a7bbd9567b125b5ca0b0ce374240ff619007b7.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_fc_2_ptf18
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 18
+  public_api:
+    name: calc_ptf_szabo2021_fc_2_ptf18
+    result_class: Euptf2Fc2Statistics
+    summary: Predict FC_2_PTF18 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -100 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: oc
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Soil organic carbon mass percentage. No normalization, clipping or imputation.
+  - name: bd
+    symbol: null
+    unit: g/cm^3
+    domain: null
+    description: Dry soil bulk density. No normalization, clipping or imputation.
+  - name: ph_h2o
+    symbol: null
+    unit: '1'
+    domain: null
+    description: Soil pH measured in water. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2Fc2Statistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      oc: 1.69
+      bd: 1.41
+      ph_h2o: 7.9
+    expected:
+      mean: 0.446485672619048
+      q05: 0.35385
+      q25: 0.4085
+      q50: 0.444
+      q75: 0.458
+      q95: 0.5354
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/FC_2_PTF18.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object FC_2_PTF18; artifact SHA-256 327a1ad8749ccb1fa734de2b42b1c48ef2f45cf0fc668997579f28aecad3461a.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_fc_ptf01
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 19
+  public_api:
+    name: calc_ptf_szabo2021_fc_ptf01
+    result_class: Euptf2FcStatistics
+    summary: Predict FC_PTF01 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -330 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2FcStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+    expected:
+      mean: 0.384761773809524
+      q05: 0.2959
+      q25: 0.338
+      q50: 0.3495
+      q75: 0.432
+      q95: 0.49
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/FC_PTF01.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object FC_PTF01; artifact SHA-256 e8d25c5eddfe12f62a4b592458aa72ab61c38b5271375e85a143a31daf4c7873.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_fc_ptf02
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 20
+  public_api:
+    name: calc_ptf_szabo2021_fc_ptf02
+    result_class: Euptf2FcStatistics
+    summary: Predict FC_PTF02 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -330 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: oc
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Soil organic carbon mass percentage. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2FcStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      oc: 1.69
+    expected:
+      mean: 0.390844257936508
+      q05: 0.3
+      q25: 0.343
+      q50: 0.368
+      q75: 0.439
+      q95: 0.4698
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/FC_PTF02.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object FC_PTF02; artifact SHA-256 37c792ddfd000cb6506f9c6d3a72c9f95eabe940b30daf8a4b0f2136706f76a0.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_fc_ptf03
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 21
+  public_api:
+    name: calc_ptf_szabo2021_fc_ptf03
+    result_class: Euptf2FcStatistics
+    summary: Predict FC_PTF03 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -330 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: bd
+    symbol: null
+    unit: g/cm^3
+    domain: null
+    description: Dry soil bulk density. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2FcStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      bd: 1.41
+    expected:
+      mean: 0.378383402777777
+      q05: 0.30475
+      q25: 0.34325
+      q50: 0.372
+      q75: 0.41825
+      q95: 0.47355
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/FC_PTF03.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object FC_PTF03; artifact SHA-256 fcb9784f036978c2965150de222920529715f92f5333f219717865b24064c3aa.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_fc_ptf04
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 22
+  public_api:
+    name: calc_ptf_szabo2021_fc_ptf04
+    result_class: Euptf2FcStatistics
+    summary: Predict FC_PTF04 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -330 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: caco3
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Calcium carbonate mass percentage. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2FcStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      caco3: 3.6
+    expected:
+      mean: 0.426867404761904
+      q05: 0.318
+      q25: 0.3855
+      q50: 0.43
+      q75: 0.446
+      q95: 0.496
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/FC_PTF04.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object FC_PTF04; artifact SHA-256 69bee3bdc0f80fada15fa1b184e80edf0f9e88c87fed526e73fc5a3f18c8ab32.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_fc_ptf06
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 23
+  public_api:
+    name: calc_ptf_szabo2021_fc_ptf06
+    result_class: Euptf2FcStatistics
+    summary: Predict FC_PTF06 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -330 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: cec
+    symbol: null
+    unit: meq/100g
+    domain: null
+    description: Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping
+      or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2FcStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      cec: 43.4
+    expected:
+      mean: 0.431917958333333
+      q05: 0.35185
+      q25: 0.414
+      q50: 0.43
+      q75: 0.454
+      q95: 0.497
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/FC_PTF06.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object FC_PTF06; artifact SHA-256 ec574dce9a6d47fb14589942a469c2ab6ca8d0488d5074fdf3191a72f22ff9f0.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_fc_ptf07
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 24
+  public_api:
+    name: calc_ptf_szabo2021_fc_ptf07
+    result_class: Euptf2FcStatistics
+    summary: Predict FC_PTF07 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -330 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: oc
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Soil organic carbon mass percentage. No normalization, clipping or imputation.
+  - name: bd
+    symbol: null
+    unit: g/cm^3
+    domain: null
+    description: Dry soil bulk density. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2FcStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      oc: 1.69
+      bd: 1.41
+    expected:
+      mean: 0.386255767857143
+      q05: 0.305
+      q25: 0.345
+      q50: 0.372
+      q75: 0.424
+      q95: 0.469
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/FC_PTF07.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object FC_PTF07; artifact SHA-256 0398950aa552dfebce310f82778e12bac655c2aecd0ca7debcce945b1e707268.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_fc_ptf08
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 25
+  public_api:
+    name: calc_ptf_szabo2021_fc_ptf08
+    result_class: Euptf2FcStatistics
+    summary: Predict FC_PTF08 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -330 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: oc
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Soil organic carbon mass percentage. No normalization, clipping or imputation.
+  - name: caco3
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Calcium carbonate mass percentage. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2FcStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      oc: 1.69
+      caco3: 3.6
+    expected:
+      mean: 0.425485305555555
+      q05: 0.31395
+      q25: 0.414
+      q50: 0.43
+      q75: 0.441
+      q95: 0.488
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/FC_PTF08.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object FC_PTF08; artifact SHA-256 8d06b181f574e72f6597fe6c9d5bf0f4cbb180dab4b07a12435305130312860c.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_fc_ptf09
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 26
+  public_api:
+    name: calc_ptf_szabo2021_fc_ptf09
+    result_class: Euptf2FcStatistics
+    summary: Predict FC_PTF09 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -330 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: oc
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Soil organic carbon mass percentage. No normalization, clipping or imputation.
+  - name: ph_h2o
+    symbol: null
+    unit: '1'
+    domain: null
+    description: Soil pH measured in water. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2FcStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      oc: 1.69
+      ph_h2o: 7.9
+    expected:
+      mean: 0.420035835317461
+      q05: 0.34735
+      q25: 0.414
+      q50: 0.43
+      q75: 0.446
+      q95: 0.473
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/FC_PTF09.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object FC_PTF09; artifact SHA-256 eb37012d35eae975ad30685810e0c978c30b918b44596fc96db6fbcdb7998ab9.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_fc_ptf11
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 27
+  public_api:
+    name: calc_ptf_szabo2021_fc_ptf11
+    result_class: Euptf2FcStatistics
+    summary: Predict FC_PTF11 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -330 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: bd
+    symbol: null
+    unit: g/cm^3
+    domain: null
+    description: Dry soil bulk density. No normalization, clipping or imputation.
+  - name: caco3
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Calcium carbonate mass percentage. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2FcStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      bd: 1.41
+      caco3: 3.6
+    expected:
+      mean: 0.409093835317461
+      q05: 0.3079
+      q25: 0.375
+      q50: 0.43
+      q75: 0.43225
+      q95: 0.488
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/FC_PTF11.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object FC_PTF11; artifact SHA-256 58cbbbd380efc8a670fd3390931d1dcb0ec0a144091e38cf82bb15534dc6dbdb.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_fc_ptf14
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 28
+  public_api:
+    name: calc_ptf_szabo2021_fc_ptf14
+    result_class: Euptf2FcStatistics
+    summary: Predict FC_PTF14 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -330 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: caco3
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Calcium carbonate mass percentage. No normalization, clipping or imputation.
+  - name: ph_h2o
+    symbol: null
+    unit: '1'
+    domain: null
+    description: Soil pH measured in water. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2FcStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      caco3: 3.6
+      ph_h2o: 7.9
+    expected:
+      mean: 0.429992327380952
+      q05: 0.36765
+      q25: 0.414
+      q50: 0.43
+      q75: 0.446
+      q95: 0.49605
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/FC_PTF14.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object FC_PTF14; artifact SHA-256 db0c67ed313ca6a54df813395ea584640c4d7e6cb02c9f6b35b8d61651c5ac71.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_ks_ptf01
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 29
+  public_api:
+    name: calc_ptf_szabo2021_ks_ptf01
+    result_class: Euptf2KsStatistics
+    summary: Predict KS_PTF01 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Original KS hydraulic outputs.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2KsStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+    expected:
+      mean: 12.5429803507514
+      q05: 0.231
+      q25: 3.79956234457488
+      q50: 14.7
+      q75: 23.5
+      q95: 188.686767374109
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/KS_PTF01.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object log10KS_PTF01; artifact SHA-256 7ad1764905f05325bb416490385f59ea9a78d8b4c4f6fb7de999cdb116dbc6d2.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_ks_ptf02
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 30
+  public_api:
+    name: calc_ptf_szabo2021_ks_ptf02
+    result_class: Euptf2KsStatistics
+    summary: Predict KS_PTF02 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Original KS hydraulic outputs.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: oc
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Soil organic carbon mass percentage. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2KsStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      oc: 1.69
+    expected:
+      mean: 13.488897819404
+      q05: 0.13
+      q25: 4.8094019880172
+      q50: 22.8
+      q75: 63.4
+      q95: 286.120501880387
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/KS_PTF02.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object log10KS_PTF02; artifact SHA-256 9d44a4183651af2d5418e3adc71c2abca8bfd20b28ff92583dfd23fba63b73b0.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_ks_ptf05
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 31
+  public_api:
+    name: calc_ptf_szabo2021_ks_ptf05
+    result_class: Euptf2KsStatistics
+    summary: Predict KS_PTF05 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Original KS hydraulic outputs.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: ph_h2o
+    symbol: null
+    unit: '1'
+    domain: null
+    description: Soil pH measured in water. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2KsStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      ph_h2o: 7.9
+    expected:
+      mean: 4.29860449684657
+      q05: 0.1
+      q25: 0.829816299835382
+      q50: 4.85798312059645
+      q75: 22.8
+      q95: 27.5
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/KS_PTF05.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object log10KS_PTF05; artifact SHA-256 2b275861485a1a02401b4477dfc10ac619ea122f7e66f9df6e9a0f82f89d6460.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_ths_ptf01
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 45
+  public_api:
+    name: calc_ptf_szabo2021_ths_ptf01
+    result_class: Euptf2ThsStatistics
+    summary: Predict THS_PTF01 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Original THS hydraulic outputs.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2ThsStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+    expected:
+      mean: 0.501467656574842
+      q05: 0.37595
+      q25: 0.432
+      q50: 0.496
+      q75: 0.531
+      q95: 0.620949999999999
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/THS_PTF01.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object THS_PTF01; artifact SHA-256 37d21692c4d3ff49f3f991d50143feab76420ded451392daaa82da70ea944f76.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_ths_ptf02
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 46
+  public_api:
+    name: calc_ptf_szabo2021_ths_ptf02
+    result_class: Euptf2ThsStatistics
+    summary: Predict THS_PTF02 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Original THS hydraulic outputs.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: oc
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Soil organic carbon mass percentage. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2ThsStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      oc: 1.69
+    expected:
+      mean: 0.520300377976191
+      q05: 0.40695
+      q25: 0.484
+      q50: 0.524
+      q75: 0.568
+      q95: 0.604
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/THS_PTF02.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object THS_PTF02; artifact SHA-256 180c1b8c51e7cc40fb5c4640aad09d85f57521182a8e833d90eace80f83b207c.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_ths_ptf03
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 47
+  public_api:
+    name: calc_ptf_szabo2021_ths_ptf03
+    result_class: Euptf2ThsStatistics
+    summary: Predict THS_PTF03 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Original THS hydraulic outputs.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: bd
+    symbol: null
+    unit: g/cm^3
+    domain: null
+    description: Dry soil bulk density. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2ThsStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      bd: 1.41
+    expected:
+      mean: 0.468015549603175
+      q05: 0.4326
+      q25: 0.459375
+      q50: 0.465
+      q75: 0.476
+      q95: 0.5221
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/THS_PTF03.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object THS_PTF03; artifact SHA-256 ab6e72685a7b7b8a531c88f601c4590dcb6eb19ae76f575a015cc080969ae44f.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_ths_ptf04
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 48
+  public_api:
+    name: calc_ptf_szabo2021_ths_ptf04
+    result_class: Euptf2ThsStatistics
+    summary: Predict THS_PTF04 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Original THS hydraulic outputs.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: caco3
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Calcium carbonate mass percentage. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2ThsStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      caco3: 3.6
+    expected:
+      mean: 0.459207416666666
+      q05: 0.4079
+      q25: 0.425
+      q50: 0.4625
+      q75: 0.502
+      q95: 0.52425
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/THS_PTF04.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object THS_PTF04; artifact SHA-256 e8c59dad14e3343f8b78bd74de95a1a0333d3d6d439a4a97b5e93e79a9c576aa.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_ths_ptf05
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 49
+  public_api:
+    name: calc_ptf_szabo2021_ths_ptf05
+    result_class: Euptf2ThsStatistics
+    summary: Predict THS_PTF05 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Original THS hydraulic outputs.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: ph_h2o
+    symbol: null
+    unit: '1'
+    domain: null
+    description: Soil pH measured in water. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2ThsStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      ph_h2o: 7.9
+    expected:
+      mean: 0.452779960317461
+      q05: 0.408
+      q25: 0.42
+      q50: 0.4415
+      q75: 0.491
+      q95: 0.512
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/THS_PTF05.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object THS_PTF05; artifact SHA-256 3bb5db54d7953624878151ce991e9ec688b15aaa455a2c14223a753b1dd435e1.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_wp_ptf01
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 71
+  public_api:
+    name: calc_ptf_szabo2021_wp_ptf01
+    result_class: Euptf2WpStatistics
+    summary: Predict WP_PTF01 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -15000 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2WpStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+    expected:
+      mean: 0.297552050589764
+      q05: 0.2347
+      q25: 0.27
+      q50: 0.312
+      q75: 0.34325
+      q95: 0.38205
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/WP_PTF01.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object WP_PTF01; artifact SHA-256 699d60ab2ba894571e17bfc4bf6033ecfc5eabd6a4b048303321fed38c484935.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_wp_ptf02
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 72
+  public_api:
+    name: calc_ptf_szabo2021_wp_ptf02
+    result_class: Euptf2WpStatistics
+    summary: Predict WP_PTF02 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -15000 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: oc
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Soil organic carbon mass percentage. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2WpStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      oc: 1.69
+    expected:
+      mean: 0.290449797752113
+      q05: 0.1955
+      q25: 0.256
+      q50: 0.292
+      q75: 0.329
+      q95: 0.383
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/WP_PTF02.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object WP_PTF02; artifact SHA-256 419667fbab48bcc3790f54120ccbe991c0bc1345c37cc35fbc5b42bf21f15f01.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_wp_ptf05
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 73
+  public_api:
+    name: calc_ptf_szabo2021_wp_ptf05
+    result_class: Euptf2WpStatistics
+    summary: Predict WP_PTF05 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -15000 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: ph_h2o
+    symbol: null
+    unit: '1'
+    domain: null
+    description: Soil pH measured in water. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2WpStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      ph_h2o: 7.9
+    expected:
+      mean: 0.259089733333333
+      q05: 0.183
+      q25: 0.235
+      q50: 0.266
+      q75: 0.2847
+      q95: 0.359
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/WP_PTF05.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object WP_PTF05; artifact SHA-256 c7c36ebb4bb29515a832c09dce603b5fdc9ca56fdc86f195fb9fd73075ec4aef.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_wp_ptf07
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 74
+  public_api:
+    name: calc_ptf_szabo2021_wp_ptf07
+    result_class: Euptf2WpStatistics
+    summary: Predict WP_PTF07 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -15000 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: oc
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Soil organic carbon mass percentage. No normalization, clipping or imputation.
+  - name: bd
+    symbol: null
+    unit: g/cm^3
+    domain: null
+    description: Dry soil bulk density. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2WpStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      oc: 1.69
+      bd: 1.41
+    expected:
+      mean: 0.26012653452381
+      q05: 0.18585
+      q25: 0.235
+      q50: 0.258
+      q75: 0.2795
+      q95: 0.342
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/WP_PTF07.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object WP_PTF07; artifact SHA-256 4f3b1f21379e0e6f86b5caed325f1c97804054dbd7bbb2cd0261e0cf48efe3d1.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_wp_ptf08
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 75
+  public_api:
+    name: calc_ptf_szabo2021_wp_ptf08
+    result_class: Euptf2WpStatistics
+    summary: Predict WP_PTF08 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -15000 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: oc
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Soil organic carbon mass percentage. No normalization, clipping or imputation.
+  - name: caco3
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Calcium carbonate mass percentage. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2WpStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      oc: 1.69
+      caco3: 3.6
+    expected:
+      mean: 0.256691781746032
+      q05: 0.18275
+      q25: 0.235
+      q50: 0.254
+      q75: 0.271
+      q95: 0.35305
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/WP_PTF08.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object WP_PTF08; artifact SHA-256 34f3f97b19fdff948de68c2bbfd2853fa40e91ca3fc2f1260c7423522b310de5.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_wp_ptf09
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 76
+  public_api:
+    name: calc_ptf_szabo2021_wp_ptf09
+    result_class: Euptf2WpStatistics
+    summary: Predict WP_PTF09 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -15000 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: oc
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Soil organic carbon mass percentage. No normalization, clipping or imputation.
+  - name: ph_h2o
+    symbol: null
+    unit: '1'
+    domain: null
+    description: Soil pH measured in water. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2WpStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      oc: 1.69
+      ph_h2o: 7.9
+    expected:
+      mean: 0.253963752777778
+      q05: 0.183
+      q25: 0.235
+      q50: 0.258
+      q75: 0.271
+      q95: 0.33225
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/WP_PTF09.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object WP_PTF09; artifact SHA-256 ee48580e9bdb2ac679703901aaef47543c2322af4f1e81481a7f8aaf1d865f63.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.
+- name: calc_ptf_szabo2021_wp_ptf17
+  status: implemented
+  implementation:
+    external_model:
+      kind: euptf2
+      artifact: ../models/euptf2/collection.json
+      level: 77
+  public_api:
+    name: calc_ptf_szabo2021_wp_ptf17
+    result_class: Euptf2WpStatistics
+    summary: Predict WP_PTF17 original-scale point estimates and five conditional quantiles.
+  scope:
+    prediction_target: Water content at -15000 cm matric potential head.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: ussand
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: ussilt
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: usclay
+    symbol: null
+    unit: '%'
+    domain: null
+    description: USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation.
+  - name: depth_m
+    symbol: null
+    unit: cm
+    domain: null
+    description: Mean soil horizon depth in centimetres, despite the variable suffix. No normalization,
+      clipping or imputation.
+  - name: oc
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Soil organic carbon mass percentage. No normalization, clipping or imputation.
+  - name: bd
+    symbol: null
+    unit: g/cm^3
+    domain: null
+    description: Dry soil bulk density. No normalization, clipping or imputation.
+  - name: caco3
+    symbol: null
+    unit: '%'
+    domain: null
+    description: Calcium carbonate mass percentage. No normalization, clipping or imputation.
+  outputs:
+    $ref: '#/$defs/Euptf2WpStatistics'
+  verification_cases:
+  - id: original_sample_1
+    kind: calculated
+    inputs:
+      ussand: 1.0
+      ussilt: 53.0
+      usclay: 46.0
+      depth_m: 60.0
+      oc: 1.69
+      bd: 1.41
+      caco3: 3.6
+    expected:
+      mean: 0.238591694444444
+      q05: 0.157
+      q25: 0.215
+      q50: 0.235
+      q75: 0.262
+      q95: 0.2882
+    source_location: Original euptf2 1.0.0 / ranger 0.18.0; specs/models/euptf2/references/WP_PTF17.json
+      cases[0].
+    rationale: Independent execution of upstream euptf2::euptfFun; no ptfkit prediction or converted artifact
+      is used by the oracle.
+  documentation:
+    notes:
+    - Original object WP_PTF17; artifact SHA-256 bfd0cc4d10ed57f316cfbec5cd0f96f98871cbbb1e29d35d8ef508ef29b32b3b.
+      Inputs follow the saved forest ordering. Predictions require an externally imported model with this
+      identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete
+      rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only;
+      no M quantile is invented.

@@ -64,3 +64,4 @@ See the [function index](functions.md) for all public C++ functions.
 ## External models
 
 - [Rosetta3 and external model loading](modules/zhang_schaap2017.md)
+- [EU-PTF v2](modules/szabo_weynants_weber2021.md)

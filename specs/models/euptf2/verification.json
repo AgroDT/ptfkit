@@ -1,0 +1,1599 @@
+{
+  "available": 77,
+  "implemented": 43,
+  "blocked": 0,
+  "pending": 34,
+  "models": [
+    {
+      "name": "AWC_2_PTF01",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 3.1823136644297553e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 3.1823136644297553e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 3.1823136644297553e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 3.1823136644297553e-15
+        }
+      }
+    },
+    {
+      "name": "AWC_2_PTF02",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.718447854656915e-16,
+          "max_relative_error": 2.5444356716881986e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.718447854656915e-16,
+          "max_relative_error": 2.5444356716881986e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.718447854656915e-16,
+          "max_relative_error": 2.5444356716881986e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.718447854656915e-16,
+          "max_relative_error": 2.5444356716881986e-15
+        }
+      }
+    },
+    {
+      "name": "AWC_2_PTF03",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.718447854656915e-16,
+          "max_relative_error": 2.8671709691156793e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.718447854656915e-16,
+          "max_relative_error": 2.8671709691156793e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.718447854656915e-16,
+          "max_relative_error": 2.8671709691156793e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.718447854656915e-16,
+          "max_relative_error": 2.8671709691156793e-15
+        }
+      }
+    },
+    {
+      "name": "AWC_PTF01",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 4.269936930151528e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 4.269936930151528e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 4.269936930151528e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 4.269936930151528e-15
+        }
+      }
+    },
+    {
+      "name": "AWC_PTF03",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 3.04498317218252e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 3.04498317218252e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 3.04498317218252e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 3.04498317218252e-15
+        }
+      }
+    },
+    {
+      "name": "FC_2_PTF01",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.2690616516510875e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.2690616516510875e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.2690616516510875e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.2690616516510875e-15
+        }
+      }
+    },
+    {
+      "name": "FC_2_PTF02",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 1.0993159563332473e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 1.0993159563332473e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 1.0993159563332473e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 1.0993159563332473e-15
+        }
+      }
+    },
+    {
+      "name": "FC_2_PTF03",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.4135822666003426e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.4135822666003426e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.4135822666003426e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.4135822666003426e-15
+        }
+      }
+    },
+    {
+      "name": "FC_2_PTF04",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 1.7625828346146764e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 1.7625828346146764e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 1.7625828346146764e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 1.7625828346146764e-15
+        }
+      }
+    },
+    {
+      "name": "FC_2_PTF05",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 4.046196075809612e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 4.046196075809612e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 4.046196075809612e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 4.046196075809612e-15
+        }
+      }
+    },
+    {
+      "name": "FC_2_PTF06",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.7828316835363533e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.7828316835363533e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.7828316835363533e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.7828316835363533e-15
+        }
+      }
+    },
+    {
+      "name": "FC_2_PTF07",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.3063551299944619e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.3063551299944619e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.3063551299944619e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.3063551299944619e-15
+        }
+      }
+    },
+    {
+      "name": "FC_2_PTF08",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 2.1737923012622928e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 2.1737923012622928e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 2.1737923012622928e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 2.1737923012622928e-15
+        }
+      }
+    },
+    {
+      "name": "FC_2_PTF09",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.7758462525957852e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.7758462525957852e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.7758462525957852e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.7758462525957852e-15
+        }
+      }
+    },
+    {
+      "name": "FC_2_PTF11",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 3.3534910889193787e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 3.3534910889193787e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 3.3534910889193787e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 3.3534910889193787e-15
+        }
+      }
+    },
+    {
+      "name": "FC_2_PTF12",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 2.190366327258349e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 2.190366327258349e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 2.190366327258349e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 2.190366327258349e-15
+        }
+      }
+    },
+    {
+      "name": "FC_2_PTF13",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 1.0634620648477478e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 1.0634620648477478e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 1.0634620648477478e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 1.0634620648477478e-15
+        }
+      }
+    },
+    {
+      "name": "FC_2_PTF18",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 2.620067436184197e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 2.620067436184197e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 2.620067436184197e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 2.620067436184197e-15
+        }
+      }
+    },
+    {
+      "name": "FC_PTF01",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 3.885780586188048e-16,
+          "max_relative_error": 1.2540502785660038e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 3.885780586188048e-16,
+          "max_relative_error": 1.2540502785660038e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 3.885780586188048e-16,
+          "max_relative_error": 1.2540502785660038e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 3.885780586188048e-16,
+          "max_relative_error": 1.2540502785660038e-15
+        }
+      }
+    },
+    {
+      "name": "FC_PTF02",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 2.517832692459302e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 2.517832692459302e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 2.517832692459302e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 2.517832692459302e-15
+        }
+      }
+    },
+    {
+      "name": "FC_PTF03",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.6797857797090304e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.6797857797090304e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.6797857797090304e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.6797857797090304e-15
+        }
+      }
+    },
+    {
+      "name": "FC_PTF04",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.6728186301291206e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.6728186301291206e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.6728186301291206e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.6728186301291206e-15
+        }
+      }
+    },
+    {
+      "name": "FC_PTF06",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.718447854656915e-16,
+          "max_relative_error": 2.287379581215976e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.718447854656915e-16,
+          "max_relative_error": 2.287379581215976e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.718447854656915e-16,
+          "max_relative_error": 2.287379581215976e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.718447854656915e-16,
+          "max_relative_error": 2.287379581215976e-15
+        }
+      }
+    },
+    {
+      "name": "FC_PTF07",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.372957792860209e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.372957792860209e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.372957792860209e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.372957792860209e-15
+        }
+      }
+    },
+    {
+      "name": "FC_PTF08",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.3412750338943267e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.3412750338943267e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.3412750338943267e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.3412750338943267e-15
+        }
+      }
+    },
+    {
+      "name": "FC_PTF09",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 2.131092478307774e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 2.131092478307774e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 2.131092478307774e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 2.131092478307774e-15
+        }
+      }
+    },
+    {
+      "name": "FC_PTF11",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.231087613092319e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.231087613092319e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.231087613092319e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.231087613092319e-15
+        }
+      }
+    },
+    {
+      "name": "FC_PTF14",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 1.4006601119937017e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 1.4006601119937017e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 1.4006601119937017e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 1.4006601119937017e-15
+        }
+      }
+    },
+    {
+      "name": "KS_PTF01",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.547473508864641e-12,
+          "max_relative_error": 3.607038499297713e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.547473508864641e-12,
+          "max_relative_error": 3.607038499297713e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.547473508864641e-12,
+          "max_relative_error": 3.607038499297713e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.547473508864641e-12,
+          "max_relative_error": 3.607038499297713e-15
+        }
+      }
+    },
+    {
+      "name": "KS_PTF02",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 1.4551915228366852e-11,
+          "max_relative_error": 3.937135994645555e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 1.4551915228366852e-11,
+          "max_relative_error": 3.937135994645555e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 1.4551915228366852e-11,
+          "max_relative_error": 3.937135994645555e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 1.4551915228366852e-11,
+          "max_relative_error": 3.937135994645555e-15
+        }
+      }
+    },
+    {
+      "name": "KS_PTF05",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 9.094947017729282e-13,
+          "max_relative_error": 3.960058479320733e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 9.094947017729282e-13,
+          "max_relative_error": 3.960058479320733e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 9.094947017729282e-13,
+          "max_relative_error": 3.960058479320733e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 9.094947017729282e-13,
+          "max_relative_error": 3.960058479320733e-15
+        }
+      }
+    },
+    {
+      "name": "THS_PTF01",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 9.68279427874406e-16
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 9.68279427874406e-16
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 9.68279427874406e-16
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 9.68279427874406e-16
+        }
+      }
+    },
+    {
+      "name": "THS_PTF02",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 9.35978869869884e-16
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 9.35978869869884e-16
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 9.35978869869884e-16
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 9.35978869869884e-16
+        }
+      }
+    },
+    {
+      "name": "THS_PTF03",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.1219150904418053e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.1219150904418053e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.1219150904418053e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.1219150904418053e-15
+        }
+      }
+    },
+    {
+      "name": "THS_PTF04",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 9.819758918120072e-16
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 9.819758918120072e-16
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 9.819758918120072e-16
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 9.819758918120072e-16
+        }
+      }
+    },
+    {
+      "name": "THS_PTF05",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.086870880143136e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.086870880143136e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.086870880143136e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 1.086870880143136e-15
+        }
+      }
+    },
+    {
+      "name": "WP_PTF01",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.718447854656915e-16,
+          "max_relative_error": 3.287755028940467e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.718447854656915e-16,
+          "max_relative_error": 3.287755028940467e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.718447854656915e-16,
+          "max_relative_error": 3.287755028940467e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.718447854656915e-16,
+          "max_relative_error": 3.287755028940467e-15
+        }
+      }
+    },
+    {
+      "name": "WP_PTF02",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 2.885772563969611e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 2.885772563969611e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 2.885772563969611e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.440892098500626e-16,
+          "max_relative_error": 2.885772563969611e-15
+        }
+      }
+    },
+    {
+      "name": "WP_PTF05",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 3.3306690738754696e-16,
+          "max_relative_error": 2.003975894528344e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 3.3306690738754696e-16,
+          "max_relative_error": 2.003975894528344e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 3.3306690738754696e-16,
+          "max_relative_error": 2.003975894528344e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 3.3306690738754696e-16,
+          "max_relative_error": 2.003975894528344e-15
+        }
+      }
+    },
+    {
+      "name": "WP_PTF07",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 3.5050491005837695e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 3.5050491005837695e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 3.5050491005837695e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 3.5050491005837695e-15
+        }
+      }
+    },
+    {
+      "name": "WP_PTF08",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.163336342344337e-16,
+          "max_relative_error": 2.7821784444071813e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.163336342344337e-16,
+          "max_relative_error": 2.7821784444071813e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.163336342344337e-16,
+          "max_relative_error": 2.7821784444071813e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.163336342344337e-16,
+          "max_relative_error": 2.7821784444071813e-15
+        }
+      }
+    },
+    {
+      "name": "WP_PTF09",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 3.3070757784759535e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 3.3070757784759535e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 3.3070757784759535e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 3.3070757784759535e-15
+        }
+      }
+    },
+    {
+      "name": "WP_PTF17",
+      "targets": {
+        "c11": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 3.5070468177283897e-15
+        },
+        "cpp23": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 3.5070468177283897e-15
+        },
+        "python": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 3.5070468177283897e-15
+        },
+        "rust": {
+          "default_cases": 16,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.996003610813204e-16,
+          "max_relative_error": 3.5070468177283897e-15
+        }
+      }
+    }
+  ]
+}

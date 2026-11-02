@@ -3,12 +3,22 @@
 
 from collections.abc import Sequence
 from pathlib import Path
+from typing import NamedTuple
 
 from ptfkit import _models
 from ptfkit._models import ModelFormatError, ModelInputError, ModelIntegrityError
 
 
-__all__ = ['Euptf2Ths', 'Model', 'ModelFormatError', 'ModelInputError', 'ModelIntegrityError']
+__all__ = [
+    'Euptf2Model',
+    'Euptf2Prediction',
+    'Euptf2Ths',
+    'Model',
+    'ModelFormatError',
+    'ModelInputError',
+    'ModelIntegrityError',
+    'euptf2_models',
+]
 
 
 class Model:
@@ -57,6 +67,568 @@ class Model:
     def predict_network(self, index: int, inputs: Sequence[float]) -> list[tuple[float, ...]]:
         """Return original-scale raw predictions, indexed by member then output."""
         return _models.predict_network(self._handle, index, inputs)
+
+
+_EUPTF2_CONTRACTS = {
+    'AWC_2_PTF01': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+        ),
+        ('AWC_2',),
+        ('AWC_2',),
+    ),
+    'AWC_2_PTF02': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'OC',
+        ),
+        ('AWC_2',),
+        ('AWC_2',),
+    ),
+    'AWC_2_PTF03': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'BD',
+        ),
+        ('AWC_2',),
+        ('AWC_2',),
+    ),
+    'AWC_PTF01': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+        ),
+        ('AWC',),
+        ('AWC',),
+    ),
+    'AWC_PTF03': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'BD',
+        ),
+        ('AWC',),
+        ('AWC',),
+    ),
+    'FC_2_PTF01': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+        ),
+        ('FC_2',),
+        ('FC_2',),
+    ),
+    'FC_2_PTF02': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'OC',
+        ),
+        ('FC_2',),
+        ('FC_2',),
+    ),
+    'FC_2_PTF03': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'BD',
+        ),
+        ('FC_2',),
+        ('FC_2',),
+    ),
+    'FC_2_PTF04': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'CACO3',
+        ),
+        ('FC_2',),
+        ('FC_2',),
+    ),
+    'FC_2_PTF05': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'PH_H2O',
+        ),
+        ('FC_2',),
+        ('FC_2',),
+    ),
+    'FC_2_PTF06': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'CEC',
+        ),
+        ('FC_2',),
+        ('FC_2',),
+    ),
+    'FC_2_PTF07': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'OC',
+            'BD',
+        ),
+        ('FC_2',),
+        ('FC_2',),
+    ),
+    'FC_2_PTF08': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'OC',
+            'CACO3',
+        ),
+        ('FC_2',),
+        ('FC_2',),
+    ),
+    'FC_2_PTF09': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'OC',
+            'PH_H2O',
+        ),
+        ('FC_2',),
+        ('FC_2',),
+    ),
+    'FC_2_PTF11': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'BD',
+            'CACO3',
+        ),
+        ('FC_2',),
+        ('FC_2',),
+    ),
+    'FC_2_PTF12': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'BD',
+            'PH_H2O',
+        ),
+        ('FC_2',),
+        ('FC_2',),
+    ),
+    'FC_2_PTF13': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'BD',
+            'CEC',
+        ),
+        ('FC_2',),
+        ('FC_2',),
+    ),
+    'FC_2_PTF18': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'OC',
+            'BD',
+            'PH_H2O',
+        ),
+        ('FC_2',),
+        ('FC_2',),
+    ),
+    'FC_PTF01': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+        ),
+        ('FC',),
+        ('FC',),
+    ),
+    'FC_PTF02': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'OC',
+        ),
+        ('FC',),
+        ('FC',),
+    ),
+    'FC_PTF03': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'BD',
+        ),
+        ('FC',),
+        ('FC',),
+    ),
+    'FC_PTF04': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'CACO3',
+        ),
+        ('FC',),
+        ('FC',),
+    ),
+    'FC_PTF06': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'CEC',
+        ),
+        ('FC',),
+        ('FC',),
+    ),
+    'FC_PTF07': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'OC',
+            'BD',
+        ),
+        ('FC',),
+        ('FC',),
+    ),
+    'FC_PTF08': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'OC',
+            'CACO3',
+        ),
+        ('FC',),
+        ('FC',),
+    ),
+    'FC_PTF09': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'OC',
+            'PH_H2O',
+        ),
+        ('FC',),
+        ('FC',),
+    ),
+    'FC_PTF11': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'BD',
+            'CACO3',
+        ),
+        ('FC',),
+        ('FC',),
+    ),
+    'FC_PTF14': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'CACO3',
+            'PH_H2O',
+        ),
+        ('FC',),
+        ('FC',),
+    ),
+    'KS_PTF01': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+        ),
+        ('KS',),
+        ('KS',),
+    ),
+    'KS_PTF02': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'OC',
+        ),
+        ('KS',),
+        ('KS',),
+    ),
+    'KS_PTF05': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'PH_H2O',
+        ),
+        ('KS',),
+        ('KS',),
+    ),
+    'THS_PTF01': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+        ),
+        ('THS',),
+        ('THS',),
+    ),
+    'THS_PTF02': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'OC',
+        ),
+        ('THS',),
+        ('THS',),
+    ),
+    'THS_PTF03': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'BD',
+        ),
+        ('THS',),
+        ('THS',),
+    ),
+    'THS_PTF04': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'CACO3',
+        ),
+        ('THS',),
+        ('THS',),
+    ),
+    'THS_PTF05': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'PH_H2O',
+        ),
+        ('THS',),
+        ('THS',),
+    ),
+    'WP_PTF01': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+        ),
+        ('WP',),
+        ('WP',),
+    ),
+    'WP_PTF02': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'OC',
+        ),
+        ('WP',),
+        ('WP',),
+    ),
+    'WP_PTF05': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'PH_H2O',
+        ),
+        ('WP',),
+        ('WP',),
+    ),
+    'WP_PTF07': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'OC',
+            'BD',
+        ),
+        ('WP',),
+        ('WP',),
+    ),
+    'WP_PTF08': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'OC',
+            'CACO3',
+        ),
+        ('WP',),
+        ('WP',),
+    ),
+    'WP_PTF09': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'OC',
+            'PH_H2O',
+        ),
+        ('WP',),
+        ('WP',),
+    ),
+    'WP_PTF17': (
+        (
+            'USSAND',
+            'USSILT',
+            'USCLAY',
+            'DEPTH_M',
+            'OC',
+            'BD',
+            'CACO3',
+        ),
+        ('WP',),
+        ('WP',),
+    ),
+}
+
+
+def euptf2_models() -> tuple[str, ...]:
+    """Names of distinct supported trained objects, excluding selection aliases."""
+    return tuple(_EUPTF2_CONTRACTS)
+
+
+class Euptf2Prediction(NamedTuple):
+    """Original-scale means and parameter-major conditional quantiles."""
+
+    mean: tuple[float, ...]
+    quantiles: tuple[tuple[float, ...], ...]
+    probabilities: tuple[float, ...]
+
+
+class Euptf2Model:
+    """An external original EU-PTF v2 model, authenticated before decoding.
+
+    Input ordering and output names are available as properties. VG and MVG
+    means include derived M; their quantile outputs exclude M, as upstream.
+    """
+
+    __slots__ = ('_handle', '_name')
+
+    def __init__(self, name: str, data: bytes) -> None:
+        """Authenticate and copy the selected original model."""
+        self._handle = _models.euptf2_load(name, data)
+        self._name = name
+
+    @classmethod
+    def load(cls, name: str, path: str | Path) -> 'Euptf2Model':
+        """Load the selected external PTFKQF02 model."""
+        with Path(path).open('rb') as source:
+            return cls(name, source.read(64 * 1024 * 1024 + 1))
+
+    @classmethod
+    def from_bytes(cls, name: str, data: bytes) -> 'Euptf2Model':
+        """Copy and authenticate model bytes against the selected identity."""
+        return cls(name, data)
+
+    @property
+    def name(self) -> str:
+        """Canonical model name; KS models use physical-scale KS names."""
+        return self._name
+
+    @property
+    def inputs(self) -> tuple[str, ...]:
+        """Original ordered predictor names; see the scientific specification for units."""
+        return _EUPTF2_CONTRACTS[self._name][0]
+
+    @property
+    def mean_outputs(self) -> tuple[str, ...]:
+        """Ordered original-scale point estimate names."""
+        return _EUPTF2_CONTRACTS[self._name][1]
+
+    @property
+    def quantile_outputs(self) -> tuple[str, ...]:
+        """Ordered original-scale quantile parameter names; no derived M."""
+        return _EUPTF2_CONTRACTS[self._name][2]
+
+    def predict(
+        self,
+        inputs: Sequence[float],
+        probabilities: Sequence[float] = (0.05, 0.25, 0.5, 0.75, 0.95),
+    ) -> Euptf2Prediction:
+        """Predict means and conditional quantiles, then apply upstream back-transforms.
+
+        Pass one complete numeric row in the original predictor order. NaN is
+        missing and raises ModelInputError; no imputation or clipping occurs.
+        Between one and 64 probabilities strictly inside (0,1) are supported.
+        """
+        p = tuple(probabilities)
+        mean, quantiles = _models.euptf2_predict(self._handle, inputs, p)
+        return Euptf2Prediction(mean, quantiles, p)
 
 
 class Euptf2Ths:

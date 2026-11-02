@@ -42,6 +42,18 @@ run = 'uv run --no-project python codegen/scripts/test_import_euptf2.py'
 description = "Build the public Rust THS_PTF01 reference runner"
 run = 'cargo build --manifest-path targets/ptfkit-rs/Cargo.toml --example euptf2_runner'
 
+["euptf2:import-collection"]
+description = "Authenticate and convert the original EU-PTF v2 model collection offline"
+usage = 'arg "<upstream>" help="Path to the pinned euptf2 1.0.0 source"'
+run = 'uv run --no-project python codegen/scripts/import_euptf2.py --collection --upstream "{{ usage.upstream }}" --output .euptf2-local/models'
+
+["euptf2:verify-collection"]
+description = "Compare every implemented EU-PTF v2 object through all four public targets"
+depends = ["native:build", "python:test", "euptf2:rust-build", "euptf2:import-test"]
+usage = 'arg "<models>" help="Directory of locally imported PTFKQF02 artifacts"'
+run = 'uv run --project targets/ptfkit-py --frozen python codegen/scripts/verify_euptf2_collection.py --models "{{ usage.models }}" --rust targets/ptfkit-rs/target/debug/examples/euptf2_runner'
+run_windows = 'uv run --project targets/ptfkit-py --frozen python codegen/scripts/verify_euptf2_collection.py --models "{{ usage.models }}" --rust targets/ptfkit-rs/target/debug/examples/euptf2_runner.exe'
+
 ["euptf2:verify-public"]
 description = "Compare all four public THS_PTF01 APIs with upstream R references"
 depends = ["native:build", "python:test", "euptf2:rust-build", "euptf2:import-test"]

@@ -4,6 +4,8 @@ pub(crate) mod engine;
 mod generate;
 pub(crate) mod pack;
 pub(crate) mod public;
+mod public_euptf2;
+mod public_euptf2_named;
 mod public_rosetta;
 pub(crate) mod rosetta;
 #[cfg(test)]

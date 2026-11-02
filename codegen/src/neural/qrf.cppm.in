@@ -1,4 +1,45 @@
 export namespace ptfkit {
+struct Euptf2Prediction {
+    std::vector<double> mean;
+    std::vector<std::vector<double>> quantiles;
+    std::vector<double> probabilities;
+};
+/// Original EU-PTF v2 object with one or more forests and upstream transforms.
+class Euptf2Model {
+    ::ptfkit_euptf2_model *handle_=nullptr;
+    inline explicit Euptf2Model(::ptfkit_euptf2_model *handle):handle_(handle) {}
+public:
+    inline ~Euptf2Model() { ::ptfkit_euptf2_free(handle_); }
+    Euptf2Model(const Euptf2Model&)=delete;
+    Euptf2Model& operator=(const Euptf2Model&)=delete;
+    inline Euptf2Model(Euptf2Model&& other) noexcept:handle_(std::exchange(other.handle_,nullptr)) {}
+    inline Euptf2Model& operator=(Euptf2Model&& other) noexcept {
+        if(this!=&other) { ::ptfkit_euptf2_free(handle_); handle_=std::exchange(other.handle_,nullptr); } return *this;
+    }
+    static inline Euptf2Model load(const char *name,const char *path) {
+        ::ptfkit_euptf2_model *handle=nullptr; auto status=::ptfkit_euptf2_load(name,path,&handle);
+        if(status!=PTFKIT_MODEL_OK) throw ModelError(status); return Euptf2Model(handle);
+    }
+    static inline Euptf2Model from_bytes(const char *name,std::span<const unsigned char> bytes) {
+        ::ptfkit_euptf2_model *handle=nullptr; auto status=::ptfkit_euptf2_from_bytes(name,bytes.data(),bytes.size(),&handle);
+        if(status!=PTFKIT_MODEL_OK) throw ModelError(status); return Euptf2Model(handle);
+    }
+    inline const ::ptfkit_euptf2_model *native_handle() const noexcept { return handle_; }
+    inline std::string name() const { if(!handle_) throw ModelError(PTFKIT_MODEL_INPUT); return handle_->detail_contract->name; }
+    inline Euptf2Prediction predict(std::span<const double> inputs,std::span<const double> probabilities) const {
+        if(!handle_ || probabilities.empty() || probabilities.size()>64) throw ModelError(PTFKIT_MODEL_INPUT);
+        const auto *c=handle_->detail_contract;
+        std::vector<double> means(c->means),q(c->components*probabilities.size());
+        auto status=::ptfkit_euptf2_predict(handle_,inputs.data(),inputs.size(),probabilities.data(),probabilities.size(),means.data(),means.size(),q.data(),q.size());
+        if(status!=PTFKIT_MODEL_OK) throw ModelError(status);
+        Euptf2Prediction result{std::move(means),{},std::vector<double>(probabilities.begin(),probabilities.end())};
+        for(size_t i=0;i<c->components;++i) result.quantiles.emplace_back(q.begin()+i*probabilities.size(),q.begin()+(i+1)*probabilities.size());
+        return result;
+    }
+    inline Euptf2Prediction predict(std::span<const double> inputs) const {
+        const std::array<double,5> probabilities{.05,.25,.5,.75,.95}; return predict(inputs,probabilities);
+    }
+};
 /// Locally imported EU-PTF v2 THS_PTF01, with no bundled trained parameters.
 class Euptf2Ths {
     ::ptfkit_euptf2_ths *handle_ = nullptr;

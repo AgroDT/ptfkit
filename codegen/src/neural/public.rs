@@ -1,5 +1,5 @@
 //! Shared external-model targets and dispatch to scientific adapters.
-use super::{ModelError, public_rosetta};
+use super::{ModelError, public_euptf2, public_rosetta};
 use crate::{model::Entry, output::GeneratedFile};
 use anyhow::Result;
 use std::path::Path;
@@ -32,7 +32,7 @@ pub(crate) fn validate(entries: &[Entry]) -> Result<()> {
             .as_ref()
             .unwrap();
         match binding.kind.as_str() {
-            "rosetta3" => {}
+            "rosetta3" | "euptf2" => {}
             _ => {
                 return Err(ModelError::Contract {
                     function: function.name.clone(),
@@ -103,6 +103,8 @@ pub(crate) fn render(root: &Path, entries: &[Entry]) -> Result<Option<Files>> {
     python.functions.push_str(include_str!("qrf_python.c"));
     python.methods.push_str("\n{\"euptf2_ths_from_bytes\", ptfkit_python_qrf_load, METH_VARARGS, NULL},\n{\"euptf2_ths_predict\", ptfkit_python_qrf_predict, METH_VARARGS, NULL},\n");
     python.stub.push_str("\ndef euptf2_ths_from_bytes(data: bytes) -> object: ...\ndef euptf2_ths_predict(handle: object, inputs: Sequence[float]) -> tuple[float, float, float, float]: ...\n");
+    python.methods.push_str("\n{\"euptf2_load\",ptfkit_python_euptf2_load,METH_VARARGS,NULL},\n{\"euptf2_predict\",ptfkit_python_euptf2_predict,METH_VARARGS,NULL},\n");
+    python.stub.push_str("\ndef euptf2_load(name: str, data: bytes) -> object: ...\ndef euptf2_predict(handle: object, inputs: Sequence[float], probabilities: Sequence[float]) -> tuple[tuple[float, ...], tuple[tuple[float, ...], ...]]: ...\n");
     let mut files = render_models(&adapter.dense, &python);
     let manifest: serde_json::Value = serde_json::from_slice(&std::fs::read(
         root.join("specs/models/euptf2/manifest.json"),
@@ -123,16 +125,28 @@ pub(crate) fn render(root: &Path, entries: &[Entry]) -> Result<Option<Files>> {
         .ok_or_else(|| ModelError::Artifact {
             path: root.join("specs/models/euptf2/manifest.json"),
         })?;
+    let collection = public_euptf2::load(root)?;
+    let (rs_contracts, c_contracts, py_contracts) = public_euptf2::tables(&collection);
     files.rust.push(file(
         "detail/qrf.rs",
         RS_HEADER,
-        include_str!("qrf.rs.in").replace("@QRF_SHA256@", sha),
+        include_str!("qrf.rs.in")
+            .replace("@QRF_SHA256@", sha)
+            .replace("@EUPTF2_RUST_CONTRACTS@", &rs_contracts),
     ));
     files.c.push(file(
         "ptfkit/detail/qrf.h",
         C_HEADER,
-        include_str!("qrf.h").replace("@QRF_SHA256@", sha),
+        include_str!("qrf.h")
+            .replace("@QRF_SHA256@", sha)
+            .replace("@EUPTF2_C_CONTRACTS@", &c_contracts),
     ));
+    for file in &mut files.python {
+        file.contents = file
+            .contents
+            .replace("@EUPTF2_PY_CONTRACTS@", &py_contracts);
+    }
+    files.append(super::public_euptf2_named::render(&collection, entries)?);
     files.append(adapter.files);
     Ok(Some(files))
 }
@@ -159,7 +173,7 @@ fn render_models(dense: &str, adapter: &PythonAdapter) -> Files {
                 RS_HEADER,
                 concat!(
                     include_str!("public_models.rs.in"),
-                    "\n#[path = \"detail/qrf.rs\"]\nmod qrf;\npub use qrf::Euptf2Ths;\n"
+                    "\n#[path = \"detail/qrf.rs\"]\nmod qrf;\npub use qrf::{Euptf2Ths,Euptf2Model,Euptf2Descriptor,Euptf2Prediction,euptf2_models};\n"
                 ),
             ),
             file("detail/neural.rs", RS_HEADER, include_str!("engine.rs")),
