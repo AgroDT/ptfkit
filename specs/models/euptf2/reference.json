@@ -1,0 +1,332 @@
+{
+  "r_version": "R version 4.4.3 (2025-02-28 ucrt)",
+  "versions": ["1.0.0", "0.18.0", "2.0.0"],
+  "quantile_algorithm": "ranger stored random.node.values; stats::quantile type 7",
+  "predict_ranger_sha256_source": "installed predict.ranger deparse recorded separately",
+  "probabilities": [0.05, 0.5, 0.95],
+  "missing_retained_obs_id": [1, 3],
+  "audit": [
+    {
+      "name": "THS_PTF01",
+      "class": "ranger",
+      "forest_class": "ranger.forest",
+      "members": ["predictions", "num.trees", "num.independent.variables", "mtry", "min.node.size", "variable.importance", "prediction.error", "inbag.counts", "forest", "splitrule", "treetype", "r.squared", "call", "importance.mode", "num.samples", "replace", "random.node.values", "random.node.values.oob"],
+      "forest_members": ["dependent.varID", "num.trees", "child.nodeIDs", "split.varIDs", "split.values", "is.ordered", "independent.variable.names", "treetype"],
+      "predictors": ["USSAND", "USSILT", "USCLAY", "DEPTH_M"],
+      "ordered": [true, true, true, true, true],
+      "dependent_var_id": 0,
+      "trees": 200,
+      "samples": 3354,
+      "nodes": 101822,
+      "leaves": 51011,
+      "random_node_values_dim": [643, 200],
+      "all_leaf_samples_finite": true
+    },
+    {
+      "name": "THS_PTF02",
+      "class": "ranger",
+      "forest_class": "ranger.forest",
+      "members": ["predictions", "num.trees", "num.independent.variables", "mtry", "min.node.size", "variable.importance", "prediction.error", "inbag.counts", "forest", "splitrule", "treetype", "r.squared", "call", "importance.mode", "num.samples", "replace", "random.node.values", "random.node.values.oob"],
+      "forest_members": ["dependent.varID", "num.trees", "child.nodeIDs", "split.varIDs", "split.values", "is.ordered", "independent.variable.names", "treetype"],
+      "predictors": ["USSAND", "USSILT", "USCLAY", "DEPTH_M", "OC"],
+      "ordered": [true, true, true, true, true, true],
+      "dependent_var_id": 0,
+      "trees": 200,
+      "samples": 2966,
+      "nodes": 221046,
+      "leaves": 110623,
+      "random_node_values_dim": [1179, 200],
+      "all_leaf_samples_finite": true
+    },
+    {
+      "name": "THS_PTF03",
+      "class": "ranger",
+      "forest_class": "ranger.forest",
+      "members": ["predictions", "num.trees", "num.independent.variables", "mtry", "min.node.size", "variable.importance", "prediction.error", "inbag.counts", "forest", "splitrule", "treetype", "r.squared", "call", "importance.mode", "num.samples", "replace", "random.node.values", "random.node.values.oob"],
+      "forest_members": ["dependent.varID", "num.trees", "child.nodeIDs", "split.varIDs", "split.values", "is.ordered", "independent.variable.names", "treetype"],
+      "predictors": ["USSAND", "USSILT", "USCLAY", "DEPTH_M", "BD"],
+      "ordered": [true, true, true, true, true, true],
+      "dependent_var_id": 0,
+      "trees": 200,
+      "samples": 3305,
+      "nodes": 239876,
+      "leaves": 120038,
+      "random_node_values_dim": [1259, 200],
+      "all_leaf_samples_finite": true
+    },
+    {
+      "name": "THS_PTF04",
+      "class": "ranger",
+      "forest_class": "ranger.forest",
+      "members": ["predictions", "num.trees", "num.independent.variables", "mtry", "min.node.size", "variable.importance", "prediction.error", "inbag.counts", "forest", "splitrule", "treetype", "r.squared", "call", "importance.mode", "num.samples", "replace", "random.node.values", "random.node.values.oob"],
+      "forest_members": ["dependent.varID", "num.trees", "child.nodeIDs", "split.varIDs", "split.values", "is.ordered", "independent.variable.names", "treetype"],
+      "predictors": ["USSAND", "USSILT", "USCLAY", "DEPTH_M", "CACO3"],
+      "ordered": [true, true, true, true, true, true],
+      "dependent_var_id": 0,
+      "trees": 200,
+      "samples": 678,
+      "nodes": 50784,
+      "leaves": 25492,
+      "random_node_values_dim": [301, 200],
+      "all_leaf_samples_finite": true
+    },
+    {
+      "name": "THS_PTF05",
+      "class": "ranger",
+      "forest_class": "ranger.forest",
+      "members": ["predictions", "num.trees", "num.independent.variables", "mtry", "min.node.size", "variable.importance", "prediction.error", "inbag.counts", "forest", "splitrule", "treetype", "r.squared", "call", "importance.mode", "num.samples", "replace", "random.node.values", "random.node.values.oob"],
+      "forest_members": ["dependent.varID", "num.trees", "child.nodeIDs", "split.varIDs", "split.values", "is.ordered", "independent.variable.names", "treetype"],
+      "predictors": ["USSAND", "USSILT", "USCLAY", "DEPTH_M", "PH_H2O"],
+      "ordered": [true, true, true, true, true, true],
+      "dependent_var_id": 0,
+      "trees": 200,
+      "samples": 1203,
+      "nodes": 89590,
+      "leaves": 44895,
+      "random_node_values_dim": [481, 200],
+      "all_leaf_samples_finite": true
+    }
+  ],
+  "cases": [
+    {
+      "inputs": [1, 53, 46, 60],
+      "expected": [0.501467656574842, 0.37595, 0.496, 0.620949999999999]
+    },
+    {
+      "inputs": [3.4, 58.1, 38.6, 20],
+      "expected": [0.465980040461927, 0.358, 0.466, 0.568]
+    },
+    {
+      "inputs": [1.1, 62.6, 36.3, 62.5],
+      "expected": [0.468824857973716, 0.3638, 0.459, 0.623]
+    },
+    {
+      "inputs": [1.4, 62.3, 36.3, 22.5],
+      "expected": [0.463887600867909, 0.358, 0.463, 0.568]
+    },
+    {
+      "inputs": [3.4, 67, 29.7, 105],
+      "expected": [0.486140579845528, 0.378215, 0.465, 0.788]
+    },
+    {
+      "inputs": [9, 52, 38.9, 30],
+      "expected": [0.448253656557838, 0.372, 0.4585, 0.565715]
+    },
+    {
+      "inputs": [7.8, 54, 38.1, 90],
+      "expected": [0.501912968370984, 0.37195, 0.476, 0.659999999999999]
+    },
+    {
+      "inputs": [10.6, 57.1, 32.3, 150],
+      "expected": [0.458637452233122, 0.3548, 0.4435, 0.615]
+    },
+    {
+      "inputs": [34.9, 47.8, 17.3, 25],
+      "expected": [0.452164952440538, 0.3599, 0.4605, 0.53415]
+    },
+    {
+      "inputs": [34.3, 49.3, 16.4, 10],
+      "expected": [0.476620980447764, 0.39795, 0.4725, 0.57205]
+    },
+    {
+      "inputs": [100, 0, 0, 0],
+      "expected": [0.481223165653924, 0.370375, 0.467, 0.602]
+    },
+    {
+      "inputs": [100, 0, 0, 30],
+      "expected": [0.370679994648533, 0.26, 0.37, 0.594]
+    },
+    {
+      "inputs": [100, 0, 0, 200],
+      "expected": [0.381390411579111, 0.33795, 0.373, 0.431]
+    },
+    {
+      "inputs": [0, 100, 0, 0],
+      "expected": [0.514407902881813, 0.3759, 0.5035, 0.653]
+    },
+    {
+      "inputs": [0, 100, 0, 30],
+      "expected": [0.480231540665201, 0.35745, 0.47425, 0.5676]
+    },
+    {
+      "inputs": [0, 100, 0, 200],
+      "expected": [0.455805815899122, 0.356, 0.451, 0.731]
+    },
+    {
+      "inputs": [0, 0, 100, 0],
+      "expected": [0.486129927521862, 0.32123, 0.4645, 0.637235]
+    },
+    {
+      "inputs": [0, 0, 100, 30],
+      "expected": [0.557714728605231, 0.3819, 0.5415, 0.738]
+    },
+    {
+      "inputs": [0, 0, 100, 200],
+      "expected": [0.678145139213499, 0.436, 0.655, 0.795]
+    },
+    {
+      "inputs": [40, 40, 20, 0],
+      "expected": [0.507592073986212, 0.4248, 0.504, 0.5925]
+    },
+    {
+      "inputs": [40, 40, 20, 30],
+      "expected": [0.449515375633559, 0.325, 0.443, 0.5858]
+    },
+    {
+      "inputs": [40, 40, 20, 200],
+      "expected": [0.390869987533371, 0.292, 0.382, 0.514]
+    },
+    {
+      "inputs": [40, 40, 20, 34.2499999999],
+      "expected": [0.447550876397175, 0.32, 0.4455, 0.629]
+    },
+    {
+      "inputs": [40, 40, 20, 34.25],
+      "expected": [0.447550876397175, 0.32, 0.4455, 0.629]
+    },
+    {
+      "inputs": [40, 40, 20, 34.2500000001],
+      "expected": [0.40277260831027, 0.31, 0.378, 0.51315]
+    },
+    {
+      "inputs": [40, 40, 20, 34.2499999999],
+      "expected": [0.447550876397175, 0.32, 0.4455, 0.629]
+    },
+    {
+      "inputs": [40, 40, 20, 34.25],
+      "expected": [0.447550876397175, 0.32, 0.4455, 0.629]
+    },
+    {
+      "inputs": [40, 40, 20, 34.2500000001],
+      "expected": [0.40277260831027, 0.31, 0.378, 0.51315]
+    },
+    {
+      "inputs": [53.1049999999, 40, 20, 30],
+      "expected": [0.461102925788645, 0.318, 0.469, 0.621]
+    },
+    {
+      "inputs": [53.105, 40, 20, 30],
+      "expected": [0.461102925788645, 0.318, 0.469, 0.621]
+    },
+    {
+      "inputs": [53.1050000001, 40, 20, 30],
+      "expected": [0.462378279380959, 0.318, 0.469, 0.6214]
+    },
+    {
+      "inputs": [40, 40, 20, 27.2499999999],
+      "expected": [0.457354902811025, 0.35765, 0.456, 0.551]
+    },
+    {
+      "inputs": [40, 40, 20, 27.25],
+      "expected": [0.457354902811025, 0.35765, 0.456, 0.551]
+    },
+    {
+      "inputs": [40, 40, 20, 27.2500000001],
+      "expected": [0.448890897957193, 0.3288, 0.449, 0.56616]
+    },
+    {
+      "inputs": [50.6199999999, 40, 20, 30],
+      "expected": [0.455074094906724, 0.318, 0.4585, 0.5858]
+    },
+    {
+      "inputs": [50.62, 40, 20, 30],
+      "expected": [0.455074094906724, 0.318, 0.4585, 0.5858]
+    },
+    {
+      "inputs": [50.6200000001, 40, 20, 30],
+      "expected": [0.455353275390064, 0.318, 0.4615, 0.5858]
+    },
+    {
+      "inputs": [40, 40, 20, 34.2499999999],
+      "expected": [0.447550876397175, 0.32, 0.4455, 0.629]
+    },
+    {
+      "inputs": [40, 40, 20, 34.25],
+      "expected": [0.447550876397175, 0.32, 0.4455, 0.629]
+    },
+    {
+      "inputs": [40, 40, 20, 34.2500000001],
+      "expected": [0.40277260831027, 0.31, 0.378, 0.51315]
+    },
+    {
+      "inputs": [40, 40, 20, 34.2499999999],
+      "expected": [0.447550876397175, 0.32, 0.4455, 0.629]
+    },
+    {
+      "inputs": [40, 40, 20, 34.25],
+      "expected": [0.447550876397175, 0.32, 0.4455, 0.629]
+    },
+    {
+      "inputs": [40, 40, 20, 34.2500000001],
+      "expected": [0.40277260831027, 0.31, 0.378, 0.51315]
+    },
+    {
+      "inputs": [40, 40, 20, 25.7499999999],
+      "expected": [0.465075242227588, 0.368, 0.469, 0.56]
+    },
+    {
+      "inputs": [40, 40, 20, 25.75],
+      "expected": [0.465075242227588, 0.368, 0.469, 0.56]
+    },
+    {
+      "inputs": [40, 40, 20, 25.7500000001],
+      "expected": [0.45893346894007, 0.3599, 0.465, 0.551]
+    },
+    {
+      "inputs": [40, 40, 20, 27.2499999999],
+      "expected": [0.457354902811025, 0.35765, 0.456, 0.551]
+    },
+    {
+      "inputs": [40, 40, 20, 27.25],
+      "expected": [0.457354902811025, 0.35765, 0.456, 0.551]
+    },
+    {
+      "inputs": [40, 40, 20, 27.2500000001],
+      "expected": [0.448890897957193, 0.3288, 0.449, 0.56616]
+    },
+    {
+      "inputs": [49.1349999999, 40, 20, 30],
+      "expected": [0.458516870139044, 0.318, 0.4585, 0.5858]
+    },
+    {
+      "inputs": [49.135, 40, 20, 30],
+      "expected": [0.458516870139044, 0.318, 0.4585, 0.5858]
+    },
+    {
+      "inputs": [49.1350000001, 40, 20, 30],
+      "expected": [0.457337723522503, 0.318, 0.4605, 0.5858]
+    },
+    {
+      "inputs": [40, 40, 20, 34.2499999999],
+      "expected": [0.447550876397175, 0.32, 0.4455, 0.629]
+    },
+    {
+      "inputs": [40, 40, 20, 34.25],
+      "expected": [0.447550876397175, 0.32, 0.4455, 0.629]
+    },
+    {
+      "inputs": [40, 40, 20, 34.2500000001],
+      "expected": [0.40277260831027, 0.31, 0.378, 0.51315]
+    },
+    {
+      "inputs": [40, 40, 20, 27.2499999999],
+      "expected": [0.457354902811025, 0.35765, 0.456, 0.551]
+    },
+    {
+      "inputs": [40, 40, 20, 27.25],
+      "expected": [0.457354902811025, 0.35765, 0.456, 0.551]
+    },
+    {
+      "inputs": [40, 40, 20, 27.2500000001],
+      "expected": [0.448890897957193, 0.3288, 0.449, 0.56616]
+    },
+    {
+      "inputs": [-1, 50, 51, -10],
+      "expected": [0.451008553801817, 0.3203, 0.433, 0.619]
+    },
+    {
+      "inputs": [120, 10, 0, 1000],
+      "expected": [0.402350053196111, 0.319995, 0.402, 0.499]
+    }
+  ]
+}

@@ -29,6 +29,26 @@ description = "Remove code generator Cargo build artifacts"
 dir = "codegen"
 run = "cargo clean"
 
+["euptf2:import"]
+description = "Authenticate and import THS_PTF01 locally with offline R"
+usage = 'arg "<upstream>" help="Path to the pinned euptf2 1.0.0 source"'
+run = 'uv run --no-project python codegen/scripts/import_euptf2.py --upstream "{{ usage.upstream }}" --output .euptf2-local/ths.ptfq'
+
+["euptf2:import-test"]
+description = "Check importer rejection before R execution or output replacement"
+run = 'uv run --no-project python codegen/scripts/test_import_euptf2.py'
+
+["euptf2:rust-build"]
+description = "Build the public Rust THS_PTF01 reference runner"
+run = 'cargo build --manifest-path targets/ptfkit-rs/Cargo.toml --example euptf2_runner'
+
+["euptf2:verify-public"]
+description = "Compare all four public THS_PTF01 APIs with upstream R references"
+depends = ["native:build", "python:test", "euptf2:rust-build", "euptf2:import-test"]
+usage = 'arg "<model>" help="Path to the locally imported PTFKQF01 container"'
+run = 'uv run --project targets/ptfkit-py --frozen python codegen/scripts/verify_euptf2.py --model "{{ usage.model }}" --build targets/ptfkit-native/build/tests --rust targets/ptfkit-rs/target/debug/examples/euptf2_runner'
+run_windows = 'uv run --project targets/ptfkit-py --frozen python codegen/scripts/verify_euptf2.py --model "{{ usage.model }}" --build targets/ptfkit-native/build/tests --rust targets/ptfkit-rs/target/debug/examples/euptf2_runner.exe'
+
 ["rosetta:import"]
 description = "Verify and import pinned Rosetta artifacts for local use only"
 usage = 'arg "<upstream>" help="Path to the pinned official checkout"'

@@ -99,7 +99,40 @@ pub(crate) fn render(root: &Path, entries: &[Entry]) -> Result<Option<Files>> {
     let Some(adapter) = public_rosetta::render(root, entries)? else {
         return Ok(None);
     };
-    let mut files = render_models(&adapter.dense, &adapter.python);
+    let mut python = adapter.python;
+    python.functions.push_str(include_str!("qrf_python.c"));
+    python.methods.push_str("\n{\"euptf2_ths_from_bytes\", ptfkit_python_qrf_load, METH_VARARGS, NULL},\n{\"euptf2_ths_predict\", ptfkit_python_qrf_predict, METH_VARARGS, NULL},\n");
+    python.stub.push_str("\ndef euptf2_ths_from_bytes(data: bytes) -> object: ...\ndef euptf2_ths_predict(handle: object, inputs: Sequence[float]) -> tuple[float, float, float, float]: ...\n");
+    let mut files = render_models(&adapter.dense, &python);
+    let manifest: serde_json::Value = serde_json::from_slice(&std::fs::read(
+        root.join("specs/models/euptf2/manifest.json"),
+    )?)?;
+    if manifest["format_version"] != 1
+        || manifest["model"] != "THS_PTF01"
+        || manifest["artifact"]["format"] != "PTFKQF01"
+        || manifest["artifact"]["distribution"] != "external-only"
+    {
+        return Err(ModelError::Artifact {
+            path: root.join("specs/models/euptf2/manifest.json"),
+        }
+        .into());
+    }
+    let sha = manifest["artifact"]["sha256"]
+        .as_str()
+        .filter(|s| s.len() == 64 && s.bytes().all(|b| b.is_ascii_hexdigit()))
+        .ok_or_else(|| ModelError::Artifact {
+            path: root.join("specs/models/euptf2/manifest.json"),
+        })?;
+    files.rust.push(file(
+        "detail/qrf.rs",
+        RS_HEADER,
+        include_str!("qrf.rs.in").replace("@QRF_SHA256@", sha),
+    ));
+    files.c.push(file(
+        "ptfkit/detail/qrf.h",
+        C_HEADER,
+        include_str!("qrf.h").replace("@QRF_SHA256@", sha),
+    ));
     files.append(adapter.files);
     Ok(Some(files))
 }
@@ -121,7 +154,14 @@ fn render_models(dense: &str, adapter: &PythonAdapter) -> Files {
     ).to_owned() + &adapter.stub;
     Files {
         rust: vec![
-            file("models.rs", RS_HEADER, include_str!("public_models.rs.in")),
+            file(
+                "models.rs",
+                RS_HEADER,
+                concat!(
+                    include_str!("public_models.rs.in"),
+                    "\n#[path = \"detail/qrf.rs\"]\nmod qrf;\npub use qrf::Euptf2Ths;\n"
+                ),
+            ),
             file("detail/neural.rs", RS_HEADER, include_str!("engine.rs")),
         ],
         c: vec![
@@ -140,19 +180,32 @@ fn render_models(dense: &str, adapter: &PythonAdapter) -> Files {
                 C_HEADER,
                 include_str!("public_sha256.h"),
             ),
-            file("ptfkit/models.h", C_HEADER, include_str!("public_models.h")),
+            file(
+                "ptfkit/models.h",
+                C_HEADER,
+                include_str!("public_models.h")
+                    .replace("\n#endif", "\n#include <ptfkit/detail/qrf.h>\n#endif"),
+            ),
         ],
         cpp: vec![file(
             "models.cppm",
             C_HEADER,
-            include_str!("public_models.cppm.in"),
+            concat!(
+                include_str!("public_models.cppm.in"),
+                "\n",
+                include_str!("qrf.cppm.in")
+            ),
         )],
         extension: vec![file("src/ptfkit/models.c", C_HEADER, bridge)],
         python: vec![
             file(
                 "ptfkit/models.py",
                 PY_HEADER,
-                include_str!("public_models.py.in"),
+                concat!(
+                    include_str!("public_models.py.in"),
+                    "\n",
+                    include_str!("qrf.py.in")
+                ),
             ),
             file("ptfkit/_models.pyi", PY_HEADER, stub),
         ],

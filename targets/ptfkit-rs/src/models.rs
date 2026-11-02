@@ -236,3 +236,7 @@ impl Model {
         Ok(network.predict(&self.data, input))
     }
 }
+
+#[path = "detail/qrf.rs"]
+mod qrf;
+pub use qrf::Euptf2Ths;

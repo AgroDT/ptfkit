@@ -1,0 +1,148 @@
+//! Native THS_PTF01 inference from an external PTFKQF01 artifact.
+use super::ModelError;
+use sha2::{Digest, Sha256};
+use std::{io::Read, path::Path};
+
+const SHA256: &str = "@QRF_SHA256@";
+const MAX_BYTES: usize = 64 * 1024 * 1024;
+
+#[derive(Debug)]
+struct Node { left: usize, right: usize, feature: usize, value: f64, sample: f64 }
+
+/// EU-PTF v2 THS_PTF01. Parameters are imported locally and are never bundled.
+#[derive(Debug)]
+pub struct Euptf2Ths { trees: Vec<Vec<Node>> }
+
+impl Euptf2Ths {
+    /// Authenticate the exact reviewed THS_PTF01 container and own its data.
+    pub fn from_bytes(bytes: &[u8]) -> Result<Self, ModelError> {
+        Self::decode(bytes, SHA256)
+    }
+
+    /// Load the externally imported THS_PTF01 model.
+    pub fn load(path: impl AsRef<Path>) -> Result<Self, ModelError> {
+        let mut bytes = Vec::new();
+        std::fs::File::open(path).map_err(ModelError::Io)?.take((MAX_BYTES + 1) as u64)
+            .read_to_end(&mut bytes).map_err(ModelError::Io)?;
+        Self::from_bytes(&bytes)
+    }
+
+    fn decode(bytes: &[u8], expected: &str) -> Result<Self, ModelError> {
+        if bytes.len() < 16 || bytes.len() > MAX_BYTES { return Err(ModelError::Format); }
+        let actual: String = Sha256::digest(bytes).iter().map(|v| format!("{v:02x}")).collect();
+        if actual != expected { return Err(ModelError::Integrity); }
+        let mut r = super::Reader { data: bytes, pos: 0 };
+        if &r.bytes::<8>()? != b"PTFKQF01" || r.u32()? != 1 { return Err(ModelError::Format); }
+        let count = r.u32()?;
+        if !(1..=1000).contains(&count) { return Err(ModelError::Format); }
+        let mut trees = Vec::with_capacity(count);
+        for _ in 0..count {
+            let n = r.u32()?;
+            if n == 0 || n > (bytes.len() - r.pos) / 28 { return Err(ModelError::Format); }
+            let mut nodes = Vec::with_capacity(n);
+            let mut parents = vec![0u8; n];
+            for index in 0..n {
+                let left = r.u32()?;
+                let right = r.u32()?;
+                let feature = r.u32()?;
+                let value = r.f64()?;
+                let sample = r.f64()?;
+                if left == 0 && right == 0 {
+                    if feature != u32::MAX as usize { return Err(ModelError::Format); }
+                } else {
+                    if left <= index || right <= index || left >= n || right >= n || left == right || feature >= 4 || sample != 0.0 {
+                        return Err(ModelError::Format);
+                    }
+                    for child in [left,right] {
+                        if parents[child] != 0 { return Err(ModelError::Format); }
+                        parents[child] = 1;
+                    }
+                }
+                nodes.push(Node { left, right, feature, value, sample });
+            }
+            if parents[1..].iter().any(|p| *p != 1) { return Err(ModelError::Format); }
+            trees.push(nodes);
+        }
+        if r.pos != bytes.len() { return Err(ModelError::Format); }
+        Ok(Self { trees })
+    }
+
+    /// Return mean and conditional quantiles at 0.05, 0.5, 0.95, in cm3/cm3.
+    /// Inputs: USDA sand, silt, clay in mass percent, mean depth in cm.
+    /// NaN is missing and rejected; no imputation, clipping or renormalization.
+    pub fn predict(&self, inputs: [f64; 4]) -> Result<[f64; 4], ModelError> {
+        if inputs.iter().any(|v| v.is_nan()) { return Err(ModelError::Input); }
+        let mut mean = 0.0;
+        let mut samples = Vec::with_capacity(self.trees.len());
+        for tree in &self.trees {
+            let mut node = &tree[0];
+            while node.left != 0 {
+                node = &tree[if inputs[node.feature] <= node.value { node.left } else { node.right }];
+            }
+            mean += node.value;
+            samples.push(node.sample);
+        }
+        samples.sort_by(f64::total_cmp);
+        let quantile = |p: f64| {
+            let h = (samples.len() - 1) as f64 * p;
+            let lo = h.floor() as usize;
+            let hi = h.ceil() as usize;
+            let g = h - lo as f64;
+            if lo == hi || samples[lo] == samples[hi] { samples[lo] }
+            else { (1.0 - g) * samples[lo] + g * samples[hi] }
+        };
+        Ok([mean / self.trees.len() as f64, quantile(0.05), quantile(0.5), quantile(0.95)])
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn fixture() -> Vec<u8> {
+        // Two trees: depth <= 30 selects mean .4/sample .2, else .7/.9.
+        // The other tree always returns mean .6/sample .8. Means and samples
+        // intentionally differ, so quantiles of tree means cannot pass.
+        let mut bytes = b"PTFKQF01".to_vec();
+        for v in [1u32, 2, 3] { bytes.extend(v.to_le_bytes()); }
+        for (left,right,feature,value,sample) in [
+            (1u32,2u32,3u32,30.0f64,0.0f64),
+            (0,0,u32::MAX,0.4,0.2), (0,0,u32::MAX,0.7,0.9),
+        ] {
+            for v in [left,right,feature] { bytes.extend(v.to_le_bytes()); }
+            for v in [value,sample] { bytes.extend(v.to_le_bytes()); }
+        }
+        bytes.extend(1u32.to_le_bytes());
+        for v in [0u32,0,u32::MAX] { bytes.extend(v.to_le_bytes()); }
+        for v in [0.6f64,0.8] { bytes.extend(v.to_le_bytes()); }
+        bytes
+    }
+    fn decode(bytes: &[u8]) -> Result<Euptf2Ths, ModelError> {
+        let sha: String = Sha256::digest(bytes).iter().map(|v| format!("{v:02x}")).collect();
+        Euptf2Ths::decode(bytes, &sha)
+    }
+    #[test]
+    fn stored_response_quantiles_inclusive_depth_and_missing_input() {
+        let bytes = fixture();
+        let model = decode(&bytes).unwrap();
+        for (depth, expected) in [(30.0,[0.5,0.23,0.5,0.77]), (30.0001,[0.65,0.805,0.85,0.895])] {
+            let actual = model.predict([40.0,40.0,20.0,depth]).unwrap();
+            for (a,e) in actual.into_iter().zip(expected) { assert!((a-e).abs() < 1e-14); }
+        }
+        assert!(matches!(model.predict([40.0,40.0,20.0,f64::NAN]), Err(ModelError::Input)));
+        assert!(matches!(Euptf2Ths::from_bytes(&bytes), Err(ModelError::Integrity)));
+    }
+    #[test]
+    fn authenticated_malformed_trees_are_rejected() {
+        let original = fixture();
+        let mut bad = Vec::new();
+        for (offset,value) in [(8,2u32),(12,0),(16,u32::MAX),(20,0),(24,1),(28,4),(56,0)] {
+            let mut b = original.clone(); b[offset..offset+4].copy_from_slice(&value.to_le_bytes()); bad.push(b);
+        }
+        let mut nonfinite = original.clone();
+        nonfinite[68..76].copy_from_slice(&f64::NAN.to_le_bytes()); bad.push(nonfinite);
+        bad.push(original[..original.len()-1].to_vec());
+        let mut trailing = original.clone(); trailing.push(0); bad.push(trailing);
+        for bytes in bad { assert!(matches!(decode(&bytes), Err(ModelError::Format))); }
+    }
+}
