@@ -20,6 +20,7 @@ struct Node {
 #[derive(Debug)]
 pub struct Euptf2Ths {
     trees: Vec<Vec<Node>>,
+    features: usize,
 }
 
 impl Euptf2Ths {
@@ -57,6 +58,16 @@ impl Euptf2Ths {
         if &r.bytes::<8>()? != b"PTFKQF01" || r.u32()? != 1 {
             return Err(ModelError::Format);
         }
+        Self::read_forest(&mut r, 4).and_then(|model| {
+            if r.pos != bytes.len() {
+                Err(ModelError::Format)
+            } else {
+                Ok(model)
+            }
+        })
+    }
+
+    fn read_forest(r: &mut super::Reader<'_>, features: usize) -> Result<Self, ModelError> {
         let count = r.u32()?;
         if !(1..=1000).contains(&count) {
             return Err(ModelError::Format);
@@ -64,7 +75,7 @@ impl Euptf2Ths {
         let mut trees = Vec::with_capacity(count);
         for _ in 0..count {
             let n = r.u32()?;
-            if n == 0 || n > (bytes.len() - r.pos) / 28 {
+            if n == 0 || n > (r.data.len() - r.pos) / 28 {
                 return Err(ModelError::Format);
             }
             let mut nodes = Vec::with_capacity(n);
@@ -85,7 +96,7 @@ impl Euptf2Ths {
                         || left >= n
                         || right >= n
                         || left == right
-                        || feature >= 4
+                        || feature >= features
                         || sample != 0.0
                     {
                         return Err(ModelError::Format);
@@ -110,17 +121,23 @@ impl Euptf2Ths {
             }
             trees.push(nodes);
         }
-        if r.pos != bytes.len() {
-            return Err(ModelError::Format);
-        }
-        Ok(Self { trees })
+        Ok(Self { trees, features })
     }
 
     /// Return mean and conditional quantiles at 0.05, 0.5, 0.95, in cm3/cm3.
     /// Inputs: USDA sand, silt, clay in mass percent, mean depth in cm.
     /// NaN is missing and rejected; no imputation, clipping or renormalization.
     pub fn predict(&self, inputs: [f64; 4]) -> Result<[f64; 4], ModelError> {
-        if inputs.iter().any(|v| v.is_nan()) {
+        let (mean, q) = self.statistics(&inputs, &[0.05, 0.5, 0.95])?;
+        Ok([mean, q[0], q[1], q[2]])
+    }
+
+    fn statistics(
+        &self,
+        inputs: &[f64],
+        probabilities: &[f64],
+    ) -> Result<(f64, Vec<f64>), ModelError> {
+        if inputs.len() != self.features || inputs.iter().any(|v| v.is_nan()) {
             return Err(ModelError::Input);
         }
         let mut mean = 0.0;
@@ -149,12 +166,541 @@ impl Euptf2Ths {
                 (1.0 - g) * samples[lo] + g * samples[hi]
             }
         };
-        Ok([
+        Ok((
             mean / self.trees.len() as f64,
-            quantile(0.05),
-            quantile(0.5),
-            quantile(0.95),
-        ])
+            probabilities.iter().map(|p| quantile(*p)).collect(),
+        ))
+    }
+}
+
+/// Scientific identity of an external EU-PTF v2 trained object.
+#[derive(Debug)]
+pub struct Euptf2Descriptor {
+    pub name: &'static str,
+    pub inputs: &'static [&'static str],
+    pub mean_outputs: &'static [&'static str],
+    pub quantile_outputs: &'static [&'static str],
+    pub(crate) id: usize,
+    sha256: &'static str,
+    transforms: &'static [u32],
+}
+const EUPTF2_MODELS: &[Euptf2Descriptor] = &[
+    Euptf2Descriptor {
+        id: 1,
+        name: "AWC_2_PTF01",
+        sha256: "1ae1832bddc02221fc16a742ab716a7bfa635ea5d0c69d7861a2ea1a667dd9ad",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M"],
+        mean_outputs: &["AWC_2"],
+        quantile_outputs: &["AWC_2"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 2,
+        name: "AWC_2_PTF02",
+        sha256: "ed6378d4fe35845b014e6a736fcbb9bae17474abcb4915154603e17f95e57ab2",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "OC"],
+        mean_outputs: &["AWC_2"],
+        quantile_outputs: &["AWC_2"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 3,
+        name: "AWC_2_PTF03",
+        sha256: "41927bb0ac26799d5aba8408e122987c6d6f5da836b3a69e394bec2b6b451712",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "BD"],
+        mean_outputs: &["AWC_2"],
+        quantile_outputs: &["AWC_2"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 4,
+        name: "AWC_PTF01",
+        sha256: "067967083cd57c0094169e34d384f2ff5d45bb1b559ba68584d69de96e106142",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M"],
+        mean_outputs: &["AWC"],
+        quantile_outputs: &["AWC"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 5,
+        name: "AWC_PTF03",
+        sha256: "536b3f78b061c35e2ac1b4681db430fdc6613f0c9b88ea9414cccc54463357f6",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "BD"],
+        mean_outputs: &["AWC"],
+        quantile_outputs: &["AWC"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 6,
+        name: "FC_2_PTF01",
+        sha256: "5137cb2fdf356e83452e4e38e985bf292c65481929717c21a6ae4ac68aafb88c",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M"],
+        mean_outputs: &["FC_2"],
+        quantile_outputs: &["FC_2"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 7,
+        name: "FC_2_PTF02",
+        sha256: "526cc46ae02975ab02517d468236195ab446ff28d5f064cf8fdb6980dac4d26b",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "OC"],
+        mean_outputs: &["FC_2"],
+        quantile_outputs: &["FC_2"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 8,
+        name: "FC_2_PTF03",
+        sha256: "d69cbfb6a343cd56d2d3a6100e780fd352b0bda40e1d00480302feaef6471f4a",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "BD"],
+        mean_outputs: &["FC_2"],
+        quantile_outputs: &["FC_2"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 9,
+        name: "FC_2_PTF04",
+        sha256: "9c65eb9c2b5b7319a11fa11737a40697b03b6b41bb1d4bf7775519415c10ac6b",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "CACO3"],
+        mean_outputs: &["FC_2"],
+        quantile_outputs: &["FC_2"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 10,
+        name: "FC_2_PTF05",
+        sha256: "6f28243063eac0825c38409d30163bb25ec8223a1fd4baa71aec94bd1959ff5b",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "PH_H2O"],
+        mean_outputs: &["FC_2"],
+        quantile_outputs: &["FC_2"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 11,
+        name: "FC_2_PTF06",
+        sha256: "1f27f81a7496cac3f9953b284a0645facfd0f77844724d411514e5941b1704b5",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "CEC"],
+        mean_outputs: &["FC_2"],
+        quantile_outputs: &["FC_2"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 12,
+        name: "FC_2_PTF07",
+        sha256: "f5f57150ebb61db738c76af95947e37385d6500d69d91ef516aa9b2281502ed5",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "OC", "BD"],
+        mean_outputs: &["FC_2"],
+        quantile_outputs: &["FC_2"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 13,
+        name: "FC_2_PTF08",
+        sha256: "adbfdffa2f31d6fbf0d798c69e7cc4c5526f46599ad9900a71bc1fddcc663aba",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "OC", "CACO3"],
+        mean_outputs: &["FC_2"],
+        quantile_outputs: &["FC_2"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 14,
+        name: "FC_2_PTF09",
+        sha256: "691e86de14e7d881e12d299d78caf87fef3e918f982533cbae7859ab71ec3225",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "OC", "PH_H2O"],
+        mean_outputs: &["FC_2"],
+        quantile_outputs: &["FC_2"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 15,
+        name: "FC_2_PTF11",
+        sha256: "432dcde50925c4efd51e262d3fd9e838da4b25d449f1d518eefa2677d6e04248",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "BD", "CACO3"],
+        mean_outputs: &["FC_2"],
+        quantile_outputs: &["FC_2"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 16,
+        name: "FC_2_PTF12",
+        sha256: "cdba5160c8a35084ae644cc07304e7db0f8edf23b91913d6396a0b5eb287d651",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "BD", "PH_H2O"],
+        mean_outputs: &["FC_2"],
+        quantile_outputs: &["FC_2"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 17,
+        name: "FC_2_PTF13",
+        sha256: "9b8e0a094770f9bd42789423b1a7bbd9567b125b5ca0b0ce374240ff619007b7",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "BD", "CEC"],
+        mean_outputs: &["FC_2"],
+        quantile_outputs: &["FC_2"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 18,
+        name: "FC_2_PTF18",
+        sha256: "327a1ad8749ccb1fa734de2b42b1c48ef2f45cf0fc668997579f28aecad3461a",
+        inputs: &[
+            "USSAND", "USSILT", "USCLAY", "DEPTH_M", "OC", "BD", "PH_H2O",
+        ],
+        mean_outputs: &["FC_2"],
+        quantile_outputs: &["FC_2"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 19,
+        name: "FC_PTF01",
+        sha256: "e8d25c5eddfe12f62a4b592458aa72ab61c38b5271375e85a143a31daf4c7873",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M"],
+        mean_outputs: &["FC"],
+        quantile_outputs: &["FC"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 20,
+        name: "FC_PTF02",
+        sha256: "37c792ddfd000cb6506f9c6d3a72c9f95eabe940b30daf8a4b0f2136706f76a0",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "OC"],
+        mean_outputs: &["FC"],
+        quantile_outputs: &["FC"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 21,
+        name: "FC_PTF03",
+        sha256: "fcb9784f036978c2965150de222920529715f92f5333f219717865b24064c3aa",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "BD"],
+        mean_outputs: &["FC"],
+        quantile_outputs: &["FC"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 22,
+        name: "FC_PTF04",
+        sha256: "69bee3bdc0f80fada15fa1b184e80edf0f9e88c87fed526e73fc5a3f18c8ab32",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "CACO3"],
+        mean_outputs: &["FC"],
+        quantile_outputs: &["FC"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 23,
+        name: "FC_PTF06",
+        sha256: "ec574dce9a6d47fb14589942a469c2ab6ca8d0488d5074fdf3191a72f22ff9f0",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "CEC"],
+        mean_outputs: &["FC"],
+        quantile_outputs: &["FC"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 24,
+        name: "FC_PTF07",
+        sha256: "0398950aa552dfebce310f82778e12bac655c2aecd0ca7debcce945b1e707268",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "OC", "BD"],
+        mean_outputs: &["FC"],
+        quantile_outputs: &["FC"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 25,
+        name: "FC_PTF08",
+        sha256: "8d06b181f574e72f6597fe6c9d5bf0f4cbb180dab4b07a12435305130312860c",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "OC", "CACO3"],
+        mean_outputs: &["FC"],
+        quantile_outputs: &["FC"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 26,
+        name: "FC_PTF09",
+        sha256: "eb37012d35eae975ad30685810e0c978c30b918b44596fc96db6fbcdb7998ab9",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "OC", "PH_H2O"],
+        mean_outputs: &["FC"],
+        quantile_outputs: &["FC"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 27,
+        name: "FC_PTF11",
+        sha256: "58cbbbd380efc8a670fd3390931d1dcb0ec0a144091e38cf82bb15534dc6dbdb",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "BD", "CACO3"],
+        mean_outputs: &["FC"],
+        quantile_outputs: &["FC"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 28,
+        name: "FC_PTF14",
+        sha256: "db0c67ed313ca6a54df813395ea584640c4d7e6cb02c9f6b35b8d61651c5ac71",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "CACO3", "PH_H2O"],
+        mean_outputs: &["FC"],
+        quantile_outputs: &["FC"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 29,
+        name: "KS_PTF01",
+        sha256: "7ad1764905f05325bb416490385f59ea9a78d8b4c4f6fb7de999cdb116dbc6d2",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M"],
+        mean_outputs: &["KS"],
+        quantile_outputs: &["KS"],
+        transforms: &[1],
+    },
+    Euptf2Descriptor {
+        id: 30,
+        name: "KS_PTF02",
+        sha256: "9d44a4183651af2d5418e3adc71c2abca8bfd20b28ff92583dfd23fba63b73b0",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "OC"],
+        mean_outputs: &["KS"],
+        quantile_outputs: &["KS"],
+        transforms: &[1],
+    },
+    Euptf2Descriptor {
+        id: 31,
+        name: "KS_PTF05",
+        sha256: "2b275861485a1a02401b4477dfc10ac619ea122f7e66f9df6e9a0f82f89d6460",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "PH_H2O"],
+        mean_outputs: &["KS"],
+        quantile_outputs: &["KS"],
+        transforms: &[1],
+    },
+    Euptf2Descriptor {
+        id: 45,
+        name: "THS_PTF01",
+        sha256: "37d21692c4d3ff49f3f991d50143feab76420ded451392daaa82da70ea944f76",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M"],
+        mean_outputs: &["THS"],
+        quantile_outputs: &["THS"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 46,
+        name: "THS_PTF02",
+        sha256: "180c1b8c51e7cc40fb5c4640aad09d85f57521182a8e833d90eace80f83b207c",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "OC"],
+        mean_outputs: &["THS"],
+        quantile_outputs: &["THS"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 47,
+        name: "THS_PTF03",
+        sha256: "ab6e72685a7b7b8a531c88f601c4590dcb6eb19ae76f575a015cc080969ae44f",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "BD"],
+        mean_outputs: &["THS"],
+        quantile_outputs: &["THS"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 48,
+        name: "THS_PTF04",
+        sha256: "e8c59dad14e3343f8b78bd74de95a1a0333d3d6d439a4a97b5e93e79a9c576aa",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "CACO3"],
+        mean_outputs: &["THS"],
+        quantile_outputs: &["THS"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 49,
+        name: "THS_PTF05",
+        sha256: "3bb5db54d7953624878151ce991e9ec688b15aaa455a2c14223a753b1dd435e1",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "PH_H2O"],
+        mean_outputs: &["THS"],
+        quantile_outputs: &["THS"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 71,
+        name: "WP_PTF01",
+        sha256: "699d60ab2ba894571e17bfc4bf6033ecfc5eabd6a4b048303321fed38c484935",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M"],
+        mean_outputs: &["WP"],
+        quantile_outputs: &["WP"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 72,
+        name: "WP_PTF02",
+        sha256: "419667fbab48bcc3790f54120ccbe991c0bc1345c37cc35fbc5b42bf21f15f01",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "OC"],
+        mean_outputs: &["WP"],
+        quantile_outputs: &["WP"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 73,
+        name: "WP_PTF05",
+        sha256: "c7c36ebb4bb29515a832c09dce603b5fdc9ca56fdc86f195fb9fd73075ec4aef",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "PH_H2O"],
+        mean_outputs: &["WP"],
+        quantile_outputs: &["WP"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 74,
+        name: "WP_PTF07",
+        sha256: "4f3b1f21379e0e6f86b5caed325f1c97804054dbd7bbb2cd0261e0cf48efe3d1",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "OC", "BD"],
+        mean_outputs: &["WP"],
+        quantile_outputs: &["WP"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 75,
+        name: "WP_PTF08",
+        sha256: "34f3f97b19fdff948de68c2bbfd2853fa40e91ca3fc2f1260c7423522b310de5",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "OC", "CACO3"],
+        mean_outputs: &["WP"],
+        quantile_outputs: &["WP"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 76,
+        name: "WP_PTF09",
+        sha256: "ee48580e9bdb2ac679703901aaef47543c2322af4f1e81481a7f8aaf1d865f63",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "OC", "PH_H2O"],
+        mean_outputs: &["WP"],
+        quantile_outputs: &["WP"],
+        transforms: &[0],
+    },
+    Euptf2Descriptor {
+        id: 77,
+        name: "WP_PTF17",
+        sha256: "bfd0cc4d10ed57f316cfbec5cd0f96f98871cbbb1e29d35d8ef508ef29b32b3b",
+        inputs: &["USSAND", "USSILT", "USCLAY", "DEPTH_M", "OC", "BD", "CACO3"],
+        mean_outputs: &["WP"],
+        quantile_outputs: &["WP"],
+        transforms: &[0],
+    },
+];
+
+/// Enumerate the supported original trained objects, not the 32 selection aliases.
+pub fn euptf2_models() -> &'static [Euptf2Descriptor] {
+    EUPTF2_MODELS
+}
+
+/// Original-scale point estimates and parameter-major conditional quantiles.
+/// VG/MVG include derived M in means only, exactly as the original R package.
+#[derive(Debug)]
+pub struct Euptf2Prediction {
+    pub mean: Vec<f64>,
+    pub quantiles: Vec<Vec<f64>>,
+    pub probabilities: Vec<f64>,
+}
+
+/// An authenticated original EU-PTF v2 object, containing one or more QRFs.
+#[derive(Debug)]
+pub struct Euptf2Model {
+    descriptor: &'static Euptf2Descriptor,
+    forests: Vec<Euptf2Ths>,
+}
+
+fn output_transform(value: f64, transform: u32) -> f64 {
+    match transform {
+        0 => value,
+        1 => 10.0_f64.powf(value),
+        2 => 10.0_f64.powf(value) - 1.0,
+        3 => 10.0_f64.powf(value) + 1.0,
+        _ => unreachable!(),
+    }
+}
+
+impl Euptf2Model {
+    pub fn descriptor(&self) -> &'static Euptf2Descriptor {
+        self.descriptor
+    }
+    /// Authenticate the entire PTFKQF02 container against the selected model.
+    pub fn from_bytes(name: &str, bytes: &[u8]) -> Result<Self, ModelError> {
+        let descriptor = EUPTF2_MODELS
+            .iter()
+            .find(|m| m.name == name)
+            .ok_or(ModelError::Input)?;
+        if bytes.len() < 20 || bytes.len() > MAX_BYTES {
+            return Err(ModelError::Format);
+        }
+        let sha: String = Sha256::digest(bytes)
+            .iter()
+            .map(|v| format!("{v:02x}"))
+            .collect();
+        if sha != descriptor.sha256 {
+            return Err(ModelError::Integrity);
+        }
+        Self::parse(descriptor, bytes)
+    }
+    fn parse(descriptor: &'static Euptf2Descriptor, bytes: &[u8]) -> Result<Self, ModelError> {
+        let mut r = super::Reader {
+            data: bytes,
+            pos: 0,
+        };
+        if &r.bytes::<8>()? != b"PTFKQF02"
+            || r.u32()? != descriptor.id
+            || r.u32()? != descriptor.inputs.len()
+            || r.u32()? != descriptor.transforms.len()
+        {
+            return Err(ModelError::Format);
+        }
+        let mut forests = Vec::new();
+        for transform in descriptor.transforms {
+            if r.u32()? != *transform as usize {
+                return Err(ModelError::Format);
+            }
+            forests.push(Euptf2Ths::read_forest(&mut r, descriptor.inputs.len())?);
+        }
+        if r.pos != bytes.len() {
+            return Err(ModelError::Format);
+        }
+        Ok(Self {
+            descriptor,
+            forests,
+        })
+    }
+    pub fn load(name: &str, path: impl AsRef<Path>) -> Result<Self, ModelError> {
+        let mut bytes = Vec::new();
+        std::fs::File::open(path)
+            .map_err(ModelError::Io)?
+            .take((MAX_BYTES + 1) as u64)
+            .read_to_end(&mut bytes)
+            .map_err(ModelError::Io)?;
+        Self::from_bytes(name, &bytes)
+    }
+    /// Mean and the original default .05/.25/.5/.75/.95 conditional quantiles.
+    pub fn predict(&self, inputs: &[f64]) -> Result<Euptf2Prediction, ModelError> {
+        self.predict_quantiles(inputs, &[0.05, 0.25, 0.5, 0.75, 0.95])
+    }
+    /// Between one and 64 probabilities, each strictly inside (0,1).
+    /// Back-transform aggregated means and quantiles, never individual tree means.
+    pub fn predict_quantiles(
+        &self,
+        inputs: &[f64],
+        probabilities: &[f64],
+    ) -> Result<Euptf2Prediction, ModelError> {
+        if probabilities.is_empty()
+            || probabilities.len() > 64
+            || probabilities.iter().any(|p| !(*p > 0.0 && *p < 1.0))
+        {
+            return Err(ModelError::Input);
+        }
+        let mut mean = Vec::new();
+        let mut quantiles = Vec::new();
+        for (forest, transform) in self.forests.iter().zip(self.descriptor.transforms) {
+            let (m, q) = forest.statistics(inputs, probabilities)?;
+            mean.push(output_transform(m, *transform));
+            quantiles.push(
+                q.into_iter()
+                    .map(|v| output_transform(v, *transform))
+                    .collect(),
+            );
+        }
+        if self.descriptor.mean_outputs.len() > self.forests.len() {
+            mean.push(1.0 - 1.0 / mean[3]);
+        }
+        Ok(Euptf2Prediction {
+            mean,
+            quantiles,
+            probabilities: probabilities.to_vec(),
+        })
     }
 }
 
@@ -246,6 +792,84 @@ mod tests {
         bad.push(trailing);
         for bytes in bad {
             assert!(matches!(decode(&bytes), Err(ModelError::Format)));
+        }
+    }
+    #[test]
+    fn multivariate_transforms_quantile_order_and_derived_m() {
+        static CONTRACT: Euptf2Descriptor = Euptf2Descriptor {
+            name: "synthetic",
+            id: 9,
+            sha256: "",
+            inputs: &["a", "b", "c", "d", "e", "f", "g", "h", "i"],
+            mean_outputs: &["THS", "THR", "ALP", "N", "K0", "L", "M"],
+            quantile_outputs: &["THS", "THR", "ALP", "N", "K0", "L"],
+            transforms: &[0, 2, 1, 3, 1, 0],
+        };
+        let mut forest = fixture();
+        forest[28..32].copy_from_slice(&8u32.to_le_bytes());
+        let mut bytes = b"PTFKQF02".to_vec();
+        for value in [9u32, 9, 6] {
+            bytes.extend(value.to_le_bytes());
+        }
+        for transform in CONTRACT.transforms {
+            bytes.extend(transform.to_le_bytes());
+            bytes.extend(&forest[12..]);
+        }
+        let model = Euptf2Model::parse(&CONTRACT, &bytes).unwrap();
+        let inputs = [0., 0., 0., 0., 0., 0., 0., 0., 30.];
+        let prediction = model.predict(&inputs).unwrap();
+        let root10 = 3.1622776601683795;
+        let means = [
+            0.5,
+            root10 - 1.,
+            root10,
+            root10 + 1.,
+            root10,
+            0.5,
+            1. - 1. / (root10 + 1.),
+        ];
+        for (actual, expected) in prediction.mean.iter().zip(means) {
+            assert!((actual - expected).abs() < 1e-14);
+        }
+        assert_eq!(prediction.quantiles.len(), 6);
+        for (a, e) in prediction.quantiles[0]
+            .iter()
+            .zip([0.23, 0.35, 0.5, 0.65, 0.77])
+        {
+            assert!((a - e).abs() < 1e-14);
+        }
+        for (a, e) in prediction.quantiles[2].iter().zip([
+            1.6982436524617444,
+            2.2387211385683394,
+            3.1622776601683795,
+            4.466835921509632,
+            5.88843655355589,
+        ]) {
+            assert!((a - e).abs() < 1e-13);
+        }
+        let custom = model
+            .predict_quantiles(&inputs, &[0.95, 0.05, 0.5])
+            .unwrap();
+        for (a, e) in custom.quantiles[0].iter().zip([0.77, 0.23, 0.5]) {
+            assert!((a - e).abs() < 1e-14);
+        }
+        for p in [vec![], vec![0.], vec![1.], vec![f64::NAN], vec![0.5; 65]] {
+            assert!(matches!(
+                model.predict_quantiles(&inputs, &p),
+                Err(ModelError::Input)
+            ));
+        }
+        assert!(matches!(
+            model.predict(&inputs[..8]),
+            Err(ModelError::Input)
+        ));
+        for offset in [8, 12, 16, 20] {
+            let mut changed = bytes.clone();
+            changed[offset] ^= 1;
+            assert!(matches!(
+                Euptf2Model::parse(&CONTRACT, &changed),
+                Err(ModelError::Format)
+            ));
         }
     }
 }

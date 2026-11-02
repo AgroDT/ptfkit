@@ -148,7 +148,9 @@ pub(crate) fn run(root: &Path, loaded: LoadedSpecifications) -> anyhow::Result<(
             .find(|f| f.path == Path::new("lib.rs"))
             .unwrap()
             .contents
-            .push_str("\npub mod models;\npub mod zhang_schaap2017;\n");
+            .push_str(
+                "\npub mod models;\npub mod zhang_schaap2017;\npub mod szabo_weynants_weber2021;\n",
+            );
         rust.extend(external.rust);
         let umbrella = native
             .c_headers
@@ -157,7 +159,7 @@ pub(crate) fn run(root: &Path, loaded: LoadedSpecifications) -> anyhow::Result<(
             .unwrap();
         umbrella.contents = umbrella.contents.replace(
             "\n#endif\n",
-            "\n#include <ptfkit/models.h>\n#include <ptfkit/zhang_schaap2017.h>\n#endif\n",
+            "\n#include <ptfkit/models.h>\n#include <ptfkit/zhang_schaap2017.h>\n#include <ptfkit/szabo_weynants_weber2021.h>\n#endif\n",
         );
         native
             .cpp_modules
@@ -165,7 +167,7 @@ pub(crate) fn run(root: &Path, loaded: LoadedSpecifications) -> anyhow::Result<(
             .find(|f| f.path == Path::new("ptfkit.cppm"))
             .unwrap()
             .contents
-            .push_str("\nexport import ptfkit.models;\nexport import ptfkit.zhang_schaap2017;\n");
+            .push_str("\nexport import ptfkit.models;\nexport import ptfkit.zhang_schaap2017;\nexport import ptfkit.szabo_weynants_weber2021;\n");
         native.c_headers.extend(external.c);
         native.cpp_modules.extend(external.cpp);
         python.extension.extend(external.extension);
@@ -174,7 +176,7 @@ pub(crate) fn run(root: &Path, loaded: LoadedSpecifications) -> anyhow::Result<(
             (&mut reference_c, external.c_docs, "headers"),
             (&mut reference_cpp, external.cpp_docs, "modules"),
         ] {
-            files.iter_mut().find(|f|f.path==Path::new("index.md")).unwrap().contents.push_str(&format!("\n## External models\n\n- [Rosetta3 and external model loading]({directory}/zhang_schaap2017.md)\n"));
+            files.iter_mut().find(|f|f.path==Path::new("index.md")).unwrap().contents.push_str(&format!("\n## External models\n\n- [Rosetta3 and external model loading]({directory}/zhang_schaap2017.md)\n- [EU-PTF v2]({directory}/szabo_weynants_weber2021.md)\n"));
             files.extend(extra);
         }
         reference_python

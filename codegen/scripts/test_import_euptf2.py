@@ -52,6 +52,69 @@ class ImportIntegrityTests(unittest.TestCase):
         self.r.assert_not_called()
         self.assertEqual(output.read_bytes(), b'reviewed')
 
+    def test_collection_checks_unselected_sources_before_r(self) -> None:
+        data = self.source / 'data'
+        data.mkdir()
+        (data / 'scalar.rdata').write_bytes(b'abc')
+        (data / 'multi.rdata').write_bytes(b'abd')
+        expected = 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad'
+        collection = self.root / 'collection.json'
+        collection.write_text(
+            json.dumps(
+                {
+                    'models': [
+                        {'file': 'scalar.rdata', 'source_sha256': expected, 'components': [{}]},
+                        {'file': 'multi.rdata', 'source_sha256': expected, 'components': [{}, {}]},
+                    ]
+                }
+            )
+        )
+        patch.object(import_euptf2, 'COLLECTION', collection).start()
+        output = self.root / 'models'
+        with self.assertRaises(ValueError):
+            import_euptf2.convert_collection(self.source, output, 'Rscript', 'scalar')
+        self.r.assert_not_called()
+        self.assertFalse(output.exists())
+
+    def test_collection_output_creation_waits_for_every_digest(self) -> None:
+        data = self.source / 'data'
+        data.mkdir()
+        (data / 'scalar.rdata').write_bytes(b'abc')
+        expected = 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad'
+        collection = self.root / 'collection.json'
+        collection.write_text(
+            json.dumps(
+                {
+                    'models': [
+                        {
+                            'id': 1,
+                            'name': 'scalar',
+                            'original': 'scalar',
+                            'file': 'scalar.rdata',
+                            'source_sha256': expected,
+                            'components': [{'transform': 0}],
+                            'features': ['USSAND', 'USSILT', 'USCLAY', 'DEPTH_M'],
+                            'status': 'implemented',
+                            'artifact': {'sha256': expected, 'bytes': 3},
+                        }
+                    ]
+                }
+            )
+        )
+        patch.object(import_euptf2, 'COLLECTION', collection).start()
+
+        def fake_r(command: list[str], *, check: bool) -> None:
+            if not check:
+                raise AssertionError
+            (Path(command[-1]) / 'scalar.ptfq').write_bytes(b'abd')
+
+        self.r.side_effect = fake_r
+        output = self.root / 'models'
+        with self.assertRaises(ValueError):
+            import_euptf2.convert_collection(self.source, output, 'Rscript', 'scalar')
+        self.r.assert_called_once()
+        self.assertFalse(output.exists())
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -239,4 +239,4 @@ impl Model {
 
 #[path = "detail/qrf.rs"]
 mod qrf;
-pub use qrf::Euptf2Ths;
+pub use qrf::{Euptf2Descriptor, Euptf2Model, Euptf2Prediction, Euptf2Ths, euptf2_models};

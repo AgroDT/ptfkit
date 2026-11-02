@@ -4,6 +4,9 @@ title: EU-PTF v2 native THS model
 
 # EU-PTF v2 native THS model
 
+The [model collection guide](euptf2-collection.md) extends this validated
+reference slice. This page retains its original artifact contract and audit.
+
 ptfkit supports locally imported **THS_PTF01** from EU-PTF v2 in Python,
 Rust, C11 and C++23. This first slice predicts saturated volumetric water
 content and its conditional quantiles at 0.05, 0.5 and 0.95. Runtime inference

@@ -45,3 +45,4 @@ export import ptfkit.zhao2016;
 
 export import ptfkit.models;
 export import ptfkit.zhang_schaap2017;
+export import ptfkit.szabo_weynants_weber2021;

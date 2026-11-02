@@ -1,12 +1,13 @@
 """Owned external neural ensembles with native SHA-256 and structural validation."""
 from collections.abc import Sequence
 from pathlib import Path
+from typing import NamedTuple
 
 from ptfkit import _models
 from ptfkit._models import ModelFormatError, ModelInputError, ModelIntegrityError
 
 
-__all__ = ['Euptf2Ths', 'Model', 'ModelFormatError', 'ModelInputError', 'ModelIntegrityError']
+__all__ = ['Euptf2Model', 'Euptf2Prediction', 'Euptf2Ths', 'Model', 'ModelFormatError', 'ModelInputError', 'ModelIntegrityError', 'euptf2_models']
 
 class Model:
     """An immutable native model; the digest must come from a trusted manifest.

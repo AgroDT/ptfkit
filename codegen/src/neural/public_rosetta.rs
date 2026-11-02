@@ -28,6 +28,9 @@ pub(crate) fn validate(entries: &[Entry]) -> Result<()> {
             else {
                 continue;
             };
+            if binding.kind != "rosetta3" {
+                continue;
+            }
             let fields: Vec<_> = ["mean", "std"]
                 .into_iter()
                 .flat_map(|stat| PARAMETERS.map(|p| format!("{p}_{stat}")))
@@ -80,10 +83,15 @@ pub(crate) fn validate(entries: &[Entry]) -> Result<()> {
 
 pub(crate) fn render(root: &Path, entries: &[Entry]) -> Result<Option<AdapterFiles>> {
     validate(entries)?;
-    let Some(entry) = entries
-        .iter()
-        .find(|e| e.spec.functions.iter().any(enabled))
-    else {
+    let Some(entry) = entries.iter().find(|e| {
+        e.spec.functions.iter().any(|f| {
+            enabled(f)
+                && f.implementation
+                    .as_ref()
+                    .and_then(|i| i.external_model.as_ref())
+                    .is_some_and(|m| m.kind == "rosetta3")
+        })
+    }) else {
         return Ok(None);
     };
     let artifact_path = root.join("specs/models/rosetta3/artifact.json");
