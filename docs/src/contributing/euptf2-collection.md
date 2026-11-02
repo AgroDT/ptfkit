@@ -190,9 +190,7 @@ from ptfkit.szabo_weynants_weber2021 import calc_ptf_szabo2021_fc_2_ptf03
 model = Euptf2Model.load('FC_2_PTF03', '.euptf2-local/models/FC_2_PTF03.ptfq')
 prediction = model.predict([40, 40, 20, 30, 1.3])
 custom = model.predict([40, 40, 20, 30, 1.3], [0.1, 0.9])
-named = calc_ptf_szabo2021_fc_2_ptf03(
-    model, ussand=40, ussilt=40, usclay=20, depth_m=30, bd=1.3
-)
+named = calc_ptf_szabo2021_fc_2_ptf03(model, ussand=40, ussilt=40, usclay=20, depth_m=30, bd=1.3)
 ```
 
 Rust exposes `models::Euptf2Model`, `euptf2_models()` and `descriptor()`;
