@@ -510,6 +510,230 @@ Original object `KS_PTF05`. Predictors in saved order:
 
 Result `Euptf2KsStatistics`: mean, q05, q25, q50, q75, q95. Complete-container SHA-256 `2b275861485a1a02401b4477dfc10ac619ea122f7e66f9df6e9a0f82f89d6460`.
 
+## `calc_ptf_szabo2021_mvg_ptf01`
+
+Predict MVG_PTF01 original-scale point estimates and five conditional quantiles.
+
+Original object `MVG_PTF01`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+
+Result `Euptf2MvgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, k0_mean, l_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95, k0_q05, k0_q25, k0_q50, k0_q75, k0_q95, l_q05, l_q25, l_q50, l_q75, l_q95. Complete-container SHA-256 `32c03e6b59ee704b0602368e40b1007eea6a2595c0c81f5fe25a333711f9e5f3`.
+
+## `calc_ptf_szabo2021_mvg_ptf02`
+
+Predict MVG_PTF02 original-scale point estimates and five conditional quantiles.
+
+Original object `MVG_PTF02`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | % | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+
+Result `Euptf2MvgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, k0_mean, l_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95, k0_q05, k0_q25, k0_q50, k0_q75, k0_q95, l_q05, l_q25, l_q50, l_q75, l_q95. Complete-container SHA-256 `00fa52880c66421dbdc23a0c0bb65b4a617fc878825d9b6b47f08c52056390ac`.
+
+## `calc_ptf_szabo2021_mvg_ptf04`
+
+Predict MVG_PTF04 original-scale point estimates and five conditional quantiles.
+
+Original object `MVG_PTF04`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `caco3` | % | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+
+Result `Euptf2MvgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, k0_mean, l_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95, k0_q05, k0_q25, k0_q50, k0_q75, k0_q95, l_q05, l_q25, l_q50, l_q75, l_q95. Complete-container SHA-256 `0652b722f64b3ba2cd275347385645253ef348a50fd610aa71700deb3e66d8a4`.
+
+## `calc_ptf_szabo2021_mvg_ptf05`
+
+Predict MVG_PTF05 original-scale point estimates and five conditional quantiles.
+
+Original object `MVG_PTF05`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `ph_h2o` | 1 | Soil pH measured in water. No normalization, clipping or imputation. |
+
+Result `Euptf2MvgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, k0_mean, l_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95, k0_q05, k0_q25, k0_q50, k0_q75, k0_q95, l_q05, l_q25, l_q50, l_q75, l_q95. Complete-container SHA-256 `9035273def9ff456f50c8712c2da496a175e9b6d0cd25f59fc7c637a2f338095`.
+
+## `calc_ptf_szabo2021_mvg_ptf06`
+
+Predict MVG_PTF06 original-scale point estimates and five conditional quantiles.
+
+Original object `MVG_PTF06`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `cec` | meq/100g | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+Result `Euptf2MvgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, k0_mean, l_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95, k0_q05, k0_q25, k0_q50, k0_q75, k0_q95, l_q05, l_q25, l_q50, l_q75, l_q95. Complete-container SHA-256 `9eacf858cf779150a9fac6cd0532bea30e244fb3a5a698cba715aadd624f9a6f`.
+
+## `calc_ptf_szabo2021_mvg_ptf12`
+
+Predict MVG_PTF12 original-scale point estimates and five conditional quantiles.
+
+Original object `MVG_PTF12`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `bd` | g/cm^3 | Dry soil bulk density. No normalization, clipping or imputation. |
+| `ph_h2o` | 1 | Soil pH measured in water. No normalization, clipping or imputation. |
+
+Result `Euptf2MvgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, k0_mean, l_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95, k0_q05, k0_q25, k0_q50, k0_q75, k0_q95, l_q05, l_q25, l_q50, l_q75, l_q95. Complete-container SHA-256 `564a582915ec71a28baaf868c0ddff2788d042497e45891f0edbe8762af9c3e2`.
+
+## `calc_ptf_szabo2021_mvg_ptf13`
+
+Predict MVG_PTF13 original-scale point estimates and five conditional quantiles.
+
+Original object `MVG_PTF13`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `bd` | g/cm^3 | Dry soil bulk density. No normalization, clipping or imputation. |
+| `cec` | meq/100g | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+Result `Euptf2MvgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, k0_mean, l_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95, k0_q05, k0_q25, k0_q50, k0_q75, k0_q95, l_q05, l_q25, l_q50, l_q75, l_q95. Complete-container SHA-256 `450d476d839af4cd679b9eaa63cf256268a99032f59d768fb79b6b327bd8aeda`.
+
+## `calc_ptf_szabo2021_mvg_ptf20`
+
+Predict MVG_PTF20 original-scale point estimates and five conditional quantiles.
+
+Original object `MVG_PTF20`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | % | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+| `caco3` | % | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+| `ph_h2o` | 1 | Soil pH measured in water. No normalization, clipping or imputation. |
+
+Result `Euptf2MvgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, k0_mean, l_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95, k0_q05, k0_q25, k0_q50, k0_q75, k0_q95, l_q05, l_q25, l_q50, l_q75, l_q95. Complete-container SHA-256 `6341eb27731efeffc97263a39fed973ca3b5cb1afbecc189f26b53cf01707d20`.
+
+## `calc_ptf_szabo2021_mvg_ptf21`
+
+Predict MVG_PTF21 original-scale point estimates and five conditional quantiles.
+
+Original object `MVG_PTF21`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | % | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+| `caco3` | % | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+| `cec` | meq/100g | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+Result `Euptf2MvgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, k0_mean, l_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95, k0_q05, k0_q25, k0_q50, k0_q75, k0_q95, l_q05, l_q25, l_q50, l_q75, l_q95. Complete-container SHA-256 `3f50ec8a258be6979dc1a042ed7eb87042471457a31aa0604801dc5a0c67960f`.
+
+## `calc_ptf_szabo2021_mvg_ptf23`
+
+Predict MVG_PTF23 original-scale point estimates and five conditional quantiles.
+
+Original object `MVG_PTF23`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `bd` | g/cm^3 | Dry soil bulk density. No normalization, clipping or imputation. |
+| `caco3` | % | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+| `ph_h2o` | 1 | Soil pH measured in water. No normalization, clipping or imputation. |
+
+Result `Euptf2MvgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, k0_mean, l_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95, k0_q05, k0_q25, k0_q50, k0_q75, k0_q95, l_q05, l_q25, l_q50, l_q75, l_q95. Complete-container SHA-256 `09e2d498b3d30767fc06bd4dc77375317e659881949b7827c8adb14050d5d303`.
+
+## `calc_ptf_szabo2021_mvg_ptf27`
+
+Predict MVG_PTF27 original-scale point estimates and five conditional quantiles.
+
+Original object `MVG_PTF27`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | % | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+| `bd` | g/cm^3 | Dry soil bulk density. No normalization, clipping or imputation. |
+| `caco3` | % | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+| `ph_h2o` | 1 | Soil pH measured in water. No normalization, clipping or imputation. |
+
+Result `Euptf2MvgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, k0_mean, l_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95, k0_q05, k0_q25, k0_q50, k0_q75, k0_q95, l_q05, l_q25, l_q50, l_q75, l_q95. Complete-container SHA-256 `9c75b0d62362b257aff57254184e0eeab36a7bb2c258a1352d1b3404d767a517`.
+
+## `calc_ptf_szabo2021_mvg_ptf28`
+
+Predict MVG_PTF28 original-scale point estimates and five conditional quantiles.
+
+Original object `MVG_PTF28`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | % | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+| `bd` | g/cm^3 | Dry soil bulk density. No normalization, clipping or imputation. |
+| `caco3` | % | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+| `cec` | meq/100g | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+Result `Euptf2MvgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, k0_mean, l_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95, k0_q05, k0_q25, k0_q50, k0_q75, k0_q95, l_q05, l_q25, l_q50, l_q75, l_q95. Complete-container SHA-256 `8f27ebca2fe5fe97e187d93f9952657db7b42bf2e9871c658d7ea0252192b5a6`.
+
+## `calc_ptf_szabo2021_mvg_ptf29`
+
+Predict MVG_PTF29 original-scale point estimates and five conditional quantiles.
+
+Original object `MVG_PTF29`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | % | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+| `bd` | g/cm^3 | Dry soil bulk density. No normalization, clipping or imputation. |
+| `ph_h2o` | 1 | Soil pH measured in water. No normalization, clipping or imputation. |
+| `cec` | meq/100g | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+Result `Euptf2MvgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, k0_mean, l_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95, k0_q05, k0_q25, k0_q50, k0_q75, k0_q95, l_q05, l_q25, l_q50, l_q75, l_q95. Complete-container SHA-256 `6075435709e53cf759899308569779ce1cfea3a5f42e199dab8230f5601a8e91`.
+
 ## `calc_ptf_szabo2021_ths_ptf01`
 
 Predict THS_PTF01 original-scale point estimates and five conditional quantiles.
@@ -588,6 +812,362 @@ Original object `THS_PTF05`. Predictors in saved order:
 | `ph_h2o` | 1 | Soil pH measured in water. No normalization, clipping or imputation. |
 
 Result `Euptf2ThsStatistics`: mean, q05, q25, q50, q75, q95. Complete-container SHA-256 `3bb5db54d7953624878151ce991e9ec688b15aaa455a2c14223a753b1dd435e1`.
+
+## `calc_ptf_szabo2021_vg_ptf01`
+
+Predict VG_PTF01 original-scale point estimates and five conditional quantiles.
+
+Original object `VG_PTF01`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+
+Result `Euptf2VgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95. Complete-container SHA-256 `0c32bd11a8209d4cffd7e08faeb43dd5218e73dab970af68e08d0bdfd54a8041`.
+
+## `calc_ptf_szabo2021_vg_ptf02`
+
+Predict VG_PTF02 original-scale point estimates and five conditional quantiles.
+
+Original object `VG_PTF02`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | % | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+
+Result `Euptf2VgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95. Complete-container SHA-256 `86267746db8e4359b8753137416f2c193746b1c808fb1f57e689f889bf73d221`.
+
+## `calc_ptf_szabo2021_vg_ptf03`
+
+Predict VG_PTF03 original-scale point estimates and five conditional quantiles.
+
+Original object `VG_PTF03`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `bd` | g/cm^3 | Dry soil bulk density. No normalization, clipping or imputation. |
+
+Result `Euptf2VgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95. Complete-container SHA-256 `521a3964c76907766b1e4e78b8d8274d100b97fa68e573f42b099a27f5e334a2`.
+
+## `calc_ptf_szabo2021_vg_ptf04`
+
+Predict VG_PTF04 original-scale point estimates and five conditional quantiles.
+
+Original object `VG_PTF04`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `caco3` | % | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+
+Result `Euptf2VgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95. Complete-container SHA-256 `2d02440e32a355162d918e86a2f3facbd592bc7c74b16c9c4515bee963e3dda6`.
+
+## `calc_ptf_szabo2021_vg_ptf05`
+
+Predict VG_PTF05 original-scale point estimates and five conditional quantiles.
+
+Original object `VG_PTF05`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `ph_h2o` | 1 | Soil pH measured in water. No normalization, clipping or imputation. |
+
+Result `Euptf2VgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95. Complete-container SHA-256 `e0e7ccab39bb17752ca7ae394f8364a2c929fc4895291a7dc7f7a2362966df2f`.
+
+## `calc_ptf_szabo2021_vg_ptf06`
+
+Predict VG_PTF06 original-scale point estimates and five conditional quantiles.
+
+Original object `VG_PTF06`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `cec` | meq/100g | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+Result `Euptf2VgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95. Complete-container SHA-256 `c80a4c6b58967287b78350e6d11b95739fc2f6da85de1e1dc402067b4173717e`.
+
+## `calc_ptf_szabo2021_vg_ptf07`
+
+Predict VG_PTF07 original-scale point estimates and five conditional quantiles.
+
+Original object `VG_PTF07`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | % | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+| `bd` | g/cm^3 | Dry soil bulk density. No normalization, clipping or imputation. |
+
+Result `Euptf2VgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95. Complete-container SHA-256 `d79c3cd956b1cf4fc7b172599a490cf0ec6e9876e3817fd6c7afed8d04c45e27`.
+
+## `calc_ptf_szabo2021_vg_ptf08`
+
+Predict VG_PTF08 original-scale point estimates and five conditional quantiles.
+
+Original object `VG_PTF08`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | % | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+| `caco3` | % | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+
+Result `Euptf2VgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95. Complete-container SHA-256 `f14ce3ff46c3f4ba320f972d2a068133ebb54ba6fb2dc9503f511daa505d6067`.
+
+## `calc_ptf_szabo2021_vg_ptf09`
+
+Predict VG_PTF09 original-scale point estimates and five conditional quantiles.
+
+Original object `VG_PTF09`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | % | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+| `ph_h2o` | 1 | Soil pH measured in water. No normalization, clipping or imputation. |
+
+Result `Euptf2VgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95. Complete-container SHA-256 `faf3c85bd78753f92e5a604c26a4a62705763f69879e1b20a4465d02f9c4bf6a`.
+
+## `calc_ptf_szabo2021_vg_ptf10`
+
+Predict VG_PTF10 original-scale point estimates and five conditional quantiles.
+
+Original object `VG_PTF10`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | % | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+| `cec` | meq/100g | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+Result `Euptf2VgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95. Complete-container SHA-256 `ee04b8df6443471178071b705b9ca4a31102aa0b8d615cc775adff959b9e81c3`.
+
+## `calc_ptf_szabo2021_vg_ptf11`
+
+Predict VG_PTF11 original-scale point estimates and five conditional quantiles.
+
+Original object `VG_PTF11`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `bd` | g/cm^3 | Dry soil bulk density. No normalization, clipping or imputation. |
+| `caco3` | % | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+
+Result `Euptf2VgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95. Complete-container SHA-256 `be970ba38c327d236cfc868c47adb53478ee1ce033efed79ed4570ddac40fb99`.
+
+## `calc_ptf_szabo2021_vg_ptf12`
+
+Predict VG_PTF12 original-scale point estimates and five conditional quantiles.
+
+Original object `VG_PTF12`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `bd` | g/cm^3 | Dry soil bulk density. No normalization, clipping or imputation. |
+| `ph_h2o` | 1 | Soil pH measured in water. No normalization, clipping or imputation. |
+
+Result `Euptf2VgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95. Complete-container SHA-256 `1980852d5e428bc810e5f4470f292f9cbd15e98cdc3c14b0df755cabffe60165`.
+
+## `calc_ptf_szabo2021_vg_ptf13`
+
+Predict VG_PTF13 original-scale point estimates and five conditional quantiles.
+
+Original object `VG_PTF13`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `bd` | g/cm^3 | Dry soil bulk density. No normalization, clipping or imputation. |
+| `cec` | meq/100g | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+Result `Euptf2VgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95. Complete-container SHA-256 `3e267e528dd278d308575637d4cb1dc1803a7770a745a120a3040e7825500d22`.
+
+## `calc_ptf_szabo2021_vg_ptf14`
+
+Predict VG_PTF14 original-scale point estimates and five conditional quantiles.
+
+Original object `VG_PTF14`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `caco3` | % | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+| `ph_h2o` | 1 | Soil pH measured in water. No normalization, clipping or imputation. |
+
+Result `Euptf2VgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95. Complete-container SHA-256 `e6d8a5736d38d52f1c552d21054556d2528697dd2ed48f22d1059a352ac3d66a`.
+
+## `calc_ptf_szabo2021_vg_ptf15`
+
+Predict VG_PTF15 original-scale point estimates and five conditional quantiles.
+
+Original object `VG_PTF15`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `caco3` | % | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+| `cec` | meq/100g | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+Result `Euptf2VgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95. Complete-container SHA-256 `a28fd7e33925650006d215ae74d88fb50e6a8278494e4c8abb49047e2320ed73`.
+
+## `calc_ptf_szabo2021_vg_ptf16`
+
+Predict VG_PTF16 original-scale point estimates and five conditional quantiles.
+
+Original object `VG_PTF16`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `ph_h2o` | 1 | Soil pH measured in water. No normalization, clipping or imputation. |
+| `cec` | meq/100g | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+Result `Euptf2VgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95. Complete-container SHA-256 `6a8f3d5dad991f44cfa57384d90d788f13f16ae8a08bb71b5badcf01cae0f01d`.
+
+## `calc_ptf_szabo2021_vg_ptf21`
+
+Predict VG_PTF21 original-scale point estimates and five conditional quantiles.
+
+Original object `VG_PTF21`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | % | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+| `caco3` | % | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+| `cec` | meq/100g | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+Result `Euptf2VgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95. Complete-container SHA-256 `97bebedc28549744dfdbbe62028c18fe7e166362cee9b1a67ab0a4f1c028b5b2`.
+
+## `calc_ptf_szabo2021_vg_ptf22`
+
+Predict VG_PTF22 original-scale point estimates and five conditional quantiles.
+
+Original object `VG_PTF22`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | % | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+| `ph_h2o` | 1 | Soil pH measured in water. No normalization, clipping or imputation. |
+| `cec` | meq/100g | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+Result `Euptf2VgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95. Complete-container SHA-256 `31644c667a99143608842c124018e2c9514bac1825da5b6cc588ab2819b8e985`.
+
+## `calc_ptf_szabo2021_vg_ptf24`
+
+Predict VG_PTF24 original-scale point estimates and five conditional quantiles.
+
+Original object `VG_PTF24`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `bd` | g/cm^3 | Dry soil bulk density. No normalization, clipping or imputation. |
+| `caco3` | % | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+| `cec` | meq/100g | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+Result `Euptf2VgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95. Complete-container SHA-256 `a629e007f80b8c9a7d003822d1c6a7d481894e59e3497398a778d683497639a6`.
+
+## `calc_ptf_szabo2021_vg_ptf25`
+
+Predict VG_PTF25 original-scale point estimates and five conditional quantiles.
+
+Original object `VG_PTF25`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `bd` | g/cm^3 | Dry soil bulk density. No normalization, clipping or imputation. |
+| `ph_h2o` | 1 | Soil pH measured in water. No normalization, clipping or imputation. |
+| `cec` | meq/100g | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+Result `Euptf2VgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95. Complete-container SHA-256 `26ae2d57377cbb99daaefbe50e3cfc8cd2dbf54b4d804f80676892d2e393ada5`.
+
+## `calc_ptf_szabo2021_vg_ptf29`
+
+Predict VG_PTF29 original-scale point estimates and five conditional quantiles.
+
+Original object `VG_PTF29`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | % | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+| `bd` | g/cm^3 | Dry soil bulk density. No normalization, clipping or imputation. |
+| `ph_h2o` | 1 | Soil pH measured in water. No normalization, clipping or imputation. |
+| `cec` | meq/100g | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+Result `Euptf2VgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95. Complete-container SHA-256 `e81961ec534408681c4cebbeab36ce14350c5fb4f66469cfdc2d211bbafb4fc8`.
 
 ## `calc_ptf_szabo2021_wp_ptf01`
 
@@ -704,4 +1284,22 @@ Original object `WP_PTF17`. Predictors in saved order:
 | `caco3` | % | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
 
 Result `Euptf2WpStatistics`: mean, q05, q25, q50, q75, q95. Complete-container SHA-256 `bfd0cc4d10ed57f316cfbec5cd0f96f98871cbbb1e29d35d8ef508ef29b32b3b`.
+
+## `calc_ptf_szabo2021_vg_ptf26`
+
+Predict VG_PTF26 original-scale point estimates and five conditional quantiles.
+
+Original object `VG_PTF26`. Predictors in saved order:
+
+| Name | Unit | Definition |
+| --- | --- | --- |
+| `ussand` | % | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | % | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | % | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | cm | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `caco3` | % | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+| `ph_h2o` | 1 | Soil pH measured in water. No normalization, clipping or imputation. |
+| `cec` | meq/100g | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+Result `Euptf2VgStatistics`: ths_mean, thr_mean, alp_mean, n_mean, m_mean, ths_q05, ths_q25, ths_q50, ths_q75, ths_q95, thr_q05, thr_q25, thr_q50, thr_q75, thr_q95, alp_q05, alp_q25, alp_q50, alp_q75, alp_q95, n_q05, n_q25, n_q50, n_q75, n_q95. Complete-container SHA-256 `fe4407e2fecb8e8b7a37f30c2bc588d47d692a920ad7ec35815c3c69a762115f`.
 

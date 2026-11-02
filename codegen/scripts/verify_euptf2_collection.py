@@ -56,6 +56,10 @@ def run(args: argparse.Namespace) -> dict:
         reference = json.loads(
             (ROOT / 'specs/models/euptf2/references' / f'{name}.json').read_text()
         )
+        if reference['features'] != model['features']:
+            raise AssertionError(
+                f'{name}: predictor ordering differs from the independent R reference'
+            )
         for group in ['cases', 'custom_cases']:
             for case in reference[group]:
                 case['inputs'] = [float(x) for x in case['inputs']]

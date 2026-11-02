@@ -392,6 +392,171 @@ inline Euptf2KsStatistics calc_ptf_szabo2021_ks_ptf05(const Euptf2Model &model, 
 }
 } // namespace ptfkit
 export namespace ptfkit {
+using Euptf2MvgStatistics = ::ptfkit_euptf2_mvg_statistics;
+}
+export namespace ptfkit {
+inline Euptf2MvgStatistics calc_ptf_szabo2021_mvg_ptf01(const Euptf2Model &model, double ussand,
+                                                        double ussilt, double usclay,
+                                                        double depth_m) {
+    Euptf2MvgStatistics out;
+    auto status = ::calc_ptf_szabo2021_mvg_ptf01(model.native_handle(), ussand, ussilt, usclay,
+                                                 depth_m, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2MvgStatistics calc_ptf_szabo2021_mvg_ptf02(const Euptf2Model &model, double ussand,
+                                                        double ussilt, double usclay,
+                                                        double depth_m, double oc) {
+    Euptf2MvgStatistics out;
+    auto status = ::calc_ptf_szabo2021_mvg_ptf02(model.native_handle(), ussand, ussilt, usclay,
+                                                 depth_m, oc, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2MvgStatistics calc_ptf_szabo2021_mvg_ptf04(const Euptf2Model &model, double ussand,
+                                                        double ussilt, double usclay,
+                                                        double depth_m, double caco3) {
+    Euptf2MvgStatistics out;
+    auto status = ::calc_ptf_szabo2021_mvg_ptf04(model.native_handle(), ussand, ussilt, usclay,
+                                                 depth_m, caco3, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2MvgStatistics calc_ptf_szabo2021_mvg_ptf05(const Euptf2Model &model, double ussand,
+                                                        double ussilt, double usclay,
+                                                        double depth_m, double ph_h2o) {
+    Euptf2MvgStatistics out;
+    auto status = ::calc_ptf_szabo2021_mvg_ptf05(model.native_handle(), ussand, ussilt, usclay,
+                                                 depth_m, ph_h2o, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2MvgStatistics calc_ptf_szabo2021_mvg_ptf06(const Euptf2Model &model, double ussand,
+                                                        double ussilt, double usclay,
+                                                        double depth_m, double cec) {
+    Euptf2MvgStatistics out;
+    auto status = ::calc_ptf_szabo2021_mvg_ptf06(model.native_handle(), ussand, ussilt, usclay,
+                                                 depth_m, cec, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2MvgStatistics calc_ptf_szabo2021_mvg_ptf12(const Euptf2Model &model, double ussand,
+                                                        double ussilt, double usclay,
+                                                        double depth_m, double bd, double ph_h2o) {
+    Euptf2MvgStatistics out;
+    auto status = ::calc_ptf_szabo2021_mvg_ptf12(model.native_handle(), ussand, ussilt, usclay,
+                                                 depth_m, bd, ph_h2o, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2MvgStatistics calc_ptf_szabo2021_mvg_ptf13(const Euptf2Model &model, double ussand,
+                                                        double ussilt, double usclay,
+                                                        double depth_m, double bd, double cec) {
+    Euptf2MvgStatistics out;
+    auto status = ::calc_ptf_szabo2021_mvg_ptf13(model.native_handle(), ussand, ussilt, usclay,
+                                                 depth_m, bd, cec, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2MvgStatistics calc_ptf_szabo2021_mvg_ptf20(const Euptf2Model &model, double ussand,
+                                                        double ussilt, double usclay,
+                                                        double depth_m, double oc, double caco3,
+                                                        double ph_h2o) {
+    Euptf2MvgStatistics out;
+    auto status = ::calc_ptf_szabo2021_mvg_ptf20(model.native_handle(), ussand, ussilt, usclay,
+                                                 depth_m, oc, caco3, ph_h2o, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2MvgStatistics calc_ptf_szabo2021_mvg_ptf21(const Euptf2Model &model, double ussand,
+                                                        double ussilt, double usclay,
+                                                        double depth_m, double oc, double caco3,
+                                                        double cec) {
+    Euptf2MvgStatistics out;
+    auto status = ::calc_ptf_szabo2021_mvg_ptf21(model.native_handle(), ussand, ussilt, usclay,
+                                                 depth_m, oc, caco3, cec, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2MvgStatistics calc_ptf_szabo2021_mvg_ptf23(const Euptf2Model &model, double ussand,
+                                                        double ussilt, double usclay,
+                                                        double depth_m, double bd, double caco3,
+                                                        double ph_h2o) {
+    Euptf2MvgStatistics out;
+    auto status = ::calc_ptf_szabo2021_mvg_ptf23(model.native_handle(), ussand, ussilt, usclay,
+                                                 depth_m, bd, caco3, ph_h2o, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2MvgStatistics calc_ptf_szabo2021_mvg_ptf27(const Euptf2Model &model, double ussand,
+                                                        double ussilt, double usclay,
+                                                        double depth_m, double oc, double bd,
+                                                        double caco3, double ph_h2o) {
+    Euptf2MvgStatistics out;
+    auto status = ::calc_ptf_szabo2021_mvg_ptf27(model.native_handle(), ussand, ussilt, usclay,
+                                                 depth_m, oc, bd, caco3, ph_h2o, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2MvgStatistics calc_ptf_szabo2021_mvg_ptf28(const Euptf2Model &model, double ussand,
+                                                        double ussilt, double usclay,
+                                                        double depth_m, double oc, double bd,
+                                                        double caco3, double cec) {
+    Euptf2MvgStatistics out;
+    auto status = ::calc_ptf_szabo2021_mvg_ptf28(model.native_handle(), ussand, ussilt, usclay,
+                                                 depth_m, oc, bd, caco3, cec, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2MvgStatistics calc_ptf_szabo2021_mvg_ptf29(const Euptf2Model &model, double ussand,
+                                                        double ussilt, double usclay,
+                                                        double depth_m, double oc, double bd,
+                                                        double ph_h2o, double cec) {
+    Euptf2MvgStatistics out;
+    auto status = ::calc_ptf_szabo2021_mvg_ptf29(model.native_handle(), ussand, ussilt, usclay,
+                                                 depth_m, oc, bd, ph_h2o, cec, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
 using Euptf2ThsStatistics = ::ptfkit_euptf2_ths_statistics;
 }
 export namespace ptfkit {
@@ -449,6 +614,262 @@ inline Euptf2ThsStatistics calc_ptf_szabo2021_ths_ptf05(const Euptf2Model &model
     Euptf2ThsStatistics out;
     auto status = ::calc_ptf_szabo2021_ths_ptf05(model.native_handle(), ussand, ussilt, usclay,
                                                  depth_m, ph_h2o, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+using Euptf2VgStatistics = ::ptfkit_euptf2_vg_statistics;
+}
+export namespace ptfkit {
+inline Euptf2VgStatistics calc_ptf_szabo2021_vg_ptf01(const Euptf2Model &model, double ussand,
+                                                      double ussilt, double usclay,
+                                                      double depth_m) {
+    Euptf2VgStatistics out;
+    auto status =
+        ::calc_ptf_szabo2021_vg_ptf01(model.native_handle(), ussand, ussilt, usclay, depth_m, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2VgStatistics calc_ptf_szabo2021_vg_ptf02(const Euptf2Model &model, double ussand,
+                                                      double ussilt, double usclay, double depth_m,
+                                                      double oc) {
+    Euptf2VgStatistics out;
+    auto status = ::calc_ptf_szabo2021_vg_ptf02(model.native_handle(), ussand, ussilt, usclay,
+                                                depth_m, oc, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2VgStatistics calc_ptf_szabo2021_vg_ptf03(const Euptf2Model &model, double ussand,
+                                                      double ussilt, double usclay, double depth_m,
+                                                      double bd) {
+    Euptf2VgStatistics out;
+    auto status = ::calc_ptf_szabo2021_vg_ptf03(model.native_handle(), ussand, ussilt, usclay,
+                                                depth_m, bd, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2VgStatistics calc_ptf_szabo2021_vg_ptf04(const Euptf2Model &model, double ussand,
+                                                      double ussilt, double usclay, double depth_m,
+                                                      double caco3) {
+    Euptf2VgStatistics out;
+    auto status = ::calc_ptf_szabo2021_vg_ptf04(model.native_handle(), ussand, ussilt, usclay,
+                                                depth_m, caco3, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2VgStatistics calc_ptf_szabo2021_vg_ptf05(const Euptf2Model &model, double ussand,
+                                                      double ussilt, double usclay, double depth_m,
+                                                      double ph_h2o) {
+    Euptf2VgStatistics out;
+    auto status = ::calc_ptf_szabo2021_vg_ptf05(model.native_handle(), ussand, ussilt, usclay,
+                                                depth_m, ph_h2o, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2VgStatistics calc_ptf_szabo2021_vg_ptf06(const Euptf2Model &model, double ussand,
+                                                      double ussilt, double usclay, double depth_m,
+                                                      double cec) {
+    Euptf2VgStatistics out;
+    auto status = ::calc_ptf_szabo2021_vg_ptf06(model.native_handle(), ussand, ussilt, usclay,
+                                                depth_m, cec, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2VgStatistics calc_ptf_szabo2021_vg_ptf07(const Euptf2Model &model, double ussand,
+                                                      double ussilt, double usclay, double depth_m,
+                                                      double oc, double bd) {
+    Euptf2VgStatistics out;
+    auto status = ::calc_ptf_szabo2021_vg_ptf07(model.native_handle(), ussand, ussilt, usclay,
+                                                depth_m, oc, bd, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2VgStatistics calc_ptf_szabo2021_vg_ptf08(const Euptf2Model &model, double ussand,
+                                                      double ussilt, double usclay, double depth_m,
+                                                      double oc, double caco3) {
+    Euptf2VgStatistics out;
+    auto status = ::calc_ptf_szabo2021_vg_ptf08(model.native_handle(), ussand, ussilt, usclay,
+                                                depth_m, oc, caco3, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2VgStatistics calc_ptf_szabo2021_vg_ptf09(const Euptf2Model &model, double ussand,
+                                                      double ussilt, double usclay, double depth_m,
+                                                      double oc, double ph_h2o) {
+    Euptf2VgStatistics out;
+    auto status = ::calc_ptf_szabo2021_vg_ptf09(model.native_handle(), ussand, ussilt, usclay,
+                                                depth_m, oc, ph_h2o, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2VgStatistics calc_ptf_szabo2021_vg_ptf10(const Euptf2Model &model, double ussand,
+                                                      double ussilt, double usclay, double depth_m,
+                                                      double oc, double cec) {
+    Euptf2VgStatistics out;
+    auto status = ::calc_ptf_szabo2021_vg_ptf10(model.native_handle(), ussand, ussilt, usclay,
+                                                depth_m, oc, cec, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2VgStatistics calc_ptf_szabo2021_vg_ptf11(const Euptf2Model &model, double ussand,
+                                                      double ussilt, double usclay, double depth_m,
+                                                      double bd, double caco3) {
+    Euptf2VgStatistics out;
+    auto status = ::calc_ptf_szabo2021_vg_ptf11(model.native_handle(), ussand, ussilt, usclay,
+                                                depth_m, bd, caco3, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2VgStatistics calc_ptf_szabo2021_vg_ptf12(const Euptf2Model &model, double ussand,
+                                                      double ussilt, double usclay, double depth_m,
+                                                      double bd, double ph_h2o) {
+    Euptf2VgStatistics out;
+    auto status = ::calc_ptf_szabo2021_vg_ptf12(model.native_handle(), ussand, ussilt, usclay,
+                                                depth_m, bd, ph_h2o, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2VgStatistics calc_ptf_szabo2021_vg_ptf13(const Euptf2Model &model, double ussand,
+                                                      double ussilt, double usclay, double depth_m,
+                                                      double bd, double cec) {
+    Euptf2VgStatistics out;
+    auto status = ::calc_ptf_szabo2021_vg_ptf13(model.native_handle(), ussand, ussilt, usclay,
+                                                depth_m, bd, cec, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2VgStatistics calc_ptf_szabo2021_vg_ptf14(const Euptf2Model &model, double ussand,
+                                                      double ussilt, double usclay, double depth_m,
+                                                      double caco3, double ph_h2o) {
+    Euptf2VgStatistics out;
+    auto status = ::calc_ptf_szabo2021_vg_ptf14(model.native_handle(), ussand, ussilt, usclay,
+                                                depth_m, caco3, ph_h2o, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2VgStatistics calc_ptf_szabo2021_vg_ptf15(const Euptf2Model &model, double ussand,
+                                                      double ussilt, double usclay, double depth_m,
+                                                      double caco3, double cec) {
+    Euptf2VgStatistics out;
+    auto status = ::calc_ptf_szabo2021_vg_ptf15(model.native_handle(), ussand, ussilt, usclay,
+                                                depth_m, caco3, cec, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2VgStatistics calc_ptf_szabo2021_vg_ptf16(const Euptf2Model &model, double ussand,
+                                                      double ussilt, double usclay, double depth_m,
+                                                      double ph_h2o, double cec) {
+    Euptf2VgStatistics out;
+    auto status = ::calc_ptf_szabo2021_vg_ptf16(model.native_handle(), ussand, ussilt, usclay,
+                                                depth_m, ph_h2o, cec, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2VgStatistics calc_ptf_szabo2021_vg_ptf21(const Euptf2Model &model, double ussand,
+                                                      double ussilt, double usclay, double depth_m,
+                                                      double oc, double caco3, double cec) {
+    Euptf2VgStatistics out;
+    auto status = ::calc_ptf_szabo2021_vg_ptf21(model.native_handle(), ussand, ussilt, usclay,
+                                                depth_m, oc, caco3, cec, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2VgStatistics calc_ptf_szabo2021_vg_ptf22(const Euptf2Model &model, double ussand,
+                                                      double ussilt, double usclay, double depth_m,
+                                                      double oc, double ph_h2o, double cec) {
+    Euptf2VgStatistics out;
+    auto status = ::calc_ptf_szabo2021_vg_ptf22(model.native_handle(), ussand, ussilt, usclay,
+                                                depth_m, oc, ph_h2o, cec, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2VgStatistics calc_ptf_szabo2021_vg_ptf24(const Euptf2Model &model, double ussand,
+                                                      double ussilt, double usclay, double depth_m,
+                                                      double bd, double caco3, double cec) {
+    Euptf2VgStatistics out;
+    auto status = ::calc_ptf_szabo2021_vg_ptf24(model.native_handle(), ussand, ussilt, usclay,
+                                                depth_m, bd, caco3, cec, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2VgStatistics calc_ptf_szabo2021_vg_ptf25(const Euptf2Model &model, double ussand,
+                                                      double ussilt, double usclay, double depth_m,
+                                                      double bd, double ph_h2o, double cec) {
+    Euptf2VgStatistics out;
+    auto status = ::calc_ptf_szabo2021_vg_ptf25(model.native_handle(), ussand, ussilt, usclay,
+                                                depth_m, bd, ph_h2o, cec, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2VgStatistics calc_ptf_szabo2021_vg_ptf29(const Euptf2Model &model, double ussand,
+                                                      double ussilt, double usclay, double depth_m,
+                                                      double oc, double bd, double ph_h2o,
+                                                      double cec) {
+    Euptf2VgStatistics out;
+    auto status = ::calc_ptf_szabo2021_vg_ptf29(model.native_handle(), ussand, ussilt, usclay,
+                                                depth_m, oc, bd, ph_h2o, cec, &out);
     if (status != PTFKIT_MODEL_OK)
         throw ModelError(status);
     return out;
@@ -536,6 +957,18 @@ inline Euptf2WpStatistics calc_ptf_szabo2021_wp_ptf17(const Euptf2Model &model, 
     Euptf2WpStatistics out;
     auto status = ::calc_ptf_szabo2021_wp_ptf17(model.native_handle(), ussand, ussilt, usclay,
                                                 depth_m, oc, bd, caco3, &out);
+    if (status != PTFKIT_MODEL_OK)
+        throw ModelError(status);
+    return out;
+}
+} // namespace ptfkit
+export namespace ptfkit {
+inline Euptf2VgStatistics calc_ptf_szabo2021_vg_ptf26(const Euptf2Model &model, double ussand,
+                                                      double ussilt, double usclay, double depth_m,
+                                                      double caco3, double ph_h2o, double cec) {
+    Euptf2VgStatistics out;
+    auto status = ::calc_ptf_szabo2021_vg_ptf26(model.native_handle(), ussand, ussilt, usclay,
+                                                depth_m, caco3, ph_h2o, cec, &out);
     if (status != PTFKIT_MODEL_OK)
         throw ModelError(status);
     return out;

@@ -2001,7 +2001,7 @@
       ],
       "id": 32,
       "source_sha256": "22ec0552568b710c26dec024e8c34935f9e47e7357f0221bf872595e20a6f93f",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -2233,7 +2233,7 @@
       ],
       "id": 33,
       "source_sha256": "e0534a8f9a8161424ff6a4b5007660e79035b7059d325454162a8fd30fcdc141",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -2477,7 +2477,7 @@
       ],
       "id": 34,
       "source_sha256": "d5c0f708ed1817b7d75fb85b287d80265b8e4f7452848c48855a6d6488dfe446",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -2721,7 +2721,7 @@
       ],
       "id": 35,
       "source_sha256": "8f01cb1bda05133c1a3e1491c3a310ea6e0d0bd0f6729eee18b6bfb7adcf464e",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -2965,7 +2965,7 @@
       ],
       "id": 36,
       "source_sha256": "bd4e5be8d2368ba3681ac98c79bced642807c9bb30ae7d2842078fb2bbf8aed1",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -3210,7 +3210,7 @@
       ],
       "id": 37,
       "source_sha256": "fe44d438cc44673e93a9d57469aca4527a6bbecae43c958a6d06550516829bd3",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -3467,7 +3467,7 @@
       ],
       "id": 38,
       "source_sha256": "439cb8a457ffdd5e3e0dd87334914c8318ed3a0c49bc12b5b675edaa72d4a86f",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -3725,7 +3725,7 @@
       ],
       "id": 39,
       "source_sha256": "278b453ad1f1eb95416f15e02ac17446fc6e67eb9be5ee6105ba2f12446d49eb",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -3995,7 +3995,7 @@
       ],
       "id": 40,
       "source_sha256": "ba7fed063a584a090c5f7b97ff8532c908a3cfcffe0cc83d21dc0379e579d5ec",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -4265,7 +4265,7 @@
       ],
       "id": 41,
       "source_sha256": "93f5cd4979b766424c15c5c8ad9ac4e323c4de5f20a9c5e14874a244df785a89",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -4536,7 +4536,7 @@
       ],
       "id": 42,
       "source_sha256": "72e8e794ff7b8b64e74270950920643f33f7b008d3a321cac4df8e7dfb0c0d78",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -4819,7 +4819,7 @@
       ],
       "id": 43,
       "source_sha256": "7e612f44081525cff870d5da8f1016f16babb4441446c990f9dd4e93fa9b07dc",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -5102,7 +5102,7 @@
       ],
       "id": 44,
       "source_sha256": "ce56ad4e2ee078ef254d202ad25b1303c622040b3440f1315536f56fc03416b3",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -5693,7 +5693,7 @@
       ],
       "id": 50,
       "source_sha256": "afee0d2db3bd69fbf9576d9bfccb680aa4b821ff0bbca94536475e33a2ab5bbb",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -5857,7 +5857,7 @@
       ],
       "id": 51,
       "source_sha256": "c7e670ac8d88eb263927b4c2d9f8d26b86907d7a88be715e8c2dcb7669ee9bac",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -6029,7 +6029,7 @@
       ],
       "id": 52,
       "source_sha256": "eb56bdd0081bcdc915198f2716559a275d87a8ad185825c30f2783e1a630baa0",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -6201,7 +6201,7 @@
       ],
       "id": 53,
       "source_sha256": "e3e18bb9664df895188741d46b78aca6b1060312c21c8773d4647abd441ba1e7",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -6373,7 +6373,7 @@
       ],
       "id": 54,
       "source_sha256": "5f2889ba28432b65852deb480f85af52479dca85e30db415547ad90e854c17f4",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -6545,7 +6545,7 @@
       ],
       "id": 55,
       "source_sha256": "5a4781e8e574cbdb90930cee46e75cddef9e3a82b7282c344af6dafa22dcc54f",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -6718,7 +6718,7 @@
       ],
       "id": 56,
       "source_sha256": "13f619d58a942560184c7957165bcfd66831f32bf972ff2edd4a05a6b2d0bc27",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -6899,7 +6899,7 @@
       ],
       "id": 57,
       "source_sha256": "b20472a4db3068ec7cb58db5ff26f2e4848e17389b76ac885fbd413231e5a274",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -7080,7 +7080,7 @@
       ],
       "id": 58,
       "source_sha256": "e385c7aa8ed09e7b30ff3b0f6067c1f8c10265cff52b9cc89c1749458e358afd",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -7261,7 +7261,7 @@
       ],
       "id": 59,
       "source_sha256": "f6a9a82776b290c89bbab2331ab361afcca38b14f5c2f2d306f4513e91bfd17a",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -7442,7 +7442,7 @@
       ],
       "id": 60,
       "source_sha256": "4eca22c18eec581212088be8f2ce33b4f89422c8e884dfb32ce2fd4007fdd3cf",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -7623,7 +7623,7 @@
       ],
       "id": 61,
       "source_sha256": "5cf1c26eb96fa96153b1841acf98ea106beb105538ec3b3f0e82c14e79e5082f",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -7804,7 +7804,7 @@
       ],
       "id": 62,
       "source_sha256": "01dfeff0f13634ecb9916c2b4707a124f1459f8cc8878ded0a88eb8e21dbe052",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -7985,7 +7985,7 @@
       ],
       "id": 63,
       "source_sha256": "6a01726c1a22f1e70836fe2d4bb9bc158445cefc974e2084616f57e98d89efe2",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -8166,7 +8166,7 @@
       ],
       "id": 64,
       "source_sha256": "538d352f989b0854afb4308e0ba7081da938079430792c50ddcd9ef96768f0d4",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -8347,7 +8347,7 @@
       ],
       "id": 65,
       "source_sha256": "da6b92bf87f271ad460ca1e322eb4c075f4caf03d681a084478d1ed3c4b7465b",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -8529,7 +8529,7 @@
       ],
       "id": 66,
       "source_sha256": "aa0e559a58fa2c4f69cffd8f8af0bace58e15b530d2892a973987117c0a81ac5",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -8719,7 +8719,7 @@
       ],
       "id": 67,
       "source_sha256": "e28d4c70749ccb8705d3f61bd7fb86be2542539912b75eea5d29be27967aca48",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -8909,7 +8909,7 @@
       ],
       "id": 68,
       "source_sha256": "0895a0185129738358e1010e818e3f2b9e45cd20c955ceca8970a36923b3b68d",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -9099,7 +9099,7 @@
       ],
       "id": 69,
       "source_sha256": "99e91943cf94929837bb54aaf5275cff94459c09bf9f08723df8f96a55fc2548",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -9290,7 +9290,7 @@
       ],
       "id": 70,
       "source_sha256": "85dbd29dcb1493571f82cb570e9068c811ba30da5f2760b4316be2caef58650f",
-      "status": "inventoried",
+      "status": "implemented",
       "blocker": null,
       "mean_outputs": [
         "THS",
@@ -9924,6 +9924,219 @@
         "sha256": "bfd0cc4d10ed57f316cfbec5cd0f96f98871cbbb1e29d35d8ef508ef29b32b3b",
         "bytes": 3365196
       }
+    },
+    {
+      "id": 78,
+      "name": "VG_PTF26",
+      "original": "VG_PTF26",
+      "file": "VG_PTF26.rdata",
+      "family": "VG",
+      "source_kind": "scientific-archive",
+      "sources": [
+        {
+          "file": "suggested_PTFs/VG_EUHYDI/VG_THS_PTF26.rdata",
+          "original": "VG_THS_PTF26",
+          "sha256": "246ab9b662b7f7c9445b92eafc9889913b4c205da267605e928b0523190d5f42"
+        },
+        {
+          "file": "suggested_PTFs/VG_EUHYDI/VG_log10THR_1_PTF26.rdata",
+          "original": "VG_log10THR_1_PTF26",
+          "sha256": "4300b1032f9a580b0d81bd8bcd38bb7759c2694bb43b69c04f4fa9beaa5027b6"
+        },
+        {
+          "file": "suggested_PTFs/VG_EUHYDI/VG_log10ALP_PTF26.rdata",
+          "original": "VG_log10ALP_PTF26",
+          "sha256": "b98fcd57f3f50dd2270c4f76ccd6af1f4806f0cc7ce04499e0d3982bd6e4c81c"
+        },
+        {
+          "file": "suggested_PTFs/VG_EUHYDI/VG_log10N_1_PTF26.rdata",
+          "original": "VG_log10N_1_PTF26",
+          "sha256": "20ad030f535514922159d3bb08a7d2e20b67049dc8fb9ef095966ec4b87a8c0f"
+        }
+      ],
+      "features": [
+        "USSAND",
+        "USSILT",
+        "USCLAY",
+        "DEPTH_M",
+        "CACO3",
+        "PH_H2O",
+        "CEC"
+      ],
+      "status": "implemented",
+      "blocker": null,
+      "mean_outputs": [
+        "THS",
+        "THR",
+        "ALP",
+        "N",
+        "M"
+      ],
+      "quantile_outputs": [
+        "THS",
+        "THR",
+        "ALP",
+        "N"
+      ],
+      "components": [
+        {
+          "parameter": "THS",
+          "original": "VG_THS_PTF26",
+          "transform": 0,
+          "audit": {
+            "class": "ranger",
+            "forest_class": "ranger.forest",
+            "treetype": "Regression",
+            "features": [
+              "USSAND",
+              "USSILT",
+              "USCLAY",
+              "DEPTH_M",
+              "CACO3",
+              "PH_H2O",
+              "CEC"
+            ],
+            "ordered": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "dependent_var_id": 0,
+            "trees": 200,
+            "nodes": 53904,
+            "samples": 717,
+            "random_dim": [
+              303,
+              200
+            ],
+            "leaf_samples_present": true
+          }
+        },
+        {
+          "parameter": "THR",
+          "original": "VG_log10THR_1_PTF26",
+          "transform": 2,
+          "audit": {
+            "class": "ranger",
+            "forest_class": "ranger.forest",
+            "treetype": "Regression",
+            "features": [
+              "USSAND",
+              "USSILT",
+              "USCLAY",
+              "DEPTH_M",
+              "CACO3",
+              "PH_H2O",
+              "CEC"
+            ],
+            "ordered": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "dependent_var_id": 0,
+            "trees": 200,
+            "nodes": 41768,
+            "samples": 717,
+            "random_dim": [
+              239,
+              200
+            ],
+            "leaf_samples_present": true
+          }
+        },
+        {
+          "parameter": "ALP",
+          "original": "VG_log10ALP_PTF26",
+          "transform": 1,
+          "audit": {
+            "class": "ranger",
+            "forest_class": "ranger.forest",
+            "treetype": "Regression",
+            "features": [
+              "USSAND",
+              "USSILT",
+              "USCLAY",
+              "DEPTH_M",
+              "CACO3",
+              "PH_H2O",
+              "CEC"
+            ],
+            "ordered": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "dependent_var_id": 0,
+            "trees": 200,
+            "nodes": 26174,
+            "samples": 717,
+            "random_dim": [
+              193,
+              200
+            ],
+            "leaf_samples_present": true
+          }
+        },
+        {
+          "parameter": "N",
+          "original": "VG_log10N_1_PTF26",
+          "transform": 3,
+          "audit": {
+            "class": "ranger",
+            "forest_class": "ranger.forest",
+            "treetype": "Regression",
+            "features": [
+              "USSAND",
+              "USSILT",
+              "USCLAY",
+              "DEPTH_M",
+              "CACO3",
+              "PH_H2O",
+              "CEC"
+            ],
+            "ordered": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ],
+            "dependent_var_id": 0,
+            "trees": 200,
+            "nodes": 53670,
+            "samples": 717,
+            "random_dim": [
+              297,
+              200
+            ],
+            "leaf_samples_present": true
+          }
+        }
+      ],
+      "artifact": {
+        "sha256": "fe4407e2fecb8e8b7a37f30c2bc588d47d692a920ad7ec35815c3c69a762115f",
+        "bytes": 4917700
+      }
     }
-  ]
+  ],
+  "scientific_revision": "35e2df971259f8f1d9904c5d0359eb09406175b1"
 }

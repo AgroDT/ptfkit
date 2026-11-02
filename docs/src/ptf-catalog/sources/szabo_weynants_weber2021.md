@@ -1052,6 +1052,880 @@ Predict KS_PTF05 original-scale point estimates and five conditional quantiles.
 
     Original object log10KS_PTF05; artifact SHA-256 2b275861485a1a02401b4477dfc10ac619ea122f7e66f9df6e9a0f82f89d6460. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
 
+### `calc_ptf_szabo2021_mvg_ptf01`
+
+Predict MVG_PTF01 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original MVG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters; $k(h)$ — Mualem conductivity parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `k0_mean` | cm/day | — | K0: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `l_mean` | 1 | — | L: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q05` | cm/day | — | K0: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q25` | cm/day | — | K0: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q50` | cm/day | — | K0: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q75` | cm/day | — | K0: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q95` | cm/day | — | K0: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q05` | 1 | — | L: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q25` | 1 | — | L: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q50` | 1 | — | L: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q75` | 1 | — | L: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q95` | 1 | — | L: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object MVG_PTF01; artifact SHA-256 32c03e6b59ee704b0602368e40b1007eea6a2595c0c81f5fe25a333711f9e5f3. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_mvg_ptf02`
+
+Predict MVG_PTF02 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original MVG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters; $k(h)$ — Mualem conductivity parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | `number` | % | — | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `k0_mean` | cm/day | — | K0: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `l_mean` | 1 | — | L: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q05` | cm/day | — | K0: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q25` | cm/day | — | K0: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q50` | cm/day | — | K0: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q75` | cm/day | — | K0: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q95` | cm/day | — | K0: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q05` | 1 | — | L: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q25` | 1 | — | L: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q50` | 1 | — | L: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q75` | 1 | — | L: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q95` | 1 | — | L: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object MVG_PTF02; artifact SHA-256 00fa52880c66421dbdc23a0c0bb65b4a617fc878825d9b6b47f08c52056390ac. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_mvg_ptf04`
+
+Predict MVG_PTF04 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original MVG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters; $k(h)$ — Mualem conductivity parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `caco3` | `number` | % | — | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `k0_mean` | cm/day | — | K0: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `l_mean` | 1 | — | L: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q05` | cm/day | — | K0: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q25` | cm/day | — | K0: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q50` | cm/day | — | K0: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q75` | cm/day | — | K0: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q95` | cm/day | — | K0: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q05` | 1 | — | L: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q25` | 1 | — | L: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q50` | 1 | — | L: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q75` | 1 | — | L: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q95` | 1 | — | L: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object MVG_PTF04; artifact SHA-256 0652b722f64b3ba2cd275347385645253ef348a50fd610aa71700deb3e66d8a4. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_mvg_ptf05`
+
+Predict MVG_PTF05 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original MVG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters; $k(h)$ — Mualem conductivity parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `ph_h2o` | `number` | 1 | — | Soil pH measured in water. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `k0_mean` | cm/day | — | K0: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `l_mean` | 1 | — | L: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q05` | cm/day | — | K0: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q25` | cm/day | — | K0: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q50` | cm/day | — | K0: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q75` | cm/day | — | K0: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q95` | cm/day | — | K0: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q05` | 1 | — | L: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q25` | 1 | — | L: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q50` | 1 | — | L: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q75` | 1 | — | L: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q95` | 1 | — | L: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object MVG_PTF05; artifact SHA-256 9035273def9ff456f50c8712c2da496a175e9b6d0cd25f59fc7c637a2f338095. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_mvg_ptf06`
+
+Predict MVG_PTF06 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original MVG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters; $k(h)$ — Mualem conductivity parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `cec` | `number` | meq/100g | — | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `k0_mean` | cm/day | — | K0: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `l_mean` | 1 | — | L: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q05` | cm/day | — | K0: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q25` | cm/day | — | K0: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q50` | cm/day | — | K0: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q75` | cm/day | — | K0: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q95` | cm/day | — | K0: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q05` | 1 | — | L: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q25` | 1 | — | L: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q50` | 1 | — | L: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q75` | 1 | — | L: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q95` | 1 | — | L: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object MVG_PTF06; artifact SHA-256 9eacf858cf779150a9fac6cd0532bea30e244fb3a5a698cba715aadd624f9a6f. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_mvg_ptf12`
+
+Predict MVG_PTF12 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original MVG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters; $k(h)$ — Mualem conductivity parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `bd` | `number` | g/cm^3 | — | Dry soil bulk density. No normalization, clipping or imputation. |
+| `ph_h2o` | `number` | 1 | — | Soil pH measured in water. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `k0_mean` | cm/day | — | K0: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `l_mean` | 1 | — | L: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q05` | cm/day | — | K0: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q25` | cm/day | — | K0: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q50` | cm/day | — | K0: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q75` | cm/day | — | K0: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q95` | cm/day | — | K0: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q05` | 1 | — | L: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q25` | 1 | — | L: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q50` | 1 | — | L: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q75` | 1 | — | L: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q95` | 1 | — | L: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object MVG_PTF12; artifact SHA-256 564a582915ec71a28baaf868c0ddff2788d042497e45891f0edbe8762af9c3e2. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_mvg_ptf13`
+
+Predict MVG_PTF13 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original MVG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters; $k(h)$ — Mualem conductivity parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `bd` | `number` | g/cm^3 | — | Dry soil bulk density. No normalization, clipping or imputation. |
+| `cec` | `number` | meq/100g | — | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `k0_mean` | cm/day | — | K0: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `l_mean` | 1 | — | L: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q05` | cm/day | — | K0: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q25` | cm/day | — | K0: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q50` | cm/day | — | K0: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q75` | cm/day | — | K0: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q95` | cm/day | — | K0: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q05` | 1 | — | L: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q25` | 1 | — | L: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q50` | 1 | — | L: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q75` | 1 | — | L: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q95` | 1 | — | L: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object MVG_PTF13; artifact SHA-256 450d476d839af4cd679b9eaa63cf256268a99032f59d768fb79b6b327bd8aeda. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_mvg_ptf20`
+
+Predict MVG_PTF20 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original MVG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters; $k(h)$ — Mualem conductivity parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | `number` | % | — | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+| `caco3` | `number` | % | — | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+| `ph_h2o` | `number` | 1 | — | Soil pH measured in water. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `k0_mean` | cm/day | — | K0: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `l_mean` | 1 | — | L: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q05` | cm/day | — | K0: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q25` | cm/day | — | K0: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q50` | cm/day | — | K0: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q75` | cm/day | — | K0: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q95` | cm/day | — | K0: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q05` | 1 | — | L: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q25` | 1 | — | L: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q50` | 1 | — | L: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q75` | 1 | — | L: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q95` | 1 | — | L: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object MVG_PTF20; artifact SHA-256 6341eb27731efeffc97263a39fed973ca3b5cb1afbecc189f26b53cf01707d20. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_mvg_ptf21`
+
+Predict MVG_PTF21 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original MVG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters; $k(h)$ — Mualem conductivity parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | `number` | % | — | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+| `caco3` | `number` | % | — | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+| `cec` | `number` | meq/100g | — | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `k0_mean` | cm/day | — | K0: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `l_mean` | 1 | — | L: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q05` | cm/day | — | K0: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q25` | cm/day | — | K0: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q50` | cm/day | — | K0: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q75` | cm/day | — | K0: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q95` | cm/day | — | K0: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q05` | 1 | — | L: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q25` | 1 | — | L: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q50` | 1 | — | L: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q75` | 1 | — | L: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q95` | 1 | — | L: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object MVG_PTF21; artifact SHA-256 3f50ec8a258be6979dc1a042ed7eb87042471457a31aa0604801dc5a0c67960f. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_mvg_ptf23`
+
+Predict MVG_PTF23 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original MVG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters; $k(h)$ — Mualem conductivity parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `bd` | `number` | g/cm^3 | — | Dry soil bulk density. No normalization, clipping or imputation. |
+| `caco3` | `number` | % | — | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+| `ph_h2o` | `number` | 1 | — | Soil pH measured in water. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `k0_mean` | cm/day | — | K0: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `l_mean` | 1 | — | L: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q05` | cm/day | — | K0: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q25` | cm/day | — | K0: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q50` | cm/day | — | K0: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q75` | cm/day | — | K0: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q95` | cm/day | — | K0: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q05` | 1 | — | L: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q25` | 1 | — | L: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q50` | 1 | — | L: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q75` | 1 | — | L: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q95` | 1 | — | L: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object MVG_PTF23; artifact SHA-256 09e2d498b3d30767fc06bd4dc77375317e659881949b7827c8adb14050d5d303. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_mvg_ptf27`
+
+Predict MVG_PTF27 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original MVG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters; $k(h)$ — Mualem conductivity parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | `number` | % | — | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+| `bd` | `number` | g/cm^3 | — | Dry soil bulk density. No normalization, clipping or imputation. |
+| `caco3` | `number` | % | — | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+| `ph_h2o` | `number` | 1 | — | Soil pH measured in water. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `k0_mean` | cm/day | — | K0: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `l_mean` | 1 | — | L: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q05` | cm/day | — | K0: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q25` | cm/day | — | K0: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q50` | cm/day | — | K0: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q75` | cm/day | — | K0: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q95` | cm/day | — | K0: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q05` | 1 | — | L: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q25` | 1 | — | L: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q50` | 1 | — | L: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q75` | 1 | — | L: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q95` | 1 | — | L: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object MVG_PTF27; artifact SHA-256 9c75b0d62362b257aff57254184e0eeab36a7bb2c258a1352d1b3404d767a517. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_mvg_ptf28`
+
+Predict MVG_PTF28 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original MVG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters; $k(h)$ — Mualem conductivity parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | `number` | % | — | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+| `bd` | `number` | g/cm^3 | — | Dry soil bulk density. No normalization, clipping or imputation. |
+| `caco3` | `number` | % | — | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+| `cec` | `number` | meq/100g | — | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `k0_mean` | cm/day | — | K0: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `l_mean` | 1 | — | L: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q05` | cm/day | — | K0: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q25` | cm/day | — | K0: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q50` | cm/day | — | K0: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q75` | cm/day | — | K0: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q95` | cm/day | — | K0: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q05` | 1 | — | L: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q25` | 1 | — | L: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q50` | 1 | — | L: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q75` | 1 | — | L: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q95` | 1 | — | L: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object MVG_PTF28; artifact SHA-256 8f27ebca2fe5fe97e187d93f9952657db7b42bf2e9871c658d7ea0252192b5a6. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_mvg_ptf29`
+
+Predict MVG_PTF29 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original MVG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters; $k(h)$ — Mualem conductivity parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | `number` | % | — | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+| `bd` | `number` | g/cm^3 | — | Dry soil bulk density. No normalization, clipping or imputation. |
+| `ph_h2o` | `number` | 1 | — | Soil pH measured in water. No normalization, clipping or imputation. |
+| `cec` | `number` | meq/100g | — | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `k0_mean` | cm/day | — | K0: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `l_mean` | 1 | — | L: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q05` | cm/day | — | K0: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q25` | cm/day | — | K0: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q50` | cm/day | — | K0: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q75` | cm/day | — | K0: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `k0_q95` | cm/day | — | K0: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q05` | 1 | — | L: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q25` | 1 | — | L: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q50` | 1 | — | L: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q75` | 1 | — | L: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `l_q95` | 1 | — | L: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object MVG_PTF29; artifact SHA-256 6075435709e53cf759899308569779ce1cfea3a5f42e199dab8230f5601a8e91. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
 ### `calc_ptf_szabo2021_ths_ptf01`
 
 Predict THS_PTF01 original-scale point estimates and five conditional quantiles.
@@ -1215,6 +2089,1160 @@ Predict THS_PTF05 original-scale point estimates and five conditional quantiles.
 !!! note
 
     Original object THS_PTF05; artifact SHA-256 3bb5db54d7953624878151ce991e9ec688b15aaa455a2c14223a753b1dd435e1. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_vg_ptf01`
+
+Predict VG_PTF01 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original VG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object VG_PTF01; artifact SHA-256 0c32bd11a8209d4cffd7e08faeb43dd5218e73dab970af68e08d0bdfd54a8041. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_vg_ptf02`
+
+Predict VG_PTF02 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original VG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | `number` | % | — | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object VG_PTF02; artifact SHA-256 86267746db8e4359b8753137416f2c193746b1c808fb1f57e689f889bf73d221. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_vg_ptf03`
+
+Predict VG_PTF03 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original VG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `bd` | `number` | g/cm^3 | — | Dry soil bulk density. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object VG_PTF03; artifact SHA-256 521a3964c76907766b1e4e78b8d8274d100b97fa68e573f42b099a27f5e334a2. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_vg_ptf04`
+
+Predict VG_PTF04 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original VG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `caco3` | `number` | % | — | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object VG_PTF04; artifact SHA-256 2d02440e32a355162d918e86a2f3facbd592bc7c74b16c9c4515bee963e3dda6. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_vg_ptf05`
+
+Predict VG_PTF05 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original VG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `ph_h2o` | `number` | 1 | — | Soil pH measured in water. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object VG_PTF05; artifact SHA-256 e0e7ccab39bb17752ca7ae394f8364a2c929fc4895291a7dc7f7a2362966df2f. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_vg_ptf06`
+
+Predict VG_PTF06 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original VG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `cec` | `number` | meq/100g | — | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object VG_PTF06; artifact SHA-256 c80a4c6b58967287b78350e6d11b95739fc2f6da85de1e1dc402067b4173717e. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_vg_ptf07`
+
+Predict VG_PTF07 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original VG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | `number` | % | — | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+| `bd` | `number` | g/cm^3 | — | Dry soil bulk density. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object VG_PTF07; artifact SHA-256 d79c3cd956b1cf4fc7b172599a490cf0ec6e9876e3817fd6c7afed8d04c45e27. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_vg_ptf08`
+
+Predict VG_PTF08 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original VG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | `number` | % | — | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+| `caco3` | `number` | % | — | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object VG_PTF08; artifact SHA-256 f14ce3ff46c3f4ba320f972d2a068133ebb54ba6fb2dc9503f511daa505d6067. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_vg_ptf09`
+
+Predict VG_PTF09 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original VG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | `number` | % | — | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+| `ph_h2o` | `number` | 1 | — | Soil pH measured in water. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object VG_PTF09; artifact SHA-256 faf3c85bd78753f92e5a604c26a4a62705763f69879e1b20a4465d02f9c4bf6a. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_vg_ptf10`
+
+Predict VG_PTF10 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original VG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | `number` | % | — | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+| `cec` | `number` | meq/100g | — | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object VG_PTF10; artifact SHA-256 ee04b8df6443471178071b705b9ca4a31102aa0b8d615cc775adff959b9e81c3. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_vg_ptf11`
+
+Predict VG_PTF11 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original VG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `bd` | `number` | g/cm^3 | — | Dry soil bulk density. No normalization, clipping or imputation. |
+| `caco3` | `number` | % | — | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object VG_PTF11; artifact SHA-256 be970ba38c327d236cfc868c47adb53478ee1ce033efed79ed4570ddac40fb99. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_vg_ptf12`
+
+Predict VG_PTF12 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original VG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `bd` | `number` | g/cm^3 | — | Dry soil bulk density. No normalization, clipping or imputation. |
+| `ph_h2o` | `number` | 1 | — | Soil pH measured in water. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object VG_PTF12; artifact SHA-256 1980852d5e428bc810e5f4470f292f9cbd15e98cdc3c14b0df755cabffe60165. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_vg_ptf13`
+
+Predict VG_PTF13 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original VG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `bd` | `number` | g/cm^3 | — | Dry soil bulk density. No normalization, clipping or imputation. |
+| `cec` | `number` | meq/100g | — | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object VG_PTF13; artifact SHA-256 3e267e528dd278d308575637d4cb1dc1803a7770a745a120a3040e7825500d22. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_vg_ptf14`
+
+Predict VG_PTF14 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original VG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `caco3` | `number` | % | — | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+| `ph_h2o` | `number` | 1 | — | Soil pH measured in water. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object VG_PTF14; artifact SHA-256 e6d8a5736d38d52f1c552d21054556d2528697dd2ed48f22d1059a352ac3d66a. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_vg_ptf15`
+
+Predict VG_PTF15 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original VG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `caco3` | `number` | % | — | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+| `cec` | `number` | meq/100g | — | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object VG_PTF15; artifact SHA-256 a28fd7e33925650006d215ae74d88fb50e6a8278494e4c8abb49047e2320ed73. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_vg_ptf16`
+
+Predict VG_PTF16 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original VG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `ph_h2o` | `number` | 1 | — | Soil pH measured in water. No normalization, clipping or imputation. |
+| `cec` | `number` | meq/100g | — | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object VG_PTF16; artifact SHA-256 6a8f3d5dad991f44cfa57384d90d788f13f16ae8a08bb71b5badcf01cae0f01d. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_vg_ptf21`
+
+Predict VG_PTF21 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original VG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | `number` | % | — | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+| `caco3` | `number` | % | — | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+| `cec` | `number` | meq/100g | — | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object VG_PTF21; artifact SHA-256 97bebedc28549744dfdbbe62028c18fe7e166362cee9b1a67ab0a4f1c028b5b2. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_vg_ptf22`
+
+Predict VG_PTF22 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original VG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | `number` | % | — | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+| `ph_h2o` | `number` | 1 | — | Soil pH measured in water. No normalization, clipping or imputation. |
+| `cec` | `number` | meq/100g | — | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object VG_PTF22; artifact SHA-256 31644c667a99143608842c124018e2c9514bac1825da5b6cc588ab2819b8e985. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_vg_ptf24`
+
+Predict VG_PTF24 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original VG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `bd` | `number` | g/cm^3 | — | Dry soil bulk density. No normalization, clipping or imputation. |
+| `caco3` | `number` | % | — | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+| `cec` | `number` | meq/100g | — | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object VG_PTF24; artifact SHA-256 a629e007f80b8c9a7d003822d1c6a7d481894e59e3497398a778d683497639a6. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_vg_ptf25`
+
+Predict VG_PTF25 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original VG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `bd` | `number` | g/cm^3 | — | Dry soil bulk density. No normalization, clipping or imputation. |
+| `ph_h2o` | `number` | 1 | — | Soil pH measured in water. No normalization, clipping or imputation. |
+| `cec` | `number` | meq/100g | — | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object VG_PTF25; artifact SHA-256 26ae2d57377cbb99daaefbe50e3cfc8cd2dbf54b4d804f80676892d2e393ada5. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_vg_ptf29`
+
+Predict VG_PTF29 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original VG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `oc` | `number` | % | — | Soil organic carbon mass percentage. No normalization, clipping or imputation. |
+| `bd` | `number` | g/cm^3 | — | Dry soil bulk density. No normalization, clipping or imputation. |
+| `ph_h2o` | `number` | 1 | — | Soil pH measured in water. No normalization, clipping or imputation. |
+| `cec` | `number` | meq/100g | — | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object VG_PTF29; artifact SHA-256 e81961ec534408681c4cebbeab36ce14350c5fb4f66469cfdc2d211bbafb4fc8. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
 
 ### `calc_ptf_szabo2021_wp_ptf01`
 
@@ -1450,3 +3478,63 @@ Predict WP_PTF17 original-scale point estimates and five conditional quantiles.
 !!! note
 
     Original object WP_PTF17; artifact SHA-256 bfd0cc4d10ed57f316cfbec5cd0f96f98871cbbb1e29d35d8ef508ef29b32b3b. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+### `calc_ptf_szabo2021_vg_ptf26`
+
+Predict VG_PTF26 original-scale point estimates and five conditional quantiles.
+
+**Status:** `implemented`
+
+**Prediction target:** Original VG hydraulic outputs.
+
+**Models:** $h(\theta)$ — van Genuchten retention parameters
+
+#### Inputs
+
+| Name | Type | Unit | Domain | Description |
+| --- | --- | --- | --- | --- |
+| `ussand` | `number` | % | — | USDA sand, 50-2000 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `ussilt` | `number` | % | — | USDA silt, 2-50 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `usclay` | `number` | % | — | USDA clay, below 2 micrometres; mass percentage. No normalization, clipping or imputation. |
+| `depth_m` | `number` | cm | — | Mean soil horizon depth in centimetres, despite the variable suffix. No normalization, clipping or imputation. |
+| `caco3` | `number` | % | — | Calcium carbonate mass percentage. No normalization, clipping or imputation. |
+| `ph_h2o` | `number` | 1 | — | Soil pH measured in water. No normalization, clipping or imputation. |
+| `cec` | `number` | meq/100g | — | Cation exchange capacity; numerically equivalent to cmol(+)/kg. No normalization, clipping or imputation. |
+
+#### Outputs
+
+| Name | Unit | Domain | Description |
+| --- | --- | --- | --- |
+| `ths_mean` | cm^3/cm^3 | — | THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `thr_mean` | cm^3/cm^3 | — | THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `alp_mean` | 1/cm | — | ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `n_mean` | 1 | — | N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `m_mean` | 1 | — | M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. |
+| `ths_q05` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q25` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q50` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q75` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `ths_q95` | cm^3/cm^3 | — | THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q05` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q25` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q50` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q75` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `thr_q95` | cm^3/cm^3 | — | THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q05` | 1/cm | — | ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q25` | 1/cm | — | ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q50` | 1/cm | — | ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q75` | 1/cm | — | ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `alp_q95` | 1/cm | — | ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q05` | 1 | — | N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q25` | 1 | — | N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q50` | 1 | — | N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q75` | 1 | — | N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. |
+| `n_q95` | 1 | — | N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. |
+
+!!! note
+
+    Original object VG_PTF26; artifact SHA-256 fe4407e2fecb8e8b7a37f30c2bc588d47d692a920ad7ec35815c3c69a762115f. Inputs follow the saved forest ordering. Predictions require an externally imported model with this identity. Missing required values reject a scalar row; upstream table orchestration removes incomplete rows and preserves OBS_ID. Defaults are 0.05, 0.25, 0.5, 0.75, 0.95. VG/MVG M appears in means only; no M quantile is invented.
+
+!!! note
+
+    VG_PTF26 is absent from the euptf2 package data registry. Four original forests from scientific release 35e2df971259f8f1d9904c5d0359eb09406175b1 are assembled in THS, THR, ALP, N order without retraining. Independent references use the original exported euptf2 helper functions on those forests, with derived M=1-1/N.

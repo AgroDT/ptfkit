@@ -115,6 +115,46 @@ class ImportIntegrityTests(unittest.TestCase):
         self.r.assert_called_once()
         self.assertFalse(output.exists())
 
+    def test_archive_model_requires_explicit_authenticated_source(self) -> None:
+        collection = self.root / 'collection.json'
+        collection.write_text(
+            json.dumps(
+                {'models': [{'source_kind': 'scientific-archive', 'components': [{}, {}, {}, {}]}]}
+            )
+        )
+        patch.object(import_euptf2, 'COLLECTION', collection).start()
+        output = self.root / 'models'
+        with self.assertRaisesRegex(ValueError, 'requires --archive'):
+            import_euptf2.convert_collection(self.source, output, 'Rscript', 'all')
+        self.r.assert_not_called()
+        self.assertFalse(output.exists())
+
+    def test_changed_archive_source_is_rejected_before_r(self) -> None:
+        archive = self.root / 'archive'
+        archive.mkdir()
+        (archive / 'forest.rdata').write_bytes(b'abd')
+        expected = 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad'
+        collection = self.root / 'collection.json'
+        collection.write_text(
+            json.dumps(
+                {
+                    'models': [
+                        {
+                            'source_kind': 'scientific-archive',
+                            'components': [{}, {}, {}, {}],
+                            'sources': [{'file': 'forest.rdata', 'sha256': expected}],
+                        }
+                    ]
+                }
+            )
+        )
+        patch.object(import_euptf2, 'COLLECTION', collection).start()
+        output = self.root / 'models'
+        with self.assertRaisesRegex(ValueError, 'SHA-256 mismatch: forest.rdata'):
+            import_euptf2.convert_collection(self.source, output, 'Rscript', 'all', archive)
+        self.r.assert_not_called()
+        self.assertFalse(output.exists())
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -685,6 +685,743 @@ def calc_ptf_szabo2021_ks_ptf05(
     )
 
 
+class Euptf2MvgStatistics(NamedTuple):
+    """Default statistics in original units and parameter order."""
+
+    ths_mean: float
+    thr_mean: float
+    alp_mean: float
+    n_mean: float
+    k0_mean: float
+    l_mean: float
+    m_mean: float
+    ths_q05: float
+    ths_q25: float
+    ths_q50: float
+    ths_q75: float
+    ths_q95: float
+    thr_q05: float
+    thr_q25: float
+    thr_q50: float
+    thr_q75: float
+    thr_q95: float
+    alp_q05: float
+    alp_q25: float
+    alp_q50: float
+    alp_q75: float
+    alp_q95: float
+    n_q05: float
+    n_q25: float
+    n_q50: float
+    n_q75: float
+    n_q95: float
+    k0_q05: float
+    k0_q25: float
+    k0_q50: float
+    k0_q75: float
+    k0_q95: float
+    l_q05: float
+    l_q25: float
+    l_q50: float
+    l_q75: float
+    l_q95: float
+
+
+def calc_ptf_szabo2021_mvg_ptf01(
+    model: Euptf2Model, *, ussand: float, ussilt: float, usclay: float, depth_m: float
+) -> Euptf2MvgStatistics:
+    """Predict MVG_PTF01 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'MVG_PTF01':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m])
+    return Euptf2MvgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.mean[5],
+        p.mean[6],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+        p.quantiles[4][0],
+        p.quantiles[4][1],
+        p.quantiles[4][2],
+        p.quantiles[4][3],
+        p.quantiles[4][4],
+        p.quantiles[5][0],
+        p.quantiles[5][1],
+        p.quantiles[5][2],
+        p.quantiles[5][3],
+        p.quantiles[5][4],
+    )
+
+
+def calc_ptf_szabo2021_mvg_ptf02(
+    model: Euptf2Model, *, ussand: float, ussilt: float, usclay: float, depth_m: float, oc: float
+) -> Euptf2MvgStatistics:
+    """Predict MVG_PTF02 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'MVG_PTF02':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, oc])
+    return Euptf2MvgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.mean[5],
+        p.mean[6],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+        p.quantiles[4][0],
+        p.quantiles[4][1],
+        p.quantiles[4][2],
+        p.quantiles[4][3],
+        p.quantiles[4][4],
+        p.quantiles[5][0],
+        p.quantiles[5][1],
+        p.quantiles[5][2],
+        p.quantiles[5][3],
+        p.quantiles[5][4],
+    )
+
+
+def calc_ptf_szabo2021_mvg_ptf04(
+    model: Euptf2Model, *, ussand: float, ussilt: float, usclay: float, depth_m: float, caco3: float
+) -> Euptf2MvgStatistics:
+    """Predict MVG_PTF04 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'MVG_PTF04':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, caco3])
+    return Euptf2MvgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.mean[5],
+        p.mean[6],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+        p.quantiles[4][0],
+        p.quantiles[4][1],
+        p.quantiles[4][2],
+        p.quantiles[4][3],
+        p.quantiles[4][4],
+        p.quantiles[5][0],
+        p.quantiles[5][1],
+        p.quantiles[5][2],
+        p.quantiles[5][3],
+        p.quantiles[5][4],
+    )
+
+
+def calc_ptf_szabo2021_mvg_ptf05(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    ph_h2o: float,
+) -> Euptf2MvgStatistics:
+    """Predict MVG_PTF05 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'MVG_PTF05':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, ph_h2o])
+    return Euptf2MvgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.mean[5],
+        p.mean[6],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+        p.quantiles[4][0],
+        p.quantiles[4][1],
+        p.quantiles[4][2],
+        p.quantiles[4][3],
+        p.quantiles[4][4],
+        p.quantiles[5][0],
+        p.quantiles[5][1],
+        p.quantiles[5][2],
+        p.quantiles[5][3],
+        p.quantiles[5][4],
+    )
+
+
+def calc_ptf_szabo2021_mvg_ptf06(
+    model: Euptf2Model, *, ussand: float, ussilt: float, usclay: float, depth_m: float, cec: float
+) -> Euptf2MvgStatistics:
+    """Predict MVG_PTF06 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'MVG_PTF06':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, cec])
+    return Euptf2MvgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.mean[5],
+        p.mean[6],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+        p.quantiles[4][0],
+        p.quantiles[4][1],
+        p.quantiles[4][2],
+        p.quantiles[4][3],
+        p.quantiles[4][4],
+        p.quantiles[5][0],
+        p.quantiles[5][1],
+        p.quantiles[5][2],
+        p.quantiles[5][3],
+        p.quantiles[5][4],
+    )
+
+
+def calc_ptf_szabo2021_mvg_ptf12(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    bd: float,
+    ph_h2o: float,
+) -> Euptf2MvgStatistics:
+    """Predict MVG_PTF12 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'MVG_PTF12':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, bd, ph_h2o])
+    return Euptf2MvgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.mean[5],
+        p.mean[6],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+        p.quantiles[4][0],
+        p.quantiles[4][1],
+        p.quantiles[4][2],
+        p.quantiles[4][3],
+        p.quantiles[4][4],
+        p.quantiles[5][0],
+        p.quantiles[5][1],
+        p.quantiles[5][2],
+        p.quantiles[5][3],
+        p.quantiles[5][4],
+    )
+
+
+def calc_ptf_szabo2021_mvg_ptf13(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    bd: float,
+    cec: float,
+) -> Euptf2MvgStatistics:
+    """Predict MVG_PTF13 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'MVG_PTF13':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, bd, cec])
+    return Euptf2MvgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.mean[5],
+        p.mean[6],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+        p.quantiles[4][0],
+        p.quantiles[4][1],
+        p.quantiles[4][2],
+        p.quantiles[4][3],
+        p.quantiles[4][4],
+        p.quantiles[5][0],
+        p.quantiles[5][1],
+        p.quantiles[5][2],
+        p.quantiles[5][3],
+        p.quantiles[5][4],
+    )
+
+
+def calc_ptf_szabo2021_mvg_ptf20(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    oc: float,
+    caco3: float,
+    ph_h2o: float,
+) -> Euptf2MvgStatistics:
+    """Predict MVG_PTF20 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'MVG_PTF20':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, oc, caco3, ph_h2o])
+    return Euptf2MvgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.mean[5],
+        p.mean[6],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+        p.quantiles[4][0],
+        p.quantiles[4][1],
+        p.quantiles[4][2],
+        p.quantiles[4][3],
+        p.quantiles[4][4],
+        p.quantiles[5][0],
+        p.quantiles[5][1],
+        p.quantiles[5][2],
+        p.quantiles[5][3],
+        p.quantiles[5][4],
+    )
+
+
+def calc_ptf_szabo2021_mvg_ptf21(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    oc: float,
+    caco3: float,
+    cec: float,
+) -> Euptf2MvgStatistics:
+    """Predict MVG_PTF21 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'MVG_PTF21':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, oc, caco3, cec])
+    return Euptf2MvgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.mean[5],
+        p.mean[6],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+        p.quantiles[4][0],
+        p.quantiles[4][1],
+        p.quantiles[4][2],
+        p.quantiles[4][3],
+        p.quantiles[4][4],
+        p.quantiles[5][0],
+        p.quantiles[5][1],
+        p.quantiles[5][2],
+        p.quantiles[5][3],
+        p.quantiles[5][4],
+    )
+
+
+def calc_ptf_szabo2021_mvg_ptf23(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    bd: float,
+    caco3: float,
+    ph_h2o: float,
+) -> Euptf2MvgStatistics:
+    """Predict MVG_PTF23 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'MVG_PTF23':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, bd, caco3, ph_h2o])
+    return Euptf2MvgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.mean[5],
+        p.mean[6],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+        p.quantiles[4][0],
+        p.quantiles[4][1],
+        p.quantiles[4][2],
+        p.quantiles[4][3],
+        p.quantiles[4][4],
+        p.quantiles[5][0],
+        p.quantiles[5][1],
+        p.quantiles[5][2],
+        p.quantiles[5][3],
+        p.quantiles[5][4],
+    )
+
+
+def calc_ptf_szabo2021_mvg_ptf27(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    oc: float,
+    bd: float,
+    caco3: float,
+    ph_h2o: float,
+) -> Euptf2MvgStatistics:
+    """Predict MVG_PTF27 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'MVG_PTF27':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, oc, bd, caco3, ph_h2o])
+    return Euptf2MvgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.mean[5],
+        p.mean[6],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+        p.quantiles[4][0],
+        p.quantiles[4][1],
+        p.quantiles[4][2],
+        p.quantiles[4][3],
+        p.quantiles[4][4],
+        p.quantiles[5][0],
+        p.quantiles[5][1],
+        p.quantiles[5][2],
+        p.quantiles[5][3],
+        p.quantiles[5][4],
+    )
+
+
+def calc_ptf_szabo2021_mvg_ptf28(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    oc: float,
+    bd: float,
+    caco3: float,
+    cec: float,
+) -> Euptf2MvgStatistics:
+    """Predict MVG_PTF28 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'MVG_PTF28':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, oc, bd, caco3, cec])
+    return Euptf2MvgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.mean[5],
+        p.mean[6],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+        p.quantiles[4][0],
+        p.quantiles[4][1],
+        p.quantiles[4][2],
+        p.quantiles[4][3],
+        p.quantiles[4][4],
+        p.quantiles[5][0],
+        p.quantiles[5][1],
+        p.quantiles[5][2],
+        p.quantiles[5][3],
+        p.quantiles[5][4],
+    )
+
+
+def calc_ptf_szabo2021_mvg_ptf29(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    oc: float,
+    bd: float,
+    ph_h2o: float,
+    cec: float,
+) -> Euptf2MvgStatistics:
+    """Predict MVG_PTF29 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'MVG_PTF29':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, oc, bd, ph_h2o, cec])
+    return Euptf2MvgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.mean[5],
+        p.mean[6],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+        p.quantiles[4][0],
+        p.quantiles[4][1],
+        p.quantiles[4][2],
+        p.quantiles[4][3],
+        p.quantiles[4][4],
+        p.quantiles[5][0],
+        p.quantiles[5][1],
+        p.quantiles[5][2],
+        p.quantiles[5][3],
+        p.quantiles[5][4],
+    )
+
+
 class Euptf2ThsStatistics(NamedTuple):
     """Default statistics in original units and parameter order."""
 
@@ -784,6 +1521,909 @@ def calc_ptf_szabo2021_ths_ptf05(
         p.quantiles[0][2],
         p.quantiles[0][3],
         p.quantiles[0][4],
+    )
+
+
+class Euptf2VgStatistics(NamedTuple):
+    """Default statistics in original units and parameter order."""
+
+    ths_mean: float
+    thr_mean: float
+    alp_mean: float
+    n_mean: float
+    m_mean: float
+    ths_q05: float
+    ths_q25: float
+    ths_q50: float
+    ths_q75: float
+    ths_q95: float
+    thr_q05: float
+    thr_q25: float
+    thr_q50: float
+    thr_q75: float
+    thr_q95: float
+    alp_q05: float
+    alp_q25: float
+    alp_q50: float
+    alp_q75: float
+    alp_q95: float
+    n_q05: float
+    n_q25: float
+    n_q50: float
+    n_q75: float
+    n_q95: float
+
+
+def calc_ptf_szabo2021_vg_ptf01(
+    model: Euptf2Model, *, ussand: float, ussilt: float, usclay: float, depth_m: float
+) -> Euptf2VgStatistics:
+    """Predict VG_PTF01 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'VG_PTF01':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m])
+    return Euptf2VgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+    )
+
+
+def calc_ptf_szabo2021_vg_ptf02(
+    model: Euptf2Model, *, ussand: float, ussilt: float, usclay: float, depth_m: float, oc: float
+) -> Euptf2VgStatistics:
+    """Predict VG_PTF02 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'VG_PTF02':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, oc])
+    return Euptf2VgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+    )
+
+
+def calc_ptf_szabo2021_vg_ptf03(
+    model: Euptf2Model, *, ussand: float, ussilt: float, usclay: float, depth_m: float, bd: float
+) -> Euptf2VgStatistics:
+    """Predict VG_PTF03 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'VG_PTF03':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, bd])
+    return Euptf2VgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+    )
+
+
+def calc_ptf_szabo2021_vg_ptf04(
+    model: Euptf2Model, *, ussand: float, ussilt: float, usclay: float, depth_m: float, caco3: float
+) -> Euptf2VgStatistics:
+    """Predict VG_PTF04 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'VG_PTF04':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, caco3])
+    return Euptf2VgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+    )
+
+
+def calc_ptf_szabo2021_vg_ptf05(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    ph_h2o: float,
+) -> Euptf2VgStatistics:
+    """Predict VG_PTF05 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'VG_PTF05':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, ph_h2o])
+    return Euptf2VgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+    )
+
+
+def calc_ptf_szabo2021_vg_ptf06(
+    model: Euptf2Model, *, ussand: float, ussilt: float, usclay: float, depth_m: float, cec: float
+) -> Euptf2VgStatistics:
+    """Predict VG_PTF06 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'VG_PTF06':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, cec])
+    return Euptf2VgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+    )
+
+
+def calc_ptf_szabo2021_vg_ptf07(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    oc: float,
+    bd: float,
+) -> Euptf2VgStatistics:
+    """Predict VG_PTF07 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'VG_PTF07':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, oc, bd])
+    return Euptf2VgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+    )
+
+
+def calc_ptf_szabo2021_vg_ptf08(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    oc: float,
+    caco3: float,
+) -> Euptf2VgStatistics:
+    """Predict VG_PTF08 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'VG_PTF08':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, oc, caco3])
+    return Euptf2VgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+    )
+
+
+def calc_ptf_szabo2021_vg_ptf09(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    oc: float,
+    ph_h2o: float,
+) -> Euptf2VgStatistics:
+    """Predict VG_PTF09 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'VG_PTF09':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, oc, ph_h2o])
+    return Euptf2VgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+    )
+
+
+def calc_ptf_szabo2021_vg_ptf10(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    oc: float,
+    cec: float,
+) -> Euptf2VgStatistics:
+    """Predict VG_PTF10 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'VG_PTF10':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, oc, cec])
+    return Euptf2VgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+    )
+
+
+def calc_ptf_szabo2021_vg_ptf11(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    bd: float,
+    caco3: float,
+) -> Euptf2VgStatistics:
+    """Predict VG_PTF11 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'VG_PTF11':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, bd, caco3])
+    return Euptf2VgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+    )
+
+
+def calc_ptf_szabo2021_vg_ptf12(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    bd: float,
+    ph_h2o: float,
+) -> Euptf2VgStatistics:
+    """Predict VG_PTF12 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'VG_PTF12':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, bd, ph_h2o])
+    return Euptf2VgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+    )
+
+
+def calc_ptf_szabo2021_vg_ptf13(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    bd: float,
+    cec: float,
+) -> Euptf2VgStatistics:
+    """Predict VG_PTF13 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'VG_PTF13':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, bd, cec])
+    return Euptf2VgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+    )
+
+
+def calc_ptf_szabo2021_vg_ptf14(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    caco3: float,
+    ph_h2o: float,
+) -> Euptf2VgStatistics:
+    """Predict VG_PTF14 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'VG_PTF14':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, caco3, ph_h2o])
+    return Euptf2VgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+    )
+
+
+def calc_ptf_szabo2021_vg_ptf15(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    caco3: float,
+    cec: float,
+) -> Euptf2VgStatistics:
+    """Predict VG_PTF15 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'VG_PTF15':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, caco3, cec])
+    return Euptf2VgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+    )
+
+
+def calc_ptf_szabo2021_vg_ptf16(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    ph_h2o: float,
+    cec: float,
+) -> Euptf2VgStatistics:
+    """Predict VG_PTF16 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'VG_PTF16':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, ph_h2o, cec])
+    return Euptf2VgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+    )
+
+
+def calc_ptf_szabo2021_vg_ptf21(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    oc: float,
+    caco3: float,
+    cec: float,
+) -> Euptf2VgStatistics:
+    """Predict VG_PTF21 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'VG_PTF21':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, oc, caco3, cec])
+    return Euptf2VgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+    )
+
+
+def calc_ptf_szabo2021_vg_ptf22(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    oc: float,
+    ph_h2o: float,
+    cec: float,
+) -> Euptf2VgStatistics:
+    """Predict VG_PTF22 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'VG_PTF22':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, oc, ph_h2o, cec])
+    return Euptf2VgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+    )
+
+
+def calc_ptf_szabo2021_vg_ptf24(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    bd: float,
+    caco3: float,
+    cec: float,
+) -> Euptf2VgStatistics:
+    """Predict VG_PTF24 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'VG_PTF24':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, bd, caco3, cec])
+    return Euptf2VgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+    )
+
+
+def calc_ptf_szabo2021_vg_ptf25(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    bd: float,
+    ph_h2o: float,
+    cec: float,
+) -> Euptf2VgStatistics:
+    """Predict VG_PTF25 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'VG_PTF25':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, bd, ph_h2o, cec])
+    return Euptf2VgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
+    )
+
+
+def calc_ptf_szabo2021_vg_ptf29(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    oc: float,
+    bd: float,
+    ph_h2o: float,
+    cec: float,
+) -> Euptf2VgStatistics:
+    """Predict VG_PTF29 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'VG_PTF29':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, oc, bd, ph_h2o, cec])
+    return Euptf2VgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
     )
 
 
@@ -949,4 +2589,48 @@ def calc_ptf_szabo2021_wp_ptf17(
         p.quantiles[0][2],
         p.quantiles[0][3],
         p.quantiles[0][4],
+    )
+
+
+def calc_ptf_szabo2021_vg_ptf26(
+    model: Euptf2Model,
+    *,
+    ussand: float,
+    ussilt: float,
+    usclay: float,
+    depth_m: float,
+    caco3: float,
+    ph_h2o: float,
+    cec: float,
+) -> Euptf2VgStatistics:
+    """Predict VG_PTF26 original-scale point estimates and five conditional quantiles."""
+    if model.name != 'VG_PTF26':
+        raise ModelInputError
+    p = model.predict([ussand, ussilt, usclay, depth_m, caco3, ph_h2o, cec])
+    return Euptf2VgStatistics(
+        p.mean[0],
+        p.mean[1],
+        p.mean[2],
+        p.mean[3],
+        p.mean[4],
+        p.quantiles[0][0],
+        p.quantiles[0][1],
+        p.quantiles[0][2],
+        p.quantiles[0][3],
+        p.quantiles[0][4],
+        p.quantiles[1][0],
+        p.quantiles[1][1],
+        p.quantiles[1][2],
+        p.quantiles[1][3],
+        p.quantiles[1][4],
+        p.quantiles[2][0],
+        p.quantiles[2][1],
+        p.quantiles[2][2],
+        p.quantiles[2][3],
+        p.quantiles[2][4],
+        p.quantiles[3][0],
+        p.quantiles[3][1],
+        p.quantiles[3][2],
+        p.quantiles[3][3],
+        p.quantiles[3][4],
     )

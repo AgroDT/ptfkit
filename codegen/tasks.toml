@@ -44,8 +44,11 @@ run = 'cargo build --manifest-path targets/ptfkit-rs/Cargo.toml --example euptf2
 
 ["euptf2:import-collection"]
 description = "Authenticate and convert the original EU-PTF v2 model collection offline"
-usage = 'arg "<upstream>" help="Path to the pinned euptf2 1.0.0 source"'
-run = 'uv run --no-project python codegen/scripts/import_euptf2.py --collection --upstream "{{ usage.upstream }}" --output .euptf2-local/models'
+usage = '''
+arg "<upstream>" help="Path to the pinned euptf2 1.0.0 source"
+arg "<archive>" help="Path to the pinned euptfv2 v.2.0.0 scientific archive"
+'''
+run = 'uv run --no-project python codegen/scripts/import_euptf2.py --collection --upstream "{{ usage.upstream }}" --archive "{{ usage.archive }}" --output .euptf2-local/models'
 
 ["euptf2:verify-collection"]
 description = "Compare every implemented EU-PTF v2 object through all four public targets"
