@@ -12,6 +12,22 @@ pub(super) fn functions(entries: Vec<Entry>) -> Result<Vec<CompiledFunction>> {
     let mut compiled = Vec::new();
     for entry in entries {
         for (function_index, function) in entry.spec.functions.iter().enumerate() {
+            // External ensemble functions have model handles and their own validated IR.
+            if function
+                .implementation
+                .as_ref()
+                .is_some_and(|i| i.external_model.is_some())
+            {
+                if matches!(
+                    function.status.as_str(),
+                    "implemented" | "ready-for-implementation"
+                ) {
+                    let cases = verification_cases(function)?;
+                    let tolerances = output_tolerances(&entry, function)?;
+                    validate_discriminating_tolerances(function, &cases, &tolerances)?;
+                }
+                continue;
+            }
             if !matches!(
                 function.status.as_str(),
                 "implemented" | "ready-for-implementation"

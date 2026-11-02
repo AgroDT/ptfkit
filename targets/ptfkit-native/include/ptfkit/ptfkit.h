@@ -44,4 +44,7 @@
 #include <ptfkit/wosten2001.h>
 #include <ptfkit/zhao2016.h>
 
+#include <ptfkit/models.h>
+#include <ptfkit/zhang_schaap2017.h>
+#include <ptfkit/szabo_weynants_weber2021.h>
 #endif

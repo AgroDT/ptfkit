@@ -42,3 +42,7 @@ export import ptfkit.weynants2009;
 export import ptfkit.williams1992;
 export import ptfkit.wosten2001;
 export import ptfkit.zhao2016;
+
+export import ptfkit.models;
+export import ptfkit.zhang_schaap2017;
+export import ptfkit.szabo_weynants_weber2021;

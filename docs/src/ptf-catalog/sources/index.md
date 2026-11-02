@@ -38,6 +38,7 @@ Each page describes the source, scope, inputs, outputs, status, and limitations 
 | [Rawls et al. (2003), organic-carbon effects on soil water retention.](./rawls2003.md) | United States | 4 |
 | [Saxton et al. retention relationships parameterized by USDA CalcPTF.](./saxton1986.md) | United States | 1 |
 | [Saxton and Rawls (2006), soil water characteristics from texture and organic matter.](./saxton2006.md) | United States | 7 |
+| [Original EU-PTF v2 hydraulic predictions with native QRF uncertainty and external artifacts.](./szabo_weynants_weber2021.md) | European soils represented by subsets of the EU-HYDI inventory; no extrapolation validation is asserted. | 78 |
 | [Tiwary et al. (2014), hydraulic PTFs for two major soil regions of India.](./tiwary2014.md) | Indo-Gangetic Plains and black soil region of India | 2 |
 | [Tomasella and Hodnett (1998), point-retention regressions for Amazonian soils.](./tomasella1998.md) | Brazilian Amazonia | 1 |
 | [Varallyai et al. (1982), water-retention parameter regressions for Hungarian soils.](./varallyai1982.md) | Hungary, mainly the Hungarian Plain | 4 |
@@ -48,4 +49,5 @@ Each page describes the source, scope, inputs, outputs, status, and limitations 
 | [Corrected Weynants et al. hydraulic-parameter pedotransfer function.](./weynants2009.md) | — | 1 |
 | [Williams et al. (1992) Campbell water-retention regressions and parameter table.](./williams1992.md) | Australia, England and Wales, and the United States | 9 |
 | [Wösten et al. (2001), Staring Series hydraulic parameters for Dutch soils.](./wosten2001.md) | Netherlands | 5 |
+| [Rosetta3 hydraulic parameters and uncertainty from bundled CC0 neural ensembles.](./zhang_schaap2017.md) | Not independently established by this software audit. | 4 |
 | [Saturated hydraulic conductivity PTFs for the Loess Plateau of China.](./zhao2016.md) | Typical Loess Plateau of China, covering approximately 430,000 square kilometers. | 6 |
