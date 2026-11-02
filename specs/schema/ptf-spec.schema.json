@@ -215,7 +215,7 @@
           "properties": {
             "kind": {"enum": ["rosetta3", "euptf2"]},
             "artifact": {"enum": ["../models/rosetta3/artifact.json", "../models/euptf2/collection.json"]},
-            "level": {"type": "integer", "minimum": 1, "maximum": 77}
+            "level": {"type": "integer", "minimum": 1, "maximum": 78}
           },
           "allOf": [{"if": {"properties": {"kind": {"const": "rosetta3"}}},
                      "then": {"properties": {"artifact": {"const": "../models/rosetta3/artifact.json"}, "level": {"minimum": 2, "maximum": 5}}},

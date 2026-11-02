@@ -4,8 +4,10 @@ title: EU-PTF v2 model collection
 
 # EU-PTF v2 model collection
 
-The pinned euptf2 1.0.0 release contains **77 distinct trained objects** and
-**205 ranger regression forests**. The collection inventory is
+The pinned euptf2 1.0.0 package contains **77 distinct trained objects** and
+**205 ranger regression forests**. The original scientific archive additionally
+contains four forests forming **VG_PTF26**, omitted from the package registry.
+ptfkit supports all **78 model groups / 209 original forests**. The collection inventory is
 `specs/models/euptf2/collection.json`. It records every original filename,
 SHA-256, ordered predictor list, component name, fitted-scale transformation,
 forest dimensions, training sample count and terminal-response completeness.
@@ -30,18 +32,20 @@ additional trained models and do not trigger automatic selection or fallback.
 | AWC | 2 | Implemented | 16 default + 2 custom |
 | AWC_2 | 3 | Implemented | 16 default + 2 custom |
 | KS | 3 | Implemented | 16 default + 2 custom |
-| VG | 21 | Inventoried; next implementation stage | 25 default + 2 custom |
-| MVG | 13 | Inventoried; next implementation stage | 31 default + 2 custom |
+| VG | 22 | Implemented | 25 default + 2 custom |
+| MVG | 13 | Implemented | 31 default + 2 custom |
 
-The scalar checkpoint exposes 43 models. The remaining 34 parameter models
-have independent upstream fixtures and complete QRF state; they are pending
-activation and native verification, with no identified scientific blocker.
+All 78 models are implemented; none is blocked. The first checkpoint covers
+43 scalar models; the second adds 35 VG/MVG models through the same inference
+engine. Every model has independent upstream fixtures and complete QRF state.
 
-All four targets passed every scalar reference case. The largest observed
-absolute difference was 1.4551915228366852e-11, on a physical-scale conductivity;
-the largest relative difference was 4.269936930151528e-15. Per-model and
-per-target case counts and errors are recorded in
+Per-model and per-target verification counts and numerical errors are recorded in
 `specs/models/euptf2/verification.json`.
+All four targets passed 1,797 upstream prediction rows each (7,188 total,
+136,452 numeric comparisons). The largest absolute difference was
+1.4551915228366852e-11 in physical-scale conductivity; the largest relative
+difference was 1.4220422464135535e-14. Every model was also checked for missing
+predictors, input shape errors, invalid probabilities and changed artifact bytes.
 
 ## Scientific contract
 
@@ -53,6 +57,17 @@ The source is [Szabó, Weynants and Weber (2021)](https://doi.org/10.5194/gmd-14
 with the computational reference pinned to euptf2 `v1.0.0`, revision
 `f22c38f7e73819ad23d7f6ff00b970288a7d57d0`. The original package source hashes
 and release provenance remain in `specs/models/euptf2/manifest.json`.
+
+The scientific archive is `brigittaszabo/euptfv2` v.2.0.0, revision
+`35e2df971259f8f1d9904c5d0359eb09406175b1`, corresponding to
+[Zenodo 3759443](https://zenodo.org/records/3759443). The downloaded GitHub
+revision ZIP has SHA-256
+`e0fe56929e72f5bc1876962b12c24eb797744d289545f837cce0dac1c42b041a`.
+`scientific-archive.json` records all 209 original forest hashes.
+`archive-comparison.json` records direct R comparisons: all 205 packaged forests
+have identical topology, split values, predictor metadata and complete stored
+response matrices to their archived originals. VG_PTF26 uses the four remaining
+original forests in THS, THR, ALP, N order.
 
 | Predictor | Original unit and definition |
 | --- | --- |
@@ -105,18 +120,30 @@ enforced physical constraints between independently predicted parameters.
 ## Offline local import
 
 Use the exact authenticated source described in the reference-slice guide.
-The importer validates all 77 original RData hashes before deserializing any
-object, including when importing only a scalar subset. Base R performs the
+The importer validates all 77 packaged RData hashes and the supplied archive's
+four additional forest hashes before deserializing any object, including when
+importing only a scalar subset. Base R performs the
 conversion offline; ranger is not needed for conversion. No fitting or random
 sampling occurs. All outputs must match their frozen whole-container digests
 and sizes before the new destination directory becomes visible.
 
 ```sh
-python codegen/scripts/import_euptf2.py --collection --group scalar --upstream .euptf2-local/upstream --output .euptf2-local/models
+python codegen/scripts/import_euptf2.py --collection --upstream .euptf2-local/upstream --archive .euptf2-local/scientific-archive --output .euptf2-local/models
 ```
 
 The output directory must be new. Pass `--rscript /path/to/Rscript` when needed.
-Use `--group all` after the parameter-model stage. The trained files and the
+The source paths are extracted repository roots at the exact revisions above.
+The default `--group all` imports 78 models and requires both source trees.
+`--group package` imports the 77 packaged objects without the archive;
+`--group scalar` imports only the 43 scalar objects. To reproduce the full
+archive reconciliation, run:
+
+```sh
+python codegen/scripts/audit_euptf2_archive.py --upstream .euptf2-local/upstream --archive .euptf2-local/scientific-archive --library .euptf2-local/R-library --output .euptf2-local/archive-comparison.json
+```
+
+This optional audit authenticates all 209 original archived forest files before
+R compares their saved states against the installed package. The trained files and the
 original upstream GPL source remain outside ptfkit release directories.
 Runtime inference requires no R, NumPy inference API or ML framework.
 
@@ -175,8 +202,13 @@ thresholds, means or response-sample arrays are embedded in generated targets.
 ## Independent verification
 
 `codegen/scripts/reference_euptf2_collection.R` executes the actual installed
-upstream `euptf2::euptfFun` for means, default quantiles and custom 0.1/0.9
-quantiles, and inspects every original saved object. It reads no converted
+upstream `euptf2::euptfFun` for the 77 packaged objects' means, default quantiles
+and custom 0.1/0.9 quantiles, and inspects every original saved object.
+For archive-only VG_PTF26 it calls the unmodified exported upstream helpers
+`ptfFun.pred`, `ptf.transFun` and `ptfFun.quant` on the four original forests,
+then applies the original derived-M equation. The package's top-level registry
+cannot load this omitted model. This oracle distinction is explicit in its fixture.
+The reference script reads no converted
 artifact and calls no ptfkit prediction. References are frozen per object under
 `specs/models/euptf2/references/`. Inputs use 17-digit decimal strings to
 preserve the exact binary64 thresholds used by the oracle; replay parses these
@@ -193,7 +225,7 @@ between leaf means and response samples, the ninth predictor, transform order,
 default/custom probability ordering and derived M behavior.
 
 ```sh
-Rscript --vanilla codegen/scripts/reference_euptf2_collection.R .euptf2-local/upstream .euptf2-local/R-library .euptf2-local/reference-repeat
+Rscript --vanilla codegen/scripts/reference_euptf2_collection.R .euptf2-local/upstream .euptf2-local/R-library .euptf2-local/reference-repeat .euptf2-local/scientific-archive
 cargo build --manifest-path targets/ptfkit-rs/Cargo.toml --example euptf2_runner
 uv run --project targets/ptfkit-py --frozen python codegen/scripts/verify_euptf2_collection.py --models .euptf2-local/models --rust targets/ptfkit-rs/target/debug/examples/euptf2_runner --report .euptf2-local/verification.json
 ```
@@ -205,6 +237,16 @@ targets and Python extension first. The comparison tolerance is
 interpolation and exponential back-transforms in the original output units.
 It is distinct from predictive accuracy or the catalog's scientific tolerances.
 No tolerance was increased in response to a failing comparison.
+
+The completion checks passed 145 codegen tests, 365 Rust unit tests and three
+integration tests, 137 native CTest cases, 808 Python tests and six importer
+tests, plus formatting, linting, type checking, deterministic generation and a
+strict documentation build. Rosetta3 passed its unchanged 120 upstream cases
+and 30 rejected-input cases on each target. A fresh wheel passed every model's
+fixtures in an isolated interpreter without NumPy or R installed. The wheel,
+source distribution and Rust package listing contain no upstream R source or
+trained QRF artifacts. The original THS_PTF01 interface and artifact remain
+compatible with its 60-case reference suite.
 
 The Rosetta container, neural kernels, normalization and reference expectations
 are retained. This computational parity work does not establish predictive

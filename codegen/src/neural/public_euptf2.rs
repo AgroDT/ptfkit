@@ -42,7 +42,7 @@ pub(super) fn load(root: &Path) -> Result<Collection> {
     let valid = collection.format_version == 2
         && collection.format == "PTFKQF02"
         && collection.distribution == "external-only"
-        && collection.models.len() == 77
+        && collection.models.len() == 78
         && collection.models.iter().all(|m| {
             let (parameters, transforms): (Vec<&str>, Vec<u32>) = match m.family.as_str() {
                 "VG" => (vec!["THS", "THR", "ALP", "N"], vec![0, 2, 1, 3]),
@@ -62,7 +62,7 @@ pub(super) fn load(root: &Path) -> Result<Collection> {
             }
             ids.insert(m.id)
                 && names.insert(&m.name)
-                && (1..=77).contains(&m.id)
+                && (1..=78).contains(&m.id)
                 && ["implemented", "inventoried", "blocked"].contains(&m.status.as_str())
                 && (4..=9).contains(&m.features.len())
                 && m.features.iter().collect::<BTreeSet<_>>().len() == m.features.len()

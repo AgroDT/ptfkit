@@ -818,6 +818,1176 @@ PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_ks_ptf05(
     return PTFKIT_MODEL_OK;
 }
 typedef struct {
+    double ths_mean; /* cm^3/cm^3 */
+    double thr_mean; /* cm^3/cm^3 */
+    double alp_mean; /* 1/cm */
+    double n_mean;   /* 1 */
+    double k0_mean;  /* cm/day */
+    double l_mean;   /* 1 */
+    double m_mean;   /* 1 */
+    double ths_q05;  /* cm^3/cm^3 */
+    double ths_q25;  /* cm^3/cm^3 */
+    double ths_q50;  /* cm^3/cm^3 */
+    double ths_q75;  /* cm^3/cm^3 */
+    double ths_q95;  /* cm^3/cm^3 */
+    double thr_q05;  /* cm^3/cm^3 */
+    double thr_q25;  /* cm^3/cm^3 */
+    double thr_q50;  /* cm^3/cm^3 */
+    double thr_q75;  /* cm^3/cm^3 */
+    double thr_q95;  /* cm^3/cm^3 */
+    double alp_q05;  /* 1/cm */
+    double alp_q25;  /* 1/cm */
+    double alp_q50;  /* 1/cm */
+    double alp_q75;  /* 1/cm */
+    double alp_q95;  /* 1/cm */
+    double n_q05;    /* 1 */
+    double n_q25;    /* 1 */
+    double n_q50;    /* 1 */
+    double n_q75;    /* 1 */
+    double n_q95;    /* 1 */
+    double k0_q05;   /* cm/day */
+    double k0_q25;   /* cm/day */
+    double k0_q50;   /* cm/day */
+    double k0_q75;   /* cm/day */
+    double k0_q95;   /* cm/day */
+    double l_q05;    /* 1 */
+    double l_q25;    /* 1 */
+    double l_q50;    /* 1 */
+    double l_q75;    /* 1 */
+    double l_q95;    /* 1 */
+} ptfkit_euptf2_mvg_statistics;
+PTFKIT_MODEL_INLINE ptfkit_model_status
+calc_ptf_szabo2021_mvg_ptf01(const ptfkit_euptf2_model *model, double ussand, double ussilt,
+                             double usclay, double depth_m, ptfkit_euptf2_mvg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->k0_mean = NAN;
+    out->l_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    out->k0_q05 = NAN;
+    out->k0_q25 = NAN;
+    out->k0_q50 = NAN;
+    out->k0_q75 = NAN;
+    out->k0_q95 = NAN;
+    out->l_q05 = NAN;
+    out->l_q25 = NAN;
+    out->l_q50 = NAN;
+    out->l_q75 = NAN;
+    out->l_q95 = NAN;
+    if (!model || model->detail_contract->id != 32)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 4, NULL, 5, mean, 7, q, 30);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->k0_mean = mean[4];
+    out->l_mean = mean[5];
+    out->m_mean = mean[6];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    out->k0_q05 = q[20];
+    out->k0_q25 = q[21];
+    out->k0_q50 = q[22];
+    out->k0_q75 = q[23];
+    out->k0_q95 = q[24];
+    out->l_q05 = q[25];
+    out->l_q25 = q[26];
+    out->l_q50 = q[27];
+    out->l_q75 = q[28];
+    out->l_q95 = q[29];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_mvg_ptf02(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double oc, ptfkit_euptf2_mvg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->k0_mean = NAN;
+    out->l_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    out->k0_q05 = NAN;
+    out->k0_q25 = NAN;
+    out->k0_q50 = NAN;
+    out->k0_q75 = NAN;
+    out->k0_q95 = NAN;
+    out->l_q05 = NAN;
+    out->l_q25 = NAN;
+    out->l_q50 = NAN;
+    out->l_q75 = NAN;
+    out->l_q95 = NAN;
+    if (!model || model->detail_contract->id != 33)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, oc}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 5, NULL, 5, mean, 7, q, 30);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->k0_mean = mean[4];
+    out->l_mean = mean[5];
+    out->m_mean = mean[6];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    out->k0_q05 = q[20];
+    out->k0_q25 = q[21];
+    out->k0_q50 = q[22];
+    out->k0_q75 = q[23];
+    out->k0_q95 = q[24];
+    out->l_q05 = q[25];
+    out->l_q25 = q[26];
+    out->l_q50 = q[27];
+    out->l_q75 = q[28];
+    out->l_q95 = q[29];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_mvg_ptf04(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double caco3, ptfkit_euptf2_mvg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->k0_mean = NAN;
+    out->l_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    out->k0_q05 = NAN;
+    out->k0_q25 = NAN;
+    out->k0_q50 = NAN;
+    out->k0_q75 = NAN;
+    out->k0_q95 = NAN;
+    out->l_q05 = NAN;
+    out->l_q25 = NAN;
+    out->l_q50 = NAN;
+    out->l_q75 = NAN;
+    out->l_q95 = NAN;
+    if (!model || model->detail_contract->id != 34)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, caco3}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 5, NULL, 5, mean, 7, q, 30);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->k0_mean = mean[4];
+    out->l_mean = mean[5];
+    out->m_mean = mean[6];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    out->k0_q05 = q[20];
+    out->k0_q25 = q[21];
+    out->k0_q50 = q[22];
+    out->k0_q75 = q[23];
+    out->k0_q95 = q[24];
+    out->l_q05 = q[25];
+    out->l_q25 = q[26];
+    out->l_q50 = q[27];
+    out->l_q75 = q[28];
+    out->l_q95 = q[29];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_mvg_ptf05(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double ph_h2o, ptfkit_euptf2_mvg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->k0_mean = NAN;
+    out->l_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    out->k0_q05 = NAN;
+    out->k0_q25 = NAN;
+    out->k0_q50 = NAN;
+    out->k0_q75 = NAN;
+    out->k0_q95 = NAN;
+    out->l_q05 = NAN;
+    out->l_q25 = NAN;
+    out->l_q50 = NAN;
+    out->l_q75 = NAN;
+    out->l_q95 = NAN;
+    if (!model || model->detail_contract->id != 35)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, ph_h2o}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 5, NULL, 5, mean, 7, q, 30);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->k0_mean = mean[4];
+    out->l_mean = mean[5];
+    out->m_mean = mean[6];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    out->k0_q05 = q[20];
+    out->k0_q25 = q[21];
+    out->k0_q50 = q[22];
+    out->k0_q75 = q[23];
+    out->k0_q95 = q[24];
+    out->l_q05 = q[25];
+    out->l_q25 = q[26];
+    out->l_q50 = q[27];
+    out->l_q75 = q[28];
+    out->l_q95 = q[29];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_mvg_ptf06(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double cec, ptfkit_euptf2_mvg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->k0_mean = NAN;
+    out->l_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    out->k0_q05 = NAN;
+    out->k0_q25 = NAN;
+    out->k0_q50 = NAN;
+    out->k0_q75 = NAN;
+    out->k0_q95 = NAN;
+    out->l_q05 = NAN;
+    out->l_q25 = NAN;
+    out->l_q50 = NAN;
+    out->l_q75 = NAN;
+    out->l_q95 = NAN;
+    if (!model || model->detail_contract->id != 36)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, cec}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 5, NULL, 5, mean, 7, q, 30);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->k0_mean = mean[4];
+    out->l_mean = mean[5];
+    out->m_mean = mean[6];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    out->k0_q05 = q[20];
+    out->k0_q25 = q[21];
+    out->k0_q50 = q[22];
+    out->k0_q75 = q[23];
+    out->k0_q95 = q[24];
+    out->l_q05 = q[25];
+    out->l_q25 = q[26];
+    out->l_q50 = q[27];
+    out->l_q75 = q[28];
+    out->l_q95 = q[29];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_mvg_ptf12(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double bd, double ph_h2o, ptfkit_euptf2_mvg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->k0_mean = NAN;
+    out->l_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    out->k0_q05 = NAN;
+    out->k0_q25 = NAN;
+    out->k0_q50 = NAN;
+    out->k0_q75 = NAN;
+    out->k0_q95 = NAN;
+    out->l_q05 = NAN;
+    out->l_q25 = NAN;
+    out->l_q50 = NAN;
+    out->l_q75 = NAN;
+    out->l_q95 = NAN;
+    if (!model || model->detail_contract->id != 37)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, bd, ph_h2o}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 6, NULL, 5, mean, 7, q, 30);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->k0_mean = mean[4];
+    out->l_mean = mean[5];
+    out->m_mean = mean[6];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    out->k0_q05 = q[20];
+    out->k0_q25 = q[21];
+    out->k0_q50 = q[22];
+    out->k0_q75 = q[23];
+    out->k0_q95 = q[24];
+    out->l_q05 = q[25];
+    out->l_q25 = q[26];
+    out->l_q50 = q[27];
+    out->l_q75 = q[28];
+    out->l_q95 = q[29];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_mvg_ptf13(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double bd, double cec, ptfkit_euptf2_mvg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->k0_mean = NAN;
+    out->l_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    out->k0_q05 = NAN;
+    out->k0_q25 = NAN;
+    out->k0_q50 = NAN;
+    out->k0_q75 = NAN;
+    out->k0_q95 = NAN;
+    out->l_q05 = NAN;
+    out->l_q25 = NAN;
+    out->l_q50 = NAN;
+    out->l_q75 = NAN;
+    out->l_q95 = NAN;
+    if (!model || model->detail_contract->id != 38)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, bd, cec}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 6, NULL, 5, mean, 7, q, 30);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->k0_mean = mean[4];
+    out->l_mean = mean[5];
+    out->m_mean = mean[6];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    out->k0_q05 = q[20];
+    out->k0_q25 = q[21];
+    out->k0_q50 = q[22];
+    out->k0_q75 = q[23];
+    out->k0_q95 = q[24];
+    out->l_q05 = q[25];
+    out->l_q25 = q[26];
+    out->l_q50 = q[27];
+    out->l_q75 = q[28];
+    out->l_q95 = q[29];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_mvg_ptf20(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double oc, double caco3, double ph_h2o, ptfkit_euptf2_mvg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->k0_mean = NAN;
+    out->l_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    out->k0_q05 = NAN;
+    out->k0_q25 = NAN;
+    out->k0_q50 = NAN;
+    out->k0_q75 = NAN;
+    out->k0_q95 = NAN;
+    out->l_q05 = NAN;
+    out->l_q25 = NAN;
+    out->l_q50 = NAN;
+    out->l_q75 = NAN;
+    out->l_q95 = NAN;
+    if (!model || model->detail_contract->id != 39)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, oc, caco3, ph_h2o}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 7, NULL, 5, mean, 7, q, 30);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->k0_mean = mean[4];
+    out->l_mean = mean[5];
+    out->m_mean = mean[6];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    out->k0_q05 = q[20];
+    out->k0_q25 = q[21];
+    out->k0_q50 = q[22];
+    out->k0_q75 = q[23];
+    out->k0_q95 = q[24];
+    out->l_q05 = q[25];
+    out->l_q25 = q[26];
+    out->l_q50 = q[27];
+    out->l_q75 = q[28];
+    out->l_q95 = q[29];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_mvg_ptf21(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double oc, double caco3, double cec, ptfkit_euptf2_mvg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->k0_mean = NAN;
+    out->l_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    out->k0_q05 = NAN;
+    out->k0_q25 = NAN;
+    out->k0_q50 = NAN;
+    out->k0_q75 = NAN;
+    out->k0_q95 = NAN;
+    out->l_q05 = NAN;
+    out->l_q25 = NAN;
+    out->l_q50 = NAN;
+    out->l_q75 = NAN;
+    out->l_q95 = NAN;
+    if (!model || model->detail_contract->id != 40)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, oc, caco3, cec}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 7, NULL, 5, mean, 7, q, 30);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->k0_mean = mean[4];
+    out->l_mean = mean[5];
+    out->m_mean = mean[6];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    out->k0_q05 = q[20];
+    out->k0_q25 = q[21];
+    out->k0_q50 = q[22];
+    out->k0_q75 = q[23];
+    out->k0_q95 = q[24];
+    out->l_q05 = q[25];
+    out->l_q25 = q[26];
+    out->l_q50 = q[27];
+    out->l_q75 = q[28];
+    out->l_q95 = q[29];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_mvg_ptf23(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double bd, double caco3, double ph_h2o, ptfkit_euptf2_mvg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->k0_mean = NAN;
+    out->l_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    out->k0_q05 = NAN;
+    out->k0_q25 = NAN;
+    out->k0_q50 = NAN;
+    out->k0_q75 = NAN;
+    out->k0_q95 = NAN;
+    out->l_q05 = NAN;
+    out->l_q25 = NAN;
+    out->l_q50 = NAN;
+    out->l_q75 = NAN;
+    out->l_q95 = NAN;
+    if (!model || model->detail_contract->id != 41)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, bd, caco3, ph_h2o}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 7, NULL, 5, mean, 7, q, 30);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->k0_mean = mean[4];
+    out->l_mean = mean[5];
+    out->m_mean = mean[6];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    out->k0_q05 = q[20];
+    out->k0_q25 = q[21];
+    out->k0_q50 = q[22];
+    out->k0_q75 = q[23];
+    out->k0_q95 = q[24];
+    out->l_q05 = q[25];
+    out->l_q25 = q[26];
+    out->l_q50 = q[27];
+    out->l_q75 = q[28];
+    out->l_q95 = q[29];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_mvg_ptf27(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double oc, double bd, double caco3, double ph_h2o, ptfkit_euptf2_mvg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->k0_mean = NAN;
+    out->l_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    out->k0_q05 = NAN;
+    out->k0_q25 = NAN;
+    out->k0_q50 = NAN;
+    out->k0_q75 = NAN;
+    out->k0_q95 = NAN;
+    out->l_q05 = NAN;
+    out->l_q25 = NAN;
+    out->l_q50 = NAN;
+    out->l_q75 = NAN;
+    out->l_q95 = NAN;
+    if (!model || model->detail_contract->id != 42)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, oc, bd, caco3, ph_h2o}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 8, NULL, 5, mean, 7, q, 30);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->k0_mean = mean[4];
+    out->l_mean = mean[5];
+    out->m_mean = mean[6];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    out->k0_q05 = q[20];
+    out->k0_q25 = q[21];
+    out->k0_q50 = q[22];
+    out->k0_q75 = q[23];
+    out->k0_q95 = q[24];
+    out->l_q05 = q[25];
+    out->l_q25 = q[26];
+    out->l_q50 = q[27];
+    out->l_q75 = q[28];
+    out->l_q95 = q[29];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_mvg_ptf28(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double oc, double bd, double caco3, double cec, ptfkit_euptf2_mvg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->k0_mean = NAN;
+    out->l_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    out->k0_q05 = NAN;
+    out->k0_q25 = NAN;
+    out->k0_q50 = NAN;
+    out->k0_q75 = NAN;
+    out->k0_q95 = NAN;
+    out->l_q05 = NAN;
+    out->l_q25 = NAN;
+    out->l_q50 = NAN;
+    out->l_q75 = NAN;
+    out->l_q95 = NAN;
+    if (!model || model->detail_contract->id != 43)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, oc, bd, caco3, cec}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 8, NULL, 5, mean, 7, q, 30);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->k0_mean = mean[4];
+    out->l_mean = mean[5];
+    out->m_mean = mean[6];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    out->k0_q05 = q[20];
+    out->k0_q25 = q[21];
+    out->k0_q50 = q[22];
+    out->k0_q75 = q[23];
+    out->k0_q95 = q[24];
+    out->l_q05 = q[25];
+    out->l_q25 = q[26];
+    out->l_q50 = q[27];
+    out->l_q75 = q[28];
+    out->l_q95 = q[29];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_mvg_ptf29(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double oc, double bd, double ph_h2o, double cec, ptfkit_euptf2_mvg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->k0_mean = NAN;
+    out->l_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    out->k0_q05 = NAN;
+    out->k0_q25 = NAN;
+    out->k0_q50 = NAN;
+    out->k0_q75 = NAN;
+    out->k0_q95 = NAN;
+    out->l_q05 = NAN;
+    out->l_q25 = NAN;
+    out->l_q50 = NAN;
+    out->l_q75 = NAN;
+    out->l_q95 = NAN;
+    if (!model || model->detail_contract->id != 44)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, oc, bd, ph_h2o, cec}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 8, NULL, 5, mean, 7, q, 30);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->k0_mean = mean[4];
+    out->l_mean = mean[5];
+    out->m_mean = mean[6];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    out->k0_q05 = q[20];
+    out->k0_q25 = q[21];
+    out->k0_q50 = q[22];
+    out->k0_q75 = q[23];
+    out->k0_q95 = q[24];
+    out->l_q05 = q[25];
+    out->l_q25 = q[26];
+    out->l_q50 = q[27];
+    out->l_q75 = q[28];
+    out->l_q95 = q[29];
+    return PTFKIT_MODEL_OK;
+}
+typedef struct {
     double mean; /* cm^3/cm^3 */
     double q05;  /* cm^3/cm^3 */
     double q25;  /* cm^3/cm^3 */
@@ -948,6 +2118,1356 @@ PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_ths_ptf05(
     out->q50 = q[2];
     out->q75 = q[3];
     out->q95 = q[4];
+    return PTFKIT_MODEL_OK;
+}
+typedef struct {
+    double ths_mean; /* cm^3/cm^3 */
+    double thr_mean; /* cm^3/cm^3 */
+    double alp_mean; /* 1/cm */
+    double n_mean;   /* 1 */
+    double m_mean;   /* 1 */
+    double ths_q05;  /* cm^3/cm^3 */
+    double ths_q25;  /* cm^3/cm^3 */
+    double ths_q50;  /* cm^3/cm^3 */
+    double ths_q75;  /* cm^3/cm^3 */
+    double ths_q95;  /* cm^3/cm^3 */
+    double thr_q05;  /* cm^3/cm^3 */
+    double thr_q25;  /* cm^3/cm^3 */
+    double thr_q50;  /* cm^3/cm^3 */
+    double thr_q75;  /* cm^3/cm^3 */
+    double thr_q95;  /* cm^3/cm^3 */
+    double alp_q05;  /* 1/cm */
+    double alp_q25;  /* 1/cm */
+    double alp_q50;  /* 1/cm */
+    double alp_q75;  /* 1/cm */
+    double alp_q95;  /* 1/cm */
+    double n_q05;    /* 1 */
+    double n_q25;    /* 1 */
+    double n_q50;    /* 1 */
+    double n_q75;    /* 1 */
+    double n_q95;    /* 1 */
+} ptfkit_euptf2_vg_statistics;
+PTFKIT_MODEL_INLINE ptfkit_model_status
+calc_ptf_szabo2021_vg_ptf01(const ptfkit_euptf2_model *model, double ussand, double ussilt,
+                            double usclay, double depth_m, ptfkit_euptf2_vg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    if (!model || model->detail_contract->id != 50)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 4, NULL, 5, mean, 5, q, 20);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->m_mean = mean[4];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_vg_ptf02(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double oc, ptfkit_euptf2_vg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    if (!model || model->detail_contract->id != 51)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, oc}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 5, NULL, 5, mean, 5, q, 20);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->m_mean = mean[4];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_vg_ptf03(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double bd, ptfkit_euptf2_vg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    if (!model || model->detail_contract->id != 52)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, bd}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 5, NULL, 5, mean, 5, q, 20);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->m_mean = mean[4];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_vg_ptf04(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double caco3, ptfkit_euptf2_vg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    if (!model || model->detail_contract->id != 53)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, caco3}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 5, NULL, 5, mean, 5, q, 20);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->m_mean = mean[4];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_vg_ptf05(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double ph_h2o, ptfkit_euptf2_vg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    if (!model || model->detail_contract->id != 54)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, ph_h2o}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 5, NULL, 5, mean, 5, q, 20);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->m_mean = mean[4];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_vg_ptf06(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double cec, ptfkit_euptf2_vg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    if (!model || model->detail_contract->id != 55)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, cec}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 5, NULL, 5, mean, 5, q, 20);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->m_mean = mean[4];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_vg_ptf07(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double oc, double bd, ptfkit_euptf2_vg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    if (!model || model->detail_contract->id != 56)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, oc, bd}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 6, NULL, 5, mean, 5, q, 20);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->m_mean = mean[4];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_vg_ptf08(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double oc, double caco3, ptfkit_euptf2_vg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    if (!model || model->detail_contract->id != 57)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, oc, caco3}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 6, NULL, 5, mean, 5, q, 20);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->m_mean = mean[4];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_vg_ptf09(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double oc, double ph_h2o, ptfkit_euptf2_vg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    if (!model || model->detail_contract->id != 58)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, oc, ph_h2o}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 6, NULL, 5, mean, 5, q, 20);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->m_mean = mean[4];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_vg_ptf10(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double oc, double cec, ptfkit_euptf2_vg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    if (!model || model->detail_contract->id != 59)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, oc, cec}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 6, NULL, 5, mean, 5, q, 20);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->m_mean = mean[4];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_vg_ptf11(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double bd, double caco3, ptfkit_euptf2_vg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    if (!model || model->detail_contract->id != 60)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, bd, caco3}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 6, NULL, 5, mean, 5, q, 20);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->m_mean = mean[4];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_vg_ptf12(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double bd, double ph_h2o, ptfkit_euptf2_vg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    if (!model || model->detail_contract->id != 61)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, bd, ph_h2o}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 6, NULL, 5, mean, 5, q, 20);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->m_mean = mean[4];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_vg_ptf13(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double bd, double cec, ptfkit_euptf2_vg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    if (!model || model->detail_contract->id != 62)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, bd, cec}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 6, NULL, 5, mean, 5, q, 20);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->m_mean = mean[4];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_vg_ptf14(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double caco3, double ph_h2o, ptfkit_euptf2_vg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    if (!model || model->detail_contract->id != 63)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, caco3, ph_h2o}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 6, NULL, 5, mean, 5, q, 20);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->m_mean = mean[4];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_vg_ptf15(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double caco3, double cec, ptfkit_euptf2_vg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    if (!model || model->detail_contract->id != 64)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, caco3, cec}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 6, NULL, 5, mean, 5, q, 20);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->m_mean = mean[4];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_vg_ptf16(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double ph_h2o, double cec, ptfkit_euptf2_vg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    if (!model || model->detail_contract->id != 65)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, ph_h2o, cec}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 6, NULL, 5, mean, 5, q, 20);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->m_mean = mean[4];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_vg_ptf21(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double oc, double caco3, double cec, ptfkit_euptf2_vg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    if (!model || model->detail_contract->id != 66)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, oc, caco3, cec}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 7, NULL, 5, mean, 5, q, 20);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->m_mean = mean[4];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_vg_ptf22(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double oc, double ph_h2o, double cec, ptfkit_euptf2_vg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    if (!model || model->detail_contract->id != 67)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, oc, ph_h2o, cec}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 7, NULL, 5, mean, 5, q, 20);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->m_mean = mean[4];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_vg_ptf24(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double bd, double caco3, double cec, ptfkit_euptf2_vg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    if (!model || model->detail_contract->id != 68)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, bd, caco3, cec}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 7, NULL, 5, mean, 5, q, 20);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->m_mean = mean[4];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_vg_ptf25(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double bd, double ph_h2o, double cec, ptfkit_euptf2_vg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    if (!model || model->detail_contract->id != 69)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, bd, ph_h2o, cec}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 7, NULL, 5, mean, 5, q, 20);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->m_mean = mean[4];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_vg_ptf29(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double oc, double bd, double ph_h2o, double cec, ptfkit_euptf2_vg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    if (!model || model->detail_contract->id != 70)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, oc, bd, ph_h2o, cec}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 8, NULL, 5, mean, 5, q, 20);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->m_mean = mean[4];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
     return PTFKIT_MODEL_OK;
 }
 typedef struct {
@@ -1131,6 +3651,69 @@ PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_wp_ptf17(
     out->q50 = q[2];
     out->q75 = q[3];
     out->q95 = q[4];
+    return PTFKIT_MODEL_OK;
+}
+PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_szabo2021_vg_ptf26(
+    const ptfkit_euptf2_model *model, double ussand, double ussilt, double usclay, double depth_m,
+    double caco3, double ph_h2o, double cec, ptfkit_euptf2_vg_statistics *out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    out->ths_mean = NAN;
+    out->thr_mean = NAN;
+    out->alp_mean = NAN;
+    out->n_mean = NAN;
+    out->m_mean = NAN;
+    out->ths_q05 = NAN;
+    out->ths_q25 = NAN;
+    out->ths_q50 = NAN;
+    out->ths_q75 = NAN;
+    out->ths_q95 = NAN;
+    out->thr_q05 = NAN;
+    out->thr_q25 = NAN;
+    out->thr_q50 = NAN;
+    out->thr_q75 = NAN;
+    out->thr_q95 = NAN;
+    out->alp_q05 = NAN;
+    out->alp_q25 = NAN;
+    out->alp_q50 = NAN;
+    out->alp_q75 = NAN;
+    out->alp_q95 = NAN;
+    out->n_q05 = NAN;
+    out->n_q25 = NAN;
+    out->n_q50 = NAN;
+    out->n_q75 = NAN;
+    out->n_q95 = NAN;
+    if (!model || model->detail_contract->id != 78)
+        return PTFKIT_MODEL_INPUT;
+    double x[] = {ussand, ussilt, usclay, depth_m, caco3, ph_h2o, cec}, mean[7], q[30];
+    ptfkit_model_status status = ptfkit_euptf2_predict(model, x, 7, NULL, 5, mean, 5, q, 20);
+    if (status != PTFKIT_MODEL_OK)
+        return status;
+    out->ths_mean = mean[0];
+    out->thr_mean = mean[1];
+    out->alp_mean = mean[2];
+    out->n_mean = mean[3];
+    out->m_mean = mean[4];
+    out->ths_q05 = q[0];
+    out->ths_q25 = q[1];
+    out->ths_q50 = q[2];
+    out->ths_q75 = q[3];
+    out->ths_q95 = q[4];
+    out->thr_q05 = q[5];
+    out->thr_q25 = q[6];
+    out->thr_q50 = q[7];
+    out->thr_q75 = q[8];
+    out->thr_q95 = q[9];
+    out->alp_q05 = q[10];
+    out->alp_q25 = q[11];
+    out->alp_q50 = q[12];
+    out->alp_q75 = q[13];
+    out->alp_q95 = q[14];
+    out->n_q05 = q[15];
+    out->n_q25 = q[16];
+    out->n_q50 = q[17];
+    out->n_q75 = q[18];
+    out->n_q95 = q[19];
     return PTFKIT_MODEL_OK;
 }
 #endif

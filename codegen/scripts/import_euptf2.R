@@ -49,9 +49,15 @@ if (length(args)==2L) {
     plan <- read.csv(args[3],stringsAsFactors=FALSE)
     for (row in seq_len(nrow(plan))) {
         entry <- plan[row,]
-        environment <- new.env(parent=emptyenv())
-        stopifnot(identical(load(file.path(args[2],"data",entry$file),envir=environment),entry$original))
-        object <- environment[[entry$original]]
+        paths <- strsplit(entry$file,";",fixed=TRUE)[[1]]
+        originals <- strsplit(entry$original,";",fixed=TRUE)[[1]]
+        stopifnot(length(paths)==length(originals))
+        objects <- lapply(seq_along(paths),function(i) {
+            environment <- new.env(parent=emptyenv())
+            stopifnot(identical(load(paths[i],envir=environment),originals[i]))
+            environment[[originals[i]]]
+        })
+        object <- if(length(objects)==1L) objects[[1]] else objects
         components <- if (inherits(object,"ranger")) list(object) else object
         features <- strsplit(entry$features,";",fixed=TRUE)[[1]]
         transforms <- as.integer(strsplit(entry$transforms,";",fixed=TRUE)[[1]])

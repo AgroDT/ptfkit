@@ -89,6 +89,14 @@ class Model {
 } // namespace ptfkit
 
 export namespace ptfkit {
+inline std::vector<std::string> euptf2_models() {
+    size_t count;
+    const auto *contracts = ::ptfkit_euptf2_contracts(&count);
+    std::vector<std::string> names;
+    for (size_t i = 0; i < count; ++i)
+        names.emplace_back(contracts[i].name);
+    return names;
+}
 struct Euptf2Prediction {
     std::vector<double> mean;
     std::vector<std::vector<double>> quantiles;
@@ -131,6 +139,24 @@ class Euptf2Model {
         if (!handle_)
             throw ModelError(PTFKIT_MODEL_INPUT);
         return handle_->detail_contract->name;
+    }
+    inline std::vector<std::string> inputs() const {
+        if (!handle_)
+            throw ModelError(PTFKIT_MODEL_INPUT);
+        const auto *c = handle_->detail_contract;
+        return std::vector<std::string>(c->input_names, c->input_names + c->inputs);
+    }
+    inline std::vector<std::string> mean_outputs() const {
+        if (!handle_)
+            throw ModelError(PTFKIT_MODEL_INPUT);
+        const auto *c = handle_->detail_contract;
+        return std::vector<std::string>(c->output_names, c->output_names + c->means);
+    }
+    inline std::vector<std::string> quantile_outputs() const {
+        if (!handle_)
+            throw ModelError(PTFKIT_MODEL_INPUT);
+        const auto *c = handle_->detail_contract;
+        return std::vector<std::string>(c->output_names, c->output_names + c->components);
     }
     inline Euptf2Prediction predict(std::span<const double> inputs,
                                     std::span<const double> probabilities) const {

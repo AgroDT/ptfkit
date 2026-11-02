@@ -1,8 +1,18 @@
 {
-  "available": 77,
-  "implemented": 43,
+  "available": 78,
+  "implemented": 78,
   "blocked": 0,
-  "pending": 34,
+  "pending": 0,
+  "trained_forests": 209,
+  "absolute_tolerance": 2e-14,
+  "relative_tolerance": 2e-13,
+  "comparison": "abs(actual-expected) <= max(absolute_tolerance, relative_tolerance*abs(expected))",
+  "upstream": {
+    "euptf2": "1.0.0",
+    "ranger": "0.18.0",
+    "R": "4.4.3"
+  },
+  "archive_only_model": "VG_PTF26: original exported package helpers on four archived forests",
   "models": [
     {
       "name": "AWC_2_PTF01",
@@ -1152,6 +1162,487 @@
       }
     },
     {
+      "name": "MVG_PTF01",
+      "targets": {
+        "c11": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 3.637978807091713e-12,
+          "max_relative_error": 4.648446178099431e-15
+        },
+        "cpp23": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 3.637978807091713e-12,
+          "max_relative_error": 4.648446178099431e-15
+        },
+        "python": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 3.637978807091713e-12,
+          "max_relative_error": 4.648446178099431e-15
+        },
+        "rust": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 3.637978807091713e-12,
+          "max_relative_error": 4.648446178099431e-15
+        }
+      }
+    },
+    {
+      "name": "MVG_PTF02",
+      "targets": {
+        "c11": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.547473508864641e-12,
+          "max_relative_error": 4.648446178099431e-15
+        },
+        "cpp23": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.547473508864641e-12,
+          "max_relative_error": 4.648446178099431e-15
+        },
+        "python": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.547473508864641e-12,
+          "max_relative_error": 6.353004716709813e-15
+        },
+        "rust": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.547473508864641e-12,
+          "max_relative_error": 6.353004716709813e-15
+        }
+      }
+    },
+    {
+      "name": "MVG_PTF04",
+      "targets": {
+        "c11": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.002220859751105e-12,
+          "max_relative_error": 4.607828216023482e-15
+        },
+        "cpp23": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.002220859751105e-12,
+          "max_relative_error": 4.607828216023482e-15
+        },
+        "python": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.002220859751105e-12,
+          "max_relative_error": 4.607828216023482e-15
+        },
+        "rust": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.002220859751105e-12,
+          "max_relative_error": 4.607828216023482e-15
+        }
+      }
+    },
+    {
+      "name": "MVG_PTF05",
+      "targets": {
+        "c11": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.320099833421409e-12,
+          "max_relative_error": 4.673925849934766e-15
+        },
+        "cpp23": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.320099833421409e-12,
+          "max_relative_error": 4.673925849934766e-15
+        },
+        "python": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.320099833421409e-12,
+          "max_relative_error": 4.673925849934766e-15
+        },
+        "rust": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.320099833421409e-12,
+          "max_relative_error": 4.673925849934766e-15
+        }
+      }
+    },
+    {
+      "name": "MVG_PTF06",
+      "targets": {
+        "c11": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 3.865352482534945e-12,
+          "max_relative_error": 4.765813669253849e-15
+        },
+        "cpp23": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 3.865352482534945e-12,
+          "max_relative_error": 4.765813669253849e-15
+        },
+        "python": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 3.865352482534945e-12,
+          "max_relative_error": 6.193734744288524e-15
+        },
+        "rust": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 3.865352482534945e-12,
+          "max_relative_error": 6.193734744288524e-15
+        }
+      }
+    },
+    {
+      "name": "MVG_PTF12",
+      "targets": {
+        "c11": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.002220859751105e-12,
+          "max_relative_error": 4.607828216023482e-15
+        },
+        "cpp23": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.002220859751105e-12,
+          "max_relative_error": 4.607828216023482e-15
+        },
+        "python": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.002220859751105e-12,
+          "max_relative_error": 4.607828216023482e-15
+        },
+        "rust": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.002220859751105e-12,
+          "max_relative_error": 4.607828216023482e-15
+        }
+      }
+    },
+    {
+      "name": "MVG_PTF13",
+      "targets": {
+        "c11": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.320099833421409e-12,
+          "max_relative_error": 4.311851460173612e-15
+        },
+        "cpp23": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.320099833421409e-12,
+          "max_relative_error": 4.311851460173612e-15
+        },
+        "python": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.320099833421409e-12,
+          "max_relative_error": 4.311851460173612e-15
+        },
+        "rust": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.320099833421409e-12,
+          "max_relative_error": 4.311851460173612e-15
+        }
+      }
+    },
+    {
+      "name": "MVG_PTF20",
+      "targets": {
+        "c11": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.002220859751105e-12,
+          "max_relative_error": 4.607828216023482e-15
+        },
+        "cpp23": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.002220859751105e-12,
+          "max_relative_error": 4.607828216023482e-15
+        },
+        "python": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.002220859751105e-12,
+          "max_relative_error": 4.607828216023482e-15
+        },
+        "rust": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.002220859751105e-12,
+          "max_relative_error": 4.607828216023482e-15
+        }
+      }
+    },
+    {
+      "name": "MVG_PTF21",
+      "targets": {
+        "c11": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.774847184307873e-12,
+          "max_relative_error": 4.429860383838884e-15
+        },
+        "cpp23": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.774847184307873e-12,
+          "max_relative_error": 4.429860383838884e-15
+        },
+        "python": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.774847184307873e-12,
+          "max_relative_error": 4.429860383838884e-15
+        },
+        "rust": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.774847184307873e-12,
+          "max_relative_error": 4.429860383838884e-15
+        }
+      }
+    },
+    {
+      "name": "MVG_PTF23",
+      "targets": {
+        "c11": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.002220859751105e-12,
+          "max_relative_error": 4.680262220440812e-15
+        },
+        "cpp23": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.002220859751105e-12,
+          "max_relative_error": 4.680262220440812e-15
+        },
+        "python": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.002220859751105e-12,
+          "max_relative_error": 4.680262220440812e-15
+        },
+        "rust": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.002220859751105e-12,
+          "max_relative_error": 4.680262220440812e-15
+        }
+      }
+    },
+    {
+      "name": "MVG_PTF27",
+      "targets": {
+        "c11": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 10,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.002220859751105e-12,
+          "max_relative_error": 4.733762362614829e-15
+        },
+        "cpp23": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 10,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.002220859751105e-12,
+          "max_relative_error": 4.733762362614829e-15
+        },
+        "python": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 10,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.002220859751105e-12,
+          "max_relative_error": 4.733762362614829e-15
+        },
+        "rust": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 10,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.002220859751105e-12,
+          "max_relative_error": 4.733762362614829e-15
+        }
+      }
+    },
+    {
+      "name": "MVG_PTF28",
+      "targets": {
+        "c11": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 10,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.774847184307873e-12,
+          "max_relative_error": 4.746261995520626e-15
+        },
+        "cpp23": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 10,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.774847184307873e-12,
+          "max_relative_error": 4.746261995520626e-15
+        },
+        "python": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 10,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.774847184307873e-12,
+          "max_relative_error": 4.746261995520626e-15
+        },
+        "rust": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 10,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.774847184307873e-12,
+          "max_relative_error": 4.746261995520626e-15
+        }
+      }
+    },
+    {
+      "name": "MVG_PTF29",
+      "targets": {
+        "c11": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 10,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.774847184307873e-12,
+          "max_relative_error": 4.840613921246605e-15
+        },
+        "cpp23": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 10,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.774847184307873e-12,
+          "max_relative_error": 4.840613921246605e-15
+        },
+        "python": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 10,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.774847184307873e-12,
+          "max_relative_error": 4.840613921246605e-15
+        },
+        "rust": {
+          "default_cases": 31,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 10,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.774847184307873e-12,
+          "max_relative_error": 4.840613921246605e-15
+        }
+      }
+    },
+    {
       "name": "THS_PTF01",
       "targets": {
         "c11": {
@@ -1333,6 +1824,820 @@
           "integrity_rejections": 1,
           "max_absolute_error": 4.996003610813204e-16,
           "max_relative_error": 1.086870880143136e-15
+        }
+      }
+    },
+    {
+      "name": "VG_PTF01",
+      "targets": {
+        "c11": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.329070518200751e-15,
+          "max_relative_error": 4.919800860656768e-15
+        },
+        "cpp23": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.329070518200751e-15,
+          "max_relative_error": 4.919800860656768e-15
+        },
+        "python": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.329070518200751e-15,
+          "max_relative_error": 4.919800860656768e-15
+        },
+        "rust": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 6,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.329070518200751e-15,
+          "max_relative_error": 4.919800860656768e-15
+        }
+      }
+    },
+    {
+      "name": "VG_PTF02",
+      "targets": {
+        "c11": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.329070518200751e-15,
+          "max_relative_error": 4.6454772150251974e-15
+        },
+        "cpp23": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.329070518200751e-15,
+          "max_relative_error": 4.6454772150251974e-15
+        },
+        "python": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.329070518200751e-15,
+          "max_relative_error": 4.6454772150251974e-15
+        },
+        "rust": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.329070518200751e-15,
+          "max_relative_error": 4.6454772150251974e-15
+        }
+      }
+    },
+    {
+      "name": "VG_PTF03",
+      "targets": {
+        "c11": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.329070518200751e-15,
+          "max_relative_error": 4.441633275354607e-15
+        },
+        "cpp23": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.329070518200751e-15,
+          "max_relative_error": 4.441633275354607e-15
+        },
+        "python": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.329070518200751e-15,
+          "max_relative_error": 4.441633275354607e-15
+        },
+        "rust": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.329070518200751e-15,
+          "max_relative_error": 4.441633275354607e-15
+        }
+      }
+    },
+    {
+      "name": "VG_PTF04",
+      "targets": {
+        "c11": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.564453384913789e-15
+        },
+        "cpp23": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.564453384913789e-15
+        },
+        "python": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 1.4220422464135535e-14
+        },
+        "rust": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 1.4220422464135535e-14
+        }
+      }
+    },
+    {
+      "name": "VG_PTF05",
+      "targets": {
+        "c11": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.694252197903111e-15
+        },
+        "cpp23": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.694252197903111e-15
+        },
+        "python": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.694252197903111e-15
+        },
+        "rust": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.694252197903111e-15
+        }
+      }
+    },
+    {
+      "name": "VG_PTF06",
+      "targets": {
+        "c11": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.82988883421904e-15
+        },
+        "cpp23": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.82988883421904e-15
+        },
+        "python": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.82988883421904e-15
+        },
+        "rust": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 7,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.82988883421904e-15
+        }
+      }
+    },
+    {
+      "name": "VG_PTF07",
+      "targets": {
+        "c11": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.329070518200751e-15,
+          "max_relative_error": 4.6454772150251974e-15
+        },
+        "cpp23": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.329070518200751e-15,
+          "max_relative_error": 4.6454772150251974e-15
+        },
+        "python": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.329070518200751e-15,
+          "max_relative_error": 4.6454772150251974e-15
+        },
+        "rust": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 5.329070518200751e-15,
+          "max_relative_error": 4.6454772150251974e-15
+        }
+      }
+    },
+    {
+      "name": "VG_PTF08",
+      "targets": {
+        "c11": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.478852395050497e-15
+        },
+        "cpp23": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.478852395050497e-15
+        },
+        "python": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.478852395050497e-15
+        },
+        "rust": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.478852395050497e-15
+        }
+      }
+    },
+    {
+      "name": "VG_PTF09",
+      "targets": {
+        "c11": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.351817612657438e-15
+        },
+        "cpp23": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.351817612657438e-15
+        },
+        "python": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.351817612657438e-15
+        },
+        "rust": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.351817612657438e-15
+        }
+      }
+    },
+    {
+      "name": "VG_PTF10",
+      "targets": {
+        "c11": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.655514215399565e-15
+        },
+        "cpp23": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.655514215399565e-15
+        },
+        "python": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.655514215399565e-15
+        },
+        "rust": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.655514215399565e-15
+        }
+      }
+    },
+    {
+      "name": "VG_PTF11",
+      "targets": {
+        "c11": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.70904191253918e-15
+        },
+        "cpp23": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.70904191253918e-15
+        },
+        "python": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.70904191253918e-15
+        },
+        "rust": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.70904191253918e-15
+        }
+      }
+    },
+    {
+      "name": "VG_PTF12",
+      "targets": {
+        "c11": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.693242297481435e-15
+        },
+        "cpp23": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.693242297481435e-15
+        },
+        "python": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.693242297481435e-15
+        },
+        "rust": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.693242297481435e-15
+        }
+      }
+    },
+    {
+      "name": "VG_PTF13",
+      "targets": {
+        "c11": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.487645984089099e-15
+        },
+        "cpp23": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.487645984089099e-15
+        },
+        "python": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 1.1629963355292045e-14
+        },
+        "rust": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 1.1629963355292045e-14
+        }
+      }
+    },
+    {
+      "name": "VG_PTF14",
+      "targets": {
+        "c11": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.3458545376487434e-15
+        },
+        "cpp23": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.3458545376487434e-15
+        },
+        "python": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.3458545376487434e-15
+        },
+        "rust": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.3458545376487434e-15
+        }
+      }
+    },
+    {
+      "name": "VG_PTF15",
+      "targets": {
+        "c11": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.748183758390945e-15
+        },
+        "cpp23": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.748183758390945e-15
+        },
+        "python": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.748183758390945e-15
+        },
+        "rust": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.748183758390945e-15
+        }
+      }
+    },
+    {
+      "name": "VG_PTF16",
+      "targets": {
+        "c11": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.351817612657438e-15
+        },
+        "cpp23": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.351817612657438e-15
+        },
+        "python": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.351817612657438e-15
+        },
+        "rust": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 8,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.351817612657438e-15
+        }
+      }
+    },
+    {
+      "name": "VG_PTF21",
+      "targets": {
+        "c11": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.6280917260647795e-15
+        },
+        "cpp23": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.6280917260647795e-15
+        },
+        "python": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.6280917260647795e-15
+        },
+        "rust": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.6280917260647795e-15
+        }
+      }
+    },
+    {
+      "name": "VG_PTF22",
+      "targets": {
+        "c11": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.351817612657438e-15
+        },
+        "cpp23": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.351817612657438e-15
+        },
+        "python": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.351817612657438e-15
+        },
+        "rust": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.351817612657438e-15
+        }
+      }
+    },
+    {
+      "name": "VG_PTF24",
+      "targets": {
+        "c11": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.351817612657438e-15
+        },
+        "cpp23": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.351817612657438e-15
+        },
+        "python": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.351817612657438e-15
+        },
+        "rust": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.351817612657438e-15
+        }
+      }
+    },
+    {
+      "name": "VG_PTF25",
+      "targets": {
+        "c11": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.644311346362317e-15
+        },
+        "cpp23": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.644311346362317e-15
+        },
+        "python": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.644311346362317e-15
+        },
+        "rust": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.644311346362317e-15
+        }
+      }
+    },
+    {
+      "name": "VG_PTF26",
+      "targets": {
+        "c11": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.465648267343082e-15
+        },
+        "cpp23": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.465648267343082e-15
+        },
+        "python": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.465648267343082e-15
+        },
+        "rust": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 9,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.465648267343082e-15
+        }
+      }
+    },
+    {
+      "name": "VG_PTF29",
+      "targets": {
+        "c11": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 10,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.442572004614941e-15
+        },
+        "cpp23": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 10,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.442572004614941e-15
+        },
+        "python": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 10,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.442572004614941e-15
+        },
+        "rust": {
+          "default_cases": 25,
+          "custom_cases": 2,
+          "missing_and_shape_rejections": 10,
+          "integrity_rejections": 1,
+          "max_absolute_error": 4.884981308350689e-15,
+          "max_relative_error": 4.442572004614941e-15
         }
       }
     },
@@ -1595,5 +2900,19 @@
         }
       }
     }
-  ]
+  ],
+  "prediction_rows_all_targets": 7188,
+  "numeric_comparisons_all_targets": 136452,
+  "regression_checks": {
+    "codegen_tests": 145,
+    "rust_unit_tests": 365,
+    "rust_integration_tests": 3,
+    "native_ctest": 137,
+    "python_tests": 808,
+    "importer_tests": 6,
+    "rosetta_upstream_cases_per_target": 120,
+    "rosetta_rejections_per_target": 30,
+    "isolated_wheel_models_without_numpy_or_R": 78,
+    "isolated_wheel_prediction_rows": 1797
+  }
 }

@@ -773,6 +773,789 @@ pub fn calc_ptf_szabo2021_ks_ptf05(
 }
 /// Default statistics in original units.
 #[derive(Clone, Copy, Debug, PartialEq)]
+pub struct Euptf2MvgStatistics {
+    /// THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. (cm^3/cm^3)
+    pub ths_mean: f64,
+    /// THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. (cm^3/cm^3)
+    pub thr_mean: f64,
+    /// ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. (1/cm)
+    pub alp_mean: f64,
+    /// N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. (1)
+    pub n_mean: f64,
+    /// K0: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. (cm/day)
+    pub k0_mean: f64,
+    /// L: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. (1)
+    pub l_mean: f64,
+    /// M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. (1)
+    pub m_mean: f64,
+    /// THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. (cm^3/cm^3)
+    pub ths_q05: f64,
+    /// THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. (cm^3/cm^3)
+    pub ths_q25: f64,
+    /// THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. (cm^3/cm^3)
+    pub ths_q50: f64,
+    /// THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. (cm^3/cm^3)
+    pub ths_q75: f64,
+    /// THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. (cm^3/cm^3)
+    pub ths_q95: f64,
+    /// THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. (cm^3/cm^3)
+    pub thr_q05: f64,
+    /// THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. (cm^3/cm^3)
+    pub thr_q25: f64,
+    /// THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. (cm^3/cm^3)
+    pub thr_q50: f64,
+    /// THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. (cm^3/cm^3)
+    pub thr_q75: f64,
+    /// THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. (cm^3/cm^3)
+    pub thr_q95: f64,
+    /// ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. (1/cm)
+    pub alp_q05: f64,
+    /// ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. (1/cm)
+    pub alp_q25: f64,
+    /// ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. (1/cm)
+    pub alp_q50: f64,
+    /// ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. (1/cm)
+    pub alp_q75: f64,
+    /// ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. (1/cm)
+    pub alp_q95: f64,
+    /// N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. (1)
+    pub n_q05: f64,
+    /// N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. (1)
+    pub n_q25: f64,
+    /// N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. (1)
+    pub n_q50: f64,
+    /// N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. (1)
+    pub n_q75: f64,
+    /// N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. (1)
+    pub n_q95: f64,
+    /// K0: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. (cm/day)
+    pub k0_q05: f64,
+    /// K0: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. (cm/day)
+    pub k0_q25: f64,
+    /// K0: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. (cm/day)
+    pub k0_q50: f64,
+    /// K0: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. (cm/day)
+    pub k0_q75: f64,
+    /// K0: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. (cm/day)
+    pub k0_q95: f64,
+    /// L: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. (1)
+    pub l_q05: f64,
+    /// L: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. (1)
+    pub l_q25: f64,
+    /// L: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. (1)
+    pub l_q50: f64,
+    /// L: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. (1)
+    pub l_q75: f64,
+    /// L: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. (1)
+    pub l_q95: f64,
+}
+/// Predict MVG_PTF01 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_mvg_ptf01(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+) -> Result<Euptf2MvgStatistics, ModelError> {
+    if model.descriptor().name != "MVG_PTF01" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m])?;
+    Ok(Euptf2MvgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        k0_mean: p.mean[4],
+        l_mean: p.mean[5],
+        m_mean: p.mean[6],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+        k0_q05: p.quantiles[4][0],
+        k0_q25: p.quantiles[4][1],
+        k0_q50: p.quantiles[4][2],
+        k0_q75: p.quantiles[4][3],
+        k0_q95: p.quantiles[4][4],
+        l_q05: p.quantiles[5][0],
+        l_q25: p.quantiles[5][1],
+        l_q50: p.quantiles[5][2],
+        l_q75: p.quantiles[5][3],
+        l_q95: p.quantiles[5][4],
+    })
+}
+/// Predict MVG_PTF02 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_mvg_ptf02(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    oc: f64,
+) -> Result<Euptf2MvgStatistics, ModelError> {
+    if model.descriptor().name != "MVG_PTF02" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, oc])?;
+    Ok(Euptf2MvgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        k0_mean: p.mean[4],
+        l_mean: p.mean[5],
+        m_mean: p.mean[6],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+        k0_q05: p.quantiles[4][0],
+        k0_q25: p.quantiles[4][1],
+        k0_q50: p.quantiles[4][2],
+        k0_q75: p.quantiles[4][3],
+        k0_q95: p.quantiles[4][4],
+        l_q05: p.quantiles[5][0],
+        l_q25: p.quantiles[5][1],
+        l_q50: p.quantiles[5][2],
+        l_q75: p.quantiles[5][3],
+        l_q95: p.quantiles[5][4],
+    })
+}
+/// Predict MVG_PTF04 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_mvg_ptf04(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    caco3: f64,
+) -> Result<Euptf2MvgStatistics, ModelError> {
+    if model.descriptor().name != "MVG_PTF04" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, caco3])?;
+    Ok(Euptf2MvgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        k0_mean: p.mean[4],
+        l_mean: p.mean[5],
+        m_mean: p.mean[6],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+        k0_q05: p.quantiles[4][0],
+        k0_q25: p.quantiles[4][1],
+        k0_q50: p.quantiles[4][2],
+        k0_q75: p.quantiles[4][3],
+        k0_q95: p.quantiles[4][4],
+        l_q05: p.quantiles[5][0],
+        l_q25: p.quantiles[5][1],
+        l_q50: p.quantiles[5][2],
+        l_q75: p.quantiles[5][3],
+        l_q95: p.quantiles[5][4],
+    })
+}
+/// Predict MVG_PTF05 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_mvg_ptf05(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    ph_h2o: f64,
+) -> Result<Euptf2MvgStatistics, ModelError> {
+    if model.descriptor().name != "MVG_PTF05" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, ph_h2o])?;
+    Ok(Euptf2MvgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        k0_mean: p.mean[4],
+        l_mean: p.mean[5],
+        m_mean: p.mean[6],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+        k0_q05: p.quantiles[4][0],
+        k0_q25: p.quantiles[4][1],
+        k0_q50: p.quantiles[4][2],
+        k0_q75: p.quantiles[4][3],
+        k0_q95: p.quantiles[4][4],
+        l_q05: p.quantiles[5][0],
+        l_q25: p.quantiles[5][1],
+        l_q50: p.quantiles[5][2],
+        l_q75: p.quantiles[5][3],
+        l_q95: p.quantiles[5][4],
+    })
+}
+/// Predict MVG_PTF06 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_mvg_ptf06(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    cec: f64,
+) -> Result<Euptf2MvgStatistics, ModelError> {
+    if model.descriptor().name != "MVG_PTF06" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, cec])?;
+    Ok(Euptf2MvgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        k0_mean: p.mean[4],
+        l_mean: p.mean[5],
+        m_mean: p.mean[6],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+        k0_q05: p.quantiles[4][0],
+        k0_q25: p.quantiles[4][1],
+        k0_q50: p.quantiles[4][2],
+        k0_q75: p.quantiles[4][3],
+        k0_q95: p.quantiles[4][4],
+        l_q05: p.quantiles[5][0],
+        l_q25: p.quantiles[5][1],
+        l_q50: p.quantiles[5][2],
+        l_q75: p.quantiles[5][3],
+        l_q95: p.quantiles[5][4],
+    })
+}
+/// Predict MVG_PTF12 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_mvg_ptf12(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    bd: f64,
+    ph_h2o: f64,
+) -> Result<Euptf2MvgStatistics, ModelError> {
+    if model.descriptor().name != "MVG_PTF12" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, bd, ph_h2o])?;
+    Ok(Euptf2MvgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        k0_mean: p.mean[4],
+        l_mean: p.mean[5],
+        m_mean: p.mean[6],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+        k0_q05: p.quantiles[4][0],
+        k0_q25: p.quantiles[4][1],
+        k0_q50: p.quantiles[4][2],
+        k0_q75: p.quantiles[4][3],
+        k0_q95: p.quantiles[4][4],
+        l_q05: p.quantiles[5][0],
+        l_q25: p.quantiles[5][1],
+        l_q50: p.quantiles[5][2],
+        l_q75: p.quantiles[5][3],
+        l_q95: p.quantiles[5][4],
+    })
+}
+/// Predict MVG_PTF13 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_mvg_ptf13(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    bd: f64,
+    cec: f64,
+) -> Result<Euptf2MvgStatistics, ModelError> {
+    if model.descriptor().name != "MVG_PTF13" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, bd, cec])?;
+    Ok(Euptf2MvgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        k0_mean: p.mean[4],
+        l_mean: p.mean[5],
+        m_mean: p.mean[6],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+        k0_q05: p.quantiles[4][0],
+        k0_q25: p.quantiles[4][1],
+        k0_q50: p.quantiles[4][2],
+        k0_q75: p.quantiles[4][3],
+        k0_q95: p.quantiles[4][4],
+        l_q05: p.quantiles[5][0],
+        l_q25: p.quantiles[5][1],
+        l_q50: p.quantiles[5][2],
+        l_q75: p.quantiles[5][3],
+        l_q95: p.quantiles[5][4],
+    })
+}
+/// Predict MVG_PTF20 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_mvg_ptf20(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    oc: f64,
+    caco3: f64,
+    ph_h2o: f64,
+) -> Result<Euptf2MvgStatistics, ModelError> {
+    if model.descriptor().name != "MVG_PTF20" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, oc, caco3, ph_h2o])?;
+    Ok(Euptf2MvgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        k0_mean: p.mean[4],
+        l_mean: p.mean[5],
+        m_mean: p.mean[6],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+        k0_q05: p.quantiles[4][0],
+        k0_q25: p.quantiles[4][1],
+        k0_q50: p.quantiles[4][2],
+        k0_q75: p.quantiles[4][3],
+        k0_q95: p.quantiles[4][4],
+        l_q05: p.quantiles[5][0],
+        l_q25: p.quantiles[5][1],
+        l_q50: p.quantiles[5][2],
+        l_q75: p.quantiles[5][3],
+        l_q95: p.quantiles[5][4],
+    })
+}
+/// Predict MVG_PTF21 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_mvg_ptf21(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    oc: f64,
+    caco3: f64,
+    cec: f64,
+) -> Result<Euptf2MvgStatistics, ModelError> {
+    if model.descriptor().name != "MVG_PTF21" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, oc, caco3, cec])?;
+    Ok(Euptf2MvgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        k0_mean: p.mean[4],
+        l_mean: p.mean[5],
+        m_mean: p.mean[6],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+        k0_q05: p.quantiles[4][0],
+        k0_q25: p.quantiles[4][1],
+        k0_q50: p.quantiles[4][2],
+        k0_q75: p.quantiles[4][3],
+        k0_q95: p.quantiles[4][4],
+        l_q05: p.quantiles[5][0],
+        l_q25: p.quantiles[5][1],
+        l_q50: p.quantiles[5][2],
+        l_q75: p.quantiles[5][3],
+        l_q95: p.quantiles[5][4],
+    })
+}
+/// Predict MVG_PTF23 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_mvg_ptf23(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    bd: f64,
+    caco3: f64,
+    ph_h2o: f64,
+) -> Result<Euptf2MvgStatistics, ModelError> {
+    if model.descriptor().name != "MVG_PTF23" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, bd, caco3, ph_h2o])?;
+    Ok(Euptf2MvgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        k0_mean: p.mean[4],
+        l_mean: p.mean[5],
+        m_mean: p.mean[6],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+        k0_q05: p.quantiles[4][0],
+        k0_q25: p.quantiles[4][1],
+        k0_q50: p.quantiles[4][2],
+        k0_q75: p.quantiles[4][3],
+        k0_q95: p.quantiles[4][4],
+        l_q05: p.quantiles[5][0],
+        l_q25: p.quantiles[5][1],
+        l_q50: p.quantiles[5][2],
+        l_q75: p.quantiles[5][3],
+        l_q95: p.quantiles[5][4],
+    })
+}
+/// Predict MVG_PTF27 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_mvg_ptf27(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    oc: f64,
+    bd: f64,
+    caco3: f64,
+    ph_h2o: f64,
+) -> Result<Euptf2MvgStatistics, ModelError> {
+    if model.descriptor().name != "MVG_PTF27" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, oc, bd, caco3, ph_h2o])?;
+    Ok(Euptf2MvgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        k0_mean: p.mean[4],
+        l_mean: p.mean[5],
+        m_mean: p.mean[6],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+        k0_q05: p.quantiles[4][0],
+        k0_q25: p.quantiles[4][1],
+        k0_q50: p.quantiles[4][2],
+        k0_q75: p.quantiles[4][3],
+        k0_q95: p.quantiles[4][4],
+        l_q05: p.quantiles[5][0],
+        l_q25: p.quantiles[5][1],
+        l_q50: p.quantiles[5][2],
+        l_q75: p.quantiles[5][3],
+        l_q95: p.quantiles[5][4],
+    })
+}
+/// Predict MVG_PTF28 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_mvg_ptf28(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    oc: f64,
+    bd: f64,
+    caco3: f64,
+    cec: f64,
+) -> Result<Euptf2MvgStatistics, ModelError> {
+    if model.descriptor().name != "MVG_PTF28" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, oc, bd, caco3, cec])?;
+    Ok(Euptf2MvgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        k0_mean: p.mean[4],
+        l_mean: p.mean[5],
+        m_mean: p.mean[6],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+        k0_q05: p.quantiles[4][0],
+        k0_q25: p.quantiles[4][1],
+        k0_q50: p.quantiles[4][2],
+        k0_q75: p.quantiles[4][3],
+        k0_q95: p.quantiles[4][4],
+        l_q05: p.quantiles[5][0],
+        l_q25: p.quantiles[5][1],
+        l_q50: p.quantiles[5][2],
+        l_q75: p.quantiles[5][3],
+        l_q95: p.quantiles[5][4],
+    })
+}
+/// Predict MVG_PTF29 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_mvg_ptf29(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    oc: f64,
+    bd: f64,
+    ph_h2o: f64,
+    cec: f64,
+) -> Result<Euptf2MvgStatistics, ModelError> {
+    if model.descriptor().name != "MVG_PTF29" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, oc, bd, ph_h2o, cec])?;
+    Ok(Euptf2MvgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        k0_mean: p.mean[4],
+        l_mean: p.mean[5],
+        m_mean: p.mean[6],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+        k0_q05: p.quantiles[4][0],
+        k0_q25: p.quantiles[4][1],
+        k0_q50: p.quantiles[4][2],
+        k0_q75: p.quantiles[4][3],
+        k0_q95: p.quantiles[4][4],
+        l_q05: p.quantiles[5][0],
+        l_q25: p.quantiles[5][1],
+        l_q50: p.quantiles[5][2],
+        l_q75: p.quantiles[5][3],
+        l_q95: p.quantiles[5][4],
+    })
+}
+/// Default statistics in original units.
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Euptf2ThsStatistics {
     /// THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. (cm^3/cm^3)
     pub mean: f64,
@@ -894,6 +1677,941 @@ pub fn calc_ptf_szabo2021_ths_ptf05(
         q50: p.quantiles[0][2],
         q75: p.quantiles[0][3],
         q95: p.quantiles[0][4],
+    })
+}
+/// Default statistics in original units.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct Euptf2VgStatistics {
+    /// THS: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. (cm^3/cm^3)
+    pub ths_mean: f64,
+    /// THR: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. (cm^3/cm^3)
+    pub thr_mean: f64,
+    /// ALP: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. (1/cm)
+    pub alp_mean: f64,
+    /// N: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. (1)
+    pub n_mean: f64,
+    /// M: original-scale point estimate. Ranger means are aggregated on the fitted scale before the original back-transform; M is derived only for means. (1)
+    pub m_mean: f64,
+    /// THS: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. (cm^3/cm^3)
+    pub ths_q05: f64,
+    /// THS: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. (cm^3/cm^3)
+    pub ths_q25: f64,
+    /// THS: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. (cm^3/cm^3)
+    pub ths_q50: f64,
+    /// THS: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. (cm^3/cm^3)
+    pub ths_q75: f64,
+    /// THS: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. (cm^3/cm^3)
+    pub ths_q95: f64,
+    /// THR: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. (cm^3/cm^3)
+    pub thr_q05: f64,
+    /// THR: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. (cm^3/cm^3)
+    pub thr_q25: f64,
+    /// THR: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. (cm^3/cm^3)
+    pub thr_q50: f64,
+    /// THR: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. (cm^3/cm^3)
+    pub thr_q75: f64,
+    /// THR: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. (cm^3/cm^3)
+    pub thr_q95: f64,
+    /// ALP: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. (1/cm)
+    pub alp_q05: f64,
+    /// ALP: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. (1/cm)
+    pub alp_q25: f64,
+    /// ALP: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. (1/cm)
+    pub alp_q50: f64,
+    /// ALP: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. (1/cm)
+    pub alp_q75: f64,
+    /// ALP: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. (1/cm)
+    pub alp_q95: f64,
+    /// N: conditional quantile at probability 0.05; type-7 interpolation of stored terminal response samples, then original back-transform. (1)
+    pub n_q05: f64,
+    /// N: conditional quantile at probability 0.25; type-7 interpolation of stored terminal response samples, then original back-transform. (1)
+    pub n_q25: f64,
+    /// N: conditional quantile at probability 0.5; type-7 interpolation of stored terminal response samples, then original back-transform. (1)
+    pub n_q50: f64,
+    /// N: conditional quantile at probability 0.75; type-7 interpolation of stored terminal response samples, then original back-transform. (1)
+    pub n_q75: f64,
+    /// N: conditional quantile at probability 0.95; type-7 interpolation of stored terminal response samples, then original back-transform. (1)
+    pub n_q95: f64,
+}
+/// Predict VG_PTF01 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_vg_ptf01(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+) -> Result<Euptf2VgStatistics, ModelError> {
+    if model.descriptor().name != "VG_PTF01" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m])?;
+    Ok(Euptf2VgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        m_mean: p.mean[4],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+    })
+}
+/// Predict VG_PTF02 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_vg_ptf02(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    oc: f64,
+) -> Result<Euptf2VgStatistics, ModelError> {
+    if model.descriptor().name != "VG_PTF02" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, oc])?;
+    Ok(Euptf2VgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        m_mean: p.mean[4],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+    })
+}
+/// Predict VG_PTF03 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_vg_ptf03(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    bd: f64,
+) -> Result<Euptf2VgStatistics, ModelError> {
+    if model.descriptor().name != "VG_PTF03" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, bd])?;
+    Ok(Euptf2VgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        m_mean: p.mean[4],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+    })
+}
+/// Predict VG_PTF04 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_vg_ptf04(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    caco3: f64,
+) -> Result<Euptf2VgStatistics, ModelError> {
+    if model.descriptor().name != "VG_PTF04" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, caco3])?;
+    Ok(Euptf2VgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        m_mean: p.mean[4],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+    })
+}
+/// Predict VG_PTF05 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_vg_ptf05(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    ph_h2o: f64,
+) -> Result<Euptf2VgStatistics, ModelError> {
+    if model.descriptor().name != "VG_PTF05" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, ph_h2o])?;
+    Ok(Euptf2VgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        m_mean: p.mean[4],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+    })
+}
+/// Predict VG_PTF06 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_vg_ptf06(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    cec: f64,
+) -> Result<Euptf2VgStatistics, ModelError> {
+    if model.descriptor().name != "VG_PTF06" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, cec])?;
+    Ok(Euptf2VgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        m_mean: p.mean[4],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+    })
+}
+/// Predict VG_PTF07 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_vg_ptf07(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    oc: f64,
+    bd: f64,
+) -> Result<Euptf2VgStatistics, ModelError> {
+    if model.descriptor().name != "VG_PTF07" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, oc, bd])?;
+    Ok(Euptf2VgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        m_mean: p.mean[4],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+    })
+}
+/// Predict VG_PTF08 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_vg_ptf08(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    oc: f64,
+    caco3: f64,
+) -> Result<Euptf2VgStatistics, ModelError> {
+    if model.descriptor().name != "VG_PTF08" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, oc, caco3])?;
+    Ok(Euptf2VgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        m_mean: p.mean[4],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+    })
+}
+/// Predict VG_PTF09 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_vg_ptf09(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    oc: f64,
+    ph_h2o: f64,
+) -> Result<Euptf2VgStatistics, ModelError> {
+    if model.descriptor().name != "VG_PTF09" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, oc, ph_h2o])?;
+    Ok(Euptf2VgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        m_mean: p.mean[4],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+    })
+}
+/// Predict VG_PTF10 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_vg_ptf10(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    oc: f64,
+    cec: f64,
+) -> Result<Euptf2VgStatistics, ModelError> {
+    if model.descriptor().name != "VG_PTF10" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, oc, cec])?;
+    Ok(Euptf2VgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        m_mean: p.mean[4],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+    })
+}
+/// Predict VG_PTF11 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_vg_ptf11(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    bd: f64,
+    caco3: f64,
+) -> Result<Euptf2VgStatistics, ModelError> {
+    if model.descriptor().name != "VG_PTF11" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, bd, caco3])?;
+    Ok(Euptf2VgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        m_mean: p.mean[4],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+    })
+}
+/// Predict VG_PTF12 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_vg_ptf12(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    bd: f64,
+    ph_h2o: f64,
+) -> Result<Euptf2VgStatistics, ModelError> {
+    if model.descriptor().name != "VG_PTF12" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, bd, ph_h2o])?;
+    Ok(Euptf2VgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        m_mean: p.mean[4],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+    })
+}
+/// Predict VG_PTF13 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_vg_ptf13(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    bd: f64,
+    cec: f64,
+) -> Result<Euptf2VgStatistics, ModelError> {
+    if model.descriptor().name != "VG_PTF13" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, bd, cec])?;
+    Ok(Euptf2VgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        m_mean: p.mean[4],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+    })
+}
+/// Predict VG_PTF14 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_vg_ptf14(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    caco3: f64,
+    ph_h2o: f64,
+) -> Result<Euptf2VgStatistics, ModelError> {
+    if model.descriptor().name != "VG_PTF14" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, caco3, ph_h2o])?;
+    Ok(Euptf2VgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        m_mean: p.mean[4],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+    })
+}
+/// Predict VG_PTF15 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_vg_ptf15(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    caco3: f64,
+    cec: f64,
+) -> Result<Euptf2VgStatistics, ModelError> {
+    if model.descriptor().name != "VG_PTF15" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, caco3, cec])?;
+    Ok(Euptf2VgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        m_mean: p.mean[4],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+    })
+}
+/// Predict VG_PTF16 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_vg_ptf16(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    ph_h2o: f64,
+    cec: f64,
+) -> Result<Euptf2VgStatistics, ModelError> {
+    if model.descriptor().name != "VG_PTF16" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, ph_h2o, cec])?;
+    Ok(Euptf2VgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        m_mean: p.mean[4],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+    })
+}
+/// Predict VG_PTF21 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_vg_ptf21(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    oc: f64,
+    caco3: f64,
+    cec: f64,
+) -> Result<Euptf2VgStatistics, ModelError> {
+    if model.descriptor().name != "VG_PTF21" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, oc, caco3, cec])?;
+    Ok(Euptf2VgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        m_mean: p.mean[4],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+    })
+}
+/// Predict VG_PTF22 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_vg_ptf22(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    oc: f64,
+    ph_h2o: f64,
+    cec: f64,
+) -> Result<Euptf2VgStatistics, ModelError> {
+    if model.descriptor().name != "VG_PTF22" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, oc, ph_h2o, cec])?;
+    Ok(Euptf2VgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        m_mean: p.mean[4],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+    })
+}
+/// Predict VG_PTF24 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_vg_ptf24(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    bd: f64,
+    caco3: f64,
+    cec: f64,
+) -> Result<Euptf2VgStatistics, ModelError> {
+    if model.descriptor().name != "VG_PTF24" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, bd, caco3, cec])?;
+    Ok(Euptf2VgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        m_mean: p.mean[4],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+    })
+}
+/// Predict VG_PTF25 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_vg_ptf25(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    bd: f64,
+    ph_h2o: f64,
+    cec: f64,
+) -> Result<Euptf2VgStatistics, ModelError> {
+    if model.descriptor().name != "VG_PTF25" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, bd, ph_h2o, cec])?;
+    Ok(Euptf2VgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        m_mean: p.mean[4],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
+    })
+}
+/// Predict VG_PTF29 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_vg_ptf29(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    oc: f64,
+    bd: f64,
+    ph_h2o: f64,
+    cec: f64,
+) -> Result<Euptf2VgStatistics, ModelError> {
+    if model.descriptor().name != "VG_PTF29" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, oc, bd, ph_h2o, cec])?;
+    Ok(Euptf2VgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        m_mean: p.mean[4],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
     })
 }
 /// Default statistics in original units.
@@ -1068,5 +2786,48 @@ pub fn calc_ptf_szabo2021_wp_ptf17(
         q50: p.quantiles[0][2],
         q75: p.quantiles[0][3],
         q95: p.quantiles[0][4],
+    })
+}
+/// Predict VG_PTF26 original-scale point estimates and five conditional quantiles.
+pub fn calc_ptf_szabo2021_vg_ptf26(
+    model: &Euptf2Model,
+    ussand: f64,
+    ussilt: f64,
+    usclay: f64,
+    depth_m: f64,
+    caco3: f64,
+    ph_h2o: f64,
+    cec: f64,
+) -> Result<Euptf2VgStatistics, ModelError> {
+    if model.descriptor().name != "VG_PTF26" {
+        return Err(ModelError::Input);
+    }
+    let p = model.predict(&[ussand, ussilt, usclay, depth_m, caco3, ph_h2o, cec])?;
+    Ok(Euptf2VgStatistics {
+        ths_mean: p.mean[0],
+        thr_mean: p.mean[1],
+        alp_mean: p.mean[2],
+        n_mean: p.mean[3],
+        m_mean: p.mean[4],
+        ths_q05: p.quantiles[0][0],
+        ths_q25: p.quantiles[0][1],
+        ths_q50: p.quantiles[0][2],
+        ths_q75: p.quantiles[0][3],
+        ths_q95: p.quantiles[0][4],
+        thr_q05: p.quantiles[1][0],
+        thr_q25: p.quantiles[1][1],
+        thr_q50: p.quantiles[1][2],
+        thr_q75: p.quantiles[1][3],
+        thr_q95: p.quantiles[1][4],
+        alp_q05: p.quantiles[2][0],
+        alp_q25: p.quantiles[2][1],
+        alp_q50: p.quantiles[2][2],
+        alp_q75: p.quantiles[2][3],
+        alp_q95: p.quantiles[2][4],
+        n_q05: p.quantiles[3][0],
+        n_q25: p.quantiles[3][1],
+        n_q50: p.quantiles[3][2],
+        n_q75: p.quantiles[3][3],
+        n_q95: p.quantiles[3][4],
     })
 }
