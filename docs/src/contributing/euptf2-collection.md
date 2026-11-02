@@ -119,6 +119,42 @@ enforced physical constraints between independently predicted parameters.
 
 ## Offline local import
 
+For automatic download and local conversion, run from the repository root:
+
+```sh
+mise run euptf2:fetch
+```
+
+Install base R first; no R packages are required for conversion. If `Rscript`
+is not on PATH, use `mise run euptf2:fetch --rscript /path/to/Rscript`.
+The equivalent standard-library Python command, with configurable locations, is:
+
+```sh
+python codegen/scripts/fetch_euptf2.py --output .euptf2-local/models --cache .euptf2-local/downloads --rscript Rscript
+```
+
+This downloads the pinned euptf2 package ZIP from GitHub and the original
+v.2.0.0 ZIP from Zenodo record 3759443. It checks the package archive's SHA-256
+and Zenodo's published MD5, then verifies SHA-256 for every selected source
+file before the offline converter deserializes any object. Only allowlisted
+files are extracted; paths supplied by ZIP entries are not used as output paths.
+All 78 converted artifacts must match their frozen SHA-256 and size.
+
+ZIP downloads are cached under `.euptf2-local/downloads`; verified cache entries
+are reused without network access. Interrupted or invalid downloads never
+become cache entries. A changed cached ZIP is rejected; remove that particular
+file to download it again. The output directory must be new, and failed imports
+do not publish a partially converted collection. Temporary extracted sources
+are removed after conversion; the original ZIPs remain in the cache.
+
+Pass `--group scalar` or `--group package` to the Python command to import
+43 or 77 models respectively and omit the scientific archive download. The
+default is `--group all`. The source archives carry upstream GPL-3 licensing;
+this command stores them and the converted weights locally, outside release
+packages. R is used only during conversion and is never started by inference.
+
+### Existing local source trees
+
 Use the exact authenticated source described in the reference-slice guide.
 The importer validates all 77 packaged RData hashes and the supplied archive's
 four additional forest hashes before deserializing any object, including when

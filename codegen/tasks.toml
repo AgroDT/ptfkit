@@ -38,6 +38,15 @@ run = 'uv run --no-project python codegen/scripts/import_euptf2.py --upstream "{
 description = "Check importer rejection before R execution or output replacement"
 run = 'uv run --no-project python codegen/scripts/test_import_euptf2.py'
 
+["euptf2:fetch"]
+description = "Download authenticated EU-PTF v2 sources and import all models locally"
+usage = 'flag "--rscript <path>" default="Rscript" help="Base R executable used only during import"'
+run = 'uv run --no-project python codegen/scripts/fetch_euptf2.py --rscript "{{ usage.rscript }}"'
+
+["euptf2:fetch-test"]
+description = "Check authenticated downloads, cache reuse and selective extraction"
+run = 'uv run --no-project python codegen/scripts/test_fetch_euptf2.py'
+
 ["euptf2:rust-build"]
 description = "Build the public Rust THS_PTF01 reference runner"
 run = 'cargo build --manifest-path targets/ptfkit-rs/Cargo.toml --example euptf2_runner'
