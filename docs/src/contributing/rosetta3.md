@@ -265,11 +265,10 @@ Python uses named result fields and requires no scientific Python runtime for
 model evaluation:
 
 ```python
-from ptfkit.zhang_schaap2017 import Rosetta3, Estimate, calc_ptf_zhang2017_mod5
+from ptfkit.zhang_schaap2017 import Rosetta3, Estimate
 
 model = Rosetta3()
-result = calc_ptf_zhang2017_mod5(
-    model,
+result = model.calc_ptf_zhang2017_mod5(
     sand=30,
     silt=30,
     clay=40,
@@ -278,12 +277,16 @@ result = calc_ptf_zhang2017_mod5(
     theta_1500=0.1,
 )
 print(result.alpha_mean, result.alpha_std)
-logged = model.predict(5, [30, 30, 40, 1.5, 0.3, 0.1], Estimate.LOG10)
+logged = model.calc_ptf_zhang2017_mod2(
+    sand=30, silt=30, clay=40, estimate=Estimate.LOG10,
+)
 ```
 
-The four `calc_ptf_zhang2017_mod2` through `mod5` functions report arithmetic
+The four `calc_ptf_zhang2017_mod2` through `mod5` methods default to arithmetic
 statistics in physical units, matching their scientific specifications.
-`Rosetta3.predict` additionally exposes log10 and geometric estimates. Result
+Python methods accept keyword-only scalar or array inputs with NumPy broadcasting.
+The optional `estimate` selects log10 or geometric statistics; `out` accepts
+a tuple of 14 arrays with the broadcast shape. Scalars need no NumPy runtime. Result
 fields are `theta_r_mean` through `l_mean` and `theta_r_std` through `l_std`.
 Python provides `mean` and `stddev` tuple properties; Rust and C++ provide the
 same ordered arrays through methods.
@@ -495,3 +498,7 @@ peak working set was 24,084,480 bytes. The latter includes Python, imported
 modules and the verification workload, not just the model. These are local
 Windows measurements, not cross-platform size, memory or speed guarantees.
 No package has been published by this work.
+
+Local C verification and public C/Python inference use the same `dense.h` and
+`rosetta_core.h` templates. The core receives network metadata and weights
+explicitly; local and public wrappers only bind their model data.

@@ -82,7 +82,7 @@ pub(super) struct PythonAdapter {
 
 pub(super) struct AdapterFiles {
     pub(super) files: Files,
-    /// Shared dense interpreter extracted from the preserved local runtime.
+    /// Shared dense interpreter used by local and public inference.
     pub(super) dense: String,
     pub(super) python: PythonAdapter,
 }

@@ -54,6 +54,8 @@ PTFKIT_MODEL_INLINE int ptfkit_rosetta3_accepts(const ptfkit_model *model) {
 PTFKIT_MODEL_INLINE ptfkit_model_status ptfkit_rosetta3_load(const char *path, ptfkit_model **out) {
     return ptfkit_model_load(path, PTFKIT_ROSETTA3_SHA256, out);
 }
+#ifndef PTFKIT_DETAIL_ROSETTA_CORE_H
+#define PTFKIT_DETAIL_ROSETTA_CORE_H
 PTFKIT_MODEL_INLINE void ptfkit_detail_stats(const double *rows, size_t n, size_t width,
                                              double *mean, double *std) {
     for (size_t j = 0; j < width; ++j) {
@@ -70,9 +72,9 @@ PTFKIT_MODEL_INLINE void ptfkit_detail_stats(const double *rows, size_t n, size_
     }
 }
 
-PTFKIT_MODEL_INLINE int ptfkit_detail_rosetta(const ptfkit_model *model, unsigned level,
-                                              unsigned mode, const double *x, size_t count,
-                                              double *out) {
+PTFKIT_MODEL_INLINE int ptfkit_detail_rosetta(const ptfkit_detail_network *networks,
+                                              const double *data, unsigned level, unsigned mode,
+                                              const double *x, size_t count, double *out) {
     if (!out)
         return 0;
     for (size_t i = 0; i < 14; ++i)
@@ -87,10 +89,9 @@ PTFKIT_MODEL_INLINE int ptfkit_detail_rosetta(const ptfkit_model *model, unsigne
         (level >= 3 && (x[3] < 0.5 || x[3] > 2.0)) || (level >= 4 && !(x[4] > 0 && x[4] < 1)) ||
         (level >= 5 && !(x[5] > 0 && x[5] < x[4])))
         return 0;
-    const ptfkit_detail_network *networks = model->detail_networks;
     const ptfkit_detail_network *net = &networks[level - 2];
     double raw[5000], linear[5000];
-    ptfkit_detail_network_predict(net, model->detail_data, x, raw);
+    ptfkit_detail_network_predict(net, data, x, raw);
     for (size_t i = 0; i < net->nboot; ++i)
         for (size_t j = 0; j < 5; ++j)
             linear[i * 5 + j] = j < 2 ? raw[i * 5 + j] : pow(10.0, raw[i * 5 + j]);
@@ -106,7 +107,7 @@ PTFKIT_MODEL_INLINE int ptfkit_detail_rosetta(const ptfkit_model *model, unsigne
     if (!(0 <= vg[0] && vg[0] < vg[1] && vg[1] < 1 && vg[2] > 0 && vg[3] > 1))
         return 1;
     double u[200], ul[200], um[2], us[2], upm[2], ups[2];
-    ptfkit_detail_network_predict(&networks[4], model->detail_data, vg, u);
+    ptfkit_detail_network_predict(&networks[4], data, vg, u);
     for (size_t i = 0; i < 100; ++i) {
         ul[i * 2] = pow(10.0, u[i * 2]);
         ul[i * 2 + 1] = u[i * 2 + 1];
@@ -120,6 +121,8 @@ PTFKIT_MODEL_INLINE int ptfkit_detail_rosetta(const ptfkit_model *model, unsigne
     return 1;
 }
 
+#endif
+
 PTFKIT_MODEL_INLINE ptfkit_model_status ptfkit_rosetta3_predict(const ptfkit_model *model,
                                                                 unsigned level, unsigned mode,
                                                                 const double *x, size_t count,
@@ -130,8 +133,10 @@ PTFKIT_MODEL_INLINE ptfkit_model_status ptfkit_rosetta3_predict(const ptfkit_mod
         out[i] = NAN;
     if (!ptfkit_rosetta3_accepts(model))
         return PTFKIT_MODEL_INTEGRITY;
-    return ptfkit_detail_rosetta(model, level, mode, x, count, out) ? PTFKIT_MODEL_OK
-                                                                    : PTFKIT_MODEL_INPUT;
+    return ptfkit_detail_rosetta(model->detail_networks, model->detail_data, level, mode, x, count,
+                                 out)
+               ? PTFKIT_MODEL_OK
+               : PTFKIT_MODEL_INPUT;
 }
 
 #define PTFKIT_ROSETTA3_BYTES 2212632

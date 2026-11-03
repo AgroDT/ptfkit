@@ -10,13 +10,23 @@ mode retains physical-scale sample standard deviations, as in the original.
 All standard deviations use ddof=1, never standard errors. External loading is optional.
 """
 
-from collections.abc import Sequence
+from __future__ import annotations
+
 from dataclasses import dataclass
 from enum import IntEnum
-from pathlib import Path
+from numbers import Real
+from typing import TYPE_CHECKING, cast
 
 from ptfkit import _models
 from ptfkit.models import Model, ModelIntegrityError
+
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+    from pathlib import Path
+
+    import numpy as np
+    from numpy.typing import ArrayLike, NDArray
 
 
 MODEL_SHA256 = 'd4d2ca39f41762830f736c70fba16ed68a81cb52d4639b1f48c6a24e502c4796'
@@ -34,23 +44,23 @@ class Estimate(IntEnum):
 class Rosetta3Statistics:
     """Named parameter means and sample SDs in the selected reporting scales."""
 
-    theta_r_mean: float
-    theta_s_mean: float
-    alpha_mean: float
-    n_mean: float
-    k_sat_mean: float
-    k_0_mean: float
-    l_mean: float
-    theta_r_std: float
-    theta_s_std: float
-    alpha_std: float
-    n_std: float
-    k_sat_std: float
-    k_0_std: float
-    l_std: float
+    theta_r_mean: float | NDArray[np.float64]
+    theta_s_mean: float | NDArray[np.float64]
+    alpha_mean: float | NDArray[np.float64]
+    n_mean: float | NDArray[np.float64]
+    k_sat_mean: float | NDArray[np.float64]
+    k_0_mean: float | NDArray[np.float64]
+    l_mean: float | NDArray[np.float64]
+    theta_r_std: float | NDArray[np.float64]
+    theta_s_std: float | NDArray[np.float64]
+    alpha_std: float | NDArray[np.float64]
+    n_std: float | NDArray[np.float64]
+    k_sat_std: float | NDArray[np.float64]
+    k_0_std: float | NDArray[np.float64]
+    l_std: float | NDArray[np.float64]
 
     @property
-    def mean(self) -> tuple[float, ...]:
+    def mean(self) -> tuple[float | NDArray[np.float64], ...]:
         """Parameter mean values in the selected reporting scales."""
         return (
             self.theta_r_mean,
@@ -63,7 +73,7 @@ class Rosetta3Statistics:
         )
 
     @property
-    def stddev(self) -> tuple[float, ...]:
+    def stddev(self) -> tuple[float | NDArray[np.float64], ...]:
         """Parameter stddev values in the selected reporting scales."""
         return (
             self.theta_r_std,
@@ -94,21 +104,103 @@ class Rosetta3:
         self.model = model
 
     @classmethod
-    def load(cls, path: str | Path) -> 'Rosetta3':
+    def load(cls, path: str | Path) -> Rosetta3:
         """Load a user-supplied container using the built-in trusted digest."""
         return cls(Model.load(path, MODEL_SHA256))
 
     @classmethod
-    def from_bytes(cls, data: bytes) -> 'Rosetta3':
+    def from_bytes(cls, data: bytes) -> Rosetta3:
         """Authenticate and copy user-supplied model bytes."""
         return cls(Model.from_bytes(data, MODEL_SHA256))
 
-    def predict(
-        self, level: int, inputs: Sequence[float], estimate: Estimate = Estimate.ARITHMETIC
+    def _predict(
+        self,
+        level: int,
+        inputs: Sequence[ArrayLike],
+        estimate: Estimate,
+        out: tuple[NDArray[np.float64], ...] | None,
     ) -> Rosetta3Statistics:
-        """Predict all seven hydraulic parameters and their uncertainty."""
-        values = _models.rosetta3(self.model.native_handle, level, int(estimate), inputs)
-        return Rosetta3Statistics(*values)
+        """Broadcast predictors and evaluate each sample with the initialized model."""
+        if out is None and all(isinstance(value, Real) for value in inputs):
+            return Rosetta3Statistics(
+                *_models.rosetta3(
+                    self.model.native_handle, level, int(estimate), cast('Sequence[float]', inputs)
+                )
+            )
+        import numpy as np  # noqa: PLC0415
+
+        arrays = np.broadcast_arrays(*(np.asarray(value, dtype=float) for value in inputs))
+        shape = arrays[0].shape
+        values = np.empty((14, *shape), dtype=float)
+        for index in np.ndindex(shape):
+            values[(slice(None), *index)] = _models.rosetta3(
+                self.model.native_handle, level, int(estimate), [float(a[index]) for a in arrays]
+            )
+        fields = tuple(values[i] if shape else float(values[i]) for i in range(14))
+        if out is not None:
+            if len(out) != len(fields) or any(a.shape != shape for a in out):
+                message = 'out must contain 14 arrays with the broadcast shape'
+                raise ValueError(message)
+            for target, value in zip(out, fields, strict=True):
+                np.copyto(target, value)
+            fields = out
+        return Rosetta3Statistics(*fields)
+
+    def calc_ptf_zhang2017_mod2(
+        self,
+        *,
+        sand: ArrayLike,
+        silt: ArrayLike,
+        clay: ArrayLike,
+        estimate: Estimate = Estimate.ARITHMETIC,
+        out: tuple[NDArray[np.float64], ...] | None = None,
+    ) -> Rosetta3Statistics:
+        """Estimate Rosetta3 level 2 physical-scale arithmetic means and uncertainty."""
+        return self._predict(2, [sand, silt, clay], estimate, out)
+
+    def calc_ptf_zhang2017_mod3(
+        self,
+        *,
+        sand: ArrayLike,
+        silt: ArrayLike,
+        clay: ArrayLike,
+        bulk_density: ArrayLike,
+        estimate: Estimate = Estimate.ARITHMETIC,
+        out: tuple[NDArray[np.float64], ...] | None = None,
+    ) -> Rosetta3Statistics:
+        """Estimate Rosetta3 level 3 physical-scale arithmetic means and uncertainty."""
+        return self._predict(3, [sand, silt, clay, bulk_density], estimate, out)
+
+    def calc_ptf_zhang2017_mod4(
+        self,
+        *,
+        sand: ArrayLike,
+        silt: ArrayLike,
+        clay: ArrayLike,
+        bulk_density: ArrayLike,
+        theta_33: ArrayLike,
+        estimate: Estimate = Estimate.ARITHMETIC,
+        out: tuple[NDArray[np.float64], ...] | None = None,
+    ) -> Rosetta3Statistics:
+        """Estimate Rosetta3 level 4 physical-scale arithmetic means and uncertainty."""
+        return self._predict(4, [sand, silt, clay, bulk_density, theta_33], estimate, out)
+
+    def calc_ptf_zhang2017_mod5(
+        self,
+        *,
+        sand: ArrayLike,
+        silt: ArrayLike,
+        clay: ArrayLike,
+        bulk_density: ArrayLike,
+        theta_33: ArrayLike,
+        theta_1500: ArrayLike,
+        estimate: Estimate = Estimate.ARITHMETIC,
+        out: tuple[NDArray[np.float64], ...] | None = None,
+    ) -> Rosetta3Statistics:
+        """Estimate Rosetta3 level 5 physical-scale arithmetic means and uncertainty."""
+        return self._predict(
+            5, [sand, silt, clay, bulk_density, theta_33, theta_1500], estimate, out
+        )
 
 
 __all__ = [
@@ -125,35 +217,79 @@ __all__ = [
 
 
 def calc_ptf_zhang2017_mod2(
-    model: Rosetta3, *, sand: float, silt: float, clay: float
-) -> Rosetta3ArithmeticStatistics:
+    model: Rosetta3,
+    *,
+    sand: ArrayLike,
+    silt: ArrayLike,
+    clay: ArrayLike,
+    estimate: Estimate = Estimate.ARITHMETIC,
+    out: tuple[NDArray[np.float64], ...] | None = None,
+) -> Rosetta3Statistics:
     """Estimate Rosetta3 level 2 physical-scale arithmetic means and uncertainty."""
-    return model.predict(2, [sand, silt, clay])
+    return model.calc_ptf_zhang2017_mod2(
+        sand=sand, silt=silt, clay=clay, estimate=estimate, out=out
+    )
 
 
 def calc_ptf_zhang2017_mod3(
-    model: Rosetta3, *, sand: float, silt: float, clay: float, bulk_density: float
-) -> Rosetta3ArithmeticStatistics:
+    model: Rosetta3,
+    *,
+    sand: ArrayLike,
+    silt: ArrayLike,
+    clay: ArrayLike,
+    bulk_density: ArrayLike,
+    estimate: Estimate = Estimate.ARITHMETIC,
+    out: tuple[NDArray[np.float64], ...] | None = None,
+) -> Rosetta3Statistics:
     """Estimate Rosetta3 level 3 physical-scale arithmetic means and uncertainty."""
-    return model.predict(3, [sand, silt, clay, bulk_density])
+    return model.calc_ptf_zhang2017_mod3(
+        sand=sand, silt=silt, clay=clay, bulk_density=bulk_density, estimate=estimate, out=out
+    )
 
 
 def calc_ptf_zhang2017_mod4(
-    model: Rosetta3, *, sand: float, silt: float, clay: float, bulk_density: float, theta_33: float
-) -> Rosetta3ArithmeticStatistics:
+    model: Rosetta3,
+    *,
+    sand: ArrayLike,
+    silt: ArrayLike,
+    clay: ArrayLike,
+    bulk_density: ArrayLike,
+    theta_33: ArrayLike,
+    estimate: Estimate = Estimate.ARITHMETIC,
+    out: tuple[NDArray[np.float64], ...] | None = None,
+) -> Rosetta3Statistics:
     """Estimate Rosetta3 level 4 physical-scale arithmetic means and uncertainty."""
-    return model.predict(4, [sand, silt, clay, bulk_density, theta_33])
+    return model.calc_ptf_zhang2017_mod4(
+        sand=sand,
+        silt=silt,
+        clay=clay,
+        bulk_density=bulk_density,
+        theta_33=theta_33,
+        estimate=estimate,
+        out=out,
+    )
 
 
 def calc_ptf_zhang2017_mod5(
     model: Rosetta3,
     *,
-    sand: float,
-    silt: float,
-    clay: float,
-    bulk_density: float,
-    theta_33: float,
-    theta_1500: float,
-) -> Rosetta3ArithmeticStatistics:
+    sand: ArrayLike,
+    silt: ArrayLike,
+    clay: ArrayLike,
+    bulk_density: ArrayLike,
+    theta_33: ArrayLike,
+    theta_1500: ArrayLike,
+    estimate: Estimate = Estimate.ARITHMETIC,
+    out: tuple[NDArray[np.float64], ...] | None = None,
+) -> Rosetta3Statistics:
     """Estimate Rosetta3 level 5 physical-scale arithmetic means and uncertainty."""
-    return model.predict(5, [sand, silt, clay, bulk_density, theta_33, theta_1500])
+    return model.calc_ptf_zhang2017_mod5(
+        sand=sand,
+        silt=silt,
+        clay=clay,
+        bulk_density=bulk_density,
+        theta_33=theta_33,
+        theta_1500=theta_1500,
+        estimate=estimate,
+        out=out,
+    )

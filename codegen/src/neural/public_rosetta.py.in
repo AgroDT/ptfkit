@@ -8,13 +8,23 @@ Log10 mode reports alpha/n/Ksat/K0 in log10 of those numeric units. Geometric
 mode retains physical-scale sample standard deviations, as in the original.
 All standard deviations use ddof=1, never standard errors. External loading is optional.
 """
-from collections.abc import Sequence
+from __future__ import annotations
+
 from dataclasses import dataclass
 from enum import IntEnum
-from pathlib import Path
+from numbers import Real
+from typing import TYPE_CHECKING, cast
 
 from ptfkit import _models
 from ptfkit.models import Model, ModelIntegrityError
+
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+    from pathlib import Path
+
+    import numpy as np
+    from numpy.typing import ArrayLike, NDArray
 
 
 MODEL_SHA256 = '@SHA256@'
@@ -43,16 +53,38 @@ class Rosetta3:
         self.model = model
 
     @classmethod
-    def load(cls, path: str | Path) -> 'Rosetta3':
+    def load(cls, path: str | Path) -> Rosetta3:
         """Load a user-supplied container using the built-in trusted digest."""
         return cls(Model.load(path, MODEL_SHA256))
 
     @classmethod
-    def from_bytes(cls, data: bytes) -> 'Rosetta3':
+    def from_bytes(cls, data: bytes) -> Rosetta3:
         """Authenticate and copy user-supplied model bytes."""
         return cls(Model.from_bytes(data, MODEL_SHA256))
 
-    def predict(self, level: int, inputs: Sequence[float], estimate: Estimate = Estimate.ARITHMETIC) -> Rosetta3Statistics:
-        """Predict all seven hydraulic parameters and their uncertainty."""
-        values = _models.rosetta3(self.model.native_handle, level, int(estimate), inputs)
-        return Rosetta3Statistics(*values)
+    def _predict(self, level: int, inputs: Sequence[ArrayLike], estimate: Estimate, out: tuple[NDArray[np.float64], ...] | None) -> Rosetta3Statistics:
+        """Broadcast predictors and evaluate each sample with the initialized model."""
+        if out is None and all(isinstance(value, Real) for value in inputs):
+            return Rosetta3Statistics(*_models.rosetta3(
+                self.model.native_handle, level, int(estimate), cast('Sequence[float]', inputs)
+            ))
+        import numpy as np  # noqa: PLC0415
+
+        arrays = np.broadcast_arrays(*(np.asarray(value, dtype=float) for value in inputs))
+        shape = arrays[0].shape
+        values = np.empty((14, *shape), dtype=float)
+        for index in np.ndindex(shape):
+            values[(slice(None), *index)] = _models.rosetta3(
+                self.model.native_handle, level, int(estimate), [float(a[index]) for a in arrays]
+            )
+        fields = tuple(values[i] if shape else float(values[i]) for i in range(14))
+        if out is not None:
+            if len(out) != len(fields) or any(a.shape != shape for a in out):
+                message = 'out must contain 14 arrays with the broadcast shape'
+                raise ValueError(message)
+            for target, value in zip(out, fields, strict=True):
+                np.copyto(target, value)
+            fields = out
+        return Rosetta3Statistics(*fields)
+
+@METHODS@

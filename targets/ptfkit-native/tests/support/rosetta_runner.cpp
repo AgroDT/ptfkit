@@ -19,12 +19,11 @@ int main(int argc, char **argv) {
             return 15;
         auto result = model.predict(level, static_cast<ptfkit::Estimate>(mode), x);
         if (mode == 0) {
-            auto named =
-                level == 2   ? ptfkit::calc_ptf_zhang2017_mod2(model, x[0], x[1], x[2])
-                : level == 3 ? ptfkit::calc_ptf_zhang2017_mod3(model, x[0], x[1], x[2], x[3])
-                : level == 4
-                    ? ptfkit::calc_ptf_zhang2017_mod4(model, x[0], x[1], x[2], x[3], x[4])
-                    : ptfkit::calc_ptf_zhang2017_mod5(model, x[0], x[1], x[2], x[3], x[4], x[5]);
+            auto named = level == 2   ? model.calc_ptf_zhang2017_mod2(x[0], x[1], x[2])
+                         : level == 3 ? model.calc_ptf_zhang2017_mod3(x[0], x[1], x[2], x[3])
+                         : level == 4
+                             ? model.calc_ptf_zhang2017_mod4(x[0], x[1], x[2], x[3], x[4])
+                             : model.calc_ptf_zhang2017_mod5(x[0], x[1], x[2], x[3], x[4], x[5]);
             if (named.mean() != result.mean() || named.stddev() != result.stddev())
                 return 30;
         }

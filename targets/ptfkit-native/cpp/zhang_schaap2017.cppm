@@ -50,6 +50,27 @@ class Rosetta3 {
         return Rosetta3(Model::from_bytes(bytes, PTFKIT_ROSETTA3_SHA256));
     }
     inline const Model &model() const noexcept { return model_; }
+    inline Rosetta3Statistics calc_ptf_zhang2017_mod2(double sand, double silt, double clay) const {
+        const double x[] = {sand, silt, clay};
+        return predict(2, Estimate::Arithmetic, x);
+    }
+    inline Rosetta3Statistics calc_ptf_zhang2017_mod3(double sand, double silt, double clay,
+                                                      double bulk_density) const {
+        const double x[] = {sand, silt, clay, bulk_density};
+        return predict(3, Estimate::Arithmetic, x);
+    }
+    inline Rosetta3Statistics calc_ptf_zhang2017_mod4(double sand, double silt, double clay,
+                                                      double bulk_density, double theta_33) const {
+        const double x[] = {sand, silt, clay, bulk_density, theta_33};
+        return predict(4, Estimate::Arithmetic, x);
+    }
+    inline Rosetta3Statistics calc_ptf_zhang2017_mod5(double sand, double silt, double clay,
+                                                      double bulk_density, double theta_33,
+                                                      double theta_1500) const {
+        const double x[] = {sand, silt, clay, bulk_density, theta_33, theta_1500};
+        return predict(5, Estimate::Arithmetic, x);
+    }
+
     inline Rosetta3Statistics predict(unsigned level, Estimate estimate,
                                       std::span<const double> inputs) const {
         double values[14];

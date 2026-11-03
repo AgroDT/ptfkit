@@ -1,9 +1,11 @@
 """Independent hand-specified container protects the public loader contract."""
 
 import hashlib
+import json
 import struct
 from pathlib import Path
 
+import numpy as np
 import pytest
 
 from ptfkit.models import Model, ModelFormatError, ModelInputError, ModelIntegrityError
@@ -69,7 +71,7 @@ def test_bundled_rosetta_matches_upstream_without_a_model_file(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ):
     monkeypatch.chdir(tmp_path)
-    result = Rosetta3().predict(2, [30, 30, 40])
+    result = Rosetta3().calc_ptf_zhang2017_mod2(sand=30, silt=30, clay=40)
     # Frozen upstream case mod2_arith_clay_loam, not a value from the ptfkit engine.
     assert result.mean == pytest.approx(
         [
@@ -97,3 +99,55 @@ def test_bundled_rosetta_matches_upstream_without_a_model_file(
         rel=1e-12,
         abs=1e-11,
     )
+
+
+@pytest.fixture(scope='module')
+def rosetta_model():
+    return Rosetta3()
+
+
+@pytest.mark.parametrize('level', [2, 3, 4, 5])
+@pytest.mark.parametrize('mode', [0, 1, 2])
+def test_named_rosetta_broadcasts_against_upstream(rosetta_model: Rosetta3, level: int, mode: int):
+    reference = Path(__file__).resolve().parents[3] / 'specs/models/rosetta3/reference.json'
+    cases = json.loads(reference.read_text(encoding='utf-8'))['cases']
+    cases = [
+        case
+        for case in cases
+        if case['level'] == level and case['mode'] == ('arith', 'log', 'geo')[mode]
+    ]
+    assert len(cases) == 10
+    names = ('sand', 'silt', 'clay', 'bulk_density', 'theta_33', 'theta_1500')[: level + 1]
+    method = getattr(rosetta_model, f'calc_ptf_zhang2017_mod{level}')
+    for case in cases:
+        inputs = dict(zip(names, case['inputs'], strict=True))
+        scalar = method(**inputs, estimate=mode)
+        assert scalar.mean + scalar.stddev == pytest.approx(
+            case['mean'] + case['std'], rel=1e-12, abs=1e-11, nan_ok=True
+        )
+    # Two distinct upstream samples occupy rows; columns broadcast a scalar.
+    batch = {
+        name: np.array([case['inputs'][i] for case in cases[:2]])[:, None]
+        for i, name in enumerate(names)
+    }
+    batch['clay'] = np.repeat(batch['clay'], 3, axis=1)
+    out = tuple(np.empty((2, 3)) for _ in range(14))
+    result = method(**batch, estimate=mode, out=out)
+    expected = np.array([case['mean'] + case['std'] for case in cases[:2]])
+    for i, (actual, target) in enumerate(zip(result.mean + result.stddev, out, strict=True)):
+        assert actual is target
+        np.testing.assert_allclose(
+            actual, np.repeat(expected[:, i, None], 3, axis=1), rtol=1e-12, atol=1e-11
+        )
+
+
+def test_named_rosetta_rejects_invalid_samples_and_shapes(rosetta_model: Rosetta3):
+    method = rosetta_model.calc_ptf_zhang2017_mod2
+    with pytest.raises(ModelInputError):
+        method(sand=[30, 30], silt=[30, float('nan')], clay=40)
+    with pytest.raises(ValueError, match='shape mismatch'):
+        method(sand=[30, 30], silt=[30, 30, 30], clay=40)
+    with pytest.raises(ValueError, match='out must contain'):
+        method(sand=30, silt=30, clay=40, out=(np.empty(2),))
+    empty = method(sand=[], silt=30, clay=40)
+    assert all(np.shape(field) == (0,) for field in empty.mean + empty.stddev)

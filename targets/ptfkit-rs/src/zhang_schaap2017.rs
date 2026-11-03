@@ -117,6 +117,57 @@ impl Rosetta3 {
     pub fn model(&self) -> &Model {
         &self.model
     }
+    /// Estimate Rosetta3 level 2 physical-scale arithmetic means and uncertainty.
+    pub fn calc_ptf_zhang2017_mod2(
+        &self,
+        sand: f64,
+        silt: f64,
+        clay: f64,
+    ) -> Result<Rosetta3ArithmeticStatistics, ModelError> {
+        self.predict(2, Estimate::Arithmetic, &[sand, silt, clay])
+    }
+    /// Estimate Rosetta3 level 3 physical-scale arithmetic means and uncertainty.
+    pub fn calc_ptf_zhang2017_mod3(
+        &self,
+        sand: f64,
+        silt: f64,
+        clay: f64,
+        bulk_density: f64,
+    ) -> Result<Rosetta3ArithmeticStatistics, ModelError> {
+        self.predict(3, Estimate::Arithmetic, &[sand, silt, clay, bulk_density])
+    }
+    /// Estimate Rosetta3 level 4 physical-scale arithmetic means and uncertainty.
+    pub fn calc_ptf_zhang2017_mod4(
+        &self,
+        sand: f64,
+        silt: f64,
+        clay: f64,
+        bulk_density: f64,
+        theta_33: f64,
+    ) -> Result<Rosetta3ArithmeticStatistics, ModelError> {
+        self.predict(
+            4,
+            Estimate::Arithmetic,
+            &[sand, silt, clay, bulk_density, theta_33],
+        )
+    }
+    /// Estimate Rosetta3 level 5 physical-scale arithmetic means and uncertainty.
+    pub fn calc_ptf_zhang2017_mod5(
+        &self,
+        sand: f64,
+        silt: f64,
+        clay: f64,
+        bulk_density: f64,
+        theta_33: f64,
+        theta_1500: f64,
+    ) -> Result<Rosetta3ArithmeticStatistics, ModelError> {
+        self.predict(
+            5,
+            Estimate::Arithmetic,
+            &[sand, silt, clay, bulk_density, theta_33, theta_1500],
+        )
+    }
+
     pub fn predict(
         &self,
         level: usize,

@@ -21,6 +21,7 @@ def require(condition: bool, context: str) -> None:  # noqa: FBT001
 
 
 def run(model_path: Path | None, build: Path, rust: Path, *, builtin: bool = False) -> None:
+    from ptfkit import _models
     from ptfkit import zhang_schaap2017 as api
     from ptfkit.models import Model, ModelIntegrityError
 
@@ -68,7 +69,9 @@ def run(model_path: Path | None, build: Path, rust: Path, *, builtin: bool = Fal
         for case in refs['cases']:
             level, inputs, mode = case['level'], case['inputs'], modes[case['mode']]
             if target == 'python':
-                result = model.predict(level, inputs, mode)
+                result = getattr(model, f'calc_ptf_zhang2017_mod{level}')(
+                    **dict(zip(predictors[: len(inputs)], inputs, strict=True)), estimate=mode
+                )
                 actual = list(result.mean + result.stddev)
                 if mode == api.Estimate.ARITHMETIC:
                     named = getattr(api, f'calc_ptf_zhang2017_mod{level}')(
@@ -94,7 +97,7 @@ def run(model_path: Path | None, build: Path, rust: Path, *, builtin: bool = Fal
             level, mode = case.get('level', len(inputs) - 1), case.get('mode', 0)
             if target == 'python':
                 try:
-                    model.predict(level, inputs, mode)
+                    _models.rosetta3(model.model.native_handle, level, mode, inputs)
                 except ValueError:
                     pass
                 else:

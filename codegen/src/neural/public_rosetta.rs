@@ -5,7 +5,7 @@ use super::{
 };
 use crate::model::Entry;
 use crate::output::GeneratedFile;
-use anyhow::{Context, Result};
+use anyhow::Result;
 use sha2::{Digest, Sha256};
 use std::{fmt::Write as _, path::Path};
 
@@ -153,7 +153,7 @@ pub(crate) fn render(root: &Path, entries: &[Entry]) -> Result<Option<AdapterFil
         writeln!(rs_stats, "/// {}\npub {}: f64,", description, f.name).unwrap();
         writeln!(c_stats, "/* {} */\ndouble {};", description, f.name).unwrap();
         writeln!(cpp_stats, "double {};", f.name).unwrap();
-        writeln!(py_stats, "    {}: float", f.name).unwrap();
+        writeln!(py_stats, "    {}: float | NDArray[np.float64]", f.name).unwrap();
     }
     rs_stats.push_str("}\npub type Rosetta3ArithmeticStatistics = Rosetta3Statistics;\nimpl Rosetta3Statistics {\nfn from_values(v:[f64;14]) -> Self {Self {\n");
     for (i, name) in names.iter().enumerate() {
@@ -177,7 +177,7 @@ pub(crate) fn render(root: &Path, entries: &[Entry]) -> Result<Option<AdapterFil
             names[range.clone()].join(",")
         )
         .unwrap();
-        writeln!(py_stats,"\n    @property\n    def {method}(self) -> tuple[float, ...]:\n        \"\"\"Parameter {method} values in the selected reporting scales.\"\"\"\n        return ({rs_values},)").unwrap();
+        writeln!(py_stats,"\n    @property\n    def {method}(self) -> tuple[float | NDArray[np.float64], ...]:\n        \"\"\"Parameter {method} values in the selected reporting scales.\"\"\"\n        return ({rs_values},)").unwrap();
     }
     rs_stats.push_str("}\n");
     c_stats.push_str("} ptfkit_rosetta3_statistics;\n");
@@ -204,41 +204,17 @@ pub(crate) fn render(root: &Path, entries: &[Entry]) -> Result<Option<AdapterFil
     .collect::<Vec<_>>()
     .join(",");
     writeln!(py, "\n__all__ = [{all_names}]").unwrap();
-    // The existing inference kernels are reused verbatim apart from symbol/data bindings.
-    let source = include_str!("runtime.c").replace("\r\n", "\n");
-    let source = source.replace("#include \"engine.h\"\n", "").replace(
-        "#include \"metadata.h\"\nextern const double ptfkit_model_data[];",
-        "",
-    );
-    let source = source
-        .replace("Scale", "ptfkit_detail_scale")
-        .replace("Network", "ptfkit_detail_network")
-        .replace("scale_value", "ptfkit_detail_scale_value")
-        .replace("network_predict", "ptfkit_detail_network_predict")
-        .replace("static double ", "static inline double ")
-        .replace("static void ", "static inline void ")
-        .replace(
-            "const ptfkit_detail_network *net, const double *x",
-            "const ptfkit_detail_network *net, const double *data, const double *x",
-        )
-        .replace("ptfkit_model_data[", "data[");
-    let (dense, rest) = source
-        .split_once("static inline void stats(")
-        .context("dense runtime template boundary")?;
     let c_dense = format!(
-        "#ifndef PTFKIT_DETAIL_NEURAL_H\n#define PTFKIT_DETAIL_NEURAL_H\n#include <ptfkit/detail/model_api.h>\n#include <stddef.h>\n{dense}\n#endif\n"
+        "#include <ptfkit/detail/model_api.h>\n{}",
+        include_str!("dense.h")
     );
-    let rest=format!("static inline void stats({rest}").replace("stats(","ptfkit_detail_stats(")
-        .replace("int ptfkit_calc_ptf_zhang2017(unsigned", "static inline int ptfkit_detail_rosetta(const ptfkit_model *model, unsigned")
-        .replace("const ptfkit_detail_network *net = &networks[level - 2];", "const ptfkit_detail_network *networks = model->detail_networks;\nconst ptfkit_detail_network *net = &networks[level - 2];")
-        .replace("ptfkit_detail_network_predict(net, x, raw)", "ptfkit_detail_network_predict(net, model->detail_data, x, raw)")
-        .replace("ptfkit_detail_network_predict(&networks[4], vg, u)", "ptfkit_detail_network_predict(&networks[4], model->detail_data, vg, u)");
+    let rest = include_str!("rosetta_core.h");
     let digest = (0..32)
         .map(|i| format!("0x{}", &sha[i * 2..i * 2 + 2]))
         .collect::<Vec<_>>()
         .join(",");
     let mut c = format!(
-        "#ifndef PTFKIT_ZHANG_SCHAAP2017_H\n#define PTFKIT_ZHANG_SCHAAP2017_H\n#include <ptfkit/models.h>\n#define PTFKIT_ROSETTA3_SHA256 \"{sha}\"\n{c_stats}\nstatic inline int ptfkit_rosetta3_accepts(const ptfkit_model *model) {{static const unsigned char expected[32]={{{digest}}};return model && model->detail_count==5 && !memcmp(model->detail_digest,expected,32);}}\nstatic inline ptfkit_model_status ptfkit_rosetta3_load(const char *path,ptfkit_model **out) {{return ptfkit_model_load(path,PTFKIT_ROSETTA3_SHA256,out);}}\n{rest}\nstatic inline ptfkit_model_status ptfkit_rosetta3_predict(const ptfkit_model *model,unsigned level,unsigned mode,const double *x,size_t count,double *out) {{if(!out)return PTFKIT_MODEL_INPUT;for(size_t i=0;i<14;++i)out[i]=NAN;if(!ptfkit_rosetta3_accepts(model))return PTFKIT_MODEL_INTEGRITY;return ptfkit_detail_rosetta(model,level,mode,x,count,out)?PTFKIT_MODEL_OK:PTFKIT_MODEL_INPUT;}}\n"
+        "#ifndef PTFKIT_ZHANG_SCHAAP2017_H\n#define PTFKIT_ZHANG_SCHAAP2017_H\n#include <ptfkit/models.h>\n#define PTFKIT_ROSETTA3_SHA256 \"{sha}\"\n{c_stats}\nstatic inline int ptfkit_rosetta3_accepts(const ptfkit_model *model) {{static const unsigned char expected[32]={{{digest}}};return model && model->detail_count==5 && !memcmp(model->detail_digest,expected,32);}}\nstatic inline ptfkit_model_status ptfkit_rosetta3_load(const char *path,ptfkit_model **out) {{return ptfkit_model_load(path,PTFKIT_ROSETTA3_SHA256,out);}}\n{rest}\nstatic inline ptfkit_model_status ptfkit_rosetta3_predict(const ptfkit_model *model,unsigned level,unsigned mode,const double *x,size_t count,double *out) {{if(!out)return PTFKIT_MODEL_INPUT;for(size_t i=0;i<14;++i)out[i]=NAN;if(!ptfkit_rosetta3_accepts(model))return PTFKIT_MODEL_INTEGRITY;return ptfkit_detail_rosetta(model->detail_networks,model->detail_data,level,mode,x,count,out)?PTFKIT_MODEL_OK:PTFKIT_MODEL_INPUT;}}\n"
     );
     let builtin = format!(
         "\n#define PTFKIT_ROSETTA3_BYTES {}\n#ifdef __cplusplus\nextern \"C\" {{\n#endif\nextern const unsigned char ptfkit_detail_rosetta3_data[PTFKIT_ROSETTA3_BYTES];\n#ifdef __cplusplus\n}}\n#endif\nstatic inline ptfkit_model_status ptfkit_rosetta3_builtin(ptfkit_model **out) {{ return ptfkit_model_from_bytes(ptfkit_detail_rosetta3_data, PTFKIT_ROSETTA3_BYTES, PTFKIT_ROSETTA3_SHA256, out); }}\n",
@@ -252,6 +228,9 @@ pub(crate) fn render(root: &Path, entries: &[Entry]) -> Result<Option<AdapterFil
     let mut cpp = include_str!("public_rosetta.cppm.in")
         .replace("@STATISTICS@", &cpp_stats)
         .replace("@VALUES@", &cpp_values);
+    let mut py_methods = String::new();
+    let mut rs_methods = String::new();
+    let mut cpp_methods = String::new();
     for function in functions.iter() {
         let level = function
             .implementation
@@ -270,10 +249,17 @@ pub(crate) fn render(root: &Path, entries: &[Entry]) -> Result<Option<AdapterFil
         writeln!(rs,"/// {}\npub fn {}(model:&Rosetta3,{rs_args}) -> Result<Rosetta3ArithmeticStatistics,ModelError> {{model.predict({level},Estimate::Arithmetic,&[{}])}}",function.public_api.summary,function.name,args.join(",")).unwrap();
         let py_args = args
             .iter()
-            .map(|n| format!("{n}: float"))
+            .map(|n| format!("{n}: ArrayLike"))
             .collect::<Vec<_>>()
             .join(", ");
-        writeln!(py,"\ndef {}(model: Rosetta3, *, {py_args}) -> Rosetta3ArithmeticStatistics:\n    \"\"\"{}\"\"\"\n    return model.predict({level}, [{}])",function.name,function.public_api.summary,args.join(", ")).unwrap();
+        let kwargs = args
+            .iter()
+            .map(|n| format!("{n}={n}"))
+            .collect::<Vec<_>>()
+            .join(", ");
+        writeln!(py_methods,"    def {}(self, *, {py_args}, estimate: Estimate = Estimate.ARITHMETIC, out: tuple[NDArray[np.float64], ...] | None = None) -> Rosetta3Statistics:\n        \"\"\"{}\"\"\"\n        return self._predict({level}, [{}], estimate, out)\n",function.name,function.public_api.summary,args.join(", ")).unwrap();
+        writeln!(py,"\ndef {}(model: Rosetta3, *, {py_args}, estimate: Estimate = Estimate.ARITHMETIC, out: tuple[NDArray[np.float64], ...] | None = None) -> Rosetta3Statistics:\n    \"\"\"{}\"\"\"\n    return model.{}({kwargs}, estimate=estimate, out=out)",function.name,function.public_api.summary,function.name).unwrap();
+        writeln!(rs_methods,"/// {}\npub fn {}(&self,{rs_args}) -> Result<Rosetta3ArithmeticStatistics,ModelError> {{self.predict({level},Estimate::Arithmetic,&[{}])}}",function.public_api.summary,function.name,args.join(",")).unwrap();
         let c_args = args
             .iter()
             .map(|n| format!("double {n}"))
@@ -284,8 +270,12 @@ pub(crate) fn render(root: &Path, entries: &[Entry]) -> Result<Option<AdapterFil
             writeln!(c, "out->{name}=v[{i}];").unwrap();
         }
         c.push_str("return status;}\n");
+        writeln!(cpp_methods,"inline Rosetta3Statistics {}({c_args}) const {{const double x[]={{{}}};return predict({level},Estimate::Arithmetic,x);}}",function.name,args.join(",")).unwrap();
         writeln!(cpp,"export namespace ptfkit {{inline Rosetta3Statistics {}(const Rosetta3& model,{c_args}) {{const double x[]={{{}}};return model.predict({level},Estimate::Arithmetic,x);}}}}",function.name,args.join(",")).unwrap();
     }
+    py = py.replace("@METHODS@", &py_methods);
+    rs = rs.replace("@METHODS@", &rs_methods);
+    cpp = cpp.replace("@METHODS@", &cpp_methods);
     c.push_str("#endif\n");
     let docs = |language: &str| {
         let mut text = format!(

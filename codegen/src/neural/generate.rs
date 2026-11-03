@@ -46,8 +46,15 @@ pub(crate) fn run(model: &Path, directory: &Path) -> Result<()> {
         "runtime.c",
         &format!("{HEADER}{}", include_str!("runtime.c")),
     )?;
+    for (name, content) in [
+        ("model_api.h", include_str!("public_model_api.h")),
+        ("dense.h", include_str!("dense.h")),
+        ("rosetta_core.h", include_str!("rosetta_core.h")),
+    ] {
+        write(name, &format!("{HEADER}{content}"))?;
+    }
     write("python.c", &format!("{HEADER}{}", include_str!("python.c")))?;
-    let mut metadata = format!("{HEADER}\nstatic const Network networks[5] = {{\n");
+    let mut metadata = format!("{HEADER}\nstatic const ptfkit_detail_network networks[5] = {{\n");
     for n in &model.networks {
         let widths = n
             .widths
