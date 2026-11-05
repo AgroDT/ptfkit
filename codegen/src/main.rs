@@ -10,7 +10,10 @@ mod corpus_report;
 mod diagnostics;
 mod documentation;
 mod formula;
+#[cfg(test)]
+mod measurement;
 mod model;
+mod neural;
 mod output;
 mod render;
 mod semantic;
@@ -31,8 +34,31 @@ pub(crate) struct Cli {
 
 #[derive(Subcommand)]
 enum Command {
+    /// Pack validated external model metadata and parameters into a portable container.
+    PackNeuralModel {
+        #[arg(long)]
+        model: std::path::PathBuf,
+        #[arg(long)]
+        output: std::path::PathBuf,
+    },
+    /// Generate opt-in local targets; trained artifacts are never added to packages.
+    GenerateRosettaLocal {
+        #[arg(long)]
+        model: std::path::PathBuf,
+        #[arg(long)]
+        output: std::path::PathBuf,
+    },
+    /// Verify locally imported Rosetta models against immutable upstream references.
+    VerifyRosetta {
+        #[arg(long)]
+        model: std::path::PathBuf,
+        #[arg(long)]
+        reference: std::path::PathBuf,
+    },
     Validate,
     Generate,
+    /// Generate only the packaged function manifest.
+    GenerateManifest,
     CheckGenerated,
     /// Summarize the validated specification corpus.
     CorpusReport {
@@ -58,6 +84,11 @@ impl Cli {
             .context("finding the ptfkit workspace root")?;
 
         match self.command {
+            Command::PackNeuralModel { model, output } => neural::pack::run(&model, &output),
+            Command::GenerateRosettaLocal { model, output } => {
+                neural::generate_local(&model, &output)
+            }
+            Command::VerifyRosetta { model, reference } => neural::verify(&model, &reference),
             Command::Validate => {
                 let entries = load_validated_specifications(root)?;
                 compile::functions(entries.clone())?;
@@ -74,6 +105,10 @@ impl Cli {
             Command::Generate => {
                 let loaded = load_validated_all(root)?;
                 targets::run(root, loaded)
+            }
+            Command::GenerateManifest => {
+                let entries = load_validated_specifications(root)?;
+                targets::generate_manifest(root, &entries)
             }
             Command::CheckGenerated => {
                 let loaded = load_validated_all(root)?;
@@ -107,6 +142,7 @@ fn load_validated_all(root: &Path) -> Result<specs::LoadedSpecifications> {
         )
         .into());
     }
+    neural::public::validate(&loaded.entries)?;
     Ok(loaded)
 }
 

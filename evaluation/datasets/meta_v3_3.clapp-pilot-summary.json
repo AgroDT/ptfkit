@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "scope": "descriptive_external_check_one_profile_not_population_validation",
+  "review_id": "meta_v3_3_clapp_source_review_v1",
+  "source_review_sha256": "9a4af5e2855d78e22caa235f820831bcd43f3604468fbc4ff15eee5565022d8a",
+  "candidate_function": "calc_ptf_clapp1978",
+  "reviewed_candidate_count": 24,
+  "selected_sample_count": 6,
+  "observation_count": 56,
+  "independent_profile_count": 1,
+  "metrics": {
+    "mean_absolute_error": 0.030554176892914654,
+    "mean_error": 0.02884984219531155,
+    "median_absolute_error": 0.0325632289342067,
+    "root_mean_squared_error": 0.035036098541883734
+  },
+  "uncertainty_status": "insufficient_evidence",
+  "uncertainty_reason": "too_few_groups",
+  "pressure_kpa_range": [
+    6.7845441909621895,
+    257941.17602720842
+  ],
+  "input_hashes": {
+    "dataset": "44aa5587b9f5cca426448899ca9474c18e8e4c8dfe8a0440b1a6f195377b30d2",
+    "evaluation_plan": "8740d26ed87a7f0b08db46347e1f9c5fb96974122a42160f18f137aa0084b9d1",
+    "ptfkit_manifest": "0f17e500ab3d4715ec10210229319d31d5e9f32cb6b3b1134d520411d2db4691",
+    "run_plan": "e5aa8637724dc445aec4421e670baf757a6ddaffd13ad4bfade25844130083d8"
+  },
+  "evaluator_source_sha256": "b15e386d3160fbbe61995127550ca3e483e9c31ade9b4b393344c868cee1bccf",
+  "run_id": "1fa23f7b86a6ed3286d3680ec91306de4c05d8c63639817e9cef915756e6d938",
+  "verification": {
+    "separate_process_read": true,
+    "exact_original_plan_artifact_replay": true,
+    "persisted_plan_prediction_replay": true,
+    "installed_wheel_exact_replay": true
+  },
+  "limitations": [
+    "single_profile",
+    "source_reported_texture_only",
+    "no_pressure_domain_coverage_claim",
+    "no_national_representativeness",
+    "no_calibration_or_candidate_selection"
+  ]
+}

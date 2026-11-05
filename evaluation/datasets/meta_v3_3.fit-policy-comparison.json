@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "dataset_sha256": "000c3c9fff04a714ff2cc6e9d32fc3d00bd3a3246616caf5dfac4f1673fdd93f",
+  "scope": "descriptive_fit_policy_comparison_not_PTF_prediction_assessment",
+  "improvement_tolerance": 1e-10,
+  "regression_tolerance": 1e-12,
+  "families": [
+    {
+      "family": "brooks_corey_v1",
+      "counts": {
+        "baseline_profile_counterexamples": 5,
+        "candidate_profile_counterexamples": 0,
+        "comparable_objectives": 58,
+        "failed_to_failed": 37,
+        "failed_to_fitted": 1,
+        "fitted_to_failed": 1,
+        "fitted_to_fitted": 20,
+        "improved_objectives": 21,
+        "samples": 59,
+        "worsened_objectives": 0
+      },
+      "baseline_reasons": {
+        "accepted": 21,
+        "boundary_solution": 36,
+        "insufficient_observations": 1,
+        "nonidentifiable": 1
+      },
+      "candidate_reasons": {
+        "accepted": 21,
+        "boundary_solution": 35,
+        "insufficient_observations": 1,
+        "nonidentifiable": 2
+      }
+    },
+    {
+      "family": "clapp1978_gradual_air_entry_v1",
+      "counts": {
+        "baseline_profile_counterexamples": 0,
+        "candidate_profile_counterexamples": 0,
+        "comparable_objectives": 58,
+        "failed_to_failed": 25,
+        "fitted_to_fitted": 34,
+        "improved_objectives": 0,
+        "samples": 59,
+        "worsened_objectives": 0
+      },
+      "baseline_reasons": {
+        "accepted": 34,
+        "boundary_solution": 12,
+        "insufficient_observations": 1,
+        "nonidentifiable": 12
+      },
+      "candidate_reasons": {
+        "accepted": 34,
+        "boundary_solution": 12,
+        "insufficient_observations": 1,
+        "nonidentifiable": 12
+      }
+    },
+    {
+      "family": "van_genuchten_m1_v1",
+      "counts": {
+        "baseline_profile_counterexamples": 0,
+        "candidate_profile_counterexamples": 0,
+        "comparable_objectives": 58,
+        "failed_to_failed": 16,
+        "fitted_to_fitted": 43,
+        "improved_objectives": 0,
+        "samples": 59,
+        "worsened_objectives": 0
+      },
+      "baseline_reasons": {
+        "accepted": 43,
+        "boundary_solution": 15,
+        "insufficient_observations": 1
+      },
+      "candidate_reasons": {
+        "accepted": 43,
+        "boundary_solution": 15,
+        "insufficient_observations": 1
+      }
+    },
+    {
+      "family": "van_genuchten_mualem_v1",
+      "counts": {
+        "baseline_profile_counterexamples": 0,
+        "candidate_profile_counterexamples": 0,
+        "comparable_objectives": 58,
+        "failed_to_failed": 24,
+        "fitted_to_fitted": 35,
+        "improved_objectives": 0,
+        "samples": 59,
+        "worsened_objectives": 0
+      },
+      "baseline_reasons": {
+        "accepted": 35,
+        "boundary_solution": 23,
+        "insufficient_observations": 1
+      },
+      "candidate_reasons": {
+        "accepted": 35,
+        "boundary_solution": 23,
+        "insufficient_observations": 1
+      }
+    }
+  ],
+  "baseline_artifact_sha256": "1d1cecd21f275a37b4124ef52a559f5007c27bb47b958655f3fcbb0eb9bdc762",
+  "candidate_artifact_sha256": "43359035ff4d780617b4528dd231dfebd9411c4edd273dcfefcb2762e47b7622"
+}

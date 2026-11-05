@@ -1,14 +1,18 @@
 file(GLOB_RECURSE PTFKIT_CPP_MODULES CONFIGURE_DEPENDS *.cppm)
 
-add_library(ptfkit::cpp INTERFACE IMPORTED GLOBAL)
-target_compile_features(ptfkit::cpp INTERFACE cxx_std_23)
-target_compile_definitions(ptfkit::cpp INTERFACE
+add_library(ptfkit_cpp STATIC)
+add_library(ptfkit::cpp ALIAS ptfkit_cpp)
+target_compile_features(ptfkit_cpp PUBLIC cxx_std_23)
+target_link_libraries(ptfkit_cpp PUBLIC ptfkit::c)
+target_compile_definitions(ptfkit_cpp PUBLIC
     PTFKIT_VERSION=\"${PROJECT_VERSION}\"
 )
-target_compile_options(ptfkit::cpp INTERFACE
+target_compile_options(ptfkit_cpp PUBLIC
     $<$<CXX_COMPILER_ID:GNU>:-fmodules-ts>
 )
-target_sources(ptfkit::cpp INTERFACE
+# Module objects carry runtime definitions such as exception RTTI and vtables.
+# A BMI-only imported interface cannot provide those definitions to consumers.
+target_sources(ptfkit_cpp PUBLIC
     FILE_SET CXX_MODULES
     BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
     FILES ${PTFKIT_CPP_MODULES}

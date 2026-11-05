@@ -1,0 +1,2831 @@
+{
+  "calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand": {
+    "rmse": 0.2824123296773208,
+    "mae": 0.188049800789877,
+    "bias": 0.10124063444585482,
+    "median_absolute_error": 0.08219244324031738,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 1.047609306176732,
+    "factor_2": 0.7575757575757576,
+    "factor_5": 0.9696969696969697,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.17435912291279324,
+        "mae": 0.15623651630514335,
+        "bias": 0.03908900220654932,
+        "median_absolute_error": 0.17572127114789104,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 1.1303394254101338,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.2910193910633053,
+        "mae": 0.19123112923835037,
+        "bias": 0.10745579766978537,
+        "median_absolute_error": 0.07221260346614145,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 1.0462194982189759,
+        "factor_2": 0.7333333333333333,
+        "factor_5": 0.9666666666666667,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter": {
+    "rmse": 0.3555286838845326,
+    "mae": 0.31798538986400865,
+    "bias": -0.1056490870729961,
+    "median_absolute_error": 0.3454723335815171,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 0.5739506006349208,
+    "factor_2": 0.36363636363636365,
+    "factor_5": 1.0,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.09077141898520158,
+        "mae": 0.06710104186164163,
+        "bias": -0.048083401509718605,
+        "median_absolute_error": 0.028526460527884545,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 0.9563443499415202,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.37177515317820264,
+        "mae": 0.34307382466424535,
+        "bias": -0.11140565562932385,
+        "median_absolute_error": 0.3540615536745353,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 0.5400312556757938,
+        "factor_2": 0.3,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_calcaric_regosol_sand": {
+    "rmse": 0.3053080376595284,
+    "mae": 0.205408302149465,
+    "bias": 0.15509373311297647,
+    "median_absolute_error": 0.10616595908681514,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 1.1950271533924657,
+    "factor_2": 0.7878787878787878,
+    "factor_5": 0.9393939393939394,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.19441263571898595,
+        "mae": 0.17490802180559642,
+        "bias": 0.09219664097570342,
+        "median_absolute_error": 0.12406707124483951,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 1.2769266738617984,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.31425255822784154,
+        "mae": 0.20845833018385188,
+        "bias": 0.1613834423267038,
+        "median_absolute_error": 0.10539510622261572,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 1.1895879072781925,
+        "factor_2": 0.7666666666666667,
+        "factor_5": 0.9333333333333333,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter": {
+    "rmse": 0.3512488138004629,
+    "mae": 0.3027228277061416,
+    "bias": -0.04029959938546178,
+    "median_absolute_error": 0.3028265114887274,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 0.649459994920635,
+    "factor_2": 0.48484848484848486,
+    "factor_5": 0.9696969696969697,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.0730268374929549,
+        "mae": 0.06792495542414716,
+        "bias": 0.046099108970053614,
+        "median_absolute_error": 0.0732653593287722,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 1.183764629707602,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.36766834269002985,
+        "mae": 0.32620261493434105,
+        "bias": -0.04893947022101332,
+        "median_absolute_error": 0.3107019742281234,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 0.6405628567251465,
+        "factor_2": 0.43333333333333335,
+        "factor_5": 0.9666666666666667,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_calcic_cambisol_sand": {
+    "rmse": 0.2782342425544314,
+    "mae": 0.2301035057339422,
+    "bias": -0.02191550324572072,
+    "median_absolute_error": 0.20180618581797205,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 0.7704414035405545,
+    "factor_2": 0.7272727272727273,
+    "factor_5": 1.0,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.1651097683158664,
+        "mae": 0.13941310370819485,
+        "bias": -0.07139431721957863,
+        "median_absolute_error": 0.10202817973292433,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 0.8816272362811836,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.2871055547067839,
+        "mae": 0.23917254593651693,
+        "bias": -0.01696762184833493,
+        "median_absolute_error": 0.20224255597583385,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 0.7594807616964276,
+        "factor_2": 0.7,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter": {
+    "rmse": 0.4212664278039989,
+    "mae": 0.3745686124621199,
+    "bias": -0.13253728520093416,
+    "median_absolute_error": 0.40222857268703205,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 0.5407470685714286,
+    "factor_2": 0.36363636363636365,
+    "factor_5": 0.9090909090909091,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.10444116188616803,
+        "mae": 0.08135237705725966,
+        "bias": -0.08135237705725966,
+        "median_absolute_error": 0.05108248690931472,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 0.8890322451461987,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.4405918154988841,
+        "mae": 0.40389023600260593,
+        "bias": -0.1376557760153016,
+        "median_absolute_error": 0.4082530722911364,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 0.5134055323739035,
+        "factor_2": 0.3,
+        "factor_5": 0.9,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_calcic_luvisol_sand": {
+    "rmse": 0.31855472346026253,
+    "mae": 0.2963026432580017,
+    "bias": -0.162561988291001,
+    "median_absolute_error": 0.2813248177014982,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 0.555926319008135,
+    "factor_2": 0.5757575757575758,
+    "factor_5": 1.0,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.2640467357836095,
+        "mae": 0.21483627688223716,
+        "bias": -0.21483627688223716,
+        "median_absolute_error": 0.19872154403052367,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 0.6328174639941923,
+        "factor_2": 0.6666666666666666,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.32350078076402045,
+        "mae": 0.3044492798955782,
+        "bias": -0.15733455943187738,
+        "median_absolute_error": 0.2844943380385221,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 0.554563121259291,
+        "factor_2": 0.5666666666666667,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter": {
+    "rmse": 0.5828691481327609,
+    "mae": 0.5193692954598145,
+    "bias": -0.46345068832377134,
+    "median_absolute_error": 0.626050955223258,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 0.23656421233986924,
+    "factor_2": 0.24242424242424243,
+    "factor_5": 0.6666666666666666,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.3775544670290138,
+        "mae": 0.37491612939594915,
+        "bias": -0.37491612939594915,
+        "median_absolute_error": 0.3479776053356556,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 0.4487685303641325,
+        "factor_2": 0.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.5995459537618073,
+        "mae": 0.5338146120662011,
+        "bias": -0.4723041442165536,
+        "median_absolute_error": 0.6392999518621045,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 0.22945940165680867,
+        "factor_2": 0.26666666666666666,
+        "factor_5": 0.6333333333333333,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_campbell_shiozawa": {
+    "rmse": 3.7022559371582586,
+    "mae": 3.673238296077858,
+    "bias": -3.673238296077858,
+    "median_absolute_error": 3.7463969021306003,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 0.00017930941673689936,
+    "factor_2": 0.0,
+    "factor_5": 0.0,
+    "factor_10": 0.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 2.5330703329150706,
+        "mae": 2.529149507247784,
+        "bias": -2.529149507247784,
+        "median_absolute_error": 2.551307699437931,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 0.0028099092926121075,
+        "factor_2": 0.0,
+        "factor_5": 0.0,
+        "factor_10": 0.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 3.7994373788097215,
+        "mae": 3.787647174960865,
+        "bias": -3.787647174960865,
+        "median_absolute_error": 3.761090484834968,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 0.00017334439889435933,
+        "factor_2": 0.0,
+        "factor_5": 0.0,
+        "factor_10": 0.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_chromic_luvisol_sand": {
+    "rmse": 0.2740547215707858,
+    "mae": 0.19235606026423713,
+    "bias": 0.055639373989376684,
+    "median_absolute_error": 0.10958336878026564,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 0.9335652675683127,
+    "factor_2": 0.7575757575757576,
+    "factor_5": 0.9696969696969697,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.16187524388490054,
+        "mae": 0.1363530241788006,
+        "bias": -0.0016667689131404373,
+        "median_absolute_error": 0.18859766804757072,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 1.0314108955137877,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.28283604791201106,
+        "mae": 0.1979563638727808,
+        "bias": 0.06136998827962839,
+        "median_absolute_error": 0.10837751308087284,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 0.9253979084556233,
+        "factor_2": 0.7333333333333333,
+        "factor_5": 0.9666666666666667,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter": {
+    "rmse": 0.4065470183546869,
+    "mae": 0.3525589066523025,
+    "bias": -0.08474564571791876,
+    "median_absolute_error": 0.36772175370114146,
+    "observations": 32,
+    "samples": 32,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 32,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 32
+    },
+    "median_ratio": 0.5897678811297851,
+    "factor_2": 0.40625,
+    "factor_5": 0.9375,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.0828543341201576,
+        "mae": 0.05836184562798804,
+        "bias": -0.047611229534799314,
+        "median_absolute_error": 0.017429837088326572,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 0.9606610064717346,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.42622564762921106,
+        "mae": 0.3829930853789557,
+        "bias": -0.08858713704720698,
+        "median_absolute_error": 0.372805006166387,
+        "observations": 29,
+        "samples": 29,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 29,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 29
+        },
+        "median_ratio": 0.569989125730994,
+        "factor_2": 0.3448275862068966,
+        "factor_5": 0.9310344827586207,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_cosby": {
+    "rmse": 0.4560786714743554,
+    "mae": 0.4187438149490815,
+    "bias": -0.1392990733562702,
+    "median_absolute_error": 0.4112899278713549,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 0.45545456619809976,
+    "factor_2": 0.21212121212121213,
+    "factor_5": 0.9393939393939394,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.1084580348233485,
+        "mae": 0.10521434999098982,
+        "bias": -0.10521434999098982,
+        "median_absolute_error": 0.10464197938206699,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 0.7858832285098378,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.4771081800801784,
+        "mae": 0.4500967614448907,
+        "bias": -0.14270754569279823,
+        "median_absolute_error": 0.4251111258548699,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 0.44001074484961233,
+        "factor_2": 0.13333333333333333,
+        "factor_5": 0.9333333333333333,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_dane_puckett": {
+    "rmse": 0.7176409714643478,
+    "mae": 0.5943490466803004,
+    "bias": -0.16801495605466718,
+    "median_absolute_error": 0.49510184340272545,
+    "observations": 39,
+    "samples": 39,
+    "sources": 3,
+    "profiles": 0,
+    "samples_without_profile": 39,
+    "horizons": 12,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 39
+    },
+    "median_ratio": 0.5212205722218543,
+    "factor_2": 0.3076923076923077,
+    "factor_5": 0.717948717948718,
+    "factor_10": 0.7948717948717948,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.5373374112031177,
+        "mae": 0.5322866246667249,
+        "bias": 0.5322866246667249,
+        "median_absolute_error": 0.49510184340272545,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 3.126812528390248,
+        "factor_2": 0.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_day": {
+        "rmse": 0.3443143412995733,
+        "mae": 0.3443143412995733,
+        "bias": -0.3443143412995733,
+        "median_absolute_error": 0.3443143412995733,
+        "observations": 1,
+        "samples": 1,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 1,
+        "horizons": 1,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 1
+        },
+        "median_ratio": 0.4525698923305823,
+        "factor_2": 0.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.6602165948700119,
+        "mae": 0.5337055562406249,
+        "bias": -0.43441335789486146,
+        "median_absolute_error": 0.4084112740715682,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 0.4096529850700592,
+        "factor_2": 0.4,
+        "factor_5": 0.7666666666666667,
+        "factor_10": 0.8333333333333334
+      },
+      "thesis_m_day": {
+        "rmse": 1.097634600651315,
+        "mae": 1.0454543836026442,
+        "bias": 1.0454543836026442,
+        "median_absolute_error": 1.0376385451427677,
+        "observations": 5,
+        "samples": 5,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 5,
+        "horizons": 5,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 5
+        },
+        "median_ratio": 10.9053232977829,
+        "factor_2": 0.0,
+        "factor_5": 0.2,
+        "factor_10": 0.4
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_dystric_cambisol_sand": {
+    "rmse": 0.2998997120460656,
+    "mae": 0.19699709149197533,
+    "bias": 0.12051373820170927,
+    "median_absolute_error": 0.10164924708823264,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 1.0647847624059117,
+    "factor_2": 0.7878787878787878,
+    "factor_5": 0.9393939393939394,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.1673779209789408,
+        "mae": 0.15257426766398266,
+        "bias": 0.06879854453394874,
+        "median_absolute_error": 0.1256635846950509,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 1.2162593556589278,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.310052066870584,
+        "mae": 0.2014393738747746,
+        "bias": 0.12568525756848534,
+        "median_absolute_error": 0.09392422766944097,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 1.0629968674888948,
+        "factor_2": 0.7666666666666667,
+        "factor_5": 0.9333333333333333,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter": {
+    "rmse": 0.3840960819509275,
+    "mae": 0.32159008291076063,
+    "bias": -0.015195982174217249,
+    "median_absolute_error": 0.2860150400760819,
+    "observations": 32,
+    "samples": 32,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 32,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 32
+    },
+    "median_ratio": 0.6986358751820728,
+    "factor_2": 0.59375,
+    "factor_5": 0.90625,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.08024425800811348,
+        "mae": 0.07438012858977612,
+        "bias": 0.05083976946580412,
+        "median_absolute_error": 0.079242449996908,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 1.2001691246783623,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.4026479673453062,
+        "mae": 0.3471635264612073,
+        "bias": -0.02202726682663325,
+        "median_absolute_error": 0.2913525733594966,
+        "observations": 29,
+        "samples": 29,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 29,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 29
+        },
+        "median_ratio": 0.6815525380116958,
+        "factor_2": 0.5517241379310345,
+        "factor_5": 0.896551724137931,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_dystric_regosol_sand": {
+    "rmse": 0.2872104133454983,
+    "mae": 0.18981220615975233,
+    "bias": 0.09465264180564824,
+    "median_absolute_error": 0.10357054761326889,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 1.0171412515282197,
+    "factor_2": 0.7575757575757576,
+    "factor_5": 0.9696969696969697,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.16252151365207082,
+        "mae": 0.14683579264427996,
+        "bias": 0.039955608546017686,
+        "median_absolute_error": 0.16032027614739341,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 1.136530346414834,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.29681219558421984,
+        "mae": 0.19410984751129956,
+        "bias": 0.10012234513161129,
+        "median_absolute_error": 0.09482355216727223,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 1.0057307104676476,
+        "factor_2": 0.7333333333333333,
+        "factor_5": 0.9666666666666667,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter": {
+    "rmse": 0.3399615909898069,
+    "mae": 0.2954873994308935,
+    "bias": -0.06235523103328969,
+    "median_absolute_error": 0.2939693833719814,
+    "observations": 32,
+    "samples": 32,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 32,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 32
+    },
+    "median_ratio": 0.65411453625731,
+    "factor_2": 0.5625,
+    "factor_5": 1.0,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.08180045556460742,
+        "mae": 0.0742854703081628,
+        "bias": 0.054396635136713854,
+        "median_absolute_error": 0.07985398581187297,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 1.2018602891228067,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.3561426643410607,
+        "mae": 0.31837035761600363,
+        "bias": -0.07443301029225557,
+        "median_absolute_error": 0.29746500835876866,
+        "observations": 29,
+        "samples": 29,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 29,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 29
+        },
+        "median_ratio": 0.6488734673015875,
+        "factor_2": 0.5172413793103449,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_eutric_cambisol_sand": {
+    "rmse": 0.28620467602644106,
+    "mae": 0.18907185815216465,
+    "bias": 0.10400243238654265,
+    "median_absolute_error": 0.08649774831793611,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 1.0462847592979876,
+    "factor_2": 0.7878787878787878,
+    "factor_5": 0.9696969696969697,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.17069727723833805,
+        "mae": 0.15409510702020146,
+        "bias": 0.04501900471359921,
+        "median_absolute_error": 0.16361415345990338,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 1.1475688174598402,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.29528066680987075,
+        "mae": 0.19256953326536097,
+        "bias": 0.10990077515383699,
+        "median_absolute_error": 0.08034504143732724,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 1.0387992907934813,
+        "factor_2": 0.7666666666666667,
+        "factor_5": 0.9666666666666667,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter": {
+    "rmse": 0.38704960845168407,
+    "mae": 0.33151781425048155,
+    "bias": -0.0739967006544758,
+    "median_absolute_error": 0.32187623605797544,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 0.6343016615873016,
+    "factor_2": 0.42424242424242425,
+    "factor_5": 0.9393939393939394,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.06456686632226753,
+        "mae": 0.06329557874679666,
+        "bias": 0.027607684340066108,
+        "median_absolute_error": 0.05505011001764082,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 1.1351417837037034,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.4054272454093267,
+        "mae": 0.35834003780085,
+        "bias": -0.08415713915393,
+        "median_absolute_error": 0.3304813222054461,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 0.5942067541236269,
+        "factor_2": 0.36666666666666664,
+        "factor_5": 0.9333333333333333,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_eutric_regosol_sand": {
+    "rmse": 0.3311383776016954,
+    "mae": 0.23298152373022804,
+    "bias": 0.20101638317133544,
+    "median_absolute_error": 0.13920008923378102,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 1.325772760576349,
+    "factor_2": 0.7575757575757576,
+    "factor_5": 0.9393939393939394,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.21981466713913592,
+        "mae": 0.19003545367219607,
+        "bias": 0.13830565600855435,
+        "median_absolute_error": 0.15231261297476362,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 1.4200793525235484,
+        "factor_2": 0.6666666666666666,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.34027347655055684,
+        "mae": 0.23727613073603124,
+        "bias": 0.20728745588761355,
+        "median_absolute_error": 0.13083459048045842,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 1.3208046955973098,
+        "factor_2": 0.7666666666666667,
+        "factor_5": 0.9333333333333333,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter": {
+    "rmse": 0.39052132515139104,
+    "mae": 0.31994703463262286,
+    "bias": 0.05150166922335168,
+    "median_absolute_error": 0.27296645417698695,
+    "observations": 31,
+    "samples": 31,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 31,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 31
+    },
+    "median_ratio": 0.7521765644444446,
+    "factor_2": 0.6129032258064516,
+    "factor_5": 0.9354838709677419,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.08628382003967827,
+        "mae": 0.07686189852231144,
+        "bias": 0.061371358173582934,
+        "median_absolute_error": 0.09147243258735127,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 1.23444695454191,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.40993812139917774,
+        "mae": 0.345991870644442,
+        "bias": 0.050444202550112616,
+        "median_absolute_error": 0.27693950081941665,
+        "observations": 28,
+        "samples": 28,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 28,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 28
+        },
+        "median_ratio": 0.7296552655142758,
+        "factor_2": 0.5714285714285714,
+        "factor_5": 0.9285714285714286,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_general_sand": {
+    "rmse": 0.2746967169789255,
+    "mae": 0.19308284002910994,
+    "bias": 0.055967804025175795,
+    "median_absolute_error": 0.11196781844765002,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 0.9334528747014167,
+    "factor_2": 0.7575757575757576,
+    "factor_5": 0.9696969696969697,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.16093977210389107,
+        "mae": 0.13592214639884106,
+        "bias": -0.0007792439538653421,
+        "median_absolute_error": 0.18828219729197393,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 1.0337895941835644,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.2835735423596754,
+        "mae": 0.19879890939213682,
+        "bias": 0.06164250882307991,
+        "median_absolute_error": 0.11004667973656268,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 0.9247915213348951,
+        "factor_2": 0.7333333333333333,
+        "factor_5": 0.9666666666666667,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_general_texture_organic_matter": {
+    "rmse": 0.3592685824007437,
+    "mae": 0.31159724457579924,
+    "bias": -0.024190961859733615,
+    "median_absolute_error": 0.3118733407916663,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 0.6482493247058823,
+    "factor_2": 0.48484848484848486,
+    "factor_5": 0.9696969696969697,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.06298439742505532,
+        "mae": 0.061569824204635935,
+        "bias": 0.01393595051465161,
+        "median_absolute_error": 0.07045181929108058,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 1.1035876780662766,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.37627729442309465,
+        "mae": 0.33659998661291557,
+        "bias": -0.028003653097172135,
+        "median_absolute_error": 0.32886405704524035,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 0.6288984141382585,
+        "factor_2": 0.43333333333333335,
+        "factor_5": 0.9666666666666667,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_gleyic_cambisol_sand": {
+    "rmse": 0.257996763927537,
+    "mae": 0.1888382961478662,
+    "bias": 0.058059039477148286,
+    "median_absolute_error": 0.143103081019345,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 0.9951596333292622,
+    "factor_2": 0.8181818181818182,
+    "factor_5": 0.9696969696969697,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.21787146849078287,
+        "mae": 0.18358754123859664,
+        "bias": -0.03148824401246338,
+        "median_absolute_error": 0.22814894583919987,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 0.9486340691819967,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.2616711018407581,
+        "mae": 0.18936337163879316,
+        "bias": 0.06701376782610945,
+        "median_absolute_error": 0.13764727782913155,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 1.0138425761594163,
+        "factor_2": 0.8,
+        "factor_5": 0.9666666666666667,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter": {
+    "rmse": 0.3816403032064369,
+    "mae": 0.3346163261513564,
+    "bias": -0.13997666623299937,
+    "median_absolute_error": 0.35130354048930457,
+    "observations": 32,
+    "samples": 32,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 32,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 32
+    },
+    "median_ratio": 0.5621822380460956,
+    "factor_2": 0.375,
+    "factor_5": 0.96875,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.08852213649633091,
+        "mae": 0.06609237896230329,
+        "bias": -0.046020314430760934,
+        "median_absolute_error": 0.03010809679731352,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 0.9571060522417152,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.399882300229076,
+        "mae": 0.3623946655157412,
+        "bias": -0.14969628883323094,
+        "median_absolute_error": 0.35641528539086487,
+        "observations": 29,
+        "samples": 29,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 29,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 29
+        },
+        "median_ratio": 0.560795580952381,
+        "factor_2": 0.3103448275862069,
+        "factor_5": 0.9655172413793104,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_gleyic_luvisol_sand": {
+    "rmse": 0.28214260644183325,
+    "mae": 0.25232892516836036,
+    "bias": -0.09775844270932031,
+    "median_absolute_error": 0.23748342744447637,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 0.6596065982100314,
+    "factor_2": 0.6666666666666666,
+    "factor_5": 1.0,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.23121322054352572,
+        "mae": 0.18512023396268576,
+        "bias": -0.15879188510167452,
+        "median_absolute_error": 0.14444617843957985,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 0.7170572340613697,
+        "factor_2": 0.6666666666666666,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.2867384523766553,
+        "mae": 0.2590497942889278,
+        "bias": -0.09165509847008488,
+        "median_absolute_error": 0.23766531185674067,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 0.6572814159536441,
+        "factor_2": 0.6666666666666666,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter": {
+    "rmse": 0.3334398599104246,
+    "mae": 0.2960365541719077,
+    "bias": -0.07959733377310063,
+    "median_absolute_error": 0.3156759986604829,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 0.6191891345029239,
+    "factor_2": 0.42424242424242425,
+    "factor_5": 1.0,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.07664718953889452,
+        "mae": 0.06630604022074522,
+        "bias": 0.05744437578785533,
+        "median_absolute_error": 0.08234265488318648,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 1.20876716662768,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.34887372361410485,
+        "mae": 0.319009605567024,
+        "bias": -0.09330150472919622,
+        "median_absolute_error": 0.316101052443825,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 0.5743055581901795,
+        "factor_2": 0.36666666666666664,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_gleyic_solonchak_sand": {
+    "rmse": 0.5243342436377663,
+    "mae": 0.47447462299969356,
+    "bias": -0.4308202302038783,
+    "median_absolute_error": 0.5585378525362623,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 0.2763517044159783,
+    "factor_2": 0.24242424242424243,
+    "factor_5": 0.8787878787878788,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.48168461739265894,
+        "mae": 0.4653898462183858,
+        "bias": -0.4653898462183858,
+        "median_absolute_error": 0.4456994221323356,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 0.35834436362319616,
+        "factor_2": 0.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.5284099089656022,
+        "mae": 0.4753831006778243,
+        "bias": -0.42736326860242746,
+        "median_absolute_error": 0.5635747953387114,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 0.27318346750796574,
+        "factor_2": 0.26666666666666666,
+        "factor_5": 0.8666666666666667,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter": {
+    "rmse": 0.46043167514524036,
+    "mae": 0.42574824901101654,
+    "bias": -0.29639604141303894,
+    "median_absolute_error": 0.4367387903232536,
+    "observations": 32,
+    "samples": 32,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 32,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 32
+    },
+    "median_ratio": 0.36868802722689076,
+    "factor_2": 0.3125,
+    "factor_5": 0.96875,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.21494086134731002,
+        "mae": 0.20628079357070414,
+        "bias": -0.20628079357070414,
+        "median_absolute_error": 0.17950874066116107,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 0.6614412251072124,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.478694912474334,
+        "mae": 0.44845177888415233,
+        "bias": -0.3057183084312115,
+        "median_absolute_error": 0.46783083620878685,
+        "observations": 29,
+        "samples": 29,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 29,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 29
+        },
+        "median_ratio": 0.3646452748538011,
+        "factor_2": 0.2413793103448276,
+        "factor_5": 0.9655172413793104,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_humic_acrisol_sand": {
+    "rmse": 0.31095045411997096,
+    "mae": 0.20505605652372233,
+    "bias": 0.14055668063130683,
+    "median_absolute_error": 0.09902394597324182,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 1.119983946354927,
+    "factor_2": 0.7878787878787878,
+    "factor_5": 0.9393939393939394,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.17452582862413607,
+        "mae": 0.15709383063961013,
+        "bias": 0.09107786665744892,
+        "median_absolute_error": 0.10775718233563669,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 1.281613821332244,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.32142382756022253,
+        "mae": 0.20985227911213356,
+        "bias": 0.14550456202869264,
+        "median_absolute_error": 0.07651682104393176,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 1.104050556935881,
+        "factor_2": 0.7666666666666667,
+        "factor_5": 0.9333333333333333,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter": {
+    "rmse": 0.33423011290814947,
+    "mae": 0.3010065734768736,
+    "bias": -0.10456916753388945,
+    "median_absolute_error": 0.34088260705287254,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 0.5739775873464051,
+    "factor_2": 0.42424242424242425,
+    "factor_5": 1.0,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.05864324496741909,
+        "mae": 0.05463137382052796,
+        "bias": 0.03753895041941302,
+        "median_absolute_error": 0.061970188543711835,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 1.1533740835680306,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.3500526277490614,
+        "mae": 0.3256440934425082,
+        "bias": -0.1187799793292197,
+        "median_absolute_error": 0.3458310639405351,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 0.569710550097557,
+        "factor_2": 0.36666666666666664,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_humic_cambisol_sand": {
+    "rmse": 0.2998171384824016,
+    "mae": 0.23841907884604047,
+    "bias": 0.01975341399343421,
+    "median_absolute_error": 0.19563247824898333,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 0.7793858908507073,
+    "factor_2": 0.7272727272727273,
+    "factor_5": 0.9696969696969697,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.12478057500397077,
+        "mae": 0.10223650471254479,
+        "bias": -0.014629837046581606,
+        "median_absolute_error": 0.12631177560437745,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 1.0118082725812896,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.31196526888536963,
+        "mae": 0.25203733625939,
+        "bias": 0.02319173909743579,
+        "median_absolute_error": 0.20418150099401045,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 0.7705233450890274,
+        "factor_2": 0.7,
+        "factor_5": 0.9666666666666667,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter": {
+    "rmse": 0.3831831019532833,
+    "mae": 0.32806126290147447,
+    "bias": -0.07485511743903255,
+    "median_absolute_error": 0.3205841200259547,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 0.6322634679365079,
+    "factor_2": 0.42424242424242425,
+    "factor_5": 0.9393939393939394,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.06874519102189244,
+        "mae": 0.06363742753093445,
+        "bias": 0.044503637329187384,
+        "median_absolute_error": 0.07116413426348078,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 1.1780511139181282,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.4012974314095851,
+        "mae": 0.3545036464385285,
+        "bias": -0.08679099291585454,
+        "median_absolute_error": 0.32978488027274677,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 0.5925141354976226,
+        "factor_2": 0.36666666666666664,
+        "factor_5": 0.9333333333333333,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_orthic_luvisol_sand": {
+    "rmse": 0.28445610779332103,
+    "mae": 0.21558055721402128,
+    "bias": 0.033341957820480425,
+    "median_absolute_error": 0.15824273537807976,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 0.8430128099322639,
+    "factor_2": 0.7575757575757576,
+    "factor_5": 1.0,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.14291568012061542,
+        "mae": 0.11757310849275122,
+        "bias": -0.012223191689048285,
+        "median_absolute_error": 0.15277833525935058,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 1.0121538699067252,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.2948971275285404,
+        "mae": 0.2253813020861483,
+        "bias": 0.037898472771433295,
+        "median_absolute_error": 0.16262861330246148,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 0.8396314820870784,
+        "factor_2": 0.7333333333333333,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter": {
+    "rmse": 0.3433178172176184,
+    "mae": 0.29457482688559333,
+    "bias": -0.026175834614468242,
+    "median_absolute_error": 0.2986838918844086,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 0.6591628311111111,
+    "factor_2": 0.5151515151515151,
+    "factor_5": 0.9696969696969697,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.07625628878280664,
+        "mae": 0.06797224190012023,
+        "bias": 0.05421065776716194,
+        "median_absolute_error": 0.08104912844512224,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 1.2051722646705654,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.3592663828179369,
+        "mae": 0.31723508538414064,
+        "bias": -0.03421448385263126,
+        "median_absolute_error": 0.3079623152242861,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 0.6408627889924812,
+        "factor_2": 0.4666666666666667,
+        "factor_5": 0.9666666666666667,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_puckett": {
+    "rmse": 1.3027579389935224,
+    "mae": 1.0505513322752875,
+    "bias": -0.8759502039821303,
+    "median_absolute_error": 0.9257908519276494,
+    "observations": 39,
+    "samples": 39,
+    "sources": 3,
+    "profiles": 0,
+    "samples_without_profile": 39,
+    "horizons": 12,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 39
+    },
+    "median_ratio": 0.1215576069523082,
+    "factor_2": 0.2564102564102564,
+    "factor_5": 0.358974358974359,
+    "factor_10": 0.5128205128205128,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.13781829884507346,
+        "mae": 0.09285577757567864,
+        "bias": 0.09285577757567864,
+        "median_absolute_error": 0.029338274225612082,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 1.0698878959940912,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_day": {
+        "rmse": 1.002926375165826,
+        "mae": 1.002926375165826,
+        "bias": -1.002926375165826,
+        "median_absolute_error": 1.002926375165826,
+        "observations": 1,
+        "samples": 1,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 1,
+        "horizons": 1,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 1
+        },
+        "median_ratio": 0.09932844231195127,
+        "factor_2": 0.0,
+        "factor_5": 0.0,
+        "factor_10": 0.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 1.4446797617959297,
+        "mae": 1.2187951193951274,
+        "bias": -1.2187951193951274,
+        "median_absolute_error": 1.1151192503361966,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 0.07695802446771868,
+        "factor_2": 0.2,
+        "factor_5": 0.26666666666666666,
+        "factor_10": 0.43333333333333335
+      },
+      "thesis_m_day": {
+        "rmse": 0.7091008768913076,
+        "mae": 0.6252309337979055,
+        "bias": 0.6252309337979055,
+        "median_absolute_error": 0.6508731422238556,
+        "observations": 5,
+        "samples": 5,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 5,
+        "horizons": 5,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 5
+        },
+        "median_ratio": 4.475825458494084,
+        "factor_2": 0.2,
+        "factor_5": 0.6,
+        "factor_10": 0.8
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_ranker_sand": {
+    "rmse": 0.30041440702683775,
+    "mae": 0.19891834441011852,
+    "bias": 0.13979357135883752,
+    "median_absolute_error": 0.09467386243570886,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 1.1374928163876288,
+    "factor_2": 0.7878787878787878,
+    "factor_5": 0.9393939393939394,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.18420304759310063,
+        "mae": 0.16674595928904581,
+        "bias": 0.08006468378792657,
+        "median_absolute_error": 0.1300219132516789,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 1.2435803825365594,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.30964596117171717,
+        "mae": 0.20213558292222578,
+        "bias": 0.14576646011592861,
+        "median_absolute_error": 0.08606855808596148,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 1.1301626727881766,
+        "factor_2": 0.7666666666666667,
+        "factor_5": 0.9333333333333333,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_ranker_texture_organic_matter": {
+    "rmse": 0.37235297375159965,
+    "mae": 0.3092691553888202,
+    "bias": 0.016151224926977695,
+    "median_absolute_error": 0.27309912735155173,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 0.7342376698412699,
+    "factor_2": 0.6666666666666666,
+    "factor_5": 0.9393939393939394,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.09004220897748683,
+        "mae": 0.0803283383295496,
+        "bias": 0.06337283120747195,
+        "median_absolute_error": 0.09286500776891415,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 1.2384115898635475,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.38948767737641055,
+        "mae": 0.33216323709474727,
+        "bias": 0.01142906429892827,
+        "median_absolute_error": 0.27611157774297457,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 0.6950509121893275,
+        "factor_2": 0.6333333333333333,
+        "factor_5": 0.9333333333333333,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_rendzina_sand": {
+    "rmse": 0.3236751228018546,
+    "mae": 0.28891033637525837,
+    "bias": -0.07955388971196334,
+    "median_absolute_error": 0.2977528296170737,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 0.6017493614150167,
+    "factor_2": 0.5151515151515151,
+    "factor_5": 1.0,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.15219912204244782,
+        "mae": 0.11678523621262087,
+        "bias": -0.10536435192535294,
+        "median_absolute_error": 0.08390490164968334,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 0.8243185979800667,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.33604417322403624,
+        "mae": 0.30612284639152215,
+        "bias": -0.07697284349062437,
+        "median_absolute_error": 0.30979570976731274,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 0.5975015023795602,
+        "factor_2": 0.4666666666666667,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter": {
+    "rmse": 0.40478483879320676,
+    "mae": 0.37113303632147887,
+    "bias": -0.24796074105578292,
+    "median_absolute_error": 0.39733622758585163,
+    "observations": 32,
+    "samples": 32,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 32,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 32
+    },
+    "median_ratio": 0.4347787127170869,
+    "factor_2": 0.3125,
+    "factor_5": 0.96875,
+    "factor_10": 1.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.053128364506164726,
+        "mae": 0.039142368105268645,
+        "bias": -0.039142368105268645,
+        "median_absolute_error": 0.01633043409974544,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 0.9630959706822612,
+        "factor_2": 1.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.42486333030077333,
+        "mae": 0.40547689855074204,
+        "bias": -0.2695626417058361,
+        "median_absolute_error": 0.43341907261383117,
+        "observations": 29,
+        "samples": 29,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 29,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 29
+        },
+        "median_ratio": 0.36862172523364484,
+        "factor_2": 0.2413793103448276,
+        "factor_5": 0.9655172413793104,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_ferrerjulia2004_saxton": {
+    "rmse": 5.05778771724547,
+    "mae": 5.045005310487149,
+    "bias": -5.045005310487149,
+    "median_absolute_error": 5.0794667027179194,
+    "observations": 33,
+    "samples": 33,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 33,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 33
+    },
+    "median_ratio": 8.32785773077417e-06,
+    "factor_2": 0.0,
+    "factor_5": 0.0,
+    "factor_10": 0.0,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 4.456033673005026,
+        "mae": 4.455391422188359,
+        "bias": -4.455391422188359,
+        "median_absolute_error": 4.48799406297859,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 3.2509174152073327e-05,
+        "factor_2": 0.0,
+        "factor_5": 0.0,
+        "factor_10": 0.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 5.11407026178714,
+        "mae": 5.103966699317027,
+        "bias": -5.103966699317027,
+        "median_absolute_error": 5.152252233789174,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 7.054330288128884e-06,
+        "factor_2": 0.0,
+        "factor_5": 0.0,
+        "factor_10": 0.0
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_saxton2006": {
+    "rmse": 0.6122201008693283,
+    "mae": 0.46252393071638787,
+    "bias": -0.3408633002999686,
+    "median_absolute_error": 0.3379116766385515,
+    "observations": 30,
+    "samples": 30,
+    "sources": 2,
+    "profiles": 0,
+    "samples_without_profile": 30,
+    "horizons": 6,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 30
+    },
+    "median_ratio": 0.501731958080259,
+    "factor_2": 0.4,
+    "factor_5": 0.8333333333333334,
+    "factor_10": 0.9,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.3409420230851928,
+        "mae": 0.32588190336275513,
+        "bias": 0.32588190336275513,
+        "median_absolute_error": 0.3132077390383703,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 2.056874239377334,
+        "factor_2": 0.3333333333333333,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 0.6352508739754432,
+        "mae": 0.47770637820012485,
+        "bias": -0.4149461007069379,
+        "median_absolute_error": 0.34446203792454977,
+        "observations": 27,
+        "samples": 27,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 27,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 27
+        },
+        "median_ratio": 0.46627130013791207,
+        "factor_2": 0.4074074074074074,
+        "factor_5": 0.8148148148148148,
+        "factor_10": 0.8888888888888888
+      }
+    },
+    "total": 39
+  },
+  "calc_ptf_wosten2001_loam_clay_table5": {
+    "rmse": 24.166390979869917,
+    "mae": 5.74302304106726,
+    "bias": -5.591837054989512,
+    "median_absolute_error": 0.46787343313496876,
+    "observations": 39,
+    "samples": 39,
+    "sources": 3,
+    "profiles": 0,
+    "samples_without_profile": 39,
+    "horizons": 12,
+    "pressure_range_kpa": null,
+    "basis_counts": {
+      "ksat": 39
+    },
+    "median_ratio": 0.3520794153244037,
+    "factor_2": 0.23076923076923078,
+    "factor_5": 0.7435897435897436,
+    "factor_10": 0.8461538461538461,
+    "block_sensitivity": {
+      "master_cm_day": {
+        "rmse": 0.4485869494964329,
+        "mae": 0.44538066980093216,
+        "bias": -0.44538066980093216,
+        "median_absolute_error": 0.45335936564937196,
+        "observations": 3,
+        "samples": 3,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 3,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 3
+        },
+        "median_ratio": 0.3520794153244037,
+        "factor_2": 0.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_day": {
+        "rmse": 0.46787343313496876,
+        "mae": 0.46787343313496876,
+        "bias": -0.46787343313496876,
+        "median_absolute_error": 0.46787343313496876,
+        "observations": 1,
+        "samples": 1,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 1,
+        "horizons": 1,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 1
+        },
+        "median_ratio": 0.3405074096493789,
+        "factor_2": 0.0,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      },
+      "thesis_cm_min_assumed": {
+        "rmse": 27.553069715099976,
+        "mae": 7.353629958158611,
+        "bias": -7.204330244947411,
+        "median_absolute_error": 0.5592369951954219,
+        "observations": 30,
+        "samples": 30,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 30,
+        "horizons": 3,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 30
+        },
+        "median_ratio": 0.30292103507765766,
+        "factor_2": 0.2,
+        "factor_5": 0.6666666666666666,
+        "factor_10": 0.8
+      },
+      "thesis_m_day": {
+        "rmse": 0.3439618082258717,
+        "mae": 0.31299688286540733,
+        "bias": -0.02954447072616535,
+        "median_absolute_error": 0.2646645931161098,
+        "observations": 5,
+        "samples": 5,
+        "sources": 1,
+        "profiles": 0,
+        "samples_without_profile": 5,
+        "horizons": 5,
+        "pressure_range_kpa": null,
+        "basis_counts": {
+          "ksat": 5
+        },
+        "median_ratio": 0.6577380620228686,
+        "factor_2": 0.6,
+        "factor_5": 1.0,
+        "factor_10": 1.0
+      }
+    },
+    "total": 39
+  }
+}

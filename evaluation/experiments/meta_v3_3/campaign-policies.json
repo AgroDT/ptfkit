@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "protocol": "catalog_exploratory_campaign_v1",
+  "psd_scenarios": [
+    "reported_boundary_proxy",
+    "log_psd"
+  ],
+  "primary_target_route": "log_pressure_linear_interpolation_v1",
+  "diagnostic_target_routes": [
+    "van_genuchten_mualem_v1",
+    "brooks_corey_v1"
+  ],
+  "fit_disagreement_volume_fraction_threshold": 0.03,
+  "stages": [
+    {
+      "id": "current_policies",
+      "legacy": false,
+      "representative": false,
+      "water_predictors": false,
+      "density_link": false
+    },
+    {
+      "id": "generic_spec_adapters",
+      "legacy": true,
+      "representative": false,
+      "water_predictors": false,
+      "density_link": false
+    },
+    {
+      "id": "conditional_class_psd",
+      "legacy": true,
+      "representative": true,
+      "water_predictors": false,
+      "density_link": false
+    },
+    {
+      "id": "wrc_predictors_and_density_links",
+      "legacy": true,
+      "representative": true,
+      "water_predictors": true,
+      "density_link": true
+    }
+  ],
+  "policies": {
+    "native_spec_fixed_pressure_v1": "Use an explicitly structured condition or a single kPa coordinate in the YAML output description. Preserve quantity, output unit and the source public wrapper. This is an exploratory adapter, not a public measurement migration.",
+    "native_direct_property_v1": "Compare a defined native dry-bulk-density output with the same sample's reported density, with approximate density units/protocol and no predictor imputation from another sample.",
+    "native_scalar_water_axis_v1": "Supply requested kPa to a source-declared scalar water-content pressure/tension input, within both observed and explicit source domains.",
+    "usda_class_conditional_psd_v1": "For a confirmed reported USDA class, fill only missing texture fractions using the uniform mean of the closed one-percentage-point USDA lattice conditional on available fractions within 0.5 percentage points. Rescale only missing fractions to exact closure. Retain reported fractions. Reject inconsistent class/fraction evidence. This is approximate within-class imputation, never a measured PSD.",
+    "closed_psd_cdf_v1": "Construct a cumulative PSD from supported exploratory fractions at 0, 2, 50 and 2000 micrometres. Rebin or log-interpolate requested source boundaries; all imputed distributions retain approximate provenance.",
+    "catalog_oc_om_v1": "Apply the existing registered OC/OM factor across all source aliases and compatible percent/fraction units. Preserve reported values; label missing-counterpart conversions derived.",
+    "exploratory_derived_texture_class": "Apply the existing USDA triangle to closed exploratory fractions. The class inherits approximate evidence; do not map unreviewed labels to USDA or USDA to other taxonomies.",
+    "depth_interval_midpoint_cm_v1": "Use an explicit numeric depth interval from the same sample; assume centimetres and use its midpoint. Reject ambiguous strings and enforce explicit mathematical source domains.",
+    "reported_porosity_percent_v1": "Use same-sample column-U percentages as approximate volume fraction. Do not assume particle density or derive bulk density from a population mean.",
+    "same_sample_density_link_v1": "Read header-identified density fields in all workbook views. Require exact source and sample identifiers and agreement of duplicate numeric values. Use only to fill an absent density; never average or borrow between horizons.",
+    "log_pressure_linear_interpolation_v1": "Interpolate between adjacent experimentally measured points in log10 pressure in the original water basis. Preserve exact points and reject extrapolation or duplicate coordinates.",
+    "same_sample_water_basis_conversion_v1": "Use the same sample's density and the registered water density of 1 g/cm3. Reject missing density and physically impossible converted targets. Preserve the original experimental parent.",
+    "accepted_fit_target_v1": "Only source-hashed accepted VG-Mualem or Brooks-Corey fits with exactly matching experimental coordinates, values and references. Evaluate within the observed range. Keep each family separate from interpolation; save disagreement and exact-point alternatives.",
+    "hutson_cass_dry_v1": "For the source-defined Hutson-Cass signature use theta_s*(head/a)^(-1/b) only beyond its source-defined inflection head a*(2*b/(1+2*b))^(-b). Do not invent a wet branch.",
+    "logistic_pressure_scale_v1": "For the source-defined theta_0, m, pF_* signature use theta_0/(1+(head/10^pF_*)^m), converting both head and water units explicitly.",
+    "retention_predictor_v1": "Reconstruct only explicitly described water-content inputs from the same measured WRC. Record conditional use of retention measurements and omit copied input anchors from predictive scoring. Do not treat these comparisons as independent validation.",
+    "native_spec_pressure_units_v2": "Parse a single explicit Pa/kPa/bar/cm-water-head/pF coordinate from each registered output description; normalize to kPa using 0.0980665 kPa/cm head and 100 kPa/bar. pF zero means 1 cm, never saturation. Reject lists and ranges. Preserve all material, water-basis, sample-specific support and provenance gates; never extrapolate or equate unspecified FC/PWP with pressure points.",
+    "explicit_pressure_difference_v1": "Only an output contract explicitly defining a water-content difference between two ordered pressures can use theta(A)-theta(B). Require the water basis from the output and the pressure pair from its description or the same function scope. Reconstruct and convert each component independently for the same sample and route; reject unsupported components and negative differences. Retain both complete evidence parents and the weaker tier. Do not infer operational available-water definitions.",
+    "source_psd_notation_v2": "Recognize source-declared sand_content/silt_content/clay_content aliases, spelled-out micrometre cutoffs and numeric intervals separated by a hyphen or the word to. Explicit source boundaries override default texture names. Use existing PSD-boundary, closure, material and approximation gates, never infer a new boundary from a function identifier.",
+    "retention_predictor_terminology_v2": "Apply retention_predictor_v1 to explicitly gravimetric or volumetric moisture-content/retention input descriptions, using the generalized source pressure parser. Preserve conditional use, native units, same-sample provenance and measured support; never infer basis from input name.",
+    "explicit_vg_mualem_signature_v1": "Use the existing van Genuchten-Mualem retention evaluator only when the registered source explicitly declares m=1-1/n and uniquely identifies residual and saturated volumetric water contents, alpha and n. Convert reciprocal head and water units explicitly. Never supply missing theta_r or infer a variant from parameter names. Keep this legacy source-contract bridge exploratory and enforce existing physical and sample-support gates.",
+    "native_scalar_water_axis_units_v2": "For a source-declared water-content pressure/potential/suction axis in bar or Pa, convert the canonical kPa coordinate to its native unit before checking the source domain and calling the public wrapper. Recognize source potential/head terminology. The shared comparison coordinates do not constrain fixed-output pressures parsed from specifications.",
+    "named_source_numeric_domains_v1": "Enforce explicit numeric comparison clauses written with native predictor names as well as value, including chained and joint arithmetic bounds, before any native call. Parse only constants, bound predictor names, unary signs, basic arithmetic and comparisons; never execute source text. Missing covariates retain their missing-input blockers; prose and unsupported expressions remain unresolved under the existing contract policy."
+  },
+  "unsupported": [
+    "Unknown gravimetric/volumetric output semantics",
+    "Unspecified operational field capacity or available-water target",
+    "Assumed population-average bulk or particle density",
+    "Unreviewed identity or taxonomic crosswalk",
+    "Unspecified retention model variant or missing mandatory covariates"
+  ],
+  "recommendation": null
+}

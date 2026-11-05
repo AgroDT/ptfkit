@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "source": "gunarathna2019",
+  "status": "all_eleven_contracts_registered_bulk_core_target_corrected_data_binding_pending",
+  "article_doi": "10.1016/j.still.2019.02.009",
+  "primary_author_dissertation": {
+    "repository_record": "https://ir.kagoshima-u.ac.jp/records/14922",
+    "location": "Chapter 6 introduction identifies the 2019 article; Section 6.2, printed page 96.",
+    "review_basis": "Indexed primary dissertation text from the university repository; direct PDF access returned HTTP 400/429. No local PDF hash or visual inspection is claimed.",
+    "local_pdf_sha256": null
+  },
+  "supported_measurements": {
+    "retention": "Pressure-plate volumetric water on undisturbed 54-mm diameter, 30-mm high soil cores at -10/-33/-1500 kPa.",
+    "bulk_density": "Distinct undisturbed 54-mm diameter, 60-mm high soil cores.",
+    "texture": "Sieve sand and pipette silt/clay; existing reviewed sand fraction 0.05-2 mm and fine-earth mass denominator retained.",
+    "carbon": "Walkley-Black organic carbon mass percentage."
+  },
+  "decisions": [
+    "All eleven retention outputs describe bulk soil volume, material soil; they are not prepared fine-earth retention measurements.",
+    "Fine-earth descriptors belong to analytical texture/carbon aliquots, separately from undisturbed retention and density cores.",
+    "Input screening retains reported marginal calibration ranges; these do not prove joint applicability or transferable predictive accuracy.",
+    "Density core geometry is explicit and cannot be replaced with a generic volumetric-ring method without evidence.",
+    "Eight additional functions acquire complete descriptors. Regression expressions, verification cases and statuses remain unchanged.",
+    "The existing g/cm3 source spelling is registered as an equivalent gram_per_cubic_centimeter notation."
+  ],
+  "remaining": [
+    "HYBRAS sand sieving/dispersion and fine-earth preparation need per-source confirmation.",
+    "Sets 2-4 require matched silt, density-core and carbon methods; generic labels are insufficient.",
+    "A bulk-soil target overlay must preserve method and source provenance before scoring.",
+    "Cross-Sri-Lanka claims do not establish validity in Brazil or authorize ignoring input support."
+  ],
+  "specification_sha256": "8eeb87e15be4d0768becdfe4f641f5227a08a6be05ab30ee8ef1a69973d52387",
+  "function_ids": [
+    "calc_ptf_gunarathna2019_vwc10_set1",
+    "calc_ptf_gunarathna2019_vwc10_set2",
+    "calc_ptf_gunarathna2019_vwc10_set3",
+    "calc_ptf_gunarathna2019_vwc10_set4",
+    "calc_ptf_gunarathna2019_vwc33_set1",
+    "calc_ptf_gunarathna2019_vwc33_set2",
+    "calc_ptf_gunarathna2019_vwc33_set3",
+    "calc_ptf_gunarathna2019_vwc33_set4",
+    "calc_ptf_gunarathna2019_vwc1500_set1",
+    "calc_ptf_gunarathna2019_vwc1500_set3",
+    "calc_ptf_gunarathna2019_vwc1500_set4"
+  ]
+}

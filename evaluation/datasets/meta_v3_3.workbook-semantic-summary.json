@@ -1,0 +1,4401 @@
+{
+  "assumption_ladder": [
+    {
+      "delta_from_previous": 0,
+      "evidence_ceiling": "E0",
+      "exploratory_excluding_strict": 0,
+      "functions_executable": 2,
+      "previous": 2
+    },
+    {
+      "delta_from_previous": 0,
+      "evidence_ceiling": "E1",
+      "exploratory_excluding_strict": 0,
+      "functions_executable": 2,
+      "previous": 2
+    },
+    {
+      "delta_from_previous": 0,
+      "evidence_ceiling": "E2",
+      "exploratory_excluding_strict": 0,
+      "functions_executable": 2,
+      "previous": 2
+    },
+    {
+      "delta_from_previous": 0,
+      "evidence_ceiling": "E3",
+      "exploratory_excluding_strict": 2,
+      "functions_executable": 4,
+      "previous": 4
+    },
+    {
+      "delta_from_previous": 20,
+      "evidence_ceiling": "E4",
+      "exploratory_excluding_strict": 62,
+      "functions_executable": 64,
+      "previous": 44
+    },
+    {
+      "evidence_ceiling": "E5",
+      "functions_executable": 129
+    }
+  ],
+  "attribution": {
+    "FC/PWP/AWC approximations": 8,
+    "PSD aliases": 62,
+    "inverse WRC": 1,
+    "other": 3,
+    "pH": 0,
+    "particle density / porosity": 1,
+    "permissive Ksat": 41,
+    "plasticity targets": 12
+  },
+  "blocked_functions": [
+    {
+      "function": "calc_ptf_ahuja1984",
+      "reasons": [
+        "missing_predictor:coefficient_b",
+        "missing_predictor:exponent_n",
+        "missing_predictor:theta_33",
+        "missing_predictor:total_porosity",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_aimrun2009",
+      "reasons": [
+        "missing_predictor:gmd",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_bai2022",
+      "reasons": [
+        "missing_predictor:altitude",
+        "missing_predictor:clay",
+        "missing_predictor:depth",
+        "missing_predictor:precipitation",
+        "missing_predictor:sand",
+        "missing_predictor:silt",
+        "missing_predictor:slope",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_bai2022_bulk_density",
+      "reasons": [
+        "missing_predictor:clay",
+        "missing_predictor:sand",
+        "missing_predictor:slope",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_bruand1994_clay_available_water",
+      "reasons": [
+        "computational_domain:clay_content",
+        "missing_predictor:clay_content",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_bruand1994_clay_water_retention",
+      "reasons": [
+        "computational_domain:clay_content",
+        "missing_predictor:clay_content",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_chakraborty2011_eq2",
+      "reasons": [
+        "missing_predictor:bulk_density",
+        "missing_predictor:sand",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_chakraborty2011_eq3",
+      "reasons": [
+        "missing_predictor:bulk_density",
+        "missing_predictor:clay",
+        "missing_predictor:silt",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_chakraborty2011_eq5",
+      "reasons": [
+        "missing_predictor:bulk_density",
+        "missing_predictor:clay",
+        "missing_predictor:sand",
+        "missing_predictor:silt",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_chakraborty2011_eq6",
+      "reasons": [
+        "missing_predictor:bulk_density",
+        "missing_predictor:clay",
+        "missing_predictor:organic_carbon",
+        "missing_predictor:sand",
+        "missing_predictor:silt",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_cosby1984_univariate",
+      "reasons": [
+        "missing_predictor:clay",
+        "missing_predictor:sand",
+        "missing_predictor:silt",
+        "native_domain_or_adapter_failure",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_dharumarajan2019_infiltration",
+      "reasons": [
+        "physical_target_unavailable_or_definition_unresolved"
+      ]
+    },
+    {
+      "function": "calc_ptf_dharumarajan2019_nkp",
+      "reasons": [
+        "physical_target_unavailable_or_definition_unresolved"
+      ]
+    },
+    {
+      "function": "calc_ptf_dharumarajan2019_nkp_clay",
+      "reasons": [
+        "physical_target_unavailable_or_definition_unresolved"
+      ]
+    },
+    {
+      "function": "calc_ptf_dharumarajan2019_skp",
+      "reasons": [
+        "physical_target_unavailable_or_definition_unresolved"
+      ]
+    },
+    {
+      "function": "calc_ptf_dharumarajan2019_skp_clay",
+      "reasons": [
+        "physical_target_unavailable_or_definition_unresolved"
+      ]
+    },
+    {
+      "function": "calc_ptf_gunarathna2019_vwc10_set1",
+      "reasons": [
+        "missing_predictor:sand",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_gunarathna2019_vwc10_set2",
+      "reasons": [
+        "missing_predictor:sand",
+        "missing_predictor:silt",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_gunarathna2019_vwc10_set3",
+      "reasons": [
+        "missing_predictor:bulk_density",
+        "missing_predictor:sand",
+        "missing_predictor:silt",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_gunarathna2019_vwc10_set4",
+      "reasons": [
+        "missing_predictor:organic_carbon",
+        "missing_predictor:sand",
+        "missing_predictor:silt",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_gunarathna2019_vwc1500_set1",
+      "reasons": [
+        "missing_predictor:sand",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_gunarathna2019_vwc1500_set3",
+      "reasons": [
+        "missing_predictor:bulk_density",
+        "missing_predictor:sand",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_gunarathna2019_vwc1500_set4",
+      "reasons": [
+        "missing_predictor:organic_carbon",
+        "missing_predictor:sand",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_gunarathna2019_vwc33_set1",
+      "reasons": [
+        "missing_predictor:sand",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_gunarathna2019_vwc33_set2",
+      "reasons": [
+        "missing_predictor:sand",
+        "missing_predictor:silt",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_gunarathna2019_vwc33_set3",
+      "reasons": [
+        "missing_predictor:bulk_density",
+        "missing_predictor:sand",
+        "missing_predictor:silt",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_gunarathna2019_vwc33_set4",
+      "reasons": [
+        "missing_predictor:organic_carbon",
+        "missing_predictor:sand",
+        "missing_predictor:silt",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_gupta1979",
+      "reasons": [
+        "missing_predictor:bulk_density",
+        "missing_predictor:clay",
+        "missing_predictor:organic_matter",
+        "missing_predictor:sand",
+        "missing_predictor:silt",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_hodnett2002",
+      "reasons": [
+        "missing_predictor:bulk_density",
+        "missing_predictor:cation_exchange_capacity",
+        "missing_predictor:clay",
+        "missing_predictor:organic_carbon",
+        "missing_predictor:ph",
+        "missing_predictor:sand",
+        "missing_predictor:silt",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_jabro1992",
+      "reasons": [
+        "missing_predictor:silt",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_kalumba2021_mlr_ksat",
+      "reasons": [
+        "computational_domain:sand",
+        "missing_predictor:nitrogen",
+        "missing_predictor:sand",
+        "missing_predictor:stoniness",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_kalumba2021_mlr_pf00",
+      "reasons": [
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_kalumba2021_mlr_pf10",
+      "reasons": [
+        "missing_predictor:bulk_density",
+        "missing_predictor:electrical_conductivity",
+        "missing_predictor:elevation",
+        "missing_predictor:nitrogen",
+        "missing_predictor:ph",
+        "missing_predictor:sand",
+        "missing_predictor:silt",
+        "missing_predictor:stoniness",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_kalumba2021_mlr_pf20",
+      "reasons": [
+        "computational_domain:depth",
+        "missing_predictor:bulk_density",
+        "missing_predictor:clay",
+        "missing_predictor:depth",
+        "missing_predictor:electrical_conductivity",
+        "missing_predictor:elevation",
+        "missing_predictor:nitrogen",
+        "missing_predictor:ph",
+        "missing_predictor:sand",
+        "missing_predictor:silt",
+        "missing_predictor:stoniness",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_kalumba2021_mlr_pf28",
+      "reasons": [
+        "computational_domain:depth",
+        "missing_predictor:bulk_density",
+        "missing_predictor:clay",
+        "missing_predictor:depth",
+        "missing_predictor:electrical_conductivity",
+        "missing_predictor:elevation",
+        "missing_predictor:nitrogen",
+        "missing_predictor:organic_matter",
+        "missing_predictor:sand",
+        "missing_predictor:silt",
+        "missing_predictor:stoniness",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_kalumba2021_mlr_pf34",
+      "reasons": [
+        "computational_domain:depth",
+        "missing_predictor:bulk_density",
+        "missing_predictor:clay",
+        "missing_predictor:depth",
+        "missing_predictor:electrical_conductivity",
+        "missing_predictor:elevation",
+        "missing_predictor:nitrogen",
+        "missing_predictor:organic_matter",
+        "missing_predictor:sand",
+        "missing_predictor:silt",
+        "missing_predictor:stoniness",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_kalumba2021_mlr_pf42",
+      "reasons": [
+        "computational_domain:depth",
+        "missing_predictor:clay",
+        "missing_predictor:depth",
+        "missing_predictor:electrical_conductivity",
+        "missing_predictor:elevation",
+        "missing_predictor:nitrogen",
+        "missing_predictor:organic_matter",
+        "missing_predictor:sand",
+        "missing_predictor:silt",
+        "missing_predictor:stoniness",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_lal1979_group_i_lower_plastic_limit_from_organic_carbon",
+      "reasons": [
+        "missing_predictor:organic_carbon",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_lal1979_group_i_moisture_equivalent_from_clay",
+      "reasons": [
+        "physical_target_unavailable_or_definition_unresolved"
+      ]
+    },
+    {
+      "function": "calc_ptf_lal1979_group_i_moisture_equivalent_from_sand",
+      "reasons": [
+        "physical_target_unavailable_or_definition_unresolved"
+      ]
+    },
+    {
+      "function": "calc_ptf_lal1979_group_i_plasticity_index_from_organic_carbon",
+      "reasons": [
+        "missing_predictor:organic_carbon",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_lal1979_group_i_upper_plastic_limit_from_organic_carbon",
+      "reasons": [
+        "missing_predictor:organic_carbon",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_lal1979_group_i_water_0bar_from_clay",
+      "reasons": [
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_lal1979_group_i_water_0bar_from_sand",
+      "reasons": [
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_lal1979_group_ii_moisture_equivalent_from_clay",
+      "reasons": [
+        "physical_target_unavailable_or_definition_unresolved"
+      ]
+    },
+    {
+      "function": "calc_ptf_lal1979_group_ii_moisture_equivalent_from_sand",
+      "reasons": [
+        "physical_target_unavailable_or_definition_unresolved"
+      ]
+    },
+    {
+      "function": "calc_ptf_lal1979_group_ii_moisture_equivalent_from_silt",
+      "reasons": [
+        "physical_target_unavailable_or_definition_unresolved"
+      ]
+    },
+    {
+      "function": "calc_ptf_lal1979_group_ii_plasticity_index_from_organic_carbon",
+      "reasons": [
+        "missing_predictor:organic_carbon",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_lal1979_group_ii_upper_plastic_limit_from_organic_carbon",
+      "reasons": [
+        "missing_predictor:organic_carbon",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_lal1979_group_ii_water_0bar_from_clay",
+      "reasons": [
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_lal1979_group_ii_water_0bar_from_sand",
+      "reasons": [
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_li2007",
+      "reasons": [
+        "missing_predictor:bulk_density",
+        "missing_predictor:clay",
+        "missing_predictor:sand",
+        "missing_predictor:silt",
+        "missing_predictor:soil_organic_matter",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_mayr1999",
+      "reasons": [
+        "missing_predictor:bulk_density",
+        "missing_predictor:clay",
+        "missing_predictor:organic_carbon",
+        "missing_predictor:sand",
+        "missing_predictor:silt",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_oosterveld1980_available_water",
+      "reasons": [
+        "physical_target_unavailable_or_definition_unresolved"
+      ]
+    },
+    {
+      "function": "calc_ptf_oosterveld1980_field_capacity_tension",
+      "reasons": [
+        "physical_target_unavailable_or_definition_unresolved"
+      ]
+    },
+    {
+      "function": "calc_ptf_ottoni2019_wm330",
+      "reasons": [
+        "missing_predictor:effective_porosity",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_ottoni2019_wmssc",
+      "reasons": [
+        "missing_predictor:silt",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_ottoni2019_wmsscbd",
+      "reasons": [
+        "missing_predictor:silt",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_pidgeon1972_awc_coarse_sand",
+      "reasons": [
+        "missing_predictor:coarse_sand",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_pidgeon1972_awc_fine_sand",
+      "reasons": [
+        "missing_predictor:fine_sand",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_pidgeon1972_awc_sand_organic_matter",
+      "reasons": [
+        "missing_predictor:organic_matter",
+        "missing_predictor:sand",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_pidgeon1972_awc_very_fine_sand",
+      "reasons": [
+        "missing_predictor:very_fine_sand",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_pidgeon1972_eawc",
+      "reasons": [
+        "physical_target_unavailable_or_definition_unresolved"
+      ]
+    },
+    {
+      "function": "calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter",
+      "reasons": [
+        "physical_target_unavailable_or_definition_unresolved"
+      ]
+    },
+    {
+      "function": "calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter",
+      "reasons": [
+        "physical_target_unavailable_or_definition_unresolved"
+      ]
+    },
+    {
+      "function": "calc_ptf_pidgeon1972_eawc_sand",
+      "reasons": [
+        "physical_target_unavailable_or_definition_unresolved"
+      ]
+    },
+    {
+      "function": "calc_ptf_pidgeon1972_eawc_sand_organic_matter",
+      "reasons": [
+        "physical_target_unavailable_or_definition_unresolved"
+      ]
+    },
+    {
+      "function": "calc_ptf_pidgeon1972_fc_vol_sand_organic_matter",
+      "reasons": [
+        "missing_predictor:organic_matter",
+        "missing_predictor:sand",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_puckett1985",
+      "reasons": [
+        "computational_domain:clay",
+        "computational_domain:porosity",
+        "computational_domain:sand",
+        "missing_predictor:bulk_density",
+        "missing_predictor:clay",
+        "missing_predictor:fine_sand",
+        "missing_predictor:porosity",
+        "missing_predictor:sand",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_rawls1982_full_wrc",
+      "reasons": [
+        "missing_predictor:bulk_density",
+        "missing_predictor:organic_matter",
+        "missing_predictor:sand",
+        "missing_predictor:theta_1500",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_rawls1982_theta_33",
+      "reasons": [
+        "missing_predictor:organic_matter",
+        "missing_predictor:sand",
+        "missing_predictor:theta_1500",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_rawls2003_soc_theta1500_gmdh",
+      "reasons": [
+        "missing_predictor:clay",
+        "missing_predictor:sand",
+        "missing_predictor:soil_organic_carbon",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_rawls2003_soc_theta1500_tree",
+      "reasons": [
+        "missing_predictor:clay",
+        "missing_predictor:sand",
+        "missing_predictor:soil_organic_carbon",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_rawls2003_soc_theta33_gmdh",
+      "reasons": [
+        "missing_predictor:clay",
+        "missing_predictor:sand",
+        "missing_predictor:soil_organic_carbon",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_saxton2006_conductivity",
+      "reasons": [
+        "physical_target_unavailable_or_definition_unresolved"
+      ]
+    },
+    {
+      "function": "calc_ptf_saxton2006_density",
+      "reasons": [
+        "missing_predictor:density_factor",
+        "missing_predictor:normal_density",
+        "missing_predictor:theta_33",
+        "missing_predictor:theta_s",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_saxton2006_gravel",
+      "reasons": [
+        "missing_predictor:gravel_weight_fraction",
+        "missing_predictor:matric_density",
+        "missing_predictor:plant_available_water",
+        "missing_predictor:saturated_conductivity",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_saxton2006_salinity",
+      "reasons": [
+        "physical_target_unavailable_or_definition_unresolved"
+      ]
+    },
+    {
+      "function": "calc_ptf_saxton2006_tension_wet",
+      "reasons": [
+        "missing_predictor:air_entry_tension",
+        "missing_predictor:theta_33",
+        "missing_predictor:theta_s",
+        "same_sample_volumetric_wrc_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_tiwary2014_bsr",
+      "reasons": [
+        "missing_predictor:cation_exchange_capacity",
+        "missing_predictor:clay",
+        "missing_predictor:emp",
+        "missing_predictor:esp",
+        "missing_predictor:excm",
+        "missing_predictor:ph",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_tiwary2014_igp",
+      "reasons": [
+        "missing_predictor:esp",
+        "missing_predictor:sand",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_tomasella1998",
+      "reasons": [
+        "missing_predictor:clay",
+        "missing_predictor:organic_carbon",
+        "missing_predictor:silt",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_varallyai1982_meadow",
+      "reasons": [
+        "missing_predictor:bulk_density",
+        "missing_predictor:fine_fraction",
+        "missing_predictor:fine_sand_fraction",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_vereecken1989",
+      "reasons": [
+        "missing_predictor:bulk_density",
+        "missing_predictor:carbon",
+        "missing_predictor:clay",
+        "missing_predictor:sand",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_vereecken1989_detailed",
+      "reasons": [
+        "missing_predictor:bulk_density",
+        "missing_predictor:carbon",
+        "missing_predictor:clay",
+        "missing_predictor:geometric_mean_particle_size",
+        "missing_predictor:geometric_standard_deviation",
+        "missing_predictor:particle_1000_500",
+        "missing_predictor:particle_100_50",
+        "missing_predictor:particle_10_2",
+        "missing_predictor:particle_2000_1000",
+        "missing_predictor:particle_200_100",
+        "missing_predictor:particle_20_10",
+        "missing_predictor:particle_500_200",
+        "missing_predictor:particle_50_20",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_wang2012",
+      "reasons": [
+        "computational_domain:clay",
+        "computational_domain:sand",
+        "missing_predictor:altitude",
+        "missing_predictor:bulk_density",
+        "missing_predictor:clay",
+        "missing_predictor:sand",
+        "missing_predictor:silt",
+        "missing_predictor:soil_organic_carbon",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_wang2022_h2",
+      "reasons": [
+        "missing_predictor:clay",
+        "missing_predictor:sand",
+        "missing_predictor:silt",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_wang2022_h3",
+      "reasons": [
+        "missing_predictor:bulk_density",
+        "missing_predictor:clay",
+        "missing_predictor:sand",
+        "missing_predictor:silt",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_weber2020",
+      "reasons": [
+        "missing_predictor:alpha_vgm",
+        "missing_predictor:k_s_vgm",
+        "missing_predictor:n_vgm",
+        "missing_predictor:tau_vgm",
+        "missing_predictor:theta_r_vgm",
+        "missing_predictor:theta_s_vgm",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_weynants2009",
+      "reasons": [
+        "missing_predictor:bulk_density",
+        "missing_predictor:clay",
+        "missing_predictor:organic_carbon",
+        "missing_predictor:sand",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_williams1992_function_1",
+      "reasons": [
+        "missing_predictor:clay",
+        "missing_predictor:coarse_sand",
+        "missing_predictor:fine_sand",
+        "missing_predictor:organic_matter",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_williams1992_function_2",
+      "reasons": [
+        "missing_predictor:bulk_density",
+        "missing_predictor:clay",
+        "missing_predictor:fine_sand",
+        "missing_predictor:structure",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_williams1992_function_3",
+      "reasons": [
+        "missing_predictor:bulk_density",
+        "missing_predictor:structure",
+        "missing_predictor:texture_class",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_williams1992_function_4",
+      "reasons": [
+        "missing_predictor:clay",
+        "missing_predictor:fine_sand",
+        "missing_predictor:silt",
+        "missing_predictor:texture_class",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_williams1992_function_5",
+      "reasons": [
+        "missing_predictor:bulk_density",
+        "missing_predictor:clay",
+        "missing_predictor:fine_sand",
+        "missing_predictor:silt",
+        "missing_predictor:texture_class",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_williams1992_function_6",
+      "reasons": [
+        "missing_predictor:clay",
+        "missing_predictor:fine_sand",
+        "missing_predictor:organic_matter",
+        "missing_predictor:silt",
+        "missing_predictor:texture_class",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_williams1992_function_7",
+      "reasons": [
+        "missing_predictor:bulk_density",
+        "missing_predictor:structure",
+        "missing_predictor:texture_class",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_williams1992_function_8",
+      "reasons": [
+        "missing_predictor:clay",
+        "missing_predictor:fine_sand",
+        "missing_predictor:silt",
+        "missing_predictor:texture_class",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_williams1992_table5",
+      "reasons": [
+        "physical_target_unavailable_or_definition_unresolved"
+      ]
+    },
+    {
+      "function": "calc_ptf_wosten2001_class_parameters",
+      "reasons": [
+        "missing_predictor:soil_class",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_wosten2001_hydraulic",
+      "reasons": [
+        "missing_predictor:alpha",
+        "missing_predictor:conductivity_shape_parameter",
+        "missing_predictor:n",
+        "missing_predictor:saturated_conductivity",
+        "missing_predictor:theta_r",
+        "missing_predictor:theta_s",
+        "same_sample_density_missing",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range"
+      ]
+    },
+    {
+      "function": "calc_ptf_wosten2001_sand_subsoil_table5",
+      "reasons": [
+        "computational_domain:silt",
+        "missing_predictor:median_sand_size",
+        "missing_predictor:organic_matter",
+        "missing_predictor:silt",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_wosten2001_sand_topsoil_table5",
+      "reasons": [
+        "computational_domain:silt",
+        "missing_predictor:median_sand_size",
+        "missing_predictor:organic_matter",
+        "missing_predictor:silt",
+        "same_sample_wrc_absent",
+        "target_pressure_outside_measured_range",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_zhao2016_m2_1",
+      "reasons": [
+        "missing_predictor:silt",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_zhao2016_m2_2",
+      "reasons": [
+        "missing_predictor:silt",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_zhao2016_m2_3",
+      "reasons": [
+        "missing_predictor:silt",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_zhao2016_m2_4",
+      "reasons": [
+        "missing_predictor:silt",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_zhao2016_m2_5",
+      "reasons": [
+        "missing_predictor:silt",
+        "target_property_absent"
+      ]
+    },
+    {
+      "function": "calc_ptf_zhao2016_m2_6",
+      "reasons": [
+        "missing_predictor:silt",
+        "target_property_absent"
+      ]
+    }
+  ],
+  "candidate_property_counts": {
+    "ksat": 36,
+    "lower_plastic_limit": 9,
+    "particle_density": 126,
+    "ph": 68,
+    "plasticity_index": 6,
+    "porosity": 215,
+    "upper_plastic_limit": 9
+  },
+  "catalog_count": 216,
+  "conductivity_catalog": [
+    "calc_ptf_ahuja1984",
+    "calc_ptf_aimrun2009",
+    "calc_ptf_bai2022",
+    "calc_ptf_clapp1978",
+    "calc_ptf_cosby1984_univariate",
+    "calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand",
+    "calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_calcaric_regosol_sand",
+    "calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_calcic_cambisol_sand",
+    "calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_calcic_luvisol_sand",
+    "calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_campbell_shiozawa",
+    "calc_ptf_ferrerjulia2004_chromic_luvisol_sand",
+    "calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_cosby",
+    "calc_ptf_ferrerjulia2004_dane_puckett",
+    "calc_ptf_ferrerjulia2004_dystric_cambisol_sand",
+    "calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_dystric_regosol_sand",
+    "calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_eutric_cambisol_sand",
+    "calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_eutric_regosol_sand",
+    "calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_general_sand",
+    "calc_ptf_ferrerjulia2004_general_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_gleyic_cambisol_sand",
+    "calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_gleyic_luvisol_sand",
+    "calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_gleyic_solonchak_sand",
+    "calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_humic_acrisol_sand",
+    "calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_humic_cambisol_sand",
+    "calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_orthic_luvisol_sand",
+    "calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_puckett",
+    "calc_ptf_ferrerjulia2004_ranker_sand",
+    "calc_ptf_ferrerjulia2004_ranker_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_rendzina_sand",
+    "calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_saxton",
+    "calc_ptf_jabro1992",
+    "calc_ptf_kalumba2021_mlr_ksat",
+    "calc_ptf_li2007",
+    "calc_ptf_ottoni2019_wm330",
+    "calc_ptf_ottoni2019_wmssc",
+    "calc_ptf_ottoni2019_wmsscbd",
+    "calc_ptf_puckett1985",
+    "calc_ptf_saxton2006",
+    "calc_ptf_saxton2006_gravel",
+    "calc_ptf_tiwary2014_bsr",
+    "calc_ptf_tiwary2014_igp",
+    "calc_ptf_wang2012",
+    "calc_ptf_wang2022_h2",
+    "calc_ptf_wang2022_h3",
+    "calc_ptf_wosten2001_class_parameters",
+    "calc_ptf_wosten2001_loam_clay_table5",
+    "calc_ptf_wosten2001_sand_subsoil_table5",
+    "calc_ptf_wosten2001_sand_topsoil_table5",
+    "calc_ptf_zhao2016_m2_1",
+    "calc_ptf_zhao2016_m2_2",
+    "calc_ptf_zhao2016_m2_3",
+    "calc_ptf_zhao2016_m2_4",
+    "calc_ptf_zhao2016_m2_5",
+    "calc_ptf_zhao2016_m2_6"
+  ],
+  "consumption": {
+    "function_sample_pairs": 2497,
+    "samples": 239,
+    "wrc_observations_union": 546,
+    "wrc_predictor_observations": 370,
+    "wrc_target_observations": 409
+  },
+  "cumulative_executable": 129,
+  "e5_executable": 107,
+  "executions": 6312,
+  "frozen_artifacts_unchanged": true,
+  "functions": [
+    "calc_ptf_beniaich2023_mlr1",
+    "calc_ptf_beniaich2023_mlr2",
+    "calc_ptf_beniaich2023_mlr3",
+    "calc_ptf_beniaich2023_mlr4",
+    "calc_ptf_beniaich2023_mlr5",
+    "calc_ptf_beniaich2023_slr1",
+    "calc_ptf_beniaich2023_slr2",
+    "calc_ptf_beniaich2023_slr3",
+    "calc_ptf_beniaich2023_slr4",
+    "calc_ptf_beniaich2023_slr5",
+    "calc_ptf_beniaich2023_slr6",
+    "calc_ptf_bruand1994_bulk_volume_available_water",
+    "calc_ptf_bruand1994_bulk_volume_water_retention",
+    "calc_ptf_chakraborty2011_eq1",
+    "calc_ptf_chakraborty2011_eq4",
+    "calc_ptf_clapp1978",
+    "calc_ptf_dijkerman1988",
+    "calc_ptf_dijkerman1988_available_water",
+    "calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand",
+    "calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_calcaric_regosol_sand",
+    "calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_calcic_cambisol_sand",
+    "calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_calcic_luvisol_sand",
+    "calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_campbell_shiozawa",
+    "calc_ptf_ferrerjulia2004_chromic_luvisol_sand",
+    "calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_cosby",
+    "calc_ptf_ferrerjulia2004_dane_puckett",
+    "calc_ptf_ferrerjulia2004_dystric_cambisol_sand",
+    "calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_dystric_regosol_sand",
+    "calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_eutric_cambisol_sand",
+    "calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_eutric_regosol_sand",
+    "calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_general_sand",
+    "calc_ptf_ferrerjulia2004_general_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_gleyic_cambisol_sand",
+    "calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_gleyic_luvisol_sand",
+    "calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_gleyic_solonchak_sand",
+    "calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_humic_acrisol_sand",
+    "calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_humic_cambisol_sand",
+    "calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_orthic_luvisol_sand",
+    "calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_puckett",
+    "calc_ptf_ferrerjulia2004_ranker_sand",
+    "calc_ptf_ferrerjulia2004_ranker_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_rendzina_sand",
+    "calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_saxton",
+    "calc_ptf_lal1979_group_i_lower_plastic_limit_from_clay",
+    "calc_ptf_lal1979_group_i_lower_plastic_limit_from_sand",
+    "calc_ptf_lal1979_group_i_plasticity_index_from_clay",
+    "calc_ptf_lal1979_group_i_plasticity_index_from_sand",
+    "calc_ptf_lal1979_group_i_upper_plastic_limit_from_clay",
+    "calc_ptf_lal1979_group_i_water_01bar_from_clay",
+    "calc_ptf_lal1979_group_i_water_01bar_from_sand",
+    "calc_ptf_lal1979_group_i_water_03bar_from_clay",
+    "calc_ptf_lal1979_group_i_water_03bar_from_sand",
+    "calc_ptf_lal1979_group_i_water_15bar_from_clay",
+    "calc_ptf_lal1979_group_i_water_15bar_from_sand",
+    "calc_ptf_lal1979_group_i_water_15bar_from_silt",
+    "calc_ptf_lal1979_group_ii_lower_plastic_limit_from_clay",
+    "calc_ptf_lal1979_group_ii_lower_plastic_limit_from_sand",
+    "calc_ptf_lal1979_group_ii_lower_plastic_limit_from_silt",
+    "calc_ptf_lal1979_group_ii_plasticity_index_from_silt",
+    "calc_ptf_lal1979_group_ii_upper_plastic_limit_from_clay",
+    "calc_ptf_lal1979_group_ii_upper_plastic_limit_from_sand",
+    "calc_ptf_lal1979_group_ii_upper_plastic_limit_from_silt",
+    "calc_ptf_lal1979_group_ii_water_01bar_from_clay",
+    "calc_ptf_lal1979_group_ii_water_01bar_from_sand",
+    "calc_ptf_lal1979_group_ii_water_03bar_from_clay",
+    "calc_ptf_lal1979_group_ii_water_03bar_from_sand",
+    "calc_ptf_lal1979_group_ii_water_03bar_from_water_01bar",
+    "calc_ptf_lal1979_group_ii_water_15bar_from_clay",
+    "calc_ptf_lal1979_group_ii_water_15bar_from_sand",
+    "calc_ptf_lal1979_group_ii_water_15bar_from_water_01bar",
+    "calc_ptf_myeni2021_fc",
+    "calc_ptf_myeni2021_pwp",
+    "calc_ptf_oosterveld1980_field_capacity",
+    "calc_ptf_oosterveld1980_retention",
+    "calc_ptf_oosterveld1980_wilting_point",
+    "calc_ptf_pidgeon1972_awc",
+    "calc_ptf_pidgeon1972_fc",
+    "calc_ptf_pidgeon1972_fc_sand",
+    "calc_ptf_pidgeon1972_fc_sand_organic_matter",
+    "calc_ptf_pidgeon1972_pwp",
+    "calc_ptf_pidgeon1972_pwp_sand",
+    "calc_ptf_pidgeon1972_pwp_sand_organic_matter",
+    "calc_ptf_rawls1982_theta_1500",
+    "calc_ptf_rawls2003_soc_theta33_tree",
+    "calc_ptf_saxton1986_calcptf_parameters",
+    "calc_ptf_saxton2006",
+    "calc_ptf_saxton2006_tension_dry",
+    "calc_ptf_varallyai1982_chernozem_a",
+    "calc_ptf_varallyai1982_chernozem_b",
+    "calc_ptf_varallyai1982_chernozem_c",
+    "calc_ptf_wosten2001_loam_clay_table5"
+  ],
+  "implementation_sha256": {
+    "atomic_campaign.py": "45ed40970eda784a9cf7b11faf366d1ba3a40f74c897d3e7e72b239a71834ae3",
+    "benchmark.py": "67f418ef197cb3f2838bf73e867390eaf44fa63cab075d616af24f2f9a002a4c",
+    "campaign.py": "4c75c14276018206e996900ccdc080c90f01d2b861b21d64967846d9b5da8bd1",
+    "campaign_comparisons.py": "7ccb590c88bf718a0adb5c33ae384eba0090a401b09c0bdef6aaa4ea2dc61eb9",
+    "campaign_contracts.py": "6c82920a6bd5f12061e897aaf9a1fa091344943a8dd3ae03c700d9d98b3c8bea",
+    "campaign_inputs.py": "e007463cd452bc27f9dc17fc76c04abdd339dd36ff8faafab4d54a7ed65f1bcd",
+    "campaign_reporting.py": "80c427409a98a0546033d009b57e886dd57e8599f6877c6b619e404de16d44dc",
+    "campaign_targets.py": "5aeb3bcd58efe7c3191a447a9afc49698d15edcb64e8b5fdcf21bc72db41594e",
+    "catalog_benchmark.py": "eb7c40261c392ca10c93b652b073a129c7f68698b7e8db7cf67336a10a5afe6c",
+    "class_comparison.py": "091d51afe81d605920731785ed97f44cb9dc4a1a269d73a67bf0a20618fd2590",
+    "comparative.py": "0182fada6e86c8c3f76f373bb3d71ea8d3566be03ba81ac3832eabc71fa67ea8",
+    "deep_unlock.py": "20a7d467ebe302e67b23b7a933c8814feb5189d0535a7d581c39f5af51d92bd9",
+    "ensembles.py": "98cd3a70b931131e2d7f6810e1aa50b6fa38c312a03bc6546a31664a0a6b5e75",
+    "exploratory.py": "9d5db472ba19d5d12fdad4a21010fac5f26a9efdb6292c2671a7956dc62ff546",
+    "exploratory_inputs.py": "08065948467717f15a395e947fb822d5faab6a41a251425ac7a65c1ffae9fe4b",
+    "function_audit.py": "e4b035e2aeeee350aea93fe96c3b8f71f0e91b9e9bc1afccaf95bd93ae4c7719",
+    "harmonized.py": "14a3eb800500c9e49a38961c3f47ec3c71c07053ff7ca017c02120d3c9cad14d",
+    "pressure_semantics.py": "4b1177ece5b4512c72171a3ef258105885400607b683631481d551a7dbc1e952",
+    "reporting.py": "a14dfb6a67d2102c13153dbe8d54dead2021fa071acc43cda658f7faa1004b4f",
+    "rolling.py": "bb893f0bb68fb80a20bf5424ac45d1f645be3909b04f326f9c499add295ec2f5",
+    "scope.py": "ff5ec8029c4d2dd5dc371d2f895e09a356bce88dd0ef2a54f1f14dd10be246d4",
+    "source_audit.py": "7148553c22b7b542fa7ff6eda51d0e9339959808d76aa1b2e61af2d5f112d1fc",
+    "source_domains.py": "cc186aa4d13467a09ba9ccd4bc5ed5aac6bdf60a8c162e0b7daa5a82c94ced95",
+    "summaries.py": "ebb595624bef9f64fb242aca774c773ac9e7ba07925f044181fc439f9e693307",
+    "workbook_evidence.py": "e345005506ce2d68d5bad1d24ae77cfb12e52da69e26112e654c06482139f834",
+    "workbook_semantic.py": "fcfb8edb87c1773ce977267e42b0bb6a50bbdf2a90de39abf7d1443eb4253e2b"
+  },
+  "input_sha256": {
+    "local\\meta-catalog-harmonized": {
+      "artifact-hashes.json": "d7dcf75485c494f91a6d4fb05316bb59a72e40c0e2f0cd6f217f4b5ba50e5922",
+      "count-summary.json": "5c4f8cdadf11f59ab4103d1cf6bc453d7ebb322712b8479e28e658acff63a265",
+      "fixed-pressure-targets.json": "eaeca0c3bbd5a0d9e4b39c6e8e8c6549d5864e6c16753e66240feccdccb2fa01",
+      "harmonized-matrix.json": "c2ad1bee937f4250bc340c10abad56beb18621ef5a66a328f014ea5ceb76f8ae",
+      "harmonized-predictions.json": "55baf4337f3583f726e7d46392a5678a423222566e4c0b846663dfbb8da14106",
+      "policies.json": "1f236cbce68625368132c5cddb8c61a6098db29d7a949d3c5b47309c0bf8cb5a",
+      "report.md": "7eb30d1965c9fb162687b7f1336b2fd567703017605a0ca95a611e0912f6e446",
+      "strict-matrix.json": "54ab3c2429b7485faf2d94a882fe0564c9d66ba64e5f3d25c62bccaadd13fa42",
+      "strict-predictions.json": "afa93fff40f1ed739432f77bdda7cdd560e8d6943357d4e027547d4c57632aa4",
+      "summary.json": "6fd077d1e76bd1a308a59c08a739d45ae01a1481c7cb3d2cfdff2541d706d30d"
+    },
+    "local\\meta-catalog-resource": {
+      "approximation-fits.json": "bf1d6c4fa8848fbd66c82ea29ebae82d4ef3a3ce4af025dffc9135cdb0dad5f6",
+      "approximation-summary.json": "5aaa67902582eb7a553be5c413349c10d348695854fb49378f09b18d9b911a3b",
+      "artifact-hashes.json": "f054848f5d7509e1683e0f642199293418519b0111a5c9c532f93a58afe1797f",
+      "blocker-impact.json": "9758be673a6f748fa1338b9a289b2ab18e66c56d0b29cc38293b707b5fa61c34",
+      "canonical-mass.json": "5a487164ca3bbd91d3b020c3bedca617f2468e973758f23128efb02f9a3dfb2a",
+      "canonical-volume.json": "000c3c9fff04a714ff2cc6e9d32fc3d00bd3a3246616caf5dfac4f1673fdd93f",
+      "catalog-support.json": "13b78c497a1d10b4be0622c7eb56bdae43b55d5a2b361d77b80f7ef2a1aeef47",
+      "eligibility-matrix.json": "54ab3c2429b7485faf2d94a882fe0564c9d66ba64e5f3d25c62bccaadd13fa42",
+      "ensembles/predictions.json": "9ee22d19f30bec9a7fcd55aef637aa747aeef9ed10c4e6acc62a7421f0ab3c54",
+      "ensembles/summary.json": "d51a7ca36323a06c9b27204e0746b4da01241e879abc057ed47e5a5e6d8b1174",
+      "exclusions.json": "4414da2cabc57f942b515999ecd0dafd20b7130170d86e3d67e7886e8537d36a",
+      "function-audit.json": "4d11698d1e0159e18babe5aed8cf79d7709fa0e6050c7343a48299897d6780b0",
+      "function-audit.md": "282a66a5d4b6db50a8b257aaae7ff19c9b334668c3f56b8c4f54a87b148d842f",
+      "function-priorities.json": "ba348e229fc32611845de2ad81e0aa8287383fb58cfb61ec40ed101903618616",
+      "implemented-functions.json": "5fa8940368126e4b236db74ce19300f24bbe3eac6812f377154087d5a4693144",
+      "native-clapp/artifacts/cohorts.json": "1392fe036f002f6949d6a34624e550dad573e9a98181dc964e954390f0001edb",
+      "native-clapp/artifacts/coverage.json": "f4aa7b18d59e0971da48107962fa4df739d8a13b8de6b840e927c4c0c49e95ea",
+      "native-clapp/artifacts/curve-quality.json": "e1021df09b2ab98cefb2811b30f0c18d2dd38a9dd236072f35a72790be0d7c26",
+      "native-clapp/artifacts/dataset.json": "198de60a4cd28d011b7f016097a6fada7461f0524aa76867f16efd8a895993c6",
+      "native-clapp/artifacts/evaluation-plan.json": "8740d26ed87a7f0b08db46347e1f9c5fb96974122a42160f18f137aa0084b9d1",
+      "native-clapp/artifacts/point-decisions.json": "389679a4ff1f942afa50737687bda21e983d26ba760c6ecb2da233a23fcd2ea4",
+      "native-clapp/artifacts/ptfkit-manifest.json": "79b4620d6e8b1378ac344f055d11c655a5c88e7834961958afe108bc56b2bd2a",
+      "native-clapp/artifacts/report.md": "eb152a238b0dac0bf747bd49021efa39f481caed63002f3c7df0d598331b0e8f",
+      "native-clapp/artifacts/run-manifest.json": "8a26a77e49ebc28cde7317b0de2b929e5e5372cb3bc93ee4ceec7cd0b2b8da45",
+      "native-clapp/artifacts/run-plan.json": "d748fdc3f700a49fa5426cf76d5b8c515be54356929d477156b170c2a2252b60",
+      "native-clapp/artifacts/sample-eligibility.json": "a32bd59d8a6647ec8359fce3817bc083abdf83d2a4e2debb0ffd930d5646a28d",
+      "native-clapp/artifacts/source-run-plan.json": "a39facdc73e5d56877dbc78563cba21be86030cc4b3dad88b2e4aeaecca33cc5",
+      "native-clapp/dataset.json": "198de60a4cd28d011b7f016097a6fada7461f0524aa76867f16efd8a895993c6",
+      "native-clapp/evaluation_plan.json": "8740d26ed87a7f0b08db46347e1f9c5fb96974122a42160f18f137aa0084b9d1",
+      "native-clapp/run.json": "a39facdc73e5d56877dbc78563cba21be86030cc4b3dad88b2e4aeaecca33cc5",
+      "native-class-comparison/artifacts/cohorts.json": "7f7b0a25ae23ae3949be4bc0780dfeaf89b611505f4a0f666c80e83dbdf4e67e",
+      "native-class-comparison/artifacts/coverage.json": "141647949cedddb5713a637ca371490962b8b56c98e1341587f0181f6ac3a59c",
+      "native-class-comparison/artifacts/curve-quality.json": "a1ee3c69322c8133cbeb959125c1b87577a625b9e0ef462394998b6aa0315ee2",
+      "native-class-comparison/artifacts/dataset.json": "1de9d4e1e60851ce88de1b30cc0915138dc3e5869a26c3a290b47ed0cb8de3db",
+      "native-class-comparison/artifacts/evaluation-plan.json": "d05dc82bdbe2a03639d89e48ab05a6031749302a83d3793f6e7b28a7791e6b45",
+      "native-class-comparison/artifacts/point-decisions.json": "38a72faeadaf52b1127c9657d3efaba16a685c5fdc5ef4eb8036986f3ffd6be2",
+      "native-class-comparison/artifacts/ptfkit-manifest.json": "79b4620d6e8b1378ac344f055d11c655a5c88e7834961958afe108bc56b2bd2a",
+      "native-class-comparison/artifacts/report.md": "ad3916cf260219b215f267176d3d1902865a70e344b31500c6e6de75eec31659",
+      "native-class-comparison/artifacts/run-manifest.json": "793b6cea4b1b2fc5ee97b6de4ed06af114216e560909a6a8a18e383f5f43cd64",
+      "native-class-comparison/artifacts/run-plan.json": "ca283580223be2b05c719faa4c012f2f95d4765ebd679ebc07590bc3004fbb34",
+      "native-class-comparison/artifacts/sample-eligibility.json": "ed06d3e788065d23a6b5d09636118eae3460acd91f6c46a67ebf0ddc84441a40",
+      "native-class-comparison/artifacts/source-run-plan.json": "ccea3aca2dda9f6ccfc3b80f8f9307f43d9fe1a038cb3a6fc985a35cfaf4589d",
+      "native-class-comparison/dataset.json": "1de9d4e1e60851ce88de1b30cc0915138dc3e5869a26c3a290b47ed0cb8de3db",
+      "native-class-comparison/evaluation_plan.json": "d05dc82bdbe2a03639d89e48ab05a6031749302a83d3793f6e7b28a7791e6b45",
+      "native-class-comparison/run.json": "ccea3aca2dda9f6ccfc3b80f8f9307f43d9fe1a038cb3a6fc985a35cfaf4589d",
+      "native-class-comparison/summary.json": "5a4e8f62dfc68a90d8ed86791473bd03f40e0437e60a35eb2889ade88b0b47d6",
+      "native-decision/report.md": "ef04f82dee7134dfdad992fa06087b690cf68703a83f8da717b1e15f4177a09b",
+      "native-decision/summary.json": "d1a9f649757e57180b355e33159c0b072b2b389fe28799803de68c6bca65e87b",
+      "normalization.json": "12a0e2b3bcd5ad6cc213c333644513e01ca9c7b4b665cadfd4132ea0c5f11b1c",
+      "predictor-audit.json": "32edea4a8924a229c2a4ea48ba902b83cdbd2e9c32ccbcb504b1082cad988165",
+      "pressure-diagnostics.json": "3a430045cb006b1e6cd870129cd8e6c8087cdb1965acc849d76619af30c9093c",
+      "priority-source-audit.json": "9beb0ea2d063dc4e96dc8512438884304680a7a9c6978d8df7fb0656aa79e00a",
+      "report.md": "2c35b4fdfee2172eb6a52a01104a1c897161fdf31bf721cba009acb7aa8651a5",
+      "row-accounting.json": "c8b95ab7bffadf692b698894a1bb381c1e2c47c12feff7089b6b6e66b6c07a78",
+      "selection.json": "868d9e9183a938193aea25409ff054972f0358b72b00787b34e4501c05a766b4",
+      "source-followup.json": "f8a9edc1089cd1d0f3911a03ddd7b1b6d76cc21d848854acebea5b68ca2c0472",
+      "source-readiness.json": "168973416e2b40b577e5cfaf1beabaae6442208d906bd2b59ceffa35bdeb3c83",
+      "summary.json": "d865f907d2cc3190e9b911324dce610988b2325c04612a2a4cea78081a775d75",
+      "uncertainty.json": "d0c3d3d18cfb68fff8098705ae481c2d1b34ff27262c9520ffad23da6b5a50ce",
+      "unsupported-approximation-targets.json": "4e6e220dd8fc85f2a6449c96b862e3b3140d59e182f0b4e9bd10db3893c8035b",
+      "workbook-scope.json": "f9633098efee9f8d02c8f8cc455cc2a3ca8814ccbc1c0504ca48218629435b01"
+    },
+    "local\\meta-deep-unlock-audited": {
+      "ablation-class_psd.json": "c4c57f71c7aa4a7a5ab9584679518c59d32b76ffd90335ad66cc5c5329571dbf",
+      "ablation-density_conversion.json": "c65e5a93229d0724e05822f6807d0580268c31cf09730269d3347109963e98f7",
+      "ablation-depth.json": "b1309be6e9467ea86739246c45491ab910808e47a9f995b8767b7bfbfc58087a",
+      "ablation-interpolation.json": "eb9ad197d747e00de8dd21a541c9a427ef99cedca18a0ce3975ed52261471f31",
+      "ablation-oc_om.json": "1cfaceb3ee0951101e41e29c1e93a1cbd6cd429e23faa1718702cedce99ff454",
+      "ablation-spec_adapters.json": "09e7fbb364d06ab536d8febaf3560ee0fce276d144bdfac606eb85bdd9ee6102",
+      "ablation-usda_class.json": "c70e6867849e81b7d1c65676c0c8441c69cc609a657998726d394da7ad81aa0c",
+      "ablation-water_predictors.json": "db4fb6873f2757ba1fa1543582dfc727ae9a901d724c38e7c6c4f8a4a1f86806",
+      "accepted-fit-predictions.json": "bf51b4d718175eacd67f98aef431b69640b6250548c7aabe78c3a0132600fd16",
+      "artifact-hashes.json": "3d71bda685b3edfd838d3ab0579281cb79fa91e49353ec8e0d23f97e5c6a2198",
+      "benchmark.md": "173038ca22e4f18e93f0df45e116dcfeab9b46e49050d35b88a30d37093d41c6",
+      "catalog-contracts.json": "c3af32f95230770b4a33ac9e0a1a38e38d12352bfbb25c18776a0e63ca3d8c6a",
+      "conditional_class_psd-coverage.json": "a0791a1ea376a8bcb8017aa00a158f208bec31411bc681c3b3878508aa34d1ae",
+      "current_policies-coverage.json": "3cea5cdda63c76525d7e235e4781ad6a1b6517992b4911209a255c547f2c5cc1",
+      "fit-disagreement.json": "c4a578697c92170fe9d8bef01687812f2de1da6645ca5957a3a6b125009a1b3f",
+      "generic_spec_adapters-coverage.json": "8cf9a274f5544723f9155e016861822e6099652ca8587f7cb27136f58363038c",
+      "inherited-policies.json": "7f3072430235a116837e01c8c7742bea95a314e9f7811567c9988fb041df3d67",
+      "initial-matrix.json": "9319e246f199dec5ad2dd08d6c7a4055646c421c53375e941bb69a4552690fc5",
+      "matrix.json": "73b20a008147e8082b7af522766252957b09a6ce30258cd38b89e16baa49772f",
+      "policies.json": "da79d7e57a6bcc44c43f3180b79549cefc6b6be879ee489ba19e2e9f5a3370d2",
+      "predictions.json": "0fdccd16308a1dcf41254dc7141c708a6a6fae1cb7537f607b12f8c76205b4ff",
+      "report.md": "141eea0de8774f7a25febbaf134a41f3fc3e27914a1c6c28eb3d3c24ab8abe16",
+      "strict-matrix.json": "8139b231bf450d0b7e9e1a39979f332d43eb4bab4c99d761f345a331e171ff95",
+      "strict-predictions.json": "ce000ae1c28f3ba20b977c4dddb6658d96101b5cd2718c37bbfe0b653f271a00",
+      "summary.json": "c8aa62db2bda2885f593ac68ce1cc0382aa43fa00a120264202cdc36f1216ac6",
+      "wrc_predictors_and_density_links-coverage.json": "5da38938a1543d981d638dd7db555f4a9854f488a2c912fb76447c807e0ac8f9"
+    },
+    "workbook": "1322bf65b1ca0130085015209858a443d1ee82a7e2ae69232321cd8ede361e68"
+  },
+  "manifest_sha256": "9bb344e94ea9888ca2b22ab3a8243cc188b31f4218474e1dff0678f7eb9e4526",
+  "metrics": [
+    {
+      "bias": -0.014616095273974955,
+      "function": "calc_ptf_beniaich2023_mlr1",
+      "mae": 0.037022612139234204,
+      "points": 10,
+      "rmse": 0.04717060545485815,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_field_capacity",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.014616095273974955,
+      "function": "calc_ptf_beniaich2023_mlr1",
+      "mae": 0.037022612139234204,
+      "points": 10,
+      "rmse": 0.04717060545485815,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_field_capacity",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.036762060525327454,
+      "function": "calc_ptf_beniaich2023_mlr1",
+      "mae": 0.04124164841210335,
+      "points": 10,
+      "rmse": 0.043285577537875486,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_wilting_point",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.03676206052532745,
+      "function": "calc_ptf_beniaich2023_mlr1",
+      "mae": 0.04124164841210334,
+      "points": 10,
+      "rmse": 0.04328557753787548,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_wilting_point",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.020809934950700826,
+      "function": "calc_ptf_beniaich2023_mlr2",
+      "mae": 0.045492349566807935,
+      "points": 10,
+      "rmse": 0.052969154649279086,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_field_capacity",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.020809934950700826,
+      "function": "calc_ptf_beniaich2023_mlr2",
+      "mae": 0.045492349566807935,
+      "points": 10,
+      "rmse": 0.052969154649279086,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_field_capacity",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.09839766851494021,
+      "function": "calc_ptf_beniaich2023_mlr2",
+      "mae": 0.09839766851494021,
+      "points": 10,
+      "rmse": 0.10278131902737661,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_wilting_point",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.09839766851494021,
+      "function": "calc_ptf_beniaich2023_mlr2",
+      "mae": 0.09839766851494021,
+      "points": 10,
+      "rmse": 0.10278131902737661,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_wilting_point",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.1013075129890589,
+      "function": "calc_ptf_beniaich2023_mlr3",
+      "mae": 0.1013075129890589,
+      "points": 10,
+      "rmse": 0.10981276743021491,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_field_capacity",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.1013075129890589,
+      "function": "calc_ptf_beniaich2023_mlr3",
+      "mae": 0.1013075129890589,
+      "points": 10,
+      "rmse": 0.10981276743021491,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_field_capacity",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.14159328167126015,
+      "function": "calc_ptf_beniaich2023_mlr3",
+      "mae": 0.14159328167126015,
+      "points": 10,
+      "rmse": 0.1431799308857253,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_wilting_point",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.14159328167126015,
+      "function": "calc_ptf_beniaich2023_mlr3",
+      "mae": 0.14159328167126015,
+      "points": 10,
+      "rmse": 0.1431799308857253,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_wilting_point",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.15563412846424135,
+      "function": "calc_ptf_beniaich2023_mlr4",
+      "mae": 0.15563412846424135,
+      "points": 10,
+      "rmse": 0.15765543967923246,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_field_capacity",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.10861914872126766,
+      "function": "calc_ptf_beniaich2023_mlr4",
+      "mae": 0.10861914872126766,
+      "points": 27,
+      "rmse": 0.11767800954927979,
+      "samples": 27,
+      "scenario": "master",
+      "target": "water_field_capacity",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.08860643732120116,
+      "function": "calc_ptf_beniaich2023_mlr4",
+      "mae": 0.08860643732120116,
+      "points": 12,
+      "rmse": 0.09187265747410928,
+      "samples": 12,
+      "scenario": "podzolic_view",
+      "target": "water_field_capacity",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.05351697698307929,
+      "function": "calc_ptf_beniaich2023_mlr4",
+      "mae": 0.05351697698307929,
+      "points": 10,
+      "rmse": 0.05474645072193936,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_wilting_point",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.028163925656782697,
+      "function": "calc_ptf_beniaich2023_mlr4",
+      "mae": 0.030194412935571496,
+      "points": 27,
+      "rmse": 0.03680647942407277,
+      "samples": 27,
+      "scenario": "master",
+      "target": "water_wilting_point",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.019775244115647312,
+      "function": "calc_ptf_beniaich2023_mlr4",
+      "mae": 0.020503437524094628,
+      "points": 12,
+      "rmse": 0.022893436322278637,
+      "samples": 12,
+      "scenario": "podzolic_view",
+      "target": "water_wilting_point",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.014996095273974963,
+      "function": "calc_ptf_beniaich2023_mlr5",
+      "mae": 0.037098612139234224,
+      "points": 10,
+      "rmse": 0.047289730929516986,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_field_capacity",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.014996095273974958,
+      "function": "calc_ptf_beniaich2023_mlr5",
+      "mae": 0.03709861213923422,
+      "points": 10,
+      "rmse": 0.04728973092951697,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_field_capacity",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.03634388407065096,
+      "function": "calc_ptf_beniaich2023_mlr5",
+      "mae": 0.04086227195742685,
+      "points": 10,
+      "rmse": 0.04288928767216372,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_wilting_point",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.03634388407065096,
+      "function": "calc_ptf_beniaich2023_mlr5",
+      "mae": 0.04086227195742686,
+      "points": 10,
+      "rmse": 0.04288928767216372,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_wilting_point",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.20077991362602493,
+      "function": "calc_ptf_beniaich2023_slr1",
+      "mae": 0.20077991362602493,
+      "points": 10,
+      "rmse": 0.20767646807006362,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_field_capacity",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.11763220289982508,
+      "function": "calc_ptf_beniaich2023_slr1",
+      "mae": 0.11806998623532224,
+      "points": 28,
+      "rmse": 0.14035936823246573,
+      "samples": 28,
+      "scenario": "master",
+      "target": "water_field_capacity",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.08018128158786784,
+      "function": "calc_ptf_beniaich2023_slr1",
+      "mae": 0.08018128158786784,
+      "points": 12,
+      "rmse": 0.0846860438791957,
+      "samples": 12,
+      "scenario": "podzolic_view",
+      "target": "water_field_capacity",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.08348302538307929,
+      "function": "calc_ptf_beniaich2023_slr1",
+      "mae": 0.08348302538307929,
+      "points": 10,
+      "rmse": 0.08805680120462721,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_wilting_point",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.03547257903142758,
+      "function": "calc_ptf_beniaich2023_slr1",
+      "mae": 0.03896683922967944,
+      "points": 28,
+      "rmse": 0.05436207734039488,
+      "samples": 28,
+      "scenario": "master",
+      "target": "water_wilting_point",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.01426992068231398,
+      "function": "calc_ptf_beniaich2023_slr1",
+      "mae": 0.01439877803213322,
+      "points": 12,
+      "rmse": 0.016612921049292507,
+      "samples": 12,
+      "scenario": "podzolic_view",
+      "target": "water_wilting_point",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.07145475828114699,
+      "function": "calc_ptf_beniaich2023_slr2",
+      "mae": 0.08200256979898465,
+      "points": 10,
+      "rmse": 0.09585925274965053,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_field_capacity",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.07145475828114699,
+      "function": "calc_ptf_beniaich2023_slr2",
+      "mae": 0.08200256979898465,
+      "points": 10,
+      "rmse": 0.09585925274965053,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_field_capacity",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.12018869634464244,
+      "function": "calc_ptf_beniaich2023_slr2",
+      "mae": 0.12018869634464244,
+      "points": 10,
+      "rmse": 0.12490351549401806,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_wilting_point",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.12018869634464244,
+      "function": "calc_ptf_beniaich2023_slr2",
+      "mae": 0.12018869634464244,
+      "points": 10,
+      "rmse": 0.12490351549401807,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_wilting_point",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.00961911627772758,
+      "function": "calc_ptf_beniaich2023_slr3",
+      "mae": 0.0596578476977512,
+      "points": 10,
+      "rmse": 0.07022693557747862,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_field_capacity",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.00961911627772758,
+      "function": "calc_ptf_beniaich2023_slr3",
+      "mae": 0.0596578476977512,
+      "points": 10,
+      "rmse": 0.07022693557747862,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_field_capacity",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.07967817279361888,
+      "function": "calc_ptf_beniaich2023_slr3",
+      "mae": 0.08375914308039478,
+      "points": 10,
+      "rmse": 0.08992511391396055,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_wilting_point",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.07967817279361888,
+      "function": "calc_ptf_beniaich2023_slr3",
+      "mae": 0.08375914308039478,
+      "points": 10,
+      "rmse": 0.08992511391396055,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_wilting_point",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.1565053525139638,
+      "function": "calc_ptf_beniaich2023_slr4",
+      "mae": 0.1565053525139638,
+      "points": 10,
+      "rmse": 0.16300522934693581,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_field_capacity",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.1565053525139638,
+      "function": "calc_ptf_beniaich2023_slr4",
+      "mae": 0.1565053525139638,
+      "points": 10,
+      "rmse": 0.16300522934693581,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_field_capacity",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.026366271650825546,
+      "function": "calc_ptf_beniaich2023_slr4",
+      "mae": 0.029539536261407835,
+      "points": 10,
+      "rmse": 0.0359755986003181,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_wilting_point",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.02636627165082555,
+      "function": "calc_ptf_beniaich2023_slr4",
+      "mae": 0.029539536261407828,
+      "points": 10,
+      "rmse": 0.0359755986003181,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_wilting_point",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.10158782032418193,
+      "function": "calc_ptf_beniaich2023_slr5",
+      "mae": 0.10158782032418193,
+      "points": 10,
+      "rmse": 0.1129059913132354,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_field_capacity",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.10158782032418193,
+      "function": "calc_ptf_beniaich2023_slr5",
+      "mae": 0.10158782032418193,
+      "points": 10,
+      "rmse": 0.1129059913132354,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_field_capacity",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.019090998521241787,
+      "function": "calc_ptf_beniaich2023_slr5",
+      "mae": 0.027571656710437608,
+      "points": 10,
+      "rmse": 0.030809192945596302,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_wilting_point",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.019090998521241787,
+      "function": "calc_ptf_beniaich2023_slr5",
+      "mae": 0.027571656710437608,
+      "points": 10,
+      "rmse": 0.030809192945596302,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_wilting_point",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.013695157686811682,
+      "function": "calc_ptf_beniaich2023_slr6",
+      "mae": 0.04558858913465241,
+      "points": 14,
+      "rmse": 0.05333032821846696,
+      "samples": 14,
+      "scenario": "chernozem_view",
+      "target": "water_field_capacity",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.0025852764678539622,
+      "function": "calc_ptf_beniaich2023_slr6",
+      "mae": 0.029509426635009967,
+      "points": 51,
+      "rmse": 0.03853439255719514,
+      "samples": 51,
+      "scenario": "master",
+      "target": "water_field_capacity",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.004850209712132167,
+      "function": "calc_ptf_beniaich2023_slr6",
+      "mae": 0.02018744465460265,
+      "points": 12,
+      "rmse": 0.02230852732306754,
+      "samples": 12,
+      "scenario": "podzolic_view",
+      "target": "water_field_capacity",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.04884289372014541,
+      "function": "calc_ptf_beniaich2023_slr6",
+      "mae": 0.04884289372014541,
+      "points": 10,
+      "rmse": 0.051017119691598715,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_wilting_point",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.06692587084509637,
+      "function": "calc_ptf_beniaich2023_slr6",
+      "mae": 0.06692587084509637,
+      "points": 47,
+      "rmse": 0.06945822911309256,
+      "samples": 47,
+      "scenario": "master",
+      "target": "water_wilting_point",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.06399934105101934,
+      "function": "calc_ptf_beniaich2023_slr6",
+      "mae": 0.06399934105101934,
+      "points": 12,
+      "rmse": 0.06539982064819642,
+      "samples": 12,
+      "scenario": "podzolic_view",
+      "target": "water_wilting_point",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.12660185547425126,
+      "function": "calc_ptf_bruand1994_bulk_volume_available_water",
+      "mae": 0.12660185547425126,
+      "points": 20,
+      "rmse": 0.13198701600000748,
+      "samples": 20,
+      "scenario": "master",
+      "target": "available_water_capacity",
+      "target_kind": "pressure_difference",
+      "unit": "volume_fraction"
+    },
+    {
+      "bias": -0.12412814256192506,
+      "function": "calc_ptf_bruand1994_bulk_volume_available_water",
+      "mae": 0.12412814256192506,
+      "points": 8,
+      "rmse": 0.1297008408492632,
+      "samples": 8,
+      "scenario": "podzolic_view",
+      "target": "available_water_capacity",
+      "target_kind": "pressure_difference",
+      "unit": "volume_fraction"
+    },
+    {
+      "bias": 0.13576944607605973,
+      "function": "calc_ptf_bruand1994_bulk_volume_water_retention",
+      "mae": 0.13576944607605973,
+      "points": 20,
+      "rmse": 0.13941716655746617,
+      "samples": 20,
+      "scenario": "master",
+      "target": "water_content_1500_kpa",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.13941534704737804,
+      "function": "calc_ptf_bruand1994_bulk_volume_water_retention",
+      "mae": 0.13941534704737804,
+      "points": 8,
+      "rmse": 0.14145671149064754,
+      "samples": 8,
+      "scenario": "podzolic_view",
+      "target": "water_content_1500_kpa",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.19300324510585615,
+      "function": "calc_ptf_bruand1994_bulk_volume_water_retention",
+      "mae": 0.19300324510585615,
+      "points": 1,
+      "rmse": 0.19300324510585615,
+      "samples": 1,
+      "scenario": "chernozem_view",
+      "target": "water_content_30_kpa",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.052071938216585935,
+      "function": "calc_ptf_bruand1994_bulk_volume_water_retention",
+      "mae": 0.052071938216585935,
+      "points": 21,
+      "rmse": 0.06594222295843662,
+      "samples": 21,
+      "scenario": "master",
+      "target": "water_content_30_kpa",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.05011763894763718,
+      "function": "calc_ptf_bruand1994_bulk_volume_water_retention",
+      "mae": 0.05011763894763718,
+      "points": 8,
+      "rmse": 0.056389061836356766,
+      "samples": 8,
+      "scenario": "podzolic_view",
+      "target": "water_content_30_kpa",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.09148167090833773,
+      "function": "calc_ptf_chakraborty2011_eq1",
+      "mae": 0.10400741385544762,
+      "points": 10,
+      "rmse": 0.11548534162050415,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_content_100",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.09148167090833774,
+      "function": "calc_ptf_chakraborty2011_eq1",
+      "mae": 0.10400741385544762,
+      "points": 10,
+      "rmse": 0.11548534162050415,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_content_100",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.03203493342537951,
+      "function": "calc_ptf_chakraborty2011_eq1",
+      "mae": 0.04234299491422216,
+      "points": 10,
+      "rmse": 0.046061356206144,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_content_1500",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.03203493342537951,
+      "function": "calc_ptf_chakraborty2011_eq1",
+      "mae": 0.04234299491422216,
+      "points": 10,
+      "rmse": 0.046061356206144,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_content_1500",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.14177771391060262,
+      "function": "calc_ptf_chakraborty2011_eq1",
+      "mae": 0.148353418375683,
+      "points": 10,
+      "rmse": 0.16273526421963933,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_content_33",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.14177771391060262,
+      "function": "calc_ptf_chakraborty2011_eq1",
+      "mae": 0.14835341837568303,
+      "points": 10,
+      "rmse": 0.16273526421963933,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_content_33",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.004782878289417733,
+      "function": "calc_ptf_chakraborty2011_eq1",
+      "mae": 0.0365252090576645,
+      "points": 10,
+      "rmse": 0.04863089475612576,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_content_500",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.004782878289417725,
+      "function": "calc_ptf_chakraborty2011_eq1",
+      "mae": 0.0365252090576645,
+      "points": 10,
+      "rmse": 0.04863089475612576,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_content_500",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.08941748065764746,
+      "function": "calc_ptf_chakraborty2011_eq4",
+      "mae": 0.10293762360475736,
+      "points": 10,
+      "rmse": 0.11445364798955475,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_content_100",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.08941748065764747,
+      "function": "calc_ptf_chakraborty2011_eq4",
+      "mae": 0.10293762360475736,
+      "points": 10,
+      "rmse": 0.11445364798955474,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_content_100",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.03033763161957772,
+      "function": "calc_ptf_chakraborty2011_eq4",
+      "mae": 0.04179847709240435,
+      "points": 10,
+      "rmse": 0.04536864409470079,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_content_1500",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.030337631619577716,
+      "function": "calc_ptf_chakraborty2011_eq4",
+      "mae": 0.04179847709240435,
+      "points": 10,
+      "rmse": 0.045368644094700775,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_content_1500",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.14055141655280526,
+      "function": "calc_ptf_chakraborty2011_eq4",
+      "mae": 0.14800512101788565,
+      "points": 10,
+      "rmse": 0.1621931128491546,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_content_33",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.14055141655280526,
+      "function": "calc_ptf_chakraborty2011_eq4",
+      "mae": 0.14800512101788565,
+      "points": 10,
+      "rmse": 0.1621931128491546,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_content_33",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.005078608523647938,
+      "function": "calc_ptf_chakraborty2011_eq4",
+      "mae": 0.03731436250711795,
+      "points": 10,
+      "rmse": 0.049576851892845684,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_content_500",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.005078608523647938,
+      "function": "calc_ptf_chakraborty2011_eq4",
+      "mae": 0.03731436250711795,
+      "points": 10,
+      "rmse": 0.049576851892845684,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_content_500",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.02871190294541637,
+      "function": "calc_ptf_clapp1978",
+      "mae": 0.02993359863318627,
+      "points": 86,
+      "rmse": 0.03459150770175693,
+      "samples": 6,
+      "scenario": "master",
+      "target": "existing_model_adapter_v1",
+      "target_kind": "fixed_pressure",
+      "unit": "volume_fraction"
+    },
+    {
+      "bias": 0.02871190294541637,
+      "function": "calc_ptf_clapp1978",
+      "mae": 0.02993359863318627,
+      "points": 86,
+      "rmse": 0.03459150770175693,
+      "samples": 6,
+      "scenario": "podzolic_view",
+      "target": "existing_model_adapter_v1",
+      "target_kind": "fixed_pressure",
+      "unit": "volume_fraction"
+    },
+    {
+      "bias": -0.0050000000000000044,
+      "function": "calc_ptf_clapp1978",
+      "mae": 0.03900000000000002,
+      "points": 7,
+      "rmse": 0.04354472249472786,
+      "samples": 7,
+      "scenario": "chernozem_view",
+      "target": "saturated_water_content",
+      "target_kind": "porosity_parameter",
+      "unit": "volume_fraction"
+    },
+    {
+      "bias": 0.007499999999999993,
+      "function": "calc_ptf_clapp1978",
+      "mae": 0.04600000000000001,
+      "points": 8,
+      "rmse": 0.05279441258315126,
+      "samples": 8,
+      "scenario": "master",
+      "target": "saturated_water_content",
+      "target_kind": "porosity_parameter",
+      "unit": "volume_fraction"
+    },
+    {
+      "bias": 0.08699999999999998,
+      "function": "calc_ptf_clapp1978",
+      "mae": 0.08699999999999998,
+      "points": 11,
+      "rmse": 0.09042274452411143,
+      "samples": 11,
+      "scenario": "thesis",
+      "target": "saturated_water_content",
+      "target_kind": "porosity_parameter",
+      "unit": "volume_fraction"
+    },
+    {
+      "bias": -0.10956423459540869,
+      "function": "calc_ptf_dijkerman1988",
+      "mae": 0.10956423459540869,
+      "points": 7,
+      "rmse": 0.1137773999610535,
+      "samples": 7,
+      "scenario": "chernozem_view",
+      "target": "water_content_15_bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.10956423459540869,
+      "function": "calc_ptf_dijkerman1988",
+      "mae": 0.10956423459540869,
+      "points": 7,
+      "rmse": 0.1137773999610535,
+      "samples": 7,
+      "scenario": "master",
+      "target": "water_content_15_bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.010077107813627298,
+      "function": "calc_ptf_dijkerman1988",
+      "mae": 0.06305297654099988,
+      "points": 7,
+      "rmse": 0.0756153982862904,
+      "samples": 7,
+      "scenario": "chernozem_view",
+      "target": "water_content_one_third_bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.010077107813627298,
+      "function": "calc_ptf_dijkerman1988",
+      "mae": 0.06305297654099988,
+      "points": 7,
+      "rmse": 0.0756153982862904,
+      "samples": 7,
+      "scenario": "master",
+      "target": "water_content_one_third_bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.09948712678178138,
+      "function": "calc_ptf_dijkerman1988_available_water",
+      "mae": 0.09948712678178138,
+      "points": 7,
+      "rmse": 0.11222531325035066,
+      "samples": 7,
+      "scenario": "chernozem_view",
+      "target": "available_water",
+      "target_kind": "pressure_difference",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.0994871267817814,
+      "function": "calc_ptf_dijkerman1988_available_water",
+      "mae": 0.0994871267817814,
+      "points": 7,
+      "rmse": 0.11222531325035066,
+      "samples": 7,
+      "scenario": "master",
+      "target": "available_water",
+      "target_kind": "pressure_difference",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 5.018862788894058e-07,
+      "function": "calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand",
+      "mae": 3.929583858066997e-06,
+      "points": 30,
+      "rmse": 5.097747894212542e-06,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -7.3149392303703705e-06,
+      "function": "calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter",
+      "mae": 9.438303751851852e-06,
+      "points": 30,
+      "rmse": 1.1649134925951874e-05,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": 2.7625074250702313e-06,
+      "function": "calc_ptf_ferrerjulia2004_calcaric_regosol_sand",
+      "mae": 4.6628094164595255e-06,
+      "points": 30,
+      "rmse": 5.914765286254136e-06,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -6.083090479259259e-06,
+      "function": "calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter",
+      "mae": 8.894862368148149e-06,
+      "points": 30,
+      "rmse": 1.0848915394233484e-05,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -4.252366196657624e-06,
+      "function": "calc_ptf_ferrerjulia2004_calcic_cambisol_sand",
+      "mae": 6.338073328351537e-06,
+      "points": 30,
+      "rmse": 7.681170876679812e-06,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -7.771133473518519e-06,
+      "function": "calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter",
+      "mae": 1.0332808993518517e-05,
+      "points": 30,
+      "rmse": 1.2601716341697105e-05,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -7.449262673822358e-06,
+      "function": "calc_ptf_ferrerjulia2004_calcic_luvisol_sand",
+      "mae": 8.605805719854057e-06,
+      "points": 30,
+      "rmse": 1.0563662428393836e-05,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -1.2464786153511111e-05,
+      "function": "calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter",
+      "mae": 1.278649910794074e-05,
+      "points": 30,
+      "rmse": 1.641566189210468e-05,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -1.615224095017516e-05,
+      "function": "calc_ptf_ferrerjulia2004_campbell_shiozawa",
+      "mae": 1.615224095017516e-05,
+      "points": 30,
+      "rmse": 1.9853987203330955e-05,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -1.4660482125626978e-06,
+      "function": "calc_ptf_ferrerjulia2004_chromic_luvisol_sand",
+      "mae": 4.2938883382729415e-06,
+      "points": 30,
+      "rmse": 5.5547498412032305e-06,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -7.122868824814816e-06,
+      "function": "calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter",
+      "mae": 9.994332361851851e-06,
+      "points": 30,
+      "rmse": 1.2062413616305788e-05,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -8.584204666505975e-06,
+      "function": "calc_ptf_ferrerjulia2004_cosby",
+      "mae": 1.1661016031263272e-05,
+      "points": 30,
+      "rmse": 1.4199802246741542e-05,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": 2.3943610555446568e-06,
+      "function": "calc_ptf_ferrerjulia2004_dane_puckett",
+      "mae": 1.2776455149799925e-05,
+      "points": 36,
+      "rmse": 1.6675617424648628e-05,
+      "samples": 36,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": 5.144596106921887e-07,
+      "function": "calc_ptf_ferrerjulia2004_dystric_cambisol_sand",
+      "mae": 3.976797174027461e-06,
+      "points": 30,
+      "rmse": 5.186483920914579e-06,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -5.5688450207407415e-06,
+      "function": "calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter",
+      "mae": 9.007733317037036e-06,
+      "points": 30,
+      "rmse": 1.0718356164358866e-05,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -2.583833309337717e-07,
+      "function": "calc_ptf_ferrerjulia2004_dystric_regosol_sand",
+      "mae": 3.9155158615040344e-06,
+      "points": 30,
+      "rmse": 5.215248081011924e-06,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -6.500573435925925e-06,
+      "function": "calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter",
+      "mae": 8.742364242592592e-06,
+      "points": 30,
+      "rmse": 1.065314491605437e-05,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": 3.810436531963116e-07,
+      "function": "calc_ptf_ferrerjulia2004_eutric_cambisol_sand",
+      "mae": 3.900132346607212e-06,
+      "points": 30,
+      "rmse": 5.099574196493689e-06,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -6.4475165440740734e-06,
+      "function": "calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter",
+      "mae": 9.198758803333333e-06,
+      "points": 30,
+      "rmse": 1.1165344216407777e-05,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": 4.855348636766416e-06,
+      "function": "calc_ptf_ferrerjulia2004_eutric_regosol_sand",
+      "mae": 6.074779347363961e-06,
+      "points": 30,
+      "rmse": 7.465969613153625e-06,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -4.981141902037037e-06,
+      "function": "calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter",
+      "mae": 9.520051281666666e-06,
+      "points": 30,
+      "rmse": 1.1140370937081134e-05,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -1.48928385992531e-06,
+      "function": "calc_ptf_ferrerjulia2004_general_sand",
+      "mae": 4.328133122618059e-06,
+      "points": 30,
+      "rmse": 5.578637557183436e-06,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -5.954867851962963e-06,
+      "function": "calc_ptf_ferrerjulia2004_general_texture_organic_matter",
+      "mae": 9.147058648259259e-06,
+      "points": 30,
+      "rmse": 1.1101030989746655e-05,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": 1.0425851333634635e-06,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_cambisol_sand",
+      "mae": 4.598705593716695e-06,
+      "points": 30,
+      "rmse": 6.008412689992902e-06,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -7.960677696296296e-06,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter",
+      "mae": 9.752659444444444e-06,
+      "points": 30,
+      "rmse": 1.1921096237327462e-05,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -5.672169931810083e-06,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_luvisol_sand",
+      "mae": 7.099367103695432e-06,
+      "points": 30,
+      "rmse": 8.606950250970662e-06,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -6.775917547407408e-06,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter",
+      "mae": 8.861227359259258e-06,
+      "points": 30,
+      "rmse": 1.0941808064655525e-05,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -1.1758229481494168e-05,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_solonchak_sand",
+      "mae": 1.2025064825462802e-05,
+      "points": 30,
+      "rmse": 1.5298721935936645e-05,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -1.0603567806666665e-05,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter",
+      "mae": 1.156749698148148e-05,
+      "points": 30,
+      "rmse": 1.4528253510958235e-05,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": 1.1480069621443915e-06,
+      "function": "calc_ptf_ferrerjulia2004_humic_acrisol_sand",
+      "mae": 4.123989221964236e-06,
+      "points": 30,
+      "rmse": 5.253404328467641e-06,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -7.436977843959261e-06,
+      "function": "calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter",
+      "mae": 9.232769104722223e-06,
+      "points": 30,
+      "rmse": 1.1522338070887041e-05,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -3.7535767348144413e-06,
+      "function": "calc_ptf_ferrerjulia2004_humic_cambisol_sand",
+      "mae": 6.538542212312544e-06,
+      "points": 30,
+      "rmse": 7.878318510380835e-06,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -6.491738827407408e-06,
+      "function": "calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter",
+      "mae": 9.14776756814815e-06,
+      "points": 30,
+      "rmse": 1.1135927947944467e-05,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -2.8392331688258397e-06,
+      "function": "calc_ptf_ferrerjulia2004_orthic_luvisol_sand",
+      "mae": 5.545273805245012e-06,
+      "points": 30,
+      "rmse": 6.740704126830836e-06,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -5.934641107814815e-06,
+      "function": "calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter",
+      "mae": 8.760823341148148e-06,
+      "points": 30,
+      "rmse": 1.0757790357097417e-05,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -8.256609748321038e-06,
+      "function": "calc_ptf_ferrerjulia2004_puckett",
+      "mae": 1.1032961657591878e-05,
+      "points": 36,
+      "rmse": 1.3062746096457166e-05,
+      "samples": 36,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": 1.8587642252625205e-06,
+      "function": "calc_ptf_ferrerjulia2004_ranker_sand",
+      "mae": 4.228138745627319e-06,
+      "points": 30,
+      "rmse": 5.402772486845887e-06,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -4.691256809259259e-06,
+      "function": "calc_ptf_ferrerjulia2004_ranker_texture_organic_matter",
+      "mae": 8.689192642592592e-06,
+      "points": 30,
+      "rmse": 1.0321078485265157e-05,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -6.553821442159713e-06,
+      "function": "calc_ptf_ferrerjulia2004_rendzina_sand",
+      "mae": 8.608473933920298e-06,
+      "points": 30,
+      "rmse": 1.053556981382299e-05,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -9.808787918888888e-06,
+      "function": "calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter",
+      "mae": 1.0767440583333333e-05,
+      "points": 30,
+      "rmse": 1.3386045551272956e-05,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": -1.6155374601844658e-05,
+      "function": "calc_ptf_ferrerjulia2004_saxton",
+      "mae": 1.6155374601844658e-05,
+      "points": 30,
+      "rmse": 1.985812611051117e-05,
+      "samples": 30,
+      "scenario": "thesis",
+      "target": "k_sat",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": 13.211436407303093,
+      "function": "calc_ptf_lal1979_group_i_lower_plastic_limit_from_clay",
+      "mae": 13.211436407303093,
+      "points": 7,
+      "rmse": 13.568376729551575,
+      "samples": 7,
+      "scenario": "thesis",
+      "target": "lower_plastic_limit",
+      "target_kind": "plasticity",
+      "unit": "mass_percent"
+    },
+    {
+      "bias": 27.364974217429612,
+      "function": "calc_ptf_lal1979_group_i_lower_plastic_limit_from_sand",
+      "mae": 27.364974217429612,
+      "points": 7,
+      "rmse": 27.60337775733971,
+      "samples": 7,
+      "scenario": "thesis",
+      "target": "lower_plastic_limit",
+      "target_kind": "plasticity",
+      "unit": "mass_percent"
+    },
+    {
+      "bias": -14.9264875,
+      "function": "calc_ptf_lal1979_group_i_plasticity_index_from_clay",
+      "mae": 16.4553175,
+      "points": 4,
+      "rmse": 18.804491134683094,
+      "samples": 4,
+      "scenario": "thesis",
+      "target": "plasticity_index",
+      "target_kind": "plasticity",
+      "unit": "mass_percent"
+    },
+    {
+      "bias": -10.1527875,
+      "function": "calc_ptf_lal1979_group_i_plasticity_index_from_sand",
+      "mae": 13.9915675,
+      "points": 4,
+      "rmse": 15.183129261877308,
+      "samples": 4,
+      "scenario": "thesis",
+      "target": "plasticity_index",
+      "target_kind": "plasticity",
+      "unit": "mass_percent"
+    },
+    {
+      "bias": 7.958810685510907,
+      "function": "calc_ptf_lal1979_group_i_upper_plastic_limit_from_clay",
+      "mae": 13.496353542653765,
+      "points": 7,
+      "rmse": 15.29638747979782,
+      "samples": 7,
+      "scenario": "thesis",
+      "target": "upper_plastic_limit",
+      "target_kind": "plasticity",
+      "unit": "mass_percent"
+    },
+    {
+      "bias": -0.2742918889464164,
+      "function": "calc_ptf_lal1979_group_i_water_01bar_from_clay",
+      "mae": 0.2742918889464164,
+      "points": 10,
+      "rmse": 0.2800992547886702,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_01bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.19047676121324894,
+      "function": "calc_ptf_lal1979_group_i_water_01bar_from_clay",
+      "mae": 0.19047676121324894,
+      "points": 28,
+      "rmse": 0.2065219897376116,
+      "samples": 28,
+      "scenario": "master",
+      "target": "water_01bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.1594777758589273,
+      "function": "calc_ptf_lal1979_group_i_water_01bar_from_clay",
+      "mae": 0.1594777758589273,
+      "points": 12,
+      "rmse": 0.16165631951098386,
+      "samples": 12,
+      "scenario": "podzolic_view",
+      "target": "water_01bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.05783895254347997,
+      "function": "calc_ptf_lal1979_group_i_water_01bar_from_sand",
+      "mae": 0.06413880932669133,
+      "points": 10,
+      "rmse": 0.0913610161072664,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_01bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.05783895254347997,
+      "function": "calc_ptf_lal1979_group_i_water_01bar_from_sand",
+      "mae": 0.06413880932669133,
+      "points": 10,
+      "rmse": 0.0913610161072664,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_01bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.23983841320895438,
+      "function": "calc_ptf_lal1979_group_i_water_03bar_from_clay",
+      "mae": 0.23983841320895438,
+      "points": 10,
+      "rmse": 0.24577371733183845,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_03bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.15527735394620068,
+      "function": "calc_ptf_lal1979_group_i_water_03bar_from_clay",
+      "mae": 0.15527735394620068,
+      "points": 28,
+      "rmse": 0.17391293351770618,
+      "samples": 28,
+      "scenario": "master",
+      "target": "water_03bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.11808032024658226,
+      "function": "calc_ptf_lal1979_group_i_water_03bar_from_clay",
+      "mae": 0.11808032024658226,
+      "points": 12,
+      "rmse": 0.12129001289141345,
+      "samples": 12,
+      "scenario": "podzolic_view",
+      "target": "water_03bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.025357120627661794,
+      "function": "calc_ptf_lal1979_group_i_water_03bar_from_sand",
+      "mae": 0.058843403472139476,
+      "points": 10,
+      "rmse": 0.07253800280540132,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_03bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.025357120627661794,
+      "function": "calc_ptf_lal1979_group_i_water_03bar_from_sand",
+      "mae": 0.058843403472139476,
+      "points": 10,
+      "rmse": 0.07253800280540132,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_03bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.11071536921492312,
+      "function": "calc_ptf_lal1979_group_i_water_15bar_from_clay",
+      "mae": 0.11071536921492312,
+      "points": 10,
+      "rmse": 0.11410186483580617,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_15bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.06381308397137181,
+      "function": "calc_ptf_lal1979_group_i_water_15bar_from_clay",
+      "mae": 0.06381308397137181,
+      "points": 28,
+      "rmse": 0.07543347145109743,
+      "samples": 28,
+      "scenario": "master",
+      "target": "water_15bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.04284664568231398,
+      "function": "calc_ptf_lal1979_group_i_water_15bar_from_clay",
+      "mae": 0.04284664568231398,
+      "points": 12,
+      "rmse": 0.0437615208421503,
+      "samples": 12,
+      "scenario": "podzolic_view",
+      "target": "water_15bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.08473756718801329,
+      "function": "calc_ptf_lal1979_group_i_water_15bar_from_sand",
+      "mae": 0.09000733747478917,
+      "points": 10,
+      "rmse": 0.0961439072877541,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_15bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.08473756718801329,
+      "function": "calc_ptf_lal1979_group_i_water_15bar_from_sand",
+      "mae": 0.09000733747478919,
+      "points": 10,
+      "rmse": 0.0961439072877541,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_15bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.3334579266583727,
+      "function": "calc_ptf_lal1979_group_i_water_15bar_from_silt",
+      "mae": 0.3334579266583727,
+      "points": 10,
+      "rmse": 0.33851385747383866,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_15bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.33345792665837276,
+      "function": "calc_ptf_lal1979_group_i_water_15bar_from_silt",
+      "mae": 0.33345792665837276,
+      "points": 10,
+      "rmse": 0.3385138574738387,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_15bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 13.721943562671024,
+      "function": "calc_ptf_lal1979_group_ii_lower_plastic_limit_from_clay",
+      "mae": 13.721943562671024,
+      "points": 7,
+      "rmse": 13.866282560552667,
+      "samples": 7,
+      "scenario": "thesis",
+      "target": "lower_plastic_limit",
+      "target_kind": "plasticity",
+      "unit": "mass_percent"
+    },
+    {
+      "bias": 23.468048104162495,
+      "function": "calc_ptf_lal1979_group_ii_lower_plastic_limit_from_sand",
+      "mae": 23.468048104162495,
+      "points": 7,
+      "rmse": 23.606036196381197,
+      "samples": 7,
+      "scenario": "thesis",
+      "target": "lower_plastic_limit",
+      "target_kind": "plasticity",
+      "unit": "mass_percent"
+    },
+    {
+      "bias": 54.612039817980126,
+      "function": "calc_ptf_lal1979_group_ii_lower_plastic_limit_from_silt",
+      "mae": 54.612039817980126,
+      "points": 7,
+      "rmse": 54.75395426769424,
+      "samples": 7,
+      "scenario": "thesis",
+      "target": "lower_plastic_limit",
+      "target_kind": "plasticity",
+      "unit": "mass_percent"
+    },
+    {
+      "bias": -29.0949375,
+      "function": "calc_ptf_lal1979_group_ii_plasticity_index_from_silt",
+      "mae": 29.0949375,
+      "points": 4,
+      "rmse": 31.20260823959874,
+      "samples": 4,
+      "scenario": "thesis",
+      "target": "plasticity_index",
+      "target_kind": "plasticity",
+      "unit": "mass_percent"
+    },
+    {
+      "bias": 14.124571418562798,
+      "function": "calc_ptf_lal1979_group_ii_upper_plastic_limit_from_clay",
+      "mae": 16.068114275705657,
+      "points": 7,
+      "rmse": 19.166633986990586,
+      "samples": 7,
+      "scenario": "thesis",
+      "target": "upper_plastic_limit",
+      "target_kind": "plasticity",
+      "unit": "mass_percent"
+    },
+    {
+      "bias": 23.987726675591063,
+      "function": "calc_ptf_lal1979_group_ii_upper_plastic_limit_from_sand",
+      "mae": 23.987726675591063,
+      "points": 7,
+      "rmse": 27.13712413183879,
+      "samples": 7,
+      "scenario": "thesis",
+      "target": "upper_plastic_limit",
+      "target_kind": "plasticity",
+      "unit": "mass_percent"
+    },
+    {
+      "bias": 36.33031958508557,
+      "function": "calc_ptf_lal1979_group_ii_upper_plastic_limit_from_silt",
+      "mae": 36.33031958508557,
+      "points": 7,
+      "rmse": 38.42119196398616,
+      "samples": 7,
+      "scenario": "thesis",
+      "target": "upper_plastic_limit",
+      "target_kind": "plasticity",
+      "unit": "mass_percent"
+    },
+    {
+      "bias": -0.2962918889464164,
+      "function": "calc_ptf_lal1979_group_ii_water_01bar_from_clay",
+      "mae": 0.2962918889464164,
+      "points": 10,
+      "rmse": 0.3016760442043927,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_01bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.21247676121324893,
+      "function": "calc_ptf_lal1979_group_ii_water_01bar_from_clay",
+      "mae": 0.21247676121324893,
+      "points": 28,
+      "rmse": 0.22697204616111893,
+      "samples": 28,
+      "scenario": "master",
+      "target": "water_01bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.1814777758589273,
+      "function": "calc_ptf_lal1979_group_ii_water_01bar_from_clay",
+      "mae": 0.1814777758589273,
+      "points": 12,
+      "rmse": 0.18339516835410385,
+      "samples": 12,
+      "scenario": "podzolic_view",
+      "target": "water_01bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.018944307898835295,
+      "function": "calc_ptf_lal1979_group_ii_water_01bar_from_sand",
+      "mae": 0.05814630179217415,
+      "points": 10,
+      "rmse": 0.07683152054593004,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_01bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.018944307898835295,
+      "function": "calc_ptf_lal1979_group_ii_water_01bar_from_sand",
+      "mae": 0.05814630179217415,
+      "points": 10,
+      "rmse": 0.07683152054593004,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_01bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.26681005703059824,
+      "function": "calc_ptf_lal1979_group_ii_water_03bar_from_clay",
+      "mae": 0.26681005703059824,
+      "points": 10,
+      "rmse": 0.27190971783914747,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_03bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.18635329816821636,
+      "function": "calc_ptf_lal1979_group_ii_water_03bar_from_clay",
+      "mae": 0.18635329816821636,
+      "points": 28,
+      "rmse": 0.20060580808850267,
+      "samples": 28,
+      "scenario": "master",
+      "target": "water_03bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.1500311535799156,
+      "function": "calc_ptf_lal1979_group_ii_water_03bar_from_clay",
+      "mae": 0.1500311535799156,
+      "points": 12,
+      "rmse": 0.15258805305785833,
+      "samples": 12,
+      "scenario": "podzolic_view",
+      "target": "water_03bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.010357120627661837,
+      "function": "calc_ptf_lal1979_group_ii_water_03bar_from_sand",
+      "mae": 0.058843403472139476,
+      "points": 10,
+      "rmse": 0.06874625976856164,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_03bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.010357120627661837,
+      "function": "calc_ptf_lal1979_group_ii_water_03bar_from_sand",
+      "mae": 0.058843403472139476,
+      "points": 10,
+      "rmse": 0.06874625976856164,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_03bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.010511080893387684,
+      "function": "calc_ptf_lal1979_group_ii_water_03bar_from_water_01bar",
+      "mae": 0.02845702740405063,
+      "points": 34,
+      "rmse": 0.03472383319010944,
+      "samples": 34,
+      "scenario": "chernozem_view",
+      "target": "water_03bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.007783378480153644,
+      "function": "calc_ptf_lal1979_group_ii_water_03bar_from_water_01bar",
+      "mae": 0.021042987202932923,
+      "points": 75,
+      "rmse": 0.02673438010113467,
+      "samples": 75,
+      "scenario": "master",
+      "target": "water_03bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.007980383658761872,
+      "function": "calc_ptf_lal1979_group_ii_water_03bar_from_water_01bar",
+      "mae": 0.01376376283499942,
+      "points": 12,
+      "rmse": 0.017225883346668403,
+      "samples": 12,
+      "scenario": "podzolic_view",
+      "target": "water_03bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.09889268427223817,
+      "function": "calc_ptf_lal1979_group_ii_water_15bar_from_clay",
+      "mae": 0.09889268427223817,
+      "points": 10,
+      "rmse": 0.10236901500315293,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_15bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.055273839348984326,
+      "function": "calc_ptf_lal1979_group_ii_water_15bar_from_clay",
+      "mae": 0.055273839348984326,
+      "points": 28,
+      "rmse": 0.06684412213784302,
+      "samples": 28,
+      "scenario": "master",
+      "target": "water_15bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.03500731234898064,
+      "function": "calc_ptf_lal1979_group_ii_water_15bar_from_clay",
+      "mae": 0.03500731234898064,
+      "points": 12,
+      "rmse": 0.036525303025767245,
+      "samples": 12,
+      "scenario": "podzolic_view",
+      "target": "water_15bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.1254639936144397,
+      "function": "calc_ptf_lal1979_group_ii_water_15bar_from_sand",
+      "mae": 0.1254639936144397,
+      "points": 10,
+      "rmse": 0.13176115078000383,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "water_15bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.1254639936144397,
+      "function": "calc_ptf_lal1979_group_ii_water_15bar_from_sand",
+      "mae": 0.1254639936144397,
+      "points": 10,
+      "rmse": 0.13176115078000383,
+      "samples": 10,
+      "scenario": "master",
+      "target": "water_15bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.07346664386986083,
+      "function": "calc_ptf_lal1979_group_ii_water_15bar_from_water_01bar",
+      "mae": 0.07346664386986083,
+      "points": 12,
+      "rmse": 0.07470956000112404,
+      "samples": 12,
+      "scenario": "chernozem_view",
+      "target": "water_15bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.06967006852348212,
+      "function": "calc_ptf_lal1979_group_ii_water_15bar_from_water_01bar",
+      "mae": 0.06967006852348212,
+      "points": 50,
+      "rmse": 0.0725373384844432,
+      "samples": 50,
+      "scenario": "master",
+      "target": "water_15bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.06809920328150676,
+      "function": "calc_ptf_lal1979_group_ii_water_15bar_from_water_01bar",
+      "mae": 0.06809920328150676,
+      "points": 12,
+      "rmse": 0.0700450645051902,
+      "samples": 12,
+      "scenario": "podzolic_view",
+      "target": "water_15bar",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.07603290353151483,
+      "function": "calc_ptf_myeni2021_fc",
+      "mae": 0.07603290353151483,
+      "points": 10,
+      "rmse": 0.09127424320274051,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "fc",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.07603290353151482,
+      "function": "calc_ptf_myeni2021_fc",
+      "mae": 0.07603290353151482,
+      "points": 10,
+      "rmse": 0.09127424320274051,
+      "samples": 10,
+      "scenario": "master",
+      "target": "fc",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.007187723747277655,
+      "function": "calc_ptf_myeni2021_pwp",
+      "mae": 0.01567097191431118,
+      "points": 10,
+      "rmse": 0.022458872028400096,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "pwp",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.007187723747277652,
+      "function": "calc_ptf_myeni2021_pwp",
+      "mae": 0.01567097191431118,
+      "points": 10,
+      "rmse": 0.022458872028400096,
+      "samples": 10,
+      "scenario": "master",
+      "target": "pwp",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.12213578381423096,
+      "function": "calc_ptf_oosterveld1980_field_capacity",
+      "mae": 0.12213578381423096,
+      "points": 8,
+      "rmse": 0.1327258731315567,
+      "samples": 8,
+      "scenario": "chernozem_view",
+      "target": "field_capacity_moisture",
+      "target_kind": "operational",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.12213578381423096,
+      "function": "calc_ptf_oosterveld1980_field_capacity",
+      "mae": 0.12213578381423096,
+      "points": 8,
+      "rmse": 0.1327258731315567,
+      "samples": 8,
+      "scenario": "master",
+      "target": "field_capacity_moisture",
+      "target_kind": "operational",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.09410152659740027,
+      "function": "calc_ptf_oosterveld1980_retention",
+      "mae": 0.09771283570005221,
+      "points": 144,
+      "rmse": 0.12465407567157515,
+      "samples": 8,
+      "scenario": "chernozem_view",
+      "target": "moisture_content",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.09410152659740027,
+      "function": "calc_ptf_oosterveld1980_retention",
+      "mae": 0.09771283570005221,
+      "points": 144,
+      "rmse": 0.12465407567157515,
+      "samples": 8,
+      "scenario": "master",
+      "target": "moisture_content",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.09586842778410835,
+      "function": "calc_ptf_oosterveld1980_wilting_point",
+      "mae": 0.09586842778410835,
+      "points": 8,
+      "rmse": 0.09909465756189847,
+      "samples": 8,
+      "scenario": "chernozem_view",
+      "target": "wilting_point_moisture",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.09586842778410835,
+      "function": "calc_ptf_oosterveld1980_wilting_point",
+      "mae": 0.09586842778410835,
+      "points": 8,
+      "rmse": 0.09909465756189847,
+      "samples": 8,
+      "scenario": "master",
+      "target": "wilting_point_moisture",
+      "target_kind": "fixed_pressure",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.03473303018472042,
+      "function": "calc_ptf_pidgeon1972_awc",
+      "mae": 0.03682888531736672,
+      "points": 17,
+      "rmse": 0.04346995923574225,
+      "samples": 17,
+      "scenario": "master",
+      "target": "available_water_capacity",
+      "target_kind": "operational",
+      "unit": "volume_fraction"
+    },
+    {
+      "bias": -0.03634890394568462,
+      "function": "calc_ptf_pidgeon1972_awc",
+      "mae": 0.039318032050266884,
+      "points": 12,
+      "rmse": 0.046546226642149496,
+      "samples": 12,
+      "scenario": "podzolic_view",
+      "target": "available_water_capacity",
+      "target_kind": "operational",
+      "unit": "volume_fraction"
+    },
+    {
+      "bias": -0.0061531613618606654,
+      "function": "calc_ptf_pidgeon1972_fc",
+      "mae": 0.02798759110582228,
+      "points": 10,
+      "rmse": 0.03182902229965443,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "field_capacity",
+      "target_kind": "operational",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": -0.0061531613618606654,
+      "function": "calc_ptf_pidgeon1972_fc",
+      "mae": 0.02798759110582228,
+      "points": 10,
+      "rmse": 0.03182902229965443,
+      "samples": 10,
+      "scenario": "master",
+      "target": "field_capacity",
+      "target_kind": "operational",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.009776809648198308,
+      "function": "calc_ptf_pidgeon1972_fc_sand",
+      "mae": 0.05640532309747337,
+      "points": 10,
+      "rmse": 0.0647433254639211,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "field_capacity",
+      "target_kind": "operational",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.009776809648198308,
+      "function": "calc_ptf_pidgeon1972_fc_sand",
+      "mae": 0.05640532309747337,
+      "points": 10,
+      "rmse": 0.0647433254639211,
+      "samples": 10,
+      "scenario": "master",
+      "target": "field_capacity",
+      "target_kind": "operational",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.06570616750605626,
+      "function": "calc_ptf_pidgeon1972_fc_sand_organic_matter",
+      "mae": 0.06821547197113664,
+      "points": 10,
+      "rmse": 0.07678655051627623,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "field_capacity",
+      "target_kind": "operational",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.06570616750605626,
+      "function": "calc_ptf_pidgeon1972_fc_sand_organic_matter",
+      "mae": 0.06821547197113664,
+      "points": 10,
+      "rmse": 0.07678655051627623,
+      "samples": 10,
+      "scenario": "master",
+      "target": "field_capacity",
+      "target_kind": "operational",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.0653841166130827,
+      "function": "calc_ptf_pidgeon1972_pwp",
+      "mae": 0.0653841166130827,
+      "points": 10,
+      "rmse": 0.06910440439862203,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "permanent_wilting_point",
+      "target_kind": "operational",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.06538411661308272,
+      "function": "calc_ptf_pidgeon1972_pwp",
+      "mae": 0.06538411661308272,
+      "points": 10,
+      "rmse": 0.06910440439862203,
+      "samples": 10,
+      "scenario": "master",
+      "target": "permanent_wilting_point",
+      "target_kind": "operational",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.12245863825908436,
+      "function": "calc_ptf_pidgeon1972_pwp_sand",
+      "mae": 0.12245863825908436,
+      "points": 10,
+      "rmse": 0.13030840011975423,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "permanent_wilting_point",
+      "target_kind": "operational",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.12245863825908436,
+      "function": "calc_ptf_pidgeon1972_pwp_sand",
+      "mae": 0.12245863825908436,
+      "points": 10,
+      "rmse": 0.13030840011975423,
+      "samples": 10,
+      "scenario": "master",
+      "target": "permanent_wilting_point",
+      "target_kind": "operational",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.18916723769051574,
+      "function": "calc_ptf_pidgeon1972_pwp_sand_organic_matter",
+      "mae": 0.18916723769051574,
+      "points": 10,
+      "rmse": 0.19389251901244156,
+      "samples": 10,
+      "scenario": "chernozem_view",
+      "target": "permanent_wilting_point",
+      "target_kind": "operational",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.18916723769051574,
+      "function": "calc_ptf_pidgeon1972_pwp_sand_organic_matter",
+      "mae": 0.18916723769051574,
+      "points": 10,
+      "rmse": 0.19389251901244156,
+      "samples": 10,
+      "scenario": "master",
+      "target": "permanent_wilting_point",
+      "target_kind": "operational",
+      "unit": "mass_fraction"
+    },
+    {
+      "bias": 0.01188485955830406,
+      "function": "calc_ptf_rawls1982_theta_1500",
+      "mae": 0.02717012112393605,
+      "points": 17,
+      "rmse": 0.03147166159551879,
+      "samples": 17,
+      "scenario": "master",
+      "target": "theta_1500",
+      "target_kind": "fixed_pressure",
+      "unit": "volume_fraction"
+    },
+    {
+      "bias": 0.0015948640302284947,
+      "function": "calc_ptf_rawls1982_theta_1500",
+      "mae": 0.023248984581540483,
+      "points": 12,
+      "rmse": 0.028105342470128823,
+      "samples": 12,
+      "scenario": "podzolic_view",
+      "target": "theta_1500",
+      "target_kind": "fixed_pressure",
+      "unit": "volume_fraction"
+    },
+    {
+      "bias": 0.016633481611931716,
+      "function": "calc_ptf_rawls2003_soc_theta33_tree",
+      "mae": 0.020486172001451825,
+      "points": 6,
+      "rmse": 0.024639845433329564,
+      "samples": 6,
+      "scenario": "master",
+      "target": "theta_33",
+      "target_kind": "fixed_pressure",
+      "unit": "volume_fraction"
+    },
+    {
+      "bias": 0.016633481611931716,
+      "function": "calc_ptf_rawls2003_soc_theta33_tree",
+      "mae": 0.020486172001451825,
+      "points": 6,
+      "rmse": 0.024639845433329564,
+      "samples": 6,
+      "scenario": "podzolic_view",
+      "target": "theta_33",
+      "target_kind": "fixed_pressure",
+      "unit": "volume_fraction"
+    },
+    {
+      "bias": -0.005075955549817984,
+      "function": "calc_ptf_saxton1986_calcptf_parameters",
+      "mae": 0.007283654736256516,
+      "points": 18,
+      "rmse": 0.014655432025438817,
+      "samples": 18,
+      "scenario": "chernozem_view",
+      "target": "theta_s",
+      "target_kind": "porosity_parameter",
+      "unit": "volume_fraction"
+    },
+    {
+      "bias": -0.01162748605830901,
+      "function": "calc_ptf_saxton1986_calcptf_parameters",
+      "mae": 0.01354259795519748,
+      "points": 21,
+      "rmse": 0.02857738887878206,
+      "samples": 21,
+      "scenario": "master",
+      "target": "theta_s",
+      "target_kind": "porosity_parameter",
+      "unit": "volume_fraction"
+    },
+    {
+      "bias": 5.1158023903196006e-05,
+      "function": "calc_ptf_saxton1986_calcptf_parameters",
+      "mae": 0.0006859169258475801,
+      "points": 9,
+      "rmse": 0.0008659118257331831,
+      "samples": 9,
+      "scenario": "thesis",
+      "target": "theta_s",
+      "target_kind": "porosity_parameter",
+      "unit": "volume_fraction"
+    },
+    {
+      "bias": 0.06003113420724974,
+      "function": "calc_ptf_saxton2006",
+      "mae": 0.11189248899671937,
+      "points": 37,
+      "rmse": 0.12630758453020147,
+      "samples": 37,
+      "scenario": "chernozem_view",
+      "target": "normal_density",
+      "target_kind": "direct_property",
+      "unit": "gram_per_cubic_centimeter"
+    },
+    {
+      "bias": -0.045791709250758414,
+      "function": "calc_ptf_saxton2006",
+      "mae": 0.1826680198647834,
+      "points": 110,
+      "rmse": 0.2282026373169065,
+      "samples": 110,
+      "scenario": "master",
+      "target": "normal_density",
+      "target_kind": "direct_property",
+      "unit": "gram_per_cubic_centimeter"
+    },
+    {
+      "bias": 0.21383957141377818,
+      "function": "calc_ptf_saxton2006",
+      "mae": 0.21383957141377818,
+      "points": 1,
+      "rmse": 0.21383957141377818,
+      "samples": 1,
+      "scenario": "podzolic_view",
+      "target": "normal_density",
+      "target_kind": "direct_property",
+      "unit": "gram_per_cubic_centimeter"
+    },
+    {
+      "bias": -0.09571100102342447,
+      "function": "calc_ptf_saxton2006",
+      "mae": 0.1388328934949185,
+      "points": 28,
+      "rmse": 0.15841424511576346,
+      "samples": 28,
+      "scenario": "thesis",
+      "target": "normal_density",
+      "target_kind": "direct_property",
+      "unit": "gram_per_cubic_centimeter"
+    },
+    {
+      "bias": -4.4627494527779175e-06,
+      "function": "calc_ptf_saxton2006",
+      "mae": 6.906831077890247e-06,
+      "points": 27,
+      "rmse": 8.38133430183112e-06,
+      "samples": 27,
+      "scenario": "thesis",
+      "target": "saturated_conductivity",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    },
+    {
+      "bias": 326148550.81562203,
+      "function": "calc_ptf_saxton2006_tension_dry",
+      "mae": 326150695.1004445,
+      "points": 476,
+      "rmse": 4733463396.972456,
+      "samples": 35,
+      "scenario": "master",
+      "target": "tension",
+      "target_kind": "inverse",
+      "unit": "kilopascal"
+    },
+    {
+      "bias": 422363632.29688287,
+      "function": "calc_ptf_saxton2006_tension_dry",
+      "mae": 422364645.4007442,
+      "points": 344,
+      "rmse": 5389282512.252853,
+      "samples": 27,
+      "scenario": "podzolic_view",
+      "target": "tension",
+      "target_kind": "inverse",
+      "unit": "kilopascal"
+    },
+    {
+      "bias": -0.0416240116272083,
+      "function": "calc_ptf_varallyai1982_chernozem_a",
+      "mae": 0.049557838004082935,
+      "points": 259,
+      "rmse": 0.06552793694426091,
+      "samples": 19,
+      "scenario": "master",
+      "target": "logistic_pressure_scale_v1",
+      "target_kind": "fixed_pressure",
+      "unit": "volume_fraction"
+    },
+    {
+      "bias": -0.05615183806195478,
+      "function": "calc_ptf_varallyai1982_chernozem_a",
+      "mae": 0.05686361660099335,
+      "points": 176,
+      "rmse": 0.07330722262635524,
+      "samples": 12,
+      "scenario": "podzolic_view",
+      "target": "logistic_pressure_scale_v1",
+      "target_kind": "fixed_pressure",
+      "unit": "volume_fraction"
+    },
+    {
+      "bias": -0.0231442947591337,
+      "function": "calc_ptf_varallyai1982_chernozem_b",
+      "mae": 0.036300625391208326,
+      "points": 259,
+      "rmse": 0.04826187229610394,
+      "samples": 19,
+      "scenario": "master",
+      "target": "logistic_pressure_scale_v1",
+      "target_kind": "fixed_pressure",
+      "unit": "volume_fraction"
+    },
+    {
+      "bias": -0.03432130312842851,
+      "function": "calc_ptf_varallyai1982_chernozem_b",
+      "mae": 0.03724326684773672,
+      "points": 176,
+      "rmse": 0.04981151607959831,
+      "samples": 12,
+      "scenario": "podzolic_view",
+      "target": "logistic_pressure_scale_v1",
+      "target_kind": "fixed_pressure",
+      "unit": "volume_fraction"
+    },
+    {
+      "bias": -0.046268469835227984,
+      "function": "calc_ptf_varallyai1982_chernozem_c",
+      "mae": 0.06233599819926519,
+      "points": 259,
+      "rmse": 0.0724845083725992,
+      "samples": 19,
+      "scenario": "master",
+      "target": "logistic_pressure_scale_v1",
+      "target_kind": "fixed_pressure",
+      "unit": "volume_fraction"
+    },
+    {
+      "bias": -0.06135659773845905,
+      "function": "calc_ptf_varallyai1982_chernozem_c",
+      "mae": 0.06201929481682015,
+      "points": 176,
+      "rmse": 0.07273913418954475,
+      "samples": 12,
+      "scenario": "podzolic_view",
+      "target": "logistic_pressure_scale_v1",
+      "target_kind": "fixed_pressure",
+      "unit": "volume_fraction"
+    },
+    {
+      "bias": 0.1004800990587131,
+      "function": "calc_ptf_wosten2001_loam_clay_table5",
+      "mae": 0.13983502805076903,
+      "points": 44,
+      "rmse": 0.19787248316316886,
+      "samples": 44,
+      "scenario": "chernozem_view",
+      "target": "bulk_density",
+      "target_kind": "direct_property",
+      "unit": "gram_per_cubic_centimeter"
+    },
+    {
+      "bias": -0.028667472012663193,
+      "function": "calc_ptf_wosten2001_loam_clay_table5",
+      "mae": 0.17157924077442002,
+      "points": 145,
+      "rmse": 0.263903326387262,
+      "samples": 145,
+      "scenario": "master",
+      "target": "bulk_density",
+      "target_kind": "direct_property",
+      "unit": "gram_per_cubic_centimeter"
+    },
+    {
+      "bias": 0.051608194291434734,
+      "function": "calc_ptf_wosten2001_loam_clay_table5",
+      "mae": 0.12732163338565328,
+      "points": 21,
+      "rmse": 0.1573102503985458,
+      "samples": 21,
+      "scenario": "podzolic_view",
+      "target": "bulk_density",
+      "target_kind": "direct_property",
+      "unit": "gram_per_cubic_centimeter"
+    },
+    {
+      "bias": -0.20901403820097425,
+      "function": "calc_ptf_wosten2001_loam_clay_table5",
+      "mae": 0.2383640004843715,
+      "points": 38,
+      "rmse": 0.386821605075969,
+      "samples": 38,
+      "scenario": "thesis",
+      "target": "bulk_density",
+      "target_kind": "direct_property",
+      "unit": "gram_per_cubic_centimeter"
+    },
+    {
+      "bias": -1.0635218306275769e-05,
+      "function": "calc_ptf_wosten2001_loam_clay_table5",
+      "mae": 1.168909320453108e-05,
+      "points": 36,
+      "rmse": 1.5731932552824732e-05,
+      "samples": 36,
+      "scenario": "thesis",
+      "target": "saturated_conductivity",
+      "target_kind": "ksat",
+      "unit": "meter_per_second"
+    }
+  ],
+  "native_extension_sha256": "0a36ee7df3ee79ce3008ae0f48d81d83dcc07fa7d5a3d227111fb7538fe6d52a",
+  "needs_user_decision": [
+    {
+      "function": "calc_ptf_dharumarajan2019_nkp",
+      "gains_overlap_between_interpretations": true,
+      "interpretations": [
+        {
+          "expected_coverage_gain": 0,
+          "feasible_executions": 0,
+          "interpretation": "gravimetric_water_content"
+        },
+        {
+          "expected_coverage_gain": 0,
+          "feasible_executions": 0,
+          "interpretation": "volumetric_water_content"
+        }
+      ],
+      "status": "needs_user_decision",
+      "workbook_field": "WRC water-content basis versus unspecified source output percentage"
+    },
+    {
+      "function": "calc_ptf_dharumarajan2019_nkp_clay",
+      "gains_overlap_between_interpretations": true,
+      "interpretations": [
+        {
+          "expected_coverage_gain": 1,
+          "feasible_executions": 100,
+          "interpretation": "gravimetric_water_content"
+        },
+        {
+          "expected_coverage_gain": 1,
+          "feasible_executions": 60,
+          "interpretation": "volumetric_water_content"
+        }
+      ],
+      "status": "needs_user_decision",
+      "workbook_field": "WRC water-content basis versus unspecified source output percentage"
+    },
+    {
+      "function": "calc_ptf_dharumarajan2019_skp",
+      "gains_overlap_between_interpretations": true,
+      "interpretations": [
+        {
+          "expected_coverage_gain": 0,
+          "feasible_executions": 0,
+          "interpretation": "gravimetric_water_content"
+        },
+        {
+          "expected_coverage_gain": 0,
+          "feasible_executions": 0,
+          "interpretation": "volumetric_water_content"
+        }
+      ],
+      "status": "needs_user_decision",
+      "workbook_field": "WRC water-content basis versus unspecified source output percentage"
+    },
+    {
+      "function": "calc_ptf_dharumarajan2019_skp_clay",
+      "gains_overlap_between_interpretations": true,
+      "interpretations": [
+        {
+          "expected_coverage_gain": 1,
+          "feasible_executions": 100,
+          "interpretation": "gravimetric_water_content"
+        },
+        {
+          "expected_coverage_gain": 1,
+          "feasible_executions": 60,
+          "interpretation": "volumetric_water_content"
+        }
+      ],
+      "status": "needs_user_decision",
+      "workbook_field": "WRC water-content basis versus unspecified source output percentage"
+    }
+  ],
+  "new_functions": [
+    "calc_ptf_bruand1994_bulk_volume_available_water",
+    "calc_ptf_bruand1994_bulk_volume_water_retention",
+    "calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand",
+    "calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_calcaric_regosol_sand",
+    "calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_calcic_cambisol_sand",
+    "calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_calcic_luvisol_sand",
+    "calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_campbell_shiozawa",
+    "calc_ptf_ferrerjulia2004_chromic_luvisol_sand",
+    "calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_cosby",
+    "calc_ptf_ferrerjulia2004_dane_puckett",
+    "calc_ptf_ferrerjulia2004_dystric_cambisol_sand",
+    "calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_dystric_regosol_sand",
+    "calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_eutric_cambisol_sand",
+    "calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_eutric_regosol_sand",
+    "calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_general_sand",
+    "calc_ptf_ferrerjulia2004_general_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_gleyic_cambisol_sand",
+    "calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_gleyic_luvisol_sand",
+    "calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_gleyic_solonchak_sand",
+    "calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_humic_acrisol_sand",
+    "calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_humic_cambisol_sand",
+    "calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_orthic_luvisol_sand",
+    "calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_puckett",
+    "calc_ptf_ferrerjulia2004_ranker_sand",
+    "calc_ptf_ferrerjulia2004_ranker_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_rendzina_sand",
+    "calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter",
+    "calc_ptf_ferrerjulia2004_saxton",
+    "calc_ptf_lal1979_group_i_lower_plastic_limit_from_clay",
+    "calc_ptf_lal1979_group_i_lower_plastic_limit_from_sand",
+    "calc_ptf_lal1979_group_i_plasticity_index_from_clay",
+    "calc_ptf_lal1979_group_i_plasticity_index_from_sand",
+    "calc_ptf_lal1979_group_i_upper_plastic_limit_from_clay",
+    "calc_ptf_lal1979_group_ii_lower_plastic_limit_from_clay",
+    "calc_ptf_lal1979_group_ii_lower_plastic_limit_from_sand",
+    "calc_ptf_lal1979_group_ii_lower_plastic_limit_from_silt",
+    "calc_ptf_lal1979_group_ii_plasticity_index_from_silt",
+    "calc_ptf_lal1979_group_ii_upper_plastic_limit_from_clay",
+    "calc_ptf_lal1979_group_ii_upper_plastic_limit_from_sand",
+    "calc_ptf_lal1979_group_ii_upper_plastic_limit_from_silt",
+    "calc_ptf_oosterveld1980_field_capacity",
+    "calc_ptf_pidgeon1972_awc",
+    "calc_ptf_pidgeon1972_fc",
+    "calc_ptf_pidgeon1972_fc_sand",
+    "calc_ptf_pidgeon1972_fc_sand_organic_matter",
+    "calc_ptf_pidgeon1972_pwp",
+    "calc_ptf_pidgeon1972_pwp_sand",
+    "calc_ptf_pidgeon1972_pwp_sand_organic_matter",
+    "calc_ptf_saxton1986_calcptf_parameters",
+    "calc_ptf_saxton2006_tension_dry"
+  ],
+  "predictor_cells_used": 4064,
+  "predictor_usage": {
+    "bulk_density": 1353,
+    "bulk_volume": 86,
+    "clay": 2547,
+    "fine_fraction": 1305,
+    "mean_depth": 320,
+    "organic_matter": 1165,
+    "particle_density": 48,
+    "sand": 2194,
+    "silt": 532,
+    "soc": 40,
+    "soil_organic_carbon": 12,
+    "soil_organic_matter": 404,
+    "soil_texture": 210,
+    "theta": 820,
+    "theta_1500": 820,
+    "theta_33": 820,
+    "water_01bar": 195
+  },
+  "protocol": "workbook_semantic_exploratory_v1",
+  "recommendation": null,
+  "specification_sha256": {
+    "specs/definitions/soil.yaml": "f4a0c257e75df74c7edc737f77b7f96d65bff1e589e617296a87cdb458a4432c",
+    "specs/functions/ahuja1984.yaml": "d19a9cd9fbd90b651a6b5b30fd5939a9e56804aed4f838f38fbc683ce42f41e9",
+    "specs/functions/aimrun2009.yaml": "e30cc53d458f0de05a606a8a1726802fa3489ff07521b2a2d4add90b90270bf9",
+    "specs/functions/bai2022.yaml": "5882c8ee9dea316147b9cb3ffe0fbba1f8651ca9d9601dcf46622634c8b6e1ef",
+    "specs/functions/beniaich2023.yaml": "3ec729f1a0848d051c4355e7185d993ee77d8308ac6fded02d6aaaeafa3e6829",
+    "specs/functions/bruand1994.yaml": "7a5e83105b4838186efa36eb67b695d07863324cf2e19db730e86027583afc72",
+    "specs/functions/chakraborty2011.yaml": "8bcf646c1e3b47a02060cae970ff42bdfa8f11540ebc8649a7b36558d4aaded2",
+    "specs/functions/clapp1978.yaml": "d2b3c18559389b57d680b8a74fca7416aff44ddf22244f14d8dbb29353aa11cb",
+    "specs/functions/cosby1984.yaml": "73c655a55a4035ace46560d82360d43dd51f5635747dbfae680e9a1bf7389ddf",
+    "specs/functions/dharumarajan2019.yaml": "834143488ddb1d51b288da842701fdbb660a6f6a911b3a14944ff147c1ca5f49",
+    "specs/functions/dijkerman1988.yaml": "71f428165fee7ae119dff6fe34aab3f745c01b15f9b256be394b30e8a85e4e6a",
+    "specs/functions/ferrerjulia2004.yaml": "e75d3fe9caad15cae8417b3dce2749cedd4210fb6366c37630152011dc94dc64",
+    "specs/functions/gunarathna2019.yaml": "8eeb87e15be4d0768becdfe4f641f5227a08a6be05ab30ee8ef1a69973d52387",
+    "specs/functions/gupta1979.yaml": "9b0d5bf9ae408a5bce2d6130413c51c901312e8ebdc1aaef3b80394610e3fa1e",
+    "specs/functions/hodnett2002.yaml": "9bc3563707bb540b70f4e5e150a2d9b6ccf9e93ae5d677dcf46682a39b738e4a",
+    "specs/functions/jabro1992.yaml": "b5a140148dc6d042bc4b876a631e1a4265c72daf07f68e9bd30eee180dde3028",
+    "specs/functions/kalumba2021.yaml": "d52fa8df38b00fff93772c17d7627edd5b66135bef1841b77a7ef8f9ff021c42",
+    "specs/functions/lal1979.yaml": "2cbec2003bb3695480d22bd31fe8adaab6a6ae67a1978baeb3fb513d820d516b",
+    "specs/functions/li2007.yaml": "36fe405c4689046b422b9efa5ea60e8f3e3fc51f9f477263e30e5043b02fd153",
+    "specs/functions/mayr1999.yaml": "66e63536f6f2aa5dfc9fa83f131c57e97399078bc78132a214c98559059e7378",
+    "specs/functions/myeni2021.yaml": "a4801051e82868ccab3c789e00b326c5951a527604348830fb84c8039c929681",
+    "specs/functions/oosterveld1980.yaml": "2ae2b238a1d3bea151ae9096905b96ae0144004551983343e09b2741f30762ed",
+    "specs/functions/ottoni2019.yaml": "396fd0c8a987f2967bc7b53e128259da7ee1d1f3e65a4dbdeb40f6fdec355b9b",
+    "specs/functions/pidgeon1972.yaml": "38f8a83cfe2b8dcae5b60a52c00c2db9b1a61b01b70865ef96aeaf5ec1722fcd",
+    "specs/functions/puckett1985.yaml": "a37aaa25c1f64b2387cac6f495781670b781b49ea976a105feb5a6a550756edf",
+    "specs/functions/rawls1982.yaml": "208179f0bf6fc46247bd1cfde235f90eda284439c9b49b3a9189fd9486ba4a81",
+    "specs/functions/rawls2003.yaml": "6b5f9ec4441c90b712b88ad975b1d4bdd1953a4c14997d0942549b7fa1228bea",
+    "specs/functions/saxton1986.yaml": "baa99cdc759d3a24e55e4437ab7e6145bbe9e574538ebceb0d5d891314f4892c",
+    "specs/functions/saxton2006.yaml": "71036c2224856056d59fcc01b49e3d6b40c3d3c7b79da0e333aa9e32bbb3e65e",
+    "specs/functions/tiwary2014.yaml": "a37ecf9377b4951813e89b7434b24da5254b6b0625c8aeb2f6ea9deb8e7215ae",
+    "specs/functions/tomasella1998.yaml": "6319f6b4102bc1bfba7baf561251448dd701241e3cdbc81572fcbc104fee7f9d",
+    "specs/functions/varallyai1982.yaml": "534b8ac11ae9d5c959f68a606c5059e642f6f3d7090054c98609e6230e2e4762",
+    "specs/functions/vereecken1989.yaml": "3ed65e917f7e501d26eed8eee806ddd67b15efc39057681e1445374d810ca793",
+    "specs/functions/wang2012.yaml": "5458e627916e2c6362b38598f8895b41a76239972eccba1b9ad70d64ff400065",
+    "specs/functions/wang2022.yaml": "d70443ae699a78c47de7b5dc6813b207f22d215861eab6032021e39192b9c32d",
+    "specs/functions/weber2020.yaml": "fdd82d33cfb9426c17612a75b41cf9d74d42d6049d1f70992ed1de4c1fb5d38c",
+    "specs/functions/weynants2009.yaml": "55a8ea80d563f7da283e42b1a051c2ede1b71bd9c6975cd5de233db05cf0061a",
+    "specs/functions/williams1992.yaml": "a6ad8e15079ac1583f6826d9c1a8983312d6b57437757d79f94b726da5c1b4e2",
+    "specs/functions/wosten2001.yaml": "45193a68790ef876ca237eeac88f8e4a700457dbe0010630f8c379510fd5bc26",
+    "specs/functions/zhao2016.yaml": "d4e84112a6e0dd7e7673d183a15547086421008638e2fdc708723ea1bd6f1193",
+    "specs/quantities.yaml": "fd173077e5e96fe8b091c211703b1e35100dcd0004d02a8f79be33336482995d",
+    "specs/units.yaml": "3a034c126e2cbe495747382713440ac771405fca6acd2809284d2ff4d2b4f0ec"
+  },
+  "target_cells_by_kind": {
+    "direct_property": 248,
+    "fixed_pressure": 3239,
+    "inverse": 2150,
+    "ksat": 36,
+    "operational": 734,
+    "plasticity": 14,
+    "porosity_parameter": 50,
+    "pressure_difference": 726
+  },
+  "target_cells_used": 4426,
+  "target_usage": {
+    "direct_property": 424,
+    "fixed_pressure": 3407,
+    "inverse": 820,
+    "ksat": 1305,
+    "operational": 165,
+    "plasticity": 75,
+    "porosity_parameter": 74,
+    "pressure_difference": 42
+  }
+}

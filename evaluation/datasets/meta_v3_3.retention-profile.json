@@ -1,0 +1,1299 @@
+{
+  "fitted_parameter_count": 92,
+  "missing_source_count": 0,
+  "observation_count": 1755,
+  "schema_version": 1,
+  "sha256": "1322bf65b1ca0130085015209858a443d1ee82a7e2ae69232321cd8ede361e68",
+  "sheet_name": "ОГХ",
+  "source_count": 27,
+  "source_filename": "meta_v3.3.xlsx",
+  "sources": [
+    {
+      "encodings": [
+        {
+          "first_row": 2,
+          "last_row": 25,
+          "pressure_encoding": "pF",
+          "pressure_values": {
+            "above_one_count": 20,
+            "at_most_one_count": 4,
+            "maximum": 3.0,
+            "minimum": 0.01,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 24,
+            "positive_count": 24,
+            "zero_count": 0
+          },
+          "row_count": 24,
+          "sample_count": 4,
+          "water_encoding": "W",
+          "water_values": {
+            "above_one_count": 24,
+            "at_most_one_count": 0,
+            "maximum": 57.1,
+            "minimum": 20.0,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 24,
+            "positive_count": 24,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 0,
+      "fitted_parameters": [],
+      "missing_sample_number_count": 0,
+      "observation_count": 24,
+      "row_count": 24,
+      "sample_count": 4,
+      "source": "1987_Сапожников",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [
+        {
+          "first_row": 26,
+          "last_row": 133,
+          "pressure_encoding": "pF",
+          "pressure_values": {
+            "above_one_count": 96,
+            "at_most_one_count": 12,
+            "maximum": 6.43,
+            "minimum": -1.0,
+            "missing_count": 0,
+            "negative_count": 12,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 108,
+            "positive_count": 96,
+            "zero_count": 0
+          },
+          "row_count": 108,
+          "sample_count": 12,
+          "water_encoding": "?",
+          "water_values": {
+            "above_one_count": 108,
+            "at_most_one_count": 0,
+            "maximum": 66.3,
+            "minimum": 5.7,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 108,
+            "positive_count": 108,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 0,
+      "fitted_parameters": [],
+      "missing_sample_number_count": 0,
+      "observation_count": 108,
+      "row_count": 108,
+      "sample_count": 12,
+      "source": "1988_сапожников",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [
+        {
+          "first_row": 134,
+          "last_row": 323,
+          "pressure_encoding": "pF",
+          "pressure_values": {
+            "above_one_count": 171,
+            "at_most_one_count": 19,
+            "maximum": 6.5,
+            "minimum": 1.0,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 190,
+            "positive_count": 190,
+            "zero_count": 0
+          },
+          "row_count": 190,
+          "sample_count": 19,
+          "water_encoding": "W",
+          "water_values": {
+            "above_one_count": 0,
+            "at_most_one_count": 190,
+            "maximum": 0.536,
+            "minimum": 0.008,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 190,
+            "positive_count": 190,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 0,
+      "fitted_parameters": [],
+      "missing_sample_number_count": 0,
+      "observation_count": 190,
+      "row_count": 190,
+      "sample_count": 19,
+      "source": "1991_Гуматов",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [
+        {
+          "first_row": 324,
+          "last_row": 333,
+          "pressure_encoding": "mPa",
+          "pressure_values": {
+            "above_one_count": 5,
+            "at_most_one_count": 5,
+            "maximum": 140.0,
+            "minimum": 0.001,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 10,
+            "positive_count": 10,
+            "zero_count": 0
+          },
+          "row_count": 10,
+          "sample_count": 1,
+          "water_encoding": "W",
+          "water_values": {
+            "above_one_count": 0,
+            "at_most_one_count": 10,
+            "maximum": 0.405,
+            "minimum": 0.016,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 10,
+            "positive_count": 10,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 0,
+      "fitted_parameters": [],
+      "missing_sample_number_count": 0,
+      "observation_count": 10,
+      "row_count": 10,
+      "sample_count": 1,
+      "source": "1992_Гуматов",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [
+        {
+          "first_row": 334,
+          "last_row": 387,
+          "pressure_encoding": "kPa",
+          "pressure_values": {
+            "above_one_count": 48,
+            "at_most_one_count": 6,
+            "maximum": 731.53,
+            "minimum": 0.36,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 54,
+            "positive_count": 54,
+            "zero_count": 0
+          },
+          "row_count": 54,
+          "sample_count": 7,
+          "water_encoding": "W",
+          "water_values": {
+            "above_one_count": 54,
+            "at_most_one_count": 0,
+            "maximum": 47.9435,
+            "minimum": 8.96582,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 54,
+            "positive_count": 54,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 0,
+      "fitted_parameters": [],
+      "missing_sample_number_count": 0,
+      "observation_count": 54,
+      "row_count": 54,
+      "sample_count": 7,
+      "source": "2001_хайдапова",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [],
+      "fitted_parameter_count": 20,
+      "fitted_parameters": [
+        {
+          "count": 5,
+          "label": "Qr"
+        },
+        {
+          "count": 5,
+          "label": "Qs"
+        },
+        {
+          "count": 5,
+          "label": "a"
+        },
+        {
+          "count": 5,
+          "label": "n"
+        }
+      ],
+      "missing_sample_number_count": 0,
+      "observation_count": 0,
+      "row_count": 20,
+      "sample_count": 5,
+      "source": "2007_кокарева",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [
+        {
+          "first_row": 408,
+          "last_row": 488,
+          "pressure_encoding": "pF",
+          "pressure_values": {
+            "above_one_count": 72,
+            "at_most_one_count": 9,
+            "maximum": 6.43,
+            "minimum": -1.0,
+            "missing_count": 0,
+            "negative_count": 6,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 81,
+            "positive_count": 75,
+            "zero_count": 0
+          },
+          "row_count": 81,
+          "sample_count": 6,
+          "water_encoding": "W",
+          "water_values": {
+            "above_one_count": 80,
+            "at_most_one_count": 1,
+            "maximum": 82.98,
+            "minimum": 0.98,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 81,
+            "positive_count": 81,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 0,
+      "fitted_parameters": [],
+      "missing_sample_number_count": 0,
+      "observation_count": 81,
+      "row_count": 81,
+      "sample_count": 6,
+      "source": "2007_пестонова",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [
+        {
+          "first_row": 489,
+          "last_row": 569,
+          "pressure_encoding": "pF",
+          "pressure_values": {
+            "above_one_count": 63,
+            "at_most_one_count": 18,
+            "maximum": 6.43,
+            "minimum": 0.01,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 81,
+            "positive_count": 81,
+            "zero_count": 0
+          },
+          "row_count": 81,
+          "sample_count": 10,
+          "water_encoding": "?",
+          "water_values": {
+            "above_one_count": 81,
+            "at_most_one_count": 0,
+            "maximum": 51.12,
+            "minimum": 1.78,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 81,
+            "positive_count": 81,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 0,
+      "fitted_parameters": [],
+      "missing_sample_number_count": 0,
+      "observation_count": 81,
+      "row_count": 81,
+      "sample_count": 10,
+      "source": "2008_Умарова",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [
+        {
+          "first_row": 570,
+          "last_row": 688,
+          "pressure_encoding": "pF",
+          "pressure_values": {
+            "above_one_count": 119,
+            "at_most_one_count": 0,
+            "maximum": 6.42,
+            "minimum": 2.7173740960694226,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 119,
+            "positive_count": 119,
+            "zero_count": 0
+          },
+          "row_count": 119,
+          "sample_count": 24,
+          "water_encoding": "W",
+          "water_values": {
+            "above_one_count": 56,
+            "at_most_one_count": 63,
+            "maximum": 38.5,
+            "minimum": 0.15,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 119,
+            "positive_count": 119,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 0,
+      "fitted_parameters": [],
+      "missing_sample_number_count": 0,
+      "observation_count": 119,
+      "row_count": 119,
+      "sample_count": 24,
+      "source": "2008_шваров",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [
+        {
+          "first_row": 689,
+          "last_row": 712,
+          "pressure_encoding": "pF",
+          "pressure_values": {
+            "above_one_count": 18,
+            "at_most_one_count": 6,
+            "maximum": 3.98983,
+            "minimum": -1.0,
+            "missing_count": 0,
+            "negative_count": 3,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 24,
+            "positive_count": 21,
+            "zero_count": 0
+          },
+          "row_count": 24,
+          "sample_count": 3,
+          "water_encoding": "?",
+          "water_values": {
+            "above_one_count": 0,
+            "at_most_one_count": 24,
+            "maximum": 0.737404,
+            "minimum": 0.180558,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 24,
+            "positive_count": 24,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 0,
+      "fitted_parameters": [],
+      "missing_sample_number_count": 0,
+      "observation_count": 24,
+      "row_count": 24,
+      "sample_count": 3,
+      "source": "2009_Смагин",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [
+        {
+          "first_row": 713,
+          "last_row": 777,
+          "pressure_encoding": "pF",
+          "pressure_values": {
+            "above_one_count": 55,
+            "at_most_one_count": 10,
+            "maximum": 5.55917,
+            "minimum": -1.0,
+            "missing_count": 0,
+            "negative_count": 3,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 65,
+            "positive_count": 59,
+            "zero_count": 3
+          },
+          "row_count": 65,
+          "sample_count": 3,
+          "water_encoding": "?",
+          "water_values": {
+            "above_one_count": 0,
+            "at_most_one_count": 65,
+            "maximum": 0.451533,
+            "minimum": 0.00306565,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 65,
+            "positive_count": 65,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 0,
+      "fitted_parameters": [],
+      "missing_sample_number_count": 0,
+      "observation_count": 65,
+      "row_count": 65,
+      "sample_count": 3,
+      "source": "2009_Чудинова",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [
+        {
+          "first_row": 778,
+          "last_row": 840,
+          "pressure_encoding": "pF",
+          "pressure_values": {
+            "above_one_count": 41,
+            "at_most_one_count": 22,
+            "maximum": 3.24012,
+            "minimum": -0.465663,
+            "missing_count": 0,
+            "negative_count": 5,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 63,
+            "positive_count": 58,
+            "zero_count": 0
+          },
+          "row_count": 63,
+          "sample_count": 5,
+          "water_encoding": "?",
+          "water_values": {
+            "above_one_count": 63,
+            "at_most_one_count": 0,
+            "maximum": 177.062,
+            "minimum": 11.0541,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 63,
+            "positive_count": 63,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 0,
+      "fitted_parameters": [],
+      "missing_sample_number_count": 0,
+      "observation_count": 63,
+      "row_count": 63,
+      "sample_count": 5,
+      "source": "2011_Садовникова",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [
+        {
+          "first_row": 841,
+          "last_row": 870,
+          "pressure_encoding": "давление над солями",
+          "pressure_values": {
+            "above_one_count": 0,
+            "at_most_one_count": 30,
+            "maximum": 0.987849,
+            "minimum": 0.150055,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 30,
+            "positive_count": 30,
+            "zero_count": 0
+          },
+          "row_count": 30,
+          "sample_count": 6,
+          "water_encoding": "?",
+          "water_values": {
+            "above_one_count": 30,
+            "at_most_one_count": 0,
+            "maximum": 9.72063,
+            "minimum": 1.87887,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 30,
+            "positive_count": 30,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 0,
+      "fitted_parameters": [],
+      "missing_sample_number_count": 0,
+      "observation_count": 30,
+      "row_count": 30,
+      "sample_count": 6,
+      "source": "2011_шеин",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [
+        {
+          "first_row": 871,
+          "last_row": 898,
+          "pressure_encoding": "pF",
+          "pressure_values": {
+            "above_one_count": 13,
+            "at_most_one_count": 15,
+            "maximum": 2.18239,
+            "minimum": -2.32622,
+            "missing_count": 0,
+            "negative_count": 6,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 28,
+            "positive_count": 22,
+            "zero_count": 0
+          },
+          "row_count": 28,
+          "sample_count": 4,
+          "water_encoding": "?",
+          "water_values": {
+            "above_one_count": 0,
+            "at_most_one_count": 28,
+            "maximum": 0.40089,
+            "minimum": 0.000543,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 28,
+            "positive_count": 28,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 0,
+      "fitted_parameters": [],
+      "missing_sample_number_count": 0,
+      "observation_count": 28,
+      "row_count": 28,
+      "sample_count": 4,
+      "source": "2012_васюков",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [
+        {
+          "first_row": 899,
+          "last_row": 925,
+          "pressure_encoding": "kPa",
+          "pressure_values": {
+            "above_one_count": 24,
+            "at_most_one_count": 3,
+            "maximum": 808.0,
+            "minimum": 0.0,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 27,
+            "positive_count": 24,
+            "zero_count": 3
+          },
+          "row_count": 27,
+          "sample_count": 3,
+          "water_encoding": "W",
+          "water_values": {
+            "above_one_count": 25,
+            "at_most_one_count": 0,
+            "maximum": 63.76,
+            "minimum": 3.17,
+            "missing_count": 2,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 25,
+            "positive_count": 25,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 0,
+      "fitted_parameters": [],
+      "missing_sample_number_count": 0,
+      "observation_count": 27,
+      "row_count": 27,
+      "sample_count": 3,
+      "source": "2012_манучарова",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [
+        {
+          "first_row": 926,
+          "last_row": 979,
+          "pressure_encoding": "pF",
+          "pressure_values": {
+            "above_one_count": 24,
+            "at_most_one_count": 6,
+            "maximum": 4.45,
+            "minimum": 0.0145752,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 30,
+            "positive_count": 30,
+            "zero_count": 0
+          },
+          "row_count": 30,
+          "sample_count": 16,
+          "water_encoding": "Q",
+          "water_values": {
+            "above_one_count": 0,
+            "at_most_one_count": 30,
+            "maximum": 0.664959,
+            "minimum": 0.103583,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 30,
+            "positive_count": 30,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 24,
+      "fitted_parameters": [
+        {
+          "count": 6,
+          "label": "Qr"
+        },
+        {
+          "count": 6,
+          "label": "Qs"
+        },
+        {
+          "count": 6,
+          "label": "a"
+        },
+        {
+          "count": 6,
+          "label": "n"
+        }
+      ],
+      "missing_sample_number_count": 0,
+      "observation_count": 30,
+      "row_count": 54,
+      "sample_count": 22,
+      "source": "2012_Шеин",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [
+        {
+          "first_row": 980,
+          "last_row": 1087,
+          "pressure_encoding": "kPa",
+          "pressure_values": {
+            "above_one_count": 90,
+            "at_most_one_count": 18,
+            "maximum": 1520.0,
+            "minimum": 0.0,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 108,
+            "positive_count": 90,
+            "zero_count": 18
+          },
+          "row_count": 108,
+          "sample_count": 14,
+          "water_encoding": "?",
+          "water_values": {
+            "above_one_count": 0,
+            "at_most_one_count": 108,
+            "maximum": 0.523,
+            "minimum": 0.032,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 108,
+            "positive_count": 108,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 0,
+      "fitted_parameters": [],
+      "missing_sample_number_count": 0,
+      "observation_count": 108,
+      "row_count": 108,
+      "sample_count": 14,
+      "source": "2013_баденко",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [
+        {
+          "first_row": 1088,
+          "last_row": 1255,
+          "pressure_encoding": "pF",
+          "pressure_values": {
+            "above_one_count": 84,
+            "at_most_one_count": 84,
+            "maximum": 3.05,
+            "minimum": -0.592095,
+            "missing_count": 0,
+            "negative_count": 36,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 168,
+            "positive_count": 132,
+            "zero_count": 0
+          },
+          "row_count": 168,
+          "sample_count": 12,
+          "water_encoding": "Q",
+          "water_values": {
+            "above_one_count": 0,
+            "at_most_one_count": 167,
+            "maximum": 0.525145,
+            "minimum": 0.0420339,
+            "missing_count": 1,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 167,
+            "positive_count": 167,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 0,
+      "fitted_parameters": [],
+      "missing_sample_number_count": 0,
+      "observation_count": 168,
+      "row_count": 168,
+      "sample_count": 12,
+      "source": "2014_Болотов",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [
+        {
+          "first_row": 1256,
+          "last_row": 1280,
+          "pressure_encoding": "ПГК",
+          "pressure_values": {
+            "above_one_count": 0,
+            "at_most_one_count": 0,
+            "maximum": null,
+            "minimum": null,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 25,
+            "numeric_count": 0,
+            "positive_count": 0,
+            "zero_count": 0
+          },
+          "row_count": 25,
+          "sample_count": 5,
+          "water_encoding": "W",
+          "water_values": {
+            "above_one_count": 25,
+            "at_most_one_count": 0,
+            "maximum": 67.59,
+            "minimum": 1.36,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 25,
+            "positive_count": 25,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 0,
+      "fitted_parameters": [],
+      "missing_sample_number_count": 0,
+      "observation_count": 25,
+      "row_count": 25,
+      "sample_count": 5,
+      "source": "2014_Макарычев-1",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [
+        {
+          "first_row": 1281,
+          "last_row": 1315,
+          "pressure_encoding": "ПГК",
+          "pressure_values": {
+            "above_one_count": 0,
+            "at_most_one_count": 0,
+            "maximum": null,
+            "minimum": null,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 35,
+            "numeric_count": 0,
+            "positive_count": 0,
+            "zero_count": 0
+          },
+          "row_count": 35,
+          "sample_count": 7,
+          "water_encoding": "W",
+          "water_values": {
+            "above_one_count": 35,
+            "at_most_one_count": 0,
+            "maximum": 43.14,
+            "minimum": 4.37,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 35,
+            "positive_count": 35,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 0,
+      "fitted_parameters": [],
+      "missing_sample_number_count": 0,
+      "observation_count": 35,
+      "row_count": 35,
+      "sample_count": 7,
+      "source": "2014_Макарычев-2",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [
+        {
+          "first_row": 1316,
+          "last_row": 1371,
+          "pressure_encoding": "pF",
+          "pressure_values": {
+            "above_one_count": 28,
+            "at_most_one_count": 28,
+            "maximum": 3.0294100000000004,
+            "minimum": -0.6049614999999999,
+            "missing_count": 0,
+            "negative_count": 12,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 56,
+            "positive_count": 44,
+            "zero_count": 0
+          },
+          "row_count": 56,
+          "sample_count": 4,
+          "water_encoding": "Q",
+          "water_values": {
+            "above_one_count": 0,
+            "at_most_one_count": 56,
+            "maximum": 0.620227,
+            "minimum": 0.0605487,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 56,
+            "positive_count": 56,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 0,
+      "fitted_parameters": [],
+      "missing_sample_number_count": 0,
+      "observation_count": 56,
+      "row_count": 56,
+      "sample_count": 4,
+      "source": "2014_Макарычев-3",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [
+        {
+          "first_row": 1372,
+          "last_row": 1551,
+          "pressure_encoding": "pF",
+          "pressure_values": {
+            "above_one_count": 120,
+            "at_most_one_count": 12,
+            "maximum": 6.42,
+            "minimum": -1.0,
+            "missing_count": 0,
+            "negative_count": 12,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 132,
+            "positive_count": 120,
+            "zero_count": 0
+          },
+          "row_count": 132,
+          "sample_count": 27,
+          "water_encoding": "Q",
+          "water_values": {
+            "above_one_count": 123,
+            "at_most_one_count": 9,
+            "maximum": 50.93,
+            "minimum": 0.14,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 132,
+            "positive_count": 132,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 48,
+      "fitted_parameters": [
+        {
+          "count": 12,
+          "label": "Qr"
+        },
+        {
+          "count": 12,
+          "label": "Qs"
+        },
+        {
+          "count": 12,
+          "label": "a"
+        },
+        {
+          "count": 12,
+          "label": "n"
+        }
+      ],
+      "missing_sample_number_count": 0,
+      "observation_count": 132,
+      "row_count": 180,
+      "sample_count": 28,
+      "source": "2015_панина",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [
+        {
+          "first_row": 1552,
+          "last_row": 1568,
+          "pressure_encoding": "pF",
+          "pressure_values": {
+            "above_one_count": 13,
+            "at_most_one_count": 4,
+            "maximum": 6.5,
+            "minimum": -1.0,
+            "missing_count": 0,
+            "negative_count": 2,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 17,
+            "positive_count": 15,
+            "zero_count": 0
+          },
+          "row_count": 17,
+          "sample_count": 2,
+          "water_encoding": "Q",
+          "water_values": {
+            "above_one_count": 16,
+            "at_most_one_count": 1,
+            "maximum": 40.01,
+            "minimum": 0.98,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 17,
+            "positive_count": 17,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 0,
+      "fitted_parameters": [],
+      "missing_sample_number_count": 0,
+      "observation_count": 17,
+      "row_count": 17,
+      "sample_count": 2,
+      "source": "2016_сидорова",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [
+        {
+          "first_row": 1569,
+          "last_row": 1698,
+          "pressure_encoding": "pF",
+          "pressure_values": {
+            "above_one_count": 120,
+            "at_most_one_count": 10,
+            "maximum": 6.48066,
+            "minimum": 0.620453,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 130,
+            "positive_count": 130,
+            "zero_count": 0
+          },
+          "row_count": 130,
+          "sample_count": 10,
+          "water_encoding": "?",
+          "water_values": {
+            "above_one_count": 130,
+            "at_most_one_count": 0,
+            "maximum": 57.0899,
+            "minimum": 1.47746,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 130,
+            "positive_count": 130,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 0,
+      "fitted_parameters": [],
+      "missing_sample_number_count": 0,
+      "observation_count": 130,
+      "row_count": 130,
+      "sample_count": 10,
+      "source": "2017_Честнова",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [
+        {
+          "first_row": 1699,
+          "last_row": 1794,
+          "pressure_encoding": "pF",
+          "pressure_values": {
+            "above_one_count": 64,
+            "at_most_one_count": 32,
+            "maximum": 4.0,
+            "minimum": -1.0,
+            "missing_count": 0,
+            "negative_count": 16,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 96,
+            "positive_count": 80,
+            "zero_count": 0
+          },
+          "row_count": 96,
+          "sample_count": 16,
+          "water_encoding": "W",
+          "water_values": {
+            "above_one_count": 96,
+            "at_most_one_count": 0,
+            "maximum": 69.02,
+            "minimum": 1.49,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 96,
+            "positive_count": 96,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 0,
+      "fitted_parameters": [],
+      "missing_sample_number_count": 0,
+      "observation_count": 96,
+      "row_count": 96,
+      "sample_count": 16,
+      "source": "2018_Макарычев",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [
+        {
+          "first_row": 1795,
+          "last_row": 1823,
+          "pressure_encoding": "pF",
+          "pressure_values": {
+            "above_one_count": 23,
+            "at_most_one_count": 6,
+            "maximum": 32.0,
+            "minimum": -1.0,
+            "missing_count": 0,
+            "negative_count": 3,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 29,
+            "positive_count": 26,
+            "zero_count": 0
+          },
+          "row_count": 29,
+          "sample_count": 3,
+          "water_encoding": "Q",
+          "water_values": {
+            "above_one_count": 29,
+            "at_most_one_count": 0,
+            "maximum": 78.2,
+            "minimum": 1.1,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 29,
+            "positive_count": 29,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 0,
+      "fitted_parameters": [],
+      "missing_sample_number_count": 0,
+      "observation_count": 29,
+      "row_count": 29,
+      "sample_count": 3,
+      "source": "2018_моисеев",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    },
+    {
+      "encodings": [
+        {
+          "first_row": 1824,
+          "last_row": 1848,
+          "pressure_encoding": "pF",
+          "pressure_values": {
+            "above_one_count": 21,
+            "at_most_one_count": 4,
+            "maximum": 2.884795363948981,
+            "minimum": -1.0,
+            "missing_count": 0,
+            "negative_count": 4,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 25,
+            "positive_count": 21,
+            "zero_count": 0
+          },
+          "row_count": 25,
+          "sample_count": 4,
+          "water_encoding": "Q",
+          "water_values": {
+            "above_one_count": 25,
+            "at_most_one_count": 0,
+            "maximum": 59.56,
+            "minimum": 10.91,
+            "missing_count": 0,
+            "negative_count": 0,
+            "nonfinite_count": 0,
+            "nonnumeric_count": 0,
+            "numeric_count": 25,
+            "positive_count": 25,
+            "zero_count": 0
+          }
+        }
+      ],
+      "fitted_parameter_count": 0,
+      "fitted_parameters": [],
+      "missing_sample_number_count": 0,
+      "observation_count": 25,
+      "row_count": 25,
+      "sample_count": 4,
+      "source": "2018_шеин",
+      "unclassified_count": 0,
+      "unclassified_encodings": []
+    }
+  ],
+  "total_data_rows": 1847,
+  "unclassified_count": 0
+}

@@ -1,0 +1,712 @@
+{
+  "schema_version": 1,
+  "study_id": "retention_coverage_expanded_v1",
+  "seed": 20261025,
+  "nominal_confidence": 0.95,
+  "familywise_alpha": 0.05,
+  "comparison_count": 34,
+  "scope": "conditional_coverage_among_assessed_regions_and_failure_accounting",
+  "brooks_corey_policy": "brooks_corey_interval_solves_v1",
+  "cells": [
+    {
+      "id": "van_genuchten_mualem_v1__dense__saturation_0.3__sigma_0.002",
+      "family": "van_genuchten_mualem_v1",
+      "truth": 0.3,
+      "sigma": 0.002,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "van_genuchten_mualem_v1__dense__saturation_0.3__sigma_0.01",
+      "family": "van_genuchten_mualem_v1",
+      "truth": 0.3,
+      "sigma": 0.01,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "van_genuchten_mualem_v1__dense__saturation_0.305__sigma_0.002",
+      "family": "van_genuchten_mualem_v1",
+      "truth": 0.305,
+      "sigma": 0.002,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "van_genuchten_mualem_v1__dense__saturation_0.305__sigma_0.01",
+      "family": "van_genuchten_mualem_v1",
+      "truth": 0.305,
+      "sigma": 0.01,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "van_genuchten_mualem_v1__dense__saturation_0.5__sigma_0.002",
+      "family": "van_genuchten_mualem_v1",
+      "truth": 0.5,
+      "sigma": 0.002,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "van_genuchten_mualem_v1__dense__saturation_0.5__sigma_0.01",
+      "family": "van_genuchten_mualem_v1",
+      "truth": 0.5,
+      "sigma": 0.01,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "van_genuchten_mualem_v1__sparse__saturation_0.3__sigma_0.002",
+      "family": "van_genuchten_mualem_v1",
+      "truth": 0.3,
+      "sigma": 0.002,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        10,
+        100,
+        1000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "van_genuchten_mualem_v1__sparse__saturation_0.5__sigma_0.002",
+      "family": "van_genuchten_mualem_v1",
+      "truth": 0.5,
+      "sigma": 0.002,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        10,
+        100,
+        1000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "van_genuchten_m1_v1__dense__saturation_0.3__sigma_0.002",
+      "family": "van_genuchten_m1_v1",
+      "truth": 0.3,
+      "sigma": 0.002,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "van_genuchten_m1_v1__dense__saturation_0.3__sigma_0.01",
+      "family": "van_genuchten_m1_v1",
+      "truth": 0.3,
+      "sigma": 0.01,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "van_genuchten_m1_v1__dense__saturation_0.305__sigma_0.002",
+      "family": "van_genuchten_m1_v1",
+      "truth": 0.305,
+      "sigma": 0.002,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "van_genuchten_m1_v1__dense__saturation_0.305__sigma_0.01",
+      "family": "van_genuchten_m1_v1",
+      "truth": 0.305,
+      "sigma": 0.01,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "van_genuchten_m1_v1__dense__saturation_0.5__sigma_0.002",
+      "family": "van_genuchten_m1_v1",
+      "truth": 0.5,
+      "sigma": 0.002,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "van_genuchten_m1_v1__dense__saturation_0.5__sigma_0.01",
+      "family": "van_genuchten_m1_v1",
+      "truth": 0.5,
+      "sigma": 0.01,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "van_genuchten_m1_v1__sparse__saturation_0.3__sigma_0.002",
+      "family": "van_genuchten_m1_v1",
+      "truth": 0.3,
+      "sigma": 0.002,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        10,
+        100,
+        1000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "van_genuchten_m1_v1__sparse__saturation_0.5__sigma_0.002",
+      "family": "van_genuchten_m1_v1",
+      "truth": 0.5,
+      "sigma": 0.002,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        10,
+        100,
+        1000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "brooks_corey_v1__dense__saturation_0.3__sigma_0.002",
+      "family": "brooks_corey_v1",
+      "truth": 0.3,
+      "sigma": 0.002,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "brooks_corey_v1__dense__saturation_0.3__sigma_0.01",
+      "family": "brooks_corey_v1",
+      "truth": 0.3,
+      "sigma": 0.01,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "brooks_corey_v1__dense__saturation_0.305__sigma_0.002",
+      "family": "brooks_corey_v1",
+      "truth": 0.305,
+      "sigma": 0.002,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "brooks_corey_v1__dense__saturation_0.305__sigma_0.01",
+      "family": "brooks_corey_v1",
+      "truth": 0.305,
+      "sigma": 0.01,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "brooks_corey_v1__dense__saturation_0.5__sigma_0.002",
+      "family": "brooks_corey_v1",
+      "truth": 0.5,
+      "sigma": 0.002,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "brooks_corey_v1__dense__saturation_0.5__sigma_0.01",
+      "family": "brooks_corey_v1",
+      "truth": 0.5,
+      "sigma": 0.01,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "brooks_corey_v1__sparse__saturation_0.3__sigma_0.002",
+      "family": "brooks_corey_v1",
+      "truth": 0.3,
+      "sigma": 0.002,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        10,
+        100,
+        1000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "brooks_corey_v1__sparse__saturation_0.5__sigma_0.002",
+      "family": "brooks_corey_v1",
+      "truth": 0.5,
+      "sigma": 0.002,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        10,
+        100,
+        1000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "clapp1978_gradual_air_entry_v1__dense__saturation_0.3__sigma_0.002",
+      "family": "clapp1978_gradual_air_entry_v1",
+      "truth": 0.3,
+      "sigma": 0.002,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "clapp1978_gradual_air_entry_v1__dense__saturation_0.3__sigma_0.01",
+      "family": "clapp1978_gradual_air_entry_v1",
+      "truth": 0.3,
+      "sigma": 0.01,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "clapp1978_gradual_air_entry_v1__dense__saturation_0.305__sigma_0.002",
+      "family": "clapp1978_gradual_air_entry_v1",
+      "truth": 0.305,
+      "sigma": 0.002,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "clapp1978_gradual_air_entry_v1__dense__saturation_0.305__sigma_0.01",
+      "family": "clapp1978_gradual_air_entry_v1",
+      "truth": 0.305,
+      "sigma": 0.01,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "clapp1978_gradual_air_entry_v1__dense__saturation_0.5__sigma_0.002",
+      "family": "clapp1978_gradual_air_entry_v1",
+      "truth": 0.5,
+      "sigma": 0.002,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "clapp1978_gradual_air_entry_v1__dense__saturation_0.5__sigma_0.01",
+      "family": "clapp1978_gradual_air_entry_v1",
+      "truth": 0.5,
+      "sigma": 0.01,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "clapp1978_gradual_air_entry_v1__sparse__saturation_0.3__sigma_0.002",
+      "family": "clapp1978_gradual_air_entry_v1",
+      "truth": 0.3,
+      "sigma": 0.002,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        10,
+        100,
+        1000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "clapp1978_gradual_air_entry_v1__sparse__saturation_0.5__sigma_0.002",
+      "family": "clapp1978_gradual_air_entry_v1",
+      "truth": 0.5,
+      "sigma": 0.002,
+      "air_entry": 10,
+      "pressure_kpa": [
+        0,
+        2,
+        10,
+        100,
+        1000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "brooks_corey_v1__dense__between_knots__sigma_0.002",
+      "family": "brooks_corey_v1",
+      "truth": 0.5,
+      "sigma": 0.002,
+      "air_entry": 7.5,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    },
+    {
+      "id": "brooks_corey_v1__dense__between_knots__sigma_0.01",
+      "family": "brooks_corey_v1",
+      "truth": 0.5,
+      "sigma": 0.01,
+      "air_entry": 7.5,
+      "pressure_kpa": [
+        0,
+        2,
+        5,
+        10,
+        20,
+        50,
+        100,
+        200,
+        300,
+        1000,
+        3000,
+        10000
+      ],
+      "repetitions": 200
+    }
+  ]
+}

@@ -3,6 +3,7 @@ lockfile = true
 
 [tool_alias]
 clang_tools = "conda:clang-tools"
+clangxx = "conda:clangxx"
 
 [tools]
 rust = { version = "stable", components = ["rustfmt", "clippy"] }
@@ -11,6 +12,7 @@ cmake = "4.4.4"
 ninja = "1.13.2"
 clang = "23.1.4"
 clang_tools = "23.1.4"
+clangxx = "23.1.4"
 ruff = "0.17.1"
 ty = "0.0.90"
 prek = "0.5.7"
@@ -21,6 +23,7 @@ includes = [
     "docs/tasks.toml",
     "codegen/tasks.toml",
     "targets/ptfkit-native/tasks.toml",
+    "targets/ptfkit-eval/tasks.toml",
     "targets/ptfkit-py/tasks.toml",
     "targets/ptfkit-rs/tasks.toml",
 ]
@@ -51,15 +54,15 @@ run = [
 
 [tasks.test]
 description = "Run the complete target test suite"
-depends = ["codegen:test", "native:test", "python:test", "rust:test"]
+depends = ["codegen:test", "eval:test", "native:test", "python:test", "rust:test"]
 
 [tasks.verify]
 description = "Run all component verification suites"
-depends = ["codegen:verify", "native:verify", "python:verify", "rust:verify"]
+depends = ["codegen:verify", "eval:verify", "native:verify", "python:verify", "rust:verify"]
 
 [tasks.clean]
 description = "Remove all local build artifacts and development environments"
-depends = ["bench:clean", "codegen:clean", "docs:clean", "native:clean", "python:clean", "rust:clean"]
+depends = ["bench:clean", "codegen:clean", "docs:clean", "eval:clean", "native:clean", "python:clean", "rust:clean"]
 
 [tasks.corpus-report]
 description = "Summarize the validated specification corpus"

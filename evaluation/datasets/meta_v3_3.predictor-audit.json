@@ -1,0 +1,218 @@
+{
+  "binding_audits": [
+    {
+      "binding_status": "blocked",
+      "blockers": [
+        "texture_classification"
+      ],
+      "candidate_sample_count": 206,
+      "column": "L",
+      "compatible_count": 0,
+      "excluded_count": 206,
+      "function": "calc_ptf_clapp1978",
+      "input": "soil_texture",
+      "kind": "categorical",
+      "measurement_compatible_count": 89,
+      "missing_count": 117,
+      "particle_size_compatible_count": null,
+      "populated_count": 89,
+      "worksheet": "Данные"
+    },
+    {
+      "binding_status": "blocked",
+      "blockers": [
+        "particle_size_schemes"
+      ],
+      "candidate_sample_count": 206,
+      "column": "P",
+      "compatible_count": 0,
+      "excluded_count": 206,
+      "function": "calc_ptf_gunarathna2019_vwc10_set1",
+      "input": "sand",
+      "kind": "numeric",
+      "measurement_compatible_count": 0,
+      "missing_count": 155,
+      "particle_size_compatible_count": 0,
+      "populated_count": 51,
+      "worksheet": "Данные"
+    },
+    {
+      "binding_status": "blocked",
+      "blockers": [
+        "particle_size_schemes"
+      ],
+      "candidate_sample_count": 206,
+      "column": "P",
+      "compatible_count": 0,
+      "excluded_count": 206,
+      "function": "calc_ptf_gunarathna2019_vwc1500_set1",
+      "input": "sand",
+      "kind": "numeric",
+      "measurement_compatible_count": 0,
+      "missing_count": 155,
+      "particle_size_compatible_count": 0,
+      "populated_count": 51,
+      "worksheet": "Данные"
+    },
+    {
+      "binding_status": "blocked",
+      "blockers": [
+        "particle_size_schemes"
+      ],
+      "candidate_sample_count": 206,
+      "column": "P",
+      "compatible_count": 0,
+      "excluded_count": 206,
+      "function": "calc_ptf_gunarathna2019_vwc33_set1",
+      "input": "sand",
+      "kind": "numeric",
+      "measurement_compatible_count": 0,
+      "missing_count": 155,
+      "particle_size_compatible_count": 0,
+      "populated_count": 51,
+      "worksheet": "Данные"
+    },
+    {
+      "binding_status": "blocked",
+      "blockers": [
+        "particle_size_schemes"
+      ],
+      "candidate_sample_count": 206,
+      "column": "P",
+      "compatible_count": 0,
+      "excluded_count": 206,
+      "function": "calc_ptf_vereecken1989",
+      "input": "sand",
+      "kind": "numeric",
+      "measurement_compatible_count": 0,
+      "missing_count": 155,
+      "particle_size_compatible_count": 0,
+      "populated_count": 51,
+      "worksheet": "Данные"
+    },
+    {
+      "binding_status": "blocked",
+      "blockers": [
+        "particle_size_schemes"
+      ],
+      "candidate_sample_count": 206,
+      "column": "N",
+      "compatible_count": 0,
+      "excluded_count": 206,
+      "function": "calc_ptf_vereecken1989",
+      "input": "clay",
+      "kind": "numeric",
+      "measurement_compatible_count": 0,
+      "missing_count": 121,
+      "particle_size_compatible_count": 12,
+      "populated_count": 85,
+      "worksheet": "Данные"
+    },
+    {
+      "binding_status": "blocked",
+      "blockers": [
+        "organic_property_provenance"
+      ],
+      "candidate_sample_count": 206,
+      "column": "R",
+      "compatible_count": 0,
+      "excluded_count": 206,
+      "function": "calc_ptf_vereecken1989",
+      "input": "carbon",
+      "kind": "numeric",
+      "measurement_compatible_count": 0,
+      "missing_count": 81,
+      "particle_size_compatible_count": null,
+      "populated_count": 125,
+      "worksheet": "Данные"
+    },
+    {
+      "binding_status": "blocked",
+      "blockers": [
+        "density_units"
+      ],
+      "candidate_sample_count": 206,
+      "column": "Q",
+      "compatible_count": 0,
+      "excluded_count": 206,
+      "function": "calc_ptf_vereecken1989",
+      "input": "bulk_density",
+      "kind": "numeric",
+      "measurement_compatible_count": 0,
+      "missing_count": 111,
+      "particle_size_compatible_count": null,
+      "populated_count": 95,
+      "worksheet": "Данные"
+    }
+  ],
+  "candidate_sample_count": 206,
+  "exclusion_reasons": [
+    {
+      "count": 95,
+      "label": "density_units"
+    },
+    {
+      "count": 754,
+      "label": "missing_input"
+    },
+    {
+      "count": 125,
+      "label": "organic_property_provenance"
+    },
+    {
+      "count": 238,
+      "label": "particle_size_schemes"
+    },
+    {
+      "count": 89,
+      "label": "texture_classification"
+    }
+  ],
+  "function_audits": [
+    {
+      "candidate_sample_count": 206,
+      "complete_input_sample_count": 89,
+      "eligible_sample_count": 0,
+      "excluded_sample_count": 206,
+      "function": "calc_ptf_clapp1978",
+      "input_count": 1
+    },
+    {
+      "candidate_sample_count": 206,
+      "complete_input_sample_count": 51,
+      "eligible_sample_count": 0,
+      "excluded_sample_count": 206,
+      "function": "calc_ptf_gunarathna2019_vwc10_set1",
+      "input_count": 1
+    },
+    {
+      "candidate_sample_count": 206,
+      "complete_input_sample_count": 51,
+      "eligible_sample_count": 0,
+      "excluded_sample_count": 206,
+      "function": "calc_ptf_gunarathna2019_vwc1500_set1",
+      "input_count": 1
+    },
+    {
+      "candidate_sample_count": 206,
+      "complete_input_sample_count": 51,
+      "eligible_sample_count": 0,
+      "excluded_sample_count": 206,
+      "function": "calc_ptf_gunarathna2019_vwc33_set1",
+      "input_count": 1
+    },
+    {
+      "candidate_sample_count": 206,
+      "complete_input_sample_count": 34,
+      "eligible_sample_count": 0,
+      "excluded_sample_count": 206,
+      "function": "calc_ptf_vereecken1989",
+      "input_count": 4
+    }
+  ],
+  "manifest_schema_version": 1,
+  "public_function_count": 5,
+  "schema_version": 2,
+  "sha256": "1322bf65b1ca0130085015209858a443d1ee82a7e2ae69232321cd8ede361e68",
+  "source_filename": "meta_v3.3.xlsx"
+}

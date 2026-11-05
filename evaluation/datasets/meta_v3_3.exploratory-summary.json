@@ -1,0 +1,5287 @@
+{
+  "functions": [
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ahuja1984",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ahuja1984",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_aimrun2009",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_aimrun2009",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_bai2022",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_bai2022",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_bai2022_bulk_density",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_bai2022_bulk_density",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:sand": 297,
+        "missing_or_unsupported_predictor:silt": 297,
+        "missing_or_unsupported_predictor:soil_organic_matter": 174,
+        "no_supported_target_observations": 148,
+        "outside_measured_wrc_range": 39,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_beniaich2023_mlr1",
+      "metrics_by_pool": {
+        "fixed_pressure:gravimetric_water_content:1500kPa": {
+          "mean_absolute_error": 0.04124164841210334,
+          "mean_error": 0.036762060525327454,
+          "median_absolute_error": 0.0420518540818266,
+          "root_mean_squared_error": 0.043285577537875486
+        },
+        "fixed_pressure:gravimetric_water_content:33kPa": {
+          "mean_absolute_error": 0.03702261213923421,
+          "mean_error": -0.014616095273974956,
+          "median_absolute_error": 0.03739352066496343,
+          "root_mean_squared_error": 0.047170605454858155
+        }
+      },
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 20,
+      "scored_samples": 10
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:sand": 297,
+        "missing_or_unsupported_predictor:silt": 297,
+        "missing_or_unsupported_predictor:soil_organic_matter": 174,
+        "no_supported_target_observations": 148,
+        "outside_measured_wrc_range": 39,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_beniaich2023_mlr1",
+      "metrics_by_pool": {
+        "fixed_pressure:gravimetric_water_content:1500kPa": {
+          "mean_absolute_error": 0.05736474766997347,
+          "mean_error": 0.05561176907192365,
+          "median_absolute_error": 0.06128840458416497,
+          "root_mean_squared_error": 0.06082281219695997
+        },
+        "fixed_pressure:gravimetric_water_content:33kPa": {
+          "mean_absolute_error": 0.038137988167606746,
+          "mean_error": -0.003790249149240644,
+          "median_absolute_error": 0.03931835720394811,
+          "root_mean_squared_error": 0.04573073333805705
+        }
+      },
+      "scenario": "log_psd",
+      "scored_points": 20,
+      "scored_samples": 10
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:sand": 297,
+        "missing_or_unsupported_predictor:soil_organic_matter": 174,
+        "no_supported_target_observations": 148,
+        "outside_measured_wrc_range": 39,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_beniaich2023_mlr2",
+      "metrics_by_pool": {
+        "fixed_pressure:gravimetric_water_content:1500kPa": {
+          "mean_absolute_error": 0.09839766851494021,
+          "mean_error": 0.09839766851494021,
+          "median_absolute_error": 0.10733942074332099,
+          "root_mean_squared_error": 0.10278131902737661
+        },
+        "fixed_pressure:gravimetric_water_content:33kPa": {
+          "mean_absolute_error": 0.045492349566807935,
+          "mean_error": 0.020809934950700826,
+          "median_absolute_error": 0.0411632801575367,
+          "root_mean_squared_error": 0.052969154649279086
+        }
+      },
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 20,
+      "scored_samples": 10
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:sand": 297,
+        "missing_or_unsupported_predictor:soil_organic_matter": 174,
+        "no_supported_target_observations": 148,
+        "outside_measured_wrc_range": 39,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_beniaich2023_mlr2",
+      "metrics_by_pool": {
+        "fixed_pressure:gravimetric_water_content:1500kPa": {
+          "mean_absolute_error": 0.09839766851494021,
+          "mean_error": 0.09839766851494021,
+          "median_absolute_error": 0.10733942074332099,
+          "root_mean_squared_error": 0.10278131902737661
+        },
+        "fixed_pressure:gravimetric_water_content:33kPa": {
+          "mean_absolute_error": 0.045492349566807935,
+          "mean_error": 0.020809934950700826,
+          "median_absolute_error": 0.0411632801575367,
+          "root_mean_squared_error": 0.052969154649279086
+        }
+      },
+      "scenario": "log_psd",
+      "scored_points": 20,
+      "scored_samples": 10
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:silt": 297,
+        "missing_or_unsupported_predictor:soil_organic_matter": 174,
+        "no_supported_target_observations": 148,
+        "outside_measured_wrc_range": 39,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_beniaich2023_mlr3",
+      "metrics_by_pool": {
+        "fixed_pressure:gravimetric_water_content:1500kPa": {
+          "mean_absolute_error": 0.14159328167126015,
+          "mean_error": 0.14159328167126015,
+          "median_absolute_error": 0.14228331084079135,
+          "root_mean_squared_error": 0.14317993088572534
+        },
+        "fixed_pressure:gravimetric_water_content:33kPa": {
+          "mean_absolute_error": 0.10130751298905892,
+          "mean_error": 0.10130751298905892,
+          "median_absolute_error": 0.10952386131040201,
+          "root_mean_squared_error": 0.10981276743021491
+        }
+      },
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 20,
+      "scored_samples": 10
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:silt": 297,
+        "missing_or_unsupported_predictor:soil_organic_matter": 174,
+        "no_supported_target_observations": 148,
+        "outside_measured_wrc_range": 39,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_beniaich2023_mlr3",
+      "metrics_by_pool": {
+        "fixed_pressure:gravimetric_water_content:1500kPa": {
+          "mean_absolute_error": 0.11841323467477023,
+          "mean_error": 0.11841323467477023,
+          "median_absolute_error": 0.11882410505161935,
+          "root_mean_squared_error": 0.12017247607198261
+        },
+        "fixed_pressure:gravimetric_water_content:33kPa": {
+          "mean_absolute_error": 0.06682951523615617,
+          "mean_error": 0.06551853932964315,
+          "median_absolute_error": 0.06980777364521704,
+          "root_mean_squared_error": 0.07742475526154488
+        }
+      },
+      "scenario": "log_psd",
+      "scored_points": 20,
+      "scored_samples": 10
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:clay": 240,
+        "missing_or_unsupported_predictor:soil_organic_matter": 174,
+        "no_supported_target_observations": 148,
+        "outside_measured_wrc_range": 39,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_beniaich2023_mlr4",
+      "metrics_by_pool": {
+        "fixed_pressure:gravimetric_water_content:1500kPa": {
+          "mean_absolute_error": 0.030194412935571496,
+          "mean_error": -0.028163925656782694,
+          "median_absolute_error": 0.027106018260294414,
+          "root_mean_squared_error": 0.03680647942407277
+        },
+        "fixed_pressure:gravimetric_water_content:33kPa": {
+          "mean_absolute_error": 0.10861914872126764,
+          "mean_error": -0.10861914872126764,
+          "median_absolute_error": 0.10799314591884301,
+          "root_mean_squared_error": 0.11767800954927979
+        }
+      },
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 54,
+      "scored_samples": 27
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:clay": 261,
+        "missing_or_unsupported_predictor:soil_organic_matter": 174,
+        "no_supported_target_observations": 148,
+        "outside_measured_wrc_range": 39,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_beniaich2023_mlr4",
+      "metrics_by_pool": {
+        "fixed_pressure:gravimetric_water_content:1500kPa": {
+          "mean_absolute_error": 0.018462742638358957,
+          "mean_error": -0.016181637757056926,
+          "median_absolute_error": 0.019631054063417516,
+          "root_mean_squared_error": 0.02115796970607189
+        },
+        "fixed_pressure:gravimetric_water_content:33kPa": {
+          "mean_absolute_error": 0.09800079966213766,
+          "mean_error": -0.09800079966213766,
+          "median_absolute_error": 0.09249139260743748,
+          "root_mean_squared_error": 0.10180480131776012
+        }
+      },
+      "scenario": "log_psd",
+      "scored_points": 44,
+      "scored_samples": 22
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:clay": 240,
+        "missing_or_unsupported_predictor:silt": 297,
+        "missing_or_unsupported_predictor:soil_organic_matter": 174,
+        "no_supported_target_observations": 148,
+        "outside_measured_wrc_range": 39,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_beniaich2023_mlr5",
+      "metrics_by_pool": {
+        "fixed_pressure:gravimetric_water_content:1500kPa": {
+          "mean_absolute_error": 0.040862271957426866,
+          "mean_error": 0.03634388407065096,
+          "median_absolute_error": 0.041578799636272104,
+          "root_mean_squared_error": 0.04288928767216372
+        },
+        "fixed_pressure:gravimetric_water_content:33kPa": {
+          "mean_absolute_error": 0.03709861213923422,
+          "mean_error": -0.014996095273974958,
+          "median_absolute_error": 0.03701352066496344,
+          "root_mean_squared_error": 0.04728973092951697
+        }
+      },
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 20,
+      "scored_samples": 10
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:clay": 261,
+        "missing_or_unsupported_predictor:silt": 297,
+        "missing_or_unsupported_predictor:soil_organic_matter": 174,
+        "no_supported_target_observations": 148,
+        "outside_measured_wrc_range": 39,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_beniaich2023_mlr5",
+      "metrics_by_pool": {
+        "fixed_pressure:gravimetric_water_content:1500kPa": {
+          "mean_absolute_error": 0.05709431107514749,
+          "mean_error": 0.0553209555128323,
+          "median_absolute_error": 0.0609453268311939,
+          "root_mean_squared_error": 0.06053050272612802
+        },
+        "fixed_pressure:gravimetric_water_content:33kPa": {
+          "mean_absolute_error": 0.038061988167606725,
+          "mean_error": -0.00417024914924063,
+          "median_absolute_error": 0.03931835720394808,
+          "root_mean_squared_error": 0.04576379530797139
+        }
+      },
+      "scenario": "log_psd",
+      "scored_points": 20,
+      "scored_samples": 10
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:clay": 240,
+        "no_supported_target_observations": 148,
+        "outside_measured_wrc_range": 39,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_beniaich2023_slr1",
+      "metrics_by_pool": {
+        "fixed_pressure:gravimetric_water_content:1500kPa": {
+          "mean_absolute_error": 0.03896683922967944,
+          "mean_error": -0.03547257903142758,
+          "median_absolute_error": 0.022008383600084926,
+          "root_mean_squared_error": 0.05436207734039488
+        },
+        "fixed_pressure:gravimetric_water_content:33kPa": {
+          "mean_absolute_error": 0.11806998623532222,
+          "mean_error": -0.11763220289982507,
+          "median_absolute_error": 0.10593463760201385,
+          "root_mean_squared_error": 0.14035936823246573
+        }
+      },
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 56,
+      "scored_samples": 28
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:clay": 261,
+        "no_supported_target_observations": 148,
+        "outside_measured_wrc_range": 39,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_beniaich2023_slr1",
+      "metrics_by_pool": {
+        "fixed_pressure:gravimetric_water_content:1500kPa": {
+          "mean_absolute_error": 0.026869950984231058,
+          "mean_error": -0.026799665157056927,
+          "median_absolute_error": 0.02192507072063169,
+          "root_mean_squared_error": 0.03727610154782765
+        },
+        "fixed_pressure:gravimetric_water_content:33kPa": {
+          "mean_absolute_error": 0.11386817938313698,
+          "mean_error": -0.11386817938313698,
+          "median_absolute_error": 0.10212562555300823,
+          "root_mean_squared_error": 0.12705043545025815
+        }
+      },
+      "scenario": "log_psd",
+      "scored_points": 44,
+      "scored_samples": 22
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:silt": 297,
+        "no_supported_target_observations": 148,
+        "outside_measured_wrc_range": 39,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_beniaich2023_slr2",
+      "metrics_by_pool": {
+        "fixed_pressure:gravimetric_water_content:1500kPa": {
+          "mean_absolute_error": 0.12018869634464245,
+          "mean_error": 0.12018869634464245,
+          "median_absolute_error": 0.1256827226089534,
+          "root_mean_squared_error": 0.12490351549401807
+        },
+        "fixed_pressure:gravimetric_water_content:33kPa": {
+          "mean_absolute_error": 0.08200256979898465,
+          "mean_error": 0.071454758281147,
+          "median_absolute_error": 0.0767819310679766,
+          "root_mean_squared_error": 0.09585925274965053
+        }
+      },
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 20,
+      "scored_samples": 10
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:silt": 297,
+        "no_supported_target_observations": 148,
+        "outside_measured_wrc_range": 39,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_beniaich2023_slr2",
+      "metrics_by_pool": {
+        "fixed_pressure:gravimetric_water_content:1500kPa": {
+          "mean_absolute_error": 0.09637183487022696,
+          "mean_error": 0.09637183487022696,
+          "median_absolute_error": 0.09882982644281443,
+          "root_mean_squared_error": 0.10177698978344041
+        },
+        "fixed_pressure:gravimetric_water_content:33kPa": {
+          "mean_absolute_error": 0.05813819825049303,
+          "mean_error": 0.03451951856146522,
+          "median_absolute_error": 0.0649830956300386,
+          "root_mean_squared_error": 0.07113707203208453
+        }
+      },
+      "scenario": "log_psd",
+      "scored_points": 20,
+      "scored_samples": 10
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:sand": 297,
+        "no_supported_target_observations": 148,
+        "outside_measured_wrc_range": 39,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_beniaich2023_slr3",
+      "metrics_by_pool": {
+        "fixed_pressure:gravimetric_water_content:1500kPa": {
+          "mean_absolute_error": 0.08375914308039478,
+          "mean_error": 0.07967817279361888,
+          "median_absolute_error": 0.09478740465363544,
+          "root_mean_squared_error": 0.08992511391396055
+        },
+        "fixed_pressure:gravimetric_water_content:33kPa": {
+          "mean_absolute_error": 0.059657847697751204,
+          "mean_error": -0.00961911627772758,
+          "median_absolute_error": 0.04960849790091143,
+          "root_mean_squared_error": 0.07022693557747862
+        }
+      },
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 20,
+      "scored_samples": 10
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:sand": 297,
+        "no_supported_target_observations": 148,
+        "outside_measured_wrc_range": 39,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_beniaich2023_slr3",
+      "metrics_by_pool": {
+        "fixed_pressure:gravimetric_water_content:1500kPa": {
+          "mean_absolute_error": 0.08375914308039478,
+          "mean_error": 0.07967817279361888,
+          "median_absolute_error": 0.09478740465363544,
+          "root_mean_squared_error": 0.08992511391396055
+        },
+        "fixed_pressure:gravimetric_water_content:33kPa": {
+          "mean_absolute_error": 0.059657847697751204,
+          "mean_error": -0.00961911627772758,
+          "median_absolute_error": 0.04960849790091143,
+          "root_mean_squared_error": 0.07022693557747862
+        }
+      },
+      "scenario": "log_psd",
+      "scored_points": 20,
+      "scored_samples": 10
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:clay": 240,
+        "missing_or_unsupported_predictor:silt": 297,
+        "no_supported_target_observations": 148,
+        "outside_measured_wrc_range": 39,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_beniaich2023_slr4",
+      "metrics_by_pool": {
+        "fixed_pressure:gravimetric_water_content:1500kPa": {
+          "mean_absolute_error": 0.02953953626140783,
+          "mean_error": -0.02636627165082555,
+          "median_absolute_error": 0.023169860863454003,
+          "root_mean_squared_error": 0.0359755986003181
+        },
+        "fixed_pressure:gravimetric_water_content:33kPa": {
+          "mean_absolute_error": 0.1565053525139638,
+          "mean_error": -0.1565053525139638,
+          "median_absolute_error": 0.13848862974887716,
+          "root_mean_squared_error": 0.16300522934693581
+        }
+      },
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 20,
+      "scored_samples": 10
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:clay": 261,
+        "missing_or_unsupported_predictor:silt": 297,
+        "no_supported_target_observations": 148,
+        "outside_measured_wrc_range": 39,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_beniaich2023_slr4",
+      "metrics_by_pool": {
+        "fixed_pressure:gravimetric_water_content:1500kPa": {
+          "mean_absolute_error": 0.029539536261407828,
+          "mean_error": -0.02636627165082555,
+          "median_absolute_error": 0.02316986086345397,
+          "root_mean_squared_error": 0.0359755986003181
+        },
+        "fixed_pressure:gravimetric_water_content:33kPa": {
+          "mean_absolute_error": 0.1565053525139638,
+          "mean_error": -0.1565053525139638,
+          "median_absolute_error": 0.13848862974887716,
+          "root_mean_squared_error": 0.16300522934693581
+        }
+      },
+      "scenario": "log_psd",
+      "scored_points": 20,
+      "scored_samples": 10
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:clay": 240,
+        "missing_or_unsupported_predictor:silt": 297,
+        "no_supported_target_observations": 148,
+        "outside_measured_wrc_range": 39,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_beniaich2023_slr5",
+      "metrics_by_pool": {
+        "fixed_pressure:gravimetric_water_content:1500kPa": {
+          "mean_absolute_error": 0.02757165671043761,
+          "mean_error": 0.019090998521241787,
+          "median_absolute_error": 0.026058791801851375,
+          "root_mean_squared_error": 0.030809192945596302
+        },
+        "fixed_pressure:gravimetric_water_content:33kPa": {
+          "mean_absolute_error": 0.10158782032418194,
+          "mean_error": -0.10158782032418194,
+          "median_absolute_error": 0.09359169366761497,
+          "root_mean_squared_error": 0.11290599131323541
+        }
+      },
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 20,
+      "scored_samples": 10
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:clay": 261,
+        "missing_or_unsupported_predictor:silt": 297,
+        "no_supported_target_observations": 148,
+        "outside_measured_wrc_range": 39,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_beniaich2023_slr5",
+      "metrics_by_pool": {
+        "fixed_pressure:gravimetric_water_content:1500kPa": {
+          "mean_absolute_error": 0.027360274753806067,
+          "mean_error": 0.018609025246867365,
+          "median_absolute_error": 0.02595227752808127,
+          "root_mean_squared_error": 0.030511494782068656
+        },
+        "fixed_pressure:gravimetric_water_content:33kPa": {
+          "mean_absolute_error": 0.09799474906972677,
+          "mean_error": -0.09799474906972677,
+          "median_absolute_error": 0.08967092127430204,
+          "root_mean_squared_error": 0.1096795164442732
+        }
+      },
+      "scenario": "log_psd",
+      "scored_points": 20,
+      "scored_samples": 10
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:soil_organic_matter": 174,
+        "no_supported_target_observations": 148,
+        "outside_measured_wrc_range": 39,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_beniaich2023_slr6",
+      "metrics_by_pool": {
+        "fixed_pressure:gravimetric_water_content:1500kPa": {
+          "mean_absolute_error": 0.06692587084509635,
+          "mean_error": 0.06692587084509635,
+          "median_absolute_error": 0.07209629428134143,
+          "root_mean_squared_error": 0.06945822911309256
+        },
+        "fixed_pressure:gravimetric_water_content:33kPa": {
+          "mean_absolute_error": 0.02950942663500997,
+          "mean_error": -0.0025852764678539622,
+          "median_absolute_error": 0.021982596751593003,
+          "root_mean_squared_error": 0.03853439255719514
+        }
+      },
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 98,
+      "scored_samples": 51
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:soil_organic_matter": 174,
+        "no_supported_target_observations": 148,
+        "outside_measured_wrc_range": 39,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_beniaich2023_slr6",
+      "metrics_by_pool": {
+        "fixed_pressure:gravimetric_water_content:1500kPa": {
+          "mean_absolute_error": 0.06692587084509635,
+          "mean_error": 0.06692587084509635,
+          "median_absolute_error": 0.07209629428134143,
+          "root_mean_squared_error": 0.06945822911309256
+        },
+        "fixed_pressure:gravimetric_water_content:33kPa": {
+          "mean_absolute_error": 0.02950942663500997,
+          "mean_error": -0.0025852764678539622,
+          "median_absolute_error": 0.021982596751593003,
+          "root_mean_squared_error": 0.03853439255719514
+        }
+      },
+      "scenario": "log_psd",
+      "scored_points": 98,
+      "scored_samples": 51
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 436,
+        "missing_public_measurement_contract": 436,
+        "no_supported_target_observations": 47,
+        "outside_measured_wrc_range": 47
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_chakraborty2011_eq1",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 436,
+        "missing_public_measurement_contract": 436,
+        "no_supported_target_observations": 47,
+        "outside_measured_wrc_range": 47
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_chakraborty2011_eq1",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 436,
+        "missing_public_measurement_contract": 436,
+        "no_supported_target_observations": 47,
+        "outside_measured_wrc_range": 47
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_chakraborty2011_eq2",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 436,
+        "missing_public_measurement_contract": 436,
+        "no_supported_target_observations": 47,
+        "outside_measured_wrc_range": 47
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_chakraborty2011_eq2",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 436,
+        "missing_public_measurement_contract": 436,
+        "no_supported_target_observations": 47,
+        "outside_measured_wrc_range": 47
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_chakraborty2011_eq3",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 436,
+        "missing_public_measurement_contract": 436,
+        "no_supported_target_observations": 47,
+        "outside_measured_wrc_range": 47
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_chakraborty2011_eq3",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 436,
+        "missing_public_measurement_contract": 436,
+        "no_supported_target_observations": 47,
+        "outside_measured_wrc_range": 47
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_chakraborty2011_eq4",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 436,
+        "missing_public_measurement_contract": 436,
+        "no_supported_target_observations": 47,
+        "outside_measured_wrc_range": 47
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_chakraborty2011_eq4",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 436,
+        "missing_public_measurement_contract": 436,
+        "no_supported_target_observations": 47,
+        "outside_measured_wrc_range": 47
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_chakraborty2011_eq5",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 436,
+        "missing_public_measurement_contract": 436,
+        "no_supported_target_observations": 47,
+        "outside_measured_wrc_range": 47
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_chakraborty2011_eq5",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 436,
+        "missing_public_measurement_contract": 436,
+        "no_supported_target_observations": 47,
+        "outside_measured_wrc_range": 47
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_chakraborty2011_eq6",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 436,
+        "missing_public_measurement_contract": 436,
+        "no_supported_target_observations": 47,
+        "outside_measured_wrc_range": 47
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_chakraborty2011_eq6",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:soil_texture": 465,
+        "missing_sample_density_for_target_conversion": 40,
+        "no_supported_target_observations": 167,
+        "outside_measured_wrc_range": 58,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_clapp1978",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:soil_texture": 465,
+        "missing_sample_density_for_target_conversion": 40,
+        "no_supported_target_observations": 167,
+        "outside_measured_wrc_range": 58,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_clapp1978",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "cosby_requires_reviewed_class_midpoint_coordinates": 412,
+        "no_supported_target_observations": 58,
+        "outside_measured_wrc_range": 58
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_cosby1984_univariate",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "cosby_requires_reviewed_class_midpoint_coordinates": 412,
+        "no_supported_target_observations": 58,
+        "outside_measured_wrc_range": 58
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_cosby1984_univariate",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_dharumarajan2019_infiltration",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_dharumarajan2019_infiltration",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 218,
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 39,
+        "outside_measured_wrc_range": 39
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_dharumarajan2019_nkp",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 218,
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 39,
+        "outside_measured_wrc_range": 39
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_dharumarajan2019_nkp",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 218,
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 39,
+        "outside_measured_wrc_range": 39
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_dharumarajan2019_nkp_clay",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 218,
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 39,
+        "outside_measured_wrc_range": 39
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_dharumarajan2019_nkp_clay",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 218,
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 39,
+        "outside_measured_wrc_range": 39
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_dharumarajan2019_skp",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 218,
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 39,
+        "outside_measured_wrc_range": 39
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_dharumarajan2019_skp",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 218,
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 39,
+        "outside_measured_wrc_range": 39
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_dharumarajan2019_skp_clay",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 218,
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 39,
+        "outside_measured_wrc_range": 39
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_dharumarajan2019_skp_clay",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcaric_regosol_sand",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcaric_regosol_sand",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcic_cambisol_sand",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcic_cambisol_sand",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcic_luvisol_sand",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcic_luvisol_sand",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_campbell_shiozawa",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_campbell_shiozawa",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_chromic_luvisol_sand",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_chromic_luvisol_sand",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_cosby",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_cosby",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_dane_puckett",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_dane_puckett",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_dystric_cambisol_sand",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_dystric_cambisol_sand",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_dystric_regosol_sand",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_dystric_regosol_sand",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_eutric_cambisol_sand",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_eutric_cambisol_sand",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_eutric_regosol_sand",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_eutric_regosol_sand",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_general_sand",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_general_sand",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_general_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_general_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_cambisol_sand",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_cambisol_sand",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_luvisol_sand",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_luvisol_sand",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_solonchak_sand",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_solonchak_sand",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_humic_acrisol_sand",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_humic_acrisol_sand",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_humic_cambisol_sand",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_humic_cambisol_sand",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_orthic_luvisol_sand",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_orthic_luvisol_sand",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_puckett",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_puckett",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_ranker_sand",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_ranker_sand",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_ranker_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_ranker_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_rendzina_sand",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_rendzina_sand",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_saxton",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ferrerjulia2004_saxton",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:sand": 99,
+        "missing_sample_density_for_target_conversion": 3,
+        "no_supported_target_observations": 19,
+        "outside_computational_domain:sand": 7,
+        "outside_measured_wrc_range": 19
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_gunarathna2019_vwc10_set1",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:sand": 99,
+        "missing_sample_density_for_target_conversion": 3,
+        "no_supported_target_observations": 19,
+        "outside_computational_domain:sand": 7,
+        "outside_measured_wrc_range": 19
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_gunarathna2019_vwc10_set1",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:sand": 99,
+        "missing_or_unsupported_predictor:silt": 99,
+        "no_supported_target_observations": 19,
+        "outside_computational_domain:sand": 7,
+        "outside_computational_domain:silt": 10,
+        "outside_measured_wrc_range": 19
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_gunarathna2019_vwc10_set2",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:sand": 99,
+        "missing_or_unsupported_predictor:silt": 99,
+        "no_supported_target_observations": 19,
+        "outside_computational_domain:sand": 7,
+        "outside_computational_domain:silt": 10,
+        "outside_measured_wrc_range": 19
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_gunarathna2019_vwc10_set2",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:bulk_density": 66,
+        "missing_or_unsupported_predictor:sand": 99,
+        "missing_or_unsupported_predictor:silt": 99,
+        "no_supported_target_observations": 19,
+        "outside_computational_domain:bulk_density": 1,
+        "outside_computational_domain:sand": 7,
+        "outside_computational_domain:silt": 10,
+        "outside_measured_wrc_range": 19
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_gunarathna2019_vwc10_set3",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:bulk_density": 66,
+        "missing_or_unsupported_predictor:sand": 99,
+        "missing_or_unsupported_predictor:silt": 99,
+        "no_supported_target_observations": 19,
+        "outside_computational_domain:bulk_density": 1,
+        "outside_computational_domain:sand": 7,
+        "outside_computational_domain:silt": 10,
+        "outside_measured_wrc_range": 19
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_gunarathna2019_vwc10_set3",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:organic_carbon": 58,
+        "missing_or_unsupported_predictor:sand": 99,
+        "missing_or_unsupported_predictor:silt": 99,
+        "no_supported_target_observations": 19,
+        "outside_computational_domain:organic_carbon": 3,
+        "outside_computational_domain:sand": 7,
+        "outside_computational_domain:silt": 10,
+        "outside_measured_wrc_range": 19
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_gunarathna2019_vwc10_set4",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:organic_carbon": 58,
+        "missing_or_unsupported_predictor:sand": 99,
+        "missing_or_unsupported_predictor:silt": 99,
+        "no_supported_target_observations": 19,
+        "outside_computational_domain:organic_carbon": 3,
+        "outside_computational_domain:sand": 7,
+        "outside_computational_domain:silt": 10,
+        "outside_measured_wrc_range": 19
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_gunarathna2019_vwc10_set4",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:sand": 99,
+        "missing_sample_density_for_target_conversion": 3,
+        "no_supported_target_observations": 38,
+        "outside_computational_domain:sand": 7,
+        "outside_measured_wrc_range": 38
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_gunarathna2019_vwc1500_set1",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:sand": 99,
+        "missing_sample_density_for_target_conversion": 3,
+        "no_supported_target_observations": 38,
+        "outside_computational_domain:sand": 7,
+        "outside_measured_wrc_range": 38
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_gunarathna2019_vwc1500_set1",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:bulk_density": 66,
+        "missing_or_unsupported_predictor:sand": 99,
+        "no_supported_target_observations": 38,
+        "outside_computational_domain:bulk_density": 1,
+        "outside_computational_domain:sand": 7,
+        "outside_measured_wrc_range": 38
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_gunarathna2019_vwc1500_set3",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:bulk_density": 66,
+        "missing_or_unsupported_predictor:sand": 99,
+        "no_supported_target_observations": 38,
+        "outside_computational_domain:bulk_density": 1,
+        "outside_computational_domain:sand": 7,
+        "outside_measured_wrc_range": 38
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_gunarathna2019_vwc1500_set3",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:organic_carbon": 58,
+        "missing_or_unsupported_predictor:sand": 99,
+        "missing_sample_density_for_target_conversion": 1,
+        "no_supported_target_observations": 38,
+        "outside_computational_domain:organic_carbon": 3,
+        "outside_computational_domain:sand": 7,
+        "outside_measured_wrc_range": 38
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_gunarathna2019_vwc1500_set4",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:organic_carbon": 58,
+        "missing_or_unsupported_predictor:sand": 99,
+        "missing_sample_density_for_target_conversion": 1,
+        "no_supported_target_observations": 38,
+        "outside_computational_domain:organic_carbon": 3,
+        "outside_computational_domain:sand": 7,
+        "outside_measured_wrc_range": 38
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_gunarathna2019_vwc1500_set4",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:sand": 99,
+        "missing_sample_density_for_target_conversion": 3,
+        "no_supported_target_observations": 1,
+        "outside_computational_domain:sand": 7,
+        "outside_measured_wrc_range": 1
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_gunarathna2019_vwc33_set1",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:sand": 99,
+        "missing_sample_density_for_target_conversion": 3,
+        "no_supported_target_observations": 1,
+        "outside_computational_domain:sand": 7,
+        "outside_measured_wrc_range": 1
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_gunarathna2019_vwc33_set1",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:sand": 99,
+        "missing_or_unsupported_predictor:silt": 99,
+        "no_supported_target_observations": 1,
+        "outside_computational_domain:sand": 7,
+        "outside_computational_domain:silt": 10,
+        "outside_measured_wrc_range": 1
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_gunarathna2019_vwc33_set2",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:sand": 99,
+        "missing_or_unsupported_predictor:silt": 99,
+        "no_supported_target_observations": 1,
+        "outside_computational_domain:sand": 7,
+        "outside_computational_domain:silt": 10,
+        "outside_measured_wrc_range": 1
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_gunarathna2019_vwc33_set2",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:bulk_density": 66,
+        "missing_or_unsupported_predictor:sand": 99,
+        "missing_or_unsupported_predictor:silt": 99,
+        "no_supported_target_observations": 1,
+        "outside_computational_domain:bulk_density": 1,
+        "outside_computational_domain:sand": 7,
+        "outside_computational_domain:silt": 10,
+        "outside_measured_wrc_range": 1
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_gunarathna2019_vwc33_set3",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:bulk_density": 66,
+        "missing_or_unsupported_predictor:sand": 99,
+        "missing_or_unsupported_predictor:silt": 99,
+        "no_supported_target_observations": 1,
+        "outside_computational_domain:bulk_density": 1,
+        "outside_computational_domain:sand": 7,
+        "outside_computational_domain:silt": 10,
+        "outside_measured_wrc_range": 1
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_gunarathna2019_vwc33_set3",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:organic_carbon": 58,
+        "missing_or_unsupported_predictor:sand": 99,
+        "missing_or_unsupported_predictor:silt": 99,
+        "no_supported_target_observations": 1,
+        "outside_computational_domain:organic_carbon": 3,
+        "outside_computational_domain:sand": 7,
+        "outside_computational_domain:silt": 10,
+        "outside_measured_wrc_range": 1
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_gunarathna2019_vwc33_set4",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:organic_carbon": 58,
+        "missing_or_unsupported_predictor:sand": 99,
+        "missing_or_unsupported_predictor:silt": 99,
+        "no_supported_target_observations": 1,
+        "outside_computational_domain:organic_carbon": 3,
+        "outside_computational_domain:sand": 7,
+        "outside_computational_domain:silt": 10,
+        "outside_measured_wrc_range": 1
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_gunarathna2019_vwc33_set4",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_hodnett2002",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_hodnett2002",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_li2007",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_li2007",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_mayr1999",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_mayr1999",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 1,
+        "outside_measured_wrc_range": 1
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_myeni2021_fc",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 1,
+        "outside_measured_wrc_range": 1
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_myeni2021_fc",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 38,
+        "outside_measured_wrc_range": 38
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_myeni2021_pwp",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 38,
+        "outside_measured_wrc_range": 38
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_myeni2021_pwp",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_oosterveld1980_available_water",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_oosterveld1980_available_water",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_oosterveld1980_field_capacity",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_oosterveld1980_field_capacity",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_oosterveld1980_field_capacity_tension",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_oosterveld1980_field_capacity_tension",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 2
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_oosterveld1980_retention",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 2
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_oosterveld1980_retention",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 38,
+        "outside_measured_wrc_range": 38
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_oosterveld1980_wilting_point",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 38,
+        "outside_measured_wrc_range": 38
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_oosterveld1980_wilting_point",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ottoni2019_wm330",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ottoni2019_wm330",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ottoni2019_wmssc",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ottoni2019_wmssc",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ottoni2019_wmsscbd",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_ottoni2019_wmsscbd",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_awc",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_awc",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_awc_coarse_sand",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_awc_coarse_sand",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_awc_fine_sand",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_awc_fine_sand",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_awc_sand_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_awc_sand_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_awc_very_fine_sand",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_awc_very_fine_sand",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_eawc",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_eawc",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_eawc_sand",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_eawc_sand",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_eawc_sand_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_eawc_sand_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_fc",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_fc",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_fc_sand",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_fc_sand",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_fc_sand_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_fc_sand_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_fc_vol_sand_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_fc_vol_sand_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_pwp",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_pwp",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_pwp_sand",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_pwp_sand",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_pwp_sand_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_pidgeon1972_pwp_sand_organic_matter",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 218,
+        "unsupported_operational_target": 218,
+        "unsupported_target_quantity": 218
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_puckett1985",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 218,
+        "unsupported_operational_target": 218,
+        "unsupported_target_quantity": 218
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_puckett1985",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 1308,
+        "missing_public_measurement_contract": 1308,
+        "no_supported_target_observations": 151,
+        "outside_measured_wrc_range": 151
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_rawls1982_full_wrc",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 1308,
+        "missing_public_measurement_contract": 1308,
+        "no_supported_target_observations": 151,
+        "outside_measured_wrc_range": 151
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_rawls1982_full_wrc",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 38,
+        "outside_measured_wrc_range": 38
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_rawls1982_theta_1500",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 38,
+        "outside_measured_wrc_range": 38
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_rawls1982_theta_1500",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 1,
+        "outside_measured_wrc_range": 1
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_rawls1982_theta_33",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 1,
+        "outside_measured_wrc_range": 1
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_rawls1982_theta_33",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 38,
+        "outside_measured_wrc_range": 38
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_rawls2003_soc_theta1500_gmdh",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 38,
+        "outside_measured_wrc_range": 38
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_rawls2003_soc_theta1500_gmdh",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 38,
+        "outside_measured_wrc_range": 38
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_rawls2003_soc_theta1500_tree",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 38,
+        "outside_measured_wrc_range": 38
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_rawls2003_soc_theta1500_tree",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 1,
+        "outside_measured_wrc_range": 1
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_rawls2003_soc_theta33_gmdh",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 1,
+        "outside_measured_wrc_range": 1
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_rawls2003_soc_theta33_gmdh",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 1,
+        "outside_measured_wrc_range": 1
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_rawls2003_soc_theta33_tree",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 1,
+        "outside_measured_wrc_range": 1
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_rawls2003_soc_theta33_tree",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:clay": 560,
+        "missing_or_unsupported_predictor:organic_matter": 406,
+        "missing_or_unsupported_predictor:sand": 693,
+        "missing_sample_density_for_target_conversion": 28,
+        "no_supported_target_observations": 367,
+        "outside_computational_domain:organic_matter": 21,
+        "outside_measured_wrc_range": 149,
+        "unsupported_operational_target": 218,
+        "unsupported_target_quantity": 218
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_saxton2006",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:clay": 609,
+        "missing_or_unsupported_predictor:organic_matter": 406,
+        "missing_or_unsupported_predictor:sand": 693,
+        "missing_sample_density_for_target_conversion": 28,
+        "no_supported_target_observations": 367,
+        "outside_computational_domain:organic_matter": 21,
+        "outside_measured_wrc_range": 149,
+        "unsupported_operational_target": 218,
+        "unsupported_target_quantity": 218
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_saxton2006",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_saxton2006_conductivity",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_saxton2006_conductivity",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 218,
+        "unsupported_operational_target": 218,
+        "unsupported_target_quantity": 218
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_saxton2006_density",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 218,
+        "unsupported_operational_target": 218,
+        "unsupported_target_quantity": 218
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_saxton2006_density",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 327,
+        "no_supported_target_observations": 327,
+        "unsupported_operational_target": 327,
+        "unsupported_target_quantity": 327
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_saxton2006_gravel",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 327,
+        "no_supported_target_observations": 327,
+        "unsupported_operational_target": 327,
+        "unsupported_target_quantity": 327
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_saxton2006_gravel",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_saxton2006_salinity",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_saxton2006_salinity",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_saxton2006_tension_dry",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_saxton2006_tension_dry",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_saxton2006_tension_wet",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_saxton2006_tension_wet",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 327,
+        "missing_public_measurement_contract": 436,
+        "no_supported_target_observations": 152,
+        "outside_measured_wrc_range": 43,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_tiwary2014_bsr",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 327,
+        "missing_public_measurement_contract": 436,
+        "no_supported_target_observations": 152,
+        "outside_measured_wrc_range": 43,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_tiwary2014_bsr",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_tiwary2014_igp",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_tiwary2014_igp",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_varallyai1982_chernozem_a",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_varallyai1982_chernozem_a",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_varallyai1982_chernozem_b",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_varallyai1982_chernozem_b",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_varallyai1982_chernozem_c",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_varallyai1982_chernozem_c",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_varallyai1982_meadow",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_varallyai1982_meadow",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:bulk_density": 264,
+        "missing_or_unsupported_predictor:carbon": 232,
+        "missing_or_unsupported_predictor:clay": 320,
+        "missing_or_unsupported_predictor:sand": 396,
+        "no_supported_target_observations": 58,
+        "outside_computational_domain:bulk_density": 4,
+        "outside_computational_domain:carbon": 4,
+        "outside_computational_domain:sand": 28,
+        "outside_measured_wrc_range": 58
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_vereecken1989",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:bulk_density": 264,
+        "missing_or_unsupported_predictor:carbon": 232,
+        "missing_or_unsupported_predictor:clay": 348,
+        "missing_or_unsupported_predictor:sand": 396,
+        "no_supported_target_observations": 58,
+        "outside_computational_domain:bulk_density": 4,
+        "outside_computational_domain:carbon": 4,
+        "outside_computational_domain:sand": 28,
+        "outside_measured_wrc_range": 58
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_vereecken1989",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_vereecken1989_detailed",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_vereecken1989_detailed",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 110,
+        "outside_measured_wrc_range": 1,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_wang2012",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 110,
+        "outside_measured_wrc_range": 1,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_wang2012",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_weber2020",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_weber2020",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:soil_class": 545,
+        "no_supported_target_observations": 167,
+        "outside_measured_wrc_range": 58,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_wosten2001_class_parameters",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_or_unsupported_predictor:soil_class": 545,
+        "no_supported_target_observations": 167,
+        "outside_measured_wrc_range": 58,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_wosten2001_class_parameters",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 218,
+        "unsupported_operational_target": 218,
+        "unsupported_target_quantity": 218
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_wosten2001_hydraulic",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 218,
+        "no_supported_target_observations": 218,
+        "unsupported_operational_target": 218,
+        "unsupported_target_quantity": 218
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_wosten2001_hydraulic",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 327,
+        "no_supported_target_observations": 218,
+        "unsupported_operational_target": 218,
+        "unsupported_target_quantity": 218
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_wosten2001_loam_clay_table5",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 327,
+        "no_supported_target_observations": 218,
+        "unsupported_operational_target": 218,
+        "unsupported_target_quantity": 218
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_wosten2001_loam_clay_table5",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 327,
+        "no_supported_target_observations": 218,
+        "unsupported_operational_target": 218,
+        "unsupported_target_quantity": 218
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_wosten2001_sand_subsoil_table5",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 327,
+        "no_supported_target_observations": 218,
+        "unsupported_operational_target": 218,
+        "unsupported_target_quantity": 218
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_wosten2001_sand_subsoil_table5",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 327,
+        "no_supported_target_observations": 218,
+        "unsupported_operational_target": 218,
+        "unsupported_target_quantity": 218
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_wosten2001_sand_topsoil_table5",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_executable_target_contract": 109,
+        "missing_public_measurement_contract": 327,
+        "no_supported_target_observations": 218,
+        "unsupported_operational_target": 218,
+        "unsupported_target_quantity": 218
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_wosten2001_sand_topsoil_table5",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_zhao2016_m2_1",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_zhao2016_m2_1",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_zhao2016_m2_2",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_zhao2016_m2_2",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_zhao2016_m2_3",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_zhao2016_m2_3",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_zhao2016_m2_4",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_zhao2016_m2_4",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_zhao2016_m2_5",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_zhao2016_m2_5",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_zhao2016_m2_6",
+      "metrics_by_pool": {},
+      "scenario": "reported_boundary_proxy",
+      "scored_points": 0,
+      "scored_samples": 0
+    },
+    {
+      "blockers": {
+        "missing_public_measurement_contract": 109,
+        "no_supported_target_observations": 109,
+        "unsupported_operational_target": 109,
+        "unsupported_target_quantity": 109
+      },
+      "failed_points": 0,
+      "function": "calc_ptf_zhao2016_m2_6",
+      "metrics_by_pool": {},
+      "scenario": "log_psd",
+      "scored_points": 0,
+      "scored_samples": 0
+    }
+  ],
+  "implementation_sha256": {
+    "evaluation/experiments/meta_v3_3/exploratory.py": "9d5db472ba19d5d12fdad4a21010fac5f26a9efdb6292c2671a7956dc62ff546",
+    "evaluation/experiments/meta_v3_3/exploratory_inputs.py": "08065948467717f15a395e947fb822d5faab6a41a251425ac7a65c1ffae9fe4b",
+    "evaluation/experiments/meta_v3_3/harmonized.py": "14a3eb800500c9e49a38961c3f47ec3c71c07053ff7ca017c02120d3c9cad14d"
+  },
+  "implemented_functions": 146,
+  "input_sha256": {
+    "harmonized": {
+      "artifact-hashes.json": "43d01a99287084c0e141e0f066b8497c8ec40bb07ceb3c707c29b30db4ef3932",
+      "count-summary.json": "b6a54bb0b6be9605287f83054d98203baffa9c5332cb8e97b80bf1b4239697bf",
+      "fixed-pressure-targets.json": "eaeca0c3bbd5a0d9e4b39c6e8e8c6549d5864e6c16753e66240feccdccb2fa01",
+      "harmonized-matrix.json": "a6142352535fefe953e20965de11f886a6ed8a373cc38b62b9af285d40574c1e",
+      "harmonized-predictions.json": "55baf4337f3583f726e7d46392a5678a423222566e4c0b846663dfbb8da14106",
+      "policies.json": "1f236cbce68625368132c5cddb8c61a6098db29d7a949d3c5b47309c0bf8cb5a",
+      "report.md": "bae2fe1ac13c69127c8297286d1db81a00d151eb42bbcd22621048e4594d43ec",
+      "strict-matrix.json": "732f68d103dd69fc9ed87626b721d0457896bc71135addd9009fa49a205525df",
+      "strict-predictions.json": "afa93fff40f1ed739432f77bdda7cdd560e8d6943357d4e027547d4c57632aa4",
+      "summary.json": "73d6f5b6da10b1dddb2cbadd40fce9d36f31a889d5ecebcedd6f67eb256e7a72"
+    },
+    "manifest": "8602a9e8a0434428d6b125522a39f2235a576638234bee013e26454ff2f1c917",
+    "mapping": "4864246d41dcf1a84cbb3b09df5889fcd327ee3be1ead223ca8c783f4d4499a3",
+    "policy_registration": "fe8124a8c20c5f00908c2c7c220ab5ca8249c56d9475b4ac5edc33e824190384",
+    "strict": {
+      "approximation-fits.json": "6a91aefa6bbd84555c12ca5a787fec864bd8d50a57ca9143955d93309ab15d95",
+      "approximation-summary.json": "5aaa67902582eb7a553be5c413349c10d348695854fb49378f09b18d9b911a3b",
+      "artifact-hashes.json": "30858a16018276021fa54fd1e312bf6359c4040640d92e41555dd2480413844a",
+      "blocker-impact.json": "71a71e9a784cc917722c03b41494e7d7a85543eed3f37b4fbb5983844249ae6c",
+      "canonical-mass.json": "5a487164ca3bbd91d3b020c3bedca617f2468e973758f23128efb02f9a3dfb2a",
+      "canonical-volume.json": "000c3c9fff04a714ff2cc6e9d32fc3d00bd3a3246616caf5dfac4f1673fdd93f",
+      "catalog-support.json": "13b78c497a1d10b4be0622c7eb56bdae43b55d5a2b361d77b80f7ef2a1aeef47",
+      "eligibility-matrix.json": "732f68d103dd69fc9ed87626b721d0457896bc71135addd9009fa49a205525df",
+      "ensembles/predictions.json": "9ee22d19f30bec9a7fcd55aef637aa747aeef9ed10c4e6acc62a7421f0ab3c54",
+      "ensembles/summary.json": "777e39f51e1e02c07c673a4ee6629da36005095edc340736cafa5784c27b67e5",
+      "exclusions.json": "de09668c0cf01487074abaf598290684dab785311bb1bc127d3b5c63aeef25ae",
+      "function-audit.json": "e8c97b74b018abd34192e14e58f66b9887ee9f47e69036ebe35731d892930a53",
+      "function-audit.md": "939c39ee45ed2b718f151975d12bc0d6f5f0247934bc453a2b30f6d3c777fbeb",
+      "function-priorities.json": "b55492fd7fee03114d98d58fe44100dcfa71d49a418327c315cbc9ba7e2b7b8a",
+      "implemented-functions.json": "9b9ab5ff4f2dd22fadea80801778595d47a1e0bc8a956bd58de5ad096fdba427",
+      "native-clapp/artifacts/cohorts.json": "1392fe036f002f6949d6a34624e550dad573e9a98181dc964e954390f0001edb",
+      "native-clapp/artifacts/coverage.json": "f4aa7b18d59e0971da48107962fa4df739d8a13b8de6b840e927c4c0c49e95ea",
+      "native-clapp/artifacts/curve-quality.json": "e1021df09b2ab98cefb2811b30f0c18d2dd38a9dd236072f35a72790be0d7c26",
+      "native-clapp/artifacts/dataset.json": "44aa5587b9f5cca426448899ca9474c18e8e4c8dfe8a0440b1a6f195377b30d2",
+      "native-clapp/artifacts/evaluation-plan.json": "8740d26ed87a7f0b08db46347e1f9c5fb96974122a42160f18f137aa0084b9d1",
+      "native-clapp/artifacts/point-decisions.json": "389679a4ff1f942afa50737687bda21e983d26ba760c6ecb2da233a23fcd2ea4",
+      "native-clapp/artifacts/ptfkit-manifest.json": "8602a9e8a0434428d6b125522a39f2235a576638234bee013e26454ff2f1c917",
+      "native-clapp/artifacts/report.md": "eb152a238b0dac0bf747bd49021efa39f481caed63002f3c7df0d598331b0e8f",
+      "native-clapp/artifacts/run-manifest.json": "79bef540435b15b20409ff8deab5395ab9f3defd098b0fa58b008ce23b2d3bd5",
+      "native-clapp/artifacts/run-plan.json": "003da6623eea051818629c1ec88dc86c75575179d28f0e10e1372f7a53ce6c26",
+      "native-clapp/artifacts/sample-eligibility.json": "a32bd59d8a6647ec8359fce3817bc083abdf83d2a4e2debb0ffd930d5646a28d",
+      "native-clapp/artifacts/source-run-plan.json": "e5aa8637724dc445aec4421e670baf757a6ddaffd13ad4bfade25844130083d8",
+      "native-clapp/dataset.json": "44aa5587b9f5cca426448899ca9474c18e8e4c8dfe8a0440b1a6f195377b30d2",
+      "native-clapp/evaluation_plan.json": "8740d26ed87a7f0b08db46347e1f9c5fb96974122a42160f18f137aa0084b9d1",
+      "native-clapp/run.json": "e5aa8637724dc445aec4421e670baf757a6ddaffd13ad4bfade25844130083d8",
+      "native-class-comparison/artifacts/cohorts.json": "7f7b0a25ae23ae3949be4bc0780dfeaf89b611505f4a0f666c80e83dbdf4e67e",
+      "native-class-comparison/artifacts/coverage.json": "141647949cedddb5713a637ca371490962b8b56c98e1341587f0181f6ac3a59c",
+      "native-class-comparison/artifacts/curve-quality.json": "a1ee3c69322c8133cbeb959125c1b87577a625b9e0ef462394998b6aa0315ee2",
+      "native-class-comparison/artifacts/dataset.json": "909eff93e578b8da61416200812993a8d1372e06006d94fb41c09fb24c33fd22",
+      "native-class-comparison/artifacts/evaluation-plan.json": "d05dc82bdbe2a03639d89e48ab05a6031749302a83d3793f6e7b28a7791e6b45",
+      "native-class-comparison/artifacts/point-decisions.json": "38a72faeadaf52b1127c9657d3efaba16a685c5fdc5ef4eb8036986f3ffd6be2",
+      "native-class-comparison/artifacts/ptfkit-manifest.json": "8602a9e8a0434428d6b125522a39f2235a576638234bee013e26454ff2f1c917",
+      "native-class-comparison/artifacts/report.md": "ad3916cf260219b215f267176d3d1902865a70e344b31500c6e6de75eec31659",
+      "native-class-comparison/artifacts/run-manifest.json": "85529d7c508961f025a5c6b48325eaac82c871803cd4fdec274cbb9b732c580d",
+      "native-class-comparison/artifacts/run-plan.json": "86a988b7c8067694762546550111bf3d1dbde37c8f6a8c99ea60a8ddf436ffc5",
+      "native-class-comparison/artifacts/sample-eligibility.json": "ed06d3e788065d23a6b5d09636118eae3460acd91f6c46a67ebf0ddc84441a40",
+      "native-class-comparison/artifacts/source-run-plan.json": "7076f28eb63d395b5d0859a3fe9974e9845fbadf014ad4708509565db5f9f5ad",
+      "native-class-comparison/dataset.json": "909eff93e578b8da61416200812993a8d1372e06006d94fb41c09fb24c33fd22",
+      "native-class-comparison/evaluation_plan.json": "d05dc82bdbe2a03639d89e48ab05a6031749302a83d3793f6e7b28a7791e6b45",
+      "native-class-comparison/run.json": "7076f28eb63d395b5d0859a3fe9974e9845fbadf014ad4708509565db5f9f5ad",
+      "native-class-comparison/summary.json": "5a4e8f62dfc68a90d8ed86791473bd03f40e0437e60a35eb2889ade88b0b47d6",
+      "native-decision/report.md": "0fe41d96ace160b8b8268b70be1be395ae68f4012b62c449ab85807f9786b515",
+      "native-decision/summary.json": "cc7ea502d7a46e4d94ab84fd0e84e85e6671a2e761ce44173afd8a46a4f5313f",
+      "normalization.json": "12a0e2b3bcd5ad6cc213c333644513e01ca9c7b4b665cadfd4132ea0c5f11b1c",
+      "predictor-audit.json": "32edea4a8924a229c2a4ea48ba902b83cdbd2e9c32ccbcb504b1082cad988165",
+      "pressure-diagnostics.json": "3a430045cb006b1e6cd870129cd8e6c8087cdb1965acc849d76619af30c9093c",
+      "priority-source-audit.json": "9beb0ea2d063dc4e96dc8512438884304680a7a9c6978d8df7fb0656aa79e00a",
+      "report.md": "33978a98c1e63bffb34238edbb23d38f8193ee4f8de16a2c7fe0875615cdac69",
+      "row-accounting.json": "c8b95ab7bffadf692b698894a1bb381c1e2c47c12feff7089b6b6e66b6c07a78",
+      "selection.json": "868d9e9183a938193aea25409ff054972f0358b72b00787b34e4501c05a766b4",
+      "source-followup.json": "f8a9edc1089cd1d0f3911a03ddd7b1b6d76cc21d848854acebea5b68ca2c0472",
+      "source-readiness.json": "801d1876d9210d3a1bcb76f1598824ed287fd2fea72cb0c2ceef38e5ff3dd676",
+      "summary.json": "766924dde25c524b3e04e50f11f2d0b545bea2adb7572abd9df377a3b6d4cbe9",
+      "uncertainty.json": "d0c3d3d18cfb68fff8098705ae481c2d1b34ff27262c9520ffad23da6b5a50ce",
+      "unsupported-approximation-targets.json": "4e6e220dd8fc85f2a6449c96b862e3b3140d59e182f0b4e9bd10db3893c8035b",
+      "workbook-scope.json": "f9633098efee9f8d02c8f8cc455cc2a3ca8814ccbc1c0504ca48218629435b01"
+    },
+    "workbook": "1322bf65b1ca0130085015209858a443d1ee82a7e2ae69232321cd8ede361e68"
+  },
+  "limitations": [
+    "Approximate predictors and target basis assumptions do not establish validation eligibility.",
+    "Legacy functions without public measurement contracts or registered target adapters remain unsupported.",
+    "Observed profiles are not inferred from sample rows; no learned ensemble or final recommendation is produced."
+  ],
+  "main_artifacts_unchanged": true,
+  "main_leaderboard_eligible": false,
+  "matrix_counts": {
+    "exploratory": 714,
+    "main_reference": 96,
+    "unsupported": 51292
+  },
+  "paired_sensitivity": [
+    {
+      "common_points": 10,
+      "difference_right_minus_left": {
+        "mean_absolute_error": 0.01612309925787013,
+        "mean_error": 0.0188497085465962,
+        "median_absolute_error": 0.01923655050233837,
+        "root_mean_squared_error": 0.017537234659084487
+      },
+      "function": "calc_ptf_beniaich2023_mlr1",
+      "metrics": {
+        "log_psd": {
+          "mean_absolute_error": 0.05736474766997347,
+          "mean_error": 0.05561176907192365,
+          "median_absolute_error": 0.06128840458416497,
+          "root_mean_squared_error": 0.06082281219695997
+        },
+        "reported_boundary_proxy": {
+          "mean_absolute_error": 0.04124164841210334,
+          "mean_error": 0.036762060525327454,
+          "median_absolute_error": 0.0420518540818266,
+          "root_mean_squared_error": 0.043285577537875486
+        }
+      },
+      "recommendation": null,
+      "scenarios": [
+        "reported_boundary_proxy",
+        "log_psd"
+      ],
+      "target_pool": "fixed_pressure:gravimetric_water_content:1500kPa"
+    },
+    {
+      "common_points": 10,
+      "difference_right_minus_left": {
+        "mean_absolute_error": 0.0011153760283725347,
+        "mean_error": 0.010825846124734313,
+        "median_absolute_error": 0.0019248365389846755,
+        "root_mean_squared_error": -0.0014398721168011053
+      },
+      "function": "calc_ptf_beniaich2023_mlr1",
+      "metrics": {
+        "log_psd": {
+          "mean_absolute_error": 0.038137988167606746,
+          "mean_error": -0.003790249149240644,
+          "median_absolute_error": 0.03931835720394811,
+          "root_mean_squared_error": 0.04573073333805705
+        },
+        "reported_boundary_proxy": {
+          "mean_absolute_error": 0.03702261213923421,
+          "mean_error": -0.014616095273974956,
+          "median_absolute_error": 0.03739352066496343,
+          "root_mean_squared_error": 0.047170605454858155
+        }
+      },
+      "recommendation": null,
+      "scenarios": [
+        "reported_boundary_proxy",
+        "log_psd"
+      ],
+      "target_pool": "fixed_pressure:gravimetric_water_content:33kPa"
+    },
+    {
+      "common_points": 10,
+      "difference_right_minus_left": {
+        "mean_absolute_error": 0.0,
+        "mean_error": 0.0,
+        "median_absolute_error": 0.0,
+        "root_mean_squared_error": 0.0
+      },
+      "function": "calc_ptf_beniaich2023_mlr2",
+      "metrics": {
+        "log_psd": {
+          "mean_absolute_error": 0.09839766851494021,
+          "mean_error": 0.09839766851494021,
+          "median_absolute_error": 0.10733942074332099,
+          "root_mean_squared_error": 0.10278131902737661
+        },
+        "reported_boundary_proxy": {
+          "mean_absolute_error": 0.09839766851494021,
+          "mean_error": 0.09839766851494021,
+          "median_absolute_error": 0.10733942074332099,
+          "root_mean_squared_error": 0.10278131902737661
+        }
+      },
+      "recommendation": null,
+      "scenarios": [
+        "reported_boundary_proxy",
+        "log_psd"
+      ],
+      "target_pool": "fixed_pressure:gravimetric_water_content:1500kPa"
+    },
+    {
+      "common_points": 10,
+      "difference_right_minus_left": {
+        "mean_absolute_error": 0.0,
+        "mean_error": 0.0,
+        "median_absolute_error": 0.0,
+        "root_mean_squared_error": 0.0
+      },
+      "function": "calc_ptf_beniaich2023_mlr2",
+      "metrics": {
+        "log_psd": {
+          "mean_absolute_error": 0.045492349566807935,
+          "mean_error": 0.020809934950700826,
+          "median_absolute_error": 0.0411632801575367,
+          "root_mean_squared_error": 0.052969154649279086
+        },
+        "reported_boundary_proxy": {
+          "mean_absolute_error": 0.045492349566807935,
+          "mean_error": 0.020809934950700826,
+          "median_absolute_error": 0.0411632801575367,
+          "root_mean_squared_error": 0.052969154649279086
+        }
+      },
+      "recommendation": null,
+      "scenarios": [
+        "reported_boundary_proxy",
+        "log_psd"
+      ],
+      "target_pool": "fixed_pressure:gravimetric_water_content:33kPa"
+    },
+    {
+      "common_points": 10,
+      "difference_right_minus_left": {
+        "mean_absolute_error": -0.023180046996489914,
+        "mean_error": -0.023180046996489914,
+        "median_absolute_error": -0.023459205789172002,
+        "root_mean_squared_error": -0.023007454813742723
+      },
+      "function": "calc_ptf_beniaich2023_mlr3",
+      "metrics": {
+        "log_psd": {
+          "mean_absolute_error": 0.11841323467477023,
+          "mean_error": 0.11841323467477023,
+          "median_absolute_error": 0.11882410505161935,
+          "root_mean_squared_error": 0.12017247607198261
+        },
+        "reported_boundary_proxy": {
+          "mean_absolute_error": 0.14159328167126015,
+          "mean_error": 0.14159328167126015,
+          "median_absolute_error": 0.14228331084079135,
+          "root_mean_squared_error": 0.14317993088572534
+        }
+      },
+      "recommendation": null,
+      "scenarios": [
+        "reported_boundary_proxy",
+        "log_psd"
+      ],
+      "target_pool": "fixed_pressure:gravimetric_water_content:1500kPa"
+    },
+    {
+      "common_points": 10,
+      "difference_right_minus_left": {
+        "mean_absolute_error": -0.03447799775290275,
+        "mean_error": -0.035788973659415774,
+        "median_absolute_error": -0.039716087665184974,
+        "root_mean_squared_error": -0.03238801216867003
+      },
+      "function": "calc_ptf_beniaich2023_mlr3",
+      "metrics": {
+        "log_psd": {
+          "mean_absolute_error": 0.06682951523615617,
+          "mean_error": 0.06551853932964315,
+          "median_absolute_error": 0.06980777364521704,
+          "root_mean_squared_error": 0.07742475526154488
+        },
+        "reported_boundary_proxy": {
+          "mean_absolute_error": 0.10130751298905892,
+          "mean_error": 0.10130751298905892,
+          "median_absolute_error": 0.10952386131040201,
+          "root_mean_squared_error": 0.10981276743021491
+        }
+      },
+      "recommendation": null,
+      "scenarios": [
+        "reported_boundary_proxy",
+        "log_psd"
+      ],
+      "target_pool": "fixed_pressure:gravimetric_water_content:33kPa"
+    },
+    {
+      "common_points": 22,
+      "difference_right_minus_left": {
+        "mean_absolute_error": -0.01704684918527415,
+        "mean_error": 0.01893075766196856,
+        "median_absolute_error": -0.01479277660052876,
+        "root_mean_squared_error": -0.019440424678997575
+      },
+      "function": "calc_ptf_beniaich2023_mlr4",
+      "metrics": {
+        "log_psd": {
+          "mean_absolute_error": 0.018462742638358957,
+          "mean_error": -0.016181637757056926,
+          "median_absolute_error": 0.019631054063417516,
+          "root_mean_squared_error": 0.02115796970607189
+        },
+        "reported_boundary_proxy": {
+          "mean_absolute_error": 0.035509591823633106,
+          "mean_error": -0.035112395419025486,
+          "median_absolute_error": 0.034423830663946275,
+          "root_mean_squared_error": 0.040598394385069465
+        }
+      },
+      "recommendation": null,
+      "scenarios": [
+        "reported_boundary_proxy",
+        "log_psd"
+      ],
+      "target_pool": "fixed_pressure:gravimetric_water_content:1500kPa"
+    },
+    {
+      "common_points": 22,
+      "difference_right_minus_left": {
+        "mean_absolute_error": -0.021072769996809043,
+        "mean_error": 0.021072769996809043,
+        "median_absolute_error": -0.025160821099951755,
+        "root_mean_squared_error": -0.024297501829828816
+      },
+      "function": "calc_ptf_beniaich2023_mlr4",
+      "metrics": {
+        "log_psd": {
+          "mean_absolute_error": 0.09800079966213766,
+          "mean_error": -0.09800079966213766,
+          "median_absolute_error": 0.09249139260743748,
+          "root_mean_squared_error": 0.10180480131776012
+        },
+        "reported_boundary_proxy": {
+          "mean_absolute_error": 0.1190735696589467,
+          "mean_error": -0.1190735696589467,
+          "median_absolute_error": 0.11765221370738924,
+          "root_mean_squared_error": 0.12610230314758894
+        }
+      },
+      "recommendation": null,
+      "scenarios": [
+        "reported_boundary_proxy",
+        "log_psd"
+      ],
+      "target_pool": "fixed_pressure:gravimetric_water_content:33kPa"
+    },
+    {
+      "common_points": 10,
+      "difference_right_minus_left": {
+        "mean_absolute_error": 0.01623203911772062,
+        "mean_error": 0.018977071442181345,
+        "median_absolute_error": 0.019366527194921795,
+        "root_mean_squared_error": 0.0176412150539643
+      },
+      "function": "calc_ptf_beniaich2023_mlr5",
+      "metrics": {
+        "log_psd": {
+          "mean_absolute_error": 0.05709431107514749,
+          "mean_error": 0.0553209555128323,
+          "median_absolute_error": 0.0609453268311939,
+          "root_mean_squared_error": 0.06053050272612802
+        },
+        "reported_boundary_proxy": {
+          "mean_absolute_error": 0.040862271957426866,
+          "mean_error": 0.03634388407065096,
+          "median_absolute_error": 0.041578799636272104,
+          "root_mean_squared_error": 0.04288928767216372
+        }
+      },
+      "recommendation": null,
+      "scenarios": [
+        "reported_boundary_proxy",
+        "log_psd"
+      ],
+      "target_pool": "fixed_pressure:gravimetric_water_content:1500kPa"
+    },
+    {
+      "common_points": 10,
+      "difference_right_minus_left": {
+        "mean_absolute_error": 0.0009633760283725076,
+        "mean_error": 0.010825846124734327,
+        "median_absolute_error": 0.0023048365389846392,
+        "root_mean_squared_error": -0.001525935621545585
+      },
+      "function": "calc_ptf_beniaich2023_mlr5",
+      "metrics": {
+        "log_psd": {
+          "mean_absolute_error": 0.038061988167606725,
+          "mean_error": -0.00417024914924063,
+          "median_absolute_error": 0.03931835720394808,
+          "root_mean_squared_error": 0.04576379530797139
+        },
+        "reported_boundary_proxy": {
+          "mean_absolute_error": 0.03709861213923422,
+          "mean_error": -0.014996095273974958,
+          "median_absolute_error": 0.03701352066496344,
+          "root_mean_squared_error": 0.04728973092951697
+        }
+      },
+      "recommendation": null,
+      "scenarios": [
+        "reported_boundary_proxy",
+        "log_psd"
+      ],
+      "target_pool": "fixed_pressure:gravimetric_water_content:33kPa"
+    },
+    {
+      "common_points": 22,
+      "difference_right_minus_left": {
+        "mean_absolute_error": -0.01893075766196856,
+        "mean_error": 0.01893075766196856,
+        "median_absolute_error": -0.0029064401588356423,
+        "root_mean_squared_error": -0.023346378581018894
+      },
+      "function": "calc_ptf_beniaich2023_slr1",
+      "metrics": {
+        "log_psd": {
+          "mean_absolute_error": 0.026869950984231058,
+          "mean_error": -0.026799665157056927,
+          "median_absolute_error": 0.02192507072063169,
+          "root_mean_squared_error": 0.03727610154782765
+        },
+        "reported_boundary_proxy": {
+          "mean_absolute_error": 0.04580070864619962,
+          "mean_error": -0.045730422819025486,
+          "median_absolute_error": 0.024831510879467333,
+          "root_mean_squared_error": 0.060622480128846544
+        }
+      },
+      "recommendation": null,
+      "scenarios": [
+        "reported_boundary_proxy",
+        "log_psd"
+      ],
+      "target_pool": "fixed_pressure:gravimetric_water_content:1500kPa"
+    },
+    {
+      "common_points": 22,
+      "difference_right_minus_left": {
+        "mean_absolute_error": -0.021130662222074992,
+        "mean_error": 0.021130662222074992,
+        "median_absolute_error": -0.025078483505206486,
+        "root_mean_squared_error": -0.026299412081377566
+      },
+      "function": "calc_ptf_beniaich2023_slr1",
+      "metrics": {
+        "log_psd": {
+          "mean_absolute_error": 0.11386817938313698,
+          "mean_error": -0.11386817938313698,
+          "median_absolute_error": 0.10212562555300823,
+          "root_mean_squared_error": 0.12705043545025815
+        },
+        "reported_boundary_proxy": {
+          "mean_absolute_error": 0.13499884160521197,
+          "mean_error": -0.13499884160521197,
+          "median_absolute_error": 0.12720410905821472,
+          "root_mean_squared_error": 0.15334984753163572
+        }
+      },
+      "recommendation": null,
+      "scenarios": [
+        "reported_boundary_proxy",
+        "log_psd"
+      ],
+      "target_pool": "fixed_pressure:gravimetric_water_content:33kPa"
+    },
+    {
+      "common_points": 10,
+      "difference_right_minus_left": {
+        "mean_absolute_error": -0.023816861474415488,
+        "mean_error": -0.023816861474415488,
+        "median_absolute_error": -0.02685289616613898,
+        "root_mean_squared_error": -0.02312652571057766
+      },
+      "function": "calc_ptf_beniaich2023_slr2",
+      "metrics": {
+        "log_psd": {
+          "mean_absolute_error": 0.09637183487022696,
+          "mean_error": 0.09637183487022696,
+          "median_absolute_error": 0.09882982644281443,
+          "root_mean_squared_error": 0.10177698978344041
+        },
+        "reported_boundary_proxy": {
+          "mean_absolute_error": 0.12018869634464245,
+          "mean_error": 0.12018869634464245,
+          "median_absolute_error": 0.1256827226089534,
+          "root_mean_squared_error": 0.12490351549401807
+        }
+      },
+      "recommendation": null,
+      "scenarios": [
+        "reported_boundary_proxy",
+        "log_psd"
+      ],
+      "target_pool": "fixed_pressure:gravimetric_water_content:1500kPa"
+    },
+    {
+      "common_points": 10,
+      "difference_right_minus_left": {
+        "mean_absolute_error": -0.023864371548491622,
+        "mean_error": -0.03693523971968178,
+        "median_absolute_error": -0.011798835437937999,
+        "root_mean_squared_error": -0.024722180717566003
+      },
+      "function": "calc_ptf_beniaich2023_slr2",
+      "metrics": {
+        "log_psd": {
+          "mean_absolute_error": 0.05813819825049303,
+          "mean_error": 0.03451951856146522,
+          "median_absolute_error": 0.0649830956300386,
+          "root_mean_squared_error": 0.07113707203208453
+        },
+        "reported_boundary_proxy": {
+          "mean_absolute_error": 0.08200256979898465,
+          "mean_error": 0.071454758281147,
+          "median_absolute_error": 0.0767819310679766,
+          "root_mean_squared_error": 0.09585925274965053
+        }
+      },
+      "recommendation": null,
+      "scenarios": [
+        "reported_boundary_proxy",
+        "log_psd"
+      ],
+      "target_pool": "fixed_pressure:gravimetric_water_content:33kPa"
+    },
+    {
+      "common_points": 10,
+      "difference_right_minus_left": {
+        "mean_absolute_error": 0.0,
+        "mean_error": 0.0,
+        "median_absolute_error": 0.0,
+        "root_mean_squared_error": 0.0
+      },
+      "function": "calc_ptf_beniaich2023_slr3",
+      "metrics": {
+        "log_psd": {
+          "mean_absolute_error": 0.08375914308039478,
+          "mean_error": 0.07967817279361888,
+          "median_absolute_error": 0.09478740465363544,
+          "root_mean_squared_error": 0.08992511391396055
+        },
+        "reported_boundary_proxy": {
+          "mean_absolute_error": 0.08375914308039478,
+          "mean_error": 0.07967817279361888,
+          "median_absolute_error": 0.09478740465363544,
+          "root_mean_squared_error": 0.08992511391396055
+        }
+      },
+      "recommendation": null,
+      "scenarios": [
+        "reported_boundary_proxy",
+        "log_psd"
+      ],
+      "target_pool": "fixed_pressure:gravimetric_water_content:1500kPa"
+    },
+    {
+      "common_points": 10,
+      "difference_right_minus_left": {
+        "mean_absolute_error": 0.0,
+        "mean_error": 0.0,
+        "median_absolute_error": 0.0,
+        "root_mean_squared_error": 0.0
+      },
+      "function": "calc_ptf_beniaich2023_slr3",
+      "metrics": {
+        "log_psd": {
+          "mean_absolute_error": 0.059657847697751204,
+          "mean_error": -0.00961911627772758,
+          "median_absolute_error": 0.04960849790091143,
+          "root_mean_squared_error": 0.07022693557747862
+        },
+        "reported_boundary_proxy": {
+          "mean_absolute_error": 0.059657847697751204,
+          "mean_error": -0.00961911627772758,
+          "median_absolute_error": 0.04960849790091143,
+          "root_mean_squared_error": 0.07022693557747862
+        }
+      },
+      "recommendation": null,
+      "scenarios": [
+        "reported_boundary_proxy",
+        "log_psd"
+      ],
+      "target_pool": "fixed_pressure:gravimetric_water_content:33kPa"
+    },
+    {
+      "common_points": 10,
+      "difference_right_minus_left": {
+        "mean_absolute_error": -3.469446951953614e-18,
+        "mean_error": 0.0,
+        "median_absolute_error": -3.469446951953614e-17,
+        "root_mean_squared_error": 0.0
+      },
+      "function": "calc_ptf_beniaich2023_slr4",
+      "metrics": {
+        "log_psd": {
+          "mean_absolute_error": 0.029539536261407828,
+          "mean_error": -0.02636627165082555,
+          "median_absolute_error": 0.02316986086345397,
+          "root_mean_squared_error": 0.0359755986003181
+        },
+        "reported_boundary_proxy": {
+          "mean_absolute_error": 0.02953953626140783,
+          "mean_error": -0.02636627165082555,
+          "median_absolute_error": 0.023169860863454003,
+          "root_mean_squared_error": 0.0359755986003181
+        }
+      },
+      "recommendation": null,
+      "scenarios": [
+        "reported_boundary_proxy",
+        "log_psd"
+      ],
+      "target_pool": "fixed_pressure:gravimetric_water_content:1500kPa"
+    },
+    {
+      "common_points": 10,
+      "difference_right_minus_left": {
+        "mean_absolute_error": 0.0,
+        "mean_error": 0.0,
+        "median_absolute_error": 0.0,
+        "root_mean_squared_error": 0.0
+      },
+      "function": "calc_ptf_beniaich2023_slr4",
+      "metrics": {
+        "log_psd": {
+          "mean_absolute_error": 0.1565053525139638,
+          "mean_error": -0.1565053525139638,
+          "median_absolute_error": 0.13848862974887716,
+          "root_mean_squared_error": 0.16300522934693581
+        },
+        "reported_boundary_proxy": {
+          "mean_absolute_error": 0.1565053525139638,
+          "mean_error": -0.1565053525139638,
+          "median_absolute_error": 0.13848862974887716,
+          "root_mean_squared_error": 0.16300522934693581
+        }
+      },
+      "recommendation": null,
+      "scenarios": [
+        "reported_boundary_proxy",
+        "log_psd"
+      ],
+      "target_pool": "fixed_pressure:gravimetric_water_content:33kPa"
+    },
+    {
+      "common_points": 10,
+      "difference_right_minus_left": {
+        "mean_absolute_error": -0.00021138195663154488,
+        "mean_error": -0.0004819732743744226,
+        "median_absolute_error": -0.0001065142737701058,
+        "root_mean_squared_error": -0.0002976981635276453
+      },
+      "function": "calc_ptf_beniaich2023_slr5",
+      "metrics": {
+        "log_psd": {
+          "mean_absolute_error": 0.027360274753806067,
+          "mean_error": 0.018609025246867365,
+          "median_absolute_error": 0.02595227752808127,
+          "root_mean_squared_error": 0.030511494782068656
+        },
+        "reported_boundary_proxy": {
+          "mean_absolute_error": 0.02757165671043761,
+          "mean_error": 0.019090998521241787,
+          "median_absolute_error": 0.026058791801851375,
+          "root_mean_squared_error": 0.030809192945596302
+        }
+      },
+      "recommendation": null,
+      "scenarios": [
+        "reported_boundary_proxy",
+        "log_psd"
+      ],
+      "target_pool": "fixed_pressure:gravimetric_water_content:1500kPa"
+    },
+    {
+      "common_points": 10,
+      "difference_right_minus_left": {
+        "mean_absolute_error": -0.0035930712544551685,
+        "mean_error": 0.0035930712544551685,
+        "median_absolute_error": -0.003920772393312927,
+        "root_mean_squared_error": -0.003226474868962201
+      },
+      "function": "calc_ptf_beniaich2023_slr5",
+      "metrics": {
+        "log_psd": {
+          "mean_absolute_error": 0.09799474906972677,
+          "mean_error": -0.09799474906972677,
+          "median_absolute_error": 0.08967092127430204,
+          "root_mean_squared_error": 0.1096795164442732
+        },
+        "reported_boundary_proxy": {
+          "mean_absolute_error": 0.10158782032418194,
+          "mean_error": -0.10158782032418194,
+          "median_absolute_error": 0.09359169366761497,
+          "root_mean_squared_error": 0.11290599131323541
+        }
+      },
+      "recommendation": null,
+      "scenarios": [
+        "reported_boundary_proxy",
+        "log_psd"
+      ],
+      "target_pool": "fixed_pressure:gravimetric_water_content:33kPa"
+    },
+    {
+      "common_points": 47,
+      "difference_right_minus_left": {
+        "mean_absolute_error": 0.0,
+        "mean_error": 0.0,
+        "median_absolute_error": 0.0,
+        "root_mean_squared_error": 0.0
+      },
+      "function": "calc_ptf_beniaich2023_slr6",
+      "metrics": {
+        "log_psd": {
+          "mean_absolute_error": 0.06692587084509635,
+          "mean_error": 0.06692587084509635,
+          "median_absolute_error": 0.07209629428134143,
+          "root_mean_squared_error": 0.06945822911309256
+        },
+        "reported_boundary_proxy": {
+          "mean_absolute_error": 0.06692587084509635,
+          "mean_error": 0.06692587084509635,
+          "median_absolute_error": 0.07209629428134143,
+          "root_mean_squared_error": 0.06945822911309256
+        }
+      },
+      "recommendation": null,
+      "scenarios": [
+        "reported_boundary_proxy",
+        "log_psd"
+      ],
+      "target_pool": "fixed_pressure:gravimetric_water_content:1500kPa"
+    },
+    {
+      "common_points": 51,
+      "difference_right_minus_left": {
+        "mean_absolute_error": 0.0,
+        "mean_error": 0.0,
+        "median_absolute_error": 0.0,
+        "root_mean_squared_error": 0.0
+      },
+      "function": "calc_ptf_beniaich2023_slr6",
+      "metrics": {
+        "log_psd": {
+          "mean_absolute_error": 0.02950942663500997,
+          "mean_error": -0.0025852764678539622,
+          "median_absolute_error": 0.021982596751593003,
+          "root_mean_squared_error": 0.03853439255719514
+        },
+        "reported_boundary_proxy": {
+          "mean_absolute_error": 0.02950942663500997,
+          "mean_error": -0.0025852764678539622,
+          "median_absolute_error": 0.021982596751593003,
+          "root_mean_squared_error": 0.03853439255719514
+        }
+      },
+      "recommendation": null,
+      "scenarios": [
+        "reported_boundary_proxy",
+        "log_psd"
+      ],
+      "target_pool": "fixed_pressure:gravimetric_water_content:33kPa"
+    }
+  ],
+  "protocol": "meta_exploratory_assumptions_v1",
+  "recommendation": null,
+  "schema_version": 1,
+  "scored_functions_by_scenario": {
+    "log_psd": 11,
+    "reported_boundary_proxy": 11
+  },
+  "target_pools": [
+    {
+      "profiles": 1,
+      "samples": 47,
+      "scenario": "log_psd",
+      "scored_functions": 11,
+      "target_pool": "fixed_pressure:gravimetric_water_content:1500kPa"
+    },
+    {
+      "profiles": 1,
+      "samples": 51,
+      "scenario": "log_psd",
+      "scored_functions": 11,
+      "target_pool": "fixed_pressure:gravimetric_water_content:33kPa"
+    },
+    {
+      "profiles": 1,
+      "samples": 48,
+      "scenario": "reported_boundary_proxy",
+      "scored_functions": 11,
+      "target_pool": "fixed_pressure:gravimetric_water_content:1500kPa"
+    },
+    {
+      "profiles": 1,
+      "samples": 52,
+      "scenario": "reported_boundary_proxy",
+      "scored_functions": 11,
+      "target_pool": "fixed_pressure:gravimetric_water_content:33kPa"
+    }
+  ],
+  "view": "exploratory"
+}
