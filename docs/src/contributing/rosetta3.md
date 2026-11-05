@@ -278,7 +278,10 @@ result = model.calc_ptf_zhang2017_mod5(
 )
 print(result.alpha_mean, result.alpha_std)
 logged = model.calc_ptf_zhang2017_mod2(
-    sand=30, silt=30, clay=40, estimate=Estimate.LOG10,
+    sand=30,
+    silt=30,
+    clay=40,
+    estimate=Estimate.LOG10,
 )
 ```
 
