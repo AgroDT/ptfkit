@@ -59,3 +59,7 @@ ptfkit's C API is organized around installed headers.
 - [`<ptfkit/zhao2016.h>`](headers/zhao2016.md) — Saturated hydraulic conductivity PTFs for the Loess Plateau of China.
 
 See the [function index](functions.md) for all public C functions.
+
+## External models
+
+- [Rosetta3 and external model loading](headers/zhang_schaap2017.md)

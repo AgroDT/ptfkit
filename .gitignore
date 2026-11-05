@@ -4,3 +4,10 @@
 # Test coverage
 .coverage*
 coverage.xml
+
+# Local Rosetta reference environment and unredistributed trained artifacts
+.rosetta-upstream/
+.rosetta-env/
+.rosetta-local/
+.mise.local.toml
+codegen/scripts/__pycache__/
