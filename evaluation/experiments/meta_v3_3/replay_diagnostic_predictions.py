@@ -135,7 +135,11 @@ def main() -> None:
         'root': ROOT,
         'datasets': restored_datasets(workbook),
         'manifest': manifest,
-        'catalog': contracts.load_catalog(ROOT),
+        'catalog': [
+            f
+            for f in contracts.load_catalog(ROOT)
+            if f['id'] in {r['function'] for r in frozen['catalog']}
+        ],
         'support': catalog_support(manifest),
         'old_registration': json.loads(
             Path(__file__).with_name('exploratory-policies.json').read_bytes()

@@ -27,6 +27,7 @@ _UNITS = {
     '%': 'mass_percent',
     '% mass': 'mass_percent',
     'g/g': 'mass_fraction',
+    'kg/kg': 'mass_fraction',
     'g/cm^3': 'gram_per_cubic_centimeter',
     'g/cm3': 'gram_per_cubic_centimeter',
     'Mg/m^3': 'gram_per_cubic_centimeter',

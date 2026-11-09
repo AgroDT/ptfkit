@@ -199,7 +199,7 @@ def water_convert(
     if original_basis == target_basis:
         return value, None
     density = row['values'].get('Q')
-    if not semantic.numeric(density) or not 0 < density < 10:
+    if 'Q' in row.get('formulas', {}) or not semantic.numeric(density) or not 0 < density < 10:
         message = 'Water basis conversion requires observed same-record bulk density.'
         raise ValueError(message)
     converted = value / density if target_basis.startswith('gravimetric') else value * density

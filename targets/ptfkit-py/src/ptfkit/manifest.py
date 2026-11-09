@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING, TypeAlias, cast
 
 
 if TYPE_CHECKING:
-    from importlib.abc import Traversable
+    from importlib.resources.abc import Traversable
 
 JsonScalar: TypeAlias = bool | int | float | str | None
 JsonValue: TypeAlias = JsonScalar | list['JsonValue'] | dict[str, 'JsonValue']

@@ -380,6 +380,7 @@ mod tests {
                             unit: "1".into(),
                             domain: None,
                             description: "Controlled predictor".into(),
+                            measurement: None,
                         })
                     })
                     .collect();

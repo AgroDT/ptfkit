@@ -1,7 +1,7 @@
 {
   "_generated": "ptfkit-codegen; DO NOT EDIT.",
   "coverage": {
-    "implemented_functions": 172,
+    "implemented_functions": 301,
     "manifest_functions": 27,
     "omitted_functions": [
       {
@@ -78,6 +78,14 @@
       },
       {
         "id": "calc_ptf_dharumarajan2019_skp_clay",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_dijkerman1988",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_dijkerman1988_available_water",
         "reason": "incomplete_measurement_contract"
       },
       {
@@ -253,6 +261,10 @@
         "reason": "incomplete_measurement_contract"
       },
       {
+        "id": "calc_ptf_jabro1992",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
         "id": "calc_ptf_kalumba2021_mlr_ksat",
         "reason": "incomplete_measurement_contract"
       },
@@ -278,6 +290,170 @@
       },
       {
         "id": "calc_ptf_kalumba2021_mlr_pf42",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_i_lower_plastic_limit_from_clay",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_i_lower_plastic_limit_from_organic_carbon",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_i_lower_plastic_limit_from_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_i_moisture_equivalent_from_clay",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_i_moisture_equivalent_from_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_i_plasticity_index_from_clay",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_i_plasticity_index_from_organic_carbon",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_i_plasticity_index_from_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_i_upper_plastic_limit_from_clay",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_i_upper_plastic_limit_from_organic_carbon",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_i_water_01bar_from_clay",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_i_water_01bar_from_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_i_water_03bar_from_clay",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_i_water_03bar_from_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_i_water_0bar_from_clay",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_i_water_0bar_from_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_i_water_15bar_from_clay",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_i_water_15bar_from_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_i_water_15bar_from_silt",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_ii_lower_plastic_limit_from_clay",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_ii_lower_plastic_limit_from_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_ii_lower_plastic_limit_from_silt",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_ii_moisture_equivalent_from_clay",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_ii_moisture_equivalent_from_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_ii_moisture_equivalent_from_silt",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_ii_plasticity_index_from_organic_carbon",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_ii_plasticity_index_from_silt",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_ii_upper_plastic_limit_from_clay",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_ii_upper_plastic_limit_from_organic_carbon",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_ii_upper_plastic_limit_from_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_ii_upper_plastic_limit_from_silt",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_ii_water_01bar_from_clay",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_ii_water_01bar_from_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_ii_water_03bar_from_clay",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_ii_water_03bar_from_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_ii_water_03bar_from_water_01bar",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_ii_water_0bar_from_clay",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_ii_water_0bar_from_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_ii_water_15bar_from_clay",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_ii_water_15bar_from_sand",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_lal1979_group_ii_water_15bar_from_water_01bar",
         "reason": "incomplete_measurement_contract"
       },
       {
@@ -429,6 +605,18 @@
         "reason": "incomplete_measurement_contract"
       },
       {
+        "id": "calc_ptf_rudiyanto2021_ssc",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_rudiyanto2021_sscbd",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_rudiyanto2021_texture",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
         "id": "calc_ptf_saxton1986_calcptf_parameters",
         "reason": "incomplete_measurement_contract"
       },
@@ -454,6 +642,318 @@
       },
       {
         "id": "calc_ptf_saxton2006_tension_wet",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_awc_2_ptf01",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_awc_2_ptf02",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_awc_2_ptf03",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_awc_ptf01",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_awc_ptf03",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_fc_2_ptf01",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_fc_2_ptf02",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_fc_2_ptf03",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_fc_2_ptf04",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_fc_2_ptf05",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_fc_2_ptf06",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_fc_2_ptf07",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_fc_2_ptf08",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_fc_2_ptf09",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_fc_2_ptf11",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_fc_2_ptf12",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_fc_2_ptf13",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_fc_2_ptf18",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_fc_ptf01",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_fc_ptf02",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_fc_ptf03",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_fc_ptf04",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_fc_ptf06",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_fc_ptf07",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_fc_ptf08",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_fc_ptf09",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_fc_ptf11",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_fc_ptf14",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_ks_ptf01",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_ks_ptf02",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_ks_ptf05",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_mvg_ptf01",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_mvg_ptf02",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_mvg_ptf04",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_mvg_ptf05",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_mvg_ptf06",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_mvg_ptf12",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_mvg_ptf13",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_mvg_ptf20",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_mvg_ptf21",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_mvg_ptf23",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_mvg_ptf27",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_mvg_ptf28",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_mvg_ptf29",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_ths_ptf01",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_ths_ptf02",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_ths_ptf03",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_ths_ptf04",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_ths_ptf05",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_vg_ptf01",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_vg_ptf02",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_vg_ptf03",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_vg_ptf04",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_vg_ptf05",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_vg_ptf06",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_vg_ptf07",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_vg_ptf08",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_vg_ptf09",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_vg_ptf10",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_vg_ptf11",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_vg_ptf12",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_vg_ptf13",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_vg_ptf14",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_vg_ptf15",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_vg_ptf16",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_vg_ptf21",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_vg_ptf22",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_vg_ptf24",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_vg_ptf25",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_vg_ptf26",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_vg_ptf29",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_wp_ptf01",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_wp_ptf02",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_wp_ptf05",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_wp_ptf07",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_wp_ptf08",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_wp_ptf09",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_szabo2021_wp_ptf17",
         "reason": "incomplete_measurement_contract"
       },
       {
@@ -558,6 +1058,22 @@
       },
       {
         "id": "calc_ptf_wosten2001_sand_topsoil_table5",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_zhang2017_mod2",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_zhang2017_mod3",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_zhang2017_mod4",
+        "reason": "incomplete_measurement_contract"
+      },
+      {
+        "id": "calc_ptf_zhang2017_mod5",
         "reason": "incomplete_measurement_contract"
       },
       {
@@ -5367,6 +5883,24 @@
         "dimensionless"
       ]
     },
+    "fredlund_xing_alpha": {
+      "description": "Inverse pressure-scale parameter of the modified Fredlund-Xing (FXW) retention model.",
+      "units": [
+        "inverse_centimeter"
+      ]
+    },
+    "fredlund_xing_m": {
+      "description": "Dimensionless m shape parameter of the modified Fredlund-Xing (FXW) retention model.",
+      "units": [
+        "dimensionless"
+      ]
+    },
+    "fredlund_xing_n": {
+      "description": "Dimensionless n shape parameter of the modified Fredlund-Xing (FXW) retention model.",
+      "units": [
+        "dimensionless"
+      ]
+    },
     "gravel_volume_fraction": {
       "description": "Volumetric fraction of gravel in bulk soil.",
       "units": [
@@ -5585,7 +6119,8 @@
     },
     "dimensionless": {
       "aliases": [
-        "1"
+        "1",
+        "-"
       ],
       "conversion": null,
       "preferred_notation": "dimensionless"

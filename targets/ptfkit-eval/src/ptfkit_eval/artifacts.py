@@ -27,7 +27,7 @@ from .sigmoid_grid import SigmoidGridFit
 
 
 if TYPE_CHECKING:
-    from collections.abc import Iterator
+    from collections.abc import Generator
 
     from .nested_applicability import NestedApplicabilityResult
     from .risk_bounds import BoundedRiskInterval
@@ -98,7 +98,7 @@ def artifact_value(value: object) -> object:
 
 
 @contextmanager
-def _publication_staging(target: Path) -> Iterator[Path]:
+def _publication_staging(target: Path) -> Generator[Path, None, None]:
     """Windows publication inherits destination ACLs instead of temporary ACLs."""
     if platform.system() == 'Windows':
         staging = target.parent / f'.{target.name}.{uuid4().hex}'

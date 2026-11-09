@@ -121,7 +121,11 @@ def resolve_selection_inputs(
 
 
 def predict(
-    context: dict, observations: list[dict], rows: list[dict]
+    context: dict,
+    observations: list[dict],
+    rows: list[dict],
+    *,
+    allow_water_basis_conversion: bool = False,
 ) -> tuple[list[dict], list[dict]]:
     datasets = {d['dataset_id']: d for d in context['datasets']}
     samples = {
@@ -177,7 +181,11 @@ def predict(
                 {'features': [], 'source_id': o['source_id'], 'sample_id': o['sample_id']},
             )
             target = candidates[0]
-            if o['basis'] != 'ksat' and target['quantity'] != o['basis']:
+            if (
+                o['basis'] != 'ksat'
+                and target['quantity'] != o['basis']
+                and not allow_water_basis_conversion
+            ):
                 failures['different_water_basis'] += 1
                 continue
             axis = {target['axis_input']} if 'axis_input' in target else set()
@@ -194,6 +202,7 @@ def predict(
             if reasons:
                 failures.update(reasons)
                 continue
+            conversion = None
             try:
                 if o['basis'] != 'ksat':
                     if 'axis_input' in target or target.get('adapter') in CURVES:
@@ -221,6 +230,16 @@ def predict(
                         )
                 else:
                     value = semantic.prediction(function, target, values, context)
+                if o['basis'] != 'ksat' and target['quantity'] != o['basis']:
+                    from evaluation.experiments.meta_v3_3.expanded_predictors import water_convert  # noqa: PLC0415 - Avoid the existing resolver import cycle.
+
+                    try:
+                        value, conversion = water_convert(
+                            value, target['quantity'], o['basis'], row
+                        )
+                    except ValueError:
+                        failures['missing_same_record_density_for_water_basis_conversion'] += 1
+                        continue
                 if not math.isfinite(value) or (o['basis'] == 'ksat' and value <= 0):
                     failures['nonpositive_or_nonfinite_prediction'] += 1
                     continue
@@ -231,6 +250,7 @@ def predict(
             points.append(
                 {
                     **o,
+                    **({'water_basis_conversion': conversion} if conversion else {}),
                     'function': function['id'],
                     'predicted': value,
                     'minimum_tier': 'E5'

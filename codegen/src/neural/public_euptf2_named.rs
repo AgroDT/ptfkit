@@ -285,6 +285,7 @@ mod tests {
                     unit: if name == "depth_m" { "cm" } else { "%" }.into(),
                     domain: None,
                     description: "Original unit".into(),
+                    measurement: None,
                 })
             })
             .collect();

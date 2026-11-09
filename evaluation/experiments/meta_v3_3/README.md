@@ -1,5 +1,87 @@
 # meta_v3.3 workbook benchmark
 
+The latest post-main refresh includes Rudiyanto (2021) neuroFX, Rosetta3 and
+EU-PTF v2 for both WRC and Ksat. Read
+[the overall coverage and matched accuracy](final_results/refresh-main/BEST-OVERALL.md),
+[the predictor-budget choices](final_results/refresh-main/BEST-BY-PREDICTORS.md),
+[the Ksat sample audit](final_results/refresh-main/KSAT-AUDIT.md), and
+[the full report](final_results/refresh-main/RESULTS.md). The primary criterion
+is maximum experimental-point coverage, followed by sample-balanced error on
+identical coordinates. All 1701 measured WRC points remain in the unrestricted
+denominator; volume and mass errors remain separate. Source-sensitive and
+single-candidate comparisons do not establish a validated leader. Per-function
+coverage gaps and sanitized failure reasons are in
+[the exclusion audit](final_results/refresh-main/COVERAGE-EXCLUSIONS.json).
+Same-record observed density permits water-basis conversion; missing or
+formula-derived density does not. No new predictor imputation is introduced.
+
+The Ksat audit retains 39 primary records and evaluates five predictor-complete
+master records as a separate duplicate-sensitive alternate view. They are never
+pooled with the thesis counterparts. Six Rosetta estimates remain excluded.
+Thirty ambiguous-unit records retain their historical E5 interpretation, with a
+separate nine-record sensitivity analysis. No additional independent Ksat sample
+is confirmed. Twelve input budgets include the eight texture combinations and
+four clay-based combinations usable by Ksat functions.
+
+```sh
+uv run --no-sync --project targets/ptfkit-eval python -B \
+  -m evaluation.experiments.meta_v3_3.refresh_selection \
+  --models .euptf2-local/models --output local/meta-refresh-repeat \
+  --public-output local/meta-refresh-repeat-public
+```
+
+Both output paths must be new. `--analyze-only` re-scores a completed private run
+without repeating the native forecasts. Earlier reports below retain historical
+selection criteria and catalogs; use the refresh above for current choices.
+
+Selection under eight predictor budgets (texture plus every combination of
+depth, SOC and bulk density) is reported in
+[predictor-budgets/RESULTS.md](final_results/predictor-budgets/RESULTS.md) and
+[summary.csv](final_results/predictor-budgets/summary.csv). Each budget masks
+unavailable predictors before running the native functions, including Rosetta3
+and EU-PTF v2. Primary choices use identical measured coordinates and distinguish
+complete-pool coverage from a restricted common intersection. Source-held-out
+selection is assessed separately; specialized Varallyai and Lal routes and
+fixed-pressure outputs remain diagnostics.
+
+```sh
+uv run --no-sync --project targets/ptfkit-eval python -B \
+  -m evaluation.experiments.meta_v3_3.select_predictor_budgets \
+  --models .euptf2-local/models --output local/meta-budget-repeat \
+  --public-output local/meta-budget-repeat-public
+```
+
+Both output directories must be new. No cached formula cell, unlisted measured
+property, reviewed texture class or hidden density conversion can satisfy an
+input budget. The existing E5 PSD approximations remain explicit; availability
+does not establish a function's empirical transfer domain.
+
+The repeated selection including Rosetta3 and EU-PTF v2 is published in
+[rosetta-euptf/RESULTS.md](final_results/rosetta-euptf/RESULTS.md), with the full
+[aggregate checkpoint](final_results/rosetta-euptf/selection.json) and
+[accuracy/coverage table](final_results/rosetta-euptf/wrc_accuracy_coverage.csv).
+It retains the same experimental ledger and E5 predictor policies. Historical
+individual rankings must reproduce exactly before new models enter the ranking.
+All four Rosetta3 functions and all 78 EU-PTF v2 functions receive an explicit
+decision. Measured-water Rosetta variants are excluded from independent scoring;
+EU-PTF fixed outputs retain their exact original pressure-head coordinates.
+The v1.0 reports and presentations below remain the historical handoff.
+
+Reproduce with authenticated local EU-PTF v2 artifacts prepared according to
+[the model import guide](../../../docs/src/contributing/euptf2-collection.md):
+
+```sh
+uv run --no-sync --project targets/ptfkit-eval python -B \
+  -m evaluation.experiments.meta_v3_3.reselect_external_models \
+  --models .euptf2-local/models --output local/meta-reselection-repeat \
+  --public-output local/meta-reselection-repeat-public
+```
+
+Both output directories must be new. To reuse expanded forecasts, pass
+`--expanded <previous-private-output>/expanded`; the same exact historical
+ranking validation still applies. Private observations and predictor evidence
+remain under `local/`; the public package contains aggregate results only.
+
 The current v1.0 handoff uses **all predictable experimental WRC points**.
 Predictor-defined testing datasets are described in
 [PREDICTOR-SUBSETS.md](final_results/PREDICTOR-SUBSETS.md). Exact availability

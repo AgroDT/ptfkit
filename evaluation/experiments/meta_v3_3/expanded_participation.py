@@ -130,7 +130,9 @@ def matched_row(observation: dict, rows: list[dict]) -> dict | None:
     return candidates[0] if len(candidates) == 1 else None
 
 
-def run_predictions() -> None:
+def run_predictions(
+    *, context_data: tuple | None = None, baseline_predictions: list[dict] | None = None
+) -> None:
     baseline_path = OUTPUT / 'baseline/benchmark_aggregates.json'
     if not baseline_path.exists():
         (OUTPUT / 'baseline').mkdir(parents=True)
@@ -155,7 +157,9 @@ def run_predictions() -> None:
         message = 'Workbook differs from the frozen comparison.'
         raise ValueError(message)
     included, eligible = eligible_catalog(baseline)
-    context, observations, rows, workbook_audit = build_context()
+    context, observations, rows, workbook_audit = (
+        build_context() if context_data is None else context_data
+    )
     catalog = {f['id']: f for f in context['catalog']}
     isolated = {
         r['function']
@@ -486,7 +490,11 @@ def run_predictions() -> None:
                     )
     old = [
         p
-        for p in read(ROOT / 'local/meta-diagnostic-replay/predictions.json')
+        for p in (
+            read(ROOT / 'local/meta-diagnostic-replay/predictions.json')
+            if baseline_predictions is None
+            else baseline_predictions
+        )
         if not p['water_conditioned']
     ]
     for point in old:
