@@ -1,0 +1,20 @@
+{
+  "format_version": 1,
+  "repository": "https://github.com/YonggenZhang/Rosetta",
+  "revision": "2a4aae0bdcea20cc2f1887ce25aa0b4336dd9510",
+  "files": {
+    "LICENSE": "230184f60bae2feaf244f10a8bac053c8ff33a183bcc365b4d8b876d2b7f4809",
+    "ANN_Module.py": "fba9c1bad4f9fb1c6e584c0221ba1d3bb13362e53509404bd1cc1ac83594057b",
+    "DB_Module.py": "5b5470b2432bd5cb2c4ad477d2221b3a894353aadd3b30f0d90b0b16b586220e",
+    "Rpredict.py": "9fc77c3047a628a223de9189de819765c0cec996178ff73a6731da34fa8fefc9",
+    "README.md": "48c33520e64037090442d4ab88750d91a8de965b03f0aa005b4dbd4ddb2d815c",
+    "sqlite/Rosetta.sqlite": "0e1a3f3ccbcf569066dc3c19027183646e434eece30213896f00df6f477910de",
+    "sqlite/Rosetta.sql": "2a2d3ee04626275b2cf0337008372a5c289a57c4e31e7b30462910e9fbd6f71a"
+  },
+  "license_observations": {
+    "repository_file": "GPL-3.0 text in LICENSE",
+    "source_headers": "GPL-2.0-or-later; copyright Marcel G. Schaap, 2016",
+    "separate_database_license_notice_found": false,
+    "scope": "Records published notices; does not determine ownership or invalidate the USDA CC0 declaration."
+  }
+}

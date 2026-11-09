@@ -1,0 +1,441 @@
+source:
+  summary: Rosetta3 hydraulic parameters and uncertainty from bundled CC0 neural ensembles.
+  citation_apa: >-
+    Zhang, Y., & Schaap, M. G. (2017). Weighted recalibration of the Rosetta
+    pedotransfer model with improved estimates of hydraulic parameter
+    distributions and summary statistics (Rosetta3). Journal of Hydrology,
+    547, 39-53.
+  doi:
+    identifier: 10.1016/j.jhydrol.2017.01.004
+    url: https://doi.org/10.1016/j.jhydrol.2017.01.004
+scope:
+  territory: Not independently established by this software audit.
+  dataset: Original trained upstream ensembles; no retraining or replacement.
+$defs:
+  Rosetta3ArithmeticStatistics:
+    type: record
+    name: Rosetta3ArithmeticStatistics
+    fields:
+      - name: theta_r_mean
+        quantity: volumetric_water_content
+        symbol: null
+        unit: volume_fraction
+        reported_unit: "cm^3/cm^3"
+        domain: null
+        description: "Arithmetic ensemble mean. Residual volumetric water content."
+      - name: theta_s_mean
+        quantity: volumetric_water_content
+        symbol: null
+        unit: volume_fraction
+        reported_unit: "cm^3/cm^3"
+        domain: null
+        description: "Arithmetic ensemble mean. Saturated volumetric water content."
+      - name: alpha_mean
+        quantity: van_genuchten_alpha
+        symbol: null
+        unit: inverse_centimeter
+        reported_unit: "1/cm"
+        domain: null
+        description: "Arithmetic ensemble mean. van Genuchten inverse pressure-scale parameter."
+      - name: n_mean
+        quantity: van_genuchten_n
+        symbol: null
+        unit: dimensionless
+        reported_unit: "1"
+        domain: null
+        description: "Arithmetic ensemble mean. van Genuchten pore-size parameter."
+      - name: k_sat_mean
+        quantity: saturated_hydraulic_conductivity
+        symbol: null
+        unit: centimeter_per_day
+        reported_unit: "cm/day"
+        domain: null
+        description: "Arithmetic ensemble mean. Saturated hydraulic conductivity."
+      - name: k_0_mean
+        quantity: unsaturated_hydraulic_conductivity
+        symbol: null
+        unit: centimeter_per_day
+        reported_unit: "cm/day"
+        domain: null
+        description: "Arithmetic ensemble mean. Unsaturated conductivity matching-point parameter; not saturated conductivity."
+      - name: l_mean
+        quantity: conductivity_shape_parameter
+        symbol: null
+        unit: dimensionless
+        reported_unit: "1"
+        domain: null
+        description: "Arithmetic ensemble mean. Unsaturated conductivity exponent from the separate Rosetta1 ensemble."
+      - name: theta_r_std
+        quantity: volumetric_water_content
+        symbol: null
+        unit: volume_fraction
+        reported_unit: "cm^3/cm^3"
+        domain: null
+        description: "Sample standard deviation (ddof=1), in physical parameter units. Residual volumetric water content."
+      - name: theta_s_std
+        quantity: volumetric_water_content
+        symbol: null
+        unit: volume_fraction
+        reported_unit: "cm^3/cm^3"
+        domain: null
+        description: "Sample standard deviation (ddof=1), in physical parameter units. Saturated volumetric water content."
+      - name: alpha_std
+        quantity: van_genuchten_alpha
+        symbol: null
+        unit: inverse_centimeter
+        reported_unit: "1/cm"
+        domain: null
+        description: "Sample standard deviation (ddof=1), in physical parameter units. van Genuchten inverse pressure-scale parameter."
+      - name: n_std
+        quantity: van_genuchten_n
+        symbol: null
+        unit: dimensionless
+        reported_unit: "1"
+        domain: null
+        description: "Sample standard deviation (ddof=1), in physical parameter units. van Genuchten pore-size parameter."
+      - name: k_sat_std
+        quantity: saturated_hydraulic_conductivity
+        symbol: null
+        unit: centimeter_per_day
+        reported_unit: "cm/day"
+        domain: null
+        description: "Sample standard deviation (ddof=1), in physical parameter units. Saturated hydraulic conductivity."
+      - name: k_0_std
+        quantity: unsaturated_hydraulic_conductivity
+        symbol: null
+        unit: centimeter_per_day
+        reported_unit: "cm/day"
+        domain: null
+        description: "Sample standard deviation (ddof=1), in physical parameter units. Unsaturated conductivity matching-point parameter; not saturated conductivity."
+      - name: l_std
+        quantity: conductivity_shape_parameter
+        symbol: null
+        unit: dimensionless
+        reported_unit: "1"
+        domain: null
+        description: "Sample standard deviation (ddof=1), in physical parameter units. Unsaturated conductivity exponent from the separate Rosetta1 ensemble."
+functions:
+  - name: calc_ptf_zhang2017_mod2
+    status: implemented
+    implementation:
+      external_model:
+        kind: rosetta3
+        artifact: ../models/rosetta3/artifact.json
+        level: 2
+    public_api:
+      name: calc_ptf_zhang2017_mod2
+      result_class: Rosetta3ArithmeticStatistics
+      summary: Estimate Rosetta3 level 2 physical-scale arithmetic means and uncertainty.
+    scope:
+      prediction_target: Seven hydraulic parameters and their bootstrap sample standard deviations.
+      models:
+        h_theta: van Genuchten retention parameters
+        k_h: Saturated conductivity and Rosetta1 unsaturated conductivity parameters
+    inputs:
+      - name: sand
+        symbol: null
+        unit: "%"
+        domain: "Nonnegative mass percentage; texture sum within [99, 101]."
+        description: "Sand mass percentage in the upstream convention; no granulometric conversion is applied."
+      - name: silt
+        symbol: null
+        unit: "%"
+        domain: "Nonnegative mass percentage; texture sum within [99, 101]."
+        description: "Silt mass percentage in the upstream convention."
+      - name: clay
+        symbol: null
+        unit: "%"
+        domain: "Nonnegative mass percentage; texture sum within [99, 101]."
+        description: "Clay mass percentage in the upstream convention."
+    outputs:
+      $ref: "#/$defs/Rosetta3ArithmeticStatistics"
+    verification_cases:
+      - id: upstream_clay_loam
+        kind: published
+        inputs:
+          sand: 30
+          silt: 30
+          clay: 40
+        expected:
+          theta_r_mean: 0.11921313412479762
+          theta_s_mean: 0.4348486578079577
+          alpha_mean: 0.009109686083606867
+          n_mean: 1.3094213646469939
+          k_sat_mean: 8.74047181417013
+          k_0_mean: 1.3099307799553759
+          l_mean: -1.009187960743742
+          theta_r_std: 0.009022699466985867
+          theta_s_std: 0.010140469075525323
+          alpha_std: 0.0022509742698824248
+          n_std: 0.0366504620061113
+          k_sat_std: 2.930411333703784
+          k_0_std: 0.843530623042398
+          l_std: 1.547848314232419
+        source_location: >-
+          Official rosetta-soil revision 6b0e3902f8a145805d41b691dc36f8e69e898f2a,
+          rosetta(3, inputs, estimate_type="arith"); specs/models/rosetta3/reference.json, mod2_arith_clay_loam.
+    documentation:
+      notes:
+        - Fixed-level local verification rejects invalid predictors instead of silently falling back.
+        - Full arithmetic, log10, and geometric reference results are in the frozen upstream model fixture.
+      warnings:
+        - A model handle is required; the reviewed CC0 parameters are bundled.
+        - Trained parameters are published by USDA under CC0 and bundled unchanged; optional external loading remains available.
+        - Local inference is not validation of predictive accuracy or applicability to a new soil population.
+  - name: calc_ptf_zhang2017_mod3
+    status: implemented
+    implementation:
+      external_model:
+        kind: rosetta3
+        artifact: ../models/rosetta3/artifact.json
+        level: 3
+    public_api:
+      name: calc_ptf_zhang2017_mod3
+      result_class: Rosetta3ArithmeticStatistics
+      summary: Estimate Rosetta3 level 3 physical-scale arithmetic means and uncertainty.
+    scope:
+      prediction_target: Seven hydraulic parameters and their bootstrap sample standard deviations.
+      models:
+        h_theta: van Genuchten retention parameters
+        k_h: Saturated conductivity and Rosetta1 unsaturated conductivity parameters
+    inputs:
+      - name: sand
+        symbol: null
+        unit: "%"
+        domain: "Nonnegative mass percentage; texture sum within [99, 101]."
+        description: "Sand mass percentage in the upstream convention; no granulometric conversion is applied."
+      - name: silt
+        symbol: null
+        unit: "%"
+        domain: "Nonnegative mass percentage; texture sum within [99, 101]."
+        description: "Silt mass percentage in the upstream convention."
+      - name: clay
+        symbol: null
+        unit: "%"
+        domain: "Nonnegative mass percentage; texture sum within [99, 101]."
+        description: "Clay mass percentage in the upstream convention."
+      - name: bulk_density
+        symbol: null
+        unit: "g/cm^3"
+        domain: "0.5 <= value <= 2.0"
+        description: "Dry bulk density."
+    outputs:
+      $ref: "#/$defs/Rosetta3ArithmeticStatistics"
+    verification_cases:
+      - id: upstream_clay_loam
+        kind: published
+        inputs:
+          sand: 30
+          silt: 30
+          clay: 40
+          bulk_density: 1.5
+        expected:
+          theta_r_mean: 0.11535772949344014
+          theta_s_mean: 0.41791198578232697
+          alpha_mean: 0.008722012030951673
+          n_mean: 1.2948263733663303
+          k_sat_mean: 6.954244726349499
+          k_0_mean: 1.2500613216646708
+          l_mean: -1.0485044772476382
+          theta_r_std: 0.013356793508184915
+          theta_s_std: 0.009382669158473743
+          alpha_std: 0.0016492656415753547
+          n_std: 0.03939481712482504
+          k_sat_std: 1.4702581628942792
+          k_0_std: 0.7856297363899943
+          l_std: 1.5768542193111532
+        source_location: >-
+          Official rosetta-soil revision 6b0e3902f8a145805d41b691dc36f8e69e898f2a,
+          rosetta(3, inputs, estimate_type="arith"); specs/models/rosetta3/reference.json, mod3_arith_clay_loam.
+    documentation:
+      notes:
+        - Fixed-level local verification rejects invalid predictors instead of silently falling back.
+        - Full arithmetic, log10, and geometric reference results are in the frozen upstream model fixture.
+      warnings:
+        - A model handle is required; the reviewed CC0 parameters are bundled.
+        - Trained parameters are published by USDA under CC0 and bundled unchanged; optional external loading remains available.
+        - Local inference is not validation of predictive accuracy or applicability to a new soil population.
+  - name: calc_ptf_zhang2017_mod4
+    status: implemented
+    implementation:
+      external_model:
+        kind: rosetta3
+        artifact: ../models/rosetta3/artifact.json
+        level: 4
+    public_api:
+      name: calc_ptf_zhang2017_mod4
+      result_class: Rosetta3ArithmeticStatistics
+      summary: Estimate Rosetta3 level 4 physical-scale arithmetic means and uncertainty.
+    scope:
+      prediction_target: Seven hydraulic parameters and their bootstrap sample standard deviations.
+      models:
+        h_theta: van Genuchten retention parameters
+        k_h: Saturated conductivity and Rosetta1 unsaturated conductivity parameters
+    inputs:
+      - name: sand
+        symbol: null
+        unit: "%"
+        domain: "Nonnegative mass percentage; texture sum within [99, 101]."
+        description: "Sand mass percentage in the upstream convention; no granulometric conversion is applied."
+      - name: silt
+        symbol: null
+        unit: "%"
+        domain: "Nonnegative mass percentage; texture sum within [99, 101]."
+        description: "Silt mass percentage in the upstream convention."
+      - name: clay
+        symbol: null
+        unit: "%"
+        domain: "Nonnegative mass percentage; texture sum within [99, 101]."
+        description: "Clay mass percentage in the upstream convention."
+      - name: bulk_density
+        symbol: null
+        unit: "g/cm^3"
+        domain: "0.5 <= value <= 2.0"
+        description: "Dry bulk density."
+      - name: theta_33
+        symbol: null
+        unit: "cm^3/cm^3"
+        domain: "0 < value < 1"
+        description: "Volumetric water content at 33 kPa suction."
+    outputs:
+      $ref: "#/$defs/Rosetta3ArithmeticStatistics"
+    verification_cases:
+      - id: upstream_clay_loam
+        kind: published
+        inputs:
+          sand: 30
+          silt: 30
+          clay: 40
+          bulk_density: 1.5
+          theta_33: 0.3
+        expected:
+          theta_r_mean: 0.10564200209306918
+          theta_s_mean: 0.40653700668266984
+          alpha_mean: 0.013663808379629364
+          n_mean: 1.2628220509818735
+          k_sat_mean: 12.047632455015195
+          k_0_mean: 2.4300447795385374
+          l_mean: -1.6264113202949755
+          theta_r_std: 0.012345190806246003
+          theta_s_std: 0.009182005673579212
+          alpha_std: 0.002590348162040073
+          n_std: 0.035077462323752084
+          k_sat_std: 2.9053493324283672
+          k_0_std: 1.5549834128030902
+          l_std: 1.436361576536985
+        source_location: >-
+          Official rosetta-soil revision 6b0e3902f8a145805d41b691dc36f8e69e898f2a,
+          rosetta(3, inputs, estimate_type="arith"); specs/models/rosetta3/reference.json, mod4_arith_clay_loam.
+    documentation:
+      notes:
+        - Fixed-level local verification rejects invalid predictors instead of silently falling back.
+        - Full arithmetic, log10, and geometric reference results are in the frozen upstream model fixture.
+      warnings:
+        - A model handle is required; the reviewed CC0 parameters are bundled.
+        - Trained parameters are published by USDA under CC0 and bundled unchanged; optional external loading remains available.
+        - Local inference is not validation of predictive accuracy or applicability to a new soil population.
+  - name: calc_ptf_zhang2017_mod5
+    status: implemented
+    implementation:
+      external_model:
+        kind: rosetta3
+        artifact: ../models/rosetta3/artifact.json
+        level: 5
+    public_api:
+      name: calc_ptf_zhang2017_mod5
+      result_class: Rosetta3ArithmeticStatistics
+      summary: Estimate Rosetta3 level 5 physical-scale arithmetic means and uncertainty.
+    scope:
+      prediction_target: Seven hydraulic parameters and their bootstrap sample standard deviations.
+      models:
+        h_theta: van Genuchten retention parameters
+        k_h: Saturated conductivity and Rosetta1 unsaturated conductivity parameters
+    inputs:
+      - name: sand
+        symbol: null
+        unit: "%"
+        domain: "Nonnegative mass percentage; texture sum within [99, 101]."
+        description: "Sand mass percentage in the upstream convention; no granulometric conversion is applied."
+      - name: silt
+        symbol: null
+        unit: "%"
+        domain: "Nonnegative mass percentage; texture sum within [99, 101]."
+        description: "Silt mass percentage in the upstream convention."
+      - name: clay
+        symbol: null
+        unit: "%"
+        domain: "Nonnegative mass percentage; texture sum within [99, 101]."
+        description: "Clay mass percentage in the upstream convention."
+      - name: bulk_density
+        symbol: null
+        unit: "g/cm^3"
+        domain: "0.5 <= value <= 2.0"
+        description: "Dry bulk density."
+      - name: theta_33
+        symbol: null
+        unit: "cm^3/cm^3"
+        domain: "0 < value < 1"
+        description: "Volumetric water content at 33 kPa suction."
+      - name: theta_1500
+        symbol: null
+        unit: "cm^3/cm^3"
+        domain: "0 < theta_1500 < theta_33"
+        description: "Volumetric water content at 1500 kPa suction."
+    outputs:
+      $ref: "#/$defs/Rosetta3ArithmeticStatistics"
+    verification_cases:
+      - id: upstream_clay_loam
+        kind: published
+        inputs:
+          sand: 30
+          silt: 30
+          clay: 40
+          bulk_density: 1.5
+          theta_33: 0.3
+          theta_1500: 0.1
+        expected:
+          theta_r_mean: 0.0687213319841933
+          theta_s_mean: 0.3839050853475144
+          alpha_mean: 0.0036914540698334396
+          n_mean: 1.5122960137476906
+          k_sat_mean: 10.452206725579414
+          k_0_mean: 1.0202837816881765
+          l_mean: 0.22415802649553598
+          theta_r_std: 0.013635805076704857
+          theta_s_std: 0.014976665455951168
+          alpha_std: 0.00120099654764296
+          n_std: 0.11756697611413275
+          k_sat_std: 4.816027639984873
+          k_0_std: 0.4967836368491003
+          l_std: 1.4016987918707078
+        source_location: >-
+          Official rosetta-soil revision 6b0e3902f8a145805d41b691dc36f8e69e898f2a,
+          rosetta(3, inputs, estimate_type="arith"); specs/models/rosetta3/reference.json, mod5_arith_clay_loam.
+    documentation:
+      notes:
+        - Fixed-level local verification rejects invalid predictors instead of silently falling back.
+        - Full arithmetic, log10, and geometric reference results are in the frozen upstream model fixture.
+      warnings:
+        - A model handle is required; the reviewed CC0 parameters are bundled.
+        - Trained parameters are published by USDA under CC0 and bundled unchanged; optional external loading remains available.
+        - Local inference is not validation of predictive accuracy or applicability to a new soil population.
+scientific_notes: |
+  Audited computational source: official rosetta-soil at revision
+  6b0e3902f8a145805d41b691dc36f8e69e898f2a. The paper is cited for model
+  identity; no claim is made that the full paper was reviewed in this audit.
+
+  The reviewed software contract, architecture, local regeneration commands,
+  numerical comparisons, and outstanding production integration are recorded in
+  docs/src/contributing/rosetta3.md. The versioned artifact manifest is
+  specs/models/rosetta3/manifest.json. Parameter files remain local only.
+
+  External-model implementations are compiled separately from scalar formulas
+  and Random Forest expressions. Public APIs load a PTFKNN01 container using
+  the pinned SHA-256 in specs/models/rosetta3/artifact.json. The existing local
+  reference workflow remains available and its numerical cases are unchanged.
+
+  Additional conductivity parameters use the Rosetta1 network described by
+  Schaap, M. G., Leij, F. J., & van Genuchten, M. T. (2001). ROSETTA: a computer
+  program for estimating soil hydraulic parameters with hierarchical pedotransfer
+  functions. Journal of Hydrology, 251(3-4), 163-176.
+  https://doi.org/10.1016/S0022-1694(01)00466-8

@@ -43,6 +43,7 @@ ptfkit's Python API is organized around public modules.
 - [`ptfkit.rudiyanto2021`](rudiyanto2021.md) — Rudiyanto et al. (2021), neuroFX hydraulic parameters from saturation to dryness.
 - [`ptfkit.saxton1986`](saxton1986.md) — Saxton et al. retention relationships parameterized by USDA CalcPTF.
 - [`ptfkit.saxton2006`](saxton2006.md) — Saxton and Rawls (2006), soil water characteristics from texture and organic matter.
+- [`ptfkit.szabo_weynants_weber2021`](szabo_weynants_weber2021.md) — Original EU-PTF v2 hydraulic predictions with native QRF uncertainty and external artifacts.
 - [`ptfkit.tiwary2014`](tiwary2014.md) — Tiwary et al. (2014), hydraulic PTFs for two major soil regions of India.
 - [`ptfkit.tomasella1998`](tomasella1998.md) — Tomasella and Hodnett (1998), point-retention regressions for Amazonian soils.
 - [`ptfkit.varallyai1982`](varallyai1982.md) — Varallyai et al. (1982), water-retention parameter regressions for Hungarian soils.
@@ -53,4 +54,9 @@ ptfkit's Python API is organized around public modules.
 - [`ptfkit.weynants2009`](weynants2009.md) — Corrected Weynants et al. hydraulic-parameter pedotransfer function.
 - [`ptfkit.williams1992`](williams1992.md) — Williams et al. (1992) Campbell water-retention regressions and parameter table.
 - [`ptfkit.wosten2001`](wosten2001.md) — Wösten et al. (2001), Staring Series hydraulic parameters for Dutch soils.
+- [`ptfkit.zhang_schaap2017`](zhang_schaap2017.md) — Rosetta3 hydraulic parameters and uncertainty from bundled CC0 neural ensembles.
 - [`ptfkit.zhao2016`](zhao2016.md) — Saturated hydraulic conductivity PTFs for the Loess Plateau of China.
+
+## External model loading
+
+- [`ptfkit.models`](models.md)

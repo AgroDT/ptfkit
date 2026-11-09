@@ -1,0 +1,100 @@
+//! Portable dense bootstrap ensemble inference. Trained data is external.
+
+#[derive(Clone, Debug)]
+pub struct Scale {
+    pub kind: String,
+    pub params: Vec<f64>,
+}
+
+impl Scale {
+    fn apply(&self, x: f64) -> f64 {
+        let p = &self.params;
+        match self.kind.as_str() {
+            "asis" => x,
+            "division" => x / p[0],
+            "logtr" => x.log10() / p[0] + p[1],
+            "affine" => p[0] * (x + p[1]),
+            "minmax" => (x - p[0]) * p[1] + p[2],
+            "linear" => x * p[0] + p[1],
+            _ => unreachable!("validated scaler"),
+        }
+    }
+}
+
+#[derive(Clone, Debug)]
+pub struct Network {
+    pub nboot: usize,
+    pub widths: Vec<usize>,
+    pub activations: Vec<String>,
+    pub inputs: Vec<Scale>,
+    pub outputs: Vec<Scale>,
+    pub offset: usize,
+}
+
+impl Network {
+    /// Each row is one ensemble member, in original model output scales.
+    pub fn predict(&self, data: &[f64], input: &[f64]) -> Vec<Vec<f64>> {
+        assert_eq!(input.len(), self.widths[0]);
+        let mut offset = self.offset;
+        let mut result = Vec::with_capacity(self.nboot);
+        for _ in 0..self.nboot {
+            let mut a = [0.0; 64];
+            for (i, scaler) in self.inputs.iter().enumerate() {
+                a[i] = scaler.apply(input[i]);
+            }
+            for (layer, pair) in self.widths.windows(2).enumerate() {
+                let (nin, nout) = (pair[0], pair[1]);
+                let mut next = [0.0; 64];
+                for node in 0..nout {
+                    let mut sum = 0.0;
+                    for (j, value) in a.iter().take(nin).enumerate() {
+                        sum += value * data[offset + node * nin + j];
+                    }
+                    // Bias is added after the dot product, as in upstream.
+                    sum += data[offset + nin * nout + node];
+                    next[node] = match self.activations[layer].as_str() {
+                        "linear" => sum,
+                        "sigmoid" => 1.0 / (1.0 + (-sum).exp()),
+                        "tansig" => -1.0 + 2.0 / (1.0 + (-2.0 * sum).exp()),
+                        "relu" => sum.max(0.0),
+                        _ => unreachable!("validated activation"),
+                    };
+                }
+                offset += nin * nout + nout;
+                a = next;
+            }
+            result.push(
+                self.outputs
+                    .iter()
+                    .enumerate()
+                    .map(|(i, s)| s.apply(a[i]))
+                    .collect(),
+            );
+        }
+        result
+    }
+}
+
+/// Sample standard deviations (ddof=1), never standard errors.
+pub fn statistics(rows: &[Vec<f64>]) -> (Vec<f64>, Vec<f64>) {
+    let width = rows[0].len();
+    let mut mean = vec![0.0; width];
+    for row in rows {
+        for (sum, value) in mean.iter_mut().zip(row) {
+            *sum += value;
+        }
+    }
+    for sum in &mut mean {
+        *sum /= rows.len() as f64;
+    }
+    let mut std = vec![0.0; width];
+    for row in rows {
+        for (i, sum) in std.iter_mut().enumerate() {
+            *sum += (row[i] - mean[i]).powi(2);
+        }
+    }
+    for sum in &mut std {
+        *sum = (*sum / (rows.len() - 1) as f64).sqrt();
+    }
+    (mean, std)
+}
