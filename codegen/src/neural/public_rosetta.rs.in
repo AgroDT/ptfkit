@@ -1,0 +1,33 @@
+//! Rosetta3 with the bundled CC0 model and optional authenticated external models.
+use crate::models::{Model, ModelError};
+use std::path::Path;
+
+/// SHA-256 of the reviewed external container, including architecture and parameters.
+pub const MODEL_SHA256: &str = "@SHA256@";
+/// Ensemble statistic convention; geometric estimates retain physical-scale SDs.
+#[derive(Clone, Copy, Debug)]
+#[repr(usize)]
+pub enum Estimate { Arithmetic = 0, Log10 = 1, Geometric = 2 }
+/// Parameters are theta_r, theta_s, alpha, n, Ksat, K0, L, in that order.
+/// Physical units are cm³/cm³, cm³/cm³, 1/cm, 1, cm/day, cm/day, 1.
+/// Log10 mode reports alpha/n/Ksat/K0 statistics in log10 of those numeric units.
+@STATISTICS@
+/// Rosetta3 with explicitly selected predictor level and owned parameters.
+#[derive(Debug)]
+pub struct Rosetta3 { model: Model }
+impl Rosetta3 {
+    /// Load the bundled, integrity-checked CC0 model without filesystem access.
+    pub fn builtin() -> Result<Self, ModelError> { Self::from_bytes(include_bytes!("data/rosetta3.ptfm")) }
+    pub fn load(path: impl AsRef<Path>) -> Result<Self, ModelError> { Self::from_model(Model::load(path,MODEL_SHA256)?) }
+    pub fn from_bytes(bytes: &[u8]) -> Result<Self, ModelError> { Self::from_model(Model::from_bytes(bytes,MODEL_SHA256)?) }
+    pub fn from_model(model: Model) -> Result<Self, ModelError> {
+        if model.sha256() != MODEL_SHA256 { return Err(ModelError::Integrity); }
+        Ok(Self { model })
+    }
+    /// The validated generic ensemble, for original-scale raw-member predictions.
+    pub fn model(&self) -> &Model { &self.model }
+    pub fn predict(&self, level: usize, estimate: Estimate, inputs: &[f64]) -> Result<Rosetta3Statistics, ModelError> {
+        let values = contract::predict(&self.model.networks,&self.model.data,level,estimate as usize,inputs).ok_or(ModelError::Input)?;
+        Ok(Rosetta3Statistics::from_values(values))
+    }
+}

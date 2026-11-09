@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "source": "nebel2010",
+  "paper": {
+    "doi": "10.1590/S0100-06832010000300008",
+    "publisher_pdf": "https://www.rbcsjournal.org/wp-content/uploads/articles_xml/0100-0683-rbcs-S0100-06832010000300008/0100-0683-rbcs-S0100-06832010000300008.x29164.pdf",
+    "sha256": "6308bea9b5af4f453ade4cc9f0c5398a45d8c3092fd7753d01fda0bca762a904",
+    "review_basis": "Original publisher PDF text, printed page 671; no visual-table claim."
+  },
+  "status": "source_methods_and_dependence_reviewed_predictor_binding_pending",
+  "measurements": [
+    "Preserved-structure retention/density specimens: 50-mm diameter and 30-mm high rings from the 0-0.20-m layer.",
+    "Retention regimes include 0,1,6,10,33,100,1500 kPa; the paper evaluates gravimetric water at 33 and 1500 kPa.",
+    "Disturbed texture aliquots: Day (1965) pipette method, with 1 mol/L NaOH dispersion.",
+    "Carbon: Walkley-Black; organic matter computed as carbon times 1.724."
+  ],
+  "sampling": {
+    "field_area_hectare": 1,
+    "grid_spacing_meter": 10,
+    "sampling_points": 100,
+    "location": "Capao do Leao, Rio Grande do Sul, Brazil",
+    "warning": "Spatial grid points are not demonstrated independent profile-level population replicates."
+  },
+  "hybras_linkage": {
+    "controlled_pressure_nebel_rows": 100,
+    "controlled_pressure_parfitt_only_rows": 99,
+    "shared_reference": "The second reference of the Nebel group is byte-identical to the first reference of the Parfitt-only group.",
+    "warning": "Hashing reference pairs creates different source IDs despite shared primary lineage. Those IDs do not establish independent studies."
+  },
+  "decisions": [
+    "Do not silently label the two citation groups as independent validation units.",
+    "Do not grant sand sieve/organic-matter-removal equivalence solely from the generic pipette label.",
+    "Preserve HYBRAS volumetric target units, but verify the original gravimetric-to-volume lineage before using source-specific conversions.",
+    "The 50x30-mm ring does not match the Gunarathna density predictor protocol of 54x60 mm."
+  ]
+}

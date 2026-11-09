@@ -1,0 +1,5705 @@
+{
+  "approximation_families": [
+    {
+      "accepted_fits": 21,
+      "accepted_rmse_range": [
+        0.0009611680901590262,
+        0.021663730054439945
+      ],
+      "family": "brooks_corey_v1",
+      "fit_attempts": 59,
+      "optimizer_starts": 174,
+      "rejected_fits": 38,
+      "rejection_reasons": {
+        "boundary_solution": 36,
+        "insufficient_observations": 1,
+        "nonidentifiable": 1
+      }
+    },
+    {
+      "accepted_fits": 34,
+      "accepted_rmse_range": [
+        0.002057815655615554,
+        0.038599220769001984
+      ],
+      "family": "clapp1978_gradual_air_entry_v1",
+      "fit_attempts": 59,
+      "optimizer_starts": 174,
+      "rejected_fits": 25,
+      "rejection_reasons": {
+        "boundary_solution": 12,
+        "insufficient_observations": 1,
+        "nonidentifiable": 12
+      }
+    },
+    {
+      "accepted_fits": 43,
+      "accepted_rmse_range": [
+        0.000803786450822458,
+        0.016223472739061166
+      ],
+      "family": "van_genuchten_m1_v1",
+      "fit_attempts": 59,
+      "optimizer_starts": 174,
+      "rejected_fits": 16,
+      "rejection_reasons": {
+        "boundary_solution": 15,
+        "insufficient_observations": 1
+      }
+    },
+    {
+      "accepted_fits": 35,
+      "accepted_rmse_range": [
+        4.0454125232989454e-05,
+        0.011063125003504022
+      ],
+      "family": "van_genuchten_mualem_v1",
+      "fit_attempts": 59,
+      "optimizer_starts": 174,
+      "rejected_fits": 24,
+      "rejection_reasons": {
+        "boundary_solution": 23,
+        "insufficient_observations": 1
+      }
+    }
+  ],
+  "blocker_impact": {
+    "coverage": {
+      "currently_evaluated": 12,
+      "scientifically_incompatible": 0,
+      "structurally_impossible": 0,
+      "unresolved_but_potentially_evaluable": 60140
+    },
+    "policy": "unresolved_combination_ceiling_not_expected_scoring_gain",
+    "ranked_blockers": [
+      {
+        "affected_functions": 119,
+        "affected_rows": 206,
+        "blocked_combinations": 49028,
+        "blocker": "unresolved_measurement_contract",
+        "co_blockers": {
+          "target_unavailable": 36057
+        },
+        "potential_gain_upper_bound": 49028,
+        "sole_blocker_combinations": 12971
+      },
+      {
+        "affected_functions": 146,
+        "affected_rows": 206,
+        "blocked_combinations": 44238,
+        "blocker": "target_unavailable",
+        "co_blockers": {
+          "density_units": 147,
+          "exact_pressure_target_unavailable": 3333,
+          "missing_input": 1029,
+          "missing_input_binding": 6666,
+          "organic_property_provenance": 202,
+          "particle_size_schemes": 417,
+          "texture_classification": 142,
+          "unresolved_measurement_contract": 36057,
+          "unsupported_adapter_or_prediction_target": 4113
+        },
+        "potential_gain_upper_bound": 44238,
+        "sole_blocker_combinations": 0
+      },
+      {
+        "affected_functions": 22,
+        "affected_rows": 206,
+        "blocked_combinations": 9058,
+        "blocker": "missing_input_binding",
+        "co_blockers": {
+          "exact_pressure_target_unavailable": 3860,
+          "target_unavailable": 6666,
+          "unsupported_adapter_or_prediction_target": 4532
+        },
+        "potential_gain_upper_bound": 9058,
+        "sole_blocker_combinations": 225
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 206,
+        "blocked_combinations": 5562,
+        "blocker": "unsupported_adapter_or_prediction_target",
+        "co_blockers": {
+          "density_units": 95,
+          "missing_input": 754,
+          "missing_input_binding": 4532,
+          "organic_property_provenance": 125,
+          "particle_size_schemes": 238,
+          "target_unavailable": 4113,
+          "texture_classification": 89
+        },
+        "potential_gain_upper_bound": 5562,
+        "sole_blocker_combinations": 0
+      },
+      {
+        "affected_functions": 22,
+        "affected_rows": 206,
+        "blocked_combinations": 4460,
+        "blocker": "exact_pressure_target_unavailable",
+        "co_blockers": {
+          "missing_input": 447,
+          "missing_input_binding": 3860,
+          "particle_size_schemes": 153,
+          "target_unavailable": 3333
+        },
+        "potential_gain_upper_bound": 4460,
+        "sole_blocker_combinations": 0
+      },
+      {
+        "affected_functions": 5,
+        "affected_rows": 176,
+        "blocked_combinations": 1508,
+        "blocker": "missing_input",
+        "co_blockers": {
+          "density_units": 122,
+          "exact_pressure_target_unavailable": 447,
+          "organic_property_provenance": 182,
+          "particle_size_schemes": 102,
+          "target_unavailable": 1029,
+          "unsupported_adapter_or_prediction_target": 754
+        },
+        "potential_gain_upper_bound": 1508,
+        "sole_blocker_combinations": 86
+      },
+      {
+        "affected_functions": 4,
+        "affected_rows": 85,
+        "blocked_combinations": 476,
+        "blocker": "particle_size_schemes",
+        "co_blockers": {
+          "density_units": 134,
+          "exact_pressure_target_unavailable": 153,
+          "missing_input": 102,
+          "organic_property_provenance": 164,
+          "target_unavailable": 417,
+          "unsupported_adapter_or_prediction_target": 238
+        },
+        "potential_gain_upper_bound": 476,
+        "sole_blocker_combinations": 0
+      },
+      {
+        "affected_functions": 1,
+        "affected_rows": 125,
+        "blocked_combinations": 250,
+        "blocker": "organic_property_provenance",
+        "co_blockers": {
+          "density_units": 172,
+          "missing_input": 182,
+          "particle_size_schemes": 164,
+          "target_unavailable": 202,
+          "unsupported_adapter_or_prediction_target": 125
+        },
+        "potential_gain_upper_bound": 250,
+        "sole_blocker_combinations": 0
+      },
+      {
+        "affected_functions": 1,
+        "affected_rows": 95,
+        "blocked_combinations": 190,
+        "blocker": "density_units",
+        "co_blockers": {
+          "missing_input": 122,
+          "organic_property_provenance": 172,
+          "particle_size_schemes": 134,
+          "target_unavailable": 147,
+          "unsupported_adapter_or_prediction_target": 95
+        },
+        "potential_gain_upper_bound": 190,
+        "sole_blocker_combinations": 0
+      },
+      {
+        "affected_functions": 1,
+        "affected_rows": 89,
+        "blocked_combinations": 172,
+        "blocker": "texture_classification",
+        "co_blockers": {
+          "target_unavailable": 142,
+          "unsupported_adapter_or_prediction_target": 89
+        },
+        "potential_gain_upper_bound": 172,
+        "sole_blocker_combinations": 18
+      }
+    ],
+    "ranked_source_reviews": [
+      {
+        "affected_functions": 27,
+        "affected_rows": 21,
+        "blockers": {
+          "exact_pressure_target_unavailable": 462,
+          "missing_input": 105,
+          "missing_input_binding": 462,
+          "organic_property_provenance": 19,
+          "target_unavailable": 567
+        },
+        "potential_combinations_upper_bound": 567,
+        "source_id": "2008_шваров",
+        "unlock_efficiency_upper_bound": 113.4,
+        "unresolved_claim_count": 5
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 19,
+        "blockers": {
+          "density_units": 16,
+          "exact_pressure_target_unavailable": 418,
+          "missing_input": 95,
+          "missing_input_binding": 418,
+          "organic_property_provenance": 16,
+          "target_unavailable": 304
+        },
+        "potential_combinations_upper_bound": 513,
+        "source_id": "1991_Гуматов",
+        "unlock_efficiency_upper_bound": 85.5,
+        "unresolved_claim_count": 6
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 18,
+        "blockers": {
+          "exact_pressure_target_unavailable": 324,
+          "missing_input": 84,
+          "missing_input_binding": 396,
+          "target_unavailable": 198,
+          "texture_classification": 6
+        },
+        "potential_combinations_upper_bound": 486,
+        "source_id": "2013_баденко",
+        "unlock_efficiency_upper_bound": 97.2,
+        "unresolved_claim_count": 5
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 16,
+        "blockers": {
+          "exact_pressure_target_unavailable": 352,
+          "missing_input": 80,
+          "missing_input_binding": 352,
+          "target_unavailable": 256
+        },
+        "potential_combinations_upper_bound": 432,
+        "source_id": "2018_макарычев",
+        "unlock_efficiency_upper_bound": 108.0,
+        "unresolved_claim_count": 4
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 12,
+        "blockers": {
+          "density_units": 12,
+          "exact_pressure_target_unavailable": 264,
+          "missing_input_binding": 264,
+          "organic_property_provenance": 12,
+          "particle_size_schemes": 48,
+          "target_unavailable": 324,
+          "texture_classification": 12
+        },
+        "potential_combinations_upper_bound": 324,
+        "source_id": "1988_Сапожников",
+        "unlock_efficiency_upper_bound": 46.285714285714285,
+        "unresolved_claim_count": 7
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 12,
+        "blockers": {
+          "exact_pressure_target_unavailable": 264,
+          "missing_input": 57,
+          "missing_input_binding": 264,
+          "target_unavailable": 132,
+          "texture_classification": 3
+        },
+        "potential_combinations_upper_bound": 324,
+        "source_id": "2014_болотов",
+        "unlock_efficiency_upper_bound": 64.8,
+        "unresolved_claim_count": 5
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 12,
+        "blockers": {
+          "density_units": 12,
+          "exact_pressure_target_unavailable": 264,
+          "missing_input": 48,
+          "missing_input_binding": 258,
+          "organic_property_provenance": 12,
+          "particle_size_schemes": 12,
+          "target_unavailable": 132,
+          "texture_classification": 6
+        },
+        "potential_combinations_upper_bound": 312,
+        "source_id": "2015_Панина. дисер",
+        "unlock_efficiency_upper_bound": 39.0,
+        "unresolved_claim_count": 8
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 10,
+        "blockers": {
+          "density_units": 7,
+          "exact_pressure_target_unavailable": 220,
+          "missing_input": 50,
+          "missing_input_binding": 220,
+          "organic_property_provenance": 5,
+          "particle_size_schemes": 7,
+          "target_unavailable": 110
+        },
+        "potential_combinations_upper_bound": 270,
+        "source_id": "2008_Умарова-дисс",
+        "unlock_efficiency_upper_bound": 38.57142857142857,
+        "unresolved_claim_count": 7
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 10,
+        "blockers": {
+          "exact_pressure_target_unavailable": 220,
+          "missing_input": 10,
+          "missing_input_binding": 220,
+          "organic_property_provenance": 10,
+          "particle_size_schemes": 40,
+          "target_unavailable": 160,
+          "texture_classification": 10
+        },
+        "potential_combinations_upper_bound": 270,
+        "source_id": "2017_честнова",
+        "unlock_efficiency_upper_bound": 38.57142857142857,
+        "unresolved_claim_count": 7
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 7,
+        "blockers": {
+          "density_units": 6,
+          "exact_pressure_target_unavailable": 154,
+          "missing_input": 1,
+          "missing_input_binding": 154,
+          "organic_property_provenance": 6,
+          "particle_size_schemes": 28,
+          "target_unavailable": 189,
+          "texture_classification": 7
+        },
+        "potential_combinations_upper_bound": 189,
+        "source_id": "2014_макарычев-2",
+        "unlock_efficiency_upper_bound": 23.625,
+        "unresolved_claim_count": 8
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 6,
+        "blockers": {
+          "exact_pressure_target_unavailable": 132,
+          "missing_input": 6,
+          "missing_input_binding": 132,
+          "organic_property_provenance": 6,
+          "particle_size_schemes": 24,
+          "target_unavailable": 162,
+          "texture_classification": 6
+        },
+        "potential_combinations_upper_bound": 162,
+        "source_id": "2001_Хайдапова",
+        "unlock_efficiency_upper_bound": 23.142857142857142,
+        "unresolved_claim_count": 7
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 6,
+        "blockers": {
+          "density_units": 5,
+          "exact_pressure_target_unavailable": 132,
+          "missing_input": 30,
+          "missing_input_binding": 132,
+          "organic_property_provenance": 6,
+          "particle_size_schemes": 6,
+          "target_unavailable": 162
+        },
+        "potential_combinations_upper_bound": 162,
+        "source_id": "2007_Пестонова",
+        "unlock_efficiency_upper_bound": 23.142857142857142,
+        "unresolved_claim_count": 7
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 6,
+        "blockers": {
+          "density_units": 6,
+          "exact_pressure_target_unavailable": 132,
+          "missing_input_binding": 132,
+          "organic_property_provenance": 6,
+          "particle_size_schemes": 24,
+          "target_unavailable": 162,
+          "texture_classification": 6
+        },
+        "potential_combinations_upper_bound": 162,
+        "source_id": "2011_шеин",
+        "unlock_efficiency_upper_bound": 23.142857142857142,
+        "unresolved_claim_count": 7
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 6,
+        "blockers": {
+          "density_units": 6,
+          "exact_pressure_target_unavailable": 132,
+          "missing_input": 24,
+          "missing_input_binding": 132,
+          "organic_property_provenance": 6,
+          "particle_size_schemes": 6,
+          "target_unavailable": 162,
+          "texture_classification": 6
+        },
+        "potential_combinations_upper_bound": 162,
+        "source_id": "2012_шеин",
+        "unlock_efficiency_upper_bound": 20.25,
+        "unresolved_claim_count": 8
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 5,
+        "blockers": {
+          "density_units": 5,
+          "exact_pressure_target_unavailable": 110,
+          "missing_input": 4,
+          "missing_input_binding": 110,
+          "organic_property_provenance": 5,
+          "particle_size_schemes": 20,
+          "target_unavailable": 135,
+          "texture_classification": 1
+        },
+        "potential_combinations_upper_bound": 135,
+        "source_id": "2007_кокарева",
+        "unlock_efficiency_upper_bound": 16.875,
+        "unresolved_claim_count": 8
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 5,
+        "blockers": {
+          "density_units": 5,
+          "exact_pressure_target_unavailable": 110,
+          "missing_input_binding": 110,
+          "organic_property_provenance": 5,
+          "particle_size_schemes": 20,
+          "target_unavailable": 135,
+          "texture_classification": 5
+        },
+        "potential_combinations_upper_bound": 135,
+        "source_id": "2014_макарычев-1",
+        "unlock_efficiency_upper_bound": 19.285714285714285,
+        "unresolved_claim_count": 7
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 4,
+        "blockers": {
+          "density_units": 4,
+          "exact_pressure_target_unavailable": 88,
+          "missing_input": 16,
+          "missing_input_binding": 88,
+          "target_unavailable": 108,
+          "texture_classification": 4
+        },
+        "potential_combinations_upper_bound": 108,
+        "source_id": "1987_Сапожников",
+        "unlock_efficiency_upper_bound": 18.0,
+        "unresolved_claim_count": 6
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 4,
+        "blockers": {
+          "exact_pressure_target_unavailable": 88,
+          "missing_input": 18,
+          "missing_input_binding": 88,
+          "target_unavailable": 64,
+          "texture_classification": 2
+        },
+        "potential_combinations_upper_bound": 108,
+        "source_id": "2011_садовникова",
+        "unlock_efficiency_upper_bound": 21.6,
+        "unresolved_claim_count": 5
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 4,
+        "blockers": {
+          "exact_pressure_target_unavailable": 88,
+          "missing_input": 20,
+          "missing_input_binding": 88,
+          "target_unavailable": 108
+        },
+        "potential_combinations_upper_bound": 108,
+        "source_id": "2012_васюков",
+        "unlock_efficiency_upper_bound": 27.0,
+        "unresolved_claim_count": 4
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 4,
+        "blockers": {
+          "density_units": 4,
+          "exact_pressure_target_unavailable": 88,
+          "missing_input": 20,
+          "missing_input_binding": 88,
+          "organic_property_provenance": 4,
+          "target_unavailable": 44
+        },
+        "potential_combinations_upper_bound": 108,
+        "source_id": "2014_макарычев-3",
+        "unlock_efficiency_upper_bound": 18.0,
+        "unresolved_claim_count": 6
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 4,
+        "blockers": {
+          "exact_pressure_target_unavailable": 88,
+          "missing_input": 20,
+          "missing_input_binding": 88,
+          "target_unavailable": 108
+        },
+        "potential_combinations_upper_bound": 108,
+        "source_id": "2018_шеин-1",
+        "unlock_efficiency_upper_bound": 27.0,
+        "unresolved_claim_count": 4
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 3,
+        "blockers": {
+          "exact_pressure_target_unavailable": 66,
+          "missing_input": 15,
+          "missing_input_binding": 66,
+          "target_unavailable": 81
+        },
+        "potential_combinations_upper_bound": 81,
+        "source_id": "2009_Смагин",
+        "unlock_efficiency_upper_bound": 20.25,
+        "unresolved_claim_count": 4
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 3,
+        "blockers": {
+          "density_units": 3,
+          "exact_pressure_target_unavailable": 66,
+          "missing_input": 12,
+          "missing_input_binding": 66,
+          "organic_property_provenance": 3,
+          "particle_size_schemes": 3,
+          "target_unavailable": 81,
+          "texture_classification": 3
+        },
+        "potential_combinations_upper_bound": 81,
+        "source_id": "2009_чудинова",
+        "unlock_efficiency_upper_bound": 10.125,
+        "unresolved_claim_count": 8
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 3,
+        "blockers": {
+          "exact_pressure_target_unavailable": 66,
+          "missing_input": 14,
+          "missing_input_binding": 66,
+          "organic_property_provenance": 3,
+          "target_unavailable": 81,
+          "texture_classification": 1
+        },
+        "potential_combinations_upper_bound": 81,
+        "source_id": "2012_манучарова",
+        "unlock_efficiency_upper_bound": 13.5,
+        "unresolved_claim_count": 6
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 3,
+        "blockers": {
+          "density_units": 3,
+          "exact_pressure_target_unavailable": 66,
+          "missing_input": 12,
+          "missing_input_binding": 66,
+          "target_unavailable": 33,
+          "texture_classification": 3
+        },
+        "potential_combinations_upper_bound": 81,
+        "source_id": "2018_Моисеев",
+        "unlock_efficiency_upper_bound": 13.5,
+        "unresolved_claim_count": 6
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 2,
+        "blockers": {
+          "exact_pressure_target_unavailable": 44,
+          "missing_input": 8,
+          "missing_input_binding": 44,
+          "target_unavailable": 54,
+          "texture_classification": 2
+        },
+        "potential_combinations_upper_bound": 54,
+        "source_id": "2016_Сидорова",
+        "unlock_efficiency_upper_bound": 10.8,
+        "unresolved_claim_count": 5
+      },
+      {
+        "affected_functions": 27,
+        "affected_rows": 1,
+        "blockers": {
+          "density_units": 1,
+          "exact_pressure_target_unavailable": 22,
+          "missing_input": 5,
+          "missing_input_binding": 22,
+          "organic_property_provenance": 1,
+          "target_unavailable": 16
+        },
+        "potential_combinations_upper_bound": 27,
+        "source_id": "1992_Гуматов",
+        "unlock_efficiency_upper_bound": 4.5,
+        "unresolved_claim_count": 6
+      }
+    ],
+    "structural_scope": "No permanent structural impossibility is established by missing adapters, missing metadata, missing bindings or absent canonical observations. Unresolved is a review ceiling, not confirmed theoretical applicability."
+  },
+  "class_comparison": {
+    "applicability": "external_evaluation_of_reviewed_classes_not_regional_validation",
+    "cohorts": [
+      {
+        "candidate_id": "clapp",
+        "kind": "maximal",
+        "metrics": {
+          "mean_absolute_error": 0.030554176892914654,
+          "mean_error": 0.02884984219531155,
+          "median_absolute_error": 0.0325632289342067,
+          "root_mean_squared_error": 0.035036098541883734
+        },
+        "point_count": 56,
+        "pressure_diagnostics": {
+          "policy": "wrc_pressure_regions_kpa_v1",
+          "regions": [
+            {
+              "lower_inclusive_kpa": 0.0,
+              "region": "wet",
+              "status": "descriptive",
+              "summary": {
+                "metrics": {
+                  "mean_absolute_error": 0.040573232524637334,
+                  "mean_error": 0.029086364240578668,
+                  "median_absolute_error": 0.036169697573912,
+                  "root_mean_squared_error": 0.04780614995609355
+                },
+                "point_count": 6,
+                "profile_count": 1,
+                "sample_count": 6,
+                "samples_without_profile_count": 0,
+                "source_count": 1,
+                "water_quantity": "volumetric_water_content"
+              },
+              "upper_exclusive_kpa": 10.0
+            },
+            {
+              "lower_inclusive_kpa": 10.0,
+              "region": "intermediate",
+              "status": "descriptive",
+              "summary": {
+                "metrics": {
+                  "mean_absolute_error": 0.03063421263141867,
+                  "mean_error": 0.02894340413009352,
+                  "median_absolute_error": 0.03054711990761047,
+                  "root_mean_squared_error": 0.03572982001027903
+                },
+                "point_count": 18,
+                "profile_count": 1,
+                "sample_count": 6,
+                "samples_without_profile_count": 0,
+                "source_count": 1,
+                "water_quantity": "volumetric_water_content"
+              },
+              "upper_exclusive_kpa": 1500.0
+            },
+            {
+              "lower_inclusive_kpa": 1500.0,
+              "region": "dry",
+              "status": "descriptive",
+              "summary": {
+                "metrics": {
+                  "mean_absolute_error": 0.030072634969494437,
+                  "mean_error": 0.030072634969494437,
+                  "median_absolute_error": 0.032863228934206706,
+                  "root_mean_squared_error": 0.033100910062859173
+                },
+                "point_count": 32,
+                "profile_count": 1,
+                "sample_count": 6,
+                "samples_without_profile_count": 0,
+                "source_count": 1,
+                "water_quantity": "volumetric_water_content"
+              },
+              "upper_exclusive_kpa": null
+            }
+          ],
+          "selection_criterion": false
+        },
+        "pressure_support_kpa": [
+          6.7845441909621895,
+          16.654081114413966,
+          27.009756913591225,
+          45.86914823304102,
+          2639.493978492987,
+          19566.839181089555,
+          31011.350216090235,
+          77896.98983058882,
+          155424.92825848784,
+          257941.17602720842
+        ],
+        "sample_count": 6,
+        "uncertainty_status": "insufficient_evidence"
+      },
+      {
+        "candidate_id": "cosby",
+        "kind": "maximal",
+        "metrics": {
+          "mean_absolute_error": 0.018430046783019006,
+          "mean_error": 0.005519214132212693,
+          "median_absolute_error": 0.016686038313994817,
+          "root_mean_squared_error": 0.022732425780276875
+        },
+        "point_count": 56,
+        "pressure_diagnostics": {
+          "policy": "wrc_pressure_regions_kpa_v1",
+          "regions": [
+            {
+              "lower_inclusive_kpa": 0.0,
+              "region": "wet",
+              "status": "descriptive",
+              "summary": {
+                "metrics": {
+                  "mean_absolute_error": 0.03074396867688027,
+                  "mean_error": -0.0004014273026925197,
+                  "median_absolute_error": 0.02645,
+                  "root_mean_squared_error": 0.037941699128639934
+                },
+                "point_count": 6,
+                "profile_count": 1,
+                "sample_count": 6,
+                "samples_without_profile_count": 0,
+                "source_count": 1,
+                "water_quantity": "volumetric_water_content"
+              },
+              "upper_exclusive_kpa": 10.0
+            },
+            {
+              "lower_inclusive_kpa": 10.0,
+              "region": "intermediate",
+              "status": "descriptive",
+              "summary": {
+                "metrics": {
+                  "mean_absolute_error": 0.018128751042565554,
+                  "mean_error": -0.005278475207426315,
+                  "median_absolute_error": 0.016970021811072933,
+                  "root_mean_squared_error": 0.02199962605329997
+                },
+                "point_count": 18,
+                "profile_count": 1,
+                "sample_count": 6,
+                "samples_without_profile_count": 0,
+                "source_count": 1,
+                "water_quantity": "volumetric_water_content"
+              },
+              "upper_exclusive_kpa": 1500.0
+            },
+            {
+              "lower_inclusive_kpa": 1500.0,
+              "region": "dry",
+              "status": "descriptive",
+              "summary": {
+                "metrics": {
+                  "mean_absolute_error": 0.016868527174216177,
+                  "mean_error": 0.01415476555248999,
+                  "median_absolute_error": 0.016186038313994823,
+                  "root_mean_squared_error": 0.019688914292535345
+                },
+                "point_count": 32,
+                "profile_count": 1,
+                "sample_count": 6,
+                "samples_without_profile_count": 0,
+                "source_count": 1,
+                "water_quantity": "volumetric_water_content"
+              },
+              "upper_exclusive_kpa": null
+            }
+          ],
+          "selection_criterion": false
+        },
+        "pressure_support_kpa": [
+          6.7845441909621895,
+          16.654081114413966,
+          27.009756913591225,
+          45.86914823304102,
+          2639.493978492987,
+          19566.839181089555,
+          31011.350216090235,
+          77896.98983058882,
+          155424.92825848784,
+          257941.17602720842
+        ],
+        "sample_count": 6,
+        "uncertainty_status": "insufficient_evidence"
+      },
+      {
+        "candidate_id": "clapp",
+        "kind": "common",
+        "metrics": {
+          "mean_absolute_error": 0.030554176892914654,
+          "mean_error": 0.02884984219531155,
+          "median_absolute_error": 0.0325632289342067,
+          "root_mean_squared_error": 0.035036098541883734
+        },
+        "point_count": 56,
+        "pressure_diagnostics": {
+          "policy": "wrc_pressure_regions_kpa_v1",
+          "regions": [
+            {
+              "lower_inclusive_kpa": 0.0,
+              "region": "wet",
+              "status": "descriptive",
+              "summary": {
+                "metrics": {
+                  "mean_absolute_error": 0.040573232524637334,
+                  "mean_error": 0.029086364240578668,
+                  "median_absolute_error": 0.036169697573912,
+                  "root_mean_squared_error": 0.04780614995609355
+                },
+                "point_count": 6,
+                "profile_count": 1,
+                "sample_count": 6,
+                "samples_without_profile_count": 0,
+                "source_count": 1,
+                "water_quantity": "volumetric_water_content"
+              },
+              "upper_exclusive_kpa": 10.0
+            },
+            {
+              "lower_inclusive_kpa": 10.0,
+              "region": "intermediate",
+              "status": "descriptive",
+              "summary": {
+                "metrics": {
+                  "mean_absolute_error": 0.03063421263141867,
+                  "mean_error": 0.02894340413009352,
+                  "median_absolute_error": 0.03054711990761047,
+                  "root_mean_squared_error": 0.03572982001027903
+                },
+                "point_count": 18,
+                "profile_count": 1,
+                "sample_count": 6,
+                "samples_without_profile_count": 0,
+                "source_count": 1,
+                "water_quantity": "volumetric_water_content"
+              },
+              "upper_exclusive_kpa": 1500.0
+            },
+            {
+              "lower_inclusive_kpa": 1500.0,
+              "region": "dry",
+              "status": "descriptive",
+              "summary": {
+                "metrics": {
+                  "mean_absolute_error": 0.030072634969494437,
+                  "mean_error": 0.030072634969494437,
+                  "median_absolute_error": 0.032863228934206706,
+                  "root_mean_squared_error": 0.033100910062859173
+                },
+                "point_count": 32,
+                "profile_count": 1,
+                "sample_count": 6,
+                "samples_without_profile_count": 0,
+                "source_count": 1,
+                "water_quantity": "volumetric_water_content"
+              },
+              "upper_exclusive_kpa": null
+            }
+          ],
+          "selection_criterion": false
+        },
+        "pressure_support_kpa": [
+          6.7845441909621895,
+          16.654081114413966,
+          27.009756913591225,
+          45.86914823304102,
+          2639.493978492987,
+          19566.839181089555,
+          31011.350216090235,
+          77896.98983058882,
+          155424.92825848784,
+          257941.17602720842
+        ],
+        "sample_count": 6,
+        "uncertainty_status": "insufficient_evidence"
+      },
+      {
+        "candidate_id": "cosby",
+        "kind": "common",
+        "metrics": {
+          "mean_absolute_error": 0.018430046783019006,
+          "mean_error": 0.005519214132212693,
+          "median_absolute_error": 0.016686038313994817,
+          "root_mean_squared_error": 0.022732425780276875
+        },
+        "point_count": 56,
+        "pressure_diagnostics": {
+          "policy": "wrc_pressure_regions_kpa_v1",
+          "regions": [
+            {
+              "lower_inclusive_kpa": 0.0,
+              "region": "wet",
+              "status": "descriptive",
+              "summary": {
+                "metrics": {
+                  "mean_absolute_error": 0.03074396867688027,
+                  "mean_error": -0.0004014273026925197,
+                  "median_absolute_error": 0.02645,
+                  "root_mean_squared_error": 0.037941699128639934
+                },
+                "point_count": 6,
+                "profile_count": 1,
+                "sample_count": 6,
+                "samples_without_profile_count": 0,
+                "source_count": 1,
+                "water_quantity": "volumetric_water_content"
+              },
+              "upper_exclusive_kpa": 10.0
+            },
+            {
+              "lower_inclusive_kpa": 10.0,
+              "region": "intermediate",
+              "status": "descriptive",
+              "summary": {
+                "metrics": {
+                  "mean_absolute_error": 0.018128751042565554,
+                  "mean_error": -0.005278475207426315,
+                  "median_absolute_error": 0.016970021811072933,
+                  "root_mean_squared_error": 0.02199962605329997
+                },
+                "point_count": 18,
+                "profile_count": 1,
+                "sample_count": 6,
+                "samples_without_profile_count": 0,
+                "source_count": 1,
+                "water_quantity": "volumetric_water_content"
+              },
+              "upper_exclusive_kpa": 1500.0
+            },
+            {
+              "lower_inclusive_kpa": 1500.0,
+              "region": "dry",
+              "status": "descriptive",
+              "summary": {
+                "metrics": {
+                  "mean_absolute_error": 0.016868527174216177,
+                  "mean_error": 0.01415476555248999,
+                  "median_absolute_error": 0.016186038313994823,
+                  "root_mean_squared_error": 0.019688914292535345
+                },
+                "point_count": 32,
+                "profile_count": 1,
+                "sample_count": 6,
+                "samples_without_profile_count": 0,
+                "source_count": 1,
+                "water_quantity": "volumetric_water_content"
+              },
+              "upper_exclusive_kpa": null
+            }
+          ],
+          "selection_criterion": false
+        },
+        "pressure_support_kpa": [
+          6.7845441909621895,
+          16.654081114413966,
+          27.009756913591225,
+          45.86914823304102,
+          2639.493978492987,
+          19566.839181089555,
+          31011.350216090235,
+          77896.98983058882,
+          155424.92825848784,
+          257941.17602720842
+        ],
+        "sample_count": 6,
+        "uncertainty_status": "insufficient_evidence"
+      }
+    ],
+    "coverage": {
+      "candidates": [
+        {
+          "candidate_id": "clapp",
+          "candidate_sample_count": 6,
+          "eligible_point_count": 56,
+          "eligible_sample_count": 6,
+          "excluded_point_count": 0,
+          "exclusion_reason_counts": {},
+          "observation_count": 56
+        },
+        {
+          "candidate_id": "cosby",
+          "candidate_sample_count": 6,
+          "eligible_point_count": 56,
+          "eligible_sample_count": 6,
+          "excluded_point_count": 0,
+          "exclusion_reason_counts": {},
+          "observation_count": 56
+        }
+      ],
+      "curve_quality_finding_counts": {},
+      "schema_version": 1
+    },
+    "profile_count": 1,
+    "protocol": "panina2015_clapp_cosby_reviewed_classes_v1",
+    "selection": {
+      "reason": "one_reviewed_profile",
+      "status": "insufficient_evidence"
+    },
+    "source_count": 1
+  },
+  "ensemble_comparison": {
+    "best_atomic": "cosby",
+    "best_ensemble": "mean_clapp_cosby",
+    "candidates": [
+      {
+        "common_n": 6,
+        "coverage": 1.0,
+        "id": "clapp",
+        "kind": "atomic",
+        "metrics": {
+          "mean_absolute_error": 0.030554176892914654,
+          "mean_error": 0.02884984219531155,
+          "median_absolute_error": 0.0325632289342067,
+          "root_mean_squared_error": 0.035036098541883734
+        },
+        "point_count": 56,
+        "status": "descriptive"
+      },
+      {
+        "common_n": 6,
+        "coverage": 1.0,
+        "id": "cosby",
+        "kind": "atomic",
+        "metrics": {
+          "mean_absolute_error": 0.018430046783019006,
+          "mean_error": 0.005519214132212693,
+          "median_absolute_error": 0.016686038313994817,
+          "root_mean_squared_error": 0.022732425780276875
+        },
+        "point_count": 56,
+        "status": "descriptive"
+      },
+      {
+        "common_n": 6,
+        "coverage": 1.0,
+        "id": "mean_clapp_cosby",
+        "kind": "ensemble",
+        "metrics": {
+          "mean_absolute_error": 0.02254684424100959,
+          "mean_error": 0.017184528163762126,
+          "median_absolute_error": 0.02375307129892744,
+          "root_mean_squared_error": 0.026755524653049735
+        },
+        "point_count": 56,
+        "status": "descriptive"
+      }
+    ],
+    "delta_rmse_ensemble_minus_atomic": 0.00402309887277286,
+    "evidence_status": "insufficient_evidence",
+    "pressure_support_kpa": [
+      6.7845441909621895,
+      16.654081114413966,
+      27.009756913591225,
+      45.86914823304102,
+      2639.493978492987,
+      19566.839181089555,
+      31011.350216090235,
+      77896.98983058882,
+      155424.92825848784,
+      257941.17602720842
+    ],
+    "recommendation": null,
+    "registration": [
+      {
+        "id": "mean_clapp_cosby",
+        "members": [
+          "clapp",
+          "cosby"
+        ],
+        "weights": [
+          0.5,
+          0.5
+        ]
+      }
+    ],
+    "status": "descriptive",
+    "target": {
+      "denominator_basis": "bulk_volume",
+      "material_basis": "mineral_soil",
+      "quantity": "volumetric_water_content",
+      "unit": "volume_fraction"
+    }
+  },
+  "ensemble_learning": {
+    "reason": "insufficient_groups_for_requested_folds",
+    "status": "insufficient_evidence"
+  },
+  "followup_sha256": "e746aafb26e0be53bb1cdeb09ec3de6c073e93a5dfa24eb2f7133d07e8cb3414",
+  "function_audit_counts": {
+    "additional_panina_implementation_only_unlocks": 0,
+    "implementation_only_blocked": 0,
+    "implemented": 146,
+    "proven_impossible_on_meta": 0,
+    "real_data_scored": 2,
+    "scientifically_blocked": 144,
+    "with_implementation_coblockers": 140,
+    "with_not_inventoried_predictors": 36
+  },
+  "function_priorities": [
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_wosten2001_class_parameters",
+      "main_blocker": "missing_input_binding",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 59,
+      "predictor_count": 1,
+      "required_predictors": [
+        "soil_class"
+      ],
+      "unresolved_claim_count": 1
+    },
+    {
+      "evaluated_combinations": 6,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_cosby1984_univariate",
+      "main_blocker": "missing_input_binding",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 59,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "silt",
+        "clay"
+      ],
+      "unresolved_claim_count": 1
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_saxton2006",
+      "main_blocker": "missing_input_binding",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 59,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "clay",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 1
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_gunarathna2019_vwc33_set1",
+      "main_blocker": "missing_input",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 18,
+      "predictor_count": 1,
+      "required_predictors": [
+        "sand"
+      ],
+      "unresolved_claim_count": 1
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_gunarathna2019_vwc33_set2",
+      "main_blocker": "missing_input_binding",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 18,
+      "predictor_count": 2,
+      "required_predictors": [
+        "sand",
+        "silt"
+      ],
+      "unresolved_claim_count": 1
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_gunarathna2019_vwc33_set3",
+      "main_blocker": "missing_input_binding",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 18,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "silt",
+        "bulk_density"
+      ],
+      "unresolved_claim_count": 1
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_gunarathna2019_vwc33_set4",
+      "main_blocker": "missing_input_binding",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 18,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "silt",
+        "organic_carbon"
+      ],
+      "unresolved_claim_count": 1
+    },
+    {
+      "evaluated_combinations": 6,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_clapp1978",
+      "main_blocker": "missing_input",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 59,
+      "predictor_count": 1,
+      "required_predictors": [
+        "soil_texture"
+      ],
+      "unresolved_claim_count": 2
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_vereecken1989",
+      "main_blocker": "missing_input",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 59,
+      "predictor_count": 4,
+      "required_predictors": [
+        "sand",
+        "clay",
+        "carbon",
+        "bulk_density"
+      ],
+      "unresolved_claim_count": 4
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_beniaich2023_slr1",
+      "main_blocker": "no_supported_exact_observed_target",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "clay"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_beniaich2023_slr2",
+      "main_blocker": "no_supported_exact_observed_target",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "silt"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_beniaich2023_slr3",
+      "main_blocker": "no_supported_exact_observed_target",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_beniaich2023_slr6",
+      "main_blocker": "no_supported_exact_observed_target",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "soil_organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_gunarathna2019_vwc10_set1",
+      "main_blocker": "no_supported_exact_observed_target",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_gunarathna2019_vwc1500_set1",
+      "main_blocker": "no_supported_exact_observed_target",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_beniaich2023_mlr2",
+      "main_blocker": "no_supported_exact_observed_target",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "sand",
+        "soil_organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_beniaich2023_mlr3",
+      "main_blocker": "no_supported_exact_observed_target",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "silt",
+        "soil_organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_beniaich2023_mlr4",
+      "main_blocker": "no_supported_exact_observed_target",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "clay",
+        "soil_organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_beniaich2023_slr4",
+      "main_blocker": "no_supported_exact_observed_target",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "clay",
+        "silt"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_beniaich2023_slr5",
+      "main_blocker": "no_supported_exact_observed_target",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "clay",
+        "silt"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_gunarathna2019_vwc10_set2",
+      "main_blocker": "no_supported_exact_observed_target",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "sand",
+        "silt"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_gunarathna2019_vwc1500_set3",
+      "main_blocker": "no_supported_exact_observed_target",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "sand",
+        "bulk_density"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_gunarathna2019_vwc1500_set4",
+      "main_blocker": "no_supported_exact_observed_target",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "sand",
+        "organic_carbon"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_beniaich2023_mlr1",
+      "main_blocker": "no_supported_exact_observed_target",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "silt",
+        "sand",
+        "soil_organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_beniaich2023_mlr5",
+      "main_blocker": "no_supported_exact_observed_target",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "clay",
+        "silt",
+        "soil_organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_gunarathna2019_vwc10_set3",
+      "main_blocker": "no_supported_exact_observed_target",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "silt",
+        "bulk_density"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "source_review_of_listed_claims",
+      "function": "calc_ptf_gunarathna2019_vwc10_set4",
+      "main_blocker": "no_supported_exact_observed_target",
+      "manifest_eligible": true,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "silt",
+        "organic_carbon"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_dharumarajan2019_nkp_clay",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "clay"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_dharumarajan2019_skp_clay",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "clay"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_calcaric_regosol_sand",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_calcic_cambisol_sand",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_calcic_luvisol_sand",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_chromic_luvisol_sand",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_dane_puckett",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "clay"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_dystric_cambisol_sand",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_dystric_regosol_sand",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_eutric_cambisol_sand",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_eutric_regosol_sand",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_general_sand",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_gleyic_cambisol_sand",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_gleyic_luvisol_sand",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_gleyic_solonchak_sand",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_humic_acrisol_sand",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_humic_cambisol_sand",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_orthic_luvisol_sand",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_puckett",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "clay"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_ranker_sand",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_rendzina_sand",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_oosterveld1980_field_capacity_tension",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "clay"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ottoni2019_wm330",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "effective_porosity"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_pidgeon1972_awc_coarse_sand",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "coarse_sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_pidgeon1972_awc_fine_sand",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "fine_sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_pidgeon1972_awc_very_fine_sand",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "very_fine_sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_pidgeon1972_eawc_sand",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_pidgeon1972_fc_sand",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_pidgeon1972_pwp_sand",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 1,
+      "required_predictors": [
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_chakraborty2011_eq1",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "clay",
+        "silt"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_chakraborty2011_eq2",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "sand",
+        "bulk_density"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_campbell_shiozawa",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "sand",
+        "clay"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_cosby",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "sand",
+        "clay"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_saxton",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "sand",
+        "clay"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ottoni2019_wmssc",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "silt",
+        "clay"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_pidgeon1972_awc",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "clay",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_pidgeon1972_awc_sand_organic_matter",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "sand",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "coarse_sand",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "fine_sand",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_pidgeon1972_eawc_sand_organic_matter",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "sand",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_pidgeon1972_fc_sand_organic_matter",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "sand",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_pidgeon1972_fc_vol_sand_organic_matter",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "sand",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_pidgeon1972_pwp_sand_organic_matter",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "sand",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_rawls1982_theta_1500",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "clay",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_rawls2003_soc_theta33_tree",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "soil_texture",
+        "soil_organic_carbon"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_varallyai1982_chernozem_a",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "bulk_density",
+        "fine_fraction"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_varallyai1982_chernozem_b",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "bulk_density",
+        "fine_fraction"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_varallyai1982_chernozem_c",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "bulk_density",
+        "fine_fraction"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_wosten2001_loam_clay_table5",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 2,
+      "required_predictors": [
+        "clay",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_bai2022_bulk_density",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "slope",
+        "clay"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_chakraborty2011_eq3",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "clay",
+        "silt",
+        "bulk_density"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_chakraborty2011_eq4",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "clay",
+        "silt",
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_dharumarajan2019_infiltration",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "silt",
+        "clay"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_dharumarajan2019_nkp",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "clay",
+        "sand",
+        "cation_exchange_capacity"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_dharumarajan2019_skp",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "clay",
+        "sand",
+        "cation_exchange_capacity"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "clay",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "clay",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "clay",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "clay",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "clay",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "clay",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "clay",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "clay",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "clay",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_general_texture_organic_matter",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "clay",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "clay",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "clay",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "clay",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "clay",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "clay",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "clay",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_ranker_texture_organic_matter",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "clay",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "clay",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_myeni2021_fc",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "clay",
+        "silt",
+        "soc"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_myeni2021_pwp",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "clay",
+        "silt",
+        "soc"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_oosterveld1980_available_water",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "clay",
+        "sand",
+        "mean_depth"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_oosterveld1980_field_capacity",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "clay",
+        "sand",
+        "mean_depth"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_oosterveld1980_wilting_point",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "clay",
+        "sand",
+        "mean_depth"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ottoni2019_wmsscbd",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "silt",
+        "clay",
+        "bulk_density"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_pidgeon1972_eawc",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "silt",
+        "clay",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_pidgeon1972_fc",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "silt",
+        "clay",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_pidgeon1972_pwp",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "silt",
+        "clay",
+        "organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_rawls1982_theta_33",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "organic_matter",
+        "theta_1500"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_rawls2003_soc_theta1500_gmdh",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "soil_organic_carbon",
+        "clay",
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_rawls2003_soc_theta1500_tree",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "clay",
+        "sand",
+        "soil_organic_carbon"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_rawls2003_soc_theta33_gmdh",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "soil_organic_carbon",
+        "clay",
+        "sand"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_saxton2006_salinity",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "electrical_conductivity",
+        "theta",
+        "theta_s"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_saxton2006_tension_dry",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "theta",
+        "theta_1500",
+        "theta_33"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_tiwary2014_igp",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "sand",
+        "bulk_density",
+        "esp"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_varallyai1982_meadow",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "bulk_density",
+        "fine_sand_fraction",
+        "fine_fraction"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_wosten2001_sand_subsoil_table5",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "silt",
+        "organic_matter",
+        "median_sand_size"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_wosten2001_sand_topsoil_table5",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "silt",
+        "organic_matter",
+        "median_sand_size"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_zhao2016_m2_1",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "bulk_density",
+        "silt",
+        "clay"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_zhao2016_m2_2",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "bulk_density",
+        "silt",
+        "clay"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_zhao2016_m2_3",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "bulk_density",
+        "silt",
+        "clay"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_zhao2016_m2_4",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "bulk_density",
+        "silt",
+        "clay"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_zhao2016_m2_5",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "bulk_density",
+        "silt",
+        "clay"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_zhao2016_m2_6",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 3,
+      "required_predictors": [
+        "bulk_density",
+        "silt",
+        "clay"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_ahuja1984",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 4,
+      "required_predictors": [
+        "total_porosity",
+        "theta_33",
+        "coefficient_b",
+        "exponent_n"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_aimrun2009",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 4,
+      "required_predictors": [
+        "clay",
+        "bulk_density",
+        "organic_matter",
+        "gmd"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_chakraborty2011_eq5",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 4,
+      "required_predictors": [
+        "clay",
+        "silt",
+        "sand",
+        "bulk_density"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_oosterveld1980_retention",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 4,
+      "required_predictors": [
+        "clay",
+        "sand",
+        "mean_depth",
+        "tension"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_saxton2006_conductivity",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 4,
+      "required_predictors": [
+        "theta",
+        "theta_s",
+        "saturated_conductivity",
+        "conductivity_lambda"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_saxton2006_density",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 4,
+      "required_predictors": [
+        "normal_density",
+        "theta_s",
+        "theta_33",
+        "density_factor"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_saxton2006_gravel",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 4,
+      "required_predictors": [
+        "gravel_weight_fraction",
+        "matric_density",
+        "plant_available_water",
+        "saturated_conductivity"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_saxton2006_tension_wet",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 4,
+      "required_predictors": [
+        "theta",
+        "theta_33",
+        "theta_s",
+        "air_entry_tension"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_chakraborty2011_eq6",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 5,
+      "required_predictors": [
+        "clay",
+        "silt",
+        "sand",
+        "organic_carbon",
+        "bulk_density"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_li2007",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 5,
+      "required_predictors": [
+        "sand",
+        "silt",
+        "clay",
+        "bulk_density",
+        "soil_organic_matter"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_mayr1999",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 5,
+      "required_predictors": [
+        "sand",
+        "silt",
+        "clay",
+        "bulk_density",
+        "organic_carbon"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_puckett1985",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 5,
+      "required_predictors": [
+        "sand",
+        "fine_sand",
+        "clay",
+        "bulk_density",
+        "porosity"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_rawls1982_full_wrc",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 5,
+      "required_predictors": [
+        "sand",
+        "organic_matter",
+        "bulk_density",
+        "theta_33",
+        "theta_1500"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_tiwary2014_bsr",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 6,
+      "required_predictors": [
+        "clay",
+        "ph",
+        "cation_exchange_capacity",
+        "esp",
+        "emp",
+        "excm"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_wang2012",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 6,
+      "required_predictors": [
+        "sand",
+        "silt",
+        "clay",
+        "bulk_density",
+        "soil_organic_carbon",
+        "altitude"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_weber2020",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 6,
+      "required_predictors": [
+        "theta_r_vgm",
+        "theta_s_vgm",
+        "alpha_vgm",
+        "n_vgm",
+        "tau_vgm",
+        "k_s_vgm"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_bai2022",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 7,
+      "required_predictors": [
+        "sand",
+        "silt",
+        "clay",
+        "depth",
+        "precipitation",
+        "slope",
+        "altitude"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_hodnett2002",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 7,
+      "required_predictors": [
+        "sand",
+        "silt",
+        "clay",
+        "organic_carbon",
+        "bulk_density",
+        "cation_exchange_capacity",
+        "ph"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_wosten2001_hydraulic",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 7,
+      "required_predictors": [
+        "theta_r",
+        "theta_s",
+        "saturated_conductivity",
+        "alpha",
+        "conductivity_shape_parameter",
+        "n",
+        "pressure_head_magnitude"
+      ],
+      "unresolved_claim_count": 0
+    },
+    {
+      "evaluated_combinations": 0,
+      "expected_unlock_cost": "public_measurement_contract_review",
+      "function": "calc_ptf_vereecken1989_detailed",
+      "main_blocker": "unresolved_measurement_contract",
+      "manifest_eligible": false,
+      "policy": "conditional_row_ceiling_not_confirmed_compatibility",
+      "potential_compatible_rows": 0,
+      "predictor_count": 13,
+      "required_predictors": [
+        "particle_2000_1000",
+        "particle_1000_500",
+        "particle_500_200",
+        "particle_200_100",
+        "particle_100_50",
+        "particle_50_20",
+        "particle_20_10",
+        "particle_10_2",
+        "clay",
+        "geometric_mean_particle_size",
+        "geometric_standard_deviation",
+        "carbon",
+        "bulk_density"
+      ],
+      "unresolved_claim_count": 0
+    }
+  ],
+  "functions": [
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ahuja1984",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_aimrun2009",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_bai2022",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_bai2022_bulk_density",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_beniaich2023_mlr1",
+      "reason_counts_by_sample_target": {
+        "exact_pressure_target_unavailable": 206,
+        "missing_input_binding": 412,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_beniaich2023_mlr2",
+      "reason_counts_by_sample_target": {
+        "exact_pressure_target_unavailable": 206,
+        "missing_input_binding": 412,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_beniaich2023_mlr3",
+      "reason_counts_by_sample_target": {
+        "exact_pressure_target_unavailable": 206,
+        "missing_input_binding": 412,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_beniaich2023_mlr4",
+      "reason_counts_by_sample_target": {
+        "exact_pressure_target_unavailable": 206,
+        "missing_input_binding": 412,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_beniaich2023_mlr5",
+      "reason_counts_by_sample_target": {
+        "exact_pressure_target_unavailable": 206,
+        "missing_input_binding": 412,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_beniaich2023_slr1",
+      "reason_counts_by_sample_target": {
+        "exact_pressure_target_unavailable": 206,
+        "missing_input_binding": 412,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_beniaich2023_slr2",
+      "reason_counts_by_sample_target": {
+        "exact_pressure_target_unavailable": 206,
+        "missing_input_binding": 412,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_beniaich2023_slr3",
+      "reason_counts_by_sample_target": {
+        "exact_pressure_target_unavailable": 206,
+        "missing_input_binding": 412,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_beniaich2023_slr4",
+      "reason_counts_by_sample_target": {
+        "exact_pressure_target_unavailable": 206,
+        "missing_input_binding": 412,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_beniaich2023_slr5",
+      "reason_counts_by_sample_target": {
+        "exact_pressure_target_unavailable": 206,
+        "missing_input_binding": 412,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_beniaich2023_slr6",
+      "reason_counts_by_sample_target": {
+        "exact_pressure_target_unavailable": 206,
+        "missing_input_binding": 412,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_chakraborty2011_eq1",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_chakraborty2011_eq2",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_chakraborty2011_eq3",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_chakraborty2011_eq4",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_chakraborty2011_eq5",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_chakraborty2011_eq6",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 200,
+      "eligible_samples": 6,
+      "evaluated_samples": 6,
+      "function": "calc_ptf_clapp1978",
+      "reason_counts_by_sample_target": {
+        "missing_input": 234,
+        "target_unavailable": 303,
+        "texture_classification": 172,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 200,
+      "eligible_samples": 6,
+      "evaluated_samples": 6,
+      "function": "calc_ptf_cosby1984_univariate",
+      "reason_counts_by_sample_target": {
+        "missing_input_binding": 406,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_dharumarajan2019_infiltration",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_dharumarajan2019_nkp",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_dharumarajan2019_nkp_clay",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_dharumarajan2019_skp",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_dharumarajan2019_skp_clay",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcaric_fluvisol_sand",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcaric_fluvisol_texture_organic_matter",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcaric_regosol_sand",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcaric_regosol_texture_organic_matter",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcic_cambisol_sand",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcic_cambisol_texture_organic_matter",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcic_luvisol_sand",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_calcic_luvisol_texture_organic_matter",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_campbell_shiozawa",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_chromic_luvisol_sand",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_chromic_luvisol_texture_organic_matter",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_cosby",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_dane_puckett",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_dystric_cambisol_sand",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_dystric_cambisol_texture_organic_matter",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_dystric_regosol_sand",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_dystric_regosol_texture_organic_matter",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_eutric_cambisol_sand",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_eutric_cambisol_texture_organic_matter",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_eutric_regosol_sand",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_eutric_regosol_texture_organic_matter",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_general_sand",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_general_texture_organic_matter",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_cambisol_sand",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_cambisol_texture_organic_matter",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_luvisol_sand",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_luvisol_texture_organic_matter",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_solonchak_sand",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_gleyic_solonchak_texture_organic_matter",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_humic_acrisol_sand",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_humic_acrisol_texture_organic_matter",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_humic_cambisol_sand",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_humic_cambisol_texture_organic_matter",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_orthic_luvisol_sand",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_orthic_luvisol_texture_organic_matter",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_puckett",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_ranker_sand",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_ranker_texture_organic_matter",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_rendzina_sand",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_rendzina_texture_organic_matter",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ferrerjulia2004_saxton",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_gunarathna2019_vwc10_set1",
+      "reason_counts_by_sample_target": {
+        "exact_pressure_target_unavailable": 206,
+        "missing_input": 310,
+        "particle_size_schemes": 102,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_gunarathna2019_vwc10_set2",
+      "reason_counts_by_sample_target": {
+        "exact_pressure_target_unavailable": 206,
+        "missing_input_binding": 412,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_gunarathna2019_vwc10_set3",
+      "reason_counts_by_sample_target": {
+        "exact_pressure_target_unavailable": 206,
+        "missing_input_binding": 412,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_gunarathna2019_vwc10_set4",
+      "reason_counts_by_sample_target": {
+        "exact_pressure_target_unavailable": 206,
+        "missing_input_binding": 412,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_gunarathna2019_vwc1500_set1",
+      "reason_counts_by_sample_target": {
+        "exact_pressure_target_unavailable": 206,
+        "missing_input": 310,
+        "particle_size_schemes": 102,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_gunarathna2019_vwc1500_set3",
+      "reason_counts_by_sample_target": {
+        "exact_pressure_target_unavailable": 206,
+        "missing_input_binding": 412,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_gunarathna2019_vwc1500_set4",
+      "reason_counts_by_sample_target": {
+        "exact_pressure_target_unavailable": 206,
+        "missing_input_binding": 412,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_gunarathna2019_vwc33_set1",
+      "reason_counts_by_sample_target": {
+        "exact_pressure_target_unavailable": 188,
+        "missing_input": 310,
+        "particle_size_schemes": 102,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_gunarathna2019_vwc33_set2",
+      "reason_counts_by_sample_target": {
+        "exact_pressure_target_unavailable": 188,
+        "missing_input_binding": 412,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_gunarathna2019_vwc33_set3",
+      "reason_counts_by_sample_target": {
+        "exact_pressure_target_unavailable": 188,
+        "missing_input_binding": 412,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_gunarathna2019_vwc33_set4",
+      "reason_counts_by_sample_target": {
+        "exact_pressure_target_unavailable": 188,
+        "missing_input_binding": 412,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_hodnett2002",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_li2007",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_mayr1999",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_myeni2021_fc",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_myeni2021_pwp",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_oosterveld1980_available_water",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_oosterveld1980_field_capacity",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_oosterveld1980_field_capacity_tension",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_oosterveld1980_retention",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_oosterveld1980_wilting_point",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ottoni2019_wm330",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ottoni2019_wmssc",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_ottoni2019_wmsscbd",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_pidgeon1972_awc",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_pidgeon1972_awc_coarse_sand",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_pidgeon1972_awc_fine_sand",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_pidgeon1972_awc_sand_organic_matter",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_pidgeon1972_awc_very_fine_sand",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_pidgeon1972_eawc",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_pidgeon1972_eawc_sand",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_pidgeon1972_eawc_sand_organic_matter",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_pidgeon1972_fc",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_pidgeon1972_fc_sand",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_pidgeon1972_fc_sand_organic_matter",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_pidgeon1972_fc_vol_sand_organic_matter",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_pidgeon1972_pwp",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_pidgeon1972_pwp_sand",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_pidgeon1972_pwp_sand_organic_matter",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_puckett1985",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_rawls1982_full_wrc",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_rawls1982_theta_1500",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_rawls1982_theta_33",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_rawls2003_soc_theta1500_gmdh",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_rawls2003_soc_theta1500_tree",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_rawls2003_soc_theta33_gmdh",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_rawls2003_soc_theta33_tree",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_saxton2006",
+      "reason_counts_by_sample_target": {
+        "missing_input_binding": 412,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_saxton2006_conductivity",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_saxton2006_density",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_saxton2006_gravel",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_saxton2006_salinity",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_saxton2006_tension_dry",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_saxton2006_tension_wet",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_tiwary2014_bsr",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_tiwary2014_igp",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_varallyai1982_chernozem_a",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_varallyai1982_chernozem_b",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_varallyai1982_chernozem_c",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_varallyai1982_meadow",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_vereecken1989",
+      "reason_counts_by_sample_target": {
+        "density_units": 190,
+        "missing_input": 344,
+        "organic_property_provenance": 250,
+        "particle_size_schemes": 170,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_vereecken1989_detailed",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_wang2012",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_weber2020",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_wosten2001_class_parameters",
+      "reason_counts_by_sample_target": {
+        "missing_input_binding": 412,
+        "target_unavailable": 303,
+        "unsupported_adapter_or_prediction_target": 206
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_wosten2001_hydraulic",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_wosten2001_loam_clay_table5",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_wosten2001_sand_subsoil_table5",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_wosten2001_sand_topsoil_table5",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_zhao2016_m2_1",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_zhao2016_m2_2",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_zhao2016_m2_3",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_zhao2016_m2_4",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_zhao2016_m2_5",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    },
+    {
+      "blocked_samples": 206,
+      "eligible_samples": 0,
+      "evaluated_samples": 0,
+      "function": "calc_ptf_zhao2016_m2_6",
+      "reason_counts_by_sample_target": {
+        "target_unavailable": 303,
+        "unresolved_measurement_contract": 412
+      }
+    }
+  ],
+  "implementation_sha256": {
+    "evaluation/experiments/measured_retention/fit.py": "2c2d02ca3ce98cef8427a606e57574c0715ad969d35d135526ca7122c9414113",
+    "evaluation/experiments/meta_v3_3/benchmark.py": "67f418ef197cb3f2838bf73e867390eaf44fa63cab075d616af24f2f9a002a4c",
+    "evaluation/experiments/meta_v3_3/class_comparison.py": "091d51afe81d605920731785ed97f44cb9dc4a1a269d73a67bf0a20618fd2590",
+    "evaluation/experiments/meta_v3_3/ensembles.py": "98cd3a70b931131e2d7f6810e1aa50b6fa38c312a03bc6546a31664a0a6b5e75",
+    "evaluation/experiments/meta_v3_3/function_audit.py": "e4b035e2aeeee350aea93fe96c3b8f71f0e91b9e9bc1afccaf95bd93ae4c7719",
+    "evaluation/experiments/meta_v3_3/report-template.md": "18f0cbf3f9c4095f8827ca7219e6b1bf70d4668bb40c9c5638bbc83dea5645cb",
+    "evaluation/experiments/meta_v3_3/reporting.py": "a14dfb6a67d2102c13153dbe8d54dead2021fa071acc43cda658f7faa1004b4f",
+    "evaluation/experiments/meta_v3_3/scope.py": "ff5ec8029c4d2dd5dc371d2f895e09a356bce88dd0ef2a54f1f14dd10be246d4",
+    "evaluation/experiments/meta_v3_3/source_audit.py": "7148553c22b7b542fa7ff6eda51d0e9339959808d76aa1b2e61af2d5f112d1fc",
+    "evaluation/experiments/meta_v3_3/summaries.py": "ebb595624bef9f64fb242aca774c773ac9e7ba07925f044181fc439f9e693307",
+    "evaluation/experiments/panina_clapp/report.py": "a9e2161474843d29824f77bb9800df0a95b046100a07d2bcdf8543a4b7ac0008",
+    "evaluation/experiments/panina_clapp/run.py": "1786c448f1b50a3d5b0adffc1b88282349e1fb84b6c71d9330d4e9ee07bc0303"
+  },
+  "manifest_sha256": "8602a9e8a0434428d6b125522a39f2235a576638234bee013e26454ff2f1c917",
+  "mapping_sha256": "9379d89d9d9433c1b4c0f45192bb144f62a1a2a1050591d860d58d36e30d8a49",
+  "matrix_record_count": 60152,
+  "performance": [
+    {
+      "kind": "maximal",
+      "metrics": {
+        "mean_absolute_error": 0.030554176892914654,
+        "mean_error": 0.02884984219531155,
+        "median_absolute_error": 0.0325632289342067,
+        "root_mean_squared_error": 0.035036098541883734
+      },
+      "observation_count": 56,
+      "performance_uncertainty": {
+        "group_count": 1,
+        "intervals": null,
+        "reason": "too_few_groups",
+        "status": "insufficient_evidence"
+      },
+      "sample_count": 6
+    },
+    {
+      "kind": "common",
+      "metrics": {
+        "mean_absolute_error": 0.030554176892914654,
+        "mean_error": 0.02884984219531155,
+        "median_absolute_error": 0.0325632289342067,
+        "root_mean_squared_error": 0.035036098541883734
+      },
+      "observation_count": 56,
+      "performance_uncertainty": {
+        "group_count": 1,
+        "intervals": null,
+        "reason": "too_few_groups",
+        "status": "insufficient_evidence"
+      },
+      "sample_count": 6
+    }
+  ],
+  "priority_source_audit": [
+    {
+      "duplicate_vector_group_count": 0,
+      "exact_id_count": 6,
+      "master_row_count": 6,
+      "nonempty_reported_water_vector_count": 5,
+      "ordered_vector_match_count": 6,
+      "original_row_count": 6,
+      "raw_source": "2023_fomin",
+      "released_observation_count": 0,
+      "remaining_claims": [
+        "original_core_identity",
+        "water_denominator_and_scale",
+        "pressure_convention_and_saturation_marker",
+        "branch_and_replicate",
+        "matric_versus_total_potential",
+        "predictor_protocols"
+      ],
+      "reused_water_multiset_group_count": 0,
+      "unique_nonempty_vector_count": 6
+    },
+    {
+      "duplicate_vector_group_count": 0,
+      "exact_id_count": 28,
+      "master_row_count": 28,
+      "nonempty_reported_water_vector_count": 12,
+      "ordered_vector_match_count": 28,
+      "original_row_count": 28,
+      "raw_source": "2001_Никулина-дисс",
+      "released_observation_count": 0,
+      "remaining_claims": [
+        "original_experimental_curve_identity",
+        "head_vector_to_water_vector_binding",
+        "water_denominator_and_scale",
+        "head_sign_and_measurement_method",
+        "duplicate_coordinate_disposition",
+        "profile_identity",
+        "predictor_protocols"
+      ],
+      "reused_water_multiset_group_count": 1,
+      "unique_nonempty_vector_count": 24
+    },
+    {
+      "duplicate_vector_group_count": 1,
+      "exact_id_count": 44,
+      "master_row_count": 44,
+      "nonempty_reported_water_vector_count": 40,
+      "ordered_vector_match_count": 44,
+      "original_row_count": 44,
+      "raw_source": "2012_Медко-дисс",
+      "released_observation_count": 0,
+      "remaining_claims": [
+        "original_experimental_curve_identity",
+        "pressure_block_to_water_vector_binding",
+        "water_denominator_and_scale",
+        "pressure_convention",
+        "measured_versus_voronin_reconstructed_points",
+        "profile_identity",
+        "predictor_protocols"
+      ],
+      "reused_water_multiset_group_count": 0,
+      "unique_nonempty_vector_count": 43
+    }
+  ],
+  "protocol": "meta_v3_3_benchmark_v1",
+  "retention_accounting": {
+    "blocker_counts": [
+      {
+        "count": 602,
+        "label": "pressure_convention_by_source"
+      },
+      {
+        "count": 30,
+        "label": "pressure_over_salts_meaning"
+      },
+      {
+        "count": 60,
+        "label": "pressure_pgk_meaning"
+      },
+      {
+        "count": 149,
+        "label": "retention_observation_provenance"
+      },
+      {
+        "count": 74,
+        "label": "retention_reconstruction"
+      },
+      {
+        "count": 119,
+        "label": "unknown_water_basis"
+      },
+      {
+        "count": 464,
+        "label": "water_scale_by_source"
+      }
+    ],
+    "excluded_observation_count": 719,
+    "exclusion_reasons": [
+      {
+        "count": 6,
+        "label": "ambiguous_sample_identity"
+      },
+      {
+        "count": 1,
+        "label": "invalid_water_content_value"
+      },
+      {
+        "count": 3,
+        "label": "non_observation_table_value"
+      },
+      {
+        "count": 48,
+        "label": "sample_identity_mismatch"
+      },
+      {
+        "count": 644,
+        "label": "source_rule_blocked"
+      },
+      {
+        "count": 17,
+        "label": "unreviewed_pressure_value"
+      }
+    ],
+    "fitted_parameter_count": 92,
+    "input_observation_count": 1755,
+    "missing_source_exclusion_count": 0,
+    "normalized_observation_count": 1036,
+    "schema_version": 1,
+    "sha256": "1322bf65b1ca0130085015209858a443d1ee82a7e2ae69232321cd8ede361e68",
+    "sheet_name": "ОГХ",
+    "source_filename": "meta_v3.3.xlsx",
+    "total_data_rows": 1847,
+    "unclassified_exclusion_count": 0
+  },
+  "schema_version": 1,
+  "selection": {
+    "final_recommended_atomic": {
+      "reason": "one_reviewed_profile",
+      "status": "insufficient_evidence"
+    },
+    "final_recommended_ensemble": {
+      "reason": "one_reviewed_profile",
+      "status": "insufficient_evidence"
+    },
+    "selection_stability": {
+      "reason": "one_reviewed_profile",
+      "status": "insufficient_evidence"
+    }
+  },
+  "source_counts": [
+    {
+      "blockers": [
+        "pressure_convention_by_source",
+        "water_scale_by_source"
+      ],
+      "excluded_observations": 24,
+      "exclusion_reasons": {
+        "source_rule_blocked": 24
+      },
+      "normalized_observations": 0,
+      "normalized_samples": 0,
+      "review_status": "blocked",
+      "source_id": "sapozhnikov_1987",
+      "stored_parameters": 0
+    },
+    {
+      "blockers": [
+        "pressure_convention_by_source",
+        "water_scale_by_source"
+      ],
+      "excluded_observations": 108,
+      "exclusion_reasons": {
+        "source_rule_blocked": 108
+      },
+      "normalized_observations": 0,
+      "normalized_samples": 0,
+      "review_status": "blocked",
+      "source_id": "sapozhnikov_1988",
+      "stored_parameters": 0
+    },
+    {
+      "blockers": [],
+      "excluded_observations": 0,
+      "exclusion_reasons": {},
+      "normalized_observations": 190,
+      "normalized_samples": 19,
+      "review_status": "confirmed_measurements",
+      "source_id": "gumatov_1991",
+      "stored_parameters": 0
+    },
+    {
+      "blockers": [],
+      "excluded_observations": 0,
+      "exclusion_reasons": {},
+      "normalized_observations": 10,
+      "normalized_samples": 1,
+      "review_status": "confirmed_measurements",
+      "source_id": "gumatov_1992",
+      "stored_parameters": 0
+    },
+    {
+      "blockers": [
+        "pressure_convention_by_source",
+        "retention_reconstruction",
+        "water_scale_by_source"
+      ],
+      "excluded_observations": 54,
+      "exclusion_reasons": {
+        "sample_identity_mismatch": 48,
+        "source_rule_blocked": 6
+      },
+      "normalized_observations": 0,
+      "normalized_samples": 0,
+      "review_status": "blocked",
+      "source_id": "khaydapova_2001",
+      "stored_parameters": 0
+    },
+    {
+      "blockers": [],
+      "excluded_observations": 0,
+      "exclusion_reasons": {},
+      "normalized_observations": 0,
+      "normalized_samples": 0,
+      "review_status": "parameters_only",
+      "source_id": "kokareva_2007",
+      "stored_parameters": 20
+    },
+    {
+      "blockers": [
+        "pressure_convention_by_source"
+      ],
+      "excluded_observations": 81,
+      "exclusion_reasons": {
+        "source_rule_blocked": 81
+      },
+      "normalized_observations": 0,
+      "normalized_samples": 0,
+      "review_status": "blocked",
+      "source_id": "pestonova_2007",
+      "stored_parameters": 0
+    },
+    {
+      "blockers": [],
+      "excluded_observations": 0,
+      "exclusion_reasons": {},
+      "normalized_observations": 81,
+      "normalized_samples": 10,
+      "review_status": "confirmed_measurements",
+      "source_id": "umarova_2008",
+      "stored_parameters": 0
+    },
+    {
+      "blockers": [
+        "pressure_convention_by_source",
+        "retention_observation_provenance",
+        "water_scale_by_source"
+      ],
+      "excluded_observations": 119,
+      "exclusion_reasons": {
+        "source_rule_blocked": 119
+      },
+      "normalized_observations": 0,
+      "normalized_samples": 0,
+      "review_status": "blocked",
+      "source_id": "shvarov_2008",
+      "stored_parameters": 0
+    },
+    {
+      "blockers": [
+        "pressure_convention_by_source",
+        "unknown_water_basis"
+      ],
+      "excluded_observations": 24,
+      "exclusion_reasons": {
+        "source_rule_blocked": 24
+      },
+      "normalized_observations": 0,
+      "normalized_samples": 0,
+      "review_status": "blocked",
+      "source_id": "smagin_2009",
+      "stored_parameters": 0
+    },
+    {
+      "blockers": [
+        "pressure_convention_by_source",
+        "unknown_water_basis"
+      ],
+      "excluded_observations": 65,
+      "exclusion_reasons": {
+        "source_rule_blocked": 65
+      },
+      "normalized_observations": 0,
+      "normalized_samples": 0,
+      "review_status": "blocked",
+      "source_id": "chudinova_2009",
+      "stored_parameters": 0
+    },
+    {
+      "blockers": [
+        "pressure_over_salts_meaning",
+        "unknown_water_basis"
+      ],
+      "excluded_observations": 30,
+      "exclusion_reasons": {
+        "source_rule_blocked": 30
+      },
+      "normalized_observations": 0,
+      "normalized_samples": 0,
+      "review_status": "blocked",
+      "source_id": "shein_2011",
+      "stored_parameters": 0
+    },
+    {
+      "blockers": [
+        "retention_reconstruction"
+      ],
+      "excluded_observations": 2,
+      "exclusion_reasons": {
+        "unreviewed_pressure_value": 2
+      },
+      "normalized_observations": 61,
+      "normalized_samples": 4,
+      "review_status": "partially_normalized",
+      "source_id": "sadovnikova_2011",
+      "stored_parameters": 0
+    },
+    {
+      "blockers": [
+        "pressure_convention_by_source"
+      ],
+      "excluded_observations": 28,
+      "exclusion_reasons": {
+        "source_rule_blocked": 28
+      },
+      "normalized_observations": 0,
+      "normalized_samples": 0,
+      "review_status": "blocked",
+      "source_id": "vasyukov_2012",
+      "stored_parameters": 0
+    },
+    {
+      "blockers": [
+        "pressure_convention_by_source",
+        "water_scale_by_source"
+      ],
+      "excluded_observations": 27,
+      "exclusion_reasons": {
+        "source_rule_blocked": 27
+      },
+      "normalized_observations": 0,
+      "normalized_samples": 0,
+      "review_status": "blocked",
+      "source_id": "manucharova_2012",
+      "stored_parameters": 0
+    },
+    {
+      "blockers": [
+        "pressure_convention_by_source",
+        "retention_observation_provenance",
+        "water_scale_by_source"
+      ],
+      "excluded_observations": 30,
+      "exclusion_reasons": {
+        "source_rule_blocked": 30
+      },
+      "normalized_observations": 0,
+      "normalized_samples": 0,
+      "review_status": "blocked",
+      "source_id": "shein_2012",
+      "stored_parameters": 24
+    },
+    {
+      "blockers": [
+        "retention_reconstruction"
+      ],
+      "excluded_observations": 2,
+      "exclusion_reasons": {
+        "ambiguous_sample_identity": 2
+      },
+      "normalized_observations": 106,
+      "normalized_samples": 18,
+      "review_status": "partially_normalized",
+      "source_id": "badenko_2013",
+      "stored_parameters": 0
+    },
+    {
+      "blockers": [],
+      "excluded_observations": 1,
+      "exclusion_reasons": {
+        "invalid_water_content_value": 1
+      },
+      "normalized_observations": 167,
+      "normalized_samples": 12,
+      "review_status": "partially_normalized",
+      "source_id": "bolotov_2014",
+      "stored_parameters": 0
+    },
+    {
+      "blockers": [
+        "pressure_pgk_meaning",
+        "water_scale_by_source"
+      ],
+      "excluded_observations": 25,
+      "exclusion_reasons": {
+        "source_rule_blocked": 25
+      },
+      "normalized_observations": 0,
+      "normalized_samples": 0,
+      "review_status": "blocked",
+      "source_id": "makarychev_2014_1",
+      "stored_parameters": 0
+    },
+    {
+      "blockers": [
+        "pressure_pgk_meaning",
+        "water_scale_by_source"
+      ],
+      "excluded_observations": 35,
+      "exclusion_reasons": {
+        "source_rule_blocked": 35
+      },
+      "normalized_observations": 0,
+      "normalized_samples": 0,
+      "review_status": "blocked",
+      "source_id": "makarychev_2014_2",
+      "stored_parameters": 0
+    },
+    {
+      "blockers": [],
+      "excluded_observations": 0,
+      "exclusion_reasons": {},
+      "normalized_observations": 56,
+      "normalized_samples": 4,
+      "review_status": "confirmed_measurements",
+      "source_id": "makarychev_2014_3",
+      "stored_parameters": 0
+    },
+    {
+      "blockers": [
+        "retention_reconstruction"
+      ],
+      "excluded_observations": 16,
+      "exclusion_reasons": {
+        "ambiguous_sample_identity": 4,
+        "unreviewed_pressure_value": 12
+      },
+      "normalized_observations": 116,
+      "normalized_samples": 12,
+      "review_status": "partially_normalized",
+      "source_id": "panina_2015",
+      "stored_parameters": 48
+    },
+    {
+      "blockers": [
+        "pressure_convention_by_source",
+        "water_scale_by_source"
+      ],
+      "excluded_observations": 17,
+      "exclusion_reasons": {
+        "source_rule_blocked": 17
+      },
+      "normalized_observations": 0,
+      "normalized_samples": 0,
+      "review_status": "blocked",
+      "source_id": "sidorova_2016",
+      "stored_parameters": 0
+    },
+    {
+      "blockers": [],
+      "excluded_observations": 0,
+      "exclusion_reasons": {},
+      "normalized_observations": 130,
+      "normalized_samples": 10,
+      "review_status": "confirmed_measurements",
+      "source_id": "chestnova_2017",
+      "stored_parameters": 0
+    },
+    {
+      "blockers": [],
+      "excluded_observations": 0,
+      "exclusion_reasons": {},
+      "normalized_observations": 96,
+      "normalized_samples": 16,
+      "review_status": "confirmed_measurements",
+      "source_id": "makarychev_2018",
+      "stored_parameters": 0
+    },
+    {
+      "blockers": [
+        "retention_reconstruction"
+      ],
+      "excluded_observations": 6,
+      "exclusion_reasons": {
+        "non_observation_table_value": 3,
+        "unreviewed_pressure_value": 3
+      },
+      "normalized_observations": 23,
+      "normalized_samples": 3,
+      "review_status": "partially_normalized",
+      "source_id": "moiseev_2018",
+      "stored_parameters": 0
+    },
+    {
+      "blockers": [
+        "pressure_convention_by_source",
+        "water_scale_by_source"
+      ],
+      "excluded_observations": 25,
+      "exclusion_reasons": {
+        "source_rule_blocked": 25
+      },
+      "normalized_observations": 0,
+      "normalized_samples": 0,
+      "review_status": "blocked",
+      "source_id": "shein_2018",
+      "stored_parameters": 0
+    }
+  ],
+  "status": "source_review_incomplete",
+  "workbook_scope": {
+    "populated_row_count": 3081,
+    "sheet_count": 8,
+    "status_counts": {
+      "audited_retention_master_row": 206,
+      "declared_header": 14,
+      "declared_retention_axis_not_sample": 37,
+      "excluded": 719,
+      "normalized": 1036,
+      "stored_parameter_not_observation": 92,
+      "unresolved_row_role_and_measurement_contract": 977
+    },
+    "unreviewed_master_sources": [
+      {
+        "raw_source": "1999_Бутылкина-дисс",
+        "row_count": 2,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 16
+      },
+      {
+        "raw_source": "2001_Алёхина-дисс",
+        "row_count": 4,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 48
+      },
+      {
+        "raw_source": "2001_Никулина-дисс",
+        "row_count": 28,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 1095
+      },
+      {
+        "raw_source": "2003_Фаустова-дисс",
+        "row_count": 4,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 32
+      },
+      {
+        "raw_source": "2004_Тымбаев-дисс",
+        "row_count": 2,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 26
+      },
+      {
+        "raw_source": "2007_Пестонова",
+        "row_count": 14,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 0
+      },
+      {
+        "raw_source": "2007_кокарева",
+        "row_count": 1,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 5
+      },
+      {
+        "raw_source": "2009_Кокорева-дисс",
+        "row_count": 40,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 224
+      },
+      {
+        "raw_source": "2010_Гончаров-дисс",
+        "row_count": 10,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 100
+      },
+      {
+        "raw_source": "2011_Трошина-дисс",
+        "row_count": 7,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 121
+      },
+      {
+        "raw_source": "2012_Медко-дисс",
+        "row_count": 44,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 464
+      },
+      {
+        "raw_source": "2012_оленченко",
+        "row_count": 3,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 21
+      },
+      {
+        "raw_source": "2014_макарычев-2",
+        "row_count": 3,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 18
+      },
+      {
+        "raw_source": "2018_шеин-2",
+        "row_count": 5,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 20
+      },
+      {
+        "raw_source": "2019_Лебедева",
+        "row_count": 34,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 371
+      },
+      {
+        "raw_source": "2021_Зырянова",
+        "row_count": 2,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 26
+      },
+      {
+        "raw_source": "2022_Бабошкина",
+        "row_count": 4,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 24
+      },
+      {
+        "raw_source": "2022_Комиссарова",
+        "row_count": 8,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 40
+      },
+      {
+        "raw_source": "2022_Моисеев",
+        "row_count": 24,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 188
+      },
+      {
+        "raw_source": "2022_Салугин ",
+        "row_count": 7,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 28
+      },
+      {
+        "raw_source": "2022_Филина",
+        "row_count": 21,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 84
+      },
+      {
+        "raw_source": "2023_fomin",
+        "row_count": 6,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 66
+      },
+      {
+        "raw_source": "2023_Бабошкина",
+        "row_count": 7,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 28
+      },
+      {
+        "raw_source": "2024_Огородняя",
+        "row_count": 13,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 39
+      },
+      {
+        "raw_source": "2025_Бабошкина",
+        "row_count": 7,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 35
+      },
+      {
+        "raw_source": "2025_Загиров",
+        "row_count": 12,
+        "status": "source_schema_and_row_roles_unresolved",
+        "tail_populated_cell_count": 22
+      }
+    ]
+  },
+  "workbook_sha256": "1322bf65b1ca0130085015209858a443d1ee82a7e2ae69232321cd8ede361e68"
+}

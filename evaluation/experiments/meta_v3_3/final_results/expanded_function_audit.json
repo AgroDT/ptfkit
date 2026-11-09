@@ -1,0 +1,2050 @@
+{
+  "functions": [
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:coefficient_b": 39,
+        "missing_predictor:exponent_n": 39,
+        "missing_predictor:theta_33": 39,
+        "missing_predictor:total_porosity": 5
+      },
+      "function": "calc_ptf_ahuja1984",
+      "previous_disposition": "not_WRC_output",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: coefficient_b, exponent_n, theta_33, total_porosity.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:gmd": 39
+      },
+      "function": "calc_ptf_aimrun2009",
+      "previous_disposition": "not_WRC_output",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: gmd.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:altitude": 1740,
+        "missing_predictor:clay": 875,
+        "missing_predictor:depth": 595,
+        "missing_predictor:precipitation": 1740,
+        "missing_predictor:sand": 1138,
+        "missing_predictor:silt": 1171,
+        "missing_predictor:slope": 1740
+      },
+      "function": "calc_ptf_bai2022",
+      "previous_disposition": "observed_pressure_adapter_available",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: altitude, clay, depth, precipitation, sand, silt, slope.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 284,
+        "missing_predictor:sand": 121,
+        "missing_predictor:silt": 121,
+        "missing_predictor:soil_organic_matter": 81
+      },
+      "function": "calc_ptf_beniaich2023_mlr1",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Native-pressure secondary scoring only; insufficient valid/supporting native coordinates for independent full-WRC scoring.",
+      "scored_candidates": [],
+      "secondary_points": 20
+    },
+    {
+      "dispositions": [
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 284,
+        "missing_predictor:sand": 121,
+        "missing_predictor:soil_organic_matter": 81
+      },
+      "function": "calc_ptf_beniaich2023_mlr2",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Native-pressure secondary scoring only; insufficient valid/supporting native coordinates for independent full-WRC scoring.",
+      "scored_candidates": [],
+      "secondary_points": 20
+    },
+    {
+      "dispositions": [
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 284,
+        "missing_predictor:silt": 121,
+        "missing_predictor:soil_organic_matter": 81
+      },
+      "function": "calc_ptf_beniaich2023_mlr3",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Native-pressure secondary scoring only; insufficient valid/supporting native coordinates for independent full-WRC scoring.",
+      "scored_candidates": [],
+      "secondary_points": 20
+    },
+    {
+      "dispositions": [
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 284,
+        "missing_predictor:clay": 95,
+        "missing_predictor:soil_organic_matter": 81
+      },
+      "function": "calc_ptf_beniaich2023_mlr4",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Native-pressure secondary scoring only; insufficient valid/supporting native coordinates for independent full-WRC scoring.",
+      "scored_candidates": [],
+      "secondary_points": 68
+    },
+    {
+      "dispositions": [
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 284,
+        "missing_predictor:clay": 95,
+        "missing_predictor:silt": 121,
+        "missing_predictor:soil_organic_matter": 81
+      },
+      "function": "calc_ptf_beniaich2023_mlr5",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Native-pressure secondary scoring only; insufficient valid/supporting native coordinates for independent full-WRC scoring.",
+      "scored_candidates": [],
+      "secondary_points": 20
+    },
+    {
+      "dispositions": [
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 284,
+        "missing_predictor:clay": 95
+      },
+      "function": "calc_ptf_beniaich2023_slr1",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Native-pressure secondary scoring only; insufficient valid/supporting native coordinates for independent full-WRC scoring.",
+      "scored_candidates": [],
+      "secondary_points": 72
+    },
+    {
+      "dispositions": [
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 284,
+        "missing_predictor:silt": 121
+      },
+      "function": "calc_ptf_beniaich2023_slr2",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Native-pressure secondary scoring only; insufficient valid/supporting native coordinates for independent full-WRC scoring.",
+      "scored_candidates": [],
+      "secondary_points": 22
+    },
+    {
+      "dispositions": [
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 284,
+        "missing_predictor:sand": 121
+      },
+      "function": "calc_ptf_beniaich2023_slr3",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Native-pressure secondary scoring only; insufficient valid/supporting native coordinates for independent full-WRC scoring.",
+      "scored_candidates": [],
+      "secondary_points": 22
+    },
+    {
+      "dispositions": [
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 284,
+        "missing_predictor:clay": 95,
+        "missing_predictor:silt": 121
+      },
+      "function": "calc_ptf_beniaich2023_slr4",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Native-pressure secondary scoring only; insufficient valid/supporting native coordinates for independent full-WRC scoring.",
+      "scored_candidates": [],
+      "secondary_points": 22
+    },
+    {
+      "dispositions": [
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 284,
+        "missing_predictor:clay": 95,
+        "missing_predictor:silt": 121
+      },
+      "function": "calc_ptf_beniaich2023_slr5",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Native-pressure secondary scoring only; insufficient valid/supporting native coordinates for independent full-WRC scoring.",
+      "scored_candidates": [],
+      "secondary_points": 22
+    },
+    {
+      "dispositions": [
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 284,
+        "missing_predictor:soil_organic_matter": 81
+      },
+      "function": "calc_ptf_beniaich2023_slr6",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Native-pressure secondary scoring only; insufficient valid/supporting native coordinates for independent full-WRC scoring.",
+      "scored_candidates": [],
+      "secondary_points": 115
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "Unit 'cubic_centimeter_per_gram' has no affine conversion.": 60,
+        "computational_domain:bulk_volume": 35,
+        "insufficient_native_pressure_points": 284,
+        "missing_predictor:bulk_volume": 77
+      },
+      "function": "calc_ptf_bruand1994_bulk_volume_water_retention",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: bulk_volume.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "computational_domain:clay_content": 47,
+        "insufficient_native_pressure_points": 284,
+        "missing_predictor:clay_content": 95
+      },
+      "function": "calc_ptf_bruand1994_clay_water_retention",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: clay_content.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "now_scored_full_wrc"
+      ],
+      "failure_counts": {
+        "missing_predictor:bulk_density": 759,
+        "missing_predictor:sand": 1132,
+        "native_or_adapter:ValueError:Observed pressure outside discrete model support.": 431
+      },
+      "function": "calc_ptf_chakraborty2011_eq2",
+      "previous_disposition": "observed_pressure_adapter_available",
+      "previous_group": "failed_executable",
+      "reason": "Independent full-WRC predictions contribute on at least one eligible observed-pressure cohort.",
+      "scored_candidates": [
+        "calc_ptf_chakraborty2011_eq2"
+      ],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "now_scored_full_wrc"
+      ],
+      "failure_counts": {
+        "missing_predictor:bulk_density": 759,
+        "missing_predictor:clay": 875,
+        "missing_predictor:silt": 1132,
+        "native_or_adapter:ValueError:Observed pressure outside discrete model support.": 431
+      },
+      "function": "calc_ptf_chakraborty2011_eq3",
+      "previous_disposition": "observed_pressure_adapter_available",
+      "previous_group": "failed_executable",
+      "reason": "Independent full-WRC predictions contribute on at least one eligible observed-pressure cohort.",
+      "scored_candidates": [
+        "calc_ptf_chakraborty2011_eq3"
+      ],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "now_scored_full_wrc"
+      ],
+      "failure_counts": {
+        "missing_predictor:bulk_density": 759,
+        "missing_predictor:clay": 875,
+        "missing_predictor:sand": 1132,
+        "missing_predictor:silt": 1132,
+        "native_or_adapter:ValueError:Observed pressure outside discrete model support.": 431
+      },
+      "function": "calc_ptf_chakraborty2011_eq5",
+      "previous_disposition": "observed_pressure_adapter_available",
+      "previous_group": "failed_executable",
+      "reason": "Independent full-WRC predictions contribute on at least one eligible observed-pressure cohort.",
+      "scored_candidates": [
+        "calc_ptf_chakraborty2011_eq5"
+      ],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:bulk_density": 759,
+        "missing_predictor:clay": 875,
+        "missing_predictor:organic_carbon": 1543,
+        "missing_predictor:sand": 1132,
+        "missing_predictor:silt": 1132
+      },
+      "function": "calc_ptf_chakraborty2011_eq6",
+      "previous_disposition": "observed_pressure_adapter_available",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: bulk_density, clay, organic_carbon, sand, silt.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "user_decision_required"
+      ],
+      "failure_counts": {},
+      "function": "calc_ptf_dharumarajan2019_nkp",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "needs_user_decision: source warnings explicitly leave gravimetric versus volumetric percentages unresolved; the provisional field quantity cannot override that physical ambiguity.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "user_decision_required"
+      ],
+      "failure_counts": {},
+      "function": "calc_ptf_dharumarajan2019_nkp_clay",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "needs_user_decision: source warnings explicitly leave gravimetric versus volumetric percentages unresolved; the provisional field quantity cannot override that physical ambiguity.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "user_decision_required"
+      ],
+      "failure_counts": {},
+      "function": "calc_ptf_dharumarajan2019_skp",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "needs_user_decision: source warnings explicitly leave gravimetric versus volumetric percentages unresolved; the provisional field quantity cannot override that physical ambiguity.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "user_decision_required"
+      ],
+      "failure_counts": {},
+      "function": "calc_ptf_dharumarajan2019_skp_clay",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "needs_user_decision: source warnings explicitly leave gravimetric versus volumetric percentages unresolved; the provisional field quantity cannot override that physical ambiguity.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "computational_domain:sand": 3,
+        "insufficient_native_pressure_points": 284,
+        "missing_predictor:clay": 95,
+        "missing_predictor:sand": 121
+      },
+      "function": "calc_ptf_dijkerman1988",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Native-pressure secondary scoring only; insufficient valid/supporting native coordinates for independent full-WRC scoring.",
+      "scored_candidates": [],
+      "secondary_points": 16
+    },
+    {
+      "dispositions": [
+        "now_scored_full_wrc",
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "computational_domain:sand": 9,
+        "insufficient_native_pressure_points": 130,
+        "missing_predictor:sand": 121
+      },
+      "function": "calc_ptf_gunarathna2019_vwc10_set1",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Independent full-WRC predictions contribute on at least one eligible observed-pressure cohort.",
+      "scored_candidates": [
+        "family_gunarathna2019_set1_WRC_volume"
+      ],
+      "secondary_points": 7
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "computational_domain:sand": 9,
+        "computational_domain:silt": 21,
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:sand": 121,
+        "missing_predictor:silt": 121
+      },
+      "function": "calc_ptf_gunarathna2019_vwc10_set2",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: sand, silt.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "computational_domain:sand": 9,
+        "computational_domain:silt": 21,
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:bulk_density": 79,
+        "missing_predictor:sand": 121,
+        "missing_predictor:silt": 121
+      },
+      "function": "calc_ptf_gunarathna2019_vwc10_set3",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: bulk_density, sand, silt.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "computational_domain:sand": 9,
+        "computational_domain:silt": 21,
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:organic_carbon": 84,
+        "missing_predictor:sand": 121,
+        "missing_predictor:silt": 121
+      },
+      "function": "calc_ptf_gunarathna2019_vwc10_set4",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: organic_carbon, sand, silt.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "now_scored_full_wrc"
+      ],
+      "failure_counts": {
+        "computational_domain:sand": 9,
+        "insufficient_native_pressure_points": 130,
+        "missing_predictor:sand": 121
+      },
+      "function": "calc_ptf_gunarathna2019_vwc1500_set1",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Independent full-WRC predictions contribute on at least one eligible observed-pressure cohort.",
+      "scored_candidates": [
+        "family_gunarathna2019_set1_WRC_volume"
+      ],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "computational_domain:sand": 9,
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:bulk_density": 79,
+        "missing_predictor:sand": 121
+      },
+      "function": "calc_ptf_gunarathna2019_vwc1500_set3",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: bulk_density, sand.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "computational_domain:sand": 9,
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:organic_carbon": 84,
+        "missing_predictor:sand": 121
+      },
+      "function": "calc_ptf_gunarathna2019_vwc1500_set4",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: organic_carbon, sand.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "now_scored_full_wrc",
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "computational_domain:sand": 9,
+        "insufficient_native_pressure_points": 130,
+        "missing_predictor:sand": 121
+      },
+      "function": "calc_ptf_gunarathna2019_vwc33_set1",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Independent full-WRC predictions contribute on at least one eligible observed-pressure cohort.",
+      "scored_candidates": [
+        "family_gunarathna2019_set1_WRC_volume"
+      ],
+      "secondary_points": 1
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "computational_domain:sand": 9,
+        "computational_domain:silt": 21,
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:sand": 121,
+        "missing_predictor:silt": 121
+      },
+      "function": "calc_ptf_gunarathna2019_vwc33_set2",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: sand, silt.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "computational_domain:sand": 9,
+        "computational_domain:silt": 21,
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:bulk_density": 79,
+        "missing_predictor:sand": 121,
+        "missing_predictor:silt": 121
+      },
+      "function": "calc_ptf_gunarathna2019_vwc33_set3",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: bulk_density, sand, silt.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "computational_domain:sand": 9,
+        "computational_domain:silt": 21,
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:organic_carbon": 84,
+        "missing_predictor:sand": 121,
+        "missing_predictor:silt": 121
+      },
+      "function": "calc_ptf_gunarathna2019_vwc33_set4",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: organic_carbon, sand, silt.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "computational_domain:sand": 39,
+        "computational_domain:silt": 104,
+        "missing_predictor:bulk_density": 684,
+        "missing_predictor:cation_exchange_capacity": 1701,
+        "missing_predictor:clay": 875,
+        "missing_predictor:organic_carbon": 1036,
+        "missing_predictor:ph": 1676,
+        "missing_predictor:sand": 1132,
+        "missing_predictor:silt": 1132
+      },
+      "function": "calc_ptf_hodnett2002",
+      "previous_disposition": "observed_pressure_adapter_available",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: bulk_density, cation_exchange_capacity, clay, organic_carbon, ph, sand, silt.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:silt": 39
+      },
+      "function": "calc_ptf_jabro1992",
+      "previous_disposition": "not_WRC_output",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: silt.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "computational_domain:sand": 1,
+        "missing_predictor:nitrogen": 39,
+        "missing_predictor:sand": 6,
+        "missing_predictor:stoniness": 39
+      },
+      "function": "calc_ptf_kalumba2021_mlr_ksat",
+      "previous_disposition": "not_WRC_output",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: nitrogen, sand, stoniness.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "computational_domain:sand": 8,
+        "computational_domain:silt": 8,
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:bulk_density": 78,
+        "missing_predictor:electrical_conductivity": 142,
+        "missing_predictor:elevation": 142,
+        "missing_predictor:nitrogen": 142,
+        "missing_predictor:ph": 142,
+        "missing_predictor:sand": 121,
+        "missing_predictor:silt": 121,
+        "missing_predictor:stoniness": 142
+      },
+      "function": "calc_ptf_kalumba2021_mlr_pf00",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: bulk_density, electrical_conductivity, elevation, nitrogen, ph, sand, silt, stoniness.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "computational_domain:sand": 8,
+        "computational_domain:silt": 8,
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:bulk_density": 78,
+        "missing_predictor:electrical_conductivity": 142,
+        "missing_predictor:elevation": 142,
+        "missing_predictor:nitrogen": 142,
+        "missing_predictor:ph": 142,
+        "missing_predictor:sand": 121,
+        "missing_predictor:silt": 121,
+        "missing_predictor:stoniness": 142
+      },
+      "function": "calc_ptf_kalumba2021_mlr_pf10",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: bulk_density, electrical_conductivity, elevation, nitrogen, ph, sand, silt, stoniness.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "computational_domain:depth": 8,
+        "computational_domain:sand": 8,
+        "computational_domain:silt": 8,
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:bulk_density": 78,
+        "missing_predictor:clay": 95,
+        "missing_predictor:depth": 56,
+        "missing_predictor:electrical_conductivity": 142,
+        "missing_predictor:elevation": 142,
+        "missing_predictor:nitrogen": 142,
+        "missing_predictor:ph": 142,
+        "missing_predictor:sand": 121,
+        "missing_predictor:silt": 121,
+        "missing_predictor:stoniness": 142
+      },
+      "function": "calc_ptf_kalumba2021_mlr_pf20",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: bulk_density, clay, depth, electrical_conductivity, elevation, nitrogen, ph, sand, silt, stoniness.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "computational_domain:depth": 8,
+        "computational_domain:sand": 8,
+        "computational_domain:silt": 8,
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:bulk_density": 78,
+        "missing_predictor:clay": 95,
+        "missing_predictor:depth": 56,
+        "missing_predictor:electrical_conductivity": 142,
+        "missing_predictor:elevation": 142,
+        "missing_predictor:nitrogen": 142,
+        "missing_predictor:organic_matter": 84,
+        "missing_predictor:sand": 121,
+        "missing_predictor:silt": 121,
+        "missing_predictor:stoniness": 142
+      },
+      "function": "calc_ptf_kalumba2021_mlr_pf28",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: bulk_density, clay, depth, electrical_conductivity, elevation, nitrogen, organic_matter, sand, silt, stoniness.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "computational_domain:depth": 8,
+        "computational_domain:sand": 8,
+        "computational_domain:silt": 8,
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:bulk_density": 78,
+        "missing_predictor:clay": 95,
+        "missing_predictor:depth": 56,
+        "missing_predictor:electrical_conductivity": 142,
+        "missing_predictor:elevation": 142,
+        "missing_predictor:nitrogen": 142,
+        "missing_predictor:organic_matter": 84,
+        "missing_predictor:sand": 121,
+        "missing_predictor:silt": 121,
+        "missing_predictor:stoniness": 142
+      },
+      "function": "calc_ptf_kalumba2021_mlr_pf34",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: bulk_density, clay, depth, electrical_conductivity, elevation, nitrogen, organic_matter, sand, silt, stoniness.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "computational_domain:depth": 8,
+        "computational_domain:sand": 8,
+        "computational_domain:silt": 8,
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:clay": 95,
+        "missing_predictor:depth": 56,
+        "missing_predictor:electrical_conductivity": 142,
+        "missing_predictor:elevation": 142,
+        "missing_predictor:nitrogen": 142,
+        "missing_predictor:organic_matter": 84,
+        "missing_predictor:sand": 121,
+        "missing_predictor:silt": 121,
+        "missing_predictor:stoniness": 142
+      },
+      "function": "calc_ptf_kalumba2021_mlr_pf42",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: clay, depth, electrical_conductivity, elevation, nitrogen, organic_matter, sand, silt, stoniness.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "now_scored_full_wrc",
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 95,
+        "missing_predictor:clay": 95
+      },
+      "function": "calc_ptf_lal1979_group_i_water_01bar_from_clay",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Independent full-WRC predictions contribute on at least one eligible observed-pressure cohort.",
+      "scored_candidates": [
+        "family_lal1979_group_i_from_clay_WRC_mass"
+      ],
+      "secondary_points": 44
+    },
+    {
+      "dispositions": [
+        "now_scored_full_wrc",
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 121,
+        "missing_predictor:sand": 121
+      },
+      "function": "calc_ptf_lal1979_group_i_water_01bar_from_sand",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Independent full-WRC predictions contribute on at least one eligible observed-pressure cohort.",
+      "scored_candidates": [
+        "family_lal1979_group_i_from_sand_WRC_mass"
+      ],
+      "secondary_points": 19
+    },
+    {
+      "dispositions": [
+        "now_scored_full_wrc",
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 95,
+        "missing_predictor:clay": 95
+      },
+      "function": "calc_ptf_lal1979_group_i_water_03bar_from_clay",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Independent full-WRC predictions contribute on at least one eligible observed-pressure cohort.",
+      "scored_candidates": [
+        "family_lal1979_group_i_from_clay_WRC_mass"
+      ],
+      "secondary_points": 38
+    },
+    {
+      "dispositions": [
+        "now_scored_full_wrc",
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 121,
+        "missing_predictor:sand": 121
+      },
+      "function": "calc_ptf_lal1979_group_i_water_03bar_from_sand",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Independent full-WRC predictions contribute on at least one eligible observed-pressure cohort.",
+      "scored_candidates": [
+        "family_lal1979_group_i_from_sand_WRC_mass"
+      ],
+      "secondary_points": 13
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 95,
+        "missing_predictor:clay": 95
+      },
+      "function": "calc_ptf_lal1979_group_i_water_0bar_from_clay",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: clay.",
+      "scored_candidates": [
+        "family_lal1979_group_i_from_clay_WRC_mass"
+      ],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 121,
+        "missing_predictor:sand": 121
+      },
+      "function": "calc_ptf_lal1979_group_i_water_0bar_from_sand",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: sand.",
+      "scored_candidates": [
+        "family_lal1979_group_i_from_sand_WRC_mass"
+      ],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "now_scored_full_wrc",
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 95,
+        "missing_predictor:clay": 95
+      },
+      "function": "calc_ptf_lal1979_group_i_water_15bar_from_clay",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Independent full-WRC predictions contribute on at least one eligible observed-pressure cohort.",
+      "scored_candidates": [
+        "family_lal1979_group_i_from_clay_WRC_mass"
+      ],
+      "secondary_points": 35
+    },
+    {
+      "dispositions": [
+        "now_scored_full_wrc",
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 121,
+        "missing_predictor:sand": 121
+      },
+      "function": "calc_ptf_lal1979_group_i_water_15bar_from_sand",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Independent full-WRC predictions contribute on at least one eligible observed-pressure cohort.",
+      "scored_candidates": [
+        "family_lal1979_group_i_from_sand_WRC_mass"
+      ],
+      "secondary_points": 10
+    },
+    {
+      "dispositions": [
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:silt": 121
+      },
+      "function": "calc_ptf_lal1979_group_i_water_15bar_from_silt",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Native-pressure secondary scoring only; insufficient valid/supporting native coordinates for independent full-WRC scoring.",
+      "scored_candidates": [],
+      "secondary_points": 10
+    },
+    {
+      "dispositions": [
+        "now_scored_full_wrc",
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 95,
+        "missing_predictor:clay": 95
+      },
+      "function": "calc_ptf_lal1979_group_ii_water_01bar_from_clay",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Independent full-WRC predictions contribute on at least one eligible observed-pressure cohort.",
+      "scored_candidates": [
+        "family_lal1979_group_ii_from_clay_WRC_mass"
+      ],
+      "secondary_points": 44
+    },
+    {
+      "dispositions": [
+        "now_scored_full_wrc",
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 121,
+        "missing_predictor:sand": 121
+      },
+      "function": "calc_ptf_lal1979_group_ii_water_01bar_from_sand",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Independent full-WRC predictions contribute on at least one eligible observed-pressure cohort.",
+      "scored_candidates": [
+        "family_lal1979_group_ii_from_sand_WRC_mass"
+      ],
+      "secondary_points": 19
+    },
+    {
+      "dispositions": [
+        "now_scored_full_wrc",
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 95,
+        "missing_predictor:clay": 95
+      },
+      "function": "calc_ptf_lal1979_group_ii_water_03bar_from_clay",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Independent full-WRC predictions contribute on at least one eligible observed-pressure cohort.",
+      "scored_candidates": [
+        "family_lal1979_group_ii_from_clay_WRC_mass"
+      ],
+      "secondary_points": 38
+    },
+    {
+      "dispositions": [
+        "now_scored_full_wrc",
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 121,
+        "missing_predictor:sand": 121
+      },
+      "function": "calc_ptf_lal1979_group_ii_water_03bar_from_sand",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Independent full-WRC predictions contribute on at least one eligible observed-pressure cohort.",
+      "scored_candidates": [
+        "family_lal1979_group_ii_from_sand_WRC_mass"
+      ],
+      "secondary_points": 13
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:water_01bar": 142
+      },
+      "function": "calc_ptf_lal1979_group_ii_water_03bar_from_water_01bar",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: water_01bar.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 95,
+        "missing_predictor:clay": 95
+      },
+      "function": "calc_ptf_lal1979_group_ii_water_0bar_from_clay",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: clay.",
+      "scored_candidates": [
+        "family_lal1979_group_ii_from_clay_WRC_mass"
+      ],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 121,
+        "missing_predictor:sand": 121
+      },
+      "function": "calc_ptf_lal1979_group_ii_water_0bar_from_sand",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: sand.",
+      "scored_candidates": [
+        "family_lal1979_group_ii_from_sand_WRC_mass"
+      ],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "now_scored_full_wrc",
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 95,
+        "missing_predictor:clay": 95
+      },
+      "function": "calc_ptf_lal1979_group_ii_water_15bar_from_clay",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Independent full-WRC predictions contribute on at least one eligible observed-pressure cohort.",
+      "scored_candidates": [
+        "family_lal1979_group_ii_from_clay_WRC_mass"
+      ],
+      "secondary_points": 35
+    },
+    {
+      "dispositions": [
+        "now_scored_full_wrc",
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 121,
+        "missing_predictor:sand": 121
+      },
+      "function": "calc_ptf_lal1979_group_ii_water_15bar_from_sand",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Independent full-WRC predictions contribute on at least one eligible observed-pressure cohort.",
+      "scored_candidates": [
+        "family_lal1979_group_ii_from_sand_WRC_mass"
+      ],
+      "secondary_points": 10
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:water_01bar": 142
+      },
+      "function": "calc_ptf_lal1979_group_ii_water_15bar_from_water_01bar",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: water_01bar.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "user_decision_required"
+      ],
+      "failure_counts": {
+        "missing_predictor:sand": 6,
+        "missing_predictor:silt": 39
+      },
+      "function": "calc_ptf_li2007",
+      "previous_disposition": "curve_definition_or_adapter_unresolved",
+      "previous_group": "failed_executable",
+      "reason": "needs_user_decision: zero residual is explicit, but the encoded metadata does not identify m=1 versus m=1-1/n.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:clay": 95,
+        "missing_predictor:silt": 121,
+        "missing_predictor:soc": 81
+      },
+      "function": "calc_ptf_myeni2021_fc",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Native-pressure secondary scoring only; insufficient valid/supporting native coordinates for independent full-WRC scoring.",
+      "scored_candidates": [],
+      "secondary_points": 10
+    },
+    {
+      "dispositions": [
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:clay": 95,
+        "missing_predictor:silt": 121,
+        "missing_predictor:soc": 81
+      },
+      "function": "calc_ptf_myeni2021_pwp",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Native-pressure secondary scoring only; insufficient valid/supporting native coordinates for independent full-WRC scoring.",
+      "scored_candidates": [],
+      "secondary_points": 10
+    },
+    {
+      "dispositions": [
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "computational_domain:mean_depth": 13,
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:clay": 95,
+        "missing_predictor:mean_depth": 56,
+        "missing_predictor:sand": 121
+      },
+      "function": "calc_ptf_oosterveld1980_wilting_point",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Native-pressure secondary scoring only; insufficient valid/supporting native coordinates for independent full-WRC scoring.",
+      "scored_candidates": [],
+      "secondary_points": 8
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:effective_porosity": 39
+      },
+      "function": "calc_ptf_ottoni2019_wm330",
+      "previous_disposition": "not_WRC_output",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: effective_porosity.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:silt": 39
+      },
+      "function": "calc_ptf_ottoni2019_wmssc",
+      "previous_disposition": "not_WRC_output",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: silt.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:silt": 39
+      },
+      "function": "calc_ptf_ottoni2019_wmsscbd",
+      "previous_disposition": "not_WRC_output",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: silt.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "excluded_other_target"
+      ],
+      "failure_counts": {},
+      "function": "calc_ptf_pidgeon1972_awc",
+      "previous_disposition": "curve_definition_or_adapter_unresolved",
+      "previous_group": "curve_definition_or_adapter_unresolved",
+      "reason": "AWC/extended AWC or osmotic potential is not an absolute matric WRC water content; retained in the audit but not evaluated, as requested.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "excluded_other_target"
+      ],
+      "failure_counts": {},
+      "function": "calc_ptf_pidgeon1972_awc_coarse_sand",
+      "previous_disposition": "curve_definition_or_adapter_unresolved",
+      "previous_group": "curve_definition_or_adapter_unresolved",
+      "reason": "AWC/extended AWC or osmotic potential is not an absolute matric WRC water content; retained in the audit but not evaluated, as requested.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "excluded_other_target"
+      ],
+      "failure_counts": {},
+      "function": "calc_ptf_pidgeon1972_awc_fine_sand",
+      "previous_disposition": "curve_definition_or_adapter_unresolved",
+      "previous_group": "curve_definition_or_adapter_unresolved",
+      "reason": "AWC/extended AWC or osmotic potential is not an absolute matric WRC water content; retained in the audit but not evaluated, as requested.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "excluded_other_target"
+      ],
+      "failure_counts": {},
+      "function": "calc_ptf_pidgeon1972_awc_sand_organic_matter",
+      "previous_disposition": "curve_definition_or_adapter_unresolved",
+      "previous_group": "curve_definition_or_adapter_unresolved",
+      "reason": "AWC/extended AWC or osmotic potential is not an absolute matric WRC water content; retained in the audit but not evaluated, as requested.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "excluded_other_target"
+      ],
+      "failure_counts": {},
+      "function": "calc_ptf_pidgeon1972_awc_very_fine_sand",
+      "previous_disposition": "curve_definition_or_adapter_unresolved",
+      "previous_group": "curve_definition_or_adapter_unresolved",
+      "reason": "AWC/extended AWC or osmotic potential is not an absolute matric WRC water content; retained in the audit but not evaluated, as requested.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "excluded_other_target"
+      ],
+      "failure_counts": {},
+      "function": "calc_ptf_pidgeon1972_eawc",
+      "previous_disposition": "curve_definition_or_adapter_unresolved",
+      "previous_group": "curve_definition_or_adapter_unresolved",
+      "reason": "AWC/extended AWC or osmotic potential is not an absolute matric WRC water content; retained in the audit but not evaluated, as requested.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "excluded_other_target"
+      ],
+      "failure_counts": {},
+      "function": "calc_ptf_pidgeon1972_eawc_coarse_sand_organic_matter",
+      "previous_disposition": "curve_definition_or_adapter_unresolved",
+      "previous_group": "curve_definition_or_adapter_unresolved",
+      "reason": "AWC/extended AWC or osmotic potential is not an absolute matric WRC water content; retained in the audit but not evaluated, as requested.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "excluded_other_target"
+      ],
+      "failure_counts": {},
+      "function": "calc_ptf_pidgeon1972_eawc_fine_sand_organic_matter",
+      "previous_disposition": "curve_definition_or_adapter_unresolved",
+      "previous_group": "curve_definition_or_adapter_unresolved",
+      "reason": "AWC/extended AWC or osmotic potential is not an absolute matric WRC water content; retained in the audit but not evaluated, as requested.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "excluded_other_target"
+      ],
+      "failure_counts": {},
+      "function": "calc_ptf_pidgeon1972_eawc_sand",
+      "previous_disposition": "curve_definition_or_adapter_unresolved",
+      "previous_group": "curve_definition_or_adapter_unresolved",
+      "reason": "AWC/extended AWC or osmotic potential is not an absolute matric WRC water content; retained in the audit but not evaluated, as requested.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "excluded_other_target"
+      ],
+      "failure_counts": {},
+      "function": "calc_ptf_pidgeon1972_eawc_sand_organic_matter",
+      "previous_disposition": "curve_definition_or_adapter_unresolved",
+      "previous_group": "curve_definition_or_adapter_unresolved",
+      "reason": "AWC/extended AWC or osmotic potential is not an absolute matric WRC water content; retained in the audit but not evaluated, as requested.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "computational_domain:clay": 2,
+        "computational_domain:porosity": 177,
+        "computational_domain:sand": 575,
+        "missing_predictor:bulk_density": 1221,
+        "missing_predictor:clay": 875,
+        "missing_predictor:fine_sand": 1171,
+        "missing_predictor:porosity": 1027,
+        "missing_predictor:sand": 1138
+      },
+      "function": "calc_ptf_puckett1985",
+      "previous_disposition": "observed_pressure_adapter_available",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: bulk_density, clay, fine_sand, porosity, sand.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:clay": 95,
+        "missing_predictor:organic_matter": 81
+      },
+      "function": "calc_ptf_rawls1982_theta_1500",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Native-pressure secondary scoring only; insufficient valid/supporting native coordinates for independent full-WRC scoring.",
+      "scored_candidates": [],
+      "secondary_points": 23
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "computational_domain:sand": 1,
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:organic_matter": 81,
+        "missing_predictor:sand": 121,
+        "missing_predictor:theta_1500": 142
+      },
+      "function": "calc_ptf_rawls1982_theta_33",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: organic_matter, sand, theta_1500.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "computational_domain:sand": 4,
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:clay": 95,
+        "missing_predictor:sand": 121,
+        "missing_predictor:soil_organic_carbon": 81
+      },
+      "function": "calc_ptf_rawls2003_soc_theta1500_gmdh",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: clay, sand, soil_organic_carbon.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:clay": 95,
+        "missing_predictor:sand": 121,
+        "missing_predictor:soil_organic_carbon": 81
+      },
+      "function": "calc_ptf_rawls2003_soc_theta1500_tree",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: clay, sand, soil_organic_carbon.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "computational_domain:sand": 4,
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:clay": 95,
+        "missing_predictor:sand": 121,
+        "missing_predictor:soil_organic_carbon": 81
+      },
+      "function": "calc_ptf_rawls2003_soc_theta33_gmdh",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: clay, sand, soil_organic_carbon.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "now_scored_point_target"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 142,
+        "missing_predictor:soil_organic_carbon": 81,
+        "missing_predictor:soil_texture": 115
+      },
+      "function": "calc_ptf_rawls2003_soc_theta33_tree",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "Native-pressure secondary scoring only; insufficient valid/supporting native coordinates for independent full-WRC scoring.",
+      "scored_candidates": [],
+      "secondary_points": 6
+    },
+    {
+      "dispositions": [
+        "now_scored_full_wrc"
+      ],
+      "failure_counts": {
+        "computational_domain:clay": 1,
+        "computational_domain:sand": 9,
+        "missing_predictor:bulk_density": 77,
+        "missing_predictor:clay": 95,
+        "missing_predictor:particle_density": 107,
+        "missing_predictor:sand": 121,
+        "unresolved_inputs": 1372
+      },
+      "function": "calc_ptf_saxton1986_calcptf_parameters",
+      "previous_disposition": "curve_definition_or_adapter_unresolved",
+      "previous_group": "curve_definition_or_adapter_unresolved",
+      "reason": "Independent full-WRC predictions contribute on at least one eligible observed-pressure cohort.",
+      "scored_candidates": [
+        "calc_ptf_saxton1986_calcptf_parameters"
+      ],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "insufficient_native_pressure_points": 284,
+        "missing_predictor:density_factor": 142,
+        "missing_predictor:normal_density": 142,
+        "missing_predictor:theta_33": 142,
+        "missing_predictor:theta_s": 142
+      },
+      "function": "calc_ptf_saxton2006_density",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "isolated_pressure_outputs_not_full_WRC",
+      "reason": "No admissible independent same-record values for: density_factor, normal_density, theta_33, theta_s.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:gravel_weight_fraction": 39,
+        "missing_predictor:matric_density": 39,
+        "missing_predictor:plant_available_water": 39,
+        "missing_predictor:saturated_conductivity": 39
+      },
+      "function": "calc_ptf_saxton2006_gravel",
+      "previous_disposition": "curve_definition_or_adapter_unresolved",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: gravel_weight_fraction, matric_density, plant_available_water, saturated_conductivity.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "excluded_other_target"
+      ],
+      "failure_counts": {},
+      "function": "calc_ptf_saxton2006_salinity",
+      "previous_disposition": "curve_definition_or_adapter_unresolved",
+      "previous_group": "curve_definition_or_adapter_unresolved",
+      "reason": "AWC/extended AWC or osmotic potential is not an absolute matric WRC water content; retained in the audit but not evaluated, as requested.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "Dry Saxton inversion requires 33<=p<=1500 and ordered predicted anchors.": 70,
+        "Water basis conversion requires observed same-record bulk density.": 21,
+        "unresolved_inputs": 1610
+      },
+      "function": "calc_ptf_saxton2006_tension_dry",
+      "previous_disposition": "curve_definition_or_adapter_unresolved",
+      "previous_group": "curve_definition_or_adapter_unresolved",
+      "reason": "The independent Saxton base anchors could not be combined with valid inputs, this segment support and actual same-record density where conversion is needed; no measured-water anchors were substituted.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "Water basis conversion requires observed same-record bulk density.": 35,
+        "Wet Saxton inversion requires p<=33 and physical predicted anchors.": 56,
+        "unresolved_inputs": 1610
+      },
+      "function": "calc_ptf_saxton2006_tension_wet",
+      "previous_disposition": "curve_definition_or_adapter_unresolved",
+      "previous_group": "curve_definition_or_adapter_unresolved",
+      "reason": "The independent Saxton base anchors could not be combined with valid inputs, this segment support and actual same-record density where conversion is needed; no measured-water anchors were substituted.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:cation_exchange_capacity": 1740,
+        "missing_predictor:clay": 875,
+        "missing_predictor:emp": 1740,
+        "missing_predictor:esp": 1740,
+        "missing_predictor:excm": 1740,
+        "missing_predictor:ph": 1710
+      },
+      "function": "calc_ptf_tiwary2014_bsr",
+      "previous_disposition": "observed_pressure_adapter_available",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: cation_exchange_capacity, clay, emp, esp, excm, ph.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:esp": 39,
+        "missing_predictor:sand": 6
+      },
+      "function": "calc_ptf_tiwary2014_igp",
+      "previous_disposition": "not_WRC_output",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: esp, sand.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "computational_domain:particle_100_50": 6,
+        "computational_domain:particle_10_2": 9,
+        "computational_domain:particle_200_100": 3,
+        "computational_domain:particle_20_10": 10,
+        "computational_domain:particle_500_200": 4,
+        "missing_predictor:bulk_density": 80,
+        "missing_predictor:carbon": 82,
+        "missing_predictor:clay": 95,
+        "missing_predictor:geometric_mean_particle_size": 142,
+        "missing_predictor:geometric_standard_deviation": 142,
+        "missing_predictor:particle_1000_500": 122,
+        "missing_predictor:particle_100_50": 121,
+        "missing_predictor:particle_10_2": 121,
+        "missing_predictor:particle_2000_1000": 142,
+        "missing_predictor:particle_200_100": 121,
+        "missing_predictor:particle_20_10": 121,
+        "missing_predictor:particle_500_200": 122,
+        "missing_predictor:particle_50_20": 121,
+        "unresolved_inputs": 1701
+      },
+      "function": "calc_ptf_vereecken1989_detailed",
+      "previous_disposition": "curve_definition_or_adapter_unresolved",
+      "previous_group": "curve_definition_or_adapter_unresolved",
+      "reason": "No admissible independent same-record values for: bulk_density, carbon, clay, geometric_mean_particle_size, geometric_standard_deviation, particle_1000_500, particle_100_50, particle_10_2, particle_2000_1000, particle_200_100, particle_20_10, particle_500_200, particle_50_20.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "computational_domain:clay": 6,
+        "computational_domain:sand": 5,
+        "missing_predictor:altitude": 39,
+        "missing_predictor:sand": 6,
+        "missing_predictor:silt": 39,
+        "missing_predictor:soil_organic_carbon": 2
+      },
+      "function": "calc_ptf_wang2012",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: altitude, sand, silt, soil_organic_carbon.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "user_decision_required"
+      ],
+      "failure_counts": {
+        "missing_predictor:sand": 6,
+        "missing_predictor:silt": 39
+      },
+      "function": "calc_ptf_wang2022_h2",
+      "previous_disposition": "curve_definition_or_adapter_unresolved",
+      "previous_group": "failed_executable",
+      "reason": "needs_user_decision: alpha/n/m/theta_s alone do not specify the corrected residual-water convention noted in the source metadata.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "user_decision_required"
+      ],
+      "failure_counts": {
+        "missing_predictor:sand": 6,
+        "missing_predictor:silt": 39
+      },
+      "function": "calc_ptf_wang2022_h3",
+      "previous_disposition": "curve_definition_or_adapter_unresolved",
+      "previous_group": "failed_executable",
+      "reason": "needs_user_decision: alpha/n/m/theta_s alone do not specify the corrected residual-water convention noted in the source metadata.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {},
+      "function": "calc_ptf_weber2020",
+      "previous_disposition": "curve_definition_or_adapter_unresolved",
+      "previous_group": "curve_definition_or_adapter_unresolved",
+      "reason": "still_missing_predictor: six VGM input parameters are unavailable independently; fitted experimental parameters would leak targets. Full Brunswick noncapillary formula is also absent from the encoded regression metadata.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:bulk_density": 684,
+        "missing_predictor:clay": 875,
+        "missing_predictor:fine_sand": 1132,
+        "missing_predictor:structure": 1701
+      },
+      "function": "calc_ptf_williams1992_function_2",
+      "previous_disposition": "observed_pressure_adapter_available",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: bulk_density, clay, fine_sand, structure.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:bulk_density": 684,
+        "missing_predictor:structure": 1701,
+        "missing_predictor:texture_class": 1701
+      },
+      "function": "calc_ptf_williams1992_function_3",
+      "previous_disposition": "observed_pressure_adapter_available",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: bulk_density, structure, texture_class.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:clay": 875,
+        "missing_predictor:fine_sand": 1132,
+        "missing_predictor:silt": 1132,
+        "missing_predictor:texture_class": 1701
+      },
+      "function": "calc_ptf_williams1992_function_4",
+      "previous_disposition": "observed_pressure_adapter_available",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: clay, fine_sand, silt, texture_class.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:bulk_density": 684,
+        "missing_predictor:clay": 875,
+        "missing_predictor:fine_sand": 1132,
+        "missing_predictor:silt": 1132,
+        "missing_predictor:texture_class": 1701
+      },
+      "function": "calc_ptf_williams1992_function_5",
+      "previous_disposition": "observed_pressure_adapter_available",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: bulk_density, clay, fine_sand, silt, texture_class.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:clay": 875,
+        "missing_predictor:fine_sand": 1132,
+        "missing_predictor:organic_matter": 1036,
+        "missing_predictor:silt": 1132,
+        "missing_predictor:texture_class": 1701
+      },
+      "function": "calc_ptf_williams1992_function_6",
+      "previous_disposition": "observed_pressure_adapter_available",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: clay, fine_sand, organic_matter, silt, texture_class.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:bulk_density": 684,
+        "missing_predictor:structure": 1701,
+        "missing_predictor:texture_class": 1701
+      },
+      "function": "calc_ptf_williams1992_function_7",
+      "previous_disposition": "observed_pressure_adapter_available",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: bulk_density, structure, texture_class.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:clay": 875,
+        "missing_predictor:fine_sand": 1132,
+        "missing_predictor:silt": 1132,
+        "missing_predictor:texture_class": 1701
+      },
+      "function": "calc_ptf_williams1992_function_8",
+      "previous_disposition": "observed_pressure_adapter_available",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: clay, fine_sand, silt, texture_class.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {},
+      "function": "calc_ptf_williams1992_table5",
+      "previous_disposition": "curve_definition_or_adapter_unresolved",
+      "previous_group": "curve_definition_or_adapter_unresolved",
+      "reason": "still_missing_predictor: Northcote structure/field-texture group and saturated water term are not supplied; no USDA-to-Northcote crosswalk or assumed saturation.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:soil_class": 1740
+      },
+      "function": "calc_ptf_wosten2001_class_parameters",
+      "previous_disposition": "observed_pressure_adapter_available",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: soil_class.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:alpha": 1701,
+        "missing_predictor:conductivity_shape_parameter": 1701,
+        "missing_predictor:n": 1701,
+        "missing_predictor:saturated_conductivity": 1701,
+        "missing_predictor:theta_r": 1701,
+        "missing_predictor:theta_s": 1701
+      },
+      "function": "calc_ptf_wosten2001_hydraulic",
+      "previous_disposition": "observed_pressure_adapter_available",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: alpha, conductivity_shape_parameter, n, saturated_conductivity, theta_r, theta_s.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:median_sand_size": 39,
+        "missing_predictor:silt": 39
+      },
+      "function": "calc_ptf_wosten2001_sand_subsoil_table5",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: median_sand_size, silt.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:median_sand_size": 39,
+        "missing_predictor:silt": 39
+      },
+      "function": "calc_ptf_wosten2001_sand_topsoil_table5",
+      "previous_disposition": "isolated_pressure_outputs_not_full_WRC",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: median_sand_size, silt.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:silt": 39
+      },
+      "function": "calc_ptf_zhao2016_m2_1",
+      "previous_disposition": "not_WRC_output",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: silt.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:silt": 39
+      },
+      "function": "calc_ptf_zhao2016_m2_2",
+      "previous_disposition": "not_WRC_output",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: silt.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:silt": 39
+      },
+      "function": "calc_ptf_zhao2016_m2_3",
+      "previous_disposition": "not_WRC_output",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: silt.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:silt": 39
+      },
+      "function": "calc_ptf_zhao2016_m2_4",
+      "previous_disposition": "not_WRC_output",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: silt.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:silt": 39
+      },
+      "function": "calc_ptf_zhao2016_m2_5",
+      "previous_disposition": "not_WRC_output",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: silt.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    },
+    {
+      "dispositions": [
+        "still_missing_predictor"
+      ],
+      "failure_counts": {
+        "missing_predictor:silt": 39
+      },
+      "function": "calc_ptf_zhao2016_m2_6",
+      "previous_disposition": "not_WRC_output",
+      "previous_group": "failed_executable",
+      "reason": "No admissible independent same-record values for: silt.",
+      "scored_candidates": [],
+      "secondary_points": 0
+    }
+  ],
+  "participation": {
+    "all_scored_including_secondary_functions": 95,
+    "disposition_counts": {
+      "excluded_other_target": 11,
+      "now_scored_full_wrc": 19,
+      "now_scored_point_target": 32,
+      "still_missing_predictor": 64,
+      "user_decision_required": 7
+    },
+    "final_participating_functions": 77,
+    "full_wrc_ksat_candidate_count": 67,
+    "mechanisms": {
+      "Fixed-pressure family reconstruction": 15,
+      "Predictor recovery": 3,
+      "Retention-parameter adapters": 1
+    },
+    "new_family_candidates": [
+      "family_gunarathna2019_set1_WRC_volume",
+      "family_lal1979_group_i_from_clay_WRC_mass",
+      "family_lal1979_group_i_from_sand_WRC_mass",
+      "family_lal1979_group_ii_from_clay_WRC_mass",
+      "family_lal1979_group_ii_from_sand_WRC_mass"
+    ],
+    "new_functions": [
+      "calc_ptf_chakraborty2011_eq2",
+      "calc_ptf_chakraborty2011_eq3",
+      "calc_ptf_chakraborty2011_eq5",
+      "calc_ptf_gunarathna2019_vwc10_set1",
+      "calc_ptf_gunarathna2019_vwc1500_set1",
+      "calc_ptf_gunarathna2019_vwc33_set1",
+      "calc_ptf_lal1979_group_i_water_01bar_from_clay",
+      "calc_ptf_lal1979_group_i_water_01bar_from_sand",
+      "calc_ptf_lal1979_group_i_water_03bar_from_clay",
+      "calc_ptf_lal1979_group_i_water_03bar_from_sand",
+      "calc_ptf_lal1979_group_i_water_15bar_from_clay",
+      "calc_ptf_lal1979_group_i_water_15bar_from_sand",
+      "calc_ptf_lal1979_group_ii_water_01bar_from_clay",
+      "calc_ptf_lal1979_group_ii_water_01bar_from_sand",
+      "calc_ptf_lal1979_group_ii_water_03bar_from_clay",
+      "calc_ptf_lal1979_group_ii_water_03bar_from_sand",
+      "calc_ptf_lal1979_group_ii_water_15bar_from_clay",
+      "calc_ptf_lal1979_group_ii_water_15bar_from_sand",
+      "calc_ptf_saxton1986_calcptf_parameters"
+    ],
+    "newly_participating_functions": 19,
+    "old_participating_functions": 58,
+    "reconsidered_functions": 119,
+    "secondary_point_functions": 32,
+    "secondary_point_only_functions": 18
+  }
+}

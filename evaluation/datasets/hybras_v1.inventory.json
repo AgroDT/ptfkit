@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "status": "inventory_only_not_evaluation_eligible",
+  "source_url": "https://rigeo.sgb.gov.br/items/edfbb5ff-604c-43c6-940b-18fc6fa53caf",
+  "archive_sha256": "e9164c2f74e9ad75033b99248b0eee7ba426230150a499a6e6b3a285eebcf618",
+  "workbook_sha256": "a185fc02e5a46d46bfaeea705c2e37a0f4459278819b72ccbef3955c0874f4c9",
+  "horizons": 1075,
+  "distinct_profile_ids": 445,
+  "missing_profile_ids": 0,
+  "raw_table_points": 8793,
+  "zero_head_points": 1075,
+  "zero_head_derived_from_porosity": 289,
+  "positive_head_points": 7718,
+  "raw_flags": {
+    "l": 8793
+  },
+  "raw_head_unit": "centimeter_water",
+  "raw_water_unit": "volume_fraction",
+  "excluded_from_observation_import": [
+    "HYDRAULIC_PROPS estimated water contents",
+    "CVG_PARAMETERS contributed fit parameters",
+    "derived van Genuchten parameters",
+    "zero-head values derived from porosity"
+  ],
+  "pending_review": [
+    "Per-point digitization, averaging and original pressure conversion provenance",
+    "Profile identity and source-study grouping for nested validation",
+    "Texture classification, material basis and predictor method compatibility",
+    "Potential overlap with PTF calibration datasets",
+    "Redistribution permissions before publishing raw observations"
+  ]
+}

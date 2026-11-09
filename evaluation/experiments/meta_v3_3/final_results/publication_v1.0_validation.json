@@ -1,0 +1,16 @@
+{
+  "method": "all_experimental_points",
+  "workbook_sha256": "1322bf65b1ca0130085015209858a443d1ee82a7e2ae69232321cd8ede361e68",
+  "png_counts": {
+    "expected_ptf": 131,
+    "actual_ptf": 131,
+    "expected_approximation": 149,
+    "actual_approximation": 149,
+    "index_rows": 281
+  },
+  "missing_png": [],
+  "invalid_png": [],
+  "stale_png": [],
+  "zip_crc_valid": true,
+  "private_output": "local/meta-final-v1_0-pointwise"
+}

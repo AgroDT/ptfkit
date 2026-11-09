@@ -207,8 +207,20 @@
     "implementation": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["variables"],
+      "oneOf": [{"required": ["variables"]}, {"required": ["external_model"]}],
       "properties": {
+        "external_model": {
+          "type": "object", "additionalProperties": false,
+          "required": ["kind", "artifact", "level"],
+          "properties": {
+            "kind": {"enum": ["rosetta3", "euptf2"]},
+            "artifact": {"enum": ["../models/rosetta3/artifact.json", "../models/euptf2/collection.json"]},
+            "level": {"type": "integer", "minimum": 1, "maximum": 78}
+          },
+          "allOf": [{"if": {"properties": {"kind": {"const": "rosetta3"}}},
+                     "then": {"properties": {"artifact": {"const": "../models/rosetta3/artifact.json"}, "level": {"minimum": 2, "maximum": 5}}},
+                     "else": {"properties": {"artifact": {"const": "../models/euptf2/collection.json"}}}}]
+        },
         "variables": {
           "type": "array",
           "minItems": 1,
@@ -353,6 +365,7 @@
         "name": { "type": "string", "minLength": 1 },
         "symbol": { "$ref": "#/$defs/stringOrNull" },
         "unit": { "type": "string", "minLength": 1 },
+        "measurement": { "$ref": "https://ptfkit.invalid/measurement.schema.json" },
         "domain": { "$ref": "#/$defs/stringOrNull" },
         "description": { "type": "string", "minLength": 1 }
       }
@@ -367,6 +380,7 @@
         "reported_unit": { "type": "string", "minLength": 1 },
         "symbol": { "$ref": "#/$defs/stringOrNull" },
         "unit": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "measurement": { "$ref": "https://ptfkit.invalid/measurement.schema.json" },
         "domain": { "$ref": "#/$defs/stringOrNull" },
         "description": { "type": "string", "minLength": 1 }
       }
@@ -453,6 +467,7 @@
             "reported_unit": { "type": "string", "minLength": 1 },
             "symbol": { "$ref": "#/$defs/stringOrNull" },
             "unit": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+            "measurement": { "$ref": "https://ptfkit.invalid/measurement.schema.json" },
             "domain": { "$ref": "#/$defs/stringOrNull" },
             "description": { "type": "string", "minLength": 1 }
           }

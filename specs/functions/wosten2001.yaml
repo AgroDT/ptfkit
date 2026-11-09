@@ -65,6 +65,18 @@ $defs:
         reported_unit: cm³/cm³
         domain: 0 <= value <= 1
         description: Residual volumetric water content.
+        measurement:
+          quantity: volumetric_water_content
+          unit: volume_fraction
+          reported_unit: cm³/cm³
+          basis: {material: soil, denominator: bulk_volume}
+          status: estimated
+          role: model_parameter
+          particle_size: null
+          conditions: []
+          method: null
+          computational_domain: {lower: {value: 0, inclusive: true}, upper: {value: 1, inclusive: true}}
+          reported_applicability: []
       - name: theta_s
         quantity: volumetric_water_content
         symbol: theta_s
@@ -72,6 +84,18 @@ $defs:
         reported_unit: cm³/cm³
         domain: 0 < value <= 1
         description: Saturated volumetric water content.
+        measurement:
+          quantity: volumetric_water_content
+          unit: volume_fraction
+          reported_unit: cm³/cm³
+          basis: {material: soil, denominator: bulk_volume}
+          status: estimated
+          role: model_parameter
+          particle_size: null
+          conditions: []
+          method: null
+          computational_domain: {lower: {value: 0, inclusive: false}, upper: {value: 1, inclusive: true}}
+          reported_applicability: []
       - name: saturated_conductivity
         quantity: saturated_hydraulic_conductivity
         symbol: K_s
@@ -79,6 +103,18 @@ $defs:
         reported_unit: cm/day
         domain: value >= 0
         description: Saturated hydraulic conductivity.
+        measurement:
+          quantity: saturated_hydraulic_conductivity
+          unit: centimeter_per_day
+          reported_unit: cm/day
+          basis: {material: soil, denominator: not_applicable}
+          status: estimated
+          role: model_parameter
+          particle_size: null
+          conditions: []
+          method: null
+          computational_domain: {lower: {value: 0, inclusive: true}, upper: null}
+          reported_applicability: []
       - name: alpha
         quantity: van_genuchten_alpha
         symbol: alpha
@@ -86,6 +122,18 @@ $defs:
         reported_unit: 1/cm
         domain: value > 0
         description: Inverse pressure-head scale of the van Genuchten model.
+        measurement:
+          quantity: van_genuchten_alpha
+          unit: inverse_centimeter
+          reported_unit: 1/cm
+          basis: {material: soil, denominator: not_applicable}
+          status: estimated
+          role: model_parameter
+          particle_size: null
+          conditions: []
+          method: null
+          computational_domain: {lower: {value: 0, inclusive: false}, upper: null}
+          reported_applicability: []
       - name: conductivity_shape_parameter
         quantity: conductivity_shape_parameter
         symbol: l
@@ -93,6 +141,18 @@ $defs:
         reported_unit: dimensionless
         domain: null
         description: Mualem hydraulic-conductivity shape parameter.
+        measurement:
+          quantity: conductivity_shape_parameter
+          unit: dimensionless
+          reported_unit: dimensionless
+          basis: {material: soil, denominator: not_applicable}
+          status: estimated
+          role: model_parameter
+          particle_size: null
+          conditions: []
+          method: null
+          computational_domain: null
+          reported_applicability: []
       - name: n
         quantity: van_genuchten_n
         symbol: n
@@ -100,6 +160,18 @@ $defs:
         reported_unit: dimensionless
         domain: value > 1
         description: van Genuchten pore-size distribution parameter.
+        measurement:
+          quantity: van_genuchten_n
+          unit: dimensionless
+          reported_unit: dimensionless
+          basis: {material: soil, denominator: not_applicable}
+          status: estimated
+          role: model_parameter
+          particle_size: null
+          conditions: []
+          method: null
+          computational_domain: {lower: {value: 1, inclusive: false}, upper: null}
+          reported_applicability: []
   wosten2001_class_parameters_by_soil_class:
     type: lookup
     input:

@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "scope": "descriptive_changed_boxes_and_coordinates_not_external_validation",
+  "dataset_sha256": "7ee2c78e07da2ffe97b987e776620ce275390b1e24939a63552f08f3039fd665",
+  "uncertainty_qualification": "insufficient_evidence",
+  "qualification_blockers": [
+    "empirical_coverage_not_established",
+    "optimizer_counterexamples_pending"
+  ],
+  "records": 1974,
+  "families": {
+    "brooks_corey_v1": {
+      "accepted_after": 399,
+      "accepted_before": 91,
+      "accepted_with_optimizer_counterexample": 6,
+      "accepted_with_physical_curve_diagnostics": 34,
+      "comparable_objectives": 976,
+      "failed_to_failed": 585,
+      "failed_to_fitted": 311,
+      "fitted_to_failed": 3,
+      "fitted_to_fitted": 88,
+      "marginal_water_intervals_overlap": 59,
+      "mean_intervals_outside_physical_bounds": 5,
+      "objective_improved_gt_1e_10": 711,
+      "objective_worsened_gt_1e_12": 27,
+      "parameter_intervals_outside_bounds": 130,
+      "prediction_intervals_outside_physical_bounds": 16,
+      "samples": 987
+    },
+    "van_genuchten_mualem_v1": {
+      "accepted_after": 486,
+      "accepted_before": 138,
+      "accepted_with_optimizer_counterexample": 0,
+      "accepted_with_physical_curve_diagnostics": 42,
+      "comparable_objectives": 976,
+      "failed_to_failed": 498,
+      "failed_to_fitted": 351,
+      "fitted_to_failed": 3,
+      "fitted_to_fitted": 135,
+      "marginal_water_intervals_overlap": 175,
+      "mean_intervals_outside_physical_bounds": 11,
+      "objective_improved_gt_1e_10": 683,
+      "objective_worsened_gt_1e_12": 0,
+      "parameter_intervals_outside_bounds": 327,
+      "prediction_intervals_outside_physical_bounds": 29,
+      "samples": 987
+    }
+  },
+  "limitations": [
+    "Bounds, initials and coordinates changed together; no isolated solver-effect claim.",
+    "More accepted fits do not establish coverage or external PTF skill.",
+    "Marginal water interval overlap is not a joint confidence-region test."
+  ],
+  "baseline_sha256": "9e6e9cbd27ee7d83bd9572de60a81a48acf3ecb37ee45b10d93b2e8a9af27b34",
+  "ordered_sha256": "7b08df058a8983a68cbc9aff1cf2a1354a341e025e7a297778f856fe4093b17f"
+}

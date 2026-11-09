@@ -1,0 +1,2303 @@
+{
+  "schema_version": 1,
+  "sha256": "1322bf65b1ca0130085015209858a443d1ee82a7e2ae69232321cd8ede361e68",
+  "sheet_count": 8,
+  "sheets": [
+    {
+      "auto_filter": "A1:BH271",
+      "declared_dimension": "A1:CW715",
+      "explicit_missing_markers": {
+        "-": 3
+      },
+      "formula_cached_values": 723,
+      "formula_count": 723,
+      "formula_examples": [
+        {
+          "coordinate": "A2",
+          "expression": "=C2&\"_\"&B2"
+        },
+        {
+          "coordinate": "A3",
+          "expression": "=C3&\"_\"&B3"
+        },
+        {
+          "coordinate": "A4",
+          "expression": "=C4&\"_\"&B4"
+        },
+        {
+          "coordinate": "A5",
+          "expression": "=C5&\"_\"&B5"
+        },
+        {
+          "coordinate": "A6",
+          "expression": "=C6&\"_\"&B6"
+        },
+        {
+          "coordinate": "A7",
+          "expression": "=C7&\"_\"&B7"
+        },
+        {
+          "coordinate": "A8",
+          "expression": "=C8&\"_\"&B8"
+        },
+        {
+          "coordinate": "A9",
+          "expression": "=C9&\"_\"&B9"
+        },
+        {
+          "coordinate": "A10",
+          "expression": "=C10&\"_\"&B10"
+        },
+        {
+          "coordinate": "A11",
+          "expression": "=C11&\"_\"&B11"
+        },
+        {
+          "coordinate": "A12",
+          "expression": "=C12&\"_\"&B12"
+        },
+        {
+          "coordinate": "A13",
+          "expression": "=C13&\"_\"&B13"
+        },
+        {
+          "coordinate": "A14",
+          "expression": "=C14&\"_\"&B14"
+        },
+        {
+          "coordinate": "A15",
+          "expression": "=C15&\"_\"&B15"
+        },
+        {
+          "coordinate": "A16",
+          "expression": "=C16&\"_\"&B16"
+        },
+        {
+          "coordinate": "A17",
+          "expression": "=C17&\"_\"&B17"
+        },
+        {
+          "coordinate": "A18",
+          "expression": "=C18&\"_\"&B18"
+        },
+        {
+          "coordinate": "A19",
+          "expression": "=C19&\"_\"&B19"
+        },
+        {
+          "coordinate": "A20",
+          "expression": "=C20&\"_\"&B20"
+        },
+        {
+          "coordinate": "A21",
+          "expression": "=C21&\"_\"&B21"
+        }
+      ],
+      "formula_missing_cached_values": 0,
+      "freeze_panes": "A526",
+      "header_blocks": [
+        {
+          "nonempty_cells": 24,
+          "rows": [
+            1
+          ],
+          "text_cells": 24
+        }
+      ],
+      "headers": [
+        {
+          "column": 1,
+          "column_letter": "A",
+          "coordinate": "A1",
+          "row": 1,
+          "value": "sample_id"
+        },
+        {
+          "column": 2,
+          "column_letter": "B",
+          "coordinate": "B1",
+          "row": 1,
+          "value": "sample_number"
+        },
+        {
+          "column": 3,
+          "column_letter": "C",
+          "coordinate": "C1",
+          "row": 1,
+          "value": "Источник"
+        },
+        {
+          "column": 4,
+          "column_letter": "D",
+          "coordinate": "D1",
+          "row": 1,
+          "value": "Метод определения ОГХ"
+        },
+        {
+          "column": 5,
+          "column_letter": "E",
+          "coordinate": "E1",
+          "row": 1,
+          "value": "Почва"
+        },
+        {
+          "column": 6,
+          "column_letter": "F",
+          "coordinate": "F1",
+          "row": 1,
+          "value": "Место"
+        },
+        {
+          "column": 7,
+          "column_letter": "G",
+          "coordinate": "G1",
+          "row": 1,
+          "value": "Коорд"
+        },
+        {
+          "column": 8,
+          "column_letter": "H",
+          "coordinate": "H1",
+          "row": 1,
+          "value": "Угодья"
+        },
+        {
+          "column": 9,
+          "column_letter": "I",
+          "coordinate": "I1",
+          "row": 1,
+          "value": "Гор"
+        },
+        {
+          "column": 10,
+          "column_letter": "J",
+          "coordinate": "J1",
+          "row": 1,
+          "value": "Глубина"
+        },
+        {
+          "column": 11,
+          "column_letter": "K",
+          "coordinate": "K1",
+          "row": 1,
+          "value": "Формат образцов"
+        },
+        {
+          "column": 12,
+          "column_letter": "L",
+          "coordinate": "L1",
+          "row": 1,
+          "value": "Текстура"
+        },
+        {
+          "column": 13,
+          "column_letter": "M",
+          "coordinate": "M1",
+          "row": 1,
+          "value": "Физ.глина (< 10 мкм)"
+        },
+        {
+          "column": 14,
+          "column_letter": "N",
+          "coordinate": "N1",
+          "row": 1,
+          "value": "Ил (< 1 мкм)"
+        },
+        {
+          "column": 15,
+          "column_letter": "O",
+          "coordinate": "O1",
+          "row": 1,
+          "value": "Пыль (1-50  мкм)"
+        },
+        {
+          "column": 16,
+          "column_letter": "P",
+          "coordinate": "P1",
+          "row": 1,
+          "value": "Песок (> 50 мкм)"
+        },
+        {
+          "column": 17,
+          "column_letter": "Q",
+          "coordinate": "Q1",
+          "row": 1,
+          "value": "Плотность почвы"
+        },
+        {
+          "column": 18,
+          "column_letter": "R",
+          "coordinate": "R1",
+          "row": 1,
+          "value": "С орг (%)"
+        },
+        {
+          "column": 19,
+          "column_letter": "S",
+          "coordinate": "S1",
+          "row": 1,
+          "value": "Cодержание гумуса ( %)"
+        },
+        {
+          "column": 20,
+          "column_letter": "T",
+          "coordinate": "T1",
+          "row": 1,
+          "value": "pH"
+        },
+        {
+          "column": 21,
+          "column_letter": "U",
+          "coordinate": "U1",
+          "row": 1,
+          "value": "Пористость (%)"
+        },
+        {
+          "column": 22,
+          "column_letter": "V",
+          "coordinate": "V1",
+          "row": 1,
+          "value": "Плотность  тв.фазы"
+        },
+        {
+          "column": 23,
+          "column_letter": "W",
+          "coordinate": "W1",
+          "row": 1,
+          "value": "Единицы обозначения влажности (W - масосвые проценты/доли, например, г/г, Q - объемные проценты/доли, например, см3/см3)"
+        },
+        {
+          "column": 24,
+          "column_letter": "X",
+          "coordinate": "X1",
+          "row": 1,
+          "value": "Давление"
+        }
+      ],
+      "hidden_columns": 0,
+      "hidden_rows": 0,
+      "identifier_candidates": [
+        {
+          "column": 1,
+          "column_letter": "A",
+          "distinct_values": 556,
+          "duplicate_values": 158,
+          "example_formula": "=C2&\"_\"&B2",
+          "formula_cells": 714,
+          "header": "sample_id",
+          "nonempty_values": 714,
+          "reasons": [
+            "formula_composite",
+            "header_match"
+          ]
+        },
+        {
+          "column": 2,
+          "column_letter": "B",
+          "distinct_values": 60,
+          "duplicate_values": 494,
+          "example_formula": null,
+          "formula_cells": 0,
+          "header": "sample_number",
+          "nonempty_values": 554,
+          "reasons": [
+            "header_match"
+          ]
+        }
+      ],
+      "max_column": 101,
+      "max_row": 715,
+      "merged_ranges": [],
+      "nonempty_cells": 12012,
+      "observed_dimension": "A1:CW715",
+      "position": 1,
+      "state": "visible",
+      "title": "Данные"
+    },
+    {
+      "auto_filter": "A1:G1848",
+      "declared_dimension": "A1:Y1848",
+      "explicit_missing_markers": {
+        "-": 3
+      },
+      "formula_cached_values": 3051,
+      "formula_count": 3051,
+      "formula_examples": [
+        {
+          "coordinate": "A2",
+          "expression": "=B2&\"_\"&C2"
+        },
+        {
+          "coordinate": "A3",
+          "expression": "=B3&\"_\"&C3"
+        },
+        {
+          "coordinate": "A4",
+          "expression": "=B4&\"_\"&C4"
+        },
+        {
+          "coordinate": "A5",
+          "expression": "=B5&\"_\"&C5"
+        },
+        {
+          "coordinate": "A6",
+          "expression": "=B6&\"_\"&C6"
+        },
+        {
+          "coordinate": "A7",
+          "expression": "=B7&\"_\"&C7"
+        },
+        {
+          "coordinate": "A8",
+          "expression": "=B8&\"_\"&C8"
+        },
+        {
+          "coordinate": "A9",
+          "expression": "=B9&\"_\"&C9"
+        },
+        {
+          "coordinate": "A10",
+          "expression": "=B10&\"_\"&C10"
+        },
+        {
+          "coordinate": "A11",
+          "expression": "=B11&\"_\"&C11"
+        },
+        {
+          "coordinate": "A12",
+          "expression": "=B12&\"_\"&C12"
+        },
+        {
+          "coordinate": "A13",
+          "expression": "=B13&\"_\"&C13"
+        },
+        {
+          "coordinate": "A14",
+          "expression": "=B14&\"_\"&C14"
+        },
+        {
+          "coordinate": "A15",
+          "expression": "=B15&\"_\"&C15"
+        },
+        {
+          "coordinate": "A16",
+          "expression": "=B16&\"_\"&C16"
+        },
+        {
+          "coordinate": "A17",
+          "expression": "=B17&\"_\"&C17"
+        },
+        {
+          "coordinate": "A18",
+          "expression": "=B18&\"_\"&C18"
+        },
+        {
+          "coordinate": "A19",
+          "expression": "=B19&\"_\"&C19"
+        },
+        {
+          "coordinate": "A20",
+          "expression": "=B20&\"_\"&C20"
+        },
+        {
+          "coordinate": "A21",
+          "expression": "=B21&\"_\"&C21"
+        }
+      ],
+      "formula_missing_cached_values": 0,
+      "freeze_panes": null,
+      "header_blocks": [
+        {
+          "nonempty_cells": 6,
+          "rows": [
+            1
+          ],
+          "text_cells": 6
+        }
+      ],
+      "headers": [
+        {
+          "column": 2,
+          "column_letter": "B",
+          "coordinate": "B1",
+          "row": 1,
+          "value": "source"
+        },
+        {
+          "column": 3,
+          "column_letter": "C",
+          "coordinate": "C1",
+          "row": 1,
+          "value": "sample_number"
+        },
+        {
+          "column": 4,
+          "column_letter": "D",
+          "coordinate": "D1",
+          "row": 1,
+          "value": "Формат данных влажности почвы"
+        },
+        {
+          "column": 5,
+          "column_letter": "E",
+          "coordinate": "E1",
+          "row": 1,
+          "value": "Формат данных давления влаги"
+        },
+        {
+          "column": 6,
+          "column_letter": "F",
+          "coordinate": "F1",
+          "row": 1,
+          "value": "Переменная/Давление влаги"
+        },
+        {
+          "column": 7,
+          "column_letter": "G",
+          "coordinate": "G1",
+          "row": 1,
+          "value": "Значение/Содержание влаги"
+        }
+      ],
+      "hidden_columns": 0,
+      "hidden_rows": 0,
+      "identifier_candidates": [
+        {
+          "column": 1,
+          "column_letter": "A",
+          "distinct_values": 239,
+          "duplicate_values": 1608,
+          "example_formula": "=B2&\"_\"&C2",
+          "formula_cells": 1827,
+          "header": null,
+          "nonempty_values": 1847,
+          "reasons": [
+            "formula_composite"
+          ]
+        },
+        {
+          "column": 3,
+          "column_letter": "C",
+          "distinct_values": 39,
+          "duplicate_values": 1808,
+          "example_formula": "=1",
+          "formula_cells": 1224,
+          "header": "sample_number",
+          "nonempty_values": 1847,
+          "reasons": [
+            "header_match"
+          ]
+        }
+      ],
+      "max_column": 25,
+      "max_row": 1848,
+      "merged_ranges": [],
+      "nonempty_cells": 12840,
+      "observed_dimension": "A1:G1848",
+      "position": 2,
+      "state": "visible",
+      "title": "ОГХ"
+    },
+    {
+      "auto_filter": null,
+      "declared_dimension": "A1:O68",
+      "explicit_missing_markers": {},
+      "formula_cached_values": 32,
+      "formula_count": 32,
+      "formula_examples": [
+        {
+          "coordinate": "A2",
+          "expression": "=B2&\"_\"&C2"
+        },
+        {
+          "coordinate": "A3",
+          "expression": "=B3&\"_\"&C3"
+        },
+        {
+          "coordinate": "A4",
+          "expression": "=B4&\"_\"&C4"
+        },
+        {
+          "coordinate": "A5",
+          "expression": "=B5&\"_\"&C5"
+        },
+        {
+          "coordinate": "A6",
+          "expression": "=B6&\"_\"&C6"
+        },
+        {
+          "coordinate": "A7",
+          "expression": "=B7&\"_\"&C7"
+        },
+        {
+          "coordinate": "A8",
+          "expression": "=B8&\"_\"&C8"
+        },
+        {
+          "coordinate": "A9",
+          "expression": "=B9&\"_\"&C9"
+        },
+        {
+          "coordinate": "A10",
+          "expression": "=B10&\"_\"&C10"
+        },
+        {
+          "coordinate": "A11",
+          "expression": "=B11&\"_\"&C11"
+        },
+        {
+          "coordinate": "A12",
+          "expression": "=B12&\"_\"&C12"
+        },
+        {
+          "coordinate": "A13",
+          "expression": "=B13&\"_\"&C13"
+        },
+        {
+          "coordinate": "A15",
+          "expression": "=B15&\"_\"&C15"
+        },
+        {
+          "coordinate": "A16",
+          "expression": "=B16&\"_\"&C16"
+        },
+        {
+          "coordinate": "A17",
+          "expression": "=B17&\"_\"&C17"
+        },
+        {
+          "coordinate": "A18",
+          "expression": "=B18&\"_\"&C18"
+        },
+        {
+          "coordinate": "A19",
+          "expression": "=B19&\"_\"&C19"
+        },
+        {
+          "coordinate": "A20",
+          "expression": "=B20&\"_\"&C20"
+        },
+        {
+          "coordinate": "A21",
+          "expression": "=B21&\"_\"&C21"
+        },
+        {
+          "coordinate": "A22",
+          "expression": "=B22&\"_\"&C22"
+        }
+      ],
+      "formula_missing_cached_values": 0,
+      "freeze_panes": null,
+      "header_blocks": [
+        {
+          "nonempty_cells": 6,
+          "rows": [
+            1
+          ],
+          "text_cells": 6
+        },
+        {
+          "nonempty_cells": 6,
+          "rows": [
+            14
+          ],
+          "text_cells": 6
+        },
+        {
+          "nonempty_cells": 6,
+          "rows": [
+            25
+          ],
+          "text_cells": 6
+        },
+        {
+          "nonempty_cells": 5,
+          "rows": [
+            32
+          ],
+          "text_cells": 5
+        },
+        {
+          "nonempty_cells": 11,
+          "rows": [
+            39,
+            40
+          ],
+          "text_cells": 11
+        },
+        {
+          "nonempty_cells": 7,
+          "rows": [
+            46
+          ],
+          "text_cells": 7
+        }
+      ],
+      "headers": [
+        {
+          "column": 4,
+          "column_letter": "D",
+          "coordinate": "D1",
+          "row": 1,
+          "value": "ГС_1-0,25"
+        },
+        {
+          "column": 5,
+          "column_letter": "E",
+          "coordinate": "E1",
+          "row": 1,
+          "value": "0,25-0,05"
+        },
+        {
+          "column": 6,
+          "column_letter": "F",
+          "coordinate": "F1",
+          "row": 1,
+          "value": "0,05—0,01"
+        },
+        {
+          "column": 7,
+          "column_letter": "G",
+          "coordinate": "G1",
+          "row": 1,
+          "value": "0,01-0,005"
+        },
+        {
+          "column": 8,
+          "column_letter": "H",
+          "coordinate": "H1",
+          "row": 1,
+          "value": "0,005-0,001"
+        },
+        {
+          "column": 9,
+          "column_letter": "I",
+          "coordinate": "I1",
+          "row": 1,
+          "value": "<0,001"
+        },
+        {
+          "column": 4,
+          "column_letter": "D",
+          "coordinate": "D14",
+          "row": 14,
+          "value": "ГС_1-0,25"
+        },
+        {
+          "column": 5,
+          "column_letter": "E",
+          "coordinate": "E14",
+          "row": 14,
+          "value": "0,25-0,05"
+        },
+        {
+          "column": 6,
+          "column_letter": "F",
+          "coordinate": "F14",
+          "row": 14,
+          "value": "0,05—0,01"
+        },
+        {
+          "column": 7,
+          "column_letter": "G",
+          "coordinate": "G14",
+          "row": 14,
+          "value": "0,01-0,005"
+        },
+        {
+          "column": 8,
+          "column_letter": "H",
+          "coordinate": "H14",
+          "row": 14,
+          "value": "0,005-0,001"
+        },
+        {
+          "column": 9,
+          "column_letter": "I",
+          "coordinate": "I14",
+          "row": 14,
+          "value": "<0,001"
+        },
+        {
+          "column": 4,
+          "column_letter": "D",
+          "coordinate": "D25",
+          "row": 25,
+          "value": "ГС_1-0,25"
+        },
+        {
+          "column": 5,
+          "column_letter": "E",
+          "coordinate": "E25",
+          "row": 25,
+          "value": "0,25-0,05"
+        },
+        {
+          "column": 6,
+          "column_letter": "F",
+          "coordinate": "F25",
+          "row": 25,
+          "value": "0,05—0,01"
+        },
+        {
+          "column": 7,
+          "column_letter": "G",
+          "coordinate": "G25",
+          "row": 25,
+          "value": "0,01-0,005"
+        },
+        {
+          "column": 8,
+          "column_letter": "H",
+          "coordinate": "H25",
+          "row": 25,
+          "value": "0,005-0,001"
+        },
+        {
+          "column": 9,
+          "column_letter": "I",
+          "coordinate": "I25",
+          "row": 25,
+          "value": "<0,001"
+        },
+        {
+          "column": 4,
+          "column_letter": "D",
+          "coordinate": "D32",
+          "row": 32,
+          "value": "0.05-0.01"
+        },
+        {
+          "column": 5,
+          "column_letter": "E",
+          "coordinate": "E32",
+          "row": 32,
+          "value": "0.01-0.005"
+        },
+        {
+          "column": 6,
+          "column_letter": "F",
+          "coordinate": "F32",
+          "row": 32,
+          "value": "0.005-0.001"
+        },
+        {
+          "column": 7,
+          "column_letter": "G",
+          "coordinate": "G32",
+          "row": 32,
+          "value": "<0.001"
+        },
+        {
+          "column": 8,
+          "column_letter": "H",
+          "coordinate": "H32",
+          "row": 32,
+          "value": "<0.01"
+        },
+        {
+          "column": 4,
+          "column_letter": "D",
+          "coordinate": "D39",
+          "row": 39,
+          "value": "1-0,25 мм"
+        },
+        {
+          "column": 5,
+          "column_letter": "E",
+          "coordinate": "E39",
+          "row": 39,
+          "value": "0,25-"
+        },
+        {
+          "column": 6,
+          "column_letter": "F",
+          "coordinate": "F39",
+          "row": 39,
+          "value": "0,05-"
+        },
+        {
+          "column": 7,
+          "column_letter": "G",
+          "coordinate": "G39",
+          "row": 39,
+          "value": "0,01-0,005"
+        },
+        {
+          "column": 8,
+          "column_letter": "H",
+          "coordinate": "H39",
+          "row": 39,
+          "value": "0,005-"
+        },
+        {
+          "column": 9,
+          "column_letter": "I",
+          "coordinate": "I39",
+          "row": 39,
+          "value": "менее"
+        },
+        {
+          "column": 5,
+          "column_letter": "E",
+          "coordinate": "E40",
+          "row": 40,
+          "value": "0,05 мм"
+        },
+        {
+          "column": 6,
+          "column_letter": "F",
+          "coordinate": "F40",
+          "row": 40,
+          "value": "0,01 мм"
+        },
+        {
+          "column": 7,
+          "column_letter": "G",
+          "coordinate": "G40",
+          "row": 40,
+          "value": "ММ"
+        },
+        {
+          "column": 8,
+          "column_letter": "H",
+          "coordinate": "H40",
+          "row": 40,
+          "value": "0,001 мм"
+        },
+        {
+          "column": 9,
+          "column_letter": "I",
+          "coordinate": "I40",
+          "row": 40,
+          "value": "0,001 мм"
+        },
+        {
+          "column": 4,
+          "column_letter": "D",
+          "coordinate": "D46",
+          "row": 46,
+          "value": "1,0-0,25"
+        },
+        {
+          "column": 5,
+          "column_letter": "E",
+          "coordinate": "E46",
+          "row": 46,
+          "value": "0,25-0,05"
+        },
+        {
+          "column": 6,
+          "column_letter": "F",
+          "coordinate": "F46",
+          "row": 46,
+          "value": "0,05-0,01"
+        },
+        {
+          "column": 7,
+          "column_letter": "G",
+          "coordinate": "G46",
+          "row": 46,
+          "value": "0,01-0,005"
+        },
+        {
+          "column": 8,
+          "column_letter": "H",
+          "coordinate": "H46",
+          "row": 46,
+          "value": "0,005-0,001"
+        },
+        {
+          "column": 9,
+          "column_letter": "I",
+          "coordinate": "I46",
+          "row": 46,
+          "value": "<0,001"
+        },
+        {
+          "column": 10,
+          "column_letter": "J",
+          "coordinate": "J46",
+          "row": 46,
+          "value": "сумма 0,01"
+        }
+      ],
+      "hidden_columns": 0,
+      "hidden_rows": 0,
+      "identifier_candidates": [
+        {
+          "column": 1,
+          "column_letter": "A",
+          "distinct_values": 38,
+          "duplicate_values": 0,
+          "example_formula": "=B2&\"_\"&C2",
+          "formula_cells": 32,
+          "header": null,
+          "nonempty_values": 38,
+          "reasons": [
+            "formula_composite"
+          ]
+        }
+      ],
+      "max_column": 15,
+      "max_row": 68,
+      "merged_ranges": [
+        "D39:D40"
+      ],
+      "nonempty_cells": 560,
+      "observed_dimension": "A1:J68",
+      "position": 3,
+      "state": "visible",
+      "title": "ГС-PSD"
+    },
+    {
+      "auto_filter": "A1:AQ109",
+      "declared_dimension": "A1:AQ90",
+      "explicit_missing_markers": {
+        "-": 3
+      },
+      "formula_cached_values": 90,
+      "formula_count": 90,
+      "formula_examples": [
+        {
+          "coordinate": "A2",
+          "expression": "=C2&\"_\"&B2"
+        },
+        {
+          "coordinate": "A3",
+          "expression": "=C3&\"_\"&B3"
+        },
+        {
+          "coordinate": "A4",
+          "expression": "=C4&\"_\"&B4"
+        },
+        {
+          "coordinate": "A5",
+          "expression": "=C5&\"_\"&B5"
+        },
+        {
+          "coordinate": "A6",
+          "expression": "=C6&\"_\"&B6"
+        },
+        {
+          "coordinate": "A7",
+          "expression": "=C7&\"_\"&B7"
+        },
+        {
+          "coordinate": "A8",
+          "expression": "=C8&\"_\"&B8"
+        },
+        {
+          "coordinate": "A9",
+          "expression": "=C9&\"_\"&B9"
+        },
+        {
+          "coordinate": "A10",
+          "expression": "=C10&\"_\"&B10"
+        },
+        {
+          "coordinate": "A11",
+          "expression": "=C11&\"_\"&B11"
+        },
+        {
+          "coordinate": "A12",
+          "expression": "=C12&\"_\"&B12"
+        },
+        {
+          "coordinate": "A13",
+          "expression": "=C13&\"_\"&B13"
+        },
+        {
+          "coordinate": "A14",
+          "expression": "=C14&\"_\"&B14"
+        },
+        {
+          "coordinate": "A15",
+          "expression": "=C15&\"_\"&B15"
+        },
+        {
+          "coordinate": "A16",
+          "expression": "=C16&\"_\"&B16"
+        },
+        {
+          "coordinate": "A17",
+          "expression": "=C17&\"_\"&B17"
+        },
+        {
+          "coordinate": "A18",
+          "expression": "=C18&\"_\"&B18"
+        },
+        {
+          "coordinate": "A19",
+          "expression": "=C19&\"_\"&B19"
+        },
+        {
+          "coordinate": "A20",
+          "expression": "=C20&\"_\"&B20"
+        },
+        {
+          "coordinate": "A21",
+          "expression": "=C21&\"_\"&B21"
+        }
+      ],
+      "formula_missing_cached_values": 0,
+      "freeze_panes": "A81",
+      "header_blocks": [
+        {
+          "nonempty_cells": 24,
+          "rows": [
+            1
+          ],
+          "text_cells": 24
+        }
+      ],
+      "headers": [
+        {
+          "column": 1,
+          "column_letter": "A",
+          "coordinate": "A1",
+          "row": 1,
+          "value": "sample_id"
+        },
+        {
+          "column": 2,
+          "column_letter": "B",
+          "coordinate": "B1",
+          "row": 1,
+          "value": "sample_number"
+        },
+        {
+          "column": 3,
+          "column_letter": "C",
+          "coordinate": "C1",
+          "row": 1,
+          "value": "Источник"
+        },
+        {
+          "column": 4,
+          "column_letter": "D",
+          "coordinate": "D1",
+          "row": 1,
+          "value": "Метод определения ОГХ"
+        },
+        {
+          "column": 5,
+          "column_letter": "E",
+          "coordinate": "E1",
+          "row": 1,
+          "value": "Почва"
+        },
+        {
+          "column": 6,
+          "column_letter": "F",
+          "coordinate": "F1",
+          "row": 1,
+          "value": "Место"
+        },
+        {
+          "column": 7,
+          "column_letter": "G",
+          "coordinate": "G1",
+          "row": 1,
+          "value": "Коорд"
+        },
+        {
+          "column": 8,
+          "column_letter": "H",
+          "coordinate": "H1",
+          "row": 1,
+          "value": "Угодья"
+        },
+        {
+          "column": 9,
+          "column_letter": "I",
+          "coordinate": "I1",
+          "row": 1,
+          "value": "Гор"
+        },
+        {
+          "column": 10,
+          "column_letter": "J",
+          "coordinate": "J1",
+          "row": 1,
+          "value": "Глубина"
+        },
+        {
+          "column": 11,
+          "column_letter": "K",
+          "coordinate": "K1",
+          "row": 1,
+          "value": "Формат образцов"
+        },
+        {
+          "column": 12,
+          "column_letter": "L",
+          "coordinate": "L1",
+          "row": 1,
+          "value": "Текстура"
+        },
+        {
+          "column": 13,
+          "column_letter": "M",
+          "coordinate": "M1",
+          "row": 1,
+          "value": "Физ.глина (< 10 мкм)"
+        },
+        {
+          "column": 14,
+          "column_letter": "N",
+          "coordinate": "N1",
+          "row": 1,
+          "value": "Ил (< 1 мкм)"
+        },
+        {
+          "column": 15,
+          "column_letter": "O",
+          "coordinate": "O1",
+          "row": 1,
+          "value": "Пыль (1-50  мкм)"
+        },
+        {
+          "column": 16,
+          "column_letter": "P",
+          "coordinate": "P1",
+          "row": 1,
+          "value": "Песок (> 50 мкм)"
+        },
+        {
+          "column": 17,
+          "column_letter": "Q",
+          "coordinate": "Q1",
+          "row": 1,
+          "value": "Плотность почвы"
+        },
+        {
+          "column": 18,
+          "column_letter": "R",
+          "coordinate": "R1",
+          "row": 1,
+          "value": "С орг (%)"
+        },
+        {
+          "column": 19,
+          "column_letter": "S",
+          "coordinate": "S1",
+          "row": 1,
+          "value": "Cодержание гумуса ( %)"
+        },
+        {
+          "column": 20,
+          "column_letter": "T",
+          "coordinate": "T1",
+          "row": 1,
+          "value": "pH"
+        },
+        {
+          "column": 21,
+          "column_letter": "U",
+          "coordinate": "U1",
+          "row": 1,
+          "value": "Пористость (%)"
+        },
+        {
+          "column": 22,
+          "column_letter": "V",
+          "coordinate": "V1",
+          "row": 1,
+          "value": "Плотность  тв.фазы"
+        },
+        {
+          "column": 23,
+          "column_letter": "W",
+          "coordinate": "W1",
+          "row": 1,
+          "value": "Единицы обозначения влажности (W - масосвые проценты/доли, например, г/г, Q - объемные проценты/доли, например, см3/см3)"
+        },
+        {
+          "column": 24,
+          "column_letter": "X",
+          "coordinate": "X1",
+          "row": 1,
+          "value": "Давление"
+        }
+      ],
+      "hidden_columns": 0,
+      "hidden_rows": 0,
+      "identifier_candidates": [
+        {
+          "column": 1,
+          "column_letter": "A",
+          "distinct_values": 89,
+          "duplicate_values": 0,
+          "example_formula": "=C2&\"_\"&B2",
+          "formula_cells": 89,
+          "header": "sample_id",
+          "nonempty_values": 89,
+          "reasons": [
+            "formula_composite",
+            "header_match"
+          ]
+        },
+        {
+          "column": 2,
+          "column_letter": "B",
+          "distinct_values": 23,
+          "duplicate_values": 66,
+          "example_formula": null,
+          "formula_cells": 0,
+          "header": "sample_number",
+          "nonempty_values": 89,
+          "reasons": [
+            "header_match"
+          ]
+        }
+      ],
+      "max_column": 43,
+      "max_row": 90,
+      "merged_ranges": [],
+      "nonempty_cells": 1528,
+      "observed_dimension": "A1:AN90",
+      "position": 4,
+      "state": "visible",
+      "title": "дп"
+    },
+    {
+      "auto_filter": null,
+      "declared_dimension": "A1:BH178",
+      "explicit_missing_markers": {},
+      "formula_cached_values": 150,
+      "formula_count": 150,
+      "formula_examples": [
+        {
+          "coordinate": "A2",
+          "expression": "=C2&\"_\"&B2"
+        },
+        {
+          "coordinate": "A3",
+          "expression": "=C3&\"_\"&B3"
+        },
+        {
+          "coordinate": "A4",
+          "expression": "=C4&\"_\"&B4"
+        },
+        {
+          "coordinate": "A5",
+          "expression": "=C5&\"_\"&B5"
+        },
+        {
+          "coordinate": "A6",
+          "expression": "=C6&\"_\"&B6"
+        },
+        {
+          "coordinate": "A7",
+          "expression": "=C7&\"_\"&B7"
+        },
+        {
+          "coordinate": "A8",
+          "expression": "=C8&\"_\"&B8"
+        },
+        {
+          "coordinate": "A9",
+          "expression": "=C9&\"_\"&B9"
+        },
+        {
+          "coordinate": "A10",
+          "expression": "=C10&\"_\"&B10"
+        },
+        {
+          "coordinate": "A11",
+          "expression": "=C11&\"_\"&B11"
+        },
+        {
+          "coordinate": "A12",
+          "expression": "=C12&\"_\"&B12"
+        },
+        {
+          "coordinate": "A13",
+          "expression": "=C13&\"_\"&B13"
+        },
+        {
+          "coordinate": "A14",
+          "expression": "=C14&\"_\"&B14"
+        },
+        {
+          "coordinate": "A15",
+          "expression": "=C15&\"_\"&B15"
+        },
+        {
+          "coordinate": "A16",
+          "expression": "=C16&\"_\"&B16"
+        },
+        {
+          "coordinate": "A17",
+          "expression": "=C17&\"_\"&B17"
+        },
+        {
+          "coordinate": "A18",
+          "expression": "=C18&\"_\"&B18"
+        },
+        {
+          "coordinate": "A19",
+          "expression": "=C19&\"_\"&B19"
+        },
+        {
+          "coordinate": "A20",
+          "expression": "=C20&\"_\"&B20"
+        },
+        {
+          "coordinate": "A21",
+          "expression": "=C21&\"_\"&B21"
+        }
+      ],
+      "formula_missing_cached_values": 0,
+      "freeze_panes": null,
+      "header_blocks": [
+        {
+          "nonempty_cells": 24,
+          "rows": [
+            1
+          ],
+          "text_cells": 24
+        }
+      ],
+      "headers": [
+        {
+          "column": 1,
+          "column_letter": "A",
+          "coordinate": "A1",
+          "row": 1,
+          "value": "sample_id"
+        },
+        {
+          "column": 2,
+          "column_letter": "B",
+          "coordinate": "B1",
+          "row": 1,
+          "value": "sample_number"
+        },
+        {
+          "column": 3,
+          "column_letter": "C",
+          "coordinate": "C1",
+          "row": 1,
+          "value": "Источник"
+        },
+        {
+          "column": 4,
+          "column_letter": "D",
+          "coordinate": "D1",
+          "row": 1,
+          "value": "Метод определения ОГХ"
+        },
+        {
+          "column": 5,
+          "column_letter": "E",
+          "coordinate": "E1",
+          "row": 1,
+          "value": "Почва"
+        },
+        {
+          "column": 6,
+          "column_letter": "F",
+          "coordinate": "F1",
+          "row": 1,
+          "value": "Место"
+        },
+        {
+          "column": 7,
+          "column_letter": "G",
+          "coordinate": "G1",
+          "row": 1,
+          "value": "Коорд"
+        },
+        {
+          "column": 8,
+          "column_letter": "H",
+          "coordinate": "H1",
+          "row": 1,
+          "value": "Угодья"
+        },
+        {
+          "column": 9,
+          "column_letter": "I",
+          "coordinate": "I1",
+          "row": 1,
+          "value": "Гор"
+        },
+        {
+          "column": 10,
+          "column_letter": "J",
+          "coordinate": "J1",
+          "row": 1,
+          "value": "Глубина"
+        },
+        {
+          "column": 11,
+          "column_letter": "K",
+          "coordinate": "K1",
+          "row": 1,
+          "value": "Формат образцов"
+        },
+        {
+          "column": 12,
+          "column_letter": "L",
+          "coordinate": "L1",
+          "row": 1,
+          "value": "Текстура"
+        },
+        {
+          "column": 13,
+          "column_letter": "M",
+          "coordinate": "M1",
+          "row": 1,
+          "value": "Физ.глина (< 10 мкм)"
+        },
+        {
+          "column": 14,
+          "column_letter": "N",
+          "coordinate": "N1",
+          "row": 1,
+          "value": "Ил (< 1 мкм)"
+        },
+        {
+          "column": 15,
+          "column_letter": "O",
+          "coordinate": "O1",
+          "row": 1,
+          "value": "Пыль (1-50  мкм)"
+        },
+        {
+          "column": 16,
+          "column_letter": "P",
+          "coordinate": "P1",
+          "row": 1,
+          "value": "Песок (> 50 мкм)"
+        },
+        {
+          "column": 17,
+          "column_letter": "Q",
+          "coordinate": "Q1",
+          "row": 1,
+          "value": "Плотность почвы"
+        },
+        {
+          "column": 18,
+          "column_letter": "R",
+          "coordinate": "R1",
+          "row": 1,
+          "value": "С орг (%)"
+        },
+        {
+          "column": 19,
+          "column_letter": "S",
+          "coordinate": "S1",
+          "row": 1,
+          "value": "Cодержание гумуса, %"
+        },
+        {
+          "column": 20,
+          "column_letter": "T",
+          "coordinate": "T1",
+          "row": 1,
+          "value": "pH"
+        },
+        {
+          "column": 21,
+          "column_letter": "U",
+          "coordinate": "U1",
+          "row": 1,
+          "value": "Пористость (%)"
+        },
+        {
+          "column": 22,
+          "column_letter": "V",
+          "coordinate": "V1",
+          "row": 1,
+          "value": "Плотность  тв.фазы"
+        },
+        {
+          "column": 23,
+          "column_letter": "W",
+          "coordinate": "W1",
+          "row": 1,
+          "value": "Единицы обозначения влажности (W - масосвые проценты/доли, например, г/г, Q - объемные проценты/доли, например, см3/см3)"
+        },
+        {
+          "column": 24,
+          "column_letter": "X",
+          "coordinate": "X1",
+          "row": 1,
+          "value": "Давление"
+        }
+      ],
+      "hidden_columns": 0,
+      "hidden_rows": 0,
+      "identifier_candidates": [
+        {
+          "column": 1,
+          "column_letter": "A",
+          "distinct_values": 144,
+          "duplicate_values": 0,
+          "example_formula": "=C2&\"_\"&B2",
+          "formula_cells": 144,
+          "header": "sample_id",
+          "nonempty_values": 144,
+          "reasons": [
+            "formula_composite",
+            "header_match"
+          ]
+        },
+        {
+          "column": 2,
+          "column_letter": "B",
+          "distinct_values": 24,
+          "duplicate_values": 119,
+          "example_formula": null,
+          "formula_cells": 0,
+          "header": "sample_number",
+          "nonempty_values": 143,
+          "reasons": [
+            "header_match"
+          ]
+        }
+      ],
+      "max_column": 60,
+      "max_row": 178,
+      "merged_ranges": [],
+      "nonempty_cells": 3022,
+      "observed_dimension": "A1:BH145",
+      "position": 5,
+      "state": "visible",
+      "title": "ч"
+    },
+    {
+      "auto_filter": null,
+      "declared_dimension": "A1:AR46",
+      "explicit_missing_markers": {},
+      "formula_cached_values": 45,
+      "formula_count": 45,
+      "formula_examples": [
+        {
+          "coordinate": "A2",
+          "expression": "=C2&\"_\"&B2"
+        },
+        {
+          "coordinate": "A3",
+          "expression": "=C3&\"_\"&B3"
+        },
+        {
+          "coordinate": "A4",
+          "expression": "=C4&\"_\"&B4"
+        },
+        {
+          "coordinate": "A5",
+          "expression": "=C5&\"_\"&B5"
+        },
+        {
+          "coordinate": "A6",
+          "expression": "=C6&\"_\"&B6"
+        },
+        {
+          "coordinate": "A7",
+          "expression": "=C7&\"_\"&B7"
+        },
+        {
+          "coordinate": "A8",
+          "expression": "=C8&\"_\"&B8"
+        },
+        {
+          "coordinate": "A9",
+          "expression": "=C9&\"_\"&B9"
+        },
+        {
+          "coordinate": "A10",
+          "expression": "=C10&\"_\"&B10"
+        },
+        {
+          "coordinate": "A11",
+          "expression": "=C11&\"_\"&B11"
+        },
+        {
+          "coordinate": "A12",
+          "expression": "=C12&\"_\"&B12"
+        },
+        {
+          "coordinate": "A13",
+          "expression": "=C13&\"_\"&B13"
+        },
+        {
+          "coordinate": "A14",
+          "expression": "=C14&\"_\"&B14"
+        },
+        {
+          "coordinate": "A15",
+          "expression": "=C15&\"_\"&B15"
+        },
+        {
+          "coordinate": "A16",
+          "expression": "=C16&\"_\"&B16"
+        },
+        {
+          "coordinate": "A17",
+          "expression": "=C17&\"_\"&B17"
+        },
+        {
+          "coordinate": "A18",
+          "expression": "=C18&\"_\"&B18"
+        },
+        {
+          "coordinate": "A19",
+          "expression": "=C19&\"_\"&B19"
+        },
+        {
+          "coordinate": "A20",
+          "expression": "=C20&\"_\"&B20"
+        },
+        {
+          "coordinate": "A21",
+          "expression": "=C21&\"_\"&B21"
+        }
+      ],
+      "formula_missing_cached_values": 0,
+      "freeze_panes": null,
+      "header_blocks": [
+        {
+          "nonempty_cells": 23,
+          "rows": [
+            1
+          ],
+          "text_cells": 23
+        }
+      ],
+      "headers": [
+        {
+          "column": 2,
+          "column_letter": "B",
+          "coordinate": "B1",
+          "row": 1,
+          "value": "Год"
+        },
+        {
+          "column": 3,
+          "column_letter": "C",
+          "coordinate": "C1",
+          "row": 1,
+          "value": "Источник"
+        },
+        {
+          "column": 4,
+          "column_letter": "D",
+          "coordinate": "D1",
+          "row": 1,
+          "value": "Метод определения ОГХ"
+        },
+        {
+          "column": 5,
+          "column_letter": "E",
+          "coordinate": "E1",
+          "row": 1,
+          "value": "Почва"
+        },
+        {
+          "column": 6,
+          "column_letter": "F",
+          "coordinate": "F1",
+          "row": 1,
+          "value": "Место"
+        },
+        {
+          "column": 7,
+          "column_letter": "G",
+          "coordinate": "G1",
+          "row": 1,
+          "value": "Коорд"
+        },
+        {
+          "column": 8,
+          "column_letter": "H",
+          "coordinate": "H1",
+          "row": 1,
+          "value": "Угодья"
+        },
+        {
+          "column": 9,
+          "column_letter": "I",
+          "coordinate": "I1",
+          "row": 1,
+          "value": "Гор"
+        },
+        {
+          "column": 10,
+          "column_letter": "J",
+          "coordinate": "J1",
+          "row": 1,
+          "value": "Глубина"
+        },
+        {
+          "column": 11,
+          "column_letter": "K",
+          "coordinate": "K1",
+          "row": 1,
+          "value": "Формат образцов"
+        },
+        {
+          "column": 12,
+          "column_letter": "L",
+          "coordinate": "L1",
+          "row": 1,
+          "value": "Текстура"
+        },
+        {
+          "column": 13,
+          "column_letter": "M",
+          "coordinate": "M1",
+          "row": 1,
+          "value": "Физ.глина (< 10 мкм)"
+        },
+        {
+          "column": 14,
+          "column_letter": "N",
+          "coordinate": "N1",
+          "row": 1,
+          "value": "Ил (< 1 мкм)"
+        },
+        {
+          "column": 15,
+          "column_letter": "O",
+          "coordinate": "O1",
+          "row": 1,
+          "value": "Пыль (1-50  мкм)"
+        },
+        {
+          "column": 16,
+          "column_letter": "P",
+          "coordinate": "P1",
+          "row": 1,
+          "value": "Песок (> 50 мкм)"
+        },
+        {
+          "column": 17,
+          "column_letter": "Q",
+          "coordinate": "Q1",
+          "row": 1,
+          "value": "Плотность почвы"
+        },
+        {
+          "column": 18,
+          "column_letter": "R",
+          "coordinate": "R1",
+          "row": 1,
+          "value": "С орг (%)"
+        },
+        {
+          "column": 19,
+          "column_letter": "S",
+          "coordinate": "S1",
+          "row": 1,
+          "value": "Cодержание гумуса, %"
+        },
+        {
+          "column": 20,
+          "column_letter": "T",
+          "coordinate": "T1",
+          "row": 1,
+          "value": "pH"
+        },
+        {
+          "column": 21,
+          "column_letter": "U",
+          "coordinate": "U1",
+          "row": 1,
+          "value": "Пористость (%)"
+        },
+        {
+          "column": 22,
+          "column_letter": "V",
+          "coordinate": "V1",
+          "row": 1,
+          "value": "Плотность  тв.фазы"
+        },
+        {
+          "column": 23,
+          "column_letter": "W",
+          "coordinate": "W1",
+          "row": 1,
+          "value": "Единицы обозначения влажности (W - масосвые проценты/доли, например, г/г, Q - объемные проценты/доли, например, см3/см3)"
+        },
+        {
+          "column": 24,
+          "column_letter": "X",
+          "coordinate": "X1",
+          "row": 1,
+          "value": "Давление"
+        }
+      ],
+      "hidden_columns": 0,
+      "hidden_rows": 0,
+      "identifier_candidates": [
+        {
+          "column": 1,
+          "column_letter": "A",
+          "distinct_values": 45,
+          "duplicate_values": 0,
+          "example_formula": "=C2&\"_\"&B2",
+          "formula_cells": 45,
+          "header": null,
+          "nonempty_values": 45,
+          "reasons": [
+            "formula_composite"
+          ]
+        }
+      ],
+      "max_column": 44,
+      "max_row": 46,
+      "merged_ranges": [],
+      "nonempty_cells": 933,
+      "observed_dimension": "A1:AO46",
+      "position": 6,
+      "state": "visible",
+      "title": "сл"
+    },
+    {
+      "auto_filter": null,
+      "declared_dimension": "A1:CW183",
+      "explicit_missing_markers": {},
+      "formula_cached_values": 144,
+      "formula_count": 144,
+      "formula_examples": [
+        {
+          "coordinate": "A2",
+          "expression": "=C2&\"_\"&B2"
+        },
+        {
+          "coordinate": "A3",
+          "expression": "=C3&\"_\"&B3"
+        },
+        {
+          "coordinate": "A4",
+          "expression": "=C4&\"_\"&B4"
+        },
+        {
+          "coordinate": "A5",
+          "expression": "=C5&\"_\"&B5"
+        },
+        {
+          "coordinate": "A6",
+          "expression": "=C6&\"_\"&B6"
+        },
+        {
+          "coordinate": "A7",
+          "expression": "=C7&\"_\"&B7"
+        },
+        {
+          "coordinate": "A8",
+          "expression": "=C8&\"_\"&B8"
+        },
+        {
+          "coordinate": "A9",
+          "expression": "=C9&\"_\"&B9"
+        },
+        {
+          "coordinate": "A10",
+          "expression": "=C10&\"_\"&B10"
+        },
+        {
+          "coordinate": "A11",
+          "expression": "=C11&\"_\"&B11"
+        },
+        {
+          "coordinate": "A12",
+          "expression": "=C12&\"_\"&B12"
+        },
+        {
+          "coordinate": "A13",
+          "expression": "=C13&\"_\"&B13"
+        },
+        {
+          "coordinate": "A14",
+          "expression": "=C14&\"_\"&B14"
+        },
+        {
+          "coordinate": "A15",
+          "expression": "=C15&\"_\"&B15"
+        },
+        {
+          "coordinate": "A16",
+          "expression": "=C16&\"_\"&B16"
+        },
+        {
+          "coordinate": "A17",
+          "expression": "=C17&\"_\"&B17"
+        },
+        {
+          "coordinate": "A18",
+          "expression": "=C18&\"_\"&B18"
+        },
+        {
+          "coordinate": "A19",
+          "expression": "=C19&\"_\"&B19"
+        },
+        {
+          "coordinate": "A20",
+          "expression": "=C20&\"_\"&B20"
+        },
+        {
+          "coordinate": "A21",
+          "expression": "=C21&\"_\"&B21"
+        }
+      ],
+      "formula_missing_cached_values": 0,
+      "freeze_panes": null,
+      "header_blocks": [
+        {
+          "nonempty_cells": 35,
+          "rows": [
+            1
+          ],
+          "text_cells": 35
+        }
+      ],
+      "headers": [
+        {
+          "column": 1,
+          "column_letter": "A",
+          "coordinate": "A1",
+          "row": 1,
+          "value": "sample_id"
+        },
+        {
+          "column": 2,
+          "column_letter": "B",
+          "coordinate": "B1",
+          "row": 1,
+          "value": "sample_number"
+        },
+        {
+          "column": 3,
+          "column_letter": "C",
+          "coordinate": "C1",
+          "row": 1,
+          "value": "Источник"
+        },
+        {
+          "column": 4,
+          "column_letter": "D",
+          "coordinate": "D1",
+          "row": 1,
+          "value": "Название"
+        },
+        {
+          "column": 5,
+          "column_letter": "E",
+          "coordinate": "E1",
+          "row": 1,
+          "value": "Метод определения ОГХ"
+        },
+        {
+          "column": 6,
+          "column_letter": "F",
+          "coordinate": "F1",
+          "row": 1,
+          "value": "Почва"
+        },
+        {
+          "column": 7,
+          "column_letter": "G",
+          "coordinate": "G1",
+          "row": 1,
+          "value": "Регион"
+        },
+        {
+          "column": 8,
+          "column_letter": "H",
+          "coordinate": "H1",
+          "row": 1,
+          "value": "Место"
+        },
+        {
+          "column": 9,
+          "column_letter": "I",
+          "coordinate": "I1",
+          "row": 1,
+          "value": "коорд"
+        },
+        {
+          "column": 10,
+          "column_letter": "J",
+          "coordinate": "J1",
+          "row": 1,
+          "value": "Угодья"
+        },
+        {
+          "column": 11,
+          "column_letter": "K",
+          "coordinate": "K1",
+          "row": 1,
+          "value": "Разрез/ Объект"
+        },
+        {
+          "column": 12,
+          "column_letter": "L",
+          "coordinate": "L1",
+          "row": 1,
+          "value": "Горизонт"
+        },
+        {
+          "column": 13,
+          "column_letter": "M",
+          "coordinate": "M1",
+          "row": 1,
+          "value": "Глубина"
+        },
+        {
+          "column": 14,
+          "column_letter": "N",
+          "coordinate": "N1",
+          "row": 1,
+          "value": "Формат образцов"
+        },
+        {
+          "column": 15,
+          "column_letter": "O",
+          "coordinate": "O1",
+          "row": 1,
+          "value": "Текстура"
+        },
+        {
+          "column": 16,
+          "column_letter": "P",
+          "coordinate": "P1",
+          "row": 1,
+          "value": "Физ.глина (< 10 мкм)"
+        },
+        {
+          "column": 17,
+          "column_letter": "Q",
+          "coordinate": "Q1",
+          "row": 1,
+          "value": "Ил (< 1 мкм)"
+        },
+        {
+          "column": 18,
+          "column_letter": "R",
+          "coordinate": "R1",
+          "row": 1,
+          "value": "Пыль (1-50  мкм)"
+        },
+        {
+          "column": 19,
+          "column_letter": "S",
+          "coordinate": "S1",
+          "row": 1,
+          "value": "Песок (> 50 мкм)"
+        },
+        {
+          "column": 20,
+          "column_letter": "T",
+          "coordinate": "T1",
+          "row": 1,
+          "value": "Плотность почвы"
+        },
+        {
+          "column": 21,
+          "column_letter": "U",
+          "coordinate": "U1",
+          "row": 1,
+          "value": "С орг (%)"
+        },
+        {
+          "column": 22,
+          "column_letter": "V",
+          "coordinate": "V1",
+          "row": 1,
+          "value": "Cодержание гумуса ( %)"
+        },
+        {
+          "column": 23,
+          "column_letter": "W",
+          "coordinate": "W1",
+          "row": 1,
+          "value": "pH"
+        },
+        {
+          "column": 24,
+          "column_letter": "X",
+          "coordinate": "X1",
+          "row": 1,
+          "value": "Пористость (%)"
+        },
+        {
+          "column": 25,
+          "column_letter": "Y",
+          "coordinate": "Y1",
+          "row": 1,
+          "value": "Плотность  тв.фазы"
+        },
+        {
+          "column": 26,
+          "column_letter": "Z",
+          "coordinate": "Z1",
+          "row": 1,
+          "value": "агроном.ценн агр"
+        },
+        {
+          "column": 27,
+          "column_letter": "AA",
+          "coordinate": "AA1",
+          "row": 1,
+          "value": "водоуст "
+        },
+        {
+          "column": 28,
+          "column_letter": "AB",
+          "coordinate": "AB1",
+          "row": 1,
+          "value": "Ksat"
+        },
+        {
+          "column": 29,
+          "column_letter": "AC",
+          "coordinate": "AC1",
+          "row": 1,
+          "value": "теплота смачивания, кал/г"
+        },
+        {
+          "column": 30,
+          "column_letter": "AD",
+          "coordinate": "AD1",
+          "row": 1,
+          "value": "Уд.пов по воде"
+        },
+        {
+          "column": 31,
+          "column_letter": "AE",
+          "coordinate": "AE1",
+          "row": 1,
+          "value": "Уд.пов по азоту"
+        },
+        {
+          "column": 32,
+          "column_letter": "AF",
+          "coordinate": "AF1",
+          "row": 1,
+          "value": "Пред.пласт."
+        },
+        {
+          "column": 33,
+          "column_letter": "AG",
+          "coordinate": "AG1",
+          "row": 1,
+          "value": "Пред.тек"
+        },
+        {
+          "column": 34,
+          "column_letter": "AH",
+          "coordinate": "AH1",
+          "row": 1,
+          "value": "Единицы обозначения влажности (W - масосвые проценты/доли, например, г/г, Q - объемные проценты/доли, например, см3/см3)"
+        },
+        {
+          "column": 35,
+          "column_letter": "AI",
+          "coordinate": "AI1",
+          "row": 1,
+          "value": "Давление"
+        }
+      ],
+      "hidden_columns": 0,
+      "hidden_rows": 0,
+      "identifier_candidates": [
+        {
+          "column": 1,
+          "column_letter": "A",
+          "distinct_values": 141,
+          "duplicate_values": 0,
+          "example_formula": "=C2&\"_\"&B2",
+          "formula_cells": 141,
+          "header": "sample_id",
+          "nonempty_values": 141,
+          "reasons": [
+            "formula_composite",
+            "header_match"
+          ]
+        },
+        {
+          "column": 2,
+          "column_letter": "B",
+          "distinct_values": 47,
+          "duplicate_values": 94,
+          "example_formula": null,
+          "formula_cells": 0,
+          "header": "sample_number",
+          "nonempty_values": 141,
+          "reasons": [
+            "header_match"
+          ]
+        }
+      ],
+      "max_column": 101,
+      "max_row": 183,
+      "merged_ranges": [],
+      "nonempty_cells": 3701,
+      "observed_dimension": "A1:CW142",
+      "position": 7,
+      "state": "visible",
+      "title": "диссертации"
+    },
+    {
+      "auto_filter": null,
+      "declared_dimension": "A1:C31",
+      "explicit_missing_markers": {},
+      "formula_cached_values": 0,
+      "formula_count": 0,
+      "formula_examples": [],
+      "formula_missing_cached_values": 0,
+      "freeze_panes": null,
+      "header_blocks": [
+        {
+          "nonempty_cells": 3,
+          "rows": [
+            1
+          ],
+          "text_cells": 3
+        }
+      ],
+      "headers": [
+        {
+          "column": 1,
+          "column_letter": "A",
+          "coordinate": "A1",
+          "row": 1,
+          "value": "Год"
+        },
+        {
+          "column": 2,
+          "column_letter": "B",
+          "coordinate": "B1",
+          "row": 1,
+          "value": "Фамилия"
+        },
+        {
+          "column": 3,
+          "column_letter": "C",
+          "coordinate": "C1",
+          "row": 1,
+          "value": "Список"
+        }
+      ],
+      "hidden_columns": 0,
+      "hidden_rows": 0,
+      "identifier_candidates": [],
+      "max_column": 3,
+      "max_row": 31,
+      "merged_ranges": [],
+      "nonempty_cells": 85,
+      "observed_dimension": "A1:C31",
+      "position": 8,
+      "state": "visible",
+      "title": "диссертации_ссылки"
+    }
+  ],
+  "size_bytes": 301143,
+  "source_filename": "meta_v3.3.xlsx"
+}

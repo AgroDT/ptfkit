@@ -1,0 +1,36 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ptfkit-eval"
+version = "0.1.0"
+description = "Reproducible external evaluation of ptfkit pedotransfer functions"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+dependencies = [
+    "jsonschema>=4.26,<5",
+    "numpy>=2,<3",
+    "openpyxl>=3.1,<4",
+    "ptfkit>=0.4,<0.5",
+    "pyyaml>=6.0,<7",
+    "scipy>=1.14,<2",
+]
+
+[project.scripts]
+ptfkit-eval = "ptfkit_eval.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0,<10",
+]
+
+[tool.uv.sources]
+ptfkit = {path = "../ptfkit-py", editable = true}
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ptfkit_eval"]
