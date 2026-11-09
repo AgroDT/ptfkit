@@ -30,6 +30,7 @@
 #include <ptfkit/puckett1985.h>
 #include <ptfkit/rawls1982.h>
 #include <ptfkit/rawls2003.h>
+#include <ptfkit/rudiyanto2021.h>
 #include <ptfkit/saxton1986.h>
 #include <ptfkit/saxton2006.h>
 #include <ptfkit/tiwary2014.h>

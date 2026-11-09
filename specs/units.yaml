@@ -68,7 +68,7 @@ inverse_kilopascal:
 
 dimensionless:
   preferred_notation: "dimensionless"
-  aliases: ["1"]
+  aliases: ["1", "-"]
 
 centimeter_per_square_root_minute:
   preferred_notation: "cm/min^(1/2)"

@@ -124,6 +124,27 @@ brooks_corey_alpha:
       absolute: 1.0e-5
       rationale: Project-default meaningful resolution for an inverse-length parameter.
 
+fredlund_xing_alpha:
+  description: Inverse pressure-scale parameter of the modified Fredlund-Xing (FXW) retention model.
+  units:
+    inverse_centimeter:
+      absolute: 1.0e-5
+      rationale: Project-default meaningful resolution, analogous to van_genuchten_alpha.
+
+fredlund_xing_n:
+  description: Dimensionless n shape parameter of the modified Fredlund-Xing (FXW) retention model.
+  units:
+    dimensionless:
+      absolute: 0.001
+      rationale: Project-default meaningful resolution, analogous to van_genuchten_n.
+
+fredlund_xing_m:
+  description: Dimensionless m shape parameter of the modified Fredlund-Xing (FXW) retention model.
+  units:
+    dimensionless:
+      absolute: 0.001
+      rationale: Project-default meaningful resolution, analogous to van_genuchten_m.
+
 van_genuchten_n:
   description: Dimensionless van Genuchten pore-size distribution parameter.
   units:
