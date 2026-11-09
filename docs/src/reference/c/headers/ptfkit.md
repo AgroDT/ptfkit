@@ -41,6 +41,7 @@ This umbrella header aggregates every public ptfkit header. Include an individua
 - [`<ptfkit/puckett1985.h>`](puckett1985.md) — Puckett et al. (1985), Alabama Lower Coastal Plain Ultisols.
 - [`<ptfkit/rawls1982.h>`](rawls1982.md) — Rawls et al. (1982), water-retention regressions for soils across the USA.
 - [`<ptfkit/rawls2003.h>`](rawls2003.md) — Rawls et al. (2003), organic-carbon effects on soil water retention.
+- [`<ptfkit/rudiyanto2021.h>`](rudiyanto2021.md) — Rudiyanto et al. (2021), neuroFX hydraulic parameters from saturation to dryness.
 - [`<ptfkit/saxton1986.h>`](saxton1986.md) — Saxton et al. retention relationships parameterized by USDA CalcPTF.
 - [`<ptfkit/saxton2006.h>`](saxton2006.md) — Saxton and Rawls (2006), soil water characteristics from texture and organic matter.
 - [`<ptfkit/tiwary2014.h>`](tiwary2014.md) — Tiwary et al. (2014), hydraulic PTFs for two major soil regions of India.
