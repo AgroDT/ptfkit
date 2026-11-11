@@ -1,12 +1,14 @@
 //! External neural-model loading, scientific adapters and local verification.
 
+mod computation;
+#[cfg(test)]
+mod computation_tests;
 pub(crate) mod engine;
 mod generate;
 pub(crate) mod pack;
-mod pipeline;
+pub(crate) mod parameters;
 pub(crate) mod public;
 mod public_rosetta;
-pub(crate) mod rosetta;
 #[cfg(test)]
 mod tests;
 
@@ -20,8 +22,8 @@ use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub(crate) enum ModelError {
-    #[error("invalid neural computation: {reason}")]
-    Pipeline { reason: &'static str },
+    #[error("inconsistent neural parameter declaration for network {network}")]
+    ParameterDefinition { network: usize },
     #[error("invalid trusted external artifact descriptor {path}", path = .path.display())]
     Artifact { path: std::path::PathBuf },
     #[error("invalid external model binding in {function}")]
@@ -200,8 +202,27 @@ impl Model {
 }
 
 pub(crate) fn verify(model: &Path, reference: &Path) -> Result<()> {
+    let model_path = model;
     let model = Model::load(model)?;
     model.check_rosetta()?;
+    let directory =
+        std::env::temp_dir().join(format!("ptfkit-neural-verification-{}", std::process::id()));
+    generate::run(model_path, &directory)?;
+    let executable = directory.join(if cfg!(windows) {
+        "runner.exe"
+    } else {
+        "runner"
+    });
+    let status = std::process::Command::new("rustc")
+        .args(["--edition", "2024"])
+        .arg(directory.join("runner.rs"))
+        .arg("-o")
+        .arg(&executable)
+        .status()?;
+    anyhow::ensure!(
+        status.success(),
+        "generated Rust verification runner did not compile"
+    );
     let refs: serde_json::Value = serde_json::from_slice(&fs::read(reference)?)?;
     anyhow::ensure!(
         refs["provenance"]["revision"] == model.revision,
@@ -220,7 +241,6 @@ pub(crate) fn verify(model: &Path, reference: &Path) -> Result<()> {
             _ => anyhow::bail!("invalid reference mode"),
         };
         let x: Vec<f64> = serde_json::from_value(case["inputs"].clone())?;
-        anyhow::ensure!(rosetta::valid(level, &x), "invalid reference predictors");
         let raw = model.networks[level - 2].predict(&model.data, &x);
         for member in case["raw_members"].as_array().context("raw member cases")? {
             let index = member["index"].as_u64().context("member index")? as usize;
@@ -237,8 +257,19 @@ pub(crate) fn verify(model: &Path, reference: &Path) -> Result<()> {
                 );
             }
         }
-        let actual = rosetta::predict(&model.networks, &model.data, level, mode, &x)
-            .context("reference inputs rejected")?;
+        let output = std::process::Command::new(&executable)
+            .arg(level.to_string())
+            .arg(mode.to_string())
+            .args(x.iter().map(|v| v.to_string()))
+            .output()?;
+        anyhow::ensure!(
+            output.status.success(),
+            "generated Rust rejected reference inputs"
+        );
+        let actual = String::from_utf8(output.stdout)?
+            .split_whitespace()
+            .map(str::parse::<f64>)
+            .collect::<Result<Vec<_>, _>>()?;
         let means: Vec<f64> = serde_json::from_value(case["mean"].clone())?;
         let stds: Vec<f64> = serde_json::from_value(case["std"].clone())?;
         anyhow::ensure!(

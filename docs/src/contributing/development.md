@@ -3,7 +3,8 @@
 ptfkit is specification-driven. YAML files describe source publications and
 function contracts; the code generator validates those files and writes the
 language targets, tests, and PTF catalog. Generated files are committed so that
-package builds and documentation builds do not depend on running codegen first.
+published package builds do not depend on running codegen. Large prepared model
+arrays are the exception: they are ignored in Git and included in release packages.
 
 ## Repository layout
 
@@ -102,6 +103,28 @@ mise run generate-check
 
 The command regenerates the targets through the normal pipeline and reports
 added, removed, or modified generated files.
+
+### Preparing neural parameters
+
+The canonical binary for each model lives under `specs/models/`, with provenance
+and integrity metadata. Before a local Rust, Python, or native build, run:
+
+```sh
+mise run models:prepare
+```
+
+The target build/test tasks depend on this step. Direct `cargo`, `uv`, or CMake
+builds in a checkout require the step explicitly. It authenticates the binary
+against the YAML declarations and writes exact typed arrays to ignored preparation
+directories. `generate` writes the reviewable calculation code and wrappers;
+`generate-check` checks those committed products rather than large prepared arrays.
+
+Run preparation before `cargo package`, `uv build`, or SDK staging. The crate's
+explicit inclusion rules and the sdist's vendoring rules include prepared sources.
+Release CI prepares them before packaging. Published crates, sdists and SDKs build
+without the generator or files outside their own package. Codegen verification
+requires both Rust and C compilers because its neural example compiles and executes
+both emitted implementations.
 
 ### Generation conventions
 

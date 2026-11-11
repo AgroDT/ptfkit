@@ -2,6 +2,9 @@
 //! Rosetta3 with the bundled CC0 model and optional authenticated external models.
 use crate::models::{Model, ModelError};
 use std::path::Path;
+mod bundled {
+    include!("prepared/rosetta3.rs");
+}
 
 /// SHA-256 of the reviewed external container, including architecture and parameters.
 pub const MODEL_SHA256: &str = "d4d2ca39f41762830f736c70fba16ed68a81cb52d4639b1f48c6a24e502c4796";
@@ -99,7 +102,7 @@ pub struct Rosetta3 {
 impl Rosetta3 {
     /// Load the bundled, integrity-checked CC0 model without filesystem access.
     pub fn builtin() -> Result<Self, ModelError> {
-        Self::from_bytes(include_bytes!("data/rosetta3.ptfm"))
+        Self::from_model(bundled::builtin())
     }
     pub fn load(path: impl AsRef<Path>) -> Result<Self, ModelError> {
         Self::from_model(Model::load(path, MODEL_SHA256)?)
@@ -189,267 +192,1241 @@ impl Rosetta3 {
 use crate::models::engine;
 mod contract {
     use super::engine::{Network, statistics};
-    pub fn predict(
+    fn mod2(
+        _ptfkit_networks: &[Network],
+        _ptfkit_data: &[f64],
+        _ptfkit_mode: usize,
+        _ptfkit_inputs: &[f64],
+    ) -> Option<[f64; 14]> {
+        if _ptfkit_mode > 2
+            || _ptfkit_inputs.len() != 3
+            || _ptfkit_inputs.iter().any(|v| !v.is_finite())
+        {
+            return None;
+        }
+        let sand: f64 = _ptfkit_inputs[0];
+        let silt: f64 = _ptfkit_inputs[1];
+        let clay: f64 = _ptfkit_inputs[2];
+        let texture_total: f64 = sand + silt + clay;
+        if !matches!(
+            (sand).partial_cmp(&(0.0f64)),
+            Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (silt).partial_cmp(&(0.0f64)),
+            Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (clay).partial_cmp(&(0.0f64)),
+            Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (texture_total).partial_cmp(&(99.0f64)),
+            Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (texture_total).partial_cmp(&(101.0f64)),
+            Some(std::cmp::Ordering::Less | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        let raw = _ptfkit_networks[0].predict(_ptfkit_data, &[sand, silt, clay]);
+        let physical = raw
+            .iter()
+            .map(|row| {
+                let member_theta_r: f64 = row[0];
+                let member_theta_s: f64 = row[1];
+                let member_alpha: f64 = row[2];
+                let member_n: f64 = row[3];
+                let member_k_sat: f64 = row[4];
+                vec![
+                    member_theta_r,
+                    member_theta_s,
+                    10.0f64.powf(member_alpha),
+                    10.0f64.powf(member_n),
+                    10.0f64.powf(member_k_sat),
+                ]
+            })
+            .collect::<Vec<Vec<f64>>>();
+        #[allow(dead_code)]
+        struct Statistics4 {
+            theta_r_mean: f64,
+            theta_s_mean: f64,
+            alpha_mean: f64,
+            n_mean: f64,
+            k_sat_mean: f64,
+            theta_r_std: f64,
+            theta_s_std: f64,
+            alpha_std: f64,
+            n_std: f64,
+            k_sat_std: f64,
+        }
+        let (log_statistics_mean, log_statistics_std) = statistics(&raw);
+        let log_statistics = Statistics4 {
+            theta_r_mean: log_statistics_mean[0],
+            theta_s_mean: log_statistics_mean[1],
+            alpha_mean: log_statistics_mean[2],
+            n_mean: log_statistics_mean[3],
+            k_sat_mean: log_statistics_mean[4],
+            theta_r_std: log_statistics_std[0],
+            theta_s_std: log_statistics_std[1],
+            alpha_std: log_statistics_std[2],
+            n_std: log_statistics_std[3],
+            k_sat_std: log_statistics_std[4],
+        };
+        #[allow(dead_code)]
+        struct Statistics5 {
+            theta_r_mean: f64,
+            theta_s_mean: f64,
+            alpha_mean: f64,
+            n_mean: f64,
+            k_sat_mean: f64,
+            theta_r_std: f64,
+            theta_s_std: f64,
+            alpha_std: f64,
+            n_std: f64,
+            k_sat_std: f64,
+        }
+        let (physical_statistics_mean, physical_statistics_std) = statistics(&physical);
+        let physical_statistics = Statistics5 {
+            theta_r_mean: physical_statistics_mean[0],
+            theta_s_mean: physical_statistics_mean[1],
+            alpha_mean: physical_statistics_mean[2],
+            n_mean: physical_statistics_mean[3],
+            k_sat_mean: physical_statistics_mean[4],
+            theta_r_std: physical_statistics_std[0],
+            theta_s_std: physical_statistics_std[1],
+            alpha_std: physical_statistics_std[2],
+            n_std: physical_statistics_std[3],
+            k_sat_std: physical_statistics_std[4],
+        };
+        let geometric_alpha: f64 = 10.0f64.powf(log_statistics.alpha_mean);
+        let geometric_n: f64 = 10.0f64.powf(log_statistics.n_mean);
+        let geometric_k_sat: f64 = 10.0f64.powf(log_statistics.k_sat_mean);
+        let conductivity_theta_r: f64 = match _ptfkit_mode {
+            0 => physical_statistics.theta_r_mean,
+            1 => log_statistics.theta_r_mean,
+            _ => log_statistics.theta_r_mean,
+        };
+        let conductivity_theta_s: f64 = match _ptfkit_mode {
+            0 => physical_statistics.theta_s_mean,
+            1 => log_statistics.theta_s_mean,
+            _ => log_statistics.theta_s_mean,
+        };
+        let conductivity_alpha: f64 = match _ptfkit_mode {
+            0 => physical_statistics.alpha_mean,
+            1 => geometric_alpha,
+            _ => geometric_alpha,
+        };
+        let conductivity_n: f64 = match _ptfkit_mode {
+            0 => physical_statistics.n_mean,
+            1 => geometric_n,
+            _ => geometric_n,
+        };
+        let unsaturated = if matches!(
+            (0.0f64).partial_cmp(&(conductivity_theta_r)),
+            Some(std::cmp::Ordering::Less | std::cmp::Ordering::Equal)
+        ) && matches!(
+            (conductivity_theta_r).partial_cmp(&(conductivity_theta_s)),
+            Some(std::cmp::Ordering::Less)
+        ) && matches!(
+            (conductivity_theta_s).partial_cmp(&(1.0f64)),
+            Some(std::cmp::Ordering::Less)
+        ) && matches!(
+            (conductivity_alpha).partial_cmp(&(0.0f64)),
+            Some(std::cmp::Ordering::Greater)
+        ) && matches!(
+            (conductivity_n).partial_cmp(&(1.0f64)),
+            Some(std::cmp::Ordering::Greater)
+        ) {
+            _ptfkit_networks[4].predict(
+                _ptfkit_data,
+                &[
+                    conductivity_theta_r,
+                    conductivity_theta_s,
+                    conductivity_alpha,
+                    conductivity_n,
+                ],
+            )
+        } else {
+            vec![vec![f64::NAN; 2]; 100]
+        };
+        let unsaturated_physical = unsaturated
+            .iter()
+            .map(|row| {
+                let member_k_0: f64 = row[0];
+                let member_l: f64 = row[1];
+                vec![10.0f64.powf(member_k_0), member_l]
+            })
+            .collect::<Vec<Vec<f64>>>();
+        #[allow(dead_code)]
+        struct Statistics15 {
+            k_0_mean: f64,
+            l_mean: f64,
+            k_0_std: f64,
+            l_std: f64,
+        }
+        let (conductivity_log_statistics_mean, conductivity_log_statistics_std) =
+            statistics(&unsaturated);
+        let conductivity_log_statistics = Statistics15 {
+            k_0_mean: conductivity_log_statistics_mean[0],
+            l_mean: conductivity_log_statistics_mean[1],
+            k_0_std: conductivity_log_statistics_std[0],
+            l_std: conductivity_log_statistics_std[1],
+        };
+        #[allow(dead_code)]
+        struct Statistics16 {
+            k_0_mean: f64,
+            l_mean: f64,
+            k_0_std: f64,
+            l_std: f64,
+        }
+        let (conductivity_physical_statistics_mean, conductivity_physical_statistics_std) =
+            statistics(&unsaturated_physical);
+        let conductivity_physical_statistics = Statistics16 {
+            k_0_mean: conductivity_physical_statistics_mean[0],
+            l_mean: conductivity_physical_statistics_mean[1],
+            k_0_std: conductivity_physical_statistics_std[0],
+            l_std: conductivity_physical_statistics_std[1],
+        };
+        let geometric_k_0: f64 = 10.0f64.powf(conductivity_log_statistics.k_0_mean);
+        let theta_r_mean: f64 = match _ptfkit_mode {
+            0 => physical_statistics.theta_r_mean,
+            1 => log_statistics.theta_r_mean,
+            _ => log_statistics.theta_r_mean,
+        };
+        let theta_r_std: f64 = match _ptfkit_mode {
+            0 => physical_statistics.theta_r_std,
+            1 => log_statistics.theta_r_std,
+            _ => physical_statistics.theta_r_std,
+        };
+        let theta_s_mean: f64 = match _ptfkit_mode {
+            0 => physical_statistics.theta_s_mean,
+            1 => log_statistics.theta_s_mean,
+            _ => log_statistics.theta_s_mean,
+        };
+        let theta_s_std: f64 = match _ptfkit_mode {
+            0 => physical_statistics.theta_s_std,
+            1 => log_statistics.theta_s_std,
+            _ => physical_statistics.theta_s_std,
+        };
+        let alpha_mean: f64 = match _ptfkit_mode {
+            0 => physical_statistics.alpha_mean,
+            1 => log_statistics.alpha_mean,
+            _ => geometric_alpha,
+        };
+        let alpha_std: f64 = match _ptfkit_mode {
+            0 => physical_statistics.alpha_std,
+            1 => log_statistics.alpha_std,
+            _ => physical_statistics.alpha_std,
+        };
+        let n_mean: f64 = match _ptfkit_mode {
+            0 => physical_statistics.n_mean,
+            1 => log_statistics.n_mean,
+            _ => geometric_n,
+        };
+        let n_std: f64 = match _ptfkit_mode {
+            0 => physical_statistics.n_std,
+            1 => log_statistics.n_std,
+            _ => physical_statistics.n_std,
+        };
+        let k_sat_mean: f64 = match _ptfkit_mode {
+            0 => physical_statistics.k_sat_mean,
+            1 => log_statistics.k_sat_mean,
+            _ => geometric_k_sat,
+        };
+        let k_sat_std: f64 = match _ptfkit_mode {
+            0 => physical_statistics.k_sat_std,
+            1 => log_statistics.k_sat_std,
+            _ => physical_statistics.k_sat_std,
+        };
+        let k_0_mean: f64 = match _ptfkit_mode {
+            0 => conductivity_physical_statistics.k_0_mean,
+            1 => conductivity_log_statistics.k_0_mean,
+            _ => geometric_k_0,
+        };
+        let k_0_std: f64 = match _ptfkit_mode {
+            0 => conductivity_physical_statistics.k_0_std,
+            1 => conductivity_log_statistics.k_0_std,
+            _ => conductivity_physical_statistics.k_0_std,
+        };
+        let l_mean: f64 = conductivity_log_statistics.l_mean;
+        let l_std: f64 = conductivity_log_statistics.l_std;
+        Some([
+            theta_r_mean,
+            theta_s_mean,
+            alpha_mean,
+            n_mean,
+            k_sat_mean,
+            k_0_mean,
+            l_mean,
+            theta_r_std,
+            theta_s_std,
+            alpha_std,
+            n_std,
+            k_sat_std,
+            k_0_std,
+            l_std,
+        ])
+    }
+    fn mod3(
+        _ptfkit_networks: &[Network],
+        _ptfkit_data: &[f64],
+        _ptfkit_mode: usize,
+        _ptfkit_inputs: &[f64],
+    ) -> Option<[f64; 14]> {
+        if _ptfkit_mode > 2
+            || _ptfkit_inputs.len() != 4
+            || _ptfkit_inputs.iter().any(|v| !v.is_finite())
+        {
+            return None;
+        }
+        let sand: f64 = _ptfkit_inputs[0];
+        let silt: f64 = _ptfkit_inputs[1];
+        let clay: f64 = _ptfkit_inputs[2];
+        let bulk_density: f64 = _ptfkit_inputs[3];
+        let texture_total: f64 = sand + silt + clay;
+        if !matches!(
+            (sand).partial_cmp(&(0.0f64)),
+            Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (silt).partial_cmp(&(0.0f64)),
+            Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (clay).partial_cmp(&(0.0f64)),
+            Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (texture_total).partial_cmp(&(99.0f64)),
+            Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (texture_total).partial_cmp(&(101.0f64)),
+            Some(std::cmp::Ordering::Less | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (bulk_density).partial_cmp(&(0.5f64)),
+            Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (bulk_density).partial_cmp(&(2.0f64)),
+            Some(std::cmp::Ordering::Less | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        let raw = _ptfkit_networks[1].predict(_ptfkit_data, &[sand, silt, clay, bulk_density]);
+        let physical = raw
+            .iter()
+            .map(|row| {
+                let member_theta_r: f64 = row[0];
+                let member_theta_s: f64 = row[1];
+                let member_alpha: f64 = row[2];
+                let member_n: f64 = row[3];
+                let member_k_sat: f64 = row[4];
+                vec![
+                    member_theta_r,
+                    member_theta_s,
+                    10.0f64.powf(member_alpha),
+                    10.0f64.powf(member_n),
+                    10.0f64.powf(member_k_sat),
+                ]
+            })
+            .collect::<Vec<Vec<f64>>>();
+        #[allow(dead_code)]
+        struct Statistics4 {
+            theta_r_mean: f64,
+            theta_s_mean: f64,
+            alpha_mean: f64,
+            n_mean: f64,
+            k_sat_mean: f64,
+            theta_r_std: f64,
+            theta_s_std: f64,
+            alpha_std: f64,
+            n_std: f64,
+            k_sat_std: f64,
+        }
+        let (log_statistics_mean, log_statistics_std) = statistics(&raw);
+        let log_statistics = Statistics4 {
+            theta_r_mean: log_statistics_mean[0],
+            theta_s_mean: log_statistics_mean[1],
+            alpha_mean: log_statistics_mean[2],
+            n_mean: log_statistics_mean[3],
+            k_sat_mean: log_statistics_mean[4],
+            theta_r_std: log_statistics_std[0],
+            theta_s_std: log_statistics_std[1],
+            alpha_std: log_statistics_std[2],
+            n_std: log_statistics_std[3],
+            k_sat_std: log_statistics_std[4],
+        };
+        #[allow(dead_code)]
+        struct Statistics5 {
+            theta_r_mean: f64,
+            theta_s_mean: f64,
+            alpha_mean: f64,
+            n_mean: f64,
+            k_sat_mean: f64,
+            theta_r_std: f64,
+            theta_s_std: f64,
+            alpha_std: f64,
+            n_std: f64,
+            k_sat_std: f64,
+        }
+        let (physical_statistics_mean, physical_statistics_std) = statistics(&physical);
+        let physical_statistics = Statistics5 {
+            theta_r_mean: physical_statistics_mean[0],
+            theta_s_mean: physical_statistics_mean[1],
+            alpha_mean: physical_statistics_mean[2],
+            n_mean: physical_statistics_mean[3],
+            k_sat_mean: physical_statistics_mean[4],
+            theta_r_std: physical_statistics_std[0],
+            theta_s_std: physical_statistics_std[1],
+            alpha_std: physical_statistics_std[2],
+            n_std: physical_statistics_std[3],
+            k_sat_std: physical_statistics_std[4],
+        };
+        let geometric_alpha: f64 = 10.0f64.powf(log_statistics.alpha_mean);
+        let geometric_n: f64 = 10.0f64.powf(log_statistics.n_mean);
+        let geometric_k_sat: f64 = 10.0f64.powf(log_statistics.k_sat_mean);
+        let conductivity_theta_r: f64 = match _ptfkit_mode {
+            0 => physical_statistics.theta_r_mean,
+            1 => log_statistics.theta_r_mean,
+            _ => log_statistics.theta_r_mean,
+        };
+        let conductivity_theta_s: f64 = match _ptfkit_mode {
+            0 => physical_statistics.theta_s_mean,
+            1 => log_statistics.theta_s_mean,
+            _ => log_statistics.theta_s_mean,
+        };
+        let conductivity_alpha: f64 = match _ptfkit_mode {
+            0 => physical_statistics.alpha_mean,
+            1 => geometric_alpha,
+            _ => geometric_alpha,
+        };
+        let conductivity_n: f64 = match _ptfkit_mode {
+            0 => physical_statistics.n_mean,
+            1 => geometric_n,
+            _ => geometric_n,
+        };
+        let unsaturated = if matches!(
+            (0.0f64).partial_cmp(&(conductivity_theta_r)),
+            Some(std::cmp::Ordering::Less | std::cmp::Ordering::Equal)
+        ) && matches!(
+            (conductivity_theta_r).partial_cmp(&(conductivity_theta_s)),
+            Some(std::cmp::Ordering::Less)
+        ) && matches!(
+            (conductivity_theta_s).partial_cmp(&(1.0f64)),
+            Some(std::cmp::Ordering::Less)
+        ) && matches!(
+            (conductivity_alpha).partial_cmp(&(0.0f64)),
+            Some(std::cmp::Ordering::Greater)
+        ) && matches!(
+            (conductivity_n).partial_cmp(&(1.0f64)),
+            Some(std::cmp::Ordering::Greater)
+        ) {
+            _ptfkit_networks[4].predict(
+                _ptfkit_data,
+                &[
+                    conductivity_theta_r,
+                    conductivity_theta_s,
+                    conductivity_alpha,
+                    conductivity_n,
+                ],
+            )
+        } else {
+            vec![vec![f64::NAN; 2]; 100]
+        };
+        let unsaturated_physical = unsaturated
+            .iter()
+            .map(|row| {
+                let member_k_0: f64 = row[0];
+                let member_l: f64 = row[1];
+                vec![10.0f64.powf(member_k_0), member_l]
+            })
+            .collect::<Vec<Vec<f64>>>();
+        #[allow(dead_code)]
+        struct Statistics15 {
+            k_0_mean: f64,
+            l_mean: f64,
+            k_0_std: f64,
+            l_std: f64,
+        }
+        let (conductivity_log_statistics_mean, conductivity_log_statistics_std) =
+            statistics(&unsaturated);
+        let conductivity_log_statistics = Statistics15 {
+            k_0_mean: conductivity_log_statistics_mean[0],
+            l_mean: conductivity_log_statistics_mean[1],
+            k_0_std: conductivity_log_statistics_std[0],
+            l_std: conductivity_log_statistics_std[1],
+        };
+        #[allow(dead_code)]
+        struct Statistics16 {
+            k_0_mean: f64,
+            l_mean: f64,
+            k_0_std: f64,
+            l_std: f64,
+        }
+        let (conductivity_physical_statistics_mean, conductivity_physical_statistics_std) =
+            statistics(&unsaturated_physical);
+        let conductivity_physical_statistics = Statistics16 {
+            k_0_mean: conductivity_physical_statistics_mean[0],
+            l_mean: conductivity_physical_statistics_mean[1],
+            k_0_std: conductivity_physical_statistics_std[0],
+            l_std: conductivity_physical_statistics_std[1],
+        };
+        let geometric_k_0: f64 = 10.0f64.powf(conductivity_log_statistics.k_0_mean);
+        let theta_r_mean: f64 = match _ptfkit_mode {
+            0 => physical_statistics.theta_r_mean,
+            1 => log_statistics.theta_r_mean,
+            _ => log_statistics.theta_r_mean,
+        };
+        let theta_r_std: f64 = match _ptfkit_mode {
+            0 => physical_statistics.theta_r_std,
+            1 => log_statistics.theta_r_std,
+            _ => physical_statistics.theta_r_std,
+        };
+        let theta_s_mean: f64 = match _ptfkit_mode {
+            0 => physical_statistics.theta_s_mean,
+            1 => log_statistics.theta_s_mean,
+            _ => log_statistics.theta_s_mean,
+        };
+        let theta_s_std: f64 = match _ptfkit_mode {
+            0 => physical_statistics.theta_s_std,
+            1 => log_statistics.theta_s_std,
+            _ => physical_statistics.theta_s_std,
+        };
+        let alpha_mean: f64 = match _ptfkit_mode {
+            0 => physical_statistics.alpha_mean,
+            1 => log_statistics.alpha_mean,
+            _ => geometric_alpha,
+        };
+        let alpha_std: f64 = match _ptfkit_mode {
+            0 => physical_statistics.alpha_std,
+            1 => log_statistics.alpha_std,
+            _ => physical_statistics.alpha_std,
+        };
+        let n_mean: f64 = match _ptfkit_mode {
+            0 => physical_statistics.n_mean,
+            1 => log_statistics.n_mean,
+            _ => geometric_n,
+        };
+        let n_std: f64 = match _ptfkit_mode {
+            0 => physical_statistics.n_std,
+            1 => log_statistics.n_std,
+            _ => physical_statistics.n_std,
+        };
+        let k_sat_mean: f64 = match _ptfkit_mode {
+            0 => physical_statistics.k_sat_mean,
+            1 => log_statistics.k_sat_mean,
+            _ => geometric_k_sat,
+        };
+        let k_sat_std: f64 = match _ptfkit_mode {
+            0 => physical_statistics.k_sat_std,
+            1 => log_statistics.k_sat_std,
+            _ => physical_statistics.k_sat_std,
+        };
+        let k_0_mean: f64 = match _ptfkit_mode {
+            0 => conductivity_physical_statistics.k_0_mean,
+            1 => conductivity_log_statistics.k_0_mean,
+            _ => geometric_k_0,
+        };
+        let k_0_std: f64 = match _ptfkit_mode {
+            0 => conductivity_physical_statistics.k_0_std,
+            1 => conductivity_log_statistics.k_0_std,
+            _ => conductivity_physical_statistics.k_0_std,
+        };
+        let l_mean: f64 = conductivity_log_statistics.l_mean;
+        let l_std: f64 = conductivity_log_statistics.l_std;
+        Some([
+            theta_r_mean,
+            theta_s_mean,
+            alpha_mean,
+            n_mean,
+            k_sat_mean,
+            k_0_mean,
+            l_mean,
+            theta_r_std,
+            theta_s_std,
+            alpha_std,
+            n_std,
+            k_sat_std,
+            k_0_std,
+            l_std,
+        ])
+    }
+    fn mod4(
+        _ptfkit_networks: &[Network],
+        _ptfkit_data: &[f64],
+        _ptfkit_mode: usize,
+        _ptfkit_inputs: &[f64],
+    ) -> Option<[f64; 14]> {
+        if _ptfkit_mode > 2
+            || _ptfkit_inputs.len() != 5
+            || _ptfkit_inputs.iter().any(|v| !v.is_finite())
+        {
+            return None;
+        }
+        let sand: f64 = _ptfkit_inputs[0];
+        let silt: f64 = _ptfkit_inputs[1];
+        let clay: f64 = _ptfkit_inputs[2];
+        let bulk_density: f64 = _ptfkit_inputs[3];
+        let theta_33: f64 = _ptfkit_inputs[4];
+        let texture_total: f64 = sand + silt + clay;
+        if !matches!(
+            (sand).partial_cmp(&(0.0f64)),
+            Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (silt).partial_cmp(&(0.0f64)),
+            Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (clay).partial_cmp(&(0.0f64)),
+            Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (texture_total).partial_cmp(&(99.0f64)),
+            Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (texture_total).partial_cmp(&(101.0f64)),
+            Some(std::cmp::Ordering::Less | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (bulk_density).partial_cmp(&(0.5f64)),
+            Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (bulk_density).partial_cmp(&(2.0f64)),
+            Some(std::cmp::Ordering::Less | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (theta_33).partial_cmp(&(0.0f64)),
+            Some(std::cmp::Ordering::Greater)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (theta_33).partial_cmp(&(1.0f64)),
+            Some(std::cmp::Ordering::Less)
+        ) {
+            return None;
+        }
+        let raw =
+            _ptfkit_networks[2].predict(_ptfkit_data, &[sand, silt, clay, bulk_density, theta_33]);
+        let physical = raw
+            .iter()
+            .map(|row| {
+                let member_theta_r: f64 = row[0];
+                let member_theta_s: f64 = row[1];
+                let member_alpha: f64 = row[2];
+                let member_n: f64 = row[3];
+                let member_k_sat: f64 = row[4];
+                vec![
+                    member_theta_r,
+                    member_theta_s,
+                    10.0f64.powf(member_alpha),
+                    10.0f64.powf(member_n),
+                    10.0f64.powf(member_k_sat),
+                ]
+            })
+            .collect::<Vec<Vec<f64>>>();
+        #[allow(dead_code)]
+        struct Statistics4 {
+            theta_r_mean: f64,
+            theta_s_mean: f64,
+            alpha_mean: f64,
+            n_mean: f64,
+            k_sat_mean: f64,
+            theta_r_std: f64,
+            theta_s_std: f64,
+            alpha_std: f64,
+            n_std: f64,
+            k_sat_std: f64,
+        }
+        let (log_statistics_mean, log_statistics_std) = statistics(&raw);
+        let log_statistics = Statistics4 {
+            theta_r_mean: log_statistics_mean[0],
+            theta_s_mean: log_statistics_mean[1],
+            alpha_mean: log_statistics_mean[2],
+            n_mean: log_statistics_mean[3],
+            k_sat_mean: log_statistics_mean[4],
+            theta_r_std: log_statistics_std[0],
+            theta_s_std: log_statistics_std[1],
+            alpha_std: log_statistics_std[2],
+            n_std: log_statistics_std[3],
+            k_sat_std: log_statistics_std[4],
+        };
+        #[allow(dead_code)]
+        struct Statistics5 {
+            theta_r_mean: f64,
+            theta_s_mean: f64,
+            alpha_mean: f64,
+            n_mean: f64,
+            k_sat_mean: f64,
+            theta_r_std: f64,
+            theta_s_std: f64,
+            alpha_std: f64,
+            n_std: f64,
+            k_sat_std: f64,
+        }
+        let (physical_statistics_mean, physical_statistics_std) = statistics(&physical);
+        let physical_statistics = Statistics5 {
+            theta_r_mean: physical_statistics_mean[0],
+            theta_s_mean: physical_statistics_mean[1],
+            alpha_mean: physical_statistics_mean[2],
+            n_mean: physical_statistics_mean[3],
+            k_sat_mean: physical_statistics_mean[4],
+            theta_r_std: physical_statistics_std[0],
+            theta_s_std: physical_statistics_std[1],
+            alpha_std: physical_statistics_std[2],
+            n_std: physical_statistics_std[3],
+            k_sat_std: physical_statistics_std[4],
+        };
+        let geometric_alpha: f64 = 10.0f64.powf(log_statistics.alpha_mean);
+        let geometric_n: f64 = 10.0f64.powf(log_statistics.n_mean);
+        let geometric_k_sat: f64 = 10.0f64.powf(log_statistics.k_sat_mean);
+        let conductivity_theta_r: f64 = match _ptfkit_mode {
+            0 => physical_statistics.theta_r_mean,
+            1 => log_statistics.theta_r_mean,
+            _ => log_statistics.theta_r_mean,
+        };
+        let conductivity_theta_s: f64 = match _ptfkit_mode {
+            0 => physical_statistics.theta_s_mean,
+            1 => log_statistics.theta_s_mean,
+            _ => log_statistics.theta_s_mean,
+        };
+        let conductivity_alpha: f64 = match _ptfkit_mode {
+            0 => physical_statistics.alpha_mean,
+            1 => geometric_alpha,
+            _ => geometric_alpha,
+        };
+        let conductivity_n: f64 = match _ptfkit_mode {
+            0 => physical_statistics.n_mean,
+            1 => geometric_n,
+            _ => geometric_n,
+        };
+        let unsaturated = if matches!(
+            (0.0f64).partial_cmp(&(conductivity_theta_r)),
+            Some(std::cmp::Ordering::Less | std::cmp::Ordering::Equal)
+        ) && matches!(
+            (conductivity_theta_r).partial_cmp(&(conductivity_theta_s)),
+            Some(std::cmp::Ordering::Less)
+        ) && matches!(
+            (conductivity_theta_s).partial_cmp(&(1.0f64)),
+            Some(std::cmp::Ordering::Less)
+        ) && matches!(
+            (conductivity_alpha).partial_cmp(&(0.0f64)),
+            Some(std::cmp::Ordering::Greater)
+        ) && matches!(
+            (conductivity_n).partial_cmp(&(1.0f64)),
+            Some(std::cmp::Ordering::Greater)
+        ) {
+            _ptfkit_networks[4].predict(
+                _ptfkit_data,
+                &[
+                    conductivity_theta_r,
+                    conductivity_theta_s,
+                    conductivity_alpha,
+                    conductivity_n,
+                ],
+            )
+        } else {
+            vec![vec![f64::NAN; 2]; 100]
+        };
+        let unsaturated_physical = unsaturated
+            .iter()
+            .map(|row| {
+                let member_k_0: f64 = row[0];
+                let member_l: f64 = row[1];
+                vec![10.0f64.powf(member_k_0), member_l]
+            })
+            .collect::<Vec<Vec<f64>>>();
+        #[allow(dead_code)]
+        struct Statistics15 {
+            k_0_mean: f64,
+            l_mean: f64,
+            k_0_std: f64,
+            l_std: f64,
+        }
+        let (conductivity_log_statistics_mean, conductivity_log_statistics_std) =
+            statistics(&unsaturated);
+        let conductivity_log_statistics = Statistics15 {
+            k_0_mean: conductivity_log_statistics_mean[0],
+            l_mean: conductivity_log_statistics_mean[1],
+            k_0_std: conductivity_log_statistics_std[0],
+            l_std: conductivity_log_statistics_std[1],
+        };
+        #[allow(dead_code)]
+        struct Statistics16 {
+            k_0_mean: f64,
+            l_mean: f64,
+            k_0_std: f64,
+            l_std: f64,
+        }
+        let (conductivity_physical_statistics_mean, conductivity_physical_statistics_std) =
+            statistics(&unsaturated_physical);
+        let conductivity_physical_statistics = Statistics16 {
+            k_0_mean: conductivity_physical_statistics_mean[0],
+            l_mean: conductivity_physical_statistics_mean[1],
+            k_0_std: conductivity_physical_statistics_std[0],
+            l_std: conductivity_physical_statistics_std[1],
+        };
+        let geometric_k_0: f64 = 10.0f64.powf(conductivity_log_statistics.k_0_mean);
+        let theta_r_mean: f64 = match _ptfkit_mode {
+            0 => physical_statistics.theta_r_mean,
+            1 => log_statistics.theta_r_mean,
+            _ => log_statistics.theta_r_mean,
+        };
+        let theta_r_std: f64 = match _ptfkit_mode {
+            0 => physical_statistics.theta_r_std,
+            1 => log_statistics.theta_r_std,
+            _ => physical_statistics.theta_r_std,
+        };
+        let theta_s_mean: f64 = match _ptfkit_mode {
+            0 => physical_statistics.theta_s_mean,
+            1 => log_statistics.theta_s_mean,
+            _ => log_statistics.theta_s_mean,
+        };
+        let theta_s_std: f64 = match _ptfkit_mode {
+            0 => physical_statistics.theta_s_std,
+            1 => log_statistics.theta_s_std,
+            _ => physical_statistics.theta_s_std,
+        };
+        let alpha_mean: f64 = match _ptfkit_mode {
+            0 => physical_statistics.alpha_mean,
+            1 => log_statistics.alpha_mean,
+            _ => geometric_alpha,
+        };
+        let alpha_std: f64 = match _ptfkit_mode {
+            0 => physical_statistics.alpha_std,
+            1 => log_statistics.alpha_std,
+            _ => physical_statistics.alpha_std,
+        };
+        let n_mean: f64 = match _ptfkit_mode {
+            0 => physical_statistics.n_mean,
+            1 => log_statistics.n_mean,
+            _ => geometric_n,
+        };
+        let n_std: f64 = match _ptfkit_mode {
+            0 => physical_statistics.n_std,
+            1 => log_statistics.n_std,
+            _ => physical_statistics.n_std,
+        };
+        let k_sat_mean: f64 = match _ptfkit_mode {
+            0 => physical_statistics.k_sat_mean,
+            1 => log_statistics.k_sat_mean,
+            _ => geometric_k_sat,
+        };
+        let k_sat_std: f64 = match _ptfkit_mode {
+            0 => physical_statistics.k_sat_std,
+            1 => log_statistics.k_sat_std,
+            _ => physical_statistics.k_sat_std,
+        };
+        let k_0_mean: f64 = match _ptfkit_mode {
+            0 => conductivity_physical_statistics.k_0_mean,
+            1 => conductivity_log_statistics.k_0_mean,
+            _ => geometric_k_0,
+        };
+        let k_0_std: f64 = match _ptfkit_mode {
+            0 => conductivity_physical_statistics.k_0_std,
+            1 => conductivity_log_statistics.k_0_std,
+            _ => conductivity_physical_statistics.k_0_std,
+        };
+        let l_mean: f64 = conductivity_log_statistics.l_mean;
+        let l_std: f64 = conductivity_log_statistics.l_std;
+        Some([
+            theta_r_mean,
+            theta_s_mean,
+            alpha_mean,
+            n_mean,
+            k_sat_mean,
+            k_0_mean,
+            l_mean,
+            theta_r_std,
+            theta_s_std,
+            alpha_std,
+            n_std,
+            k_sat_std,
+            k_0_std,
+            l_std,
+        ])
+    }
+    fn mod5(
+        _ptfkit_networks: &[Network],
+        _ptfkit_data: &[f64],
+        _ptfkit_mode: usize,
+        _ptfkit_inputs: &[f64],
+    ) -> Option<[f64; 14]> {
+        if _ptfkit_mode > 2
+            || _ptfkit_inputs.len() != 6
+            || _ptfkit_inputs.iter().any(|v| !v.is_finite())
+        {
+            return None;
+        }
+        let sand: f64 = _ptfkit_inputs[0];
+        let silt: f64 = _ptfkit_inputs[1];
+        let clay: f64 = _ptfkit_inputs[2];
+        let bulk_density: f64 = _ptfkit_inputs[3];
+        let theta_33: f64 = _ptfkit_inputs[4];
+        let theta_1500: f64 = _ptfkit_inputs[5];
+        let texture_total: f64 = sand + silt + clay;
+        if !matches!(
+            (sand).partial_cmp(&(0.0f64)),
+            Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (silt).partial_cmp(&(0.0f64)),
+            Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (clay).partial_cmp(&(0.0f64)),
+            Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (texture_total).partial_cmp(&(99.0f64)),
+            Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (texture_total).partial_cmp(&(101.0f64)),
+            Some(std::cmp::Ordering::Less | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (bulk_density).partial_cmp(&(0.5f64)),
+            Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (bulk_density).partial_cmp(&(2.0f64)),
+            Some(std::cmp::Ordering::Less | std::cmp::Ordering::Equal)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (theta_33).partial_cmp(&(0.0f64)),
+            Some(std::cmp::Ordering::Greater)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (theta_33).partial_cmp(&(1.0f64)),
+            Some(std::cmp::Ordering::Less)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (theta_1500).partial_cmp(&(0.0f64)),
+            Some(std::cmp::Ordering::Greater)
+        ) {
+            return None;
+        }
+        if !matches!(
+            (theta_1500).partial_cmp(&(theta_33)),
+            Some(std::cmp::Ordering::Less)
+        ) {
+            return None;
+        }
+        let raw = _ptfkit_networks[3].predict(
+            _ptfkit_data,
+            &[sand, silt, clay, bulk_density, theta_33, theta_1500],
+        );
+        let physical = raw
+            .iter()
+            .map(|row| {
+                let member_theta_r: f64 = row[0];
+                let member_theta_s: f64 = row[1];
+                let member_alpha: f64 = row[2];
+                let member_n: f64 = row[3];
+                let member_k_sat: f64 = row[4];
+                vec![
+                    member_theta_r,
+                    member_theta_s,
+                    10.0f64.powf(member_alpha),
+                    10.0f64.powf(member_n),
+                    10.0f64.powf(member_k_sat),
+                ]
+            })
+            .collect::<Vec<Vec<f64>>>();
+        #[allow(dead_code)]
+        struct Statistics4 {
+            theta_r_mean: f64,
+            theta_s_mean: f64,
+            alpha_mean: f64,
+            n_mean: f64,
+            k_sat_mean: f64,
+            theta_r_std: f64,
+            theta_s_std: f64,
+            alpha_std: f64,
+            n_std: f64,
+            k_sat_std: f64,
+        }
+        let (log_statistics_mean, log_statistics_std) = statistics(&raw);
+        let log_statistics = Statistics4 {
+            theta_r_mean: log_statistics_mean[0],
+            theta_s_mean: log_statistics_mean[1],
+            alpha_mean: log_statistics_mean[2],
+            n_mean: log_statistics_mean[3],
+            k_sat_mean: log_statistics_mean[4],
+            theta_r_std: log_statistics_std[0],
+            theta_s_std: log_statistics_std[1],
+            alpha_std: log_statistics_std[2],
+            n_std: log_statistics_std[3],
+            k_sat_std: log_statistics_std[4],
+        };
+        #[allow(dead_code)]
+        struct Statistics5 {
+            theta_r_mean: f64,
+            theta_s_mean: f64,
+            alpha_mean: f64,
+            n_mean: f64,
+            k_sat_mean: f64,
+            theta_r_std: f64,
+            theta_s_std: f64,
+            alpha_std: f64,
+            n_std: f64,
+            k_sat_std: f64,
+        }
+        let (physical_statistics_mean, physical_statistics_std) = statistics(&physical);
+        let physical_statistics = Statistics5 {
+            theta_r_mean: physical_statistics_mean[0],
+            theta_s_mean: physical_statistics_mean[1],
+            alpha_mean: physical_statistics_mean[2],
+            n_mean: physical_statistics_mean[3],
+            k_sat_mean: physical_statistics_mean[4],
+            theta_r_std: physical_statistics_std[0],
+            theta_s_std: physical_statistics_std[1],
+            alpha_std: physical_statistics_std[2],
+            n_std: physical_statistics_std[3],
+            k_sat_std: physical_statistics_std[4],
+        };
+        let geometric_alpha: f64 = 10.0f64.powf(log_statistics.alpha_mean);
+        let geometric_n: f64 = 10.0f64.powf(log_statistics.n_mean);
+        let geometric_k_sat: f64 = 10.0f64.powf(log_statistics.k_sat_mean);
+        let conductivity_theta_r: f64 = match _ptfkit_mode {
+            0 => physical_statistics.theta_r_mean,
+            1 => log_statistics.theta_r_mean,
+            _ => log_statistics.theta_r_mean,
+        };
+        let conductivity_theta_s: f64 = match _ptfkit_mode {
+            0 => physical_statistics.theta_s_mean,
+            1 => log_statistics.theta_s_mean,
+            _ => log_statistics.theta_s_mean,
+        };
+        let conductivity_alpha: f64 = match _ptfkit_mode {
+            0 => physical_statistics.alpha_mean,
+            1 => geometric_alpha,
+            _ => geometric_alpha,
+        };
+        let conductivity_n: f64 = match _ptfkit_mode {
+            0 => physical_statistics.n_mean,
+            1 => geometric_n,
+            _ => geometric_n,
+        };
+        let unsaturated = if matches!(
+            (0.0f64).partial_cmp(&(conductivity_theta_r)),
+            Some(std::cmp::Ordering::Less | std::cmp::Ordering::Equal)
+        ) && matches!(
+            (conductivity_theta_r).partial_cmp(&(conductivity_theta_s)),
+            Some(std::cmp::Ordering::Less)
+        ) && matches!(
+            (conductivity_theta_s).partial_cmp(&(1.0f64)),
+            Some(std::cmp::Ordering::Less)
+        ) && matches!(
+            (conductivity_alpha).partial_cmp(&(0.0f64)),
+            Some(std::cmp::Ordering::Greater)
+        ) && matches!(
+            (conductivity_n).partial_cmp(&(1.0f64)),
+            Some(std::cmp::Ordering::Greater)
+        ) {
+            _ptfkit_networks[4].predict(
+                _ptfkit_data,
+                &[
+                    conductivity_theta_r,
+                    conductivity_theta_s,
+                    conductivity_alpha,
+                    conductivity_n,
+                ],
+            )
+        } else {
+            vec![vec![f64::NAN; 2]; 100]
+        };
+        let unsaturated_physical = unsaturated
+            .iter()
+            .map(|row| {
+                let member_k_0: f64 = row[0];
+                let member_l: f64 = row[1];
+                vec![10.0f64.powf(member_k_0), member_l]
+            })
+            .collect::<Vec<Vec<f64>>>();
+        #[allow(dead_code)]
+        struct Statistics15 {
+            k_0_mean: f64,
+            l_mean: f64,
+            k_0_std: f64,
+            l_std: f64,
+        }
+        let (conductivity_log_statistics_mean, conductivity_log_statistics_std) =
+            statistics(&unsaturated);
+        let conductivity_log_statistics = Statistics15 {
+            k_0_mean: conductivity_log_statistics_mean[0],
+            l_mean: conductivity_log_statistics_mean[1],
+            k_0_std: conductivity_log_statistics_std[0],
+            l_std: conductivity_log_statistics_std[1],
+        };
+        #[allow(dead_code)]
+        struct Statistics16 {
+            k_0_mean: f64,
+            l_mean: f64,
+            k_0_std: f64,
+            l_std: f64,
+        }
+        let (conductivity_physical_statistics_mean, conductivity_physical_statistics_std) =
+            statistics(&unsaturated_physical);
+        let conductivity_physical_statistics = Statistics16 {
+            k_0_mean: conductivity_physical_statistics_mean[0],
+            l_mean: conductivity_physical_statistics_mean[1],
+            k_0_std: conductivity_physical_statistics_std[0],
+            l_std: conductivity_physical_statistics_std[1],
+        };
+        let geometric_k_0: f64 = 10.0f64.powf(conductivity_log_statistics.k_0_mean);
+        let theta_r_mean: f64 = match _ptfkit_mode {
+            0 => physical_statistics.theta_r_mean,
+            1 => log_statistics.theta_r_mean,
+            _ => log_statistics.theta_r_mean,
+        };
+        let theta_r_std: f64 = match _ptfkit_mode {
+            0 => physical_statistics.theta_r_std,
+            1 => log_statistics.theta_r_std,
+            _ => physical_statistics.theta_r_std,
+        };
+        let theta_s_mean: f64 = match _ptfkit_mode {
+            0 => physical_statistics.theta_s_mean,
+            1 => log_statistics.theta_s_mean,
+            _ => log_statistics.theta_s_mean,
+        };
+        let theta_s_std: f64 = match _ptfkit_mode {
+            0 => physical_statistics.theta_s_std,
+            1 => log_statistics.theta_s_std,
+            _ => physical_statistics.theta_s_std,
+        };
+        let alpha_mean: f64 = match _ptfkit_mode {
+            0 => physical_statistics.alpha_mean,
+            1 => log_statistics.alpha_mean,
+            _ => geometric_alpha,
+        };
+        let alpha_std: f64 = match _ptfkit_mode {
+            0 => physical_statistics.alpha_std,
+            1 => log_statistics.alpha_std,
+            _ => physical_statistics.alpha_std,
+        };
+        let n_mean: f64 = match _ptfkit_mode {
+            0 => physical_statistics.n_mean,
+            1 => log_statistics.n_mean,
+            _ => geometric_n,
+        };
+        let n_std: f64 = match _ptfkit_mode {
+            0 => physical_statistics.n_std,
+            1 => log_statistics.n_std,
+            _ => physical_statistics.n_std,
+        };
+        let k_sat_mean: f64 = match _ptfkit_mode {
+            0 => physical_statistics.k_sat_mean,
+            1 => log_statistics.k_sat_mean,
+            _ => geometric_k_sat,
+        };
+        let k_sat_std: f64 = match _ptfkit_mode {
+            0 => physical_statistics.k_sat_std,
+            1 => log_statistics.k_sat_std,
+            _ => physical_statistics.k_sat_std,
+        };
+        let k_0_mean: f64 = match _ptfkit_mode {
+            0 => conductivity_physical_statistics.k_0_mean,
+            1 => conductivity_log_statistics.k_0_mean,
+            _ => geometric_k_0,
+        };
+        let k_0_std: f64 = match _ptfkit_mode {
+            0 => conductivity_physical_statistics.k_0_std,
+            1 => conductivity_log_statistics.k_0_std,
+            _ => conductivity_physical_statistics.k_0_std,
+        };
+        let l_mean: f64 = conductivity_log_statistics.l_mean;
+        let l_std: f64 = conductivity_log_statistics.l_std;
+        Some([
+            theta_r_mean,
+            theta_s_mean,
+            alpha_mean,
+            n_mean,
+            k_sat_mean,
+            k_0_mean,
+            l_mean,
+            theta_r_std,
+            theta_s_std,
+            alpha_std,
+            n_std,
+            k_sat_std,
+            k_0_std,
+            l_std,
+        ])
+    }
+    pub(super) fn predict(
         networks: &[Network],
         data: &[f64],
         level: usize,
         mode: usize,
         x: &[f64],
     ) -> Option<[f64; 14]> {
-        if mode >= 3 {
-            return None;
-        }
         match level {
-            2 => {
-                if x.len() != 3 {
-                    return None;
-                }
-            }
-            3 => {
-                if x.len() != 4 {
-                    return None;
-                }
-            }
-            4 => {
-                if x.len() != 5 {
-                    return None;
-                }
-            }
-            5 => {
-                if x.len() != 6 {
-                    return None;
-                }
-            }
-            _ => return None,
+            2 => mod2(networks, data, mode, x),
+            3 => mod3(networks, data, mode, x),
+            4 => mod4(networks, data, mode, x),
+            5 => mod5(networks, data, mode, x),
+            _ => None,
         }
-        if x.iter().any(|v| !v.is_finite()) {
-            return None;
-        }
-        if level >= 2
-            && !matches!(
-                (x[0]).partial_cmp(&(0.0)),
-                Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
-            )
-        {
-            return None;
-        }
-        if level >= 2
-            && !matches!(
-                (x[1]).partial_cmp(&(0.0)),
-                Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
-            )
-        {
-            return None;
-        }
-        if level >= 2
-            && !matches!(
-                (x[2]).partial_cmp(&(0.0)),
-                Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
-            )
-        {
-            return None;
-        }
-        if level >= 2
-            && !matches!(
-                (x[0] + x[1] + x[2]).partial_cmp(&(99.0)),
-                Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
-            )
-        {
-            return None;
-        }
-        if level >= 2
-            && !matches!(
-                (x[0] + x[1] + x[2]).partial_cmp(&(101.0)),
-                Some(std::cmp::Ordering::Less | std::cmp::Ordering::Equal)
-            )
-        {
-            return None;
-        }
-        if level >= 3
-            && !matches!(
-                (x[3]).partial_cmp(&(0.5)),
-                Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
-            )
-        {
-            return None;
-        }
-        if level >= 3
-            && !matches!(
-                (x[3]).partial_cmp(&(2.0)),
-                Some(std::cmp::Ordering::Less | std::cmp::Ordering::Equal)
-            )
-        {
-            return None;
-        }
-        if level >= 4
-            && !matches!(
-                (x[4]).partial_cmp(&(0.0)),
-                Some(std::cmp::Ordering::Greater)
-            )
-        {
-            return None;
-        }
-        if level >= 4 && !matches!((x[4]).partial_cmp(&(1.0)), Some(std::cmp::Ordering::Less)) {
-            return None;
-        }
-        if level >= 5
-            && !matches!(
-                (x[5]).partial_cmp(&(0.0)),
-                Some(std::cmp::Ordering::Greater)
-            )
-        {
-            return None;
-        }
-        if level >= 5 && !matches!((x[5]).partial_cmp(&(x[4])), Some(std::cmp::Ordering::Less)) {
-            return None;
-        }
-        let mut out = [f64::NAN; 14];
-        let raw_index = match level {
-            2 => 0,
-            3 => 1,
-            4 => 2,
-            5 => 3,
-            _ => unreachable!(),
-        };
-        let raw = networks[raw_index].predict(data, x);
-        let mut physical = raw.clone();
-        for row in &mut physical {
-            row[2] = 10.0_f64.powf(row[2]);
-        }
-        for row in &mut physical {
-            row[3] = 10.0_f64.powf(row[3]);
-        }
-        for row in &mut physical {
-            row[4] = 10.0_f64.powf(row[4]);
-        }
-        let (log_mean, log_std) = statistics(&raw);
-        let log_mean = [log_mean];
-        let log_std = [log_std];
-        let (linear_mean, linear_std) = statistics(&physical);
-        let linear_mean = [linear_mean];
-        let linear_std = [linear_std];
-        let mut geometric = log_mean.clone();
-        for row in &mut geometric {
-            row[2] = 10.0_f64.powf(row[2]);
-        }
-        for row in &mut geometric {
-            row[3] = 10.0_f64.powf(row[3]);
-        }
-        for row in &mut geometric {
-            row[4] = 10.0_f64.powf(row[4]);
-        }
-        let mean = match mode {
-            0 => &linear_mean,
-            1 => &log_mean,
-            2 => &geometric,
-            _ => unreachable!(),
-        };
-        let std = match mode {
-            0 => &linear_std,
-            1 => &log_std,
-            2 => &linear_std,
-            _ => unreachable!(),
-        };
-        out[0] = mean[0][0];
-        out[1] = mean[0][1];
-        out[2] = mean[0][2];
-        out[3] = mean[0][3];
-        out[4] = mean[0][4];
-        out[7] = std[0][0];
-        out[8] = std[0][1];
-        out[9] = std[0][2];
-        out[10] = std[0][3];
-        out[11] = std[0][4];
-        let conductivity_parameters = match mode {
-            0 => &linear_mean,
-            1 => &geometric,
-            2 => &geometric,
-            _ => unreachable!(),
-        };
-        let vg = [vec![
-            conductivity_parameters[0][0],
-            conductivity_parameters[0][1],
-            conductivity_parameters[0][2],
-            conductivity_parameters[0][3],
-        ]];
-        if level >= 2
-            && !matches!(
-                (0.0).partial_cmp(&(vg[0][0])),
-                Some(std::cmp::Ordering::Less | std::cmp::Ordering::Equal)
-            )
-        {
-            return Some(out);
-        }
-        if level >= 2
-            && !matches!(
-                (vg[0][0]).partial_cmp(&(vg[0][1])),
-                Some(std::cmp::Ordering::Less)
-            )
-        {
-            return Some(out);
-        }
-        if level >= 2
-            && !matches!(
-                (vg[0][1]).partial_cmp(&(1.0)),
-                Some(std::cmp::Ordering::Less)
-            )
-        {
-            return Some(out);
-        }
-        if level >= 2
-            && !matches!(
-                (vg[0][2]).partial_cmp(&(0.0)),
-                Some(std::cmp::Ordering::Greater)
-            )
-        {
-            return Some(out);
-        }
-        if level >= 2
-            && !matches!(
-                (vg[0][3]).partial_cmp(&(1.0)),
-                Some(std::cmp::Ordering::Greater)
-            )
-        {
-            return Some(out);
-        }
-        let unsat_index = match level {
-            2 => 4,
-            3 => 4,
-            4 => 4,
-            5 => 4,
-            _ => unreachable!(),
-        };
-        let unsat = networks[unsat_index].predict(data, &vg[0]);
-        let mut unsat_physical = unsat.clone();
-        for row in &mut unsat_physical {
-            row[0] = 10.0_f64.powf(row[0]);
-        }
-        let (ulog_mean, ulog_std) = statistics(&unsat);
-        let ulog_mean = [ulog_mean];
-        let ulog_std = [ulog_std];
-        let (ulin_mean, ulin_std) = statistics(&unsat_physical);
-        let ulin_mean = [ulin_mean];
-        let ulin_std = [ulin_std];
-        let mut ugeo = ulog_mean.clone();
-        for row in &mut ugeo {
-            row[0] = 10.0_f64.powf(row[0]);
-        }
-        let umean = match mode {
-            0 => &ulin_mean,
-            1 => &ulog_mean,
-            2 => &ugeo,
-            _ => unreachable!(),
-        };
-        let ustd = match mode {
-            0 => &ulin_std,
-            1 => &ulog_std,
-            2 => &ulin_std,
-            _ => unreachable!(),
-        };
-        out[5] = umean[0][0];
-        out[6] = ulog_mean[0][1];
-        out[12] = ustd[0][0];
-        out[13] = ulog_std[0][1];
-        Some(out)
     }
 }

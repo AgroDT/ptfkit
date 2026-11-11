@@ -257,3 +257,30 @@ def test_rosetta_native_batch_releases_the_gil(rosetta_model: Rosetta3):
         sys.setswitchinterval(interval)
         start.set()
         thread.join(timeout=2)
+
+
+@pytest.mark.parametrize(
+    ('level', 'inputs', 'valid'),
+    [
+        (2, [39, 40, 20], True),
+        (2, [41, 40, 20], True),
+        (2, [38.99, 40, 20], False),
+        (2, [41.01, 40, 20], False),
+        (3, [40, 40, 20, 0.5], True),
+        (3, [40, 40, 20, 2.0], True),
+        (3, [40, 40, 20, 2.01], False),
+        (5, [40, 40, 20, 1.4, 0.3, 0.3], False),
+        (4, [40, 40, 20, 1.4], False),
+        *[(2, [value, 40, 20], False) for value in [float('nan'), float('inf'), -float('inf')]],
+        (0, [40, 40, 20], False),
+    ],
+)
+def test_generated_rosetta_validation_boundaries(
+    rosetta_model: Rosetta3, level: int, inputs: list[float], *, valid: bool
+):
+    if valid:
+        values = _models.rosetta3(rosetta_model.model.native_handle, level, 0, inputs)
+        assert len(values) == 14
+    else:
+        with pytest.raises(ModelInputError):
+            _models.rosetta3(rosetta_model.model.native_handle, level, 0, inputs)

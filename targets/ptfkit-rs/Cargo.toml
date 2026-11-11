@@ -9,6 +9,11 @@ repository = "https://github.com/AgroDT/ptfkit"
 documentation = "https://docs.rs/ptfkit"
 keywords = ["pedotransfer", "soil", "hydrology", "soil-water", "hydraulic"]
 categories = ["science"]
+include = ["src/**", "tests/**", "examples/**", "Cargo.toml", "Cargo.lock", "README.md", "LICENSE", "MODEL_NOTICE.txt"]
+
+# Include prepared arrays even though Git ignores them. Published crates need no generator.
+[package.metadata.ptfkit]
+parameter_preparation = "mise run models:prepare"
 
 [features]
 default = ["inline"]

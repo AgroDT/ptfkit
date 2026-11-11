@@ -4,7 +4,6 @@ use super::{
     public::{AdapterFiles, Files, PythonAdapter, enabled, file},
 };
 use crate::model::Entry;
-use crate::output::GeneratedFile;
 use anyhow::Result;
 use sha2::{Digest, Sha256};
 use std::{fmt::Write as _, path::Path};
@@ -42,8 +41,14 @@ pub(crate) fn validate(entries: &[Entry]) -> Result<()> {
             ];
             if entry.slug != "zhang_schaap2017"
                 || binding.kind != "rosetta3"
-                || binding.computation != "../models/rosetta3/computation.json"
                 || binding.artifact != "../models/rosetta3/artifact.json"
+                || function
+                    .implementation
+                    .as_ref()
+                    .unwrap()
+                    .networks
+                    .values()
+                    .any(|n| n.parameters.artifact != binding.artifact)
                 || !(2..=5).contains(&binding.level)
                 || function.name != format!("calc_ptf_zhang2017_mod{}", binding.level)
                 || function.public_api.name != function.name
@@ -119,37 +124,8 @@ pub(crate) fn render(root: &Path, entries: &[Entry]) -> Result<Option<AdapterFil
         }
         .into());
     }
-    let computation = super::pipeline::load(
-        &root.join("specs/models/rosetta3/computation.json"),
-        Some(&data),
-    )?;
-    for function in entry.spec.functions.iter().filter(|f| enabled(f)) {
-        computation.check_contract(
-            function
-                .implementation
-                .as_ref()
-                .unwrap()
-                .external_model
-                .as_ref()
-                .unwrap()
-                .level,
-            function.inputs.len(),
-            function.outputs.fields().len(),
-            3,
-        )?;
-    }
-    let mut c_data = format!(
-        "#include <stddef.h>\n/* CC0-1.0 model data from the pinned USDA repository; see MODEL_NOTICE.txt. */\n#ifdef __cplusplus\nextern \"C\" {{\n#endif\nextern const unsigned char ptfkit_detail_rosetta3_data[{}];\n/* clang-format off */\nconst unsigned char ptfkit_detail_rosetta3_data[{}] = {{\n",
-        data.len(),
-        data.len()
-    );
-    for chunk in data.chunks(24) {
-        for byte in chunk {
-            write!(c_data, "0x{byte:02x},").unwrap();
-        }
-        c_data.push('\n');
-    }
-    c_data.push_str("};\n/* clang-format on */\n#ifdef __cplusplus\n}\n#endif\n");
+    super::parameters::decode(entry, &data)?;
+    let computation = super::computation::render(entry)?;
     let functions: Vec<_> = entry.spec.functions.iter().filter(|f| enabled(f)).collect();
     let fields = functions[0].outputs.fields();
     let names: Vec<_> = fields.iter().map(|f| f.name.as_str()).collect();
@@ -235,11 +211,8 @@ pub(crate) fn render(root: &Path, entries: &[Entry]) -> Result<Option<AdapterFil
     let mut c = format!(
         "#ifndef PTFKIT_ZHANG_SCHAAP2017_H\n#define PTFKIT_ZHANG_SCHAAP2017_H\n#include <ptfkit/models.h>\n#define PTFKIT_ROSETTA3_SHA256 \"{sha}\"\n{c_stats}\nstatic inline int ptfkit_rosetta3_accepts(const ptfkit_model *model) {{static const unsigned char expected[32]={{{digest}}};return model && model->detail_count==5 && !memcmp(model->detail_digest,expected,32);}}\nstatic inline ptfkit_model_status ptfkit_rosetta3_load(const char *path,ptfkit_model **out) {{return ptfkit_model_load(path,PTFKIT_ROSETTA3_SHA256,out);}}\n{rest}\nstatic inline ptfkit_model_status ptfkit_rosetta3_predict(const ptfkit_model *model,unsigned level,unsigned mode,const double *x,size_t count,double *out) {{if(!out)return PTFKIT_MODEL_INPUT;for(size_t i=0;i<14;++i)out[i]=NAN;if(!ptfkit_rosetta3_accepts(model))return PTFKIT_MODEL_INTEGRITY;return ptfkit_detail_rosetta(model->detail_networks,model->detail_data,level,mode,x,count,out)?PTFKIT_MODEL_OK:PTFKIT_MODEL_INPUT;}}\n"
     );
-    let builtin = format!(
-        "\n#define PTFKIT_ROSETTA3_BYTES {}\n#ifdef __cplusplus\nextern \"C\" {{\n#endif\nextern const unsigned char ptfkit_detail_rosetta3_data[PTFKIT_ROSETTA3_BYTES];\n#ifdef __cplusplus\n}}\n#endif\nstatic inline ptfkit_model_status ptfkit_rosetta3_builtin(ptfkit_model **out) {{ return ptfkit_model_from_bytes(ptfkit_detail_rosetta3_data, PTFKIT_ROSETTA3_BYTES, PTFKIT_ROSETTA3_SHA256, out); }}\n",
-        data.len()
-    );
-    c.push_str(&builtin);
+    let builtin = "\n#ifdef __cplusplus\nextern \"C\" {\n#endif\nptfkit_model_status ptfkit_detail_rosetta3_builtin(ptfkit_model **out);\n#ifdef __cplusplus\n}\n#endif\nstatic inline ptfkit_model_status ptfkit_rosetta3_builtin(ptfkit_model **out) {return ptfkit_detail_rosetta3_builtin(out);}\n";
+    c.push_str(builtin);
     let cpp_values = (0..14)
         .map(|i| format!("values[{i}]"))
         .collect::<Vec<_>>()
@@ -319,12 +292,12 @@ pub(crate) fn render(root: &Path, entries: &[Entry]) -> Result<Option<AdapterFil
         python: PythonAdapter {
             headers: "#include <ptfkit/zhang_schaap2017.h>".into(),
             functions: include_str!("public_rosetta_python.c").into(),
-            methods: "    {\"rosetta3_batch\", ptfkit_python_rosetta_batch, METH_VARARGS, NULL},\n    {\"rosetta3\", ptfkit_python_rosetta, METH_VARARGS, NULL},\n    {\"rosetta3_data\", ptfkit_python_rosetta_data, METH_NOARGS, NULL},".into(),
-            stub: "def rosetta3_batch(handle: object, level: int, mode: int, inputs: Sequence[object], outputs: Sequence[object]) -> None: ...\ndef rosetta3(handle: object, level: int, mode: int, inputs: Sequence[float]) -> tuple[float, ...]: ...\ndef rosetta3_data() -> bytes: ...\n".into(),
+            methods: "    {\"rosetta3_batch\", ptfkit_python_rosetta_batch, METH_VARARGS, NULL},\n    {\"rosetta3\", ptfkit_python_rosetta, METH_VARARGS, NULL},\n    {\"rosetta3_builtin\", ptfkit_python_rosetta_builtin, METH_NOARGS, NULL},".into(),
+            stub: "def rosetta3_batch(handle: object, level: int, mode: int, inputs: Sequence[object], outputs: Sequence[object]) -> None: ...\ndef rosetta3(handle: object, level: int, mode: int, inputs: Sequence[float]) -> tuple[float, ...]: ...\ndef rosetta3_builtin() -> object: ...\n".into(),
         },
         files: Files {
-            rust_data: vec![GeneratedFile::binary("rosetta3.ptfm".into(), data)],
-            c_sources: vec![file("rosetta3_data.c", C_HEADER, c_data)],
+            rust_data: vec![],
+            c_sources: vec![],
             rust: vec![
                 file("zhang_schaap2017.rs", RS_HEADER, rs),
             ],
@@ -396,9 +369,9 @@ mod tests {
                         .collect(),
                 };
                 function.implementation = Some(Implementation {
+                    networks: Default::default(),
                     variables: vec![],
                     external_model: Some(ExternalModel {
-                        computation: "../models/rosetta3/computation.json".into(),
                         kind: "rosetta3".into(),
                         artifact: "../models/rosetta3/artifact.json".into(),
                         level,

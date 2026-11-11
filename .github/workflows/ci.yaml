@@ -54,6 +54,9 @@ jobs:
       - name: Check ptfkit-py uv.lock
         run: uv lock --project targets/ptfkit-py --check
 
+      - name: Prepare native model arrays
+        run: mise run models:prepare
+
       - name: Sync ptfkit-py
         run: uv sync --project targets/ptfkit-py --frozen --all-groups
 
@@ -153,6 +156,12 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           allow-prereleases: true
+
+      - name: Set up development toolchains
+        uses: jdx/mise-action@v4
+
+      - name: Prepare native model arrays
+        run: mise run models:prepare
 
       - name: Run pytest
         run: uv run --directory targets/ptfkit-py pytest --no-cov

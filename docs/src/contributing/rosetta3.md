@@ -67,8 +67,9 @@ come from the separate 100-member Rosetta1 ensemble. No models are retrained.
 The original NPZs and author database remain in ignored audit checkouts.
 The byte-identical reviewed PTFKNN01 container is committed at
 `specs/models/rosetta3/rosetta3.ptfm`. Normal generation verifies its size and
-SHA-256, emits the Rust binary resource and the C data translation unit, and
-checks both for generated-output drift. Public headers contain declarations,
+SHA-256 and the YAML architecture declarations. `models:prepare` emits ignored
+typed Rust/C arrays for compilation and packaging; generated calculations and
+wrappers remain committed and checked for generated-output drift. Public headers contain declarations,
 not trained arrays. `MODEL_NOTICE.txt` in each distribution records CC0,
 upstream revision, credits and container hash. ptfkit code remains MIT-licensed.
 The network metadata and fixtures contain topology, normalization and
@@ -404,18 +405,26 @@ umbrella modules and API references. `generate-check` covers those files.
 The four Rosetta3 bindings form one enabled model family; blocked bindings do
 not produce public APIs or trigger artifact lookup.
 
-The dense Rust kernel and C kernel retain their original operation order and
-transforms. The Rosetta statistics layer is reused unchanged. Rust uses
-`include_bytes!` for a generated binary resource. C compiles the container once
-in a separate data translation unit; model handles authenticate and decode it
-through the existing generic loader. The installed native package includes
-portable data source and compiles it once with the consumer's toolchain, for
-C-only, C++-only and mixed projects. C++ module objects supply their runtime
-definitions, including exception RTTI. The Python native extension links the
-same data translation unit and uses no NumPy runtime API. Its constructor
-briefly copies the embedded bytes before the generic native loader owns the
-decoded model. Rust uses `sha2` for integrity checks. No runtime depends on
-local audit checkouts or development environments.
+The generic dense Rust and C kernels implement member evaluation and sample
+statistics. The Rosetta operation sequence is compiled from YAML variables through
+the shared semantic IR. There is no separate computation document or interpreter.
+
+One canonical PTFKNN01 parameter file is committed in `specs/models/rosetta3/`.
+Before a repository build or release package, run `mise run models:prepare`.
+Preparation authenticates the container and matches every architecture, parameter
+offset and scaling declaration to its metadata, then writes ignored static typed
+arrays under `targets/ptfkit-rs/src/prepared/` and `targets/ptfkit-native/prepared/`.
+C uses exact hexadecimal binary64 literals; Rust uses shortest round-trip decimal
+binary64 literals. Compiled regression tests compare parameter bits, including
+signed zero and subnormals. Initialization copies the prepared arrays into owned
+model storage; external authenticated loading remains available.
+
+Published crates include the prepared Rust source. Python sdists include prepared
+C source and vendored native headers; wheels contain compiled data. The native SDK
+ships prepared C source, compiled once with the consumer's toolchain for C-only,
+C++-only and mixed projects. Each distribution builds from files inside its own
+package, without the ptfkit generator or audit checkout. Release workflows prepare
+arrays before packaging. Do not commit the generated weight arrays.
 
 The original local generation workflow remains available as an additional
 reference path; it is no longer the public implementation. Bundled parameters are the default; external model
@@ -502,22 +511,20 @@ modules and the verification workload, not just the model. These are local
 Windows measurements, not cross-platform size, memory or speed guarantees.
 No package has been published by this work.
 
-Local verification and public targets compile the same declarative computation
-in `specs/models/rosetta3/computation.json`. Its `network_manifest` references
-`network.json`, which describes ensemble membership, dense architectures,
-activations, input/output transformations and parameter offsets. Generation
-checks this metadata against the authenticated bundled container.
+Local verification and public targets compile the same `implementation.variables`
+from `specs/functions/zhang_schaap2017.yaml`. `implementation.networks` declares
+architecture, parameters and preprocessing. Ordinary expressions use the existing
+parser, identifier resolver, record fields and language renderers. Typed ensemble
+operations add dense evaluation, member transformations, sample statistics,
+estimate expressions and numeric requirements to the semantic model.
 
-The computation is an ordered graph of network evaluation, column-wise `pow10`,
-sample statistics (`ddof=1`), estimate selection, vector gathering, conditional
-termination and output assignments. Graph references must precede use and match
-the declared dimensions. Level-specific predictor counts and numeric conditions
-are part of the specification. Arithmetic estimates transform individual ensemble
-members before aggregation; geometric estimates transform aggregated log means.
-The graph explicitly gathers the four physical parameters passed to the
-conductivity network, selects arithmetic or geometric means for those inputs,
-and specifies the physical-domain guard and resulting missing conductivity
-outputs. Neither target renderer contains the Rosetta algorithm.
+Arithmetic estimates transform members before aggregation; geometric estimates
+transform aggregated log means. The YAML explicitly selects the four physical
+parameters passed to conductivity and its domain conditions. The small independent
+verification example compiles and executes both emitted C and Rust, checking
+transformation order, composition, sample uncertainty, preprocessing and conditional
+missing outputs. The existing upstream comparisons exercise the actual generated
+public implementations.
 
 Only the generic dense/statistics runtimes are handwritten in C and Rust.
 Python and C++ reuse the C computation. Rust and C++ keep the generic Rosetta

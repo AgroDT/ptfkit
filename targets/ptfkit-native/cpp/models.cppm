@@ -34,6 +34,13 @@ class Model {
         }
         return *this;
     }
+    static inline Model from_initializer(::ptfkit_model_status (*initialize)(::ptfkit_model **)) {
+        ::ptfkit_model *handle = nullptr;
+        auto status = initialize(&handle);
+        if (status != PTFKIT_MODEL_OK)
+            throw ModelError(status);
+        return Model(handle);
+    }
     static inline Model load(const char *path, const char *expected_sha256) {
         ::ptfkit_model *handle = nullptr;
         auto status = ::ptfkit_model_load(path, expected_sha256, &handle);

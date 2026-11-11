@@ -119,10 +119,282 @@ functions:
     status: implemented
     implementation:
       external_model:
-        computation: ../models/rosetta3/computation.json
         kind: rosetta3
         artifact: ../models/rosetta3/artifact.json
         level: 2
+      networks:
+        retention:
+          parameters:
+            artifact: ../models/rosetta3/artifact.json
+            network: 0
+            offset: 0
+          members: 1000
+          widths:
+          - 3
+          - 6
+          - 5
+          activations:
+          - tansig
+          - sigmoid
+          inputs:
+          - name: sand
+            scale: minmax
+            params:
+            - 0.0
+            - 0.01
+            - 0.0
+          - name: silt
+            scale: minmax
+            params:
+            - 0.0
+            - 0.01
+            - 0.0
+          - name: clay
+            scale: minmax
+            params:
+            - 0.0
+            - 0.01
+            - 0.0
+          outputs:
+          - name: theta_r
+            scale: linear
+            params:
+            - 1.0
+            - 0.0
+          - name: theta_s
+            scale: linear
+            params:
+            - 1.0
+            - 0.0
+          - name: alpha
+            scale: linear
+            params:
+            - -8.0
+            - 2.0
+          - name: n
+            scale: linear
+            params:
+            - 1.5
+            - 0.0
+          - name: k_sat
+            scale: linear
+            params:
+            - 8.0
+            - -2.0
+        conductivity:
+          parameters:
+            artifact: ../models/rosetta3/artifact.json
+            network: 4
+            offset: 272000
+          members: 100
+          widths:
+          - 4
+          - 6
+          - 2
+          activations:
+          - sigmoid
+          - sigmoid
+          inputs:
+          - name: theta_r
+            scale: division
+            params:
+            - 1.0
+          - name: theta_s
+            scale: division
+            params:
+            - 1.0
+          - name: alpha
+            scale: logtr
+            params:
+            - -8.0
+            - 0.25
+          - name: n
+            scale: logtr
+            params:
+            - 1.5
+            - 0.0
+          outputs:
+          - name: k_0
+            scale: affine
+            params:
+            - 10.0
+            - -0.3
+          - name: l
+            scale: affine
+            params:
+            - 100.0
+            - -0.5
+      variables:
+      - name: texture_total
+        expr: sand + silt + clay
+      - name: required_predictors
+        require:
+        - left: sand
+          op: ge
+          right: '0'
+        - left: silt
+          op: ge
+          right: '0'
+        - left: clay
+          op: ge
+          right: '0'
+        - left: texture_total
+          op: ge
+          right: '99'
+        - left: texture_total
+          op: le
+          right: '101'
+      - name: raw
+        network:
+          definition: retention
+          arguments:
+          - sand
+          - silt
+          - clay
+      - name: physical
+        ensemble_transform:
+          source: raw
+          fields:
+            alpha: 10 ^ alpha
+            n: 10 ^ n
+            k_sat: 10 ^ k_sat
+      - name: log_statistics
+        ensemble_statistics:
+          source: raw
+          ddof: 1
+      - name: physical_statistics
+        ensemble_statistics:
+          source: physical
+          ddof: 1
+      - name: geometric_alpha
+        expr: 10 ^ log_statistics.alpha_mean
+      - name: geometric_n
+        expr: 10 ^ log_statistics.n_mean
+      - name: geometric_k_sat
+        expr: 10 ^ log_statistics.k_sat_mean
+      - name: conductivity_theta_r
+        estimate:
+          arithmetic: physical_statistics.theta_r_mean
+          log10: log_statistics.theta_r_mean
+          geometric: log_statistics.theta_r_mean
+      - name: conductivity_theta_s
+        estimate:
+          arithmetic: physical_statistics.theta_s_mean
+          log10: log_statistics.theta_s_mean
+          geometric: log_statistics.theta_s_mean
+      - name: conductivity_alpha
+        estimate:
+          arithmetic: physical_statistics.alpha_mean
+          log10: geometric_alpha
+          geometric: geometric_alpha
+      - name: conductivity_n
+        estimate:
+          arithmetic: physical_statistics.n_mean
+          log10: geometric_n
+          geometric: geometric_n
+      - name: unsaturated
+        network:
+          definition: conductivity
+          arguments:
+          - conductivity_theta_r
+          - conductivity_theta_s
+          - conductivity_alpha
+          - conductivity_n
+          when:
+          - left: '0'
+            op: le
+            right: conductivity_theta_r
+          - left: conductivity_theta_r
+            op: lt
+            right: conductivity_theta_s
+          - left: conductivity_theta_s
+            op: lt
+            right: '1'
+          - left: conductivity_alpha
+            op: gt
+            right: '0'
+          - left: conductivity_n
+            op: gt
+            right: '1'
+      - name: unsaturated_physical
+        ensemble_transform:
+          source: unsaturated
+          fields:
+            k_0: 10 ^ k_0
+      - name: conductivity_log_statistics
+        ensemble_statistics:
+          source: unsaturated
+          ddof: 1
+      - name: conductivity_physical_statistics
+        ensemble_statistics:
+          source: unsaturated_physical
+          ddof: 1
+      - name: geometric_k_0
+        expr: 10 ^ conductivity_log_statistics.k_0_mean
+      - name: theta_r_mean
+        estimate:
+          arithmetic: physical_statistics.theta_r_mean
+          log10: log_statistics.theta_r_mean
+          geometric: log_statistics.theta_r_mean
+      - name: theta_r_std
+        estimate:
+          arithmetic: physical_statistics.theta_r_std
+          log10: log_statistics.theta_r_std
+          geometric: physical_statistics.theta_r_std
+      - name: theta_s_mean
+        estimate:
+          arithmetic: physical_statistics.theta_s_mean
+          log10: log_statistics.theta_s_mean
+          geometric: log_statistics.theta_s_mean
+      - name: theta_s_std
+        estimate:
+          arithmetic: physical_statistics.theta_s_std
+          log10: log_statistics.theta_s_std
+          geometric: physical_statistics.theta_s_std
+      - name: alpha_mean
+        estimate:
+          arithmetic: physical_statistics.alpha_mean
+          log10: log_statistics.alpha_mean
+          geometric: geometric_alpha
+      - name: alpha_std
+        estimate:
+          arithmetic: physical_statistics.alpha_std
+          log10: log_statistics.alpha_std
+          geometric: physical_statistics.alpha_std
+      - name: n_mean
+        estimate:
+          arithmetic: physical_statistics.n_mean
+          log10: log_statistics.n_mean
+          geometric: geometric_n
+      - name: n_std
+        estimate:
+          arithmetic: physical_statistics.n_std
+          log10: log_statistics.n_std
+          geometric: physical_statistics.n_std
+      - name: k_sat_mean
+        estimate:
+          arithmetic: physical_statistics.k_sat_mean
+          log10: log_statistics.k_sat_mean
+          geometric: geometric_k_sat
+      - name: k_sat_std
+        estimate:
+          arithmetic: physical_statistics.k_sat_std
+          log10: log_statistics.k_sat_std
+          geometric: physical_statistics.k_sat_std
+      - name: k_0_mean
+        estimate:
+          arithmetic: conductivity_physical_statistics.k_0_mean
+          log10: conductivity_log_statistics.k_0_mean
+          geometric: geometric_k_0
+      - name: k_0_std
+        estimate:
+          arithmetic: conductivity_physical_statistics.k_0_std
+          log10: conductivity_log_statistics.k_0_std
+          geometric: conductivity_physical_statistics.k_0_std
+      - name: l_mean
+        expr: conductivity_log_statistics.l_mean
+      - name: l_std
+        expr: conductivity_log_statistics.l_std
     public_api:
       name: calc_ptf_zhang2017_mod2
       result_class: Rosetta3ArithmeticStatistics
@@ -187,10 +459,295 @@ functions:
     status: implemented
     implementation:
       external_model:
-        computation: ../models/rosetta3/computation.json
         kind: rosetta3
         artifact: ../models/rosetta3/artifact.json
         level: 3
+      networks:
+        retention:
+          parameters:
+            artifact: ../models/rosetta3/artifact.json
+            network: 1
+            offset: 59000
+          members: 1000
+          widths:
+          - 4
+          - 6
+          - 5
+          activations:
+          - tansig
+          - sigmoid
+          inputs:
+          - name: sand
+            scale: minmax
+            params:
+            - 0.0
+            - 0.01
+            - 0.0
+          - name: silt
+            scale: minmax
+            params:
+            - 0.0
+            - 0.01
+            - 0.0
+          - name: clay
+            scale: minmax
+            params:
+            - 0.0
+            - 0.01
+            - 0.0
+          - name: bulk_density
+            scale: minmax
+            params:
+            - 0.0
+            - 1.0
+            - 0.0
+          outputs:
+          - name: theta_r
+            scale: linear
+            params:
+            - 1.0
+            - 0.0
+          - name: theta_s
+            scale: linear
+            params:
+            - 1.0
+            - 0.0
+          - name: alpha
+            scale: linear
+            params:
+            - -8.0
+            - 2.0
+          - name: n
+            scale: linear
+            params:
+            - 1.5
+            - 0.0
+          - name: k_sat
+            scale: linear
+            params:
+            - 8.0
+            - -2.0
+        conductivity:
+          parameters:
+            artifact: ../models/rosetta3/artifact.json
+            network: 4
+            offset: 272000
+          members: 100
+          widths:
+          - 4
+          - 6
+          - 2
+          activations:
+          - sigmoid
+          - sigmoid
+          inputs:
+          - name: theta_r
+            scale: division
+            params:
+            - 1.0
+          - name: theta_s
+            scale: division
+            params:
+            - 1.0
+          - name: alpha
+            scale: logtr
+            params:
+            - -8.0
+            - 0.25
+          - name: n
+            scale: logtr
+            params:
+            - 1.5
+            - 0.0
+          outputs:
+          - name: k_0
+            scale: affine
+            params:
+            - 10.0
+            - -0.3
+          - name: l
+            scale: affine
+            params:
+            - 100.0
+            - -0.5
+      variables:
+      - name: texture_total
+        expr: sand + silt + clay
+      - name: required_predictors
+        require:
+        - left: sand
+          op: ge
+          right: '0'
+        - left: silt
+          op: ge
+          right: '0'
+        - left: clay
+          op: ge
+          right: '0'
+        - left: texture_total
+          op: ge
+          right: '99'
+        - left: texture_total
+          op: le
+          right: '101'
+        - left: bulk_density
+          op: ge
+          right: '0.5'
+        - left: bulk_density
+          op: le
+          right: '2'
+      - name: raw
+        network:
+          definition: retention
+          arguments:
+          - sand
+          - silt
+          - clay
+          - bulk_density
+      - name: physical
+        ensemble_transform:
+          source: raw
+          fields:
+            alpha: 10 ^ alpha
+            n: 10 ^ n
+            k_sat: 10 ^ k_sat
+      - name: log_statistics
+        ensemble_statistics:
+          source: raw
+          ddof: 1
+      - name: physical_statistics
+        ensemble_statistics:
+          source: physical
+          ddof: 1
+      - name: geometric_alpha
+        expr: 10 ^ log_statistics.alpha_mean
+      - name: geometric_n
+        expr: 10 ^ log_statistics.n_mean
+      - name: geometric_k_sat
+        expr: 10 ^ log_statistics.k_sat_mean
+      - name: conductivity_theta_r
+        estimate:
+          arithmetic: physical_statistics.theta_r_mean
+          log10: log_statistics.theta_r_mean
+          geometric: log_statistics.theta_r_mean
+      - name: conductivity_theta_s
+        estimate:
+          arithmetic: physical_statistics.theta_s_mean
+          log10: log_statistics.theta_s_mean
+          geometric: log_statistics.theta_s_mean
+      - name: conductivity_alpha
+        estimate:
+          arithmetic: physical_statistics.alpha_mean
+          log10: geometric_alpha
+          geometric: geometric_alpha
+      - name: conductivity_n
+        estimate:
+          arithmetic: physical_statistics.n_mean
+          log10: geometric_n
+          geometric: geometric_n
+      - name: unsaturated
+        network:
+          definition: conductivity
+          arguments:
+          - conductivity_theta_r
+          - conductivity_theta_s
+          - conductivity_alpha
+          - conductivity_n
+          when:
+          - left: '0'
+            op: le
+            right: conductivity_theta_r
+          - left: conductivity_theta_r
+            op: lt
+            right: conductivity_theta_s
+          - left: conductivity_theta_s
+            op: lt
+            right: '1'
+          - left: conductivity_alpha
+            op: gt
+            right: '0'
+          - left: conductivity_n
+            op: gt
+            right: '1'
+      - name: unsaturated_physical
+        ensemble_transform:
+          source: unsaturated
+          fields:
+            k_0: 10 ^ k_0
+      - name: conductivity_log_statistics
+        ensemble_statistics:
+          source: unsaturated
+          ddof: 1
+      - name: conductivity_physical_statistics
+        ensemble_statistics:
+          source: unsaturated_physical
+          ddof: 1
+      - name: geometric_k_0
+        expr: 10 ^ conductivity_log_statistics.k_0_mean
+      - name: theta_r_mean
+        estimate:
+          arithmetic: physical_statistics.theta_r_mean
+          log10: log_statistics.theta_r_mean
+          geometric: log_statistics.theta_r_mean
+      - name: theta_r_std
+        estimate:
+          arithmetic: physical_statistics.theta_r_std
+          log10: log_statistics.theta_r_std
+          geometric: physical_statistics.theta_r_std
+      - name: theta_s_mean
+        estimate:
+          arithmetic: physical_statistics.theta_s_mean
+          log10: log_statistics.theta_s_mean
+          geometric: log_statistics.theta_s_mean
+      - name: theta_s_std
+        estimate:
+          arithmetic: physical_statistics.theta_s_std
+          log10: log_statistics.theta_s_std
+          geometric: physical_statistics.theta_s_std
+      - name: alpha_mean
+        estimate:
+          arithmetic: physical_statistics.alpha_mean
+          log10: log_statistics.alpha_mean
+          geometric: geometric_alpha
+      - name: alpha_std
+        estimate:
+          arithmetic: physical_statistics.alpha_std
+          log10: log_statistics.alpha_std
+          geometric: physical_statistics.alpha_std
+      - name: n_mean
+        estimate:
+          arithmetic: physical_statistics.n_mean
+          log10: log_statistics.n_mean
+          geometric: geometric_n
+      - name: n_std
+        estimate:
+          arithmetic: physical_statistics.n_std
+          log10: log_statistics.n_std
+          geometric: physical_statistics.n_std
+      - name: k_sat_mean
+        estimate:
+          arithmetic: physical_statistics.k_sat_mean
+          log10: log_statistics.k_sat_mean
+          geometric: geometric_k_sat
+      - name: k_sat_std
+        estimate:
+          arithmetic: physical_statistics.k_sat_std
+          log10: log_statistics.k_sat_std
+          geometric: physical_statistics.k_sat_std
+      - name: k_0_mean
+        estimate:
+          arithmetic: conductivity_physical_statistics.k_0_mean
+          log10: conductivity_log_statistics.k_0_mean
+          geometric: geometric_k_0
+      - name: k_0_std
+        estimate:
+          arithmetic: conductivity_physical_statistics.k_0_std
+          log10: conductivity_log_statistics.k_0_std
+          geometric: conductivity_physical_statistics.k_0_std
+      - name: l_mean
+        expr: conductivity_log_statistics.l_mean
+      - name: l_std
+        expr: conductivity_log_statistics.l_std
     public_api:
       name: calc_ptf_zhang2017_mod3
       result_class: Rosetta3ArithmeticStatistics
@@ -261,10 +818,308 @@ functions:
     status: implemented
     implementation:
       external_model:
-        computation: ../models/rosetta3/computation.json
         kind: rosetta3
         artifact: ../models/rosetta3/artifact.json
         level: 4
+      networks:
+        retention:
+          parameters:
+            artifact: ../models/rosetta3/artifact.json
+            network: 2
+            offset: 124000
+          members: 1000
+          widths:
+          - 5
+          - 6
+          - 5
+          activations:
+          - tansig
+          - sigmoid
+          inputs:
+          - name: sand
+            scale: minmax
+            params:
+            - 0.0
+            - 0.01
+            - 0.0
+          - name: silt
+            scale: minmax
+            params:
+            - 0.0
+            - 0.01
+            - 0.0
+          - name: clay
+            scale: minmax
+            params:
+            - 0.0
+            - 0.01
+            - 0.0
+          - name: bulk_density
+            scale: minmax
+            params:
+            - 0.0
+            - 1.0
+            - 0.0
+          - name: theta_33
+            scale: minmax
+            params:
+            - 0.0
+            - 1.0
+            - 0.0
+          outputs:
+          - name: theta_r
+            scale: linear
+            params:
+            - 1.0
+            - 0.0
+          - name: theta_s
+            scale: linear
+            params:
+            - 1.0
+            - 0.0
+          - name: alpha
+            scale: linear
+            params:
+            - -8.0
+            - 2.0
+          - name: n
+            scale: linear
+            params:
+            - 1.5
+            - 0.0
+          - name: k_sat
+            scale: linear
+            params:
+            - 8.0
+            - -2.0
+        conductivity:
+          parameters:
+            artifact: ../models/rosetta3/artifact.json
+            network: 4
+            offset: 272000
+          members: 100
+          widths:
+          - 4
+          - 6
+          - 2
+          activations:
+          - sigmoid
+          - sigmoid
+          inputs:
+          - name: theta_r
+            scale: division
+            params:
+            - 1.0
+          - name: theta_s
+            scale: division
+            params:
+            - 1.0
+          - name: alpha
+            scale: logtr
+            params:
+            - -8.0
+            - 0.25
+          - name: n
+            scale: logtr
+            params:
+            - 1.5
+            - 0.0
+          outputs:
+          - name: k_0
+            scale: affine
+            params:
+            - 10.0
+            - -0.3
+          - name: l
+            scale: affine
+            params:
+            - 100.0
+            - -0.5
+      variables:
+      - name: texture_total
+        expr: sand + silt + clay
+      - name: required_predictors
+        require:
+        - left: sand
+          op: ge
+          right: '0'
+        - left: silt
+          op: ge
+          right: '0'
+        - left: clay
+          op: ge
+          right: '0'
+        - left: texture_total
+          op: ge
+          right: '99'
+        - left: texture_total
+          op: le
+          right: '101'
+        - left: bulk_density
+          op: ge
+          right: '0.5'
+        - left: bulk_density
+          op: le
+          right: '2'
+        - left: theta_33
+          op: gt
+          right: '0'
+        - left: theta_33
+          op: lt
+          right: '1'
+      - name: raw
+        network:
+          definition: retention
+          arguments:
+          - sand
+          - silt
+          - clay
+          - bulk_density
+          - theta_33
+      - name: physical
+        ensemble_transform:
+          source: raw
+          fields:
+            alpha: 10 ^ alpha
+            n: 10 ^ n
+            k_sat: 10 ^ k_sat
+      - name: log_statistics
+        ensemble_statistics:
+          source: raw
+          ddof: 1
+      - name: physical_statistics
+        ensemble_statistics:
+          source: physical
+          ddof: 1
+      - name: geometric_alpha
+        expr: 10 ^ log_statistics.alpha_mean
+      - name: geometric_n
+        expr: 10 ^ log_statistics.n_mean
+      - name: geometric_k_sat
+        expr: 10 ^ log_statistics.k_sat_mean
+      - name: conductivity_theta_r
+        estimate:
+          arithmetic: physical_statistics.theta_r_mean
+          log10: log_statistics.theta_r_mean
+          geometric: log_statistics.theta_r_mean
+      - name: conductivity_theta_s
+        estimate:
+          arithmetic: physical_statistics.theta_s_mean
+          log10: log_statistics.theta_s_mean
+          geometric: log_statistics.theta_s_mean
+      - name: conductivity_alpha
+        estimate:
+          arithmetic: physical_statistics.alpha_mean
+          log10: geometric_alpha
+          geometric: geometric_alpha
+      - name: conductivity_n
+        estimate:
+          arithmetic: physical_statistics.n_mean
+          log10: geometric_n
+          geometric: geometric_n
+      - name: unsaturated
+        network:
+          definition: conductivity
+          arguments:
+          - conductivity_theta_r
+          - conductivity_theta_s
+          - conductivity_alpha
+          - conductivity_n
+          when:
+          - left: '0'
+            op: le
+            right: conductivity_theta_r
+          - left: conductivity_theta_r
+            op: lt
+            right: conductivity_theta_s
+          - left: conductivity_theta_s
+            op: lt
+            right: '1'
+          - left: conductivity_alpha
+            op: gt
+            right: '0'
+          - left: conductivity_n
+            op: gt
+            right: '1'
+      - name: unsaturated_physical
+        ensemble_transform:
+          source: unsaturated
+          fields:
+            k_0: 10 ^ k_0
+      - name: conductivity_log_statistics
+        ensemble_statistics:
+          source: unsaturated
+          ddof: 1
+      - name: conductivity_physical_statistics
+        ensemble_statistics:
+          source: unsaturated_physical
+          ddof: 1
+      - name: geometric_k_0
+        expr: 10 ^ conductivity_log_statistics.k_0_mean
+      - name: theta_r_mean
+        estimate:
+          arithmetic: physical_statistics.theta_r_mean
+          log10: log_statistics.theta_r_mean
+          geometric: log_statistics.theta_r_mean
+      - name: theta_r_std
+        estimate:
+          arithmetic: physical_statistics.theta_r_std
+          log10: log_statistics.theta_r_std
+          geometric: physical_statistics.theta_r_std
+      - name: theta_s_mean
+        estimate:
+          arithmetic: physical_statistics.theta_s_mean
+          log10: log_statistics.theta_s_mean
+          geometric: log_statistics.theta_s_mean
+      - name: theta_s_std
+        estimate:
+          arithmetic: physical_statistics.theta_s_std
+          log10: log_statistics.theta_s_std
+          geometric: physical_statistics.theta_s_std
+      - name: alpha_mean
+        estimate:
+          arithmetic: physical_statistics.alpha_mean
+          log10: log_statistics.alpha_mean
+          geometric: geometric_alpha
+      - name: alpha_std
+        estimate:
+          arithmetic: physical_statistics.alpha_std
+          log10: log_statistics.alpha_std
+          geometric: physical_statistics.alpha_std
+      - name: n_mean
+        estimate:
+          arithmetic: physical_statistics.n_mean
+          log10: log_statistics.n_mean
+          geometric: geometric_n
+      - name: n_std
+        estimate:
+          arithmetic: physical_statistics.n_std
+          log10: log_statistics.n_std
+          geometric: physical_statistics.n_std
+      - name: k_sat_mean
+        estimate:
+          arithmetic: physical_statistics.k_sat_mean
+          log10: log_statistics.k_sat_mean
+          geometric: geometric_k_sat
+      - name: k_sat_std
+        estimate:
+          arithmetic: physical_statistics.k_sat_std
+          log10: log_statistics.k_sat_std
+          geometric: physical_statistics.k_sat_std
+      - name: k_0_mean
+        estimate:
+          arithmetic: conductivity_physical_statistics.k_0_mean
+          log10: conductivity_log_statistics.k_0_mean
+          geometric: geometric_k_0
+      - name: k_0_std
+        estimate:
+          arithmetic: conductivity_physical_statistics.k_0_std
+          log10: conductivity_log_statistics.k_0_std
+          geometric: conductivity_physical_statistics.k_0_std
+      - name: l_mean
+        expr: conductivity_log_statistics.l_mean
+      - name: l_std
+        expr: conductivity_log_statistics.l_std
     public_api:
       name: calc_ptf_zhang2017_mod4
       result_class: Rosetta3ArithmeticStatistics
@@ -341,10 +1196,321 @@ functions:
     status: implemented
     implementation:
       external_model:
-        computation: ../models/rosetta3/computation.json
         kind: rosetta3
         artifact: ../models/rosetta3/artifact.json
         level: 5
+      networks:
+        retention:
+          parameters:
+            artifact: ../models/rosetta3/artifact.json
+            network: 3
+            offset: 195000
+          members: 1000
+          widths:
+          - 6
+          - 6
+          - 5
+          activations:
+          - tansig
+          - sigmoid
+          inputs:
+          - name: sand
+            scale: minmax
+            params:
+            - 0.0
+            - 0.01
+            - 0.0
+          - name: silt
+            scale: minmax
+            params:
+            - 0.0
+            - 0.01
+            - 0.0
+          - name: clay
+            scale: minmax
+            params:
+            - 0.0
+            - 0.01
+            - 0.0
+          - name: bulk_density
+            scale: minmax
+            params:
+            - 0.0
+            - 1.0
+            - 0.0
+          - name: theta_33
+            scale: minmax
+            params:
+            - 0.0
+            - 1.0
+            - 0.0
+          - name: theta_1500
+            scale: minmax
+            params:
+            - 0.0
+            - 1.0
+            - 0.0
+          outputs:
+          - name: theta_r
+            scale: linear
+            params:
+            - 1.0
+            - 0.0
+          - name: theta_s
+            scale: linear
+            params:
+            - 1.0
+            - 0.0
+          - name: alpha
+            scale: linear
+            params:
+            - -8.0
+            - 2.0
+          - name: n
+            scale: linear
+            params:
+            - 1.5
+            - 0.0
+          - name: k_sat
+            scale: linear
+            params:
+            - 8.0
+            - -2.0
+        conductivity:
+          parameters:
+            artifact: ../models/rosetta3/artifact.json
+            network: 4
+            offset: 272000
+          members: 100
+          widths:
+          - 4
+          - 6
+          - 2
+          activations:
+          - sigmoid
+          - sigmoid
+          inputs:
+          - name: theta_r
+            scale: division
+            params:
+            - 1.0
+          - name: theta_s
+            scale: division
+            params:
+            - 1.0
+          - name: alpha
+            scale: logtr
+            params:
+            - -8.0
+            - 0.25
+          - name: n
+            scale: logtr
+            params:
+            - 1.5
+            - 0.0
+          outputs:
+          - name: k_0
+            scale: affine
+            params:
+            - 10.0
+            - -0.3
+          - name: l
+            scale: affine
+            params:
+            - 100.0
+            - -0.5
+      variables:
+      - name: texture_total
+        expr: sand + silt + clay
+      - name: required_predictors
+        require:
+        - left: sand
+          op: ge
+          right: '0'
+        - left: silt
+          op: ge
+          right: '0'
+        - left: clay
+          op: ge
+          right: '0'
+        - left: texture_total
+          op: ge
+          right: '99'
+        - left: texture_total
+          op: le
+          right: '101'
+        - left: bulk_density
+          op: ge
+          right: '0.5'
+        - left: bulk_density
+          op: le
+          right: '2'
+        - left: theta_33
+          op: gt
+          right: '0'
+        - left: theta_33
+          op: lt
+          right: '1'
+        - left: theta_1500
+          op: gt
+          right: '0'
+        - left: theta_1500
+          op: lt
+          right: theta_33
+      - name: raw
+        network:
+          definition: retention
+          arguments:
+          - sand
+          - silt
+          - clay
+          - bulk_density
+          - theta_33
+          - theta_1500
+      - name: physical
+        ensemble_transform:
+          source: raw
+          fields:
+            alpha: 10 ^ alpha
+            n: 10 ^ n
+            k_sat: 10 ^ k_sat
+      - name: log_statistics
+        ensemble_statistics:
+          source: raw
+          ddof: 1
+      - name: physical_statistics
+        ensemble_statistics:
+          source: physical
+          ddof: 1
+      - name: geometric_alpha
+        expr: 10 ^ log_statistics.alpha_mean
+      - name: geometric_n
+        expr: 10 ^ log_statistics.n_mean
+      - name: geometric_k_sat
+        expr: 10 ^ log_statistics.k_sat_mean
+      - name: conductivity_theta_r
+        estimate:
+          arithmetic: physical_statistics.theta_r_mean
+          log10: log_statistics.theta_r_mean
+          geometric: log_statistics.theta_r_mean
+      - name: conductivity_theta_s
+        estimate:
+          arithmetic: physical_statistics.theta_s_mean
+          log10: log_statistics.theta_s_mean
+          geometric: log_statistics.theta_s_mean
+      - name: conductivity_alpha
+        estimate:
+          arithmetic: physical_statistics.alpha_mean
+          log10: geometric_alpha
+          geometric: geometric_alpha
+      - name: conductivity_n
+        estimate:
+          arithmetic: physical_statistics.n_mean
+          log10: geometric_n
+          geometric: geometric_n
+      - name: unsaturated
+        network:
+          definition: conductivity
+          arguments:
+          - conductivity_theta_r
+          - conductivity_theta_s
+          - conductivity_alpha
+          - conductivity_n
+          when:
+          - left: '0'
+            op: le
+            right: conductivity_theta_r
+          - left: conductivity_theta_r
+            op: lt
+            right: conductivity_theta_s
+          - left: conductivity_theta_s
+            op: lt
+            right: '1'
+          - left: conductivity_alpha
+            op: gt
+            right: '0'
+          - left: conductivity_n
+            op: gt
+            right: '1'
+      - name: unsaturated_physical
+        ensemble_transform:
+          source: unsaturated
+          fields:
+            k_0: 10 ^ k_0
+      - name: conductivity_log_statistics
+        ensemble_statistics:
+          source: unsaturated
+          ddof: 1
+      - name: conductivity_physical_statistics
+        ensemble_statistics:
+          source: unsaturated_physical
+          ddof: 1
+      - name: geometric_k_0
+        expr: 10 ^ conductivity_log_statistics.k_0_mean
+      - name: theta_r_mean
+        estimate:
+          arithmetic: physical_statistics.theta_r_mean
+          log10: log_statistics.theta_r_mean
+          geometric: log_statistics.theta_r_mean
+      - name: theta_r_std
+        estimate:
+          arithmetic: physical_statistics.theta_r_std
+          log10: log_statistics.theta_r_std
+          geometric: physical_statistics.theta_r_std
+      - name: theta_s_mean
+        estimate:
+          arithmetic: physical_statistics.theta_s_mean
+          log10: log_statistics.theta_s_mean
+          geometric: log_statistics.theta_s_mean
+      - name: theta_s_std
+        estimate:
+          arithmetic: physical_statistics.theta_s_std
+          log10: log_statistics.theta_s_std
+          geometric: physical_statistics.theta_s_std
+      - name: alpha_mean
+        estimate:
+          arithmetic: physical_statistics.alpha_mean
+          log10: log_statistics.alpha_mean
+          geometric: geometric_alpha
+      - name: alpha_std
+        estimate:
+          arithmetic: physical_statistics.alpha_std
+          log10: log_statistics.alpha_std
+          geometric: physical_statistics.alpha_std
+      - name: n_mean
+        estimate:
+          arithmetic: physical_statistics.n_mean
+          log10: log_statistics.n_mean
+          geometric: geometric_n
+      - name: n_std
+        estimate:
+          arithmetic: physical_statistics.n_std
+          log10: log_statistics.n_std
+          geometric: physical_statistics.n_std
+      - name: k_sat_mean
+        estimate:
+          arithmetic: physical_statistics.k_sat_mean
+          log10: log_statistics.k_sat_mean
+          geometric: geometric_k_sat
+      - name: k_sat_std
+        estimate:
+          arithmetic: physical_statistics.k_sat_std
+          log10: log_statistics.k_sat_std
+          geometric: physical_statistics.k_sat_std
+      - name: k_0_mean
+        estimate:
+          arithmetic: conductivity_physical_statistics.k_0_mean
+          log10: conductivity_log_statistics.k_0_mean
+          geometric: geometric_k_0
+      - name: k_0_std
+        estimate:
+          arithmetic: conductivity_physical_statistics.k_0_std
+          log10: conductivity_log_statistics.k_0_std
+          geometric: conductivity_physical_statistics.k_0_std
+      - name: l_mean
+        expr: conductivity_log_statistics.l_mean
+      - name: l_std
+        expr: conductivity_log_statistics.l_std
     public_api:
       name: calc_ptf_zhang2017_mod5
       result_class: Rosetta3ArithmeticStatistics
@@ -433,12 +1599,12 @@ scientific_notes: |
   docs/src/contributing/rosetta3.md. The versioned artifact manifest is
   specs/models/rosetta3/manifest.json. The reviewed parameters are bundled unchanged.
 
-  The neural computation is specified in specs/models/rosetta3/computation.json,
-  with architectures, activations, ensemble sizes, parameter offsets, and input
-  and output scaling in network.json. The ordered graph specifies member and
-  aggregate transformations, sample statistics, estimate selection, conductivity
-  inputs, physical-domain conditions, and output assignment. C and Rust
-  computation is generated from this graph; Python and C++ reuse the C target.
+  The dense architectures, parameter references, activations, and scaling are declared
+  in implementation.networks. Ordered implementation.variables describe member
+  transformations, sample statistics, estimate selection, conductivity inputs,
+  numeric conditions, and output transformations. All arithmetic uses the shared
+  expression parser and semantic model. C and Rust computation is generated from
+  this specification; Python and C++ reuse the C target.
 
   External-model implementations are compiled separately from scalar formulas
   and Random Forest expressions. Public APIs load a PTFKNN01 container using

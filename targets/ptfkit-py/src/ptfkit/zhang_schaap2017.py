@@ -97,7 +97,7 @@ class Rosetta3:
     def __init__(self, model: Model | None = None) -> None:
         """Use the bundled model by default, or validate a supplied model."""
         if model is None:
-            model = Model.from_bytes(_models.rosetta3_data(), MODEL_SHA256)
+            model = Model._from_native(_models.rosetta3_builtin())  # noqa: SLF001
         if model.sha256 != MODEL_SHA256:
             message = 'model is not the pinned Rosetta3 container'
             raise ModelIntegrityError(message)

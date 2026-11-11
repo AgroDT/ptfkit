@@ -1,4 +1,5 @@
 ["python:sync"]
+depends = ["models:prepare"]
 description = "Synchronize the locked Python development environment"
 dir = "targets/ptfkit-py"
 run = "uv sync --frozen --all-groups"
@@ -9,11 +10,13 @@ dir = "targets/ptfkit-py"
 run = "uv lock --check"
 
 ["python:build"]
+depends = ["models:prepare"]
 description = "Build Python source and wheel distributions"
 dir = "targets/ptfkit-py"
 run = "uv build"
 
 ["python:test"]
+depends = ["models:prepare"]
 description = "Rebuild the local extension and run the Python test suite"
 dir = "targets/ptfkit-py"
 run = "uv run --frozen --reinstall-package ptfkit pytest"

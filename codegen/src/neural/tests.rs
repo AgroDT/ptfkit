@@ -1,7 +1,4 @@
-use super::{
-    engine::{Network, Scale, statistics},
-    rosetta,
-};
+use super::engine::{Network, Scale, statistics};
 
 fn scale(kind: &str, params: &[f64]) -> Scale {
     Scale {
@@ -40,23 +37,6 @@ fn uncertainty_is_sample_standard_deviation_in_each_reported_scale() {
     assert_eq!(mean, [2.0, 12.0]);
     assert!((std[0] - 2.0_f64.sqrt()).abs() < 1e-15);
     assert!((std[1] - 8.0_f64.sqrt()).abs() < 1e-15);
-}
-
-#[test]
-fn fixed_level_validation_never_downgrades_or_invents_predictors() {
-    assert!(rosetta::valid(2, &[39.0, 40.0, 20.0]));
-    assert!(rosetta::valid(2, &[41.0, 40.0, 20.0]));
-    assert!(!rosetta::valid(2, &[38.99, 40.0, 20.0]));
-    assert!(!rosetta::valid(2, &[41.01, 40.0, 20.0]));
-    assert!(rosetta::valid(3, &[40.0, 40.0, 20.0, 0.5]));
-    assert!(rosetta::valid(3, &[40.0, 40.0, 20.0, 2.0]));
-    assert!(!rosetta::valid(3, &[40.0, 40.0, 20.0, 2.01]));
-    assert!(!rosetta::valid(5, &[40.0, 40.0, 20.0, 1.4, 0.3, 0.3]));
-    assert!(!rosetta::valid(4, &[40.0, 40.0, 20.0, 1.4]));
-    for value in [f64::NAN, f64::INFINITY, f64::NEG_INFINITY] {
-        assert!(!rosetta::valid(2, &[value, 40.0, 20.0]));
-    }
-    assert!(!rosetta::valid(0, &[]));
 }
 
 #[test]

@@ -1,0 +1,178 @@
+source:
+  summary: Synthetic rendering example.
+  citation_apa: Example (2026).
+  doi: null
+functions:
+- name: calc_ptf_example2026
+  status: implemented
+  public_api:
+    name: calc_ptf_example2026
+    summary: Record example.
+  scope:
+    prediction_target: Test fractions.
+    models:
+      h_theta: null
+      k_h: null
+  inputs:
+  - name: x
+    unit: '1'
+    symbol: null
+    domain: null
+    description: Input value.
+  outputs:
+    type: record
+    name: DenseStatistics
+    fields:
+    - name: mean
+      quantity: volumetric_water_content
+      unit: volume_fraction
+      reported_unit: '1'
+      symbol: null
+      domain: null
+      description: First result.
+    - name: std
+      quantity: volumetric_water_content
+      unit: volume_fraction
+      reported_unit: '1'
+      symbol: null
+      domain: null
+      description: First result.
+    - name: secondary_mean
+      quantity: volumetric_water_content
+      unit: volume_fraction
+      reported_unit: '1'
+      symbol: null
+      domain: null
+      description: First result.
+    - name: secondary_std
+      quantity: volumetric_water_content
+      unit: volume_fraction
+      reported_unit: '1'
+      symbol: null
+      domain: null
+      description: First result.
+    - name: shifted
+      quantity: volumetric_water_content
+      unit: volume_fraction
+      reported_unit: '1'
+      symbol: null
+      domain: null
+      description: First result.
+  implementation:
+    networks:
+      primary:
+        parameters:
+          artifact: controlled.ptfm
+          network: 0
+          offset: 0
+        members: 2
+        widths:
+        - 1
+        - 1
+        activations:
+        - linear
+        inputs:
+        - name: value
+          scale: division
+          params:
+          - 2.0
+        outputs:
+        - name: value
+          scale: linear
+          params:
+          - 1.0
+          - -2.0
+      secondary:
+        parameters:
+          artifact: controlled.ptfm
+          network: 1
+          offset: 4
+        members: 2
+        widths:
+        - 1
+        - 1
+        activations:
+        - linear
+        inputs:
+        - name: value
+          scale: asis
+          params: []
+        outputs:
+        - name: value
+          scale: asis
+          params: []
+    variables:
+    - name: required
+      require:
+      - left: x
+        op: ge
+        right: '0'
+      - left: x
+        op: le
+        right: '4'
+    - name: raw
+      network:
+        definition: primary
+        arguments:
+        - x
+    - name: physical
+      ensemble_transform:
+        source: raw
+        fields:
+          value: 10 ^ value
+    - name: logs
+      ensemble_statistics:
+        source: raw
+        ddof: 1
+    - name: linear
+      ensemble_statistics:
+        source: physical
+        ddof: 1
+    - name: geometric
+      expr: 10 ^ logs.value_mean
+    - name: mean
+      estimate:
+        arithmetic: linear.value_mean
+        log10: logs.value_mean
+        geometric: geometric
+    - name: std
+      estimate:
+        arithmetic: linear.value_std
+        log10: logs.value_std
+        geometric: linear.value_std
+    - name: feed
+      estimate:
+        arithmetic: linear.value_mean
+        log10: geometric
+        geometric: geometric
+    - name: secondary
+      network:
+        definition: secondary
+        arguments:
+        - feed
+        when:
+        - left: feed
+          op: lt
+          right: '100'
+    - name: summary
+      ensemble_statistics:
+        source: secondary
+        ddof: 1
+    - name: secondary_mean
+      expr: summary.value_mean
+    - name: secondary_std
+      expr: summary.value_std
+    - name: shifted
+      expr: secondary_mean + 7
+  verification_cases:
+  - id: hand_calculated
+    kind: calculated
+    inputs:
+      x: 2.0
+    expected:
+      mean: 50.5
+      std: 70.0035713374682
+      secondary_mean: 75.75
+      secondary_std: 35.70889244992065
+      shifted: 82.75
+    rationale: Two primary members 0 and 2; transformed mean 50.5; secondary members v and 2v.

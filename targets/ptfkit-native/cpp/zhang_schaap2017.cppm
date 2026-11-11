@@ -36,8 +36,7 @@ class Rosetta3 {
 
   public:
     static inline Rosetta3 builtin() {
-        return from_bytes(
-            std::span<const unsigned char>(::ptfkit_detail_rosetta3_data, PTFKIT_ROSETTA3_BYTES));
+        return Rosetta3(Model::from_initializer(::ptfkit_detail_rosetta3_builtin));
     }
     inline explicit Rosetta3(Model model) : model_(std::move(model)) {
         if (!::ptfkit_rosetta3_accepts(model_.native_handle()))

@@ -200,7 +200,8 @@ fn module_tokens(
                 VariableValue::RecordLookup(lookup) => Some(lookup),
                 VariableValue::Expression(_)
                 | VariableValue::Tree(_)
-                | VariableValue::Forest(_) => None,
+                | VariableValue::Forest(_)
+                | VariableValue::Neural(_) => None,
             }
         }
         ResultBinding::Fields | ResultBinding::RecordVariable(_) => None,
@@ -215,6 +216,7 @@ fn module_tokens(
         .map(|variable| {
             let name = format_ident!("{}", variable.name);
             match &variable.value {
+                VariableValue::Neural(_) => unreachable!("neural functions use the dense backend"),
                 VariableValue::Expression(expression) => {
                     let expression = expression_tokens(expression, &inputs, &ir.variables)?.tokens;
                     Ok(quote!(let #name = #expression;))
@@ -307,6 +309,9 @@ fn output_tokens(
                 .name;
             let expression = match terminal_output {
                 Some(variable) => match &variable.value {
+                    VariableValue::Neural(_) => {
+                        unreachable!("neural functions use the dense backend")
+                    }
                     VariableValue::Expression(expression) => {
                         expression_tokens(expression, inputs, variables)?.tokens
                     }
@@ -479,7 +484,8 @@ fn tree_definitions<'a>(functions: &[&'a CompiledFunction]) -> Vec<&'a TreeDefin
             VariableValue::Tree(tree) => Some(&tree.definition),
             VariableValue::Expression(_)
             | VariableValue::RecordLookup(_)
-            | VariableValue::Forest(_) => None,
+            | VariableValue::Forest(_)
+            | VariableValue::Neural(_) => None,
         })
         .filter(|definition| names.insert(definition.name.as_str()))
         .collect()
@@ -498,7 +504,9 @@ fn tree_definition_tokens(definition: &TreeDefinition) -> TokenStream {
         .map(|input| match &input.value_type {
             ValueType::Number => quote!(f64),
             ValueType::Enum(enum_type) => enum_type_tokens(enum_type),
-            ValueType::Record(_) => unreachable!("tree inputs cannot be records"),
+            ValueType::Ensemble(_) | ValueType::Effect | ValueType::Record(_) => {
+                unreachable!("tree inputs cannot be records")
+            }
         });
     let output = match &definition.output {
         ValueType::Number => quote!(f64),
@@ -506,7 +514,9 @@ fn tree_definition_tokens(definition: &TreeDefinition) -> TokenStream {
             let name = format_ident!("{}", record.name);
             quote!(#name)
         }
-        ValueType::Enum(_) => unreachable!("tree outputs cannot be enums"),
+        ValueType::Ensemble(_) | ValueType::Effect | ValueType::Enum(_) => {
+            unreachable!("tree outputs cannot be enums")
+        }
     };
     let body = tree_node_tokens(&definition.root, &inputs, &[], &definition.output);
     quote!(#[inline] fn #name(#(#inputs: #input_types),*) -> #output { #body })
@@ -534,7 +544,8 @@ fn forest_definitions<'a>(functions: &[&'a CompiledFunction]) -> Vec<&'a RandomF
             VariableValue::Forest(forest) => Some(&forest.definition),
             VariableValue::Expression(_)
             | VariableValue::RecordLookup(_)
-            | VariableValue::Tree(_) => None,
+            | VariableValue::Tree(_)
+            | VariableValue::Neural(_) => None,
         })
         .filter(|definition| names.insert(definition.name.as_str()))
         .collect()
@@ -600,9 +611,10 @@ fn lookup_conversion_tokens(functions: &[&CompiledFunction]) -> Vec<TokenStream>
         .flat_map(|function| &function.ir.variables)
         .filter_map(|variable| match &variable.value {
             VariableValue::RecordLookup(lookup) => Some(lookup),
-            VariableValue::Expression(_) | VariableValue::Tree(_) | VariableValue::Forest(_) => {
-                None
-            }
+            VariableValue::Expression(_)
+            | VariableValue::Tree(_)
+            | VariableValue::Forest(_)
+            | VariableValue::Neural(_) => None,
         })
         .filter(|lookup| names.insert((lookup.enum_type.clone(), lookup.output.name.clone())))
         .map(|lookup| {
@@ -1061,6 +1073,20 @@ fn verification_test_tokens(resolved: &CompiledFunction, unique_test_module: boo
 
 fn render_tokens(module_docs: TokenStream, tokens: TokenStream) -> String {
     format!("{HEADER}\n{module_docs}\n\n{tokens}")
+}
+
+pub(crate) fn render_expression(
+    expression: &Expr,
+    inputs: &[String],
+    variables: &[semantic::Variable],
+) -> Result<String> {
+    let inputs = inputs
+        .iter()
+        .map(|s| format_ident!("{s}"))
+        .collect::<Vec<_>>();
+    Ok(expression_tokens(expression, &inputs, variables)?
+        .tokens
+        .to_string())
 }
 
 #[cfg(test)]

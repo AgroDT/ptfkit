@@ -245,35 +245,35 @@ generate targets are documented in the
 
 ## Neural ensemble computation
 
-A neural function uses `implementation.external_model` to bind an authenticated
-parameter artifact, a predictor level, and a required `computation` specification.
-An adapter name alone does not define its scientific computation. Rosetta3 is the
-current supported public binding; see the [Rosetta3 contract](../contributing/rosetta3.md).
+Dense neural PTFs declare their architectures in `implementation.networks` and
+use the same ordered `implementation.variables` pipeline as formulas and trees.
+A network declaration contains a parameter artifact reference, network index and
+offset, member count, layer widths and activations, and named input/output channels
+with reusable scaling transforms. Parameters are authenticated against those
+declarations before preparation or generation.
 
-The computation document declares a format version, network manifest, predictor
-counts by level, estimate count, output count, input conditions, and ordered graph
-nodes. The network manifest records dense layer widths, activations, bootstrap
-membership, scaling transforms, and parameter offsets. Generation verifies the
-network metadata against the bundled parameter container.
-
-| Graph operation | Meaning |
+| Variable operation | Meaning |
 | --- | --- |
-| `network` | Evaluate a level-selected ensemble on an explicit input vector. |
-| `pow10` | Transform selected columns of every row. |
-| `statistics` | Calculate column means and sample standard deviations (`ddof=1`). |
-| `select` | Choose a matrix or vector for each estimate mode. |
-| `gather` | Compose a vector from named scalar references. |
-| `guard` | Return existing outputs when a declared condition fails; unassigned outputs remain NaN. |
-| `store` | Assign scalar references to declared output positions. |
+| `expr` | Ordinary arithmetic, using the shared parser and typed expression IR. |
+| `network` | Evaluate a declared dense ensemble on explicit arithmetic arguments. |
+| `ensemble_transform` | Apply ordinary arithmetic expressions to named member channels. |
+| `ensemble_statistics` | Produce a record of channel means and sample standard deviations (`ddof=1`). |
+| `estimate` | Select arithmetic expressions for arithmetic, log10, or geometric estimates. |
+| `require` | Reject predictors when a declared numeric condition fails. |
 
-A scalar is a numeric constant, a reference such as `node.0` (zero-based column
-of a vector), or a `sum` of scalars. `x` is the predictor vector. Conditions
-compare two scalars using `lt`, `le`, `gt`, or `ge` and declare the minimum
-predictor level where they apply. Inputs must be finite. Graph references must
-precede use, dimensions must match, and every output must be assigned exactly
-once on the complete execution path. Early guards preserve earlier assignments.
+A network's optional `when` conditions suppress that network's outputs with NaN;
+other calculations continue. Conditions compare ordinary expressions with `lt`,
+`le`, `gt`, or `ge`. Ensemble references must resolve to earlier variables, channel
+names and argument counts must match, and all public outputs must resolve to
+numeric variables. Statistics fields use names such as `theta_r_mean` and
+`theta_r_std`, accessible through the existing record expression syntax.
 
-The graph determines whether nonlinear transformations precede or follow
-aggregation, which parameter estimates feed a composed network, and which
-conditions suppress dependent outputs. C and Rust render the graph independently;
-Python and C++ reuse the generated C computation and its generic runtime.
+The Rosetta `external_model` binding controls explicit model initialization and
+method signatures. Its computation comes from these compiled variables, including
+the order of transformations and statistics and the exact conductivity arguments.
+C and Rust render the shared semantic IR independently; Python and C++ reuse C.
+These operations cover dense neural ensembles. Quantile regression forests use a
+separate execution backend.
+
+See the [Rosetta3 contract](../contributing/rosetta3.md) and the
+[development guide](../contributing/development.md) for preparation and distribution.

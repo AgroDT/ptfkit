@@ -33,13 +33,13 @@ fn scales(scales: &[Scale]) -> String {
 pub(crate) fn run(model: &Path, directory: &Path) -> Result<()> {
     let model = Model::load(model)?;
     model.check_rosetta()?;
-    let computation = super::pipeline::load(
-        Path::new(concat!(
-            env!("CARGO_MANIFEST_DIR"),
-            "/../specs/models/rosetta3/computation.json"
-        )),
-        None,
-    )?;
+    let root = Path::new(concat!(env!("CARGO_MANIFEST_DIR"), "/.."));
+    let entries = crate::specs::load_all(root)?.entries;
+    let entry = entries
+        .iter()
+        .find(|e| e.slug == "zhang_schaap2017")
+        .context("Rosetta source")?;
+    let computation = super::computation::render(entry)?;
     // Never overwrite reviewed generated local artifacts or arbitrary directories.
     fs::create_dir(directory).context("creating new local neural output directory")?;
     let write = |name: &str, content: &str| fs::write(directory.join(name), content);

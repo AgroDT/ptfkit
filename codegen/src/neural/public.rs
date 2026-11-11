@@ -44,38 +44,6 @@ pub(crate) fn validate(entries: &[Entry]) -> Result<()> {
     public_rosetta::validate(entries)
 }
 
-pub(crate) fn validate_computations(root: &Path, entries: &[Entry]) -> Result<()> {
-    let mut computations = std::collections::BTreeMap::new();
-    for function in entries
-        .iter()
-        .flat_map(|e| &e.spec.functions)
-        .filter(|f| enabled(f))
-    {
-        let binding = function
-            .implementation
-            .as_ref()
-            .unwrap()
-            .external_model
-            .as_ref()
-            .unwrap();
-        if !computations.contains_key(&binding.computation) {
-            let path = root.join("specs/functions").join(&binding.computation);
-            let container = std::fs::read(path.with_file_name("rosetta3.ptfm"))?;
-            computations.insert(
-                &binding.computation,
-                super::pipeline::load(&path, Some(&container))?,
-            );
-        }
-        computations[&binding.computation].check_contract(
-            binding.level,
-            function.inputs.len(),
-            function.outputs.fields().len(),
-            3,
-        )?;
-    }
-    Ok(())
-}
-
 #[derive(Default)]
 pub(crate) struct Files {
     pub(crate) rust: Vec<GeneratedFile>,

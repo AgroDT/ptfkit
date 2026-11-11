@@ -21,6 +21,12 @@ class Model:
         self._handle = _models.from_bytes(data, sha256)
 
     @classmethod
+    def _from_native(cls, handle: object) -> 'Model':
+        instance = cls.__new__(cls)
+        instance._handle = handle  # noqa: SLF001
+        return instance
+
+    @classmethod
     def load(cls, path: str | Path, sha256: str) -> 'Model':
         """Read and authenticate a PTFKNN01 external model container."""
         with Path(path).open('rb') as source:

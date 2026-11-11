@@ -147,11 +147,16 @@ static PyObject *ptfkit_python_predict(PyObject *module, PyObject *args) {
     free(raw);
     return rows;
 }
-static PyObject *ptfkit_python_rosetta_data(PyObject *module, PyObject *unused) {
-    (void)module;
+static PyObject *ptfkit_python_rosetta_builtin(PyObject *module, PyObject *unused) {
     (void)unused;
-    return PyBytes_FromStringAndSize((const char *)ptfkit_detail_rosetta3_data,
-                                     PTFKIT_ROSETTA3_BYTES);
+    ptfkit_model *model = NULL;
+    ptfkit_model_status status = ptfkit_rosetta3_builtin(&model);
+    if (status != PTFKIT_MODEL_OK)
+        return ptfkit_python_failure(module, status);
+    PyObject *capsule = PyCapsule_New(model, "ptfkit.Model", ptfkit_python_model_free);
+    if (!capsule)
+        ptfkit_model_free(model);
+    return capsule;
 }
 
 static PyObject *ptfkit_python_rosetta(PyObject *module, PyObject *args) {
@@ -272,7 +277,7 @@ static PyMethodDef ptfkit_model_methods[] = {
     {"predict_network", ptfkit_python_predict, METH_VARARGS, NULL},
     {"rosetta3_batch", ptfkit_python_rosetta_batch, METH_VARARGS, NULL},
     {"rosetta3", ptfkit_python_rosetta, METH_VARARGS, NULL},
-    {"rosetta3_data", ptfkit_python_rosetta_data, METH_NOARGS, NULL},
+    {"rosetta3_builtin", ptfkit_python_rosetta_builtin, METH_NOARGS, NULL},
     {NULL, NULL, 0, NULL}};
 static struct PyModuleDef ptfkit_models_module = {
     PyModuleDef_HEAD_INIT, "_models", NULL, -1, ptfkit_model_methods, NULL, NULL, NULL, NULL};

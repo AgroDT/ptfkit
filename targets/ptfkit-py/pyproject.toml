@@ -74,4 +74,4 @@ wheel.exclude = ["*.c", "*.h"]
 
 [tool.scikit-build.sdist.force-include]
 "../ptfkit-native/include" = "vendor/ptfkit-native/include"
-"../ptfkit-native/src" = "vendor/ptfkit-native/src"
+"../ptfkit-native/prepared" = "vendor/ptfkit-native/prepared"

@@ -7,7 +7,7 @@ repos:
     hooks:
       - id: check-added-large-files
         # Reviewed bundled model assets; generation verifies their pinned SHA-256.
-        exclude: '^(specs/models/rosetta3/rosetta3\.ptfm|targets/ptfkit-rs/src/data/rosetta3\.ptfm|targets/ptfkit-native/src/rosetta3_data\.c)$'
+        exclude: '^(specs/models/rosetta3/rosetta3\.ptfm)$'
       - id: check-toml
       - id: check-yaml
       - id: end-of-file-fixer

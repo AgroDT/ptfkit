@@ -1,8 +1,11 @@
-static PyObject *ptfkit_python_rosetta_data(PyObject *module, PyObject *unused) {
-    (void)module;
+static PyObject *ptfkit_python_rosetta_builtin(PyObject *module, PyObject *unused) {
     (void)unused;
-    return PyBytes_FromStringAndSize((const char *)ptfkit_detail_rosetta3_data,
-                                     PTFKIT_ROSETTA3_BYTES);
+    ptfkit_model *model=NULL;
+    ptfkit_model_status status=ptfkit_rosetta3_builtin(&model);
+    if(status!=PTFKIT_MODEL_OK)return ptfkit_python_failure(module,status);
+    PyObject *capsule=PyCapsule_New(model,"ptfkit.Model",ptfkit_python_model_free);
+    if(!capsule)ptfkit_model_free(model);
+    return capsule;
 }
 
 static PyObject *ptfkit_python_rosetta(PyObject *module, PyObject *args) {

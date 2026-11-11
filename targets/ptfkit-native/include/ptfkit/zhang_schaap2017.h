@@ -54,217 +54,871 @@ PTFKIT_MODEL_INLINE int ptfkit_rosetta3_accepts(const ptfkit_model *model) {
 PTFKIT_MODEL_INLINE ptfkit_model_status ptfkit_rosetta3_load(const char *path, ptfkit_model **out) {
     return ptfkit_model_load(path, PTFKIT_ROSETTA3_SHA256, out);
 }
+PTFKIT_MODEL_INLINE int ptfkit_detail_rosetta_mod2(const ptfkit_detail_network *_ptfkit_networks,
+                                                   const double *_ptfkit_data,
+                                                   unsigned _ptfkit_mode,
+                                                   const double *_ptfkit_inputs,
+                                                   size_t _ptfkit_count, double *_ptfkit_out) {
+    if (!_ptfkit_inputs || !_ptfkit_out)
+        return 0;
+    for (size_t i = 0; i < 14; ++i)
+        _ptfkit_out[i] = NAN;
+    if (_ptfkit_mode > 2 || _ptfkit_count != 3)
+        return 0;
+    for (size_t i = 0; i < _ptfkit_count; ++i)
+        if (!isfinite(_ptfkit_inputs[i]))
+            return 0;
+    const double sand = _ptfkit_inputs[0];
+    const double silt = _ptfkit_inputs[1];
+    const double clay = _ptfkit_inputs[2];
+    const double texture_total = sand + silt + clay;
+    if (!(sand >= 0.0))
+        return 0;
+    if (!(silt >= 0.0))
+        return 0;
+    if (!(clay >= 0.0))
+        return 0;
+    if (!(texture_total >= 99.0))
+        return 0;
+    if (!(texture_total <= 101.0))
+        return 0;
+    double raw[5000];
+    const double _ptfkit_raw_inputs[] = {sand, silt, clay};
+    ptfkit_detail_network_predict(&_ptfkit_networks[0], _ptfkit_data, _ptfkit_raw_inputs, raw);
+    double physical[5000];
+    for (size_t member = 0; member < 1000; ++member) {
+        const double member_theta_r = raw[member * 5 + 0];
+        const double member_theta_s = raw[member * 5 + 1];
+        const double member_alpha = raw[member * 5 + 2];
+        const double member_n = raw[member * 5 + 3];
+        const double member_k_sat = raw[member * 5 + 4];
+        physical[member * 5 + 0] = member_theta_r;
+        physical[member * 5 + 1] = member_theta_s;
+        physical[member * 5 + 2] = pow(10.0, member_alpha);
+        physical[member * 5 + 3] = pow(10.0, member_n);
+        physical[member * 5 + 4] = pow(10.0, member_k_sat);
+    }
+    struct {
+        double theta_r_mean;
+        double theta_s_mean;
+        double alpha_mean;
+        double n_mean;
+        double k_sat_mean;
+        double theta_r_std;
+        double theta_s_std;
+        double alpha_std;
+        double n_std;
+        double k_sat_std;
+    } log_statistics;
+    double log_statistics_mean[5], log_statistics_std[5];
+    ptfkit_detail_stats(raw, 1000, 5, log_statistics_mean, log_statistics_std);
+    log_statistics.theta_r_mean = log_statistics_mean[0];
+    log_statistics.theta_s_mean = log_statistics_mean[1];
+    log_statistics.alpha_mean = log_statistics_mean[2];
+    log_statistics.n_mean = log_statistics_mean[3];
+    log_statistics.k_sat_mean = log_statistics_mean[4];
+    log_statistics.theta_r_std = log_statistics_std[0];
+    log_statistics.theta_s_std = log_statistics_std[1];
+    log_statistics.alpha_std = log_statistics_std[2];
+    log_statistics.n_std = log_statistics_std[3];
+    log_statistics.k_sat_std = log_statistics_std[4];
+    struct {
+        double theta_r_mean;
+        double theta_s_mean;
+        double alpha_mean;
+        double n_mean;
+        double k_sat_mean;
+        double theta_r_std;
+        double theta_s_std;
+        double alpha_std;
+        double n_std;
+        double k_sat_std;
+    } physical_statistics;
+    double physical_statistics_mean[5], physical_statistics_std[5];
+    ptfkit_detail_stats(physical, 1000, 5, physical_statistics_mean, physical_statistics_std);
+    physical_statistics.theta_r_mean = physical_statistics_mean[0];
+    physical_statistics.theta_s_mean = physical_statistics_mean[1];
+    physical_statistics.alpha_mean = physical_statistics_mean[2];
+    physical_statistics.n_mean = physical_statistics_mean[3];
+    physical_statistics.k_sat_mean = physical_statistics_mean[4];
+    physical_statistics.theta_r_std = physical_statistics_std[0];
+    physical_statistics.theta_s_std = physical_statistics_std[1];
+    physical_statistics.alpha_std = physical_statistics_std[2];
+    physical_statistics.n_std = physical_statistics_std[3];
+    physical_statistics.k_sat_std = physical_statistics_std[4];
+    const double geometric_alpha = pow(10.0, log_statistics.alpha_mean);
+    const double geometric_n = pow(10.0, log_statistics.n_mean);
+    const double geometric_k_sat = pow(10.0, log_statistics.k_sat_mean);
+    const double conductivity_theta_r = _ptfkit_mode == 0   ? physical_statistics.theta_r_mean
+                                        : _ptfkit_mode == 1 ? log_statistics.theta_r_mean
+                                                            : log_statistics.theta_r_mean;
+    const double conductivity_theta_s = _ptfkit_mode == 0   ? physical_statistics.theta_s_mean
+                                        : _ptfkit_mode == 1 ? log_statistics.theta_s_mean
+                                                            : log_statistics.theta_s_mean;
+    const double conductivity_alpha = _ptfkit_mode == 0   ? physical_statistics.alpha_mean
+                                      : _ptfkit_mode == 1 ? geometric_alpha
+                                                          : geometric_alpha;
+    const double conductivity_n = _ptfkit_mode == 0   ? physical_statistics.n_mean
+                                  : _ptfkit_mode == 1 ? geometric_n
+                                                      : geometric_n;
+    double unsaturated[200];
+    for (size_t i = 0; i < 200; ++i)
+        unsaturated[i] = NAN;
+    if ((0.0 <= conductivity_theta_r) && (conductivity_theta_r < conductivity_theta_s) &&
+        (conductivity_theta_s < 1.0) && (conductivity_alpha > 0.0) && (conductivity_n > 1.0)) {
+        const double _ptfkit_unsaturated_inputs[] = {conductivity_theta_r, conductivity_theta_s,
+                                                     conductivity_alpha, conductivity_n};
+        ptfkit_detail_network_predict(&_ptfkit_networks[4], _ptfkit_data,
+                                      _ptfkit_unsaturated_inputs, unsaturated);
+    }
+    double unsaturated_physical[200];
+    for (size_t member = 0; member < 100; ++member) {
+        const double member_k_0 = unsaturated[member * 2 + 0];
+        const double member_l = unsaturated[member * 2 + 1];
+        unsaturated_physical[member * 2 + 0] = pow(10.0, member_k_0);
+        unsaturated_physical[member * 2 + 1] = member_l;
+    }
+    struct {
+        double k_0_mean;
+        double l_mean;
+        double k_0_std;
+        double l_std;
+    } conductivity_log_statistics;
+    double conductivity_log_statistics_mean[2], conductivity_log_statistics_std[2];
+    ptfkit_detail_stats(unsaturated, 100, 2, conductivity_log_statistics_mean,
+                        conductivity_log_statistics_std);
+    conductivity_log_statistics.k_0_mean = conductivity_log_statistics_mean[0];
+    conductivity_log_statistics.l_mean = conductivity_log_statistics_mean[1];
+    conductivity_log_statistics.k_0_std = conductivity_log_statistics_std[0];
+    conductivity_log_statistics.l_std = conductivity_log_statistics_std[1];
+    struct {
+        double k_0_mean;
+        double l_mean;
+        double k_0_std;
+        double l_std;
+    } conductivity_physical_statistics;
+    double conductivity_physical_statistics_mean[2], conductivity_physical_statistics_std[2];
+    ptfkit_detail_stats(unsaturated_physical, 100, 2, conductivity_physical_statistics_mean,
+                        conductivity_physical_statistics_std);
+    conductivity_physical_statistics.k_0_mean = conductivity_physical_statistics_mean[0];
+    conductivity_physical_statistics.l_mean = conductivity_physical_statistics_mean[1];
+    conductivity_physical_statistics.k_0_std = conductivity_physical_statistics_std[0];
+    conductivity_physical_statistics.l_std = conductivity_physical_statistics_std[1];
+    const double geometric_k_0 = pow(10.0, conductivity_log_statistics.k_0_mean);
+    const double theta_r_mean = _ptfkit_mode == 0   ? physical_statistics.theta_r_mean
+                                : _ptfkit_mode == 1 ? log_statistics.theta_r_mean
+                                                    : log_statistics.theta_r_mean;
+    const double theta_r_std = _ptfkit_mode == 0   ? physical_statistics.theta_r_std
+                               : _ptfkit_mode == 1 ? log_statistics.theta_r_std
+                                                   : physical_statistics.theta_r_std;
+    const double theta_s_mean = _ptfkit_mode == 0   ? physical_statistics.theta_s_mean
+                                : _ptfkit_mode == 1 ? log_statistics.theta_s_mean
+                                                    : log_statistics.theta_s_mean;
+    const double theta_s_std = _ptfkit_mode == 0   ? physical_statistics.theta_s_std
+                               : _ptfkit_mode == 1 ? log_statistics.theta_s_std
+                                                   : physical_statistics.theta_s_std;
+    const double alpha_mean = _ptfkit_mode == 0   ? physical_statistics.alpha_mean
+                              : _ptfkit_mode == 1 ? log_statistics.alpha_mean
+                                                  : geometric_alpha;
+    const double alpha_std = _ptfkit_mode == 0   ? physical_statistics.alpha_std
+                             : _ptfkit_mode == 1 ? log_statistics.alpha_std
+                                                 : physical_statistics.alpha_std;
+    const double n_mean = _ptfkit_mode == 0   ? physical_statistics.n_mean
+                          : _ptfkit_mode == 1 ? log_statistics.n_mean
+                                              : geometric_n;
+    const double n_std = _ptfkit_mode == 0   ? physical_statistics.n_std
+                         : _ptfkit_mode == 1 ? log_statistics.n_std
+                                             : physical_statistics.n_std;
+    const double k_sat_mean = _ptfkit_mode == 0   ? physical_statistics.k_sat_mean
+                              : _ptfkit_mode == 1 ? log_statistics.k_sat_mean
+                                                  : geometric_k_sat;
+    const double k_sat_std = _ptfkit_mode == 0   ? physical_statistics.k_sat_std
+                             : _ptfkit_mode == 1 ? log_statistics.k_sat_std
+                                                 : physical_statistics.k_sat_std;
+    const double k_0_mean = _ptfkit_mode == 0   ? conductivity_physical_statistics.k_0_mean
+                            : _ptfkit_mode == 1 ? conductivity_log_statistics.k_0_mean
+                                                : geometric_k_0;
+    const double k_0_std = _ptfkit_mode == 0   ? conductivity_physical_statistics.k_0_std
+                           : _ptfkit_mode == 1 ? conductivity_log_statistics.k_0_std
+                                               : conductivity_physical_statistics.k_0_std;
+    const double l_mean = conductivity_log_statistics.l_mean;
+    const double l_std = conductivity_log_statistics.l_std;
+    _ptfkit_out[0] = theta_r_mean;
+    _ptfkit_out[1] = theta_s_mean;
+    _ptfkit_out[2] = alpha_mean;
+    _ptfkit_out[3] = n_mean;
+    _ptfkit_out[4] = k_sat_mean;
+    _ptfkit_out[5] = k_0_mean;
+    _ptfkit_out[6] = l_mean;
+    _ptfkit_out[7] = theta_r_std;
+    _ptfkit_out[8] = theta_s_std;
+    _ptfkit_out[9] = alpha_std;
+    _ptfkit_out[10] = n_std;
+    _ptfkit_out[11] = k_sat_std;
+    _ptfkit_out[12] = k_0_std;
+    _ptfkit_out[13] = l_std;
+    return 1;
+}
+PTFKIT_MODEL_INLINE int ptfkit_detail_rosetta_mod3(const ptfkit_detail_network *_ptfkit_networks,
+                                                   const double *_ptfkit_data,
+                                                   unsigned _ptfkit_mode,
+                                                   const double *_ptfkit_inputs,
+                                                   size_t _ptfkit_count, double *_ptfkit_out) {
+    if (!_ptfkit_inputs || !_ptfkit_out)
+        return 0;
+    for (size_t i = 0; i < 14; ++i)
+        _ptfkit_out[i] = NAN;
+    if (_ptfkit_mode > 2 || _ptfkit_count != 4)
+        return 0;
+    for (size_t i = 0; i < _ptfkit_count; ++i)
+        if (!isfinite(_ptfkit_inputs[i]))
+            return 0;
+    const double sand = _ptfkit_inputs[0];
+    const double silt = _ptfkit_inputs[1];
+    const double clay = _ptfkit_inputs[2];
+    const double bulk_density = _ptfkit_inputs[3];
+    const double texture_total = sand + silt + clay;
+    if (!(sand >= 0.0))
+        return 0;
+    if (!(silt >= 0.0))
+        return 0;
+    if (!(clay >= 0.0))
+        return 0;
+    if (!(texture_total >= 99.0))
+        return 0;
+    if (!(texture_total <= 101.0))
+        return 0;
+    if (!(bulk_density >= 0.5))
+        return 0;
+    if (!(bulk_density <= 2.0))
+        return 0;
+    double raw[5000];
+    const double _ptfkit_raw_inputs[] = {sand, silt, clay, bulk_density};
+    ptfkit_detail_network_predict(&_ptfkit_networks[1], _ptfkit_data, _ptfkit_raw_inputs, raw);
+    double physical[5000];
+    for (size_t member = 0; member < 1000; ++member) {
+        const double member_theta_r = raw[member * 5 + 0];
+        const double member_theta_s = raw[member * 5 + 1];
+        const double member_alpha = raw[member * 5 + 2];
+        const double member_n = raw[member * 5 + 3];
+        const double member_k_sat = raw[member * 5 + 4];
+        physical[member * 5 + 0] = member_theta_r;
+        physical[member * 5 + 1] = member_theta_s;
+        physical[member * 5 + 2] = pow(10.0, member_alpha);
+        physical[member * 5 + 3] = pow(10.0, member_n);
+        physical[member * 5 + 4] = pow(10.0, member_k_sat);
+    }
+    struct {
+        double theta_r_mean;
+        double theta_s_mean;
+        double alpha_mean;
+        double n_mean;
+        double k_sat_mean;
+        double theta_r_std;
+        double theta_s_std;
+        double alpha_std;
+        double n_std;
+        double k_sat_std;
+    } log_statistics;
+    double log_statistics_mean[5], log_statistics_std[5];
+    ptfkit_detail_stats(raw, 1000, 5, log_statistics_mean, log_statistics_std);
+    log_statistics.theta_r_mean = log_statistics_mean[0];
+    log_statistics.theta_s_mean = log_statistics_mean[1];
+    log_statistics.alpha_mean = log_statistics_mean[2];
+    log_statistics.n_mean = log_statistics_mean[3];
+    log_statistics.k_sat_mean = log_statistics_mean[4];
+    log_statistics.theta_r_std = log_statistics_std[0];
+    log_statistics.theta_s_std = log_statistics_std[1];
+    log_statistics.alpha_std = log_statistics_std[2];
+    log_statistics.n_std = log_statistics_std[3];
+    log_statistics.k_sat_std = log_statistics_std[4];
+    struct {
+        double theta_r_mean;
+        double theta_s_mean;
+        double alpha_mean;
+        double n_mean;
+        double k_sat_mean;
+        double theta_r_std;
+        double theta_s_std;
+        double alpha_std;
+        double n_std;
+        double k_sat_std;
+    } physical_statistics;
+    double physical_statistics_mean[5], physical_statistics_std[5];
+    ptfkit_detail_stats(physical, 1000, 5, physical_statistics_mean, physical_statistics_std);
+    physical_statistics.theta_r_mean = physical_statistics_mean[0];
+    physical_statistics.theta_s_mean = physical_statistics_mean[1];
+    physical_statistics.alpha_mean = physical_statistics_mean[2];
+    physical_statistics.n_mean = physical_statistics_mean[3];
+    physical_statistics.k_sat_mean = physical_statistics_mean[4];
+    physical_statistics.theta_r_std = physical_statistics_std[0];
+    physical_statistics.theta_s_std = physical_statistics_std[1];
+    physical_statistics.alpha_std = physical_statistics_std[2];
+    physical_statistics.n_std = physical_statistics_std[3];
+    physical_statistics.k_sat_std = physical_statistics_std[4];
+    const double geometric_alpha = pow(10.0, log_statistics.alpha_mean);
+    const double geometric_n = pow(10.0, log_statistics.n_mean);
+    const double geometric_k_sat = pow(10.0, log_statistics.k_sat_mean);
+    const double conductivity_theta_r = _ptfkit_mode == 0   ? physical_statistics.theta_r_mean
+                                        : _ptfkit_mode == 1 ? log_statistics.theta_r_mean
+                                                            : log_statistics.theta_r_mean;
+    const double conductivity_theta_s = _ptfkit_mode == 0   ? physical_statistics.theta_s_mean
+                                        : _ptfkit_mode == 1 ? log_statistics.theta_s_mean
+                                                            : log_statistics.theta_s_mean;
+    const double conductivity_alpha = _ptfkit_mode == 0   ? physical_statistics.alpha_mean
+                                      : _ptfkit_mode == 1 ? geometric_alpha
+                                                          : geometric_alpha;
+    const double conductivity_n = _ptfkit_mode == 0   ? physical_statistics.n_mean
+                                  : _ptfkit_mode == 1 ? geometric_n
+                                                      : geometric_n;
+    double unsaturated[200];
+    for (size_t i = 0; i < 200; ++i)
+        unsaturated[i] = NAN;
+    if ((0.0 <= conductivity_theta_r) && (conductivity_theta_r < conductivity_theta_s) &&
+        (conductivity_theta_s < 1.0) && (conductivity_alpha > 0.0) && (conductivity_n > 1.0)) {
+        const double _ptfkit_unsaturated_inputs[] = {conductivity_theta_r, conductivity_theta_s,
+                                                     conductivity_alpha, conductivity_n};
+        ptfkit_detail_network_predict(&_ptfkit_networks[4], _ptfkit_data,
+                                      _ptfkit_unsaturated_inputs, unsaturated);
+    }
+    double unsaturated_physical[200];
+    for (size_t member = 0; member < 100; ++member) {
+        const double member_k_0 = unsaturated[member * 2 + 0];
+        const double member_l = unsaturated[member * 2 + 1];
+        unsaturated_physical[member * 2 + 0] = pow(10.0, member_k_0);
+        unsaturated_physical[member * 2 + 1] = member_l;
+    }
+    struct {
+        double k_0_mean;
+        double l_mean;
+        double k_0_std;
+        double l_std;
+    } conductivity_log_statistics;
+    double conductivity_log_statistics_mean[2], conductivity_log_statistics_std[2];
+    ptfkit_detail_stats(unsaturated, 100, 2, conductivity_log_statistics_mean,
+                        conductivity_log_statistics_std);
+    conductivity_log_statistics.k_0_mean = conductivity_log_statistics_mean[0];
+    conductivity_log_statistics.l_mean = conductivity_log_statistics_mean[1];
+    conductivity_log_statistics.k_0_std = conductivity_log_statistics_std[0];
+    conductivity_log_statistics.l_std = conductivity_log_statistics_std[1];
+    struct {
+        double k_0_mean;
+        double l_mean;
+        double k_0_std;
+        double l_std;
+    } conductivity_physical_statistics;
+    double conductivity_physical_statistics_mean[2], conductivity_physical_statistics_std[2];
+    ptfkit_detail_stats(unsaturated_physical, 100, 2, conductivity_physical_statistics_mean,
+                        conductivity_physical_statistics_std);
+    conductivity_physical_statistics.k_0_mean = conductivity_physical_statistics_mean[0];
+    conductivity_physical_statistics.l_mean = conductivity_physical_statistics_mean[1];
+    conductivity_physical_statistics.k_0_std = conductivity_physical_statistics_std[0];
+    conductivity_physical_statistics.l_std = conductivity_physical_statistics_std[1];
+    const double geometric_k_0 = pow(10.0, conductivity_log_statistics.k_0_mean);
+    const double theta_r_mean = _ptfkit_mode == 0   ? physical_statistics.theta_r_mean
+                                : _ptfkit_mode == 1 ? log_statistics.theta_r_mean
+                                                    : log_statistics.theta_r_mean;
+    const double theta_r_std = _ptfkit_mode == 0   ? physical_statistics.theta_r_std
+                               : _ptfkit_mode == 1 ? log_statistics.theta_r_std
+                                                   : physical_statistics.theta_r_std;
+    const double theta_s_mean = _ptfkit_mode == 0   ? physical_statistics.theta_s_mean
+                                : _ptfkit_mode == 1 ? log_statistics.theta_s_mean
+                                                    : log_statistics.theta_s_mean;
+    const double theta_s_std = _ptfkit_mode == 0   ? physical_statistics.theta_s_std
+                               : _ptfkit_mode == 1 ? log_statistics.theta_s_std
+                                                   : physical_statistics.theta_s_std;
+    const double alpha_mean = _ptfkit_mode == 0   ? physical_statistics.alpha_mean
+                              : _ptfkit_mode == 1 ? log_statistics.alpha_mean
+                                                  : geometric_alpha;
+    const double alpha_std = _ptfkit_mode == 0   ? physical_statistics.alpha_std
+                             : _ptfkit_mode == 1 ? log_statistics.alpha_std
+                                                 : physical_statistics.alpha_std;
+    const double n_mean = _ptfkit_mode == 0   ? physical_statistics.n_mean
+                          : _ptfkit_mode == 1 ? log_statistics.n_mean
+                                              : geometric_n;
+    const double n_std = _ptfkit_mode == 0   ? physical_statistics.n_std
+                         : _ptfkit_mode == 1 ? log_statistics.n_std
+                                             : physical_statistics.n_std;
+    const double k_sat_mean = _ptfkit_mode == 0   ? physical_statistics.k_sat_mean
+                              : _ptfkit_mode == 1 ? log_statistics.k_sat_mean
+                                                  : geometric_k_sat;
+    const double k_sat_std = _ptfkit_mode == 0   ? physical_statistics.k_sat_std
+                             : _ptfkit_mode == 1 ? log_statistics.k_sat_std
+                                                 : physical_statistics.k_sat_std;
+    const double k_0_mean = _ptfkit_mode == 0   ? conductivity_physical_statistics.k_0_mean
+                            : _ptfkit_mode == 1 ? conductivity_log_statistics.k_0_mean
+                                                : geometric_k_0;
+    const double k_0_std = _ptfkit_mode == 0   ? conductivity_physical_statistics.k_0_std
+                           : _ptfkit_mode == 1 ? conductivity_log_statistics.k_0_std
+                                               : conductivity_physical_statistics.k_0_std;
+    const double l_mean = conductivity_log_statistics.l_mean;
+    const double l_std = conductivity_log_statistics.l_std;
+    _ptfkit_out[0] = theta_r_mean;
+    _ptfkit_out[1] = theta_s_mean;
+    _ptfkit_out[2] = alpha_mean;
+    _ptfkit_out[3] = n_mean;
+    _ptfkit_out[4] = k_sat_mean;
+    _ptfkit_out[5] = k_0_mean;
+    _ptfkit_out[6] = l_mean;
+    _ptfkit_out[7] = theta_r_std;
+    _ptfkit_out[8] = theta_s_std;
+    _ptfkit_out[9] = alpha_std;
+    _ptfkit_out[10] = n_std;
+    _ptfkit_out[11] = k_sat_std;
+    _ptfkit_out[12] = k_0_std;
+    _ptfkit_out[13] = l_std;
+    return 1;
+}
+PTFKIT_MODEL_INLINE int ptfkit_detail_rosetta_mod4(const ptfkit_detail_network *_ptfkit_networks,
+                                                   const double *_ptfkit_data,
+                                                   unsigned _ptfkit_mode,
+                                                   const double *_ptfkit_inputs,
+                                                   size_t _ptfkit_count, double *_ptfkit_out) {
+    if (!_ptfkit_inputs || !_ptfkit_out)
+        return 0;
+    for (size_t i = 0; i < 14; ++i)
+        _ptfkit_out[i] = NAN;
+    if (_ptfkit_mode > 2 || _ptfkit_count != 5)
+        return 0;
+    for (size_t i = 0; i < _ptfkit_count; ++i)
+        if (!isfinite(_ptfkit_inputs[i]))
+            return 0;
+    const double sand = _ptfkit_inputs[0];
+    const double silt = _ptfkit_inputs[1];
+    const double clay = _ptfkit_inputs[2];
+    const double bulk_density = _ptfkit_inputs[3];
+    const double theta_33 = _ptfkit_inputs[4];
+    const double texture_total = sand + silt + clay;
+    if (!(sand >= 0.0))
+        return 0;
+    if (!(silt >= 0.0))
+        return 0;
+    if (!(clay >= 0.0))
+        return 0;
+    if (!(texture_total >= 99.0))
+        return 0;
+    if (!(texture_total <= 101.0))
+        return 0;
+    if (!(bulk_density >= 0.5))
+        return 0;
+    if (!(bulk_density <= 2.0))
+        return 0;
+    if (!(theta_33 > 0.0))
+        return 0;
+    if (!(theta_33 < 1.0))
+        return 0;
+    double raw[5000];
+    const double _ptfkit_raw_inputs[] = {sand, silt, clay, bulk_density, theta_33};
+    ptfkit_detail_network_predict(&_ptfkit_networks[2], _ptfkit_data, _ptfkit_raw_inputs, raw);
+    double physical[5000];
+    for (size_t member = 0; member < 1000; ++member) {
+        const double member_theta_r = raw[member * 5 + 0];
+        const double member_theta_s = raw[member * 5 + 1];
+        const double member_alpha = raw[member * 5 + 2];
+        const double member_n = raw[member * 5 + 3];
+        const double member_k_sat = raw[member * 5 + 4];
+        physical[member * 5 + 0] = member_theta_r;
+        physical[member * 5 + 1] = member_theta_s;
+        physical[member * 5 + 2] = pow(10.0, member_alpha);
+        physical[member * 5 + 3] = pow(10.0, member_n);
+        physical[member * 5 + 4] = pow(10.0, member_k_sat);
+    }
+    struct {
+        double theta_r_mean;
+        double theta_s_mean;
+        double alpha_mean;
+        double n_mean;
+        double k_sat_mean;
+        double theta_r_std;
+        double theta_s_std;
+        double alpha_std;
+        double n_std;
+        double k_sat_std;
+    } log_statistics;
+    double log_statistics_mean[5], log_statistics_std[5];
+    ptfkit_detail_stats(raw, 1000, 5, log_statistics_mean, log_statistics_std);
+    log_statistics.theta_r_mean = log_statistics_mean[0];
+    log_statistics.theta_s_mean = log_statistics_mean[1];
+    log_statistics.alpha_mean = log_statistics_mean[2];
+    log_statistics.n_mean = log_statistics_mean[3];
+    log_statistics.k_sat_mean = log_statistics_mean[4];
+    log_statistics.theta_r_std = log_statistics_std[0];
+    log_statistics.theta_s_std = log_statistics_std[1];
+    log_statistics.alpha_std = log_statistics_std[2];
+    log_statistics.n_std = log_statistics_std[3];
+    log_statistics.k_sat_std = log_statistics_std[4];
+    struct {
+        double theta_r_mean;
+        double theta_s_mean;
+        double alpha_mean;
+        double n_mean;
+        double k_sat_mean;
+        double theta_r_std;
+        double theta_s_std;
+        double alpha_std;
+        double n_std;
+        double k_sat_std;
+    } physical_statistics;
+    double physical_statistics_mean[5], physical_statistics_std[5];
+    ptfkit_detail_stats(physical, 1000, 5, physical_statistics_mean, physical_statistics_std);
+    physical_statistics.theta_r_mean = physical_statistics_mean[0];
+    physical_statistics.theta_s_mean = physical_statistics_mean[1];
+    physical_statistics.alpha_mean = physical_statistics_mean[2];
+    physical_statistics.n_mean = physical_statistics_mean[3];
+    physical_statistics.k_sat_mean = physical_statistics_mean[4];
+    physical_statistics.theta_r_std = physical_statistics_std[0];
+    physical_statistics.theta_s_std = physical_statistics_std[1];
+    physical_statistics.alpha_std = physical_statistics_std[2];
+    physical_statistics.n_std = physical_statistics_std[3];
+    physical_statistics.k_sat_std = physical_statistics_std[4];
+    const double geometric_alpha = pow(10.0, log_statistics.alpha_mean);
+    const double geometric_n = pow(10.0, log_statistics.n_mean);
+    const double geometric_k_sat = pow(10.0, log_statistics.k_sat_mean);
+    const double conductivity_theta_r = _ptfkit_mode == 0   ? physical_statistics.theta_r_mean
+                                        : _ptfkit_mode == 1 ? log_statistics.theta_r_mean
+                                                            : log_statistics.theta_r_mean;
+    const double conductivity_theta_s = _ptfkit_mode == 0   ? physical_statistics.theta_s_mean
+                                        : _ptfkit_mode == 1 ? log_statistics.theta_s_mean
+                                                            : log_statistics.theta_s_mean;
+    const double conductivity_alpha = _ptfkit_mode == 0   ? physical_statistics.alpha_mean
+                                      : _ptfkit_mode == 1 ? geometric_alpha
+                                                          : geometric_alpha;
+    const double conductivity_n = _ptfkit_mode == 0   ? physical_statistics.n_mean
+                                  : _ptfkit_mode == 1 ? geometric_n
+                                                      : geometric_n;
+    double unsaturated[200];
+    for (size_t i = 0; i < 200; ++i)
+        unsaturated[i] = NAN;
+    if ((0.0 <= conductivity_theta_r) && (conductivity_theta_r < conductivity_theta_s) &&
+        (conductivity_theta_s < 1.0) && (conductivity_alpha > 0.0) && (conductivity_n > 1.0)) {
+        const double _ptfkit_unsaturated_inputs[] = {conductivity_theta_r, conductivity_theta_s,
+                                                     conductivity_alpha, conductivity_n};
+        ptfkit_detail_network_predict(&_ptfkit_networks[4], _ptfkit_data,
+                                      _ptfkit_unsaturated_inputs, unsaturated);
+    }
+    double unsaturated_physical[200];
+    for (size_t member = 0; member < 100; ++member) {
+        const double member_k_0 = unsaturated[member * 2 + 0];
+        const double member_l = unsaturated[member * 2 + 1];
+        unsaturated_physical[member * 2 + 0] = pow(10.0, member_k_0);
+        unsaturated_physical[member * 2 + 1] = member_l;
+    }
+    struct {
+        double k_0_mean;
+        double l_mean;
+        double k_0_std;
+        double l_std;
+    } conductivity_log_statistics;
+    double conductivity_log_statistics_mean[2], conductivity_log_statistics_std[2];
+    ptfkit_detail_stats(unsaturated, 100, 2, conductivity_log_statistics_mean,
+                        conductivity_log_statistics_std);
+    conductivity_log_statistics.k_0_mean = conductivity_log_statistics_mean[0];
+    conductivity_log_statistics.l_mean = conductivity_log_statistics_mean[1];
+    conductivity_log_statistics.k_0_std = conductivity_log_statistics_std[0];
+    conductivity_log_statistics.l_std = conductivity_log_statistics_std[1];
+    struct {
+        double k_0_mean;
+        double l_mean;
+        double k_0_std;
+        double l_std;
+    } conductivity_physical_statistics;
+    double conductivity_physical_statistics_mean[2], conductivity_physical_statistics_std[2];
+    ptfkit_detail_stats(unsaturated_physical, 100, 2, conductivity_physical_statistics_mean,
+                        conductivity_physical_statistics_std);
+    conductivity_physical_statistics.k_0_mean = conductivity_physical_statistics_mean[0];
+    conductivity_physical_statistics.l_mean = conductivity_physical_statistics_mean[1];
+    conductivity_physical_statistics.k_0_std = conductivity_physical_statistics_std[0];
+    conductivity_physical_statistics.l_std = conductivity_physical_statistics_std[1];
+    const double geometric_k_0 = pow(10.0, conductivity_log_statistics.k_0_mean);
+    const double theta_r_mean = _ptfkit_mode == 0   ? physical_statistics.theta_r_mean
+                                : _ptfkit_mode == 1 ? log_statistics.theta_r_mean
+                                                    : log_statistics.theta_r_mean;
+    const double theta_r_std = _ptfkit_mode == 0   ? physical_statistics.theta_r_std
+                               : _ptfkit_mode == 1 ? log_statistics.theta_r_std
+                                                   : physical_statistics.theta_r_std;
+    const double theta_s_mean = _ptfkit_mode == 0   ? physical_statistics.theta_s_mean
+                                : _ptfkit_mode == 1 ? log_statistics.theta_s_mean
+                                                    : log_statistics.theta_s_mean;
+    const double theta_s_std = _ptfkit_mode == 0   ? physical_statistics.theta_s_std
+                               : _ptfkit_mode == 1 ? log_statistics.theta_s_std
+                                                   : physical_statistics.theta_s_std;
+    const double alpha_mean = _ptfkit_mode == 0   ? physical_statistics.alpha_mean
+                              : _ptfkit_mode == 1 ? log_statistics.alpha_mean
+                                                  : geometric_alpha;
+    const double alpha_std = _ptfkit_mode == 0   ? physical_statistics.alpha_std
+                             : _ptfkit_mode == 1 ? log_statistics.alpha_std
+                                                 : physical_statistics.alpha_std;
+    const double n_mean = _ptfkit_mode == 0   ? physical_statistics.n_mean
+                          : _ptfkit_mode == 1 ? log_statistics.n_mean
+                                              : geometric_n;
+    const double n_std = _ptfkit_mode == 0   ? physical_statistics.n_std
+                         : _ptfkit_mode == 1 ? log_statistics.n_std
+                                             : physical_statistics.n_std;
+    const double k_sat_mean = _ptfkit_mode == 0   ? physical_statistics.k_sat_mean
+                              : _ptfkit_mode == 1 ? log_statistics.k_sat_mean
+                                                  : geometric_k_sat;
+    const double k_sat_std = _ptfkit_mode == 0   ? physical_statistics.k_sat_std
+                             : _ptfkit_mode == 1 ? log_statistics.k_sat_std
+                                                 : physical_statistics.k_sat_std;
+    const double k_0_mean = _ptfkit_mode == 0   ? conductivity_physical_statistics.k_0_mean
+                            : _ptfkit_mode == 1 ? conductivity_log_statistics.k_0_mean
+                                                : geometric_k_0;
+    const double k_0_std = _ptfkit_mode == 0   ? conductivity_physical_statistics.k_0_std
+                           : _ptfkit_mode == 1 ? conductivity_log_statistics.k_0_std
+                                               : conductivity_physical_statistics.k_0_std;
+    const double l_mean = conductivity_log_statistics.l_mean;
+    const double l_std = conductivity_log_statistics.l_std;
+    _ptfkit_out[0] = theta_r_mean;
+    _ptfkit_out[1] = theta_s_mean;
+    _ptfkit_out[2] = alpha_mean;
+    _ptfkit_out[3] = n_mean;
+    _ptfkit_out[4] = k_sat_mean;
+    _ptfkit_out[5] = k_0_mean;
+    _ptfkit_out[6] = l_mean;
+    _ptfkit_out[7] = theta_r_std;
+    _ptfkit_out[8] = theta_s_std;
+    _ptfkit_out[9] = alpha_std;
+    _ptfkit_out[10] = n_std;
+    _ptfkit_out[11] = k_sat_std;
+    _ptfkit_out[12] = k_0_std;
+    _ptfkit_out[13] = l_std;
+    return 1;
+}
+PTFKIT_MODEL_INLINE int ptfkit_detail_rosetta_mod5(const ptfkit_detail_network *_ptfkit_networks,
+                                                   const double *_ptfkit_data,
+                                                   unsigned _ptfkit_mode,
+                                                   const double *_ptfkit_inputs,
+                                                   size_t _ptfkit_count, double *_ptfkit_out) {
+    if (!_ptfkit_inputs || !_ptfkit_out)
+        return 0;
+    for (size_t i = 0; i < 14; ++i)
+        _ptfkit_out[i] = NAN;
+    if (_ptfkit_mode > 2 || _ptfkit_count != 6)
+        return 0;
+    for (size_t i = 0; i < _ptfkit_count; ++i)
+        if (!isfinite(_ptfkit_inputs[i]))
+            return 0;
+    const double sand = _ptfkit_inputs[0];
+    const double silt = _ptfkit_inputs[1];
+    const double clay = _ptfkit_inputs[2];
+    const double bulk_density = _ptfkit_inputs[3];
+    const double theta_33 = _ptfkit_inputs[4];
+    const double theta_1500 = _ptfkit_inputs[5];
+    const double texture_total = sand + silt + clay;
+    if (!(sand >= 0.0))
+        return 0;
+    if (!(silt >= 0.0))
+        return 0;
+    if (!(clay >= 0.0))
+        return 0;
+    if (!(texture_total >= 99.0))
+        return 0;
+    if (!(texture_total <= 101.0))
+        return 0;
+    if (!(bulk_density >= 0.5))
+        return 0;
+    if (!(bulk_density <= 2.0))
+        return 0;
+    if (!(theta_33 > 0.0))
+        return 0;
+    if (!(theta_33 < 1.0))
+        return 0;
+    if (!(theta_1500 > 0.0))
+        return 0;
+    if (!(theta_1500 < theta_33))
+        return 0;
+    double raw[5000];
+    const double _ptfkit_raw_inputs[] = {sand, silt, clay, bulk_density, theta_33, theta_1500};
+    ptfkit_detail_network_predict(&_ptfkit_networks[3], _ptfkit_data, _ptfkit_raw_inputs, raw);
+    double physical[5000];
+    for (size_t member = 0; member < 1000; ++member) {
+        const double member_theta_r = raw[member * 5 + 0];
+        const double member_theta_s = raw[member * 5 + 1];
+        const double member_alpha = raw[member * 5 + 2];
+        const double member_n = raw[member * 5 + 3];
+        const double member_k_sat = raw[member * 5 + 4];
+        physical[member * 5 + 0] = member_theta_r;
+        physical[member * 5 + 1] = member_theta_s;
+        physical[member * 5 + 2] = pow(10.0, member_alpha);
+        physical[member * 5 + 3] = pow(10.0, member_n);
+        physical[member * 5 + 4] = pow(10.0, member_k_sat);
+    }
+    struct {
+        double theta_r_mean;
+        double theta_s_mean;
+        double alpha_mean;
+        double n_mean;
+        double k_sat_mean;
+        double theta_r_std;
+        double theta_s_std;
+        double alpha_std;
+        double n_std;
+        double k_sat_std;
+    } log_statistics;
+    double log_statistics_mean[5], log_statistics_std[5];
+    ptfkit_detail_stats(raw, 1000, 5, log_statistics_mean, log_statistics_std);
+    log_statistics.theta_r_mean = log_statistics_mean[0];
+    log_statistics.theta_s_mean = log_statistics_mean[1];
+    log_statistics.alpha_mean = log_statistics_mean[2];
+    log_statistics.n_mean = log_statistics_mean[3];
+    log_statistics.k_sat_mean = log_statistics_mean[4];
+    log_statistics.theta_r_std = log_statistics_std[0];
+    log_statistics.theta_s_std = log_statistics_std[1];
+    log_statistics.alpha_std = log_statistics_std[2];
+    log_statistics.n_std = log_statistics_std[3];
+    log_statistics.k_sat_std = log_statistics_std[4];
+    struct {
+        double theta_r_mean;
+        double theta_s_mean;
+        double alpha_mean;
+        double n_mean;
+        double k_sat_mean;
+        double theta_r_std;
+        double theta_s_std;
+        double alpha_std;
+        double n_std;
+        double k_sat_std;
+    } physical_statistics;
+    double physical_statistics_mean[5], physical_statistics_std[5];
+    ptfkit_detail_stats(physical, 1000, 5, physical_statistics_mean, physical_statistics_std);
+    physical_statistics.theta_r_mean = physical_statistics_mean[0];
+    physical_statistics.theta_s_mean = physical_statistics_mean[1];
+    physical_statistics.alpha_mean = physical_statistics_mean[2];
+    physical_statistics.n_mean = physical_statistics_mean[3];
+    physical_statistics.k_sat_mean = physical_statistics_mean[4];
+    physical_statistics.theta_r_std = physical_statistics_std[0];
+    physical_statistics.theta_s_std = physical_statistics_std[1];
+    physical_statistics.alpha_std = physical_statistics_std[2];
+    physical_statistics.n_std = physical_statistics_std[3];
+    physical_statistics.k_sat_std = physical_statistics_std[4];
+    const double geometric_alpha = pow(10.0, log_statistics.alpha_mean);
+    const double geometric_n = pow(10.0, log_statistics.n_mean);
+    const double geometric_k_sat = pow(10.0, log_statistics.k_sat_mean);
+    const double conductivity_theta_r = _ptfkit_mode == 0   ? physical_statistics.theta_r_mean
+                                        : _ptfkit_mode == 1 ? log_statistics.theta_r_mean
+                                                            : log_statistics.theta_r_mean;
+    const double conductivity_theta_s = _ptfkit_mode == 0   ? physical_statistics.theta_s_mean
+                                        : _ptfkit_mode == 1 ? log_statistics.theta_s_mean
+                                                            : log_statistics.theta_s_mean;
+    const double conductivity_alpha = _ptfkit_mode == 0   ? physical_statistics.alpha_mean
+                                      : _ptfkit_mode == 1 ? geometric_alpha
+                                                          : geometric_alpha;
+    const double conductivity_n = _ptfkit_mode == 0   ? physical_statistics.n_mean
+                                  : _ptfkit_mode == 1 ? geometric_n
+                                                      : geometric_n;
+    double unsaturated[200];
+    for (size_t i = 0; i < 200; ++i)
+        unsaturated[i] = NAN;
+    if ((0.0 <= conductivity_theta_r) && (conductivity_theta_r < conductivity_theta_s) &&
+        (conductivity_theta_s < 1.0) && (conductivity_alpha > 0.0) && (conductivity_n > 1.0)) {
+        const double _ptfkit_unsaturated_inputs[] = {conductivity_theta_r, conductivity_theta_s,
+                                                     conductivity_alpha, conductivity_n};
+        ptfkit_detail_network_predict(&_ptfkit_networks[4], _ptfkit_data,
+                                      _ptfkit_unsaturated_inputs, unsaturated);
+    }
+    double unsaturated_physical[200];
+    for (size_t member = 0; member < 100; ++member) {
+        const double member_k_0 = unsaturated[member * 2 + 0];
+        const double member_l = unsaturated[member * 2 + 1];
+        unsaturated_physical[member * 2 + 0] = pow(10.0, member_k_0);
+        unsaturated_physical[member * 2 + 1] = member_l;
+    }
+    struct {
+        double k_0_mean;
+        double l_mean;
+        double k_0_std;
+        double l_std;
+    } conductivity_log_statistics;
+    double conductivity_log_statistics_mean[2], conductivity_log_statistics_std[2];
+    ptfkit_detail_stats(unsaturated, 100, 2, conductivity_log_statistics_mean,
+                        conductivity_log_statistics_std);
+    conductivity_log_statistics.k_0_mean = conductivity_log_statistics_mean[0];
+    conductivity_log_statistics.l_mean = conductivity_log_statistics_mean[1];
+    conductivity_log_statistics.k_0_std = conductivity_log_statistics_std[0];
+    conductivity_log_statistics.l_std = conductivity_log_statistics_std[1];
+    struct {
+        double k_0_mean;
+        double l_mean;
+        double k_0_std;
+        double l_std;
+    } conductivity_physical_statistics;
+    double conductivity_physical_statistics_mean[2], conductivity_physical_statistics_std[2];
+    ptfkit_detail_stats(unsaturated_physical, 100, 2, conductivity_physical_statistics_mean,
+                        conductivity_physical_statistics_std);
+    conductivity_physical_statistics.k_0_mean = conductivity_physical_statistics_mean[0];
+    conductivity_physical_statistics.l_mean = conductivity_physical_statistics_mean[1];
+    conductivity_physical_statistics.k_0_std = conductivity_physical_statistics_std[0];
+    conductivity_physical_statistics.l_std = conductivity_physical_statistics_std[1];
+    const double geometric_k_0 = pow(10.0, conductivity_log_statistics.k_0_mean);
+    const double theta_r_mean = _ptfkit_mode == 0   ? physical_statistics.theta_r_mean
+                                : _ptfkit_mode == 1 ? log_statistics.theta_r_mean
+                                                    : log_statistics.theta_r_mean;
+    const double theta_r_std = _ptfkit_mode == 0   ? physical_statistics.theta_r_std
+                               : _ptfkit_mode == 1 ? log_statistics.theta_r_std
+                                                   : physical_statistics.theta_r_std;
+    const double theta_s_mean = _ptfkit_mode == 0   ? physical_statistics.theta_s_mean
+                                : _ptfkit_mode == 1 ? log_statistics.theta_s_mean
+                                                    : log_statistics.theta_s_mean;
+    const double theta_s_std = _ptfkit_mode == 0   ? physical_statistics.theta_s_std
+                               : _ptfkit_mode == 1 ? log_statistics.theta_s_std
+                                                   : physical_statistics.theta_s_std;
+    const double alpha_mean = _ptfkit_mode == 0   ? physical_statistics.alpha_mean
+                              : _ptfkit_mode == 1 ? log_statistics.alpha_mean
+                                                  : geometric_alpha;
+    const double alpha_std = _ptfkit_mode == 0   ? physical_statistics.alpha_std
+                             : _ptfkit_mode == 1 ? log_statistics.alpha_std
+                                                 : physical_statistics.alpha_std;
+    const double n_mean = _ptfkit_mode == 0   ? physical_statistics.n_mean
+                          : _ptfkit_mode == 1 ? log_statistics.n_mean
+                                              : geometric_n;
+    const double n_std = _ptfkit_mode == 0   ? physical_statistics.n_std
+                         : _ptfkit_mode == 1 ? log_statistics.n_std
+                                             : physical_statistics.n_std;
+    const double k_sat_mean = _ptfkit_mode == 0   ? physical_statistics.k_sat_mean
+                              : _ptfkit_mode == 1 ? log_statistics.k_sat_mean
+                                                  : geometric_k_sat;
+    const double k_sat_std = _ptfkit_mode == 0   ? physical_statistics.k_sat_std
+                             : _ptfkit_mode == 1 ? log_statistics.k_sat_std
+                                                 : physical_statistics.k_sat_std;
+    const double k_0_mean = _ptfkit_mode == 0   ? conductivity_physical_statistics.k_0_mean
+                            : _ptfkit_mode == 1 ? conductivity_log_statistics.k_0_mean
+                                                : geometric_k_0;
+    const double k_0_std = _ptfkit_mode == 0   ? conductivity_physical_statistics.k_0_std
+                           : _ptfkit_mode == 1 ? conductivity_log_statistics.k_0_std
+                                               : conductivity_physical_statistics.k_0_std;
+    const double l_mean = conductivity_log_statistics.l_mean;
+    const double l_std = conductivity_log_statistics.l_std;
+    _ptfkit_out[0] = theta_r_mean;
+    _ptfkit_out[1] = theta_s_mean;
+    _ptfkit_out[2] = alpha_mean;
+    _ptfkit_out[3] = n_mean;
+    _ptfkit_out[4] = k_sat_mean;
+    _ptfkit_out[5] = k_0_mean;
+    _ptfkit_out[6] = l_mean;
+    _ptfkit_out[7] = theta_r_std;
+    _ptfkit_out[8] = theta_s_std;
+    _ptfkit_out[9] = alpha_std;
+    _ptfkit_out[10] = n_std;
+    _ptfkit_out[11] = k_sat_std;
+    _ptfkit_out[12] = k_0_std;
+    _ptfkit_out[13] = l_std;
+    return 1;
+}
 PTFKIT_MODEL_INLINE int ptfkit_detail_rosetta(const ptfkit_detail_network *networks,
                                               const double *data, unsigned level, unsigned mode,
                                               const double *x, size_t count, double *out) {
-    if (!out)
-        return 0;
-    for (size_t i = 0; i < 14; ++i)
-        out[i] = NAN;
-    if (!x || mode >= 3)
-        return 0;
     switch (level) {
     case 2:
-        if (count != 3)
-            return 0;
-        break;
+        return ptfkit_detail_rosetta_mod2(networks, data, mode, x, count, out);
     case 3:
-        if (count != 4)
-            return 0;
-        break;
+        return ptfkit_detail_rosetta_mod3(networks, data, mode, x, count, out);
     case 4:
-        if (count != 5)
-            return 0;
-        break;
+        return ptfkit_detail_rosetta_mod4(networks, data, mode, x, count, out);
     case 5:
-        if (count != 6)
-            return 0;
-        break;
+        return ptfkit_detail_rosetta_mod5(networks, data, mode, x, count, out);
     default:
         return 0;
     }
-    for (size_t i = 0; i < count; ++i)
-        if (!isfinite(x[i]))
-            return 0;
-    if (level >= 2 && !(x[0] >= 0.0))
-        return 0;
-    if (level >= 2 && !(x[1] >= 0.0))
-        return 0;
-    if (level >= 2 && !(x[2] >= 0.0))
-        return 0;
-    if (level >= 2 && !((x[0] + x[1] + x[2]) >= 99.0))
-        return 0;
-    if (level >= 2 && !((x[0] + x[1] + x[2]) <= 101.0))
-        return 0;
-    if (level >= 3 && !(x[3] >= 0.5))
-        return 0;
-    if (level >= 3 && !(x[3] <= 2.0))
-        return 0;
-    if (level >= 4 && !(x[4] > 0.0))
-        return 0;
-    if (level >= 4 && !(x[4] < 1.0))
-        return 0;
-    if (level >= 5 && !(x[5] > 0.0))
-        return 0;
-    if (level >= 5 && !(x[5] < x[4]))
-        return 0;
-    size_t raw_index = 0;
-    switch (level) {
-    case 2:
-        raw_index = 0;
-        break;
-    case 3:
-        raw_index = 1;
-        break;
-    case 4:
-        raw_index = 2;
-        break;
-    case 5:
-        raw_index = 3;
-        break;
-    }
-    double raw[5000];
-    ptfkit_detail_network_predict(&networks[raw_index], data, x, raw);
-    double physical[5000];
-    for (size_t i = 0; i < 5000; ++i)
-        physical[i] = raw[i];
-    for (size_t i = 0; i < 1000; ++i)
-        physical[i * 5 + 2] = pow(10.0, raw[i * 5 + 2]);
-    for (size_t i = 0; i < 1000; ++i)
-        physical[i * 5 + 3] = pow(10.0, raw[i * 5 + 3]);
-    for (size_t i = 0; i < 1000; ++i)
-        physical[i * 5 + 4] = pow(10.0, raw[i * 5 + 4]);
-    double log_mean[5], log_std[5];
-    ptfkit_detail_stats(raw, 1000, 5, log_mean, log_std);
-    double linear_mean[5], linear_std[5];
-    ptfkit_detail_stats(physical, 1000, 5, linear_mean, linear_std);
-    double geometric[5];
-    for (size_t i = 0; i < 5; ++i)
-        geometric[i] = log_mean[i];
-    for (size_t i = 0; i < 1; ++i)
-        geometric[i * 5 + 2] = pow(10.0, log_mean[i * 5 + 2]);
-    for (size_t i = 0; i < 1; ++i)
-        geometric[i * 5 + 3] = pow(10.0, log_mean[i * 5 + 3]);
-    for (size_t i = 0; i < 1; ++i)
-        geometric[i * 5 + 4] = pow(10.0, log_mean[i * 5 + 4]);
-    const double *mean = NULL;
-    switch (mode) {
-    case 0:
-        mean = linear_mean;
-        break;
-    case 1:
-        mean = log_mean;
-        break;
-    case 2:
-        mean = geometric;
-        break;
-    }
-    const double *std = NULL;
-    switch (mode) {
-    case 0:
-        std = linear_std;
-        break;
-    case 1:
-        std = log_std;
-        break;
-    case 2:
-        std = linear_std;
-        break;
-    }
-    out[0] = mean[0];
-    out[1] = mean[1];
-    out[2] = mean[2];
-    out[3] = mean[3];
-    out[4] = mean[4];
-    out[7] = std[0];
-    out[8] = std[1];
-    out[9] = std[2];
-    out[10] = std[3];
-    out[11] = std[4];
-    const double *conductivity_parameters = NULL;
-    switch (mode) {
-    case 0:
-        conductivity_parameters = linear_mean;
-        break;
-    case 1:
-        conductivity_parameters = geometric;
-        break;
-    case 2:
-        conductivity_parameters = geometric;
-        break;
-    }
-    double vg[] = {conductivity_parameters[0], conductivity_parameters[1],
-                   conductivity_parameters[2], conductivity_parameters[3]};
-    if (level >= 2 && !(0.0 <= vg[0]))
-        return 1;
-    if (level >= 2 && !(vg[0] < vg[1]))
-        return 1;
-    if (level >= 2 && !(vg[1] < 1.0))
-        return 1;
-    if (level >= 2 && !(vg[2] > 0.0))
-        return 1;
-    if (level >= 2 && !(vg[3] > 1.0))
-        return 1;
-    size_t unsat_index = 0;
-    switch (level) {
-    case 2:
-        unsat_index = 4;
-        break;
-    case 3:
-        unsat_index = 4;
-        break;
-    case 4:
-        unsat_index = 4;
-        break;
-    case 5:
-        unsat_index = 4;
-        break;
-    }
-    double unsat[200];
-    ptfkit_detail_network_predict(&networks[unsat_index], data, vg, unsat);
-    double unsat_physical[200];
-    for (size_t i = 0; i < 200; ++i)
-        unsat_physical[i] = unsat[i];
-    for (size_t i = 0; i < 100; ++i)
-        unsat_physical[i * 2 + 0] = pow(10.0, unsat[i * 2 + 0]);
-    double ulog_mean[2], ulog_std[2];
-    ptfkit_detail_stats(unsat, 100, 2, ulog_mean, ulog_std);
-    double ulin_mean[2], ulin_std[2];
-    ptfkit_detail_stats(unsat_physical, 100, 2, ulin_mean, ulin_std);
-    double ugeo[2];
-    for (size_t i = 0; i < 2; ++i)
-        ugeo[i] = ulog_mean[i];
-    for (size_t i = 0; i < 1; ++i)
-        ugeo[i * 2 + 0] = pow(10.0, ulog_mean[i * 2 + 0]);
-    const double *umean = NULL;
-    switch (mode) {
-    case 0:
-        umean = ulin_mean;
-        break;
-    case 1:
-        umean = ulog_mean;
-        break;
-    case 2:
-        umean = ugeo;
-        break;
-    }
-    const double *ustd = NULL;
-    switch (mode) {
-    case 0:
-        ustd = ulin_std;
-        break;
-    case 1:
-        ustd = ulog_std;
-        break;
-    case 2:
-        ustd = ulin_std;
-        break;
-    }
-    out[5] = umean[0];
-    out[6] = ulog_mean[1];
-    out[12] = ustd[0];
-    out[13] = ulog_std[1];
-    return 1;
 }
 
 PTFKIT_MODEL_INLINE ptfkit_model_status ptfkit_rosetta3_predict(const ptfkit_model *model,
@@ -283,17 +937,15 @@ PTFKIT_MODEL_INLINE ptfkit_model_status ptfkit_rosetta3_predict(const ptfkit_mod
                : PTFKIT_MODEL_INPUT;
 }
 
-#define PTFKIT_ROSETTA3_BYTES 2212632
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern const unsigned char ptfkit_detail_rosetta3_data[PTFKIT_ROSETTA3_BYTES];
+ptfkit_model_status ptfkit_detail_rosetta3_builtin(ptfkit_model **out);
 #ifdef __cplusplus
 }
 #endif
 PTFKIT_MODEL_INLINE ptfkit_model_status ptfkit_rosetta3_builtin(ptfkit_model **out) {
-    return ptfkit_model_from_bytes(ptfkit_detail_rosetta3_data, PTFKIT_ROSETTA3_BYTES,
-                                   PTFKIT_ROSETTA3_SHA256, out);
+    return ptfkit_detail_rosetta3_builtin(out);
 }
 /* calc_ptf_zhang2017_mod2 */
 PTFKIT_MODEL_INLINE ptfkit_model_status calc_ptf_zhang2017_mod2(const ptfkit_model *model,

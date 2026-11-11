@@ -31,6 +31,22 @@ PTFKIT_MODEL_INLINE void ptfkit_model_free(ptfkit_model *model) {
         free(model);
     }
 }
+/* Clone trusted compiled arrays; authentication belongs to the preparation step. */
+PTFKIT_MODEL_INLINE ptfkit_model_status ptfkit_detail_model_from_arrays(
+    const ptfkit_detail_network *networks,size_t count,const double *values,size_t length,
+    const unsigned char digest[32],ptfkit_model **out) {
+    if(!out)return PTFKIT_MODEL_INPUT;
+    *out=NULL;
+    ptfkit_model *model=(ptfkit_model *)calloc(1,sizeof(*model));
+    if(!model)return PTFKIT_MODEL_MEMORY;
+    model->detail_networks=(ptfkit_detail_network *)malloc(count*sizeof(*networks));
+    model->detail_data=(double *)malloc(length*sizeof(double));
+    if(!model->detail_networks || !model->detail_data){ptfkit_model_free(model);return PTFKIT_MODEL_MEMORY;}
+    memcpy(model->detail_networks,networks,count*sizeof(*networks));
+    memcpy(model->detail_data,values,length*sizeof(double));
+    memcpy(model->detail_digest,digest,32);
+    model->detail_count=count;model->detail_values=length;*out=model;return PTFKIT_MODEL_OK;
+}
 PTFKIT_MODEL_INLINE size_t ptfkit_model_network_count(const ptfkit_model *model) {
     return model ? model->detail_count : 0;
 }

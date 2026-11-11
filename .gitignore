@@ -11,3 +11,7 @@ coverage.xml
 .rosetta-local/
 .mise.local.toml
 codegen/scripts/__pycache__/
+
+# Prepared exact model arrays are shipped in packages, never committed.
+targets/ptfkit-rs/src/prepared/
+targets/ptfkit-native/prepared/

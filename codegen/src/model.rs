@@ -1,6 +1,8 @@
 mod error;
+mod neural;
 pub(crate) use error::DefinitionError;
 use error::{RandomForestError, RandomForestErrorKind, TreeError, TreeErrorKind};
+pub(crate) use neural::*;
 
 use std::{
     collections::BTreeMap,
@@ -220,7 +222,8 @@ impl<'de> Deserialize<'de> for Spec {
                                         )?);
                                 }
                                 ImplementationVariable::Expression { .. }
-                                | ImplementationVariable::Forest { .. } => {}
+                                | ImplementationVariable::Forest { .. }
+                                | ImplementationVariable::Neural { .. } => {}
                             }
                         }
                         Ok::<_, DefinitionError>(implementation)
@@ -710,7 +713,8 @@ impl Spec {
                             }
                         }
                         ImplementationVariable::Expression { .. }
-                        | ImplementationVariable::Forest { .. } => {}
+                        | ImplementationVariable::Forest { .. }
+                        | ImplementationVariable::Neural { .. } => {}
                     }
                 }
             }
@@ -1071,6 +1075,8 @@ pub(crate) struct Generation {
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub(crate) struct Implementation {
+    #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
+    pub(crate) networks: BTreeMap<String, DenseEnsembleDefinition>,
     #[serde(default)]
     pub(crate) variables: Vec<ImplementationVariable>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -1079,7 +1085,6 @@ pub(crate) struct Implementation {
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub(crate) struct ExternalModel {
-    pub(crate) computation: String,
     pub(crate) kind: String,
     pub(crate) artifact: String,
     pub(crate) level: usize,
@@ -1088,6 +1093,11 @@ pub(crate) struct ExternalModel {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(untagged)]
 pub(crate) enum ImplementationVariable {
+    Neural {
+        name: String,
+        #[serde(flatten)]
+        operation: Box<NeuralVariable>,
+    },
     Expression {
         name: String,
         expr: String,
@@ -1573,6 +1583,7 @@ pub(crate) struct RawVariable {
 
 #[derive(Clone, Debug)]
 pub(crate) enum RawVariableValue {
+    Neural(Box<RawNeuralVariable>),
     Expression(RawExpression),
     Lookup(Box<RawLookup>),
     Tree(Box<RawTreeInvocation>),

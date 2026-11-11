@@ -4,7 +4,7 @@ mod catalog;
 mod native;
 mod python;
 mod reference;
-mod rust;
+pub(crate) mod rust;
 
 use std::{collections::BTreeMap, path::Path};
 
@@ -132,7 +132,11 @@ pub(crate) fn run(root: &Path, loaded: LoadedSpecifications) -> anyhow::Result<(
         definitions,
     } = loaded;
     let catalog = catalog::render(&entries, &definitions);
-    let compiled = compile::functions(entries.clone())?;
+    let all_compiled = compile::functions(entries.clone())?;
+    let compiled = all_compiled
+        .into_iter()
+        .filter(|f| !crate::neural::public::enabled(&f.entry.spec.functions[f.function_index]))
+        .collect::<Vec<_>>();
     let mut reference_python = reference::python::render(&entries, &compiled);
     let mut reference_c = reference::c::render(&compiled)?;
     let mut reference_cpp = reference::cpp::render(&compiled)?;

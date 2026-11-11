@@ -1,4 +1,5 @@
 ["rust:lint"]
+depends = ["models:prepare"]
 description = "Run Clippy for the Rust target"
 dir = "targets/ptfkit-rs"
 run = "cargo clippy --all-targets -- -D warnings"
@@ -9,6 +10,7 @@ dir = "targets/ptfkit-rs"
 run = "cargo fmt --all --check"
 
 ["rust:test"]
+depends = ["models:prepare"]
 description = "Run the Rust target test suite"
 dir = "targets/ptfkit-rs"
 run = "cargo test"

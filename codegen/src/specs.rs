@@ -158,10 +158,9 @@ pub(crate) fn load_all(root: &Path) -> Result<LoadedSpecifications> {
             .functions
             .iter()
             .map(|function| match &function.implementation {
-                Some(implementation) if implementation.external_model.is_none() => {
+                Some(implementation) => {
                     compile(&path, function, implementation, &mut expression_locations).map(Some)
                 }
-                Some(_) => Ok(None),
                 None => Ok(None),
             })
             .collect::<Result<Vec<_>, _>>();
@@ -497,6 +496,14 @@ fn compile(
             .iter()
             .enumerate()
             .map(|(index, variable)| match variable {
+                ImplementationVariable::Neural { name, operation } => Ok(RawVariable {
+                    name: name.clone(),
+                    value: RawVariableValue::Neural(Box::new(crate::model::RawNeuralVariable {
+                        implementation_path: format!("implementation.variables[{index}]"),
+                        operation: *operation.clone(),
+                        networks: implementation.networks.clone(),
+                    })),
+                }),
                 ImplementationVariable::Expression { name, expr } => {
                     let source_location = expression_locations.next().ok_or_else(|| {
                         SpecificationError::missing_source_location(path, function, index)
@@ -600,7 +607,8 @@ fn expression_locations(
             ImplementationVariable::Expression { expr, .. } => Some(expr.as_str()),
             ImplementationVariable::Lookup { .. }
             | ImplementationVariable::Tree { .. }
-            | ImplementationVariable::Forest { .. } => None,
+            | ImplementationVariable::Forest { .. }
+            | ImplementationVariable::Neural { .. } => None,
         });
     let mut cursor = 0;
     let mut locations = Vec::new();
@@ -661,9 +669,14 @@ fn validate_output(
                 semantic::VariableValue::RecordLookup(lookup) => Some(&lookup.output),
                 semantic::VariableValue::Tree(tree) => match &tree.definition.output {
                     semantic::ValueType::Record(record) => Some(record),
-                    semantic::ValueType::Number | semantic::ValueType::Enum(_) => None,
+                    semantic::ValueType::Number
+                    | semantic::ValueType::Enum(_)
+                    | semantic::ValueType::Ensemble(_)
+                    | semantic::ValueType::Effect => None,
                 },
-                semantic::VariableValue::Expression(_) | semantic::VariableValue::Forest(_) => None,
+                semantic::VariableValue::Expression(_)
+                | semantic::VariableValue::Forest(_)
+                | semantic::VariableValue::Neural(_) => None,
             };
             if actual == Some(&expected) {
                 return Ok(semantic::ResultBinding::RecordVariable(index));
@@ -692,17 +705,8 @@ fn validate_output(
             compiled
                 .variables
                 .iter()
-                .filter_map(|variable| match variable.value {
-                    semantic::VariableValue::Expression(_) => Some(variable.name.as_str()),
-                    semantic::VariableValue::Tree(ref tree)
-                        if tree.definition.output == semantic::ValueType::Number =>
-                    {
-                        Some(variable.name.as_str())
-                    }
-                    semantic::VariableValue::Forest(_) => Some(variable.name.as_str()),
-                    semantic::VariableValue::Tree(_) => None,
-                    semantic::VariableValue::RecordLookup(_) => None,
-                }),
+                .filter(|variable| variable.value.is_number())
+                .map(|variable| variable.name.as_str()),
         )
         .collect::<std::collections::BTreeSet<_>>();
     let missing = output_names

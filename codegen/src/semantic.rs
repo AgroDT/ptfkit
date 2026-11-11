@@ -1,3 +1,4 @@
+pub(crate) mod neural;
 use std::{
     collections::{BTreeMap, HashMap},
     fmt,
@@ -41,6 +42,8 @@ pub(crate) struct Variable {
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub(crate) enum ValueType {
+    Ensemble(neural::EnsembleType),
+    Effect,
     Number,
     Enum(crate::model::EnumType),
     Record(RecordType),
@@ -54,6 +57,7 @@ pub(crate) struct RecordType {
 
 #[derive(Clone, Debug, PartialEq)]
 pub(crate) enum VariableValue {
+    Neural(Box<neural::Operation>),
     Expression(Expr),
     RecordLookup(RecordLookup),
     Tree(TreeCall),
@@ -64,7 +68,7 @@ impl VariableValue {
     pub(crate) fn as_expression(&self) -> Option<&Expr> {
         match self {
             Self::Expression(expression) => Some(expression),
-            Self::RecordLookup(_) | Self::Tree(_) | Self::Forest(_) => None,
+            Self::RecordLookup(_) | Self::Tree(_) | Self::Forest(_) | Self::Neural(_) => None,
         }
     }
 
@@ -72,6 +76,7 @@ impl VariableValue {
         matches!(self, Self::Expression(_))
             || matches!(self, Self::Tree(tree) if tree.definition.output == ValueType::Number)
             || matches!(self, Self::Forest(_))
+            || matches!(self,Self::Neural(op) if matches!(op.as_ref(),neural::Operation::Estimate {..}))
     }
 }
 
@@ -292,6 +297,8 @@ impl MathFunction {
 
 #[derive(Clone, Debug, Eq, PartialEq, thiserror::Error)]
 pub(crate) enum SemanticErrorKind {
+    #[error(transparent)]
+    Neural(#[from] neural::NeuralErrorKind),
     #[error("duplicate name `{name}`")]
     DuplicateName { name: String },
     #[error("unknown identifier `{name}`")]
@@ -494,6 +501,11 @@ pub(crate) fn compile(raw: &RawFunction) -> Result<Function, Box<Error>> {
             ));
         }
         let (value, value_type) = match &variable.value {
+            RawVariableValue::Neural(invocation) => {
+                let (operation, ty) =
+                    neural::compile(raw, invocation, &scope, &variable_names, index)?;
+                (VariableValue::Neural(Box::new(operation)), ty)
+            }
             RawVariableValue::Expression(expression) => (
                 VariableValue::Expression(compile_expression(
                     raw,
@@ -980,6 +992,8 @@ fn compile_random_forest_definition(raw: &RawRandomForestDefinition) -> RandomFo
 
 fn value_type_name(value_type: &ValueType) -> String {
     match value_type {
+        ValueType::Ensemble(_) => "ensemble".to_owned(),
+        ValueType::Effect => "validation".to_owned(),
         ValueType::Number => "number".to_owned(),
         ValueType::Enum(enum_type) => format!("enum `{}`", enum_type.name),
         ValueType::Record(record) => format!("record `{}`", record.name),

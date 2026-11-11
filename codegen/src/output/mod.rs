@@ -190,6 +190,7 @@ impl GeneratedFile {
         }
     }
 
+    #[cfg(test)]
     pub(crate) fn binary(path: PathBuf, bytes: Vec<u8>) -> Self {
         Self {
             path,
