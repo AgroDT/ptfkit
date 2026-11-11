@@ -3,13 +3,17 @@
 import hashlib
 import json
 import struct
+import sys
+import threading
 from pathlib import Path
 
 import numpy as np
 import pytest
 
+from ptfkit import _models
+from ptfkit import zhang_schaap2017 as api
 from ptfkit.models import Model, ModelFormatError, ModelInputError, ModelIntegrityError
-from ptfkit.zhang_schaap2017 import Rosetta3
+from ptfkit.zhang_schaap2017 import Rosetta3, Rosetta3Statistics
 
 
 SHA = '7b160f19c85818a5995d9154563a44a8edd8e63f44d961542a4ca5d3b3a0e5ec'
@@ -127,11 +131,11 @@ def test_named_rosetta_broadcasts_against_upstream(rosetta_model: Rosetta3, leve
         )
     # Two distinct upstream samples occupy rows; columns broadcast a scalar.
     batch = {
-        name: np.array([case['inputs'][i] for case in cases[:2]])[:, None]
+        name: np.array([case['inputs'][i] for case in cases[:2]][::-1])[::-1, None]
         for i, name in enumerate(names)
     }
     batch['clay'] = np.repeat(batch['clay'], 3, axis=1)
-    out = tuple(np.empty((2, 3)) for _ in range(14))
+    out = Rosetta3Statistics(*(np.empty((3, 4))[::-1, ::-2].T for _ in range(14)))
     result = method(**batch, estimate=mode, out=out)
     expected = np.array([case['mean'] + case['std'] for case in cases[:2]])
     for i, (actual, target) in enumerate(zip(result.mean + result.stddev, out, strict=True)):
@@ -148,6 +152,108 @@ def test_named_rosetta_rejects_invalid_samples_and_shapes(rosetta_model: Rosetta
     with pytest.raises(ValueError, match='shape mismatch'):
         method(sand=[30, 30], silt=[30, 30, 30], clay=40)
     with pytest.raises(ValueError, match='out must contain'):
-        method(sand=30, silt=30, clay=40, out=(np.empty(2),))
+        method(sand=30, silt=30, clay=40, out=(np.empty(2),))  # ty: ignore[invalid-argument-type]
     empty = method(sand=[], silt=30, clay=40)
     assert all(np.shape(field) == (0,) for field in empty.mean + empty.stddev)
+
+
+def test_rosetta_native_batch_uses_named_outputs_without_full_result_allocation(
+    rosetta_model: Rosetta3, monkeypatch: pytest.MonkeyPatch
+):
+
+    # The independent frozen upstream oracle is also checked by the scalar test above.
+    expected = [
+        0.11921313412479762,
+        0.4348486578079577,
+        0.009109686083606867,
+        1.3094213646469939,
+        8.74047181417013,
+        1.3099307799553759,
+        -1.009187960743742,
+        0.009022699466985867,
+        0.010140469075525323,
+        0.0022509742698824248,
+        0.0366504620061113,
+        2.930411333703784,
+        0.843530623042398,
+        1.547848314232419,
+    ]
+    storage = np.empty((6, 14))
+    out = Rosetta3Statistics(*(storage[::-2, i] for i in range(14)))
+
+    def forbidden(*_args: object, **_kwargs: object) -> None:
+        pytest.fail('batch inference allocated a full result or called the scalar bridge')
+
+    monkeypatch.setattr(np, 'empty', forbidden)
+    monkeypatch.setattr(_models, 'rosetta3', forbidden)
+    result = rosetta_model.calc_ptf_zhang2017_mod2(sand=[30] * 3, silt=30, clay=40, out=out)
+    monkeypatch.undo()
+    assert isinstance(result, tuple)
+    assert result._fields == out._fields
+    for actual, target, value in zip(result, out, expected, strict=True):
+        assert actual is target
+        np.testing.assert_allclose(actual, value, rtol=1e-12, atol=1e-11)
+
+
+def test_rosetta_batch_preserves_overlapping_predictors(rosetta_model: Rosetta3):
+    sand = np.full(3, 30.0)
+    out = Rosetta3Statistics(sand[::-1], *(np.empty(3) for _ in range(13)))
+    result = rosetta_model.calc_ptf_zhang2017_mod2(sand=sand, silt=30, clay=40, out=out)
+    np.testing.assert_allclose(result.theta_r_mean, 0.11921313412479762, rtol=1e-12, atol=1e-11)
+    np.testing.assert_allclose(result.k_0_mean, 1.3099307799553759, rtol=1e-12, atol=1e-11)
+
+
+def test_rosetta_rejects_unusable_output_buffers(rosetta_model: Rosetta3):
+    method = rosetta_model.calc_ptf_zhang2017_mod2
+    for out in [
+        Rosetta3Statistics(*(np.empty(2, dtype=np.int64) for _ in range(14))),
+        Rosetta3Statistics(*(np.broadcast_to(0.0, (2,)) for _ in range(14))),
+    ]:
+        with pytest.raises(ValueError, match='writable floating-point'):
+            method(sand=[30, 30], silt=30, clay=40, out=out)  # ty: ignore[invalid-argument-type]
+    shared = np.empty(2)
+    with pytest.raises(ValueError, match='overlap'):
+        method(
+            sand=[30, 30], silt=30, clay=40, out=Rosetta3Statistics(*(shared for _ in range(14)))
+        )
+
+
+def test_rosetta_public_interface_is_method_only():
+    assert not hasattr(Rosetta3, 'predict')
+    for level in range(2, 6):
+        assert not hasattr(api, f'calc_ptf_zhang2017_mod{level}')
+
+
+def test_rosetta_converts_float32_output_buffers(rosetta_model: Rosetta3):
+    out = Rosetta3Statistics(*(np.empty(2, dtype=np.float32) for _ in range(14)))
+    result = rosetta_model.calc_ptf_zhang2017_mod2(sand=[30, 30], silt=30, clay=40, out=out)
+    assert result is out
+    np.testing.assert_allclose(result.theta_r_mean, 0.11921313412479762, rtol=1e-6)
+    np.testing.assert_allclose(result.k_0_mean, 1.3099307799553759, rtol=1e-6)
+
+
+def test_rosetta_native_batch_releases_the_gil(rosetta_model: Rosetta3):
+    inputs = [np.full(512, value) for value in (30.0, 30.0, 40.0)]
+    outputs = Rosetta3Statistics(*(np.empty(512) for _ in range(14)))
+    parked, start, progressed = threading.Event(), threading.Event(), threading.Event()
+
+    def worker() -> None:
+        parked.set()
+        start.wait()
+        progressed.set()
+
+    thread = threading.Thread(target=worker)
+    thread.start()
+    parked.wait()
+    interval = sys.getswitchinterval()
+    try:
+        # Prevent periodic Python thread switches from satisfying the assertion.
+        sys.setswitchinterval(60)
+        start.set()
+        assert not progressed.is_set()
+        _models.rosetta3_batch(rosetta_model.model.native_handle, 2, 0, inputs, outputs)
+        assert progressed.is_set()
+    finally:
+        sys.setswitchinterval(interval)
+        start.set()
+        thread.join(timeout=2)

@@ -27,7 +27,7 @@ impl Rosetta3 {
     /// The validated generic ensemble, for original-scale raw-member predictions.
     pub fn model(&self) -> &Model { &self.model }
 @METHODS@
-    pub fn predict(&self, level: usize, estimate: Estimate, inputs: &[f64]) -> Result<Rosetta3Statistics, ModelError> {
+    fn predict(&self, level: usize, estimate: Estimate, inputs: &[f64]) -> Result<Rosetta3Statistics, ModelError> {
         let values = contract::predict(&self.model.networks,&self.model.data,level,estimate as usize,inputs).ok_or(ModelError::Input)?;
         Ok(Rosetta3Statistics::from_values(values))
     }

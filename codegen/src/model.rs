@@ -1079,6 +1079,7 @@ pub(crate) struct Implementation {
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub(crate) struct ExternalModel {
+    pub(crate) computation: String,
     pub(crate) kind: String,
     pub(crate) artifact: String,
     pub(crate) level: usize,

@@ -30,7 +30,8 @@ int main() {
     // Frozen upstream case mod2_arith_clay_loam; no model file is loaded.
     auto bundled = ptfkit::Rosetta3::builtin();
     const double soil[] = {30, 30, 40};
-    auto prediction = bundled.predict(2, ptfkit::Estimate::Arithmetic, soil);
+    auto prediction =
+        bundled.calc_ptf_zhang2017_mod2(soil[0], soil[1], soil[2], ptfkit::Estimate::Arithmetic);
     const double expected[] = {0.11921313412479762,   0.4348486578079577,   0.009109686083606867,
                                1.3094213646469939,    8.74047181417013,     1.3099307799553759,
                                -1.009187960743742,    0.009022699466985867, 0.010140469075525323,

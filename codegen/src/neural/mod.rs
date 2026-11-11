@@ -3,6 +3,7 @@
 pub(crate) mod engine;
 mod generate;
 pub(crate) mod pack;
+mod pipeline;
 pub(crate) mod public;
 mod public_rosetta;
 pub(crate) mod rosetta;
@@ -19,6 +20,8 @@ use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub(crate) enum ModelError {
+    #[error("invalid neural computation: {reason}")]
+    Pipeline { reason: &'static str },
     #[error("invalid trusted external artifact descriptor {path}", path = .path.display())]
     Artifact { path: std::path::PathBuf },
     #[error("invalid external model binding in {function}")]

@@ -8,29 +8,29 @@ The reviewed CC0 model is bundled. Use `ptfkit_rosetta3_builtin` (C) or `Rosetta
 
 `models.h` / `ptfkit.models` provides owned, immutable generic model loading and original-scale network prediction. Rosetta3 requires the pinned complete-container digest. C models must be freed exactly once with `ptfkit_model_free`; C++ models use move-only RAII. Never share a C handle with a thread that frees it. Predictions on a live model use no shared mutable state.
 
-Rosetta3 levels are explicit. Modes 0/1/2 are arithmetic/log10/geometric. The 14 outputs are seven means then seven sample standard deviations (ddof=1), ordered theta_r, theta_s, alpha, n, Ksat, K0, L. Geometric estimates retain physical-scale SDs. Fixed-level functions use arithmetic mode; the model prediction interface exposes all three modes.
+Rosetta3 levels are explicit. Modes 0/1/2 are arithmetic/log10/geometric. The 14 outputs are seven means then seven sample standard deviations (ddof=1), ordered theta_r, theta_s, alpha, n, Ksat, K0, L. Geometric estimates retain physical-scale SDs. Named Rust/C++/Python methods expose all three modes through Estimate; C functions use arithmetic estimates, with ptfkit_rosetta3_predict for explicit modes.
 
 ## `calc_ptf_zhang2017_mod2`
 
-Estimate Rosetta3 level 2 physical-scale arithmetic means and uncertainty.
+Estimate Rosetta3 level 2 hydraulic means and uncertainty.
 
 Requires a loaded model plus sand, silt, clay. Returns named hydraulic means and sample SDs.
 
 ## `calc_ptf_zhang2017_mod3`
 
-Estimate Rosetta3 level 3 physical-scale arithmetic means and uncertainty.
+Estimate Rosetta3 level 3 hydraulic means and uncertainty.
 
 Requires a loaded model plus sand, silt, clay, bulk_density. Returns named hydraulic means and sample SDs.
 
 ## `calc_ptf_zhang2017_mod4`
 
-Estimate Rosetta3 level 4 physical-scale arithmetic means and uncertainty.
+Estimate Rosetta3 level 4 hydraulic means and uncertainty.
 
 Requires a loaded model plus sand, silt, clay, bulk_density, theta_33. Returns named hydraulic means and sample SDs.
 
 ## `calc_ptf_zhang2017_mod5`
 
-Estimate Rosetta3 level 5 physical-scale arithmetic means and uncertainty.
+Estimate Rosetta3 level 5 hydraulic means and uncertainty.
 
 Requires a loaded model plus sand, silt, clay, bulk_density, theta_33, theta_1500. Returns named hydraulic means and sample SDs.
 

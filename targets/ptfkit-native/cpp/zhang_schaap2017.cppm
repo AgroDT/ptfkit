@@ -50,27 +50,33 @@ class Rosetta3 {
         return Rosetta3(Model::from_bytes(bytes, PTFKIT_ROSETTA3_SHA256));
     }
     inline const Model &model() const noexcept { return model_; }
-    inline Rosetta3Statistics calc_ptf_zhang2017_mod2(double sand, double silt, double clay) const {
+    inline Rosetta3Statistics
+    calc_ptf_zhang2017_mod2(double sand, double silt, double clay,
+                            Estimate estimate = Estimate::Arithmetic) const {
         const double x[] = {sand, silt, clay};
-        return predict(2, Estimate::Arithmetic, x);
+        return predict(2, estimate, x);
     }
-    inline Rosetta3Statistics calc_ptf_zhang2017_mod3(double sand, double silt, double clay,
-                                                      double bulk_density) const {
+    inline Rosetta3Statistics
+    calc_ptf_zhang2017_mod3(double sand, double silt, double clay, double bulk_density,
+                            Estimate estimate = Estimate::Arithmetic) const {
         const double x[] = {sand, silt, clay, bulk_density};
-        return predict(3, Estimate::Arithmetic, x);
+        return predict(3, estimate, x);
     }
-    inline Rosetta3Statistics calc_ptf_zhang2017_mod4(double sand, double silt, double clay,
-                                                      double bulk_density, double theta_33) const {
+    inline Rosetta3Statistics
+    calc_ptf_zhang2017_mod4(double sand, double silt, double clay, double bulk_density,
+                            double theta_33, Estimate estimate = Estimate::Arithmetic) const {
         const double x[] = {sand, silt, clay, bulk_density, theta_33};
-        return predict(4, Estimate::Arithmetic, x);
+        return predict(4, estimate, x);
     }
-    inline Rosetta3Statistics calc_ptf_zhang2017_mod5(double sand, double silt, double clay,
-                                                      double bulk_density, double theta_33,
-                                                      double theta_1500) const {
+    inline Rosetta3Statistics
+    calc_ptf_zhang2017_mod5(double sand, double silt, double clay, double bulk_density,
+                            double theta_33, double theta_1500,
+                            Estimate estimate = Estimate::Arithmetic) const {
         const double x[] = {sand, silt, clay, bulk_density, theta_33, theta_1500};
-        return predict(5, Estimate::Arithmetic, x);
+        return predict(5, estimate, x);
     }
 
+  private:
     inline Rosetta3Statistics predict(unsigned level, Estimate estimate,
                                       std::span<const double> inputs) const {
         double values[14];
@@ -83,34 +89,4 @@ class Rosetta3 {
                                   values[10], values[11], values[12], values[13]};
     }
 };
-} // namespace ptfkit
-export namespace ptfkit {
-inline Rosetta3Statistics calc_ptf_zhang2017_mod2(const Rosetta3 &model, double sand, double silt,
-                                                  double clay) {
-    const double x[] = {sand, silt, clay};
-    return model.predict(2, Estimate::Arithmetic, x);
-}
-} // namespace ptfkit
-export namespace ptfkit {
-inline Rosetta3Statistics calc_ptf_zhang2017_mod3(const Rosetta3 &model, double sand, double silt,
-                                                  double clay, double bulk_density) {
-    const double x[] = {sand, silt, clay, bulk_density};
-    return model.predict(3, Estimate::Arithmetic, x);
-}
-} // namespace ptfkit
-export namespace ptfkit {
-inline Rosetta3Statistics calc_ptf_zhang2017_mod4(const Rosetta3 &model, double sand, double silt,
-                                                  double clay, double bulk_density,
-                                                  double theta_33) {
-    const double x[] = {sand, silt, clay, bulk_density, theta_33};
-    return model.predict(4, Estimate::Arithmetic, x);
-}
-} // namespace ptfkit
-export namespace ptfkit {
-inline Rosetta3Statistics calc_ptf_zhang2017_mod5(const Rosetta3 &model, double sand, double silt,
-                                                  double clay, double bulk_density, double theta_33,
-                                                  double theta_1500) {
-    const double x[] = {sand, silt, clay, bulk_density, theta_33, theta_1500};
-    return model.predict(5, Estimate::Arithmetic, x);
-}
 } // namespace ptfkit

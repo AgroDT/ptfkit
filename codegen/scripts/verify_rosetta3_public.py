@@ -73,11 +73,7 @@ def run(model_path: Path | None, build: Path, rust: Path, *, builtin: bool = Fal
                     **dict(zip(predictors[: len(inputs)], inputs, strict=True)), estimate=mode
                 )
                 actual = list(result.mean + result.stddev)
-                if mode == api.Estimate.ARITHMETIC:
-                    named = getattr(api, f'calc_ptf_zhang2017_mod{level}')(
-                        model, **dict(zip(predictors[: len(inputs)], inputs, strict=True))
-                    )
-                    require(named == result, f'public function differs: {case["id"]}')
+
             else:
                 output = subprocess.check_output(
                     [

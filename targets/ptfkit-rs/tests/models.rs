@@ -91,7 +91,14 @@ fn corruption_and_authenticated_malformed_containers_are_rejected() {
 fn bundled_rosetta_matches_frozen_upstream_case() {
     use ptfkit::zhang_schaap2017::Rosetta3;
     let model = Rosetta3::builtin().unwrap();
-    let actual = model.calc_ptf_zhang2017_mod2(30.0, 30.0, 40.0).unwrap();
+    let actual = model
+        .calc_ptf_zhang2017_mod2(
+            30.0,
+            30.0,
+            40.0,
+            ptfkit::zhang_schaap2017::Estimate::Arithmetic,
+        )
+        .unwrap();
     // Frozen upstream case mod2_arith_clay_loam; no external file is loaded.
     let expected = [
         0.11921313412479762,

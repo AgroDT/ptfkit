@@ -42,6 +42,7 @@ pub(crate) fn validate(entries: &[Entry]) -> Result<()> {
             ];
             if entry.slug != "zhang_schaap2017"
                 || binding.kind != "rosetta3"
+                || binding.computation != "../models/rosetta3/computation.json"
                 || binding.artifact != "../models/rosetta3/artifact.json"
                 || !(2..=5).contains(&binding.level)
                 || function.name != format!("calc_ptf_zhang2017_mod{}", binding.level)
@@ -118,6 +119,25 @@ pub(crate) fn render(root: &Path, entries: &[Entry]) -> Result<Option<AdapterFil
         }
         .into());
     }
+    let computation = super::pipeline::load(
+        &root.join("specs/models/rosetta3/computation.json"),
+        Some(&data),
+    )?;
+    for function in entry.spec.functions.iter().filter(|f| enabled(f)) {
+        computation.check_contract(
+            function
+                .implementation
+                .as_ref()
+                .unwrap()
+                .external_model
+                .as_ref()
+                .unwrap()
+                .level,
+            function.inputs.len(),
+            function.outputs.fields().len(),
+            3,
+        )?;
+    }
     let mut c_data = format!(
         "#include <stddef.h>\n/* CC0-1.0 model data from the pinned USDA repository; see MODEL_NOTICE.txt. */\n#ifdef __cplusplus\nextern \"C\" {{\n#endif\nextern const unsigned char ptfkit_detail_rosetta3_data[{}];\n/* clang-format off */\nconst unsigned char ptfkit_detail_rosetta3_data[{}] = {{\n",
         data.len(),
@@ -137,7 +157,7 @@ pub(crate) fn render(root: &Path, entries: &[Entry]) -> Result<Option<AdapterFil
     let mut c_stats = String::from("typedef struct {\n");
     let mut cpp_stats = String::from("struct Rosetta3Statistics {\n");
     let mut py_stats = String::from(
-        "@dataclass(frozen=True)\nclass Rosetta3Statistics:\n    \"\"\"Named parameter means and sample SDs in the selected reporting scales.\"\"\"\n",
+        "class Rosetta3Statistics(NamedTuple, Generic[T_co]):\n    \"\"\"Named parameter means and sample SDs in the selected reporting scales.\"\"\"\n",
     );
     for f in fields {
         let description = f
@@ -153,7 +173,7 @@ pub(crate) fn render(root: &Path, entries: &[Entry]) -> Result<Option<AdapterFil
         writeln!(rs_stats, "/// {}\npub {}: f64,", description, f.name).unwrap();
         writeln!(c_stats, "/* {} */\ndouble {};", description, f.name).unwrap();
         writeln!(cpp_stats, "double {};", f.name).unwrap();
-        writeln!(py_stats, "    {}: float | NDArray[np.float64]", f.name).unwrap();
+        writeln!(py_stats, "    {}: T_co", f.name).unwrap();
     }
     rs_stats.push_str("}\npub type Rosetta3ArithmeticStatistics = Rosetta3Statistics;\nimpl Rosetta3Statistics {\nfn from_values(v:[f64;14]) -> Self {Self {\n");
     for (i, name) in names.iter().enumerate() {
@@ -177,7 +197,7 @@ pub(crate) fn render(root: &Path, entries: &[Entry]) -> Result<Option<AdapterFil
             names[range.clone()].join(",")
         )
         .unwrap();
-        writeln!(py_stats,"\n    @property\n    def {method}(self) -> tuple[float | NDArray[np.float64], ...]:\n        \"\"\"Parameter {method} values in the selected reporting scales.\"\"\"\n        return ({rs_values},)").unwrap();
+        writeln!(py_stats,"\n    @property\n    def {method}(self) -> tuple[T_co, ...]:\n        \"\"\"Parameter {method} values in the selected reporting scales.\"\"\"\n        return ({rs_values},)").unwrap();
     }
     rs_stats.push_str("}\n");
     c_stats.push_str("} ptfkit_rosetta3_statistics;\n");
@@ -186,7 +206,7 @@ pub(crate) fn render(root: &Path, entries: &[Entry]) -> Result<Option<AdapterFil
         .replace("@SHA256@", sha)
         .replace("@STATISTICS@", &rs_stats);
     rs.push_str("\nuse crate::models::engine;\nmod contract {\n");
-    rs.push_str(include_str!("rosetta.rs"));
+    rs.push_str(&computation.rust);
     rs.push_str("\n}\n");
     let mut py = include_str!("public_rosetta.py.in")
         .replace("@SHA256@", sha)
@@ -200,7 +220,6 @@ pub(crate) fn render(root: &Path, entries: &[Entry]) -> Result<Option<AdapterFil
     ]
     .into_iter()
     .map(|n| format!("'{n}'"))
-    .chain(functions.iter().map(|f| format!("'{}'", f.name)))
     .collect::<Vec<_>>()
     .join(",");
     writeln!(py, "\n__all__ = [{all_names}]").unwrap();
@@ -208,7 +227,7 @@ pub(crate) fn render(root: &Path, entries: &[Entry]) -> Result<Option<AdapterFil
         "#include <ptfkit/detail/model_api.h>\n{}",
         include_str!("dense.h")
     );
-    let rest = include_str!("rosetta_core.h");
+    let rest = &computation.c;
     let digest = (0..32)
         .map(|i| format!("0x{}", &sha[i * 2..i * 2 + 2]))
         .collect::<Vec<_>>()
@@ -246,20 +265,19 @@ pub(crate) fn render(root: &Path, entries: &[Entry]) -> Result<Option<AdapterFil
             .map(|n| format!("{n}:f64"))
             .collect::<Vec<_>>()
             .join(",");
-        writeln!(rs,"/// {}\npub fn {}(model:&Rosetta3,{rs_args}) -> Result<Rosetta3ArithmeticStatistics,ModelError> {{model.predict({level},Estimate::Arithmetic,&[{}])}}",function.public_api.summary,function.name,args.join(",")).unwrap();
         let py_args = args
             .iter()
             .map(|n| format!("{n}: ArrayLike"))
             .collect::<Vec<_>>()
             .join(", ");
-        let kwargs = args
+        let scalar_args = args
             .iter()
-            .map(|n| format!("{n}={n}"))
+            .map(|n| format!("{n}: float"))
             .collect::<Vec<_>>()
             .join(", ");
-        writeln!(py_methods,"    def {}(self, *, {py_args}, estimate: Estimate = Estimate.ARITHMETIC, out: tuple[NDArray[np.float64], ...] | None = None) -> Rosetta3Statistics:\n        \"\"\"{}\"\"\"\n        return self._predict({level}, [{}], estimate, out)\n",function.name,function.public_api.summary,args.join(", ")).unwrap();
-        writeln!(py,"\ndef {}(model: Rosetta3, *, {py_args}, estimate: Estimate = Estimate.ARITHMETIC, out: tuple[NDArray[np.float64], ...] | None = None) -> Rosetta3Statistics:\n    \"\"\"{}\"\"\"\n    return model.{}({kwargs}, estimate=estimate, out=out)",function.name,function.public_api.summary,function.name).unwrap();
-        writeln!(rs_methods,"/// {}\npub fn {}(&self,{rs_args}) -> Result<Rosetta3ArithmeticStatistics,ModelError> {{self.predict({level},Estimate::Arithmetic,&[{}])}}",function.public_api.summary,function.name,args.join(",")).unwrap();
+        writeln!(py_methods,"    @overload\n    def {}(self, *, {scalar_args}, estimate: Estimate = Estimate.ARITHMETIC) -> Rosetta3Statistics[float]: ...\n\n    @overload\n    def {}(self, *, {py_args}, estimate: Estimate = Estimate.ARITHMETIC, out: Rosetta3Statistics[NDArray[floating]] | None = None) -> Rosetta3Statistics[NDArray[floating]]: ...\n", function.name, function.name).unwrap();
+        writeln!(py_methods,"    def {}(self, *, {py_args}, estimate: Estimate = Estimate.ARITHMETIC, out: Rosetta3Statistics[NDArray[floating]] | None = None) -> Rosetta3Statistics[float] | Rosetta3Statistics[NDArray[floating]]:\n        \"\"\"{}\"\"\"\n        return self._predict({level}, [{}], estimate, out)\n",function.name,function.public_api.summary,args.join(", ")).unwrap();
+        writeln!(rs_methods,"/// {}\npub fn {}(&self,{rs_args},estimate:Estimate) -> Result<Rosetta3Statistics,ModelError> {{self.predict({level},estimate,&[{}])}}",function.public_api.summary,function.name,args.join(",")).unwrap();
         let c_args = args
             .iter()
             .map(|n| format!("double {n}"))
@@ -270,8 +288,7 @@ pub(crate) fn render(root: &Path, entries: &[Entry]) -> Result<Option<AdapterFil
             writeln!(c, "out->{name}=v[{i}];").unwrap();
         }
         c.push_str("return status;}\n");
-        writeln!(cpp_methods,"inline Rosetta3Statistics {}({c_args}) const {{const double x[]={{{}}};return predict({level},Estimate::Arithmetic,x);}}",function.name,args.join(",")).unwrap();
-        writeln!(cpp,"export namespace ptfkit {{inline Rosetta3Statistics {}(const Rosetta3& model,{c_args}) {{const double x[]={{{}}};return model.predict({level},Estimate::Arithmetic,x);}}}}",function.name,args.join(",")).unwrap();
+        writeln!(cpp_methods,"inline Rosetta3Statistics {}({c_args},Estimate estimate=Estimate::Arithmetic) const {{const double x[]={{{}}};return predict({level},estimate,x);}}",function.name,args.join(",")).unwrap();
     }
     py = py.replace("@METHODS@", &py_methods);
     rs = rs.replace("@METHODS@", &rs_methods);
@@ -282,7 +299,7 @@ pub(crate) fn render(root: &Path, entries: &[Entry]) -> Result<Option<AdapterFil
             "<!-- @generated by ptfkit-codegen; DO NOT EDIT. -->\n\n# Rosetta3 {language} API\n\n{}\n\nThe reviewed CC0 model is bundled. Use `ptfkit_rosetta3_builtin` (C) or `Rosetta3::builtin` (C++) without a file. External PTFKNN01 loading remains available with pinned SHA-256 `{sha}`. Invalid predictors, containers and digest mismatches are errors.\n\n",
             entry.spec.source.citation_apa
         );
-        text.push_str("`models.h` / `ptfkit.models` provides owned, immutable generic model loading and original-scale network prediction. Rosetta3 requires the pinned complete-container digest. C models must be freed exactly once with `ptfkit_model_free`; C++ models use move-only RAII. Never share a C handle with a thread that frees it. Predictions on a live model use no shared mutable state.\n\nRosetta3 levels are explicit. Modes 0/1/2 are arithmetic/log10/geometric. The 14 outputs are seven means then seven sample standard deviations (ddof=1), ordered theta_r, theta_s, alpha, n, Ksat, K0, L. Geometric estimates retain physical-scale SDs. Fixed-level functions use arithmetic mode; the model prediction interface exposes all three modes.\n\n");
+        text.push_str("`models.h` / `ptfkit.models` provides owned, immutable generic model loading and original-scale network prediction. Rosetta3 requires the pinned complete-container digest. C models must be freed exactly once with `ptfkit_model_free`; C++ models use move-only RAII. Never share a C handle with a thread that frees it. Predictions on a live model use no shared mutable state.\n\nRosetta3 levels are explicit. Modes 0/1/2 are arithmetic/log10/geometric. The 14 outputs are seven means then seven sample standard deviations (ddof=1), ordered theta_r, theta_s, alpha, n, Ksat, K0, L. Geometric estimates retain physical-scale SDs. Named Rust/C++/Python methods expose all three modes through Estimate; C functions use arithmetic estimates, with ptfkit_rosetta3_predict for explicit modes.\n\n");
         for f in functions.iter() {
             writeln!(text,"## `{}`\n\n{}\n\nRequires a loaded model plus {}. Returns named hydraulic means and sample SDs.\n",f.public_api.name,f.public_api.summary,f.inputs.iter().map(|i|i.name()).collect::<Vec<_>>().join(", ")).unwrap();
         }
@@ -302,8 +319,8 @@ pub(crate) fn render(root: &Path, entries: &[Entry]) -> Result<Option<AdapterFil
         python: PythonAdapter {
             headers: "#include <ptfkit/zhang_schaap2017.h>".into(),
             functions: include_str!("public_rosetta_python.c").into(),
-            methods: "    {\"rosetta3\", ptfkit_python_rosetta, METH_VARARGS, NULL},\n    {\"rosetta3_data\", ptfkit_python_rosetta_data, METH_NOARGS, NULL},".into(),
-            stub: "def rosetta3(handle: object, level: int, mode: int, inputs: Sequence[float]) -> tuple[float, ...]: ...\ndef rosetta3_data() -> bytes: ...\n".into(),
+            methods: "    {\"rosetta3_batch\", ptfkit_python_rosetta_batch, METH_VARARGS, NULL},\n    {\"rosetta3\", ptfkit_python_rosetta, METH_VARARGS, NULL},\n    {\"rosetta3_data\", ptfkit_python_rosetta_data, METH_NOARGS, NULL},".into(),
+            stub: "def rosetta3_batch(handle: object, level: int, mode: int, inputs: Sequence[object], outputs: Sequence[object]) -> None: ...\ndef rosetta3(handle: object, level: int, mode: int, inputs: Sequence[float]) -> tuple[float, ...]: ...\ndef rosetta3_data() -> bytes: ...\n".into(),
         },
         files: Files {
             rust_data: vec![GeneratedFile::binary("rosetta3.ptfm".into(), data)],
@@ -381,6 +398,7 @@ mod tests {
                 function.implementation = Some(Implementation {
                     variables: vec![],
                     external_model: Some(ExternalModel {
+                        computation: "../models/rosetta3/computation.json".into(),
                         kind: "rosetta3".into(),
                         artifact: "../models/rosetta3/artifact.json".into(),
                         level,

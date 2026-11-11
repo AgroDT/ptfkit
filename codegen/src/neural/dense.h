@@ -72,4 +72,20 @@ PTFKIT_MODEL_INLINE void ptfkit_detail_network_predict(const ptfkit_detail_netwo
     }
 }
 
+PTFKIT_MODEL_INLINE void ptfkit_detail_stats(const double *rows, size_t n, size_t width,
+                                             double *mean, double *std) {
+    for (size_t j = 0; j < width; ++j) {
+        mean[j] = 0;
+        for (size_t i = 0; i < n; ++i)
+            mean[j] += rows[i * width + j];
+        mean[j] /= (double)n;
+        std[j] = 0;
+        for (size_t i = 0; i < n; ++i) {
+            double d = rows[i * width + j] - mean[j];
+            std[j] += d * d;
+        }
+        std[j] = sqrt(std[j] / (double)(n - 1));
+    }
+}
+
 #endif

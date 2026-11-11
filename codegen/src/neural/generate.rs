@@ -33,6 +33,13 @@ fn scales(scales: &[Scale]) -> String {
 pub(crate) fn run(model: &Path, directory: &Path) -> Result<()> {
     let model = Model::load(model)?;
     model.check_rosetta()?;
+    let computation = super::pipeline::load(
+        Path::new(concat!(
+            env!("CARGO_MANIFEST_DIR"),
+            "/../specs/models/rosetta3/computation.json"
+        )),
+        None,
+    )?;
     // Never overwrite reviewed generated local artifacts or arbitrary directories.
     fs::create_dir(directory).context("creating new local neural output directory")?;
     let write = |name: &str, content: &str| fs::write(directory.join(name), content);
@@ -49,7 +56,7 @@ pub(crate) fn run(model: &Path, directory: &Path) -> Result<()> {
     for (name, content) in [
         ("model_api.h", include_str!("public_model_api.h")),
         ("dense.h", include_str!("dense.h")),
-        ("rosetta_core.h", include_str!("rosetta_core.h")),
+        ("rosetta_core.h", computation.c.as_str()),
     ] {
         write(name, &format!("{HEADER}{content}"))?;
     }
@@ -154,10 +161,7 @@ target_link_libraries(_rosetta3_local PRIVATE model)
         "engine.rs",
         &format!("{RUST_HEADER}{}", include_str!("engine.rs")),
     )?;
-    write(
-        "rosetta.rs",
-        &format!("{RUST_HEADER}{}", include_str!("rosetta.rs")),
-    )?;
+    write("rosetta.rs", &format!("{RUST_HEADER}{}", computation.rust))?;
     let mut rust = String::from(
         "mod engine;\nmod rosetta;\nuse engine::{Network, Scale};\nfn networks() -> Vec<Network> { vec![\n",
     );

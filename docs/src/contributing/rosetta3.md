@@ -295,12 +295,12 @@ Python provides `mean` and `stddev` tuple properties; Rust and C++ provide the
 same ordered arrays through methods.
 
 ```rust
-use ptfkit::zhang_schaap2017::{Rosetta3, Estimate, calc_ptf_zhang2017_mod2};
+use ptfkit::zhang_schaap2017::{Rosetta3, Estimate};
 
 fn example() -> Result<(), ptfkit::models::ModelError> {
 let model = Rosetta3::builtin()?;
-let result = calc_ptf_zhang2017_mod2(&model, 30.0, 30.0, 40.0)?;
-let logged = model.predict(2, Estimate::Log10, &[30.0, 30.0, 40.0])?;
+let result = model.calc_ptf_zhang2017_mod2(30.0, 30.0, 40.0, Estimate::Arithmetic)?;
+let logged = model.calc_ptf_zhang2017_mod2(30.0, 30.0, 40.0, Estimate::Log10)?;
     Ok(())
 }
 ```
@@ -332,7 +332,7 @@ import ptfkit;
 
 int main() {
     auto model = ptfkit::Rosetta3::builtin();
-    auto result = ptfkit::calc_ptf_zhang2017_mod2(model, 30, 30, 40);
+    auto result = model.calc_ptf_zhang2017_mod2(30, 30, 40);
     return result.theta_s_mean > result.theta_r_mean ? 0 : 1;
 }
 ```
@@ -502,6 +502,34 @@ modules and the verification workload, not just the model. These are local
 Windows measurements, not cross-platform size, memory or speed guarantees.
 No package has been published by this work.
 
-Local C verification and public C/Python inference use the same `dense.h` and
-`rosetta_core.h` templates. The core receives network metadata and weights
-explicitly; local and public wrappers only bind their model data.
+Local verification and public targets compile the same declarative computation
+in `specs/models/rosetta3/computation.json`. Its `network_manifest` references
+`network.json`, which describes ensemble membership, dense architectures,
+activations, input/output transformations and parameter offsets. Generation
+checks this metadata against the authenticated bundled container.
+
+The computation is an ordered graph of network evaluation, column-wise `pow10`,
+sample statistics (`ddof=1`), estimate selection, vector gathering, conditional
+termination and output assignments. Graph references must precede use and match
+the declared dimensions. Level-specific predictor counts and numeric conditions
+are part of the specification. Arithmetic estimates transform individual ensemble
+members before aggregation; geometric estimates transform aggregated log means.
+The graph explicitly gathers the four physical parameters passed to the
+conductivity network, selects arithmetic or geometric means for those inputs,
+and specifies the physical-domain guard and resulting missing conductivity
+outputs. Neither target renderer contains the Rosetta algorithm.
+
+Only the generic dense/statistics runtimes are handwritten in C and Rust.
+Python and C++ reuse the C computation. Rust and C++ keep the generic Rosetta
+prediction dispatcher private; named methods accept `Estimate` (required in Rust,
+defaulting to arithmetic in C++). Python exposes only named calculation methods.
+
+Python results use `Rosetta3Statistics[T]`, a generic `NamedTuple`. Scalar inputs
+return float fields; array inputs return array fields. Supply a
+`Rosetta3Statistics` containing writable floating-point arrays as `out`. The native
+bridge iterates broadcast strided buffers with the GIL released, including
+negative strides and zero-dimensional or empty arrays. It writes directly into
+provided float64 buffers; other floating dtypes use conversion buffers. Predictors that overlap outputs are copied before inference;
+output arrays must not overlap each other. An invalid sample raises an error;
+buffers may already contain results for earlier samples. The scalar path still
+works without importing NumPy.

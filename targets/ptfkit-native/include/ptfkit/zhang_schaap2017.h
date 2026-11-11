@@ -54,24 +54,6 @@ PTFKIT_MODEL_INLINE int ptfkit_rosetta3_accepts(const ptfkit_model *model) {
 PTFKIT_MODEL_INLINE ptfkit_model_status ptfkit_rosetta3_load(const char *path, ptfkit_model **out) {
     return ptfkit_model_load(path, PTFKIT_ROSETTA3_SHA256, out);
 }
-#ifndef PTFKIT_DETAIL_ROSETTA_CORE_H
-#define PTFKIT_DETAIL_ROSETTA_CORE_H
-PTFKIT_MODEL_INLINE void ptfkit_detail_stats(const double *rows, size_t n, size_t width,
-                                             double *mean, double *std) {
-    for (size_t j = 0; j < width; ++j) {
-        mean[j] = 0;
-        for (size_t i = 0; i < n; ++i)
-            mean[j] += rows[i * width + j];
-        mean[j] /= (double)n;
-        std[j] = 0;
-        for (size_t i = 0; i < n; ++i) {
-            double d = rows[i * width + j] - mean[j];
-            std[j] += d * d;
-        }
-        std[j] = sqrt(std[j] / (double)(n - 1));
-    }
-}
-
 PTFKIT_MODEL_INLINE int ptfkit_detail_rosetta(const ptfkit_detail_network *networks,
                                               const double *data, unsigned level, unsigned mode,
                                               const double *x, size_t count, double *out) {
@@ -79,49 +61,211 @@ PTFKIT_MODEL_INLINE int ptfkit_detail_rosetta(const ptfkit_detail_network *netwo
         return 0;
     for (size_t i = 0; i < 14; ++i)
         out[i] = NAN;
-    if (!x || level < 2 || level > 5 || mode > 2 || count != level + 1)
+    if (!x || mode >= 3)
         return 0;
+    switch (level) {
+    case 2:
+        if (count != 3)
+            return 0;
+        break;
+    case 3:
+        if (count != 4)
+            return 0;
+        break;
+    case 4:
+        if (count != 5)
+            return 0;
+        break;
+    case 5:
+        if (count != 6)
+            return 0;
+        break;
+    default:
+        return 0;
+    }
     for (size_t i = 0; i < count; ++i)
         if (!isfinite(x[i]))
             return 0;
-    double sum = x[0] + x[1] + x[2];
-    if (x[0] < 0 || x[1] < 0 || x[2] < 0 || sum < 99 || sum > 101 ||
-        (level >= 3 && (x[3] < 0.5 || x[3] > 2.0)) || (level >= 4 && !(x[4] > 0 && x[4] < 1)) ||
-        (level >= 5 && !(x[5] > 0 && x[5] < x[4])))
+    if (level >= 2 && !(x[0] >= 0.0))
         return 0;
-    const ptfkit_detail_network *net = &networks[level - 2];
-    double raw[5000], linear[5000];
-    ptfkit_detail_network_predict(net, data, x, raw);
-    for (size_t i = 0; i < net->nboot; ++i)
-        for (size_t j = 0; j < 5; ++j)
-            linear[i * 5 + j] = j < 2 ? raw[i * 5 + j] : pow(10.0, raw[i * 5 + j]);
-    double lm[5], ls[5], pm[5], ps[5], gm[5];
-    ptfkit_detail_stats(raw, net->nboot, 5, lm, ls);
-    ptfkit_detail_stats(linear, net->nboot, 5, pm, ps);
-    for (size_t j = 0; j < 5; ++j) {
-        gm[j] = j < 2 ? lm[j] : pow(10.0, lm[j]);
-        out[j] = mode == 0 ? pm[j] : mode == 1 ? lm[j] : gm[j];
-        out[j + 7] = mode == 1 ? ls[j] : ps[j];
+    if (level >= 2 && !(x[1] >= 0.0))
+        return 0;
+    if (level >= 2 && !(x[2] >= 0.0))
+        return 0;
+    if (level >= 2 && !((x[0] + x[1] + x[2]) >= 99.0))
+        return 0;
+    if (level >= 2 && !((x[0] + x[1] + x[2]) <= 101.0))
+        return 0;
+    if (level >= 3 && !(x[3] >= 0.5))
+        return 0;
+    if (level >= 3 && !(x[3] <= 2.0))
+        return 0;
+    if (level >= 4 && !(x[4] > 0.0))
+        return 0;
+    if (level >= 4 && !(x[4] < 1.0))
+        return 0;
+    if (level >= 5 && !(x[5] > 0.0))
+        return 0;
+    if (level >= 5 && !(x[5] < x[4]))
+        return 0;
+    size_t raw_index = 0;
+    switch (level) {
+    case 2:
+        raw_index = 0;
+        break;
+    case 3:
+        raw_index = 1;
+        break;
+    case 4:
+        raw_index = 2;
+        break;
+    case 5:
+        raw_index = 3;
+        break;
     }
-    const double *vg = mode == 0 ? pm : gm;
-    if (!(0 <= vg[0] && vg[0] < vg[1] && vg[1] < 1 && vg[2] > 0 && vg[3] > 1))
+    double raw[5000];
+    ptfkit_detail_network_predict(&networks[raw_index], data, x, raw);
+    double physical[5000];
+    for (size_t i = 0; i < 5000; ++i)
+        physical[i] = raw[i];
+    for (size_t i = 0; i < 1000; ++i)
+        physical[i * 5 + 2] = pow(10.0, raw[i * 5 + 2]);
+    for (size_t i = 0; i < 1000; ++i)
+        physical[i * 5 + 3] = pow(10.0, raw[i * 5 + 3]);
+    for (size_t i = 0; i < 1000; ++i)
+        physical[i * 5 + 4] = pow(10.0, raw[i * 5 + 4]);
+    double log_mean[5], log_std[5];
+    ptfkit_detail_stats(raw, 1000, 5, log_mean, log_std);
+    double linear_mean[5], linear_std[5];
+    ptfkit_detail_stats(physical, 1000, 5, linear_mean, linear_std);
+    double geometric[5];
+    for (size_t i = 0; i < 5; ++i)
+        geometric[i] = log_mean[i];
+    for (size_t i = 0; i < 1; ++i)
+        geometric[i * 5 + 2] = pow(10.0, log_mean[i * 5 + 2]);
+    for (size_t i = 0; i < 1; ++i)
+        geometric[i * 5 + 3] = pow(10.0, log_mean[i * 5 + 3]);
+    for (size_t i = 0; i < 1; ++i)
+        geometric[i * 5 + 4] = pow(10.0, log_mean[i * 5 + 4]);
+    const double *mean = NULL;
+    switch (mode) {
+    case 0:
+        mean = linear_mean;
+        break;
+    case 1:
+        mean = log_mean;
+        break;
+    case 2:
+        mean = geometric;
+        break;
+    }
+    const double *std = NULL;
+    switch (mode) {
+    case 0:
+        std = linear_std;
+        break;
+    case 1:
+        std = log_std;
+        break;
+    case 2:
+        std = linear_std;
+        break;
+    }
+    out[0] = mean[0];
+    out[1] = mean[1];
+    out[2] = mean[2];
+    out[3] = mean[3];
+    out[4] = mean[4];
+    out[7] = std[0];
+    out[8] = std[1];
+    out[9] = std[2];
+    out[10] = std[3];
+    out[11] = std[4];
+    const double *conductivity_parameters = NULL;
+    switch (mode) {
+    case 0:
+        conductivity_parameters = linear_mean;
+        break;
+    case 1:
+        conductivity_parameters = geometric;
+        break;
+    case 2:
+        conductivity_parameters = geometric;
+        break;
+    }
+    double vg[] = {conductivity_parameters[0], conductivity_parameters[1],
+                   conductivity_parameters[2], conductivity_parameters[3]};
+    if (level >= 2 && !(0.0 <= vg[0]))
         return 1;
-    double u[200], ul[200], um[2], us[2], upm[2], ups[2];
-    ptfkit_detail_network_predict(&networks[4], data, vg, u);
-    for (size_t i = 0; i < 100; ++i) {
-        ul[i * 2] = pow(10.0, u[i * 2]);
-        ul[i * 2 + 1] = u[i * 2 + 1];
+    if (level >= 2 && !(vg[0] < vg[1]))
+        return 1;
+    if (level >= 2 && !(vg[1] < 1.0))
+        return 1;
+    if (level >= 2 && !(vg[2] > 0.0))
+        return 1;
+    if (level >= 2 && !(vg[3] > 1.0))
+        return 1;
+    size_t unsat_index = 0;
+    switch (level) {
+    case 2:
+        unsat_index = 4;
+        break;
+    case 3:
+        unsat_index = 4;
+        break;
+    case 4:
+        unsat_index = 4;
+        break;
+    case 5:
+        unsat_index = 4;
+        break;
     }
-    ptfkit_detail_stats(u, 100, 2, um, us);
-    ptfkit_detail_stats(ul, 100, 2, upm, ups);
-    out[5] = mode == 0 ? upm[0] : mode == 1 ? um[0] : pow(10.0, um[0]);
-    out[12] = mode == 1 ? us[0] : ups[0];
-    out[6] = um[1];
-    out[13] = us[1];
+    double unsat[200];
+    ptfkit_detail_network_predict(&networks[unsat_index], data, vg, unsat);
+    double unsat_physical[200];
+    for (size_t i = 0; i < 200; ++i)
+        unsat_physical[i] = unsat[i];
+    for (size_t i = 0; i < 100; ++i)
+        unsat_physical[i * 2 + 0] = pow(10.0, unsat[i * 2 + 0]);
+    double ulog_mean[2], ulog_std[2];
+    ptfkit_detail_stats(unsat, 100, 2, ulog_mean, ulog_std);
+    double ulin_mean[2], ulin_std[2];
+    ptfkit_detail_stats(unsat_physical, 100, 2, ulin_mean, ulin_std);
+    double ugeo[2];
+    for (size_t i = 0; i < 2; ++i)
+        ugeo[i] = ulog_mean[i];
+    for (size_t i = 0; i < 1; ++i)
+        ugeo[i * 2 + 0] = pow(10.0, ulog_mean[i * 2 + 0]);
+    const double *umean = NULL;
+    switch (mode) {
+    case 0:
+        umean = ulin_mean;
+        break;
+    case 1:
+        umean = ulog_mean;
+        break;
+    case 2:
+        umean = ugeo;
+        break;
+    }
+    const double *ustd = NULL;
+    switch (mode) {
+    case 0:
+        ustd = ulin_std;
+        break;
+    case 1:
+        ustd = ulog_std;
+        break;
+    case 2:
+        ustd = ulin_std;
+        break;
+    }
+    out[5] = umean[0];
+    out[6] = ulog_mean[1];
+    out[12] = ustd[0];
+    out[13] = ulog_std[1];
     return 1;
 }
-
-#endif
 
 PTFKIT_MODEL_INLINE ptfkit_model_status ptfkit_rosetta3_predict(const ptfkit_model *model,
                                                                 unsigned level, unsigned mode,

@@ -211,8 +211,9 @@
       "properties": {
         "external_model": {
           "type": "object", "additionalProperties": false,
-          "required": ["kind", "artifact", "level"],
+          "required": ["kind", "artifact", "computation", "level"],
           "properties": {
+            "computation": {"type": "string", "minLength": 1},
             "kind": {"const": "rosetta3"},
             "artifact": {"const": "../models/rosetta3/artifact.json"},
             "level": {"type": "integer", "minimum": 2, "maximum": 5}

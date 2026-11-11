@@ -17,16 +17,15 @@ int main(int argc, char **argv) {
             x.push_back(std::strtod(argv[i], nullptr));
         if (mode > 2)
             return 15;
-        auto result = model.predict(level, static_cast<ptfkit::Estimate>(mode), x);
-        if (mode == 0) {
-            auto named = level == 2   ? model.calc_ptf_zhang2017_mod2(x[0], x[1], x[2])
-                         : level == 3 ? model.calc_ptf_zhang2017_mod3(x[0], x[1], x[2], x[3])
-                         : level == 4
-                             ? model.calc_ptf_zhang2017_mod4(x[0], x[1], x[2], x[3], x[4])
-                             : model.calc_ptf_zhang2017_mod5(x[0], x[1], x[2], x[3], x[4], x[5]);
-            if (named.mean() != result.mean() || named.stddev() != result.stddev())
-                return 30;
-        }
+        if (level < 2 || level > 5 || x.size() != level + 1)
+            return 15;
+        auto estimate = static_cast<ptfkit::Estimate>(mode);
+        auto result =
+            level == 2   ? model.calc_ptf_zhang2017_mod2(x[0], x[1], x[2], estimate)
+            : level == 3 ? model.calc_ptf_zhang2017_mod3(x[0], x[1], x[2], x[3], estimate)
+            : level == 4
+                ? model.calc_ptf_zhang2017_mod4(x[0], x[1], x[2], x[3], x[4], estimate)
+                : model.calc_ptf_zhang2017_mod5(x[0], x[1], x[2], x[3], x[4], x[5], estimate);
         for (double v : result.mean())
             std::printf("%.17g\n", v);
         for (double v : result.stddev())

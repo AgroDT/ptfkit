@@ -135,6 +135,7 @@ fn load_validated_all(root: &Path) -> Result<specs::LoadedSpecifications> {
         .into());
     }
     neural::public::validate(&loaded.entries)?;
+    neural::public::validate_computations(root, &loaded.entries)?;
     Ok(loaded)
 }
 

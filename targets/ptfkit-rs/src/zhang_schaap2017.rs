@@ -117,26 +117,28 @@ impl Rosetta3 {
     pub fn model(&self) -> &Model {
         &self.model
     }
-    /// Estimate Rosetta3 level 2 physical-scale arithmetic means and uncertainty.
+    /// Estimate Rosetta3 level 2 hydraulic means and uncertainty.
     pub fn calc_ptf_zhang2017_mod2(
         &self,
         sand: f64,
         silt: f64,
         clay: f64,
-    ) -> Result<Rosetta3ArithmeticStatistics, ModelError> {
-        self.predict(2, Estimate::Arithmetic, &[sand, silt, clay])
+        estimate: Estimate,
+    ) -> Result<Rosetta3Statistics, ModelError> {
+        self.predict(2, estimate, &[sand, silt, clay])
     }
-    /// Estimate Rosetta3 level 3 physical-scale arithmetic means and uncertainty.
+    /// Estimate Rosetta3 level 3 hydraulic means and uncertainty.
     pub fn calc_ptf_zhang2017_mod3(
         &self,
         sand: f64,
         silt: f64,
         clay: f64,
         bulk_density: f64,
-    ) -> Result<Rosetta3ArithmeticStatistics, ModelError> {
-        self.predict(3, Estimate::Arithmetic, &[sand, silt, clay, bulk_density])
+        estimate: Estimate,
+    ) -> Result<Rosetta3Statistics, ModelError> {
+        self.predict(3, estimate, &[sand, silt, clay, bulk_density])
     }
-    /// Estimate Rosetta3 level 4 physical-scale arithmetic means and uncertainty.
+    /// Estimate Rosetta3 level 4 hydraulic means and uncertainty.
     pub fn calc_ptf_zhang2017_mod4(
         &self,
         sand: f64,
@@ -144,14 +146,11 @@ impl Rosetta3 {
         clay: f64,
         bulk_density: f64,
         theta_33: f64,
-    ) -> Result<Rosetta3ArithmeticStatistics, ModelError> {
-        self.predict(
-            4,
-            Estimate::Arithmetic,
-            &[sand, silt, clay, bulk_density, theta_33],
-        )
+        estimate: Estimate,
+    ) -> Result<Rosetta3Statistics, ModelError> {
+        self.predict(4, estimate, &[sand, silt, clay, bulk_density, theta_33])
     }
-    /// Estimate Rosetta3 level 5 physical-scale arithmetic means and uncertainty.
+    /// Estimate Rosetta3 level 5 hydraulic means and uncertainty.
     pub fn calc_ptf_zhang2017_mod5(
         &self,
         sand: f64,
@@ -160,15 +159,16 @@ impl Rosetta3 {
         bulk_density: f64,
         theta_33: f64,
         theta_1500: f64,
-    ) -> Result<Rosetta3ArithmeticStatistics, ModelError> {
+        estimate: Estimate,
+    ) -> Result<Rosetta3Statistics, ModelError> {
         self.predict(
             5,
-            Estimate::Arithmetic,
+            estimate,
             &[sand, silt, clay, bulk_density, theta_33, theta_1500],
         )
     }
 
-    pub fn predict(
+    fn predict(
         &self,
         level: usize,
         estimate: Estimate,
@@ -188,24 +188,7 @@ impl Rosetta3 {
 
 use crate::models::engine;
 mod contract {
-    //! Local Rosetta3 orchestration over the reusable dense ensemble engine.
-
     use super::engine::{Network, statistics};
-
-    /// Fixed-level input validation. Missing predictors never select another level.
-    pub fn valid(level: usize, x: &[f64]) -> bool {
-        (2..=5).contains(&level)
-            && x.len() == level + 1
-            && x.iter().all(|v| v.is_finite())
-            && x[..3].iter().all(|v| *v >= 0.0)
-            && (99.0..=101.0).contains(&(x[0] + x[1] + x[2]))
-            && (level < 3 || (0.5..=2.0).contains(&x[3]))
-            && (level < 4 || (x[4] > 0.0 && x[4] < 1.0))
-            && (level < 5 || (x[5] > 0.0 && x[5] < x[4]))
-    }
-
-    /// Seven means followed by seven sample standard deviations.
-    /// Mode 0: arithmetic, 1: log10, 2: geometric (physical-scale stdev).
     pub fn predict(
         networks: &[Network],
         data: &[f64],
@@ -213,99 +196,260 @@ mod contract {
         mode: usize,
         x: &[f64],
     ) -> Option<[f64; 14]> {
-        if !valid(level, x) || mode > 2 {
+        if mode >= 3 {
             return None;
         }
-        let raw = networks[level - 2].predict(data, x);
-        let mut linear = raw.clone();
-        for row in &mut linear {
-            for value in &mut row[2..] {
-                *value = 10.0_f64.powf(*value);
+        match level {
+            2 => {
+                if x.len() != 3 {
+                    return None;
+                }
             }
+            3 => {
+                if x.len() != 4 {
+                    return None;
+                }
+            }
+            4 => {
+                if x.len() != 5 {
+                    return None;
+                }
+            }
+            5 => {
+                if x.len() != 6 {
+                    return None;
+                }
+            }
+            _ => return None,
         }
-        let (logmean, logstd) = statistics(&raw);
-        let (linmean, linstd) = statistics(&linear);
-        let mut geo = logmean.clone();
-        for value in &mut geo[2..] {
-            *value = 10.0_f64.powf(*value);
+        if x.iter().any(|v| !v.is_finite()) {
+            return None;
         }
-        let (mean, std) = match mode {
-            0 => (&linmean, &linstd),
-            1 => (&logmean, &logstd),
-            _ => (&geo, &linstd),
-        };
-        let vg = if mode == 0 { &linmean[..4] } else { &geo[..4] };
+        if level >= 2
+            && !matches!(
+                (x[0]).partial_cmp(&(0.0)),
+                Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
+            )
+        {
+            return None;
+        }
+        if level >= 2
+            && !matches!(
+                (x[1]).partial_cmp(&(0.0)),
+                Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
+            )
+        {
+            return None;
+        }
+        if level >= 2
+            && !matches!(
+                (x[2]).partial_cmp(&(0.0)),
+                Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
+            )
+        {
+            return None;
+        }
+        if level >= 2
+            && !matches!(
+                (x[0] + x[1] + x[2]).partial_cmp(&(99.0)),
+                Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
+            )
+        {
+            return None;
+        }
+        if level >= 2
+            && !matches!(
+                (x[0] + x[1] + x[2]).partial_cmp(&(101.0)),
+                Some(std::cmp::Ordering::Less | std::cmp::Ordering::Equal)
+            )
+        {
+            return None;
+        }
+        if level >= 3
+            && !matches!(
+                (x[3]).partial_cmp(&(0.5)),
+                Some(std::cmp::Ordering::Greater | std::cmp::Ordering::Equal)
+            )
+        {
+            return None;
+        }
+        if level >= 3
+            && !matches!(
+                (x[3]).partial_cmp(&(2.0)),
+                Some(std::cmp::Ordering::Less | std::cmp::Ordering::Equal)
+            )
+        {
+            return None;
+        }
+        if level >= 4
+            && !matches!(
+                (x[4]).partial_cmp(&(0.0)),
+                Some(std::cmp::Ordering::Greater)
+            )
+        {
+            return None;
+        }
+        if level >= 4 && !matches!((x[4]).partial_cmp(&(1.0)), Some(std::cmp::Ordering::Less)) {
+            return None;
+        }
+        if level >= 5
+            && !matches!(
+                (x[5]).partial_cmp(&(0.0)),
+                Some(std::cmp::Ordering::Greater)
+            )
+        {
+            return None;
+        }
+        if level >= 5 && !matches!((x[5]).partial_cmp(&(x[4])), Some(std::cmp::Ordering::Less)) {
+            return None;
+        }
         let mut out = [f64::NAN; 14];
-        out[..5].copy_from_slice(mean);
-        out[7..12].copy_from_slice(std);
-        if !(0.0 <= vg[0] && vg[0] < vg[1] && vg[1] < 1.0 && vg[2] > 0.0 && vg[3] > 1.0) {
+        let raw_index = match level {
+            2 => 0,
+            3 => 1,
+            4 => 2,
+            5 => 3,
+            _ => unreachable!(),
+        };
+        let raw = networks[raw_index].predict(data, x);
+        let mut physical = raw.clone();
+        for row in &mut physical {
+            row[2] = 10.0_f64.powf(row[2]);
+        }
+        for row in &mut physical {
+            row[3] = 10.0_f64.powf(row[3]);
+        }
+        for row in &mut physical {
+            row[4] = 10.0_f64.powf(row[4]);
+        }
+        let (log_mean, log_std) = statistics(&raw);
+        let log_mean = [log_mean];
+        let log_std = [log_std];
+        let (linear_mean, linear_std) = statistics(&physical);
+        let linear_mean = [linear_mean];
+        let linear_std = [linear_std];
+        let mut geometric = log_mean.clone();
+        for row in &mut geometric {
+            row[2] = 10.0_f64.powf(row[2]);
+        }
+        for row in &mut geometric {
+            row[3] = 10.0_f64.powf(row[3]);
+        }
+        for row in &mut geometric {
+            row[4] = 10.0_f64.powf(row[4]);
+        }
+        let mean = match mode {
+            0 => &linear_mean,
+            1 => &log_mean,
+            2 => &geometric,
+            _ => unreachable!(),
+        };
+        let std = match mode {
+            0 => &linear_std,
+            1 => &log_std,
+            2 => &linear_std,
+            _ => unreachable!(),
+        };
+        out[0] = mean[0][0];
+        out[1] = mean[0][1];
+        out[2] = mean[0][2];
+        out[3] = mean[0][3];
+        out[4] = mean[0][4];
+        out[7] = std[0][0];
+        out[8] = std[0][1];
+        out[9] = std[0][2];
+        out[10] = std[0][3];
+        out[11] = std[0][4];
+        let conductivity_parameters = match mode {
+            0 => &linear_mean,
+            1 => &geometric,
+            2 => &geometric,
+            _ => unreachable!(),
+        };
+        let vg = [vec![
+            conductivity_parameters[0][0],
+            conductivity_parameters[0][1],
+            conductivity_parameters[0][2],
+            conductivity_parameters[0][3],
+        ]];
+        if level >= 2
+            && !matches!(
+                (0.0).partial_cmp(&(vg[0][0])),
+                Some(std::cmp::Ordering::Less | std::cmp::Ordering::Equal)
+            )
+        {
             return Some(out);
         }
-        let unsat = networks[4].predict(data, vg);
-        let mut unsatlin = unsat.clone();
-        for row in &mut unsatlin {
+        if level >= 2
+            && !matches!(
+                (vg[0][0]).partial_cmp(&(vg[0][1])),
+                Some(std::cmp::Ordering::Less)
+            )
+        {
+            return Some(out);
+        }
+        if level >= 2
+            && !matches!(
+                (vg[0][1]).partial_cmp(&(1.0)),
+                Some(std::cmp::Ordering::Less)
+            )
+        {
+            return Some(out);
+        }
+        if level >= 2
+            && !matches!(
+                (vg[0][2]).partial_cmp(&(0.0)),
+                Some(std::cmp::Ordering::Greater)
+            )
+        {
+            return Some(out);
+        }
+        if level >= 2
+            && !matches!(
+                (vg[0][3]).partial_cmp(&(1.0)),
+                Some(std::cmp::Ordering::Greater)
+            )
+        {
+            return Some(out);
+        }
+        let unsat_index = match level {
+            2 => 4,
+            3 => 4,
+            4 => 4,
+            5 => 4,
+            _ => unreachable!(),
+        };
+        let unsat = networks[unsat_index].predict(data, &vg[0]);
+        let mut unsat_physical = unsat.clone();
+        for row in &mut unsat_physical {
             row[0] = 10.0_f64.powf(row[0]);
         }
-        let (um, us) = statistics(&unsat);
-        let (ulm, uls) = statistics(&unsatlin);
-        out[6] = um[1];
-        out[13] = us[1];
-        out[5] = match mode {
-            0 => ulm[0],
-            1 => um[0],
-            _ => 10.0_f64.powf(um[0]),
+        let (ulog_mean, ulog_std) = statistics(&unsat);
+        let ulog_mean = [ulog_mean];
+        let ulog_std = [ulog_std];
+        let (ulin_mean, ulin_std) = statistics(&unsat_physical);
+        let ulin_mean = [ulin_mean];
+        let ulin_std = [ulin_std];
+        let mut ugeo = ulog_mean.clone();
+        for row in &mut ugeo {
+            row[0] = 10.0_f64.powf(row[0]);
+        }
+        let umean = match mode {
+            0 => &ulin_mean,
+            1 => &ulog_mean,
+            2 => &ugeo,
+            _ => unreachable!(),
         };
-        out[12] = if mode == 1 { us[0] } else { uls[0] };
+        let ustd = match mode {
+            0 => &ulin_std,
+            1 => &ulog_std,
+            2 => &ulin_std,
+            _ => unreachable!(),
+        };
+        out[5] = umean[0][0];
+        out[6] = ulog_mean[0][1];
+        out[12] = ustd[0][0];
+        out[13] = ulog_std[0][1];
         Some(out)
     }
-}
-/// Estimate Rosetta3 level 2 physical-scale arithmetic means and uncertainty.
-pub fn calc_ptf_zhang2017_mod2(
-    model: &Rosetta3,
-    sand: f64,
-    silt: f64,
-    clay: f64,
-) -> Result<Rosetta3ArithmeticStatistics, ModelError> {
-    model.predict(2, Estimate::Arithmetic, &[sand, silt, clay])
-}
-/// Estimate Rosetta3 level 3 physical-scale arithmetic means and uncertainty.
-pub fn calc_ptf_zhang2017_mod3(
-    model: &Rosetta3,
-    sand: f64,
-    silt: f64,
-    clay: f64,
-    bulk_density: f64,
-) -> Result<Rosetta3ArithmeticStatistics, ModelError> {
-    model.predict(3, Estimate::Arithmetic, &[sand, silt, clay, bulk_density])
-}
-/// Estimate Rosetta3 level 4 physical-scale arithmetic means and uncertainty.
-pub fn calc_ptf_zhang2017_mod4(
-    model: &Rosetta3,
-    sand: f64,
-    silt: f64,
-    clay: f64,
-    bulk_density: f64,
-    theta_33: f64,
-) -> Result<Rosetta3ArithmeticStatistics, ModelError> {
-    model.predict(
-        4,
-        Estimate::Arithmetic,
-        &[sand, silt, clay, bulk_density, theta_33],
-    )
-}
-/// Estimate Rosetta3 level 5 physical-scale arithmetic means and uncertainty.
-pub fn calc_ptf_zhang2017_mod5(
-    model: &Rosetta3,
-    sand: f64,
-    silt: f64,
-    clay: f64,
-    bulk_density: f64,
-    theta_33: f64,
-    theta_1500: f64,
-) -> Result<Rosetta3ArithmeticStatistics, ModelError> {
-    model.predict(
-        5,
-        Estimate::Arithmetic,
-        &[sand, silt, clay, bulk_density, theta_33, theta_1500],
-    )
 }

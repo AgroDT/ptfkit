@@ -23,7 +23,7 @@ Zhang, Y., & Schaap, M. G. (2017). Weighted recalibration of the Rosetta pedotra
 
 ### `calc_ptf_zhang2017_mod2`
 
-Estimate Rosetta3 level 2 physical-scale arithmetic means and uncertainty.
+Estimate Rosetta3 level 2 hydraulic means and uncertainty.
 
 **Status:** `implemented`
 
@@ -80,7 +80,7 @@ Estimate Rosetta3 level 2 physical-scale arithmetic means and uncertainty.
 
 ### `calc_ptf_zhang2017_mod3`
 
-Estimate Rosetta3 level 3 physical-scale arithmetic means and uncertainty.
+Estimate Rosetta3 level 3 hydraulic means and uncertainty.
 
 **Status:** `implemented`
 
@@ -138,7 +138,7 @@ Estimate Rosetta3 level 3 physical-scale arithmetic means and uncertainty.
 
 ### `calc_ptf_zhang2017_mod4`
 
-Estimate Rosetta3 level 4 physical-scale arithmetic means and uncertainty.
+Estimate Rosetta3 level 4 hydraulic means and uncertainty.
 
 **Status:** `implemented`
 
@@ -197,7 +197,7 @@ Estimate Rosetta3 level 4 physical-scale arithmetic means and uncertainty.
 
 ### `calc_ptf_zhang2017_mod5`
 
-Estimate Rosetta3 level 5 physical-scale arithmetic means and uncertainty.
+Estimate Rosetta3 level 5 hydraulic means and uncertainty.
 
 **Status:** `implemented`
 

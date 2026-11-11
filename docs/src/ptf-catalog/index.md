@@ -241,3 +241,39 @@ The YAML is the canonical target-independent representation. Language-specific
 details, generated file ownership, and the commands used to validate and
 generate targets are documented in the
 [development guide](../contributing/development.md).
+
+
+## Neural ensemble computation
+
+A neural function uses `implementation.external_model` to bind an authenticated
+parameter artifact, a predictor level, and a required `computation` specification.
+An adapter name alone does not define its scientific computation. Rosetta3 is the
+current supported public binding; see the [Rosetta3 contract](../contributing/rosetta3.md).
+
+The computation document declares a format version, network manifest, predictor
+counts by level, estimate count, output count, input conditions, and ordered graph
+nodes. The network manifest records dense layer widths, activations, bootstrap
+membership, scaling transforms, and parameter offsets. Generation verifies the
+network metadata against the bundled parameter container.
+
+| Graph operation | Meaning |
+| --- | --- |
+| `network` | Evaluate a level-selected ensemble on an explicit input vector. |
+| `pow10` | Transform selected columns of every row. |
+| `statistics` | Calculate column means and sample standard deviations (`ddof=1`). |
+| `select` | Choose a matrix or vector for each estimate mode. |
+| `gather` | Compose a vector from named scalar references. |
+| `guard` | Return existing outputs when a declared condition fails; unassigned outputs remain NaN. |
+| `store` | Assign scalar references to declared output positions. |
+
+A scalar is a numeric constant, a reference such as `node.0` (zero-based column
+of a vector), or a `sum` of scalars. `x` is the predictor vector. Conditions
+compare two scalars using `lt`, `le`, `gt`, or `ge` and declare the minimum
+predictor level where they apply. Inputs must be finite. Graph references must
+precede use, dimensions must match, and every output must be assigned exactly
+once on the complete execution path. Early guards preserve earlier assignments.
+
+The graph determines whether nonlinear transformations precede or follow
+aggregation, which parameter estimates feed a composed network, and which
+conditions suppress dependent outputs. C and Rust render the graph independently;
+Python and C++ reuse the generated C computation and its generic runtime.
