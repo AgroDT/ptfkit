@@ -3,11 +3,11 @@ module;
 #include <ptfkit/zhang_schaap2017.h>
 #include <array>
 #include <span>
+#include <new>
 #include <utility>
 export module ptfkit.zhang_schaap2017;
-export import ptfkit.models;
+export import ptfkit.detail.neural;
 export namespace ptfkit {
-enum class Estimate : unsigned { Arithmetic = 0, Log10 = 1, Geometric = 2 };
 struct Rosetta3Statistics {
     double theta_r_mean;
     double theta_s_mean;
@@ -32,60 +32,88 @@ struct Rosetta3Statistics {
 };
 
 class Rosetta3 {
-    Model model_;
+    ::ptfkit_model *model_;
+    inline explicit Rosetta3(::ptfkit_model *model) : model_(model) {}
 
   public:
+    inline ~Rosetta3() { ::ptfkit_rosetta3_free(model_); }
+    Rosetta3(const Rosetta3 &) = delete;
+    Rosetta3 &operator=(const Rosetta3 &) = delete;
+    inline Rosetta3(Rosetta3 &&other) noexcept : model_(std::exchange(other.model_, nullptr)) {}
+    inline Rosetta3 &operator=(Rosetta3 &&other) noexcept {
+        if (this != &other) {
+            ::ptfkit_rosetta3_free(model_);
+            model_ = std::exchange(other.model_, nullptr);
+        }
+        return *this;
+    }
     static inline Rosetta3 builtin() {
-        return Rosetta3(Model::from_initializer(::ptfkit_detail_rosetta3_builtin));
+        ::ptfkit_model *model = nullptr;
+        if (::ptfkit_rosetta3_builtin(&model) != PTFKIT_MODEL_OK)
+            throw std::bad_alloc();
+        return Rosetta3(model);
     }
-    inline explicit Rosetta3(Model model) : model_(std::move(model)) {
-        if (!::ptfkit_rosetta3_accepts(model_.native_handle()))
-            throw ModelError(PTFKIT_MODEL_INTEGRITY);
-    }
-    static inline Rosetta3 load(const char *path) {
-        return Rosetta3(Model::load(path, PTFKIT_ROSETTA3_SHA256));
-    }
-    static inline Rosetta3 from_bytes(std::span<const unsigned char> bytes) {
-        return Rosetta3(Model::from_bytes(bytes, PTFKIT_ROSETTA3_SHA256));
-    }
-    inline const Model &model() const noexcept { return model_; }
     inline Rosetta3Statistics
     calc_ptf_zhang2017_mod2(double sand, double silt, double clay,
                             Estimate estimate = Estimate::Arithmetic) const {
-        const double x[] = {sand, silt, clay};
-        return predict(2, estimate, x);
+        const double _ptfkit_inputs[] = {sand, silt, clay};
+        double _ptfkit_values[14];
+        if (!model_ || !::ptfkit_detail_zhang_schaap2017_mod0(
+                           model_->detail_networks, model_->detail_data, (unsigned)estimate,
+                           _ptfkit_inputs, 3, _ptfkit_values))
+            throw ModelError();
+        return Rosetta3Statistics{_ptfkit_values[0],  _ptfkit_values[1],  _ptfkit_values[2],
+                                  _ptfkit_values[3],  _ptfkit_values[4],  _ptfkit_values[5],
+                                  _ptfkit_values[6],  _ptfkit_values[7],  _ptfkit_values[8],
+                                  _ptfkit_values[9],  _ptfkit_values[10], _ptfkit_values[11],
+                                  _ptfkit_values[12], _ptfkit_values[13]};
     }
     inline Rosetta3Statistics
     calc_ptf_zhang2017_mod3(double sand, double silt, double clay, double bulk_density,
                             Estimate estimate = Estimate::Arithmetic) const {
-        const double x[] = {sand, silt, clay, bulk_density};
-        return predict(3, estimate, x);
+        const double _ptfkit_inputs[] = {sand, silt, clay, bulk_density};
+        double _ptfkit_values[14];
+        if (!model_ || !::ptfkit_detail_zhang_schaap2017_mod1(
+                           model_->detail_networks, model_->detail_data, (unsigned)estimate,
+                           _ptfkit_inputs, 4, _ptfkit_values))
+            throw ModelError();
+        return Rosetta3Statistics{_ptfkit_values[0],  _ptfkit_values[1],  _ptfkit_values[2],
+                                  _ptfkit_values[3],  _ptfkit_values[4],  _ptfkit_values[5],
+                                  _ptfkit_values[6],  _ptfkit_values[7],  _ptfkit_values[8],
+                                  _ptfkit_values[9],  _ptfkit_values[10], _ptfkit_values[11],
+                                  _ptfkit_values[12], _ptfkit_values[13]};
     }
     inline Rosetta3Statistics
     calc_ptf_zhang2017_mod4(double sand, double silt, double clay, double bulk_density,
                             double theta_33, Estimate estimate = Estimate::Arithmetic) const {
-        const double x[] = {sand, silt, clay, bulk_density, theta_33};
-        return predict(4, estimate, x);
+        const double _ptfkit_inputs[] = {sand, silt, clay, bulk_density, theta_33};
+        double _ptfkit_values[14];
+        if (!model_ || !::ptfkit_detail_zhang_schaap2017_mod2(
+                           model_->detail_networks, model_->detail_data, (unsigned)estimate,
+                           _ptfkit_inputs, 5, _ptfkit_values))
+            throw ModelError();
+        return Rosetta3Statistics{_ptfkit_values[0],  _ptfkit_values[1],  _ptfkit_values[2],
+                                  _ptfkit_values[3],  _ptfkit_values[4],  _ptfkit_values[5],
+                                  _ptfkit_values[6],  _ptfkit_values[7],  _ptfkit_values[8],
+                                  _ptfkit_values[9],  _ptfkit_values[10], _ptfkit_values[11],
+                                  _ptfkit_values[12], _ptfkit_values[13]};
     }
     inline Rosetta3Statistics
     calc_ptf_zhang2017_mod5(double sand, double silt, double clay, double bulk_density,
                             double theta_33, double theta_1500,
                             Estimate estimate = Estimate::Arithmetic) const {
-        const double x[] = {sand, silt, clay, bulk_density, theta_33, theta_1500};
-        return predict(5, estimate, x);
-    }
-
-  private:
-    inline Rosetta3Statistics predict(unsigned level, Estimate estimate,
-                                      std::span<const double> inputs) const {
-        double values[14];
-        auto status = ::ptfkit_rosetta3_predict(model_.native_handle(), level, (unsigned)estimate,
-                                                inputs.data(), inputs.size(), values);
-        if (status != PTFKIT_MODEL_OK)
-            throw ModelError(status);
-        return Rosetta3Statistics{values[0],  values[1],  values[2],  values[3], values[4],
-                                  values[5],  values[6],  values[7],  values[8], values[9],
-                                  values[10], values[11], values[12], values[13]};
+        const double _ptfkit_inputs[] = {sand, silt, clay, bulk_density, theta_33, theta_1500};
+        double _ptfkit_values[14];
+        if (!model_ || !::ptfkit_detail_zhang_schaap2017_mod3(
+                           model_->detail_networks, model_->detail_data, (unsigned)estimate,
+                           _ptfkit_inputs, 6, _ptfkit_values))
+            throw ModelError();
+        return Rosetta3Statistics{_ptfkit_values[0],  _ptfkit_values[1],  _ptfkit_values[2],
+                                  _ptfkit_values[3],  _ptfkit_values[4],  _ptfkit_values[5],
+                                  _ptfkit_values[6],  _ptfkit_values[7],  _ptfkit_values[8],
+                                  _ptfkit_values[9],  _ptfkit_values[10], _ptfkit_values[11],
+                                  _ptfkit_values[12], _ptfkit_values[13]};
     }
 };
+using Rosetta3ArithmeticStatistics = Rosetta3Statistics;
 } // namespace ptfkit

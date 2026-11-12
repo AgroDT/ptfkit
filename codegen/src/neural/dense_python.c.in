@@ -1,14 +1,14 @@
-static PyObject *ptfkit_python_rosetta_builtin(PyObject *module, PyObject *unused) {
+static PyObject *ptfkit_python_builtin(PyObject *module, PyObject *unused) {
     (void)unused;
     ptfkit_model *model=NULL;
-    ptfkit_model_status status=ptfkit_rosetta3_builtin(&model);
+    ptfkit_model_status status=ptfkit_@PREFIX@_builtin(&model);
     if(status!=PTFKIT_MODEL_OK)return ptfkit_python_failure(module,status);
     PyObject *capsule=PyCapsule_New(model,"ptfkit.Model",ptfkit_python_model_free);
-    if(!capsule)ptfkit_model_free(model);
+    if(!capsule)ptfkit_detail_model_free(model);
     return capsule;
 }
 
-static PyObject *ptfkit_python_rosetta(PyObject *module, PyObject *args) {
+static PyObject *ptfkit_python_evaluate(PyObject *module, PyObject *args) {
     PyObject *capsule, *values;
     unsigned level, mode;
     if (!PyArg_ParseTuple(args, "OIIO", &capsule, &level, &mode, &values))
@@ -16,20 +16,20 @@ static PyObject *ptfkit_python_rosetta(PyObject *module, PyObject *args) {
     ptfkit_model *model = (ptfkit_model *)PyCapsule_GetPointer(capsule, "ptfkit.Model");
     if (!model)
         return NULL;
-    double x[64], out[14];
+    double x[64], out[@SIZE@];
     size_t count;
     if (!ptfkit_python_inputs(values, x, &count))
         return NULL;
     ptfkit_model_status status;
     PyThreadState *thread_state = PyEval_SaveThread();
-    status = ptfkit_rosetta3_predict(model, level, mode, x, count, out);
+    status = ptfkit_detail_@SLUG@_predict(model, level, mode, x, count, out);
     PyEval_RestoreThread(thread_state);
     if (status != PTFKIT_MODEL_OK)
         return ptfkit_python_failure(module, status);
-    PyObject *result = PyTuple_New(14);
+    PyObject *result = PyTuple_New(@SIZE@);
     if (!result)
         return NULL;
-    for (Py_ssize_t i = 0; i < 14; ++i) {
+    for (Py_ssize_t i = 0; i < @SIZE@; ++i) {
         PyObject *v = PyFloat_FromDouble(out[i]);
         if (!v) {
             Py_DECREF(result);
@@ -41,7 +41,7 @@ static PyObject *ptfkit_python_rosetta(PyObject *module, PyObject *args) {
 }
 
 /* Python normalizes dtypes and broadcasting; this bridge owns strided iteration. */
-static PyObject *ptfkit_python_rosetta_batch(PyObject *module, PyObject *args) {
+static PyObject *ptfkit_python_batch(PyObject *module, PyObject *args) {
     PyObject *capsule, *inputs, *outputs;
     unsigned level, mode;
     if (!PyArg_ParseTuple(args, "OIIOO", &capsule, &level, &mode, &inputs, &outputs))
@@ -57,13 +57,13 @@ static PyObject *ptfkit_python_rosetta_batch(PyObject *module, PyObject *args) {
         Py_DECREF(in);
         return NULL;
     }
-    Py_buffer buffers[20] = {{0}};
-    Py_ssize_t acquired = 0, count = (Py_ssize_t)level + 1, total = 1;
+    Py_buffer buffers[64 + @SIZE@] = {{0}};
+    Py_ssize_t acquired = 0, count = ptfkit_detail_@SLUG@_inputs(level), total = 1;
     ptfkit_model_status status = PTFKIT_MODEL_INPUT;
-    if (level < 2 || level > 5 || mode > 2 || PySequence_Fast_GET_SIZE(in) != count ||
-        PySequence_Fast_GET_SIZE(out) != 14)
+    if (count < 1 || mode > 2 || PySequence_Fast_GET_SIZE(in) != count ||
+        PySequence_Fast_GET_SIZE(out) != @SIZE@)
         goto cleanup;
-    for (Py_ssize_t i = 0; i < count + 14; ++i) {
+    for (Py_ssize_t i = 0; i < count + @SIZE@; ++i) {
         PyObject *array =
             i < count ? PySequence_Fast_GET_ITEM(in, i) : PySequence_Fast_GET_ITEM(out, i - count);
         if (PyObject_GetBuffer(array, &buffers[i],
@@ -87,8 +87,8 @@ static PyObject *ptfkit_python_rosetta_batch(PyObject *module, PyObject *args) {
     status = PTFKIT_MODEL_OK;
     PyThreadState *thread_state = PyEval_SaveThread();
     for (Py_ssize_t sample = 0; sample < total; ++sample) {
-        double x[6], values[14];
-        char *addresses[20];
+        double x[64], values[@SIZE@];
+        char *addresses[64 + @SIZE@];
         for (Py_ssize_t i = 0; i < acquired; ++i) {
             addresses[i] = (char *)buffers[i].buf;
             Py_ssize_t remainder = sample;
@@ -99,10 +99,10 @@ static PyObject *ptfkit_python_rosetta_batch(PyObject *module, PyObject *args) {
             if (i < count)
                 memcpy(&x[i], addresses[i], sizeof(double));
         }
-        status = ptfkit_rosetta3_predict(model, level, mode, x, (size_t)count, values);
+        status = ptfkit_detail_@SLUG@_predict(model, level, mode, x, (size_t)count, values);
         if (status != PTFKIT_MODEL_OK)
             break;
-        for (Py_ssize_t i = 0; i < 14; ++i)
+        for (Py_ssize_t i = 0; i < @SIZE@; ++i)
             memcpy(addresses[count + i], &values[i], sizeof(double));
     }
     PyEval_RestoreThread(thread_state);

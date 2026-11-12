@@ -40,69 +40,6 @@ fn uncertainty_is_sample_standard_deviation_in_each_reported_scale() {
 }
 
 #[test]
-fn importer_rejects_corrupted_bytes_and_incompatible_metadata() {
-    use super::{Model, ModelError};
-    use sha2::{Digest, Sha256};
-    use std::fs;
-    let root = crate::test_support::fixture_root("neural-integrity");
-    let path = root.join("models.json");
-    let bytes: Vec<u8> = [2.0_f64, 1.0, 4.0, -1.0]
-        .into_iter()
-        .flat_map(f64::to_le_bytes)
-        .collect();
-    let hash: String = Sha256::digest(&bytes)
-        .iter()
-        .map(|b| format!("{b:02x}"))
-        .collect();
-    let manifest = serde_json::json!({
-        "format_version": 1, "upstream_revision": "synthetic", "artifact": "models.bin", "sha256": hash,
-        "networks": [{"name": "synthetic", "nboot": 2, "widths": [1,1], "offset": 0,
-            "activations": ["linear"], "inputs": [{"kind":"asis", "params":[]}],
-            "outputs": [{"kind":"asis", "params":[]}]}]
-    });
-    fs::write(&path, serde_json::to_vec(&manifest).unwrap()).unwrap();
-    fs::write(root.join("models.bin"), &bytes).unwrap();
-    let model = Model::load(&path).unwrap();
-    // Independent affine arithmetic: 2*3+1=7 and 4*3-1=11.
-    assert_eq!(
-        model.networks[0].predict(&model.data, &[3.0]),
-        [vec![7.0], vec![11.0]]
-    );
-    let mut corrupted = bytes.clone();
-    corrupted[0] ^= 1;
-    fs::write(root.join("models.bin"), &corrupted).unwrap();
-    assert!(matches!(
-        Model::load(&path)
-            .err()
-            .unwrap()
-            .downcast_ref::<ModelError>(),
-        Some(ModelError::Integrity)
-    ));
-    fs::write(root.join("models.bin"), &bytes).unwrap();
-    let mut invalid = manifest.clone();
-    invalid["networks"][0]["widths"] = serde_json::json!([2, 1]);
-    fs::write(&path, serde_json::to_vec(&invalid).unwrap()).unwrap();
-    assert!(matches!(
-        Model::load(&path)
-            .err()
-            .unwrap()
-            .downcast_ref::<ModelError>(),
-        Some(ModelError::Topology { network: 0 })
-    ));
-    let mut invalid = manifest;
-    invalid["networks"][0]["inputs"][0] = serde_json::json!({"kind":"division","params":[0.0]});
-    fs::write(&path, serde_json::to_vec(&invalid).unwrap()).unwrap();
-    assert!(matches!(
-        Model::load(&path)
-            .err()
-            .unwrap()
-            .downcast_ref::<ModelError>(),
-        Some(ModelError::Transform { network: 0 })
-    ));
-    fs::remove_dir_all(root).unwrap();
-}
-
-#[test]
 fn portable_encoder_matches_independently_specified_affine_container() {
     use sha2::{Digest, Sha256};
     let model = super::Model {
@@ -115,8 +52,6 @@ fn portable_encoder_matches_independently_specified_affine_container() {
             offset: 0,
         }],
         data: vec![2.0, 1.0, 1.0, -1.0, 2.0, 0.0],
-        revision: "hand-specified".into(),
-        contract: serde_json::Value::Null,
     };
     let bytes = super::pack::encode(&model);
     let sha: String = Sha256::digest(&bytes)

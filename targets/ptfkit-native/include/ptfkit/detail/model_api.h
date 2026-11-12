@@ -7,4 +7,9 @@
 #else
 #define PTFKIT_MODEL_INLINE static inline
 #endif
+typedef enum {
+    PTFKIT_ESTIMATE_ARITHMETIC = 0,
+    PTFKIT_ESTIMATE_LOG10 = 1,
+    PTFKIT_ESTIMATE_GEOMETRIC = 2
+} ptfkit_estimate;
 #endif

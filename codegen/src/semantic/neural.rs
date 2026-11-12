@@ -269,7 +269,7 @@ pub(crate) fn validate_definition(d: &DenseEnsembleDefinition) -> Result<(), Neu
         && d.activations
             .iter()
             .all(|a| matches!(a.as_str(), "linear" | "sigmoid" | "tansig" | "relu"))
-        && !d.parameters.artifact.is_empty();
+        && !d.parameters.artifact.path.is_empty();
     let channels_valid = |channels: &[crate::model::NeuralChannel]| {
         let mut names = std::collections::BTreeSet::new();
         channels.iter().all(|c| {

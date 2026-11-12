@@ -1,4 +1,4 @@
-PTFKIT_MODEL_INLINE int ptfkit_detail_rosetta_mod2(const ptfkit_detail_network *_ptfkit_networks,const double *_ptfkit_data,unsigned _ptfkit_mode,const double *_ptfkit_inputs,size_t _ptfkit_count,double *_ptfkit_out){
+PTFKIT_MODEL_INLINE int ptfkit_detail_dense_mod2(const ptfkit_detail_network *_ptfkit_networks,const double *_ptfkit_data,unsigned _ptfkit_mode,const double *_ptfkit_inputs,size_t _ptfkit_count,double *_ptfkit_out){
 if(!_ptfkit_inputs || !_ptfkit_out)return 0;
 for(size_t i=0;i<5;++i)_ptfkit_out[i]=NAN;
 if(_ptfkit_mode>2 || _ptfkit_count!=1)return 0;

@@ -1,8 +1,6 @@
-"""Independent hand-specified container protects the public loader contract."""
+"""Bundled public methods checked against frozen upstream numerical cases."""
 
-import hashlib
 import json
-import struct
 import sys
 import threading
 from pathlib import Path
@@ -10,65 +8,9 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from ptfkit import _models
+from ptfkit import _zhang_schaap2017 as _models
 from ptfkit import zhang_schaap2017 as api
-from ptfkit.models import Model, ModelFormatError, ModelInputError, ModelIntegrityError
-from ptfkit.zhang_schaap2017 import Rosetta3, Rosetta3Statistics
-
-
-SHA = '7b160f19c85818a5995d9154563a44a8edd8e63f44d961542a4ca5d3b3a0e5ec'
-
-
-def affine_bytes() -> bytes:
-    data = b'PTFKNN01' + struct.pack('<6I', 1, 2, 1, 2, 1, 0)
-    for kind, params in [(0, (0.0, 0.0, 0.0)), (0, (0.0, 0.0, 0.0)), (5, (2.0, -1.0, 0.0))]:
-        data += struct.pack('<I3d', kind, *params)
-    return data + struct.pack('<2Q6d', 0, 6, 2.0, 1.0, 1.0, -1.0, 2.0, 0.0)
-
-
-def test_owned_authenticated_model(tmp_path: Path):
-    """Hand arithmetic: (2*3+4+1)*2-1=21; (-3+2*4)*2-1=9."""
-    data = affine_bytes()
-    assert hashlib.sha256(data).hexdigest() == SHA
-    path = tmp_path / 'model.ptfm'
-    path.write_bytes(data)
-    model = Model.load(path, SHA)
-    path.write_bytes(b'changed after loading')
-    assert model.predict_network(0, [3, 4]) == [(21.0,), (9.0,)]
-    assert model.sha256 == SHA
-    assert model.network_count == 1
-    assert model.network_shape(0) == (2, 1, 2)
-    with pytest.raises(ModelIntegrityError):
-        Rosetta3(model)
-    with pytest.raises(ModelInputError):
-        model.predict_network(1, [3, 4])
-    with pytest.raises(ModelInputError):
-        model.predict_network(0, [3])
-    with pytest.raises(ModelInputError):
-        model.predict_network(0, [float('nan'), 4])
-    with pytest.raises(FileNotFoundError):
-        Model.load(tmp_path / 'missing.ptfm', SHA)
-
-
-def test_bad_digest_and_malformed_authenticated_container():
-    data = affine_bytes()
-    changed = data[:-1] + bytes([data[-1] ^ 1])
-    with pytest.raises(ModelIntegrityError):
-        Model.from_bytes(changed, SHA)
-    for size in range(len(data)):
-        prefix = data[:size]
-        with pytest.raises(ModelFormatError):
-            Model.from_bytes(prefix, hashlib.sha256(prefix).hexdigest())
-    for offset in (0, 8, 12, 16, 20, 24, 28, 32, 116, 124):
-        changed = bytearray(data)
-        changed[offset] = 255
-        with pytest.raises(ModelFormatError):
-            Model.from_bytes(bytes(changed), hashlib.sha256(changed).hexdigest())
-    changed = data[:132] + struct.pack('<d', float('nan')) + data[140:]
-    with pytest.raises(ModelFormatError):
-        Model.from_bytes(changed, hashlib.sha256(changed).hexdigest())
-    with pytest.raises(ModelFormatError):
-        Model.from_bytes(data, 'not a digest')
+from ptfkit.zhang_schaap2017 import ModelInputError, Rosetta3, Rosetta3Statistics
 
 
 def test_bundled_rosetta_matches_upstream_without_a_model_file(
@@ -185,7 +127,7 @@ def test_rosetta_native_batch_uses_named_outputs_without_full_result_allocation(
         pytest.fail('batch inference allocated a full result or called the scalar bridge')
 
     monkeypatch.setattr(np, 'empty', forbidden)
-    monkeypatch.setattr(_models, 'rosetta3', forbidden)
+    monkeypatch.setattr(_models, 'evaluate', forbidden)
     result = rosetta_model.calc_ptf_zhang2017_mod2(sand=[30] * 3, silt=30, clay=40, out=out)
     monkeypatch.undo()
     assert isinstance(result, tuple)
@@ -219,7 +161,8 @@ def test_rosetta_rejects_unusable_output_buffers(rosetta_model: Rosetta3):
 
 
 def test_rosetta_public_interface_is_method_only():
-    assert not hasattr(Rosetta3, 'predict')
+    for name in ('predict', 'load', 'from_bytes', 'model'):
+        assert not hasattr(Rosetta3, name)
     for level in range(2, 6):
         assert not hasattr(api, f'calc_ptf_zhang2017_mod{level}')
 
@@ -251,7 +194,7 @@ def test_rosetta_native_batch_releases_the_gil(rosetta_model: Rosetta3):
         sys.setswitchinterval(60)
         start.set()
         assert not progressed.is_set()
-        _models.rosetta3_batch(rosetta_model.model.native_handle, 2, 0, inputs, outputs)
+        _models.batch(rosetta_model._handle, 0, 0, inputs, outputs)  # noqa: SLF001
         assert progressed.is_set()
     finally:
         sys.setswitchinterval(interval)
@@ -270,17 +213,17 @@ def test_rosetta_native_batch_releases_the_gil(rosetta_model: Rosetta3):
         (3, [40, 40, 20, 2.0], True),
         (3, [40, 40, 20, 2.01], False),
         (5, [40, 40, 20, 1.4, 0.3, 0.3], False),
-        (4, [40, 40, 20, 1.4], False),
         *[(2, [value, 40, 20], False) for value in [float('nan'), float('inf'), -float('inf')]],
-        (0, [40, 40, 20], False),
     ],
 )
 def test_generated_rosetta_validation_boundaries(
     rosetta_model: Rosetta3, level: int, inputs: list[float], *, valid: bool
 ):
+    names = ('sand', 'silt', 'clay', 'bulk_density', 'theta_33', 'theta_1500')[: level + 1]
+    method = getattr(rosetta_model, f'calc_ptf_zhang2017_mod{level}')
+    predictors = dict(zip(names, inputs, strict=True))
     if valid:
-        values = _models.rosetta3(rosetta_model.model.native_handle, level, 0, inputs)
-        assert len(values) == 14
+        assert len(method(**predictors)) == 14
     else:
         with pytest.raises(ModelInputError):
-            _models.rosetta3(rosetta_model.model.native_handle, level, 0, inputs)
+            method(**predictors)

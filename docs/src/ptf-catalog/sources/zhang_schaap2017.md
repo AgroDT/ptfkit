@@ -15,7 +15,7 @@ Zhang, Y., & Schaap, M. G. (2017). Weighted recalibration of the Rosetta pedotra
 
 ## Scope
 
-**Territory:** Not independently established by this software audit.
+**Territory:** Not independently established.
 
 **Dataset:** Original trained upstream ensembles; no retraining or replacement.
 
@@ -43,24 +43,24 @@ Estimate Rosetta3 level 2 hydraulic means and uncertainty.
 
 | Name | Unit | Domain | Description |
 | --- | --- | --- | --- |
-| `theta_r_mean` | cm^3/cm^3 | — | Arithmetic ensemble mean. Residual volumetric water content. |
-| `theta_s_mean` | cm^3/cm^3 | — | Arithmetic ensemble mean. Saturated volumetric water content. |
-| `alpha_mean` | 1/cm | — | Arithmetic ensemble mean. van Genuchten inverse pressure-scale parameter. |
-| `n_mean` | 1 | — | Arithmetic ensemble mean. van Genuchten pore-size parameter. |
-| `k_sat_mean` | cm/day | — | Arithmetic ensemble mean. Saturated hydraulic conductivity. |
-| `k_0_mean` | cm/day | — | Arithmetic ensemble mean. Unsaturated conductivity matching-point parameter; not saturated conductivity. |
-| `l_mean` | 1 | — | Arithmetic ensemble mean. Unsaturated conductivity exponent from the separate Rosetta1 ensemble. |
-| `theta_r_std` | cm^3/cm^3 | — | Sample standard deviation (ddof=1), in physical parameter units. Residual volumetric water content. |
-| `theta_s_std` | cm^3/cm^3 | — | Sample standard deviation (ddof=1), in physical parameter units. Saturated volumetric water content. |
-| `alpha_std` | 1/cm | — | Sample standard deviation (ddof=1), in physical parameter units. van Genuchten inverse pressure-scale parameter. |
-| `n_std` | 1 | — | Sample standard deviation (ddof=1), in physical parameter units. van Genuchten pore-size parameter. |
-| `k_sat_std` | cm/day | — | Sample standard deviation (ddof=1), in physical parameter units. Saturated hydraulic conductivity. |
-| `k_0_std` | cm/day | — | Sample standard deviation (ddof=1), in physical parameter units. Unsaturated conductivity matching-point parameter; not saturated conductivity. |
-| `l_std` | 1 | — | Sample standard deviation (ddof=1), in physical parameter units. Unsaturated conductivity exponent from the separate Rosetta1 ensemble. |
+| `theta_r_mean` | cm^3/cm^3 | — | Ensemble mean in the selected reporting scale. Residual volumetric water content. |
+| `theta_s_mean` | cm^3/cm^3 | — | Ensemble mean in the selected reporting scale. Saturated volumetric water content. |
+| `alpha_mean` | 1/cm | — | Ensemble mean in the selected reporting scale. van Genuchten inverse pressure-scale parameter. |
+| `n_mean` | 1 | — | Ensemble mean in the selected reporting scale. van Genuchten pore-size parameter. |
+| `k_sat_mean` | cm/day | — | Ensemble mean in the selected reporting scale. Saturated hydraulic conductivity. |
+| `k_0_mean` | cm/day | — | Ensemble mean in the selected reporting scale. Unsaturated conductivity matching-point parameter; not saturated conductivity. |
+| `l_mean` | 1 | — | Ensemble mean in the selected reporting scale. Unsaturated conductivity exponent from the separate Rosetta1 ensemble. |
+| `theta_r_std` | cm^3/cm^3 | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). Residual volumetric water content. |
+| `theta_s_std` | cm^3/cm^3 | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). Saturated volumetric water content. |
+| `alpha_std` | 1/cm | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). van Genuchten inverse pressure-scale parameter. |
+| `n_std` | 1 | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). van Genuchten pore-size parameter. |
+| `k_sat_std` | cm/day | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). Saturated hydraulic conductivity. |
+| `k_0_std` | cm/day | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). Unsaturated conductivity matching-point parameter; not saturated conductivity. |
+| `l_std` | 1 | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). Unsaturated conductivity exponent from the separate Rosetta1 ensemble. |
 
 !!! note
 
-    Fixed-level local verification rejects invalid predictors instead of silently falling back.
+    Explicit predictor levels reject invalid predictors instead of silently falling back.
 
 !!! note
 
@@ -72,7 +72,7 @@ Estimate Rosetta3 level 2 hydraulic means and uncertainty.
 
 !!! warning
 
-    Trained parameters are published by USDA under CC0 and bundled unchanged; optional external loading remains available.
+    Trained parameters are published by USDA under CC0 and bundled unchanged.
 
 !!! warning
 
@@ -101,24 +101,24 @@ Estimate Rosetta3 level 3 hydraulic means and uncertainty.
 
 | Name | Unit | Domain | Description |
 | --- | --- | --- | --- |
-| `theta_r_mean` | cm^3/cm^3 | — | Arithmetic ensemble mean. Residual volumetric water content. |
-| `theta_s_mean` | cm^3/cm^3 | — | Arithmetic ensemble mean. Saturated volumetric water content. |
-| `alpha_mean` | 1/cm | — | Arithmetic ensemble mean. van Genuchten inverse pressure-scale parameter. |
-| `n_mean` | 1 | — | Arithmetic ensemble mean. van Genuchten pore-size parameter. |
-| `k_sat_mean` | cm/day | — | Arithmetic ensemble mean. Saturated hydraulic conductivity. |
-| `k_0_mean` | cm/day | — | Arithmetic ensemble mean. Unsaturated conductivity matching-point parameter; not saturated conductivity. |
-| `l_mean` | 1 | — | Arithmetic ensemble mean. Unsaturated conductivity exponent from the separate Rosetta1 ensemble. |
-| `theta_r_std` | cm^3/cm^3 | — | Sample standard deviation (ddof=1), in physical parameter units. Residual volumetric water content. |
-| `theta_s_std` | cm^3/cm^3 | — | Sample standard deviation (ddof=1), in physical parameter units. Saturated volumetric water content. |
-| `alpha_std` | 1/cm | — | Sample standard deviation (ddof=1), in physical parameter units. van Genuchten inverse pressure-scale parameter. |
-| `n_std` | 1 | — | Sample standard deviation (ddof=1), in physical parameter units. van Genuchten pore-size parameter. |
-| `k_sat_std` | cm/day | — | Sample standard deviation (ddof=1), in physical parameter units. Saturated hydraulic conductivity. |
-| `k_0_std` | cm/day | — | Sample standard deviation (ddof=1), in physical parameter units. Unsaturated conductivity matching-point parameter; not saturated conductivity. |
-| `l_std` | 1 | — | Sample standard deviation (ddof=1), in physical parameter units. Unsaturated conductivity exponent from the separate Rosetta1 ensemble. |
+| `theta_r_mean` | cm^3/cm^3 | — | Ensemble mean in the selected reporting scale. Residual volumetric water content. |
+| `theta_s_mean` | cm^3/cm^3 | — | Ensemble mean in the selected reporting scale. Saturated volumetric water content. |
+| `alpha_mean` | 1/cm | — | Ensemble mean in the selected reporting scale. van Genuchten inverse pressure-scale parameter. |
+| `n_mean` | 1 | — | Ensemble mean in the selected reporting scale. van Genuchten pore-size parameter. |
+| `k_sat_mean` | cm/day | — | Ensemble mean in the selected reporting scale. Saturated hydraulic conductivity. |
+| `k_0_mean` | cm/day | — | Ensemble mean in the selected reporting scale. Unsaturated conductivity matching-point parameter; not saturated conductivity. |
+| `l_mean` | 1 | — | Ensemble mean in the selected reporting scale. Unsaturated conductivity exponent from the separate Rosetta1 ensemble. |
+| `theta_r_std` | cm^3/cm^3 | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). Residual volumetric water content. |
+| `theta_s_std` | cm^3/cm^3 | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). Saturated volumetric water content. |
+| `alpha_std` | 1/cm | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). van Genuchten inverse pressure-scale parameter. |
+| `n_std` | 1 | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). van Genuchten pore-size parameter. |
+| `k_sat_std` | cm/day | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). Saturated hydraulic conductivity. |
+| `k_0_std` | cm/day | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). Unsaturated conductivity matching-point parameter; not saturated conductivity. |
+| `l_std` | 1 | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). Unsaturated conductivity exponent from the separate Rosetta1 ensemble. |
 
 !!! note
 
-    Fixed-level local verification rejects invalid predictors instead of silently falling back.
+    Explicit predictor levels reject invalid predictors instead of silently falling back.
 
 !!! note
 
@@ -130,7 +130,7 @@ Estimate Rosetta3 level 3 hydraulic means and uncertainty.
 
 !!! warning
 
-    Trained parameters are published by USDA under CC0 and bundled unchanged; optional external loading remains available.
+    Trained parameters are published by USDA under CC0 and bundled unchanged.
 
 !!! warning
 
@@ -160,24 +160,24 @@ Estimate Rosetta3 level 4 hydraulic means and uncertainty.
 
 | Name | Unit | Domain | Description |
 | --- | --- | --- | --- |
-| `theta_r_mean` | cm^3/cm^3 | — | Arithmetic ensemble mean. Residual volumetric water content. |
-| `theta_s_mean` | cm^3/cm^3 | — | Arithmetic ensemble mean. Saturated volumetric water content. |
-| `alpha_mean` | 1/cm | — | Arithmetic ensemble mean. van Genuchten inverse pressure-scale parameter. |
-| `n_mean` | 1 | — | Arithmetic ensemble mean. van Genuchten pore-size parameter. |
-| `k_sat_mean` | cm/day | — | Arithmetic ensemble mean. Saturated hydraulic conductivity. |
-| `k_0_mean` | cm/day | — | Arithmetic ensemble mean. Unsaturated conductivity matching-point parameter; not saturated conductivity. |
-| `l_mean` | 1 | — | Arithmetic ensemble mean. Unsaturated conductivity exponent from the separate Rosetta1 ensemble. |
-| `theta_r_std` | cm^3/cm^3 | — | Sample standard deviation (ddof=1), in physical parameter units. Residual volumetric water content. |
-| `theta_s_std` | cm^3/cm^3 | — | Sample standard deviation (ddof=1), in physical parameter units. Saturated volumetric water content. |
-| `alpha_std` | 1/cm | — | Sample standard deviation (ddof=1), in physical parameter units. van Genuchten inverse pressure-scale parameter. |
-| `n_std` | 1 | — | Sample standard deviation (ddof=1), in physical parameter units. van Genuchten pore-size parameter. |
-| `k_sat_std` | cm/day | — | Sample standard deviation (ddof=1), in physical parameter units. Saturated hydraulic conductivity. |
-| `k_0_std` | cm/day | — | Sample standard deviation (ddof=1), in physical parameter units. Unsaturated conductivity matching-point parameter; not saturated conductivity. |
-| `l_std` | 1 | — | Sample standard deviation (ddof=1), in physical parameter units. Unsaturated conductivity exponent from the separate Rosetta1 ensemble. |
+| `theta_r_mean` | cm^3/cm^3 | — | Ensemble mean in the selected reporting scale. Residual volumetric water content. |
+| `theta_s_mean` | cm^3/cm^3 | — | Ensemble mean in the selected reporting scale. Saturated volumetric water content. |
+| `alpha_mean` | 1/cm | — | Ensemble mean in the selected reporting scale. van Genuchten inverse pressure-scale parameter. |
+| `n_mean` | 1 | — | Ensemble mean in the selected reporting scale. van Genuchten pore-size parameter. |
+| `k_sat_mean` | cm/day | — | Ensemble mean in the selected reporting scale. Saturated hydraulic conductivity. |
+| `k_0_mean` | cm/day | — | Ensemble mean in the selected reporting scale. Unsaturated conductivity matching-point parameter; not saturated conductivity. |
+| `l_mean` | 1 | — | Ensemble mean in the selected reporting scale. Unsaturated conductivity exponent from the separate Rosetta1 ensemble. |
+| `theta_r_std` | cm^3/cm^3 | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). Residual volumetric water content. |
+| `theta_s_std` | cm^3/cm^3 | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). Saturated volumetric water content. |
+| `alpha_std` | 1/cm | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). van Genuchten inverse pressure-scale parameter. |
+| `n_std` | 1 | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). van Genuchten pore-size parameter. |
+| `k_sat_std` | cm/day | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). Saturated hydraulic conductivity. |
+| `k_0_std` | cm/day | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). Unsaturated conductivity matching-point parameter; not saturated conductivity. |
+| `l_std` | 1 | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). Unsaturated conductivity exponent from the separate Rosetta1 ensemble. |
 
 !!! note
 
-    Fixed-level local verification rejects invalid predictors instead of silently falling back.
+    Explicit predictor levels reject invalid predictors instead of silently falling back.
 
 !!! note
 
@@ -189,7 +189,7 @@ Estimate Rosetta3 level 4 hydraulic means and uncertainty.
 
 !!! warning
 
-    Trained parameters are published by USDA under CC0 and bundled unchanged; optional external loading remains available.
+    Trained parameters are published by USDA under CC0 and bundled unchanged.
 
 !!! warning
 
@@ -220,24 +220,24 @@ Estimate Rosetta3 level 5 hydraulic means and uncertainty.
 
 | Name | Unit | Domain | Description |
 | --- | --- | --- | --- |
-| `theta_r_mean` | cm^3/cm^3 | — | Arithmetic ensemble mean. Residual volumetric water content. |
-| `theta_s_mean` | cm^3/cm^3 | — | Arithmetic ensemble mean. Saturated volumetric water content. |
-| `alpha_mean` | 1/cm | — | Arithmetic ensemble mean. van Genuchten inverse pressure-scale parameter. |
-| `n_mean` | 1 | — | Arithmetic ensemble mean. van Genuchten pore-size parameter. |
-| `k_sat_mean` | cm/day | — | Arithmetic ensemble mean. Saturated hydraulic conductivity. |
-| `k_0_mean` | cm/day | — | Arithmetic ensemble mean. Unsaturated conductivity matching-point parameter; not saturated conductivity. |
-| `l_mean` | 1 | — | Arithmetic ensemble mean. Unsaturated conductivity exponent from the separate Rosetta1 ensemble. |
-| `theta_r_std` | cm^3/cm^3 | — | Sample standard deviation (ddof=1), in physical parameter units. Residual volumetric water content. |
-| `theta_s_std` | cm^3/cm^3 | — | Sample standard deviation (ddof=1), in physical parameter units. Saturated volumetric water content. |
-| `alpha_std` | 1/cm | — | Sample standard deviation (ddof=1), in physical parameter units. van Genuchten inverse pressure-scale parameter. |
-| `n_std` | 1 | — | Sample standard deviation (ddof=1), in physical parameter units. van Genuchten pore-size parameter. |
-| `k_sat_std` | cm/day | — | Sample standard deviation (ddof=1), in physical parameter units. Saturated hydraulic conductivity. |
-| `k_0_std` | cm/day | — | Sample standard deviation (ddof=1), in physical parameter units. Unsaturated conductivity matching-point parameter; not saturated conductivity. |
-| `l_std` | 1 | — | Sample standard deviation (ddof=1), in physical parameter units. Unsaturated conductivity exponent from the separate Rosetta1 ensemble. |
+| `theta_r_mean` | cm^3/cm^3 | — | Ensemble mean in the selected reporting scale. Residual volumetric water content. |
+| `theta_s_mean` | cm^3/cm^3 | — | Ensemble mean in the selected reporting scale. Saturated volumetric water content. |
+| `alpha_mean` | 1/cm | — | Ensemble mean in the selected reporting scale. van Genuchten inverse pressure-scale parameter. |
+| `n_mean` | 1 | — | Ensemble mean in the selected reporting scale. van Genuchten pore-size parameter. |
+| `k_sat_mean` | cm/day | — | Ensemble mean in the selected reporting scale. Saturated hydraulic conductivity. |
+| `k_0_mean` | cm/day | — | Ensemble mean in the selected reporting scale. Unsaturated conductivity matching-point parameter; not saturated conductivity. |
+| `l_mean` | 1 | — | Ensemble mean in the selected reporting scale. Unsaturated conductivity exponent from the separate Rosetta1 ensemble. |
+| `theta_r_std` | cm^3/cm^3 | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). Residual volumetric water content. |
+| `theta_s_std` | cm^3/cm^3 | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). Saturated volumetric water content. |
+| `alpha_std` | 1/cm | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). van Genuchten inverse pressure-scale parameter. |
+| `n_std` | 1 | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). van Genuchten pore-size parameter. |
+| `k_sat_std` | cm/day | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). Saturated hydraulic conductivity. |
+| `k_0_std` | cm/day | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). Unsaturated conductivity matching-point parameter; not saturated conductivity. |
+| `l_std` | 1 | — | Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). Unsaturated conductivity exponent from the separate Rosetta1 ensemble. |
 
 !!! note
 
-    Fixed-level local verification rejects invalid predictors instead of silently falling back.
+    Explicit predictor levels reject invalid predictors instead of silently falling back.
 
 !!! note
 
@@ -249,7 +249,7 @@ Estimate Rosetta3 level 5 hydraulic means and uncertainty.
 
 !!! warning
 
-    Trained parameters are published by USDA under CC0 and bundled unchanged; optional external loading remains available.
+    Trained parameters are published by USDA under CC0 and bundled unchanged.
 
 !!! warning
 

@@ -92,4 +92,4 @@ methods, and variable ranges reported by its source publication.
 
 Rosetta3 needs no external model file: use `ptfkit_rosetta3_builtin` in C or
 `ptfkit::Rosetta3::builtin()` in C++. Parameter provenance and CC0 terms are
-recorded in `MODEL_NOTICE.txt`. Generic external model loading remains available.
+recorded in `MODEL_NOTICE.txt`. Explicit initialization shares immutable bundled parameters.

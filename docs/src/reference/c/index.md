@@ -60,6 +60,4 @@ ptfkit's C API is organized around installed headers.
 
 See the [function index](functions.md) for all public C functions.
 
-## External models
-
-- [Rosetta3 and external model loading](headers/zhang_schaap2017.md)
+- [zhang_schaap2017](headers/zhang_schaap2017.md)

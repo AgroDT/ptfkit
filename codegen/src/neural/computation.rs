@@ -1,17 +1,9 @@
 //! Emit dense-model calculation functions from the shared semantic IR.
-use crate::{
-    model::{Entry, ExternalModel},
-    semantic::{
-        self, Expr, Reference, VariableValue,
-        neural::{Condition, Operation},
-    },
+use crate::semantic::{
+    self, Expr, Reference, VariableValue,
+    neural::{Condition, Operation},
 };
 use std::fmt::Write as _;
-
-pub(super) struct Rendered {
-    pub(super) c: String,
-    pub(super) rust: String,
-}
 
 fn reference(reference: Reference, ir: &semantic::Function) -> &str {
     match reference {
@@ -83,7 +75,7 @@ pub(super) fn render_function(
         )
     } else {
         format!(
-            "PTFKIT_MODEL_INLINE int ptfkit_detail_rosetta_mod{level}(const ptfkit_detail_network *_ptfkit_networks,const double *_ptfkit_data,unsigned _ptfkit_mode,const double *_ptfkit_inputs,size_t _ptfkit_count,double *_ptfkit_out){{\nif(!_ptfkit_inputs || !_ptfkit_out)return 0;\nfor(size_t i=0;i<{size};++i)_ptfkit_out[i]=NAN;\nif(_ptfkit_mode>2 || _ptfkit_count!={count})return 0;\nfor(size_t i=0;i<_ptfkit_count;++i)if(!isfinite(_ptfkit_inputs[i]))return 0;\n"
+            "PTFKIT_MODEL_INLINE int ptfkit_detail_dense_mod{level}(const ptfkit_detail_network *_ptfkit_networks,const double *_ptfkit_data,unsigned _ptfkit_mode,const double *_ptfkit_inputs,size_t _ptfkit_count,double *_ptfkit_out){{\nif(!_ptfkit_inputs || !_ptfkit_out)return 0;\nfor(size_t i=0;i<{size};++i)_ptfkit_out[i]=NAN;\nif(_ptfkit_mode>2 || _ptfkit_count!={count})return 0;\nfor(size_t i=0;i<_ptfkit_count;++i)if(!isfinite(_ptfkit_inputs[i]))return 0;\n"
         )
     };
     for (i, name) in inputs.iter().enumerate() {
@@ -278,49 +270,4 @@ pub(super) fn render_function(
         text.push_str("return 1;}\n");
     }
     Ok(text)
-}
-
-pub(super) fn render(entry: &Entry) -> anyhow::Result<Rendered> {
-    let mut c = String::new();
-    let mut rust = String::from("use super::engine::{Network,statistics};\n");
-    let mut levels = Vec::new();
-    for (index, function) in entry
-        .spec
-        .functions
-        .iter()
-        .enumerate()
-        .filter(|(_, f)| super::public::enabled(f))
-    {
-        let ExternalModel { level, .. } = function
-            .implementation
-            .as_ref()
-            .unwrap()
-            .external_model
-            .as_ref()
-            .unwrap();
-        let ir = entry.implementations[index]
-            .as_ref()
-            .expect("neural implementations are compiled with the source");
-        let outputs = function
-            .outputs
-            .fields()
-            .iter()
-            .map(|f| f.name.clone())
-            .collect::<Vec<_>>();
-        c.push_str(&render_function(ir, &outputs, *level, false)?);
-        rust.push_str(&render_function(ir, &outputs, *level, true)?);
-        levels.push(*level);
-    }
-    c.push_str("PTFKIT_MODEL_INLINE int ptfkit_detail_rosetta(const ptfkit_detail_network *networks,const double *data,unsigned level,unsigned mode,const double *x,size_t count,double *out){switch(level){\n");
-    rust.push_str("pub(super) fn predict(networks:&[Network],data:&[f64],level:usize,mode:usize,x:&[f64])->Option<[f64;14]>{match level{\n");
-    for level in levels {
-        writeln!(
-            c,
-            "case {level}:return ptfkit_detail_rosetta_mod{level}(networks,data,mode,x,count,out);"
-        )?;
-        writeln!(rust, "{level}=>mod{level}(networks,data,mode,x),")?;
-    }
-    c.push_str("default:return 0;}}\n");
-    rust.push_str("_=>None,}}\n");
-    Ok(Rendered { c, rust })
 }

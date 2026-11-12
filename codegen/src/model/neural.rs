@@ -16,7 +16,7 @@ pub(crate) struct DenseEnsembleDefinition {
 #[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct NeuralParameters {
-    pub(crate) artifact: String,
+    pub(crate) artifact: NeuralArtifact,
     pub(crate) network: usize,
     pub(crate) offset: usize,
 }
@@ -102,4 +102,13 @@ pub(crate) struct RawNeuralVariable {
     pub(crate) implementation_path: String,
     pub(crate) operation: NeuralVariable,
     pub(crate) networks: BTreeMap<String, DenseEnsembleDefinition>,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct NeuralArtifact {
+    pub(crate) path: String,
+    pub(crate) sha256: String,
+    pub(crate) bytes: usize,
+    pub(crate) license: String,
 }

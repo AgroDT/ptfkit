@@ -22,17 +22,18 @@ target_include_directories(ptfkit_c INTERFACE
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/prepared/rosetta3_data.c")
+file(GLOB PTFKIT_PREPARED_MODELS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/prepared/*_data.c")
+if(NOT PTFKIT_PREPARED_MODELS)
     message(FATAL_ERROR "Prepared model arrays are missing. In a repository checkout run mise run models:prepare; distributions must include prepared arrays.")
 endif()
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/prepared/rosetta3_data.c")
-    add_library(ptfkit_model_data STATIC prepared/rosetta3_data.c)
+if(PTFKIT_PREPARED_MODELS)
+    add_library(ptfkit_model_data STATIC ${PTFKIT_PREPARED_MODELS})
     target_include_directories(ptfkit_model_data PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
     target_compile_features(ptfkit_model_data PRIVATE c_std_11)
     set_target_properties(ptfkit_model_data PROPERTIES POSITION_INDEPENDENT_CODE ON)
     target_link_libraries(ptfkit_c INTERFACE $<BUILD_INTERFACE:ptfkit_model_data>)
     # Keep native archives compiler-independent: consumers compile this data once.
-    install(FILES prepared/rosetta3_data.c DESTINATION ${CMAKE_INSTALL_DATADIR}/ptfkit)
+    install(FILES ${PTFKIT_PREPARED_MODELS} DESTINATION ${CMAKE_INSTALL_DATADIR}/ptfkit)
 endif()
 
 cmake_dependent_option(

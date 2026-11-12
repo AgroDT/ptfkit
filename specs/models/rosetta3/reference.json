@@ -3,7 +3,6 @@
     "kind": "published",
     "repository": "https://github.com/usda-ars-ussl/rosetta-soil",
     "revision": "6b0e3902f8a145805d41b691dc36f8e69e898f2a",
-    "manifest_sha256": "3b24036d44930d3dee653cff25b9a04874ce404614830e850a3945b10ada37d3",
     "python": "3.13.12",
     "numpy": "2.4.3",
     "upstream_distribution": "0.3.3.dev2+g6b0e3902f",

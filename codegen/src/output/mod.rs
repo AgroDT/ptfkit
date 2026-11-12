@@ -131,22 +131,7 @@ layout!(
     Formatter::Cpp
 );
 
-layout!(
-    RUST_MODEL_DATA,
-    "targets/ptfkit-rs/src/data",
-    "targets/ptfkit-rs/src/data",
-    "PTFKNN01",
-    Formatter::None
-);
-layout!(
-    NATIVE_SOURCE,
-    "targets/ptfkit-native/src",
-    "targets/ptfkit-native/src",
-    C_HEADER,
-    Formatter::C
-);
-
-pub(crate) const LAYOUTS: [&Layout; 15] = [
+pub(crate) const LAYOUTS: [&Layout; 13] = [
     &CATALOG,
     &CATALOG_DEFINITIONS,
     &REFERENCE_C,
@@ -160,8 +145,6 @@ pub(crate) const LAYOUTS: [&Layout; 15] = [
     &NATIVE_CPP_MODULE,
     &NATIVE_C_TEST,
     &NATIVE_CPP_TEST,
-    &RUST_MODEL_DATA,
-    &NATIVE_SOURCE,
 ];
 
 pub(crate) struct Output {
@@ -178,28 +161,14 @@ impl Output {
 pub(crate) struct GeneratedFile {
     pub(crate) path: PathBuf,
     pub(crate) contents: String,
-    binary: Option<Vec<u8>>,
 }
 
 impl GeneratedFile {
     pub(crate) fn new(path: PathBuf, contents: String) -> Self {
-        Self {
-            path,
-            contents,
-            binary: None,
-        }
-    }
-
-    #[cfg(test)]
-    pub(crate) fn binary(path: PathBuf, bytes: Vec<u8>) -> Self {
-        Self {
-            path,
-            contents: String::new(),
-            binary: Some(bytes),
-        }
+        Self { path, contents }
     }
 
     pub(super) fn bytes(&self) -> &[u8] {
-        self.binary.as_deref().unwrap_or(self.contents.as_bytes())
+        self.contents.as_bytes()
     }
 }

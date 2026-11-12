@@ -67,8 +67,6 @@ pub(super) fn decode(entry: &Entry, bytes: &[u8]) -> anyhow::Result<Model> {
     let mut model = Model {
         networks,
         data: Vec::new(),
-        revision: String::new(),
-        contract: serde_json::Value::Null,
     };
     let mut metadata = super::pack::encode(&model);
     metadata.truncate(metadata.len() - 8);
@@ -122,9 +120,9 @@ fn c_scales(scales: &[Scale]) -> String {
     text
 }
 
-pub(super) fn render(model: &Model, sha: &str) -> (String, String) {
+pub(super) fn render(model: &Model, slug: &str) -> (String, String) {
     let mut c = format!(
-        "{HEADER}/* Exact binary64 hexadecimal literals; CC0 model parameters. */\n#include <ptfkit/zhang_schaap2017.h>\nstatic const double weights[]={{\n"
+        "{HEADER}/* Exact binary64 hexadecimal literals. */\n#include <ptfkit/detail/models.h>\nstatic const double weights[]={{\n"
     );
     let mut rust = format!(
         "{HEADER}use crate::models::{{Model,engine::{{Network,Scale}}}};\nstatic WEIGHTS:[f64;{}]=[\n",
@@ -187,53 +185,70 @@ pub(super) fn render(model: &Model, sha: &str) -> (String, String) {
         };
         writeln!(rust,"Network{{nboot:{},widths:vec![{widths}],activations:vec![{}],inputs:vec![{}],outputs:vec![{}],offset:{}}},",n.nboot,n.activations.iter().map(|a|format!("{a:?}.into()")).collect::<Vec<_>>().join(","),rs_scales(&n.inputs),rs_scales(&n.outputs),n.offset).unwrap();
     }
-    let digest = (0..32)
-        .map(|i| format!("0x{}", &sha[i * 2..i * 2 + 2]))
-        .collect::<Vec<_>>()
-        .join(",");
     c.push_str("};\n");
-    writeln!(c,"ptfkit_model_status ptfkit_detail_rosetta3_builtin(ptfkit_model **out){{static const unsigned char digest[32]={{{digest}}};return ptfkit_detail_model_from_arrays(networks,{},weights,{},digest,out);}}",model.networks.len(),model.data.len()).unwrap();
-    writeln!(
-        rust,
-        "];Model::from_bundled(networks,&WEIGHTS,[{digest}])}}"
-    )
-    .unwrap();
+    writeln!(c,"ptfkit_model_status ptfkit_detail_{slug}_builtin(ptfkit_model **out){{return ptfkit_detail_model_from_arrays(networks,weights,out);}}").unwrap();
+    rust.push_str("];Model::from_bundled(networks,&WEIGHTS)}\n");
     (c, rust)
 }
 
+/// Resolve and validate the artifact declared by this source, without publication-specific paths.
+pub(super) fn load(entry: &Entry) -> anyhow::Result<Model> {
+    let declarations = declarations(entry)?;
+    let artifact = &declarations.values().next().unwrap().parameters.artifact;
+    if declarations
+        .values()
+        .any(|d| &d.parameters.artifact != artifact)
+    {
+        return Err(ModelError::Data.into());
+    }
+    let path = entry.path.parent().unwrap().join(&artifact.path);
+    let bytes = std::fs::read(&path)?;
+    let actual = Sha256::digest(&bytes)
+        .iter()
+        .map(|v| format!("{v:02x}"))
+        .collect::<String>();
+    if artifact.sha256 != actual || artifact.bytes != bytes.len() {
+        return Err(ModelError::Integrity.into());
+    }
+    decode(entry, &bytes)
+}
+
 pub(crate) fn prepare(root: &Path, entries: &[Entry]) -> anyhow::Result<()> {
-    for entry in entries.iter().filter(|e| e.slug == "zhang_schaap2017") {
-        let declarations = declarations(entry)?;
-        let artifacts = declarations
-            .values()
-            .map(|d| d.parameters.artifact.as_str())
-            .collect::<std::collections::BTreeSet<_>>();
-        if artifacts.len() != 1 {
-            return Err(ModelError::Data.into());
-        }
-        let path = entry
-            .path
-            .parent()
-            .unwrap()
-            .join(artifacts.first().unwrap());
-        let metadata: serde_json::Value = serde_json::from_slice(&std::fs::read(&path)?)?;
-        let sha = metadata["sha256"].as_str().ok_or(ModelError::Integrity)?;
-        let bytes = std::fs::read(path.with_file_name("rosetta3.ptfm"))?;
-        let actual = Sha256::digest(&bytes)
-            .iter()
-            .map(|v| format!("{v:02x}"))
-            .collect::<String>();
-        if sha != actual || metadata["bytes"].as_u64() != Some(bytes.len() as u64) {
-            return Err(ModelError::Integrity.into());
-        }
-        let model = decode(entry, &bytes)?;
-        let (c, rust) = render(&model, sha);
-        let c_path = root.join("targets/ptfkit-native/prepared/rosetta3_data.c");
-        let rs_path = root.join("targets/ptfkit-rs/src/prepared/rosetta3.rs");
+    let mut prepared = std::collections::BTreeSet::new();
+    for entry in entries
+        .iter()
+        .filter(|e| e.spec.functions.iter().any(super::public::enabled))
+    {
+        let model = load(entry)?;
+        let (c, rust) = render(&model, &entry.slug);
+        let c_path = root.join(format!(
+            "targets/ptfkit-native/prepared/{}_data.c",
+            entry.slug
+        ));
+        let rs_path = root.join(format!("targets/ptfkit-rs/src/prepared/{}.rs", entry.slug));
         std::fs::create_dir_all(c_path.parent().unwrap())?;
         std::fs::create_dir_all(rs_path.parent().unwrap())?;
-        std::fs::write(c_path, c)?;
-        std::fs::write(rs_path, rust)?;
+        std::fs::write(&c_path, c)?;
+        std::fs::write(&rs_path, rust)?;
+        prepared.insert(c_path);
+        prepared.insert(rs_path);
+    }
+    for directory in [
+        root.join("targets/ptfkit-native/prepared"),
+        root.join("targets/ptfkit-rs/src/prepared"),
+    ] {
+        if !directory.exists() {
+            continue;
+        }
+        for file in std::fs::read_dir(directory)? {
+            let path = file?.path();
+            if path.is_file()
+                && !prepared.contains(&path)
+                && std::fs::read_to_string(&path)?.starts_with(HEADER)
+            {
+                std::fs::remove_file(path)?;
+            }
+        }
     }
     Ok(())
 }

@@ -9,6 +9,7 @@ coverage.xml
 .rosetta-upstream/
 .rosetta-env/
 .rosetta-local/
+.euptf2-local/
 .mise.local.toml
 codegen/scripts/__pycache__/
 

@@ -1,3 +1,5 @@
+generation:
+  model_class: DenseModel
 source:
   summary: Synthetic rendering example.
   citation_apa: Example (2026).
@@ -62,7 +64,11 @@ functions:
     networks:
       primary:
         parameters:
-          artifact: controlled.ptfm
+          artifact:
+            path: controlled.ptfm
+            sha256: d44ba75d4010d0e37e0fc6e156a903e08e3780ffde6e021e2162bcc9ab64ba16
+            bytes: 252
+            license: CC0-1.0
           network: 0
           offset: 0
         members: 2
@@ -84,7 +90,11 @@ functions:
           - -2.0
       secondary:
         parameters:
-          artifact: controlled.ptfm
+          artifact:
+            path: controlled.ptfm
+            sha256: d44ba75d4010d0e37e0fc6e156a903e08e3780ffde6e021e2162bcc9ab64ba16
+            bytes: 252
+            license: CC0-1.0
           network: 1
           offset: 4
         members: 2

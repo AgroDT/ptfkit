@@ -1,0 +1,70 @@
+"""@SUMMARY@"""
+from __future__ import annotations
+
+from enum import IntEnum
+from numbers import Real
+from typing import TYPE_CHECKING, Generic, NamedTuple, TypeVar, cast, overload
+
+from ptfkit import _@SLUG@ as _models
+
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+
+    from numpy import floating
+    from numpy.typing import ArrayLike, NDArray
+
+
+T_co = TypeVar('T_co', covariant=True)
+
+ModelInputError = _models.ModelInputError
+
+class Estimate(IntEnum):
+    """Explicit upstream bootstrap summary convention."""
+    ARITHMETIC = 0
+    LOG10 = 1
+    GEOMETRIC = 2
+
+@STATISTICS@
+
+
+
+class @CLASS@:
+    """Explicitly initialized model with shared immutable bundled parameters."""
+    __slots__ = ('_handle',)
+
+    def __init__(self) -> None:
+        """Initialize the bundled model without reading external files."""
+        self._handle = _models.builtin()
+
+    def _predict(self, level: int, inputs: Sequence[ArrayLike], estimate: Estimate, out: @RESULT@[NDArray[floating]] | None) -> @RESULT@[float] | @RESULT@[NDArray[floating]]:
+        """Broadcast predictors and evaluate natively, writing directly into output arrays."""
+        if out is None and all(isinstance(value, Real) for value in inputs):
+            return @RESULT@(*_models.evaluate(
+                self._handle, level, int(estimate), cast('Sequence[float]', inputs)
+            ))
+        import numpy as np  # noqa: PLC0415
+
+        arrays = np.broadcast_arrays(*(np.asarray(value, dtype=np.float64) for value in inputs))
+        shape = arrays[0].shape
+        if out is not None:
+            if not isinstance(out, @RESULT@) or any(a.shape != shape for a in out):
+                message = 'out must contain a @RESULT@ of arrays with the broadcast shape'
+                raise ValueError(message)
+            if any(not np.issubdtype(a.dtype, np.floating) or not a.flags.writeable for a in out):
+                message = 'out arrays must be writable floating-point arrays'
+                raise ValueError(message)
+            arrays = [a.copy() if any(np.may_share_memory(a, target) for target in out) else a for a in arrays]
+            if any(np.shares_memory(a, b) for i, a in enumerate(out) for b in out[i + 1:]):
+                message = 'out arrays must not overlap each other'
+                raise ValueError(message)
+        else:
+            out = @RESULT@(*(np.empty(shape, dtype=np.float64) for _ in range(@SIZE@)))
+        native_out = @RESULT@(*(a if a.dtype == np.float64 else np.empty(shape, dtype=np.float64) for a in out))
+        _models.batch(self._handle, level, int(estimate), arrays, native_out)
+        for target, value in zip(out, native_out, strict=True):
+            if target is not value:
+                np.copyto(target, value)
+        return out
+
+@METHODS@

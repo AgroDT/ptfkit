@@ -8,7 +8,6 @@ run_windows = '''powershell -NoProfile -Command "& { $vswhere = Join-Path ([Envi
 ["native:build"]
 description = "Build the native target"
 depends = ["native:configure"]
-depends = ["models:prepare"]
 dir = "targets/ptfkit-native"
 run = 'cmake --build build'
 run_windows = '''powershell -NoProfile -Command "& { $vswhere = Join-Path ([Environment]::GetFolderPath('ProgramFilesX86')) 'Microsoft Visual Studio\Installer\vswhere.exe'; if (-not (Test-Path -LiteralPath $vswhere -PathType Leaf)) { throw 'Visual Studio locator not found' }; $installation = & $vswhere -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath; if (-not $installation) { throw 'Visual Studio C++ build tools not found' }; $vsdev = Join-Path $installation 'Common7\Tools\VsDevCmd.bat'; $command = 'call \"' + $vsdev + '\" -arch=x64 >nul && cmake --build build'; cmd /d /s /c $command; exit $LASTEXITCODE }"'''

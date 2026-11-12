@@ -1,9 +1,5 @@
 //! Versioned, portable external dense-ensemble container. No executable content.
 use super::Model;
-use anyhow::Result;
-use sha2::{Digest, Sha256};
-use std::{fs::OpenOptions, io::Write, path::Path};
-
 pub(crate) fn encode(model: &Model) -> Vec<u8> {
     let mut out = b"PTFKNN01".to_vec();
     fn u32le(out: &mut Vec<u8>, value: usize) {
@@ -52,23 +48,4 @@ pub(crate) fn encode(model: &Model) -> Vec<u8> {
         out.extend_from_slice(&value.to_le_bytes());
     }
     out
-}
-
-pub(crate) fn run(manifest: &Path, output: &Path) -> Result<()> {
-    let model = Model::load(manifest)?;
-    let data = encode(&model);
-    if model.networks.len() > 64 || data.len() > 64 * 1024 * 1024 {
-        return Err(super::ModelError::Data.into());
-    }
-    OpenOptions::new()
-        .write(true)
-        .create_new(true)
-        .open(output)?
-        .write_all(&data)?;
-    let digest: String = Sha256::digest(&data)
-        .iter()
-        .map(|v| format!("{v:02x}"))
-        .collect();
-    println!("{} bytes; SHA-256 {digest}", data.len());
-    Ok(())
 }

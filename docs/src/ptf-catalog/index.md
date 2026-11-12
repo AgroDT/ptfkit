@@ -268,12 +268,11 @@ names and argument counts must match, and all public outputs must resolve to
 numeric variables. Statistics fields use names such as `theta_r_mean` and
 `theta_r_std`, accessible through the existing record expression syntax.
 
-The Rosetta `external_model` binding controls explicit model initialization and
-method signatures. Its computation comes from these compiled variables, including
-the order of transformations and statistics and the exact conductivity arguments.
-C and Rust render the shared semantic IR independently; Python and C++ reuse C.
-These operations cover dense neural ensembles. Quantile regression forests use a
-separate execution backend.
+Dense-network operations select the dense backend through the normal generation
+pipeline. Network parameter declarations contain the binary path, size, SHA-256,
+and license. The source specification owns public model names and scientific
+computation. Run `mise run models:prepare` before target builds. Bundled parameters
+are shared immutable data; initialize the model explicitly and call named methods.
 
 See the [Rosetta3 contract](../contributing/rosetta3.md) and the
 [development guide](../contributing/development.md) for preparation and distribution.

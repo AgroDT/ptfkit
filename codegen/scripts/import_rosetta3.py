@@ -1,110 +1,96 @@
-# ruff: noqa: EM101, EM102, INP001, PLC0415, S603, S607, T201, TRY003
-"""Verify and convert the pinned Rosetta networks for local use only.
+# ruff: noqa: EM101, EM102, INP001, PLC0415, T201, TRY003
+"""Import bundled Rosetta parameters from a trusted upstream checkout.
 
-NPZ metadata uses pickle. No NPZ is opened until every pinned source and
-artifact hash has been checked. The output is deliberately outside packages.
+NPZ metadata uses pickle: only pass a trusted checkout. The YAML specification
+owns topology and ordering; this script does not supply scientific calculations.
 """
 
 from __future__ import annotations
 
 import argparse
 import hashlib
-import itertools
-import json
-import math
 import struct
-import subprocess
+from itertools import pairwise
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[2]
-LOCK = ROOT / 'specs/models/rosetta3/manifest.json'
+NAMES = ('rose3_mod2_0', 'rose3_mod3_0', 'rose3_mod4_0', 'rose3_mod5_0', 'rose1_unsat_k')
 
 
-def digest(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
-def verify_checkout(checkout: Path) -> dict:
-    lock = json.loads(LOCK.read_text(encoding='utf-8'))
-    revision = subprocess.check_output(
-        ['git', '-C', str(checkout), 'rev-parse', 'HEAD'], text=True
-    ).strip()
-    if revision != lock['revision']:
-        raise ValueError(f'upstream revision mismatch: {revision}')
-    for name, expected in lock['files'].items():
-        if digest(checkout / name) != expected:
-            raise ValueError(f'upstream SHA-256 mismatch: {name}')
-    return lock
-
-
-def convert(checkout: Path, output: Path) -> None:
-    lock = verify_checkout(checkout)
-    # This import and the pickle loader occur only after integrity verification.
+def convert(checkout: Path, output: Path) -> None:  # noqa: C901, PLR0912
     import numpy as np
+    import yaml
 
-    data = bytearray()
-    networks = []
-    for name in lock['required_models']:
-        with np.load(checkout / f'src/rosetta/data/{name}.npz', allow_pickle=True) as z:
-            widths = [int(z['ninput'])] + [int(x['nnodes']) for x in z['layers']]
-            nboot = int(z['nboot'])
-            layers = [str(x['activate']) for x in z['layers']]
-            if len(widths) != int(z['nlayer']) + 1:
-                raise ValueError(f'invalid layer count: {name}')
-            offset = len(data) // 8
-            stored_weights = z['weights']
-            stored_biases = z['biases']
-            for boot in range(nboot):
-                for layer, (nin, nout) in enumerate(itertools.pairwise(widths)):
-                    weights = np.asarray(stored_weights[boot][layer], dtype=np.float64)
-                    biases = np.asarray(stored_biases[boot][layer], dtype=np.float64)
+    spec = yaml.safe_load((ROOT / 'specs/functions/zhang_schaap2017.yaml').read_text())
+    declarations = {}
+    for function in spec['functions']:
+        for network in function['implementation']['networks'].values():
+            index = network['parameters']['network']
+            if index in declarations and declarations[index] != network:
+                raise ValueError(f'inconsistent network declaration: {index}')
+            declarations[index] = network
+    if sorted(declarations) != list(range(len(NAMES))):
+        raise ValueError('expected the five declared Rosetta networks')
+    header = bytearray(b'PTFKNN01' + struct.pack('<I', len(NAMES)))
+    values = bytearray()
+    activations = ('linear', 'sigmoid', 'tansig', 'relu')
+    scales = ('asis', 'division', 'logtr', 'affine', 'minmax', 'linear')
+    for index, name in enumerate(NAMES):
+        declared = declarations[index]
+        with np.load(checkout / f'src/rosetta/data/{name}.npz', allow_pickle=True) as archive:
+            widths = [int(archive['ninput'])] + [
+                int(layer['nnodes']) for layer in archive['layers']
+            ]
+            acts = [str(layer['activate']) for layer in archive['layers']]
+            members = int(archive['nboot'])
+            if (
+                widths != declared['widths']
+                or acts != declared['activations']
+                or members != declared['members']
+                or int(archive['nlayer']) != len(acts)
+                or declared['parameters']['offset'] != len(values) // 8
+            ):
+                raise ValueError(f'topology or ordering differs from YAML: {name}')
+            header.extend(struct.pack('<2I', members, len(acts)))
+            header.extend(struct.pack(f'<{len(widths)}I', *widths))
+            header.extend(struct.pack(f'<{len(acts)}I', *(activations.index(a) for a in acts)))
+            for key in ('inputs', 'outputs'):
+                channels = archive[key]
+                if len(channels) != len(declared[key]):
+                    raise ValueError(f'channel count differs from YAML: {name}/{key}')
+                for actual, expected in zip(channels, declared[key], strict=True):
+                    params = [float(v) for v in actual['params']]
+                    if str(actual['scale']) != expected['scale'] or params != expected['params']:
+                        raise ValueError(f'scale differs from YAML: {name}/{key}')
+                    padded = params + [0.0] * (3 - len(params))
+                    header.extend(struct.pack('<I3d', scales.index(expected['scale']), *padded))
+            header.extend(struct.pack('<Q', len(values) // 8))
+            stored_weights = archive['weights']
+            stored_biases = archive['biases']
+            # Container order: member, layer, output row, input column, then biases.
+            for member in range(members):
+                for layer, (nin, nout) in enumerate(pairwise(widths)):
+                    weights = np.asarray(stored_weights[member][layer], dtype='<f8')
+                    biases = np.asarray(stored_biases[member][layer], dtype='<f8')
                     if weights.shape != (nout, nin) or biases.size != nout:
-                        raise ValueError(f'invalid network dimensions: {name}')
-                    for value in [*weights.flat, *biases.flat]:
-                        if not math.isfinite(value):
-                            raise ValueError(f'non-finite trained parameter: {name}')
-                        data.extend(struct.pack('<d', value))
-
-            def scalers(key: str) -> list[dict]:
-                return [
-                    {'kind': str(x['scale']), 'params': [float(v) for v in x['params']]}
-                    for x in z[key]
-                ]
-
-            networks.append(
-                {
-                    'name': name,
-                    'nboot': nboot,
-                    'widths': widths,
-                    'activations': layers,
-                    'offset': offset,
-                    'inputs': scalers('inputs'),
-                    'outputs': scalers('outputs'),
-                }
-            )
-    converted = hashlib.sha256(data).hexdigest()
-    if converted != lock['converted_sha256']:
-        raise ValueError('converted artifact differs from the reviewed manifest')
-    metadata = {
-        'format_version': 1,
-        'upstream_revision': lock['revision'],
-        'artifact': 'models.bin',
-        'sha256': converted,
-        'networks': networks,
-    }
-    # Exclusive creation prevents silently replacing reviewed local artifacts.
-    output.mkdir(parents=True, exist_ok=False)
-    (output / 'models.bin').write_bytes(data)
-    (output / 'models.json').write_text(
-        json.dumps(metadata, indent=2, allow_nan=False) + '\n', encoding='utf-8', newline='\n'
-    )
-    print(f'Imported {len(networks)} ensembles, {len(data)} bytes; SHA-256 {converted}')
+                        raise ValueError(f'invalid parameter dimensions: {name}/{member}/{layer}')
+                    if not np.isfinite(weights).all() or not np.isfinite(biases).all():
+                        raise ValueError(f'non-finite parameters: {name}/{member}/{layer}')
+                    values.extend(weights.tobytes(order='C'))
+                    values.extend(biases.tobytes(order='C'))
+    header.extend(struct.pack('<Q', len(values) // 8))
+    data = header + values
+    artifact = declarations[0]['parameters']['artifact']
+    if len(data) != artifact['bytes'] or hashlib.sha256(data).hexdigest() != artifact['sha256']:
+        raise ValueError('imported binary differs from the YAML artifact declaration')
+    output.write_bytes(data)
+    print(f'Imported {len(NAMES)} networks into {output}')
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--upstream', type=Path, required=True)
-    parser.add_argument('--output', type=Path, default=ROOT / '.rosetta-local/imported')
+    parser.add_argument('--output', type=Path, default=ROOT / 'specs/models/rosetta3/rosetta3.ptfm')
     args = parser.parse_args()
     convert(args.upstream.resolve(), args.output.resolve())

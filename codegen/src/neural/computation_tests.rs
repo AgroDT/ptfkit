@@ -13,12 +13,26 @@ fn fixture() -> (PathBuf, Entry) {
         include_str!("../fixtures/neural.yaml"),
     )
     .unwrap();
+    fs::write(
+        root.join("specs/functions/controlled.ptfm"),
+        include_bytes!("../fixtures/controlled.ptfm"),
+    )
+    .unwrap();
     let entries = crate::specs::load(&root).unwrap();
     let functions = crate::compile::functions(entries).unwrap();
     (root, functions[0].entry.clone())
 }
 
 fn execute(root: &Path, name: &str, source: &str, rust: bool) -> String {
+    execute_with_include(root, name, source, rust, None)
+}
+fn execute_with_include(
+    root: &Path,
+    name: &str,
+    source: &str,
+    rust: bool,
+    include: Option<&Path>,
+) -> String {
     let path = root.join(format!("{name}.{}", if rust { "rs" } else { "c" }));
     fs::write(&path, source).unwrap();
     let exe = root.join(format!("{name}{}", std::env::consts::EXE_SUFFIX));
@@ -28,9 +42,12 @@ fn execute(root: &Path, name: &str, source: &str, rust: bool) -> String {
         c
     } else {
         let mut c = Command::new(std::env::var("CC").unwrap_or_else(|_| "clang".into()));
-        c.arg("-std=c11")
-            .arg("-I")
-            .arg(Path::new(env!("CARGO_MANIFEST_DIR")).join("../targets/ptfkit-native/include"));
+        c.arg("-std=c11").arg("-I");
+        if let Some(include) = include {
+            c.arg(include);
+        } else {
+            c.arg(Path::new(env!("CARGO_MANIFEST_DIR")).join("../targets/ptfkit-native/include"));
+        }
         c
     };
     command.arg(&path).arg("-o").arg(&exe);
@@ -74,53 +91,70 @@ fn emits_neural_operations_resolved_by_the_shared_semantic_pipeline() {
 
 #[test]
 fn generated_c_and_rust_execute_independent_composition_and_uncertainty_example() {
-    let (root, entry) = fixture();
-    let ir = entry.implementations[0].as_ref().unwrap();
-    let outputs = entry.spec.functions[0]
-        .outputs
-        .fields()
-        .iter()
-        .map(|f| f.name.clone())
-        .collect::<Vec<_>>();
-    // After division by two and output shift by -2, primary members at x=2 are [0,2].
-    // Mean(10^[0,2])=50.5, 10^mean([0,2])=10; secondary members are [v,2v].
+    let (root, _) = fixture();
+    fs::write(
+        root.join("specs/functions/other2026.yaml"),
+        include_str!("../fixtures/neural.yaml")
+            .replace("calc_ptf_example2026", "calc_ptf_other2026")
+            .replace("DenseModel", "OtherModel")
+            .replace("DenseStatistics", "OtherStatistics"),
+    )
+    .unwrap();
+    let loaded = crate::specs::load_all(&root).unwrap();
+    let entries = loaded.entries.clone();
+    fs::create_dir_all(root.join("targets/ptfkit-py")).unwrap();
+    fs::write(
+        root.join("targets/ptfkit-py/ruff.toml"),
+        include_str!("../../../ruff.toml"),
+    )
+    .unwrap();
+    crate::targets::run(&root, loaded).unwrap();
+    super::parameters::prepare(&root, &entries).unwrap();
+    let include = root.join("targets/ptfkit-native/include");
+    let prepared = root.join("targets/ptfkit-native/prepared/example2026_data.c");
     let c = format!(
-        "#include <ptfkit/models.h>\n{}\n{}",
-        render_function(ir, &outputs, 2, false).unwrap(),
+        "#include <ptfkit/ptfkit.h>\n#include {:?}\n{}",
+        prepared.to_string_lossy(),
         r#"
 int main(void){
-    ptfkit_detail_network nets[2]={0};
-    for(size_t i=0;i<2;++i){nets[i].nboot=2;nets[i].nlayer=1;nets[i].widths[0]=1;nets[i].widths[1]=1;nets[i].offset=i*4;}
-    nets[0].inputs[0].kind=1;nets[0].inputs[0].p[0]=2;
-    nets[0].outputs[0].kind=5;nets[0].outputs[0].p[0]=1;nets[0].outputs[0].p[1]=-2;
-    double data[]={2,0,4,0,1,0,2,0},x=2,out[5];
-    for(unsigned mode=0;mode<3;++mode){if(!ptfkit_detail_rosetta_mod2(nets,data,mode,&x,1,out))return 10;
+    ptfkit_model *model=NULL;
+    if(ptfkit_densemodel_builtin(&model)!=PTFKIT_MODEL_OK)return 1;
+    ptfkit_densemodel_statistics result;
+    if(calc_ptf_example2026(model,2,&result)!=PTFKIT_MODEL_OK || result.mean!=50.5 || result.shifted!=82.75)return 2;
+    double x=2;
+    for(unsigned mode=0;mode<3;++mode){if(calc_ptf_example2026_estimate(model,2,(ptfkit_estimate)mode,&result)!=PTFKIT_MODEL_OK)return 10;
+        double out[]={result.mean,result.std,result.secondary_mean,result.secondary_std,result.shifted};
         for(size_t j=0;j<5;++j)printf("%.17g\n",out[j]);}
-    x=-0.01;if(ptfkit_detail_rosetta_mod2(nets,data,0,&x,1,out))return 11;
-    x=4.01;if(ptfkit_detail_rosetta_mod2(nets,data,0,&x,1,out))return 12;
-    x=0;if(!ptfkit_detail_rosetta_mod2(nets,data,0,&x,1,out))return 13;
-    x=4;if(!ptfkit_detail_rosetta_mod2(nets,data,0,&x,1,out) || !isfinite(out[0]) || !isnan(out[2]))return 14;
-    x=NAN;if(ptfkit_detail_rosetta_mod2(nets,data,0,&x,1,out))return 15;
-    return 0;
+    x=-0.01;if(calc_ptf_example2026(model,x,&result)!=PTFKIT_MODEL_INPUT)return 11;
+    x=4.01;if(calc_ptf_example2026(model,x,&result)!=PTFKIT_MODEL_INPUT)return 12;
+    x=0;if(calc_ptf_example2026(model,x,&result)!=PTFKIT_MODEL_OK)return 13;
+    x=4;if(calc_ptf_example2026(model,x,&result)!=PTFKIT_MODEL_OK || !isfinite(result.mean) || !isnan(result.secondary_mean))return 14;
+    x=NAN;if(calc_ptf_example2026(model,x,&result)!=PTFKIT_MODEL_INPUT)return 15;
+    ptfkit_model *other=NULL;if(ptfkit_densemodel_builtin(&other)!=PTFKIT_MODEL_OK)return 16;
+    if(model->detail_data!=other->detail_data || model->detail_networks!=other->detail_networks)return 17;
+    ptfkit_densemodel_free(model);ptfkit_densemodel_free(other);return 0;
 }"#
     );
-    let engine = Path::new(env!("CARGO_MANIFEST_DIR")).join("src/neural/engine.rs");
+    let rust_src = root.join("targets/ptfkit-rs/src");
     let rust = format!(
-        "#[path={:?}]mod engine;use engine::{{Network,Scale,statistics}};\n{}\n{}",
-        engine.to_string_lossy(),
-        render_function(ir, &outputs, 2, true).unwrap(),
+        "#[path={:?}]mod models;#[path={:?}]mod example2026;\n{}",
+        rust_src.join("models.rs").to_string_lossy(),
+        rust_src.join("example2026.rs").to_string_lossy(),
         r#"
 fn main(){
-    let asis=||Scale{kind:"asis".into(),params:vec![]};
-    let net=|offset|Network{nboot:2,widths:vec![1,1],activations:vec!["linear".into()],inputs:vec![asis()],outputs:vec![asis()],offset};
-    let mut nets=[net(0),net(4)];
-    nets[0].inputs[0]=Scale{kind:"division".into(),params:vec![2.0]};
-    nets[0].outputs[0]=Scale{kind:"linear".into(),params:vec![1.0,-2.0]};
-    let data=[2.,0.,4.,0.,1.,0.,2.,0.];
-    for mode in 0..3{for value in mod2(&nets,&data,mode,&[2.]).unwrap(){println!("{value:.17e}");}}
-    assert!(mod2(&nets,&data,0,&[-0.01]).is_none());assert!(mod2(&nets,&data,0,&[4.01]).is_none());
-    assert!(mod2(&nets,&data,0,&[0.]).is_some());let guarded=mod2(&nets,&data,0,&[4.]).unwrap();
-    assert!(guarded[0].is_finite());assert!(guarded[2].is_nan());assert!(mod2(&nets,&data,0,&[f64::NAN]).is_none());
+    use example2026::{DenseModel,Estimate};
+    let model=DenseModel::builtin().unwrap();
+    for mode in [Estimate::Arithmetic,Estimate::Log10,Estimate::Geometric]{
+        let v=model.calc_ptf_example2026(2.,mode).unwrap();
+        for value in [v.mean,v.std,v.secondary_mean,v.secondary_std,v.shifted]{println!("{value:.17e}");}
+    }
+    assert!(model.calc_ptf_example2026(-0.01,Estimate::Arithmetic).is_err());
+    assert!(model.calc_ptf_example2026(4.01,Estimate::Arithmetic).is_err());
+    assert!(model.calc_ptf_example2026(0.,Estimate::Arithmetic).is_ok());
+    let guarded=model.calc_ptf_example2026(4.,Estimate::Arithmetic).unwrap();
+    assert!(guarded.mean.is_finite());assert!(guarded.secondary_mean.is_nan());
+    assert!(model.calc_ptf_example2026(f64::NAN,Estimate::Arithmetic).is_err());
+
 }"#
     );
     let expected = [
@@ -141,7 +175,7 @@ fn main(){
         22.0,
     ];
     for (name, source, is_rust) in [("neural_c", c, false), ("neural_rs", rust, true)] {
-        let actual = execute(&root, name, &source, is_rust)
+        let actual = execute_with_include(&root, name, &source, is_rust, Some(&include))
             .split_whitespace()
             .map(|s| s.parse::<f64>().unwrap())
             .collect::<Vec<_>>();
@@ -251,15 +285,13 @@ fn compiled_prepared_c_and_rust_arrays_preserve_binary64_bits() {
             offset: 0,
         }],
         data: bits.iter().copied().map(f64::from_bits).collect(),
-        revision: String::new(),
-        contract: serde_json::Value::Null,
     };
-    let (c, rust) = super::parameters::render(&model, &"0".repeat(64));
+    let (c, rust) = super::parameters::render(&model, "example2026");
     let c = c
         + "\nint main(void){for(size_t i=0;i<6;++i){uint64_t bits;memcpy(&bits,&weights[i],8);printf(\"%016llx\\n\",(unsigned long long)bits);}return 0;}\n";
     let engine = Path::new(env!("CARGO_MANIFEST_DIR")).join("src/neural/engine.rs");
     let rust = format!(
-        "mod models{{#[path={:?}]pub mod engine;pub struct Model;impl Model{{pub(crate) fn from_bundled(_:Vec<engine::Network>,_:&[f64],_:[u8;32])->Self{{Self}}}}}}\nmod prepared{{{rust}\npub(super) fn print_bits(){{for value in WEIGHTS{{println!(\"{{:016x}}\",value.to_bits());}}}}}}\nfn main(){{prepared::print_bits();}}",
+        "mod models{{#[path={:?}]pub mod engine;pub struct Model;impl Model{{pub(crate) fn from_bundled(_:Vec<engine::Network>,_:&'static [f64])->Self{{Self}}}}}}\nmod prepared{{{rust}\npub(super) fn print_bits(){{for value in WEIGHTS{{println!(\"{{:016x}}\",value.to_bits());}}}}}}\nfn main(){{prepared::print_bits();}}",
         engine.to_string_lossy()
     );
     let root = crate::test_support::fixture_root("prepared-bits");
@@ -270,5 +302,50 @@ fn compiled_prepared_c_and_rust_arrays_preserve_binary64_bits() {
             .collect::<Vec<_>>();
         assert_eq!(actual, bits, "{name} changed binary64 parameter bits");
     }
+    fs::remove_dir_all(root).unwrap();
+}
+
+#[test]
+fn preparation_rejects_corruption_and_inconsistent_parameter_artifacts() {
+    let (root, entry) = fixture();
+    let path = root.join("specs/functions/controlled.ptfm");
+    let original = fs::read(&path).unwrap();
+    let mut corrupt = original.clone();
+    *corrupt.last_mut().unwrap() ^= 1;
+    fs::write(&path, &corrupt).unwrap();
+    let error = super::parameters::prepare(&root, std::slice::from_ref(&entry)).unwrap_err();
+    assert!(matches!(
+        error.downcast_ref::<super::ModelError>(),
+        Some(super::ModelError::Integrity)
+    ));
+    fs::write(&path, &original).unwrap();
+    let mut inconsistent = entry.clone();
+    inconsistent.spec.functions[0]
+        .implementation
+        .as_mut()
+        .unwrap()
+        .networks
+        .get_mut("secondary")
+        .unwrap()
+        .parameters
+        .artifact
+        .path = "other.ptfm".into();
+    let error = super::parameters::prepare(&root, &[inconsistent]).unwrap_err();
+    assert!(matches!(
+        error.downcast_ref::<super::ModelError>(),
+        Some(super::ModelError::Data)
+    ));
+    let mut truncated = original.clone();
+    truncated.pop();
+    let error = super::parameters::decode(&entry, &truncated).err().unwrap();
+    assert!(matches!(
+        error.downcast_ref::<super::ModelError>(),
+        Some(super::ModelError::Data)
+    ));
+    let mut blocked = entry;
+    blocked.spec.functions[0].status = "blocked".into();
+    fs::remove_file(path).unwrap();
+    super::parameters::prepare(&root, std::slice::from_ref(&blocked)).unwrap();
+    assert!(super::public::render(&root, &[blocked]).unwrap().is_none());
     fs::remove_dir_all(root).unwrap();
 }

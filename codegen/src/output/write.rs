@@ -356,31 +356,6 @@ mod tests {
     }
 
     #[test]
-    fn binary_model_output_preserves_bytes_and_detects_drift() {
-        let root = temporary_root("binary-model");
-        let bytes = b"PTFKNN01\x00\xff\x80\r\n";
-        commit(
-            &root,
-            &[Output::new(
-                &super::super::RUST_MODEL_DATA,
-                vec![GeneratedFile::binary("sample.ptfm".into(), bytes.to_vec())],
-            )],
-        )
-        .unwrap();
-        let path = root.join("targets/ptfkit-rs/src/data/sample.ptfm");
-        assert_eq!(fs::read(&path).unwrap(), bytes);
-        let before = snapshot_generated(&root).unwrap();
-        fs::write(&path, b"PTFKNN01\x00\xfe\x80\r\n").unwrap();
-        let error = assert_unchanged(&root, before).unwrap_err();
-        let drift = error.downcast_ref::<GeneratedDrift>().unwrap();
-        assert_eq!(
-            drift.modified,
-            [PathBuf::from("targets/ptfkit-rs/src/data/sample.ptfm")]
-        );
-        fs::remove_dir_all(root).unwrap();
-    }
-
-    #[test]
     fn removes_obsolete_generated_python_reference_pages_only() {
         let root = temporary_root("python-documentation");
         let python_reference = root.join("docs/src/reference/python");

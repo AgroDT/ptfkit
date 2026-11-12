@@ -1070,6 +1070,10 @@ pub(crate) enum PythonGeneration {
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub(crate) struct Generation {
     #[serde(default)]
+    pub(crate) model_class: Option<String>,
+    #[serde(default)]
+    pub(crate) result_aliases: BTreeMap<String, String>,
+    #[serde(default)]
     pub(crate) public_python: PythonGeneration,
 }
 
@@ -1079,15 +1083,6 @@ pub(crate) struct Implementation {
     pub(crate) networks: BTreeMap<String, DenseEnsembleDefinition>,
     #[serde(default)]
     pub(crate) variables: Vec<ImplementationVariable>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub(crate) external_model: Option<ExternalModel>,
-}
-
-#[derive(Clone, Debug, Deserialize, Serialize)]
-pub(crate) struct ExternalModel {
-    pub(crate) kind: String,
-    pub(crate) artifact: String,
-    pub(crate) level: usize,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]

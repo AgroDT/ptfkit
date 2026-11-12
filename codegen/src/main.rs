@@ -34,27 +34,6 @@ pub(crate) struct Cli {
 enum Command {
     /// Prepare exact typed parameter arrays for local builds and release packages.
     PrepareModels,
-    /// Pack validated external model metadata and parameters into a portable container.
-    PackNeuralModel {
-        #[arg(long)]
-        model: std::path::PathBuf,
-        #[arg(long)]
-        output: std::path::PathBuf,
-    },
-    /// Generate opt-in local targets; trained artifacts are never added to packages.
-    GenerateRosettaLocal {
-        #[arg(long)]
-        model: std::path::PathBuf,
-        #[arg(long)]
-        output: std::path::PathBuf,
-    },
-    /// Verify locally imported Rosetta models against immutable upstream references.
-    VerifyRosetta {
-        #[arg(long)]
-        model: std::path::PathBuf,
-        #[arg(long)]
-        reference: std::path::PathBuf,
-    },
     Validate,
     Generate,
     CheckGenerated,
@@ -86,11 +65,6 @@ impl Cli {
                 let loaded = load_validated_all(root)?;
                 neural::parameters::prepare(root, &loaded.entries)
             }
-            Command::PackNeuralModel { model, output } => neural::pack::run(&model, &output),
-            Command::GenerateRosettaLocal { model, output } => {
-                neural::generate_local(&model, &output)
-            }
-            Command::VerifyRosetta { model, reference } => neural::verify(&model, &reference),
             Command::Validate => {
                 let entries = load_validated_specifications(root)?;
                 compile::functions(entries.clone())?;

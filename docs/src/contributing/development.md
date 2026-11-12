@@ -106,8 +106,7 @@ added, removed, or modified generated files.
 
 ### Preparing neural parameters
 
-The canonical binary for each model lives under `specs/models/`, with provenance
-and integrity metadata. Before a local Rust, Python, or native build, run:
+The canonical binary for each model lives under `specs/models/`, with artifact metadata in the YAML source specification. Before a local Rust, Python, or native build, run:
 
 ```sh
 mise run models:prepare
