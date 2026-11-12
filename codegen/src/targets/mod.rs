@@ -4,7 +4,7 @@ mod catalog;
 mod native;
 mod python;
 mod reference;
-mod rust;
+pub(crate) mod rust;
 
 use std::{collections::BTreeMap, path::Path};
 
@@ -132,13 +132,76 @@ pub(crate) fn run(root: &Path, loaded: LoadedSpecifications) -> anyhow::Result<(
         definitions,
     } = loaded;
     let catalog = catalog::render(&entries, &definitions);
-    let compiled = compile::functions(entries.clone())?;
+    let all_compiled = compile::functions(entries.clone())?;
+    let compiled = all_compiled
+        .into_iter()
+        .filter(|f| !crate::neural::public::enabled(&f.entry.spec.functions[f.function_index]))
+        .collect::<Vec<_>>();
     let reference_python = reference::python::render(&entries, &compiled);
-    let reference_c = reference::c::render(&compiled)?;
-    let reference_cpp = reference::cpp::render(&compiled)?;
-    let rust = rust::render_with_definitions(&compiled, &definitions)?;
-    let python = python::render_with_definitions(&compiled, &definitions)?;
-    let native = native::render_with_definitions(&compiled, &definitions)?;
+    let mut reference_c = reference::c::render(&compiled)?;
+    let mut reference_cpp = reference::cpp::render(&compiled)?;
+    let mut rust = rust::render_with_definitions(&compiled, &definitions)?;
+    let mut python = python::render_with_definitions(&compiled, &definitions)?;
+    let mut native = native::render_with_definitions(&compiled, &definitions)?;
+    if let Some(dense) = crate::neural::public::render(root, &entries)? {
+        let sources = entries
+            .iter()
+            .filter(|e| e.spec.functions.iter().any(crate::neural::public::enabled))
+            .collect::<Vec<_>>();
+        let lib = rust
+            .iter_mut()
+            .find(|f| f.path == Path::new("lib.rs"))
+            .unwrap();
+        lib.contents.push_str("\nmod models;\n");
+        for entry in &sources {
+            lib.contents.push_str(&format!("pub mod {};\n", entry.slug));
+        }
+        rust.extend(dense.rust);
+        let includes = sources
+            .iter()
+            .map(|e| format!("#include <ptfkit/{}.h>\n", e.slug))
+            .collect::<String>();
+        let umbrella = native
+            .c_headers
+            .iter_mut()
+            .find(|f| f.path == Path::new("ptfkit/ptfkit.h"))
+            .unwrap();
+        umbrella.contents = umbrella
+            .contents
+            .replace("\n#endif\n", &format!("\n{includes}#endif\n"));
+        let umbrella = native
+            .cpp_modules
+            .iter_mut()
+            .find(|f| f.path == Path::new("ptfkit.cppm"))
+            .unwrap();
+        for entry in &sources {
+            umbrella
+                .contents
+                .push_str(&format!("\nexport import ptfkit.{};\n", entry.slug));
+        }
+        native.c_tests.extend(dense.c_tests);
+        native.cpp_tests.extend(dense.cpp_tests);
+        native.c_headers.extend(dense.c);
+        native.cpp_modules.extend(dense.cpp);
+        python.extension.extend(dense.extension);
+        python.wrappers.extend(dense.python);
+        for (files, extra, directory) in [
+            (&mut reference_c, dense.c_docs, "headers"),
+            (&mut reference_cpp, dense.cpp_docs, "modules"),
+        ] {
+            let index = files
+                .iter_mut()
+                .find(|f| f.path == Path::new("index.md"))
+                .unwrap();
+            for entry in &sources {
+                index.contents.push_str(&format!(
+                    "\n- [{}]({directory}/{}.md)\n",
+                    entry.slug, entry.slug
+                ));
+            }
+            files.extend(extra);
+        }
+    }
 
     output::commit(
         root,

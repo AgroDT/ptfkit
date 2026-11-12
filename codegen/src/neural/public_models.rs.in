@@ -1,0 +1,20 @@
+//! Internal storage for immutable bundled dense parameters.
+#[path = "detail/neural.rs"]
+pub(crate) mod engine;
+use engine::Network;
+use std::fmt;
+/// Invalid predictors or estimate mode.
+#[derive(Debug)]
+pub enum ModelError { Input }
+impl fmt::Display for ModelError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result { f.write_str("invalid predictors or estimate mode") }
+}
+impl std::error::Error for ModelError {}
+#[derive(Debug)]
+pub(crate) struct Model {
+    pub(crate) networks: Vec<Network>,
+    pub(crate) data: &'static [f64],
+}
+impl Model {
+    pub(crate) fn from_bundled(networks: Vec<Network>, data: &'static [f64]) -> Self { Self { networks, data } }
+}

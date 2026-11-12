@@ -1,0 +1,14 @@
+#ifndef PTFKIT_DETAIL_MODEL_API_H
+#define PTFKIT_DETAIL_MODEL_API_H
+/* External inline linkage in C++ keeps exported module bodies free of TU-local references. */
+#ifdef __cplusplus
+#define PTFKIT_MODEL_INLINE inline
+#else
+#define PTFKIT_MODEL_INLINE static inline
+#endif
+typedef enum {
+    PTFKIT_ESTIMATE_ARITHMETIC = 0,
+    PTFKIT_ESTIMATE_LOG10 = 1,
+    PTFKIT_ESTIMATE_GEOMETRIC = 2
+} ptfkit_estimate;
+#endif

@@ -167,4 +167,8 @@ impl GeneratedFile {
     pub(crate) fn new(path: PathBuf, contents: String) -> Self {
         Self { path, contents }
     }
+
+    pub(super) fn bytes(&self) -> &[u8] {
+        self.contents.as_bytes()
+    }
 }

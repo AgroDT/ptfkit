@@ -22,6 +22,20 @@ target_include_directories(ptfkit_c INTERFACE
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
+file(GLOB PTFKIT_PREPARED_MODELS CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/prepared/*_data.c")
+if(NOT PTFKIT_PREPARED_MODELS)
+    message(FATAL_ERROR "Prepared model arrays are missing. In a repository checkout run mise run models:prepare; distributions must include prepared arrays.")
+endif()
+if(PTFKIT_PREPARED_MODELS)
+    add_library(ptfkit_model_data STATIC ${PTFKIT_PREPARED_MODELS})
+    target_include_directories(ptfkit_model_data PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
+    target_compile_features(ptfkit_model_data PRIVATE c_std_11)
+    set_target_properties(ptfkit_model_data PROPERTIES POSITION_INDEPENDENT_CODE ON)
+    target_link_libraries(ptfkit_c INTERFACE $<BUILD_INTERFACE:ptfkit_model_data>)
+    # Keep native archives compiler-independent: consumers compile this data once.
+    install(FILES ${PTFKIT_PREPARED_MODELS} DESTINATION ${CMAKE_INSTALL_DATADIR}/ptfkit)
+endif()
+
 cmake_dependent_option(
     PTFKIT_BUILD_CPP_MODULES
     "Provide the C++23 module interface target"
@@ -41,7 +55,7 @@ install(
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/ptfkit
 )
 install(
-    FILES README.md LICENSE
+    FILES README.md LICENSE MODEL_NOTICE.txt
     DESTINATION ${CMAKE_INSTALL_DOCDIR}
 )
 install(

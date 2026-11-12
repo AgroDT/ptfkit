@@ -1,0 +1,7 @@
+Bundled Rosetta3 parameters: CC0-1.0.
+Source: https://github.com/usda-ars-ussl/rosetta-soil
+Upstream version: 0.3.3.dev2+g6b0e3902f
+Commit: 6b0e3902f8a145805d41b691dc36f8e69e898f2a
+Retrieval recorded with the initial bundle: 2026-10-30.
+Upstream credits Marcel Schaap and Yonggen Zhang at the University of Arizona.
+License: https://creativecommons.org/publicdomain/zero/1.0/

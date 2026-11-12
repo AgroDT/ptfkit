@@ -3,12 +3,17 @@ name = "ptfkit"
 version = "0.4.0"
 edition = "2024"
 description = "Collection of published pedotransfer functions for estimating soil hydraulic properties"
-license = "MIT"
+license = "MIT AND CC0-1.0"
 readme = "README.md"
 repository = "https://github.com/AgroDT/ptfkit"
 documentation = "https://docs.rs/ptfkit"
 keywords = ["pedotransfer", "soil", "hydrology", "soil-water", "hydraulic"]
 categories = ["science"]
+include = ["src/**", "tests/**", "examples/**", "Cargo.toml", "Cargo.lock", "README.md", "LICENSE", "MODEL_NOTICE.txt"]
+
+# Include prepared arrays even though Git ignores them. Published crates need no generator.
+[package.metadata.ptfkit]
+parameter_preparation = "mise run models:prepare"
 
 [features]
 default = ["inline"]

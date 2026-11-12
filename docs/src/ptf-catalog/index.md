@@ -241,3 +241,38 @@ The YAML is the canonical target-independent representation. Language-specific
 details, generated file ownership, and the commands used to validate and
 generate targets are documented in the
 [development guide](../contributing/development.md).
+
+
+## Neural ensemble computation
+
+Dense neural PTFs declare their architectures in `implementation.networks` and
+use the same ordered `implementation.variables` pipeline as formulas and trees.
+A network declaration contains a parameter artifact reference, network index and
+offset, member count, layer widths and activations, and named input/output channels
+with reusable scaling transforms. Parameters are authenticated against those
+declarations before preparation or generation.
+
+| Variable operation | Meaning |
+| --- | --- |
+| `expr` | Ordinary arithmetic, using the shared parser and typed expression IR. |
+| `network` | Evaluate a declared dense ensemble on explicit arithmetic arguments. |
+| `ensemble_transform` | Apply ordinary arithmetic expressions to named member channels. |
+| `ensemble_statistics` | Produce a record of channel means and sample standard deviations (`ddof=1`). |
+| `estimate` | Select arithmetic expressions for arithmetic, log10, or geometric estimates. |
+| `require` | Reject predictors when a declared numeric condition fails. |
+
+A network's optional `when` conditions suppress that network's outputs with NaN;
+other calculations continue. Conditions compare ordinary expressions with `lt`,
+`le`, `gt`, or `ge`. Ensemble references must resolve to earlier variables, channel
+names and argument counts must match, and all public outputs must resolve to
+numeric variables. Statistics fields use names such as `theta_r_mean` and
+`theta_r_std`, accessible through the existing record expression syntax.
+
+Dense-network operations select the dense backend through the normal generation
+pipeline. Network parameter declarations contain the binary path, size, SHA-256,
+and license. The source specification owns public model names and scientific
+computation. Run `mise run models:prepare` before target builds. Bundled parameters
+are shared immutable data; initialize the model explicitly and call named methods.
+
+See the [Rosetta3 contract](../contributing/rosetta3.md) and the
+[development guide](../contributing/development.md) for preparation and distribution.

@@ -361,6 +361,9 @@ impl Render for NativeFunction<'_> {
                 .take(self.function.ir.variables.len() - usize::from(self.terminal))
             {
                 match &variable.value {
+                    VariableValue::Neural(_) => {
+                        unreachable!("neural functions use the dense backend")
+                    }
                     VariableValue::Expression(expression) => {
                         writer.write(format_args!("const double {} = ", variable.name));
                         writer.write(c::expression(
@@ -420,6 +423,9 @@ impl NativeFunction<'_> {
                     .expect("terminal variable")
                     .value
                 {
+                    VariableValue::Neural(_) => {
+                        unreachable!("neural functions use the dense backend")
+                    }
                     VariableValue::Expression(expression) => {
                         writer.write("return ");
                         writer.write(c::expression(
@@ -530,9 +536,10 @@ fn lookup_definitions<'a>(functions: &[&'a CompiledFunction]) -> Vec<&'a RecordL
         .flat_map(|function| &function.ir.variables)
         .filter_map(|variable| match &variable.value {
             VariableValue::RecordLookup(lookup) => Some(lookup),
-            VariableValue::Expression(_) | VariableValue::Tree(_) | VariableValue::Forest(_) => {
-                None
-            }
+            VariableValue::Expression(_)
+            | VariableValue::Tree(_)
+            | VariableValue::Forest(_)
+            | VariableValue::Neural(_) => None,
         })
         .filter(|lookup| names.insert((lookup.enum_type.clone(), lookup.output.name.clone())))
         .collect()
@@ -547,7 +554,8 @@ fn tree_definitions<'a>(functions: &[&'a CompiledFunction]) -> Vec<&'a TreeDefin
             VariableValue::Tree(tree) => Some(&tree.definition),
             VariableValue::Expression(_)
             | VariableValue::RecordLookup(_)
-            | VariableValue::Forest(_) => None,
+            | VariableValue::Forest(_)
+            | VariableValue::Neural(_) => None,
         })
         .filter(|definition| names.insert(definition.name.as_str()))
         .collect()
@@ -562,7 +570,8 @@ fn forest_definitions<'a>(functions: &[&'a CompiledFunction]) -> Vec<&'a RandomF
             VariableValue::Forest(forest) => Some(&forest.definition),
             VariableValue::Expression(_)
             | VariableValue::RecordLookup(_)
-            | VariableValue::Tree(_) => None,
+            | VariableValue::Tree(_)
+            | VariableValue::Neural(_) => None,
         })
         .filter(|definition| names.insert(definition.name.as_str()))
         .collect()
@@ -688,7 +697,9 @@ fn native_value_type(value_type: &ValueType, dialect: NativeDialect) -> String {
             NativeDialect::C => c_result_name(&record.name),
             NativeDialect::Cpp => record.name.clone(),
         },
-        ValueType::Enum(_) => unreachable!("tree outputs cannot be enums"),
+        ValueType::Ensemble(_) | ValueType::Effect | ValueType::Enum(_) => {
+            unreachable!("tree outputs cannot be enums")
+        }
     }
 }
 
@@ -717,7 +728,9 @@ fn render_tree_helper(
                 writer.write(enum_type_name(enum_type, slug, dialect));
                 writer.write(" ");
             }
-            ValueType::Record(_) => unreachable!("tree inputs cannot be records"),
+            ValueType::Ensemble(_) | ValueType::Effect | ValueType::Record(_) => {
+                unreachable!("tree inputs cannot be records")
+            }
         }
         writer.write(&input.name);
     }
@@ -873,7 +886,9 @@ impl NativeTreeRenderer<'_> {
                     }
                 }
             }
-            ValueType::Enum(_) => unreachable!("tree outputs cannot be enums"),
+            ValueType::Ensemble(_) | ValueType::Effect | ValueType::Enum(_) => {
+                unreachable!("tree outputs cannot be enums")
+            }
         }
     }
 }

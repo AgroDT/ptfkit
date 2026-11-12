@@ -28,3 +28,12 @@ depends = ["codegen:format", "codegen:lint", "codegen:test"]
 description = "Remove code generator Cargo build artifacts"
 dir = "codegen"
 run = "cargo clean"
+
+["rosetta:import"]
+description = "Import bundled parameters from a trusted upstream checkout"
+usage = 'arg "<upstream>" help="Path to the upstream checkout"'
+run = 'uv run --no-project --with numpy==2.4.3 --with pyyaml python codegen/scripts/import_rosetta3.py --upstream "{{ usage.upstream }}"'
+
+["models:prepare"]
+description = "Prepare exact typed model arrays for builds and distribution"
+run = "cargo run --manifest-path codegen/Cargo.toml -- prepare-models"

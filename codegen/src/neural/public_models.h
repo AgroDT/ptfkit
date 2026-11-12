@@ -1,0 +1,31 @@
+#ifndef PTFKIT_DETAIL_MODELS_H
+#define PTFKIT_DETAIL_MODELS_H
+#include <ptfkit/detail/model_api.h>
+#include <ptfkit/detail/neural.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+typedef enum {
+    PTFKIT_MODEL_OK = 0,
+    PTFKIT_MODEL_MEMORY = 4,
+    PTFKIT_MODEL_INPUT = 5
+} ptfkit_model_status;
+/* Private runtime storage: arrays are borrowed from immutable bundled data. */
+typedef struct {
+    const ptfkit_detail_network *detail_networks;
+    const double *detail_data;
+} ptfkit_model;
+PTFKIT_MODEL_INLINE void ptfkit_detail_model_free(ptfkit_model *model) { free(model); }
+PTFKIT_MODEL_INLINE ptfkit_model_status ptfkit_detail_model_from_arrays(
+    const ptfkit_detail_network *networks, const double *values, ptfkit_model **out) {
+    if (!out)
+        return PTFKIT_MODEL_INPUT;
+    *out = (ptfkit_model *)malloc(sizeof(ptfkit_model));
+    if (!*out)
+        return PTFKIT_MODEL_MEMORY;
+    (*out)->detail_networks = networks;
+    (*out)->detail_data = values;
+    return PTFKIT_MODEL_OK;
+}
+#endif

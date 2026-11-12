@@ -1,0 +1,49 @@
+#define PY_SSIZE_T_CLEAN
+#include <Python.h>
+#include <ptfkit/@SLUG@.h>
+static PyObject *ptfkit_python_failure(PyObject *module, ptfkit_model_status status) {
+    if(status==PTFKIT_MODEL_MEMORY)return PyErr_NoMemory();
+    PyObject *error=PyObject_GetAttrString(module,"ModelInputError");
+    if(error){PyErr_SetString(error,"invalid predictors or estimate mode");Py_DECREF(error);}
+    return NULL;
+}
+static void ptfkit_python_model_free(PyObject *capsule) {
+    ptfkit_detail_model_free((ptfkit_model *)PyCapsule_GetPointer(capsule,"ptfkit.Model"));
+}
+static int ptfkit_python_inputs(PyObject *values, double x[64], size_t *count) {
+    PyObject *seq = PySequence_Fast(values, "predictors must be a sequence");
+    if (!seq)
+        return 0;
+    Py_ssize_t n = PySequence_Fast_GET_SIZE(seq);
+    if (n < 1 || n > 64) {
+        Py_DECREF(seq);
+        PyErr_SetString(PyExc_ValueError, "expected 1 to 64 predictors");
+        return 0;
+    }
+    for (Py_ssize_t i = 0; i < n; ++i) {
+        x[i] = PyFloat_AsDouble(PySequence_Fast_GET_ITEM(seq, i));
+        if (PyErr_Occurred()) {
+            Py_DECREF(seq);
+            return 0;
+        }
+    }
+    Py_DECREF(seq);
+    *count = (size_t)n;
+    return 1;
+}
+
+@FUNCTIONS@
+static PyMethodDef methods[]={
+    {"builtin",ptfkit_python_builtin,METH_NOARGS,NULL},
+    {"evaluate",ptfkit_python_evaluate,METH_VARARGS,NULL},
+    {"batch",ptfkit_python_batch,METH_VARARGS,NULL},
+    {NULL,NULL,0,NULL}
+};
+static struct PyModuleDef definition={PyModuleDef_HEAD_INIT,"_@SLUG@",NULL,-1,methods,NULL,NULL,NULL,NULL};
+PyMODINIT_FUNC PyInit__@SLUG@(void){
+    PyObject *module=PyModule_Create(&definition);
+    if(!module)return NULL;
+    PyObject *error=PyErr_NewException("ptfkit.@SLUG@.ModelInputError",PyExc_ValueError,NULL);
+    if(!error || PyModule_AddObject(module,"ModelInputError",error)<0){Py_XDECREF(error);Py_DECREF(module);return NULL;}
+    return module;
+}

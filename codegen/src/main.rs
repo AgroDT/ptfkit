@@ -11,6 +11,7 @@ mod diagnostics;
 mod documentation;
 mod formula;
 mod model;
+mod neural;
 mod output;
 mod render;
 mod semantic;
@@ -31,6 +32,8 @@ pub(crate) struct Cli {
 
 #[derive(Subcommand)]
 enum Command {
+    /// Prepare exact typed parameter arrays for local builds and release packages.
+    PrepareModels,
     Validate,
     Generate,
     CheckGenerated,
@@ -58,6 +61,10 @@ impl Cli {
             .context("finding the ptfkit workspace root")?;
 
         match self.command {
+            Command::PrepareModels => {
+                let loaded = load_validated_all(root)?;
+                neural::parameters::prepare(root, &loaded.entries)
+            }
             Command::Validate => {
                 let entries = load_validated_specifications(root)?;
                 compile::functions(entries.clone())?;
@@ -107,6 +114,7 @@ fn load_validated_all(root: &Path) -> Result<specs::LoadedSpecifications> {
         )
         .into());
     }
+    neural::public::validate(&loaded.entries)?;
     Ok(loaded)
 }
 

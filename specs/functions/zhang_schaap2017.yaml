@@ -1,0 +1,1608 @@
+generation:
+  model_class: Rosetta3
+  result_aliases:
+    Rosetta3ArithmeticStatistics: Rosetta3Statistics
+source:
+  summary: Rosetta3 hydraulic parameters and uncertainty from bundled CC0 neural ensembles.
+  citation_apa: >-
+    Zhang, Y., & Schaap, M. G. (2017). Weighted recalibration of the Rosetta
+    pedotransfer model with improved estimates of hydraulic parameter
+    distributions and summary statistics (Rosetta3). Journal of Hydrology,
+    547, 39-53.
+  doi:
+    identifier: 10.1016/j.jhydrol.2017.01.004
+    url: https://doi.org/10.1016/j.jhydrol.2017.01.004
+scope:
+  territory: Not independently established.
+  dataset: Original trained upstream ensembles; no retraining or replacement.
+$defs:
+  Rosetta3Statistics:
+    type: record
+    name: Rosetta3Statistics
+    fields:
+      - name: theta_r_mean
+        quantity: volumetric_water_content
+        symbol: null
+        unit: volume_fraction
+        reported_unit: "cm^3/cm^3"
+        domain: null
+        description: "Ensemble mean in the selected reporting scale. Residual volumetric water content."
+      - name: theta_s_mean
+        quantity: volumetric_water_content
+        symbol: null
+        unit: volume_fraction
+        reported_unit: "cm^3/cm^3"
+        domain: null
+        description: "Ensemble mean in the selected reporting scale. Saturated volumetric water content."
+      - name: alpha_mean
+        quantity: van_genuchten_alpha
+        symbol: null
+        unit: inverse_centimeter
+        reported_unit: "1/cm"
+        domain: null
+        description: "Ensemble mean in the selected reporting scale. van Genuchten inverse pressure-scale parameter."
+      - name: n_mean
+        quantity: van_genuchten_n
+        symbol: null
+        unit: dimensionless
+        reported_unit: "1"
+        domain: null
+        description: "Ensemble mean in the selected reporting scale. van Genuchten pore-size parameter."
+      - name: k_sat_mean
+        quantity: saturated_hydraulic_conductivity
+        symbol: null
+        unit: centimeter_per_day
+        reported_unit: "cm/day"
+        domain: null
+        description: "Ensemble mean in the selected reporting scale. Saturated hydraulic conductivity."
+      - name: k_0_mean
+        quantity: unsaturated_hydraulic_conductivity
+        symbol: null
+        unit: centimeter_per_day
+        reported_unit: "cm/day"
+        domain: null
+        description: "Ensemble mean in the selected reporting scale. Unsaturated conductivity matching-point parameter; not saturated conductivity."
+      - name: l_mean
+        quantity: conductivity_shape_parameter
+        symbol: null
+        unit: dimensionless
+        reported_unit: "1"
+        domain: null
+        description: "Ensemble mean in the selected reporting scale. Unsaturated conductivity exponent from the separate Rosetta1 ensemble."
+      - name: theta_r_std
+        quantity: volumetric_water_content
+        symbol: null
+        unit: volume_fraction
+        reported_unit: "cm^3/cm^3"
+        domain: null
+        description: "Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). Residual volumetric water content."
+      - name: theta_s_std
+        quantity: volumetric_water_content
+        symbol: null
+        unit: volume_fraction
+        reported_unit: "cm^3/cm^3"
+        domain: null
+        description: "Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). Saturated volumetric water content."
+      - name: alpha_std
+        quantity: van_genuchten_alpha
+        symbol: null
+        unit: inverse_centimeter
+        reported_unit: "1/cm"
+        domain: null
+        description: "Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). van Genuchten inverse pressure-scale parameter."
+      - name: n_std
+        quantity: van_genuchten_n
+        symbol: null
+        unit: dimensionless
+        reported_unit: "1"
+        domain: null
+        description: "Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). van Genuchten pore-size parameter."
+      - name: k_sat_std
+        quantity: saturated_hydraulic_conductivity
+        symbol: null
+        unit: centimeter_per_day
+        reported_unit: "cm/day"
+        domain: null
+        description: "Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). Saturated hydraulic conductivity."
+      - name: k_0_std
+        quantity: unsaturated_hydraulic_conductivity
+        symbol: null
+        unit: centimeter_per_day
+        reported_unit: "cm/day"
+        domain: null
+        description: "Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). Unsaturated conductivity matching-point parameter; not saturated conductivity."
+      - name: l_std
+        quantity: conductivity_shape_parameter
+        symbol: null
+        unit: dimensionless
+        reported_unit: "1"
+        domain: null
+        description: "Sample standard deviation (ddof=1), in the selected reporting scale (physical units for geometric estimates). Unsaturated conductivity exponent from the separate Rosetta1 ensemble."
+functions:
+  - name: calc_ptf_zhang2017_mod2
+    status: implemented
+    implementation:
+      networks:
+        retention:
+          parameters:
+            artifact: &rosetta_parameters
+              path: ../models/rosetta3/rosetta3.ptfm
+              sha256: d4d2ca39f41762830f736c70fba16ed68a81cb52d4639b1f48c6a24e502c4796
+              bytes: 2212632
+              license: CC0-1.0
+            network: 0
+            offset: 0
+          members: 1000
+          widths:
+          - 3
+          - 6
+          - 5
+          activations:
+          - tansig
+          - sigmoid
+          inputs:
+          - name: sand
+            scale: minmax
+            params:
+            - 0.0
+            - 0.01
+            - 0.0
+          - name: silt
+            scale: minmax
+            params:
+            - 0.0
+            - 0.01
+            - 0.0
+          - name: clay
+            scale: minmax
+            params:
+            - 0.0
+            - 0.01
+            - 0.0
+          outputs:
+          - name: theta_r
+            scale: linear
+            params:
+            - 1.0
+            - 0.0
+          - name: theta_s
+            scale: linear
+            params:
+            - 1.0
+            - 0.0
+          - name: alpha
+            scale: linear
+            params:
+            - -8.0
+            - 2.0
+          - name: n
+            scale: linear
+            params:
+            - 1.5
+            - 0.0
+          - name: k_sat
+            scale: linear
+            params:
+            - 8.0
+            - -2.0
+        conductivity:
+          parameters:
+            artifact: *rosetta_parameters
+            network: 4
+            offset: 272000
+          members: 100
+          widths:
+          - 4
+          - 6
+          - 2
+          activations:
+          - sigmoid
+          - sigmoid
+          inputs:
+          - name: theta_r
+            scale: division
+            params:
+            - 1.0
+          - name: theta_s
+            scale: division
+            params:
+            - 1.0
+          - name: alpha
+            scale: logtr
+            params:
+            - -8.0
+            - 0.25
+          - name: n
+            scale: logtr
+            params:
+            - 1.5
+            - 0.0
+          outputs:
+          - name: k_0
+            scale: affine
+            params:
+            - 10.0
+            - -0.3
+          - name: l
+            scale: affine
+            params:
+            - 100.0
+            - -0.5
+      variables:
+      - name: texture_total
+        expr: sand + silt + clay
+      - name: required_predictors
+        require:
+        - left: sand
+          op: ge
+          right: '0'
+        - left: silt
+          op: ge
+          right: '0'
+        - left: clay
+          op: ge
+          right: '0'
+        - left: texture_total
+          op: ge
+          right: '99'
+        - left: texture_total
+          op: le
+          right: '101'
+      - name: raw
+        network:
+          definition: retention
+          arguments:
+          - sand
+          - silt
+          - clay
+      - name: physical
+        ensemble_transform:
+          source: raw
+          fields:
+            alpha: 10 ^ alpha
+            n: 10 ^ n
+            k_sat: 10 ^ k_sat
+      - name: log_statistics
+        ensemble_statistics:
+          source: raw
+          ddof: 1
+      - name: physical_statistics
+        ensemble_statistics:
+          source: physical
+          ddof: 1
+      - name: geometric_alpha
+        expr: 10 ^ log_statistics.alpha_mean
+      - name: geometric_n
+        expr: 10 ^ log_statistics.n_mean
+      - name: geometric_k_sat
+        expr: 10 ^ log_statistics.k_sat_mean
+      - name: conductivity_theta_r
+        estimate:
+          arithmetic: physical_statistics.theta_r_mean
+          log10: log_statistics.theta_r_mean
+          geometric: log_statistics.theta_r_mean
+      - name: conductivity_theta_s
+        estimate:
+          arithmetic: physical_statistics.theta_s_mean
+          log10: log_statistics.theta_s_mean
+          geometric: log_statistics.theta_s_mean
+      - name: conductivity_alpha
+        estimate:
+          arithmetic: physical_statistics.alpha_mean
+          log10: geometric_alpha
+          geometric: geometric_alpha
+      - name: conductivity_n
+        estimate:
+          arithmetic: physical_statistics.n_mean
+          log10: geometric_n
+          geometric: geometric_n
+      - name: unsaturated
+        network:
+          definition: conductivity
+          arguments:
+          - conductivity_theta_r
+          - conductivity_theta_s
+          - conductivity_alpha
+          - conductivity_n
+          when:
+          - left: '0'
+            op: le
+            right: conductivity_theta_r
+          - left: conductivity_theta_r
+            op: lt
+            right: conductivity_theta_s
+          - left: conductivity_theta_s
+            op: lt
+            right: '1'
+          - left: conductivity_alpha
+            op: gt
+            right: '0'
+          - left: conductivity_n
+            op: gt
+            right: '1'
+      - name: unsaturated_physical
+        ensemble_transform:
+          source: unsaturated
+          fields:
+            k_0: 10 ^ k_0
+      - name: conductivity_log_statistics
+        ensemble_statistics:
+          source: unsaturated
+          ddof: 1
+      - name: conductivity_physical_statistics
+        ensemble_statistics:
+          source: unsaturated_physical
+          ddof: 1
+      - name: geometric_k_0
+        expr: 10 ^ conductivity_log_statistics.k_0_mean
+      - name: theta_r_mean
+        estimate:
+          arithmetic: physical_statistics.theta_r_mean
+          log10: log_statistics.theta_r_mean
+          geometric: log_statistics.theta_r_mean
+      - name: theta_r_std
+        estimate:
+          arithmetic: physical_statistics.theta_r_std
+          log10: log_statistics.theta_r_std
+          geometric: physical_statistics.theta_r_std
+      - name: theta_s_mean
+        estimate:
+          arithmetic: physical_statistics.theta_s_mean
+          log10: log_statistics.theta_s_mean
+          geometric: log_statistics.theta_s_mean
+      - name: theta_s_std
+        estimate:
+          arithmetic: physical_statistics.theta_s_std
+          log10: log_statistics.theta_s_std
+          geometric: physical_statistics.theta_s_std
+      - name: alpha_mean
+        estimate:
+          arithmetic: physical_statistics.alpha_mean
+          log10: log_statistics.alpha_mean
+          geometric: geometric_alpha
+      - name: alpha_std
+        estimate:
+          arithmetic: physical_statistics.alpha_std
+          log10: log_statistics.alpha_std
+          geometric: physical_statistics.alpha_std
+      - name: n_mean
+        estimate:
+          arithmetic: physical_statistics.n_mean
+          log10: log_statistics.n_mean
+          geometric: geometric_n
+      - name: n_std
+        estimate:
+          arithmetic: physical_statistics.n_std
+          log10: log_statistics.n_std
+          geometric: physical_statistics.n_std
+      - name: k_sat_mean
+        estimate:
+          arithmetic: physical_statistics.k_sat_mean
+          log10: log_statistics.k_sat_mean
+          geometric: geometric_k_sat
+      - name: k_sat_std
+        estimate:
+          arithmetic: physical_statistics.k_sat_std
+          log10: log_statistics.k_sat_std
+          geometric: physical_statistics.k_sat_std
+      - name: k_0_mean
+        estimate:
+          arithmetic: conductivity_physical_statistics.k_0_mean
+          log10: conductivity_log_statistics.k_0_mean
+          geometric: geometric_k_0
+      - name: k_0_std
+        estimate:
+          arithmetic: conductivity_physical_statistics.k_0_std
+          log10: conductivity_log_statistics.k_0_std
+          geometric: conductivity_physical_statistics.k_0_std
+      - name: l_mean
+        expr: conductivity_log_statistics.l_mean
+      - name: l_std
+        expr: conductivity_log_statistics.l_std
+    public_api:
+      name: calc_ptf_zhang2017_mod2
+      result_class: Rosetta3Statistics
+      summary: Estimate Rosetta3 level 2 hydraulic means and uncertainty.
+    scope:
+      prediction_target: Seven hydraulic parameters and their bootstrap sample standard deviations.
+      models:
+        h_theta: van Genuchten retention parameters
+        k_h: Saturated conductivity and Rosetta1 unsaturated conductivity parameters
+    inputs:
+      - name: sand
+        symbol: null
+        unit: "%"
+        domain: "Nonnegative mass percentage; texture sum within [99, 101]."
+        description: "Sand mass percentage in the upstream convention; no granulometric conversion is applied."
+      - name: silt
+        symbol: null
+        unit: "%"
+        domain: "Nonnegative mass percentage; texture sum within [99, 101]."
+        description: "Silt mass percentage in the upstream convention."
+      - name: clay
+        symbol: null
+        unit: "%"
+        domain: "Nonnegative mass percentage; texture sum within [99, 101]."
+        description: "Clay mass percentage in the upstream convention."
+    outputs:
+      $ref: "#/$defs/Rosetta3Statistics"
+    verification_cases:
+      - id: upstream_clay_loam
+        kind: published
+        inputs:
+          sand: 30
+          silt: 30
+          clay: 40
+        expected:
+          theta_r_mean: 0.11921313412479762
+          theta_s_mean: 0.4348486578079577
+          alpha_mean: 0.009109686083606867
+          n_mean: 1.3094213646469939
+          k_sat_mean: 8.74047181417013
+          k_0_mean: 1.3099307799553759
+          l_mean: -1.009187960743742
+          theta_r_std: 0.009022699466985867
+          theta_s_std: 0.010140469075525323
+          alpha_std: 0.0022509742698824248
+          n_std: 0.0366504620061113
+          k_sat_std: 2.930411333703784
+          k_0_std: 0.843530623042398
+          l_std: 1.547848314232419
+        source_location: >-
+          Official rosetta-soil revision 6b0e3902f8a145805d41b691dc36f8e69e898f2a,
+          rosetta(3, inputs, estimate_type="arith"); specs/models/rosetta3/reference.json, mod2_arith_clay_loam.
+    documentation:
+      notes:
+        - Explicit predictor levels reject invalid predictors instead of silently falling back.
+        - Full arithmetic, log10, and geometric reference results are in the frozen upstream model fixture.
+      warnings:
+        - A model handle is required; the reviewed CC0 parameters are bundled.
+        - Trained parameters are published by USDA under CC0 and bundled unchanged.
+        - Local inference is not validation of predictive accuracy or applicability to a new soil population.
+  - name: calc_ptf_zhang2017_mod3
+    status: implemented
+    implementation:
+      networks:
+        retention:
+          parameters:
+            artifact: *rosetta_parameters
+            network: 1
+            offset: 59000
+          members: 1000
+          widths:
+          - 4
+          - 6
+          - 5
+          activations:
+          - tansig
+          - sigmoid
+          inputs:
+          - name: sand
+            scale: minmax
+            params:
+            - 0.0
+            - 0.01
+            - 0.0
+          - name: silt
+            scale: minmax
+            params:
+            - 0.0
+            - 0.01
+            - 0.0
+          - name: clay
+            scale: minmax
+            params:
+            - 0.0
+            - 0.01
+            - 0.0
+          - name: bulk_density
+            scale: minmax
+            params:
+            - 0.0
+            - 1.0
+            - 0.0
+          outputs:
+          - name: theta_r
+            scale: linear
+            params:
+            - 1.0
+            - 0.0
+          - name: theta_s
+            scale: linear
+            params:
+            - 1.0
+            - 0.0
+          - name: alpha
+            scale: linear
+            params:
+            - -8.0
+            - 2.0
+          - name: n
+            scale: linear
+            params:
+            - 1.5
+            - 0.0
+          - name: k_sat
+            scale: linear
+            params:
+            - 8.0
+            - -2.0
+        conductivity:
+          parameters:
+            artifact: *rosetta_parameters
+            network: 4
+            offset: 272000
+          members: 100
+          widths:
+          - 4
+          - 6
+          - 2
+          activations:
+          - sigmoid
+          - sigmoid
+          inputs:
+          - name: theta_r
+            scale: division
+            params:
+            - 1.0
+          - name: theta_s
+            scale: division
+            params:
+            - 1.0
+          - name: alpha
+            scale: logtr
+            params:
+            - -8.0
+            - 0.25
+          - name: n
+            scale: logtr
+            params:
+            - 1.5
+            - 0.0
+          outputs:
+          - name: k_0
+            scale: affine
+            params:
+            - 10.0
+            - -0.3
+          - name: l
+            scale: affine
+            params:
+            - 100.0
+            - -0.5
+      variables:
+      - name: texture_total
+        expr: sand + silt + clay
+      - name: required_predictors
+        require:
+        - left: sand
+          op: ge
+          right: '0'
+        - left: silt
+          op: ge
+          right: '0'
+        - left: clay
+          op: ge
+          right: '0'
+        - left: texture_total
+          op: ge
+          right: '99'
+        - left: texture_total
+          op: le
+          right: '101'
+        - left: bulk_density
+          op: ge
+          right: '0.5'
+        - left: bulk_density
+          op: le
+          right: '2'
+      - name: raw
+        network:
+          definition: retention
+          arguments:
+          - sand
+          - silt
+          - clay
+          - bulk_density
+      - name: physical
+        ensemble_transform:
+          source: raw
+          fields:
+            alpha: 10 ^ alpha
+            n: 10 ^ n
+            k_sat: 10 ^ k_sat
+      - name: log_statistics
+        ensemble_statistics:
+          source: raw
+          ddof: 1
+      - name: physical_statistics
+        ensemble_statistics:
+          source: physical
+          ddof: 1
+      - name: geometric_alpha
+        expr: 10 ^ log_statistics.alpha_mean
+      - name: geometric_n
+        expr: 10 ^ log_statistics.n_mean
+      - name: geometric_k_sat
+        expr: 10 ^ log_statistics.k_sat_mean
+      - name: conductivity_theta_r
+        estimate:
+          arithmetic: physical_statistics.theta_r_mean
+          log10: log_statistics.theta_r_mean
+          geometric: log_statistics.theta_r_mean
+      - name: conductivity_theta_s
+        estimate:
+          arithmetic: physical_statistics.theta_s_mean
+          log10: log_statistics.theta_s_mean
+          geometric: log_statistics.theta_s_mean
+      - name: conductivity_alpha
+        estimate:
+          arithmetic: physical_statistics.alpha_mean
+          log10: geometric_alpha
+          geometric: geometric_alpha
+      - name: conductivity_n
+        estimate:
+          arithmetic: physical_statistics.n_mean
+          log10: geometric_n
+          geometric: geometric_n
+      - name: unsaturated
+        network:
+          definition: conductivity
+          arguments:
+          - conductivity_theta_r
+          - conductivity_theta_s
+          - conductivity_alpha
+          - conductivity_n
+          when:
+          - left: '0'
+            op: le
+            right: conductivity_theta_r
+          - left: conductivity_theta_r
+            op: lt
+            right: conductivity_theta_s
+          - left: conductivity_theta_s
+            op: lt
+            right: '1'
+          - left: conductivity_alpha
+            op: gt
+            right: '0'
+          - left: conductivity_n
+            op: gt
+            right: '1'
+      - name: unsaturated_physical
+        ensemble_transform:
+          source: unsaturated
+          fields:
+            k_0: 10 ^ k_0
+      - name: conductivity_log_statistics
+        ensemble_statistics:
+          source: unsaturated
+          ddof: 1
+      - name: conductivity_physical_statistics
+        ensemble_statistics:
+          source: unsaturated_physical
+          ddof: 1
+      - name: geometric_k_0
+        expr: 10 ^ conductivity_log_statistics.k_0_mean
+      - name: theta_r_mean
+        estimate:
+          arithmetic: physical_statistics.theta_r_mean
+          log10: log_statistics.theta_r_mean
+          geometric: log_statistics.theta_r_mean
+      - name: theta_r_std
+        estimate:
+          arithmetic: physical_statistics.theta_r_std
+          log10: log_statistics.theta_r_std
+          geometric: physical_statistics.theta_r_std
+      - name: theta_s_mean
+        estimate:
+          arithmetic: physical_statistics.theta_s_mean
+          log10: log_statistics.theta_s_mean
+          geometric: log_statistics.theta_s_mean
+      - name: theta_s_std
+        estimate:
+          arithmetic: physical_statistics.theta_s_std
+          log10: log_statistics.theta_s_std
+          geometric: physical_statistics.theta_s_std
+      - name: alpha_mean
+        estimate:
+          arithmetic: physical_statistics.alpha_mean
+          log10: log_statistics.alpha_mean
+          geometric: geometric_alpha
+      - name: alpha_std
+        estimate:
+          arithmetic: physical_statistics.alpha_std
+          log10: log_statistics.alpha_std
+          geometric: physical_statistics.alpha_std
+      - name: n_mean
+        estimate:
+          arithmetic: physical_statistics.n_mean
+          log10: log_statistics.n_mean
+          geometric: geometric_n
+      - name: n_std
+        estimate:
+          arithmetic: physical_statistics.n_std
+          log10: log_statistics.n_std
+          geometric: physical_statistics.n_std
+      - name: k_sat_mean
+        estimate:
+          arithmetic: physical_statistics.k_sat_mean
+          log10: log_statistics.k_sat_mean
+          geometric: geometric_k_sat
+      - name: k_sat_std
+        estimate:
+          arithmetic: physical_statistics.k_sat_std
+          log10: log_statistics.k_sat_std
+          geometric: physical_statistics.k_sat_std
+      - name: k_0_mean
+        estimate:
+          arithmetic: conductivity_physical_statistics.k_0_mean
+          log10: conductivity_log_statistics.k_0_mean
+          geometric: geometric_k_0
+      - name: k_0_std
+        estimate:
+          arithmetic: conductivity_physical_statistics.k_0_std
+          log10: conductivity_log_statistics.k_0_std
+          geometric: conductivity_physical_statistics.k_0_std
+      - name: l_mean
+        expr: conductivity_log_statistics.l_mean
+      - name: l_std
+        expr: conductivity_log_statistics.l_std
+    public_api:
+      name: calc_ptf_zhang2017_mod3
+      result_class: Rosetta3Statistics
+      summary: Estimate Rosetta3 level 3 hydraulic means and uncertainty.
+    scope:
+      prediction_target: Seven hydraulic parameters and their bootstrap sample standard deviations.
+      models:
+        h_theta: van Genuchten retention parameters
+        k_h: Saturated conductivity and Rosetta1 unsaturated conductivity parameters
+    inputs:
+      - name: sand
+        symbol: null
+        unit: "%"
+        domain: "Nonnegative mass percentage; texture sum within [99, 101]."
+        description: "Sand mass percentage in the upstream convention; no granulometric conversion is applied."
+      - name: silt
+        symbol: null
+        unit: "%"
+        domain: "Nonnegative mass percentage; texture sum within [99, 101]."
+        description: "Silt mass percentage in the upstream convention."
+      - name: clay
+        symbol: null
+        unit: "%"
+        domain: "Nonnegative mass percentage; texture sum within [99, 101]."
+        description: "Clay mass percentage in the upstream convention."
+      - name: bulk_density
+        symbol: null
+        unit: "g/cm^3"
+        domain: "0.5 <= value <= 2.0"
+        description: "Dry bulk density."
+    outputs:
+      $ref: "#/$defs/Rosetta3Statistics"
+    verification_cases:
+      - id: upstream_clay_loam
+        kind: published
+        inputs:
+          sand: 30
+          silt: 30
+          clay: 40
+          bulk_density: 1.5
+        expected:
+          theta_r_mean: 0.11535772949344014
+          theta_s_mean: 0.41791198578232697
+          alpha_mean: 0.008722012030951673
+          n_mean: 1.2948263733663303
+          k_sat_mean: 6.954244726349499
+          k_0_mean: 1.2500613216646708
+          l_mean: -1.0485044772476382
+          theta_r_std: 0.013356793508184915
+          theta_s_std: 0.009382669158473743
+          alpha_std: 0.0016492656415753547
+          n_std: 0.03939481712482504
+          k_sat_std: 1.4702581628942792
+          k_0_std: 0.7856297363899943
+          l_std: 1.5768542193111532
+        source_location: >-
+          Official rosetta-soil revision 6b0e3902f8a145805d41b691dc36f8e69e898f2a,
+          rosetta(3, inputs, estimate_type="arith"); specs/models/rosetta3/reference.json, mod3_arith_clay_loam.
+    documentation:
+      notes:
+        - Explicit predictor levels reject invalid predictors instead of silently falling back.
+        - Full arithmetic, log10, and geometric reference results are in the frozen upstream model fixture.
+      warnings:
+        - A model handle is required; the reviewed CC0 parameters are bundled.
+        - Trained parameters are published by USDA under CC0 and bundled unchanged.
+        - Local inference is not validation of predictive accuracy or applicability to a new soil population.
+  - name: calc_ptf_zhang2017_mod4
+    status: implemented
+    implementation:
+      networks:
+        retention:
+          parameters:
+            artifact: *rosetta_parameters
+            network: 2
+            offset: 124000
+          members: 1000
+          widths:
+          - 5
+          - 6
+          - 5
+          activations:
+          - tansig
+          - sigmoid
+          inputs:
+          - name: sand
+            scale: minmax
+            params:
+            - 0.0
+            - 0.01
+            - 0.0
+          - name: silt
+            scale: minmax
+            params:
+            - 0.0
+            - 0.01
+            - 0.0
+          - name: clay
+            scale: minmax
+            params:
+            - 0.0
+            - 0.01
+            - 0.0
+          - name: bulk_density
+            scale: minmax
+            params:
+            - 0.0
+            - 1.0
+            - 0.0
+          - name: theta_33
+            scale: minmax
+            params:
+            - 0.0
+            - 1.0
+            - 0.0
+          outputs:
+          - name: theta_r
+            scale: linear
+            params:
+            - 1.0
+            - 0.0
+          - name: theta_s
+            scale: linear
+            params:
+            - 1.0
+            - 0.0
+          - name: alpha
+            scale: linear
+            params:
+            - -8.0
+            - 2.0
+          - name: n
+            scale: linear
+            params:
+            - 1.5
+            - 0.0
+          - name: k_sat
+            scale: linear
+            params:
+            - 8.0
+            - -2.0
+        conductivity:
+          parameters:
+            artifact: *rosetta_parameters
+            network: 4
+            offset: 272000
+          members: 100
+          widths:
+          - 4
+          - 6
+          - 2
+          activations:
+          - sigmoid
+          - sigmoid
+          inputs:
+          - name: theta_r
+            scale: division
+            params:
+            - 1.0
+          - name: theta_s
+            scale: division
+            params:
+            - 1.0
+          - name: alpha
+            scale: logtr
+            params:
+            - -8.0
+            - 0.25
+          - name: n
+            scale: logtr
+            params:
+            - 1.5
+            - 0.0
+          outputs:
+          - name: k_0
+            scale: affine
+            params:
+            - 10.0
+            - -0.3
+          - name: l
+            scale: affine
+            params:
+            - 100.0
+            - -0.5
+      variables:
+      - name: texture_total
+        expr: sand + silt + clay
+      - name: required_predictors
+        require:
+        - left: sand
+          op: ge
+          right: '0'
+        - left: silt
+          op: ge
+          right: '0'
+        - left: clay
+          op: ge
+          right: '0'
+        - left: texture_total
+          op: ge
+          right: '99'
+        - left: texture_total
+          op: le
+          right: '101'
+        - left: bulk_density
+          op: ge
+          right: '0.5'
+        - left: bulk_density
+          op: le
+          right: '2'
+        - left: theta_33
+          op: gt
+          right: '0'
+        - left: theta_33
+          op: lt
+          right: '1'
+      - name: raw
+        network:
+          definition: retention
+          arguments:
+          - sand
+          - silt
+          - clay
+          - bulk_density
+          - theta_33
+      - name: physical
+        ensemble_transform:
+          source: raw
+          fields:
+            alpha: 10 ^ alpha
+            n: 10 ^ n
+            k_sat: 10 ^ k_sat
+      - name: log_statistics
+        ensemble_statistics:
+          source: raw
+          ddof: 1
+      - name: physical_statistics
+        ensemble_statistics:
+          source: physical
+          ddof: 1
+      - name: geometric_alpha
+        expr: 10 ^ log_statistics.alpha_mean
+      - name: geometric_n
+        expr: 10 ^ log_statistics.n_mean
+      - name: geometric_k_sat
+        expr: 10 ^ log_statistics.k_sat_mean
+      - name: conductivity_theta_r
+        estimate:
+          arithmetic: physical_statistics.theta_r_mean
+          log10: log_statistics.theta_r_mean
+          geometric: log_statistics.theta_r_mean
+      - name: conductivity_theta_s
+        estimate:
+          arithmetic: physical_statistics.theta_s_mean
+          log10: log_statistics.theta_s_mean
+          geometric: log_statistics.theta_s_mean
+      - name: conductivity_alpha
+        estimate:
+          arithmetic: physical_statistics.alpha_mean
+          log10: geometric_alpha
+          geometric: geometric_alpha
+      - name: conductivity_n
+        estimate:
+          arithmetic: physical_statistics.n_mean
+          log10: geometric_n
+          geometric: geometric_n
+      - name: unsaturated
+        network:
+          definition: conductivity
+          arguments:
+          - conductivity_theta_r
+          - conductivity_theta_s
+          - conductivity_alpha
+          - conductivity_n
+          when:
+          - left: '0'
+            op: le
+            right: conductivity_theta_r
+          - left: conductivity_theta_r
+            op: lt
+            right: conductivity_theta_s
+          - left: conductivity_theta_s
+            op: lt
+            right: '1'
+          - left: conductivity_alpha
+            op: gt
+            right: '0'
+          - left: conductivity_n
+            op: gt
+            right: '1'
+      - name: unsaturated_physical
+        ensemble_transform:
+          source: unsaturated
+          fields:
+            k_0: 10 ^ k_0
+      - name: conductivity_log_statistics
+        ensemble_statistics:
+          source: unsaturated
+          ddof: 1
+      - name: conductivity_physical_statistics
+        ensemble_statistics:
+          source: unsaturated_physical
+          ddof: 1
+      - name: geometric_k_0
+        expr: 10 ^ conductivity_log_statistics.k_0_mean
+      - name: theta_r_mean
+        estimate:
+          arithmetic: physical_statistics.theta_r_mean
+          log10: log_statistics.theta_r_mean
+          geometric: log_statistics.theta_r_mean
+      - name: theta_r_std
+        estimate:
+          arithmetic: physical_statistics.theta_r_std
+          log10: log_statistics.theta_r_std
+          geometric: physical_statistics.theta_r_std
+      - name: theta_s_mean
+        estimate:
+          arithmetic: physical_statistics.theta_s_mean
+          log10: log_statistics.theta_s_mean
+          geometric: log_statistics.theta_s_mean
+      - name: theta_s_std
+        estimate:
+          arithmetic: physical_statistics.theta_s_std
+          log10: log_statistics.theta_s_std
+          geometric: physical_statistics.theta_s_std
+      - name: alpha_mean
+        estimate:
+          arithmetic: physical_statistics.alpha_mean
+          log10: log_statistics.alpha_mean
+          geometric: geometric_alpha
+      - name: alpha_std
+        estimate:
+          arithmetic: physical_statistics.alpha_std
+          log10: log_statistics.alpha_std
+          geometric: physical_statistics.alpha_std
+      - name: n_mean
+        estimate:
+          arithmetic: physical_statistics.n_mean
+          log10: log_statistics.n_mean
+          geometric: geometric_n
+      - name: n_std
+        estimate:
+          arithmetic: physical_statistics.n_std
+          log10: log_statistics.n_std
+          geometric: physical_statistics.n_std
+      - name: k_sat_mean
+        estimate:
+          arithmetic: physical_statistics.k_sat_mean
+          log10: log_statistics.k_sat_mean
+          geometric: geometric_k_sat
+      - name: k_sat_std
+        estimate:
+          arithmetic: physical_statistics.k_sat_std
+          log10: log_statistics.k_sat_std
+          geometric: physical_statistics.k_sat_std
+      - name: k_0_mean
+        estimate:
+          arithmetic: conductivity_physical_statistics.k_0_mean
+          log10: conductivity_log_statistics.k_0_mean
+          geometric: geometric_k_0
+      - name: k_0_std
+        estimate:
+          arithmetic: conductivity_physical_statistics.k_0_std
+          log10: conductivity_log_statistics.k_0_std
+          geometric: conductivity_physical_statistics.k_0_std
+      - name: l_mean
+        expr: conductivity_log_statistics.l_mean
+      - name: l_std
+        expr: conductivity_log_statistics.l_std
+    public_api:
+      name: calc_ptf_zhang2017_mod4
+      result_class: Rosetta3Statistics
+      summary: Estimate Rosetta3 level 4 hydraulic means and uncertainty.
+    scope:
+      prediction_target: Seven hydraulic parameters and their bootstrap sample standard deviations.
+      models:
+        h_theta: van Genuchten retention parameters
+        k_h: Saturated conductivity and Rosetta1 unsaturated conductivity parameters
+    inputs:
+      - name: sand
+        symbol: null
+        unit: "%"
+        domain: "Nonnegative mass percentage; texture sum within [99, 101]."
+        description: "Sand mass percentage in the upstream convention; no granulometric conversion is applied."
+      - name: silt
+        symbol: null
+        unit: "%"
+        domain: "Nonnegative mass percentage; texture sum within [99, 101]."
+        description: "Silt mass percentage in the upstream convention."
+      - name: clay
+        symbol: null
+        unit: "%"
+        domain: "Nonnegative mass percentage; texture sum within [99, 101]."
+        description: "Clay mass percentage in the upstream convention."
+      - name: bulk_density
+        symbol: null
+        unit: "g/cm^3"
+        domain: "0.5 <= value <= 2.0"
+        description: "Dry bulk density."
+      - name: theta_33
+        symbol: null
+        unit: "cm^3/cm^3"
+        domain: "0 < value < 1"
+        description: "Volumetric water content at 33 kPa suction."
+    outputs:
+      $ref: "#/$defs/Rosetta3Statistics"
+    verification_cases:
+      - id: upstream_clay_loam
+        kind: published
+        inputs:
+          sand: 30
+          silt: 30
+          clay: 40
+          bulk_density: 1.5
+          theta_33: 0.3
+        expected:
+          theta_r_mean: 0.10564200209306918
+          theta_s_mean: 0.40653700668266984
+          alpha_mean: 0.013663808379629364
+          n_mean: 1.2628220509818735
+          k_sat_mean: 12.047632455015195
+          k_0_mean: 2.4300447795385374
+          l_mean: -1.6264113202949755
+          theta_r_std: 0.012345190806246003
+          theta_s_std: 0.009182005673579212
+          alpha_std: 0.002590348162040073
+          n_std: 0.035077462323752084
+          k_sat_std: 2.9053493324283672
+          k_0_std: 1.5549834128030902
+          l_std: 1.436361576536985
+        source_location: >-
+          Official rosetta-soil revision 6b0e3902f8a145805d41b691dc36f8e69e898f2a,
+          rosetta(3, inputs, estimate_type="arith"); specs/models/rosetta3/reference.json, mod4_arith_clay_loam.
+    documentation:
+      notes:
+        - Explicit predictor levels reject invalid predictors instead of silently falling back.
+        - Full arithmetic, log10, and geometric reference results are in the frozen upstream model fixture.
+      warnings:
+        - A model handle is required; the reviewed CC0 parameters are bundled.
+        - Trained parameters are published by USDA under CC0 and bundled unchanged.
+        - Local inference is not validation of predictive accuracy or applicability to a new soil population.
+  - name: calc_ptf_zhang2017_mod5
+    status: implemented
+    implementation:
+      networks:
+        retention:
+          parameters:
+            artifact: *rosetta_parameters
+            network: 3
+            offset: 195000
+          members: 1000
+          widths:
+          - 6
+          - 6
+          - 5
+          activations:
+          - tansig
+          - sigmoid
+          inputs:
+          - name: sand
+            scale: minmax
+            params:
+            - 0.0
+            - 0.01
+            - 0.0
+          - name: silt
+            scale: minmax
+            params:
+            - 0.0
+            - 0.01
+            - 0.0
+          - name: clay
+            scale: minmax
+            params:
+            - 0.0
+            - 0.01
+            - 0.0
+          - name: bulk_density
+            scale: minmax
+            params:
+            - 0.0
+            - 1.0
+            - 0.0
+          - name: theta_33
+            scale: minmax
+            params:
+            - 0.0
+            - 1.0
+            - 0.0
+          - name: theta_1500
+            scale: minmax
+            params:
+            - 0.0
+            - 1.0
+            - 0.0
+          outputs:
+          - name: theta_r
+            scale: linear
+            params:
+            - 1.0
+            - 0.0
+          - name: theta_s
+            scale: linear
+            params:
+            - 1.0
+            - 0.0
+          - name: alpha
+            scale: linear
+            params:
+            - -8.0
+            - 2.0
+          - name: n
+            scale: linear
+            params:
+            - 1.5
+            - 0.0
+          - name: k_sat
+            scale: linear
+            params:
+            - 8.0
+            - -2.0
+        conductivity:
+          parameters:
+            artifact: *rosetta_parameters
+            network: 4
+            offset: 272000
+          members: 100
+          widths:
+          - 4
+          - 6
+          - 2
+          activations:
+          - sigmoid
+          - sigmoid
+          inputs:
+          - name: theta_r
+            scale: division
+            params:
+            - 1.0
+          - name: theta_s
+            scale: division
+            params:
+            - 1.0
+          - name: alpha
+            scale: logtr
+            params:
+            - -8.0
+            - 0.25
+          - name: n
+            scale: logtr
+            params:
+            - 1.5
+            - 0.0
+          outputs:
+          - name: k_0
+            scale: affine
+            params:
+            - 10.0
+            - -0.3
+          - name: l
+            scale: affine
+            params:
+            - 100.0
+            - -0.5
+      variables:
+      - name: texture_total
+        expr: sand + silt + clay
+      - name: required_predictors
+        require:
+        - left: sand
+          op: ge
+          right: '0'
+        - left: silt
+          op: ge
+          right: '0'
+        - left: clay
+          op: ge
+          right: '0'
+        - left: texture_total
+          op: ge
+          right: '99'
+        - left: texture_total
+          op: le
+          right: '101'
+        - left: bulk_density
+          op: ge
+          right: '0.5'
+        - left: bulk_density
+          op: le
+          right: '2'
+        - left: theta_33
+          op: gt
+          right: '0'
+        - left: theta_33
+          op: lt
+          right: '1'
+        - left: theta_1500
+          op: gt
+          right: '0'
+        - left: theta_1500
+          op: lt
+          right: theta_33
+      - name: raw
+        network:
+          definition: retention
+          arguments:
+          - sand
+          - silt
+          - clay
+          - bulk_density
+          - theta_33
+          - theta_1500
+      - name: physical
+        ensemble_transform:
+          source: raw
+          fields:
+            alpha: 10 ^ alpha
+            n: 10 ^ n
+            k_sat: 10 ^ k_sat
+      - name: log_statistics
+        ensemble_statistics:
+          source: raw
+          ddof: 1
+      - name: physical_statistics
+        ensemble_statistics:
+          source: physical
+          ddof: 1
+      - name: geometric_alpha
+        expr: 10 ^ log_statistics.alpha_mean
+      - name: geometric_n
+        expr: 10 ^ log_statistics.n_mean
+      - name: geometric_k_sat
+        expr: 10 ^ log_statistics.k_sat_mean
+      - name: conductivity_theta_r
+        estimate:
+          arithmetic: physical_statistics.theta_r_mean
+          log10: log_statistics.theta_r_mean
+          geometric: log_statistics.theta_r_mean
+      - name: conductivity_theta_s
+        estimate:
+          arithmetic: physical_statistics.theta_s_mean
+          log10: log_statistics.theta_s_mean
+          geometric: log_statistics.theta_s_mean
+      - name: conductivity_alpha
+        estimate:
+          arithmetic: physical_statistics.alpha_mean
+          log10: geometric_alpha
+          geometric: geometric_alpha
+      - name: conductivity_n
+        estimate:
+          arithmetic: physical_statistics.n_mean
+          log10: geometric_n
+          geometric: geometric_n
+      - name: unsaturated
+        network:
+          definition: conductivity
+          arguments:
+          - conductivity_theta_r
+          - conductivity_theta_s
+          - conductivity_alpha
+          - conductivity_n
+          when:
+          - left: '0'
+            op: le
+            right: conductivity_theta_r
+          - left: conductivity_theta_r
+            op: lt
+            right: conductivity_theta_s
+          - left: conductivity_theta_s
+            op: lt
+            right: '1'
+          - left: conductivity_alpha
+            op: gt
+            right: '0'
+          - left: conductivity_n
+            op: gt
+            right: '1'
+      - name: unsaturated_physical
+        ensemble_transform:
+          source: unsaturated
+          fields:
+            k_0: 10 ^ k_0
+      - name: conductivity_log_statistics
+        ensemble_statistics:
+          source: unsaturated
+          ddof: 1
+      - name: conductivity_physical_statistics
+        ensemble_statistics:
+          source: unsaturated_physical
+          ddof: 1
+      - name: geometric_k_0
+        expr: 10 ^ conductivity_log_statistics.k_0_mean
+      - name: theta_r_mean
+        estimate:
+          arithmetic: physical_statistics.theta_r_mean
+          log10: log_statistics.theta_r_mean
+          geometric: log_statistics.theta_r_mean
+      - name: theta_r_std
+        estimate:
+          arithmetic: physical_statistics.theta_r_std
+          log10: log_statistics.theta_r_std
+          geometric: physical_statistics.theta_r_std
+      - name: theta_s_mean
+        estimate:
+          arithmetic: physical_statistics.theta_s_mean
+          log10: log_statistics.theta_s_mean
+          geometric: log_statistics.theta_s_mean
+      - name: theta_s_std
+        estimate:
+          arithmetic: physical_statistics.theta_s_std
+          log10: log_statistics.theta_s_std
+          geometric: physical_statistics.theta_s_std
+      - name: alpha_mean
+        estimate:
+          arithmetic: physical_statistics.alpha_mean
+          log10: log_statistics.alpha_mean
+          geometric: geometric_alpha
+      - name: alpha_std
+        estimate:
+          arithmetic: physical_statistics.alpha_std
+          log10: log_statistics.alpha_std
+          geometric: physical_statistics.alpha_std
+      - name: n_mean
+        estimate:
+          arithmetic: physical_statistics.n_mean
+          log10: log_statistics.n_mean
+          geometric: geometric_n
+      - name: n_std
+        estimate:
+          arithmetic: physical_statistics.n_std
+          log10: log_statistics.n_std
+          geometric: physical_statistics.n_std
+      - name: k_sat_mean
+        estimate:
+          arithmetic: physical_statistics.k_sat_mean
+          log10: log_statistics.k_sat_mean
+          geometric: geometric_k_sat
+      - name: k_sat_std
+        estimate:
+          arithmetic: physical_statistics.k_sat_std
+          log10: log_statistics.k_sat_std
+          geometric: physical_statistics.k_sat_std
+      - name: k_0_mean
+        estimate:
+          arithmetic: conductivity_physical_statistics.k_0_mean
+          log10: conductivity_log_statistics.k_0_mean
+          geometric: geometric_k_0
+      - name: k_0_std
+        estimate:
+          arithmetic: conductivity_physical_statistics.k_0_std
+          log10: conductivity_log_statistics.k_0_std
+          geometric: conductivity_physical_statistics.k_0_std
+      - name: l_mean
+        expr: conductivity_log_statistics.l_mean
+      - name: l_std
+        expr: conductivity_log_statistics.l_std
+    public_api:
+      name: calc_ptf_zhang2017_mod5
+      result_class: Rosetta3Statistics
+      summary: Estimate Rosetta3 level 5 hydraulic means and uncertainty.
+    scope:
+      prediction_target: Seven hydraulic parameters and their bootstrap sample standard deviations.
+      models:
+        h_theta: van Genuchten retention parameters
+        k_h: Saturated conductivity and Rosetta1 unsaturated conductivity parameters
+    inputs:
+      - name: sand
+        symbol: null
+        unit: "%"
+        domain: "Nonnegative mass percentage; texture sum within [99, 101]."
+        description: "Sand mass percentage in the upstream convention; no granulometric conversion is applied."
+      - name: silt
+        symbol: null
+        unit: "%"
+        domain: "Nonnegative mass percentage; texture sum within [99, 101]."
+        description: "Silt mass percentage in the upstream convention."
+      - name: clay
+        symbol: null
+        unit: "%"
+        domain: "Nonnegative mass percentage; texture sum within [99, 101]."
+        description: "Clay mass percentage in the upstream convention."
+      - name: bulk_density
+        symbol: null
+        unit: "g/cm^3"
+        domain: "0.5 <= value <= 2.0"
+        description: "Dry bulk density."
+      - name: theta_33
+        symbol: null
+        unit: "cm^3/cm^3"
+        domain: "0 < value < 1"
+        description: "Volumetric water content at 33 kPa suction."
+      - name: theta_1500
+        symbol: null
+        unit: "cm^3/cm^3"
+        domain: "0 < theta_1500 < theta_33"
+        description: "Volumetric water content at 1500 kPa suction."
+    outputs:
+      $ref: "#/$defs/Rosetta3Statistics"
+    verification_cases:
+      - id: upstream_clay_loam
+        kind: published
+        inputs:
+          sand: 30
+          silt: 30
+          clay: 40
+          bulk_density: 1.5
+          theta_33: 0.3
+          theta_1500: 0.1
+        expected:
+          theta_r_mean: 0.0687213319841933
+          theta_s_mean: 0.3839050853475144
+          alpha_mean: 0.0036914540698334396
+          n_mean: 1.5122960137476906
+          k_sat_mean: 10.452206725579414
+          k_0_mean: 1.0202837816881765
+          l_mean: 0.22415802649553598
+          theta_r_std: 0.013635805076704857
+          theta_s_std: 0.014976665455951168
+          alpha_std: 0.00120099654764296
+          n_std: 0.11756697611413275
+          k_sat_std: 4.816027639984873
+          k_0_std: 0.4967836368491003
+          l_std: 1.4016987918707078
+        source_location: >-
+          Official rosetta-soil revision 6b0e3902f8a145805d41b691dc36f8e69e898f2a,
+          rosetta(3, inputs, estimate_type="arith"); specs/models/rosetta3/reference.json, mod5_arith_clay_loam.
+    documentation:
+      notes:
+        - Explicit predictor levels reject invalid predictors instead of silently falling back.
+        - Full arithmetic, log10, and geometric reference results are in the frozen upstream model fixture.
+      warnings:
+        - A model handle is required; the reviewed CC0 parameters are bundled.
+        - Trained parameters are published by USDA under CC0 and bundled unchanged.
+        - Local inference is not validation of predictive accuracy or applicability to a new soil population.
+scientific_notes: |
+  Computational source: official rosetta-soil at commit
+  6b0e3902f8a145805d41b691dc36f8e69e898f2a. The paper is cited for model
+  identity; the complete paper has not been independently reviewed.
+
+  Dense architectures, artifact metadata, activations, and scaling are declared
+  in implementation.networks. Ordered implementation.variables describe member
+  transformations, sample statistics, estimate selection, conductivity inputs,
+  numeric conditions, and output transformations. Arithmetic uses the shared
+  expression parser and semantic model. Python and C++ reuse the C computation.
+  Explicit initialization shares immutable bundled parameters. Numerical reference
+  cases are retained in specs/models/rosetta3/reference.json.
+
+  Arithmetic estimates summarize members in physical units. Log10 estimates
+  summarize alpha, n, k_sat, and k_0 in log10 of their declared numeric units;
+  theta_r, theta_s, and l retain their original scales. Geometric estimates
+  exponentiate the corresponding log10 means and retain physical-scale sample
+  standard deviations. All sample standard deviations use ddof=1, not standard
+  errors. These conventions are implemented by the declared estimate operations.
+
+  Additional conductivity parameters use the Rosetta1 network described by
+  Schaap, M. G., Leij, F. J., & van Genuchten, M. T. (2001). ROSETTA: a computer
+  program for estimating soil hydraulic parameters with hierarchical pedotransfer
+  functions. Journal of Hydrology, 251(3-4), 163-176.
+  https://doi.org/10.1016/S0022-1694(01)00466-8

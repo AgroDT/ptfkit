@@ -51,3 +51,6 @@ pub mod zhao2016;
 
 #[cfg(test)]
 mod test_support;
+
+mod models;
+pub mod zhang_schaap2017;

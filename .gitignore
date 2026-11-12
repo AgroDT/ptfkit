@@ -4,3 +4,15 @@
 # Test coverage
 .coverage*
 coverage.xml
+
+# Local Rosetta reference environment and unredistributed trained artifacts
+.rosetta-upstream/
+.rosetta-env/
+.rosetta-local/
+.euptf2-local/
+.mise.local.toml
+codegen/scripts/__pycache__/
+
+# Prepared exact model arrays are shipped in packages, never committed.
+targets/ptfkit-rs/src/prepared/
+targets/ptfkit-native/prepared/
